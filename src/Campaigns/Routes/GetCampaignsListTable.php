@@ -124,6 +124,11 @@ class GetCampaignsListTable implements RestRoute
 
         $items = $this->listTable->getItems();
 
+        // Set the raw title property of each item
+        foreach ($items as $i => $item) {
+            $items[$i]['titleRaw'] = $campaigns[$i]->title;
+        }
+
         return new WP_REST_Response(
             [
                 'items' => $items,

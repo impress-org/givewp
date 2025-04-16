@@ -38,6 +38,7 @@ class RegisterCampaignRoutes
         $this->registerMergeCampaigns();
         $this->registerCreateCampaign();
         $this->registerCreateCampaignPage();
+        $this->registerDuplicateCampaign();
     }
 
     /**
@@ -126,7 +127,7 @@ class RegisterCampaignRoutes
                         'type' => 'enum',
                         'enum' => [
                             'asc',
-                            'desc'
+                            'desc',
                         ],
                         'default' => 'desc',
                     ],
@@ -256,6 +257,35 @@ class RegisterCampaignRoutes
 
 
     /**
+     * @unreleased
+     */
+    public function registerDuplicateCampaign()
+    {
+        register_rest_route(
+            CampaignRoute::NAMESPACE,
+            CampaignRoute::CAMPAIGN . '/duplicate',
+            [
+                [
+                    'methods' => WP_REST_Server::CREATABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->campaignRequestController->duplicateCampaign($request);
+                    },
+                    'permission_callback' => function () {
+                        return current_user_can('manage_options');
+                    },
+                ],
+                'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                ],
+            ]
+        );
+    }
+
+
+    /**
      * @since 4.0.0
      */
     public function getSchema(): array
@@ -319,7 +349,7 @@ class RegisterCampaignRoutes
                 'pageId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Campaign page ID', 'give'),
-                ]
+                ],
             ],
             'required' => ['id', 'title', 'goal', 'goalType'],
             'allOf' => [
@@ -477,7 +507,7 @@ class RegisterCampaignRoutes
                         return current_user_can('manage_options');
                     },
                 ],
-                 'args' => [
+                'args' => [
                     'id' => [
                         'type' => 'integer',
                         'required' => true,

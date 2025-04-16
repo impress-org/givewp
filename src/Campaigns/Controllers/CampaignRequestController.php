@@ -34,7 +34,7 @@ class CampaignRequestController
     {
         $campaign = Campaign::find($request->get_param('id'));
 
-        if (!$campaign) {
+        if ( ! $campaign) {
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
@@ -57,7 +57,7 @@ class CampaignRequestController
 
         $query->whereIn('status', $status);
 
-        if (!empty($ids)) {
+        if ( ! empty($ids)) {
             $query->whereIn('id', $ids);
         }
 
@@ -136,7 +136,7 @@ class CampaignRequestController
     {
         $campaign = Campaign::find($request->get_param('id'));
 
-        if (!$campaign) {
+        if ( ! $campaign) {
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
@@ -190,14 +190,14 @@ class CampaignRequestController
     /**
      * @since 4.0.0
      *
-     * @throws Exception
      * @return WP_Error | WP_REST_Response
+     * @throws Exception
      */
     public function mergeCampaigns(WP_REST_Request $request)
     {
         $destinationCampaign = Campaign::find($request->get_param('id'));
 
-        if (!$destinationCampaign) {
+        if ( ! $destinationCampaign) {
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
@@ -248,6 +248,32 @@ class CampaignRequestController
         ]);
 
         return new WP_REST_Response($campaignPage->toArray(), 201);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function duplicateCampaign(WP_REST_Request $request): WP_REST_Response
+    {
+        $campaign = Campaign::find($request->get_param('id'));
+
+        if ( ! $campaign) {
+            return new WP_REST_Response('Campaign does not exist', 404);
+        }
+
+        $campaign->id = null;
+
+        // todo:
+        // save campaign
+        // duplicate forms
+        // update default form id
+
+        return new WP_REST_Response([
+            'errors' => 0,
+            'campaign' => $campaign->toArray(),
+        ], 201);
     }
 
     /**
