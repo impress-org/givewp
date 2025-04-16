@@ -100,7 +100,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     private function maybeHidePayPalStandard()
     {

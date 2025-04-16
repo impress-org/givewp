@@ -9,7 +9,7 @@ use PayPalHttp\HttpRequest;
  *
  * This class use to generate a client token for PayPal JS SDK.
  *
- * @unreleased Add PayPal-Partner-Attribution-Id header
+ * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
  * @since 2.30.0
  */
 class GenerateClientToken extends HttpRequest

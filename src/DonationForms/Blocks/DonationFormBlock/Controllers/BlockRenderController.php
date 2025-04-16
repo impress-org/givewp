@@ -14,12 +14,12 @@ use Give\Helpers\Language;
 class BlockRenderController
 {
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     protected static int $embedInstance = 0;
 
     /**
-     * @unreleased updated with embed ID instance fallback when block ID is not set.
+     * @since 4.1.0 updated with embed ID instance fallback when block ID is not set.
      * @since 3.22.0 Add locale support
      * @since 3.2.0 include form url for new tab format.
      * @since 3.0.0

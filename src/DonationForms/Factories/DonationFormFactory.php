@@ -12,7 +12,7 @@ use Give\Framework\Models\Factories\ModelFactory;
 class DonationFormFactory extends ModelFactory
 {
     /**
-     * @unreleased added goalSource
+     * @since 4.1.0 added goalSource
      * @since 3.0.0
      */
     public function definition(): array

@@ -17,7 +17,7 @@ type ModalFormProps = {
 };
 
 /**
- * @unreleased updated with improved accessibility and styling
+ * @since 4.1.0 updated with improved accessibility and styling
  * @since 4.0.0 updated to include loading state
  * @since 3.6.1
  * @since 3.4.0

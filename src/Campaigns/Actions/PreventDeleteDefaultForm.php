@@ -5,12 +5,12 @@ namespace Give\Campaigns\Actions;
 use Give\Campaigns\Models\Campaign;
 
 /**
- * @unreleased
+ * @since 4.1.0
  */
 class PreventDeleteDefaultForm
 {
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     public function __invoke($postId)
     {
@@ -29,7 +29,7 @@ class PreventDeleteDefaultForm
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     public function preventTrashStatusChange($newStatus, $oldStatus, $post)
     {

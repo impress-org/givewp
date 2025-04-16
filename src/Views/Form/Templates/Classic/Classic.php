@@ -131,7 +131,7 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * @inheritDoc
      *
-     * @unreleased Added custom form styles
+     * @since 4.1.0 Added custom form styles
      */
     public function loadScripts()
     {
