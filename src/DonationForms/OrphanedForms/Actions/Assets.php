@@ -14,7 +14,7 @@ class Assets
      */
     public function __invoke()
     {
-        if ('enabled' !== give_get_option('show_orphaned_forms_table')) {
+        if ('enabled' !== give_get_option('show_orphaned_forms_table', 'disabled')) {
             return;
         }
 
