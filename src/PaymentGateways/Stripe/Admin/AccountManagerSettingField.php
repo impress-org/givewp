@@ -140,7 +140,7 @@ class AccountManagerSettingField
                     <div class="give-tooltip" data-tooltip="
 					<?php
                     esc_html_e(
-                        'You are using the Pro version of the GiveWP add-on which includes additional payment methods, zero additional fees, and premium support.',
+                        'You are using the Pro version of the GiveWP add-on, which includes additional connection options and premium support.',
                         'give'
                     );
                     ?>
