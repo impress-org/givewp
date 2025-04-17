@@ -144,6 +144,7 @@ class Utils
     /**
      * The regular expression attempts to capture the basic structure of all data types that can be serialized by PHP.
      *
+     * @unreleased Add regular expression to remove character located in not allowed places inside a serialized data structure
      * @since 3.19.4 Decode the string and remove any character not allowed in a serialized string
      * @since 3.19.3 Support all types of serialized data instead of only objects and arrays
      * @since 3.17.2
@@ -161,6 +162,31 @@ class Utils
          * a Letter (a-zA-Z), number (0-9), or any of the characters {}, :, ;, ", ', ., [, ], (, ), ,
          */
         $data = preg_replace('/[^a-zA-Z0-9:{};"\'.\[\](),]/', '', $data);
+
+        /**
+         * Matches a delimiter (a, O, s, i, b, d) followed by optional non-colon characters,
+         * then a colon, digits, and ':"', ensuring the delimiter is not inside quotes.
+         *
+         * Example: In 'O63:8:"stdClass":1:{s63:4:"name";}', it matches 'O63:8:"' and 's63:4:"'.
+         */
+        $data = preg_replace_callback('/([aOsibd])(?=(?:[^"]*"[^"]*")*[^"]*$)[^:]*:(\d+):"/',
+            function ($matches) {
+                static $count = 0;
+                $count++;
+
+                if ($count === 1) {
+                    // Preserve the first occurrence by returning the entire match as is (useful when the serialized data is hidden inside a string)
+                    // Example: For input 'O63:8:"stdClass":1:{s63:4:"name";s63:5:"James";}', the first match is 'O63:8:"', and it is returned unchanged.
+                    return $matches[0]; // $matches[0] contains the full matched string
+                }
+
+                // For subsequent matches, remove unwanted characters between the delimiter and the pattern
+                // Example: For input 'O63:8:"stdClass":1:{s63:4:"name";s63:5:"James";}', the second match is 's63:4:"'. Here, $matches[1] is 's', and $matches[2] is '4'.
+                // The result is s:4:"
+                return $matches[1] . ':' . $matches[2] . ':"';
+            },
+            $data
+        );
 
         $pattern = '/
         (a:\d+:\{.*}) |         # Matches arrays (e.g: a:2:{i:0;s:5:"hello";i:1;i:42;})
