@@ -2,10 +2,10 @@
 
 namespace Give\Donors\Controllers;
 
+use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
+use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
-use Give\Donors\ValueObjects\DonorAnonymousMode;
-use Give\Donors\ValueObjects\DonorRoute;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Donations\ValueObjects;
+namespace Give\API\REST\V3\Routes\Donations\ValueObjects;
 
 use Give\Framework\Support\ValueObjects\Enum;
 

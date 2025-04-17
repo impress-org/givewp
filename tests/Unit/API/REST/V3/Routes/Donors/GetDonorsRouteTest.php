@@ -1,17 +1,17 @@
 <?php
 
-namespace Unit\Donations\Routes;
+namespace Unit\API\REST\V3\Routes\Donors;
 
 use Exception;
+use Give\API\REST\V3\Routes\Donors\RegisterDonorRoutes;
+use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
-use Give\Donations\Routes\RegisterDonationRoutes;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
-use Give\Donations\ValueObjects\DonationRoute;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donors\Routes\RegisterDonorRoutes;
-use Give\Donors\ValueObjects\DonorRoute;
+use Give\Donors\Models\Donor;
+use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
@@ -22,7 +22,7 @@ use WP_REST_Server;
 /**
  * @since 4.0.0
  */
-class GetDonationsRouteTest extends RestApiTestCase
+class GetDonorsRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
@@ -31,7 +31,7 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     public function setUp(): void
     {
-        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
+        Hooks::addAction('rest_api_init', RegisterDonorRoutes::class);
 
         parent::setUp();
     }
@@ -39,26 +39,26 @@ class GetDonationsRouteTest extends RestApiTestCase
     /**
      * @since 4.0.0
      */
-    public function testGetDonationShouldReturnAllModelProperties()
+    public function testGetDonorsShouldReturnAllModelProperties()
     {
-        $donation = $this->createDonation1();
-
-        $newAdminUser = self::factory()->user->create(
+        $newAdminUser = $this->factory()->user->create(
             [
                 'role' => 'administrator',
-                'user_login' => 'testGetDonationShouldReturnAllModelProperties',
-                'user_pass' => 'testGetDonationShouldReturnAllModelProperties',
-                'user_email' => 'testGetDonationShouldReturnAllModelProperties@test.com',
+                'user_login' => 'testGetDonorsShouldReturnAllModelProperties',
+                'user_pass' => 'testGetDonorsShouldReturnAllModelProperties',
+                'user_email' => 'testGetDonorsShouldReturnAllModelProperties@test.com',
             ]
         );
-
         wp_set_current_user($newAdminUser);
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
 
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
+                'onlyWithDonations' => false,
                 'includeSensitiveData' => true,
             ]
         );
@@ -71,38 +71,21 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         // TODO: show shape of DateTime objects
         $createdAtJson = json_encode($data[0]['createdAt']);
-        $updatedAtJson = json_encode($data[0]['updatedAt']);
 
         $this->assertEquals(200, $status);
         $this->assertEquals([
-            'id' => $donation->id,
-            'campaignId' => $donation->campaignId,
-            'formId' => $donation->formId,
-            'formTitle' => $donation->formTitle,
-            'purchaseKey' => $donation->purchaseKey,
-            'donorIp' => $donation->donorIp,
+            'id' => $donor->id,
+            'userId' => $donor->userId,
             'createdAt' => json_decode($createdAtJson, true),
-            'updatedAt' => json_decode($updatedAtJson, true),
-            'status' => $donation->status->getValue(),
-            'type' => $donation->type->getValue(),
-            'mode' => $donation->mode->getValue(),
-            'amount' => $donation->amount->toArray(),
-            'feeAmountRecovered' => $donation->feeAmountRecovered ? $donation->feeAmountRecovered->toArray() : null,
-            'exchangeRate' => $donation->exchangeRate,
-            'gatewayId' => $donation->gatewayId,
-            'donorId' => $donation->donorId,
-            'honorific' => $donation->honorific,
-            'firstName' => $donation->firstName,
-            'lastName' => $donation->lastName,
-            'email' => $donation->email,
-            'phone' => $donation->phone,
-            'subscriptionId' => $donation->subscriptionId,
-            'billingAddress' => $donation->billingAddress ? $donation->billingAddress->toArray() : null,
-            'anonymous' => $donation->anonymous,
-            'levelId' => $donation->levelId,
-            'gatewayTransactionId' => $donation->gatewayTransactionId,
-            'company' => $donation->company,
-            'comment' => $donation->comment,
+            'name' => $donor->name,
+            'firstName' => $donor->firstName,
+            'lastName' => $donor->lastName,
+            'email' => $donor->email,
+            'phone' => $donor->phone,
+            'prefix' => $donor->prefix,
+            'additionalEmails' => $donor->additionalEmails,
+            'totalAmountDonated' => $donor->totalAmountDonated->toArray(),
+            'totalNumberOfDonations' => $donor->totalNumberOfDonations,
         ], $data[0]);
     }
 
@@ -111,12 +94,17 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldNotIncludeSensitiveData()
+    public function testGetDonorsShouldNotIncludeSensitiveData()
     {
-        $this->createDonation1();
+        Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+            ]
+        );
 
         $response = $this->dispatchRequest($request);
 
@@ -124,11 +112,10 @@ class GetDonationsRouteTest extends RestApiTestCase
         $data = $response->get_data();
 
         $sensitiveProperties = [
-            'donorIp',
+            'userId',
             'email',
             'phone',
-            'billingAddress',
-            'purchaseKey'
+            'additionalEmails',
         ];
 
         $this->assertEquals(200, $status);
@@ -140,25 +127,25 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldIncludeSensitiveData()
+    public function testGetDonorsShouldIncludeSensitiveData()
     {
         $newAdminUser = $this->factory()->user->create(
             [
                 'role' => 'administrator',
-                'user_login' => 'testGetDonationsShouldReturnSensitiveData',
-                'user_pass' => 'testGetDonationsShouldReturnSensitiveData',
-                'user_email' => 'testGetDonationsShouldReturnSensitiveData@test.com',
+                'user_login' => 'testGetDonorsShouldIncludeSensitiveData',
+                'user_pass' => 'testGetDonorsShouldIncludeSensitiveData',
+                'user_email' => 'testGetDonorsShouldIncludeSensitiveData@test.com',
             ]
         );
         wp_set_current_user($newAdminUser);
 
-        $this->createDonation1();
+        Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-
         $request->set_query_params(
             [
+                'onlyWithDonations' => false,
                 'includeSensitiveData' => true,
             ]
         );
@@ -169,11 +156,10 @@ class GetDonationsRouteTest extends RestApiTestCase
         $data = $response->get_data();
 
         $sensitiveProperties = [
-            'donorIp',
+            'userId',
             'email',
             'phone',
-            'billingAddress',
-            'purchaseKey'
+            'additionalEmails',
         ];
 
         $this->assertEquals(200, $status);
@@ -185,25 +171,25 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
+    public function testGetDonorsShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
     {
         $newSubscriberUser = $this->factory()->user->create(
             [
                 'role' => 'subscriber',
-                'user_login' => 'testGetDonationShouldReturn403ErrorSensitiveData',
-                'user_pass' => 'testGetDonationShouldReturn403ErrorSensitiveData',
-                'user_email' => 'testGetDonationShouldReturn403ErrorSensitiveData@test.com',
+                'user_login' => 'testGetDonorsShouldReturn403ErrorSensitiveData',
+                'user_pass' => 'testGetDonorsShouldReturn403ErrorSensitiveData',
+                'user_email' => 'testGetDonorsShouldReturn403ErrorSensitiveData@test.com',
             ]
         );
         wp_set_current_user($newSubscriberUser);
 
-        $this->createDonation1();
+        Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-
         $request->set_query_params(
             [
+                'onlyWithDonations' => false,
                 'includeSensitiveData' => true,
             ]
         );
@@ -220,23 +206,96 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsWithPagination()
+    public function testGetDonorsShouldReturnOnlyDonorsWithDonations()
     {
-        Donation::query()->delete();
+        DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
-        $donation1 = $this->createDonation1();
-        $donation2 = $this->createDonation2();
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => true,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($donor1->id, $data[0]['id']);
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsShouldReturnDonorsWithOrWithoutDonations()
+    {
+        DB::query("DELETE FROM " . DB::prefix('give_donors'));
+
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
+
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($donor1->id, $data[0]['id']);
+        $this->assertEquals($donor2->id, $data[1]['id']);
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @throws Exception
+     */
+    public function testGetDonorsWithPagination()
+    {
+        DB::query("DELETE FROM " . DB::prefix('give_donors'));
+
+        /** @var  Donor $donor1 */
+        $donor1 = Donor::factory()->create();
+
+        /** @var  Donor $donor2 */
+        $donor2 = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
         $request->set_query_params(
             [
+                'onlyWithDonations' => false,
                 'page' => 1,
                 'per_page' => 1,
                 'direction' => 'ASC',
             ]
         );
+
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
@@ -245,12 +304,12 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
-        $this->assertEquals($donation1->id, $data[0]['id']);
+        $this->assertEquals($donor1->id, $data[0]['id']);
         $this->assertEquals(2, $headers['X-WP-Total']);
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
-
         $request->set_query_params(
             [
+                'onlyWithDonations' => false,
                 'page' => 2,
                 'per_page' => 1,
                 'direction' => 'ASC',
@@ -264,7 +323,7 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
-        $this->assertEquals($donation2->id, $data[0]['id']);
+        $this->assertEquals($donor2->id, $data[0]['id']);
         $this->assertEquals(2, $headers['X-WP-Total']);
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
     }
@@ -274,15 +333,17 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsByCampaignId()
+    public function testGetDonorsByCampaignId()
     {
+        Donation::query()->delete();
+
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create();
 
-        $donation1 = $this->createDonation1($campaign->id);
-        $donation2 = $this->createDonation2($campaign->id);
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = $this->createDonor2WithDonation($campaign->id);
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -297,8 +358,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation1->id, $data[0]['id']);
-        $this->assertEquals($donation2->id, $data[1]['id']);
+        $this->assertEquals($donor1->id, $data[0]['id']);
+        $this->assertEquals($donor2->id, $data[1]['id']);
     }
 
     /**
@@ -306,18 +367,18 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldNotIncludeAnonymousDonations()
+    public function testGetDonorsShouldNotIncludeAnonymousDonors()
     {
         Donation::query()->delete();
 
-        $donation1 = $this->createDonation1();
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
 
-        // This anonymous donation should NOT be returned to the data array.
-        $donation2 = $this->createDonation2(0, true);
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = $this->createDonor2WithDonation($campaign->id, true);
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
@@ -325,7 +386,7 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
-        $this->assertEquals($donation1->id, $data[0]['id']);
+        $this->assertEquals($donor1->id, $data[0]['id']);
     }
 
     /**
@@ -333,30 +394,31 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldIncludeAnonymousDonations()
+    public function testGetDonorsShouldIncludeAnonymousDonors()
     {
         $newAdminUser = $this->factory()->user->create(
             [
                 'role' => 'administrator',
-                'user_login' => 'testGetDonationsShouldIncludeAnonymousDonations',
-                'user_pass' => 'testGetDonationsShouldIncludeAnonymousDonations',
-                'user_email' => 'testGetDonationsShouldIncludeAnonymousDonations@test.com',
+                'user_login' => 'testGetDonorsShouldIncludeAnonymousDonors',
+                'user_pass' => 'testGetDonorsShouldIncludeAnonymousDonors',
+                'user_email' => 'testGetDonorsShouldIncludeAnonymousDonors@test.com',
             ]
         );
         wp_set_current_user($newAdminUser);
 
         Donation::query()->delete();
 
-        $donation1 = $this->createDonation1();
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
 
-        // This anonymous donation should be returned to the data array.
-        $donation2 = $this->createDonation2(0, true);
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = $this->createDonor2WithDonation($campaign->id, true);
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'anonymousDonations' => 'include',
+                'anonymousDonors' => 'include',
                 'direction' => 'ASC',
             ]
         );
@@ -368,8 +430,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation1->id, $data[0]['id']);
-        $this->assertEquals($donation2->id, $data[1]['id']);
+        $this->assertEquals($donor1->id, $data[0]['id']);
+        $this->assertEquals($donor2->id, $data[1]['id']);
     }
 
     /**
@@ -377,27 +439,32 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldReturn403ErrorWhenNotAdminUserIncludeAnonymousDonations()
+    public function testGetDonorsShouldReturn403ErrorWhenNotAdminUserIncludeAnonymousDonors()
     {
         $newSubscriberUser = $this->factory()->user->create(
             [
                 'role' => 'subscriber',
-                'user_login' => 'testGetDonationShouldReturn403ErrorAnonymousDonation',
-                'user_pass' => 'testGetDonationShouldReturn403ErrorAnonymousDonation',
-                'user_email' => 'testGetDonationShouldReturn403ErrorAnonymousDonation@test.com',
+                'user_login' => 'testGetDonorsShouldReturn403ErrorAnonymousDonors',
+                'user_pass' => 'testGetDonorsShouldReturn403ErrorAnonymousDonors',
+                'user_email' => 'testGetDonorsShouldReturn403ErrorAnonymousDonors@test.com',
             ]
         );
         wp_set_current_user($newSubscriberUser);
 
         Donation::query()->delete();
 
-        $this->createDonation2(0, true);
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $this->createDonor1WithDonation($campaign->id);
+        $this->createDonor2WithDonation($campaign->id, true);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'anonymousDonations' => 'include',
+                'anonymousDonors' => 'include',
+                'direction' => 'ASC',
             ]
         );
 
@@ -413,20 +480,21 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsShouldRedactAnonymousDonations()
+    public function testGetDonorsShouldRedactAnonymousDonors()
     {
         Donation::query()->delete();
 
-        $donation1 = $this->createDonation1();
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create();
 
-        // This anonymous donation should be returned to the data array.
-        $donation2 = $this->createDonation2(0, true);
+        $donor1 = $this->createDonor1WithDonation($campaign->id);
+        $donor2 = $this->createDonor2WithDonation($campaign->id, true);
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
-                'anonymousDonations' => 'redact',
+                'anonymousDonors' => 'redact',
                 'direction' => 'ASC',
             ]
         );
@@ -438,15 +506,15 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation1->id, $data[0]['id']);
-        $this->assertEquals($donation2->id, $data[1]['id']);
+        $this->assertEquals($donor1->id, $data[0]['id']);
+        $this->assertEquals(0, $data[1]['id']);
 
         $anonymousDataRedacted = [
-            'donorId',
-            'honorific',
+            //'id', // This property is Checked above...
+            'name',
             'firstName',
             'lastName',
-            'company',
+            'prefix',
         ];
 
         foreach ($anonymousDataRedacted as $property) {
@@ -461,9 +529,9 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonationsSortedByColumns($sortableColumn)
+    public function testGetDonorsSortedByColumns($sortableColumn)
     {
-        Donation::query()->delete();
+        DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
         /** @var Campaign $campaign1 */
         $campaign1 = Campaign::factory()->create();
@@ -471,12 +539,11 @@ class GetDonationsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign2 */
         $campaign2 = Campaign::factory()->create();
 
+        $donor1 = $this->createDonor1WithDonation($campaign1->id);
+        $donor2 = $this->createDonor2WithDonation($campaign1->id);
+        $donor3 = $this->createDonor3WithDonation($campaign2->id);
 
-        $donation1 = $this->createDonation1($campaign1->id);
-        $donation2 = $this->createDonation2($campaign1->id);
-        $donation3 = $this->createDonation3($campaign2->id);
-
-        $route = '/' . DonorRoute::NAMESPACE . '/donations';
+        $route = '/' . DonorRoute::NAMESPACE . '/donors';
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
         /**
@@ -498,9 +565,9 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donation1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donation3->{$sortableColumn}, $data[2][$sortableColumn]);
+        $this->assertEquals($donor1->{$sortableColumn}, $data[0][$sortableColumn]);
+        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($donor3->{$sortableColumn}, $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -519,8 +586,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation2->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($donor1->{$sortableColumn}, $data[0][$sortableColumn]);
+        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
 
         /**
          * Descendant Direction
@@ -541,9 +608,9 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donation3->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donation1->{$sortableColumn}, $data[2][$sortableColumn]);
+        $this->assertEquals($donor3->{$sortableColumn}, $data[0][$sortableColumn]);
+        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($donor1->{$sortableColumn}, $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -562,8 +629,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation2->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation1->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($donor2->{$sortableColumn}, $data[0][$sortableColumn]);
+        $this->assertEquals($donor1->{$sortableColumn}, $data[1][$sortableColumn]);
     }
 
     /**
@@ -574,13 +641,11 @@ class GetDonationsRouteTest extends RestApiTestCase
         return [
             ['id'],
             ['createdAt'],
-            ['updatedAt'],
-            ['status'],
-            ['amount'],
-            ['feeAmountRecovered'],
-            ['donorId'],
+            ['name'],
             ['firstName'],
             ['lastName'],
+            ['totalAmountDonated'],
+            ['totalNumberOfDonations'],
         ];
     }
 
@@ -589,24 +654,30 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    private function createDonation1(int $campaignId = 0, bool $anonymous = false): Donation
+    private function createDonor1WithDonation(int $campaignId = 0, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation1 */
         $donation1 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'amount' => new Money(100, 'USD'),
-            'feeAmountRecovered' => new Money(10, 'USD'),
-            'firstName' => 'A',
-            'lastName' => 'A',
             'mode' => DonationMode::LIVE(),
         ]);
+        $donor1 = $donation1->donor;
+
+        $donor1->firstName = 'A';
+        $donor1->lastName = 'A';
+        $donor1->name = 'A A';
+        $donor1->totalAmountDonated = new Money(100, 'USD');
+        $donor1->totalNumberOfDonations = 1;
+        $donor1->save();
+
+        give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::DONOR_ID, $donor1->id);
 
         if ($campaignId) {
             give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::CAMPAIGN_ID, $campaignId);
         }
 
-        return $donation1;
+        return Donor::find($donor1->id);
     }
 
     /**
@@ -614,24 +685,30 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    private function createDonation2(int $campaignId = 0, bool $anonymous = false): Donation
+    private function createDonor2WithDonation(int $campaignId = 0, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation2 */
         $donation2 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'amount' => new Money(200, 'USD'),
-            'feeAmountRecovered' => new Money(20, 'USD'),
-            'firstName' => 'B',
-            'lastName' => 'B',
             'mode' => DonationMode::LIVE(),
         ]);
+        $donor2 = $donation2->donor;
+
+        $donor2->firstName = 'B';
+        $donor2->lastName = 'B';
+        $donor2->name = 'B B';
+        $donor2->totalAmountDonated = new Money(200, 'USD');
+        $donor2->totalNumberOfDonations = 2;
+        $donor2->save();
+
+        give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::DONOR_ID, $donor2->id);
 
         if ($campaignId) {
             give()->payment_meta->update_meta($donation2->id, DonationMetaKeys::CAMPAIGN_ID, $campaignId);
         }
 
-        return $donation2;
+        return Donor::find($donor2->id);
     }
 
     /**
@@ -639,23 +716,29 @@ class GetDonationsRouteTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    private function createDonation3(int $campaignId = 0, bool $anonymous = false): Donation
+    private function createDonor3WithDonation(int $campaignId = 0, bool $anonymous = false): Donor
     {
         /** @var  Donation $donation3 */
         $donation3 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'amount' => new Money(300, 'USD'),
-            'feeAmountRecovered' => new Money(30, 'USD'),
-            'firstName' => 'C',
-            'lastName' => 'C',
             'mode' => DonationMode::LIVE(),
         ]);
+        $donor3 = $donation3->donor;
+
+        $donor3->firstName = 'C';
+        $donor3->lastName = 'C';
+        $donor3->name = 'C C';
+        $donor3->totalAmountDonated = new Money(300, 'USD');
+        $donor3->totalNumberOfDonations = 3;
+        $donor3->save();
+
+        give()->payment_meta->update_meta($donation3->id, DonationMetaKeys::DONOR_ID, $donor3->id);
 
         if ($campaignId) {
             give()->payment_meta->update_meta($donation3->id, DonationMetaKeys::CAMPAIGN_ID, $campaignId);
         }
 
-        return $donation3;
+        return Donor::find($donor3->id);
     }
 }

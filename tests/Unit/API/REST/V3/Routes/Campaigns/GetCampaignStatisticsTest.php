@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\Tests\Unit\Campaigns\Routes;
+namespace Unit\API\REST\V3\Routes\Campaigns;
 
 use DateTime;
+use Give\API\REST\V3\Routes\Campaigns\GetCampaignStatistics;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Routes\GetCampaignStatistics;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;

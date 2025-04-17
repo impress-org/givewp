@@ -3,13 +3,13 @@
 namespace Give\Campaigns\Controllers;
 
 use Exception;
+use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignPageStatus;
-use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Campaigns\ViewModels\CampaignViewModel;

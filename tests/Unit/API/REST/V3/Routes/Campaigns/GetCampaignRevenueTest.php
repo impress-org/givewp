@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\Tests\Unit\Campaigns\Routes;
+namespace Unit\API\REST\V3\Routes\Campaigns;
 
 use Exception;
+use Give\API\REST\V3\Routes\Campaigns\GetCampaignRevenue;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Routes\GetCampaignRevenue;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
