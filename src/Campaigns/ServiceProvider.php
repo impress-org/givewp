@@ -226,6 +226,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
         Hooks::addAction('enqueue_block_editor_assets', Actions\RegisterCampaignBlocks::class, 'loadBlockEditorAssets');
+        Hooks::addAction('init', Actions\RegisterCampaignShortcodes::class);
     }
 
     /**
