@@ -106,7 +106,7 @@ If you are a GiveWP customer with an active license of any of our popular add-on
 
 GiveWP comes with several payment gateway options:
 
-* **Stripe Donations** -- Accept donations through any payment method (like Apple Pay, Google Pay, or ACH) activated in your Stripe accounts. Upgrade to the [Premium Stripe](https://go.givewp.com/addon-stripe) add-on to remove the 2% fee for one-time donations processed through Stripe.
+* **Stripe Donations** -- Accept donations through any payment method (like Apple Pay, Google Pay, or ACH) activated in your Stripe accounts.
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
 * **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account.
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
@@ -244,12 +244,6 @@ On top of that, customizing the plugin’s terminology is a daunting task. You n
 Use GiveWP for donations, and let your WooCommerce or WP eCommerce plugin or the like handle your products. They work alongside each other just fine. Your donors will be happy, your customers will be happy, and so will you.
 
 Additionally, you can use our [Donation Upsells for WooCommerce](https://go.givewp.com/addon-upsells/) GiveWP add-on to allow your customers to do a donation upsell in the cart or checkout.
-
-= How do I eliminated the 2% fee on Stripe donations? =
-
-The 2% fee on Stripe donations only applies to donations taken via our free Stripe integration in GiveWP Core. If you purchase the premium Stripe add-on you will not have any additional fees at all. Additionally, even with the free Stripe plugin, the fees only apply to one-time donations, never to recurring donations.
-
-[Read our release announcement](https://go.givewp.com/version2-5) for all the details, and if you have further questions feel free to reach out via [our contact page](https://go.givewp.com/contact).
 
 = How can I report security bugs? =
 

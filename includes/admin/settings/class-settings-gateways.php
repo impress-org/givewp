@@ -257,6 +257,7 @@ if (! class_exists('Give_Settings_Gateways')) :
         /**
          * Render Gateway Notice
          *
+         * @unreleased Updated messages removing mentions to Stripe fees
          * @since  2.3.0
          * @access public
          *
@@ -299,18 +300,18 @@ if (! class_exists('Give_Settings_Gateways')) :
                         <?php
                         printf(
                             __(
-                                'Activate the free Stripe payment gateway %1$s, <a href="%2$s" target="_blank">PayPal Donations</a>, or a premium gateway like <a href="%3$s" target="_blank">Authorize.net</a>, or <a href="%4$s" target="_blank">Stripe Premium</a> for no added fees and priority support.',
+                                'Activate the free Stripe payment gateway %1$s, <a href="%2$s" target="_blank">PayPal Donations</a>, or a premium gateway like <a href="%3$s" target="_blank">2checkout</a>, or <a href="%4$s" target="_blank">Authorize.Net</a>.',
                                 'give'
                             ),
                             Give()->tooltips->render_help(
                                 __(
-                                    'The free version of Stripe includes an additional 2% processing fee in addition to Stripe\'s normal fees for one-time donations. This ensures we can fully support the plugin for the future. Upgrade to the premium Stripe add-on for no added fees.',
+                                    'The Stripe payment gateway includes a 2% processing fee in addition to Stripe’s transaction fee. This ensures our ability to provide future support and updates for the plugin.',
                                     'give'
                                 )
                             ),
                             admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal'),
-                            'https://givewp.com/addons/authorize-net-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner',
-                            'https://givewp.com/addons/stripe-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner'
+                            'https://givewp.com/addons/2checkout/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner',
+                            'https://givewp.com/addons/authorize-net-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner'
                         );
                         ?>
                     </p>
