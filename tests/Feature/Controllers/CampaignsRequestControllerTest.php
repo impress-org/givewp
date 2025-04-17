@@ -3,9 +3,9 @@
 namespace Give\Tests\Feature\Controllers;
 
 use Exception;
+use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Controllers\CampaignRequestController;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ViewModels\CampaignViewModel;
 use Give\Tests\TestCase;

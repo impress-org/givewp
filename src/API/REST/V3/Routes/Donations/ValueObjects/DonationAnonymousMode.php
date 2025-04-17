@@ -1,20 +1,20 @@
 <?php
 
-namespace Give\Donors\ValueObjects;
+namespace Give\API\REST\V3\Routes\Donations\ValueObjects;
 
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
  * @since 4.0.0
  *
- * @method static DonorAnonymousMode EXCLUDE()
- * @method static DonorAnonymousMode INCLUDED()
- * @method static DonorAnonymousMode REDACTED()
+ * @method static DonationAnonymousMode EXCLUDE()
+ * @method static DonationAnonymousMode INCLUDED()
+ * @method static DonationAnonymousMode REDACTED()
  * @method bool isExcluded()
  * @method bool isIncluded()
  * @method bool isRedacted()
  */
-class DonorAnonymousMode extends Enum
+class DonationAnonymousMode extends Enum
 {
     const EXCLUDED = 'exclude';
     const INCLUDED = 'include';

@@ -1,10 +1,10 @@
 <?php
 
-namespace Give\Campaigns\Routes;
+namespace Give\API\REST\V3\Routes\Campaigns;
 
 use DateTime;
+use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Controllers\CampaignRequestController;
-use Give\Campaigns\ValueObjects\CampaignRoute;
 use WP_REST_Request;
 use WP_REST_Server;
 

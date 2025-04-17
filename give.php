@@ -250,6 +250,7 @@ final class Give
         Give\Campaigns\ServiceProvider::class,
         Give\FeatureFlags\OptionBasedFormEditor\ServiceProvider::class,
         Give\ThirdPartySupport\ServiceProvider::class,
+        Give\API\REST\V3\Routes\ServiceProvider::class,
     ];
 
     /**
