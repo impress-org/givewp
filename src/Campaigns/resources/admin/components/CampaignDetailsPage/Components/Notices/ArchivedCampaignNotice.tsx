@@ -6,13 +6,13 @@ export default ({handleClick}) => (
         <TriangleIcon />
         <span>
             {__(
-                'Your campaign is currently archived and can not be edited. Moving this campaign out of archive will require you to update your landing page and campaign forms.',
+                'Your campaign is currently archived. You can view the campaign details but won\'t be able to make any changes until it\'s moved out of archive.',
                 'give'
             )}
         </span>
         <strong>
             <a href="#" onClick={() => handleClick()}>
-                {__('Move to Publish', 'give')}
+                {__('Move to Active', 'give')}
             </a>
         </strong>
     </>

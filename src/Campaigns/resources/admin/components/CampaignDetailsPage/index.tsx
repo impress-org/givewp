@@ -340,7 +340,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                                                         dispatch.dismissNotification('update-archive-notice');
                                                     }}
                                                 >
-                                                    <ArrowReverse /> {__('Move to Publish', 'give')}
+                                                    <ArrowReverse /> {__('Move to Active', 'give')}
                                                 </a>
                                             ) : (
                                                 <a
