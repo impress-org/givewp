@@ -167,10 +167,10 @@ class ListDonationForms extends Endpoint
                     }
                 }
 
-                $item['name'] = get_the_title($item['id']);
+                $item['name'] = $forms[$i]->title;
                 $item['edit'] = add_query_arg($queryArgs, get_edit_post_link($item['id'], 'edit'));
                 $item['permalink'] = get_permalink($item['id']);
-                $item['v3form'] = (bool)give_get_meta($item['id'], 'formBuilderSettings');
+                $item['v3form'] = $forms[$i]->usesFormBuilder;
                 $item['status_raw'] = $forms[$i]->status->getValue();
                 $item['isDefaultCampaignForm'] = $defaultCampaignForm && $item['id'] === $defaultCampaignForm->id;
             }

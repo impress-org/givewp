@@ -54,6 +54,10 @@ final class DonationFormQueryData
      * @var string
      */
     public $status;
+    /**
+     * @unreleased
+     */
+    public bool $usesFormBuilder;
 
     /**
      * Convert data from donation form object to DonationForm Model
@@ -77,6 +81,7 @@ final class DonationFormQueryData
         $self->totalAmountDonated = Money::fromDecimal($object->{DonationFormMetaKeys::FORM_EARNINGS()->getKeyAsCamelCase()}, give_get_currency());
         $self->totalNumberOfDonations = (int)$object->{DonationFormMetaKeys::FORM_SALES()->getKeyAsCamelCase()};
         $self->status = new DonationFormStatus($object->status);
+        $self->usesFormBuilder = (bool)$object->{DonationFormMetaKeys::FORM_BUILDER_SETTINGS()->getKeyAsCamelCase()};
 
         return $self;
     }

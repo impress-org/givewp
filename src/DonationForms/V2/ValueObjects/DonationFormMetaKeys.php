@@ -16,6 +16,8 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @method static DonationFormMetaKeys SET_PRICE()
  * @method static DonationFormMetaKeys PRICE_OPTION()
  * @method static DonationFormMetaKeys GOAL_OPTION()
+ * @unreleased
+ * @method static DonationFormMetaKeys FORM_BUILDER_SETTINGS()
  */
 class DonationFormMetaKeys extends Enum
 {
@@ -27,4 +29,5 @@ class DonationFormMetaKeys extends Enum
     const SET_PRICE = '_give_set_price';
     const PRICE_OPTION = '_give_price_option';
     const GOAL_OPTION = '_give_goal_option';
+    const FORM_BUILDER_SETTINGS = 'formBuilderSettings';
 }
