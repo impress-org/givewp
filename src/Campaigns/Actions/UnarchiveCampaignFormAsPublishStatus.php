@@ -17,7 +17,7 @@ class UnarchiveCampaignFormAsPublishStatus
     {
         if ($campaign->isDirty('status') &&
             $campaign->status->isActive() &&
-            $campaign->getOriginal('status')->getValue() === 'archived') {
+            $campaign->getOriginal('status')->isArchived()) {
             if (!$campaign->defaultFormId) {
                 return;
             }
