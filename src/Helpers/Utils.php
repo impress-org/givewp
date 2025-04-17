@@ -72,7 +72,7 @@ class Utils
             $url = add_query_arg([$name => $value], $url);
         }
 
-        if ($urlAnchor) {
+        if (!empty($urlAnchor)) {
             $url = add_query_arg('request_anchor', $urlAnchor, $url);
         }
 
