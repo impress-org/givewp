@@ -21,14 +21,9 @@ class CampaignGridShortcode
 
         $renderFile = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignGrid/render.php';
 
-        if (file_exists($renderFile)) {
-            ob_start();
-            include $renderFile;
-
-            return ob_get_clean();
-        }
-
-        return '';
+        ob_start();
+        include $renderFile;
+        return ob_get_clean();
     }
 
     /**
