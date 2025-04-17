@@ -20,7 +20,7 @@ export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters
 
     const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
 
-    const confirmDelete = (selected) => <p>{sprintf(__('Really delete donation #%d?', 'give'), item.id)}</p>;
+    const confirmDelete = (selected) => <p>{sprintf(__('Are you sure you want to delete the following donation #%d?', 'give'), item.id)}</p>;
 
     const confirmModal = (event) => {
         showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');

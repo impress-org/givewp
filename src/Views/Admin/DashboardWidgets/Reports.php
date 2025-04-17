@@ -46,7 +46,11 @@ class Reports
         }
     }
 
-    // Enqueue app scripts
+    /**
+     * Enqueue app scripts
+     *
+     * @since 4.0.0 Replace "new form" with "new campaign form" link
+     */
     public function enqueue_scripts($base)
     {
         if ($base !== 'index.php') {
@@ -55,7 +59,7 @@ class Reports
 
         wp_enqueue_script(
             'give-admin-reports-widget-js',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-reports-widget.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-reports-widget.js',
             ['wp-element', 'wp-api', 'wp-i18n'],
             GIVE_VERSION,
             true
@@ -64,11 +68,11 @@ class Reports
             'give-admin-reports-widget-js',
             'giveReportsData',
             [
-                'newFormUrl' => admin_url('/post-new.php?post_type=give_forms'),
+                'newFormUrl' => admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign'),
                 'allTimeStart' => $this->get_all_time_start(),
                 'currency' => give_get_currency(),
                 'testMode' => give_is_test_mode(),
-                'assetsUrl' => GIVE_PLUGIN_URL . 'assets/dist',
+                'assetsUrl' => GIVE_PLUGIN_URL . 'build/assets/dist',
             ]
         );
         wp_set_script_translations( 'give-admin-reports-widget-js', 'give' );

@@ -51,6 +51,7 @@ export default function StepForm({
             <DonationFormErrorBoundary>
                 <MultiStepFormTemplate
                     formProps={{
+                        id: 'give-next-gen',
                         className: 'givewp-layouts-multiStepForm__form',
                         onSubmit: handleSubmit((values: any) =>
                             handleSubmitRequest(

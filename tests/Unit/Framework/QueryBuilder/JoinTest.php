@@ -18,7 +18,7 @@ final class JoinTest extends TestCase
             ->from(DB::raw('posts'), 'donationsTable')
             ->leftJoin(DB::raw('give_donationmeta'), 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id',
             $builder->getSQL()
         );
@@ -34,7 +34,7 @@ final class JoinTest extends TestCase
             ->from(DB::raw('posts'), 'donationsTable')
             ->rightJoin(DB::raw('give_donationmeta'), 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable RIGHT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id',
             $builder->getSQL()
         );
@@ -49,7 +49,7 @@ final class JoinTest extends TestCase
             ->from(DB::raw('posts'), 'donationsTable')
             ->innerJoin(DB::raw('give_donationmeta'), 'donationsTable.ID', 'metaTable.donation_id', 'metaTable');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable INNER JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id',
             $builder->getSQL()
         );
@@ -69,7 +69,7 @@ final class JoinTest extends TestCase
                     ->on('donationsTable.ID', 'metaTable.donation_id');
             });
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id',
             $builder->getSQL()
         );
@@ -91,7 +91,7 @@ final class JoinTest extends TestCase
                     ->orOn('metaTable.meta_key', '_give_donor_billing_last_name', true);
             });
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT donationsTable.*, metaTable.* FROM posts AS donationsTable LEFT JOIN give_donationmeta metaTable ON donationsTable.ID = metaTable.donation_id AND metaTable.meta_key = '_give_donor_billing_first_name' OR metaTable.meta_key = '_give_donor_billing_last_name'",
             $builder->getSQL()
         );
@@ -107,7 +107,7 @@ final class JoinTest extends TestCase
             ->from(DB::raw('give_donations'))
             ->joinRaw('LEFT JOIN posts ON post_id = give_donations.id');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT ID FROM give_donations LEFT JOIN posts ON post_id = give_donations.id",
             $builder->getSQL()
         );

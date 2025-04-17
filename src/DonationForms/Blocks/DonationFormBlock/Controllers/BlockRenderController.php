@@ -9,10 +9,18 @@ use Give\DonationForms\DataTransferObjects\DonationConfirmationReceiptViewRouteD
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\EnqueueScript;
 use Give\Framework\Routes\RouteListener;
+use Give\Helpers\Language;
 
 class BlockRenderController
 {
     /**
+     * @since 4.1.0
+     */
+    protected static int $embedInstance = 0;
+
+    /**
+     * @since 4.1.0 updated with embed ID instance fallback when block ID is not set.
+     * @since 3.22.0 Add locale support
      * @since 3.2.0 include form url for new tab format.
      * @since 3.0.0
      *
@@ -25,6 +33,8 @@ class BlockRenderController
             return null;
         }
 
+        static::$embedInstance++;
+
         $blockAttributes = BlockAttributes::fromArray($attributes);
 
         if (!$blockAttributes->formId) {
@@ -36,8 +46,9 @@ class BlockRenderController
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::find($blockAttributes->formId);
 
-        $embedId = $blockAttributes->blockId ?? '';
+        $embedId = $blockAttributes->blockId ?? 'givewp-embed-' . static::$embedInstance;
 
+        $locale = Language::getLocale();
         $viewUrl = $this->getViewUrl($donationForm, $embedId);
         $formUrl = esc_url(add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms')));
         $formViewUrl = $this->getFormViewUrl($donationForm);
@@ -46,7 +57,7 @@ class BlockRenderController
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<div class='root-data-givewp-embed' data-form-url='$formUrl' data-form-view-url='$formViewUrl' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$blockAttributes->formFormat' data-open-form-button='$blockAttributes->openFormButton'></div>";
+        return "<div class='root-data-givewp-embed' data-form-locale='$locale' data-form-url='$formUrl' data-form-view-url='$formViewUrl' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$blockAttributes->formFormat' data-open-form-button='$blockAttributes->openFormButton'></div>";
     }
 
     /**

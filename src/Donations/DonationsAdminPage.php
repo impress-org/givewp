@@ -68,7 +68,7 @@ class DonationsAdminPage
         $data = [
             'apiRoot' => $this->apiRoot,
             'apiNonce' => $this->apiNonce,
-            'forms' => $this->getForms(),
+            'campaigns' => $this->getCampaigns(),
             'table' => give(DonationsListTable::class)->toArray(),
             'adminUrl' => $this->adminUrl,
             'paymentMode' => give_is_test_mode(),
@@ -78,7 +78,7 @@ class DonationsAdminPage
             'addonsBulkActions' => [],
         ];
 
-        EnqueueScript::make('give-admin-donations', 'assets/dist/js/give-admin-donations.js')
+        EnqueueScript::make('give-admin-donations', 'build/assets/dist/js/give-admin-donations.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonations', $data)->enqueue();
@@ -120,26 +120,28 @@ class DonationsAdminPage
     /**
      * Retrieve a list of donation forms to populate the form filter dropdown
      *
+     * @since 4.0.0 replace formselect with campaigns.
      * @since 2.20.0
      * @return array
      */
-    private function getForms()
+    private function getCampaigns()
     {
-        $options = DB::table('posts')
+        $options = DB::table('give_campaigns')
             ->select(
-                ['ID', 'value'],
-                ['post_title', 'text']
+                ['id', 'value'],
+                ['campaign_title', 'text']
             )
-            ->where('post_type', 'give_forms')
-            ->whereIn('post_status', ['publish', 'draft', 'pending', 'private'])
             ->getAll(ARRAY_A);
 
-        return array_merge([
+        return array_merge(
             [
-                'value' => '0',
-                'text' => __('Any', 'give'),
+                [
+                    'value' => '0',
+                    'text' => __('Any', 'give'),
+                ]
             ],
-        ], $options);
+            $options
+        );
     }
 
     /**

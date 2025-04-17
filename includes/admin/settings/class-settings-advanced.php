@@ -58,6 +58,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         /**
          * Get settings array.
          *
+         * @since 4.1.0 Added Donation Forms section
          * @since  1.8
          * @return array
          */
@@ -229,6 +230,32 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                     ];
                     break;
 
+                case 'donation-forms':
+                    $settings = [
+                        [
+                            'id' => 'give_setting_advanced_section_donation_forms',
+                            'type' => 'title',
+                        ],
+                        [
+                            'name' => __('Custom Styles', 'give'),
+                            'desc' => __(
+                                'Add your own custom CSS styles here to customize the appearance of all donation forms across your site. These styles will be applied globally, allowing you to maintain consistent design without editing each form individually.',
+                                'give'
+                            ),
+                            'id' => 'custom_form_styles',
+                            'type' => 'code_editor',
+                            'css' => 'width: 100%;',
+                            'editor_attributes' => [
+                                'mode' => 'css',
+                            ],
+                        ],
+                        [
+                            'id' => 'give_setting_advanced_section_donation_forms',
+                            'type' => 'sectionend',
+                        ],
+                    ];
+                    break;
+
                 case 'akismet-spam-protection':
                     $settings = [
                         [
@@ -332,6 +359,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         {
             $sections = [
                 'advanced-options' => __('Advanced Options', 'give'),
+                'donation-forms' => __('Donation Forms', 'give'),
                 'akismet-spam-protection' => __('Akismet SPAM Protection', 'give'),
             ];
 

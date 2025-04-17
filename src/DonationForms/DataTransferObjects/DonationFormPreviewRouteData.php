@@ -28,9 +28,9 @@ class DonationFormPreviewRouteData
     /**
      * Convert data from request into DTO
      *
-     * @param  array{form-id: string, form-settings: string, form-blocks: string}  $request
-     *
      * @since 3.0.0
+     *
+     * @param array{form-id: string, form-settings: string, form-blocks: string} $request
      */
     public static function fromRequest(array $request): self
     {

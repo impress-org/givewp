@@ -8,7 +8,7 @@ export default class ListTableApi {
     private readonly headers: {'X-WP-Nonce': string; 'Content-Type': string};
     private readonly swrOptions;
 
-    constructor({apiNonce, apiRoot, preload = null}) {
+    constructor({apiNonce, apiRoot, preload = null, swrConfig = {}}) {
         this.controller = null;
         this.apiRoot = apiRoot;
         this.headers = {
@@ -17,6 +17,7 @@ export default class ListTableApi {
         };
         this.swrOptions = {
             use: [lagData],
+            ...swrConfig,
             onErrorRetry: (error, key, config, revalidate, {retryCount}) => {
                 //don't retry if we cancelled the initial request
                 if (error.name == 'AbortError') return;
@@ -42,7 +43,9 @@ export default class ListTableApi {
             headers: this.headers,
         }).then((res) => {
             if (!res.ok) {
-                throw new Error();
+                return res.text().then((errorMessage) => {
+                    throw new Error(errorMessage);
+                });
             }
             return res.json();
         });

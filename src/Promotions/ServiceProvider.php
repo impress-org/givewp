@@ -3,17 +3,16 @@
 namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
+use Give\Promotions\Campaigns\CampaignsWelcomeBanner;
 use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
 use Give\Promotions\InPluginUpsells\Endpoints\HideSaleBannerRoute;
 use Give\Promotions\InPluginUpsells\Endpoints\ProductRecommendationsRoute;
 use Give\Promotions\InPluginUpsells\LegacyFormEditor;
 use Give\Promotions\InPluginUpsells\PaymentGateways;
-use Give\Promotions\InPluginUpsells\SaleBanners;
 use Give\Promotions\InPluginUpsells\StellarSaleBanners;
 use Give\Promotions\ReportsWidgetBanner\ReportsWidgetBanner;
 use Give\Promotions\WelcomeBanner\Endpoints\DismissWelcomeBannerRoute;
-use Give\Promotions\WelcomeBanner\WelcomeBanner;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 
 class ServiceProvider implements ServiceProviderContract
@@ -39,6 +38,7 @@ class ServiceProvider implements ServiceProviderContract
     }
 
     /**
+     * @since 4.0.0 add CampaignWelcomeBanner
      * @since 3.13.0 add Stellar banner.
      * @since      2.27.1 Removed Recurring donations tab app.
      * @since      2.19.0
@@ -79,10 +79,7 @@ class ServiceProvider implements ServiceProviderContract
             );
         }
 
-        if (WelcomeBanner::isShowing()) {
-            Hooks::addAction('admin_notices', WelcomeBanner::class, 'render');
-            Hooks::addAction('admin_enqueue_scripts', WelcomeBanner::class, 'loadScripts');
-        }
+        Hooks::addAction('admin_init', CampaignsWelcomeBanner::class);
     }
 
     /**

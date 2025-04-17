@@ -25,7 +25,7 @@ class DonateControllerData
      */
     public $amount;
     /**
-     * @var bool
+     * @var bool|null
      */
     public $anonymous;
     /**
@@ -49,7 +49,7 @@ class DonateControllerData
      */
     public $email;
     /**
-     * @var string
+     * @var string|null
      */
     public $phone;
     /**
@@ -101,31 +101,31 @@ class DonateControllerData
      */
     public $subscriptionInstallments;
     /**
-     * @var string
+     * @var string|null
      */
     public $country;
     /**
-     * @var string
+     * @var string|null
      */
     public $address1;
     /**
-     * @var string
+     * @var string|null
      */
     public $address2;
     /**
-     * @var string
+     * @var string|null
      */
     public $city;
     /**
-     * @var string
+     * @var string|null
      */
     public $state;
     /**
-     * @var string
+     * @var string|null
      */
     public $zip;
     /**
-     * @var string
+     * @var string|null
      */
     public $comment;
 

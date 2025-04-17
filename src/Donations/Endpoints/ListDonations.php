@@ -13,6 +13,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
+ * @since 4.0.0 replace form with campaignId.
  * @since 3.4.0 The class is extendable
  */
 class ListDonations extends Endpoint
@@ -68,7 +69,7 @@ class ListDonations extends Endpoint
                         'default' => 30,
                         'minimum' => 1
                     ],
-                    'form' => [
+                    'campaignId' => [
                         'type' => 'integer',
                         'required' => false,
                         'default' => 0
@@ -234,15 +235,15 @@ class ListDonations extends Endpoint
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
-        $form = $this->request->get_param('form');
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
+        $campaignId = $this->request->get_param('campaignId');
 
         $dependencies = [
             DonationMetaKeys::MODE(),
         ];
 
-        $hasWhereConditions = $search || $start || $end || $form || $donor;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $donor;
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -274,10 +275,10 @@ class ListDonations extends Endpoint
             }
         }
 
-        if ($form) {
+        if ($campaignId) {
             $query
-                ->where('give_donationmeta_attach_meta_formId.meta_value', $form);
-            $dependencies[] = DonationMetaKeys::FORM_ID();
+                ->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
+            $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
         }
 
         if ($start && $end) {

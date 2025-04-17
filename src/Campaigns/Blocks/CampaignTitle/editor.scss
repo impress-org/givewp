@@ -1,0 +1,13 @@
+.givewp-campaign-title-block {
+    &__edit-campaign-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.125rem;
+
+        svg {
+            fill: currentColor;
+            height: 1.25rem;
+            width: 1.25rem;
+        }
+    }
+}

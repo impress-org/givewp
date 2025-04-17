@@ -52,4 +52,24 @@ class Language
 
         return trailingslashit($giveRelativePath);
     }
+
+    /**
+     * @since 3.22.0
+     */
+    public static function getLocale()
+    {
+        return apply_filters('givewp_locale', get_locale());
+    }
+
+    /**
+     * @since 3.22.0
+     */
+    public static function switchToLocale(string $locale)
+    {
+        if (empty($locale) || $locale == get_locale()) {
+            return;
+        }
+
+        switch_to_locale($locale);
+    }
 }

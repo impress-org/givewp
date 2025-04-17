@@ -13,7 +13,7 @@ $uniqueId = uniqid('', true);
 
 <div id="<?= esc_attr($uniqueId) ?>" class="give-progress-bar-block">
     <style>
-        <?php echo file_get_contents( GIVE_PLUGIN_DIR . 'assets/dist/css/multi-form-goal-block.css' ); ?>
+        <?php echo file_get_contents( GIVE_PLUGIN_DIR . 'build/assets/dist/css/multi-form-goal-block.css' ); ?>
     </style>
     <!-- Target the Progress Bar Block elements using CSS "parts", see https://developer.mozilla.org/en-US/docs/Web/CSS/::part -->
     <div part="goal" class="give-progress-bar-block__goal">

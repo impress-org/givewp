@@ -132,12 +132,12 @@ class RegisterPaymentGateways
     }
 
     /**
+     * @since 4.0.0 updated to support authorize and capture
      * @since 3.2.0 Prevent undefined index notice when getting payPalOrderId from gateway data.
      * @since 2.26.0 Add support for the updated PayPal Commerce gateway data.
      * @since 2.21.2
      *
      * @throws PayPalOrderIdException
-     * @throws PayPalOrderException
      */
     private function addGatewayDataToPayPalCommerce()
     {
@@ -146,7 +146,7 @@ class RegisterPaymentGateways
                 'givewp_create_payment_gateway_data_%1$s',
                 PayPalCommerce::id()
             ),
-            function ($gatewayData) {
+            static function ($gatewayData) {
                 if (array_key_exists('payPalOrderId', $gatewayData)) {
                     $paypalOrderId = $gatewayData['payPalOrderId'];
                 } else {
@@ -158,13 +158,7 @@ class RegisterPaymentGateways
                     throw new PayPalOrderIdException(__('PayPal order id is missing.', 'give'));
                 }
 
-                try {
-                    $gatewayData['paypalOrder'] = give(PayPalOrder::class)->getOrder($paypalOrderId);
-                } catch (\Exception $e) {
-                    throw new PayPalOrderException(__('Unable to get order using order id.', 'give'));
-                }
-
-                return $gatewayData;
+               return $gatewayData;
             }
         );
     }

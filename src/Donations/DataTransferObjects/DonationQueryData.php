@@ -129,10 +129,15 @@ final class DonationQueryData
      * @var string|null
      */
     public $honorific;
+    /**
+     * @var int
+     */
+    public $campaignId;
 
     /**
      * Convert data from object to Donation
      *
+     * @since 4.0.0 Added campaignId property
      * @since 3.9.0 Add support for "phone" property
      * @since 3.2.0 add fallback for donation mode
      * @since 2.23.0 remove parentId property
@@ -191,6 +196,7 @@ final class DonationQueryData
             ->getKeyAsCamelCase()};
         $self->comment = $donationQueryObject->{DonationMetaKeys::COMMENT()
             ->getKeyAsCamelCase()};
+        $self->campaignId = (int)$donationQueryObject->{DonationMetaKeys::CAMPAIGN_ID()->getKeyAsCamelCase()};
 
         if (!empty($donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()->getKeyAsCamelCase()})) {
             $self->type = DonationType::SUBSCRIPTION();

@@ -14,14 +14,15 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\Feature\Gateways\Stripe\TestTraits\HasMockStripeAccounts;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use PHPUnit_Framework_MockObject_MockBuilder;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use Stripe\Event;
 use Stripe\Invoice;
 
 class InvoicePaymentSucceededTest extends TestCase
 {
-    use RefreshDatabase, HasMockStripeAccounts;
+    use HasMockStripeAccounts;
+    use RefreshDatabase;
 
     /**
      * @since 3.0.0
@@ -138,8 +139,6 @@ class InvoicePaymentSucceededTest extends TestCase
 
         //refresh subscription model
         $subscription = Subscription::find($subscription->id);
-        // cache donations
-        $subscriptionDonations = $subscription->donations;
         //refresh donation model
         $donation = Donation::find($donation->id);
 
@@ -158,9 +157,9 @@ class InvoicePaymentSucceededTest extends TestCase
 
         $subscriptionModelDecorator = new SubscriptionModelDecorator($subscription);
 
-        $listener = $this->createMock(
+        $listener = $this->createMockWithCallback(
             InvoicePaymentSucceeded::class,
-            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+            function (MockBuilder $mockBuilder) {
                 // partial mock gateway by setting methods on the mock builder
                 $mockBuilder->setMethods(['cancelSubscription']);
 
@@ -168,7 +167,7 @@ class InvoicePaymentSucceededTest extends TestCase
             }
         );
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $listener */
+        /** @var MockObject $listener */
         $listener->expects($this->once())
             ->method('cancelSubscription')
             ->with($subscriptionModelDecorator);
@@ -178,7 +177,7 @@ class InvoicePaymentSucceededTest extends TestCase
         // Refresh subscription model
         $subscription = Subscription::find($subscription->id);
 
-        $this->assertCount(1, $subscriptionDonations);
+        $this->assertSame(1, $subscription->totalDonations());
         $this->assertTrue($subscription->status->isCompleted());
     }
 
@@ -223,9 +222,9 @@ class InvoicePaymentSucceededTest extends TestCase
             ]
         ]);
 
-        $listener = $this->createMock(
+        $listener = $this->createMockWithCallback(
             InvoicePaymentSucceeded::class,
-            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+            function (MockBuilder $mockBuilder) {
                 // partial mock gateway by setting methods on the mock builder
                 $mockBuilder->setMethods(['cancelSubscription']);
 
@@ -233,7 +232,7 @@ class InvoicePaymentSucceededTest extends TestCase
             }
         );
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $listener */
+        /** @var MockObject $listener */
         $listener->expects($this->once())
             ->method('cancelSubscription');
 

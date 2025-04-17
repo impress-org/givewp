@@ -303,6 +303,7 @@ function give_is_donation_history_page() {
 /**
  * Adds body classes for Give pages
  *
+ * @since 4.0.0 updated with give-campaign-page
  * @since 1.0
  *
  * @param array $class current classes
@@ -331,6 +332,11 @@ function give_add_body_classes( $class ) {
 		$classes[] = 'give-test-mode';
 		$classes[] = 'give-page';
 	}
+
+    if ( give_is_campaign_page() ) {
+        $classes[] = 'give-campaign-page';
+        $classes[] = 'give-page';
+    }
 
 	// Theme-specific Classes used to prevent conflicts via CSS
 	/* @var WP_Theme $current_theme */
@@ -400,7 +406,7 @@ add_filter( 'post_class', 'give_add_post_class', 20, 3 );
  */
 function give_get_placeholder_img_src() {
 
-	$placeholder_url = esc_url( GIVE_PLUGIN_URL . 'assets/dist/images/give-placeholder.jpg');
+	$placeholder_url = esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/give-placeholder.jpg');
 
 	return apply_filters( 'give_placeholder_img_src', $placeholder_url );
 }

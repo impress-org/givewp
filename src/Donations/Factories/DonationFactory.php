@@ -3,6 +3,7 @@
 namespace Give\Donations\Factories;
 
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
@@ -15,6 +16,7 @@ class DonationFactory extends ModelFactory
 {
 
     /**
+     * @since 4.0.0 added campaignId
      * @since 2.22.0 add optional support for anonymous and company properties
      * @since 2.20.0 update default donorId to create factory
      * @since 2.19.6
@@ -33,6 +35,7 @@ class DonationFactory extends ModelFactory
             'firstName' => $this->faker->firstName,
             'lastName' => $this->faker->lastName,
             'email' => $this->faker->email,
+            'campaignId' => 1,
             'formId' => 1,
             'formTitle' => 'Form Title',
             'anonymous' => $this->faker->optional(0.5, false)->boolean(true),

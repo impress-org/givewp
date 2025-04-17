@@ -3,7 +3,9 @@
 namespace Give\Framework\Support\ValueObjects;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Currency;
+use JsonSerializable;
 use Money\Currency as VendorCurrency;
 use Money\Money as VendorMoney;
 
@@ -11,6 +13,7 @@ use Money\Money as VendorMoney;
  * A decorator class for the vendor Money class which adds additional formatting and other convenience methods. Try and
  * keep the vendor Money logic in the Currency facade.
  *
+ * @since 4.0.0 added JsonSerializable interface
  * @since 2.20.0
  *
  * @method bool equals(Money $money )
@@ -19,7 +22,7 @@ use Money\Money as VendorMoney;
  *
  * @mixin VendorMoney
  */
-class Money
+class Money implements JsonSerializable, Arrayable
 {
     /**
      * @var VendorMoney
@@ -155,5 +158,25 @@ class Money
     public static function fromDecimal($amount, string $currency): Money
     {
         return self::fromMoney(Currency::parseFromDecimal($amount, $currency));
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    public function toArray(): array
+    {
+        return [
+            'value' => $this->formatToDecimal(),
+            'valueInMinorUnits' => $this->formatToMinorAmount(),
+            'currency' => $this->amount->getCurrency()->getCode(),
+        ];
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

@@ -1,0 +1,125 @@
+.introModal {
+    :global {
+        .givewp-modal-dialog {
+            border-radius: 16px;
+            padding: 0;
+
+            .givewp-modal-header {
+                display: none;
+            }
+
+            .givewp-modal-content {
+                border-radius: 16px;
+                padding: 0;
+            }
+        }
+    }
+
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.25);
+
+    .dismiss {
+        position: absolute;
+        top: var(--givewp-spacing-4);
+        right: var(--givewp-spacing-4);
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
+        outline: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .badge {
+        width: 63px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--givewp-spacing-1);
+        padding: var(--givewp-spacing-1) 0;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1.4;
+        background-color: var(--givewp-green-400);
+        color: var(--givewp-emerald-25);
+    }
+
+    .preview {
+        display: flex;
+
+        .previewImage {
+            max-height: 347px;
+            width: 100%;
+            border-radius: 16px 16px 0 0;
+        }
+    }
+
+    .details {
+        display: flex;
+        flex-direction: column;
+        padding: var(--givewp-spacing-6) var(--givewp-spacing-6) var(--givewp-spacing-10) var(--givewp-spacing-6);
+
+        .title {
+            margin: var(--givewp-spacing-2) 0 var(--givewp-spacing-1);
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.6;
+            color: var(--givewp-neutral-900);
+        }
+
+        .description {
+            margin: 0 0 var(--givewp-spacing-9) 0;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--givewp-neutral-500);
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--givewp-spacing-6);
+
+            &:has(.link) {
+                .button, .link {
+                    flex: 1;
+                }
+            }
+
+            .button, .link {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: var(--givewp-spacing-2);
+                width: 244px;
+                padding: 12px 24px;
+                border-radius: 8px;
+                background-color: var(--givewp-green-500);
+                font-size: 1rem;
+                font-weight: 500;
+                line-height: 1.5;
+                color: var(--givewp-shades-white);
+                border: none;
+                outline: none;
+                cursor: pointer;
+                margin-left: auto;
+            }
+
+            .button:hover {
+                background-color: var(--givewp-green-600);
+            }
+
+            .link {
+                background-color: var(--givewp-neutral-100);
+                color: var(--givewp-neutral-900);
+                text-decoration: none;
+
+                &:hover {
+                    background-color: var(--givewp-neutral-200);
+
+                }
+            }
+        }
+    }
+}

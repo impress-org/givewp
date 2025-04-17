@@ -3,6 +3,7 @@
 namespace Give\Donations\Models;
 
 use DateTime;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Factories\DonationFactory;
 use Give\Donations\Properties\BillingAddress;
@@ -30,6 +31,7 @@ use Give\Subscriptions\Models\Subscription;
  * @since 2.19.6
  *
  * @property int $id
+ * @property int $campaignId
  * @property int $formId
  * @property string $formTitle
  * @property DateTime $createdAt
@@ -55,6 +57,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $levelId
  * @property string $gatewayTransactionId
  * @property Donor $donor
+ * @property Campaign $campaign
  * @property Subscription $subscription
  * @property DonationNote[] $notes
  * @property string $company
@@ -67,6 +70,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
+        'campaignId' => 'int',
         'formId' => 'int',
         'formTitle' => 'string',
         'purchaseKey' => 'string',
@@ -99,6 +103,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      * @inheritdoc
      */
     protected $relationships = [
+        'campaign' => Relationship::BELONGS_TO,
         'donor' => Relationship::BELONGS_TO,
         'subscription' => Relationship::BELONGS_TO,
         'notes' => Relationship::HAS_MANY,
@@ -182,6 +187,16 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         }
 
         return give()->subscriptions->queryByDonationId($this->id);
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @return ModelQueryBuilder<Campaign>
+     */
+    public function campaign(): ModelQueryBuilder
+    {
+        return give()->campaigns->queryById($this->campaignId);
     }
 
     /**

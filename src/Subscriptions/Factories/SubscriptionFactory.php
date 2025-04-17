@@ -46,27 +46,32 @@ class SubscriptionFactory extends ModelFactory
     }
 
     /**
+     * @since 4.0.0 Add $donationAttributes parameter and merge it with the default attributes when creating a donation
      * @since 2.23.0
      *
      * @return Subscription|Subscription[]
      * @throws Exception
      */
-    public function createWithDonation(array $attributes = [])
+    public function createWithDonation(array $subscriptionAttributes = [], array $donationAttributes = [])
     {
-        $subscriptions = $this->create($attributes);
+        $subscriptions = $this->create($subscriptionAttributes);
 
-        if ( $this->count === 1 ) {
+        if ($this->count === 1) {
             $subscriptions = [$subscriptions];
         }
 
         foreach ($subscriptions as $subscription) {
-            $donation = Donation::factory()->create([
+            $defaultDonationAttributes = [
                 'amount' => $subscription->amount,
                 'type' => DonationType::SUBSCRIPTION(),
                 'status' => DonationStatus::COMPLETE(),
                 'gatewayId' => $subscription->gatewayId,
                 'subscriptionId' => $subscription->id,
-            ]);
+            ];
+
+            $donation = Donation::factory()->create(
+                array_merge($defaultDonationAttributes, $donationAttributes)
+            );
 
             give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
         }

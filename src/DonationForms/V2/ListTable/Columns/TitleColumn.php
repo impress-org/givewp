@@ -6,6 +6,7 @@ namespace Give\DonationForms\V2\ListTable\Columns;
 
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Helpers\Language;
 
 /**
  * @since 2.24.0
@@ -38,6 +39,7 @@ class TitleColumn extends ModelColumn
     }
 
     /**
+     * @since 3.22.0 Add locale support
      * @since 3.0.0 remove html tags from title
      * @since 2.24.0
      *
@@ -48,8 +50,9 @@ class TitleColumn extends ModelColumn
     public function getCellValue($model): string
     {
         return sprintf(
-            '<a href="%s" class="giveDonationFormsLink">%s</a>',
-            get_edit_post_link( $model->id ),
+            '<a href="%s" rel="noopener noreferrer" class="giveDonationFormsLink" title="%s">%s</a>',
+            add_query_arg(['locale' => Language::getLocale()], get_edit_post_link($model->id)),
+            esc_attr($model->title),
             wp_strip_all_tags($model->title)
         );
     }

@@ -1,0 +1,22 @@
+.givewp-campaign-stats-block {
+
+    span {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+        letter-spacing: 0.48px;
+        text-align: left;
+        color: var(--givewp-neutral-500);
+        text-transform: uppercase;
+    }
+
+    strong {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.6;
+        letter-spacing: normal;
+        color: var(--givewp-neutral-900);
+    }
+}

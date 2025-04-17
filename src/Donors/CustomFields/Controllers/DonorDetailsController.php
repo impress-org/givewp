@@ -35,6 +35,7 @@ class DonorDetailsController
     }
 
     /**
+     * @since 4.0.0 return array_filter to reduce null values
      * @since 3.2.2 added array fallback when no donations are found
      * @since 3.0.0
      *
@@ -52,9 +53,9 @@ class DonorDetailsController
             return !give(DonationFormRepository::class)->isLegacyForm($formId);
         });
 
-        return array_map(static function ($formId) {
+        return array_filter(array_map(static function ($formId) {
             return DonationForm::find($formId);
-        }, array_unique($formIds));
+        }, array_unique($formIds)));
     }
 
     /**

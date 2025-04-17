@@ -22,7 +22,7 @@ class ProcessIpnDonationRefundTest extends TestCase
      */
     private $processIpnDonationRefund;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->donation = new Give_Payment(\Give_Helper_Payment::create_simple_payment());

@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Framework\Database\DB;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -226,10 +228,111 @@ class Give_HTML_Elements {
 		return $output;
 	}
 
-	/**
-	 * Donors Dropdown
-	 *
-	 * Renders an HTML Dropdown of all donors.
+    /**
+     * @since 4.1.0
+     */
+    public function campaigns_dropdown($args = [])
+    {
+        $defaults = [
+            'name' => 'campaigns',
+            'id' => 'campaigns',
+            'class' => '',
+            'multiple' => false,
+            'selected' => 0,
+            'chosen' => false,
+            'number' => 30,
+            'placeholder' => esc_attr__('All Campaigns', 'give'),
+            'data' => [
+                'search-type' => 'campaign',
+            ],
+            'query_args' => [],
+        ];
+
+        $args = wp_parse_args($args, $defaults);
+
+        $campaigns_args = wp_parse_args(
+            $args['query_args'],
+            [
+                'orderby' => 'id',
+                'order' => 'DESC',
+                'per_page' => $args['number'],
+            ]
+        );
+
+        /**
+         * Filter the campaigns dropdown.
+         *
+         * @since 4.1.0
+         *
+         * @param array $campaigns_args Arguments for campaigns_dropdown query.
+         *
+         * @return array Arguments for campaigns_dropdown query.
+         */
+        $campaigns_args = apply_filters('give_campaigns_dropdown_args', $campaigns_args);
+
+        $campaigns = DB::table('give_campaigns', 'campaigns')
+            ->select(
+                ['campaigns.id', 'id'],
+                ['campaigns.form_id', 'defaultFormId'],
+                ['campaign_title', 'title'],
+                ['GROUP_CONCAT(campaign_forms.form_id)', 'form_ids']
+            )
+            ->join(function ($builder) {
+                $builder
+                    ->leftJoin("give_campaign_forms", "campaign_forms")
+                    ->on("campaign_forms.campaign_id", "id");
+            })
+            ->groupBy("campaigns.id")
+            ->orderBy($campaigns_args['orderby'], $campaigns_args['order'])
+            ->limit($campaigns_args['per_page'])
+            ->getAll();
+
+        $options = [];
+
+        // Ensure the selected.
+        if (false !== $args['selected'] && $args['selected'] !== 0) {
+            $options[$args['selected']] = get_the_title($args['selected']);
+        }
+
+        $options[0] = esc_html__('No campaigns found.', 'give');
+        if ( ! empty($campaigns)) {
+            $options[0] = $args['placeholder'];
+            foreach ($campaigns as $campaign) {
+                $campaign_title = empty($campaign->title)
+                    ? sprintf(__('Untitled (#%s)', 'give'), $campaign->id)
+                    : $campaign->title;
+
+                $options[absint($campaign->id)] = esc_html($campaign_title);
+            }
+        }
+
+        $output = $this->select(
+            [
+                'name' => $args['name'],
+                'selected' => $args['selected'],
+                'id' => $args['id'],
+                'class' => $args['class'],
+                'options' => $options,
+                'chosen' => $args['chosen'],
+                'multiple' => $args['multiple'],
+                'placeholder' => $args['placeholder'],
+                'show_option_all' => false,
+                'show_option_none' => false,
+                'data' => array_merge(
+                    $args['data'],
+                    ['campaigns' => json_encode($campaigns)]
+                ),
+            ]
+        );
+
+        return $output;
+    }
+
+
+    /**
+     * Donors Dropdown
+     *
+     * Renders an HTML Dropdown of all donors.
 	 *
 	 * @since  1.0
 	 * @access public
