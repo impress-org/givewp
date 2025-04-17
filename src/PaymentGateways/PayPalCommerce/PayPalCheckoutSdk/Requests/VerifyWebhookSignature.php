@@ -6,7 +6,7 @@ use PayPalHttp\HttpRequest;
 /**
  * Class VerifyWebhookSignature
  *
- * @unreleased Add PayPal-Partner-Attribution-Id header
+ * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
  * @since 2.30.0
  */
 class VerifyWebhookSignature extends HttpRequest

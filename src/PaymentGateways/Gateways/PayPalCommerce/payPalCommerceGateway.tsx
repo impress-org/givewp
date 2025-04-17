@@ -137,7 +137,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const cardFieldsOnErrorHandler: PayPalCardFieldsComponentBasics['onError'] = (error) => {
         console.error('PayPal Card Fields Error:', error);
@@ -146,7 +146,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const cardFieldsCreateOrderHandler = async () => {
         return await createOrder(
@@ -157,7 +157,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const cardFieldsOnApproveHandler: PayPalCardFieldsComponentBasics['onApprove'] = async (data) => {
         // @ts-ignore
@@ -399,7 +399,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const PayPalGatewayCardFieldsForm = () => {
         const {cardFieldsForm} = usePayPalCardFields();

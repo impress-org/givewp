@@ -46,7 +46,7 @@ class FormSettings implements Arrayable, Jsonable
      */
     public $enableAutoClose;
     /**
-     * @unreleased
+     * @since 4.1.0
      *
      * @var GoalSource
      */
@@ -277,13 +277,13 @@ class FormSettings implements Arrayable, Jsonable
     public $enableReceiptConfirmationPage;
 
     /**
-     * @unreleased Added goalSource
-     * @unreleased
+     * @since 4.1.0 Added goalSource
+     * @since 4.1.0
      */
     public bool $inheritCampaignColors;
 
     /**
-     * @unreleased Added $inheritCampaignColors
+     * @since 4.1.0 Added $inheritCampaignColors
      * @since 3.16.0 Added $enableReceiptConfirmationPage
      * @since 3.7.0 Added formExcerpt
      * @since 3.11.0 Sanitize customCSS property
@@ -424,7 +424,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
-     * @unreleased Add goalSource
+     * @since 4.1.0 Add goalSource
      * @since 3.2.0 Remove call to addSlashesRecursive method for emailTemplateOptions in favor of SanitizeDonationFormPreviewRequest class
      * @since 3.0.0
      */

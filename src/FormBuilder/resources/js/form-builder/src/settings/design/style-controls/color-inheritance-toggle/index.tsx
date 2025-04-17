@@ -5,7 +5,7 @@ import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPu
 import {getWindowData} from '@givewp/form-builder/common';
 
 /**
- * @unreleased
+ * @since 4.1.0
  */
 export default function ColorInheritanceToggle({dispatch, children}) {
     const {

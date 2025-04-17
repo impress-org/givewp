@@ -86,7 +86,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @unreleased add campaign colors
+     * @since 4.1.0 add campaign colors
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
      */
@@ -257,7 +257,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     private function getCampaignColors(int $formId): array
     {

@@ -9,7 +9,7 @@ use PayPalHttp\HttpRequest;
  *
  * This class use  as request to create a webhook.
  *
- * @unreleased Add PayPal-Partner-Attribution-Id header
+ * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
  * @since 2.32.0
  */
 class CreateWebhook extends HttpRequest

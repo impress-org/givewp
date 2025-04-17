@@ -229,7 +229,7 @@ class Give_HTML_Elements {
 	}
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     public function campaigns_dropdown($args = [])
     {
@@ -262,7 +262,7 @@ class Give_HTML_Elements {
         /**
          * Filter the campaigns dropdown.
          *
-         * @unreleased
+         * @since 4.1.0
          *
          * @param array $campaigns_args Arguments for campaigns_dropdown query.
          *
