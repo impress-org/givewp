@@ -50,7 +50,6 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
 
-
         give(MigrationsRegister::class)->addMigrations([
             AddMissingDonorIdToDonationComments::class,
             SetAutomaticFormattingOption::class,
