@@ -209,6 +209,17 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                             ],
                         ],
                         [
+                            'name' => __('Orphaned Donation Forms', 'give'),
+                            'desc' => __('Show orphaned donation forms list-table. Tools > Data > Orphaned forms', 'give'),
+                            'id' => 'show_orphaned_forms_table',
+                            'type' => 'radio_inline',
+                            'default' => 'disabled',
+                            'options' => [
+                                'enabled' => __('Enabled', 'give'),
+                                'disabled' => __('Disabled', 'give'),
+                            ],
+                        ],
+                        [
                             'name' => __('GiveWP Cache', 'give'),
                             'id' => 'give-clear-cache',
                             'buttonTitle' => __('Clear Cache', 'give'),

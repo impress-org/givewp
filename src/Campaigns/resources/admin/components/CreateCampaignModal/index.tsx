@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import styles from './CreateCampaignModal.module.scss';
 import CampaignFormModal from '../CampaignFormModal';
