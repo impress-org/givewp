@@ -611,7 +611,7 @@ class DonationRepository
     /**
      * @unreleased
      */
-    public function getConfirmationPageReceipt(Donation $donation)
+    public function getConfirmationPageReceipt(Donation $donation): DonationReceipt
     {
         $receipt = new DonationReceipt($donation);
 
