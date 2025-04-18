@@ -2,6 +2,7 @@
 
 namespace Give\Form\LegacyConsumer\Actions;
 
+use Give\Donations\Models\Donation;
 use Give\Receipt\DonationReceipt;
 
 /**
@@ -15,7 +16,7 @@ class AddCustomFieldsToLegacyReceipt
     public function __invoke(DonationReceipt $receipt)
     {
 
-        $donation = \Give\Donations\Models\Donation::find($receipt->donationId);
+        $donation = Donation::find($receipt->donationId);
 
         if (!$donation) {
             return;
