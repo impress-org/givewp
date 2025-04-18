@@ -617,20 +617,4 @@ class DonationRepository
 
         return (new DonationReceiptBuilder($receipt))->toConfirmationPage();
     }
-
-    /**
-     * @unreleased
-     */
-    public function getCustomFields(Donation $donation)
-    {
-        $form = DonationForm::find($donation->formId);
-
-        if (!$form) {
-            return [];
-        }
-
-        return array_filter($form->schema()->getFields(), static function (Field $field) {
-            return $field->shouldShowInReceipt();
-        });
-    }
 }

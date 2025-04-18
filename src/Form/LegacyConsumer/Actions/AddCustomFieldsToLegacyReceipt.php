@@ -21,7 +21,7 @@ class AddCustomFieldsToLegacyReceipt
             return;
         }
 
-        $confirmationPageReceipt = $donation->confirmationPageReceipt();
+        $confirmationPageReceipt = $donation->receipt();
         $details = $confirmationPageReceipt->additionalDetails->getDetails();
 
         if (empty($details)) {

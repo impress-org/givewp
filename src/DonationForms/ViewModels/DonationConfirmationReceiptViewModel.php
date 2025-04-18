@@ -46,7 +46,7 @@ class DonationConfirmationReceiptViewModel
      */
     public function getReceipt(): DonationReceipt
     {
-        return $this->donation->confirmationPageReceipt();
+        return $this->donation->receipt();
     }
 
     /**

@@ -39,7 +39,15 @@ class GenerateConfirmationPageReceipt
      */
     protected function getCustomFields(Donation $donation): array
     {
-        $customFields = give()->donations->getCustomFields($donation);
+        $form = DonationForm::find($donation->formId);
+
+        if (!$form) {
+            return [];
+        }
+
+        return array_filter($form->schema()->getFields(), static function (Field $field) {
+            return $field->shouldShowInReceipt();
+        });
 
         if (empty($customFields)) {
             return [];

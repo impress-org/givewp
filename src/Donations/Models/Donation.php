@@ -266,7 +266,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      */
-    public function confirmationPageReceipt(): DonationReceipt
+    public function receipt(): DonationReceipt
     {
         return give()->donations->getConfirmationPageReceipt($this);
     }
