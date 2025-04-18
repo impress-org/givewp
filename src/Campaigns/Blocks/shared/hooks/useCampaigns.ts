@@ -30,7 +30,7 @@ export default function useCampaigns({
     });
 
     return {
-        campaigns: data?.records as Campaign[],
+        campaigns: (data?.records as Campaign[]) ?? [],
         //@ts-ignore
         totalItems: data.totalItems,
         //@ts-ignore
