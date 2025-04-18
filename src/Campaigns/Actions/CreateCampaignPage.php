@@ -17,7 +17,10 @@ class CreateCampaignPage
      */
     public function __invoke(Campaign $campaign)
     {
-        if (!$campaign->type->isCore()) {
+        if (
+            $campaign->pageId
+            || ! $campaign->type->isCore()
+        ) {
             return;
         }
 

@@ -25,6 +25,13 @@ class CreateDefaultCampaignForm
      */
     public function __invoke(Campaign $campaign)
     {
+        /**
+         * @unreleased return if campaign already has default form set
+         */
+        if ($campaign->defaultFormId) {
+            return;
+        }
+
         $defaultCampaignForm = DonationForm::create([
             'title' => $campaign->title,
             'status' => DonationFormStatus::PUBLISHED(),
