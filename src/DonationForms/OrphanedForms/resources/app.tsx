@@ -106,7 +106,7 @@ const OrphanedFormsListTable = () => {
         <div className={styles.pagination}>
             <ListTablePagination
                 currentPage={state.currentPage}
-                setPage={() => setCurrentPage(state.currentPage)}
+                setPage={(page: number) => setCurrentPage(page)}
                 totalPages={totalPages}
                 disabled={!hasResolved}
             />
