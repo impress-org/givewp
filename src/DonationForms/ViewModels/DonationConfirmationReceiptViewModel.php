@@ -5,13 +5,11 @@ namespace Give\DonationForms\ViewModels;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\Models\DonationForm;
-use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
 use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Receipts\DonationReceipt;
-use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Language;
 
@@ -48,9 +46,7 @@ class DonationConfirmationReceiptViewModel
      */
     public function getReceipt(): DonationReceipt
     {
-        $receipt = new DonationReceipt($this->donation);
-
-        return (new DonationReceiptBuilder($receipt))->toConfirmationPage();
+        return $this->donation->receipt();
     }
 
     /**
