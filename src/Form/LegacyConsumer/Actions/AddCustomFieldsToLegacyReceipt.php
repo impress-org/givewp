@@ -2,7 +2,9 @@
 
 namespace Give\Form\LegacyConsumer\Actions;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Helpers\Form\Utils;
 use Give\Receipt\DonationReceipt;
 
 /**
@@ -18,12 +20,12 @@ class AddCustomFieldsToLegacyReceipt
 
         $donation = Donation::find($receipt->donationId);
 
+        // make sure we have a valid donation
         if (!$donation) {
             return;
         }
 
-        $confirmationPageReceipt = $donation->receipt();
-        $details = $confirmationPageReceipt->additionalDetails->getDetails();
+        $details = $donation->receipt()->additionalDetails->getDetails();
 
         if (empty($details)) {
             return;
