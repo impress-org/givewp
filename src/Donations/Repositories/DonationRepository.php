@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Repositories;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -10,8 +11,11 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Receipts\DonationReceipt;
+use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
@@ -602,5 +606,31 @@ class DonationRepository
             ->limit(1)
             ->orderBy('post_date', 'DESC')
             ->get();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConfirmationPageReceipt(Donation $donation)
+    {
+        $receipt = new DonationReceipt($donation);
+
+        return (new DonationReceiptBuilder($receipt))->toConfirmationPage();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getCustomFields(Donation $donation)
+    {
+        $form = DonationForm::find($donation->formId);
+
+        if (!$form) {
+            return [];
+        }
+
+        return array_filter($form->schema()->getFields(), static function (Field $field) {
+            return $field->shouldShowInReceipt();
+        });
     }
 }
