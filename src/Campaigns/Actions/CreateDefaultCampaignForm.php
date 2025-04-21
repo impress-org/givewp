@@ -18,6 +18,7 @@ use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 class CreateDefaultCampaignForm
 {
     /**
+     * @unreleased return if campaign already has default form set
      * @since 4.1.0 Added inheritCampaignColors property to FormSettings
      * @since      4.0.0
      *
@@ -25,9 +26,6 @@ class CreateDefaultCampaignForm
      */
     public function __invoke(Campaign $campaign)
     {
-        /**
-         * @unreleased return if campaign already has default form set
-         */
         if ($campaign->defaultFormId) {
             return;
         }
