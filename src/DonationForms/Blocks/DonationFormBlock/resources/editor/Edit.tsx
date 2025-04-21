@@ -2,15 +2,16 @@ import {useEffect, useState} from 'react';
 import {useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import ServerSideRender from '@wordpress/server-side-render';
-import DonationFormSelector from './components/DonationFormSelector';
+import { __ } from '@wordpress/i18n';
 import useFormOptions from './hooks/useFormOptions';
+import useCampaignOptions from "./hooks/useCampaignOptions";
 import DonationFormBlockControls from './components/DonationFormBlockControls';
 import DonationFormBlockPreview from './components/DonationFormBlockPreview';
 import type {BlockPreviewProps} from './components/DonationFormBlockPreview';
-
+import EntitySelector from "./components/EntitySelector";
 import './styles/index.scss';
-import { __ } from '@wordpress/i18n';
-
+import {useSelect} from "@wordpress/data";
+import { store as blockEditorStore } from '@wordpress/block-editor';
 /**
  * @since 3.2.1
  *
@@ -26,6 +27,7 @@ type DonationFormBlockAttributes = {
     showGoal: boolean;
     showContent: boolean;
     contentDisplay: string;
+    campaignId: string;
 }
 
 /**
@@ -36,11 +38,16 @@ type DonationFormBlockAttributes = {
 export default function Edit({attributes, isSelected, setAttributes, className, clientId}: BlockEditProps<any>) {
     const {id, blockId, displayStyle, continueButtonTitle} = attributes as DonationFormBlockAttributes;
     const {formOptions, isResolving} = useFormOptions();
+    const {campaignOptions, campaignForms, hasResolved} = useCampaignOptions(attributes);
     const [showPreview, setShowPreview] = useState<boolean>(!!id);
 
-    const handleSelect = (id) => {
+    const handleFormSelect = (id) => {
         setAttributes({id});
         setShowPreview(true);
+    };
+
+    const handleCampaignSelect = (campaignId) => {
+        setAttributes({campaignId});
     };
 
     useEffect(() => {
@@ -54,7 +61,7 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
     }, []);
 
     const [isLegacyForm, isLegacyTemplate, link] = (() => {
-        const form = formOptions.find((form) => form.value === id);
+        const form = formOptions?.find((form) => form.value === id);
 
         return [form?.isLegacyForm, form?.isLegacyTemplate, form?.link];
     })();
@@ -65,6 +72,10 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
         </div>
     }
 
+    const isCampaignFormBlock = attributes?.campaignId === null;
+    const isCampaignSelected = !!attributes?.campaignId;
+    const entityOptions = isCampaignFormBlock ? campaignOptions : isCampaignSelected ? campaignForms : formOptions;
+   
     return (
         <div {...useBlockProps()}>
             {id && showPreview ? (
@@ -72,7 +83,8 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
                     <DonationFormBlockControls
                         attributes={attributes}
                         setAttributes={setAttributes}
-                        formOptions={formOptions}
+                        entityOptions={entityOptions}
+                        campaignOptions={campaignOptions}
                         isResolving={isResolving}
                         isLegacyTemplate={isLegacyTemplate}
                         isLegacyForm={isLegacyForm}
@@ -93,7 +105,16 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
                     )}
                 </>
             ) : (
-                <DonationFormSelector formOptions={formOptions} isResolving={isResolving} handleSelect={handleSelect} />
+                <EntitySelector
+                    id={isCampaignFormBlock ? 'campaignId' : 'formId'}
+                    label={isCampaignFormBlock ? __('Choose a campaign to view your forms', 'give') : __('Choose a donation form', 'give')}
+                    options={entityOptions}
+                    isLoading={!hasResolved || isResolving}
+                    emptyMessage={isCampaignFormBlock ? __('No campaigns were found.', 'give') : __('No donation forms were found.', 'give')}
+                    loadingMessage={isCampaignFormBlock ? __('Loading Campaigns...', 'give') : __('Loading Donation Forms...', 'give')}
+                    buttonText={isCampaignFormBlock ? __('Continue', 'give') : __('Confirm', 'give')}
+                    onConfirm={isCampaignFormBlock ? handleCampaignSelect : handleFormSelect}
+                />
             )}
         </div>
     );
