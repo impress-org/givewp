@@ -2,11 +2,13 @@ import {ExternalLink, PanelBody, PanelRow, SelectControl, TextControl, ToggleCon
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import type {FormOption} from '../hooks/useFormOptions';
+import type {EntityOption} from "./EntitySelector";
 
 interface DonationFormBlockControls {
     attributes: Readonly<any>;
     setAttributes: (newAttributes: Record<string, any>) => void;
-    formOptions: FormOption[];
+    entityOptions: FormOption[];
+    campaignOptions: EntityOption[];
     isResolving: boolean;
     isLegacyTemplate: boolean;
     isLegacyForm: boolean;
@@ -19,7 +21,8 @@ interface DonationFormBlockControls {
 export default function DonationFormBlockControls({
     attributes,
     setAttributes,
-    formOptions,
+    entityOptions,
+    campaignOptions,
     isResolving,
     isLegacyTemplate,
     isLegacyForm,
@@ -38,18 +41,31 @@ export default function DonationFormBlockControls({
     return (
         <InspectorControls>
             <PanelBody title={__('Form Settings', 'give')} initialOpen={true}>
+                {attributes?.campaignId &&
+                    <PanelRow>
+                        <SelectControl
+                            label={__('Change campaign', 'give')}
+                            value={attributes?.campaignId ?? ''}
+                            options={[
+                                ...campaignOptions.map((campaign) => ({
+                                    label: campaign.label,
+                                    value: String(campaign.value),
+                                })),
+                            ]}
+                            onChange={(campaignId) => {
+                                setAttributes({campaignId, id: null});
+                            }}
+                        />
+                    </PanelRow>
+                }
                 <PanelRow>
-                    {isResolving === false && formOptions.length === 0 ? (
+                    {isResolving === false && entityOptions.length === 0 ? (
                         <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
                     ) : (
                         <SelectControl
                             label={__('Choose a donation form', 'give')}
                             value={id ?? ''}
-                            options={[
-                                // add a disabled selector manually
-                                ...[{value: '', label: __('Select...', 'give'), disabled: true}],
-                                ...formOptions.map((form) => ({label: form.label, value: String(form.value)})),
-                            ]}
+                            options={[...entityOptions.map((form) => ({label: form.label, value: String(form.value)}))]}
                             onChange={(newFormId) => {
                                 setAttributes({id: Number(newFormId)});
                             }}
