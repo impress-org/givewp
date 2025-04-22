@@ -36,7 +36,7 @@ class LoadCampaignOptions
                                                          version_compare((string)get_option('give_version_upgraded_from', '4.0.0'), '4.0.0', '<'),
                         'showCampaignListTableNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_listtable_notice', true),
                         'showCampaignFormNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_form_notice', true),
-                        'showCampaignSettingsNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_settings_notice', true),
+                        'showCampaignSettingsNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_settings_notice', true)
                     ]
                     : null,
             ]
