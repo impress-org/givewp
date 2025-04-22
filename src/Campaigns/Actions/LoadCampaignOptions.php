@@ -2,6 +2,8 @@
 
 namespace Give\Campaigns\Actions;
 
+use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
+
 /**
  * The purpose of this action is to have a centralized place for localizing options used on many different places
  * by campaign scripts (list tables, blocks, etc.)
@@ -18,6 +20,8 @@ class LoadCampaignOptions
             [
                 'isAdmin' => is_admin(),
                 'adminUrl' => admin_url(),
+                'apiRoot' => rest_url(CampaignRoute::NAMESPACE . '/' . CampaignRoute::CAMPAIGNS),
+                'apiNonce' => wp_create_nonce('wp_rest'),
                 'campaignsAdminUrl' => admin_url('edit.php?post_type=give_forms&page=give-campaigns'),
                 'currency' => give_get_currency(),
                 'currencySymbol' => give_currency_symbol(),

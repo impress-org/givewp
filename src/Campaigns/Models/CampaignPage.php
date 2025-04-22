@@ -19,6 +19,7 @@ use Give\Framework\Support\Facades\DateTime\Temporal;
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property CampaignPageStatus $status
+ * @property string $content
  */
 class CampaignPage extends Model implements ModelCrud
 {
@@ -28,6 +29,7 @@ class CampaignPage extends Model implements ModelCrud
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => CampaignPageStatus::class,
+        'content' => 'string'
     ];
 
     public $relationships = [
@@ -113,6 +115,7 @@ class CampaignPage extends Model implements ModelCrud
             'createdAt' => Temporal::toDateTime($object->createdAt),
             'updatedAt' => Temporal::toDateTime($object->updatedAt),
             'status' => new CampaignPageStatus($object->status),
+            'content' => $object->content
         ]);
     }
 }
