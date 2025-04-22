@@ -451,6 +451,10 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             if (!shouldShowCardFields) {
                 showOrHideDonateButton('hide');
             }
+
+            return () => {
+                showOrHideDonateButton('show');
+            };
         }, [shouldShowCardFields]);
 
         return (
