@@ -12,6 +12,8 @@ use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
 use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
+use Give\Donations\Listeners\DonationCreated\UpdateDonationMetaWithCurrencySettings;
+use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurrency;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
@@ -46,6 +48,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        $this->bootListeners();
         $this->bootLegacyListeners();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
@@ -127,6 +130,18 @@ class ServiceProvider implements ServiceProviderInterface
     {
         add_action('give_view_donation_details_billing_after', static function ($donationId) {
             echo (new DonationDetailsController())->show($donationId);
+        });
+    }
+
+    /**
+     * @unreleased
+     */
+    private function bootListeners()
+    {
+        add_action('givewp_donation_created', static function (Donation $donation) {
+            (new UpdateDonationMetaWithCurrencySettings())($donation);
+
+            (new UpdateDonorMetaWithLastDonatedCurrency())($donation);
         });
     }
 }
