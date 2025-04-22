@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.1.0
+Stable tag: 4.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,10 +31,10 @@ GiveWP makes it easy to manage and launch successful fundraising campaigns direc
 
 #### **Key Features of Campaign-Based Fundraising**
 
-* **Campaign Creation:** Create multiple campaigns on your site, each with its own unique donation goal, target audience, and messaging.  
-* **Customizable Donation Forms:** Each campaign comes with a built-in, fully customizable landing page, created using the WordPress Block Editor. Add text, images, and donation forms to create a visually appealing and engaging page that strengthens your donor connections.  
-* **Dedicated Landing Pages:** Create custom landing pages for each campaign, complete with campaign-specific content, donation forms, progress bars, and social sharing options to engage and inspire donors.  
-* **Organized Fundraising**: All your donation forms are linked to specific campaigns. This makes it easy to manage and track your efforts, set goals, and monitor campaign performance in one streamlined view.  
+* **Campaign Creation:** Create multiple campaigns on your site, each with its own unique donation goal, target audience, and messaging.
+* **Customizable Donation Forms:** Each campaign comes with a built-in, fully customizable landing page, created using the WordPress Block Editor. Add text, images, and donation forms to create a visually appealing and engaging page that strengthens your donor connections.
+* **Dedicated Landing Pages:** Create custom landing pages for each campaign, complete with campaign-specific content, donation forms, progress bars, and social sharing options to engage and inspire donors.
+* **Organized Fundraising**: All your donation forms are linked to specific campaigns. This makes it easy to manage and track your efforts, set goals, and monitor campaign performance in one streamlined view.
 * **Visibility Controls**: Publish, archive, or draft campaigns to manage when and how your campaigns appear on your site. This gives you full control over the visibility of your campaigns and associated donation forms.
 
 #### **How Campaigns and Donation Forms Work Together**
@@ -273,6 +273,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 4.2.0: April 30th, 2025 =
+* New: Added shortcodes for the Campaign Block and Campaign Grid Block
+* New: Added the ability to associate orphaned campaign forms to a campaign
+* New: Added the ability to duplicate a campaign
+* Enhancement: Improved the campaign archiving functionality
+* Fix: Resolved an issue with the Stripe Credit Card gateway and utm tags
+* Fix: Resolved an issue with Stripe Payment Element not showing accurate total amount when using Fee Recovery and Apple/Google Pay
+
 = 4.1.0: April 16th, 2025 =
 * New: Added the ability for donation forms to inherit Campaign goals and colors
 * New: Added a campaign filter to the donation list table
@@ -282,7 +290,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Enhancement: Updated the PayPal Donations gateway to use the new PayPal Card Fields API
 * Enhancement: Improved the donation form modal experience
 * Fix: Fixed an issue where a Form Field Manager upgrade notice was still showing with an active license
-* Fix: Resolved an issue with the cancel/pause subscription modal in the donor dashboard 
+* Fix: Resolved an issue with the cancel/pause subscription modal in the donor dashboard
 
 = 4.0.0: March 31st, 2025 =
 * New: Introducing Campaigns! Manage all of your fundraising efforts seamlessly.

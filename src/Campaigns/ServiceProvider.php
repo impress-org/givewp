@@ -74,7 +74,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Move V3 routes to top level API folder and rename method
+     * @since 4.2.0 Move V3 routes to top level API folder and rename method
      * @since 4.0.0
      */
     private function registerListTableRoutes()

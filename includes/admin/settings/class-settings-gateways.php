@@ -257,7 +257,7 @@ if (! class_exists('Give_Settings_Gateways')) :
         /**
          * Render Gateway Notice
          *
-         * @unreleased Updated messages removing mentions to Stripe fees
+         * @since 4.2.0 Updated messages removing mentions to Stripe fees
          * @since  2.3.0
          * @access public
          *

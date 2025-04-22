@@ -103,7 +103,7 @@ class ServiceProvider implements ServiceProviderInterface
         ]);
 
         /**
-         * @unreleased
+         * @since 4.2.0
          */
         Hooks::addAction('init', RegisterFormEntity::class);
         Hooks::addAction('rest_api_init', DonationFormsEntityRoute::class);
