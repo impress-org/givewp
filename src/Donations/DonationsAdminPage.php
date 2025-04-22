@@ -211,12 +211,77 @@ class DonationsAdminPage
             return '';
         }
 
+        $donationId = absint($_GET['id']);
+
         ob_start();
 
-        //echo 'Test';
+        /**
+         * Fires in donation details page, before the sidebar.
+         */
+        do_action('give_view_donation_details_sidebar_before', $donationId);
 
-        do_action('give_view_donation_details_payment_meta_after', absint($_GET['id']));
+        /**
+         * Fires in donation details page, before the sidebar update-donation metabox.
+         */
+        do_action('give_view_donation_details_totals_before', $donationId);
 
-        return ob_get_clean();
+        /**
+         * Fires in donation details page, after the sidebar update-donation metabox.
+         */
+        do_action('give_view_donation_details_totals_after', $donationId);
+
+        /**
+         * Fires in donation details page, before the sidebar update-payment metabox actions buttons.
+         */
+        do_action('give_view_donation_details_update_before', $donationId);
+
+        /**
+         * Fires in donation details page, after the sidebar update-payment metabox actions buttons.
+         */
+        do_action('give_view_donation_details_update_after', $donationId);
+
+        /**
+         * Fires in donation details page, in the donation-information metabox, before the head elements.
+         */
+        do_action('give_donation_details_thead_before', $donationId);
+
+        /**
+         * Fires in donation details page, in the donation-information metabox, after the head elements.
+         */
+        do_action('give_donation_details_thead_after', $donationId);
+
+        /**
+         * Fires in donation details page, in the donation-information metabox, before the body elements.
+         */
+        do_action('give_donation_details_tbody_before', $donationId);
+
+        /**
+         * Fires in donation details page, in the donation-information metabox, after the body elements.
+         */
+        do_action('give_donation_details_tbody_after', $donationId);
+
+        /**
+         * Fires in donation details page, before the main area.
+         */
+        do_action('give_view_donation_details_main_before', $donationId);
+
+        /**
+         * Fires in donation details page, before the payment meta.
+         */
+        do_action('give_view_donation_details_payment_meta_before', $donationId);
+
+        /**
+         * Fires in donation details page, after the payment meta.
+         */
+        do_action('give_view_donation_details_payment_meta_after', $donationId);
+
+        /**
+         * Fires in donation details page, after the sidebar.
+         */
+        do_action('give_view_donation_details_sidebar_after', $donationId);
+
+        $html = ob_get_clean();
+
+        return $html;
     }
 }
