@@ -194,6 +194,7 @@ const entry = {
     campaignWelcomeBannerCss: srcPath('Promotions/Campaigns/resources/css/styles.scss'),
     campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),
     campaignListTable: srcPath('Campaigns/resources/admin/campaigns-list-table.tsx'),
+    donationDetails: srcPath('Donations/Admin/Details/resources/js/app/index.tsx'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };

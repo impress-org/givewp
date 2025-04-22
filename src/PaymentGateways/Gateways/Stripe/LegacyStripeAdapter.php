@@ -79,7 +79,7 @@ class LegacyStripeAdapter
             /** @var Donation $donation */
             $donation = Donation::find($donationId);
 
-            if ($donation->gatewayId === StripePaymentElementGateway::id()) {
+            if ($donation && $donation->gatewayId === StripePaymentElementGateway::id()) {
                 $stripeAccounts = give_stripe_get_all_accounts();
                 $accountId = give_get_meta($donationId, '_give_stripe_account_slug', true);
                 $accountDetail = $stripeAccounts[$accountId] ?? [];

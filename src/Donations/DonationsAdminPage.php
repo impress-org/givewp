@@ -93,6 +93,28 @@ class DonationsAdminPage
         wp_enqueue_style('givewp-design-system-foundation');
     }
 
+    public function loadDetailsScripts()
+    {
+        $data = [
+            'apiRoot' => $this->apiRoot,
+            'apiNonce' => $this->apiNonce,
+            'campaigns' => $this->getCampaigns(),
+            'table' => give(DonationsListTable::class)->toArray(),
+            'adminUrl' => $this->adminUrl,
+            'paymentMode' => give_is_test_mode(),
+            'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
+            'pluginUrl' => GIVE_PLUGIN_URL,
+            'dismissedRecommendations' => $this->getDismissedRecommendations(),
+            'addonsBulkActions' => [],
+            'legacyMeta' => $this->getLegacyMeta(),
+        ];
+
+        EnqueueScript::make('givewp-admin-donation-details', 'build/donationDetails.js')
+            ->loadInFooter()
+            ->registerTranslations()
+            ->registerLocalizeData('giveDonationDetails', $data)->enqueue();
+    }
+
     /**
      * Render admin page container
      * @since 2.20.0
@@ -101,9 +123,16 @@ class DonationsAdminPage
     {
         if (isset($_GET['view']) && 'view-payment-details' === $_GET['view']) {
             include GIVE_PLUGIN_DIR . 'includes/admin/payments/view-payment-details.php';
+        } elseif (self::isShowingDetailsPage()) {
+            echo '<div id="givewp-admin-donation-details-root"></div>';
         } else {
             echo '<div id="give-admin-donations-root"></div>';
         }
+    }
+
+    public static function isShowingDetailsPage()
+    {
+        return isset($_GET['view']) && 'view-donation-details' === $_GET['view'];
     }
 
     /**
@@ -173,5 +202,21 @@ class DonationsAdminPage
         }
 
         return $dismissedRecommendations;
+    }
+
+    private function getLegacyMeta()
+    {
+        // Check if donation ID exists in the URL
+        if (!isset($_GET['id'])) {
+            return '';
+        }
+
+        ob_start();
+
+        //echo 'Test';
+
+        do_action('give_view_donation_details_payment_meta_after', absint($_GET['id']));
+
+        return ob_get_clean();
     }
 }
