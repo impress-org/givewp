@@ -17,7 +17,7 @@
             "type": "number"
         },
         "blockId": {
-            "type": "number"
+            "type": "string"
         },
         "prevId": {
             "type": "number"
