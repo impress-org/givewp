@@ -29,19 +29,24 @@ if (FormUtils::isV3Form($attributes['id'])) {
         'formFormat'       => $attributes['displayStyle'] ?? 'onpage',
     ]);
 } else {
+
     ob_start();
+    $atts = [
+        'campaign_id'           => $attributes['campaignId'],
+        'block_id'              => $attributes['blockId'] ?? '',
+        'prev_id'               => $attributes['prevId'] ?? 0,
+        'id'                    => $attributes['id'],
+        'display_style'         => $attributes['displayStyle'] ?? 'onpage',
+        'continue_button_title' => $attributes['continueButtonTitle'] ?? __('Donate Now', 'give'),
+        'show_title'            => $attributes['showTitle'] ?? true,
+        'content_display'       => $attributes['contentDisplay'] ?? 'above',
+        'show_goal'             => $attributes['showGoal'] ?? true,
+        'show_content'          => $attributes['showContent'] ?? true,
+    ];
 
-    if (!FormUtils::isLegacyForm($attributes['id'])) {
-        $showIframeInModal = 'modal' === $attributes['displayStyle'];
-        $iframeView        = new IframeView();
+    echo give_form_shortcode($atts);
 
-        ConfirmDonation::storePostedDataInDonationSession();
+    $final_output = ob_get_clean();
 
-        echo $iframeView->setFormId($attributes['id'])
-            ->showInModal($showIframeInModal)
-            ->setButtonTitle($attributes['continueButtonTitle'])
-            ->render();
-    } else {
-        echo give_get_donation_form($attributes);
-    }
+    echo $final_output;
 }
