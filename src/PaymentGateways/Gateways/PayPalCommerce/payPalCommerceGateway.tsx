@@ -57,7 +57,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     let payPalCardFieldsForm: PayPalCardFieldsComponent = null;
 
     /**
-     * @unreleased updated to reassign the submit button when not assigned yet
+     * @since 4.1.1 updated to reassign the submit button when not assigned yet
      * @since 4.1.0
      */
     const showOrHideDonateButton = (showOrHide: 'show' | 'hide') => {
@@ -528,7 +528,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         },
 
         /**
-         * @unreleased updated the submit button to assign on mount
+         * @since 4.1.1 updated the submit button to assign on mount
          * @since 4.1.0 updated to use card fields api
          * @since 3.17.1 Hide submit button when PayPal Commerce is selected.
          */

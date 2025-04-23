@@ -1,5 +1,5 @@
 /**
- * @unreleased updated the selector to use the next button classname
+ * @since 4.1.1 updated the selector to use the next button classname
  * @since 4.0.0
  */
 export default function useFormSubmitButton(): HTMLButtonElement | null {
