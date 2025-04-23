@@ -21,15 +21,6 @@ if (! isset($attributes['campaignId']) ||
     return;
 }
 
-if (FormUtils::isV3Form($attributes['id'])) {
-    echo (new BlockRenderController())->render([
-        'formId'           => $attributes['id'] ?? 0,
-        'blockId'          => $attributes['blockId'] ?? '',
-        'openFormButton'   => esc_html($attributes['continueButtonTitle'] ?? __('Donate Now', 'give')),
-        'formFormat'       => $attributes['displayStyle'] ?? 'onpage',
-    ]);
-} else {
-
     ob_start();
     $atts = [
         'campaign_id'           => $attributes['campaignId'],
@@ -49,4 +40,3 @@ if (FormUtils::isV3Form($attributes['id'])) {
     $final_output = ob_get_clean();
 
     echo $final_output;
-}

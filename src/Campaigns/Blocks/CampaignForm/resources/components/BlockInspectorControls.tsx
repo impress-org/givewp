@@ -32,8 +32,6 @@ export default function DonationFormBlockControls({
     const showOpenFormButton = ['newTab', 'modal', 'reveal', 'button'].includes(displayStyle);
     const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
 
-    console.log(entityOptions);
-
     const displayStyleOptions = (
         options: {label: string; value: string}[],
         legacy: {label: string; value: string}[],
