@@ -3,6 +3,7 @@ import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import type {FormOption} from '../../../shared/hooks/useFormOptions';
 import type {EntityOption} from "../../../shared/components/EntitySelector/EntitySelector";
+import useCampaigns from "../../../shared/hooks/useCampaigns";
 
 /**
  * @unreleasaed
@@ -27,9 +28,10 @@ export default function DonationFormBlockControls({
     isLegacyTemplate,
     isLegacyForm,
 }: BlockInspectorControls) {
-    const {id, displayStyle, continueButtonTitle, showTitle, contentDisplay, showGoal, showContent} = attributes;
+    const {id, displayStyle, continueButtonTitle=__('Donate now', 'give'), showTitle, contentDisplay, showGoal, showContent} = attributes;
     const hasFormFormat = isLegacyTemplate || !isLegacyForm;
     const showOpenFormButton = hasFormFormat && ['newTab', 'modal', 'reveal', 'button'].includes(displayStyle);
+    const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
 
     const displayStyleOptions = (
         options: {label: string; value: string}[],
@@ -39,9 +41,43 @@ export default function DonationFormBlockControls({
         return isLegacyTemplate ? options.concat(legacy) : options.concat(v3);
     };
 
+    const campaignOptions = (() => {
+        if (!hasResolved) {
+            return [{label: __('Loading...', 'give'), value: ''}];
+        }
+
+        if (campaigns.length) {
+            const campaignOptions = campaigns.map((campaign) => ({
+                label: `${campaign.title} ${campaign.status === 'draft' ? `(${__('Draft', 'give')})` : ''}`.trim(),
+                value: campaign.id.toString(),
+            }));
+
+            return [{label: __('Select...', 'give'), value: ''}, ...campaignOptions];
+        }
+
+        return [{label: __('No campaigns found.', 'give'), value: ''}];
+    })();
+
     return (
         <InspectorControls>
             <PanelBody title={__('Form Settings', 'give')} initialOpen={true}>
+                {attributes?.campaignId &&
+                    <PanelRow>
+                        <SelectControl
+                            label={__('Select a campaign', 'give')}
+                            value={attributes?.campaignId ?? ''}
+                            options={[
+                                ...campaignOptions.map((campaign) => ({
+                                    label: campaign.label,
+                                    value: String(campaign.value),
+                                })),
+                            ]}
+                            onChange={(campaignId) => {
+                                setAttributes({campaignId, id: null});
+                            }}
+                        />
+                    </PanelRow>
+                }
                 <PanelRow>
                     {isResolving === false && entityOptions.length === 0 ? (
                         <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
@@ -64,7 +100,7 @@ export default function DonationFormBlockControls({
                             options={displayStyleOptions(
                                 [
                                     {
-                                        label: __('Full Form', 'give'),
+                                        label: __('On page', 'give'),
                                         value: 'onpage',
                                     },
                                     {
