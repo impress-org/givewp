@@ -46,7 +46,7 @@ export default function BlockPreview({
     if (isLegacyForm) {
         return (
             <div className={`${className}${isSelected ? ' isSelected' : ''}`}>
-                <ServerSideRender block="give/donation-form" attributes={attributes} />
+                <ServerSideRender block="givewp/campaign-form" attributes={attributes} />
             </div>
         );
     }

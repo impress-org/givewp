@@ -18,6 +18,7 @@ import "./styles.scss";
  * @see 'class-give-block-donation-form.php'
  */
 type CampaignFormBlockAttributes = {
+    campaignId: number;
     id: number;
     prevId: number;
     blockId: string;
