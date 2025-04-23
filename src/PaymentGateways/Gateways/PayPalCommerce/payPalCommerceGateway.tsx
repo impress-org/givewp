@@ -57,6 +57,8 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     let payPalCardFieldsForm: PayPalCardFieldsComponent = null;
 
     const showOrHideDonateButton = (showOrHide: 'show' | 'hide') => {
+        submitButton = submitButton || window.givewp.form.hooks.useFormSubmitButton();
+
         if (submitButton) {
             submitButton.style.display = showOrHide === 'hide' ? 'none' : '';
         }
@@ -162,11 +164,13 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     const cardFieldsOnApproveHandler: PayPalCardFieldsComponentBasics['onApprove'] = async (data) => {
         // @ts-ignore
         const {orderID, liabilityShift} = data;
-        payPalOrderId = orderID
+        payPalOrderId = orderID;
 
         if (liabilityShift && !['POSSIBLE', 'YES'].includes(liabilityShift)) {
             console.log('Liability shift not possible or not accepted.');
-            throw new Error(__('Card type and issuing bank are not ready to complete a 3D Secure authentication.', 'give'));
+            throw new Error(
+                __('Card type and issuing bank are not ready to complete a 3D Secure authentication.', 'give')
+            );
         }
 
         return;
@@ -451,6 +455,10 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             if (!shouldShowCardFields) {
                 showOrHideDonateButton('hide');
             }
+
+            return () => {
+                showOrHideDonateButton('show');
+            };
         }, [shouldShowCardFields]);
 
         return (
