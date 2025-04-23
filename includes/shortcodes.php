@@ -188,7 +188,7 @@ function give_form_shortcode( $atts ) {
 	ob_start();
 
 	if ( ! FormUtils::isLegacyForm( $formId ) ) {
-		$showIframeInModal = 'button' === $atts['display_style'];
+		$showIframeInModal = 'button' === $atts['display_style'] || 'modal' === $atts['display_style'];
 		$iframeView        = new IframeView();
 
 		ConfirmDonation::storePostedDataInDonationSession();
