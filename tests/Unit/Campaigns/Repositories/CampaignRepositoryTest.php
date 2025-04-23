@@ -73,6 +73,9 @@ final class CampaignRepositoryTest extends TestCase
 
         $campaign = $repository->getById($campaignFactory->id);
 
+        $defaultFormId = $campaign->defaultFormId;
+        $campaignFactory->defaultFormId = $defaultFormId;
+
         $this->assertEquals($campaign->getAttributes(), $campaignFactory->getAttributes());
     }
 

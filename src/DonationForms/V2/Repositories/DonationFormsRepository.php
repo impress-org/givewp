@@ -4,6 +4,7 @@ namespace Give\DonationForms\V2\Repositories;
 
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Donations\Models\Donation;
 use Give\Framework\Models\ModelQueryBuilder;
 
@@ -50,6 +51,7 @@ class DonationFormsRepository
                 'form_id',
                 ...DonationFormMetaKeys::getColumnsForAttachMetaQuery()
             )
-            ->where('post_type', 'give_forms');
+            ->where('post_type', 'give_forms')
+            ->whereIn('post_status', DonationFormStatus::toArray());
     }
 }

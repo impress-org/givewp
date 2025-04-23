@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\Campaigns\Repositories;
 
 use Exception;
+use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignPageRepository;
@@ -47,6 +48,10 @@ final class CampaignPageRepositoryTest extends TestCase
         $campaign = Campaign::factory()->create();
         $campaignPage = new CampaignPage([
             'campaignId' => $campaign->id,
+            'content' => give(CreateDefaultLayoutForCampaignPage::class)(
+                $campaign->id,
+                $campaign->shortDescription
+            )
         ]);
 
         give(CampaignPageRepository::class)->insert($campaignPage);
