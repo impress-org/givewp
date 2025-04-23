@@ -528,7 +528,10 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
          */
         Fields() {
             const {isRecurring} = window.givewp.form.hooks.useFormData();
-            submitButton = window.givewp.form.hooks.useFormSubmitButton();
+
+            useEffect(() => {
+                submitButton = window.givewp.form.hooks.useFormSubmitButton();
+            }, []);
 
             return (
                 <FormFieldsProvider>
