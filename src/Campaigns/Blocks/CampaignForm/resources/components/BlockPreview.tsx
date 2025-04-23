@@ -64,7 +64,7 @@ export default function BlockPreview({
             <ModalForm
                 dataSrc={`/?givewp-route=donation-form-view&form-id=${formId}`}
                 embedId=""
-                openFormButton={continueButtonTitle}
+                buttonText={continueButtonTitle}
                 isFormRedirect={false}
                 formViewUrl=""
             />

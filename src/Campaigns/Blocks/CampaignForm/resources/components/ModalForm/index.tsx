@@ -13,7 +13,7 @@ import '../../../../shared/components/EntitySelector/styles/index.scss';
 type ModalFormProps = {
     dataSrc: string;
     embedId: string;
-    openFormButton: string;
+    buttonText: string;
     isFormRedirect: boolean;
     formViewUrl: string;
 };
@@ -21,7 +21,7 @@ type ModalFormProps = {
 /**
  * @unreleasaed
  */
-export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedirect, formViewUrl}: ModalFormProps) {
+export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect, formViewUrl}: ModalFormProps) {
     const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
     const [isOpen, setIsOpen] = useState<boolean>(isFormRedirect);
     const [isLoading, setLoading] = useState<boolean>(false);
@@ -101,7 +101,7 @@ export default function ModalForm({dataSrc, embedId, openFormButton, isFormRedir
                 )}
 
                 <span style={{margin: '0', visibility: isLoading ? 'hidden' : 'visible'}} aria-hidden={isLoading}>
-                    {openFormButton}
+                    {buttonText}
                 </span>
             </Button>
 
