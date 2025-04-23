@@ -62,12 +62,14 @@ class InvoicePaymentSucceeded
 
         if ($initialDonation = give()->donations->getByGatewayTransactionId($invoice->payment_intent)) {
             $this->handleInitialDonation($initialDonation);
-            give(UpdateStripeInvoiceMetaData::class)($invoice, $initialDonation);
+            $this->updateStripeInvoiceMetaData($invoice, $initialDonation);
         } else {
             $subscriptionModel = $this->getSubscriptionModelDecorator($subscription);
 
             if ($subscriptionModel->shouldCreateRenewal()) {
                 $subscriptionModel = $subscriptionModel->handleRenewal($invoice);
+                $renewalDonation = $subscriptionModel->subscription->donations[0];
+                $this->updateStripeInvoiceMetaData($invoice, $renewalDonation);
             }
 
             if ($subscriptionModel->shouldEndSubscription()) {
@@ -115,5 +117,13 @@ class InvoicePaymentSucceeded
     protected function cancelSubscription(SubscriptionModelDecorator $subscriptionModel)
     {
         $subscriptionModel->cancelSubscription();
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function updateStripeInvoiceMetaData(Invoice $invoice, Donation $donation)
+    {
+        give(UpdateStripeInvoiceMetaData::class)($invoice, $donation);
     }
 }

@@ -4,7 +4,6 @@ namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webho
 use Exception;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\UpdateStripeInvoiceMetaData;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Stripe\Invoice;
@@ -42,7 +41,6 @@ class SubscriptionModelDecorator {
     }
 
     /**
-     * @unreleased Update Stripe Invoice metadata
      * @since 3.22.0 updated to use model method
      * @since 3.0.0
      *
@@ -50,7 +48,7 @@ class SubscriptionModelDecorator {
      */
     public function handleRenewal(Invoice $invoice): SubscriptionModelDecorator
     {
-        $renewalDonation = $this->subscription->createRenewal([
+        $this->subscription->createRenewal([
             'amount' => Money::fromDecimal(
                 give_stripe_cents_to_dollars($invoice->total),
                 strtoupper($invoice->currency)
@@ -58,8 +56,6 @@ class SubscriptionModelDecorator {
             'createdAt' => Temporal::toDateTime(date_i18n('Y-m-d H:i:s', $invoice->created)),
             'gatewayTransactionId' => $invoice->payment_intent,
         ]);
-
-        give(UpdateStripeInvoiceMetaData::class)($invoice, $renewalDonation);
 
         // refresh the subscription model
         $subscription = Subscription::find($this->subscription->id);
