@@ -4,6 +4,9 @@ import {InspectorControls} from '@wordpress/block-editor';
 import type {FormOption} from '../../../shared/hooks/useFormOptions';
 import type {EntityOption} from "../../../shared/components/EntitySelector/EntitySelector";
 
+/**
+ * @unreleasaed
+ */
 interface BlockInspectorControls {
     attributes: Readonly<any>;
     setAttributes: (newAttributes: Record<string, any>) => void;

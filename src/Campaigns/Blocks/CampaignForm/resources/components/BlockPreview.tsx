@@ -6,6 +6,9 @@ import ServerSideRender from '@wordpress/server-side-render';
 
 import '../../../shared/components/EntitySelector/styles/index.scss';
 
+/**
+ * @unreleasaed
+ */
 export interface BlockPreviewProps {
     formId: number;
     clientId: string;
@@ -18,6 +21,9 @@ export interface BlockPreviewProps {
     className: string;
 }
 
+/**
+ * @unreleasaed
+ */
 export default function BlockPreview({
     clientId,
     formId,

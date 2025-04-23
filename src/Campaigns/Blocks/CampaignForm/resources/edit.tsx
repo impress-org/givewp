@@ -8,7 +8,6 @@ import type {BlockPreviewProps} from './components/BlockPreview';
 import useFormOptions from "../../shared/hooks/useFormOptions";
 import CampaignSelector from "../../shared/components/CampaignSelector";
 import EntitySelector from "../../shared/components/EntitySelector/EntitySelector";
-
 import '../../shared/components/EntitySelector/styles/index.scss';
 
 /**

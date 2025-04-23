@@ -1,5 +1,6 @@
-// Temporary fork from '@givewp/components/GiveIcon'
-
+/**
+ * @unreleasaed
+ */
 const colorMap = {
     white: '#fff',
     grey: '#555d66',
@@ -7,7 +8,7 @@ const colorMap = {
 };
 
 /**
- * Give Icon
+ * @unreleasaed
  */
 export default function GiveIcon({color = 'grey', size = '24px', ...rest}) {
     return (
