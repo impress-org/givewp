@@ -56,6 +56,10 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
     let payPalCardFieldsForm: PayPalCardFieldsComponent = null;
 
+    /**
+     * @since 4.1.1 updated to reassign the submit button when not assigned yet
+     * @since 4.1.0
+     */
     const showOrHideDonateButton = (showOrHide: 'show' | 'hide') => {
         submitButton = submitButton || window.givewp.form.hooks.useFormSubmitButton();
 
@@ -524,11 +528,16 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         },
 
         /**
+         * @since 4.1.1 updated the submit button to assign on mount
+         * @since 4.1.0 updated to use card fields api
          * @since 3.17.1 Hide submit button when PayPal Commerce is selected.
          */
         Fields() {
             const {isRecurring} = window.givewp.form.hooks.useFormData();
-            submitButton = window.givewp.form.hooks.useFormSubmitButton();
+
+            useEffect(() => {
+                submitButton = window.givewp.form.hooks.useFormSubmitButton();
+            }, []);
 
             return (
                 <FormFieldsProvider>
