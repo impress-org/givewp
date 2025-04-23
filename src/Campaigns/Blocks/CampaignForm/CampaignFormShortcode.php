@@ -33,7 +33,7 @@ class CampaignFormShortcode
     {
         wp_enqueue_script(
             'givewp-campaign-form-app',
-            GIVE_PLUGIN_URL . 'build/campaignFormApp.js',
+            GIVE_PLUGIN_URL . 'build/campaignFormBlockApp.js',
             [],
             null,
             true
@@ -41,7 +41,7 @@ class CampaignFormShortcode
 
         wp_enqueue_style(
             'givewp-campaign-form-style',
-            GIVE_PLUGIN_URL . 'build/campaignFormApp.css',
+            GIVE_PLUGIN_URL . 'build/campaignFormBlockApp.css',
             [],
             null
         );
@@ -71,7 +71,7 @@ class CampaignFormShortcode
             'campaignId'           => (int) $atts['campaign_id'],
             'blockId'              => (string) $atts['block_id'],
             'prevId'               => (int) $atts['prev_id'],
-            'id'                    => (int) $atts['id'],
+            'id'                   => (int) $atts['id'],
             'displayStyle'         => $atts['display_style'],
             'continueButtonTitle'  => sanitize_text_field($atts['continue_button_title']),
             'showTitle'            => filter_var($atts['show_title'], FILTER_VALIDATE_BOOLEAN),

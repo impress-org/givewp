@@ -47,5 +47,7 @@
     "example": {},
     "textdomain": "give",
     "render": "file:./render.php",
+    "viewScript": "file:../../../../build/campaignFormBlockApp.js",
+    "viewStyle": "file:../../../../build/campaignFormBlockApp.css",
     "style": "file:../../../../build/campaignFormBlock.css"
 }
