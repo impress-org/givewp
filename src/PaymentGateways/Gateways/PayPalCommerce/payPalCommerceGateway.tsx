@@ -451,7 +451,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         }, [currency, isRecurring]);
 
         useEffect(() => {
-            console.log('shouldShowCardFields', shouldShowCardFields);
             // hide donate buttons if card fields are not expected to be shown
             if (!shouldShowCardFields) {
                 showOrHideDonateButton('hide');
