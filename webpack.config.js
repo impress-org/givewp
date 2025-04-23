@@ -190,6 +190,7 @@ const entry = {
     campaignCommentsBlockApp: srcPath('Campaigns/Blocks/CampaignComments/resources/app.tsx'),
     campaignBlock: srcPath('Campaigns/Blocks/Campaign/index.tsx'),
     campaignBlockApp: srcPath('Campaigns/Blocks/Campaign/app.tsx'),
+    campaignFormBlock: srcPath('Campaigns/Blocks/CampaignForm/resources/index.tsx'),
     campaignPagePostTypeEditor: srcPath('Campaigns/resources/editor/campaign-page-post-type-editor.tsx'),
     campaignWelcomeBannerCss: srcPath('Promotions/Campaigns/resources/css/styles.scss'),
     campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),

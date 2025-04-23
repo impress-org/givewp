@@ -10,6 +10,8 @@ import CampaignSelector from "../../shared/components/CampaignSelector";
 import EntitySelector from "../../shared/components/EntitySelector/EntitySelector";
 import '../../shared/components/EntitySelector/styles/index.scss';
 
+import "./styles.scss";
+
 /**
  * @unreleased
  *

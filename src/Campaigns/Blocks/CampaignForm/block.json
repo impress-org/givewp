@@ -47,5 +47,5 @@
     "example": {},
     "textdomain": "give",
     "render": "file:./render.php",
-    "style": "file:../../../../build/campaignFormBlockApp.css"
+    "style": "file:../../../../build/campaignFormBlock.css"
 }
