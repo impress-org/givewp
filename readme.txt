@@ -279,7 +279,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 4.1.1: April 23rd, 2025 =
+= 4.1.1: April 24th, 2025 =
 * Fix: Resolved an issue with PayPal donations where the donate button was not being shown when switching payment methods
 
 = 4.1.0: April 16th, 2025 =
