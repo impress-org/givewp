@@ -271,8 +271,9 @@ class IframeView
             '<div class="js-give-embed-form-modal-launcher-wrap">
 				<button
 				type="button"
-				class="js-give-embed-form-modal-opener"
-				data-form-id="%1$s"%3$s>%2$s</button>
+				class="js-give-embed-form-modal-opener givewp-donation-form-modal__open"
+				data-form-id="%1$s"%3$s
+				>%2$s</button>
 			</div>',
             esc_attr($this->uniqueId),
             esc_html($this->buttonTitle),
