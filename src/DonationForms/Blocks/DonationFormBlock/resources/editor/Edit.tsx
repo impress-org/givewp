@@ -2,14 +2,13 @@ import {useEffect, useState} from 'react';
 import {useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import ServerSideRender from '@wordpress/server-side-render';
-import DonationFormSelector from './components/DonationFormSelector';
+import { __ } from '@wordpress/i18n';
 import useFormOptions from './hooks/useFormOptions';
 import DonationFormBlockControls from './components/DonationFormBlockControls';
 import DonationFormBlockPreview from './components/DonationFormBlockPreview';
 import type {BlockPreviewProps} from './components/DonationFormBlockPreview';
-
+import EntitySelector from "../../../../../Campaigns/Blocks/shared/components/EntitySelector/EntitySelector";
 import './styles/index.scss';
-import { __ } from '@wordpress/i18n';
 
 /**
  * @since 3.2.1
@@ -93,7 +92,16 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
                     )}
                 </>
             ) : (
-                <DonationFormSelector formOptions={formOptions} isResolving={isResolving} handleSelect={handleSelect} />
+                <EntitySelector
+                    id={'formId'}
+                    label={__('Choose a donation form', 'give')}
+                    options={formOptions}
+                    isLoading={isResolving}
+                    emptyMessage={__('No donation forms were found.', 'give')}
+                    loadingMessage={__('Loading Donation Forms...', 'give')}
+                    buttonText={__('Confirm', 'give')}
+                    onConfirm={handleSelect}
+                />
             )}
         </div>
     );

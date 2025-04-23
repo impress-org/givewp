@@ -8,11 +8,13 @@ import {BlockConfiguration, getBlockType, registerBlockType, registerBlockVariat
  */
 import campaignGrid from './CampaignGrid';
 import campaignBlock from './Campaign';
+import campaignForm from './CampaignForm/resources';
 
 export const getAllBlocks = () => {
     return [
         campaignGrid,
         campaignBlock,
+        campaignForm
     ];
 };
 
@@ -22,12 +24,3 @@ getAllBlocks().forEach((block) => {
     }
 });
 
-registerBlockVariation('give/donation-form', {
-    name: 'givewp-campaign-donation-form',
-    title: 'Campaign Form',
-    description: "The GiveWP Campaign Form block inserts an existing campaign form into the page.",
-    attributes: {
-        campaignId: null,
-    },
-    isActive: attributes => !!attributes.campaignId,
-});

@@ -36,9 +36,6 @@ const blockAttributes = {
     blockId: {
         type: 'string',
     },
-    campaignId: {
-        type: 'string',
-    }
 };
 
 export default blockAttributes;
