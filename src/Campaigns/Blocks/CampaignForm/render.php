@@ -2,7 +2,6 @@
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
-use Give\DonationForms\Actions\GenerateDonationFormViewRouteUrl;
 use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use Give\Helpers\Frontend\ConfirmDonation;
 use Give\Views\IframeView;
@@ -23,8 +22,8 @@ if (! isset($attributes['campaignId']) ||
 
 if (FormUtils::isV3Form($attributes['id'])) {
     (new BlockRenderController())->render([
-        'formId'           => $attributes['id'] ?? null,
-        'blockId'          => $attributes['blockId'] ?? null,
+        'formId'           => $attributes['id'] ?? 0,
+        'blockId'          => $attributes['blockId'] ?? '',
         'openFormButton'   => esc_html($attributes['continueButtonTitle'] ?? __('Donate Now', 'give')),
         'formFormat'       => $attributes['displayStyle'] ?? 'onpage',
     ]);
