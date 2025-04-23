@@ -32,7 +32,7 @@ if (FormUtils::isV3Form($attributes['id'])) {
     ob_start();
 
     if (!FormUtils::isLegacyForm($attributes['id'])) {
-        $showIframeInModal = 'button' === $attributes['displayStyle'];
+        $showIframeInModal = 'modal' === $attributes['displayStyle'];
         $iframeView        = new IframeView();
 
         ConfirmDonation::storePostedDataInDonationSession();

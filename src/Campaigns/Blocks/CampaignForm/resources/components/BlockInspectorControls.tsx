@@ -29,16 +29,17 @@ export default function DonationFormBlockControls({
     isLegacyForm,
 }: BlockInspectorControls) {
     const {id, displayStyle, continueButtonTitle=__('Donate now', 'give'), showTitle, contentDisplay, showGoal, showContent} = attributes;
-    const hasFormFormat = isLegacyTemplate || !isLegacyForm;
-    const showOpenFormButton = hasFormFormat && ['newTab', 'modal', 'reveal', 'button'].includes(displayStyle);
+    const showOpenFormButton = ['newTab', 'modal', 'reveal', 'button'].includes(displayStyle);
     const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
+
+    console.log(entityOptions);
 
     const displayStyleOptions = (
         options: {label: string; value: string}[],
         legacy: {label: string; value: string}[],
         v3: {label: string; value: string}[]
     ) => {
-        return isLegacyTemplate ? options.concat(legacy) : options.concat(v3);
+        return  isLegacyTemplate ? options.concat(legacy) : (!isLegacyForm ? options.concat(v3) : options);
     };
 
     const campaignOptions = (() => {
@@ -92,7 +93,6 @@ export default function DonationFormBlockControls({
                         />
                     )}
                 </PanelRow>
-                {hasFormFormat && (
                     <PanelRow>
                         <SelectControl
                             label={__('Display style', 'give')}
@@ -130,7 +130,6 @@ export default function DonationFormBlockControls({
                             }}
                         />
                     </PanelRow>
-                )}
 
                 {showOpenFormButton && (
                     <PanelRow>
