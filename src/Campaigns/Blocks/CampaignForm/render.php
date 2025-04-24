@@ -33,7 +33,6 @@ if (! isset($attributes['campaignId']) ||
         'content_display'       => $attributes['contentDisplay'] ?? 'above',
         'show_goal'             => $attributes['showGoal'] ?? true,
         'show_content'          => $attributes['showContent'] ?? true,
-        'button_color'          => $campaign->primaryColor,
     ];
 
     echo give_form_shortcode($atts);
