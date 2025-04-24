@@ -2,8 +2,7 @@ import {createRoot} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
 import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
-import ModalForm from '../../../../../Campaigns/Blocks/shared/components/ModalForm';
-
+import ModalForm from '@givewp/campaigns/../Blocks/shared/components/ModalForm';
 import '../editor/styles/index.scss';
 
 /**

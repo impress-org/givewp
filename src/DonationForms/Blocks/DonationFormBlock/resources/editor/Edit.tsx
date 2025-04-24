@@ -2,12 +2,12 @@ import {useEffect, useState} from 'react';
 import {useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import ServerSideRender from '@wordpress/server-side-render';
-import { __ } from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import useFormOptions from './hooks/useFormOptions';
 import DonationFormBlockControls from './components/DonationFormBlockControls';
-import DonationFormBlockPreview from './components/DonationFormBlockPreview';
 import type {BlockPreviewProps} from './components/DonationFormBlockPreview';
-import EntitySelector from "../../../../../Campaigns/Blocks/shared/components/EntitySelector/EntitySelector";
+import DonationFormBlockPreview from './components/DonationFormBlockPreview';
+import EntitySelector from '@givewp/campaigns/../Blocks/shared/components/EntitySelector/EntitySelector';
 import './styles/index.scss';
 
 /**
@@ -25,7 +25,7 @@ type DonationFormBlockAttributes = {
     showGoal: boolean;
     showContent: boolean;
     contentDisplay: string;
-}
+};
 
 /**
  * @since 3.2.1 added isResolving loading state to prevent forms from prematurely being rendered.
@@ -59,9 +59,11 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
     })();
 
     if (isResolving !== false) {
-        return <div {...useBlockProps()}>
-            <p>{__('Loading...', 'give')}</p>
-        </div>
+        return (
+            <div {...useBlockProps()}>
+                <p>{__('Loading...', 'give')}</p>
+            </div>
+        );
     }
 
     return (

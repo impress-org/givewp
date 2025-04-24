@@ -1,8 +1,7 @@
 import {useSelect} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-import ModalForm from '../../../../../../Campaigns/Blocks/shared/components/ModalForm';
-
+import ModalForm from '@givewp/campaigns/..//Blocks/shared/components/ModalForm';
 import '../styles/index.scss';
 
 /**
@@ -43,7 +42,13 @@ export default function DonationFormBlockPreview({
             {openFormButton}
         </a>
     ) : isModalDisplay ? (
-        <ModalForm dataSrc={`/?givewp-route=donation-form-view&form-id=${formId}`} embedId={''} buttonText={openFormButton} isFormRedirect={false} formViewUrl={''} />
+        <ModalForm
+            dataSrc={`/?givewp-route=donation-form-view&form-id=${formId}`}
+            embedId={''}
+            buttonText={openFormButton}
+            isFormRedirect={false}
+            formViewUrl={''}
+        />
     ) : (
         <IframeResizer
             title={__('Donation Form', 'give')}
