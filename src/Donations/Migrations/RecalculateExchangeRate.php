@@ -125,7 +125,7 @@ class RecalculateExchangeRate extends BatchMigration
      */
     public function getBatchItemsAfter($lastId): ?array
     {
-        $item = clone $this->query()
+        $item = $this->query()
             ->select('MIN(ID) AS first_id, MAX(ID) AS last_id')
             ->where('ID', $lastId, '>')
             ->limit($this->getBatchSize())
