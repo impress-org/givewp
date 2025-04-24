@@ -58,17 +58,19 @@ final class CampaignDonationQueryTest extends TestCase
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
+            'amount' => new Money(1051, 'USD'),
+            'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
+            'amount' => new Money(1051, 'USD'),
+            'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
 
         $query = new CampaignDonationQuery($campaign);
 
-        $this->assertEquals(20.00, $query->sumIntendedAmount());
+        $this->assertEquals(21.02, $query->sumIntendedAmount());
     }
 
     /**
