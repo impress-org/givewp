@@ -57,6 +57,7 @@ class CampaignGoalData implements Arrayable
     }
 
     /**
+     * @unreleased return union type int|float
      * @since 4.0.0
      *
      * @return int|float
