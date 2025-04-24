@@ -1,8 +1,8 @@
 import {createRoot} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-import ModalForm from './Components/ModalForm';
 import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
+import ModalForm from '../../../../../Campaigns/Blocks/shared/components/ModalForm';
 
 import '../editor/styles/index.scss';
 
@@ -60,7 +60,7 @@ function DonationFormBlockApp({
     if (formFormat === 'modal' || formFormat === 'reveal') {
         return (
             <ModalForm
-                openFormButton={openFormButton}
+                buttonText={openFormButton}
                 dataSrc={dataSrc}
                 embedId={embedId}
                 isFormRedirect={isFormRedirect}

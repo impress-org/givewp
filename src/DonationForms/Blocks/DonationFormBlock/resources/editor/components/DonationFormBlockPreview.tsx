@@ -1,10 +1,9 @@
 import {useSelect} from '@wordpress/data';
-import {useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
+import ModalForm from '../../../../../../Campaigns/Blocks/shared/components/ModalForm';
 
 import '../styles/index.scss';
-import ModalForm from '../../app/Components/ModalForm';
 
 /**
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage"
@@ -44,7 +43,7 @@ export default function DonationFormBlockPreview({
             {openFormButton}
         </a>
     ) : isModalDisplay ? (
-        <ModalForm dataSrc={`/?givewp-route=donation-form-view&form-id=${formId}`} embedId={''} openFormButton={openFormButton} isFormRedirect={false} formViewUrl={''} />
+        <ModalForm dataSrc={`/?givewp-route=donation-form-view&form-id=${formId}`} embedId={''} buttonText={openFormButton} isFormRedirect={false} formViewUrl={''} />
     ) : (
         <IframeResizer
             title={__('Donation Form', 'give')}
