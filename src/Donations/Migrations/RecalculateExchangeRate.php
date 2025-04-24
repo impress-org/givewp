@@ -46,28 +46,9 @@ class RecalculateExchangeRate extends BatchMigration
      */
     protected function query(): QueryBuilder
     {
-        // Select donations where base currency is not empty,
-        // base currency is different from payment currency,
-        // and either the exchange rate does not exist or is equal to 1
-
         return DB::table('posts', 'posts')
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                [DonationMetaKeys::AMOUNT, 'amount'],
-                [DonationMetaKeys::CURRENCY, 'currency'],
-                [DonationMetaKeys::BASE_AMOUNT, 'baseAmount'],
-                [DonationMetaKeys::EXCHANGE_RATE, 'exchangeRate'],
-                ['_give_cs_base_currency', 'baseCurrency']
-            )
             ->where('posts.post_type', 'give_payment')
-            ->whereIsNotNull('give_donationmeta_attach_meta_baseAmount.meta_value')
-            ->whereRaw('AND give_donationmeta_attach_meta_baseCurrency.meta_value != give_donationmeta_attach_meta_currency.meta_value')
-            ->where(function($query) {
-                $query->where('give_donationmeta_attach_meta_exchangeRate.meta_value', '1')
-                    ->orWhereIsNull('give_donationmeta_attach_meta_exchangeRate.meta_value');
-            });
+            ->orderBy('posts.ID', 'ASC');
     }
 
     /**
@@ -77,9 +58,28 @@ class RecalculateExchangeRate extends BatchMigration
     public function runBatch($firstId, $lastId): void
     {
         try {
+            // Select donations where base currency is not empty,
+            // base currency is different from payment currency,
+            // and either the exchange rate does not exist or is equal to 1
+
             $query = $this->query()
                 ->select('posts.ID')
-                ->orderBy('posts.ID', 'ASC');
+                ->attachMeta(
+                    'give_donationmeta',
+                    'ID',
+                    'donation_id',
+                    [DonationMetaKeys::AMOUNT, 'amount'],
+                    [DonationMetaKeys::CURRENCY, 'currency'],
+                    [DonationMetaKeys::BASE_AMOUNT, 'baseAmount'],
+                    [DonationMetaKeys::EXCHANGE_RATE, 'exchangeRate'],
+                    ['_give_cs_base_currency', 'baseCurrency']
+                )
+                ->whereIsNotNull('give_donationmeta_attach_meta_baseAmount.meta_value')
+                ->whereRaw('AND give_donationmeta_attach_meta_baseCurrency.meta_value != give_donationmeta_attach_meta_currency.meta_value')
+                ->where(function ($query) {
+                    $query->where('give_donationmeta_attach_meta_exchangeRate.meta_value', '1')
+                        ->orWhereIsNull('give_donationmeta_attach_meta_exchangeRate.meta_value');
+                });
 
             // Migration Runner will pass null for lastId in the last step
             if (is_null($lastId)) {
@@ -91,34 +91,17 @@ class RecalculateExchangeRate extends BatchMigration
             $donations = $query->getAll();
 
             foreach ($donations as $donation) {
-                try {
-                    $amount = Money::fromDecimal($donation->amount, $donation->currency);
-                    $baseAmount = Money::fromDecimal($donation->baseAmount, $donation->baseCurrency);
+                $amount = Money::fromDecimal($donation->amount, $donation->currency);
+                $baseAmount = Money::fromDecimal($donation->baseAmount, $donation->baseCurrency);
 
-                    if ($baseAmount->formatToDecimal() === '0') {
-                        throw new DatabaseMigrationException(
-                            sprintf(
-                                'Invalid base amount (0) for donation ID %d',
-                                $donation->ID
-                            )
-                        );
-                    }
-
-                    /** @var Money $exchangeRate */
-                    $exchangeRate = $amount->divide($baseAmount->formatToDecimal());
-
-                    give()->payment_meta->update_meta($donation->ID, DonationMetaKeys::EXCHANGE_RATE, $exchangeRate->formatToDecimal());
-                } catch (\Exception $e) {
-                    throw new DatabaseMigrationException(
-                        sprintf(
-                            'Failed to process donation ID %d: %s',
-                            $donation->ID,
-                            $e->getMessage()
-                        ),
-                        0,
-                        $e
-                    );
+                if ($baseAmount->formatToDecimal() === '0') {
+                    continue;
                 }
+
+                /** @var Money $exchangeRate */
+                $exchangeRate = $amount->divide($baseAmount->formatToDecimal());
+
+                give()->payment_meta->update_meta($donation->ID, DonationMetaKeys::EXCHANGE_RATE, $exchangeRate->formatToDecimal());
             }
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException(
@@ -143,9 +126,8 @@ class RecalculateExchangeRate extends BatchMigration
     public function getBatchItemsAfter($lastId): ?array
     {
         $item = clone $this->query()
-            ->select('MIN(posts.ID) AS first_id, MAX(posts.ID) AS last_id')
-            ->where('posts.ID', $lastId, '>')
-            ->orderBy('posts.ID', 'ASC')
+            ->select('MIN(ID) AS first_id, MAX(ID) AS last_id')
+            ->where('ID', $lastId, '>')
             ->limit($this->getBatchSize())
             ->get();
 
