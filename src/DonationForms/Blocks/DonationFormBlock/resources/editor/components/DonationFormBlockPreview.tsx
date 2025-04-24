@@ -1,7 +1,7 @@
 import {useSelect} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-import ModalForm from '@givewp/campaigns/..//Blocks/shared/components/ModalForm';
+import ModalForm from '@givewp/src/Campaigns/Blocks/shared/components/ModalForm';
 import '../styles/index.scss';
 
 /**

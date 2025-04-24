@@ -7,7 +7,7 @@ import useFormOptions from './hooks/useFormOptions';
 import DonationFormBlockControls from './components/DonationFormBlockControls';
 import type {BlockPreviewProps} from './components/DonationFormBlockPreview';
 import DonationFormBlockPreview from './components/DonationFormBlockPreview';
-import EntitySelector from '@givewp/campaigns/../Blocks/shared/components/EntitySelector/EntitySelector';
+import EntitySelector from '@givewp/src/Campaigns/Blocks/shared/components/EntitySelector/EntitySelector';
 import './styles/index.scss';
 
 /**
