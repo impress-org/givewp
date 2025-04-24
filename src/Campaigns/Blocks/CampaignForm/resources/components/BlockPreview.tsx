@@ -1,9 +1,8 @@
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-import ModalForm from '../../../shared/components/ModalForm';
 import ServerSideRender from '@wordpress/server-side-render';
-
+import ModalForm from '../../../shared/components/ModalForm';
 import '../../../shared/components/EntitySelector/styles/index.scss';
 
 /**

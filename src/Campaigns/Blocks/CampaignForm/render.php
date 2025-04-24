@@ -2,11 +2,6 @@
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
-use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
-use Give\Helpers\Frontend\ConfirmDonation;
-use Give\Log\Log;
-use Give\Views\IframeView;
-use Give\Helpers\Form\Utils as FormUtils;
 
 /**
  * @var array    $attributes

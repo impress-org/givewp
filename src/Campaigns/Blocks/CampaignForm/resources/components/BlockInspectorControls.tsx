@@ -2,7 +2,6 @@ import {ExternalLink, PanelBody, PanelRow, SelectControl, TextControl, ToggleCon
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import type {FormOption} from '../../../shared/hooks/useFormOptions';
-import type {EntityOption} from "../../../shared/components/EntitySelector/EntitySelector";
 import useCampaigns from "../../../shared/hooks/useCampaigns";
 
 /**
