@@ -34,7 +34,7 @@ type CampaignFormBlockAttributes = {
  * @unreleased
  */
 export default function Edit({attributes, isSelected, setAttributes, className, clientId}: BlockEditProps<any>) {
-    const {id, blockId, displayStyle, continueButtonTitle} = attributes as CampaignFormBlockAttributes;
+    const {id, blockId, displayStyle, continueButtonTitle = __('Donate now', 'give')} = attributes as CampaignFormBlockAttributes;
     const [showPreview, setShowPreview] = useState<boolean>(!!id);
     const {formOptions, isResolving} = useFormOptions(attributes?.campaignId);
 
