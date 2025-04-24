@@ -51,18 +51,18 @@ class RecalculateExchangeRate extends BatchMigration
         // and either the exchange rate does not exist or is equal to 1
 
         return DB::table('posts', 'posts')
-            ->leftJoin('give_donationmeta as meta1', 'posts.ID', 'meta1.donation_id')
-            ->leftJoin('give_donationmeta as meta2', 'posts.ID', 'meta2.donation_id')
-            ->leftJoin('give_donationmeta as meta3', 'posts.ID', 'meta3.donation_id')
+            ->leftJoin('give_donationmeta as baseCurrencyMeta', 'posts.ID', 'baseCurrencyMeta.donation_id')
+            ->leftJoin('give_donationmeta as paymentCurrencyMeta', 'posts.ID', 'paymentCurrencyMeta.donation_id')
+            ->leftJoin('give_donationmeta as exchangeRateMeta', 'posts.ID', 'exchangeRateMeta.donation_id')
             ->where('posts.post_type', 'give_payment')
-            ->where('meta1.meta_key', '_give_cs_base_currency')
-            ->whereIsNotNull('meta1.meta_value')
-            ->where('meta2.meta_key', DonationMetaKeys::CURRENCY)
-            ->whereRaw('AND meta1.meta_value != meta2.meta_value')
-            ->where('meta3.meta_key', DonationMetaKeys::EXCHANGE_RATE)
+            ->where('baseCurrencyMeta.meta_key', '_give_cs_base_currency')
+            ->whereIsNotNull('baseCurrencyMeta.meta_value')
+            ->where('paymentCurrencyMeta.meta_key', DonationMetaKeys::CURRENCY)
+            ->whereRaw('AND baseCurrencyMeta.meta_value != paymentCurrencyMeta.meta_value')
+            ->where('exchangeRateMeta.meta_key', DonationMetaKeys::EXCHANGE_RATE)
             ->where(function($query) {
-                $query->where('meta3.meta_value', '1')
-                    ->orWhereIsNull('meta3.meta_value')
+                $query->where('exchangeRateMeta.meta_value', '1')
+                    ->orWhereIsNull('exchangeRateMeta.meta_value');
             });
     }
 
