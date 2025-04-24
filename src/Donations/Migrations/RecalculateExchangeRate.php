@@ -40,7 +40,7 @@ class RecalculateExchangeRate extends BatchMigration
     }
 
     /**
-     * Base query
+     * Base query to find donations that need exchange rate recalculation
      *
      * @unreleased
      */
@@ -70,7 +70,7 @@ class RecalculateExchangeRate extends BatchMigration
      * @inheritDoc
      * @throws DatabaseMigrationException
      */
-    public function runBatch($firstId, $lastId)
+    public function runBatch($firstId, $lastId): void
     {
         try {
             $query = $this->query()
@@ -111,17 +111,41 @@ class RecalculateExchangeRate extends BatchMigration
             $donations = $query->getAll();
 
             foreach ($donations as $donation) {
-                $amount = Money::fromDecimal($donation->amount, $donation->currency);
-                $baseAmount = Money::fromDecimal($donation->baseAmount, $donation->baseCurrency);
+                try {
+                    $amount = Money::fromDecimal($donation->amount, $donation->currency);
+                    $baseAmount = Money::fromDecimal($donation->baseAmount, $donation->baseCurrency);
 
-                /** @var Money $exchangeRate */
-                $exchangeRate = $amount->divide($baseAmount->formatToDecimal());
+                    if ($baseAmount->formatToDecimal() === '0') {
+                        throw new DatabaseMigrationException(
+                            sprintf(
+                                'Invalid base amount (0) for donation ID %d',
+                                $donation->ID
+                            )
+                        );
+                    }
 
-                give()->payment_meta->update_meta($donation->ID, DonationMetaKeys::EXCHANGE_RATE, $exchangeRate->formatToDecimal());
+                    /** @var Money $exchangeRate */
+                    $exchangeRate = $amount->divide($baseAmount->formatToDecimal());
+
+                    give()->payment_meta->update_meta($donation->ID, DonationMetaKeys::EXCHANGE_RATE, $exchangeRate->formatToDecimal());
+                } catch (\Exception $e) {
+                    throw new DatabaseMigrationException(
+                        sprintf(
+                            'Failed to process donation ID %d: %s',
+                            $donation->ID,
+                            $e->getMessage()
+                        ),
+                        0,
+                        $e
+                    );
+                }
             }
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while updating donation exchange rates to the donation meta table",
-                0, $exception);
+            throw new DatabaseMigrationException(
+                'An error occurred while updating donation exchange rates',
+                0,
+                $exception
+            );
         }
     }
 
@@ -145,7 +169,7 @@ class RecalculateExchangeRate extends BatchMigration
             ->limit($this->getBatchSize())
             ->get();
 
-        if ( ! $item) {
+        if (!$item) {
             return null;
         }
 
