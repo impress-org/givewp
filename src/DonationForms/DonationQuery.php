@@ -120,10 +120,10 @@ class DonationQuery extends QueryBuilder
             $this->includeOnlyCurrentMode();
         }
 
-        $this->joinMeta('_give_payment_total', 'amount');
-        $this->joinMeta('_give_fee_donation_amount', 'intendedAmount');
+        $this->joinMeta(DonationMetaKeys::AMOUNT, 'amount');
+        $this->joinMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
         return $this->sum(
-            'COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)'
+            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)'
         );
     }
 
