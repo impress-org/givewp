@@ -58,8 +58,10 @@ class CampaignGoalData implements Arrayable
 
     /**
      * @since 4.0.0
+     *
+     * @return int|float
      */
-    private function getActual(): int
+    private function getActual()
     {
         $query = $this->campaign->goalType->isOneOf(
             CampaignGoalType::SUBSCRIPTIONS(),
