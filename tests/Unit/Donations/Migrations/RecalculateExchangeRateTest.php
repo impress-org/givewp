@@ -8,6 +8,9 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
+/**
+ * @unreleased
+ */
 class RecalculateExchangeRateTest extends TestCase
 {
     use RefreshDatabase;
@@ -17,27 +20,30 @@ class RecalculateExchangeRateTest extends TestCase
      */
     private $migration;
 
+    /**
+     * @unreleased
+     */
     public function setUp(): void
     {
         parent::setUp();
         $this->migration = new RecalculateExchangeRate();
     }
 
+    /**
+     * @unreleased
+     */
     public function testGetBatchSizeReturnsCorrectValue()
     {
         $this->assertEquals(100, $this->migration->getBatchSize());
     }
 
+    /**
+     * @unreleased
+     */
     public function testRunBatchUpdatesExchangeRates()
     {
         // Create test data
-        $donationId = $this->createDonationWithMeta([
-            DonationMetaKeys::AMOUNT => '100.00',
-            DonationMetaKeys::BASE_AMOUNT => '80.00',
-            DonationMetaKeys::CURRENCY => 'USD',
-            '_give_cs_base_currency' => 'EUR',
-            DonationMetaKeys::EXCHANGE_RATE => '1'
-        ]);
+        $donationId = $this->createDonationWithMeta($this->getDefaultDonationMeta());
 
         // Run the migration
         $this->migration->runBatch(0, $donationId + 1);
@@ -49,34 +55,31 @@ class RecalculateExchangeRateTest extends TestCase
         $this->assertEquals('1.25', $updatedExchangeRate);
     }
 
+    /**
+     * @unreleased
+     */
     public function testGetItemsCountReturnsCorrectCount()
     {
-        $this->createDonationWithMeta([
-            DonationMetaKeys::AMOUNT => '100.00',
-            DonationMetaKeys::BASE_AMOUNT => '80.00',
-            DonationMetaKeys::CURRENCY => 'USD',
-            '_give_cs_base_currency' => 'EUR',
-            DonationMetaKeys::EXCHANGE_RATE => '1'
-        ]);
+        $this->createDonationWithMeta($this->getDefaultDonationMeta());
 
         $count = $this->migration->getItemsCount();
         $this->assertEquals(1, $count);
     }
 
+    /**
+     * @unreleased
+     */
     public function testHasMoreItemsToBatchReturnsCorrectValue()
     {
-        $donationId = $this->createDonationWithMeta([
-            DonationMetaKeys::AMOUNT => '100.00',
-            DonationMetaKeys::BASE_AMOUNT => '80.00',
-            DonationMetaKeys::CURRENCY => 'USD',
-            '_give_cs_base_currency' => 'EUR',
-            DonationMetaKeys::EXCHANGE_RATE => '1'
-        ]);
+        $donationId = $this->createDonationWithMeta($this->getDefaultDonationMeta());
 
         $this->assertTrue($this->migration->hasMoreItemsToBatch(0));
         $this->assertFalse($this->migration->hasMoreItemsToBatch($donationId + 1));
     }
 
+    /**
+     * @unreleased
+     */
     private function createDonationWithMeta(array $meta): int
     {
         $donationId = Donation::factory()->create()->id;
@@ -86,5 +89,19 @@ class RecalculateExchangeRateTest extends TestCase
         }
 
         return $donationId;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getDefaultDonationMeta(): array
+    {
+        return [
+            DonationMetaKeys::AMOUNT => '100.00',
+            DonationMetaKeys::BASE_AMOUNT => '80.00',
+            DonationMetaKeys::CURRENCY => 'USD',
+            '_give_cs_base_currency' => 'EUR',
+            DonationMetaKeys::EXCHANGE_RATE => '1'
+        ];
     }
 }
