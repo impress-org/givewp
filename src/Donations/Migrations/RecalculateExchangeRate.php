@@ -51,18 +51,22 @@ class RecalculateExchangeRate extends BatchMigration
         // and either the exchange rate does not exist or is equal to 1
 
         return DB::table('posts', 'posts')
-            ->leftJoin('give_donationmeta as baseCurrencyMeta', 'posts.ID', 'baseCurrencyMeta.donation_id')
-            ->leftJoin('give_donationmeta as paymentCurrencyMeta', 'posts.ID', 'paymentCurrencyMeta.donation_id')
-            ->leftJoin('give_donationmeta as exchangeRateMeta', 'posts.ID', 'exchangeRateMeta.donation_id')
+            ->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                [DonationMetaKeys::AMOUNT, 'amount'],
+                [DonationMetaKeys::CURRENCY, 'currency'],
+                [DonationMetaKeys::BASE_AMOUNT, 'baseAmount'],
+                [DonationMetaKeys::EXCHANGE_RATE, 'exchangeRate'],
+                ['_give_cs_base_currency', 'baseCurrency']
+            )
             ->where('posts.post_type', 'give_payment')
-            ->where('baseCurrencyMeta.meta_key', '_give_cs_base_currency')
-            ->whereIsNotNull('baseCurrencyMeta.meta_value')
-            ->where('paymentCurrencyMeta.meta_key', DonationMetaKeys::CURRENCY)
-            ->whereRaw('AND baseCurrencyMeta.meta_value != paymentCurrencyMeta.meta_value')
-            ->where('exchangeRateMeta.meta_key', DonationMetaKeys::EXCHANGE_RATE)
+            ->whereIsNotNull('give_donationmeta_attach_meta_baseAmount.meta_value')
+            ->whereRaw('AND give_donationmeta_attach_meta_baseCurrency.meta_value != give_donationmeta_attach_meta_currency.meta_value')
             ->where(function($query) {
-                $query->where('exchangeRateMeta.meta_value', '1')
-                    ->orWhereIsNull('exchangeRateMeta.meta_value');
+                $query->where('give_donationmeta_attach_meta_exchangeRate.meta_value', '1')
+                    ->orWhereIsNull('give_donationmeta_attach_meta_exchangeRate.meta_value');
             });
     }
 
@@ -75,30 +79,6 @@ class RecalculateExchangeRate extends BatchMigration
         try {
             $query = $this->query()
                 ->select('posts.ID')
-                ->attachMeta(
-                    'give_donationmeta',
-                    'ID',
-                    'donation_id',
-                    [DonationMetaKeys::AMOUNT, 'amount']
-                )
-                ->attachMeta(
-                    'give_donationmeta',
-                    'ID',
-                    'donation_id',
-                    [DonationMetaKeys::CURRENCY, 'currency']
-                )
-                ->attachMeta(
-                    'give_donationmeta',
-                    'ID',
-                    'donation_id',
-                    [DonationMetaKeys::BASE_AMOUNT, 'baseAmount']
-                )
-                ->attachMeta(
-                    'give_donationmeta',
-                    'ID',
-                    'donation_id',
-                    ['_give_cs_base_currency', 'baseCurrency']
-                )
                 ->orderBy('posts.ID', 'ASC');
 
             // Migration Runner will pass null for lastId in the last step
