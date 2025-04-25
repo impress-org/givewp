@@ -243,14 +243,16 @@ class IframeView
 
         if ($this->modal) {
             $iframe = sprintf(
-                '<div class="modal-inner-wrap">
+                '
 					<div class="modal-content">
-		    			<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%3$s" rel="nofollow">%2$s<span>&times;</span></a>
+		    			<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%3$s" rel="nofollow">%2$s
+		    			    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" class="givewp-donation-form-modal__close__icon"><path stroke="black" stroke-width="2" d="M13 11.8l6.1-6.3-1-1-6.1 6.2-6.1-6.2-1 1 6.1 6.3-6.5 6.7 1 1 6.5-6.6 6.5 6.6 1-1z"></path></svg>
+		    			</a>
 						%1$s
 					</div>
-				</div>',
+		            ',
                 $iframe,
-                esc_html__('Close', 'give'),
+                '',
                 $this->uniqueId
             );
         }

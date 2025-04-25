@@ -21,14 +21,6 @@
 .wp-block-givewp-campaign-form {
     position: relative;
 
-    .iframe-loader {
-        display: none;
-    }
-
-    .close-btn.js-give-embed-form-modal-closer{
-        display: none;
-    }
-
     form[id*='give-form'] #give-gateway-radio-list > li input[type='radio'] {
         display: inline-block;
     }
@@ -44,4 +36,3 @@
         margin-top: 3px;
     }
 }
-
