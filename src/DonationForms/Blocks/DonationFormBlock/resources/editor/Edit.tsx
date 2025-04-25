@@ -11,6 +11,7 @@ import EntitySelector from '@givewp/src/Campaigns/Blocks/shared/components/Entit
 import './styles/index.scss';
 
 /**
+ * @unreleased replace DonationFormSelector with Campaigns EntitySelector.
  * @since 3.2.1
  *
  * @see 'class-give-block-donation-form.php'
