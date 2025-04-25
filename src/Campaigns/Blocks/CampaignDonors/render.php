@@ -8,6 +8,7 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 
 /**
+ * @unreleased remove SQL casting
  * @since 4.0.0
  *
  * @var array $attributes
@@ -36,7 +37,7 @@ $query = (new CampaignDonationQuery($campaign))
 if ($sortBy === 'top-donors') {
     $query->select(
         'donorIdMeta.meta_value as id',
-        'SUM(CAST(amountMeta.meta_value - IFNULL(feeAmountRecovered.meta_value, 0) AS DECIMAL)) AS amount',
+        'SUM(amountMeta.meta_value - IFNULL(feeAmountRecovered.meta_value, 0)) AS amount',
         'MAX(donorName.meta_value) AS name'
     )
         ->groupBy('donorIdMeta.meta_value')

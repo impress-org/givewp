@@ -8,6 +8,7 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 
 /**
+ * @unreleased remove SQL casting to decimal
  * @since 4.0.0
  *
  * @var array $attributes
@@ -38,7 +39,7 @@ $query = (new CampaignDonationQuery($campaign))
     ->joinDonationMeta(DonationMetaKeys::FIRST_NAME, 'donorName')
     ->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered')
     ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors')
-    ->orderByRaw($sortBy === 'top-donations' ? 'CAST(amountMeta.meta_value AS DECIMAL) DESC' : 'donation.ID DESC')
+    ->orderByRaw($sortBy === 'top-donations' ? 'amountMeta.meta_value DESC' : 'donation.ID DESC')
     ->limit($attributes['donationsPerPage'] ?? 5);
 
 if ( ! $attributes['showAnonymous']) {
