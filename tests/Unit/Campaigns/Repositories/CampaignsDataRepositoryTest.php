@@ -53,7 +53,7 @@ final class CampaignsDataRepositoryTest extends TestCase
     /**
      * @unreleased
      */
-    public function testSumCampaignDonations()
+    public function testGetRevenueReturnsSumOfDonationsWithoutRecoveredFees()
     {
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create([
@@ -77,7 +77,7 @@ final class CampaignsDataRepositoryTest extends TestCase
 
         $campaignsData = CampaignsDataRepository::campaigns([$campaign->id]);
 
-        $this->assertEquals(21.02, $campaignsData->getRevenue($campaign));
+        $this->assertEquals(20.32, $campaignsData->getRevenue($campaign));
     }
 
     /**
