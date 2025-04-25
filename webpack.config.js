@@ -51,6 +51,7 @@ function includesPath(relativePath) {
  * Files from before Give 3.0
  */
 const legacyStyleEntry = {
+    'assets/dist/css/embed-form': assetPath('src/css/frontend/embed-form.scss'),
     'assets/dist/css/give': assetPath('src/css/frontend/give-frontend.scss'),
     'assets/dist/css/admin-block-editor': assetPath('src/css/admin/block-editor.scss'),
     'assets/dist/css/admin': assetPath('src/css/admin/give-admin.scss'),
@@ -116,6 +117,9 @@ const legacyScriptsEntry = {
     'assets/dist/js/payment-gateway': srcPath('Promotions/InPluginUpsells/resources/js/payment-gateway.ts'),
     'assets/dist/js/welcome-banner': srcPath('Promotions/WelcomeBanner/resources/js/index.tsx'),
     'assets/dist/js/orphaned-forms-list-table': srcPath('DonationForms/OrphanedForms/resources/index.tsx'),
+    'assets/dist/js/parent-page': assetPath('src/js/plugins/form-template/parent-page.js'),
+    'assets/dist/js/utils': assetPath('src/js/plugins/form-template/utils.js'),
+    'assets/dist/js/iframe-content': assetPath('src/js/plugins/form-template/iframe-content.js'),
 };
 
 /**
@@ -222,11 +226,7 @@ const plugins = [
         ],
     }),
     // Generate RTL files
-    ...(isProduction
-        ? [
-              new RtlCssPlugin({filename: '[name]-rtl.css'}),
-          ]
-        : []),
+    ...(isProduction ? [new RtlCssPlugin({filename: '[name]-rtl.css'})] : []),
     {
         // Write the design system version to a file
         apply: (compiler) => {

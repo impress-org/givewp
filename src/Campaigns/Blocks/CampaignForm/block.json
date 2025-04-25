@@ -48,6 +48,8 @@
     "textdomain": "give",
     "render": "file:./render.php",
     "viewScript": "file:../../../../build/campaignFormBlockApp.js",
+    "editorScript": "file:../../../../build/assets/dist/js/parent-page.js",
     "viewStyle": "file:../../../../build/campaignFormBlockApp.css",
+    "editorStyle": "file:../../../../build/assets/dist/css/embed-form.css",
     "style": "file:../../../../build/campaignFormBlock.css"
 }
