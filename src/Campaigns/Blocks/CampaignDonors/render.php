@@ -36,8 +36,8 @@ $query = (new CampaignDonationQuery($campaign))
 if ($sortBy === 'top-donors') {
     $query->select(
         'donorIdMeta.meta_value as id',
-        'SUM(amountMeta.meta_value) AS amount',
-        'donorName.meta_value AS name',
+        'SUM(CAST(amountMeta.meta_value AS DECIMAL)) AS amount',
+        'MAX(donorName.meta_value) AS name',
         'anonymousMeta.meta_value as isAnonymous'
     )
         ->groupBy('donorIdMeta.meta_value')
