@@ -12,6 +12,10 @@
         @media (max-width: 782px){
             --givewp-admin-bar-height: 46px;
         }
+
+        @media (max-width: 600px){
+            --givewp-admin-bar-height: 0px;
+        }
     }
 
     .post-type-give_forms #wpbody {
@@ -150,7 +154,7 @@ select[name="campaignId"] {
     display: flex;
     gap: 0.25rem;
     background-color: #fff;
-    border-bottom: 0.0625rem solid #dbdbdb;
+    border-bottom: 0.0625rem solid var(--givewp-neutral-100);
 
     &:not(.fullWidth) {
         padding: 0 var(--givewp-spacing-6);
