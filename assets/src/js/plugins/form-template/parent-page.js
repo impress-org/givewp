@@ -115,3 +115,55 @@ jQuery( function() {
 		}
 	} );
 } );
+
+function initializeGiveModalButtons() {
+    document.querySelectorAll('.js-give-embed-form-modal-opener').forEach(function (button) {
+        if (!button.dataset.bound) {
+            button.dataset.bound = 'true';
+
+            button.addEventListener('click', function () {
+                const iframeContainer = document.getElementById(button.getAttribute('data-form-id'));
+                const iframe = iframeContainer?.querySelector('iframe[name="give-embed-form"]');
+                const iframeURL = iframe?.getAttribute('data-src');
+
+                if (iframeURL) {
+                    iframe.setAttribute('src', iframeURL);
+                    iframe.setAttribute('data-src', '');
+                    initializeIframeResize(iframe);
+                }
+
+                document.documentElement.style.overflow = 'hidden';
+                iframeContainer?.classList.add('modal');
+                iframeContainer?.classList.remove('is-hide');
+            });
+        }
+    });
+
+    document.querySelectorAll('.js-give-embed-form-modal-closer').forEach(function (button) {
+        if (!button.dataset.bound) {
+            button.dataset.bound = 'true';
+
+            button.addEventListener('click', function (evt) {
+                evt.preventDefault();
+
+                const iframeContainer = document.getElementById(button.getAttribute('data-form-id'));
+
+                document.documentElement.style.overflow = '';
+
+                iframeContainer.classList.remove('modal');
+                iframeContainer.classList.add('is-hide');
+            });
+        }
+    });
+}
+
+// Watch for changes in the DOM to reinitialize the buttons.
+jQuery(function () {
+    initializeGiveModalButtons();
+    const observer = new MutationObserver(() => {
+        initializeGiveModalButtons();
+    });
+
+    observer.observe(document.body, {childList: true, subtree: true});
+});
+
