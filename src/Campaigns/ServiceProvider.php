@@ -15,6 +15,7 @@ use Give\Campaigns\Actions\PreventDeleteDefaultForm;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
 use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
+use Give\Campaigns\Actions\UnarchiveCampaignFormAsPublishStatus;
 use Give\Campaigns\ListTable\Routes\DeleteCampaignListTable;
 use Give\Campaigns\ListTable\Routes\GetCampaignsListTable;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
@@ -118,6 +119,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerActions(): void
     {
         Hooks::addAction('givewp_campaign_updated', ArchiveCampaignFormsAsDraftStatus::class);
+        Hooks::addAction('givewp_campaign_updated', UnarchiveCampaignFormAsPublishStatus::class);
         Hooks::addAction('givewp_campaign_updated', ArchiveCampaignPagesAsDraftStatus::class);
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
         Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);

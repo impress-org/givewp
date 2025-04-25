@@ -84,7 +84,7 @@ class CampaignPageRepository
                 'post_modified' => $dateUpdatedFormatted,
                 'post_status' => $status->getValue(),
                 'post_type' => 'page',
-                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)(
+                'post_content' => $campaignPage->content ?? give(CreateDefaultLayoutForCampaignPage::class)(
                     $campaign->id,
                     $campaign->shortDescription
                 ),
@@ -139,6 +139,7 @@ class CampaignPageRepository
                     'post_modified' => $nowFormatted,
                     'post_modified_gmt' => get_gmt_from_date($nowFormatted),
                     'post_status' => $status->getValue(),
+                    'post_content' => $campaignPage->content,
                 ]);
 
             $campaignPage->updatedAt = $now;
@@ -205,7 +206,8 @@ class CampaignPageRepository
                 ['ID', 'id'],
                 ['post_date', 'createdAt'],
                 ['post_modified', 'updatedAt'],
-                ['post_status', 'status']
+                ['post_status', 'status'],
+                ['post_content', 'content']
             )
             ->attachMeta(
                 'postmeta',

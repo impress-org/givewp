@@ -115,6 +115,7 @@ const legacyScriptsEntry = {
     'assets/dist/js/donation-options': srcPath('Promotions/InPluginUpsells/resources/js/donation-options.ts'),
     'assets/dist/js/payment-gateway': srcPath('Promotions/InPluginUpsells/resources/js/payment-gateway.ts'),
     'assets/dist/js/welcome-banner': srcPath('Promotions/WelcomeBanner/resources/js/index.tsx'),
+    'assets/dist/js/orphaned-forms-list-table': srcPath('DonationForms/OrphanedForms/resources/index.tsx'),
 };
 
 /**
@@ -194,6 +195,7 @@ const entry = {
     campaignWelcomeBannerCss: srcPath('Promotions/Campaigns/resources/css/styles.scss'),
     campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),
     campaignListTable: srcPath('Campaigns/resources/admin/campaigns-list-table.tsx'),
+    formEntity: srcPath('DonationForms/resources/entity.ts'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };

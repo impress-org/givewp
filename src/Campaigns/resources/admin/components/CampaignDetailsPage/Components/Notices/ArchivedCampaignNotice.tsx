@@ -5,12 +5,15 @@ export default ({handleClick}) => (
     <>
         <TriangleIcon />
         <span>
-            {__("Your campaign is currently archived. You can view the campaign details but won't be able to make any changes until it's moved out of archive.", 'give')}
+            {__(
+                'Your campaign is currently archived. You can view the campaign details but won\'t be able to make any changes until it\'s moved out of archive.',
+                'give'
+            )}
         </span>
         <strong>
             <a href="#" onClick={() => handleClick()}>
-                {__('Move to draft', 'give')}
+                {__('Move to Active', 'give')}
             </a>
         </strong>
     </>
-)
+);
