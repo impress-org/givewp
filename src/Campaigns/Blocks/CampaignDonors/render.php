@@ -37,7 +37,7 @@ if ($sortBy === 'top-donors') {
     $query->select(
         'donorIdMeta.meta_value as id',
         'SUM(amountMeta.meta_value) AS amount',
-        'MAX(donorName.meta_value) AS name',
+        'donorName.meta_value AS name',
         'anonymousMeta.meta_value as isAnonymous'
     )
         ->groupBy('donorIdMeta.meta_value')
