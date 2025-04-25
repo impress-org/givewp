@@ -231,6 +231,7 @@ class DonationFormGoalData implements Arrayable
     }
 
     /**
+     * @unreleased add percentage value
      * @since 3.0.0
      */
     public function toArray(): array

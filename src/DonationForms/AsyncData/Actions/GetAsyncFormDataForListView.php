@@ -101,6 +101,7 @@ class GetAsyncFormDataForListView
     }
 
     /**
+     * @unreleased get correct v2 goal option value
      * @since 3.20.0
      */
     private function isFormGoalEnabled(int $formId): bool

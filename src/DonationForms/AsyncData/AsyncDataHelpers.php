@@ -21,6 +21,7 @@ class AsyncDataHelpers
     }
 
     /**
+     * @unreleased return float value
      * @since 3.16.0
      */
     public static function getFormRevenueValue($formId): float
