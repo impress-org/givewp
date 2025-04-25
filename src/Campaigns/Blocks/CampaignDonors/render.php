@@ -29,14 +29,16 @@ $query = (new CampaignDonationQuery($campaign))
     ->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorIdMeta')
     ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amountMeta')
     ->joinDonationMeta(DonationMetaKeys::FIRST_NAME, 'donorName')
+    ->joinDonationMeta(DonationMetaKeys::ANONYMOUS, 'anonymousMeta')
     ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors')
     ->limit($attributes['donorsPerPage'] ?? 5);
 
 if ($sortBy === 'top-donors') {
     $query->select(
         'donorIdMeta.meta_value as id',
-        'SUM(CAST(amountMeta.meta_value AS DECIMAL)) AS amount',
-        'MAX(donorName.meta_value) AS name'
+        'SUM(amountMeta.meta_value) AS amount',
+        'MAX(donorName.meta_value) AS name',
+        'anonymousMeta.meta_value as isAnonymous'
     )
         ->groupBy('donorIdMeta.meta_value')
         ->orderBy('amount', 'DESC');
@@ -48,14 +50,14 @@ if ($sortBy === 'top-donors') {
             'companyMeta.meta_value as company',
             'donation.post_date as date',
             'amountMeta.meta_value as amount',
-            'donorName.meta_value as name'
+            'donorName.meta_value as name',
+            'anonymousMeta.meta_value as isAnonymous'
         )
         ->orderBy('donation.ID', 'DESC');
 }
 
 if ( ! $attributes['showAnonymous']) {
-    $query->joinDonationMeta(DonationMetaKeys::ANONYMOUS, 'anonymousMeta')
-        ->where('anonymousMeta.meta_value', '0');
+    $query->where('anonymousMeta.meta_value', '0');
 }
 
 (new CampaignDonorsBlockViewModel($campaign, $query->getAll(), $attributes))->render();
