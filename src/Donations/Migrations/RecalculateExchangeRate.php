@@ -125,11 +125,12 @@ class RecalculateExchangeRate extends BatchMigration
      */
     public function getBatchItemsAfter($lastId): ?array
     {
-        $item = $this->query()
-            ->select('MIN(ID) AS first_id, MAX(ID) AS last_id')
+        $subquerySQL = $this->query()
             ->where('ID', $lastId, '>')
             ->limit($this->getBatchSize())
-            ->get();
+            ->getSQL();
+
+        $item = DB::get_row("SELECT MIN(ID) AS first_id, MAX(ID) AS last_id FROM ($subquerySQL) as batch");
 
         if (!$item) {
             return null;
