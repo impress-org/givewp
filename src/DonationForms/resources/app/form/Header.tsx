@@ -19,9 +19,7 @@ const HeaderImageTemplate = withTemplateWrapper(formTemplates.layouts.headerImag
  */
 export default function Header({form}: {form: DonationForm}) {
     const formatGoalAmount = useCallback((amount: number) => {
-        return amountFormatter(form.currency, {
-            maximumFractionDigits: 0,
-        }).format(amount);
+        return amountFormatter(form.currency).format(amount);
     }, []);
 
     return (

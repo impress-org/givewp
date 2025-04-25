@@ -75,9 +75,9 @@ class CampaignsDataQuery extends QueryBuilder
     public function collectIntendedAmounts()
     {
         return (clone $this)
-            ->select('SUM(COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0))) as sum')
+            ->select('SUM(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) as sum')
             ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount')
-            ->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount')
+            ->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered')
             ->getAll(ARRAY_A);
     }
 

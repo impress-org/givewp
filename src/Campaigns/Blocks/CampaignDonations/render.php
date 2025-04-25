@@ -29,13 +29,14 @@ $query = (new CampaignDonationQuery($campaign))
     ->select(
         'donation.ID as id',
         'donorIdMeta.meta_value as donorId',
-        'amountMeta.meta_value as amount',
+        'amountMeta.meta_value - IFNULL(feeAmountRecovered.meta_value, 0) as amount',
         'donorName.meta_value as donorName',
         'donation.post_date as date'
     )
     ->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorIdMeta')
     ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amountMeta')
     ->joinDonationMeta(DonationMetaKeys::FIRST_NAME, 'donorName')
+    ->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered')
     ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors')
     ->orderByRaw($sortBy === 'top-donations' ? 'CAST(amountMeta.meta_value AS DECIMAL) DESC' : 'donation.ID DESC')
     ->limit($attributes['donationsPerPage'] ?? 5);

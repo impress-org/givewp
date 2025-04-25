@@ -28,14 +28,13 @@ final class CampaignDonationQueryTest extends TestCase
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
 
-        $db = DB::table('give_campaign_forms');
-
 
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
         ]);
+
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
@@ -50,28 +49,24 @@ final class CampaignDonationQueryTest extends TestCase
     /**
      * @since 4.0.0
      */
-    public function testSumCampaignDonations()
+    public function testSumIntendedAmountReturnsSumOfDonationsWithoutRecoveredFees()
     {
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
 
-        $donation1 = Donation::factory()->create([
+        Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1051, 'USD'),
             'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
 
-        give_update_meta($donation1->id, '_give_fee_donation_amount', 10.16);
-
-        $donation2 = Donation::factory()->create([
+        Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1051, 'USD'),
             'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
-
-        give_update_meta($donation2->id, '_give_fee_donation_amount', 10.16);
 
         $query = new CampaignDonationQuery($campaign);
 
@@ -105,7 +100,7 @@ final class CampaignDonationQueryTest extends TestCase
     /**
      * @since 4.0.0
      */
-    public function testCoalesceIntendedAmountWithoutRecoveredFees()
+    public function testSumIntendedAmountWithoutRecoveredFees()
     {
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
@@ -114,8 +109,8 @@ final class CampaignDonationQueryTest extends TestCase
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1070, 'USD'),
+            'feeAmountRecovered' => new Money(70, 'USD'),
         ]);
-        give_update_meta($donation->id, '_give_fee_donation_amount', 10.00);
 
         $query = new CampaignDonationQuery($campaign);
 
