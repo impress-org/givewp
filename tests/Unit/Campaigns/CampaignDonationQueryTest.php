@@ -55,20 +55,27 @@ final class CampaignDonationQueryTest extends TestCase
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
 
-        Donation::factory()->create([
+        $donation1 = Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
+            'amount' => new Money(1051, 'USD'),
+            'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
-        Donation::factory()->create([
+
+        give_update_meta($donation1->id, '_give_fee_donation_amount', 10.16);
+
+        $donation2 = Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
+            'amount' => new Money(1051, 'USD'),
+            'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
+
+        give_update_meta($donation2->id, '_give_fee_donation_amount', 10.16);
 
         $query = new CampaignDonationQuery($campaign);
 
-        $this->assertEquals(20.00, $query->sumIntendedAmount());
+        $this->assertEquals(20.32, $query->sumIntendedAmount());
     }
 
     /**
