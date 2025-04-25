@@ -23,7 +23,7 @@ class AsyncDataHelpers
     /**
      * @since 3.16.0
      */
-    public static function getFormRevenueValue($formId): int
+    public static function getFormRevenueValue($formId): float
     {
         $donationForm = DonationForm::find($formId);
         $form = $donationForm->toV3Form();
