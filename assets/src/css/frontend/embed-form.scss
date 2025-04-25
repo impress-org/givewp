@@ -3,11 +3,9 @@ Embed Form aka IFrame Form
 -----------------------------------*/
 .give-embed-form-wrapper {
     width: 100% !important;
-    position: relative;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .iframe-loader {
         height: 100%;
@@ -15,10 +13,12 @@ Embed Form aka IFrame Form
         position: absolute;
         top: 0;
         pointer-events: none;
+        background: none;
     }
 
     iframe {
         width: 100% !important;
+        max-width: min(100%, 48.5rem);
     }
 
     &.is-hide {
@@ -30,7 +30,7 @@ Embed Form aka IFrame Form
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
+        min-width: 100vw;
         min-height: 100vh;
         height: var(--visual-viewport-height);
         display: flex;
@@ -38,6 +38,7 @@ Embed Form aka IFrame Form
         align-items: center;
         justify-content: center;
         z-index: 100;
+        overflow: scroll;
 
         &[data-loading="true"] {
             display: none;
@@ -51,20 +52,16 @@ Embed Form aka IFrame Form
             animation: modal-fade 150ms reverse ease-in;
         }
 
-        .modal-inner-wrap {
-            position: relative;
-            top: 0;
-            left: 0;
-            min-width: 100vw;
-            height: 100vh;
-            z-index: 1;
-        }
-
         .modal-content {
-            position: relative;
-            max-width: 572px;
+            position: absolute;
+            top: 6%;
+            min-width: 100vw;
             width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             z-index: 999;
+            min-height: 100vh;
         }
 
         .close-btn {
@@ -133,4 +130,3 @@ Embed Form aka IFrame Form
         }
     }
 }
-
