@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {BlockConfiguration, getBlockType, registerBlockType, registerBlockVariation} from '@wordpress/blocks';
+import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/blocks';
 
 /**
  * Internal dependencies
