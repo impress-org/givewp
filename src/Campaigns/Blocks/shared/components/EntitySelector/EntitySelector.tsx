@@ -6,11 +6,17 @@ import usePostState from "../../hooks/usePostState";
 import {reactSelectStyles, reactSelectThemeStyles} from "./styles/reactSelectStyles";
 import './styles/index.scss';
 
+/**
+ * @unreleased
+ */
 export type EntityOption = {
     label: string;
     value: number | string;
 };
 
+/**
+ * @unreleased
+ */
 type EntitySelectorProps = {
     id: string;
     label: string;
@@ -26,6 +32,9 @@ type EntitySelectorProps = {
 // @ts-ignore
 const savePost = () => dispatch('core/editor').savePost();
 
+/**
+ * @unreleased
+ */
 export default function EntitySelector({
     id,
     label,
