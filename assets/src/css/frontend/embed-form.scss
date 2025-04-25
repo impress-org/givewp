@@ -62,6 +62,10 @@ Embed Form aka IFrame Form
             align-items: center;
             z-index: 999;
             min-height: 100vh;
+
+            iframe{
+                z-index: 1;
+            }
         }
 
         .close-btn {
