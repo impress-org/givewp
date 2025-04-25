@@ -241,6 +241,9 @@ class IframeView
             $loader
         );
 
+        /**
+         * @unreleased remove modal-inner-wrap element to achieve style parity with v3 modals.
+         */
         if ($this->modal) {
             $iframe = sprintf(
                 '
@@ -273,7 +276,7 @@ class IframeView
             '<div class="js-give-embed-form-modal-launcher-wrap">
 				<button
 				type="button"
-				class="js-give-embed-form-modal-opener givewp-donation-form-modal__open"
+				class="js-give-embed-form-modal-opener"
 				data-form-id="%1$s"%3$s
 				>%2$s</button>
 			</div>',
