@@ -24,7 +24,7 @@ class DonationFormGoalData implements Arrayable
      */
     public $formId;
     /**
-     * @var array
+     * @var FormSettings
      */
     public $formSettings;
     /**
@@ -250,6 +250,7 @@ class DonationFormGoalData implements Arrayable
             'currentAmount' => $currentAmount,
             'targetAmount' => $targetAmount,
             'label' => $this->getLabel(),
+            'percentage' => $progressPercentage,
             'isAchieved' => $this->isEnabled && $this->formSettings->enableAutoClose && $progressPercentage >= 100,
         ];
     }

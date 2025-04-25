@@ -35,6 +35,7 @@ class ConvertV2FormToV3Form
     public function __invoke()
     {
         return new V3DonationForm([
+            'id' => $this->form->id,
             'title' => $this->form->title,
             'status' => $this->convertStatus(),
             'settings' => $this->convertSettings(),
@@ -56,7 +57,7 @@ class ConvertV2FormToV3Form
         return FormSettings::fromArray([
             'formTitle' => $this->form->title,
             'designId' => $this->convertDesignId(),
-            'goalType' => $this->convertGoalType(),
+            'goalType' => $this->convertGoalType()->getValue(),
             'enableDonationGoal' => $this->convertGoalEnabled(),
             'goalAmount' => $this->convertGoalAmount(),
             'enableAutoClose' => $this->convertAutoClose(),
@@ -112,14 +113,15 @@ class ConvertV2FormToV3Form
     public function convertGoalType(): GoalType
     {
         $goalFormat = give_get_meta($this->form->id, '_give_goal_format', true);
+        $recurringGoalFormat = (bool)give_get_meta($this->form->id, '_give_recurring_goal_format', true);
 
         switch ($goalFormat) {
             case 'donation':
-                return GoalType::DONATIONS();
+                return $recurringGoalFormat ? GoalType::SUBSCRIPTIONS() : GoalType::DONATIONS();
             case 'donors':
-                return GoalType::DONORS();
+                return $recurringGoalFormat ? GoalType::DONORS_FROM_SUBSCRIPTIONS() : GoalType::DONORS();
             default:
-                return GoalType::AMOUNT();
+                return $recurringGoalFormat ? GoalType::AMOUNT_FROM_SUBSCRIPTIONS() : GoalType::AMOUNT();
         }
     }
 
