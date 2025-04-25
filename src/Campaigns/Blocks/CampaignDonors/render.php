@@ -57,7 +57,7 @@ if ($sortBy === 'top-donors') {
 }
 
 if ( ! $attributes['showAnonymous']) {
-    $query->where('anonymousMeta.meta_value', '0');
+    $query->where('anonymousMeta.meta_value', '1', '!=');
 }
 
 (new CampaignDonorsBlockViewModel($campaign, $query->getAll(), $attributes))->render();

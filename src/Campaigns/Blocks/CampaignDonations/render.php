@@ -43,7 +43,7 @@ $query = (new CampaignDonationQuery($campaign))
     ->limit($attributes['donationsPerPage'] ?? 5);
 
 if ( ! $attributes['showAnonymous']) {
-    $query->where('anonymousMeta.meta_value', '0');
+    $query->where('anonymousMeta.meta_value', '1', '!=');
 }
 
 (new CampaignDonationsBlockViewModel($campaign, $query->getAll(), $attributes))->render();
