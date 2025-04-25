@@ -266,6 +266,7 @@ class IframeView
     /**
      * Get button HTML.
      *
+     * @unreleased add v3 button classname to match v3 modals.
      * @since 3.7.0 Escape attributes
      *
      * @return string
@@ -276,7 +277,7 @@ class IframeView
             '<div class="js-give-embed-form-modal-launcher-wrap">
 				<button
 				type="button"
-				class="js-give-embed-form-modal-opener"
+				class="js-give-embed-form-modal-opener givewp-donation-form-modal__open"
 				data-form-id="%1$s"%3$s
 				>%2$s</button>
 			</div>',
