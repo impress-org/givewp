@@ -42,6 +42,10 @@
         },
         "showContent": {
             "type": "boolean"
+        },
+        "useDefaultForm": {
+            "type": "boolean",
+            "default": true
         }
     },
     "example": {},

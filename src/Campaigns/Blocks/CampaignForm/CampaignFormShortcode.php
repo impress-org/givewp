@@ -65,6 +65,7 @@ class CampaignFormShortcode
             'content_display'    => 'above',
             'show_goal'          => true,
             'show_content'       => true,
+            'use_default_form'   => true,
         ], $atts, 'givewp_campaign_form');
 
         return [
@@ -78,6 +79,7 @@ class CampaignFormShortcode
             'contentDisplay'       => $atts['content_display'],
             'showGoal'             => filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN),
             'showContent'          => filter_var($atts['show_content'], FILTER_VALIDATE_BOOLEAN),
+            'useDefaultForm'       => filter_var($atts['use_default_form'], FILTER_VALIDATE_BOOLEAN),
         ];
     }
 }

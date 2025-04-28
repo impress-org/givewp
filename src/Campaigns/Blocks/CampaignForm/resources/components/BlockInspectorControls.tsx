@@ -2,7 +2,9 @@ import {ExternalLink, PanelBody, PanelRow, SelectControl, TextControl, ToggleCon
 import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import type {FormOption} from '../../../shared/hooks/useFormOptions';
-import useCampaigns from "../../../shared/hooks/useCampaigns";
+import useCampaigns from '../../../shared/hooks/useCampaigns';
+import {useSelect} from '@wordpress/data';
+import {useEffect} from '@wordpress/element';
 
 /**
  * @unreleasaed
@@ -27,16 +29,34 @@ export default function DonationFormBlockControls({
     isLegacyTemplate,
     isLegacyForm,
 }: BlockInspectorControls) {
-    const {id, displayStyle, continueButtonTitle=__('Donate now', 'give'), showTitle, contentDisplay, showGoal, showContent} = attributes;
+    const {
+        id,
+        displayStyle,
+        continueButtonTitle = __('Donate now', 'give'),
+        showTitle,
+        contentDisplay,
+        showGoal,
+        showContent,
+        useDefaultForm,
+        campaignId,
+    } = attributes;
     const showOpenFormButton = ['newTab', 'modal', 'reveal', 'button'].includes(displayStyle);
     const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
+    const defaultFormId = campaigns?.find((campaign) => campaign.id === campaignId)?.defaultFormId;
+
+    useEffect(() => {
+        setAttributes({
+            id: defaultFormId,
+            useDefaultForm: true,
+        });
+    }, [campaignId]);
 
     const displayStyleOptions = (
         options: {label: string; value: string}[],
         legacy: {label: string; value: string}[],
         v3: {label: string; value: string}[]
     ) => {
-        return  isLegacyTemplate ? options.concat(legacy) : (!isLegacyForm ? options.concat(v3) : options);
+        return isLegacyTemplate ? options.concat(legacy) : !isLegacyForm ? options.concat(v3) : options;
     };
 
     const campaignOptions = (() => {
@@ -56,30 +76,44 @@ export default function DonationFormBlockControls({
         return [{label: __('No campaigns found.', 'give'), value: ''}];
     })();
 
+    const adminBaseUrl = useSelect(
+        // @ts-ignore
+        (select) => select('core').getSite()?.url + '/wp-admin/edit.php?post_type=give_forms&page=give-campaigns',
+        []
+    );
+
     return (
         <InspectorControls>
             <PanelBody title={__('Form Settings', 'give')} initialOpen={true}>
-                {attributes?.campaignId &&
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Select a campaign', 'give')}
-                            value={attributes?.campaignId ?? ''}
-                            options={[
-                                ...campaignOptions.map((campaign) => ({
-                                    label: campaign.label,
-                                    value: String(campaign.value),
-                                })),
-                            ]}
-                            onChange={(campaignId) => {
-                                setAttributes({campaignId, id: null});
-                            }}
-                        />
-                    </PanelRow>
-                }
                 <PanelRow>
-                    {isResolving === false && entityOptions.length === 0 ? (
-                        <p>{__('No forms were found using the GiveWP form builder.', 'give')}</p>
-                    ) : (
+                    <ToggleControl
+                        className={'givewp-default-form-toggle'}
+                        label={__('Use default form', 'give')}
+                        checked={attributes.useDefaultForm}
+                        onChange={(useDefaultForm: boolean) => {
+                            setAttributes({useDefaultForm});
+                            if (useDefaultForm) {
+                                setAttributes({id: defaultFormId});
+                            }
+                        }}
+                        help={
+                            <>
+                                {__('Uses the campaign’s default form.', 'give')}
+                                {` `}
+                                <a
+                                    href={`${adminBaseUrl}&id=${attributes.campaignId}&tab=forms`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={__('Change campaign default form', 'give')}
+                                >
+                                    {__('Change default form', 'give')}
+                                </a>
+                            </>
+                        }
+                    />
+                </PanelRow>
+                {!useDefaultForm && (
+                    <PanelRow>
                         <SelectControl
                             label={__('Choose a donation form', 'give')}
                             value={id ?? ''}
@@ -88,45 +122,45 @@ export default function DonationFormBlockControls({
                                 setAttributes({id: Number(newFormId)});
                             }}
                         />
-                    )}
-                </PanelRow>
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Display style', 'give')}
-                            value={displayStyle}
-                            options={displayStyleOptions(
-                                [
-                                    {
-                                        label: __('On page', 'give'),
-                                        value: 'onpage',
-                                    },
-                                    {
-                                        label: __('Modal', 'give'),
-                                        value: 'modal',
-                                    },
-                                ],
-                                [
-                                    {
-                                        label: __('Reveal', 'give'),
-                                        value: 'reveal',
-                                    },
-                                    {
-                                        value: 'button',
-                                        label: __('One Button Launch', 'give'),
-                                    },
-                                ],
-                                [
-                                    {
-                                        label: __('New Tab', 'give'),
-                                        value: 'newTab',
-                                    },
-                                ]
-                            )}
-                            onChange={(value) => {
-                                setAttributes({displayStyle: value});
-                            }}
-                        />
                     </PanelRow>
+                )}
+                <PanelRow>
+                    <SelectControl
+                        label={__('Display style', 'give')}
+                        value={displayStyle}
+                        options={displayStyleOptions(
+                            [
+                                {
+                                    label: __('On page', 'give'),
+                                    value: 'onpage',
+                                },
+                                {
+                                    label: __('Modal', 'give'),
+                                    value: 'modal',
+                                },
+                            ],
+                            [
+                                {
+                                    label: __('Reveal', 'give'),
+                                    value: 'reveal',
+                                },
+                                {
+                                    value: 'button',
+                                    label: __('One Button Launch', 'give'),
+                                },
+                            ],
+                            [
+                                {
+                                    label: __('New Tab', 'give'),
+                                    value: 'newTab',
+                                },
+                            ]
+                        )}
+                        onChange={(value) => {
+                            setAttributes({displayStyle: value});
+                        }}
+                    />
+                </PanelRow>
 
                 {showOpenFormButton && (
                     <PanelRow>

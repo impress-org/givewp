@@ -1,16 +1,15 @@
 import {useEffect, useState} from 'react';
 import {useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
-import { __ } from '@wordpress/i18n';
+import {__} from '@wordpress/i18n';
 import BlockInspectorControls from './components/BlockInspectorControls';
-import BlockPreview from './components/BlockPreview';
 import type {BlockPreviewProps} from './components/BlockPreview';
-import useFormOptions from "../../shared/hooks/useFormOptions";
-import CampaignSelector from "../../shared/components/CampaignSelector";
-import EntitySelector from "../../shared/components/EntitySelector/EntitySelector";
+import BlockPreview from './components/BlockPreview';
+import useFormOptions from '../../shared/hooks/useFormOptions';
+import CampaignSelector from '../../shared/components/CampaignSelector';
 import '../../shared/components/EntitySelector/styles/index.scss';
 
-import "./styles.scss";
+import './styles.scss';
 
 /**
  * @unreleased
@@ -28,13 +27,19 @@ type CampaignFormBlockAttributes = {
     showGoal: boolean;
     showContent: boolean;
     contentDisplay: string;
-}
+    useDefaultForm: boolean;
+};
 
 /**
  * @unreleased
  */
 export default function Edit({attributes, isSelected, setAttributes, className, clientId}: BlockEditProps<any>) {
-    const {id, blockId, displayStyle, continueButtonTitle = __('Donate now', 'give')} = attributes as CampaignFormBlockAttributes;
+    const {
+        id,
+        blockId,
+        displayStyle,
+        continueButtonTitle = __('Donate now', 'give'),
+    } = attributes as CampaignFormBlockAttributes;
     const [showPreview, setShowPreview] = useState<boolean>(!!id);
     const {formOptions, isResolving} = useFormOptions(attributes?.campaignId);
 
@@ -61,16 +66,11 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
 
     return (
         <div {...useBlockProps()}>
-            {id && showPreview ? (
-                <>
-                    <BlockInspectorControls
-                        attributes={attributes}
-                        setAttributes={setAttributes}
-                        entityOptions={formOptions}
-                        isResolving={isResolving}
-                        isLegacyTemplate={isLegacyTemplate}
-                        isLegacyForm={isLegacyForm}
-                    />
+            <CampaignSelector
+                campaignId={attributes.campaignId}
+                handleSelect={(campaignId: number) => setAttributes({campaignId})}
+            >
+                {id && (
                     <BlockPreview
                         clientId={clientId}
                         formId={id}
@@ -82,24 +82,16 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
                         isSelected={isSelected}
                         className={className}
                     />
-                </>
-            ) : (
-                <CampaignSelector
-                    campaignId={attributes.campaignId}
-                    handleSelect={(campaignId: number) => setAttributes({campaignId})}
-                >
-                    <EntitySelector
-                        id={'formId'}
-                        label={__('Choose a donation form', 'give')}
-                        options={formOptions}
-                        isLoading={isResolving}
-                        emptyMessage={__('No Donation forms were found.', 'give')}
-                        loadingMessage={__('Loading Donation Forms...', 'give')}
-                        buttonText={__('Confirm', 'give')}
-                        onConfirm={handleFormSelect}
-                    />
-                </CampaignSelector>
-            )}
+                )}
+                <BlockInspectorControls
+                    attributes={attributes}
+                    setAttributes={setAttributes}
+                    entityOptions={formOptions}
+                    isResolving={isResolving}
+                    isLegacyTemplate={isLegacyTemplate}
+                    isLegacyForm={isLegacyForm}
+                />
+            </CampaignSelector>
         </div>
     );
 }
