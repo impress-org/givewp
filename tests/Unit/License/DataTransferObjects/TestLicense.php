@@ -5,7 +5,7 @@ namespace Give\Tests\Unit\License\DataTransferObjects;
 use Give\License\DataTransferObjects\License;
 use Give\Tests\Unit\License\TestTraits\HasLicenseData;
 use Give\Tests\TestCase;
-use Give\Tests\Unit\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
