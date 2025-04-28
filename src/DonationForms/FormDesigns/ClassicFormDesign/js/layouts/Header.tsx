@@ -6,10 +6,10 @@ import {HeaderProps} from '@givewp/forms/propTypes';
  */
 const SecureBadge = () => {
     return (
-        <aside className="givewp-form-secure-badge">
+        <div className="givewp-form-secure-badge">
             <i className="fa-solid fa-lock givewp-secondary-color"></i>
             <span>{__('100% Secure Donation', 'give')}</span>
-        </aside>
+        </div>
     );
 };
 
