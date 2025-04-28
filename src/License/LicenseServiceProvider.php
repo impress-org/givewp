@@ -2,6 +2,7 @@
 
 namespace Give\License;
 
+use Give\License\Repositories\LicenseRepository;
 use Give\ServiceProviders\ServiceProvider;
 
 class LicenseServiceProvider implements ServiceProvider
@@ -12,6 +13,7 @@ class LicenseServiceProvider implements ServiceProvider
     public function register()
     {
         give()->singleton(PremiumAddonsListManager::class);
+        give()->singleton(LicenseRepository::class);
     }
 
     /**
