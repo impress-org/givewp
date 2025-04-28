@@ -26,7 +26,7 @@ class License
     /** @var Download[] */
     public array $downloads = [];
     public bool $isValid;
-    public int $gatewayFee;
+    public float $gatewayFee;
 
     /**
      * @unreleased
@@ -51,7 +51,7 @@ class License
         $self->licenseKey = (string)$data['license_key'];
         $self->licenseId = (int)$data['license_id'];
         $self->isAllAccessPass = (bool)filter_var($data['is_all_access_pass'] ?? null, FILTER_VALIDATE_BOOLEAN);
-        $self->gatewayFee = (int)($data['gateway_fee'] ?? 0);
+        $self->gatewayFee = (float)($data['gateway_fee'] ?? 0);
 
         foreach ($data['download'] as $downloadData) {
             $self->downloads[] = Download::fromData($downloadData);

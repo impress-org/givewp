@@ -72,7 +72,7 @@ class TestLicenseRepository extends TestCase
 
         $this->assertSame(
             [
-                'licence-key-1' =>$this->getRawLicenseData(),
+                'licence-key-1' => $this->getRawLicenseData(),
                 'licence-key-2' => $this->getRawLicenseData([
                     'license' => 'invalid'
                 ]),
@@ -131,20 +131,21 @@ class TestLicenseRepository extends TestCase
      */
     public function testGetGatewayFeeReturnsDefaultWhenNoLicenseIsStored(): void
     {
-        $this->assertEquals(2, $this->repository->getGatewayFee());
+        $this->assertSame(2.0, $this->repository->getGatewayFeePercentage());
     }
 
     /**
      * @unreleased
+     * @dataProvider gatewayFeeDataProvider
      */
-    public function testGetGatewayFeeReturnsFeeWhenLicenseIsStored(): void
+    public function testGetGatewayFeeReturnsFee($fee): void
     {
         update_option(
             'give_licenses',
-            ['licence-key-1' => $this->getRawLicenseData(['gateway_fee' => 5])]
+            ['licence-key-1' => $this->getRawLicenseData(['gateway_fee' => $fee])]
         );
 
-        $this->assertEquals(5, $this->repository->getGatewayFee());
+        $this->assertSame((float)$fee, $this->repository->getGatewayFeePercentage());
     }
 
     /**
@@ -208,5 +209,18 @@ class TestLicenseRepository extends TestCase
             ],
             "is_all_access_pass" => false,
         ], $data);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function gatewayFeeDataProvider(): array
+    {
+        return
+            [
+                [0],
+                [1.8],
+                [2],
+            ];
     }
 }

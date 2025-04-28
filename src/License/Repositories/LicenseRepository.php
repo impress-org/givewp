@@ -49,10 +49,10 @@ class LicenseRepository
     /**
      * @unreleased
      */
-    public function getGatewayFee(): int
+    public function getGatewayFeePercentage(): float
     {
         $license = $this->getLicense();
 
-        return $license->gatewayFee ?? 2;
+        return $license->gatewayFee ?? 2.0;
     }
 }

@@ -608,9 +608,10 @@ function give_stripe_set_app_info( $form_id = 0 ) {
  *
  * Note: This function is for internal purpose only.
  *
+ * @unreleased updated to use LicenseRepository
  * @since 2.5.0
  *
- * @return int
+ * @return float
  */
 function give_stripe_get_application_fee_percentage() {
     /**
@@ -618,7 +619,7 @@ function give_stripe_get_application_fee_percentage() {
      */
     $licenseRepository = give(LicenseRepository::class);
 
-    $licenseRepository->getGatewayFee();
+    return $licenseRepository->getGatewayFeePercentage();
 }
 
 /**

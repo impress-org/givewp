@@ -44,7 +44,7 @@ class ApplicationFee
             return false;
         }
 
-        return $gate->licenseRepository->getGatewayFee() > 0;
+        return $gate->licenseRepository->getGatewayFeePercentage() > 0;
     }
 
     /**
