@@ -15,18 +15,24 @@ use Give\PaymentGateways\Stripe\Models\AccountDetail as AccountDetailModel;
  */
 class ApplicationFee
 {
+    /**
+     * @since 2.10.2
+     */
     protected AccountDetailModel $accountDetail;
 
+    /**
+     * @unreleased
+     */
     protected LicenseRepository $licenseRepository;
 
     /**
      * @unreleased added LicenseRepository
      * @since 2.10.2
      */
-    public function __construct(AccountDetailModel $accountDetail, LicenseRepository $licenseRepository)
+    public function __construct(AccountDetailModel $accountDetail)
     {
         $this->accountDetail = $accountDetail;
-        $this->licenseRepository = $licenseRepository;
+        $this->licenseRepository = give(LicenseRepository::class);
     }
 
     /**
