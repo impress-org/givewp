@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Tests\License\DataTransferObjects;
+namespace Give\Tests\Unit\License\DataTransferObjects;
 
 use Give\License\DataTransferObjects\Download;
 use Give\Tests\TestCase;
