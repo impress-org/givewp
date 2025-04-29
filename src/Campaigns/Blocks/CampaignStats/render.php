@@ -23,10 +23,11 @@ if (
 $query = (new CampaignDonationQuery($campaign))
     ->select(
         $attributes['statistic'] === 'top-donation'
-            ? 'MAX(amountMeta.meta_value) as amount'
-            : 'AVG(amountMeta.meta_value) as amount'
+        ? 'MAX(amountMeta.meta_value - IFNULL(feeAmountRecovered.meta_value, 0)) as amount'
+        : 'AVG(amountMeta.meta_value - IFNULL(feeAmountRecovered.meta_value, 0)) as amount'
     )
-    ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amountMeta');
+    ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amountMeta')
+    ->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
 
 $donationStat = $query->get();
 
