@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {__} from '@wordpress/i18n';
@@ -40,13 +40,7 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
         displayStyle,
         continueButtonTitle = __('Donate now', 'give'),
     } = attributes as CampaignFormBlockAttributes;
-    const [showPreview, setShowPreview] = useState<boolean>(!!id);
     const {formOptions, isResolving} = useFormOptions(attributes?.campaignId);
-
-    const handleFormSelect = (id: number) => {
-        setAttributes({id});
-        setShowPreview(true);
-    };
 
     useEffect(() => {
         if (!blockId) {
