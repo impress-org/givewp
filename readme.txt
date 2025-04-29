@@ -281,6 +281,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix: Resolved an issue with goal progress amounts not calculating correctly throughout Campaigns and Forms
 * Fix: Resolved an issue with the Stripe Credit Card gateway and utm tags
 * Fix: Resolved an issue with Stripe Payment Element not showing accurate total amount when using Fee Recovery and Apple/Google Pay
+* Fix: Resolved an issue where some donations were not storing currency exchange rates correctly
 
 = 4.1.0: April 16th, 2025 =
 * New: Added the ability for donation forms to inherit Campaign goals and colors

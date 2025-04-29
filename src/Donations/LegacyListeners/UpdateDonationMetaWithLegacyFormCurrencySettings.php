@@ -6,12 +6,12 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class UpdateDonationMetaWithLegacyFormCurrencySettings
 {
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function __invoke(Donation $donation)
     {

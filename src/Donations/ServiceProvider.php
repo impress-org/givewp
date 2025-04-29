@@ -138,7 +138,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     private function bootListeners()
     {
