@@ -43,8 +43,6 @@ export default function DonationFormBlockControls({
     const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
     const defaultFormId = campaigns?.find((campaign) => campaign.id === attributes?.campaignId)?.defaultFormId;
 
-    console.log(defaultFormId);
-
     useEffect(() => {
         if (defaultFormId) {
             setAttributes({
