@@ -38,18 +38,21 @@ export default function DonationFormBlockControls({
         showGoal,
         showContent,
         useDefaultForm,
-        campaignId,
     } = attributes;
     const showOpenFormButton = ['newTab', 'modal', 'reveal', 'button'].includes(displayStyle);
     const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
-    const defaultFormId = campaigns?.find((campaign) => campaign.id === campaignId)?.defaultFormId;
+    const defaultFormId = campaigns?.find((campaign) => campaign.id === attributes?.campaignId)?.defaultFormId;
+
+    console.log(defaultFormId);
 
     useEffect(() => {
-        setAttributes({
-            id: defaultFormId,
-            useDefaultForm: true,
-        });
-    }, [campaignId]);
+        if (defaultFormId) {
+            setAttributes({
+                id: defaultFormId,
+                useDefaultForm: true,
+            });
+        }
+    }, [attributes?.campaignId]);
 
     const displayStyleOptions = (
         options: {label: string; value: string}[],
