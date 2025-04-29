@@ -8,7 +8,7 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 
 /**
- * @unreleased remove SQL casting
+ * @since 4.2.0 remove SQL casting
  * @since 4.0.0
  *
  * @var array $attributes

@@ -36,7 +36,7 @@ class GoalColumn extends ModelColumn
     }
 
     /**
-     * @unreleased convert goal data to v3 form format
+     * @since 4.2.0 convert goal data to v3 form format
      * @since 3.16.0 Remove "give_get_form_earnings_stats" filter logic and add filters to change the cell value content
      * @since 3.14.0 Use the "give_get_form_earnings_stats" filter to ensure the correct value will be displayed in the form  progress bar
      * @since 2.24.0

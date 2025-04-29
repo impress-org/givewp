@@ -278,6 +278,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * New: Added the ability to associate orphaned campaign forms to a campaign
 * New: Added the ability to duplicate a campaign
 * Enhancement: Improved the campaign archiving functionality
+* Fix: Resolved an issue with goal progress amounts not calculating correctly throughout Campaigns and Forms
 * Fix: Resolved an issue with the Stripe Credit Card gateway and utm tags
 * Fix: Resolved an issue with Stripe Payment Element not showing accurate total amount when using Fee Recovery and Apple/Google Pay
 

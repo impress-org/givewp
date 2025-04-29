@@ -14,14 +14,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 final class CampaignsDataRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testCountCampaignDonations()
     {
@@ -51,7 +51,7 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testGetRevenueReturnsSumOfDonationsWithoutRecoveredFees()
     {
@@ -81,7 +81,7 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testCountCampaignDonors()
     {
