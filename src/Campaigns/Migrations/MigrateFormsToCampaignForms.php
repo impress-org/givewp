@@ -179,15 +179,20 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
+     * @unreleased Use the ON DUPLICATE KEY UPDATE statement to prevent exceptions related to duplicate entries
      * @since 4.0.0
      */
     protected function addCampaignFormRelationship($formId, $campaignId)
     {
-        DB::table('give_campaign_forms')
-            ->insert([
-                'form_id' => $formId,
-                'campaign_id' => $campaignId,
-            ]);
+        $table = DB::prefix('give_campaign_forms');
+
+        DB::query(
+            DB::prepare("INSERT INTO {$table} (form_id, campaign_id) VALUES (%d, %d) ON DUPLICATE KEY UPDATE form_id = form_id",
+                [
+                    $formId,
+                    $campaignId,
+                ])
+        );
     }
 
     /**
