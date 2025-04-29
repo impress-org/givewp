@@ -499,8 +499,6 @@ $donor_phone_number = Donor::find($donor_id)->phone;
 												<strong><?php esc_html_e( 'Total Donation:', 'give' ); ?></strong><br>
 												<?php echo give_donation_amount( $payment, true ); ?>
 											</p>
-
-											<?php if ( give_is_anonymous_donation_field_enabled( $payment->form_id ) ) : ?>
 												<div>
 													<strong><?php esc_html_e( 'Anonymous Donation:', 'give' ); ?></strong>
 													<ul class="give-radio-inline">
@@ -526,7 +524,6 @@ $donor_phone_number = Donor::find($donor_id)->phone;
 														</li>
 													</ul>
 												</div>
-											<?php endif; ?>
 											<p>
 												<?php
 												/**

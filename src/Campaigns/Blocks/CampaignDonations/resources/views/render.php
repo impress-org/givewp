@@ -90,7 +90,7 @@ $blockInlineStyles = sprintf(
                             <?php
                             printf(
                                 __('%s donated %s', 'give'),
-                                '<strong>' . esc_html($donation->donorName) . '</strong>',
+                                '<strong>' . esc_html(!$donation->isAnonymous ? $donation->donorName : __('Anonymous', 'give')) . '</strong>',
                                 '<strong>' . esc_html($donation->amount->formatToLocale()) . '</strong>'
                             );
                             ?>
