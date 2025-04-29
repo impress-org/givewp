@@ -63,7 +63,7 @@ Embed Form aka IFrame Form
             z-index: 999;
             min-height: 100vh;
 
-            iframe{
+            iframe {
                 z-index: 1;
             }
         }
@@ -92,7 +92,7 @@ Embed Form aka IFrame Form
             }
         }
 
-        &::after {
+        &::before {
             content: '';
             display: block;
             position: fixed;
@@ -101,7 +101,6 @@ Embed Form aka IFrame Form
             bottom: 0;
             right: 0;
             background: rgba(0 0 0 / .7);
-            overflow: hidden;
         }
     }
 }

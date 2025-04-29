@@ -139,6 +139,11 @@ function initializeGiveModalButtons() {
                 document.documentElement.style.overflow = 'hidden';
                 iframeContainer?.classList.add('modal');
                 iframeContainer?.classList.remove('is-hide');
+
+                const modal = document.querySelector('.give-embed-form-wrapper.modal');
+                if (modal && modal.parentNode !== document.body) {
+                    document.body.appendChild(modal);
+                }
             });
         }
     });
