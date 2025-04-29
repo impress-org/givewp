@@ -59,23 +59,6 @@ export default function DonationFormBlockControls({
         return isLegacyTemplate ? options.concat(legacy) : !isLegacyForm ? options.concat(v3) : options;
     };
 
-    const campaignOptions = (() => {
-        if (!hasResolved) {
-            return [{label: __('Loading...', 'give'), value: ''}];
-        }
-
-        if (campaigns.length) {
-            const campaignOptions = campaigns.map((campaign) => ({
-                label: `${campaign.title} ${campaign.status === 'draft' ? `(${__('Draft', 'give')})` : ''}`.trim(),
-                value: campaign.id.toString(),
-            }));
-
-            return [{label: __('Select...', 'give'), value: ''}, ...campaignOptions];
-        }
-
-        return [{label: __('No campaigns found.', 'give'), value: ''}];
-    })();
-
     const adminBaseUrl = useSelect(
         // @ts-ignore
         (select) => select('core').getSite()?.url + '/wp-admin/edit.php?post_type=give_forms&page=give-campaigns',
