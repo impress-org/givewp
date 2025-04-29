@@ -58,7 +58,7 @@ class CampaignDonationQuery extends QueryBuilder
     {
         $query = clone $this;
         $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
-        $query->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
+        $query->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
         return $query->sum(
             /**
              * The intended amount meta and the amount meta could either be 0 or NULL.
@@ -66,7 +66,7 @@ class CampaignDonationQuery extends QueryBuilder
              * Then we coalesce the values to select the first non-NULL value.
              * @link https://github.com/impress-org/givewp/pull/7411
              */
-            'COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)'
+            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)'
         );
     }
 
@@ -115,9 +115,9 @@ class CampaignDonationQuery extends QueryBuilder
         $query = clone $this;
 
         $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
-        $query->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
+        $query->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
         $query->select(
-            'SUM(COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)) as amount'
+            'SUM(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) as amount'
         );
 
         $query->select('YEAR(donation.post_date) as year');
