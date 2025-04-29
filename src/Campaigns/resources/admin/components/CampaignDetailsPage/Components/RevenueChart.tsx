@@ -66,7 +66,7 @@ const RevenueChart = () => {
             showForNullSeries: false,
             labels: {
                 formatter: (value) => {
-                    return currencyFormatter.format(Math.ceil(Number(value)));
+                    return currencyFormatter.format(Number(value));
                 },
             },
         },
