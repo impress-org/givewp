@@ -15,6 +15,7 @@ use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
+use Give\Donations\Migrations\RecalculateExchangeRate;
 use Give\Donations\Migrations\SetAutomaticFormattingOption;
 use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
@@ -55,6 +56,7 @@ class ServiceProvider implements ServiceProviderInterface
             SetAutomaticFormattingOption::class,
             MoveDonationCommentToDonationMetaTable::class,
             UnserializeTitlePrefix::class,
+            RecalculateExchangeRate::class,
         ]);
     }
 
