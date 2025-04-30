@@ -162,11 +162,11 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
             'status' => DonationFormStatus::UPGRADED(),
         ]);
 
-        //First form migrate attempt
+        //First form upgrade attempt
         $form2 = DonationForm::factory()->create();
         give_update_meta($form2->id, 'migratedFormId', $form1->id);
 
-        // Second form migrate attempt
+        // Second form upgrade attempt
         $form3 = DonationForm::factory()->create();
         give_update_meta($form3->id, 'migratedFormId', $form1->id);
 
@@ -191,11 +191,11 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
             'status' => DonationFormStatus::UPGRADED(),
         ]);
 
-        // First form migrate attempt
+        // First form upgrade attempt
         $form2 = DonationForm::factory()->create();
         give_update_meta($form2->id, 'migratedFormId', $form1->id);
 
-        // Second form migrate attempt
+        // Second form upgrade attempt
         $form3 = DonationForm::factory()->create();
         give_update_meta($form3->id, 'migratedFormId', $form1->id);
 
