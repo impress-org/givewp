@@ -15,7 +15,7 @@ class UpdateDonationMetaWithLegacyFormCurrencySettings
      */
     public function __invoke(Donation $donation)
     {
-        if (!isset($_POST['give-cs-exchange-rate'])) {
+        if (!isset($_POST['give-cs-exchange-rate']) || $_POST['give-cs-exchange-rate'] === '0') {
             return;
         }
 
