@@ -36,7 +36,7 @@ export default function Goal({
                     max={100}
                     aria-label={__(`${currentAmount} of ${targetAmount} ${goalLabel} goal`, 'give')}
                 ></progress>
-                <div className="givewp-layouts-goal__progress__markers">
+                <div className="givewp-layouts-goal__progress__markers" aria-hidden={true}>
                     <span className="givewp-layouts-goal__progress__marker">
                         {currentAmountFormatted} {goalLabel}
                     </span>
