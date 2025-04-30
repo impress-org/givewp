@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import type {GoalProps} from '@givewp/forms/propTypes';
 
 /**
+ * @unreleased replace <aside> landmark with div for accessibility audit.
  * @since 3.0.0
  */
 export default function Goal({
