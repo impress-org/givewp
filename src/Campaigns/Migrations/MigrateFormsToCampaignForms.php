@@ -109,12 +109,13 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
+     * @unreleased Add NOT IN and DISTINCT statements
      * @since 4.0.0
      * @return array [{formId, campaignId, migratedFormId}]
      */
     protected function getUpgradedV2FormsData(): array
     {
-        $results = DB::table('posts', 'forms')
+        $query = DB::table('posts', 'forms')->distinct()
             ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'])
             ->attachMeta('give_formmeta', 'ID', 'form_id', 'migratedFormId')
             ->join(function (JoinQueryBuilder $builder) {
@@ -123,8 +124,22 @@ class MigrateFormsToCampaignForms extends Migration
                     ->on('campaign_forms.form_id', 'forms.ID');
             })
             ->where('forms.post_type', 'give_forms')
-            ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value')
-            ->getAll();
+            ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value');
+
+        /**
+         * Sometimes the user starts upgrading a form but gives up and deletes the migrated form. However, the
+         * migratedFormId keeps on DB, which can make this query return the same migratedFormId for multiple
+         * campaigns, so we need to use this whereNotIn statement to ensure we are NOT adding the same
+         * migratedFormId for multiple campaigns.
+         */
+        $query->whereNotIn('give_formmeta_attach_meta_migratedFormId.meta_value', function (QueryBuilder $builder) {
+            $builder
+                ->select('form_id')
+                ->from('give_campaign_forms')
+                ->whereRaw('WHERE form_id = give_formmeta_attach_meta_migratedFormId.meta_value');
+        });
+
+        $results = $query->getAll();
 
         if (!$results) {
             return [];
