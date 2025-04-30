@@ -152,6 +152,44 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testUpgradedFormsMoreThanOnceAreNotAssociatedWIthMultipleCampaigns()
+    {
+        //$forms = DonationForm::query()->getAll();
+        //DonationForm::query()->delete();
+        DB::query("DELETE FROM " . DB::prefix('posts'));
+        DB::query("DELETE FROM " . DB::prefix('give_campaigns'));
+        DB::query("DELETE FROM " . DB::prefix('give_campaign_forms'));
+
+        $form1 = DonationForm::factory()->create([
+            'status' => DonationFormStatus::UPGRADED(),
+        ]);
+
+        // First migration association
+        $form2 = DonationForm::factory()->create();
+        give_update_meta($form2->id, 'migratedFormId', $form1->id);
+
+        // Second migration association
+        $form3 = DonationForm::factory()->create();
+        give_update_meta($form3->id, 'migratedFormId', $form1->id);
+
+        $forms = DonationForm::query()->getAll();
+
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        $entries = DB::table('give_campaign_forms')
+            ->where('form_id', $form1->id)
+            ->getAll();
+
+        $this->assertEquals(1, count($entries));
+        //$this->assertEquals($form2->id, $entries[0]->form_id);
+    }
+
+    /**
      * @since 4.0.0
      * @throws Exception
      */
@@ -188,6 +226,8 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      */
     public function testAddCampaignFormRelationshipPreventDuplicatedEntryError()
     {
+        DB::query("DELETE FROM " . DB::prefix('give_campaign_forms'));
+
         $migration = new MigrateFormsToCampaignForms();
         $reflection = new ReflectionClass(MigrateFormsToCampaignForms::class);
         $addCampaignFormRelationship = $reflection->getMethod('addCampaignFormRelationship');

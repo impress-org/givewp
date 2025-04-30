@@ -115,7 +115,18 @@ class MigrateFormsToCampaignForms extends Migration
      */
     protected function getUpgradedV2FormsData(): array
     {
+
         $query = DB::table('posts', 'forms')->distinct()
+            ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'],
+                ['give_formmeta.migratedFormId', 'migratedFormId'])
+            ->join(function (JoinQueryBuilder $builder) {
+                $builder
+                    ->rightJoin('give_campaign_forms', 'campaign_forms')
+                    ->on('campaign_forms.form_id', 'forms.ID');
+            })
+            ->where('forms.post_type', 'give_forms');
+
+        /*$query = DB::table('posts', 'forms')->distinct()
             ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'])
             ->attachMeta('give_formmeta', 'ID', 'form_id', 'migratedFormId')
             ->join(function (JoinQueryBuilder $builder) {
@@ -124,7 +135,7 @@ class MigrateFormsToCampaignForms extends Migration
                     ->on('campaign_forms.form_id', 'forms.ID');
             })
             ->where('forms.post_type', 'give_forms')
-            ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value');
+            ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value');*/
 
         /**
          * Sometimes the user starts upgrading a form but gives up and deletes the migrated form. However, the
@@ -132,12 +143,24 @@ class MigrateFormsToCampaignForms extends Migration
          * campaigns, so we need to use this whereNotIn statement to ensure we are NOT adding the same
          * migratedFormId for multiple campaigns.
          */
-        $query->whereNotIn('give_formmeta_attach_meta_migratedFormId.meta_value', function (QueryBuilder $builder) {
+        /*$query->whereNotIn('give_formmeta_attach_meta_migratedFormId.meta_value', function (QueryBuilder $builder) {
             $builder
                 ->select('form_id')
                 ->from('give_campaign_forms')
                 ->whereRaw('WHERE form_id = give_formmeta_attach_meta_migratedFormId.meta_value');
-        });
+        });*/
+
+        $table = DB::prefix('give_formmeta');
+        $query->joinRaw("INNER JOIN (
+                    SELECT
+                        meta_value AS migratedFormId,
+                        MAX(form_id) AS max_form_id
+                    FROM {$table}
+                    WHERE meta_key = 'migratedFormId'
+                    GROUP BY meta_value
+                ) AS give_formmeta ON forms.ID = give_formmeta.max_form_id");
+
+        $SQL = $query->getSQL();
 
         $results = $query->getAll();
 
