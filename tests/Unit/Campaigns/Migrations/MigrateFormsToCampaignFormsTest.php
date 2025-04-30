@@ -158,25 +158,17 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      */
     public function testUpgradedFormsMoreThanOnceAreNotAssociatedWIthMultipleCampaigns()
     {
-        //$forms = DonationForm::query()->getAll();
-        //DonationForm::query()->delete();
-        DB::query("DELETE FROM " . DB::prefix('posts'));
-        DB::query("DELETE FROM " . DB::prefix('give_campaigns'));
-        DB::query("DELETE FROM " . DB::prefix('give_campaign_forms'));
-
         $form1 = DonationForm::factory()->create([
             'status' => DonationFormStatus::UPGRADED(),
         ]);
 
-        // First migration association
+        //First form migrate attempt
         $form2 = DonationForm::factory()->create();
         give_update_meta($form2->id, 'migratedFormId', $form1->id);
 
-        // Second migration association
+        // Second form migrate attempt
         $form3 = DonationForm::factory()->create();
         give_update_meta($form3->id, 'migratedFormId', $form1->id);
-
-        $forms = DonationForm::query()->getAll();
 
         $migration = new MigrateFormsToCampaignForms();
         $migration->run();
@@ -186,7 +178,33 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
             ->getAll();
 
         $this->assertEquals(1, count($entries));
-        //$this->assertEquals($form2->id, $entries[0]->form_id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testUpgradedFormsMoreThanOnceBelongsToSameCampaignFromLasFormUpgraded()
+    {
+        $form1 = DonationForm::factory()->create([
+            'status' => DonationFormStatus::UPGRADED(),
+        ]);
+
+        // First form migrate attempt
+        $form2 = DonationForm::factory()->create();
+        give_update_meta($form2->id, 'migratedFormId', $form1->id);
+
+        // Second form migrate attempt
+        $form3 = DonationForm::factory()->create();
+        give_update_meta($form3->id, 'migratedFormId', $form1->id);
+
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        $campaign = Campaign::findByFormId($form1->id);
+
+        $this->assertEquals($form3->id, $campaign->defaultFormId);
     }
 
     /**
