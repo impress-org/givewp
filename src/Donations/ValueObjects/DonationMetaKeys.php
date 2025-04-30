@@ -13,6 +13,7 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  *
  * @method static DonationMetaKeys AMOUNT()
  * @method static DonationMetaKeys CAMPAIGN_ID()
+ * @method static DonationMetaKeys BASE_AMOUNT()
  * @method static DonationMetaKeys CURRENCY()
  * @method static DonationMetaKeys GATEWAY()
  * @method static DonationMetaKeys DONOR_ID()

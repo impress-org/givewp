@@ -93,7 +93,7 @@ $blockInlineStyles = sprintf(
 
                     <div class="givewp-campaign-donors-block__donor-info">
                                     <span class="givewp-campaign-donors-block__donor-name"><?php
-                                        echo esc_html($donor->name); ?></span>
+                                        echo esc_html(!$donor->isAnonymous ? $donor->name : __('Anonymous', 'give')); ?></span>
 
                         <?php
                         if ($sortBy === 'top-donors' && $key < 3) : ?>
