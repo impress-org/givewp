@@ -11,12 +11,6 @@ use Give\DonationForms\Actions\ReplaceGiveReceiptShortcodeViewWithDonationConfir
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
 use Give\DonationForms\Actions\ValidateReceiptViewPermission;
-use Give\DonationForms\AsyncData\Actions\GetAsyncFormDataForListView;
-use Give\DonationForms\AsyncData\Actions\GiveGoalProgressStats;
-use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
-use Give\DonationForms\AsyncData\AdminFormListView\AdminFormListView;
-use Give\DonationForms\AsyncData\AsyncDataHelpers;
-use Give\DonationForms\AsyncData\FormGrid\FormGridView;
 use Give\DonationForms\Blocks\DonationFormBlock\Block as DonationFormBlock;
 use Give\DonationForms\Controllers\DonationConfirmationReceiptViewController;
 use Give\DonationForms\Controllers\DonationFormViewController;
