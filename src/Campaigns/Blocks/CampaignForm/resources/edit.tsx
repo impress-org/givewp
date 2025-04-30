@@ -62,7 +62,7 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
         <div {...useBlockProps()}>
             <CampaignSelector
                 campaignId={attributes.campaignId}
-                handleSelect={(campaignId: number) => setAttributes({campaignId})}
+                handleSelect={(campaignId: number) => setAttributes({campaignId: Number(campaignId)})}
             >
                 {id && (
                     <BlockPreview
