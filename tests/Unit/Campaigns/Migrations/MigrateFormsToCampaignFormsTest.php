@@ -244,8 +244,6 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      */
     public function testAddCampaignFormRelationshipPreventDuplicatedEntryError()
     {
-        DB::query("DELETE FROM " . DB::prefix('give_campaign_forms'));
-
         $migration = new MigrateFormsToCampaignForms();
         $reflection = new ReflectionClass(MigrateFormsToCampaignForms::class);
         $addCampaignFormRelationship = $reflection->getMethod('addCampaignFormRelationship');
