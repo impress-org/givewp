@@ -10,6 +10,8 @@ use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * @since 4.0.0
@@ -177,5 +179,37 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $migration->run();
 
         $this->assertEquals(0, DB::table('give_campaign_forms')->count());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws ReflectionException
+     */
+    public function testAddCampaignFormRelationshipPreventDuplicatedEntryError()
+    {
+        $migration = new MigrateFormsToCampaignForms();
+        $reflection = new ReflectionClass(MigrateFormsToCampaignForms::class);
+        $addCampaignFormRelationship = $reflection->getMethod('addCampaignFormRelationship');
+        $addCampaignFormRelationship->setAccessible(true);
+
+        $formId = 123;
+        $campaignId = 456;
+
+        //First Entry
+        $addCampaignFormRelationship->invoke($migration, $formId, $campaignId);
+
+        //Duplicated Entry
+        $addCampaignFormRelationship->invoke($migration, $formId, $campaignId);
+
+        $entries = DB::table('give_campaign_forms')
+            ->where('form_id', $formId)
+            ->where('campaign_id', $campaignId)
+            ->getAll();
+
+
+        $this->assertEquals(1, count($entries));
+        $this->assertEquals($formId, $entries[0]->form_id);
+        $this->assertEquals($campaignId, $entries[0]->campaign_id);
     }
 }
