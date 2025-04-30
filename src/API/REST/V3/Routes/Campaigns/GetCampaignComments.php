@@ -73,7 +73,7 @@ class GetCampaignComments implements RestRoute
 
 
         if (!$anonymous) {
-            $query->where('anonymousMeta.meta_value', '0');
+            $query->where('anonymousMeta.meta_value', '1', '!=');
         }
 
         $query->where('commentMeta.meta_value', '', '!=');
