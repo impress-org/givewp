@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Give\DonationForms\V2\ListTable\Columns;
 
+use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -48,6 +49,13 @@ class GoalColumn extends ModelColumn
         if ( ! $model->goalOption) {
             return __('No Goal Set', 'give');
         }
+
+        /**
+         * @var DonationFormDataRepository $formData
+         */
+        $formData = $this->getListTableData();
+
+        //$goalData = $formData->getGoalData($model);
 
         $goal = give_goal_progress_stats($model->id);
         $goalPercentage = ('percentage' === $goal['format']) ? str_replace('%', '',

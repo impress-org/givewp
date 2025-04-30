@@ -4,7 +4,9 @@ namespace Give\DonationForms\V2\Endpoints;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -142,6 +144,14 @@ class ListDonationForms extends Endpoint
         $forms = $this->getForms();
         $totalForms = $this->getTotalFormsCount();
         $totalPages = (int)ceil($totalForms / $this->request->get_param('perPage'));
+
+        $ids = array_map(function (DonationForm $form) {
+            return $form->id;
+        }, $forms);
+
+        $formsData = DonationFormDataRepository::forms($ids);
+
+        $this->listTable->setData($formsData);
 
         // get p2p forms
         $p2pForms = DB::table('give_campaigns')
