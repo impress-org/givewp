@@ -71,7 +71,7 @@ Embed Form aka IFrame Form
         .close-btn {
             display: flex;
             position: fixed;
-            top: 125px;
+            top: 57px;
             right: 25px;
             padding: .75rem;
             background: #e7e8ed;
@@ -127,9 +127,5 @@ Embed Form aka IFrame Form
     .give-embed-form-wrapper {
         margin-top: -26px;
         background: none;
-
-        .close-btn {
-            top: 70px;
-        }
     }
 }
