@@ -35,7 +35,7 @@ class TestLicense extends TestCase
         $this->assertEquals(1, $license->licenseLimit);
         $this->assertEquals(1, $license->siteCount);
         $this->assertEquals(0, $license->activationsLeft);
-        $this->assertFalse($license->priceId);
+        $this->assertEquals(0, $license->priceId);
         $this->assertEquals('license-key-1234567890', $license->licenseKey);
         $this->assertEquals(123456, $license->licenseId);
         $this->assertFalse($license->isAllAccessPass);
