@@ -19,6 +19,8 @@ class LicenseRepository
     }
 
     /**
+     * Gets the raw, stored licenses from the database.
+     *
      * @unreleased
      */
     public function getStoredLicenses(): array
@@ -27,7 +29,10 @@ class LicenseRepository
     }
 
     /**
+     * Gets the stored licenses from the database and converts them to License objects.
+     *
      * @unreleased
+     * @return License[]
      */
     public function getLicenses(): array
     {
@@ -74,22 +79,30 @@ class LicenseRepository
             return 2.0;
         }
 
-        if (is_null($this->getStoredPlatformFeeAmount())) {
+        if (!$this->hasStoredPlatformFeePercentage()) {
             return 0.0;
         }
 
-        return $this->getStoredPlatformFeeAmount();
+        return $this->getStoredPlatformFeePercentage();
     }
 
     /**
      * @unreleased
      */
-    public function getStoredPlatformFeeAmount(): ?float
+    public function getStoredPlatformFeePercentage(): ?float
     {
         if (!get_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE)) {
             return null;
         }
 
         return (float)get_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function hasStoredPlatformFeePercentage(): bool
+    {
+        return !is_null($this->getStoredPlatformFeePercentage());
     }
 }
