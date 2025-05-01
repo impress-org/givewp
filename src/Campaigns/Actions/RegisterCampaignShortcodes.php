@@ -6,12 +6,12 @@ use Give\Campaigns\Blocks\Campaign\CampaignShortcode;
 use Give\Campaigns\Blocks\CampaignGrid\CampaignGridShortcode;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class RegisterCampaignShortcodes
 {
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function __invoke()
     {

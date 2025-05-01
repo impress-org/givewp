@@ -15,14 +15,14 @@ use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 use Give\Framework\Blocks\BlockCollection;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class ConvertV2FormToV3Form
 {
     public $form;
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function __construct(DonationForm $form)
     {
@@ -30,7 +30,7 @@ class ConvertV2FormToV3Form
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function __invoke()
     {
@@ -44,7 +44,7 @@ class ConvertV2FormToV3Form
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function convertSettings()
     {
@@ -65,7 +65,7 @@ class ConvertV2FormToV3Form
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function convertAutoClose()
     {
@@ -73,7 +73,7 @@ class ConvertV2FormToV3Form
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function convertBlocks()
     {
@@ -87,7 +87,7 @@ class ConvertV2FormToV3Form
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function convertStatus(): V3DonationFormStatus
     {
@@ -108,7 +108,7 @@ class ConvertV2FormToV3Form
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function convertGoalType(): GoalType
     {
@@ -126,7 +126,7 @@ class ConvertV2FormToV3Form
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function convertGoalEnabled(): bool
     {
@@ -134,7 +134,7 @@ class ConvertV2FormToV3Form
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function convertGoalAmount()
     {
@@ -142,7 +142,7 @@ class ConvertV2FormToV3Form
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function convertDesignId()
     {

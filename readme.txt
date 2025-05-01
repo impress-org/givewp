@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.1.1
+Stable tag: 4.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,8 +273,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 4.1.1: April 24th, 2025 =
-* Fix: Resolved an issue with PayPal donations where the donate button was not being shown when switching payment methods
+= 4.2.0: April 30th, 2025 =
+* New: Added shortcodes for the Campaign Block and Campaign Grid Block
+* New: Added the ability to associate orphaned campaign forms to a campaign
+* New: Added the ability to duplicate a campaign
+* Enhancement: Improved the campaign archiving functionality
+* Fix: Resolved an issue with goal progress amounts not calculating correctly throughout Campaigns and Forms
+* Fix: Resolved an issue with the Stripe Credit Card gateway and utm tags
+* Fix: Resolved an issue with Stripe Payment Element not showing accurate total amount when using Fee Recovery and Apple/Google Pay
+* Fix: Resolved an issue where some donations were not storing currency exchange rates correctly
 
 = 4.1.0: April 16th, 2025 =
 * New: Added the ability for donation forms to inherit Campaign goals and colors

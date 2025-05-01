@@ -30,7 +30,7 @@ class Utils
     /**
      * This function will change request url with other url.
      *
-     * @unreleased Replace URL anchor with request_anchor argument
+     * @since 4.2.0 Replace URL anchor with request_anchor argument
      * @since 2.7.0
      *
      * @param string $location Requested URL.

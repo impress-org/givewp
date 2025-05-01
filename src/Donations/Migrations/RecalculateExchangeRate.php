@@ -11,7 +11,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class RecalculateExchangeRate extends BatchMigration
 {
@@ -42,7 +42,7 @@ class RecalculateExchangeRate extends BatchMigration
     /**
      * Base query to find donations that need exchange rate recalculation
      *
-     * @unreleased
+     * @since 4.2.0
      */
     protected function query(): QueryBuilder
     {

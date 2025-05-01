@@ -67,7 +67,7 @@ class CampaignsDataRepository
     }
 
     /**
-     * @unreleased return type of float
+     * @since 4.2.0 return type of float
      * @since 4.0.0
      *
      * Get revenue for campaign
@@ -168,7 +168,7 @@ class CampaignsDataRepository
     }
 
     /**
-     * @unreleased return union type int|float
+     * @since 4.2.0 return union type int|float
      * @since 4.0.0
      *
      * @param Campaign $campaign

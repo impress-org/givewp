@@ -5,7 +5,7 @@ namespace Give\DonationForms\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 4.2.0
  *
  * @method static DonationFormsRoute NAMESPACE()
  * @method static DonationFormsRoute FORM()

@@ -21,15 +21,15 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 	 * @sine 1.8
 	 */
 	class Give_Settings_Data extends Give_Settings_Page {
-		/**
-		 * Migrations list table app container ID
-         * @unreleased rename to GIVE_MIGRATIONS_TABLE_APP
-		 * @since 2.10.0
-		 */
+        /**
+         * Migrations list table app container ID
+         * @since 4.2.0 rename to GIVE_MIGRATIONS_TABLE_APP
+         * @since 2.10.0
+         */
 		const GIVE_MIGRATIONS_TABLE_APP = 'give_migrations_table_app';
 
         /**
-         * @unreleased
+         * @since 4.2.0
          */
         const GIVE_ORPHANED_FORMS_TABLE_APP = 'give_orphaned_forms_app';
 
@@ -62,7 +62,7 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 				add_action( 'give_admin_field_' . self::GIVE_MIGRATIONS_TABLE_APP, [$this, 'render_migrations_container'] );
                 /**
                  * Render orphaned forms container
-                 * @unreleased
+                 * @since 4.2.0
                  */
                 if ('enabled' === give_get_option('show_orphaned_forms_table', 'disabled')) {
                     add_action( 'give_admin_field_' . self::GIVE_ORPHANED_FORMS_TABLE_APP, [$this, 'render_orphaned_forms_container'] );
@@ -162,12 +162,12 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
 			return apply_filters( 'give_get_sections_' . $this->id, $sections );
 		}
 
-		/**
-		 * Render Migrations list table app container
-		 *
-         * @unreleased renamed to render_migrations_container
-		 * @since 2.10.0
-		 */
+        /**
+         * Render Migrations list table app container
+         *
+         * @since 4.2.0 renamed to render_migrations_container
+         * @since 2.10.0
+         */
 		public function render_migrations_container() {
 			printf( '<div id="%s" style="padding-top: 20px"></div>', self::GIVE_MIGRATIONS_TABLE_APP );
 		}
@@ -175,7 +175,7 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
         /**
          * Render orphaned forms container
          *
-         * @unreleased
+         * @since 4.2.0
          */
         public function render_orphaned_forms_container() {
             printf( '<div id="%s" style="padding-top: 20px"></div>', self::GIVE_ORPHANED_FORMS_TABLE_APP );

@@ -8,14 +8,14 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class DonationFormsEntityRoute
 {
     protected DonationFormsRequestController $controller;
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function __construct(DonationFormsRequestController $controller)
     {
@@ -24,7 +24,7 @@ class DonationFormsEntityRoute
 
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function __invoke()
     {
@@ -36,7 +36,7 @@ class DonationFormsEntityRoute
     /**
      * Get Form route
      *
-     * @unreleased
+     * @since 4.2.0
      */
     public function registerGetForm()
     {
@@ -66,7 +66,7 @@ class DonationFormsEntityRoute
     /**
      * Get Forms route
      *
-     * @unreleased
+     * @since 4.2.0
      */
     public function registerGetForms()
     {
@@ -114,7 +114,7 @@ class DonationFormsEntityRoute
     /**
      * Associate donation forms with campaign
      *
-     * @unreleased
+     * @since 4.2.0
      */
     public function registerAssociateFormsWithCampaign()
     {

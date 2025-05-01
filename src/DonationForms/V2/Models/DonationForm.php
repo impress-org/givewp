@@ -89,7 +89,7 @@ class DonationForm extends Model implements ModelReadOnly
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function toV3Form(): ModelsDonationForm
     {

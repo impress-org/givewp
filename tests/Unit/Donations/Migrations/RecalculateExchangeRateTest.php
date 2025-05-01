@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class RecalculateExchangeRateTest extends TestCase
 {
@@ -21,7 +21,7 @@ class RecalculateExchangeRateTest extends TestCase
     private $migration;
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function setUp(): void
     {
@@ -30,7 +30,7 @@ class RecalculateExchangeRateTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testGetBatchSizeReturnsCorrectValue()
     {
@@ -38,7 +38,7 @@ class RecalculateExchangeRateTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testRunBatchUpdatesExchangeRates()
     {
@@ -56,7 +56,7 @@ class RecalculateExchangeRateTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testGetItemsCountReturnsCorrectCount()
     {
@@ -67,7 +67,7 @@ class RecalculateExchangeRateTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testHasMoreItemsToBatchReturnsCorrectValue()
     {
@@ -78,7 +78,7 @@ class RecalculateExchangeRateTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     private function createDonationWithMeta(array $meta): int
     {
@@ -92,7 +92,7 @@ class RecalculateExchangeRateTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     private function getDefaultDonationMeta(): array
     {
