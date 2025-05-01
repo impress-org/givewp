@@ -247,6 +247,7 @@ class TestLicenseRepository extends TestCase
         );
 
         $this->assertSame(0.0, $this->repository->getPlatformFeePercentage());
+        $this->assertFalse($this->repository->hasPlatformFeePercentage());
     }
 
     /**
@@ -278,6 +279,44 @@ class TestLicenseRepository extends TestCase
         update_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, 1.8);
 
         $this->assertSame(2.0, $this->repository->getPlatformFeePercentage());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testHasPlatformFeePercentageShouldReturnTrue(): void
+    {
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'valid'
+                ]),
+            ]
+        );
+
+        update_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, 1.8);
+
+        $this->assertTrue($this->repository->hasPlatformFeePercentage());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testHasPlatformFeePercentageShouldReturnTrueWhenLicenseIsExpired(): void
+    {
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+            ]
+        );
+
+        update_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, 1.8);
+
+        $this->assertTrue($this->repository->hasPlatformFeePercentage());
     }
 
     /**

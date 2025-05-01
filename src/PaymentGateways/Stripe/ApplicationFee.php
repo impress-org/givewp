@@ -50,7 +50,7 @@ class ApplicationFee
             return false;
         }
 
-        return $gate->licenseRepository->getPlatformFeePercentage() > 0;
+        return $gate->licenseRepository->hasPlatformFeePercentage();
     }
 
     /**

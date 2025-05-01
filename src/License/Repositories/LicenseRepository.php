@@ -99,6 +99,14 @@ class LicenseRepository
     /**
      * @unreleased
      */
+    public function hasPlatformFeePercentage(): bool
+    {
+        return $this->getPlatformFeePercentage() > 0;
+    }
+
+    /**
+     * @unreleased
+     */
     public function getStoredPlatformFeePercentage(): ?float
     {
         if (!get_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE)) {
