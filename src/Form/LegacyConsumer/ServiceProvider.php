@@ -2,7 +2,9 @@
 
 namespace Give\Form\LegacyConsumer;
 
+use Give\Form\LegacyConsumer\Actions\AddCustomFieldsToLegacyReceipt;
 use Give\Form\LegacyConsumer\Commands\DeprecateOldTemplateHook;
+use Give\Helpers\Hooks;
 use Give\Receipt\DonationReceipt;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give_Donate_Form;
@@ -97,5 +99,7 @@ class ServiceProvider implements ServiceProviderInterface
                 give(TemplateHooks::class)->walk(new Commands\SetupFieldEmailTag);
             }
         );
+
+        Hooks::addAction('give_new_receipt', AddCustomFieldsToLegacyReceipt::class);
     }
 }
