@@ -534,9 +534,6 @@ if ( ! class_exists('Give_License') ) :
 
             $api_params = wp_parse_args($api_params, $default_api_params);
 
-            add_filter( 'https_ssl_verify', '__return_false' );
-            add_filter( 'https_local_ssl_verify', '__return_false' );
-
             // Call the API.
             $response = wp_remote_post(
                 self::get_api_url(),
