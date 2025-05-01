@@ -7,6 +7,8 @@ namespace Give\License\DataTransferObjects;
  */
 class License
 {
+    public bool $isActive;
+    public float $gatewayFee;
     public bool $success;
     public string $license;
     public ?int $itemId; // false or int
@@ -25,8 +27,6 @@ class License
     public bool $isAllAccessPass;
     /** @var Download[] */
     public array $downloads = [];
-    public bool $isActive;
-    public float $gatewayFee;
 
     /**
      * @unreleased
