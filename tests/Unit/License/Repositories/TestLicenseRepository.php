@@ -4,9 +4,10 @@ namespace Give\Tests\Unit\Resources\License;
 
 use Give\License\DataTransferObjects\License;
 use Give\License\Repositories\LicenseRepository;
-use Give\Tests\Unit\License\TestTraits\HasLicenseData;
+use Give\License\ValueObjects\LicenseOptionKeys;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\Unit\License\TestTraits\HasLicenseData;
 
 /**
  * @unreleased
@@ -35,18 +36,18 @@ class TestLicenseRepository extends TestCase
     /**
      * @unreleased
      */
-    public function testHasLicenseReturnsFalseWhenNoLicenseIsStored(): void
+    public function testHasLicensesReturnsFalseWhenNoLicenseIsStored(): void
     {
-        $this->assertFalse($this->repository->hasLicense());
+        $this->assertFalse($this->repository->hasLicenses());
     }
 
     /**
      * @unreleased
      */
-    public function testHasLicenseReturnsTrueWhenLicenseIsStored(): void
+    public function testHasLicensesReturnsTrueWhenLicenseIsStored(): void
     {
-        update_option('give_licenses', $this->getRawLicenseData());
-        $this->assertTrue($this->repository->hasLicense());
+        update_option(LicenseOptionKeys::LICENSES, $this->getRawLicenseData());
+        $this->assertTrue($this->repository->hasLicenses());
     }
 
     /**
@@ -62,23 +63,20 @@ class TestLicenseRepository extends TestCase
      */
     public function testGetStoredLicensesReturnsArrayWhenLicenseIsStored(): void
     {
+        $data = [
+            'licence-key-1' => $this->getRawLicenseData(),
+            'licence-key-2' => $this->getRawLicenseData([
+                'license' => 'expired'
+            ]),
+        ];
+
         update_option(
-            'give_licenses',
-            [
-                'licence-key-1' => $this->getRawLicenseData(),
-                'licence-key-2' => $this->getRawLicenseData([
-                    'license' => 'invalid'
-                ]),
-            ]
+            LICenseOptionKeys::LICENSES,
+            $data
         );
 
         $this->assertSame(
-            [
-                'licence-key-1' => $this->getRawLicenseData(),
-                'licence-key-2' => $this->getRawLicenseData([
-                    'license' => 'invalid'
-                ]),
-            ],
+            $data,
             $this->repository->getStoredLicenses()
         );
     }
@@ -86,46 +84,68 @@ class TestLicenseRepository extends TestCase
     /**
      * @unreleased
      */
-    public function testGetLicenseReturnsLicenseDataWhenLicenseIsStored(): void
+    public function testGetLicensesReturnsLicenseDataWhenLicenseIsStored(): void
     {
-        $data = $this->getRawLicenseData();
+        $license1 = $this->getRawLicenseData([
+            'license_key' => 'licence-key-1',
+            'license_id' => 123456,
+        ]);
+
+        $license2 = $this->getRawLicenseData([
+            'license_key' => 'licence-key-2',
+            'license_id' => 123457,
+        ]);
 
         update_option(
             'give_licenses',
-            ['licence-key-1' => $data]
+            [
+                'licence-key-1' => $license1,
+                'licence-key-2' => $license2
+            ],
         );
 
-        $licenseData = License::fromData($data);
+        $licenses = $this->repository->getLicenses();
 
-        $license = $this->repository->getLicense();
-
-        $this->assertEquals($licenseData, $license);
+        $this->assertEquals([
+            License::fromData($license1),
+            License::fromData($license2),
+        ], $licenses);
     }
 
     /**
      * @unreleased
      */
-    public function testIsLicenseValidReturnsFalseWhenLicenseIsNotValid(): void
+    public function testHasActiveLicensesReturnsFalseWhenNoLicenseIsValid(): void
     {
         update_option(
-            'give_licenses',
-            ['licence-key-1' => $this->getRawLicenseData(['license' => 'invalid'])]
+            LICenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData(['license' => 'expired']),
+                'licence-key-2' => $this->getRawLicenseData(['license' => 'expired']),
+            ]
         );
 
-        $this->assertFalse($this->repository->isLicenseValid());
+        $this->assertFalse($this->repository->hasActiveLicense());
     }
 
     /**
      * @unreleased
      */
-    public function testIsValidReturnsTrueWhenLicenseIsValid(): void
+    public function testHasActiveLicensesReturnsTrueWhenValidLicenseIsFound(): void
     {
         update_option(
-            'give_licenses',
-            ['licence-key-1' => $this->getRawLicenseData()]
+            LICenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+                'licence-key-2' => $this->getRawLicenseData([
+                    'license' => 'valid'
+                ]),
+            ]
         );
 
-        $this->assertTrue($this->repository->isLicenseValid());
+        $this->assertTrue($this->repository->hasActiveLicense());
     }
 
     /**
@@ -133,21 +153,76 @@ class TestLicenseRepository extends TestCase
      */
     public function testGetGatewayFeeReturnsDefaultWhenNoLicenseIsStored(): void
     {
-        $this->assertSame(2.0, $this->repository->getGatewayFeePercentage());
+        $this->assertSame(2.0, $this->repository->getPlatformFeePercentage());
     }
 
     /**
      * @unreleased
      * @dataProvider gatewayFeeDataProvider
      */
-    public function testGetGatewayFeeReturnsFee($fee): void
+    public function testGetPlatformFeePercentageReturnsFeeWhenLicenseIsActive($fee): void
     {
         update_option(
-            'give_licenses',
-            ['licence-key-1' => $this->getRawLicenseData(['gateway_fee' => $fee])]
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'valid'
+                ]),
+            ]
         );
 
-        $this->assertSame((float)$fee, $this->repository->getGatewayFeePercentage());
+        update_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, $fee);
+
+        $this->assertSame((float)$fee, $this->repository->getPlatformFeePercentage());
+    }
+
+    /**
+     * @unreleased
+     * @dataProvider gatewayFeeDataProvider
+     */
+    public function testGetPlatformFeePercentageReturnsZeroWhenLicenseIsActiveAndOptionIsMissing($fee): void
+    {
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'valid'
+                ]),
+            ]
+        );
+
+        $this->assertSame(0.0, $this->repository->getPlatformFeePercentage());
+    }
+
+    /**
+     * @unreleased
+     * @dataProvider gatewayFeeDataProvider
+     */
+    public function testGetPlatformFeePercentageReturnsDefaultFeeWhenNoLicensesAreActive(): void
+    {
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+            ]
+        );
+
+        update_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, 1.8);
+
+        $this->assertSame(2.0, $this->repository->getPlatformFeePercentage());
+    }
+
+    /**
+     * @unreleased
+     * @dataProvider gatewayFeeDataProvider
+     */
+    public function testGetPlatformFeePercentageReturnsDefaultFeeWhenNoLicensesAreFound(): void
+    {
+        update_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, 1.8);
+
+        $this->assertSame(2.0, $this->repository->getPlatformFeePercentage());
     }
 
     /**

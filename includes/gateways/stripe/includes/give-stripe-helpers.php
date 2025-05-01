@@ -619,7 +619,7 @@ function give_stripe_get_application_fee_percentage() {
      */
     $licenseRepository = give(LicenseRepository::class);
 
-    return $licenseRepository->getGatewayFeePercentage();
+    return $licenseRepository->getPlatformFeePercentage();
 }
 
 /**

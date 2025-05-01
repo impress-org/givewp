@@ -3,13 +3,17 @@
 namespace Give\License\Repositories;
 
 use Give\License\DataTransferObjects\License;
+use Give\License\ValueObjects\LicenseOptionKeys;
 
+/**
+ * @unreleased
+ */
 class LicenseRepository
 {
     /**
      * @unreleased
      */
-    public function hasLicense(): bool
+    public function hasLicenses(): bool
     {
         return !empty($this->getStoredLicenses());
     }
@@ -19,40 +23,73 @@ class LicenseRepository
      */
     public function getStoredLicenses(): array
     {
-        return (array)get_option('give_licenses', []);
+        return (array)get_option(LicenseOptionKeys::LICENSES, []);
     }
 
     /**
      * @unreleased
      */
-    public function getLicense(): ?License
+    public function getLicenses(): array
     {
-        if (!$this->hasLicense()) {
+        if (!$this->hasLicenses()) {
+            return [];
+        }
+
+        $storedLicenses = $this->getStoredLicenses();
+        $licenses = [];
+
+        foreach ($storedLicenses as $license) {
+            $licenses[] = License::fromData($license);
+        }
+
+        return $licenses;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function hasActiveLicense(): bool
+    {
+        if (!$this->hasLicenses()) {
+            return false;
+        }
+
+        $licenses = $this->getLicenses();
+
+        foreach ($licenses as $license) {
+            if ($license->isValid) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getPlatformFeePercentage(): float
+    {
+        if (!$this->hasActiveLicense()) {
+            return 2.0;
+        }
+
+        if (is_null($this->getStoredPlatformFeeAmount())) {
+            return 0.0;
+        }
+
+        return $this->getStoredPlatformFeeAmount();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getStoredPlatformFeeAmount(): ?float
+    {
+        if (!get_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE)) {
             return null;
         }
 
-        $data = current($this->getStoredLicenses());
-
-        return License::fromData($data);
-    }
-
-    /**
-     * @unreleased
-     */
-    public function isLicenseValid(): bool
-    {
-        $license = $this->getLicense();
-
-        return $license->isValid ?? false;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getGatewayFeePercentage(): float
-    {
-        $license = $this->getLicense();
-
-        return $license->gatewayFee ?? 2.0;
+        return (float)get_option(LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE);
     }
 }
