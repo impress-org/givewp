@@ -25,7 +25,7 @@ class License
     public bool $isAllAccessPass;
     /** @var Download[] */
     public array $downloads = [];
-    public bool $isValid;
+    public bool $isActive;
     public float $gatewayFee;
 
     /**
@@ -34,7 +34,7 @@ class License
     public static function fromData(array $data): self
     {
         $self = new self();
-        $self->isValid = $data['license'] === 'valid';
+        $self->isActive = $data['license'] === 'valid';
         $self->success = (bool)$data['success'];
         $self->license = (string)$data['license'];
         $self->itemId = $data['item_id'];

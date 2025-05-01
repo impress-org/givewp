@@ -9,8 +9,9 @@
  * @since       1.0
  */
 
-use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\License\PremiumAddonsListManager;
+use Give\License\Repositories\LicenseRepository;
+use Give\License\ValueObjects\LicenseOptionKeys;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -2520,6 +2521,12 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
 
+    $platform_fee_percentage = get_platform_fee_from_licenses();
+
+    if (!is_null($platform_fee_percentage)) {
+        update_option( LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, $platform_fee_percentage, 'no' );
+    }
+
 	// Tell WordPress to look for updates.
 	if ( $wp_check_updates ) {
 		delete_site_transient('update_plugins');
@@ -2529,6 +2536,17 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 		'give_licenses'     => $give_licenses,
 		'give_get_versions' => $tmp_update_plugins,
 	];
+}
+
+/**
+ * Get platform fee from stored licenses
+ */
+function get_platform_fee_from_licenses(): ?float
+{
+    /** @var LicenseRepository $repository */
+    $repository = give(LicenseRepository::class);
+
+    return $repository->findLowestPlatformFeePercentageFromActiveLicenses();
 }
 
 /**

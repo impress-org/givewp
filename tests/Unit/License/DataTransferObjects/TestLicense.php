@@ -23,7 +23,7 @@ class TestLicense extends TestCase
 
         $license = License::fromData($data);
 
-        $this->assertTrue($license->isValid);
+        $this->assertTrue($license->isActive);
         $this->assertTrue($license->success);
         $this->assertEquals('valid', $license->license);
         $this->assertEquals('Basic Plan', $license->itemName);

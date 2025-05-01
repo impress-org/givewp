@@ -13,7 +13,7 @@ class LicenseRepository
     /**
      * @unreleased
      */
-    public function hasLicenses(): bool
+    public function hasStoredLicenses(): bool
     {
         return !empty($this->getStoredLicenses());
     }
@@ -36,7 +36,7 @@ class LicenseRepository
      */
     public function getLicenses(): array
     {
-        if (!$this->hasLicenses()) {
+        if (!$this->hasStoredLicenses()) {
             return [];
         }
 
@@ -53,21 +53,31 @@ class LicenseRepository
     /**
      * @unreleased
      */
-    public function hasActiveLicense(): bool
+    public function getActiveLicenses(): array
     {
-        if (!$this->hasLicenses()) {
-            return false;
+        if (!$this->hasStoredLicenses()) {
+            return [];
         }
 
         $licenses = $this->getLicenses();
 
-        foreach ($licenses as $license) {
-            if ($license->isValid) {
-                return true;
-            }
+        return array_filter($licenses, static function(License $license) {
+            return $license->isActive;
+        });
+    }
+
+    /**
+     * @unreleased
+     */
+    public function hasActiveLicenses(): bool
+    {
+        if (!$this->hasStoredLicenses()) {
+            return false;
         }
 
-        return false;
+        $activeLicenses = $this->getActiveLicenses();
+
+        return !empty($activeLicenses);
     }
 
     /**
@@ -75,7 +85,7 @@ class LicenseRepository
      */
     public function getPlatformFeePercentage(): float
     {
-        if (!$this->hasActiveLicense()) {
+        if (!$this->hasActiveLicenses()) {
             return 2.0;
         }
 
@@ -104,5 +114,26 @@ class LicenseRepository
     public function hasStoredPlatformFeePercentage(): bool
     {
         return !is_null($this->getStoredPlatformFeePercentage());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function findLowestPlatformFeePercentageFromActiveLicenses(): ?float
+    {
+        if (!$this->hasActiveLicenses()) {
+            return null;
+        }
+
+        $fees = array_map(static function(License $license) {
+            return $license->gatewayFee;
+
+        }, $this->getActiveLicenses());
+
+        if (empty($fees)) {
+            return null;
+        }
+
+        return (float)min($fees);
     }
 }
