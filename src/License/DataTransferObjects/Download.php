@@ -24,16 +24,16 @@ class Download
     public static function fromData(array $data): self
     {
         $self = new self();
-        $self->index = (int)$data['index'];
-        $self->attachmentId = (int)$data['attachment_id'];
-        $self->thumbnailSize = (string)$data['thumbnail_size'];
-        $self->name = (string)$data['name'];
-        $self->file = (string)$data['file'];
-        $self->condition = (string)$data['condition'];
-        $self->arrayIndex = (int)$data['array_index'];
-        $self->pluginSlug = (string)$data['plugin_slug'];
-        $self->readme = (string)$data['readme'];
-        $self->currentVersion = (string)$data['current_version'];
+        $self->index = (int)($data['index'] ?? 0);
+        $self->attachmentId = (int)($data['attachment_id'] ?? 0);
+        $self->thumbnailSize = (string)($data['thumbnail_size'] ?? 'thumbnail');
+        $self->name = (string)($data['name'] ?? '');
+        $self->file = (string)($data['file'] ?? '');
+        $self->condition = (string)($data['condition'] ?? '');
+        $self->arrayIndex = (int)($data['array_index'] ?? 0);
+        $self->pluginSlug = (string)($data['plugin_slug'] ?? '');
+        $self->readme = (string)($data['readme'] ?? '');
+        $self->currentVersion = (string)($data['current_version'] ?? '');
 
         return $self;
     }

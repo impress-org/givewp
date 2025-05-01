@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\License\DataTransferObjects;
 
+use Give\License\DataTransferObjects\Download;
 use Give\License\DataTransferObjects\License;
 use Give\Tests\Unit\License\TestTraits\HasLicenseData;
 use Give\Tests\TestCase;
@@ -40,5 +41,31 @@ class TestLicense extends TestCase
         $this->assertEquals(123456, $license->licenseId);
         $this->assertFalse($license->isAllAccessPass);
         $this->assertCount(3, $license->downloads);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testFromDataFormatsDownloads(): void
+    {
+        $data = $this->getRawLicenseData([
+            'download' => 'https://example.com/download.zip',
+            'readme' => 'https://example.com/readme.txt',
+            'current_version' => '1.0.0',
+            'plugin_slug' => 'example-plugin',
+        ]);
+
+        $license = License::fromData($data);
+
+        $download = Download::fromData([
+            'file' => 'https://example.com/download.zip',
+            'plugin_slug' => 'example-plugin',
+            'readme' => 'https://example.com/readme.txt',
+            'current_version' => '1.0.0',
+        ]);
+
+        $this->assertEquals([
+            $download,
+        ], $license->downloads);
     }
 }
