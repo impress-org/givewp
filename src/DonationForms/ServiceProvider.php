@@ -3,10 +3,12 @@
 namespace Give\DonationForms;
 
 use Exception;
+use Give\DonationForms\OrphanedForms\Actions\Assets as OrphanedFormsAssets;
 use Give\DonationForms\Actions\AddHoneyPotFieldToDonationForms;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\PrintFormMetaTags;
+use Give\DonationForms\Actions\RegisterFormEntity;
 use Give\DonationForms\Actions\ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
@@ -27,6 +29,7 @@ use Give\DonationForms\Migrations\UpdateDonationLevelsSchema;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
+use Give\DonationForms\Routes\DonationFormsEntityRoute;
 use Give\DonationForms\Routes\ValidationRoute;
 use Give\DonationForms\Shortcodes\GiveFormShortcode;
 use Give\DonationForms\V2\ListTable\Columns\DonationCountColumn;
@@ -92,6 +95,13 @@ class ServiceProvider implements ServiceProviderInterface
             RemoveDuplicateMeta::class,
             UpdateDonationLevelsSchema::class,
         ]);
+
+        /**
+         * @since 4.2.0
+         */
+        Hooks::addAction('init', RegisterFormEntity::class);
+        Hooks::addAction('rest_api_init', DonationFormsEntityRoute::class);
+        Hooks::addAction('admin_init', OrphanedFormsAssets::class);
 
         /**
          * @since 3.16.0

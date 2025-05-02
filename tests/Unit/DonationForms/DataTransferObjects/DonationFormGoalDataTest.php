@@ -45,6 +45,7 @@ class DonationFormGoalDataTest extends TestCase
             'currentAmount' => $currentAmount,
             'targetAmount' => $targetAmount,
             'label' => $donationFormGoalData->getLabel(),
+            'percentage' => $progressPercentage,
             'isAchieved' => $isEnabled && $donationForm->settings->enableAutoClose && $progressPercentage >= 100
         ]);
     }

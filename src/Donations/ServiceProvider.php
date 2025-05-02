@@ -12,9 +12,13 @@ use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
 use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
+use Give\Donations\LegacyListeners\UpdateDonationMetaWithLegacyFormCurrencySettings;
+use Give\Donations\Listeners\DonationCreated\UpdateDonationMetaWithCurrencySettings;
+use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurrency;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
+use Give\Donations\Migrations\RecalculateExchangeRate;
 use Give\Donations\Migrations\SetAutomaticFormattingOption;
 use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
@@ -46,6 +50,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        $this->bootListeners();
         $this->bootLegacyListeners();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
@@ -55,6 +60,7 @@ class ServiceProvider implements ServiceProviderInterface
             SetAutomaticFormattingOption::class,
             MoveDonationCommentToDonationMetaTable::class,
             UnserializeTitlePrefix::class,
+            RecalculateExchangeRate::class,
         ]);
     }
 
@@ -69,6 +75,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_donation_creating', DispatchGivePreInsertPayment::class);
 
         add_action('givewp_donation_created', static function (Donation $donation) {
+            (new UpdateDonationMetaWithLegacyFormCurrencySettings())($donation);
             (new InsertSequentialId())($donation);
             (new DispatchGiveInsertPayment())($donation);
             (new UpdateDonorPaymentIds())($donation);
@@ -127,6 +134,18 @@ class ServiceProvider implements ServiceProviderInterface
     {
         add_action('give_view_donation_details_billing_after', static function ($donationId) {
             echo (new DonationDetailsController())->show($donationId);
+        });
+    }
+
+    /**
+     * @since 4.2.0
+     */
+    private function bootListeners()
+    {
+        add_action('givewp_donation_created', static function (Donation $donation) {
+            (new UpdateDonationMetaWithCurrencySettings())($donation);
+
+            (new UpdateDonorMetaWithLastDonatedCurrency())($donation);
         });
     }
 }

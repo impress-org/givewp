@@ -67,15 +67,14 @@ class CampaignsDataRepository
     }
 
     /**
+     * @since 4.2.0 return type of float
      * @since 4.0.0
      *
      * Get revenue for campaign
      *
      * @param Campaign $campaign
-     *
-     * @return int
      */
-    public function getRevenue(Campaign $campaign): int
+    public function getRevenue(Campaign $campaign): float
     {
         $data = $campaign->goalType->isSubscriptions()
             ? $this->subscriptionAmounts
@@ -83,7 +82,7 @@ class CampaignsDataRepository
 
         foreach ($data as $row) {
             if (isset($row['campaign_id']) && $row['campaign_id'] == $campaign->id) {
-                return (int)$row['sum'];
+                return $row['sum'];
             }
         }
 
@@ -169,13 +168,14 @@ class CampaignsDataRepository
     }
 
     /**
+     * @since 4.2.0 return union type int|float
      * @since 4.0.0
      *
      * @param Campaign $campaign
      *
-     * @return int
+     * @return int|float
      */
-    private function getActualGoal(Campaign $campaign): int
+    private function getActualGoal(Campaign $campaign)
     {
         switch ($campaign->goalType->getValue()) {
             case CampaignGoalType::DONATIONS():

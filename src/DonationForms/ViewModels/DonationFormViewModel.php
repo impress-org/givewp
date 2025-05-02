@@ -160,10 +160,9 @@ class DonationFormViewModel
     }
 
     /**
+     * @since 4.2.0 always return count value
      * @since 4.1.0 use DonationFormGoalData
-     *
-     * @since      3.0.0
-     *
+     * @since 3.0.0
      */
     private function getTotalCountValue(): ?int
     {
@@ -175,12 +174,8 @@ class DonationFormViewModel
                 return $this->formSettings->goalSource->isCampaign()
                     ? $this->donationFormGoalData->getQuery()->countDonations()
                     : $this->donationFormGoalData->getQuery()->count();
-            case 'subscriptions':
-                return $this->donationFormGoalData->getQuery()->count();
-            case 'amountFromSubscriptions':
-                return $this->donationFormGoalData->getQuery()->sumInitialAmount();
             default:
-                return $this->donationFormGoalData->getQuery()->sumIntendedAmount();
+                return $this->donationFormGoalData->getQuery()->count();
         endswitch;
     }
 
