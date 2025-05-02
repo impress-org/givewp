@@ -28,7 +28,7 @@ class MigrateFormsToCampaignForms extends Migration
      */
     public static function title(): string
     {
-        return 'Migrate Forms to Campaigns and Campaign Forms';
+        return 'Migrate Forms to Campaigns';
     }
 
     /**
