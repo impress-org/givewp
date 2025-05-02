@@ -34,10 +34,14 @@ class RefreshLicensesForPlatformFee extends Migration
     }
 
     /**
+     * This migration refreshes the stored licenses (making a request to the License Server API) to retrieve the new gateway_fee property.
+     *
      * @unreleased
      */
     public function run(): void
     {
+        // Normally we avoid using production code within migrations, but this is a simple license refresh that will eventually be refreshed anyway.
+        // We check if the function exists now to avoid errors in case in the future, this function is not defined anymore.
         if (function_exists('give_refresh_licenses')) {
             give_refresh_licenses();
         }

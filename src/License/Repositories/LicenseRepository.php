@@ -11,6 +11,8 @@ use Give\License\ValueObjects\LicenseOptionKeys;
 class LicenseRepository
 {
     /**
+     * Check if we have stored licenses in the database.
+     *
      * @unreleased
      */
     public function hasStoredLicenses(): bool
@@ -51,6 +53,8 @@ class LicenseRepository
     }
 
     /**
+     * Returns only the active licenses.
+     *
      * @unreleased
      */
     public function getActiveLicenses(): array
@@ -67,6 +71,8 @@ class LicenseRepository
     }
 
     /**
+     * Checks if we have any active licenses.
+     *
      * @unreleased
      */
     public function hasActiveLicenses(): bool
@@ -81,6 +87,8 @@ class LicenseRepository
     }
 
     /**
+     * The platform fee percentage is used by gateways to calculate a platform fee.
+     *
      * @unreleased
      */
     public function getPlatformFeePercentage(): float
@@ -97,6 +105,9 @@ class LicenseRepository
     }
 
     /**
+     * Check if we have an available platform fee percentage set.
+     * This can be used to determine if we can charge a platform fee.
+     *
      * @unreleased
      */
     public function hasPlatformFeePercentage(): bool
@@ -105,6 +116,9 @@ class LicenseRepository
     }
 
     /**
+     * The stored platform fee percentage comes from License Server API.
+     * When licenses are activated and refreshed, this value is stored in the database.
+     *
      * @unreleased
      */
     public function getStoredPlatformFeePercentage(): ?float
@@ -117,6 +131,8 @@ class LicenseRepository
     }
 
     /**
+     * Check if we have a stored platform fee percentage.
+     *
      * @unreleased
      */
     public function hasStoredPlatformFeePercentage(): bool
@@ -125,6 +141,10 @@ class LicenseRepository
     }
 
     /**
+     * Find the lowest platform fee percentage from active licenses.
+     * Since there can be multiple licenses, we need to find the lowest fee from all active licenses.
+     * Once we have the lowest fee, we store it in the database for future use.
+     *
      * @unreleased
      */
     public function findLowestPlatformFeePercentageFromActiveLicenses(): ?float
