@@ -64,4 +64,6 @@ class Give_Shortcode_Login extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Login();
+add_action( 'init', static function () {
+    new Give_Shortcode_Login();
+});

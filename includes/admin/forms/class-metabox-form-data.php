@@ -1501,5 +1501,6 @@ class Give_MetaBox_Form_Data {
 	}
 }
 
-new Give_MetaBox_Form_Data();
-
+add_action( 'init', static function () {
+    new Give_MetaBox_Form_Data();
+});

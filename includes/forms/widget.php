@@ -505,4 +505,8 @@ class Give_Forms_Widget extends WP_Widget {
 	}
 }
 
-new Give_Forms_Widget();
+
+add_action( 'widgets_init', static function() {
+    register_widget( 'Give_Forms_Widget' );
+} );
+

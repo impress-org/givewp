@@ -53,31 +53,35 @@ class ServiceProvider implements ServiceProviderContract
         Hooks::addAction('rest_api_init', ProductRecommendationsRoute::class, 'registerRoute');
         Hooks::addAction('rest_api_init', DismissWelcomeBannerRoute::class, 'registerRoute');
 
-        if (AddonsAdminPage::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', AddonsAdminPage::class, 'loadScripts');
-        }
+        add_action('admin_enqueue_scripts', static function (){
+            if (ReportsWidgetBanner::isShowing()) {
+                give(ReportsWidgetBanner::class)->loadScripts();
+            }
 
-        if (ReportsWidgetBanner::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', ReportsWidgetBanner::class, 'loadScripts');
-        }
+            if (AddonsAdminPage::isShowing()) {
+                give(AddonsAdminPage::class)->loadScripts();
+            }
 
-        if (PaymentGateways::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', PaymentGateways::class, 'loadScripts');
-            Hooks::addAction(
-                'give_admin_field_enabled_gateways',
-                PaymentGateways::class,
-                'renderPaymentGatewayRecommendation'
-            );
-        }
+             if (PaymentGateways::isShowing()) {
+                 give(PaymentGateways::class)->loadScripts();
+            }
 
-        if (LegacyFormEditor::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', LegacyFormEditor::class, 'loadScripts');
-            Hooks::addAction(
-                'give_post_form_field_options_settings',
-                LegacyFormEditor::class,
-                'renderDonationOptionsRecurringRecommendation'
-            );
-        }
+             if (LegacyFormEditor::isShowing()) {
+                 give(LegacyFormEditor::class)->loadScripts();
+            }
+        });
+
+         Hooks::addAction(
+            'give_admin_field_enabled_gateways',
+            PaymentGateways::class,
+            'renderPaymentGatewayRecommendation'
+        );
+
+          Hooks::addAction(
+            'give_post_form_field_options_settings',
+            LegacyFormEditor::class,
+            'renderDonationOptionsRecurringRecommendation'
+        );
 
         Hooks::addAction('admin_init', CampaignsWelcomeBanner::class);
     }

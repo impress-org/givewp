@@ -137,8 +137,8 @@ class Give_Cache_Setting {
 		add_action( 'updated_option', [ $this, 'reload_plugin_settings' ] );
 		add_action( 'deleted_option', [ $this, 'reload_plugin_settings' ] );
 
-		add_action( 'give_init', [ $this, 'setup_currencies_list' ], 11 );
-		add_action( 'give_init', [ $this, 'setup_gateways_list' ], 11 );
+		add_action( 'init', [ $this, 'setup_currencies_list' ], 11 );
+		add_action( 'init', [ $this, 'setup_gateways_list' ], 11 );
 	}
 
 	/**
