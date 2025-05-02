@@ -35,8 +35,9 @@ class Form extends Model
         'goalSettings' => GoalSettings::class,
         'levels' => 'array',
         'goalOption' => 'bool',
-        'donationsCount' => 'int',
-        'raisedAmount' => Money::class,
+        'totalNumberOfDonations' => 'int',
+        'totalAmountDonated' => Money::class,
+        'usesFormBuilder' => 'bool',
     ];
 
 

@@ -11,10 +11,6 @@ class Converter
 {
     /**
      * @unreleased
-     *
-     * @param object $queryObject
-     *
-     * @return Form
      */
     public function __invoke(object $queryObject): Form
     {
@@ -29,6 +25,9 @@ class Converter
     }
 
 
+    /**
+     * @unreleased
+     */
     private function getGoalSettings(object $queryObject): GoalSettings
     {
         $settings = $queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()};

@@ -42,7 +42,6 @@ class DonationForm extends Model implements ModelReadOnly
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => DonationFormStatus::class,
-        'usesFormBuilder' => 'bool',
     ];
 
     /**

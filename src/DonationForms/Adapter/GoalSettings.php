@@ -9,9 +9,11 @@ class GoalSettings
 {
     public string $title;
 
-    public static function fromArray(array $data)
+    public static function fromArray(array $data): GoalSettings
     {
-        $settings = new self();
+        $settings = new static();
         $settings->title = $data['title'];
+
+        return $settings;
     }
 }
