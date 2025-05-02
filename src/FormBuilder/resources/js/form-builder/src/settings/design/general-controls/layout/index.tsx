@@ -11,7 +11,12 @@ export default function Layout({dispatch, formDesigns, designId}) {
                 <SelectControl
                     label={__('Form layout', 'give')}
                     value={designId}
-                    onChange={(designId: string) => dispatch(setFormSettings({designId}))}
+                    onChange={(designId: string) => {
+                        dispatch(setFormSettings({designId}));
+                        if (designId !== 'multi-step') {
+                            dispatch(setFormSettings({showHeader: true}));
+                        }
+                    }}
                     options={designOptions}
                     help={__(
                         'Change the appearance of your donation form on your site. Each option has a different layout.',
