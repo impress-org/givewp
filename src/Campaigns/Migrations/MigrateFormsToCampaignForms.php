@@ -26,6 +26,14 @@ class MigrateFormsToCampaignForms extends Migration
     /**
      * @inheritDoc
      */
+    public static function title(): string
+    {
+        return 'Migrate Forms to Campaigns and Campaign Forms';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public static function timestamp(): int
     {
         return strtotime('2024-08-26 00:00:02');
