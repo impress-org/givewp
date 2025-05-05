@@ -114,7 +114,7 @@ class FormBuilderResourceController
     protected function getRequiredBlocks(): array
     {
         return [
-            "givewp/donation-amount" => "Donation Amount",
+            //"givewp/donation-amount" => "Donation Amount",
             "givewp/donor-name" => "Donor Name",
             "givewp/email" => "Email",
             "givewp/payment-gateways" => "Payment Gateways",

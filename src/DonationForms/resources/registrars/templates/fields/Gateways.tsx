@@ -103,13 +103,12 @@ const TestModeNotice = () => {
  * @since 3.0.0
  */
 export default function Gateways({isTestMode, defaultValue, inputProps, gateways}: GatewayFieldProps) {
-    const {useFormState, useWatch, useFormContext, useDonationFormSettings} = window.givewp.form.hooks;
+    const {useFormState, useWatch, useFormContext, useDonationFormSettings, useFormData} = window.givewp.form.hooks;
     const {errors} = useFormState();
     const {setValue} = useFormContext();
     const {currencySwitcherSettings} = useDonationFormSettings();
+    const {amount: donationAmount, currency} = useFormData();
 
-    const donationAmount = useWatch({name: 'amount'});
-    const currency = useWatch({name: 'currency'});
     const activeGatewayId = useWatch({name: 'gatewayId'});
 
     const donationAmountMinimumNotReached = donationAmount === 0;

@@ -24,7 +24,7 @@ class UpdateDonationLevelId
         /** @var Amount $amountField */
         $amountField = $donationForm->schema()->getNodeByName('amount');
 
-        if (!$amountField) {
+        if (!$amountField instanceof Amount) {
             return;
         }
 

@@ -6,12 +6,17 @@ use Closure;
 use Give\DonationForms\Actions\ConvertDonationFormBlocksToFieldsApi;
 use Give\DonationForms\DonationQuery;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Rules\DonationTypeRule;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationType;
+use Give\FormAPI\Form\Group;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\FieldsAPI\Amount;
+use Give\Framework\FieldsAPI\DonationAmount;
 use Give\Framework\FieldsAPI\DonationForm as DonationFormNode;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
 use Give\Framework\FieldsAPI\Hidden;
@@ -448,19 +453,39 @@ class DonationFormRepository
             $firstSection = $form->count() ? $formNodes[0] : null;
 
             if ($firstSection) {
+                $amountFields = [];
+
+                if (!$form->getNodeByName('amount')) {
+                    $amountFields[] = Hidden::make('amount')->defaultValue(0);
+                }
+
+                if (!$form->getNodeByName('donationType')) {
+                    $amountFields[] = Hidden::make('donationType')
+                        ->defaultValue(DonationType::SINGLE()->getValue())
+                        ->rules(new DonationTypeRule());
+                }
+
+                if (!$form->getNodeByName('currency')) {
+                    $amountFields[] = Hidden::make('currency')
+                        ->defaultValue($form->getDefaultCurrency())
+                        ->rules('required', 'currency');
+                }
+
+                $firstSection->append(...$amountFields);
+
                 $firstSection->append(
-                    Hidden::make('formId')
-                        ->defaultValue($formId)
-                        ->rules(
-                            'required', 'integer',
-                            function ($value, Closure $fail, string $key, array $values) use ($formId) {
-                                if ($value !== $formId) {
-                                    $fail('Invalid donation form ID');
+                        Hidden::make('formId')
+                            ->defaultValue($formId)
+                            ->rules(
+                                'required', 'integer',
+                                function ($value, Closure $fail, string $key, array $values) use ($formId) {
+                                    if ($value !== $formId) {
+                                        $fail('Invalid donation form ID');
+                                    }
                                 }
-                            }
-                        )
-                );
-            }
+                            )
+                    );
+                }
         } catch (NameCollisionException $exception) {
             throw $exception;
         } catch (Exception $exception) {
