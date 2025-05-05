@@ -109,6 +109,9 @@ export default function Authentication({
     );
 }
 
+/**
+ * @unreleased replace "Forgot your password" anchor element with a button since it does not contain a valid href attribute.
+ */
 const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
     const {authUrl} = getWindowData();
     const {useWatch, useFormContext} = window.givewp.form.hooks;
@@ -153,7 +156,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
                 <button className={styles['authentication__login-form__login-button']} onClick={tryLogin}>
                     {__('Log In', 'give')}
                 </button>
-                <a
+                <button
                     className={styles['authentication__login-form__reset-button']}
                     onClick={(event) => {
                         event.preventDefault();
@@ -163,7 +166,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
                     }}
                 >
                     {__('Forgot your password?', 'give')} <span>{__('Reset', 'give')}</span>
-                </a>
+                </button>
             </div>
         </div>
     );
