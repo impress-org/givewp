@@ -19,7 +19,7 @@ class TestUpdateDonorMetaWithLastDonatedCurrency extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testShouldUpdateDonorMetaWithLastDonatedCurrency()
     {

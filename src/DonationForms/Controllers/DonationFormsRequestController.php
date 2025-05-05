@@ -12,12 +12,12 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class DonationFormsRequestController
 {
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function getForm(WP_REST_Request $request): WP_REST_Response
     {
@@ -31,7 +31,7 @@ class DonationFormsRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function getForms(WP_REST_Request $request): WP_REST_Response
     {
@@ -113,7 +113,7 @@ class DonationFormsRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      *
      * @throws Exception
      */

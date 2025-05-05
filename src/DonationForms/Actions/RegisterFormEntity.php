@@ -5,12 +5,12 @@ namespace Give\DonationForms\Actions;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class RegisterFormEntity
 {
     /**
-     * @unreleased 
+     * @since 4.2.0
      */
     public function __invoke()
     {

@@ -252,7 +252,7 @@ class CampaignRequestController
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      *
      * @throws Exception
      */

@@ -9,12 +9,12 @@ use Give\Framework\FieldsAPI\Properties\DonationForm\CurrencySwitcherSetting;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class UpdateDonationMetaWithCurrencySettings
 {
     /**
-     * @unreleased
+     * @since 4.2.0
      *
      * @throws Exception
      */

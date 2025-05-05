@@ -9,7 +9,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 
 /**
- * @unreleased
+ * @since 4.2.0
  * @coversDefaultClass \Give\DonationForms\V2\Actions\ConvertV2FormToV3Form
  */
 class TestConvertV2FormToV3Form extends TestCase
@@ -18,7 +18,7 @@ class TestConvertV2FormToV3Form extends TestCase
     use LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testConvertV2FormToV3Form()
     {

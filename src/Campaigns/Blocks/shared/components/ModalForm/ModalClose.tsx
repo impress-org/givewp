@@ -1,5 +1,8 @@
 import {Path, SVG} from '@wordpress/components';
 
+/**
+ * @unreleasaed
+ */
 export default function ModalCloseIcon() {
     return (
         <SVG

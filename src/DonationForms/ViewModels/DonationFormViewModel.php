@@ -160,7 +160,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased always return count value
+     * @since 4.2.0 always return count value
      * @since 4.1.0 use DonationFormGoalData
      * @since 3.0.0
      */
