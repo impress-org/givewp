@@ -7,6 +7,7 @@ import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 import getCurrentStepObject from '@givewp/forms/app/form/MultiStepForm/utilities/getCurrentStepObject';
 
 /**
+ * @unreleased update step title element to h3.
  * @since 3.4.0 updated with steps props and showStepsHeader conditional
  * @since 3.0.0
  */
@@ -27,7 +28,7 @@ export default function StepsWrapper({steps, children}: {steps: StepObject[]; ch
                             <PreviousButton>{__('Previous', 'give')}</PreviousButton>
                         </div>
                         <div className="givewp-donation-form__steps-header-title">
-                            <p className="givewp-donation-form__steps-header-title-text">{currentStepObject.title}</p>
+                            <h3 className="givewp-donation-form__steps-header-title-text">{currentStepObject.title}</h3>
                         </div>
                     </div>
                     <progress className="givewp-donation-form__steps-progress" value={currentStep} max={totalSteps} />
