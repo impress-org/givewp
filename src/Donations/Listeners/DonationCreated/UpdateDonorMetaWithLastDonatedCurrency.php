@@ -7,12 +7,12 @@ use Give\Donations\Models\Donation;
 /**
  * Ported over from v2 forms `give_cs_store_switched_currency_meta_data`
  *
- * @unreleased
+ * @since 4.2.0
  */
 class UpdateDonorMetaWithLastDonatedCurrency
 {
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function __invoke(Donation $donation)
     {

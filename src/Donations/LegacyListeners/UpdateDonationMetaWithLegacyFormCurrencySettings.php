@@ -6,16 +6,16 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class UpdateDonationMetaWithLegacyFormCurrencySettings
 {
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function __invoke(Donation $donation)
     {
-        if (!isset($_POST['give-cs-exchange-rate'])) {
+        if (!isset($_POST['give-cs-exchange-rate']) || $_POST['give-cs-exchange-rate'] === '0') {
             return;
         }
 

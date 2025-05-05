@@ -6,12 +6,12 @@ use Give\Campaigns\Models\Campaign;
 use Give\Framework\Database\DB;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class UnarchiveCampaignFormAsPublishStatus
 {
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function __invoke(Campaign $campaign)
     {
