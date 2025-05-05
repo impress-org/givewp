@@ -4,8 +4,7 @@ namespace Give\DonationForms\Repositories;
 
 
 use Give\DonationForms\DonationDataQuery;
-use Give\DonationForms\Models\DonationForm as V3FORM;
-use Give\DonationForms\V2\Models\DonationForm;
+use Give\DonationForms\Adapter\Form;
 use Give\DonationForms\ValueObjects\GoalType;
 
 class DonationFormDataRepository
@@ -49,13 +48,13 @@ class DonationFormDataRepository
      *
      * Get revenue for form
      *
-     * @param DonationForm $form
+     * @param Form $form
      *
      * @return int
      */
-    public function getRevenue(DonationForm $form): int
+    public function getRevenue(Form $form): int
     {
-        $data = $form->settings->goalType->isSubscriptions()
+        $data = $form->goalSettings->goalType->isSubscriptions()
             ? $this->subscriptionAmounts
             : $this->amounts;
 
@@ -73,13 +72,13 @@ class DonationFormDataRepository
      *
      * Get donations count for form
      *
-     * @param DonationForm $form
+     * @param Form $form
      *
      * @return int
      */
-    public function getDonationsCount(DonationForm $form): int
+    public function getDonationsCount(Form $form): int
     {
-        $data = $form->settings->goalType->isSubscriptions()
+        $data = $form->goalSettings->goalType->isSubscriptions()
             ? $this->subscriptionDonationsCount
             : $this->donationsCount;
 
@@ -97,13 +96,13 @@ class DonationFormDataRepository
      *
      * Get donors count for form
      *
-     * @param DonationForm $form
+     * @param Form $form
      *
      * @return int
      */
-    public function getDonorsCount(DonationForm $form): int
+    public function getDonorsCount(Form $form): int
     {
-        $data = $form->settings->goalType->isSubscriptions()
+        $data = $form->goalSettings->goalType->isSubscriptions()
             ? $this->subscriptionDonorsCount
             : $this->donorsCount;
 
@@ -122,40 +121,41 @@ class DonationFormDataRepository
      *
      * Get goal data for form
      *
-     * @param DonationForm $form
+     * @param Form $form
      *
      * @return array{actual: int, goal: int, actualFormatted: string, goalFormatted:string, percentage:float}
      */
-    public function getGoalData(DonationForm $form): array
+    public function getGoalData(Form $form): array
     {
         $actual = $this->getActualGoal($form);
-        $percentage = $form->settings->goalAmount
-            ? $actual / $form->settings->goalAmount
+        $percentage = $form->goalSettings->goalAmount
+            ? $actual / $form->goalSettings->goalAmount
             : 0;
 
         return [
             'actual' => $actual,
-            'goal' => $form->settings->goalAmount,
-            'actualFormatted' => $form->settings->goalType == GoalType::AMOUNT
+            'goal' => $form->goalSettings->goalAmount,
+            'actualFormatted' => $form->goalSettings->goalType == GoalType::AMOUNT
                 ? give_currency_filter(give_format_amount($actual))
                 : $actual,
-            'goalFormatted' => $form->settings->goalType == GoalType::AMOUNT
-                ? give_currency_filter(give_format_amount($form->settings->goalAmount))
-                : $form->settings->goalAmount,
+            'goalFormatted' => $form->goalSettings->goalType == GoalType::AMOUNT
+                ? give_currency_filter(give_format_amount($form->goalSettings->goalAmount))
+                : $form->goalSettings->goalAmount,
             'percentage' => round($percentage * 100, 2),
+            'typeIsMoney' => $form->goalSettings->goalType->isOneOf(GoalType::AMOUNT(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS())
         ];
     }
 
     /**
      * @unreleased
      *
-     * @param DonationForm $form
+     * @param Form $form
      *
      * @return int
      */
-    private function getActualGoal(DonationForm $form): int
+    private function getActualGoal(Form $form): int
     {
-        switch ($form->settings->goalType->getValue()) {
+        switch ($form->goalSettings->goalType->getValue()) {
             case GoalType::DONATIONS():
             case GoalType::SUBSCRIPTIONS():
                 return $this->getDonationsCount($form);

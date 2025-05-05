@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Give\DonationForms\V2\ListTable\Columns;
 
+use Give\Campaigns\Repositories\CampaignsDataRepository;
+use Give\DonationForms\Adapter\Form;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
+use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -43,26 +46,29 @@ class GoalColumn extends ModelColumn
      *
      * @inheritDoc
      *
-     * @param DonationForm $model
+     * @param Form $model
      */
     public function getCellValue($model): string
     {
-        $form = $model->toV3Form();
-
-        if (! $form->settings->enableDonationGoal) {
+        if (! $model->goalSettings->enableDonationGoal) {
             return __('No Goal Set', 'give');
         }
 
-        $goalData = (new DonationFormGoalData($form->id, $form->settings))->toArray();
+        /**
+         * @var DonationFormDataRepository $campaignsData
+         */
+        $donationFormData = $this->getListTableData();
+
+        $goalData = $donationFormData->getGoalData($model);
 
         $stats = apply_filters('give_goal_progress_stats', [
-            'raw_actual' => $goalData['currentAmount'],
-            'raw_goal' => $goalData['targetAmount'],
+            'raw_actual' => $goalData['actual'],
+            'raw_goal' => $goalData['goal'],
             'progress' => $goalData['percentage'],
-            'actual' => $goalData['typeIsMoney'] ? give_currency_filter(give_format_amount($goalData['currentAmount'])) : $goalData['currentAmount'],
-            'goal' => $goalData['typeIsMoney'] ? give_currency_filter(give_format_amount($goalData['targetAmount'])) : $goalData['targetAmount'],
+            'actual' => $goalData['actualFormatted'] ,
+            'goal' => $goalData['goalFormatted'],
             'format' => $goalData['typeIsMoney'] ? 'percentage' : 'amount',
-            'form_id' => $form->id,
+            'form_id' => $model->id,
         ]);
 
         $template = '

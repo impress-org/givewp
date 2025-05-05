@@ -45,6 +45,9 @@ class DonationRevenueColumn extends ModelColumn
      */
     public function getCellValue($model, $locale = ''): string
     {
+
+        return '0';
+
         return sprintf(
             '<a class="column-earnings-value" href="%s" aria-label="%s">%s</a>',
             admin_url("edit.php?post_type=give_forms&page=give-reports&tab=forms&legacy=true&form-id=$model->id"),

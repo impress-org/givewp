@@ -3,7 +3,7 @@
 namespace Give\DonationForms\Adapter;
 
 use DateTime;
-use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
 use Give\Framework\Models\Model;
 use Give\Framework\Support\ValueObjects\Money;
 
@@ -17,9 +17,8 @@ use Give\Framework\Support\ValueObjects\Money;
  * @property DonationFormStatus $status
  * @property GoalSettings       $goalSettings
  * @property array              $levels
- * @property bool               $goalOption
- * @property int                $donationsCount
- * @property Money              $raisedAmount
+ * @property bool               $enableDonationGoal
+ * @property bool               $usesFormBuilder
  */
 class Form extends Model
 {
@@ -34,9 +33,7 @@ class Form extends Model
         'status' => DonationFormStatus::class,
         'goalSettings' => GoalSettings::class,
         'levels' => 'array',
-        'goalOption' => 'bool',
-        'totalNumberOfDonations' => 'int',
-        'totalAmountDonated' => Money::class,
+        'enableDonationGoal' => 'bool',
         'usesFormBuilder' => 'bool',
     ];
 

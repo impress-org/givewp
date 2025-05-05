@@ -4,9 +4,10 @@ namespace Give\DonationForms\V2\Endpoints;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\DonationForms\Adapter\Form;
+use Give\DonationForms\Adapter\Repository;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
-use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -145,7 +146,7 @@ class ListDonationForms extends Endpoint
         $totalForms = $this->getTotalFormsCount();
         $totalPages = (int)ceil($totalForms / $this->request->get_param('perPage'));
 
-        $ids = array_map(function (DonationForm $form) {
+        $ids = array_map(function (Form $form) {
             return $form->id;
         }, $forms);
 
@@ -170,7 +171,7 @@ class ListDonationForms extends Endpoint
                     'locale' => Language::getLocale(),
                 ];
 
-                foreach($p2pForms as $form) {
+                foreach ($p2pForms as $form) {
                     if ($item['id'] == $form['form_id']) {
                         $queryArgs['p2p'] = true;
                         break;
@@ -209,7 +210,9 @@ class ListDonationForms extends Endpoint
         $perPage = $this->request->get_param('perPage');
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
 
-        $query = give()->donationForms->prepareQuery();
+        $query = give(Repository::class)->prepareQuery();
+//
+//        $query = give()->donationForms->prepareQuery();
         $query = $this->getWhereConditions($query);
 
         $query->orderByRaw('FIELD(ID, %d) DESC', $this->defaultForm);
@@ -247,7 +250,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @since 4.0.0 Add "campaignId" support
+     * @since      4.0.0 Add "campaignId" support
      * @since      2.24.0
      *
      * @param QueryBuilder $query
@@ -281,10 +284,13 @@ class ListDonationForms extends Endpoint
         }
 
         if ($campaignId = $this->request->get_param('campaignId')) {
-            $query->join(function (JoinQueryBuilder $builder) {
-                $builder->leftJoin('give_campaign_forms', 'campaign_forms')
-                    ->on('campaign_forms.form_id', 'ID');
-            })->where('campaign_forms.campaign_id', $campaignId);
+            $query
+                ->join(function (JoinQueryBuilder $builder) {
+                    $builder
+                        ->leftJoin('give_campaign_forms', 'campaign_forms')
+                        ->on('campaign_forms.form_id', 'ID');
+                })
+                ->where('campaign_forms.campaign_id', $campaignId);
         }
 
         return $query;
