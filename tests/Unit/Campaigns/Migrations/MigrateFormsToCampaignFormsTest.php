@@ -10,8 +10,6 @@ use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use ReflectionClass;
-use ReflectionException;
 
 /**
  * @since 4.0.0
@@ -240,32 +238,28 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     /**
      * @unreleased
      *
-     * @throws ReflectionException
+     * @throws Exception
      */
-    public function testAddCampaignFormRelationshipPreventDuplicatedEntryError()
+    public function testMigrationReRunsWithoutFormDuplicatedEntryError()
     {
+        $form1 = DonationForm::factory()->create([
+            'status' => DonationFormStatus::UPGRADED(),
+        ]);
+
+        $form2 = DonationForm::factory()->create();
+        give_update_meta($form2->id, 'migratedFormId', $form1->id);
+
         $migration = new MigrateFormsToCampaignForms();
-        $reflection = new ReflectionClass(MigrateFormsToCampaignForms::class);
-        $addCampaignFormRelationship = $reflection->getMethod('addCampaignFormRelationship');
-        $addCampaignFormRelationship->setAccessible(true);
 
-        $formId = 123;
-        $campaignId = 456;
+        //First run
+        $migration->run();
 
-        //First Entry
-        $addCampaignFormRelationship->invoke($migration, $formId, $campaignId);
+        //Second run
+        $migration->run();
 
-        //Duplicated Entry
-        $addCampaignFormRelationship->invoke($migration, $formId, $campaignId);
+        $campaign = Campaign::findByFormId($form1->id);
 
-        $entries = DB::table('give_campaign_forms')
-            ->where('form_id', $formId)
-            ->where('campaign_id', $campaignId)
-            ->getAll();
-
-
-        $this->assertEquals(1, count($entries));
-        $this->assertEquals($formId, $entries[0]->form_id);
-        $this->assertEquals($campaignId, $entries[0]->campaign_id);
+        $this->assertEquals(2, $campaign->forms()->count());
+        $this->assertEquals($form2->id, $campaign->defaultFormId);
     }
 }

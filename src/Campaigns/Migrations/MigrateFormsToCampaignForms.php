@@ -117,7 +117,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased Add DISTINCT and new JOIN to retrieve only the migratedFormId associated with the highest form_id
+     * @unreleased Add DISTINCT, whereNotIn and new JOIN to retrieve only the migratedFormId associated with the highest form_id
      * @since 4.0.0
      * @return array [{formId, campaignId, migratedFormId}]
      */
@@ -149,6 +149,19 @@ class MigrateFormsToCampaignForms extends Migration
                     WHERE meta_key = 'migratedFormId'
                     GROUP BY meta_value
                 ) AS give_formmeta ON forms.ID = give_formmeta.max_form_id");
+
+        /**
+         * When someone re-runs the migration, it can return a duplicated entry error if the upgraded forms were
+         * already added previously in the first time the migration was run, so this whereNotIn prevents these
+         * errors by excluding upgrade forms already added to the give_campaign_forms table previously.
+         */
+        $query->whereNotIn('give_formmeta.migratedFormId', function (QueryBuilder $builder) {
+            $builder
+                ->select('form_id')
+                ->from('give_campaign_forms')
+                ->whereRaw('WHERE form_id = give_formmeta.migratedFormId');
+        });
+
 
         $results = $query->getAll();
 
@@ -205,20 +218,15 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased Use the ON DUPLICATE KEY UPDATE statement to prevent exceptions related to duplicate entries
      * @since 4.0.0
      */
     protected function addCampaignFormRelationship($formId, $campaignId)
     {
-        $table = DB::prefix('give_campaign_forms');
-
-        DB::query(
-            DB::prepare("INSERT INTO {$table} (form_id, campaign_id) VALUES (%d, %d) ON DUPLICATE KEY UPDATE form_id = form_id",
-                [
-                    $formId,
-                    $campaignId,
-                ])
-        );
+        DB::table('give_campaign_forms')
+            ->insert([
+                'form_id' => $formId,
+                'campaign_id' => $campaignId,
+            ]);
     }
 
     /**
