@@ -257,7 +257,7 @@ class RegisterCampaignRoutes
 
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function registerDuplicateCampaign()
     {

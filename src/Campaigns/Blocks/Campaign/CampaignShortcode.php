@@ -3,12 +3,12 @@
 namespace Give\Campaigns\Blocks\Campaign;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class CampaignShortcode
 {
     /**
-     * @unreleased
+     * @since 4.2.0
      *
      * @param array $atts
      *
@@ -27,7 +27,7 @@ class CampaignShortcode
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function loadAssets()
     {
@@ -50,7 +50,7 @@ class CampaignShortcode
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     private function parseAttributes($atts): array
     {

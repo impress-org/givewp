@@ -5,7 +5,7 @@ namespace Give\DonationForms\OrphanedForms\Actions;
 use Give\Helpers\EnqueueScript;
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 class Assets
 {

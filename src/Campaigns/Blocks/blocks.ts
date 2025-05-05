@@ -8,11 +8,13 @@ import {BlockConfiguration, getBlockType, registerBlockType} from '@wordpress/bl
  */
 import campaignGrid from './CampaignGrid';
 import campaignBlock from './Campaign';
+import campaignForm from './CampaignForm/resources';
 
 export const getAllBlocks = () => {
     return [
         campaignGrid,
         campaignBlock,
+        campaignForm
     ];
 };
 
@@ -21,3 +23,4 @@ getAllBlocks().forEach((block) => {
         registerBlockType(block.schema as BlockConfiguration, block.settings);
     }
 });
+

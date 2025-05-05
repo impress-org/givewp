@@ -21,7 +21,7 @@ class TestUpdateDonationMetaWithCurrencySettings extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testShouldUpdateDonationMetaWithCurrencySettings()
     {
@@ -55,7 +55,7 @@ class TestUpdateDonationMetaWithCurrencySettings extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0
      */
     public function testShouldNotUpdateDonationMetaWithCurrencySettingsIfCurrencySwitcherSettingsAreNotSet()
     {
