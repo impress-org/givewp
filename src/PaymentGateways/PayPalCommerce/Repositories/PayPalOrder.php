@@ -3,6 +3,7 @@
 namespace Give\PaymentGateways\PayPalCommerce\Repositories;
 
 use Exception;
+use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\Support\ValueObjects\Money;
@@ -280,6 +281,8 @@ class PayPalOrder
     }
 
     /**
+     * Update order amount using the Donation model.
+     *
      * @unreleased updated to support donation category
      * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 4.0.0
@@ -288,14 +291,15 @@ class PayPalOrder
      * @see https://developer.paypal.com/docs/api/orders/v2/#orders_patch
      *
      */
-    public function updateApprovedOrder(string $orderId, Money $amount, string $name = '')
+    public function updateOrderFromDonation(string $orderId, Donation $donation)
     {
         $patchRequest = new OrdersPatchRequest($orderId);
 
         $patchRequest->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
 
-        $value = $amount->formatToDecimal();
-        $currency = $amount->getCurrency()->getCode();
+        $value = $donation->amount->formatToDecimal();
+        $currency = $donation->amount->getCurrency()->getCode();
+        $name = $donation->formTitle;
 
         $amountParameters = [
             'amount' => [
@@ -307,7 +311,7 @@ class PayPalOrder
         if ($this->settings->isTransactionTypeDonation()) {
             $amountParameters['items'] = [
                 [
-                    'name' => !empty($name) ? $name : get_bloginfo(),
+                    'name' => $name,
                     'unit_amount' => [
                         'value' => $value,
                         'currency_code' => $currency,
