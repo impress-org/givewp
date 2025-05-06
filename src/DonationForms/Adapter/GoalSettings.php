@@ -15,7 +15,7 @@ class GoalSettings
 
     public static function fromArray(array $data): GoalSettings
     {
-        $settings = new static();
+        $settings = new self();
         $settings->enableDonationGoal = $data['enableDonationGoal'];
         $settings->goalType = new GoalType($data['goalType']);
         $settings->goalAmount = $data['goalAmount'];
