@@ -183,7 +183,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      *
      * @throws Exception
      */
-    public function testUpgradedFormsMoreThanOnceBelongsToSameCampaignFromLasFormUpgraded()
+    public function testUpgradedFormsMoreThanOnceBelongsToSameCampaignFromLastFormUpgraded()
     {
         $form1 = DonationForm::factory()->create([
             'status' => DonationFormStatus::UPGRADED(),
