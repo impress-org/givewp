@@ -138,7 +138,7 @@ class MigrateFormsToCampaignForms extends Migration
          * the migratedFormId keeps on DB, which can make this query return the same migratedFormId for multiple
          * campaigns, so we need to use this join statement to ensure we are NOT adding the same migratedFormId
          * for multiple campaigns, since it forces the query to retrieve only the migratedFormId associated with
-         * the highest form_id which is the last upgraded attempt.
+         * the highest form_id which is the last upgrade attempt.
          *
          * @see https://github.com/impress-org/givewp/pull/7901#issuecomment-2854905488
          */
