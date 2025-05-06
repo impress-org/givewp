@@ -240,7 +240,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      *
      * @throws Exception
      */
-    public function testMigrationReRunsWithoutFormDuplicatedEntryError()
+    public function testMigrationReRunsWithoutErrors()
     {
         $form1 = DonationForm::factory()->create([
             'status' => DonationFormStatus::UPGRADED(),
