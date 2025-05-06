@@ -155,7 +155,7 @@ class MigrateFormsToCampaignForms extends Migration
         /**
          * When someone re-runs the migration, it can return a duplicated entry error if the upgraded forms were
          * already added previously in the first time the migration was run, so this whereNotIn prevents these
-         * errors by excluding upgrade forms already added to the give_campaign_forms table previously.
+         * errors by excluding upgraded forms already added to the give_campaign_forms table previously.
          *
          * @see https://github.com/impress-org/givewp/pull/7901#discussion_r2073600045
          */
