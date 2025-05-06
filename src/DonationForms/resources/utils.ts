@@ -5,7 +5,7 @@ import {Form} from './types'
 type FormStatus = "draft" | "publish" | "private" | "orphaned";
 
 /**
- * @unreleased
+ * @since 4.2.0
  */
 export function useForm(formId: number) {
     const data = useEntityRecord('givewp', 'forms', formId);

@@ -9,7 +9,7 @@ import {registerBlockType} from '@wordpress/blocks';
  */
 import GiveIcon from '@givewp/components/GiveIcon';
 import blockAttributes from './data/attributes';
-import Edit from '../../src/DonationForms/Blocks/DonationFormBlock/resources/editor/Edit';
+import Edit from '@givewp/src/DonationForms/Blocks/DonationFormBlock/resources/editor/Edit';
 
 /**
  * Register Block
