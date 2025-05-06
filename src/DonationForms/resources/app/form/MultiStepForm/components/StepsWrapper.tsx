@@ -1,12 +1,13 @@
 import {ReactNode} from 'react';
 import PreviousButton from '@givewp/forms/app/form/MultiStepForm/components/PreviousButton';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepForm/store';
 import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
 import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 import getCurrentStepObject from '@givewp/forms/app/form/MultiStepForm/utilities/getCurrentStepObject';
 
 /**
+ * @unreleased update step title element to h3. add react-aria progress component.
  * @since 3.4.0 updated with steps props and showStepsHeader conditional
  * @since 3.0.0
  */
@@ -30,7 +31,14 @@ export default function StepsWrapper({steps, children}: {steps: StepObject[]; ch
                             <p className="givewp-donation-form__steps-header-title-text">{currentStepObject.title}</p>
                         </div>
                     </div>
-                    <progress className="givewp-donation-form__steps-progress" value={currentStep} max={totalSteps} />
+                    <progress
+                        className="givewp-donation-form__steps-progress"
+                        value={currentStep}
+                        max={totalSteps}
+                        aria-valuemax={totalSteps}
+                        aria-valuenow={currentStep}
+                        aria-valuetext={sprintf(__('Progress: Step %1$d of %2$d', 'give'), currentStep, totalSteps)}
+                    />
                 </>
             )}
             <div className="givewp-donation-form__steps-body">{children}</div>
