@@ -153,7 +153,9 @@ class MigrateFormsToCampaignForms extends Migration
          * the migratedFormId keeps on DB, which can make this query return the same migratedFormId for multiple
          * campaigns, so we need to use this join statement to ensure we are NOT adding the same migratedFormId
          * for multiple campaigns, since it forces the query to retrieve only the migratedFormId associated with
-         * the highest form_id which is the last upgraded attempt.
+         * the highest form_id which is the last upgrade attempt.
+         *
+         * @see https://github.com/impress-org/givewp/pull/7901#issuecomment-2854905488
          */
         $table = DB::prefix('give_formmeta');
         $query->joinRaw("INNER JOIN (
@@ -168,7 +170,9 @@ class MigrateFormsToCampaignForms extends Migration
         /**
          * When someone re-runs the migration, it can return a duplicated entry error if the upgraded forms were
          * already added previously in the first time the migration was run, so this whereNotIn prevents these
-         * errors by excluding upgrade forms already added to the give_campaign_forms table previously.
+         * errors by excluding upgraded forms already added to the give_campaign_forms table previously.
+         *
+         * @see https://github.com/impress-org/givewp/pull/7901#discussion_r2073600045
          */
         $query->whereNotIn('give_formmeta.migratedFormId', function (QueryBuilder $builder) {
             $builder
