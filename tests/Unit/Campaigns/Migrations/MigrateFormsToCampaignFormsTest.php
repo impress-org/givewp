@@ -246,6 +246,11 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
             'status' => DonationFormStatus::UPGRADED(),
         ]);
 
+        /**
+         * This second form is necessary to test if no duplicate entry errors will happen
+         *
+         * @see https://github.com/impress-org/givewp/pull/7901
+         */
         $form2 = DonationForm::factory()->create();
         give_update_meta($form2->id, 'migratedFormId', $form1->id);
 
