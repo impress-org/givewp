@@ -103,7 +103,7 @@ class PayPalCommerce extends PaymentGateway
             $this->validate3dSecure($payPalOrder);
 
             if ($this->shouldUpdateOrder($donation, $payPalOrder)){
-                $payPalOrderRepository->updateApprovedOrder($payPalOrderId, $donation->amount);
+                $payPalOrderRepository->updateApprovedOrder($payPalOrderId, $donation->amount, $donation->formTitle);
             }
 
             // ready to capture order, response is the updated PayPal order.

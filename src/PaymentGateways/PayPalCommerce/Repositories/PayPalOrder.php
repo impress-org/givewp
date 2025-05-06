@@ -284,23 +284,51 @@ class PayPalOrder
      * @since 4.0.0
      *
      * @throws Exception|HttpException|IOException
-     * @see        https://developer.paypal.com/docs/api/orders/v2/#orders_patch
+     * @see https://developer.paypal.com/docs/api/orders/v2/#orders_patch
      *
      */
-    public function updateApprovedOrder(string $orderId, Money $amount)
+    public function updateApprovedOrder(string $orderId, Money $amount, string $name = '')
     {
         $patchRequest = new OrdersPatchRequest($orderId);
 
         $patchRequest->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
 
+        $value = $amount->formatToDecimal();
+        $currency = $amount->getCurrency()->getCode();
+
+        $amountParameters = [
+            'amount' => [
+                'value' => $value,
+                'currency_code' => $currency
+            ],
+        ];
+
+        if ($this->settings->isTransactionTypeDonation()) {
+            $amountParameters['items'] = [
+                [
+                    'name' => !empty($name) ? $name : get_bloginfo(),
+                    'unit_amount' => [
+                        'value' => $value,
+                        'currency_code' => $currency,
+                    ],
+                    'quantity' => 1,
+                    'category' => 'DONATION',
+                ],
+            ];
+
+            $amountParameters['amount']['breakdown'] = [
+                'item_total' => [
+                    'currency_code' => $currency,
+                    'value' => $value,
+                ],
+            ];
+        }
+
         $patchRequest->body = [
             [
                 'op' => 'replace',
-                'path' => "/purchase_units/@reference_id=='default'/amount",
-                'value' => [
-                    'value' => $amount->formatToDecimal(),
-                    'currency_code' => $amount->getCurrency(),
-                ]
+                'path' => "/purchase_units/@reference_id=='default'",
+                'value' => $amountParameters
             ],
         ];
 
@@ -310,7 +338,8 @@ class PayPalOrder
             PaymentGatewayLog::error(
                 'Update PayPal Commerce order failure',
                 [
-                    'response' => $exception->getMessage()
+                    'response' => $exception->getMessage(),
+                    'request' => $patchRequest->body
                 ]
             );
 
