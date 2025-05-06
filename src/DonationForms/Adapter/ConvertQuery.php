@@ -3,8 +3,8 @@
 namespace Give\DonationForms\Adapter;
 
 use Give\DonationForms\Properties\FormSettings;
-use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
@@ -12,7 +12,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * @unreleased
  */
-class Converter
+class ConvertQuery
 {
     private string $currency;
 
@@ -21,10 +21,6 @@ class Converter
      */
     public function __invoke(object $queryObject): Form
     {
-
-       // print_r($queryObject);
-
-
         $this->currency = give_get_option('currency', 'USD');
 
         return new Form([
@@ -53,15 +49,20 @@ class Converter
             return GoalSettings::fromArray([
                 'enableDonationGoal' => $settings->enableDonationGoal,
                 'goalType' => $settings->goalType,
-                'goalAmount' => Money::fromDecimal($queryObject->goalAmount, $this->currency)->formatToDecimal(),
+                'goalAmount' => $settings->goalType->isOneOf(GoalType::AMOUNT(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS())
+                    ? Money::fromDecimal($queryObject->goalAmount, $this->currency)->formatToDecimal()
+                    : $settings->goalAmount,
             ]);
         }
 
-        // good ol pain in the...
+        $goalType = $this->convertGoalType($queryObject->goalFormat, (bool)$queryObject->recurringGoalFormat);
+
         return GoalSettings::fromArray([
             'enableDonationGoal' => $queryObject->goalOption === 'enabled',
-            'goalType' => $this->convertGoalType($queryObject->goalFormat, $queryObject->recurringGoalFormat),
-            'goalAmount' => Money::fromDecimal($queryObject->goalAmount, $this->currency)->formatToDecimal(),
+            'goalType' => $goalType,
+            'goalAmount' => $goalType->isOneOf(GoalType::AMOUNT(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS())
+                ? Money::fromDecimal($queryObject->goalAmount, $this->currency)->formatToDecimal()
+                : $settings->goalAmount,
         ]);
     }
 
@@ -69,7 +70,7 @@ class Converter
     /**
      * @unreleased
      */
-    public function convertGoalType($type, $isRecurring): GoalType
+    public function convertGoalType(string $type, bool $isRecurring): GoalType
     {
         switch ($type) {
             case 'donation':

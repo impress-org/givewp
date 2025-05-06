@@ -11,15 +11,16 @@ use Give\Framework\QueryBuilder\QueryBuilder;
  *
  * @unreleased
  */
-class DonationDataQuery extends QueryBuilder
+class DonationFormDataQuery extends QueryBuilder
 {
     /**
      * @unreleased
      */
     private function __construct()
     {
+        $this->select(['formId.meta_value', 'form_id']);
         $this->whereIn('donation.post_status', ['publish', 'give_subscription']);
-        $this->groupBy('ID');
+        $this->groupBy('form_id');
     }
 
 
@@ -28,7 +29,7 @@ class DonationDataQuery extends QueryBuilder
      *
      * @param int[] $formIds
      */
-    public static function donations(array $formIds): DonationDataQuery
+    public static function donations(array $formIds): DonationFormDataQuery
     {
         return (new self())
             ->from('posts', 'donation')
@@ -46,9 +47,9 @@ class DonationDataQuery extends QueryBuilder
      *
      * @param int[] $formIds
      */
-    public static function subscriptions(array $formIds): DonationDataQuery
+    public static function subscriptions(array $formIds): DonationFormDataQuery
     {
-        return (new self($formIds))
+        return (new self())
             ->from('give_subscriptions', 'subscription')
             ->join(function (JoinQueryBuilder $builder) {
                 $builder

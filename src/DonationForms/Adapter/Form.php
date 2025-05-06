@@ -5,7 +5,6 @@ namespace Give\DonationForms\Adapter;
 use DateTime;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
 use Give\Framework\Models\Model;
-use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * @unreleased
@@ -43,6 +42,6 @@ class Form extends Model
      */
     public static function fromQueryBuilderObject(object $object): Form
     {
-        return (new Converter())($object);
+        return (new ConvertQuery())($object);
     }
 }

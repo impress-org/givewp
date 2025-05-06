@@ -3,7 +3,7 @@
 namespace Give\DonationForms\Repositories;
 
 
-use Give\DonationForms\DonationDataQuery;
+use Give\DonationForms\DonationFormDataQuery;
 use Give\DonationForms\Adapter\Form;
 use Give\DonationForms\ValueObjects\GoalType;
 
@@ -25,7 +25,7 @@ class DonationFormDataRepository
     {
         $self = new self();
 
-        $donations = DonationDataQuery::donations($ids);
+        $donations = DonationFormDataQuery::donations($ids);
 
         $self->amounts = $donations->collectIntendedAmounts();
         $self->donationsCount = $donations->collectDonations();
@@ -33,7 +33,7 @@ class DonationFormDataRepository
 
         // Set subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
-            $subscriptions = DonationDataQuery::subscriptions($ids);
+            $subscriptions = DonationFormDataQuery::subscriptions($ids);
 
             $self->subscriptionAmounts = $subscriptions->collectInitialAmounts();
             $self->subscriptionDonationsCount = $subscriptions->collectDonations();
@@ -59,7 +59,7 @@ class DonationFormDataRepository
             : $this->amounts;
 
         foreach ($data as $row) {
-            if (isset($row['id']) && $row['id'] == $form->id) {
+            if (isset($row['form_id']) && $row['form_id'] == $form->id) {
                 return (int)$row['sum'];
             }
         }
@@ -83,7 +83,7 @@ class DonationFormDataRepository
             : $this->donationsCount;
 
         foreach ($data as $row) {
-            if (isset($row['id']) && $row['id'] == $form->id) {
+            if (isset($row['form_id']) && $row['form_id'] == $form->id) {
                 return (int)$row['count'];
             }
         }
@@ -107,7 +107,7 @@ class DonationFormDataRepository
             : $this->donorsCount;
 
         foreach ($data as $row) {
-            if (isset($row['id']) && $row['id'] == $form->id) {
+            if (isset($row['form_id']) && $row['form_id'] == $form->id) {
                 return (int)$row['count'];
             }
         }
