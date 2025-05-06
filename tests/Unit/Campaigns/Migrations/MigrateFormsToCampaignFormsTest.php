@@ -154,7 +154,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      *
      * @throws Exception
      */
-    public function testUpgradedFormsMoreThanOnceAreNotAssociatedWIthMultipleCampaigns()
+    public function testUpgradedFormsMoreThanOnceAreNotAssociatedWithMultipleCampaigns()
     {
         $form1 = DonationForm::factory()->create([
             'status' => DonationFormStatus::UPGRADED(),
