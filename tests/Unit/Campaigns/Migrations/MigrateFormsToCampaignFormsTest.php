@@ -154,7 +154,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      *
      * @throws Exception
      */
-    public function testUpgradedFormsMoreThanOnceAreNotAssociatedWIthMultipleCampaigns()
+    public function testUpgradedFormsMoreThanOnceAreNotAssociatedWithMultipleCampaigns()
     {
         $form1 = DonationForm::factory()->create([
             'status' => DonationFormStatus::UPGRADED(),
@@ -183,7 +183,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      *
      * @throws Exception
      */
-    public function testUpgradedFormsMoreThanOnceBelongsToSameCampaignFromLasFormUpgraded()
+    public function testUpgradedFormsMoreThanOnceBelongsToSameCampaignFromLastFormUpgraded()
     {
         $form1 = DonationForm::factory()->create([
             'status' => DonationFormStatus::UPGRADED(),
@@ -240,12 +240,17 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
      *
      * @throws Exception
      */
-    public function testMigrationReRunsWithoutFormDuplicatedEntryError()
+    public function testMigrationReRunsWithoutErrors()
     {
         $form1 = DonationForm::factory()->create([
             'status' => DonationFormStatus::UPGRADED(),
         ]);
 
+        /**
+         * This second form is necessary to test if no duplicate entry errors will happen
+         *
+         * @see https://github.com/impress-org/givewp/pull/7901
+         */
         $form2 = DonationForm::factory()->create();
         give_update_meta($form2->id, 'migratedFormId', $form1->id);
 

@@ -25,6 +25,7 @@ class InvoicePaymentSucceededTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @unreleased Update Stripe Invoice metadata
      * @since 3.0.0
      *
      * @throws Exception
@@ -55,7 +56,19 @@ class InvoicePaymentSucceededTest extends TestCase
             ]
         ]);
 
-        $listener = new InvoicePaymentSucceeded();
+        $listener = $this->createMockWithCallback(
+            InvoicePaymentSucceeded::class,
+            function (MockBuilder $mockBuilder) {
+                // partial mock gateway by setting methods on the mock builder
+                $mockBuilder->setMethods(['updateStripeInvoiceMetaData']);
+
+                return $mockBuilder->getMock();
+            }
+        );
+
+        /** @var MockObject $listener */
+        $listener->expects($this->once())
+            ->method('updateStripeInvoiceMetaData');
 
         $listener->processEvent($mockEvent);
 
@@ -67,6 +80,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
+     * @unreleased Update Stripe Invoice metadata
      * @since 3.0.0
      *
      * @throws Exception
@@ -104,7 +118,21 @@ class InvoicePaymentSucceededTest extends TestCase
             ]
         ]);
 
-        $listener = new InvoicePaymentSucceeded();
+        //$listener = new InvoicePaymentSucceeded();
+
+        $listener = $this->createMockWithCallback(
+            InvoicePaymentSucceeded::class,
+            function (MockBuilder $mockBuilder) {
+                // partial mock gateway by setting methods on the mock builder
+                $mockBuilder->setMethods(['updateStripeInvoiceMetaData']);
+
+                return $mockBuilder->getMock();
+            }
+        );
+
+        /** @var MockObject $listener */
+        $listener->expects($this->once())
+            ->method('updateStripeInvoiceMetaData');
 
         $listener->processEvent($mockEvent);
 
@@ -182,6 +210,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
+     * @unreleased Update Stripe Invoice metadata
      * @since 3.0.0
      *
      * @throws Exception
@@ -226,7 +255,7 @@ class InvoicePaymentSucceededTest extends TestCase
             InvoicePaymentSucceeded::class,
             function (MockBuilder $mockBuilder) {
                 // partial mock gateway by setting methods on the mock builder
-                $mockBuilder->setMethods(['cancelSubscription']);
+                $mockBuilder->setMethods(['cancelSubscription', 'updateStripeInvoiceMetaData']);
 
                 return $mockBuilder->getMock();
             }
@@ -235,6 +264,10 @@ class InvoicePaymentSucceededTest extends TestCase
         /** @var MockObject $listener */
         $listener->expects($this->once())
             ->method('cancelSubscription');
+
+        /** @var MockObject $listener */
+        $listener->expects($this->once())
+            ->method('updateStripeInvoiceMetaData');
 
         $listener->processEvent($mockEvent);
 

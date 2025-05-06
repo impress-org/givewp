@@ -149,8 +149,8 @@ class MigrateFormsToCampaignForms extends Migration
             ->where('forms.post_type', 'give_forms');
 
         /**
-         * Sometimes the user starts upgrading a form but gives up and deletes the migrated form. However, the
-         * migratedFormId keeps on DB, which can make this query return the same migratedFormId for multiple
+         * Sometimes the user starts upgrading a form but gives up and puts the migrated form in the trash. However,
+         * the migratedFormId keeps on DB, which can make this query return the same migratedFormId for multiple
          * campaigns, so we need to use this join statement to ensure we are NOT adding the same migratedFormId
          * for multiple campaigns, since it forces the query to retrieve only the migratedFormId associated with
          * the highest form_id which is the last upgraded attempt.
