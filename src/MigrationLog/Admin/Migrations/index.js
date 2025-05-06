@@ -290,7 +290,7 @@ const Migrations = () => {
                 return null;
             }
 
-            if (migration.status === 'failed' || migration.status === 'running') {
+            if (migration.status === 'running') {
                 return null;
             }
 

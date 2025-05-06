@@ -152,8 +152,24 @@ class MigrationsRunner
             } catch (Exception $exception) {
                 DB::rollback();
 
+                try {
+                    $migration->reverse();
+                } catch (DatabaseQueryException $exception) {
+                    Log::error('Migration rollback failed', [
+                        'message' => $exception->getMessage(),
+                        'code' => $exception->getCode(),
+                        'file' => $exception->getFile(),
+                        'line' => $exception->getLine(),
+                    ]);
+                }
+
                 $migrationLog->setStatus(MigrationLogStatus::FAILED);
-                $migrationLog->setError($exception);
+                $migrationLog->setError([
+                    'message' => $exception->getMessage(),
+                    'code' => $exception->getCode(),
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine(),
+                ]);
 
                 give()->notices->register_notice(
                     [
