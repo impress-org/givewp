@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\DonationForms\Repositories;
 
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm as LegacyDonationForm;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -24,6 +25,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
     public function testCountFormsDonations()
     {
         $form = DonationForm::factory()->create();
+        $legacyDonationForm = LegacyDonationForm::find($form->id);
 
         Donation::factory()->create([
             'formId' => $form->id,
@@ -38,7 +40,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
 
         $formsData = DonationFormDataRepository::forms([$form->id]);
 
-        $this->assertEquals(2, $formsData->getDonationsCount($form));
+        $this->assertEquals(2, $formsData->getDonationsCount($legacyDonationForm));
     }
 
     /**
@@ -47,6 +49,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
     public function testGetRevenueReturnsSumOfDonationsWithoutRecoveredFees()
     {
         $form = DonationForm::factory()->create();
+        $legacyDonationForm = LegacyDonationForm::find($form->id);
 
         Donation::factory()->create([
             'formId' => $form->id,
@@ -63,7 +66,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
 
         $formsData = DonationFormDataRepository::forms([$form->id]);
 
-        $this->assertEquals(20.32, $formsData->getRevenue($form));
+        $this->assertEquals(20.32, $formsData->getRevenue($legacyDonationForm));
     }
 
     /**
@@ -72,6 +75,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
     public function testCountFormDonors()
     {
         $form = DonationForm::factory()->create();
+        $legacyDonationForm = LegacyDonationForm::find($form->id);
 
         $donor = Donor::factory()->create();
         $donor2 = Donor::factory()->create();
@@ -92,6 +96,6 @@ final class DonationFormsDataRepositoryTest extends TestCase
 
         $formsData = DonationFormDataRepository::forms([$form->id]);
 
-        $this->assertEquals(2, $formsData->getDonorsCount($form));
+        $this->assertEquals(2, $formsData->getDonorsCount($legacyDonationForm));
     }
 }
