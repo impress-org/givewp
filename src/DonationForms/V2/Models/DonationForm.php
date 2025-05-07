@@ -31,7 +31,6 @@ use Give\Framework\Support\ValueObjects\Money;
  * @property DonationFormStatus $status
  * @unreleased
  * @property GoalSettings $goalSettings
- * @property bool $enableDonationGoal
  * @property bool $usesFormBuilder
  */
 class DonationForm extends Model implements ModelReadOnly
