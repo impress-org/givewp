@@ -78,6 +78,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @unreleased updated to use updateOrderFromDonation
      * @since 4.1.0 updated to include 3D Secure validation
      * @since 4.0.0 updated to update and capture payment
      * @since 2.19.0
