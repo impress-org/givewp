@@ -63,7 +63,7 @@ trait LegacyDonationFormAdapter
             'goalSettings' => GoalSettings::fromArray([
                 'enableDonationGoal' => false,
                 'goalType' => GoalType::AMOUNT(),
-                'goalAmount' => '0.0',
+                'goalAmount' => '100.0',
             ]),
             'usesFormBuilder' => false,
         ]);
