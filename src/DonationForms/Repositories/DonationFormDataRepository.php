@@ -65,7 +65,7 @@ class DonationFormDataRepository
 
         foreach ($data as $row) {
             if (isset($row['form_id']) && $row['form_id'] == $form->id) {
-                return (int)$row['sum'];
+                return $row['sum'];
             }
         }
 
