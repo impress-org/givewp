@@ -153,9 +153,6 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
             {!!errorMessage && <FieldError error={errorMessage} name={nodeName} />}
 
             <div className={styles['authentication__login-form__buttons-wrapper']}>
-                <button className={styles['authentication__login-form__login-button']} onClick={tryLogin}>
-                    {__('Log In', 'give')}
-                </button>
                 <button
                     className={styles['authentication__login-form__reset-button']}
                     onClick={(event) => {
@@ -166,6 +163,9 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
                     }}
                 >
                     {__('Forgot your password?', 'give')} <span>{__('Reset', 'give')}</span>
+                </button>
+                <button className={styles['authentication__login-form__login-button']} onClick={tryLogin}>
+                    {__('Log In', 'give')}
                 </button>
             </div>
         </div>
