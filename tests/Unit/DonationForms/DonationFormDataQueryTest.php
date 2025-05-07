@@ -45,13 +45,13 @@ final class DonationFormDataQueryTest extends TestCase
             'amount' => new Money(1000, 'USD'),
         ]);
 
-        $campaignsDataQuery = DonationFormDataQuery::donations([$form->id]);
+        $formsDataQuery = DonationFormDataQuery::donations([$form->id]);
 
         $this->assertEquals([
             [
                 'sum' => 30.32,
                 'form_id' => $form->id,
             ]
-        ], $campaignsDataQuery->collectIntendedAmounts());
+        ], $formsDataQuery->collectIntendedAmounts());
     }
 }
