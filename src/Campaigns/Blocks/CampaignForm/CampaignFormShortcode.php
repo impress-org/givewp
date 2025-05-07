@@ -35,7 +35,7 @@ class CampaignFormShortcode
     public function loadAssets()
     {
         $handleName = 'givewp-campaign-form-app';
-        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignListTable.asset.php');
+        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignFormBlockApp.asset.php');
 
         wp_enqueue_script(
             $handleName,
