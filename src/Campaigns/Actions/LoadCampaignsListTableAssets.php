@@ -5,6 +5,7 @@ namespace Give\Campaigns\Actions;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
 
 /**
  * @since 4.0.0
@@ -12,6 +13,7 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 class LoadCampaignsListTableAssets
 {
     /**
+     * @unreleased set script translations
      * @since 4.0.0
      */
     public function __invoke()
@@ -27,8 +29,6 @@ class LoadCampaignsListTableAssets
             true
         );
 
-        wp_set_script_translations($handleName, 'give');
-        
         wp_localize_script($handleName, 'GiveCampaignsListTable',
             [
                 'apiRoot' => esc_url_raw(rest_url(CampaignRoute::NAMESPACE . '/campaigns/list-table')),
@@ -43,6 +43,9 @@ class LoadCampaignsListTableAssets
         );
 
         wp_enqueue_script($handleName);
+
+        Language::setScriptTranslations($handleName);
+
         wp_enqueue_style('givewp-design-system-foundation');
         wp_enqueue_style(
             $handleName,
