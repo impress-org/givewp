@@ -2,8 +2,8 @@
 
 namespace Give\Campaigns\Actions;
 
+use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
-use Give\Campaigns\ValueObjects\CampaignRoute;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 
 /**

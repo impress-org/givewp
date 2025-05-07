@@ -1,9 +1,8 @@
 import {createRoot} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-import ModalForm from './Components/ModalForm';
 import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
-
+import ModalForm from '@givewp/src/Campaigns/Blocks/shared/components/ModalForm';
 import '../editor/styles/index.scss';
 
 /**
@@ -35,6 +34,7 @@ const isRedirect = (url: string) => {
 };
 
 /**
+ * @unreleased replace ModalForm with Campaigns ModalForm.
  * @since 3.4.0 add logic for inline redirects.
  * @since 3.2.0 replace form format reveal with new tab.
  * @since 3.0.0
@@ -60,7 +60,7 @@ function DonationFormBlockApp({
     if (formFormat === 'modal' || formFormat === 'reveal') {
         return (
             <ModalForm
-                openFormButton={openFormButton}
+                buttonText={openFormButton}
                 dataSrc={dataSrc}
                 embedId={embedId}
                 isFormRedirect={isFormRedirect}

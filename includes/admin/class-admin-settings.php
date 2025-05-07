@@ -317,7 +317,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * Loops though the give options array and outputs each field.
          *
-         * @unreleased Display tabs only when there is more than one group available
+         * @since 4.1.0 Display tabs only when there is more than one group available
 		 * @since  1.8
 		 * @access public
          *
@@ -451,7 +451,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		/**
 		 * This function will help you prepare the admin settings field.
 		 *
-         * @unreleased Added support for code editor field.
+         * @since 4.1.0 Added support for code editor field.
 		 * @since  2.5.5
 		 *
 		 * @param array  $value       Settings Field Array.
@@ -1143,7 +1143,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 *
 		 * Loops though the give options array and outputs each field.
 		 *
-         * @unreleased Added validation for code editor field.
+         * @since 4.1.0 Added validation for code editor field.
 		 * @since  1.8
 		 *
 		 * @param  array  $options     Options array to output

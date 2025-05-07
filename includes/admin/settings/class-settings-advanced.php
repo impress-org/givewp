@@ -58,7 +58,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         /**
          * Get settings array.
          *
-         * @unreleased Added Donation Forms section
+         * @since 4.1.0 Added Donation Forms section
          * @since  1.8
          * @return array
          */
@@ -201,6 +201,17 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                             'desc' => __('This option is only for advanced users and/or those directed by GiveWP support. Once you enable this, you\'ll have the ability to override the run order and to force re-running for database updates at Donations > Tools > Data. If you don\'t know what you are doing, you can easily break things with this option enabled. Do not leave this option enabled after you\'re done troubleshooting.',
                                 'give'),
                             'id' => 'enable_database_updates',
+                            'type' => 'radio_inline',
+                            'default' => 'disabled',
+                            'options' => [
+                                'enabled' => __('Enabled', 'give'),
+                                'disabled' => __('Disabled', 'give'),
+                            ],
+                        ],
+                        [
+                            'name' => __('Orphaned Donation Forms', 'give'),
+                            'desc' => __('Show orphaned donation forms list-table. Tools > Data > Orphaned forms', 'give'),
+                            'id' => 'show_orphaned_forms_table',
                             'type' => 'radio_inline',
                             'default' => 'disabled',
                             'options' => [

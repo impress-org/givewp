@@ -46,7 +46,7 @@ class ValidationRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
-     * @unreleased updated to exclude security challenge fields during pre-validation
+     * @since 4.1.0 updated to exclude security challenge fields during pre-validation
      * @since 3.22.0 added additional validation for form validity, added givewp_donation_form_fields_validated action
      * @since 3.0.0
      *
@@ -140,7 +140,7 @@ class ValidationRouteData implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     protected function isSecurityChallengeField(Field $field): bool
     {

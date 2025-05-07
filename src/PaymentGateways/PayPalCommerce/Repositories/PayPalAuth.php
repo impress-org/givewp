@@ -132,7 +132,7 @@ class PayPalAuth
     /**
      * Retrieves a Partner Link for on-boarding
      *
-     * @unreleased Add PayPal-Partner-Attribution-Id header
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 3.0.0 Implement $accountType. This parameter is required by GiveWP gateway server.
      * @since 2.9.0
      *
@@ -164,7 +164,7 @@ class PayPalAuth
     /**
      * Get seller on-boarding details from seller.
      *
-     * @unreleased Add PayPal-Partner-Attribution-Id header
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.9.0
      *
      * @param string $accessToken
@@ -199,7 +199,7 @@ class PayPalAuth
     /**
      * Get seller rest API credentials
      *
-     * @unreleased Add PayPal-Partner-Attribution-Id header
+     * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 2.9.0
      *
      * @param string $accessToken

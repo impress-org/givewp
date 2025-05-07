@@ -101,6 +101,7 @@ class GetAsyncFormDataForListView
     }
 
     /**
+     * @since 4.2.0 get correct v2 goal option value
      * @since 3.20.0
      */
     private function isFormGoalEnabled(int $formId): bool
@@ -110,6 +111,8 @@ class GetAsyncFormDataForListView
         }
 
         return give_is_setting_enabled(Give()->form_meta->get_meta($formId,
-            DonationFormMetaKeys::GOAL_OPTION()->getKeyAsCamelCase(), true));
+            DonationFormMetaKeys::GOAL_OPTION,
+            true
+        ));
     }
 }

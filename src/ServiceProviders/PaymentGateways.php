@@ -55,7 +55,7 @@ class PaymentGateways implements ServiceProvider
     ];
 
     /**
-     * @unreleased changed BN code to GiveWP_SP_PPCPV2
+     * @since 4.1.0 changed BN code to GiveWP_SP_PPCPV2
      * @inheritDoc
      */
     public function register()

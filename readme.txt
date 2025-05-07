@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.0.0
+Stable tag: 4.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,10 +31,10 @@ GiveWP makes it easy to manage and launch successful fundraising campaigns direc
 
 #### **Key Features of Campaign-Based Fundraising**
 
-* **Campaign Creation:** Create multiple campaigns on your site, each with its own unique donation goal, target audience, and messaging.  
-* **Customizable Donation Forms:** Each campaign comes with a built-in, fully customizable landing page, created using the WordPress Block Editor. Add text, images, and donation forms to create a visually appealing and engaging page that strengthens your donor connections.  
-* **Dedicated Landing Pages:** Create custom landing pages for each campaign, complete with campaign-specific content, donation forms, progress bars, and social sharing options to engage and inspire donors.  
-* **Organized Fundraising**: All your donation forms are linked to specific campaigns. This makes it easy to manage and track your efforts, set goals, and monitor campaign performance in one streamlined view.  
+* **Campaign Creation:** Create multiple campaigns on your site, each with its own unique donation goal, target audience, and messaging.
+* **Customizable Donation Forms:** Each campaign comes with a built-in, fully customizable landing page, created using the WordPress Block Editor. Add text, images, and donation forms to create a visually appealing and engaging page that strengthens your donor connections.
+* **Dedicated Landing Pages:** Create custom landing pages for each campaign, complete with campaign-specific content, donation forms, progress bars, and social sharing options to engage and inspire donors.
+* **Organized Fundraising**: All your donation forms are linked to specific campaigns. This makes it easy to manage and track your efforts, set goals, and monitor campaign performance in one streamlined view.
 * **Visibility Controls**: Publish, archive, or draft campaigns to manage when and how your campaigns appear on your site. This gives you full control over the visibility of your campaigns and associated donation forms.
 
 #### **How Campaigns and Donation Forms Work Together**
@@ -106,7 +106,7 @@ If you are a GiveWP customer with an active license of any of our popular add-on
 
 GiveWP comes with several payment gateway options:
 
-* **Stripe Donations** -- Accept donations through any payment method (like Apple Pay, Google Pay, or ACH) activated in your Stripe accounts. Upgrade to the [Premium Stripe](https://go.givewp.com/addon-stripe) add-on to remove the 2% fee for one-time donations processed through Stripe.
+* **Stripe Donations** -- Accept donations through any payment method (like Apple Pay, Google Pay, or ACH) activated in your Stripe accounts.
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
 * **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account.
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
@@ -245,12 +245,6 @@ Use GiveWP for donations, and let your WooCommerce or WP eCommerce plugin or the
 
 Additionally, you can use our [Donation Upsells for WooCommerce](https://go.givewp.com/addon-upsells/) GiveWP add-on to allow your customers to do a donation upsell in the cart or checkout.
 
-= How do I eliminated the 2% fee on Stripe donations? =
-
-The 2% fee on Stripe donations only applies to donations taken via our free Stripe integration in GiveWP Core. If you purchase the premium Stripe add-on you will not have any additional fees at all. Additionally, even with the free Stripe plugin, the fees only apply to one-time donations, never to recurring donations.
-
-[Read our release announcement](https://go.givewp.com/version2-5) for all the details, and if you have further questions feel free to reach out via [our contact page](https://go.givewp.com/contact).
-
 = How can I report security bugs? =
 
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/give)
@@ -278,6 +272,27 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.2.0: April 30th, 2025 =
+* New: Added shortcodes for the Campaign Block and Campaign Grid Block
+* New: Added the ability to associate orphaned campaign forms to a campaign
+* New: Added the ability to duplicate a campaign
+* Enhancement: Improved the campaign archiving functionality
+* Fix: Resolved an issue with goal progress amounts not calculating correctly throughout Campaigns and Forms
+* Fix: Resolved an issue with the Stripe Credit Card gateway and utm tags
+* Fix: Resolved an issue with Stripe Payment Element not showing accurate total amount when using Fee Recovery and Apple/Google Pay
+* Fix: Resolved an issue where some donations were not storing currency exchange rates correctly
+
+= 4.1.0: April 16th, 2025 =
+* New: Added the ability for donation forms to inherit Campaign goals and colors
+* New: Added a campaign filter to the donation list table
+* New: Added a global setting to apply custom css to all donation forms
+* New: Added a notice to the campaigns overview that lets your know when the landing page is in draft
+* New: Added the ability to update the associated campaign for a donation within the donation details screen
+* Enhancement: Updated the PayPal Donations gateway to use the new PayPal Card Fields API
+* Enhancement: Improved the donation form modal experience
+* Fix: Fixed an issue where a Form Field Manager upgrade notice was still showing with an active license
+* Fix: Resolved an issue with the cancel/pause subscription modal in the donor dashboard
 
 = 4.0.0: March 31st, 2025 =
 * New: Introducing Campaigns! Manage all of your fundraising efforts seamlessly.

@@ -48,7 +48,7 @@ class DonationFormViewModel
      */
     private $previewMode;
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     private DonationFormGoalData $donationFormGoalData;
 
@@ -78,7 +78,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased Add support for campaign colors
+     * @since 4.1.0 Add support for campaign colors
      * @since 3.0.0
      */
     public function primaryColor(): string
@@ -95,7 +95,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased Add support for campaign colors
+     * @since 4.1.0 Add support for campaign colors
      * @since 3.0.0
      */
     public function secondaryColor(): string
@@ -112,7 +112,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased Added custom form styles
+     * @since 4.1.0 Added custom form styles
      * @since 3.0.0
      */
     public function enqueueGlobalStyles()
@@ -160,10 +160,9 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased use DonationFormGoalData
-     *
-     * @since      3.0.0
-     *
+     * @since 4.2.0 always return count value
+     * @since 4.1.0 use DonationFormGoalData
+     * @since 3.0.0
      */
     private function getTotalCountValue(): ?int
     {
@@ -175,12 +174,8 @@ class DonationFormViewModel
                 return $this->formSettings->goalSource->isCampaign()
                     ? $this->donationFormGoalData->getQuery()->countDonations()
                     : $this->donationFormGoalData->getQuery()->count();
-            case 'subscriptions':
-                return $this->donationFormGoalData->getQuery()->count();
-            case 'amountFromSubscriptions':
-                return $this->donationFormGoalData->getQuery()->sumInitialAmount();
             default:
-                return $this->donationFormGoalData->getQuery()->sumIntendedAmount();
+                return $this->donationFormGoalData->getQuery()->count();
         endswitch;
     }
 
@@ -205,7 +200,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased  use DonationFormGoalData instead of repository
+     * @since 4.1.0  use DonationFormGoalData instead of repository
      *
      * @since       3.0.0
      */
@@ -497,7 +492,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     private function getCampaignColors(int $formId): array
     {

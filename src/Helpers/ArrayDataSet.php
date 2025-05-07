@@ -11,7 +11,7 @@ class ArrayDataSet
      * You can pass a multi dimensional array but only zero level array keys will be renamed.
      *
      * @since 2.7.0
-     * @unreleased Add is_array check
+     * @since 4.1.0 Add is_array check
      *
      * @param array $renameTo Pass array of existing key name as key and new key name as value.
      *

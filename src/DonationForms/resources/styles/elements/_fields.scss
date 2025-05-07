@@ -120,6 +120,7 @@ input[type="checkbox"], input[type="radio"] {
     font-size: inherit;
     vertical-align: middle;
     cursor: pointer;
+    flex-shrink: 0;
 
     &:checked::before {
         transform: scale(1);

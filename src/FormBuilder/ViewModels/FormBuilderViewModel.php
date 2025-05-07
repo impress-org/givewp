@@ -121,7 +121,7 @@ class FormBuilderViewModel
 
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     public function getGoalSourceOption(
         string $value,
@@ -203,7 +203,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     public function getGoalSourceOptions(): array
     {
@@ -383,7 +383,7 @@ class FormBuilderViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     private function getCampaignColors(int $formId): array
     {

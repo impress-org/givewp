@@ -56,7 +56,13 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
     let payPalCardFieldsForm: PayPalCardFieldsComponent = null;
 
+    /**
+     * @since 4.1.1 updated to reassign the submit button when not assigned yet
+     * @since 4.1.0
+     */
     const showOrHideDonateButton = (showOrHide: 'show' | 'hide') => {
+        submitButton = submitButton || window.givewp.form.hooks.useFormSubmitButton();
+
         if (submitButton) {
             submitButton.style.display = showOrHide === 'hide' ? 'none' : '';
         }
@@ -137,7 +143,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const cardFieldsOnErrorHandler: PayPalCardFieldsComponentBasics['onError'] = (error) => {
         console.error('PayPal Card Fields Error:', error);
@@ -146,7 +152,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const cardFieldsCreateOrderHandler = async () => {
         return await createOrder(
@@ -157,16 +163,18 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const cardFieldsOnApproveHandler: PayPalCardFieldsComponentBasics['onApprove'] = async (data) => {
         // @ts-ignore
         const {orderID, liabilityShift} = data;
-        payPalOrderId = orderID
+        payPalOrderId = orderID;
 
         if (liabilityShift && !['POSSIBLE', 'YES'].includes(liabilityShift)) {
             console.log('Liability shift not possible or not accepted.');
-            throw new Error(__('Card type and issuing bank are not ready to complete a 3D Secure authentication.', 'give'));
+            throw new Error(
+                __('Card type and issuing bank are not ready to complete a 3D Secure authentication.', 'give')
+            );
         }
 
         return;
@@ -399,7 +407,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     /**
-     * @unreleased
+     * @since 4.1.0
      */
     const PayPalGatewayCardFieldsForm = () => {
         const {cardFieldsForm} = usePayPalCardFields();
@@ -451,6 +459,10 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             if (!shouldShowCardFields) {
                 showOrHideDonateButton('hide');
             }
+
+            return () => {
+                showOrHideDonateButton('show');
+            };
         }, [shouldShowCardFields]);
 
         return (
@@ -516,11 +528,16 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         },
 
         /**
+         * @since 4.1.1 updated the submit button to assign on mount
+         * @since 4.1.0 updated to use card fields api
          * @since 3.17.1 Hide submit button when PayPal Commerce is selected.
          */
         Fields() {
             const {isRecurring} = window.givewp.form.hooks.useFormData();
-            submitButton = window.givewp.form.hooks.useFormSubmitButton();
+
+            useEffect(() => {
+                submitButton = window.givewp.form.hooks.useFormSubmitButton();
+            }, []);
 
             return (
                 <FormFieldsProvider>
