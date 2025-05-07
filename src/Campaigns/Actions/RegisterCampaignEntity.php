@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
 
 /**
  * @since 4.0.0
@@ -10,6 +11,7 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 class RegisterCampaignEntity
 {
     /**
+     * @unreleased set script translations
      * @since 4.0.0
      */
     public function __invoke()
@@ -26,5 +28,7 @@ class RegisterCampaignEntity
         );
 
         wp_enqueue_script($handleName);
+
+        Language::setScriptTranslations($handleName);
     }
 }
