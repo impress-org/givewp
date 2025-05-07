@@ -50,7 +50,6 @@ class DonationForm extends Model implements ModelReadOnly
         'updatedAt' => DateTime::class,
         'status' => DonationFormStatus::class,
         'goalSettings' => GoalSettings::class,
-        'enableDonationGoal' => 'bool',
         'usesFormBuilder' => 'bool',
     ];
 
