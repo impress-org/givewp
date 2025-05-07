@@ -1,0 +1,194 @@
+.dateField {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-1);
+    position: relative;
+
+    :global {
+        .react-aria-Label {
+            color: var(--givewp-grey-700);
+            font-size: var(--givewp-font-size-paragraph-lg);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+    }
+
+    &[data-focus-within="true"] {
+        .dateInputContainer {
+            box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
+            border-color: transparent;
+        }
+    }
+
+    .dateInputContainer {
+        align-items: center;
+        background-color: #fff;
+        border-radius: .25rem;
+        border-style: solid;
+        border-width: .078rem;
+        display: flex ;
+        gap: 1rem;
+        height: calc( (1rem * var(--line-height)) + (var(--form-element-spacing-vertical) * 2) + (var(--border-width) * 2));
+        padding: 0.8125rem 1.1875rem;
+        width: 100%;
+
+        .dateInputButton {
+            background-color: transparent;
+            background-image: var(--icon-date);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 1rem auto;
+            border: 0;
+            box-shadow: var(--box-shadow, none);
+            color: transparent;
+            height: 1.5rem;
+            margin: 0;
+            padding: 0;
+            width: 1.5rem;
+
+            &:hover {
+                background-color: var(--givewp-primary-color);
+                background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27white%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Crect x=%273%27 y=%274%27 width=%2718%27 height=%2718%27 rx=%272%27 ry=%272%27%3E%3C/rect%3E%3Cline x1=%2716%27 y1=%272%27 x2=%2716%27 y2=%276%27%3E%3C/line%3E%3Cline x1=%278%27 y1=%272%27 x2=%278%27 y2=%276%27%3E%3C/line%3E%3Cline x1=%273%27 y1=%2710%27 x2=%2721%27 y2=%2710%27%3E%3C/line%3E%3C/svg%3E");
+            }
+
+            &:focus {
+                --box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
+            }
+        }
+    }
+
+    .dateInput {
+        align-items: center;
+        box-sizing: inherit;
+        color: #4d4d4d;
+        display: flex;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+        inline-size: 100%;
+        line-height: 1.25;
+
+        :global {
+            .react-aria-DateSegment {
+                border-radius: 4px;
+                padding: 0 0.25rem;
+
+                &[data-focused="true"] {
+                    background-color: var(--givewp-primary-color);
+                    color: var(--givewp-shades-white);
+                }
+            }
+        }
+    }
+
+    @at-root {
+        :global {
+            .react-aria-Popover[data-trigger=DatePicker] {
+                max-width: unset;
+            }
+
+            .react-aria-Popover {
+                left: 0 !important;
+                top: 100% !important;
+                transform: translateY(8px);
+                transition: transform .2s,opacity .2s;
+            }
+
+            .react-aria-Dialog {
+                background-color: var(--givewp-grey-5);
+                border-radius: 0.25rem;
+                border: 0.078rem solid var(--givewp-grey-400);
+                margin: 0;
+                padding: 1rem;
+            }
+
+            .react-aria-Calendar {
+                header {
+                    align-items: center;
+                    display: flex;
+                    gap: 0.25rem;
+                    justify-content: space-between;
+                    padding-bottom: 1rem;
+
+                    h2 {
+                        font-size: 1.25rem;
+                        font-weight: 600;
+                        line-height: 1.4;
+                        margin: 0 2rem;
+                        text-align: center;
+                    }
+
+                    button {
+                        align-items: center;
+                        background-color: transparent;
+                        border: 0;
+                        color: var(--givewp-grey-700);
+                        display: flex;
+                        font-size: 0.875rem;
+                        height: 2rem;
+                        justify-content: center;
+                        margin: 0;
+                        padding: 0.25rem;
+                        width: 2rem;
+
+                        &:hover {
+                            background-color: var(--givewp-grey-50);
+                        }
+                    }
+                }
+
+                table {
+                    margin: 0;
+
+                    tr {
+                        background-color: transparent;
+                    }
+
+                    th,
+                    td {
+                        border: 0;
+                        font-weight: 600;
+                        padding: 0;
+                        text-align: center;
+                    }
+
+                    th {
+                        color: var(--givewp-grey-500);
+                        font-size: 0.75rem;
+                        padding-bottom: 0.5rem;
+                    }
+
+                    td {
+                        [role="button"] {
+                            align-items: center;
+                            background-color: transparent;
+                            border: 0;
+                            color: var(--givewp-shades-black);
+                            display: flex;
+                            font-size: 0.875rem;
+                            height: 2.25rem;
+                            justify-content: center;
+                            margin: 1px;
+                            padding: 0;
+                            width: 2.25rem;
+
+                            &:hover {
+                                background-color: var(--givewp-grey-100);
+                            }
+
+                            &[data-disabled="true"] {
+                                color: var(--givewp-grey-300);
+                                pointer-events: none;
+                            }
+
+                            &[data-selected="true"] {
+                                background-color: var(--givewp-primary-color);
+                                color: var(--givewp-shades-white);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
