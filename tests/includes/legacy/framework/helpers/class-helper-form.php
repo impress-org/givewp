@@ -50,7 +50,7 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 				'_give_custom_amount_minimum'         => '1',
 				'_give_custom_amount_text'            => 'Would you like to set a custom amount?',
 				'_give_goal_option'                   => 'disabled',
-				'_give_set_goal'                      => '0.000000',
+				'_give_set_goal'                      => '0',
 				'_give_goal_format'                   => 'amount',
 				'_give_close_form_when_goal_achieved' => 'disabled',
 				'_give_payment_display'               => 'onpage',
@@ -129,9 +129,9 @@ class Give_Helper_Form extends Give_Unit_Test_Case {
 				'_give_donation_levels' => array_values( $_multi_level_donations ),
 				'_give_form_earnings'   => 120,
 				'_give_form_sales'      => 6,
-                '_give_goal_option'     => 'enabled',
+                '_give_goal_option'     => 'disabled',
                 '_give_goal_format '    => 'amount',
-                '_give_set_goal '       => 100,
+                '_give_set_goal '       => '0',
 			)
 		);
 
