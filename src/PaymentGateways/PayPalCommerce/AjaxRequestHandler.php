@@ -258,7 +258,7 @@ class AjaxRequestHandler
     }
 
     /**
-     * @unreleased only filter amount for v2 forms
+     * @since 4.2.1 only filter amount for v2 forms
      * @since 3.4.2
      */
     private function getOrderData(): array

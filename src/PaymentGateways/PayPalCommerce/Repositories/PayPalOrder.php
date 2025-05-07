@@ -283,7 +283,7 @@ class PayPalOrder
     /**
      * Update order amount using the Donation model.
      *
-     * @unreleased updated to support donation category
+     * @since 4.2.1 updated to support donation category
      * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
      * @since 4.0.0
      *
