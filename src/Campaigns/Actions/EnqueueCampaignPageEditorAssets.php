@@ -5,8 +5,10 @@ namespace Give\Campaigns\Actions;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
 
 /**
+ * @unreleased set script translations
  * @since 4.0.0
  */
 class EnqueueCampaignPageEditorAssets
@@ -36,9 +38,9 @@ class EnqueueCampaignPageEditorAssets
             'id' => $campaignPage->campaignId,
         ], admin_url('edit.php'));
 
-
+        $handleName = 'givewp-campaign-page-post-type-editor';
         wp_enqueue_script(
-            'givewp-campaign-page-post-type-editor',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignPagePostTypeEditor.js',
             $scriptAsset['dependencies'],
             $scriptAsset['version'],
@@ -46,11 +48,13 @@ class EnqueueCampaignPageEditorAssets
         );
 
         wp_localize_script(
-            'givewp-campaign-page-post-type-editor',
+            $handleName,
             'giveCampaignPage',
             [
                 'campaignDetailsURL' => $campaignDetailsURL,
             ]
         );
+
+        Language::setScriptTranslations($handleName);
     }
 }
