@@ -2,8 +2,6 @@
 
 namespace Give\Tests\Unit\DonationForms\Repositories;
 
-use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\Donations\Models\Donation;
@@ -25,12 +23,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
      */
     public function testCountFormsDonations()
     {
-        /** @var Campaign $campaign */
-        $campaign = Campaign::factory()->create([
-            'goalType' => CampaignGoalType::AMOUNT(),
-        ]);
-
-        $form = DonationForm::find($campaign->defaultFormId);
+        $form = DonationForm::factory()->create();
 
         Donation::factory()->create([
             'campaignId' => $campaign->id,
@@ -55,12 +48,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
      */
     public function testGetRevenueReturnsSumOfDonationsWithoutRecoveredFees()
     {
-        /** @var Campaign $campaign */
-        $campaign = Campaign::factory()->create([
-            'goalType' => CampaignGoalType::AMOUNT(),
-        ]);
-
-        $form = DonationForm::find($campaign->defaultFormId);
+        $form = DonationForm::factory()->create();
 
         Donation::factory()->create([
             'formId' => $form->id,
@@ -85,12 +73,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
      */
     public function testCountFormDonors()
     {
-        /** @var Campaign $campaign */
-        $campaign = Campaign::factory()->create([
-            'goalType' => CampaignGoalType::AMOUNT(),
-        ]);
-
-        $form = DonationForm::find($campaign->defaultFormId);
+        $form = DonationForm::factory()->create();
 
         $donor = Donor::factory()->create();
         $donor2 = Donor::factory()->create();
