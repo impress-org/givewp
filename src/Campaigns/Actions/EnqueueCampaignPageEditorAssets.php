@@ -14,6 +14,7 @@ use Give\Helpers\Language;
 class EnqueueCampaignPageEditorAssets
 {
     /**
+     * @unreleased set script translations
      * @since 4.0.0
      */
     public function __invoke()
@@ -30,6 +31,7 @@ class EnqueueCampaignPageEditorAssets
             return;
         }
 
+        $handleName = 'givewp-campaign-page-post-type-editor';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignPagePostTypeEditor.asset.php');
 
         $campaignDetailsURL = add_query_arg([
@@ -38,7 +40,6 @@ class EnqueueCampaignPageEditorAssets
             'id' => $campaignPage->campaignId,
         ], admin_url('edit.php'));
 
-        $handleName = 'givewp-campaign-page-post-type-editor';
         wp_enqueue_script(
             $handleName,
             GIVE_PLUGIN_URL . 'build/campaignPagePostTypeEditor.js',
