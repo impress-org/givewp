@@ -2,6 +2,9 @@
 
 namespace Give\Campaigns\Blocks\CampaignForm;
 
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
+
 /**
  * @unreleased
  */
@@ -31,19 +34,24 @@ class CampaignFormShortcode
      */
     public function loadAssets()
     {
+        $handleName = 'givewp-campaign-form-app';
+        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignListTable.asset.php');
+
         wp_enqueue_script(
-            'givewp-campaign-form-app',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignFormBlockApp.js',
-            [],
-            null,
+            $asset['dependencies'],
+            $asset['version'],
             true
         );
 
+        Language::setScriptTranslations($handleName);
+
         wp_enqueue_style(
-            'givewp-campaign-form-style',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignFormBlockApp.css',
             [],
-            null
+            $asset['version']
         );
 
         wp_enqueue_style('givewp-design-system-foundation');
