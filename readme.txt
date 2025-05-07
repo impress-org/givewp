@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.2.0
+Stable tag: 4.2.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.2.1: May 7th, 2025 =
+* Fix: Resolved an issue with PayPal Donations and Fee Recovery when using the global option for donor forced opt-in
 
 = 4.2.0: April 30th, 2025 =
 * New: Added shortcodes for the Campaign Block and Campaign Grid Block
