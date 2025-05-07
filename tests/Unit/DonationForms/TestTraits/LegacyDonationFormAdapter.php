@@ -5,9 +5,11 @@ namespace Give\Tests\Unit\DonationForms\TestTraits;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\DonationForms\Properties\GoalSettings;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\V2\Properties\DonationFormLevel;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give_Donate_Form;
@@ -57,7 +59,14 @@ trait LegacyDonationFormAdapter
             'createdAt' => Temporal::toDateTime($giveDonateForm->post_date),
             'updatedAt' => Temporal::toDateTime($giveDonateForm->post_date),
             'status' => new DonationFormStatus($giveDonateForm->post_status),
-            'levels' => $levels
+            'levels' => $levels,
+            'goalSettings' => GoalSettings::fromArray([
+                'enableDonationGoal' => false,
+                'goalType' => GoalType::AMOUNT(),
+                'goalAmount' => 100,
+            ]),
+            'enableDonationGoal' => false,
+            'usesFormBuilder' => false,
         ]);
     }
 
