@@ -51,7 +51,7 @@ class DonationCountColumn extends ModelColumn
     public function getCellValue($model): string
     {
         /**
-         * @var DonationFormDataRepository $campaignsData
+         * @var DonationFormDataRepository $donationFormData
          */
         $donationFormData = $this->getListTableData();
 

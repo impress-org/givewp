@@ -53,7 +53,7 @@ class GoalColumn extends ModelColumn
         }
 
         /**
-         * @var DonationFormDataRepository $campaignsData
+         * @var DonationFormDataRepository $donationFormData
          */
         $donationFormData = $this->getListTableData();
 

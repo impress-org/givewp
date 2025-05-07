@@ -49,7 +49,7 @@ class DonationRevenueColumn extends ModelColumn
     public function getCellValue($model, $locale = ''): string
     {
         /**
-         * @var DonationFormDataRepository $campaignsData
+         * @var DonationFormDataRepository $donationFormData
          */
         $donationFormData = $this->getListTableData();
 
