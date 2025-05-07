@@ -26,13 +26,11 @@ final class DonationFormsDataRepositoryTest extends TestCase
         $form = DonationForm::factory()->create();
 
         Donation::factory()->create([
-            'campaignId' => $campaign->id,
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
         ]);
         Donation::factory()->create([
-            'campaignId' => $campaign->id,
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
