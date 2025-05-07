@@ -4,10 +4,9 @@ namespace Give\DonationForms\V2\Endpoints;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignType;
-use Give\DonationForms\Adapter\Form;
-use Give\DonationForms\Adapter\Repository;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -146,7 +145,7 @@ class ListDonationForms extends Endpoint
         $totalForms = $this->getTotalFormsCount();
         $totalPages = (int)ceil($totalForms / $this->request->get_param('perPage'));
 
-        $ids = array_map(function (Form $form) {
+        $ids = array_map(function (DonationForm $form) {
             return $form->id;
         }, $forms);
 
@@ -210,9 +209,8 @@ class ListDonationForms extends Endpoint
         $perPage = $this->request->get_param('perPage');
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
 
-        $query = give(Repository::class)->prepareQuery();
-//
-//        $query = give()->donationForms->prepareQuery();
+        $query = give()->donationForms->prepareQuery();
+
         $query = $this->getWhereConditions($query);
 
         $query->orderByRaw('FIELD(ID, %d) DESC', $this->defaultForm);

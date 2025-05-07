@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Give\DonationForms\V2\ListTable\Columns;
 
-use Give\Campaigns\Repositories\CampaignsDataRepository;
-use Give\DonationForms\Adapter\Form;
-use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
@@ -47,7 +44,7 @@ class GoalColumn extends ModelColumn
      *
      * @inheritDoc
      *
-     * @param Form $model
+     * @param DonationForm $model
      */
     public function getCellValue($model): string
     {

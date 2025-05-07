@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\DonationForms\Adapter;
+namespace Give\DonationForms\Properties;
 
 use Give\DonationForms\ValueObjects\GoalType;
 

@@ -4,9 +4,14 @@ namespace Give\DonationForms\Repositories;
 
 
 use Give\DonationForms\DonationFormDataQuery;
-use Give\DonationForms\Adapter\Form;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalType;
 
+/**
+ * @unreleased
+ *
+ * Used to optimize the donation forms list table performance and to avoid n+1 problems.
+ */
 class DonationFormDataRepository
 {
     private array $amounts;
@@ -48,11 +53,11 @@ class DonationFormDataRepository
      *
      * Get revenue for form
      *
-     * @param Form $form
+     * @param DonationForm $form
      *
-     * @return int
+     * @return int|float
      */
-    public function getRevenue(Form $form): int
+    public function getRevenue(DonationForm $form)
     {
         $data = $form->goalSettings->goalType->isSubscriptions()
             ? $this->subscriptionAmounts
@@ -72,11 +77,11 @@ class DonationFormDataRepository
      *
      * Get donations count for form
      *
-     * @param Form $form
+     * @param DonationForm $form
      *
-     * @return int
+     * @return int|float
      */
-    public function getDonationsCount(Form $form): int
+    public function getDonationsCount(DonationForm $form)
     {
         $data = $form->goalSettings->goalType->isSubscriptions()
             ? $this->subscriptionDonationsCount
@@ -96,11 +101,11 @@ class DonationFormDataRepository
      *
      * Get donors count for form
      *
-     * @param Form $form
+     * @param DonationForm $form
      *
-     * @return int
+     * @return int|float
      */
-    public function getDonorsCount(Form $form): int
+    public function getDonorsCount(DonationForm $form)
     {
         $data = $form->goalSettings->goalType->isSubscriptions()
             ? $this->subscriptionDonorsCount
@@ -121,11 +126,11 @@ class DonationFormDataRepository
      *
      * Get goal data for form
      *
-     * @param Form $form
+     * @param DonationForm $form
      *
      * @return array{actual: int, goal: int, actualFormatted: string, goalFormatted:string, percentage:float}
      */
-    public function getGoalData(Form $form): array
+    public function getGoalData(DonationForm $form): array
     {
         $actual = $this->getActualGoal($form);
         $percentage = $form->goalSettings->goalAmount
@@ -149,11 +154,11 @@ class DonationFormDataRepository
     /**
      * @unreleased
      *
-     * @param Form $form
+     * @param DonationForm $form
      *
-     * @return int
+     * @return int|float
      */
-    private function getActualGoal(Form $form): int
+    private function getActualGoal(DonationForm $form)
     {
         switch ($form->goalSettings->goalType->getValue()) {
             case GoalType::DONATIONS():
