@@ -28,6 +28,7 @@ class LoadCampaignDetailsAssets
         );
 
         wp_enqueue_script($handleName);
+        wp_set_script_translations($handleName, 'give');
         wp_enqueue_style('givewp-design-system-foundation');
         wp_enqueue_style(
             $handleName,

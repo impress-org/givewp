@@ -27,6 +27,8 @@ class LoadCampaignsListTableAssets
             true
         );
 
+        wp_set_script_translations($handleName, 'give');
+        
         wp_localize_script($handleName, 'GiveCampaignsListTable',
             [
                 'apiRoot' => esc_url_raw(rest_url(CampaignRoute::NAMESPACE . '/campaigns/list-table')),
