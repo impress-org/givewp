@@ -6,6 +6,7 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Contracts\ReversibleMigration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -14,7 +15,7 @@ use stdClass;
 /**
  * @since 4.0.0
  */
-class MigrateFormsToCampaignForms extends Migration
+class MigrateFormsToCampaignForms extends Migration implements ReversibleMigration
 {
     /**
      * @inheritDoc

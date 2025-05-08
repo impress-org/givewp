@@ -18,14 +18,4 @@ abstract class Migration extends BaseMigration
      * @since 2.9.0
      */
     abstract public function run();
-
-    /**
-     * Reverse migration
-     * Method used in case the migration fails, and you need to do some cleanup before you can re-run it.
-     *
-     * @unreleased
-     */
-    public function reverse(): void
-    {
-    }
 }

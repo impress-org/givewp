@@ -7,6 +7,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Contracts\ReversibleMigration;
 use Give\Framework\Migrations\Controllers\BatchMigrationRunner;
 use Give\Log\Log;
 use Give\MigrationLog\MigrationLogFactory;
@@ -152,15 +153,17 @@ class MigrationsRunner
             } catch (Exception $exception) {
                 DB::rollback();
 
-                try {
-                    $migration->reverse();
-                } catch (DatabaseQueryException $exception) {
-                    Log::error('Migration rollback failed', [
-                        'message' => $exception->getMessage(),
-                        'code' => $exception->getCode(),
-                        'file' => $exception->getFile(),
-                        'line' => $exception->getLine(),
-                    ]);
+                if ($migration instanceof ReversibleMigration) {
+                    try {
+                        $migration->reverse();
+                    } catch (DatabaseQueryException $exception) {
+                        Log::error('Migration rollback failed', [
+                            'message' => $exception->getMessage(),
+                            'code' => $exception->getCode(),
+                            'file' => $exception->getFile(),
+                            'line' => $exception->getLine(),
+                        ]);
+                    }
                 }
 
                 $migrationLog->setStatus(MigrationLogStatus::FAILED);

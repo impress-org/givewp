@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import classNames from 'classnames';
-import {Card, Label, Notice, Spinner, Pagination, Table, Button, Modal} from '@givewp/components';
-import API, {useMigrationFetcher, getEndpoint} from './api';
+import {Button, Card, Label, Modal, Notice, Pagination, Spinner, Table} from '@givewp/components';
+import API, {getEndpoint, useMigrationFetcher} from './api';
 
 import styles from './styles.module.scss';
 
@@ -56,12 +56,16 @@ const Migrations = () => {
             };
         });
 
-        let url = '/run-migration';
+        let url;
 
-        if (migrationRunModal.isBatchMigration) {
+        if (migrationRunModal.action === 'run' && migrationRunModal.isBatchMigration) {
             url = migrationRunModal.status === 'incomplete'
                 ? '/reschedule-failed-actions'
-                : '/run-batch-migration'
+                : '/run-batch-migration';
+        } else if (migrationRunModal.action === 'rollback') {
+            url = '/rollback-migration';
+        } else {
+            url = '/run-migration'
         }
 
         API.post(url, {id: migrationRunModal.id})
@@ -112,6 +116,7 @@ const Migrations = () => {
             visible: true,
             type: 'warning',
             isBatchMigration: migration.isBatchMigration,
+            action: migration.action,
             status: migration.status,
         });
     };
@@ -222,7 +227,7 @@ const Migrations = () => {
             sort: true,
             sortCallback: (direction) => setSortDirectionForColumn('status', direction),
             styles: {
-                maxWidth: 150,
+                maxWidth: 120,
             },
         },
         {
@@ -242,7 +247,7 @@ const Migrations = () => {
             sort: true,
             sortCallback: (direction) => setSortDirectionForColumn('last_run', direction),
             styles: {
-                maxWidth: 200,
+                maxWidth: 180,
             },
         },
         {
@@ -251,7 +256,7 @@ const Migrations = () => {
             sort: true,
             sortCallback: (direction) => setSortDirectionForColumn('source', direction),
             styles: {
-                maxWidth: 200,
+                maxWidth: 150,
             },
         },
         {
@@ -260,7 +265,7 @@ const Migrations = () => {
             sort: true,
             sortCallback: (direction) => setSortDirectionForColumn('run_order', direction),
             styles: {
-                maxWidth: 150,
+                maxWidth: 100,
             },
         },
         {
@@ -268,7 +273,7 @@ const Migrations = () => {
             label: __('Actions', 'give'),
             append: true,
             styles: {
-                maxWidth: 100,
+                maxWidth: 200,
             },
         },
         {
@@ -284,7 +289,7 @@ const Migrations = () => {
     ];
 
     const columnFilters = {
-        status: (type) => <Label type={type}/>,
+        status: (type) => <Label type={type} />,
         actions: (type, migration) => {
             if (!state.showOptions) {
                 return null;
@@ -295,9 +300,32 @@ const Migrations = () => {
             }
 
             return (
-                <button className="button" onClick={() => openMigrationRunModal(migration)}>
-                    {migration.status === 'incomplete' ? __('Continue Update', 'give') : __('Re-run Update', 'give')}
-                </button>
+                <>
+                    <button
+                        className="button"
+                        onClick={() => openMigrationRunModal({
+                            action: 'run',
+                            ...migration,
+                        })}
+                    >
+                        {migration.status === 'incomplete' ? __('Continue Update', 'give') : __('Re-run Update', 'give')}
+                    </button>
+
+                    {migration.isReversible && migration.status === 'success' && (
+                        <>
+                            <button
+                                style={{marginLeft: 10}}
+                                className="button"
+                                onClick={() => openMigrationRunModal({
+                                    action: 'rollback',
+                                    ...migration,
+                                })
+                            }>
+                                {__('Rollback Update', 'give')}
+                            </button>
+                        </>
+                    )}
+                </>
             );
         },
         details: (value, migration) => {
