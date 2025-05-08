@@ -79,9 +79,9 @@ class DonationFormDataRepository
      *
      * @param DonationForm $form
      *
-     * @return int|float
+     * @return int
      */
-    public function getDonationsCount(DonationForm $form)
+    public function getDonationsCount(DonationForm $form): int
     {
         $data = $form->goalSettings->goalType->isSubscriptions()
             ? $this->subscriptionDonationsCount
@@ -103,9 +103,9 @@ class DonationFormDataRepository
      *
      * @param DonationForm $form
      *
-     * @return int|float
+     * @return int
      */
-    public function getDonorsCount(DonationForm $form)
+    public function getDonorsCount(DonationForm $form): int
     {
         $data = $form->goalSettings->goalType->isSubscriptions()
             ? $this->subscriptionDonorsCount
