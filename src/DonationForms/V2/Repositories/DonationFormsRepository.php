@@ -3,7 +3,8 @@
 namespace Give\DonationForms\V2\Repositories;
 
 use Give\DonationForms\V2\Models\DonationForm;
-use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys as LegacyDonationFormMetaKeys;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\Donations\Models\Donation;
 use Give\Framework\Models\ModelQueryBuilder;
@@ -49,7 +50,8 @@ class DonationFormsRepository
                 'give_formmeta',
                 'ID',
                 'form_id',
-                ...DonationFormMetaKeys::getColumnsForAttachMetaQuery()
+                ...DonationFormMetaKeys::getColumnsForAttachMetaQuery(),
+                ...LegacyDonationFormMetaKeys::getColumnsForAttachMetaQuery()
             )
             ->where('post_type', 'give_forms')
             ->whereIn('post_status', DonationFormStatus::toArray());

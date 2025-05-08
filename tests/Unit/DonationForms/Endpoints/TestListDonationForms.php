@@ -3,8 +3,10 @@
 namespace Give\Tests\Unit\DonationForms\Endpoints;
 
 use Exception;
+use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Endpoints\ListDonationForms;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Helpers\Language;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -102,6 +104,15 @@ class TestListDonationForms extends TestCase
     public function getMockColumns(array $donationForms, string $sortDirection = 'desc'): array
     {
         $listTable = new DonationFormsListTable();
+
+        $ids = array_map(function (DonationForm $form) {
+            return $form->id;
+        }, $donationForms);
+
+        $formsData = DonationFormDataRepository::forms($ids);
+
+        $listTable->setData($formsData);
+
         $columns = $listTable->getColumns();
 
         $expectedItems = [];

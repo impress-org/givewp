@@ -9,7 +9,6 @@
  * @since       1.0
  */
 
-use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\License\PremiumAddonsListManager;
 
 // Exit if accessed directly.

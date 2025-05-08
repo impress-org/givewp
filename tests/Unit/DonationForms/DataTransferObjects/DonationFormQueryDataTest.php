@@ -3,7 +3,8 @@
 namespace Give\Tests\Unit\DonationForms\DataTransferObjects;
 
 use Give\DonationForms\V2\DataTransferObjects\DonationFormQueryData;
-use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys as LegacyDonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -37,6 +38,7 @@ final class DonationFormQueryDataTest extends TestCase
                 'give_formmeta',
                 'ID',
                 'form_id',
+                ...LegacyDonationFormMetaKeys::getColumnsForAttachMetaQuery(),
                 ...DonationFormMetaKeys::getColumnsForAttachMetaQuery()
             )
             ->where('post_type', 'give_forms')
@@ -103,8 +105,8 @@ final class DonationFormQueryDataTest extends TestCase
         $dto = new DonationFormQueryData();
 
         $object = json_encode([
-            DonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase() => 'multi',
-            DonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase() => null
+            LegacyDonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase() => 'multi',
+            LegacyDonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase() => null
         ]);
 
         $levels = $dto->getDonationFormLevels(json_decode($object));
@@ -120,8 +122,8 @@ final class DonationFormQueryDataTest extends TestCase
         $dto = new DonationFormQueryData();
 
         $object = json_encode([
-            DonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase() => 'set',
-            DonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase() => null
+            LegacyDonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase() => 'set',
+            LegacyDonationFormMetaKeys::SET_PRICE()->getKeyAsCamelCase() => null
         ]);
 
         $levels = $dto->getDonationFormLevels(json_decode($object));
