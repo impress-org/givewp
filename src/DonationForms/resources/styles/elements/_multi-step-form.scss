@@ -4,8 +4,6 @@
         flex-direction: column;
         max-width: 35rem;
         width: 100%;
-        overflow: hidden;
-        position: relative;
         padding: 0;
         margin: 0 auto;
         border-radius: var(--givewp-rounded-8);
@@ -75,6 +73,8 @@
 
         &-body {
             padding: 2rem 2rem 0 2rem;
+            position: relative;
+            z-index: 2;
         }
 
         &-footer {

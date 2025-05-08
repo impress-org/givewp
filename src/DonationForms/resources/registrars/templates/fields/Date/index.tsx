@@ -1,8 +1,9 @@
-import {Button, Calendar, CalendarCell, CalendarGrid, DatePicker, Heading, Label as AriaLabel, Popover, Group, DateInput, DateSegment, Dialog} from 'react-aria-components';
+import { Button, Calendar, CalendarCell, CalendarGrid, DatePicker, Heading, Label as AriaLabel, Popover, Group, DateInput, DateSegment, Dialog } from 'react-aria-components';
 import useDateHandling from './useDateHandlingHook';
-import {UseFormRegisterReturn} from 'react-hook-form';
+import { UseFormRegisterReturn } from 'react-hook-form';
+import { useRef, useEffect, useState } from 'react';
 
-import {DateProps} from '@givewp/forms/propTypes';
+import { DateProps } from '@givewp/forms/propTypes';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './styles.module.scss';
 
@@ -24,11 +25,19 @@ export default function Date({
     inputProps,
 }: DateFieldProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
-    const {calendarDate, handleDateChange} = useDateHandling(dateFormat, inputProps.name);
+    const { calendarDate, handleDateChange } = useDateHandling(dateFormat, inputProps.name);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
+
+    useEffect(() => {
+        if (containerRef.current) {
+            setPortalContainer(containerRef.current);
+        }
+    }, []);
 
     return (
         <DatePicker
-            id={`givewp-date-picker__${inputProps.name}`}
+            ref={containerRef}
             aria-invalid={fieldError ? 'true' : 'false'}
             className={styles.dateField}
             onChange={handleDateChange}
@@ -52,7 +61,8 @@ export default function Date({
 
             <Popover
                 placement="bottom"
-                UNSTABLE_portalContainer={document.getElementById(`givewp-date-picker__${inputProps.name}`)}
+                isNonModal={true}
+                UNSTABLE_portalContainer={portalContainer}
             >
                 <Dialog>
                     <Calendar>
