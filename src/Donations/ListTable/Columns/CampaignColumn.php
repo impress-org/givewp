@@ -45,7 +45,7 @@ class CampaignColumn extends ModelColumn
     {
         return sprintf(
             '<a href="%s" aria-label="%s">%s</a>',
-            admin_url("post.php?post={$model->campaign->id}&action=edit"),
+            admin_url("edit.php?post_type=give_forms&page=give-campaigns&id={$model->campaign->id}&tab=overview&action=edit"),
             __('Visit campaign page', 'give'),
             $model->campaign->title
         );
