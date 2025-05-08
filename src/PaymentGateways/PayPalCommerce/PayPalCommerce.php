@@ -78,6 +78,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @since 4.2.1 updated to use updateOrderFromDonation
      * @since 4.1.0 updated to include 3D Secure validation
      * @since 4.0.0 updated to update and capture payment
      * @since 2.19.0
@@ -103,7 +104,7 @@ class PayPalCommerce extends PaymentGateway
             $this->validate3dSecure($payPalOrder);
 
             if ($this->shouldUpdateOrder($donation, $payPalOrder)){
-                $payPalOrderRepository->updateApprovedOrder($payPalOrderId, $donation->amount);
+                $payPalOrderRepository->updateOrderFromDonation($payPalOrderId, $donation);
             }
 
             // ready to capture order, response is the updated PayPal order.
