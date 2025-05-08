@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\Donations\Endpoints;
 
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Models\Donation;
@@ -23,7 +24,10 @@ class TestListDonations extends TestCase
      */
     public function testShouldReturnListWithSameSize()
     {
-        $donations = Donation::factory()->count(5)->create();
+        $campaign = Campaign::factory()->create();
+        $donations = Donation::factory()->count(5)->create([
+            'campaignId' => $campaign->id
+        ]);
 
         $mockRequest = $this->getMockRequest();
         // set_params
@@ -47,7 +51,10 @@ class TestListDonations extends TestCase
      */
     public function testShouldReturnListWithSameData()
     {
-        $donations = Donation::factory()->count(5)->create();
+        $campaign = Campaign::factory()->create();
+        $donations = Donation::factory()->count(5)->create([
+            'campaignId' => $campaign->id
+        ]);
         $sortDirection = ['asc', 'desc'][round(rand(0, 1))];
         $mockRequest = $this->getMockRequest();
         // set_params

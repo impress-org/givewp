@@ -10,6 +10,8 @@
  */
 
 // Exit if accessed directly.
+use Give\Donations\Models\Donation;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -410,7 +412,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 		$columns = [
 			'cb'            => '<input type="checkbox" />', // Render a checkbox instead of text.
 			'donation'      => __( 'Donation', 'give' ),
-			'donation_form' => __( 'Donation Form', 'give' ),
+			'campaign' => __( 'Campaign', 'give' ),
 			'status'        => __( 'Status', 'give' ),
 			'date'          => __( 'Date', 'give' ),
 			'amount'        => __( 'Amount', 'give' ),
@@ -434,7 +436,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	public function get_sortable_columns() {
 		$columns = [
 			'donation'      => [ 'ID', true ],
-			'donation_form' => [ 'donation_form', false ],
+			'campaign '     => [ 'campaign', false ],
 			'status'        => [ 'status', false ],
 			'amount'        => [ 'amount', false ],
 			'date'          => [ 'date', false ],
@@ -502,19 +504,11 @@ class Give_Payment_History_Table extends WP_List_Table {
 				$value .= sprintf( '<br><small>%1$s %2$s</small>', __( 'via', 'give' ), give_get_gateway_admin_label( $payment->gateway ) );
 				break;
 
-			case 'donation_form':
-				$form_title = empty( $payment->form_title ) ? sprintf( __( 'Untitled (#%s)', 'give' ), $payment->form_id ) : $payment->form_title;
-				$value      = '<a href="' . admin_url( 'post.php?post=' . $payment->form_id . '&action=edit' ) . '">' . $form_title . '</a>';
-				$level      = give_get_donation_form_title(
-					$payment,
-					[
-						'only_level' => true,
-					]
-				);
+			case 'campaign':
 
-				if ( ! empty( $level ) ) {
-					$value .= $level;
-				}
+                $donation = Donation::find($payment->ID);
+
+				$value = '<a href="' . admin_url( 'edit.php?post_type=give_forms&page=give-campaigns&id=' . $donation->campaign->id . '&tab=overview&action=edit' ) . '">' . $donation->campaign->title . '</a>';
 
 				break;
 
