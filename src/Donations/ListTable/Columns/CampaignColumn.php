@@ -8,37 +8,34 @@ use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @since 2.24.0
+ * @unreleased
  *
  * @extends ModelColumn<Donation>
  */
-class FormColumn extends ModelColumn
+class CampaignColumn extends ModelColumn
 {
-
-    protected $sortColumn = 'formTitle';
-
     /**
-     * @since 2.24.0
+     * @unreleased
      *
      * @inheritDoc
      */
     public static function getId(): string
     {
-        return 'form';
+        return 'campaign';
     }
 
     /**
-     * @since 2.24.0
+     * @unreleased
      *
      * @inheritDoc
      */
     public function getLabel(): string
     {
-        return __('Donation Form', 'give');
+        return __('Campaign', 'give');
     }
 
     /**
-     * @since 2.24.0
+     * @unreleased
      *
      * @inheritDoc
      *
@@ -48,9 +45,9 @@ class FormColumn extends ModelColumn
     {
         return sprintf(
             '<a href="%s" aria-label="%s">%s</a>',
-            admin_url("post.php?post={$model->formId}&action=edit"),
-            __('Visit donation form page', 'give'),
-            $model->formTitle
+            admin_url("post.php?post={$model->campaign->id}&action=edit"),
+            __('Visit campaign page', 'give'),
+            $model->campaign->title
         );
     }
 }
