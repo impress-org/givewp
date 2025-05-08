@@ -32,7 +32,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
      * a component, so it cannot use hooks to access the form field values.
      */
     let amount;
-    let feeRecovery;
     let firstName;
     let lastName;
     let email;
@@ -264,11 +263,9 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
     };
 
     const FormFieldsProvider = ({children}) => {
-        const {useWatch} = window.givewp.form.hooks;
         const formData = window.givewp.form.hooks.useFormData();
 
         amount = formData.amount;
-        feeRecovery = useWatch({name: 'feeRecovery'});
         firstName = formData.firstName;
         lastName = formData.lastName;
         email = formData.email;
@@ -298,7 +295,6 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             getFieldState,
             setFocus,
             getValues,
-            formState: {errors},
             trigger,
             setError,
         } = useFormContext();
@@ -307,7 +303,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         const props: PayPalButtonsComponentProps = {
             style: buttonsStyle,
             disabled: isSubmitting || isSubmitSuccessful,
-            forceReRender: [donationType, amount, feeRecovery, firstName, lastName, email, currency],
+            forceReRender: [donationType, amount, firstName, lastName, email, currency],
             onClick: async (data, actions) => {
                 // Validate whether payment gateway support subscriptions.
                 if (donationType === 'subscription' && !gateway.supportsSubscriptions) {
