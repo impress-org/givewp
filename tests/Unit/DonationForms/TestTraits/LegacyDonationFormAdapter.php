@@ -61,9 +61,9 @@ trait LegacyDonationFormAdapter
             'status' => new DonationFormStatus($giveDonateForm->post_status),
             'levels' => $levels,
             'goalSettings' => GoalSettings::fromArray([
-                'enableDonationGoal' => false,
+                'enableDonationGoal' => $giveDonateForm->has_goal(),
                 'goalType' => GoalType::AMOUNT(),
-                'goalAmount' => '0',
+                'goalAmount' => $giveDonateForm->get_goal(),
             ]),
             'usesFormBuilder' => false,
         ]);
