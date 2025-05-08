@@ -2,6 +2,9 @@
 
 namespace Give\Campaigns\Blocks\Campaign;
 
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
+
 /**
  * @since 4.2.0
  */
@@ -27,23 +30,29 @@ class CampaignShortcode
     }
 
     /**
+     * @unreleased Use info from asset.php file and set script translations
      * @since 4.2.0
      */
     public function loadAssets()
     {
+        $handleName = 'givewp-campaign-block-app';
+        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlockApp.asset.php');
+
         wp_enqueue_script(
-            'givewp-campaign-block-app',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignBlockApp.js',
-            [],
-            null,
+            $asset['dependencies'],
+            $asset['version'],
             true
         );
 
+        Language::setScriptTranslations($handleName);
+
         wp_enqueue_style(
-            'givewp-campaign-block-style',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignBlockApp.css',
             [],
-            null
+            $asset['version']
         );
 
         wp_enqueue_style('givewp-design-system-foundation');
