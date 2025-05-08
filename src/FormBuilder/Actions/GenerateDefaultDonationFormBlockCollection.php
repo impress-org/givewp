@@ -106,9 +106,9 @@ class GenerateDefaultDonationFormBlockCollection
                     __("Mrs", 'give')
                 ],
                 "firstNameLabel" => __("First name", 'give'),
-                "firstNamePlaceholder" => __("First name", 'give'),
+                "firstNamePlaceholder" => __("John", 'give'),
                 "lastNameLabel" => __("Last name", 'give'),
-                "lastNamePlaceholder" => __("Last name", 'give'),
+                "lastNamePlaceholder" => __("Doe", 'give'),
                 "requireLastName" => false
             ],
             "innerBlocks" => []
