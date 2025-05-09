@@ -153,19 +153,21 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
             {!!errorMessage && <FieldError error={errorMessage} name={nodeName} />}
 
             <div className={styles['authentication__login-form__buttons-wrapper']}>
+                <div className={styles['authentication__login-form__reset-wrapper']}>
+                    {__('Forgot your password?', 'give')}
+                    <button
+                        className={styles['authentication__login-form__reset-button']}
+                        onClick={(event) => {
+                            event.preventDefault();
+                            const passwordResetUrl = getRedirectUrl(new URL(lostPasswordUrl));
+                            window.top.location.assign(passwordResetUrl);
+                        }}
+                    >
+                        <span>{__('Reset', 'give')}</span>
+                    </button>
+                </div>
                 <button className={styles['authentication__login-form__login-button']} onClick={tryLogin}>
                     {__('Log In', 'give')}
-                </button>
-                <button
-                    className={styles['authentication__login-form__reset-button']}
-                    onClick={(event) => {
-                        event.preventDefault();
-                        const passwordResetUrl = getRedirectUrl(new URL(lostPasswordUrl));
-
-                        window.top.location.assign(passwordResetUrl);
-                    }}
-                >
-                    {__('Forgot your password?', 'give')} <span>{__('Reset', 'give')}</span>
                 </button>
             </div>
         </div>

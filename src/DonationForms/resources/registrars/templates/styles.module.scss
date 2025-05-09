@@ -102,6 +102,11 @@
         margin: 0;
         padding: 0;
         width: auto;
+
+        &:focus {
+            border-color: transparent;
+            box-shadow: 0 0 0 0.125rem var(--givewp-primary-color);
+        }
     }
 
     &__login-form {
@@ -117,7 +122,6 @@
 
         &__buttons-wrapper {
             display: flex;
-            flex-direction: row-reverse;
             gap: 15px;
             justify-content: space-between;
             align-items: baseline;
@@ -139,6 +143,15 @@
                     background-color: color-mix(in lab, var(--givewp-primary-color) 90%, black);
                 }
             }
+
+            &:focus {
+                outline: thick double var(--givewp-primary-color);
+            }
+        }
+
+        &__reset-wrapper {
+            display: flex;
+            gap: 5px;
         }
 
         &__reset-button {
@@ -149,10 +162,16 @@
             cursor: pointer;
             font-size: 14px;
             line-height: 1.43;
+            padding: 2px;
 
             span {
                 color: var(--primary);
                 font-weight: 500;
+            }
+
+            &:focus {
+                border-color: transparent;
+                box-shadow: 0 0 0 0.125rem var(--givewp-primary-color);
             }
         }
     }
