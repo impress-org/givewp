@@ -35,8 +35,8 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
         $this->assertEquals(
             $block->getAttributes(),
             [
-                "label" => __("Donation Amount", 'give'),
-                "levels" => [
+                "label"                              => __("Donation Amount", 'give'),
+                "levels"                             => [
                     ['value' => 10, 'checked' => true],
                     ['value' => 25],
                     ['value' => 50],
@@ -44,18 +44,18 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
                     ['value' => 250],
                     ['value' => 500],
                 ],
-                "priceOption" => "multi",
-                "setPrice" => 25,
-                "customAmount" => true,
-                "customAmountMin" => 1,
-                "recurringBillingPeriodOptions" => [
-                    "month"
+                "priceOption"                        => "multi",
+                "setPrice"                           => 25,
+                "customAmount"                       => true,
+                "customAmountMin"                    => 1,
+                "recurringBillingPeriodOptions"      => [
+                    "month",
                 ],
-                "recurringBillingInterval" => 1,
-                "recurringEnabled" => false,
-                "recurringLengthOfTime" => "0",
+                "recurringBillingInterval"           => 1,
+                "recurringEnabled"                   => false,
+                "recurringLengthOfTime"              => "0",
                 "recurringOptInDefaultBillingPeriod" => "month",
-                "recurringEnableOneTimeDonations" => true
+                "recurringEnableOneTimeDonations"    => true,
             ]
         );
     }
@@ -74,17 +74,17 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
         $this->assertEquals(
             $block->getAttributes(),
             [
-                "showHonorific" => false,
-                "honorifics" => [
+                "showHonorific"        => false,
+                "honorifics"           => [
                     __("Mr", 'give'),
                     __("Ms", 'give'),
-                    __("Mrs", 'give')
+                    __("Mrs", 'give'),
                 ],
-                "firstNameLabel" => __("First name", 'give'),
-                "firstNamePlaceholder" => __("First name", 'give'),
-                "lastNameLabel" => __("Last name", 'give'),
-                "lastNamePlaceholder" => __("Last name", 'give'),
-                "requireLastName" => false
+                "firstNameLabel"       => __("First name", 'give'),
+                "firstNamePlaceholder" => __("John", 'give'),
+                "lastNameLabel"        => __("Last name", 'give'),
+                "lastNamePlaceholder"  => __("Doe", 'give'),
+                "requireLastName"      => false,
             ]
         );
     }
@@ -103,7 +103,7 @@ class GenerateDefaultDonationFormBlockCollectionTest extends TestCase
         $this->assertEquals(
             $block->getAttributes(),
             [
-                "label" => __("Email Address", 'give'),
+                "label"      => __("Email Address", 'give'),
                 "isRequired" => true,
             ]
         );
