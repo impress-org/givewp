@@ -150,4 +150,10 @@ class Give_Shortcode_Donation_Grid extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Donation_Grid();
+/**
+ * @unreleased use init action
+ */
+add_action( 'init', static function () {
+    new Give_Shortcode_Donation_Grid();
+});
+

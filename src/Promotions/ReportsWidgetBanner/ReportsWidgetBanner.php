@@ -56,7 +56,7 @@ class ReportsWidgetBanner extends SaleBanners
      */
     public static function isShowing(): bool
     {
-        $hasBanners = !empty((new ReportsWidgetBanner)->getVisibleBanners());
+        $hasBanners = !empty((new ReportsWidgetBanner())->getVisibleBanners());
         $isDashboardWidgetPage = admin_url() . 'index.php' === get_site_url() . $_SERVER['REQUEST_URI'];
 
         return $hasBanners && $isDashboardWidgetPage;
