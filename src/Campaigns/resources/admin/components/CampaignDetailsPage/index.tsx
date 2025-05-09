@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {useEffect, useState} from '@wordpress/element';
+import {useEffect, useState, useRef} from '@wordpress/element';
 import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
@@ -43,6 +43,8 @@ const StatusBadge = ({status}: {status: string}) => {
 };
 
 export default function CampaignsDetailsPage({campaignId}) {
+    const headerRef = useRef(null);
+    const [headerHeight, setHeaderHeight] = useState(0);
     const {adminUrl} = getCampaignOptionsWindowData();
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState<null | string>(null);
@@ -62,6 +64,37 @@ export default function CampaignsDetailsPage({campaignId}) {
             };
         });
     };
+
+    useEffect(() => {
+        // Function to update header height
+        const updateHeaderHeight = () => {
+          if (headerRef.current) {
+            const height = headerRef.current.offsetHeight;
+            setHeaderHeight(height);
+            
+            // Update CSS variable directly
+            document.documentElement.style.setProperty('--header-height', `${height}px`);
+          }
+        };
+        
+        // Initial measurement
+        updateHeaderHeight();
+        
+        // Listen for resize events
+        window.addEventListener('resize', updateHeaderHeight);
+        
+        // Use ResizeObserver to detect content changes
+        const resizeObserver = new ResizeObserver(updateHeaderHeight);
+        if (headerRef.current) {
+          resizeObserver.observe(headerRef.current);
+        }
+        
+        // Clean up
+        return () => {
+          window.removeEventListener('resize', updateHeaderHeight);
+          resizeObserver.disconnect();
+        };
+      }, []);
 
     useEffect(() => {
         apiFetch({
@@ -256,7 +289,7 @@ export default function CampaignsDetailsPage({campaignId}) {
             <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <article className={`interface-interface-skeleton__content ${styles.page}`}>
-                        <header className={styles.pageHeader}>
+                        <header ref={headerRef} className={styles.pageHeader}>
                             <div className={styles.breadcrumb}>
                                 <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-campaigns`}>
                                     {__('Campaigns', 'give')}

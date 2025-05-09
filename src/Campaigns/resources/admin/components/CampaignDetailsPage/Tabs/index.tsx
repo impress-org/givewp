@@ -64,7 +64,7 @@ export default function CampaignDetailsTabs() {
 
     return (
         <Tabs defaultSelectedKey={activeTab.id} selectedKey={activeTab.id} onSelectionChange={handleTabNavigation}>
-            <div>
+            <div className={styles.tabMenu}>
                 <TabList className={`${styles.tabs} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                     {Object.values(tabs).map((tab) => (
                         <Tab key={tab.id} id={tab.id}>
