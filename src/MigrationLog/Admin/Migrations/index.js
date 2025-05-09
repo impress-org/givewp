@@ -224,8 +224,6 @@ const Migrations = () => {
         switch (status) {
             case 'incomplete':
                 return __('Continue Update', 'give');
-            case 'reversed':
-                return __('Run Update', 'give');
             default:
                 return __('Re-run Update', 'give');
 
