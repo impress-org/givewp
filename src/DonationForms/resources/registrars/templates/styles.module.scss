@@ -145,8 +145,7 @@
             }
 
             &:focus {
-                border-color: transparent;
-                box-shadow: 0 0 0 0.125rem var(--givewp-primary-color);
+                outline: thick double var(--givewp-primary-color);
             }
         }
 
