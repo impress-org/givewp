@@ -70,7 +70,7 @@ class MigrationsRunner
     /**
      * Run database migrations.
      *
-     * @since 4.0.0 add support for batch processing
+     * @since      4.0.0 add support for batch processing
      * @since      2.9.0
      */
     public function run()
@@ -151,9 +151,17 @@ class MigrationsRunner
                 }
             } catch (Exception $exception) {
                 DB::rollback();
-
-                $migrationLog->setStatus(MigrationLogStatus::FAILED);
-                $migrationLog->setError($exception);
+                $migrationLog
+                    ->setStatus(MigrationLogStatus::FAILED)
+                    ->setError([
+                        'status' => __('Migration failed', 'give'),
+                        'error' => [
+                            'message' => $exception->getMessage(),
+                            'code' => $exception->getCode(),
+                            'file' => $exception->getFile(),
+                            'line' => $exception->getLine(),
+                        ],
+                    ]);
 
                 give()->notices->register_notice(
                     [

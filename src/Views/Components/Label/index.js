@@ -5,7 +5,7 @@ const Label = ({type, text}) => {
     const labelClasses = classNames(
         styles.label,
         {[styles.error]: type === 'error' || type === 'failed'},
-        {[styles.warning]: type === 'warning' || type === 'incomplete'},
+        {[styles.warning]: type === 'warning' || type === 'incomplete' || type === 'reversed'},
         {[styles.notice]: type === 'notice'},
         {[styles.success]: type === 'success'},
         {[styles.info]: type === 'info' || type === 'running'},

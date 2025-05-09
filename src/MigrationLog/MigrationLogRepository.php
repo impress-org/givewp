@@ -143,17 +143,15 @@ class MigrationLogRepository
 
     /**
      * Get completed migrations IDs
-     *
-     * @return array
      */
-    public function getCompletedMigrationsIDs()
+    public function getCompletedMigrationsIDs(): array
     {
         $migrations = [];
 
         try {
-            $result = DB::get_results(
-                DB::prepare("SELECT * FROM {$this->migration_table} WHERE status = %s", MigrationLogStatus::SUCCESS)
-            );
+            $result = DB::table('give_migrations')
+                ->where('status', MigrationLogStatus::SUCCESS)
+                ->getAll();
         } catch (\Exception $exception) {
             // This exception should happen only once, during the migration system storage update.
             // But, we will log this error just in case to see if this is a repeating problem.
