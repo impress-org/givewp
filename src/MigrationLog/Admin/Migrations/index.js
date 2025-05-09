@@ -65,7 +65,7 @@ const Migrations = () => {
         } else if (migrationRunModal.action === 'rollback') {
             url = '/rollback-migration';
         } else {
-            url = '/run-migration'
+            url = '/run-migration';
         }
 
         API.post(url, {id: migrationRunModal.id})
@@ -220,6 +220,18 @@ const Migrations = () => {
         );
     };
 
+    const getButtonTextByStatus = status => {
+        switch (status) {
+            case 'incomplete':
+                return __('Continue Update', 'give');
+            case 'reversed':
+                return __('Run Update', 'give');
+            default:
+                return __('Re-run Update', 'give');
+
+        }
+    };
+
     const columns = [
         {
             key: 'status',
@@ -289,7 +301,10 @@ const Migrations = () => {
     ];
 
     const columnFilters = {
-        status: (type) => <Label type={type} />,
+        status: (type, migration) => {
+            const text = migration.status === 'reversed' ? __('Pending', 'give') : null;
+            return <Label type={type} text={text} />;
+        },
         actions: (type, migration) => {
             if (!state.showOptions) {
                 return null;
@@ -301,29 +316,26 @@ const Migrations = () => {
 
             return (
                 <>
-                    <button
-                        className="button"
-                        onClick={() => openMigrationRunModal({
-                            action: 'run',
-                            ...migration,
-                        })}
-                    >
-                        {migration.status === 'incomplete' ? __('Continue Update', 'give') : __('Re-run Update', 'give')}
-                    </button>
-
-                    {migration.isReversible && migration.status === 'success' && (
-                        <>
-                            <button
-                                style={{marginLeft: 10}}
-                                className="button"
-                                onClick={() => openMigrationRunModal({
-                                    action: 'rollback',
-                                    ...migration,
-                                })
-                            }>
-                                {__('Rollback Update', 'give')}
-                            </button>
-                        </>
+                    {migration.isReversible && migration.status !== 'reversed' ? (
+                        <button
+                            className="button"
+                            onClick={() => openMigrationRunModal({
+                                action: 'rollback',
+                                ...migration,
+                            })
+                        }>
+                            {__('Reverse Update', 'give')}
+                        </button>
+                    ) : (
+                        <button
+                            className="button"
+                            onClick={() => openMigrationRunModal({
+                                action: 'run',
+                                ...migration,
+                            })}
+                        >
+                            {getButtonTextByStatus(migration.status)}
+                        </button>
                     )}
                 </>
             );
