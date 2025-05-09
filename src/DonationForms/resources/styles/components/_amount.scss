@@ -204,7 +204,7 @@ $borderColor: #9A9A9A;
             background-color: var(--givewp-primary-color);
             border: none;
             color: #fff;
-            
+
             &:focus{
                 outline: none;
             }
@@ -283,6 +283,7 @@ $borderColor: #9A9A9A;
         input[type="radio"] {
             position: absolute;
             z-index: -999;
+            border: none;
         }
     }
 }
