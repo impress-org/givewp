@@ -7,7 +7,6 @@ use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Contracts\Migration;
-use Give\Framework\Migrations\Contracts\ReversibleMigration;
 use Give\Framework\Migrations\Controllers\BatchMigrationRunner;
 use Give\Log\Log;
 use Give\MigrationLog\MigrationLogFactory;
@@ -71,7 +70,7 @@ class MigrationsRunner
     /**
      * Run database migrations.
      *
-     * @since 4.0.0 add support for batch processing
+     * @since      4.0.0 add support for batch processing
      * @since      2.9.0
      */
     public function run()
@@ -152,27 +151,17 @@ class MigrationsRunner
                 }
             } catch (Exception $exception) {
                 DB::rollback();
-
-                if ($migration instanceof ReversibleMigration) {
-                    try {
-                        $migration->reverse();
-                    } catch (DatabaseQueryException $exception) {
-                        Log::error('Migration rollback failed', [
+                $migrationLog
+                    ->setStatus(MigrationLogStatus::FAILED)
+                    ->setError([
+                        'status' => __('Migration failed', 'give'),
+                        'error' => [
                             'message' => $exception->getMessage(),
                             'code' => $exception->getCode(),
                             'file' => $exception->getFile(),
                             'line' => $exception->getLine(),
-                        ]);
-                    }
-                }
-
-                $migrationLog->setStatus(MigrationLogStatus::FAILED);
-                $migrationLog->setError([
-                    'message' => $exception->getMessage(),
-                    'code' => $exception->getCode(),
-                    'file' => $exception->getFile(),
-                    'line' => $exception->getLine(),
-                ]);
+                        ],
+                    ]);
 
                 give()->notices->register_notice(
                     [
