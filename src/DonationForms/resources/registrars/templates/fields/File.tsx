@@ -1,5 +1,8 @@
 import {FileProps} from '@givewp/forms/propTypes';
 
+/**
+ * @unreleased add aria-required attribute.
+ */
 export default function File({Label, allowedMimeTypes, ErrorMessage, fieldError, description, inputProps}: FileProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
     const {setValue} = window.givewp.form.hooks.useFormContext();
@@ -20,6 +23,7 @@ export default function File({Label, allowedMimeTypes, ErrorMessage, fieldError,
                 onChange={(e) => {
                     setValue(name, e.target.files[0]);
                 }}
+                aria-required={inputProps['aria-required']}
             />
 
             <input type="hidden" {...inputProps} />
