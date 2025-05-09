@@ -10,6 +10,7 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\Helpers\Form\Utils as FormUtils;
 
 /**
  * Class AjaxRequestHandler
@@ -257,6 +258,7 @@ class AjaxRequestHandler
     }
 
     /**
+     * @since 4.2.1 only filter amount for v2 forms
      * @since 3.4.2
      */
     private function getOrderData(): array
@@ -264,11 +266,13 @@ class AjaxRequestHandler
         $postData = give_clean($_POST);
         $formId = absint($postData['give-form-id']);
         $donorAddress = $this->getDonorAddressFromPostedDataForPaypalOrder($postData);
+        $isV3Form = FormUtils::isV3Form($formId);
 
-        return [
-            'formId' => $formId,
-            'formTitle' => give_payment_gateway_item_title(['post_data' => $postData], 127),
-            'donationAmount' => isset($postData['give-amount']) ?
+        if ($isV3Form) {
+            // if coming from v3 forms, fee recovery is already included in the amount and should not be filtered.
+            $amount = isset($postData['give-amount']) ? give_clean($postData['give-amount']) : '0.00';
+        } else {
+            $amount = isset($postData['give-amount']) ?
                 (float)apply_filters(
                     'give_donation_total',
                     give_maybe_sanitize_amount(
@@ -276,7 +280,13 @@ class AjaxRequestHandler
                         ['currency' => give_get_currency($formId)]
                     )
                 ) :
-                '0.00',
+                '0.00';
+        }
+
+        return [
+            'formId' => $formId,
+            'formTitle' => give_payment_gateway_item_title(['post_data' => $postData], 127),
+            'donationAmount' => $amount,
             'payer' => [
                 'firstName' => $postData['give_first'],
                 'lastName' => $postData['give_last'],
