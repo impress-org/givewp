@@ -151,7 +151,6 @@ class MigrationLogRepository
         try {
             $result = DB::table('give_migrations')
                 ->where('status', MigrationLogStatus::SUCCESS)
-                ->orWhere('status', MigrationLogStatus::REVERSED)
                 ->getAll();
         } catch (\Exception $exception) {
             // This exception should happen only once, during the migration system storage update.
