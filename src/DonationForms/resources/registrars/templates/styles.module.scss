@@ -150,6 +150,11 @@
             }
         }
 
+        &__reset-wrapper {
+            display: flex;
+            gap: 5px;
+        }
+
         &__reset-button {
             background: none;
             border: none;
@@ -158,6 +163,7 @@
             cursor: pointer;
             font-size: 14px;
             line-height: 1.43;
+            padding: 2px;
 
             span {
                 color: var(--primary);
