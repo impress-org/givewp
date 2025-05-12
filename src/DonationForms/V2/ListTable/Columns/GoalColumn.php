@@ -63,7 +63,7 @@ class GoalColumn extends ModelColumn
             'raw_actual' => $goalData['actual'],
             'raw_goal' => $goalData['goal'],
             'progress' => $goalData['percentage'],
-            'actual' => $goalData['actual'] ,
+            'actual' => $goalData['actualFormatted'] ,
             'goal' => $goalData['goalFormatted'],
             'format' => $goalData['typeIsMoney'] ? 'percentage' : 'amount',
             'form_id' => $model->id,

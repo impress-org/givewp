@@ -4,6 +4,7 @@ namespace Give\DonationForms\Repositories;
 
 
 use Give\Campaigns\CampaignsDataQuery;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\DonationFormDataQuery;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalSource;
@@ -209,18 +210,22 @@ class DonationFormDataRepository
             ? $actual / $form->goalSettings->goalAmount
             : 0;
 
+        $typeIsMoney = $form->goalSettings->goalType->isOneOf(
+            GoalType::AMOUNT(),
+            GoalType::AMOUNT_FROM_SUBSCRIPTIONS(),
+        );
+
         return [
             'actual' => $actual,
             'goal' => $form->goalSettings->goalAmount,
-            'actualFormatted' => $form->goalSettings->goalType == GoalType::AMOUNT
+            'actualFormatted' => $typeIsMoney
                 ? give_currency_filter(give_format_amount($actual))
                 : $actual,
-            'goalFormatted' => $form->goalSettings->goalType == GoalType::AMOUNT
+            'goalFormatted' => $typeIsMoney
                 ? give_currency_filter(give_format_amount($form->goalSettings->goalAmount))
                 : $form->goalSettings->goalAmount,
             'percentage' => round($percentage * 100, 2),
-            'typeIsMoney' => $form->goalSettings->goalType->isOneOf(GoalType::AMOUNT(),
-                GoalType::AMOUNT_FROM_SUBSCRIPTIONS()),
+            'typeIsMoney' => $typeIsMoney,
         ];
     }
 
