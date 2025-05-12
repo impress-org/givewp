@@ -1,5 +1,9 @@
 import type {SelectableFieldProps} from '@givewp/forms/propTypes';
+import autoCompleteMapping from '@givewp/forms/registrars/templates/fields/utils/autoCompleteMapping';
 
+/**
+ * @unreleased Add autoComplete support
+ */
 export default function Select({
     Label,
     ErrorMessage,
@@ -9,13 +13,18 @@ export default function Select({
     description,
     inputProps,
 }: SelectableFieldProps) {
+    const autoComplete = autoCompleteMapping[inputProps?.name] || '';
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
 
     return (
         <label>
             <Label />
             {description && <FieldDescription description={description} />}
-            <select {...inputProps} aria-invalid={fieldError ? 'true' : 'false'}>
+            <select
+                {...inputProps}
+                aria-invalid={fieldError ? 'true' : 'false'}
+                {...(autoComplete && {autoComplete: autoComplete})}
+            >
                 {placeholder && (
                     <>
                         <option hidden>{placeholder}</option>
