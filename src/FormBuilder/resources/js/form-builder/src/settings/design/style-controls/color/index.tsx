@@ -15,7 +15,7 @@ export default function Color({dispatch}) {
     const defaultColors = [
         {name: 'Black', slug: 'black', color: '#000000'},
         {name: 'Dark Blue', slug: 'dark-blue', color: '#1E1AE2'},
-        {name: 'Give Primary Default', slug: 'give-primary-default', color: '#69b86b'},
+        {name: 'Give Primary Default', slug: 'give-primary-default', color: '#2d802f'},
         {name: 'Red', slug: 'red', color: '#BD3D36'},
         {name: 'Orange', slug: 'orange', color: '#EB712E'},
         {name: 'Gray', slug: 'gray', color: '#5F7385'},

@@ -319,7 +319,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->goalEndDate = $array['goalEndDate'] ?? '';
         $self->designId = $array['designId'] ?? null;
         $self->inheritCampaignColors = $array['inheritCampaignColors'] ?? false;
-        $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
+        $self->primaryColor = $array['primaryColor'] ?? '#2d802f';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registrationNotification = $array['registrationNotification'] ?? false;
