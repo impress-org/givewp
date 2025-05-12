@@ -42,6 +42,8 @@ export default function DonationAmountLevels({name, currency, levels, onLevelCli
             className={classNames('givewp-fields-amount__levels-container', {
                 'givewp-fields-amount__levels-container--has-descriptions': groupedLevels.labeled.length > 0,
             })}
+            role="radiogroup"
+            aria-label="Donation Amount"
         >
             {allLevels.map((level, index) => {
                 const label = formatter.format(level.value);
@@ -61,6 +63,8 @@ export default function DonationAmountLevels({name, currency, levels, onLevelCli
                                 'givewp-fields-amount__level--description': hasDescription,
                             })}
                             type="button"
+                            role="radio"
+                            aria-checked={selected}
                             onClick={() => {
                                 onLevelClick(level.value);
                             }}
