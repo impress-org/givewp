@@ -92,9 +92,11 @@ class DonationFormDataRepository
             ->distinct()
             ->select(['campaign_id', 'ids'])
             ->whereIn('form_id', $ids)
-            ->getSQL();
+            ->get();
 
-        $donations = CampaignsDataQuery::donations($campaign->ids);
+        $ids = array_map('intval', $ids);
+
+        $donations = CampaignsDataQuery::donations($ids);
 
         $this->campaignAmounts = $donations->collectIntendedAmounts();
         $this->campaignDonationsCount = $donations->collectDonations();
