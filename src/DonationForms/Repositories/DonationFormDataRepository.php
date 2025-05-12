@@ -106,7 +106,7 @@ class DonationFormDataRepository
 
         // Set subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
-            $subscriptions = CampaignsDataQuery::subscriptions($campaign->ids);
+            $subscriptions = CampaignsDataQuery::subscriptions($ids);
 
             $this->campaignSubscriptionAmounts = $subscriptions->collectInitialAmounts();
             $this->campaignSubscriptionDonationsCount = $subscriptions->collectDonations();
