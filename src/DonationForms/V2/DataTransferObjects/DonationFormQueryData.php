@@ -3,6 +3,8 @@
 namespace Give\DonationForms\V2\DataTransferObjects;
 
 use DateTime;
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Properties\GoalSettings;
 use Give\DonationForms\V2\Models\DonationForm;
@@ -156,7 +158,21 @@ final class DonationFormQueryData
         if ($settings) {
             $settings = FormSettings::fromjson($settings);
 
+            if ($settings->enableDonationGoal && $settings->goalSource->isCampaign()) {
+                $campaign = Campaign::findByFormId($queryObject->ID);
+
+                return GoalSettings::fromArray([
+                    'goalSource' => $settings->goalSource->getValue(),
+                    'enableDonationGoal' => $settings->enableDonationGoal,
+                    'goalType' => $campaign->goalType,
+                    'goalAmount' => $campaign->goalType->isOneOf(CampaignGoalType::AMOUNT(), CampaignGoalType::AMOUNT_FROM_SUBSCRIPTIONS())
+                        ? Money::fromDecimal($campaign->goal, $currency)->formatToDecimal()
+                        : $campaign->goal,
+                ]);
+            }
+
             return GoalSettings::fromArray([
+                'goalSource' => $settings->goalSource->getValue(),
                 'enableDonationGoal' => $settings->enableDonationGoal,
                 'goalType' => $settings->goalType,
                 'goalAmount' => $settings->goalType->isOneOf(GoalType::AMOUNT(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS())
@@ -168,6 +184,7 @@ final class DonationFormQueryData
         $goalType = $this->convertGoalType($queryObject->goalFormat, (bool)$queryObject->recurringGoalFormat);
 
         return GoalSettings::fromArray([
+            'goalSource' => 'form',
             'enableDonationGoal' => $queryObject->goalOption === 'enabled',
             'goalType' => $goalType,
             'goalAmount' => $goalType->isOneOf(GoalType::AMOUNT(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS())

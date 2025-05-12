@@ -3,9 +3,12 @@
 namespace Give\DonationForms\Repositories;
 
 
+use Give\Campaigns\CampaignsDataQuery;
 use Give\DonationForms\DonationFormDataQuery;
 use Give\DonationForms\V2\Models\DonationForm;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
+use Give\Framework\Database\DB;
 
 /**
  * @unreleased
@@ -14,38 +17,97 @@ use Give\DonationForms\ValueObjects\GoalType;
  */
 class DonationFormDataRepository
 {
-    private array $amounts;
-    private array $subscriptionAmounts = [];
-    private array $donationsCount;
-    private array $subscriptionDonationsCount = [];
-    private array $donorsCount;
-    private array $subscriptionDonorsCount = [];
+    private array $formAmounts = [];
+    private array $campaignAmounts = [];
+    private array $formSubscriptionAmounts = [];
+    private array $campaignSubscriptionAmounts = [];
+    private array $formDonationsCount = [];
+    private array $campaignDonationsCount = [];
+    private array $formSubscriptionDonationsCount = [];
+    private array $campaignSubscriptionDonationsCount = [];
+    private array $formDonorsCount = [];
+    private array $campaignDonorsCount = [];
+    private array $formSubscriptionDonorsCount = [];
+    private array $campaignSubscriptionDonorsCount = [];
 
     /**
-     * @param int[] $ids
+     * @param DonationForm[] $forms
      *
      * @return DonationFormDataRepository
      */
-    public static function forms(array $ids): DonationFormDataRepository
+    public static function forms(array $forms): DonationFormDataRepository
     {
         $self = new self();
 
+        $formsUsingFormGoal = [];
+        $formsUsingCampaignGoal = [];
+
+        foreach ($forms as $form) {
+            if ($form->goalSettings->goalSource === GoalSource::CAMPAIGN) {
+                $formsUsingCampaignGoal[] = $form->id;
+            } else {
+                $formsUsingFormGoal[] = $form->id;
+            }
+        }
+
+        if ( ! empty($formsUsingFormGoal)) {
+            $self->setFormsGoals($formsUsingFormGoal);
+        }
+
+        if ( ! empty($formsUsingCampaignGoal)) {
+            $self->setFormsCampaignGoals($formsUsingCampaignGoal);
+        }
+
+        return $self;
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function setFormsGoals(array $ids): void
+    {
         $donations = DonationFormDataQuery::donations($ids);
 
-        $self->amounts = $donations->collectIntendedAmounts();
-        $self->donationsCount = $donations->collectDonations();
-        $self->donorsCount = $donations->collectDonors();
+        $this->formAmounts = $donations->collectIntendedAmounts();
+        $this->formDonationsCount = $donations->collectDonations();
+        $this->formDonorsCount = $donations->collectDonors();
 
         // Set subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
             $subscriptions = DonationFormDataQuery::subscriptions($ids);
 
-            $self->subscriptionAmounts = $subscriptions->collectInitialAmounts();
-            $self->subscriptionDonationsCount = $subscriptions->collectDonations();
-            $self->subscriptionDonorsCount = $subscriptions->collectDonors();
+            $this->formSubscriptionAmounts = $subscriptions->collectInitialAmounts();
+            $this->formSubscriptionDonationsCount = $subscriptions->collectDonations();
+            $this->formSubscriptionDonorsCount = $subscriptions->collectDonors();
         }
+    }
 
-        return $self;
+    /**
+     * @unreleased
+     */
+    public function setFormsCampaignGoals(array $ids): void
+    {
+        $campaign = DB::table('give_campaign_forms')
+            ->distinct()
+            ->select(['campaign_id', 'ids'])
+            ->whereIn('form_id', $ids)
+            ->getSQL();
+
+        $donations = CampaignsDataQuery::donations($campaign->ids);
+
+        $this->campaignAmounts = $donations->collectIntendedAmounts();
+        $this->campaignDonationsCount = $donations->collectDonations();
+        $this->campaignDonorsCount = $donations->collectDonors();
+
+        // Set subscriptions data
+        if (defined('GIVE_RECURRING_VERSION')) {
+            $subscriptions = CampaignsDataQuery::subscriptions($campaign->ids);
+
+            $this->campaignSubscriptionAmounts = $subscriptions->collectInitialAmounts();
+            $this->campaignSubscriptionDonationsCount = $subscriptions->collectDonations();
+            $this->campaignSubscriptionDonorsCount = $subscriptions->collectDonors();
+        }
     }
 
     /**
@@ -60,8 +122,8 @@ class DonationFormDataRepository
     public function getRevenue(DonationForm $form)
     {
         $data = $form->goalSettings->goalType->isSubscriptions()
-            ? $this->subscriptionAmounts
-            : $this->amounts;
+            ? $this->{$form->goalSettings->goalSource . 'SubscriptionAmounts'}
+            : $this->{$form->goalSettings->goalSource . 'Amounts'};
 
         foreach ($data as $row) {
             if (isset($row['form_id']) && $row['form_id'] == $form->id) {
@@ -84,8 +146,8 @@ class DonationFormDataRepository
     public function getDonationsCount(DonationForm $form): int
     {
         $data = $form->goalSettings->goalType->isSubscriptions()
-            ? $this->subscriptionDonationsCount
-            : $this->donationsCount;
+            ? $this->{$form->goalSettings->goalSource . 'SubscriptionDonationsCount'}
+            : $this->{$form->goalSettings->goalSource . 'DonationsCount'};
 
         foreach ($data as $row) {
             if (isset($row['form_id']) && $row['form_id'] == $form->id) {
@@ -108,8 +170,8 @@ class DonationFormDataRepository
     public function getDonorsCount(DonationForm $form): int
     {
         $data = $form->goalSettings->goalType->isSubscriptions()
-            ? $this->subscriptionDonorsCount
-            : $this->donorsCount;
+            ? $this->{$form->goalSettings->goalSource . 'SubscriptionDonorsCount'}
+            : $this->{$form->goalSettings->goalSource . 'DonorsCount'};
 
         foreach ($data as $row) {
             if (isset($row['form_id']) && $row['form_id'] == $form->id) {
@@ -147,7 +209,8 @@ class DonationFormDataRepository
                 ? give_currency_filter(give_format_amount($form->goalSettings->goalAmount))
                 : $form->goalSettings->goalAmount,
             'percentage' => round($percentage * 100, 2),
-            'typeIsMoney' => $form->goalSettings->goalType->isOneOf(GoalType::AMOUNT(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS())
+            'typeIsMoney' => $form->goalSettings->goalType->isOneOf(GoalType::AMOUNT(),
+                GoalType::AMOUNT_FROM_SUBSCRIPTIONS()),
         ];
     }
 

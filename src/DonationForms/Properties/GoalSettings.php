@@ -9,6 +9,7 @@ use Give\DonationForms\ValueObjects\GoalType;
  */
 class GoalSettings
 {
+    public string $goalSource;
     public float $goalAmount;
     public GoalType $goalType;
     public bool $enableDonationGoal;
@@ -16,6 +17,7 @@ class GoalSettings
     public static function fromArray(array $data): GoalSettings
     {
         $settings = new self();
+        $settings->goalSource = $data['goalSource'];
         $settings->enableDonationGoal = $data['enableDonationGoal'];
         $settings->goalType = new GoalType($data['goalType']);
         $settings->goalAmount = $data['goalAmount'];

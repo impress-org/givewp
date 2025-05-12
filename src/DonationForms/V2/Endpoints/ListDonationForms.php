@@ -145,11 +145,7 @@ class ListDonationForms extends Endpoint
         $totalForms = $this->getTotalFormsCount();
         $totalPages = (int)ceil($totalForms / $this->request->get_param('perPage'));
 
-        $ids = array_map(function (DonationForm $form) {
-            return $form->id;
-        }, $forms);
-
-        $formsData = DonationFormDataRepository::forms($ids);
+        $formsData = DonationFormDataRepository::forms($forms);
 
         $this->listTable->setData($formsData);
 
