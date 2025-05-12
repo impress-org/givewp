@@ -94,7 +94,7 @@ class DonationFormDataRepository
             ->whereIn('form_id', $ids)
             ->getAll();
 
-        $ids = array_map(function($campaign) {
+        $ids = array_map(function ($campaign) {
             return (int)$campaign->id;
         }, $campaigns);
 
@@ -129,8 +129,10 @@ class DonationFormDataRepository
             ? $this->{$form->goalSettings->goalSource . 'SubscriptionAmounts'}
             : $this->{$form->goalSettings->goalSource . 'Amounts'};
 
+        $source = $this->getSourceData($form);
+
         foreach ($data as $row) {
-            if (isset($row['form_id']) && $row['form_id'] == $form->id) {
+            if (isset($row[$source['column']]) && $row[$source['column']] == $source['id']) {
                 return $row['sum'];
             }
         }
@@ -153,8 +155,10 @@ class DonationFormDataRepository
             ? $this->{$form->goalSettings->goalSource . 'SubscriptionDonationsCount'}
             : $this->{$form->goalSettings->goalSource . 'DonationsCount'};
 
+        $source = $this->getSourceData($form);
+
         foreach ($data as $row) {
-            if (isset($row['form_id']) && $row['form_id'] == $form->id) {
+            if (isset($row[$source['column']]) && $row[$source['column']] == $source['id']) {
                 return (int)$row['count'];
             }
         }
@@ -177,8 +181,10 @@ class DonationFormDataRepository
             ? $this->{$form->goalSettings->goalSource . 'SubscriptionDonorsCount'}
             : $this->{$form->goalSettings->goalSource . 'DonorsCount'};
 
+        $source = $this->getSourceData($form);
+
         foreach ($data as $row) {
-            if (isset($row['form_id']) && $row['form_id'] == $form->id) {
+            if (isset($row[$source['column']]) && $row[$source['column']] == $source['id']) {
                 return (int)$row['count'];
             }
         }
@@ -237,5 +243,25 @@ class DonationFormDataRepository
             default:
                 return $this->getRevenue($form);
         }
+    }
+
+    /**
+     * @param DonationForm $form
+     *
+     * @return array{id: int, column: string}
+     */
+    private function getSourceData(DonationForm $form): array
+    {
+        if ($form->goalSettings->goalSource === GoalSource::CAMPAIGN) {
+            return [
+                'id' => $form->campaignId,
+                'column' => 'campaign_id',
+            ];
+        }
+
+        return [
+            'id' => $form->id,
+            'column' => 'form_id',
+        ];
     }
 }

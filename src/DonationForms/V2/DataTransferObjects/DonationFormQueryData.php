@@ -4,7 +4,6 @@ namespace Give\DonationForms\V2\DataTransferObjects;
 
 use DateTime;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Properties\GoalSettings;
 use Give\DonationForms\V2\Models\DonationForm;
@@ -19,6 +18,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonationFormQueryData
  *
+ * @unreleased add GoalSettings
  * @since 2.24.0
  */
 final class DonationFormQueryData
@@ -72,6 +72,11 @@ final class DonationFormQueryData
     public bool $usesFormBuilder;
 
     /**
+     * @unreleased
+     */
+    public int $campaignId;
+
+    /**
      * Convert data from donation form object to DonationForm Model
      *
      * @since 2.24.0
@@ -84,13 +89,15 @@ final class DonationFormQueryData
     {
         $self = new DonationFormQueryData();
 
+        $self->campaignId = 0;
         $self->id = (int)$object->id;
         $self->title = $object->title;
         $self->levels = $self->getDonationFormLevels($object);
         $self->goalOption = ($object->{LegacyDonationFormMetaKeys::GOAL_OPTION()->getKeyAsCamelCase()} === 'enabled');
         $self->createdAt = Temporal::toDateTime($object->createdAt);
         $self->updatedAt = Temporal::toDateTime($object->updatedAt);
-        $self->totalAmountDonated = Money::fromDecimal($object->{LegacyDonationFormMetaKeys::FORM_EARNINGS()->getKeyAsCamelCase()}, give_get_currency());
+        $self->totalAmountDonated = Money::fromDecimal($object->{LegacyDonationFormMetaKeys::FORM_EARNINGS()->getKeyAsCamelCase()},
+            give_get_currency());
         $self->totalNumberOfDonations = (int)$object->{LegacyDonationFormMetaKeys::FORM_SALES()->getKeyAsCamelCase()};
         $self->status = new DonationFormStatus($object->status);
         $self->goalSettings = $self->getGoalSettings($object);
@@ -120,7 +127,7 @@ final class DonationFormQueryData
      */
     public function getDonationFormLevels($object): array
     {
-        switch( $object->{LegacyDonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase()} ) {
+        switch ($object->{LegacyDonationFormMetaKeys::PRICE_OPTION()->getKeyAsCamelCase()}) {
             case 'multi':
                 $levels = maybe_unserialize($object->{LegacyDonationFormMetaKeys::DONATION_LEVELS()->getKeyAsCamelCase()});
 
@@ -153,19 +160,26 @@ final class DonationFormQueryData
     private function getGoalSettings(object $queryObject): GoalSettings
     {
         $currency = give_get_option('currency', 'USD');
-        $settings = $queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()};
+        $formSettings = $queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()};
 
-        if ($settings) {
-            $settings = FormSettings::fromjson($settings);
-
-            if ($settings->enableDonationGoal && $settings->goalSource->isCampaign()) {
+        // v3 form
+        if ($formSettings) {
+            $settings = FormSettings::fromjson($formSettings);
+            // uses campaign goal settings
+            if ($settings->goalSource->isCampaign()) {
                 $campaign = Campaign::findByFormId($queryObject->id);
+                $this->campaignId = $campaign->id;
+
+                $goalType = $this->convertGoalType(
+                    $campaign->goalType->getValue(),
+                    (bool)$queryObject->recurringGoalFormat
+                );
 
                 return GoalSettings::fromArray([
                     'goalSource' => $settings->goalSource->getValue(),
                     'enableDonationGoal' => $settings->enableDonationGoal,
-                    'goalType' => $campaign->goalType,
-                    'goalAmount' => $campaign->goalType->isOneOf(CampaignGoalType::AMOUNT(), CampaignGoalType::AMOUNT_FROM_SUBSCRIPTIONS())
+                    'goalType' => $goalType,
+                    'goalAmount' => $goalType->isOneOf(GoalType::AMOUNT(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS())
                         ? Money::fromDecimal($campaign->goal, $currency)->formatToDecimal()
                         : $campaign->goal,
                 ]);
@@ -181,6 +195,8 @@ final class DonationFormQueryData
             ]);
         }
 
+
+        // v2 form
         $goalType = $this->convertGoalType($queryObject->goalFormat, (bool)$queryObject->recurringGoalFormat);
 
         return GoalSettings::fromArray([
@@ -189,7 +205,7 @@ final class DonationFormQueryData
             'goalType' => $goalType,
             'goalAmount' => $goalType->isOneOf(GoalType::AMOUNT(), GoalType::AMOUNT_FROM_SUBSCRIPTIONS())
                 ? Money::fromDecimal($queryObject->goalAmount, $currency)->formatToDecimal()
-                : $settings->goalAmount,
+                : $queryObject->goalAmount,
         ]);
     }
 

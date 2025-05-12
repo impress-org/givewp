@@ -115,7 +115,7 @@ class ServiceProvider implements ServiceProviderInterface
          */
         Hooks::addAction('wp_head', PrintFormMetaTags::class);
 
-        $this->registerAsyncData();
+        //$this->registerAsyncData();
     }
 
     /**

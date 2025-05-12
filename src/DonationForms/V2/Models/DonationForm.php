@@ -32,6 +32,7 @@ use Give\Framework\Support\ValueObjects\Money;
  * @unreleased
  * @property GoalSettings $goalSettings
  * @property bool $usesFormBuilder
+ * @property int $campaignId
  */
 class DonationForm extends Model implements ModelReadOnly
 {
@@ -50,6 +51,7 @@ class DonationForm extends Model implements ModelReadOnly
         'status' => DonationFormStatus::class,
         'goalSettings' => GoalSettings::class,
         'usesFormBuilder' => 'bool',
+        'campaignId' => 'int',
     ];
 
     /**
