@@ -88,13 +88,15 @@ class DonationFormDataRepository
      */
     public function setFormsCampaignGoals(array $ids): void
     {
-        $campaign = DB::table('give_campaign_forms')
+        $campaigns = DB::table('give_campaign_forms')
             ->distinct()
-            ->select(['campaign_id', 'ids'])
+            ->select(['campaign_id', 'id'])
             ->whereIn('form_id', $ids)
-            ->get();
+            ->getAll();
 
-        $ids = array_map('intval', $ids);
+        $ids = array_map(function($campaign) {
+            return (int)$campaign->id;
+        }, $campaigns);
 
         $donations = CampaignsDataQuery::donations($ids);
 
