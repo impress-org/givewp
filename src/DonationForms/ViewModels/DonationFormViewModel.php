@@ -200,9 +200,9 @@ class DonationFormViewModel
     }
 
     /**
+     * @unreleased ensure totalRevenue always reflects revenue
      * @since 4.1.0  use DonationFormGoalData instead of repository
-     *
-     * @since       3.0.0
+     * @since 3.0.0
      */
     private function formStatsData(): array
     {
@@ -216,7 +216,7 @@ class DonationFormViewModel
         }
 
         return [
-            'totalRevenue' => $this->donationFormGoalData->getCurrentAmount(),
+            'totalRevenue' => $this->goalType()->isAmountFromSubscriptions()  ? $query->sumInitialAmount() : $query->sumIntendedAmount(),
             'totalCountValue' => $this->goalType()->isDonations() || $this->goalType()->isAmount()
                 ? $query->count()
                 : $this->getTotalCountValue(),
