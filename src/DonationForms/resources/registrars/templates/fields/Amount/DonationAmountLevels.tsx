@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import {__} from '@wordpress/i18n';
 
 /**
  * @since 3.0.0
@@ -44,7 +45,7 @@ export default function DonationAmountLevels({name, currency, levels, onLevelCli
                 'givewp-fields-amount__levels-container--has-descriptions': groupedLevels.labeled.length > 0,
             })}
             role="radiogroup"
-            aria-label="Donation Amount"
+            aria-label={__('Donation Amount', 'give')}
         >
             {allLevels.map((level, index) => {
                 const label = formatter.format(level.value);
