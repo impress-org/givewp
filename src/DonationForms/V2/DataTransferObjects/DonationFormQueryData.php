@@ -159,7 +159,7 @@ final class DonationFormQueryData
             $settings = FormSettings::fromjson($settings);
 
             if ($settings->enableDonationGoal && $settings->goalSource->isCampaign()) {
-                $campaign = Campaign::findByFormId($queryObject->ID);
+                $campaign = Campaign::findByFormId($queryObject->id);
 
                 return GoalSettings::fromArray([
                     'goalSource' => $settings->goalSource->getValue(),
