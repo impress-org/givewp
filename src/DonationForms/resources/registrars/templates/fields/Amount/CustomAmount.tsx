@@ -21,6 +21,7 @@ const groupSeparator = formatter.format(1000).replace(/[0-9]/g, '');
 const decimalSeparator = formatter.format(1.1).replace(/[0-9]/g, '');
 
 /**
+ * @unreleased add module styles to override currency-input placeholder styling.
  * @since 3.0.0
  */
 const CustomAmount = (
