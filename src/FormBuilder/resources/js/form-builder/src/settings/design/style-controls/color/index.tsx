@@ -5,6 +5,9 @@ import {PanelColorSettings} from '@wordpress/block-editor';
 import {PanelBody} from '@wordpress/components';
 import ColorInheritanceToggle from '@givewp/form-builder/settings/design/style-controls/color-inheritance-toggle';
 
+/**
+ * @unreleased Update the value of the default colors Primary color to improve accessibility color contrast.
+ */
 export default function Color({dispatch}) {
     const {
         settings: {primaryColor, secondaryColor},
