@@ -109,7 +109,7 @@ class DonationFormGoalData implements Arrayable
      *
      * @since 4.1.0
      */
-    private function isSubscription(): bool
+    public function isSubscription(): bool
     {
         return in_array(
             $this->getGoalType()->getValue(), [
