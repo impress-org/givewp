@@ -217,6 +217,7 @@ final class DonationFormQueryData
     {
         switch ($type) {
             case 'donation':
+            case 'donations':
                 return $isRecurring
                     ? GoalType::SUBSCRIPTIONS()
                     : GoalType::DONATIONS();
