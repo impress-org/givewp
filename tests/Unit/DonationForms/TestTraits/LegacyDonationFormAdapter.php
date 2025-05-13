@@ -66,6 +66,7 @@ trait LegacyDonationFormAdapter
                 'goalAmount' => $giveDonateForm->get_goal(),
             ]),
             'usesFormBuilder' => false,
+            'campaignId' => 0,
         ]);
     }
 
