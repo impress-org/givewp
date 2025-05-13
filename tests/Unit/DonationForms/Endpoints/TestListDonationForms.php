@@ -103,13 +103,11 @@ class TestListDonationForms extends TestCase
      */
     public function getMockColumns(array $donationForms, string $sortDirection = 'desc'): array
     {
-        $listTable = new DonationFormsListTable();
-
         $formsData = DonationFormDataRepository::forms($donationForms);
 
-        $listTable->setData($formsData);
-
-        $columns = $listTable->getColumns();
+        $columns = (new DonationFormsListTable())
+            ->setData($formsData)
+            ->getColumns();
 
         $expectedItems = [];
         foreach ( $donationForms as $donationForm ) {
