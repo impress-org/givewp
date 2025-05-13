@@ -314,7 +314,7 @@ const Migrations = () => {
 
             return (
                 <>
-                    {migration.isReversible && migration.status !== 'reversed' ? (
+                    {migration.isReversible && migration.status === 'failed' ? (
                         <button
                             className="button"
                             onClick={() => openMigrationRunModal({
