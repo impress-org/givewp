@@ -64,7 +64,7 @@
             cursor: pointer;
 
             &:focus {
-                box-shadow: none;
+                box-shadow: inset 0 0 0 2px var(--givewp-primary-color);
             }
         }
 

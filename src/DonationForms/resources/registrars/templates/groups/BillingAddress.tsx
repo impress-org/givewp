@@ -142,6 +142,7 @@ function StateFieldContainer({
                         onChange={updateStateValue}
                         disabled={statesLoading}
                         aria-invalid={fieldError ? 'true' : 'false'}
+                        aria-required={stateRequired ? 'true' : 'false'}
                     >
                         {statesLoading ? (
                             <>
@@ -187,6 +188,7 @@ function StateFieldContainer({
                     aria-invalid={fieldError ? 'true' : 'false'}
                     placeholder={statesLoading ? __('Loading...', 'give') : ''}
                     disabled={statesLoading}
+                    aria-required={stateRequired ? 'true' : 'false'}
                 />
 
                 <HiddenStateField />
