@@ -1,5 +1,5 @@
 import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
-import autoCompleteMapping from '@givewp/forms/registrars/templates/fields/utils/autoCompleteMapping';
+import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
 
 /**
  * @unreleased Add autoComplete support
@@ -12,7 +12,7 @@ export default function Text({
     placeholder,
     inputProps,
 }: FieldHasDescriptionProps) {
-    const autoComplete = autoCompleteMapping[inputProps?.name] || '';
+    const autoComplete = autoCompleteAttr(inputProps?.name);
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
 
     return (
@@ -24,7 +24,7 @@ export default function Text({
                 aria-invalid={fieldError ? 'true' : 'false'}
                 placeholder={placeholder}
                 {...inputProps}
-                {...(autoComplete && {autoComplete: autoComplete})}
+                autoComplete={autoComplete}
             />
 
             <ErrorMessage />

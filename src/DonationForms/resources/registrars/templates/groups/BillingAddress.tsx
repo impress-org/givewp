@@ -3,7 +3,7 @@ import {FC, useEffect, useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {ErrorMessage} from '@hookform/error-message';
 import {useCallback} from '@wordpress/element';
-import autoCompleteMapping from '@givewp/forms/registrars/templates/fields/utils/autoCompleteMapping';
+import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
 
 /**
  * @since 3.0.0
@@ -131,7 +131,7 @@ function StateFieldContainer({
         return <HiddenStateField />;
     }
 
-    const autoComplete = autoCompleteMapping['state'] || '';
+    const autoComplete = autoCompleteAttr('state');
 
     if (states.length > 0) {
         return (
@@ -146,7 +146,7 @@ function StateFieldContainer({
                         onChange={updateStateValue}
                         disabled={statesLoading}
                         aria-invalid={fieldError ? 'true' : 'false'}
-                        {...(autoComplete && {autoComplete: autoComplete})}
+                        autoComplete={autoComplete}
                     >
                         {statesLoading ? (
                             <>
@@ -192,7 +192,7 @@ function StateFieldContainer({
                     aria-invalid={fieldError ? 'true' : 'false'}
                     placeholder={statesLoading ? __('Loading...', 'give') : ''}
                     disabled={statesLoading}
-                    {...(autoComplete && {autoComplete: autoComplete})}
+                    autoComplete={autoComplete}
                 />
 
                 <HiddenStateField />
