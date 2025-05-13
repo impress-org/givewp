@@ -24,7 +24,6 @@ final class DonationFormDataQueryTest extends TestCase
     public function testCollectInitialAmounts()
     {
         $form = DonationForm::factory()->create();
-        $legacyDonationForm = LegacyDonationForm::find($form->id);
 
         Donation::factory()->create([
             'formId' => $form->id,
@@ -47,7 +46,7 @@ final class DonationFormDataQueryTest extends TestCase
             'amount' => new Money(1000, 'USD'),
         ]);
 
-        $formsDataQuery = DonationFormDataQuery::donations([$legacyDonationForm]);
+        $formsDataQuery = DonationFormDataQuery::donations([$form->id]);
 
         $this->assertEquals([
             [
