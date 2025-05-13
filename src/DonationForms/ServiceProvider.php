@@ -115,7 +115,7 @@ class ServiceProvider implements ServiceProviderInterface
          */
         Hooks::addAction('wp_head', PrintFormMetaTags::class);
 
-        //$this->registerAsyncData();
+        $this->registerAsyncData();
     }
 
     /**
@@ -132,14 +132,6 @@ class ServiceProvider implements ServiceProviderInterface
                 LoadAsyncDataAssets::enqueueAssets();
             }
         });
-
-        // Load assets on the admin form list pages
-        $isLegacyAdminFormListPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] && ! isset($_GET['page']);
-        $isAdminFormListPage = isset($_GET['page']) && 'give-forms' === $_GET['page'];
-        $isAdminCampaignDetailsPage = isset($_GET['page'], $_GET['id']) && 'give-campaigns' === $_GET['page'];
-        if ($isLegacyAdminFormListPage || $isAdminFormListPage || $isAdminCampaignDetailsPage) {
-            Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
-        }
 
         // Load assets on the WordPress Block Editor - Gutenberg
         Hooks::addAction('enqueue_block_editor_assets', LoadAsyncDataAssets::class);
@@ -173,64 +165,6 @@ class ServiceProvider implements ServiceProviderInterface
         });
         Hooks::addFilter('give_form_grid_progress_bar_amount_raised_value', FormGridView::class, 'maybeSetProgressBarAmountRaisedAsync',10,2);
         Hooks::addFilter('give_form_grid_progress_bar_donations_count_value', FormGridView::class, 'maybeSetProgressBarDonationsCountAsync',10,2);
-
-        // Legacy Admin Form List View Columns
-        Hooks::addFilter('give_admin_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
-        add_action(
-            'give_admin_form_list_view_donations_goal_column_before',
-            function () {
-                $usePlaceholder = give(AdminFormListView::class)->maybeUsePlaceholderOnGoalAmountRaised();
-
-                if ($usePlaceholder) {
-                    //Enable placeholder on the give_goal_progress_stats() function
-                    add_filter('give_goal_progress_stats', function ($stats) {
-                        $stats['actual'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
-
-                        return $stats;
-                    });
-                }
-            },
-            10,
-            2
-        );
-        Hooks::addFilter('give_admin_form_list_view_donations_count_column_value', AdminFormListView::class, 'maybeSetDonationsColumnAsync',10,2);
-        Hooks::addFilter('give_admin_form_list_view_revenue_column_value', AdminFormListView::class, 'maybeSetRevenueColumnAsync',10,2);
-
-        // Admin Form List View Columns
-        Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
-        add_action(
-            sprintf("givewp_list_table_cell_value_%s_before", GoalColumn::getId()),
-            function () {
-                $usePlaceholder = give(AdminFormListView::class)->maybeUsePlaceholderOnGoalAmountRaised();
-
-                if ($usePlaceholder) {
-                    //Enable placeholder on the give_goal_progress_stats() function
-                    add_filter('give_goal_progress_stats', function ($stats) {
-                        $stats['actual'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
-
-                        return $stats;
-                    });
-                }
-            },
-            10,
-            2
-        );
-        add_filter(
-            sprintf("givewp_list_table_cell_value_%s_content", DonationCountColumn::getId()),
-            function ($value, DonationForm $form){
-                return give(AdminFormListView::class)->maybeSetDonationsColumnAsync($value, $form->id);
-            },
-            10,
-            2
-        );
-        add_filter(
-            sprintf("givewp_list_table_cell_value_%s_content", DonationRevenueColumn::getId()),
-            function ($value, DonationForm $form){
-                return give(AdminFormListView::class)->maybeSetRevenueColumnAsync($value, $form->id);
-            },
-            10,
-            2
-        );
     }
 
     /**
