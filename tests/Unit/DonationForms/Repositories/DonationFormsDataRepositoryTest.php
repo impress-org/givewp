@@ -38,7 +38,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
             'amount' => new Money(1000, 'USD'),
         ]);
 
-        $formsData = DonationFormDataRepository::forms([$form->id]);
+        $formsData = DonationFormDataRepository::forms([$form]);
 
         $this->assertEquals(2, $formsData->getDonationsCount($legacyDonationForm));
     }
@@ -64,7 +64,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
             'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
 
-        $formsData = DonationFormDataRepository::forms([$form->id]);
+        $formsData = DonationFormDataRepository::forms([$form]);
 
         $this->assertEquals(20.32, $formsData->getRevenue($legacyDonationForm));
     }
@@ -94,7 +94,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
             'donorId' => $donor2->id,
         ]);
 
-        $formsData = DonationFormDataRepository::forms([$form->id]);
+        $formsData = DonationFormDataRepository::forms([$form]);
 
         $this->assertEquals(2, $formsData->getDonorsCount($legacyDonationForm));
     }
