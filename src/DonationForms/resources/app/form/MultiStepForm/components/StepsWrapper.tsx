@@ -32,7 +32,6 @@ export default function StepsWrapper({steps, children}: {steps: StepObject[]; ch
                             <h3 className="givewp-donation-form__steps-header-title-text">{currentStepObject.title}</h3>
                         </div>
                     </header>
-                    </div>
                     <ProgressBar value={currentStep}>
                         <Label className={'sr-only'}>{sprintf(__('Progress: Step %1$d of %2$d', 'give'), currentStep, totalSteps)}</Label>
                         <progress className="givewp-donation-form__steps-progress" value={currentStep} max={totalSteps} />
