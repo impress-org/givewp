@@ -105,11 +105,7 @@ class TestListDonationForms extends TestCase
     {
         $listTable = new DonationFormsListTable();
 
-        $ids = array_map(function (DonationForm $form) {
-            return $form->id;
-        }, $donationForms);
-
-        $formsData = DonationFormDataRepository::forms($ids);
+        $formsData = DonationFormDataRepository::forms($donationForms);
 
         $listTable->setData($formsData);
 
