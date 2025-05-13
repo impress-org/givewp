@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\DonationForms;
 
 use Give\DonationForms\DonationFormDataQuery;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\V2\Models\DonationForm as LegacyDonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
@@ -23,6 +24,7 @@ final class DonationFormDataQueryTest extends TestCase
     public function testCollectInitialAmounts()
     {
         $form = DonationForm::factory()->create();
+        $legacyDonationForm = LegacyDonationForm::find($form->id);
 
         Donation::factory()->create([
             'formId' => $form->id,
@@ -45,7 +47,7 @@ final class DonationFormDataQueryTest extends TestCase
             'amount' => new Money(1000, 'USD'),
         ]);
 
-        $formsDataQuery = DonationFormDataQuery::donations([$form]);
+        $formsDataQuery = DonationFormDataQuery::donations([$legacyDonationForm]);
 
         $this->assertEquals([
             [
