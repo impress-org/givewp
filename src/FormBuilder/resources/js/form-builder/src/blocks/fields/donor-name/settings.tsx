@@ -33,7 +33,7 @@ const settings: FieldBlock['settings'] = {
         firstNamePlaceholder: {
             type: 'string',
             source: 'attribute',
-            default: __('First name', 'give'),
+            default: __('John', 'give'),
         },
         lastNameLabel: {
             type: 'string',
@@ -43,7 +43,7 @@ const settings: FieldBlock['settings'] = {
         lastNamePlaceholder: {
             type: 'string',
             source: 'attribute',
-            default: __('Last name', 'give'),
+            default: __('Doe', 'give'),
         },
         requireLastName: {
             type: 'boolean',
