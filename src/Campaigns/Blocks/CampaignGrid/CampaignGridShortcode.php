@@ -2,6 +2,9 @@
 
 namespace Give\Campaigns\Blocks\CampaignGrid;
 
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
+
 /**
  * @since 4.2.0
  */
@@ -27,23 +30,29 @@ class CampaignGridShortcode
     }
 
     /**
+     * @unreleased Use info from asset.php file and set script translations
      * @since 4.2.0
      */
     public function loadAssets()
     {
+        $handleName = 'givewp-campaign-grid-app';
+        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignGridApp.asset.php');
+
         wp_enqueue_script(
-            'givewp-campaign-grid-app',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignGridApp.js',
-            [],
-            null,
+            $asset['dependencies'],
+            $asset['version'],
             true
         );
 
+        Language::setScriptTranslations($handleName);
+
         wp_enqueue_style(
-            'givewp-campaign-grid-style',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignGridApp.css',
             [],
-            null
+            $asset['version']
         );
 
         wp_enqueue_style('givewp-design-system-foundation');
