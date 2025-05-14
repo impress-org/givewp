@@ -7,6 +7,7 @@ import {CurrencyInputOnChangeValues} from 'react-currency-input-field/dist/compo
  * @since 3.0.0
  */
 type CustomAmountProps = {
+    inputProps: any;
     fieldError?: string;
     currency?: string;
     currencySymbol?: string;
@@ -22,15 +23,12 @@ const decimalSeparator = formatter.format(1.1).replace(/[0-9]/g, '');
 /**
  * @since 3.0.0
  */
-const CustomAmount = ({defaultValue, fieldError, currency, value, onValueChange}: CustomAmountProps) => {
+const CustomAmount = ({defaultValue, fieldError, currency, value, onValueChange, inputProps}: CustomAmountProps) => {
     return (
         <div className={classNames('givewp-fields-amount__input-container', {invalid: fieldError})}>
             <CurrencyInput
-                ref={(input) => {
-                    if (input && fieldError) {
-                        input.focus();
-                    }
-                }}
+                name={inputProps.name}
+                ref={inputProps.ref}
                 intlConfig={{
                     locale: navigator.language,
                     currency,
@@ -49,7 +47,6 @@ const CustomAmount = ({defaultValue, fieldError, currency, value, onValueChange}
                 aria-describedby={fieldError ? 'givewp-field-error-amount' : undefined}
                 aria-invalid={fieldError ? 'true' : 'false'}
                 id="amount-custom"
-                name="amount-custom"
                 placeholder={__('Enter custom amount', 'give')}
                 defaultValue={defaultValue}
                 value={value}
