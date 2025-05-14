@@ -126,7 +126,7 @@ class DonationFormDataRepository
      */
     public function getRevenue(DonationForm $form)
     {
-        $data = $form->goalSettings->goalType->isSubscriptions()
+        $data = $form->goalSettings->goalType->isAmountFromSubscriptions()
             ? $this->{$form->goalSettings->goalSource . 'SubscriptionAmounts'}
             : $this->{$form->goalSettings->goalSource . 'Amounts'};
 
