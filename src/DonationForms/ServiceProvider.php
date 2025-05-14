@@ -136,6 +136,11 @@ class ServiceProvider implements ServiceProviderInterface
         // Load assets on the WordPress Block Editor - Gutenberg
         Hooks::addAction('enqueue_block_editor_assets', LoadAsyncDataAssets::class);
 
+        // Filter from give_goal_progress_stats() function which is used by the admin form list views and form grid view
+        Hooks::addFilter('give_goal_progress_stats', GiveGoalProgressStats::class,
+            'maybeChangeGoalProgressStatsActualValue', 999,
+            2);
+
         // Form Grid
         add_filter('give_form_grid_goal_progress_stats_before', function () {
             $usePlaceholder = give(FormGridView::class)->maybeUsePlaceholderOnGoalAmountRaised();
