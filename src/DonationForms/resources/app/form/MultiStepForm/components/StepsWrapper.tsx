@@ -24,14 +24,14 @@ export default function StepsWrapper({steps, children}: {steps: StepObject[]; ch
         <div className="givewp-donation-form__steps">
             {showStepsHeader && (
                 <>
-                    <div className="givewp-donation-form__steps-header">
+                    <header className="givewp-donation-form__steps-header">
                         <div className="givewp-donation-form__steps-header-previous">
                             <PreviousButton>{__('Previous', 'give')}</PreviousButton>
                         </div>
                         <div className="givewp-donation-form__steps-header-title">
-                            <p className="givewp-donation-form__steps-header-title-text">{currentStepObject.title}</p>
+                            <h3 className="givewp-donation-form__steps-header-title-text">{currentStepObject.title}</h3>
                         </div>
-                    </div>
+                    </header>
                     <ProgressBar value={currentStep}>
                         <Label className={'sr-only'}>{sprintf(__('Progress: Step %1$d of %2$d', 'give'), currentStep, totalSteps)}</Label>
                         <progress className="givewp-donation-form__steps-progress" value={currentStep} max={totalSteps} />
@@ -39,14 +39,14 @@ export default function StepsWrapper({steps, children}: {steps: StepObject[]; ch
                 </>
             )}
             <div className="givewp-donation-form__steps-body">{children}</div>
-            <div className="givewp-donation-form__steps-footer">
+            <footer className="givewp-donation-form__steps-footer">
                 <div className="givewp-donation-form__steps-footer-secure">
                     <i className="fas fa-lock givewp-donation-form__steps-footer-secure-icon"></i>
                     <span className="givewp-donation-form__steps-footer-secure-text">
                         {__('100% Secure Donation', 'give')}
                     </span>
                 </div>
-            </div>
+            </footer>
         </div>
     );
 }
