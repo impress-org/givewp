@@ -12,7 +12,7 @@ use Give\Tests\TestCase;
  */
 class UpdateStripeAccountStatementDescriptorTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->setUpStripeAccounts();

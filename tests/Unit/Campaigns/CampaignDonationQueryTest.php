@@ -13,14 +13,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 final class CampaignDonationQueryTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCountCampaignDonations()
     {
@@ -28,14 +28,13 @@ final class CampaignDonationQueryTest extends TestCase
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
 
-        $db = DB::table('give_campaign_forms');
-
 
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1000, 'USD'),
         ]);
+
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
@@ -48,9 +47,9 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
-    public function testSumCampaignDonations()
+    public function testSumIntendedAmountReturnsSumOfDonationsWithoutRecoveredFees()
     {
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
@@ -58,21 +57,24 @@ final class CampaignDonationQueryTest extends TestCase
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
+            'amount' => new Money(1051, 'USD'),
+            'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
+
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
-            'amount' => new Money(1000, 'USD'),
+            'amount' => new Money(1051, 'USD'),
+            'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
 
         $query = new CampaignDonationQuery($campaign);
 
-        $this->assertEquals(20.00, $query->sumIntendedAmount());
+        $this->assertEquals(20.32, $query->sumIntendedAmount());
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testCountCampaignDonors()
     {
@@ -96,9 +98,9 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
-    public function testCoalesceIntendedAmountWithoutRecoveredFees()
+    public function testSumIntendedAmountWithoutRecoveredFees()
     {
         $campaign = Campaign::factory()->create();
         $form = DonationForm::find($campaign->defaultFormId);
@@ -107,8 +109,8 @@ final class CampaignDonationQueryTest extends TestCase
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(1070, 'USD'),
+            'feeAmountRecovered' => new Money(70, 'USD'),
         ]);
-        give_update_meta($donation->id, '_give_fee_donation_amount', 10.00);
 
         $query = new CampaignDonationQuery($campaign);
 
@@ -116,7 +118,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testGetDonationsByDate(): void
     {
@@ -215,7 +217,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getYear(string $date): string
     {
@@ -223,18 +225,20 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getMonth(string $date): string
     {
-        return date_create($date)->format('m');
+        // MySQL returns without leading zero
+        return date_create($date)->format('n');
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getDay(string $date): string
     {
-        return date_create($date)->format('d');
+        // MySQL returns without leading zero
+        return date_create($date)->format('j');
     }
 }

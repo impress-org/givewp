@@ -8,7 +8,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
- * @unreleased
+ * @since 4.0.0
  * Creates give_campaigns table
  */
 class CreateCampaignsTable extends Migration
@@ -53,7 +53,6 @@ class CreateCampaignsTable extends Migration
             campaign_page_id INT UNSIGNED NULL,
             form_id INT NOT NULL,
             campaign_type VARCHAR(12) NOT NULL DEFAULT '',
-            enable_campaign_page BOOLEAN NOT NULL DEFAULT 1,
             campaign_title TEXT NOT NULL,
             campaign_url TEXT NOT NULL,
             short_desc TEXT NOT NULL,

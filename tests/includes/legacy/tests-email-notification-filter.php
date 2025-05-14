@@ -4,13 +4,11 @@
  * @group email_notification_filters
  */
 class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 
 	/**

@@ -20,14 +20,14 @@ class DonationFormVariablePricesDropdownTest extends TestCase
      */
     private $donation;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->donation = new Give_Payment(Give_Helper_Payment::create_multilevel_payment());
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
     }
@@ -41,7 +41,7 @@ class DonationFormVariablePricesDropdownTest extends TestCase
             'selected' => $this->donation->price_id
         ];
 
-        $this->assertContains('Custom', give_get_form_variable_price_dropdown($args));
+        $this->assertStringContainsString('Custom', give_get_form_variable_price_dropdown($args));
     }
 
     public function testShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeDisabledAndDonationDonatedWithCustomLevel(
@@ -56,7 +56,7 @@ class DonationFormVariablePricesDropdownTest extends TestCase
             'selected' => $this->donation->price_id
         ];
 
-        $this->assertContains('Custom', give_get_form_variable_price_dropdown($args));
+        $this->assertStringContainsString('Custom', give_get_form_variable_price_dropdown($args));
     }
 
     public function testDoNotShowCustomDonationLevelChoiceInDropDownIfDonationFormCustomAmountModeDisabledAndDonationNotDonatedWithCustomLevel(
@@ -71,6 +71,6 @@ class DonationFormVariablePricesDropdownTest extends TestCase
             'selected' => $this->donation->price_id
         ];
 
-        $this->assertNotContains('Custom', give_get_form_variable_price_dropdown($args));
+        $this->assertStringNotContainsString('Custom', give_get_form_variable_price_dropdown($args));
     }
 }

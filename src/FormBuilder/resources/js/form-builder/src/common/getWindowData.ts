@@ -10,12 +10,22 @@ import type {
 
 import BlockRegistrar from '@givewp/form-builder/registrars/blocks';
 import {IntlTelInputSettings} from '@givewp/forms/propTypes';
+import {FormColors} from '@givewp/forms/types';
 
 type GoalTypeOption = {
     value: string;
     label: string;
     description: string;
     isCurrency: boolean;
+};
+
+/**
+ * @since 4.1.0
+ */
+type GoalSourceOption = {
+    value: string;
+    label: string;
+    description: string;
 };
 
 /**
@@ -47,6 +57,7 @@ interface FormBuilderWindowData {
     gateways: Gateway[];
     formFieldManagerData?: {
         isInstalled: boolean;
+        isLicensed: boolean;
     };
     recurringAddonData?: {
         isInstalled: boolean;
@@ -61,10 +72,12 @@ interface FormBuilderWindowData {
     donationConfirmationTemplateTags: TemplateTag[];
     termsAndConditions: TermsAndConditions;
     goalTypeOptions: GoalTypeOption[];
+    goalSourceOptions: GoalSourceOption[];
     goalProgressOptions: GoalProgressOption[];
     nameTitlePrefixes: string[];
     isExcerptEnabled: boolean;
     intlTelInputSettings: IntlTelInputSettings;
+    campaignColors: FormColors;
 }
 
 /**

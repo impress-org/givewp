@@ -1,7 +1,7 @@
 .tableCell {
     position: relative;
     padding-block-start: 1em;
-    padding-block-end: 2.5em;
+    padding-block-end: 2.75em;
     padding-inline: 1em;
     vertical-align: middle;
     font-size: 0.875em;
@@ -15,6 +15,12 @@
             text-decoration: underline;
             transition: all 0.05s ease-in-out;
         }
+    }
+
+    input[type="checkbox"] {
+        margin: 0;
+        padding: 0;
+        transform: translateY(-1px);
     }
 }
 

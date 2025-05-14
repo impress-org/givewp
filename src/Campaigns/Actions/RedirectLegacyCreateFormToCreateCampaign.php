@@ -3,60 +3,111 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Framework\Database\DB;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RedirectLegacyCreateFormToCreateCampaign
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {
-        if ( ! $this->isAddingNewForm()) {
+        if ($this->isAddingNewForm()) {
+            if ($this->isCampaignIdInvalidOrMissing()) {
+                $this->redirectToNewCampaignPage();
+            }
+
             return;
         }
 
         if ($this->isEditingCampaignForm()) {
-            return;
-        }
-
-        if ( ! isset($_GET['campaignId']) || ! (Campaign::find(absint($_GET['campaignId'])))) {
-            wp_safe_redirect(admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign'));
-            exit;
+            if ($this->isP2P()) {
+                if ($this->isP2PCampaignFormIdInvalidOrMissing()) {
+                    $this->redirectToP2PNewCampaignPage();
+                }
+            } elseif ($this->isCampaignFormIdInvalidOrMissing()) {
+                $this->redirectToNewCampaignPage();
+            }
         }
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isAddingNewForm(): bool
     {
-        global $pagenow;
-
-        $isOptionBasedFormEditorPage = $pagenow === 'post-new.php';
-        $isVisualFormBuilderPage = $pagenow === 'edit.php' && isset($_GET['page']) && 'givewp-form-builder' === $_GET['page'];
-        $isGiveFormsCpt = isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms';
-
-        return ($isOptionBasedFormEditorPage || $isVisualFormBuilderPage) && $isGiveFormsCpt;
+        return $GLOBALS['pagenow'] === 'post-new.php'
+               && isset($_GET['post_type'])
+               && $_GET['post_type'] === 'give_forms';
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function isEditingCampaignForm(): bool
     {
-        global $pagenow;
+        return $GLOBALS['pagenow'] === 'edit.php'
+               && isset($_GET['post_type'])
+               && $_GET['post_type'] === 'give_forms'
+               && isset($_GET['page']) && $_GET['page'] === 'givewp-form-builder';
+    }
 
-        $formId = $pagenow === 'post.php' && isset($_GET['post']) ? absint($_GET['post']) : 0;
-        $formId = $pagenow === 'edit.php' && isset($_GET['donationFormID'], $_GET['page']) && 'givewp-form-builder' === $_GET['page'] ? absint($_GET['donationFormID']) : $formId;
-        $isGiveFormsCpt = (isset($_GET['post_type']) && $_GET['post_type'] === 'give_forms') || (get_post_type($formId) === 'give_forms');
+    /**
+     * @since 4.0.0
+     */
+    private function isP2P(): bool
+    {
+        return isset($_GET['p2p']);
+    }
 
-        if ($formId && $isGiveFormsCpt) {
-            return (bool)Campaign::findByFormId($formId);
-        }
+    /**
+     * @since 4.0.0
+     */
+    private function redirectToNewCampaignPage(): void
+    {
+        wp_safe_redirect(admin_url('edit.php?post_type=give_forms&page=give-campaigns&new=campaign'));
+        exit;
+    }
 
-        return false;
+    /**
+     * @since 4.0.0
+     */
+    private function redirectToP2PNewCampaignPage(): void
+    {
+        wp_safe_redirect(admin_url('edit.php?post_type=give_forms&page=p2p-add-campaign'));
+        exit;
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    private function isCampaignIdInvalidOrMissing(): bool
+    {
+        return ! isset($_GET['campaignId']) || ! (Campaign::find(absint($_GET['campaignId'])));
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    private function isP2PCampaignFormIdInvalidOrMissing(): bool
+    {
+        $form = DB::table('give_campaigns')
+            ->where('form_id', $_GET['donationFormID'])
+            ->where('campaign_type', CampaignType::CORE, '!=')
+            ->get();
+
+        return ! isset($_GET['donationFormID']) || ! $form;
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    private function isCampaignFormIdInvalidOrMissing(): bool
+    {
+        return ! isset($_GET['donationFormID']) || ! Campaign::findByFormId(absint($_GET['donationFormID']));
     }
 }

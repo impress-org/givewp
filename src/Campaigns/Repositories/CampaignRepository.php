@@ -9,18 +9,17 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
-use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignRepository
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @var string[]
      */
@@ -30,11 +29,11 @@ class CampaignRepository
     ];
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Get Campaign by ID
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function getById(int $id)
     {
@@ -42,11 +41,11 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Query Campaign by ID
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function queryById(int $id): ModelQueryBuilder
     {
@@ -55,7 +54,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * Get Campaign by Form ID using a lookup table
      */
@@ -65,7 +64,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param int $formId
      *
@@ -79,7 +78,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -105,7 +104,6 @@ class CampaignRepository
             DB::table('give_campaigns')
                 ->insert([
                     'campaign_type' => $campaign->type->getValue(),
-                    'enable_campaign_page' => $campaign->enableCampaignPage,
                     'campaign_title' => wp_strip_all_tags($campaign->title, true),
                     'short_desc' => wp_strip_all_tags($campaign->shortDescription),
                     'long_desc' => wp_strip_all_tags($campaign->longDescription),
@@ -141,7 +139,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -161,7 +159,6 @@ class CampaignRepository
                 ->where('id', $campaign->id)
                 ->update([
                     'campaign_type' => $campaign->type->getValue(),
-                    'enable_campaign_page' => $campaign->enableCampaignPage,
                     'campaign_page_id' => $campaign->pageId,
                     'campaign_title' => wp_strip_all_tags($campaign->title, true),
                     'short_desc' => wp_strip_all_tags($campaign->shortDescription),
@@ -190,7 +187,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -230,7 +227,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -262,7 +259,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -293,7 +290,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -301,7 +298,7 @@ class CampaignRepository
     {
         // Make sure the destination campaign ID will not be included into $campaignsToMergeIds
         $campaignsToMergeIds = array_column($campaignsToMerge, 'id');
-        if ($key = array_search($destinationCampaign->id, $campaignsToMergeIds)) {
+        if ($key = array_search($destinationCampaign->id, $campaignsToMergeIds, true)) {
             unset($campaignsToMergeIds[$key]);
         }
 
@@ -359,7 +356,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function validateProperties(Campaign $campaign): void
     {
@@ -371,7 +368,7 @@ class CampaignRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<Campaign>
      */
@@ -385,7 +382,6 @@ class CampaignRepository
                 ['campaigns.form_id', 'defaultFormId'], // Prefix the `form_id` column to avoid conflicts with the `give_campaign_forms` table.
                 ['campaign_type', 'type'],
                 ['campaign_page_id', 'pageId'],
-                ['enable_campaign_page', 'enableCampaignPage'],
                 ['campaign_title', 'title'],
                 ['short_desc', 'shortDescription'],
                 ['long_desc', 'longDescription'],

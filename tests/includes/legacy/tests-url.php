@@ -10,16 +10,14 @@ class Tests_URL extends Give_Unit_Test_Case {
 	/**
 	 * Set it up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 
 	/**
 	 * Tear down.
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test AJAX URL.

@@ -14,16 +14,18 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\Feature\Gateways\Stripe\TestTraits\HasMockStripeAccounts;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use PHPUnit_Framework_MockObject_MockBuilder;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use Stripe\Event;
 use Stripe\Invoice;
 
 class InvoicePaymentSucceededTest extends TestCase
 {
-    use RefreshDatabase, HasMockStripeAccounts;
+    use HasMockStripeAccounts;
+    use RefreshDatabase;
 
     /**
+     * @unreleased Update Stripe Invoice metadata
      * @since 3.0.0
      *
      * @throws Exception
@@ -54,7 +56,19 @@ class InvoicePaymentSucceededTest extends TestCase
             ]
         ]);
 
-        $listener = new InvoicePaymentSucceeded();
+        $listener = $this->createMockWithCallback(
+            InvoicePaymentSucceeded::class,
+            function (MockBuilder $mockBuilder) {
+                // partial mock gateway by setting methods on the mock builder
+                $mockBuilder->setMethods(['updateStripeInvoiceMetaData']);
+
+                return $mockBuilder->getMock();
+            }
+        );
+
+        /** @var MockObject $listener */
+        $listener->expects($this->once())
+            ->method('updateStripeInvoiceMetaData');
 
         $listener->processEvent($mockEvent);
 
@@ -66,6 +80,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
+     * @unreleased Update Stripe Invoice metadata
      * @since 3.0.0
      *
      * @throws Exception
@@ -103,7 +118,21 @@ class InvoicePaymentSucceededTest extends TestCase
             ]
         ]);
 
-        $listener = new InvoicePaymentSucceeded();
+        //$listener = new InvoicePaymentSucceeded();
+
+        $listener = $this->createMockWithCallback(
+            InvoicePaymentSucceeded::class,
+            function (MockBuilder $mockBuilder) {
+                // partial mock gateway by setting methods on the mock builder
+                $mockBuilder->setMethods(['updateStripeInvoiceMetaData']);
+
+                return $mockBuilder->getMock();
+            }
+        );
+
+        /** @var MockObject $listener */
+        $listener->expects($this->once())
+            ->method('updateStripeInvoiceMetaData');
 
         $listener->processEvent($mockEvent);
 
@@ -156,9 +185,9 @@ class InvoicePaymentSucceededTest extends TestCase
 
         $subscriptionModelDecorator = new SubscriptionModelDecorator($subscription);
 
-        $listener = $this->createMock(
+        $listener = $this->createMockWithCallback(
             InvoicePaymentSucceeded::class,
-            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+            function (MockBuilder $mockBuilder) {
                 // partial mock gateway by setting methods on the mock builder
                 $mockBuilder->setMethods(['cancelSubscription']);
 
@@ -166,7 +195,7 @@ class InvoicePaymentSucceededTest extends TestCase
             }
         );
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $listener */
+        /** @var MockObject $listener */
         $listener->expects($this->once())
             ->method('cancelSubscription')
             ->with($subscriptionModelDecorator);
@@ -181,6 +210,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
+     * @unreleased Update Stripe Invoice metadata
      * @since 3.0.0
      *
      * @throws Exception
@@ -221,19 +251,23 @@ class InvoicePaymentSucceededTest extends TestCase
             ]
         ]);
 
-        $listener = $this->createMock(
+        $listener = $this->createMockWithCallback(
             InvoicePaymentSucceeded::class,
-            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+            function (MockBuilder $mockBuilder) {
                 // partial mock gateway by setting methods on the mock builder
-                $mockBuilder->setMethods(['cancelSubscription']);
+                $mockBuilder->setMethods(['cancelSubscription', 'updateStripeInvoiceMetaData']);
 
                 return $mockBuilder->getMock();
             }
         );
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $listener */
+        /** @var MockObject $listener */
         $listener->expects($this->once())
             ->method('cancelSubscription');
+
+        /** @var MockObject $listener */
+        $listener->expects($this->once())
+            ->method('updateStripeInvoiceMetaData');
 
         $listener->processEvent($mockEvent);
 

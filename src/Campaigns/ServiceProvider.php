@@ -4,14 +4,20 @@ namespace Give\Campaigns;
 
 use Give\Campaigns\Actions\AddCampaignFormFromRequest;
 use Give\Campaigns\Actions\AddNewBadgeToAdminMenuItem;
+use Give\Campaigns\Actions\ArchiveCampaignFormsAsDraftStatus;
+use Give\Campaigns\Actions\ArchiveCampaignPagesAsDraftStatus;
 use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
 use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
-use Give\Campaigns\Actions\DeleteCampaignPage;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\LoadCampaignOptions;
+use Give\Campaigns\Actions\PreventDeleteDefaultForm;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
+use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
+use Give\Campaigns\Actions\UnarchiveCampaignFormAsPublishStatus;
+use Give\Campaigns\ListTable\Routes\DeleteCampaignListTable;
+use Give\Campaigns\ListTable\Routes\GetCampaignsListTable;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -21,28 +27,35 @@ use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
+use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use Give\DonationForms\V2\DonationFormsAdminPage;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      * @inheritDoc
      */
     public function register(): void
     {
         give()->singleton('campaigns', CampaignRepository::class);
+        give()->bind(RenderDonateButton::class, function () {
+            return new RenderDonateButton(
+                new BlockRenderController()
+            );
+        });
         $this->registerTableNames();
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @inheritDoc
      */
     public function boot(): void
@@ -52,7 +65,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerActions();
         $this->setupCampaignPages();
         $this->registerMigrations();
-        $this->registerRoutes();
+        $this->registerListTableRoutes();
         $this->registerCampaignEntity();
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
@@ -61,20 +74,17 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.2.0 Move V3 routes to top level API folder and rename method
+     * @since 4.0.0
      */
-    private function registerRoutes()
+    private function registerListTableRoutes()
     {
-        Hooks::addAction('rest_api_init', Routes\RegisterCampaignRoutes::class);
-        Hooks::addAction('rest_api_init', Routes\GetCampaignsListTable::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\DeleteCampaignListTable::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetCampaignStatistics::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetCampaignRevenue::class, 'registerRoute');
-        Hooks::addAction('rest_api_init', Routes\GetCampaignComments::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', GetCampaignsListTable::class, 'registerRoute');
+        Hooks::addAction('rest_api_init', DeleteCampaignListTable::class, 'registerRoute');
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerMigrations(): void
     {
@@ -93,7 +103,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerTableNames(): void
     {
@@ -104,21 +114,24 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerActions(): void
     {
-        Hooks::addAction('givewp_campaign_deleted', DeleteCampaignPage::class);
+        Hooks::addAction('givewp_campaign_updated', ArchiveCampaignFormsAsDraftStatus::class);
+        Hooks::addAction('givewp_campaign_updated', UnarchiveCampaignFormAsPublishStatus::class);
+        Hooks::addAction('givewp_campaign_updated', ArchiveCampaignPagesAsDraftStatus::class);
         Hooks::addAction('givewp_donation_form_creating', FormInheritsCampaignGoal::class);
         Hooks::addAction('givewp_campaign_page_created', AssociateCampaignPageWithCampaign::class);
         Hooks::addAction('give_form_duplicated', Actions\AssignDuplicatedFormToCampaign::class, '__invoke', 10, 2);
-        Hooks::addAction('init', Actions\CampaignPageTemplate::class, 'registerTemplate');
-        Hooks::addFilter('template_include', Actions\CampaignPageTemplate::class, 'loadTemplate');
-        Hooks::addFilter('map_meta_cap', Actions\PreventDeletingCampaignPage::class, '__invoke', 10, 4);
+
+        Hooks::addAction('before_delete_post', PreventDeleteDefaultForm::class);
+        Hooks::addAction('transition_post_status', PreventDeleteDefaultForm::class, 'preventTrashStatusChange', 10, 3);
 
         $noticeActions = [
             'givewp_campaign_interaction_notice',
             'givewp_campaign_existing_user_intro_notice',
+            'givewp_campaign_form_goal_notice',
         ];
 
         foreach ($noticeActions as $metaKey) {
@@ -149,7 +162,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerMenus()
     {
@@ -157,7 +170,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function replaceGiveFormsCptLabels()
     {
@@ -170,7 +183,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerCampaignEntity()
     {
@@ -178,24 +191,12 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function setupCampaignForms()
     {
         if (CampaignsAdminPage::isShowingDetailsPage()) {
             Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
-        }
-
-        /**
-         * We implemented a feature to load the stats columns ("Goal", "Donations" and "Revenue") using an async approach,
-         * so we could prevent a long page load on websites with lots of forms. However, the campaign details page's current
-         * "Forms" tab still doesn't support it. Still, it's using the same Form List Table that active the async approach by
-         * default, so the line below is necessary to disable it while we still don't have support for async loading on this screen.
-         *
-         * @see https://github.com/impress-org/givewp/pull/7483
-         */
-        if (!defined('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS')) {
-            define('GIVE_IS_ALL_STATS_COLUMNS_ASYNC_ON_ADMIN_FORM_LIST_VIEWS', false);
         }
 
         Hooks::addAction('admin_init', RedirectLegacyCreateFormToCreateCampaign::class);
@@ -207,17 +208,28 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerCampaignBlocks()
     {
+        register_meta('post',
+            CampaignPageMetaKeys::CAMPAIGN_ID,
+            [
+                'type' => 'integer',
+                'description' => 'Campaign ID for GiveWP',
+                'single' => true,
+                'show_in_rest' => true,
+            ]
+        );
+
         Hooks::addAction('rest_api_init', Actions\RegisterCampaignIdRestField::class);
         Hooks::addAction('init', Actions\RegisterCampaignBlocks::class);
         Hooks::addAction('enqueue_block_editor_assets', Actions\RegisterCampaignBlocks::class, 'loadBlockEditorAssets');
+        Hooks::addAction('init', Actions\RegisterCampaignShortcodes::class);
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function loadCampaignOptions()
     {
@@ -225,7 +237,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return void
      */

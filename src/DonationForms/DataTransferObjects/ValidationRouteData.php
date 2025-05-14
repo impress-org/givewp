@@ -7,6 +7,8 @@ use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromFormFields;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
+use Give\Framework\FieldsAPI\Field;
+use Give\Framework\FieldsAPI\SecurityChallenge;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Support\Contracts\Arrayable;
 use WP_Error;
@@ -44,6 +46,7 @@ class ValidationRouteData implements Arrayable
      * compares the request against the individual fields,
      * their types and validation rules.
      *
+     * @since 4.1.0 updated to exclude security challenge fields during pre-validation
      * @since 3.22.0 added additional validation for form validity, added givewp_donation_form_fields_validated action
      * @since 3.0.0
      *
@@ -60,8 +63,8 @@ class ValidationRouteData implements Arrayable
             throw new DonationFormForbidden();
         }
 
-        $formFields = array_filter($form->schema()->getFields(), static function ($field) use ($request) {
-            return array_key_exists($field->getName(), $request);
+        $formFields = array_filter($form->schema()->getFields(), function ($field) use ($request) {
+            return array_key_exists($field->getName(), $request) && !$this->isSecurityChallengeField($field);
         });
 
         $validator = (new CreateValidatorFromFormFields())($formFields, $request);
@@ -134,5 +137,13 @@ class ValidationRouteData implements Arrayable
     public function toArray(): array
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * @since 4.1.0
+     */
+    protected function isSecurityChallengeField(Field $field): bool
+    {
+        return is_subclass_of($field, SecurityChallenge::class);
     }
 }

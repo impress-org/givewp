@@ -9,8 +9,8 @@ use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use PHPUnit_Framework_MockObject_MockBuilder;
-use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class GatewayPaymentControllerTest extends TestCase {
     use RefreshDatabase;
@@ -28,7 +28,7 @@ class GatewayPaymentControllerTest extends TestCase {
 
         $mockCommand = new PaymentComplete('mock-transaction-id');
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        /** @var MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('createPayment')
             ->with($donation)
@@ -53,7 +53,7 @@ class GatewayPaymentControllerTest extends TestCase {
 
         $mockCommand = new PaymentRefunded('mock-transaction-id');
 
-        /** @var PHPUnit_Framework_MockObject_MockObject $mockGateway */
+        /** @var MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('refundDonation')
             ->with($donation)
@@ -69,9 +69,9 @@ class GatewayPaymentControllerTest extends TestCase {
      */
     protected function getMockGateway()
     {
-        return $this->createMock(
+        return $this->createMockWithCallback(
             TestGateway::class,
-            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+            function (MockBuilder $mockBuilder) {
                 // partial mock gateway by setting methods on the mock builder
                 $mockBuilder->setMethods(['createPayment', 'refundDonation']);
 
@@ -85,9 +85,9 @@ class GatewayPaymentControllerTest extends TestCase {
      */
     protected function getMockController()
     {
-        return $this->createMock(
+        return $this->createMockWithCallback(
             GatewayPaymentController::class,
-            function (PHPUnit_Framework_MockObject_MockBuilder $mockBuilder) {
+            function (MockBuilder $mockBuilder) {
                 // partial mock gateway by setting methods on the mock builder
                 $mockBuilder->setMethods(['handleGatewayCommand']);
 

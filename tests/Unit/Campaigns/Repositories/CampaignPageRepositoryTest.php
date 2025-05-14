@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\Campaigns\Repositories;
 
 use Exception;
+use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignPageRepository;
@@ -11,7 +12,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @coversDefaultClass CampaignPageRepository
  */
@@ -20,7 +21,7 @@ final class CampaignPageRepositoryTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -38,7 +39,7 @@ final class CampaignPageRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -47,6 +48,10 @@ final class CampaignPageRepositoryTest extends TestCase
         $campaign = Campaign::factory()->create();
         $campaignPage = new CampaignPage([
             'campaignId' => $campaign->id,
+            'content' => give(CreateDefaultLayoutForCampaignPage::class)(
+                $campaign->id,
+                $campaign->shortDescription
+            )
         ]);
 
         give(CampaignPageRepository::class)->insert($campaignPage);
@@ -57,7 +62,7 @@ final class CampaignPageRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -73,7 +78,7 @@ final class CampaignPageRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -89,7 +94,7 @@ final class CampaignPageRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -111,7 +116,7 @@ final class CampaignPageRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -130,7 +135,7 @@ final class CampaignPageRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */

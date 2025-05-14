@@ -9,12 +9,12 @@ use Give\DonationForms\Models\DonationForm;
 use WP_Post;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class AddCampaignFormFromRequest
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -26,7 +26,7 @@ class AddCampaignFormFromRequest
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */

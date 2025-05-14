@@ -30,7 +30,7 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	/**
 	 * Set it Up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 
 		parent::setUp();
 
@@ -139,9 +139,7 @@ class Tests_Deprecated_Classes extends Give_Unit_Test_Case {
 	/**
 	 * Tear Down.
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test to ensure Give_Customer matches Give_Donor

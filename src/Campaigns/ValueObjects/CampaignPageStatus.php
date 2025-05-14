@@ -5,7 +5,7 @@ namespace Give\Campaigns\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * Statuses aligned with WordPress Custom Post Type options.
  *

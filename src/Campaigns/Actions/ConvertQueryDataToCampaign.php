@@ -9,21 +9,20 @@ use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class ConvertQueryDataToCampaign
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke(object $queryObject): Campaign
     {
         return new Campaign([
             'id' => (int)$queryObject->id,
-            'pageId' => (int)$queryObject->pageId,
-            'defaultFormId' => (int)$queryObject->defaultFormId,
+            'pageId' => $queryObject->pageId ? (int)$queryObject->pageId : null,
+            'defaultFormId' => $queryObject->defaultFormId ? (int)$queryObject->defaultFormId : null,
             'type' => new CampaignType($queryObject->type),
-            'enableCampaignPage' => (bool)$queryObject->enableCampaignPage,
             'title' => $queryObject->title,
             'shortDescription' => $queryObject->shortDescription,
             'longDescription' => $queryObject->longDescription,

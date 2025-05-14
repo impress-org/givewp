@@ -13,7 +13,7 @@ import GiveBlankSlate from '../blank-slate';
 /**
  * Render No forms Found UI
  *
- * @unreleased Replace "new form" with "new campaign form" link
+ * @since 4.0.0 Replace "new form" with "new campaign form" link
  */
 
 const NoForms = () => {

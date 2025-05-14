@@ -5,7 +5,7 @@ import type {StatWidgetProps} from './types';
 import {Spinner} from '@givewp/components';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const StatWidget = ({label, value, previousValue, description, formatter = null, loading = false}: StatWidgetProps) => {
     return (

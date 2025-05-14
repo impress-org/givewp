@@ -27,7 +27,7 @@ const EditorSelectedIcon = () => {
 /**
  * Editor Type Option component
  *
- * @unreleased
+ * @since 4.0.0
  */
 const EditorTypeOption = ({
     editorType,
@@ -54,8 +54,8 @@ const EditorTypeOption = ({
             <img
                 src={`${window.GiveDonationForms.pluginUrl}${
                     editorType === 'visualFormBuilder'
-                        ? '/assets/dist/images/admin/give-settings-gateways-v3.jpg'
-                        : '/assets/dist/images/admin/give-settings-gateways-v2.jpg'
+                        ? 'build/assets/dist/images/admin/give-settings-gateways-v3.jpg'
+                        : 'build/assets/dist/images/admin/give-settings-gateways-v2.jpg'
                 }`}
                 alt={label}
             />
@@ -82,7 +82,7 @@ const EditorTypeOption = ({
 /**
  * Form Modal component that renders a modal with a styled form inside
  *
- * @unreleased
+ * @since 4.0.0
  */
 export default function AddCampaignFormModal({isOpen, handleClose, title, campaignId}: FormModalProps) {
     const [editorSelected, setEditorSelected] = useState('');

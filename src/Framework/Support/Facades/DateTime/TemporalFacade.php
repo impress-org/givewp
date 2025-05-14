@@ -57,7 +57,7 @@ class TemporalFacade
     /**
      * Immutably returns a new DateTime instance with the microseconds set to 0.
      *
-     * @unreleased Extracted new immutableOrClone method.
+     * @since 4.0.0 Extracted new immutableOrClone method.
      * @since 2.20.0
      */
     public function withoutMicroseconds(DateTimeInterface $dateTime)
@@ -74,7 +74,7 @@ class TemporalFacade
     /**
      * Immutably returns a new DateTime instance with the time set to the start of the day.
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function withStartOfDay(DateTimeInterface $dateTime): DateTimeInterface
     {
@@ -86,7 +86,7 @@ class TemporalFacade
     /**
      * Immutably returns a new DateTime instance with the time set to the end of the day.
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function withEndOfDay(DateTimeInterface $dateTime): DateTimeInterface
     {
@@ -96,7 +96,7 @@ class TemporalFacade
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function immutableOrClone(DateTimeInterface $dateTime): DateTimeInterface
     {

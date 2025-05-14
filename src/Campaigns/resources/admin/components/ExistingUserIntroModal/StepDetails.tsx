@@ -2,7 +2,7 @@ import {stepConfig} from '@givewp/campaigns/admin/components/ExistingUserIntroMo
 import styles from './ExistingUserIntroModal.module.scss';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 
 type StepDetailsProps = {

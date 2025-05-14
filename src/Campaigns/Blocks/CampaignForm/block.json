@@ -1,0 +1,59 @@
+{
+    "$schema": "https://json.schemastore.org/block.json",
+    "apiVersion": 2,
+    "name": "givewp/campaign-form",
+    "version": "1.0.0",
+    "title": "Campaign Form",
+    "category": "give",
+    "description": "The GiveWP Campaign Form block inserts an existing campaign form into the page.",
+    "supports": {
+        "align": [
+            "wide",
+            "full"
+        ]
+    },
+    "attributes": {
+        "campaignId": {
+            "type": "number"
+        },
+        "blockId": {
+            "type": "string"
+        },
+        "prevId": {
+            "type": "number"
+        },
+        "id": {
+            "type": "number"
+        },
+        "displayStyle": {
+            "type": "string"
+        },
+        "continueButtonTitle": {
+            "type": "string"
+        },
+        "showTitle": {
+            "type": "boolean"
+        },
+        "contentDisplay": {
+            "type": "string"
+        },
+        "showGoal": {
+            "type": "boolean"
+        },
+        "showContent": {
+            "type": "boolean"
+        },
+        "useDefaultForm": {
+            "type": "boolean",
+            "default": true
+        }
+    },
+    "example": {},
+    "textdomain": "give",
+    "render": "file:./render.php",
+    "viewScript": "file:../../../../build/campaignFormBlockApp.js",
+    "editorScript": "file:../../../../build/assets/dist/js/parent-page.js",
+    "viewStyle": "file:../../../../build/campaignFormBlockApp.css",
+    "editorStyle": "file:../../../../build/assets/dist/css/embed-form.css",
+    "style": "file:../../../../build/campaignFormBlock.css"
+}

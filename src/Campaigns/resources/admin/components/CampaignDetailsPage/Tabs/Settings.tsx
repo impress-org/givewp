@@ -2,9 +2,7 @@ import {__} from '@wordpress/i18n';
 import {useFormContext} from 'react-hook-form';
 import {Upload} from '../../Inputs';
 import styles from '../CampaignDetailsPage.module.scss';
-import {ToggleControl} from '@wordpress/components';
-import {WarningIcon} from '@givewp/campaigns/admin/components/Icons';
-import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
+import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import ColorControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ColorControl';
 import TextareaControl from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/TextareaControl';
 import {CurrencyControl} from '@givewp/form-builder-library';
@@ -16,7 +14,7 @@ import {useCampaignNoticeHook} from '@givewp/campaigns/hooks';
 const {currency, isRecurringEnabled} = getCampaignOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function CampaignDetailsSettingsTab() {
     const [showTooltip, dismissTooltip] = useCampaignNoticeHook('givewp_campaign_settings_notice');
@@ -28,13 +26,12 @@ export default function CampaignDetailsSettingsTab() {
         formState: {errors},
     } = useFormContext();
 
-    const [goal, goalType, image, status, shortDescription, enableCampaignPage] = watch([
+    const [goal, goalType, image, status, shortDescription] = watch([
         'goal',
         'goalType',
         'image',
         'status',
         'shortDescription',
-        'enableCampaignPage',
     ]);
 
     const isDisabled = status === 'archived';
@@ -43,53 +40,7 @@ export default function CampaignDetailsSettingsTab() {
 
     return (
         <>
-            <div className={styles.sections}>
-                {/* Campaign Page */}
-                <div className={styles.section}>
-                    <div className={styles.leftColumn}>
-                        <div className={styles.sectionTitle}>{__('Campaign page', 'give')}</div>
-                        <div className={styles.sectionDescription}>
-                            {__(
-                                'Set up a landing page for your campaign. The default campaign page has the campaign details, the campaign form, and donor wall.',
-                                'give'
-                            )}
-                        </div>
-                    </div>
-
-                <div className={styles.rightColumn}>
-                    <div className={styles.sectionField}>
-                        <div className={styles.toggle}>
-                            <ToggleControl
-                                label={__('Enable campaign page for your campaign.', 'give')}
-                                help={__('This will create a default campaign page for your campaign.', 'give')}
-                                name="enableCampaignPage"
-                                checked={enableCampaignPage}
-                                disabled={isDisabled}
-                                onChange={(value) => {
-                                    setValue('enableCampaignPage', value, {shouldDirty: true});
-                                }}
-                            />
-                        </div>
-
-                            {!enableCampaignPage && (
-                                <div className={styles.warningNotice}>
-                                    <WarningIcon />
-                                    <p>
-                                        {__(
-                                            'This will affect the campaign blocks associated with this campaign. Ensure that no campaign blocks are being used on any page.',
-                                            'give'
-                                        )}
-                                    </p>
-                                </div>
-                            )}
-
-                            {errors.enableCampaignPage && (
-                                <div className={styles.errorMsg}>{`${errors.enableCampaignPage.message}`}</div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
+        <div className={styles.sections}>
                 {/* Campaign Details */}
                 <div className={styles.section}>
                     <div className={styles.leftColumn}>
@@ -148,6 +99,7 @@ export default function CampaignDetailsSettingsTab() {
                                     }}
                                     reset={() => setValue('image', '', {shouldDirty: true})}
                                 />
+                                <p className={styles.sectionFieldHelpText}>{__('This will be displayed in your campaign block and campaign grid.', 'give')}</p>
                             </div>
 
                             {errors.title && <div className={styles.errorMsg}>{`${errors.title.message}`}</div>}
@@ -263,7 +215,7 @@ export default function CampaignDetailsSettingsTab() {
                 <CampaignNotice
                     title={__('Campaign Settings', 'give')}
                     description={__('You can make changes to your campaign page, campaign details, campaign goal, and campaign theme. Publish your campaign when you’re done with your changes.', 'give')}
-                    linkHref="#"
+                    linkHref="https://docs.givewp.com/campaign-settings"
                     linkText={__('Learn more about campaign and form settings', 'give')}
                     handleDismiss={dismissTooltip}
                     type={'campaignSettings'}

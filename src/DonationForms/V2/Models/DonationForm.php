@@ -3,6 +3,9 @@
 namespace Give\DonationForms\V2\Models;
 
 use DateTime;
+use Give\DonationForms\Models\DonationForm as ModelsDonationForm;
+use Give\DonationForms\Properties\FormSettings;
+use Give\DonationForms\V2\Actions\ConvertV2FormToV3Form;
 use Give\DonationForms\V2\DataTransferObjects\DonationFormQueryData;
 use Give\DonationForms\V2\Properties\DonationFormLevel;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
@@ -83,5 +86,13 @@ class DonationForm extends Model implements ModelReadOnly
     public static function fromQueryBuilderObject($object): DonationForm
     {
         return DonationFormQueryData::fromObject($object)->toDonationForm();
+    }
+
+    /**
+     * @since 4.2.0
+     */
+    public function toV3Form(): ModelsDonationForm
+    {
+        return (new ConvertV2FormToV3Form($this))();
     }
 }

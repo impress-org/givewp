@@ -8,6 +8,7 @@ use Give\DonationForms\ValueObjects\DesignSettingsSectionStyle;
 use Give\DonationForms\ValueObjects\DesignSettingsTextFieldStyle;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\GoalProgressType;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
@@ -44,6 +45,12 @@ class FormSettings implements Arrayable, Jsonable
      * @var boolean
      */
     public $enableAutoClose;
+    /**
+     * @since 4.1.0
+     *
+     * @var GoalSource
+     */
+    public $goalSource;
     /**
      * @var GoalType
      */
@@ -262,6 +269,7 @@ class FormSettings implements Arrayable, Jsonable
      * @var array
      */
     public $currencySwitcherSettings;
+
     /**
      * @since 3.16.0
      * @var bool
@@ -269,6 +277,13 @@ class FormSettings implements Arrayable, Jsonable
     public $enableReceiptConfirmationPage;
 
     /**
+     * @since 4.1.0 Added goalSource
+     * @since 4.1.0
+     */
+    public bool $inheritCampaignColors;
+
+    /**
+     * @since 4.1.0 Added $inheritCampaignColors
      * @since 3.16.0 Added $enableReceiptConfirmationPage
      * @since 3.7.0 Added formExcerpt
      * @since 3.11.0 Sanitize customCSS property
@@ -291,6 +306,9 @@ class FormSettings implements Arrayable, Jsonable
         $self->donateButtonCaption = $array['donateButtonCaption'] ?? __('Donate now', 'give');
         $self->enableDonationGoal = $array['enableDonationGoal'] ?? false;
         $self->enableAutoClose = $array['enableAutoClose'] ?? false;
+        $self->goalSource = ! empty($array['goalSource']) && GoalSource::isValid($array['goalSource'])
+            ? new GoalSource($array['goalSource'])
+            : GoalSource::FORM();
         $self->goalType = ! empty($array['goalType']) && GoalType::isValid($array['goalType']) ? new GoalType(
             $array['goalType']
         ) : GoalType::AMOUNT();
@@ -300,6 +318,7 @@ class FormSettings implements Arrayable, Jsonable
         $self->goalStartDate = $array['goalStartDate'] ?? '';
         $self->goalEndDate = $array['goalEndDate'] ?? '';
         $self->designId = $array['designId'] ?? null;
+        $self->inheritCampaignColors = $array['inheritCampaignColors'] ?? false;
         $self->primaryColor = $array['primaryColor'] ?? '#69b86b';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
@@ -405,6 +424,7 @@ class FormSettings implements Arrayable, Jsonable
     }
 
     /**
+     * @since 4.1.0 Add goalSource
      * @since 3.2.0 Remove call to addSlashesRecursive method for emailTemplateOptions in favor of SanitizeDonationFormPreviewRequest class
      * @since 3.0.0
      */
@@ -414,6 +434,7 @@ class FormSettings implements Arrayable, Jsonable
             array_merge(
                 $this->toArray(),
                 [
+                    'goalSource' => $this->goalSource ? $this->goalSource->getValue() : GoalSource::FORM()->getValue(),
                     'goalType' => $this->goalType ? $this->goalType->getValue() : null,
                 ]
             )

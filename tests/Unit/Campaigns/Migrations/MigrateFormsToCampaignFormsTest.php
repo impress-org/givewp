@@ -12,14 +12,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 final class MigrateFormsToCampaignFormsTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -37,7 +37,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -62,7 +62,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -83,7 +83,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -112,7 +112,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -129,7 +129,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -150,7 +150,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function testFormDatesMatchCampaignDates(): void
@@ -165,5 +165,17 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $this->assertEquals($form->createdAt, $campaign->createdAt);
         $this->assertEquals($form->createdAt, $campaign->startDate);
         $this->assertNull($campaign->endDate);
+    }
+
+    /**
+     * @since 4.0.0
+     * @throws Exception
+     */
+    public function testMigrationRunsWithNoData(): void
+    {
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        $this->assertEquals(0, DB::table('give_campaign_forms')->count());
     }
 }

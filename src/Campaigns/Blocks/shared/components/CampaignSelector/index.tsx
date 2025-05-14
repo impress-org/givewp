@@ -1,8 +1,8 @@
 import {useEffect} from 'react';
-import {select} from '@wordpress/data';
 import Inspector from './Inspector';
 import useCampaigns from '../../hooks/useCampaigns';
 import Selector from './Selector';
+import {useEntityProp} from '@wordpress/core-data';
 
 type CampaignSelectorProps = {
     campaignId: number;
@@ -12,22 +12,18 @@ type CampaignSelectorProps = {
     showInspectorControl?: boolean;
 }
 
-export default ({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = false}: CampaignSelectorProps) => {
+export default function CampaignSelector({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = true}: CampaignSelectorProps){
+    const [id] = useEntityProp('postType', 'page', 'campaignId');
+    const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
 
     // set campaign id from context
     useEffect(() => {
-        if (campaignId) {
-            return;
-        }
-        // @ts-ignore
-        const id = select('core/editor').getEditedPostAttribute('campaignId');
-
-        if (id) {
+        // if campaign page ID changes, update the campaign ID in block attributes
+        // or default the campaignId in the block attributes to the campaign page ID
+        if (id && campaignId !== id) {
             handleSelect(id);
         }
-    }, []);
-
-    const {campaigns, hasResolved} = useCampaigns();
+    }, [id]);
 
     return (
         <>
@@ -39,7 +35,7 @@ export default ({campaignId, handleSelect, children, inspectorControls = null, s
                 />
             )}
 
-            {showInspectorControl && (
+            {!id && showInspectorControl && (
                 <Inspector
                     campaignId={campaignId}
                     campaigns={campaigns}

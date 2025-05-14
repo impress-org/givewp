@@ -1,7 +1,7 @@
 <?php
 
+use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Models\Campaign;
-use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 
 /**
  * @var Campaign $campaign
@@ -32,16 +32,7 @@ $blockInlineStyles = sprintf(
         if ($attributes['showButton'] && ! empty($donors)) : ?>
             <div class="givewp-campaign-donors-block__donate-button">
                 <?php
-                $blockRender = (new BlockRenderController())->render([
-                    'formId' => $campaign->defaultFormId,
-                    'openFormButton' => $donateButtonText,
-                    'formFormat' => 'modal',
-                ]);
-
-                echo $blockRender ?? sprintf(
-                    '<button type="button" class="givewp-donation-form-modal__open">%s</button>',
-                    $donateButtonText
-                );
+                echo give(RenderDonateButton::class)($campaign->defaultFormId, $donateButtonText);
                 ?>
             </div>
         <?php
@@ -75,16 +66,7 @@ $blockInlineStyles = sprintf(
                     <?php
                     $firstDonationButtonText = __('Be the first donor', 'give');
 
-                    $blockRender = (new BlockRenderController())->render([
-                        'formId' => $campaign->defaultFormId,
-                        'openFormButton' => $firstDonationButtonText,
-                        'formFormat' => 'modal',
-                    ]);
-
-                    echo $blockRender ?? sprintf(
-                        '<button type="button" class="givewp-donation-form-modal__open">%s</button>',
-                        $firstDonationButtonText
-                    );
+                    echo give(RenderDonateButton::class)($campaign->defaultFormId, $firstDonationButtonText);
                     ?>
                 </div>
             <?php
@@ -111,7 +93,7 @@ $blockInlineStyles = sprintf(
 
                     <div class="givewp-campaign-donors-block__donor-info">
                                     <span class="givewp-campaign-donors-block__donor-name"><?php
-                                        echo esc_html($donor->name); ?></span>
+                                        echo esc_html(!$donor->isAnonymous ? $donor->name : __('Anonymous', 'give')); ?></span>
 
                         <?php
                         if ($sortBy === 'top-donors' && $key < 3) : ?>

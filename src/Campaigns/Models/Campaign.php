@@ -22,13 +22,12 @@ use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @property int              $id
  * @property int              $pageId
  * @property int              $defaultFormId
  * @property CampaignType     $type
- * @property bool $enableCampaignPage
  * @property string           $title
  * @property string           $url
  * @property string           $shortDescription
@@ -54,7 +53,6 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         'pageId' => 'int',
         'defaultFormId' => 'int',
         'type' => CampaignType::class,
-        'enableCampaignPage' => ['bool', true],
         'title' => 'string',
         'shortDescription' => 'string',
         'longDescription' => 'string',
@@ -71,7 +69,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function defaultForm(): ?DonationForm
     {
@@ -79,7 +77,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function forms(): ModelQueryBuilder
     {
@@ -93,15 +91,15 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
-    public function page()
+    public function page(): ?CampaignPage
     {
         return give(CampaignPageRepository::class)->findByCampaignId($this->id);
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function factory(): CampaignFactory
     {
@@ -111,7 +109,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * Find campaign by ID
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public static function find($id): ?Campaign
     {
@@ -121,7 +119,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     /**
      * Find campaign by Form ID
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public static function findByFormId(int $formId): ?Campaign
     {
@@ -129,7 +127,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -143,7 +141,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -157,7 +155,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -167,7 +165,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -176,13 +174,16 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
         return give(CampaignRepository::class)->mergeCampaigns($this, ...$campaignsToMerge);
     }
 
+    /**
+     * @since 4.0.0
+     */
     public function getGoalStats(): array
     {
         return (new CampaignGoalData($this))->toArray();
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<Campaign>
      */
@@ -192,7 +193,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @param object $object
      */

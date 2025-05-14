@@ -12,6 +12,8 @@ import DateRangeFilters from './DateRangeFilters';
 import {amountFormatter, getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 import type {CampaignOverViewStat} from './types';
 import styles from './styles.module.scss';
+import CampaignDetailsErrorBoundary
+    from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/CampaignDetailsErrorBoundary';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
@@ -100,7 +102,9 @@ const CampaignStats = () => {
                             {__('This graph shows revenue for the campaign over its lifetime.', 'give')}
                         </HeaderSubText>
                     </header>
-                    <RevenueChart />
+                    <CampaignDetailsErrorBoundary>
+                        <RevenueChart />
+                    </CampaignDetailsErrorBoundary>
                 </div>
                 <div className={styles.nestedGrid}>
                     <div className={styles.progressWidget}>
@@ -108,7 +112,9 @@ const CampaignStats = () => {
                             <HeaderText>{__('Goal progress', 'give')}</HeaderText>
                             <HeaderSubText>{__('This chart shows your campaign goal progress.', 'give')}</HeaderSubText>
                         </header>
-                        <GoalProgressChart value={campaign.goalStats.actual} goal={campaign.goal} goalType={campaign.goalType} />
+                        <CampaignDetailsErrorBoundary>
+                            <GoalProgressChart value={campaign.goalStats.actual} goal={campaign.goal} goalType={campaign.goalType} />
+                        </CampaignDetailsErrorBoundary>
                     </div>
                     <DefaultFormWidget defaultForm={campaign.defaultFormTitle} />
                 </div>

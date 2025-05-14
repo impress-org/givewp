@@ -2,7 +2,6 @@
 
 namespace Give\Campaigns\Migrations;
 
-use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
@@ -12,7 +11,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use stdClass;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class MigrateFormsToCampaignForms extends Migration
 {
@@ -29,11 +28,11 @@ class MigrateFormsToCampaignForms extends Migration
      */
     public static function timestamp(): int
     {
-        return strtotime('2024-08-26 00:00:01');
+        return strtotime('2024-08-26 00:00:02');
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @inheritDoc
      * @throws \Exception
      */
@@ -51,7 +50,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getAllFormsData(): array
     {
@@ -110,7 +109,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @return array [{formId, campaignId, migratedFormId}]
      */
     protected function getUpgradedV2FormsData(): array
@@ -135,7 +134,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function createCampaignForForm($formData): void
     {
@@ -151,7 +150,6 @@ class MigrateFormsToCampaignForms extends Migration
             ->insert([
                 'form_id' => $formId,
                 'campaign_type' => 'core',
-                'enable_campaign_page' => false,
                 'campaign_title' => $formTitle,
                 'status' => $this->mapFormToCampaignStatus($formStatus),
                 'short_desc' => $formSettings->formExcerpt,
@@ -170,35 +168,6 @@ class MigrateFormsToCampaignForms extends Migration
         $campaignId = DB::last_insert_id();
 
         $this->addCampaignFormRelationship($formId, $campaignId);
-
-        DB::table('posts')
-            ->insert([
-                'post_title' => $formTitle,
-                'post_name' => $formName, // unique slug
-                'post_date' => $formCreatedAt,
-                'post_date_gmt' => get_gmt_from_date($formCreatedAt),
-                'post_modified' => $formCreatedAt,
-                'post_modified_gmt' => get_gmt_from_date($formCreatedAt),
-                'post_status' => 'publish',
-                'post_type' => 'give_campaign_page',
-                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)($campaignId,
-                    $formSettings->formExcerpt),
-            ]);
-
-        $campaignPageId = DB::last_insert_id();
-
-        DB::table('postmeta')
-            ->insert([
-                'post_id' => $campaignPageId,
-                'meta_key' => 'campaignId',
-                'meta_value' => $campaignId,
-            ]);
-
-        DB::table('give_campaigns')
-            ->where('id', $campaignId)
-            ->update([
-                'campaign_page_id' => $campaignPageId,
-            ]);
     }
 
     /**
@@ -210,7 +179,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function addCampaignFormRelationship($formId, $campaignId)
     {
@@ -222,7 +191,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function mapFormToCampaignStatus(string $status): string
     {
@@ -248,7 +217,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormSettings(int $formId): stdClass
     {
@@ -271,7 +240,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormFeaturedImage(array $templateSettings, int $formId): string
     {
@@ -292,7 +261,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormDescription(array $templateSettings): string
     {
@@ -310,7 +279,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormPrimaryColor(array $templateSettings): string
     {
@@ -328,7 +297,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormGoalAmount(int $formId)
     {
@@ -336,7 +305,7 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getV2FormGoalType(int $formId): string
     {

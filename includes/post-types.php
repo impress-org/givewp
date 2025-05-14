@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Registers and sets up the Donation Forms (give_forms) custom post type
  *
- * @unreleased updated menu_name to GiveWP
+ * @since 4.0.0 updated menu_name to GiveWP
  * @since 1.0
  *
  * @return void
@@ -136,36 +136,8 @@ function give_setup_post_types() {
 		'supports'        => [ 'title' ],
 		'can_export'      => true,
 	];
+
 	register_post_type( 'give_payment', $payment_args );
-
-    /**
-     * Register Campaign Page CPT
-     *
-     * @unreleased
-     */
-    register_post_type('give_campaign_page', [
-        'label' => __('Campaign Page', 'give'),
-        'labels' => [
-            'edit_item' => __('Edit Campaign Page', 'give'),
-        ],
-        'public' => true,
-        'show_ui' => true,
-        'show_in_menu' => false,
-        'show_in_rest' => true,
-        'show_in_admin_bar' => true,
-        'query_var' => true,
-        'hierarchical' => false,
-        'supports' => [
-            'title',
-            'editor',
-        ],
-        'rewrite' => [
-            'slug' => 'campaigns',
-            'with_front' => true,
-        ],
-        'template' => [],
-    ]);
-
 }
 
 add_action( 'init', 'give_setup_post_types', 1 );

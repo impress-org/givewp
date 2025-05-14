@@ -51,8 +51,9 @@ function includesPath(relativePath) {
  * Files from before Give 3.0
  */
 const legacyStyleEntry = {
+    'assets/dist/css/embed-form': assetPath('src/css/frontend/embed-form.scss'),
     'assets/dist/css/give': assetPath('src/css/frontend/give-frontend.scss'),
-    'assets/dist/css/admin-block-editor.css': assetPath('src/css/admin/block-editor.scss'),
+    'assets/dist/css/admin-block-editor': assetPath('src/css/admin/block-editor.scss'),
     'assets/dist/css/admin': assetPath('src/css/admin/give-admin.scss'),
     'assets/dist/css/admin-global': assetPath('src/css/admin/give-admin-global.scss'),
     'assets/dist/css/admin-setup': assetPath('src/css/admin/setup.scss'),
@@ -115,6 +116,10 @@ const legacyScriptsEntry = {
     'assets/dist/js/donation-options': srcPath('Promotions/InPluginUpsells/resources/js/donation-options.ts'),
     'assets/dist/js/payment-gateway': srcPath('Promotions/InPluginUpsells/resources/js/payment-gateway.ts'),
     'assets/dist/js/welcome-banner': srcPath('Promotions/WelcomeBanner/resources/js/index.tsx'),
+    'assets/dist/js/orphaned-forms-list-table': srcPath('DonationForms/OrphanedForms/resources/index.tsx'),
+    'assets/dist/js/parent-page': assetPath('src/js/plugins/form-template/parent-page.js'),
+    'assets/dist/js/utils': assetPath('src/js/plugins/form-template/utils.js'),
+    'assets/dist/js/iframe-content': assetPath('src/js/plugins/form-template/iframe-content.js'),
 };
 
 /**
@@ -176,6 +181,7 @@ const entry = {
     campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
     campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
     campaignBlocksLandingPage: srcPath('Campaigns/Blocks/landingPage.ts'),
+    campaignDonateButtonBlockApp: srcPath('Campaigns/Blocks/DonateButton/app.tsx'),
     campaignDonationsBlockApp: srcPath('Campaigns/Blocks/CampaignDonations/app.tsx'),
     campaignDonorsBlockApp: srcPath('Campaigns/Blocks/CampaignDonors/app.tsx'),
     campaignStatsBlockApp: srcPath('Campaigns/Blocks/CampaignStats/app.tsx'),
@@ -189,10 +195,13 @@ const entry = {
     campaignCommentsBlockApp: srcPath('Campaigns/Blocks/CampaignComments/resources/app.tsx'),
     campaignBlock: srcPath('Campaigns/Blocks/Campaign/index.tsx'),
     campaignBlockApp: srcPath('Campaigns/Blocks/Campaign/app.tsx'),
+    campaignFormBlock: srcPath('Campaigns/Blocks/CampaignForm/resources/index.tsx'),
+    campaignFormBlockApp: srcPath('Campaigns/Blocks/CampaignForm/resources/app.tsx'),
     campaignPagePostTypeEditor: srcPath('Campaigns/resources/editor/campaign-page-post-type-editor.tsx'),
     campaignWelcomeBannerCss: srcPath('Promotions/Campaigns/resources/css/styles.scss'),
     campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),
     campaignListTable: srcPath('Campaigns/resources/admin/campaigns-list-table.tsx'),
+    formEntity: srcPath('DonationForms/resources/entity.ts'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };
@@ -217,11 +226,7 @@ const plugins = [
         ],
     }),
     // Generate RTL files
-    ...(isProduction
-        ? [
-              new RtlCssPlugin({filename: '[name]-rtl.css'}),
-          ]
-        : []),
+    ...(isProduction ? [new RtlCssPlugin({filename: '[name]-rtl.css'})] : []),
     {
         // Write the design system version to a file
         apply: (compiler) => {
