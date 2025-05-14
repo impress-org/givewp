@@ -154,6 +154,10 @@ class ServiceProvider implements ServiceProviderInterface
                 });
             }
         });
+
+        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
+        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
+
         Hooks::addFilter('give_form_grid_progress_bar_amount_raised_value', FormGridView::class, 'maybeSetProgressBarAmountRaisedAsync',10,2);
         Hooks::addFilter('give_form_grid_progress_bar_donations_count_value', FormGridView::class, 'maybeSetProgressBarDonationsCountAsync',10,2);
     }
