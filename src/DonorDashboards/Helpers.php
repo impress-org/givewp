@@ -50,6 +50,13 @@ class Helpers
         /** @var WP_User $user */
         $user = wp_get_current_user();
         $allowedRoles = ['administrator', 'give_donor', 'give_subscriber'];
+        // If the user is logged in and they are a donor, return true
+        if ( is_user_logged_in() ) {
+            $donor = give()->donors->get_donor_by('user_id', get_current_user_id());
+            if ($donor) {
+                return true;
+            }
+        }
 
         return (is_user_logged_in() && !empty(array_intersect($allowedRoles, $user->roles))) || (
                 give_is_setting_enabled( give_get_option( 'email_access' ) ) &&
