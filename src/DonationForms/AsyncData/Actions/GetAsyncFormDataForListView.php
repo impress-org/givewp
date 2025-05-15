@@ -111,8 +111,6 @@ class GetAsyncFormDataForListView
         }
 
         return give_is_setting_enabled(Give()->form_meta->get_meta($formId,
-            DonationFormMetaKeys::GOAL_OPTION,
-            true
-        ));
+            DonationFormMetaKeys::GOAL_OPTION, true));
     }
 }

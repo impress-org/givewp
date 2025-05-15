@@ -3,6 +3,7 @@ import Chart from 'react-apexcharts';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
 import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
+import {__} from '@wordpress/i18n';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
@@ -22,7 +23,7 @@ const RevenueChart = () => {
     const {currency} = getCampaignOptionsWindowData();
     const currencyFormatter = amountFormatter(currency);
     const [max, setMax] = useState(100);
-    const [series, setSeries] = useState([{name: 'Revenue', data: getDefaultData()}]);
+    const [series, setSeries] = useState([{name: __('Revenue', 'give'), data: getDefaultData()}]);
 
     useEffect(() => {
         apiFetch({path: addQueryArgs('/givewp/v3/campaigns/' + campaignId + '/revenue')}).then(
@@ -33,7 +34,7 @@ const RevenueChart = () => {
                     setMax(undefined);
                     setSeries([
                         {
-                            name: 'Revenue',
+                            name: __('Revenue', 'give'),
                             data: data.map((item) => {
                                 return {
                                     x: item.date,
