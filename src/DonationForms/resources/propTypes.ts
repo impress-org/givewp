@@ -46,7 +46,6 @@ export interface FieldHasDescriptionProps extends FieldProps {
 
 export interface FileProps extends FieldHasDescriptionProps {
     allowedMimeTypes: string[];
-    maxUploadSize: number;
 }
 
 export interface DateProps extends Omit<FieldHasDescriptionProps, 'placeholder'> {
