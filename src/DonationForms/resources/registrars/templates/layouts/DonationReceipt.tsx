@@ -4,11 +4,12 @@ import {DonationReceiptProps} from '@givewp/forms/propTypes';
 import {Interweave} from 'interweave';
 
 /**
+ * @unreleased include aria-live and role attributes to the secure badge for screen readers.
  * @since 3.0.0
  */
 const SecureBadge = () => {
     return (
-        <aside className="givewp-form-secure-badge">
+        <aside className="givewp-form-secure-badge" role="status" aria-live="polite">
             <i className="fa-regular fa-circle-check givewp-form-secure-badge-icon"></i>
             {__('Success!', 'give')}
         </aside>
