@@ -98,6 +98,7 @@ export default function Amount({
 
             {allowCustomAmount && (
                 <CustomAmount
+                    inputProps={inputProps}
                     fieldError={fieldError}
                     defaultValue={customAmountValue}
                     currency={currency}
@@ -108,8 +109,6 @@ export default function Amount({
                     }}
                 />
             )}
-
-            <input type="hidden" {...inputProps} />
 
             {messages}
 
