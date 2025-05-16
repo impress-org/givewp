@@ -2,7 +2,7 @@ import {FileProps} from '@givewp/forms/propTypes';
 import {__, sprintf} from '@wordpress/i18n';
 
 /**
- * @unreleased Add aria-required attribute and file size validation.
+ * @unreleased Add aria-required attribute and file size and type validations.
  */
 export default function File({Label, allowedMimeTypes, maxUploadSize, ErrorMessage, fieldError, description, inputProps}: FileProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
@@ -24,12 +24,22 @@ export default function File({Label, allowedMimeTypes, maxUploadSize, ErrorMessa
                 onChange={(e) => {
                     const file = e.target.files[0];
 
+                    if (!file) {
+                        return;
+                    }
+
+                    if (!allowedMimeTypes.includes(file.type)) {
+                        setError(name, {message: __('The selected file must be a valid file type.', 'give')});
+                        return;
+                    }
+
                     if (file.size > maxUploadSize) {
                         setError(name, {message: sprintf(__('The selected file must be less than or equal to %d bytes.', 'give'), maxUploadSize)});
-                    } else {
-                        setError(name, undefined);
-                        setValue(name, file);
+                        return;
                     }
+
+                    setError(name, undefined);
+                    setValue(name, file);
                 }}
                 aria-required={inputProps['aria-required']}
             />
