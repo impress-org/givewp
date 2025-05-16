@@ -177,6 +177,17 @@
     }
 }
 
+.htmlField {
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+
 .customAmount{
     color: #4d4d4d;
     font-weight: 500;
