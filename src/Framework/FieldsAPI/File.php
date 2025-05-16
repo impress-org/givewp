@@ -24,6 +24,7 @@ class File extends Field
     const TYPE = 'file';
 
     protected $allowedMimeTypes = [];
+    protected $maxUploadSize = null;
 
     /**
      * Set the maximum file size.
@@ -75,6 +76,7 @@ class File extends Field
         }
 
         $this->rules((new FileRule())->maxSize($maxUploadSize));
+        $this->maxUploadSize = $maxUploadSize;
 
         return $this;
     }
