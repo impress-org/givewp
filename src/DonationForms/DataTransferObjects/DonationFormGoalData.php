@@ -109,7 +109,7 @@ class DonationFormGoalData implements Arrayable
      *
      * @since 4.1.0
      */
-    private function isSubscription(): bool
+    public function isSubscription(): bool
     {
         return in_array(
             $this->getGoalType()->getValue(), [
@@ -254,5 +254,26 @@ class DonationFormGoalData implements Arrayable
             'percentage' => $progressPercentage,
             'isAchieved' => $this->isEnabled && $this->formSettings->enableAutoClose && $progressPercentage >= 100,
         ];
+    }
+
+    /**
+     * Get total donation revenue, the exception is for subscription amount goal, it will return the sum of initial amount
+     *
+     * @unreleased
+     */
+    public function getTotalDonationRevenue()
+    {
+        if ($this->getGoalType()->getValue() === 'amountFromSubscriptions') {
+            $query = $this->getQuery();
+
+            return $query->sumInitialAmount();
+        }
+
+
+        $query = $this->goalSource->isCampaign()
+            ? new CampaignDonationQuery($this->campaign)
+            : (new DonationQuery())->form($this->formId);
+
+        return $query->sumIntendedAmount();
     }
 }
