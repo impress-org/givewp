@@ -13,6 +13,7 @@
 
         .react-datepicker__day {
             &--selected {
+
                 &,
                 &:hover {
                     background-color: var(--givewp-primary-color);
@@ -52,6 +53,11 @@
 
                 &:hover {
                     border-color: var(--givewp-primary-color);
+                }
+
+                &--is-focused {
+                    border-color: transparent;
+                    box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
                 }
             }
 
