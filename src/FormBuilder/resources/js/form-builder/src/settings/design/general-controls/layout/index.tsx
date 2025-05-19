@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import {setFormSettings} from '@givewp/form-builder/stores/form-state';
 
 /**
- * @unreleased enable showHeader when switching to Classic or Two-panel form templates.
+ * @since 4.3.0 enable showHeader when switching to Classic or Two-panel form templates.
  */
 export default function Layout({dispatch, formDesigns, designId}) {
     const designOptions = Object.values(formDesigns).map(({id, name}) => ({value: id, label: name}));

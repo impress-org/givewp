@@ -30,7 +30,7 @@ class CampaignGridShortcode
     }
 
     /**
-     * @unreleased Use info from asset.php file and set script translations
+     * @since 4.3.0 Use info from asset.php file and set script translations
      * @since 4.2.0
      */
     public function loadAssets()

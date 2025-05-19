@@ -405,7 +405,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-     * @unreleased change donation form to campaign
+     * @since 4.3.0 change donation form to campaign
 	 *
 	 * @return array $columns Array of all the list table columns
 	 */
@@ -466,7 +466,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-     * @unreleased show campaign name instead of the form name
+     * @since 4.3.0 show campaign name instead of the form name
 	 *
 	 * @return string Column Name
 	 */

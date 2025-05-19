@@ -6,12 +6,12 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class CampaignFormShortcode
 {
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * @param array $atts
      *
@@ -30,7 +30,7 @@ class CampaignFormShortcode
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function loadAssets()
     {
@@ -58,7 +58,7 @@ class CampaignFormShortcode
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     private function parseAttributes($atts): array
     {

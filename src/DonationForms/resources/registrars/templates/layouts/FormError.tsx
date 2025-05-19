@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 
 /**
- * @unreleased Add proper roles and ARIA attributes
+ * @since 4.3.0 Add proper roles and ARIA attributes
  */
 export default function FormError({error}: {error: string}) {
     return (

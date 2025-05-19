@@ -5,7 +5,7 @@ use Give\Helpers\Form\Template as FormTemplateUtils;
 /**
  * The following variables should be in scope when including this view
  *
- * @unreleased hide form background on v2 loader.
+ * @since 4.3.0 hide form background on v2 loader.
  * @var int $formId
  */
 

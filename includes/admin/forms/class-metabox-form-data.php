@@ -1502,7 +1502,7 @@ class Give_MetaBox_Form_Data {
 }
 
 /**
- * @unreleased use init action
+ * @since 4.3.0 use init action
  */
 add_action( 'init', static function () {
     new Give_MetaBox_Form_Data();

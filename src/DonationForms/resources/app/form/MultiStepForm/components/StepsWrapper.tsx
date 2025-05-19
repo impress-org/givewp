@@ -8,7 +8,7 @@ import getCurrentStepObject from '@givewp/forms/app/form/MultiStepForm/utilities
 import {Label, ProgressBar} from "react-aria-components";
 
 /**
- * @unreleased update step title element to h3. add react-aria progress element wrapper..
+ * @since 4.3.0 update step title element to h3. add react-aria progress element wrapper..
  * @since 3.4.0 updated with steps props and showStepsHeader conditional
  * @since 3.0.0
  */

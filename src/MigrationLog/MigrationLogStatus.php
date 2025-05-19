@@ -6,7 +6,7 @@ namespace Give\MigrationLog;
  * Class MigrationLogStatus
  * @package Give\MigrationLog
  *
- * @unreleased add REVERSED status
+ * @since 4.3.0 add REVERSED status
  * @since 4.0.0 add RUNNING and INCOMPLETE statuses
  * @since 2.10.0
  */

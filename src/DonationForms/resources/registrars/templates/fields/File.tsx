@@ -1,7 +1,7 @@
 import {FileProps} from '@givewp/forms/propTypes';
 
 /**
- * @unreleased add aria-required attribute.
+ * @since 4.3.0 add aria-required attribute.
  */
 export default function File({Label, allowedMimeTypes, ErrorMessage, fieldError, description, inputProps}: FileProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;

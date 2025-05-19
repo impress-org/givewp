@@ -2,7 +2,7 @@ import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
 import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
 
 /**
- * @unreleased Add autoComplete support
+ * @since 4.3.0 Add autoComplete support
  */
 export default function Text({
     Label,

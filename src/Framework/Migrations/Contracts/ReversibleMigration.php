@@ -3,7 +3,7 @@
 namespace Give\Framework\Migrations\Contracts;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 interface ReversibleMigration
 {

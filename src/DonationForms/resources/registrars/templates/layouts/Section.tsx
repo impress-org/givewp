@@ -1,7 +1,7 @@
 import type {SectionProps} from '@givewp/forms/propTypes';
 
 /**
- * @unreleased update legend to use the description prop.
+ * @since 4.3.0 update legend to use the description prop.
  */
 const Legend = ({name, description}: {name: string; description?: string}) => {
     return description.length > 0 ? (
@@ -14,7 +14,7 @@ const Legend = ({name, description}: {name: string; description?: string}) => {
 };
 
 /**
- * @unreleased use h3 tag for the section label.
+ * @since 4.3.0 use h3 tag for the section label.
  */
 export default function Section({
     section: {name, label, description},
