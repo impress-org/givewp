@@ -50,10 +50,6 @@ class ServiceProvider implements ServiceProviderInterface
         // only register new admin page if user hasn't chosen to use the old one
         if (empty($showLegacy)) {
             Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem', 30);
-
-            if (DonorsAdminPage::isShowing()) {
-                Hooks::addAction('admin_enqueue_scripts', DonorsAdminPage::class, 'loadScripts');
-            }
         } elseif (DonorsAdminPage::isShowing()) {
             Hooks::addAction('admin_head', DonorsAdminPage::class, 'renderReactSwitch');
         }
