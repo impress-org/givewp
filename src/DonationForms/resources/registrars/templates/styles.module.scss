@@ -184,6 +184,12 @@
         &:hover {
             text-decoration: none;
         }
+
+        &:focus {
+            border-radius: 2px;
+            outline: 2px solid var(--givewp-primary-color);
+            text-decoration: none;
+        }
     }
 }
 
