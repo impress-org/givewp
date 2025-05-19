@@ -2,9 +2,11 @@
 
 namespace Give\Campaigns\Migrations;
 
+use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Contracts\ReversibleMigration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -13,7 +15,7 @@ use stdClass;
 /**
  * @since 4.0.0
  */
-class MigrateFormsToCampaignForms extends Migration
+class MigrateFormsToCampaignForms extends Migration implements ReversibleMigration
 {
     /**
      * @inheritDoc
@@ -21,6 +23,14 @@ class MigrateFormsToCampaignForms extends Migration
     public static function id(): string
     {
         return 'migrate_forms_to_campaign_forms';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function title(): string
+    {
+        return 'Migrate Forms to Campaigns';
     }
 
     /**
@@ -47,6 +57,20 @@ class MigrateFormsToCampaignForms extends Migration
                 throw new DatabaseMigrationException('An error occurred while creating initial campaigns', 0, $exception);
             }
         });
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function reverse(): void
+    {
+        // Delete core campaigns
+        DB::table('give_campaigns')
+            ->where('campaign_type', CampaignType::CORE)
+            ->delete();
+
+        // Truncate form relationships
+        DB::table('give_campaign_forms')->truncate();
     }
 
     /**
@@ -109,22 +133,57 @@ class MigrateFormsToCampaignForms extends Migration
     }
 
     /**
+     * @unreleased Add DISTINCT, whereNotIn and new JOIN to retrieve only the migratedFormId associated with the highest form_id
      * @since 4.0.0
      * @return array [{formId, campaignId, migratedFormId}]
      */
     protected function getUpgradedV2FormsData(): array
     {
-        $results = DB::table('posts', 'forms')
-            ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'])
-            ->attachMeta('give_formmeta', 'ID', 'form_id', 'migratedFormId')
+        $query = DB::table('posts', 'forms')->distinct()
+            ->select(['forms.ID', 'formId'], ['campaign_forms.campaign_id', 'campaignId'],
+                ['give_formmeta.migratedFormId', 'migratedFormId'])
             ->join(function (JoinQueryBuilder $builder) {
                 $builder
                     ->rightJoin('give_campaign_forms', 'campaign_forms')
                     ->on('campaign_forms.form_id', 'forms.ID');
             })
-            ->where('forms.post_type', 'give_forms')
-            ->whereIsNotNull('give_formmeta_attach_meta_migratedFormId.meta_value')
-            ->getAll();
+            ->where('forms.post_type', 'give_forms');
+
+        /**
+         * Sometimes the user starts upgrading a form but gives up and puts the migrated form in the trash. However,
+         * the migratedFormId keeps on DB, which can make this query return the same migratedFormId for multiple
+         * campaigns, so we need to use this join statement to ensure we are NOT adding the same migratedFormId
+         * for multiple campaigns, since it forces the query to retrieve only the migratedFormId associated with
+         * the highest form_id which is the last upgrade attempt.
+         *
+         * @see https://github.com/impress-org/givewp/pull/7901#issuecomment-2854905488
+         */
+        $table = DB::prefix('give_formmeta');
+        $query->joinRaw("INNER JOIN (
+                    SELECT
+                        meta_value AS migratedFormId,
+                        MAX(form_id) AS max_form_id
+                    FROM {$table}
+                    WHERE meta_key = 'migratedFormId'
+                    GROUP BY meta_value
+                ) AS give_formmeta ON forms.ID = give_formmeta.max_form_id");
+
+        /**
+         * When someone re-runs the migration, it can return a duplicated entry error if the upgraded forms were
+         * already added previously in the first time the migration was run, so this whereNotIn prevents these
+         * errors by excluding upgraded forms already added to the give_campaign_forms table previously.
+         *
+         * @see https://github.com/impress-org/givewp/pull/7901#discussion_r2073600045
+         */
+        $query->whereNotIn('give_formmeta.migratedFormId', function (QueryBuilder $builder) {
+            $builder
+                ->select('form_id')
+                ->from('give_campaign_forms')
+                ->whereRaw('WHERE form_id = give_formmeta.migratedFormId');
+        });
+
+
+        $results = $query->getAll();
 
         if (!$results) {
             return [];

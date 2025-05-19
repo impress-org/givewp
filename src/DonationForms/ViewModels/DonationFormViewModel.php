@@ -200,23 +200,21 @@ class DonationFormViewModel
     }
 
     /**
-     * @since 4.1.0  use DonationFormGoalData instead of repository
-     *
-     * @since       3.0.0
+     * @unreleased ensure totalRevenue always reflects revenue
+     * @since 4.1.0 use DonationFormGoalData instead of repository
+     * @since 3.0.0
      */
     private function formStatsData(): array
     {
         $query = $this->donationFormGoalData->getQuery();
 
         // Only form goal has range
-        if ($this->formSettings->goalSource->isForm()) {
-            if ($this->formSettings->goalProgressType->isCustom()) {
-                $query->between($this->formSettings->goalStartDate, $this->formSettings->goalEndDate);
-            }
+        if ($this->formSettings->goalSource->isForm() && $this->formSettings->goalProgressType->isCustom()) {
+            $query->between($this->formSettings->goalStartDate, $this->formSettings->goalEndDate);
         }
 
         return [
-            'totalRevenue' => $this->donationFormGoalData->getCurrentAmount(),
+            'totalRevenue' => $this->donationFormGoalData->getTotalDonationRevenue(),
             'totalCountValue' => $this->goalType()->isDonations() || $this->goalType()->isAmount()
                 ? $query->count()
                 : $this->getTotalCountValue(),
