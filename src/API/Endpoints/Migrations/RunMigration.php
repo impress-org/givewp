@@ -6,6 +6,7 @@ use Exception;
 use Give\Framework\Database\DB;
 use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Contracts\ReversibleMigration;
 use Give\Framework\Migrations\Controllers\BatchMigrationRunner;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\MigrationLog\MigrationLogFactory;
@@ -17,7 +18,7 @@ use WP_REST_Response;
  * Class RunMigration
  * @package    Give\API\Endpoints\Migrations
  *
- * @since 4.0.0 run batch migrations
+ * @since      4.0.0 run batch migrations
  * @since      2.10.0
  */
 class RunMigration extends Endpoint
@@ -105,6 +106,33 @@ class RunMigration extends Endpoint
                 ],
             ]
         );
+
+        /**
+         * @unreleased
+         */
+        register_rest_route(
+            'give-api/v2',
+            'migrations/rollback-migration',
+            [
+                [
+                    'methods' => 'POST',
+                    'callback' => [$this, 'rollbackMigration'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
+                    'args' => [
+                        'id' => [
+                            'type' => 'string',
+                            'required' => true,
+                            'validate_callback' => function ($param) {
+                                $migrationClass = $this->migrationRegister->getMigration($param);
+
+                                return is_subclass_of($migrationClass, ReversibleMigration::class);
+                            },
+                        ],
+                    ],
+                ],
+                'schema' => [$this, 'getSchema'],
+            ]
+        );
     }
 
     /**
@@ -146,9 +174,10 @@ class RunMigration extends Endpoint
             $migration = give($migrationClass);
             $migration->run();
             // Save migration status
-            $migrationLog->setStatus(MigrationLogStatus::SUCCESS);
-            $migrationLog->setError(null);
-            $migrationLog->save();
+            $migrationLog
+                ->setStatus(MigrationLogStatus::SUCCESS)
+                ->setError(null)
+                ->save();
 
             DB::commit();
 
@@ -156,9 +185,18 @@ class RunMigration extends Endpoint
         } catch (Exception $exception) {
             DB::rollback();
 
-            $migrationLog->setStatus(MigrationLogStatus::FAILED);
-            $migrationLog->setError($exception);
-            $migrationLog->save();
+            $migrationLog
+                ->setStatus(MigrationLogStatus::FAILED)
+                ->setError([
+                    'status' => __('Migration failed', 'give'),
+                    'error' => [
+                        'message' => $exception->getMessage(),
+                        'code' => $exception->getCode(),
+                        'file' => $exception->getFile(),
+                        'line' => $exception->getLine(),
+                    ],
+                ])
+                ->save();
         }
 
         return new WP_REST_Response(
@@ -231,6 +269,48 @@ class RunMigration extends Endpoint
         }
 
         return new WP_REST_Response(['status' => true]);
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function rollbackMigration(WP_REST_Request $request): WP_REST_Response
+    {
+        $migrationId = $request->get_param('id');
+        $migrationClass = $this->migrationRegister->getMigration($migrationId);
+        $migration = give($migrationClass);
+        $migrationLog = $this->migrationLogFactory->make($migrationId);
+
+        if ($migration instanceof ReversibleMigration) {
+            try {
+                $migration->reverse();
+                $migrationLog->setStatus(MigrationLogStatus::REVERSED);
+            } catch (Exception $e) {
+                $migrationLog
+                    ->setStatus(MigrationLogStatus::FAILED)
+                    ->setError([
+                        'status' => __('Rollback failed', 'give'),
+                        'error' => [
+                            'message' => $e->getMessage(),
+                            'code' => $e->getCode(),
+                            'file' => $e->getFile(),
+                            'line' => $e->getLine(),
+                        ],
+                    ]);
+
+                return new WP_REST_Response([
+                    'status' => false,
+                    'message' => $e->getMessage(),
+                ]);
+            }
+
+            $migrationLog->save();
+
+            return new WP_REST_Response(['status' => true]);
+        }
+
+        return new WP_REST_Response(['status' => false]);
     }
 
 }

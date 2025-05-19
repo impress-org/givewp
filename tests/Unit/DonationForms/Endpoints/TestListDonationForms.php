@@ -3,8 +3,10 @@
 namespace Give\Tests\Unit\DonationForms\Endpoints;
 
 use Exception;
+use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Endpoints\ListDonationForms;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Helpers\Language;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -94,15 +96,18 @@ class TestListDonationForms extends TestCase
      * @since 4.0.0 Add support to isDefaultCampaignForm key
      * @since 2.25.0
      *
-     * @param array  $donationForms
+     * @param DonationForm[]  $donationForms
      * @param string $sortDirection
      *
      * @return array
      */
     public function getMockColumns(array $donationForms, string $sortDirection = 'desc'): array
     {
-        $listTable = new DonationFormsListTable();
-        $columns = $listTable->getColumns();
+        $formsData = DonationFormDataRepository::forms($donationForms);
+
+        $columns = (new DonationFormsListTable())
+            ->setData($formsData)
+            ->getColumns();
 
         $expectedItems = [];
         foreach ( $donationForms as $donationForm ) {
