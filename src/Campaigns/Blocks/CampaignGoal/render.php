@@ -17,4 +17,6 @@ if (
 
 ?>
 
-<div data-givewp-campaign-goal data-id="<?= $campaign->id; ?>"></div>
+<div <?= get_block_wrapper_attributes() ?>>
+    <div data-givewp-campaign-goal data-id="<?= $campaign->id ?>"></div>
+</div>

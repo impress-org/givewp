@@ -5,12 +5,14 @@ namespace Give\Tests\Unit\PaymentGateways\Stripe;
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * Class ApplicationFeeTest
  */
 final class ApplicationFeeTest extends TestCase
 {
+    use RefreshDatabase;
 
     /**
      * @var AccountDetailRepository
@@ -22,7 +24,7 @@ final class ApplicationFeeTest extends TestCase
      */
     private $gate;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -66,7 +68,7 @@ final class ApplicationFeeTest extends TestCase
         );
     }
 
-    public function testCanAddFee()
+    public function testCanAddFeeIfMerchantCountryIsUS()
     {
         give()->singleton(ApplicationFee::class, function () {
             return new ApplicationFee($this->repository->getAccountDetail('account_2'));
@@ -77,7 +79,7 @@ final class ApplicationFeeTest extends TestCase
         );
     }
 
-    public function testCanNotAddFee()
+    public function testCanNotAddFeeIfMerchantCountryIsBR()
     {
         give()->singleton(ApplicationFee::class, function () {
             return new ApplicationFee($this->repository->getAccountDetail('account_1'));
@@ -85,106 +87,6 @@ final class ApplicationFeeTest extends TestCase
 
         $this->assertFalse(
             ApplicationFee::canAddFee()
-        );
-    }
-
-    /**
-     * @note Run this test first, before GIVE_STRIPE_VERSION is defined in the next test.
-     */
-    public function testNotIsStripeProAddonActive()
-    {
-        $this->assertFalse(
-            $this->gate->isStripeProAddonActive()
-        );
-    }
-
-    public function testIsStripeProAddonActive()
-    {
-        // Mock the Give Stripe Add-on being active.
-        define('GIVE_STRIPE_VERSION', '1.2.3');
-
-        $this->assertTrue(
-            $this->gate->isStripeProAddonActive()
-        );
-    }
-
-    public function testIsStripeProAddonInstalled()
-    {
-        // Mock Stripe Add-on installed.
-        $plugins = [
-            ['Name' => 'Give - Stripe Gateway'],
-        ];
-
-        $this->assertTrue(
-            $this->gate->isStripeProAddonInstalled($plugins)
-        );
-    }
-
-    public function testNotIsStripeProAddonInstalled()
-    {
-        // Mock no add-ons installed.
-        $plugins = [];
-
-        $this->assertFalse(
-            $this->gate->isStripeProAddonInstalled($plugins)
-        );
-    }
-
-    public function testHasLicense()
-    {
-        // Mock licensing with Stripe Add-on.
-        update_option(
-            'give_licenses',
-            [
-                [
-                    'is_all_access_pass' => false,
-                    'plugin_slug' => 'give-stripe',
-                ],
-            ]
-        );
-
-        $this->assertTrue(
-            $this->gate->hasLicense()
-        );
-    }
-
-    public function testNotHasLicense()
-    {
-        // Mock licensing without Stripe Add-on.
-        update_option(
-            'give_licenses',
-            [
-                [
-                    'is_all_access_pass' => false,
-                    'plugin_slug' => 'not-stripe-addon',
-                ],
-            ]
-        );
-
-        $this->assertFalse(
-            $this->gate->hasLicense()
-        );
-    }
-
-    public function testHasLicenseAllAccessPass()
-    {
-        // Mock licensing with All Access pass.
-        update_option(
-            'give_licenses',
-            [
-                [
-                    'is_all_access_pass' => true,
-                    'download' => [
-                        [
-                            'plugin_slug' => 'give-stripe',
-                        ],
-                    ],
-                ],
-            ]
-        );
-
-        $this->assertTrue(
-            $this->gate->hasLicense()
         );
     }
 

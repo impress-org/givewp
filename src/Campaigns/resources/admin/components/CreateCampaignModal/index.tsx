@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import styles from './CreateCampaignModal.module.scss';
 import CampaignFormModal from '../CampaignFormModal';
@@ -7,7 +6,7 @@ import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 /**
  * Create Campaign Modal component
  *
- * @unreleased
+ * @since 4.0.0
  */
 export default function CreateCampaignModal({isOpen, setOpen}) {
 

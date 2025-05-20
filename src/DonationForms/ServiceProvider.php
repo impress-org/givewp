@@ -3,10 +3,12 @@
 namespace Give\DonationForms;
 
 use Exception;
+use Give\DonationForms\OrphanedForms\Actions\Assets as OrphanedFormsAssets;
 use Give\DonationForms\Actions\AddHoneyPotFieldToDonationForms;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\PrintFormMetaTags;
+use Give\DonationForms\Actions\RegisterFormEntity;
 use Give\DonationForms\Actions\ReplaceGiveReceiptShortcodeViewWithDonationConfirmationIframe;
 use Give\DonationForms\Actions\SanitizeDonationFormPreviewRequest;
 use Give\DonationForms\Actions\StoreBackwardsCompatibleFormMeta;
@@ -33,6 +35,7 @@ use Give\DonationForms\Migrations\UpdateDonationLevelsSchema;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
+use Give\DonationForms\Routes\DonationFormsEntityRoute;
 use Give\DonationForms\Routes\ValidationRoute;
 use Give\DonationForms\Shortcodes\GiveFormShortcode;
 use Give\DonationForms\V2\ListTable\Columns\DonationCountColumn;
@@ -100,6 +103,13 @@ class ServiceProvider implements ServiceProviderInterface
         ]);
 
         /**
+         * @since 4.2.0
+         */
+        Hooks::addAction('init', RegisterFormEntity::class);
+        Hooks::addAction('rest_api_init', DonationFormsEntityRoute::class);
+        Hooks::addAction('admin_init', OrphanedFormsAssets::class);
+
+        /**
          * @since 3.16.0
          * Print form meta tags
          */
@@ -109,6 +119,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since 4.1.0 Add support to campaign details page (the "Forms" tab)
      * @since 3.15.0
      */
     private function registerAsyncData()
@@ -122,19 +133,8 @@ class ServiceProvider implements ServiceProviderInterface
             }
         });
 
-        // Load assets on the admin form list pages
-        $isLegacyAdminFormListPage = isset($_GET['post_type']) && 'give_forms' === $_GET['post_type'] && ! isset($_GET['page']);
-        $isAdminFormListPage = isset($_GET['page']) && 'give-forms' === $_GET['page'];
-        if ($isLegacyAdminFormListPage || $isAdminFormListPage) {
-            Hooks::addAction('admin_enqueue_scripts', LoadAsyncDataAssets::class);
-        }
-
         // Load assets on the WordPress Block Editor - Gutenberg
         Hooks::addAction('enqueue_block_editor_assets', LoadAsyncDataAssets::class);
-
-        // Async ajax request
-        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
-        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
 
         // Filter from give_goal_progress_stats() function which is used by the admin form list views and form grid view
         Hooks::addFilter('give_goal_progress_stats', GiveGoalProgressStats::class,
@@ -159,66 +159,12 @@ class ServiceProvider implements ServiceProviderInterface
                 });
             }
         });
+
+        Hooks::addAction('wp_ajax_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
+        Hooks::addAction('wp_ajax_nopriv_givewp_get_form_async_data_for_list_view', GetAsyncFormDataForListView::class);
+
         Hooks::addFilter('give_form_grid_progress_bar_amount_raised_value', FormGridView::class, 'maybeSetProgressBarAmountRaisedAsync',10,2);
         Hooks::addFilter('give_form_grid_progress_bar_donations_count_value', FormGridView::class, 'maybeSetProgressBarDonationsCountAsync',10,2);
-
-        // Legacy Admin Form List View Columns
-        Hooks::addFilter('give_admin_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
-        add_action(
-            'give_admin_form_list_view_donations_goal_column_before',
-            function () {
-                $usePlaceholder = give(AdminFormListView::class)->maybeUsePlaceholderOnGoalAmountRaised();
-
-                if ($usePlaceholder) {
-                    //Enable placeholder on the give_goal_progress_stats() function
-                    add_filter('give_goal_progress_stats', function ($stats) {
-                        $stats['actual'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
-
-                        return $stats;
-                    });
-                }
-            },
-            10,
-            2
-        );
-        Hooks::addFilter('give_admin_form_list_view_donations_count_column_value', AdminFormListView::class, 'maybeSetDonationsColumnAsync',10,2);
-        Hooks::addFilter('give_admin_form_list_view_revenue_column_value', AdminFormListView::class, 'maybeSetRevenueColumnAsync',10,2);
-
-        // Admin Form List View Columns
-        Hooks::addFilter('givewp_list_table_goal_progress_achieved_opacity', AdminFormListView::class, 'maybeChangeAchievedIconOpacity');
-        add_action(
-            sprintf("givewp_list_table_cell_value_%s_before", GoalColumn::getId()),
-            function () {
-                $usePlaceholder = give(AdminFormListView::class)->maybeUsePlaceholderOnGoalAmountRaised();
-
-                if ($usePlaceholder) {
-                    //Enable placeholder on the give_goal_progress_stats() function
-                    add_filter('give_goal_progress_stats', function ($stats) {
-                        $stats['actual'] = AsyncDataHelpers::getSkeletonPlaceholder('1rem');
-
-                        return $stats;
-                    });
-                }
-            },
-            10,
-            2
-        );
-        add_filter(
-            sprintf("givewp_list_table_cell_value_%s_content", DonationCountColumn::getId()),
-            function ($value, DonationForm $form){
-                return give(AdminFormListView::class)->maybeSetDonationsColumnAsync($value, $form->id);
-            },
-            10,
-            2
-        );
-        add_filter(
-            sprintf("givewp_list_table_cell_value_%s_content", DonationRevenueColumn::getId()),
-            function ($value, DonationForm $form){
-                return give(AdminFormListView::class)->maybeSetRevenueColumnAsync($value, $form->id);
-            },
-            10,
-            2
-        );
     }
 
     /**
@@ -404,7 +350,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerReceiptViewPermission()
     {

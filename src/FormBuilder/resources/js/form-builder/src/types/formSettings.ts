@@ -2,6 +2,7 @@ import {FormStatus} from '@givewp/form-builder/types/formStatus';
 import {EmailTemplateOption} from '@givewp/form-builder/types/emailTemplateOption';
 
 /**
+ * @since 4.1.0 Added goalSource, Added inheritCampaignColors
  * @since 3.16.0 Added enableReceiptConfirmationPage
  * @since 3.7.0 Added formExcerpt
  * @since 3.0.0
@@ -15,6 +16,7 @@ export type FormSettings = {
     enableAutoClose: boolean;
     goalAchievedMessage: string;
     registrationNotification: boolean;
+    goalSource: string;
     goalType: string;
     goalProgressType: string;
     goalStartDate: string;
@@ -23,6 +25,7 @@ export type FormSettings = {
     designId: string;
     heading: string;
     description: string;
+    inheritCampaignColors: boolean;
     primaryColor: string;
     secondaryColor: string;
     customCss: string;

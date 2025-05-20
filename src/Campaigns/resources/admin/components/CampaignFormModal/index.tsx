@@ -25,7 +25,7 @@ const currencyFormatter = amountFormatter(currency);
 /**
  * Get the next sharp hour
  *
- * @unreleased
+ * @since 4.0.0
  */
 const getNextSharpHour = (hoursToAdd: number) => {
     const date = new Date();
@@ -37,7 +37,7 @@ const getNextSharpHour = (hoursToAdd: number) => {
 /**
  * Format a given date to be used in datetime inputs
  *
- * @unreleased
+ * @since 4.0.0
  */
 const getDateString = (date: Date) => {
     const offsetInMilliseconds = date.getTimezoneOffset() * 60 * 1000;
@@ -49,14 +49,14 @@ const getDateString = (date: Date) => {
 /**
  * Remove timezone from date string
  *
- * @unreleased
+ * @since 4.0.0
  */
 const removeTimezoneFromDateISOString = (date: string) => {
     return date.slice(0, -5);
 };
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const getGoalTypeIcon = (type: string) => {
     switch (type) {
@@ -78,7 +78,7 @@ const getGoalTypeIcon = (type: string) => {
 /**
  * Goal Type Option component
  *
- * @unreleased
+ * @since 4.0.0
  */
 const GoalTypeOption = ({type, label, description, selected, register}: GoalTypeOptionType) => {
     const divRef = useRef(null);
@@ -109,7 +109,7 @@ const GoalTypeOption = ({type, label, description, selected, register}: GoalType
 /**
  * Campaign Form Modal component
  *
- * @unreleased
+ * @since 4.0.0
  */
 export default function CampaignFormModal({isOpen, handleClose, apiSettings, title, campaign}: CampaignModalProps) {
     const API = new CampaignsApi(apiSettings);

@@ -1,7 +1,7 @@
 import type {PayPalCommerceGateway} from '../../types';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default async function createSubscriptionPlan(url: string, gateway: PayPalCommerceGateway, formData: FormData) {
     const response = await fetch(url, {

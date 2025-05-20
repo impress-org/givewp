@@ -3,14 +3,15 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class RegisterCampaignBlocks
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke()
     {
@@ -22,41 +23,48 @@ class RegisterCampaignBlocks
     }
 
     /**
-     * @unreleased
+     * @unreleased set script translations
+     * @since 4.0.0
      */
     public function loadBlockEditorAssets(): void
     {
+        $handleName = 'givewp-campaign-blocks';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocks.asset.php');
 
         wp_register_script(
-            'givewp-campaign-blocks',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignBlocks.js',
             $scriptAsset['dependencies'],
             $scriptAsset['version'],
             true
         );
+        wp_enqueue_script($handleName);
 
-        wp_enqueue_script('givewp-campaign-blocks');
+        Language::setScriptTranslations($handleName);
+
         wp_enqueue_style(
-            'givewp-campaign-blocks',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignBlocks.css',
             ['wp-components'],
             $scriptAsset['version']
         );
 
+        $handleName = 'givewp-campaign-landing-page-blocks';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignBlocksLandingPage.asset.php');
 
         wp_register_script(
-            'givewp-campaign-landing-page-blocks',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignBlocksLandingPage.js',
             $scriptAsset['dependencies'],
             $scriptAsset['version'],
             true
         );
+        wp_enqueue_script($handleName);
 
-        wp_enqueue_script('givewp-campaign-landing-page-blocks');
+        Language::setScriptTranslations($handleName);
+
         wp_enqueue_style(
-            'givewp-campaign-landing-page-blocks',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignBlocksLandingPage.css',
             ['wp-components'],
             $scriptAsset['version']
@@ -64,7 +72,7 @@ class RegisterCampaignBlocks
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     private function registerSharedStyles(): void
     {

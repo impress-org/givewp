@@ -43,7 +43,9 @@ export default class ListTableApi {
             headers: this.headers,
         }).then((res) => {
             if (!res.ok) {
-                throw new Error();
+                return res.text().then((errorMessage) => {
+                    throw new Error(errorMessage);
+                });
             }
             return res.json();
         });

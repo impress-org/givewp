@@ -2,7 +2,7 @@ import DonationFormsListTable from '../../../../../../DonationForms/V2/resources
 import {useCampaignEntityRecord} from '@givewp/campaigns/utils';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function CampaignDetailsFormsTab() {
     const entity = useCampaignEntityRecord();

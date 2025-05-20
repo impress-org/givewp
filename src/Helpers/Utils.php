@@ -30,6 +30,7 @@ class Utils
     /**
      * This function will change request url with other url.
      *
+     * @since 4.2.0 Replace URL anchor with request_anchor argument
      * @since 2.7.0
      *
      * @param string $location Requested URL.
@@ -41,31 +42,38 @@ class Utils
      */
     public static function switchRequestedURL($location, $url, $addArgs = [], $removeArgs = [])
     {
+        $urlAnchor = '';
+
+        if (strpos($url, '#') !== false) {
+            [$url, $urlAnchor] = explode('#', $url, 2);
+        }
+
         $queryString = [];
 
-        if ($index = strpos($location, '?')) {
-            $queryString = wp_parse_args(substr($location, strpos($location, '?') + 1));
+        if (($index = strpos($location, '?')) !== false) {
+            $queryString = wp_parse_args(substr($location, $index + 1));
         }
 
-        if ($index = strpos($url, '?')) {
-            $queryString = array_merge($queryString, wp_parse_args(substr($url, strpos($url, '?') + 1)));
+        if (($index = strpos($url, '?')) !== false) {
+            $queryString = array_merge(
+                $queryString,
+                wp_parse_args(substr($url, $index + 1))
+            );
+            $url = substr($url, 0, $index);
         }
 
-        $url = add_query_arg(
-            $queryString,
-            $url
-        );
+        $url = add_query_arg($queryString, $url);
 
-        if ($removeArgs) {
-            foreach ($removeArgs as $name) {
-                $url = add_query_arg([$name => false], $url);
-            }
+        foreach ((array) $removeArgs as $name) {
+            $url = add_query_arg([$name => false], $url);
         }
 
-        if ($addArgs) {
-            foreach ($addArgs as $name => $value) {
-                $url = add_query_arg([$name => $value], $url);
-            }
+        foreach ((array) $addArgs as $name => $value) {
+            $url = add_query_arg([$name => $value], $url);
+        }
+
+        if (!empty($urlAnchor)) {
+            $url = add_query_arg('request_anchor', $urlAnchor, $url);
         }
 
         return esc_url_raw($url);

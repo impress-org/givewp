@@ -3,6 +3,11 @@
 namespace Give\API\Endpoints\Migrations;
 
 use Exception;
+use Give\Framework\Database\DB;
+use Give\Framework\Migrations\Contracts\BatchMigration;
+use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Contracts\ReversibleMigration;
+use Give\Framework\Migrations\Controllers\BatchMigrationRunner;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\MigrationLog\MigrationLogFactory;
 use Give\MigrationLog\MigrationLogStatus;
@@ -11,16 +16,13 @@ use WP_REST_Response;
 
 /**
  * Class RunMigration
- * @package Give\API\Endpoints\Migrations
+ * @package    Give\API\Endpoints\Migrations
  *
- * @since 2.10.0
+ * @since      4.0.0 run batch migrations
+ * @since      2.10.0
  */
 class RunMigration extends Endpoint
 {
-
-    /** @var string */
-    protected $endpoint = 'migrations/run-migration';
-
     /**
      * @var MigrationsRegister
      */
@@ -34,7 +36,7 @@ class RunMigration extends Endpoint
     /**
      * RunMigration constructor.
      *
-     * @param MigrationsRegister $migrationsRegister
+     * @param MigrationsRegister  $migrationsRegister
      * @param MigrationLogFactory $migrationLogFactory
      */
     public function __construct(
@@ -52,16 +54,78 @@ class RunMigration extends Endpoint
     {
         register_rest_route(
             'give-api/v2',
-            $this->endpoint,
+            'migrations/run-migration',
             [
                 [
                     'methods' => 'POST',
-                    'callback' => [$this, 'handleRequest'],
+                    'callback' => [$this, 'runMigration'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                     'args' => [
                         'id' => [
+                            'type' => 'string',
+                            'required' => true,
+                        ],
+                    ],
+                ],
+                'schema' => [$this, 'getSchema'],
+            ]
+        );
+
+        register_rest_route(
+            'give-api/v2',
+            'migrations/run-batch-migration',
+            [
+                [
+                    'methods' => 'POST',
+                    'callback' => [$this, 'runBatchMigration'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
+                    'args' => [
+                        'id' => [
+                            'type' => 'string',
+                            'required' => true,
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        register_rest_route(
+            'give-api/v2',
+            'migrations/reschedule-failed-actions',
+            [
+                [
+                    'methods' => 'POST',
+                    'callback' => [$this, 'rescheduleFailedActions'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
+                    'args' => [
+                        'id' => [
+                            'type' => 'string',
+                            'required' => true,
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        /**
+         * @unreleased
+         */
+        register_rest_route(
+            'give-api/v2',
+            'migrations/rollback-migration',
+            [
+                [
+                    'methods' => 'POST',
+                    'callback' => [$this, 'rollbackMigration'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
+                    'args' => [
+                        'id' => [
+                            'type' => 'string',
+                            'required' => true,
                             'validate_callback' => function ($param) {
-                                return ! empty(trim($param));
+                                $migrationClass = $this->migrationRegister->getMigration($param);
+
+                                return is_subclass_of($migrationClass, ReversibleMigration::class);
                             },
                         ],
                     ],
@@ -94,33 +158,45 @@ class RunMigration extends Endpoint
      *
      * @return WP_REST_Response
      */
-    public function handleRequest(WP_REST_Request $request)
+    public function runMigration(WP_REST_Request $request): WP_REST_Response
     {
-        global $wpdb;
         $migrationId = $request->get_param('id');
         $migrationLog = $this->migrationLogFactory->make($migrationId);
 
         // Begin transaction
-        $wpdb->query('START TRANSACTION');
+        DB::beginTransaction();
 
         try {
             $migrationClass = $this->migrationRegister->getMigration($migrationId);
+            /**
+             * @var Migration $migration
+             */
             $migration = give($migrationClass);
             $migration->run();
             // Save migration status
-            $migrationLog->setStatus(MigrationLogStatus::SUCCESS);
-            $migrationLog->setError(null);
-            $migrationLog->save();
+            $migrationLog
+                ->setStatus(MigrationLogStatus::SUCCESS)
+                ->setError(null)
+                ->save();
 
-            $wpdb->query('COMMIT');
+            DB::commit();
 
             return new WP_REST_Response(['status' => true]);
         } catch (Exception $exception) {
-            $wpdb->query('ROLLBACK');
+            DB::rollback();
 
-            $migrationLog->setStatus(MigrationLogStatus::FAILED);
-            $migrationLog->setError($exception);
-            $migrationLog->save();
+            $migrationLog
+                ->setStatus(MigrationLogStatus::FAILED)
+                ->setError([
+                    'status' => __('Migration failed', 'give'),
+                    'error' => [
+                        'message' => $exception->getMessage(),
+                        'code' => $exception->getCode(),
+                        'file' => $exception->getFile(),
+                        'line' => $exception->getLine(),
+                    ],
+                ])
+                ->save();
         }
 
         return new WP_REST_Response(
@@ -129,6 +205,112 @@ class RunMigration extends Endpoint
                 'message' => $exception->getMessage(),
             ]
         );
+    }
+
+
+    /**
+     * Run batch migration
+     *
+     * @since 4.0.0
+     */
+    public function runBatchMigration(WP_REST_Request $request): WP_REST_Response
+    {
+        $migrationId = $request->get_param('id');
+        $migrationClass = $this->migrationRegister->getMigration($migrationId);
+
+        if ( ! is_subclass_of($migrationClass, BatchMigration::class)) {
+            return new WP_REST_Response([
+                'status' => false,
+                'message' => 'Migration is not an instance of ' . BatchMigration::class,
+            ]);
+        }
+
+        try {
+            // We are not running migration directly,
+            // we just have to set migration status to PENDING and Migration Runner will handle it
+            $migrationLog = $this->migrationLogFactory->make($migrationId);
+            $migrationLog->setStatus(MigrationLogStatus::PENDING);
+            $migrationLog->save();
+        } catch (Exception $e) {
+            return new WP_REST_Response([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        return new WP_REST_Response(['status' => true]);
+    }
+
+    /**
+     * Reschedule failed actions
+     *
+     * @since 4.0.0
+     */
+    public function rescheduleFailedActions(WP_REST_Request $request): WP_REST_Response
+    {
+        $migrationId = $request->get_param('id');
+        $migrationClass = $this->migrationRegister->getMigration($migrationId);
+        $migration = give($migrationClass);
+
+        if ( ! is_subclass_of($migration, BatchMigration::class)) {
+            return new WP_REST_Response([
+                'status' => false,
+                'message' => 'Migration is not an instance of ' . BatchMigration::class,
+            ]);
+        }
+
+        try {
+            (new BatchMigrationRunner($migration))->rescheduleFailedActions();
+        } catch (Exception $e) {
+            return new WP_REST_Response([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
+
+        return new WP_REST_Response(['status' => true]);
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function rollbackMigration(WP_REST_Request $request): WP_REST_Response
+    {
+        $migrationId = $request->get_param('id');
+        $migrationClass = $this->migrationRegister->getMigration($migrationId);
+        $migration = give($migrationClass);
+        $migrationLog = $this->migrationLogFactory->make($migrationId);
+
+        if ($migration instanceof ReversibleMigration) {
+            try {
+                $migration->reverse();
+                $migrationLog->setStatus(MigrationLogStatus::REVERSED);
+            } catch (Exception $e) {
+                $migrationLog
+                    ->setStatus(MigrationLogStatus::FAILED)
+                    ->setError([
+                        'status' => __('Rollback failed', 'give'),
+                        'error' => [
+                            'message' => $e->getMessage(),
+                            'code' => $e->getCode(),
+                            'file' => $e->getFile(),
+                            'line' => $e->getLine(),
+                        ],
+                    ]);
+
+                return new WP_REST_Response([
+                    'status' => false,
+                    'message' => $e->getMessage(),
+                ]);
+            }
+
+            $migrationLog->save();
+
+            return new WP_REST_Response(['status' => true]);
+        }
+
+        return new WP_REST_Response(['status' => false]);
     }
 
 }

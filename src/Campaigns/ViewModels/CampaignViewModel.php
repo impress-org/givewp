@@ -3,12 +3,13 @@
 namespace Give\Campaigns\ViewModels;
 
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignViewModel
 {
@@ -18,7 +19,12 @@ class CampaignViewModel
     private $campaign;
 
     /**
-     * @unreleased
+     * @var CampaignsDataRepository|null
+     */
+    private $data;
+
+    /**
+     * @since 4.0.0
      */
     public function __construct(Campaign $campaign)
     {
@@ -26,7 +32,21 @@ class CampaignViewModel
     }
 
     /**
-     * @unreleased
+     * Set data source
+     *
+     * @param CampaignsDataRepository $data
+     *
+     * @return CampaignViewModel
+     */
+    public function setData(CampaignsDataRepository $data): CampaignViewModel
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @since 4.0.0
      */
     public function exports(): array
     {
@@ -48,7 +68,9 @@ class CampaignViewModel
             'secondaryColor' => $this->campaign->secondaryColor,
             'goal' => $this->campaign->goal,
             'goalType' => $this->campaign->goalType->getValue(),
-            'goalStats' => $this->campaign->getGoalStats(),
+            'goalStats' => is_null($this->data)
+                ? $this->campaign->getGoalStats()
+                : $this->data->getGoalData($this->campaign),
             'status' => $this->campaign->status->getValue(),
             'startDate' => Temporal::getFormattedDateTime($this->campaign->startDate),
             'endDate' => $this->campaign->endDate
@@ -59,7 +81,7 @@ class CampaignViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected function getPagePermalink(): ?string
     {

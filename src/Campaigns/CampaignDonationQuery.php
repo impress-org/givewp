@@ -9,12 +9,12 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignDonationQuery extends QueryBuilder
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function __construct(Campaign $campaign)
     {
@@ -34,7 +34,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function between(DateTimeInterface $startDate, DateTimeInterface $endDate): self
     {
@@ -50,7 +50,7 @@ class CampaignDonationQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
-     * @unreleased
+     * @since 4.0.0
      *
      * @return int|float
      */
@@ -58,7 +58,7 @@ class CampaignDonationQuery extends QueryBuilder
     {
         $query = clone $this;
         $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
-        $query->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
+        $query->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
         return $query->sum(
             /**
              * The intended amount meta and the amount meta could either be 0 or NULL.
@@ -66,12 +66,12 @@ class CampaignDonationQuery extends QueryBuilder
              * Then we coalesce the values to select the first non-NULL value.
              * @link https://github.com/impress-org/givewp/pull/7411
              */
-            'COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)'
+            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)'
         );
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function countDonations(): int
     {
@@ -80,7 +80,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function countDonors(): int
     {
@@ -90,7 +90,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getOldestDonationDate()
     {
@@ -108,16 +108,16 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getDonationsByDate($groupBy = 'DATE'): array
     {
         $query = clone $this;
 
         $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
-        $query->joinDonationMeta('_give_fee_donation_amount', 'intendedAmount');
+        $query->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
         $query->select(
-            'SUM(COALESCE(NULLIF(intendedAmount.meta_value,0), NULLIF(amount.meta_value,0), 0)) as amount'
+            'SUM(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) as amount'
         );
 
         $query->select('YEAR(donation.post_date) as year');
@@ -140,7 +140,7 @@ class CampaignDonationQuery extends QueryBuilder
 
     /**
      * An opinionated join method for the donation meta table.
-     * @unreleased
+     * @since 4.0.0
      */
     public function joinDonationMeta($key, $alias): self
     {

@@ -43,6 +43,9 @@
         }
 
         &-header-title-text {
+            font-size: 1rem;
+            line-height: 24px;
+            margin: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -64,7 +67,7 @@
             cursor: pointer;
 
             &:focus {
-                box-shadow: none;
+                box-shadow: inset 0 0 0 2px var(--givewp-primary-color);
             }
         }
 

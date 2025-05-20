@@ -1,3 +1,5 @@
+@use '../variables';
+
 .givewp-fields-gateways {
     &__list {
         display: flex;
@@ -62,6 +64,10 @@
 
         &--active &__fields {
             display: block;
+
+            @media screen and (max-width: variables.$givewp-breakpoint-sm) {
+                padding: var(--givewp-spacing-4);
+            }
         }
 
         &--empty {

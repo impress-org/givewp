@@ -84,6 +84,15 @@
         }
     }
 
+    .type-info {
+        border-color: #0c7ff2;
+        background-color: #f2f9ff;
+
+        svg > path {
+            fill: #0c7ff2;
+        }
+    }
+
     // Note: other notification types styles are not defined. You can define them below
 }
 

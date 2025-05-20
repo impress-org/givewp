@@ -4,6 +4,7 @@ namespace Give\DonationForms\Factories;
 
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Models\Factories\ModelFactory;
@@ -11,6 +12,7 @@ use Give\Framework\Models\Factories\ModelFactory;
 class DonationFormFactory extends ModelFactory
 {
     /**
+     * @since 4.1.0 added goalSource
      * @since 3.0.0
      */
     public function definition(): array
@@ -28,6 +30,7 @@ class DonationFormFactory extends ModelFactory
                 'enableAutoClose' => false,
                 'registration' => 'none',
                 'goalType' => GoalType::AMOUNT(),
+                'goalSource' => GoalSource::FORM(),
                 'designId' => 'classic',
                 'showHeading' => true,
                 'showDescription' => true,

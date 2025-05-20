@@ -15,19 +15,19 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignPageRepository
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     protected $requiredProperties = [
         'campaignId',
     ];
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getById(int $id): ?CampaignPage
     {
@@ -37,7 +37,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function queryByCampaignId(int $campaignId): ModelQueryBuilder
     {
@@ -46,7 +46,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function findByCampaignId(int $campaignId): ?CampaignPage
     {
@@ -54,7 +54,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function insert(CampaignPage $campaignPage): void
@@ -84,7 +84,7 @@ class CampaignPageRepository
                 'post_modified' => $dateUpdatedFormatted,
                 'post_status' => $status->getValue(),
                 'post_type' => 'page',
-                'post_content' => give(CreateDefaultLayoutForCampaignPage::class)(
+                'post_content' => $campaignPage->content ?? give(CreateDefaultLayoutForCampaignPage::class)(
                     $campaign->id,
                     $campaign->shortDescription
                 ),
@@ -117,7 +117,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function update(CampaignPage $campaignPage): void
@@ -139,6 +139,7 @@ class CampaignPageRepository
                     'post_modified' => $nowFormatted,
                     'post_modified_gmt' => get_gmt_from_date($nowFormatted),
                     'post_status' => $status->getValue(),
+                    'post_content' => $campaignPage->content,
                 ]);
 
             $campaignPage->updatedAt = $now;
@@ -159,7 +160,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      * @throws Exception
      */
     public function delete(CampaignPage $campaignPage): bool
@@ -192,7 +193,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<CampaignPage>
      */
@@ -205,7 +206,8 @@ class CampaignPageRepository
                 ['ID', 'id'],
                 ['post_date', 'createdAt'],
                 ['post_modified', 'updatedAt'],
-                ['post_status', 'status']
+                ['post_status', 'status'],
+                ['post_content', 'content']
             )
             ->attachMeta(
                 'postmeta',
@@ -216,7 +218,7 @@ class CampaignPageRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function validate(CampaignPage $campaignPage)
     {

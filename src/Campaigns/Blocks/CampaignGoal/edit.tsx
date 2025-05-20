@@ -9,7 +9,7 @@ import CampaignSelector from '../shared/components/CampaignSelector';
 import {getGoalDescription} from './utils';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function Edit({attributes, setAttributes}: BlockEditProps<{
     campaignId: number;

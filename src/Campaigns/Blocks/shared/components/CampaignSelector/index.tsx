@@ -12,21 +12,18 @@ type CampaignSelectorProps = {
     showInspectorControl?: boolean;
 }
 
-export default ({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = true}: CampaignSelectorProps) => {
+export default function CampaignSelector({campaignId, handleSelect, children, inspectorControls = null, showInspectorControl = true}: CampaignSelectorProps){
     const [id] = useEntityProp('postType', 'page', 'campaignId');
+    const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
 
     // set campaign id from context
     useEffect(() => {
-        if (campaignId) {
-            return;
-        }
-
-        if (id) {
+        // if campaign page ID changes, update the campaign ID in block attributes
+        // or default the campaignId in the block attributes to the campaign page ID
+        if (id && campaignId !== id) {
             handleSelect(id);
         }
-    }, []);
-
-    const {campaigns, hasResolved} = useCampaigns({status: ['active', 'draft']});
+    }, [id]);
 
     return (
         <>
@@ -38,7 +35,7 @@ export default ({campaignId, handleSelect, children, inspectorControls = null, s
                 />
             )}
 
-            {showInspectorControl && (
+            {!id && showInspectorControl && (
                 <Inspector
                     campaignId={campaignId}
                     campaigns={campaigns}

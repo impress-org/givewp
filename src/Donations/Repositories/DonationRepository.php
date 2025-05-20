@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Repositories;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -10,8 +11,11 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Receipts\DonationReceipt;
+use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
@@ -166,7 +170,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getByReceiptId(string $receiptId): ?Donation
     {
@@ -174,7 +178,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function queryByReceiptId(string $receiptId): ModelQueryBuilder
     {
@@ -344,7 +348,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased added campaignId
+     * @since 4.0.0 added campaignId
      * @since 3.9.0 Added meta for phone property
      * @since 3.2.0 added meta for honorific property
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate
@@ -602,5 +606,15 @@ class DonationRepository
             ->limit(1)
             ->orderBy('post_date', 'DESC')
             ->get();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getConfirmationPageReceipt(Donation $donation): DonationReceipt
+    {
+        $receipt = new DonationReceipt($donation);
+
+        return (new DonationReceiptBuilder($receipt))->toConfirmationPage();
     }
 }

@@ -3,9 +3,10 @@
 namespace Give\Tests\Feature\Controllers;
 
 use Exception;
+use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Controllers\CampaignRequestController;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ValueObjects\CampaignRoute;
+use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ViewModels\CampaignViewModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -15,14 +16,14 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignsRequestControllerTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -44,7 +45,51 @@ class CampaignsRequestControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
+     *
+     * @throws Exception
+     */
+    public function testShowShouldReturnCampaignsData()
+    {
+        $campaign = Campaign::factory()->create();
+        $campaign2 = Campaign::factory()->create();
+        $campaignViewModel = new CampaignViewModel($campaign);
+        $campaignViewModel2 = new CampaignViewModel($campaign2);
+
+        $request = $this->getMockRequest(WP_REST_Server::READABLE);
+        $request->set_param('status', [CampaignStatus::ACTIVE]);
+        $request->set_param('per_page', 30);
+        $request->set_param('page', 1);
+
+        $response = (new CampaignRequestController())->getCampaigns($request);
+
+        $this->assertInstanceOf(WP_REST_Response::class, $response);
+        $this->assertSame(
+            $response->data,
+            [$campaignViewModel->exports(), $campaignViewModel2->exports()]
+        );
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @throws Exception
+     */
+    public function testShowShouldNotReturnCampaignsDataWhenEmpty()
+    {
+        $request = $this->getMockRequest(WP_REST_Server::READABLE);
+        $request->set_param('status', [CampaignStatus::ACTIVE]);
+        $request->set_param('per_page', 30);
+        $request->set_param('page', 1);
+
+        $response = (new CampaignRequestController())->getCampaigns($request);
+
+        $this->assertInstanceOf(WP_REST_Response::class, $response);
+        $this->assertEmpty($response->data);
+    }
+
+    /**
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -69,7 +114,7 @@ class CampaignsRequestControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @throws Exception
      */
@@ -85,7 +130,7 @@ class CampaignsRequestControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function testShowShouldFailIfCampaignDoesNotExist()
     {
@@ -101,7 +146,7 @@ class CampaignsRequestControllerTest extends TestCase
 
     /**
      *
-     * @unreleased
+     * @since 4.0.0
      */
     public function getMockRequest(string $method): WP_REST_Request
     {

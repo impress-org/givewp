@@ -14,39 +14,6 @@ let stripePromise = null;
 let stripePaymentMethod = null;
 let stripePaymentMethodIsCreditCard = false;
 
-// @see https://stripe.com/docs/currencies#zero-decimal
-const zeroDecimalCurrencies = [
-    'BIF',
-    'CLP',
-    'DJF',
-    'GNF',
-    'JPY',
-    'KMF',
-    'KRW',
-    'MGA',
-    'PYG',
-    'RWF',
-    'UGX',
-    'VND',
-    'VUV',
-    'XAF',
-    'XOF',
-    'XPF',
-];
-
-/**
- * Takes in an amount value in dollar units and returns the calculated cents amount
- *
- * @since 3.0.0
- */
-const dollarsToCents = (amount: string, currency: string) => {
-    if (zeroDecimalCurrencies.includes(currency)) {
-        return Math.round(parseFloat(amount));
-    }
-
-    return Math.round(parseFloat(amount) * 100);
-};
-
 const StripeFields = ({gateway}) => {
     const stripe = useStripe();
     const elements = useElements();
@@ -91,6 +58,7 @@ interface StripeGateway extends Gateway {
 }
 
 /**
+ * @since 4.2.0 Replace useWatch with useFormData
  * @since 3.18.0 added fields conditional when donation amount is zero
  * @since 3.13.0 Use only stripeKey to load the Stripe script (when stripeConnectedAccountId is missing) to prevent errors when the account is connected through API keys
  * @since 3.12.1 updated afterCreatePayment response type to include billing details address
@@ -200,20 +168,16 @@ const stripePaymentElementGateway: StripeGateway = {
             throw new Error('Stripe library was not able to load.  Check your Stripe settings.');
         }
 
-        const {useWatch} = window.givewp.form.hooks;
-        const donationType = useWatch({name: 'donationType'});
-        const donationCurrency = useWatch({name: 'currency'});
-        const donationAmount = useWatch({name: 'amount'});
-        const stripeAmount = dollarsToCents(donationAmount, donationCurrency.toString().toUpperCase());
+        const {isRecurring, currency, amountInMinorUnits: stripeAmount} = window.givewp.form.hooks.useFormData();
 
         const stripeElementOptions: StripeElementsOptionsMode = {
-            mode: donationType === 'subscription' ? 'subscription' : 'payment',
+            mode: isRecurring ? 'subscription' : 'payment',
             amount: stripeAmount,
-            currency: donationCurrency.toLowerCase(),
+            currency: currency.toLowerCase(),
             appearance: appearanceOptions,
         };
 
-        if (donationAmount <= 0) {
+        if (stripeAmount <= 0) {
             return <>{__('Donation amount must be greater than zero to proceed.', 'give')}</>;
         }
 

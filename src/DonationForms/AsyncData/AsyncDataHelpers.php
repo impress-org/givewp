@@ -2,7 +2,8 @@
 
 namespace Give\DonationForms\AsyncData;
 
-use Give\DonationForms\DonationQuery;
+use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
 
 /**
@@ -19,11 +20,16 @@ class AsyncDataHelpers
     }
 
     /**
+     * @since 4.2.0 return float value
      * @since 3.16.0
      */
-    public static function getFormRevenueValue($formId): int
+    public static function getFormRevenueValue($formId): float
     {
-        return (new DonationQuery())->form($formId)->sumIntendedAmount();
+        $donationForm = DonationForm::find($formId);
+        $form = $donationForm->toV3Form();
+        $goalData = new DonationFormGoalData($form->id, $form->settings);
+
+        return $goalData->getCurrentAmount();
     }
 
     /**

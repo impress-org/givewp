@@ -6,11 +6,12 @@ import {CampaignDetailsTab} from '../types';
 import styles from '../CampaignDetailsPage.module.scss';
 import tabsDefinitions from './definitions';
 import NotificationsPlaceholder from '../../Notifications';
+import CampaignDetailsErrorBoundary from '../Components/CampaignDetailsErrorBoundary';
 
 const tabs: CampaignDetailsTab[] = tabsDefinitions;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export default function CampaignDetailsTabs() {
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
@@ -63,7 +64,7 @@ export default function CampaignDetailsTabs() {
 
     return (
         <Tabs defaultSelectedKey={activeTab.id} selectedKey={activeTab.id} onSelectionChange={handleTabNavigation}>
-            <div>
+            <div className={styles.tabMenu}>
                 <TabList className={`${styles.tabs} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                     {Object.values(tabs).map((tab) => (
                         <Tab key={tab.id} id={tab.id}>
@@ -79,9 +80,11 @@ export default function CampaignDetailsTabs() {
 
             <div className={`${styles.pageContent} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                 {Object.values(tabs).map((tab) => (
-                    <TabPanel key={tab.id} id={tab.id}>
-                        <tab.content />
-                    </TabPanel>
+                    <CampaignDetailsErrorBoundary>
+                        <TabPanel key={tab.id} id={tab.id}>
+                            <tab.content />
+                        </TabPanel>
+                    </CampaignDetailsErrorBoundary>
                 ))}
             </div>
         </Tabs>

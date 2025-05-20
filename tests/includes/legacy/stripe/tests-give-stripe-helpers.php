@@ -1,10 +1,15 @@
 <?php
+
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
+
 /**
  * Unit tests for Stripe helper functions
  *
  * @since 2.5.0
  */
-class Tests_Give_Stripe_Helpers extends Give_Unit_Test_Case {
+class Tests_Give_Stripe_Helpers extends TestCase {
+    use RefreshDatabase;
 
 	/**
 	 * Unit test for function give_stripe_get_secret_key();

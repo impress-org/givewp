@@ -1,19 +1,17 @@
 <?php
 
+use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
-use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
-use Give\DonationForms\V2\Models\DonationForm;
 
 /**
  * @var array    $attributes
  * @var Campaign $campaign
  */
 
-if (!isset($attributes['campaignId']) ||
-    !($campaign = give(CampaignRepository::class)->getById($attributes['campaignId'])) ||
-    !$campaign->defaultForm() ||
-    !$campaign->defaultForm()->status->isPublished()
+if (
+    ! isset($attributes['campaignId']) ||
+    ! ($campaign = give(CampaignRepository::class)->getById($attributes['campaignId']))
 ) {
     return;
 }
@@ -22,14 +20,6 @@ $blockInlineStyles = sprintf(
     '--givewp-primary-color: %s;',
     esc_attr($campaign->primaryColor ?? '#0b72d9')
 );
-
-$params = [
-    'formId' => ($attributes['useDefaultForm'] || ! isset($attributes['selectedForm']))
-        ? $campaign->defaultFormId
-        : $attributes['selectedForm'],
-    'openFormButton' => $attributes['buttonText'],
-    'formFormat' => 'modal',
-];
 ?>
 
 <div
@@ -38,5 +28,11 @@ $params = [
     style="<?php
     echo esc_attr($blockInlineStyles); ?>">
     <?php
-    echo (new BlockRenderController())->render($params); ?>
+    echo give(RenderDonateButton::class)(
+        ($attributes['useDefaultForm'] || ! isset($attributes['selectedForm']))
+            ? $campaign->defaultFormId
+            : $attributes['selectedForm'],
+        $attributes['buttonText'] ?? __('Donate', 'give'),
+    );
+    ?>
 </div>

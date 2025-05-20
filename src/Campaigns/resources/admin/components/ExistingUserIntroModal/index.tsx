@@ -5,10 +5,10 @@ import {getGiveCampaignsListTableWindowData} from '@givewp/campaigns/admin/compo
 import {__} from '@wordpress/i18n';
 import {StepDetails} from '@givewp/campaigns/admin/components/ExistingUserIntroModal/StepDetails';
 import styles from './ExistingUserIntroModal.module.scss';
-import {updateUserNoticeOptions} from "@givewp/campaigns/utils";
+import {updateUserNoticeOptions} from '@givewp/campaigns/utils';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 
 export type stepConfig = {
@@ -46,7 +46,7 @@ const stepsConfig: stepConfig[] = [
 ];
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 
 type ExisingUserIntroModalProps = {
@@ -59,12 +59,11 @@ export default function ExistingUserIntroModal({isOpen, setOpen}: ExisingUserInt
 
     const stepConfig = stepsConfig[step];
 
-    const handleClose = async() => {
-        updateUserNoticeOptions('givewp_campaign_existing_user_intro_notice').then(() => {
-            setStep(0);
-            setOpen(false);
-        });
-    }
+    const handleClose = async () => {
+        setStep(0);
+        setOpen(false);
+        updateUserNoticeOptions('givewp_campaign_existing_user_intro_notice');
+    };
 
     const handleNextStep = () => {
         if (step >= stepsConfig.length - 1) {

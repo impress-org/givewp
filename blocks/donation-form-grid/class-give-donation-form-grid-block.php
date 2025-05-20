@@ -270,7 +270,7 @@ class Give_Donation_Form_Grid_Block {
 	/**
 	 * Return formatted notice when shortcode return empty string
 	 *
-     * @unreleased Replace "new form" with "new campaign form" link
+     * @since 4.0.0 Replace "new form" with "new campaign form" link
 	 * @since 2.4.0
 	 *
 	 * @return string

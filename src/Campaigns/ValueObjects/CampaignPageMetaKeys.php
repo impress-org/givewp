@@ -6,7 +6,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @method static CampaignPageMetaKeys CAMPAIGN_ID()
  */

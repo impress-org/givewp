@@ -7,12 +7,12 @@ use Give\Campaigns\Actions\LoadCampaignsListTableAssets;
 use Give\Campaigns\Models\Campaign;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignsAdminPage
 {
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function addCampaignsSubmenuPage()
     {
@@ -28,7 +28,7 @@ class CampaignsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function renderCampaignsPage()
     {
@@ -48,7 +48,7 @@ class CampaignsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function isShowingDetailsPage(): bool
     {

@@ -130,6 +130,8 @@ class Classic extends Template implements Hookable, Scriptable
 
     /**
      * @inheritDoc
+     *
+     * @since 4.1.0 Added custom form styles
      */
     public function loadScripts()
     {
@@ -178,6 +180,12 @@ class Classic extends Template implements Hookable, Scriptable
                 'statsProgressBarColor' => give_get_meta(Frontend::getFormId(), '_give_goal_color', true),
                 'primaryFont'           => $primaryFont ? : 'inherit'
             ])
+        );
+
+        // Custom styles
+        wp_add_inline_style(
+            'give-classic-template',
+            wp_strip_all_tags(give_get_option('custom_form_styles', ''))
         );
 
         // JS

@@ -10,13 +10,13 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 /**
  * When a Campaign is archived, set all Forms to Draft Status
  *
- * @unreleased
+ * @since 4.0.0
  */
 class ArchiveCampaignFormsAsDraftStatus
 {
     /**
      * TODO: update this to use single update query (QB was not working with whereIn and update)
-     * @unreleased
+     * @since 4.0.0
      */
     public function __invoke(Campaign $campaign)
     {

@@ -5,14 +5,17 @@ namespace Give\Campaigns\Actions;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
+use Give\Helpers\Language;
 
 /**
- * @unreleased
+ * @unreleased set script translations
+ * @since 4.0.0
  */
 class EnqueueCampaignPageEditorAssets
 {
     /**
-     * @unreleased
+     * @unreleased set script translations
+     * @since 4.0.0
      */
     public function __invoke()
     {
@@ -28,6 +31,7 @@ class EnqueueCampaignPageEditorAssets
             return;
         }
 
+        $handleName = 'givewp-campaign-page-post-type-editor';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignPagePostTypeEditor.asset.php');
 
         $campaignDetailsURL = add_query_arg([
@@ -36,9 +40,8 @@ class EnqueueCampaignPageEditorAssets
             'id' => $campaignPage->campaignId,
         ], admin_url('edit.php'));
 
-
         wp_enqueue_script(
-            'givewp-campaign-page-post-type-editor',
+            $handleName,
             GIVE_PLUGIN_URL . 'build/campaignPagePostTypeEditor.js',
             $scriptAsset['dependencies'],
             $scriptAsset['version'],
@@ -46,11 +49,13 @@ class EnqueueCampaignPageEditorAssets
         );
 
         wp_localize_script(
-            'givewp-campaign-page-post-type-editor',
+            $handleName,
             'giveCampaignPage',
             [
                 'campaignDetailsURL' => $campaignDetailsURL,
             ]
         );
+
+        Language::setScriptTranslations($handleName);
     }
 }

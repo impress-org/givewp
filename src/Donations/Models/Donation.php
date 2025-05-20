@@ -19,6 +19,7 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 
@@ -190,7 +191,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<Campaign>
      */
@@ -260,6 +261,14 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     public function gateway(): PaymentGateway
     {
         return give()->gateways->getPaymentGateway($this->gatewayId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function receipt(): DonationReceipt
+    {
+        return give()->donations->getConfirmationPageReceipt($this);
     }
 
     /**

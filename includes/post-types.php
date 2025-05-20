@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Registers and sets up the Donation Forms (give_forms) custom post type
  *
- * @unreleased updated menu_name to GiveWP
+ * @since 4.0.0 updated menu_name to GiveWP
  * @since 1.0
  *
  * @return void
@@ -136,7 +136,7 @@ function give_setup_post_types() {
 		'supports'        => [ 'title' ],
 		'can_export'      => true,
 	];
-    
+
 	register_post_type( 'give_payment', $payment_args );
 }
 

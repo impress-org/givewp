@@ -12,7 +12,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	 */
 	protected $_multi_form;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		// Create multilevel donation form.
@@ -20,7 +20,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 
 		// Delete form.

@@ -12,13 +12,14 @@ use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.0.0
  *
  * @property int $id
  * @property int $campaignId
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property CampaignPageStatus $status
+ * @property string $content
  */
 class CampaignPage extends Model implements ModelCrud
 {
@@ -28,6 +29,7 @@ class CampaignPage extends Model implements ModelCrud
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => CampaignPageStatus::class,
+        'content' => 'string'
     ];
 
     public $relationships = [
@@ -35,7 +37,7 @@ class CampaignPage extends Model implements ModelCrud
     ];
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function getEditLinkUrl(): string
     {
@@ -45,7 +47,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function campaign(): ?Campaign
     {
@@ -53,7 +55,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function find($id): ?CampaignPage
     {
@@ -61,7 +63,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function create(array $attributes): CampaignPage
     {
@@ -73,7 +75,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function save(): void
     {
@@ -85,7 +87,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public function delete(): bool
     {
@@ -93,7 +95,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      *
      * @return ModelQueryBuilder<CampaignPage>
      */
@@ -103,7 +105,7 @@ class CampaignPage extends Model implements ModelCrud
     }
 
     /**
-     * @unreleased
+     * @since 4.0.0
      */
     public static function fromQueryBuilderObject($object): CampaignPage
     {
@@ -113,6 +115,7 @@ class CampaignPage extends Model implements ModelCrud
             'createdAt' => Temporal::toDateTime($object->createdAt),
             'updatedAt' => Temporal::toDateTime($object->updatedAt),
             'status' => new CampaignPageStatus($object->status),
+            'content' => $object->content
         ]);
     }
 }

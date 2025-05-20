@@ -79,11 +79,11 @@ class TestSubscriptionRepository extends TestCase
         $this->assertEquals($subscriptionQuery->product_id, $subscriptionInstance->donationFormId);
         $this->assertEquals($subscriptionQuery->period, $subscriptionInstance->period->getValue());
         $this->assertEquals($subscriptionQuery->frequency, $subscriptionInstance->frequency);
-        $this->assertEquals($subscriptionQuery->initial_amount, $subscriptionInstance->amount->formatToDecimal());
-        $this->assertEquals($subscriptionQuery->recurring_amount, $subscriptionInstance->amount->formatToDecimal());
+        $this->assertEquals((float)$subscriptionQuery->initial_amount, (float)$subscriptionInstance->amount->formatToDecimal());
+        $this->assertEquals((float)$subscriptionQuery->recurring_amount, (float)$subscriptionInstance->amount->formatToDecimal());
         $this->assertEquals(
-            $subscriptionQuery->recurring_fee_amount,
-            $subscriptionInstance->feeAmountRecovered->formatToDecimal()
+            (float)$subscriptionQuery->recurring_fee_amount,
+            (float)$subscriptionInstance->feeAmountRecovered->formatToDecimal(),
         );
         $this->assertEquals($subscriptionQuery->bill_times, $subscriptionInstance->installments);
         $this->assertEquals($subscriptionQuery->transaction_id, $subscriptionInstance->transactionId);

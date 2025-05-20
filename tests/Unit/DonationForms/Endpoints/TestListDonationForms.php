@@ -3,8 +3,10 @@
 namespace Give\Tests\Unit\DonationForms\Endpoints;
 
 use Exception;
+use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Endpoints\ListDonationForms;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
+use Give\DonationForms\V2\Models\DonationForm;
 use Give\Helpers\Language;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -19,7 +21,7 @@ class TestListDonationForms extends TestCase
 
     private $donationForms = [];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -42,7 +44,7 @@ class TestListDonationForms extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('status', 'any');
 
         $listDonationForms = new ListDonationForms();
@@ -64,7 +66,7 @@ class TestListDonationForms extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
         $mockRequest->set_param('status', 'any');
@@ -91,24 +93,27 @@ class TestListDonationForms extends TestCase
     }
 
     /**
-     * @unreleased Add support to isDefaultCampaignForm key
+     * @since 4.0.0 Add support to isDefaultCampaignForm key
      * @since 2.25.0
      *
-     * @param array  $donationForms
+     * @param DonationForm[]  $donationForms
      * @param string $sortDirection
      *
      * @return array
      */
     public function getMockColumns(array $donationForms, string $sortDirection = 'desc'): array
     {
-        $listTable = new DonationFormsListTable();
-        $columns = $listTable->getColumns();
+        $formsData = DonationFormDataRepository::forms($donationForms);
+
+        $columns = (new DonationFormsListTable())
+            ->setData($formsData)
+            ->getColumns();
 
         $expectedItems = [];
         foreach ( $donationForms as $donationForm ) {
             $expectedItem = [];
             foreach ( $columns as $column ) {
-                $expectedItem[$column::getId()] = $column->getCellValue($donationForm);
+                $expectedItem[$column::getId()] = $column->getCellValue($donationForm, 'en-US');
             }
             $expectedItem['name'] = $donationForm->title;
             $expectedItem['edit'] = add_query_arg(['locale' => Language::getLocale()],

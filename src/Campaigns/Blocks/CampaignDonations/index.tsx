@@ -3,7 +3,7 @@ import Edit from './edit';
 import GiveIcon from '@givewp/components/GiveIcon';
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 const settings = {
     icon: <GiveIcon color="grey" />,

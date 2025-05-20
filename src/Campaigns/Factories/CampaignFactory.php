@@ -11,7 +11,7 @@ use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 class CampaignFactory extends ModelFactory
 {
@@ -26,7 +26,6 @@ class CampaignFactory extends ModelFactory
 
         return [
             'type' => CampaignType::CORE(),
-            'defaultFormId' => 1,
             'title' => __('GiveWP Campaign', 'give'),
             'shortDescription' => __('Campaign short description', 'give'),
             'longDescription' => __('Campaign long description', 'give'),

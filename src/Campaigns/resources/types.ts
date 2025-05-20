@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type Notification = {
     id: string;
@@ -13,7 +13,7 @@ export type Notification = {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 declare module "@wordpress/data" {
     export function select(key: 'givewp/campaign-notifications'): {
@@ -29,17 +29,20 @@ declare module "@wordpress/data" {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type GiveCampaignOptions = {
     isAdmin: boolean;
     adminUrl: string;
+    apiRoot: string;
+    apiNonce: string;
     campaignsAdminUrl: string;s
     currency: string;
     isRecurringEnabled: boolean;
     defaultForm: string;
     admin: {
         showCampaignInteractionNotice: boolean
+        showFormGoalNotice: boolean
         showExistingUserIntroNotice: boolean
         showCampaignListTableNotice: boolean
         showCampaignFormNotice: boolean
@@ -48,7 +51,7 @@ export type GiveCampaignOptions = {
 }
 
 /**
- * @unreleased
+ * @since 4.0.0
  */
 export type GoalType =
     'amount'

@@ -5,6 +5,9 @@ import {DateProps} from '@givewp/forms/propTypes';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../styles.module.scss';
 
+/**
+ * @unreleased add aria-required attribute.
+ */
 export default function Date({
     Label,
     ErrorMessage,
@@ -30,6 +33,7 @@ export default function Date({
                 dateFormat={dateFormat}
                 selected={value ? parse(value, dateFormat, new window.Date()) : null}
                 onChange={(date) => setValue(inputProps.name, date ? format(date, dateFormat) : '')}
+                ariaRequired={inputProps['aria-required']}
             />
 
             <ErrorMessage />
