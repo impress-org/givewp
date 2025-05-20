@@ -9,6 +9,7 @@ use Give\Vendors\StellarWP\Validation\Rules\Max;
 /**
  * A file upload field.
  *
+ * @since 4.3.0 Added maxUploadSize property.
  * @since 2.32.0 Updated to use the new Validation File Rule; added description
  * @since 2.12.0
  * @since 2.23.1 Moved default rule values inline since inherited constructor is final.
@@ -24,6 +25,7 @@ class File extends Field
     const TYPE = 'file';
 
     protected $allowedMimeTypes = [];
+    protected $maxUploadSize = null;
 
     /**
      * Set the maximum file size.
@@ -64,6 +66,7 @@ class File extends Field
     /**
      * Set the maximum file upload size.
      *
+     * @since 4.3.0 Set the field's maxUploadSize property.
      * @since 2.32.0
      */
     public function maxUploadSize(int $maxUploadSize): File
@@ -75,6 +78,7 @@ class File extends Field
         }
 
         $this->rules((new FileRule())->maxSize($maxUploadSize));
+        $this->maxUploadSize = $maxUploadSize;
 
         return $this;
     }
