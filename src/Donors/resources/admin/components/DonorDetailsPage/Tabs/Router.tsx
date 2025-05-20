@@ -7,8 +7,7 @@ import { DonorDetailsTab } from '../types';
 const tabs: DonorDetailsTab[] = donorDetailsTabs;
 
 export default function TabsRouter({ children }: { children: React.ReactNode }) {
-    const [activeTab, setActiveTab] = useState<DonorDetailsTab>(tabs[0]);
-    const [selectedKey, onSelectionChange] = useState(null);
+    const [selectedKey, onSelectionChange] = useState(tabs[0].id);
 
     const onPress = (e: PressEvent) => {
         onSelectionChange(e.target.getAttribute('data-href'));
@@ -16,7 +15,7 @@ export default function TabsRouter({ children }: { children: React.ReactNode }) 
 
     const getTabFromURL = () => {
         const urlParams = new URLSearchParams(window.location.search);
-        const tabId = urlParams.get('tab') || activeTab.id;
+        const tabId = urlParams.get('tab') || selectedKey;
         return tabs.find((tab) => tab.id === tabId);
     };
 
@@ -30,26 +29,27 @@ export default function TabsRouter({ children }: { children: React.ReactNode }) 
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.set('tab', newTab.id);
 
-        window.history.pushState(null, activeTab.title, `${window.location.pathname}?${urlParams.toString()}`);
+        window.history.pushState(null, newTab.title, `${window.location.pathname}?${urlParams.toString()}`);
 
-        setActiveTab(newTab);
+        onSelectionChange(newTab.id);
     };
 
     const handleUrlTabParamOnFirstLoad = () => {
+        const activeTab = tabs.find((tab) => tab.id === selectedKey);
         const urlParams = new URLSearchParams(window.location.search);
         // Add the 'tab' parameter only if it's not in the URL yet
         if (!urlParams.has('tab')) {
-            urlParams.set('tab', activeTab.id);
-            window.history.replaceState(null, activeTab.title, `${window.location.pathname}?${urlParams.toString()}`);
+            urlParams.set('tab', selectedKey);
+            window.history.replaceState(null, activeTab?.title, `${window.location.pathname}?${urlParams.toString()}`);
         } else {
-            setActiveTab(getTabFromURL());
+            onSelectionChange(getTabFromURL()?.id);
         }
     };
 
     useEffect(() => {
         handleUrlTabParamOnFirstLoad();
 
-        const handlePopState = () => setActiveTab(getTabFromURL());
+        const handlePopState = () => onSelectionChange(getTabFromURL()?.id);
 
         // Updates state based on URL when user navigates with "Back" or "Forward" buttons
         window.addEventListener('popstate', handlePopState);
@@ -61,9 +61,9 @@ export default function TabsRouter({ children }: { children: React.ReactNode }) 
     }, []);
 
     return (
-        <TabsContext.Provider value={{ selectedKey, onSelectionChange }}>
+        <TabsContext.Provider value={{ selectedKey, onSelectionChange: handleTabNavigation }}>
             <LinkContext.Provider value={{ onPress }}>
-                <Tabs defaultSelectedKey={activeTab.id} selectedKey={activeTab.id} onSelectionChange={handleTabNavigation}>
+                <Tabs>
                     {children}
                 </Tabs>
             </LinkContext.Provider>
