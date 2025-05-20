@@ -4,6 +4,7 @@ import CurrencyInput from 'react-currency-input-field';
 import {CurrencyInputOnChangeValues} from 'react-currency-input-field/dist/components/CurrencyInputProps';
 
 import styles from "../../styles.module.scss"
+import {useEffect, useRef} from "react";
 /**
  * @since 3.0.0
  */
@@ -25,14 +26,18 @@ const decimalSeparator = formatter.format(1.1).replace(/[0-9]/g, '');
  * @since 3.0.0
  */
 const CustomAmount = ({defaultValue, fieldError, currency, value, onValueChange}: CustomAmountProps) => {
+    const ref = useRef<HTMLInputElement | null>(null);
+
+    useEffect(() => {
+        if (fieldError && ref.current) {
+            ref.current.focus();
+        }
+    }, [fieldError]);
+
     return (
         <div className={classNames('givewp-fields-amount__input-container', {invalid: fieldError})}>
             <CurrencyInput
-                ref={(input) => {
-                    if (input && fieldError) {
-                        input.focus();
-                    }
-                }}
+                ref={ref}
                 intlConfig={{
                     locale: navigator.language,
                     currency,
