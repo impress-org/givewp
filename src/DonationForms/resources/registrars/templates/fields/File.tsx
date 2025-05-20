@@ -2,7 +2,7 @@ import {FileProps} from '@givewp/forms/propTypes';
 import {useEffect, useRef} from "react";
 
 /**
- * @unreleased add aria-required attribute.
+ * @unreleased add aria-required attribute. manually focus the visible input when error is present.
  */
 export default function File({Label, allowedMimeTypes, ErrorMessage, fieldError, description, inputProps}: FileProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
