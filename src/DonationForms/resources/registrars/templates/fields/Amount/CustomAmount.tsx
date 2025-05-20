@@ -8,7 +8,6 @@ import styles from "../../styles.module.scss"
  * @since 3.0.0
  */
 type CustomAmountProps = {
-    inputProps: any;
     fieldError?: string;
     currency?: string;
     currencySymbol?: string;
@@ -22,15 +21,18 @@ const groupSeparator = formatter.format(1000).replace(/[0-9]/g, '');
 const decimalSeparator = formatter.format(1.1).replace(/[0-9]/g, '');
 
 /**
- * @unreleased add module styles to override currency-input placeholder styling. Pass amount field inputProps to CurrencyInput.
+ * @unreleased add module styles to override currency-input placeholder styling.
  * @since 3.0.0
  */
-const CustomAmount = ({defaultValue, fieldError, currency, value, onValueChange, inputProps}: CustomAmountProps) => {
+const CustomAmount = ({defaultValue, fieldError, currency, value, onValueChange}: CustomAmountProps) => {
     return (
         <div className={classNames('givewp-fields-amount__input-container', {invalid: fieldError})}>
             <CurrencyInput
-                name={inputProps.name}
-                ref={inputProps.ref}
+                ref={(input) => {
+                    if (input && fieldError) {
+                        input.focus();
+                    }
+                }}
                 intlConfig={{
                     locale: navigator.language,
                     currency,
