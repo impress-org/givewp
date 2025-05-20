@@ -58,8 +58,12 @@
 
 .pageHeader {
     background-color: var(--givewp-shades-white);
-    padding-block: 1rem;
+    border-bottom: 0.0625rem solid #dbdbdb;
+    padding-block: 1rem 0;
     padding-inline: 1.5rem;
+    position: sticky;
+    top: 2rem;
+    z-index: 100;
 }
 
 .flexContainer {
@@ -132,12 +136,7 @@ select[name="campaignId"] {
 .tabs {
     display: flex;
     gap: 0.25rem;
-    background-color: #fff;
-    border-bottom: 0.0625rem solid #dbdbdb;
-
-    &:not(.fullWidth) {
-        padding: 0 var(--givewp-spacing-6);
-    }
+    margin-top: 1rem;
 
     &.fullWidth {
         padding-left: var(--givewp-spacing-6);

@@ -8,7 +8,8 @@ import {Donor} from '../types';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
-import Tabs from './Tabs';
+import TabsRouter from './Tabs/Router';
+import TabList from './Tabs/TabList';
 import {BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
 import cx from 'classnames';
@@ -16,6 +17,7 @@ import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/ut
 
 import styles from './DonorDetailsPage.module.scss';
 import DonorDetailsErrorBoundary from './Components/DonorDetailsErrorBoundary';
+import TabPanels from './Tabs/TabPanels';
 
 interface Show {
     contextMenu?: boolean;
@@ -165,77 +167,81 @@ export default function DonorDetailsPage({donorId}) {
             <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <article className={`interface-interface-skeleton__content ${styles.page}`}>
-                        <header className={styles.pageHeader}>
-                            <div className={styles.breadcrumb}>
-                                <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-donors`}>
-                                    {__('Donors', 'give')}
-                                </a>
-                                <BreadcrumbSeparatorIcon />
-                                <span>{donor.name}</span>
-                            </div>
-                            <div className={styles.flexContainer}>
-                                <div className={styles.flexRow}>
-                                    <h1 className={styles.pageTitle}>{donor.name}</h1>
-                                    <StatusBadge status={donor.status} />
+                        <TabsRouter>
+                            <header className={styles.pageHeader}>
+                                <div className={styles.breadcrumb}>
+                                    <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-donors`}>
+                                        {__('Donors', 'give')}
+                                    </a>
+                                    <BreadcrumbSeparatorIcon />
+                                    <span>{donor.name}</span>
                                 </div>
+                                <div className={styles.flexContainer}>
+                                    <div className={styles.flexRow}>
+                                        <h1 className={styles.pageTitle}>{donor.name}</h1>
+                                        <StatusBadge status={donor.status} />
+                                    </div>
 
-                                <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                                    <button
-                                        type="button"
-                                        className={`button button-tertiary ${styles.sendDonorEmailButton}`}
-                                        onClick={() => {}} // TODO: Add email sending logic
-                                    >
-                                        {__('Send Email', 'give')}
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        disabled={!formState.isDirty}
-                                        className={`button button-primary ${styles.updateDonorButton}`}
-                                    >
-                                        {isSaving ? (
-                                            <>
-                                                {__('Saving changes', 'give')}
-                                                <Spinner />
-                                            </>
-                                        ) : (
-                                            __('Save changes', 'give')
-                                        )}
-                                    </button>
-
-                                    <button
-                                        className={`button button-secondary ${styles.donorButtonDots}`}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setShow({contextMenu: !show.contextMenu});
-                                        }}
-                                    >
-                                        <DotsIcons />
-                                    </button>
-
-                                    {!isSaving && show.contextMenu && (
-                                        <div className={styles.contextMenu}>
-                                            {donor.wpUserPermalink && (
-                                                <a
-                                                    href={donor.wpUserPermalink}
-                                                    aria-label={__('View WordPress profile', 'give')}
-                                                    className={styles.contextMenuItem}
-                                                >
-                                                    <ViewIcon /> {__('View WordPress profile', 'give')}
-                                                </a>
+                                    <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
+                                        <button
+                                            type="button"
+                                            className={`button button-tertiary ${styles.sendDonorEmailButton}`}
+                                            onClick={() => {}} // TODO: Add email sending logic
+                                        >
+                                            {__('Send Email', 'give')}
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            disabled={!formState.isDirty}
+                                            className={`button button-primary ${styles.updateDonorButton}`}
+                                        >
+                                            {isSaving ? (
+                                                <>
+                                                    {__('Saving changes', 'give')}
+                                                    <Spinner />
+                                                </>
+                                            ) : (
+                                                __('Save changes', 'give')
                                             )}
-                                            <a
-                                                href="#"
-                                                className={cx(styles.contextMenuItem, styles.archive)}
-                                                onClick={() => setShow({confirmationModal: true})}
-                                            >
-                                                <TrashIcon /> {__('Delete Donor', 'give')}
-                                            </a>
-                                        </div>
-                                    )}
+                                        </button>
+
+                                        <button
+                                            className={`button button-secondary ${styles.donorButtonDots}`}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setShow({contextMenu: !show.contextMenu});
+                                            }}
+                                        >
+                                            <DotsIcons />
+                                        </button>
+
+                                        {!isSaving && show.contextMenu && (
+                                            <div className={styles.contextMenu}>
+                                                {donor.wpUserPermalink && (
+                                                    <a
+                                                        href={donor.wpUserPermalink}
+                                                        aria-label={__('View WordPress profile', 'give')}
+                                                        className={styles.contextMenuItem}
+                                                    >
+                                                        <ViewIcon /> {__('View WordPress profile', 'give')}
+                                                    </a>
+                                                )}
+                                                <a
+                                                    href="#"
+                                                    className={cx(styles.contextMenuItem, styles.archive)}
+                                                    onClick={() => setShow({confirmationModal: true})}
+                                                >
+                                                    <TrashIcon /> {__('Delete Donor', 'give')}
+                                                </a>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        </header>
-                        <Tabs />
+                                <TabList />
+                            </header>
+
+                            <TabPanels />
+                        </TabsRouter>
                     </article>
                 </form>
 
