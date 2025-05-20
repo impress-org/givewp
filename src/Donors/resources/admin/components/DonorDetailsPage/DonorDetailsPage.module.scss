@@ -131,53 +131,53 @@
 
 .statusBadge {
     align-items: center;
-    background-color: var(--statusBadgeBackgroundColor);
+    background-color: var(--statusBadgeBgColor);
     border-radius: var(--givewp-rounded-full);
-    border: 1px solid var(--statusBadgeBorderColor);
+    border: 1px solid var(--statusBadgeIconColor);
     display: flex;
     gap: var(--givewp-spacing-1);
     justify-content: center;
     padding: calc(var(--givewp-spacing-1) - 1px) var(--givewp-spacing-3) calc(var(--givewp-spacing-1) - 1px) calc(var(--givewp-spacing-1) - 1px);
 
     &.statusBadge--current {
-        --statusBadgeBorderColor: var(--givewp-green-600);
-        --statusBadgeBackgroundColor: var(--givewp-green-25);
+        --statusBadgeIconColor: var(--givewp-green-600);
+        --statusBadgeBgColor: var(--givewp-green-25);
         --statusBadgeTextColor: var(--givewp-green-900);
     }
 
     &.statusBadge--prospective {
-        --statusBadgeBorderColor: var(--givewp-orange-600);
-        --statusBadgeBackgroundColor: var(--givewp-orange-25);
+        --statusBadgeIconColor: var(--givewp-orange-600);
+        --statusBadgeBgColor: var(--givewp-orange-25);
         --statusBadgeTextColor: var(--givewp-orange-900);
     }
 
     &.statusBadge--retained {
-        --statusBadgeBorderColor: var(--givewp-esmerald-600);
-        --statusBadgeBackgroundColor: var(--givewp-esmerald-25);
+        --statusBadgeIconColor: var(--givewp-esmerald-600);
+        --statusBadgeBgColor: var(--givewp-esmerald-25);
         --statusBadgeTextColor: var(--givewp-esmerald-900);
     }
 
     &.statusBadge--lapsed {
-        --statusBadgeBorderColor: var(--givewp-red-600);
-        --statusBadgeBackgroundColor: var(--givewp-red-25);
+        --statusBadgeIconColor: var(--givewp-red-600);
+        --statusBadgeBgColor: var(--givewp-red-25);
         --statusBadgeTextColor: var(--givewp-red-900);
     }
 
     &.statusBadge--new {
-        --statusBadgeBorderColor: var(--givewp-purple-500);
-        --statusBadgeBackgroundColor: var(--givewp-purple-25);
+        --statusBadgeIconColor: var(--givewp-purple-500);
+        --statusBadgeBgColor: var(--givewp-purple-25);
         --statusBadgeTextColor: var(--givewp-purple-900);
     }
 
     &.statusBadge--recaptured {
-        --statusBadgeBorderColor: var(--givewp-yellow-600);
-        --statusBadgeBackgroundColor: var(--givewp-yellow-25);
+        --statusBadgeIconColor: var(--givewp-yellow-600);
+        --statusBadgeBgColor: var(--givewp-yellow-25);
         --statusBadgeTextColor: var(--givewp-yellow-900);
     }
 
     &.statusBadge--recurring {
-        --statusBadgeBorderColor: var(--givewp-blue-600);
-        --statusBadgeBackgroundColor: var(--givewp-blue-25);
+        --statusBadgeIconColor: var(--givewp-blue-600);
+        --statusBadgeBgColor: var(--givewp-blue-25);
         --statusBadgeTextColor: var(--givewp-blue-900);
     }
 }
@@ -186,14 +186,14 @@
     font-size: 0.75rem;
     font-weight: 600;
     text-align: center;
-    color: #f2fff3;
+    color: var(--statusBadgeBgColor);
     display: flex;
     align-items: center;
     justify-content: center;
     width: 1.125rem;
     height: 1.125rem;
     border-radius: 50%;
-    background-color: var(--statusBadgeBorderColor);
+    background-color: var(--statusBadgeIconColor);
 }
 
 .statusBadgeText {
