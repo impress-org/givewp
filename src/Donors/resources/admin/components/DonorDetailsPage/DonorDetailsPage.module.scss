@@ -141,43 +141,43 @@
 
     &.statusBadge--current {
         --statusBadgeBorderColor: var(--givewp-green-600);
-        --statusBadgeBackgroundColor: #f2fff3;
+        --statusBadgeBackgroundColor: var(--givewp-green-25);
         --statusBadgeTextColor: var(--givewp-green-900);
     }
 
     &.statusBadge--prospective {
         --statusBadgeBorderColor: var(--givewp-orange-600);
-        --statusBadgeBackgroundColor: #D98715;
+        --statusBadgeBackgroundColor: var(--givewp-orange-25);
         --statusBadgeTextColor: var(--givewp-orange-900);
     }
 
     &.statusBadge--retained {
         --statusBadgeBorderColor: var(--givewp-esmerald-600);
-        --statusBadgeBackgroundColor: #15D92D;
+        --statusBadgeBackgroundColor: var(--givewp-esmerald-25);
         --statusBadgeTextColor: var(--givewp-esmerald-900);
     }
 
     &.statusBadge--lapsed {
         --statusBadgeBorderColor: var(--givewp-red-600);
-        --statusBadgeBackgroundColor: #D92D0B;
+        --statusBadgeBackgroundColor: var(--givewp-red-25);
         --statusBadgeTextColor: var(--givewp-red-900);
     }
 
     &.statusBadge--new {
         --statusBadgeBorderColor: var(--givewp-purple-500);
-        --statusBadgeBackgroundColor: #2511A6;
+        --statusBadgeBackgroundColor: var(--givewp-purple-25);
         --statusBadgeTextColor: var(--givewp-purple-900);
     }
 
     &.statusBadge--recaptured {
         --statusBadgeBorderColor: var(--givewp-yellow-600);
-        --statusBadgeBackgroundColor: #A68C08;
+        --statusBadgeBackgroundColor: var(--givewp-yellow-25);
         --statusBadgeTextColor: var(--givewp-yellow-900);
     }
 
     &.statusBadge--recurring {
         --statusBadgeBorderColor: var(--givewp-blue-600);
-        --statusBadgeBackgroundColor: #0857A6;
+        --statusBadgeBackgroundColor: var(--givewp-blue-25);
         --statusBadgeTextColor: var(--givewp-blue-900);
     }
 }
