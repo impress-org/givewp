@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 4.3.0: May 19th, 2025 =
+= 4.3.0: May 21st, 2025 =
 * New: Added a new Campaign form block and shortcode
 * Enhancement: Improved the performance of the campaign form list table
 * Enhancement: Updated the donation list table to include it's associated Campaign
