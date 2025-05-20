@@ -40,10 +40,9 @@ const StatusBadge = ({status}: {status: string}) => {
     }
 
     return (
-        <div className="interweave">
-            <div className={`statusBadge statusBadge--${status}`}>
-                <p>{statusMap[status]}</p>
-            </div>
+        <div className={`${styles.statusBadge} ${styles[`statusBadge--${status}`]}`}>
+            <span className={styles.statusBadgeIcon}>{statusMap[status].substring(0, 1)}</span>
+            <span className={styles.statusBadgeText}>{statusMap[status]}</span>
         </div>
     );
 };
