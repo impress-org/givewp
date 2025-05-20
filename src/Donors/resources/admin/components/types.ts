@@ -8,6 +8,7 @@ export type Donor = {
   lastName: string;
   email: string;
   phone: string;
+  companyName: string;
   additionalEmails: string[];
   totalAmountDonated: number;
   totalNumberOfDonations: number;
