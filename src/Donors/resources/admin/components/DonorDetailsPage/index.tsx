@@ -33,6 +33,10 @@ const StatusBadge = ({status}: {status: string}) => {
         recurring: __('Recurring', 'give'),
     };
 
+    if (!statusMap[status]) {
+        return null;
+    }
+
     return (
         <div className="interweave">
             <div className={`statusBadge statusBadge--${status}`}>
