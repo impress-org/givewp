@@ -1,4 +1,5 @@
 import {FileProps} from '@givewp/forms/propTypes';
+import {useEffect, useRef} from "react";
 
 /**
  * @unreleased add aria-required attribute.
@@ -7,6 +8,13 @@ export default function File({Label, allowedMimeTypes, ErrorMessage, fieldError,
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
     const {setValue} = window.givewp.form.hooks.useFormContext();
     const {name} = inputProps;
+    const ref = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (fieldError && ref.current) {
+            ref.current.focus();
+        }
+    }, [fieldError]);
 
     return (
         <>
@@ -16,6 +24,7 @@ export default function File({Label, allowedMimeTypes, ErrorMessage, fieldError,
             {description && <FieldDescription description={description} />}
 
             <input
+                ref={ref}
                 id={`${name}-field`}
                 type="file"
                 aria-invalid={fieldError ? 'true' : 'false'}
