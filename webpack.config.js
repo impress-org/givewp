@@ -202,6 +202,8 @@ const entry = {
     campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),
     campaignListTable: srcPath('Campaigns/resources/admin/campaigns-list-table.tsx'),
     formEntity: srcPath('DonationForms/resources/entity.ts'),
+    donorEntity: srcPath('Donors/resources/entity.ts'),
+    donorDetails: srcPath('Donors/resources/admin/donor-details.tsx'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };

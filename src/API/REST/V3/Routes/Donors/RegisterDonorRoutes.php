@@ -176,13 +176,15 @@ class RegisterDonorRoutes
             );
         }
 
-        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-        if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to include anonymous donors.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($request->get_param('anonymousDonors')) {
+            $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
+            if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
+                return new WP_Error(
+                    'rest_forbidden',
+                    esc_html__('You do not have permission to include anonymous donors.', 'give'),
+                    ['status' => $this->authorizationStatusCode()]
+                );
+            }
         }
 
         return true;
