@@ -1,13 +1,22 @@
 import {FileProps} from '@givewp/forms/propTypes';
 import {__, sprintf} from '@wordpress/i18n';
+import {useEffect, useRef} from "react";
 
 /**
- * @unreleased Add aria-required attribute and file size and type validations.
+ * @unreleased add aria-required attribute. manually focus the visible input when error is present.
  */
+
 export default function File({Label, allowedMimeTypes, maxUploadSize, ErrorMessage, fieldError, description, inputProps}: FileProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
     const {setValue, setError} = window.givewp.form.hooks.useFormContext();
     const {name} = inputProps;
+    const ref = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (fieldError && ref.current) {
+            ref.current.focus();
+        }
+    }, [fieldError]);
 
     return (
         <>
@@ -17,6 +26,7 @@ export default function File({Label, allowedMimeTypes, maxUploadSize, ErrorMessa
             {description && <FieldDescription description={description} />}
 
             <input
+                ref={ref}
                 id={`${name}-field`}
                 type="file"
                 aria-invalid={fieldError ? 'true' : 'false'}
