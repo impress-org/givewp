@@ -208,6 +208,23 @@
     }
 }
 
+.htmlField {
+    a {
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        &:focus {
+            border-radius: 2px;
+            outline: 2px solid var(--givewp-primary-color);
+            text-decoration: none;
+        }
+    }
+}
+
+
 .customAmount{
     color: #4d4d4d;
     font-weight: 500;
