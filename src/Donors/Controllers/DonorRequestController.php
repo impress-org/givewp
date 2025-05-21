@@ -4,10 +4,8 @@ namespace Give\Donors\Controllers;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
-use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
-use Give\Framework\QueryBuilder\JoinQueryBuilder;
-use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -36,6 +34,7 @@ class DonorRequestController
     }
 
     /**
+     * @unreleased Use DonorsQuery to retrieve data
      * @since 4.0.0
      */
     public function getDonors(WP_REST_Request $request): WP_REST_Response
@@ -44,51 +43,16 @@ class DonorRequestController
         $perPage = $request->get_param('per_page');
         $sortColumn = $this->getSortColumn($request->get_param('sort'));
         $sortDirection = $request->get_param('direction');
-        $mode = $request->get_param('mode');
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
-
-        $query = Donor::query();
+        $query = new DonorsQuery();
 
         // Donors only can be donors if they have donations associated with them
         if ($request->get_param('onlyWithDonations')) {
-            $query->join(function (JoinQueryBuilder $builder) use ($mode) {
-                // The donationmeta1.donation_id should be used in other "donationmeta" joins to make sure we are retrieving data from the proper donation
-                $builder->innerJoin('give_donationmeta', 'donationmeta1')
-                    ->joinRaw("ON donationmeta1.meta_key = '" . DonationMetaKeys::DONOR_ID . "' AND donationmeta1.meta_value = ID");
-
-                // Include only current payment "mode"
-                $builder->innerJoin('give_donationmeta', 'donationmeta2')
-                    ->joinRaw("ON donationmeta2.meta_key = '" . DonationMetaKeys::MODE . "' AND donationmeta2.meta_value = '{$mode}' AND donationmeta2.donation_id = donationmeta1.donation_id");
-            });
-
-
-            if ($campaignId = $request->get_param('campaignId')) {
-                // Filter by CampaignId - Donors only can be filtered by campaignId if they donated to a campaign
-                $query->join(function (JoinQueryBuilder $builder) use ($campaignId) {
-                    $builder->innerJoin('give_donationmeta', 'donationmeta3')
-                        ->joinRaw("ON donationmeta3.meta_key = '" . DonationMetaKeys::CAMPAIGN_ID . "' AND donationmeta3.meta_value = {$campaignId} AND donationmeta3.donation_id = donationmeta1.donation_id");
-                });
-            }
-
-            if ($donorAnonymousMode->isExcluded()) {
-                // Exclude anonymous donors from results - Donors only can be excluded if they made an anonymous donation
-                $query->join(function (JoinQueryBuilder $builder) {
-                        $builder->innerJoin('give_donationmeta', 'donationmeta4')
-                            ->joinRaw("ON donationmeta4.meta_key = '" . DonationMetaKeys::ANONYMOUS . "' AND donationmeta4.meta_value = 0 AND donationmeta4.donation_id = donationmeta1.donation_id");
-                    });
-            }
-
-            // Make sure the donation is valid
-            $query->whereIn('donationmeta1.donation_id', function (QueryBuilder $builder) {
-                $builder
-                    ->select('ID')
-                    ->from('posts')
-                    ->where('post_type', 'give_payment')
-                    ->whereIn('post_status', ['publish', 'give_subscription'])
-                    ->whereRaw("AND ID = donationmeta1.donation_id");
-            });
+            $mode = $request->get_param('mode');
+            $campaignId = $request->get_param('campaignId');
+            $query->whereDonorsHaveDonations($mode, $campaignId, $donorAnonymousMode->isExcluded());
         }
 
         $query
