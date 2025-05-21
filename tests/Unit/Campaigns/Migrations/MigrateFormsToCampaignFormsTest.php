@@ -150,6 +150,62 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testUpgradedFormsMoreThanOnceAreNotAssociatedWithMultipleCampaigns()
+    {
+        $form1 = DonationForm::factory()->create([
+            'status' => DonationFormStatus::UPGRADED(),
+        ]);
+
+        //First form upgrade attempt
+        $form2 = DonationForm::factory()->create();
+        give_update_meta($form2->id, 'migratedFormId', $form1->id);
+
+        // Second form upgrade attempt
+        $form3 = DonationForm::factory()->create();
+        give_update_meta($form3->id, 'migratedFormId', $form1->id);
+
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        $entries = DB::table('give_campaign_forms')
+            ->where('form_id', $form1->id)
+            ->getAll();
+
+        $this->assertEquals(1, count($entries));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testUpgradedFormsMoreThanOnceBelongsToSameCampaignFromLastUpgradeAttempt()
+    {
+        $form1 = DonationForm::factory()->create([
+            'status' => DonationFormStatus::UPGRADED(),
+        ]);
+
+        // First form upgrade attempt
+        $form2 = DonationForm::factory()->create();
+        give_update_meta($form2->id, 'migratedFormId', $form1->id);
+
+        // Second form upgrade attempt
+        $form3 = DonationForm::factory()->create();
+        give_update_meta($form3->id, 'migratedFormId', $form1->id);
+
+        $migration = new MigrateFormsToCampaignForms();
+        $migration->run();
+
+        $campaign = Campaign::findByFormId($form1->id);
+
+        $this->assertEquals($form3->id, $campaign->defaultFormId);
+    }
+
+    /**
      * @since 4.0.0
      * @throws Exception
      */
@@ -177,5 +233,38 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
         $migration->run();
 
         $this->assertEquals(0, DB::table('give_campaign_forms')->count());
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testMigrationReRunsWithoutErrors()
+    {
+        $form1 = DonationForm::factory()->create([
+            'status' => DonationFormStatus::UPGRADED(),
+        ]);
+
+        /**
+         * This second form is necessary to test if no duplicate entry errors will happen
+         *
+         * @see https://github.com/impress-org/givewp/pull/7901
+         */
+        $form2 = DonationForm::factory()->create();
+        give_update_meta($form2->id, 'migratedFormId', $form1->id);
+
+        $migration = new MigrateFormsToCampaignForms();
+
+        //First run
+        $migration->run();
+
+        //Second run
+        $migration->run();
+
+        $campaign = Campaign::findByFormId($form1->id);
+
+        $this->assertEquals(2, $campaign->forms()->count());
+        $this->assertEquals($form2->id, $campaign->defaultFormId);
     }
 }

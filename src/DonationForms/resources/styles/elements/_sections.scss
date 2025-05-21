@@ -1,21 +1,23 @@
 // add a little styling to section legends
 .givewp-layouts-section {
+    &__header {
+        font-size: clamp(var(--givewp-spacing-5), 1.28205vw, var(--givewp-spacing-6));
+        margin-block-end: var(--givewp-spacing-3);
+        color: var(--givewp-grey-900);
+    }
+
     &__fieldset {
         gap: var(--givewp-spacing-6);
 
         &__legend {
             legend {
-                font-size: clamp(var(--givewp-spacing-5), 1.28205vw, var(--givewp-spacing-6));
-                font-weight: bold;
-                color: var(--givewp-grey-900);
-                line-height: 1.6;
-                margin-block-end: var(--givewp-spacing-3);
-            }
-
-            p {
+                font-size: 1rem;
+                font-weight: 400;
+                width: 100%;
                 margin: 0;
                 color: var(--givewp-grey-700);
                 line-height: 1.5;
+                margin-block-end: var(--givewp-spacing-3);
             }
         }
     }

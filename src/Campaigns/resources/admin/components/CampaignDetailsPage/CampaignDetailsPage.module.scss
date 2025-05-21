@@ -6,6 +6,16 @@
 :global {
     :root {
         --give-primary-color: #69b868;
+        --givewp-admin-bar-height: var(--givewp-spacing-8);
+        --header-height: 97px;
+
+        @media (max-width: 782px){
+            --givewp-admin-bar-height: 46px;
+        }
+
+        @media (max-width: 600px){
+            --givewp-admin-bar-height: 0px;
+        }
     }
 
     .post-type-give_forms #wpbody {
@@ -129,11 +139,23 @@ select[name="campaignId"] {
     display: none;
 }
 
+.pageHeader {
+    position: sticky;
+    top: var(--givewp-admin-bar-height);
+    z-index: 2;
+}
+
+.tabMenu{
+    position: sticky;
+    z-index: 1;
+    top: calc(var(--givewp-admin-bar-height) + var(--header-height));
+}
+
 .tabs {
     display: flex;
     gap: 0.25rem;
     background-color: #fff;
-    border-bottom: 0.0625rem solid #dbdbdb;
+    border-bottom: 0.0625rem solid var(--givewp-neutral-100);
 
     &:not(.fullWidth) {
         padding: 0 var(--givewp-spacing-6);
@@ -589,7 +611,7 @@ select[name="campaignId"] {
         display: flex;
         flex-direction: column;
         gap: var(--givewp-spacing-1);
-        z-index: 9999;
+        z-index: 3;
         padding: var(--givewp-spacing-1);
         top: 50px;
         width: 203px;
