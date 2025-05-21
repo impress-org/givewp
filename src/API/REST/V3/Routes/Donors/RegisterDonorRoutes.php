@@ -14,10 +14,7 @@ use WP_REST_Server;
  */
 class RegisterDonorRoutes
 {
-    /**
-     * @var DonorRequestController
-     */
-    protected $donorRequestController;
+    protected DonorRequestController $donorRequestController;
 
     /**
      * @since 4.0.0
@@ -30,10 +27,11 @@ class RegisterDonorRoutes
     /**
      * @since 4.0.0
      */
-    public function __invoke()
+    public function __invoke(): void
     {
         $this->registerGetDonor();
         $this->registerGetDonors();
+        $this->registerUpdateDonor();
     }
 
     /**
@@ -41,7 +39,7 @@ class RegisterDonorRoutes
      *
      * @since 4.0.0
      */
-    public function registerGetDonor()
+    public function registerGetDonor(): void
     {
         register_rest_route(
             DonorRoute::NAMESPACE,
@@ -84,7 +82,7 @@ class RegisterDonorRoutes
      *
      * @since 4.0.0
      */
-    public function registerGetDonors()
+    public function registerGetDonors(): void
     {
         register_rest_route(
             DonorRoute::NAMESPACE,
@@ -161,6 +159,32 @@ class RegisterDonorRoutes
     }
 
     /**
+     * Update Donor route
+     *
+     * @unreleased
+     */
+    public function registerUpdateDonor()
+    {
+        register_rest_route(
+            DonorRoute::NAMESPACE,
+            DonorRoute::DONORS,
+            [
+                [
+                    'methods' => WP_REST_Server::EDITABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->donorRequestController->updateDonor($request);
+                    },
+                    'permission_callback' => function () {
+                        return current_user_can('manage_options');
+                    },
+                ],
+                'args' => rest_get_endpoint_args_for_schema($this->getSchema(), WP_REST_Server::EDITABLE),
+                'schema' => [$this, 'getSchema'],
+            ]
+        );
+    }
+
+    /**
      * @since 4.0.0
      */
     public function permissionsCheck(WP_REST_Request $request)
@@ -198,5 +222,23 @@ class RegisterDonorRoutes
         }
 
         return 401;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getSchema(): array
+    {
+        return [
+            'title' => 'donor',
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Donor ID', 'give'),
+                ],
+            ],
+            'required' => ['id'],
+        ];
     }
 }
