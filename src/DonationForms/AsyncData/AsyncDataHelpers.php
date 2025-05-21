@@ -3,7 +3,6 @@
 namespace Give\DonationForms\AsyncData;
 
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
-use Give\DonationForms\DonationQuery;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\MultiFormGoals\ProgressBar\Model as ProgressBarModel;
 

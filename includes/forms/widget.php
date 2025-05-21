@@ -505,4 +505,11 @@ class Give_Forms_Widget extends WP_Widget {
 	}
 }
 
-new Give_Forms_Widget();
+
+/**
+ * @unreleased use widgets_init action and register_widget
+ */
+add_action( 'widgets_init', static function() {
+    register_widget( 'Give_Forms_Widget' );
+} );
+

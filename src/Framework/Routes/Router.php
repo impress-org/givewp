@@ -124,6 +124,7 @@ class Router
     }
 
     /**
+     * @unreleased Use trailingslashit() method to prevent errors on websites installed in subdirectories
      * @since 3.0.0
      */
     public function url(string $uri, array $args = []): string
@@ -133,7 +134,7 @@ class Router
                 ['givewp-route' => $uri],
                 $args
             ),
-            home_url()
+            trailingslashit(home_url())
         );
     }
 }
