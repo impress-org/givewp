@@ -127,11 +127,6 @@ class RegisterDonorRoutes
                         'default' => 'DESC',
                         'enum' => ['ASC', 'DESC'],
                     ],
-                    'mode' => [
-                        'type' => 'string',
-                        'default' => 'live',
-                        'enum' => ['live', 'test'],
-                    ],
                     'onlyWithDonations' => [
                         'type' => 'boolean',
                         'default' => true,
