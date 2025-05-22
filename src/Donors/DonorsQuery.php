@@ -57,18 +57,23 @@ class DonorsQuery
         $this->query->join(function (JoinQueryBuilder $builder) use ($mode) {
             // The donationmeta1.donation_id should be used in other "donationmeta" joins to make sure we are retrieving data from the proper donation
             $builder->innerJoin('give_donationmeta', 'donationmeta1')
-                ->joinRaw("ON donationmeta1.meta_key = '" . DonationMetaKeys::DONOR_ID . "' AND donationmeta1.meta_value = ID");
+                ->on('donationmeta1.meta_key', DonationMetaKeys::DONOR_ID, true)
+                ->andOn('donationmeta1.meta_value', 'ID');
 
             // Include only current payment "mode"
             $builder->innerJoin('give_donationmeta', 'donationmeta2')
-                ->joinRaw("ON donationmeta2.meta_key = '" . DonationMetaKeys::MODE . "' AND donationmeta2.meta_value = '{$mode}' AND donationmeta2.donation_id = donationmeta1.donation_id");
+                ->on('donationmeta2.meta_key', DonationMetaKeys::MODE, true)
+                ->andOn('donationmeta2.meta_value', $mode, true)
+                ->andOn('donationmeta2.donation_id', 'donationmeta1.donation_id');
         });
 
         if ($campaignId) {
             // Filter by CampaignId - Donors only can be filtered by campaignId if they donated to a campaign
             $this->query->join(function (JoinQueryBuilder $builder) use ($campaignId) {
                 $builder->innerJoin('give_donationmeta', 'donationmeta3')
-                    ->joinRaw("ON donationmeta3.meta_key = '" . DonationMetaKeys::CAMPAIGN_ID . "' AND donationmeta3.meta_value = {$campaignId} AND donationmeta3.donation_id = donationmeta1.donation_id");
+                    ->on('donationmeta3.meta_key', DonationMetaKeys::CAMPAIGN_ID, true)
+                    ->andOn('donationmeta3.meta_value', $campaignId, true)
+                    ->andOn('donationmeta3.donation_id', 'donationmeta1.donation_id');
             });
         }
 
@@ -76,7 +81,9 @@ class DonorsQuery
             // Exclude anonymous donors from results - Donors only can be excluded if they made an anonymous donation
             $this->query->join(function (JoinQueryBuilder $builder) {
                 $builder->innerJoin('give_donationmeta', 'donationmeta4')
-                    ->joinRaw("ON donationmeta4.meta_key = '" . DonationMetaKeys::ANONYMOUS . "' AND donationmeta4.meta_value = 0 AND donationmeta4.donation_id = donationmeta1.donation_id");
+                    ->on('donationmeta4.meta_key', DonationMetaKeys::ANONYMOUS, true)
+                    ->andOn('donationmeta4.meta_value', '0')
+                    ->andOn('donationmeta4.donation_id', 'donationmeta1.donation_id');
             });
         }
 
