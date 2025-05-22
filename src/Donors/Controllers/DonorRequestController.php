@@ -16,6 +16,18 @@ use WP_REST_Response;
 class DonorRequestController
 {
     /**
+     * @unreleased
+     */
+    public function getDonorStatistics(WP_REST_Request $request): WP_REST_Response
+    {
+        return new WP_REST_Response([
+            'lifetimeDonations' => 300,
+            'highestDonation' => 250,
+            'averageDonation' => 150,
+        ]);
+    }
+
+    /**
      * @since 4.0.0
      *
      * @return WP_Error|WP_REST_Response

@@ -32,8 +32,40 @@ class RegisterDonorRoutes
      */
     public function __invoke()
     {
+        $this->registerGetDonorStatistics();
         $this->registerGetDonor();
         $this->registerGetDonors();
+    }
+
+    /**
+     * Get Donor Statistics route
+     *
+     * @unreleased
+     */
+    public function registerGetDonorStatistics()
+    {
+        register_rest_route(
+            DonorRoute::NAMESPACE,
+            DonorRoute::DONOR . '/statistics',
+            [
+                [
+                    'methods' => WP_REST_Server::READABLE,
+                    'callback' => function (WP_REST_Request $request) {
+                        return $this->donorRequestController->getDonorStatistics($request);
+                    },
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        //return $this->permissionsCheck($request);
+                        return current_user_can('manage_options');
+                    },
+                ],
+                'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                ],
+            ]
+        );
     }
 
     /**
