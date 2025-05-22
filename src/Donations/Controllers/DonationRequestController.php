@@ -46,7 +46,6 @@ class DonationRequestController
         $perPage = $request->get_param('per_page');
         $sortColumn = $this->getSortColumn($request->get_param('sort'));
         $sortDirection = $request->get_param('direction');
-        $mode = $request->get_param('mode');
 
         $query = Donation::query();
 
@@ -55,13 +54,17 @@ class DonationRequestController
             $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
         }
 
+        if ($donorId = $request->get_param('donorId')) {
+            $query->where('give_donationmeta_attach_meta_donorId.meta_value', $donorId);
+        }
+
         if ($donationAnonymousMode->isExcluded()) {
             // Exclude anonymous donations from results
             $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
         }
 
         // Include only current payment "mode"
-        $query->where('give_donationmeta_attach_meta_mode.meta_value', $mode);
+        $query->where('give_donationmeta_attach_meta_mode.meta_value', give_is_test_mode() ? 'test' : 'live');
 
         // Include only valid statuses
         $query->whereIn('post_status', ['publish', 'give_subscription']);

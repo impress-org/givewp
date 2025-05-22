@@ -56,7 +56,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'prefix' => 'string',
         'additionalEmails' => ['array', []],
         'totalAmountDonated' => Money::class,
-        'totalNumberOfDonations' => 'int'
+        'totalNumberOfDonations' => 'int',
     ];
 
     /**
@@ -92,7 +92,8 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param  string  $donorEmail
+     * @param string $donorEmail
+     *
      * @return bool
      */
     public function hasEmail(string $donorEmail): bool
@@ -105,7 +106,8 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.21.0
      *
-     * @param  int  $userId
+     * @param int $userId
+     *
      * @return Donor|null
      */
     public static function whereUserId(int $userId)
@@ -142,7 +144,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public function save()
     {
-        if (!$this->id) {
+        if ( ! $this->id) {
             give()->donors->insert($this);
         } else {
             give()->donors->update($this);
@@ -229,6 +231,23 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     public static function factory(): DonorFactory
     {
         return new DonorFactory(static::class);
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function isAnonymous(): bool
+    {
+        if ($this->donations) {
+            foreach ($this->donations as $donation) {
+                if ($donation->anonymous) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 }

@@ -660,7 +660,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donation1 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'mode' => DonationMode::LIVE(),
+            'mode' => DonationMode::TEST(),
         ]);
         $donor1 = $donation1->donor;
 
@@ -691,7 +691,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donation2 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'mode' => DonationMode::LIVE(),
+            'mode' => DonationMode::TEST(),
         ]);
         $donor2 = $donation2->donor;
 
@@ -722,7 +722,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donation3 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'mode' => DonationMode::LIVE(),
+            'mode' => DonationMode::TEST(),
         ]);
         $donor3 = $donation3->donor;
 
