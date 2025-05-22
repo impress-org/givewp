@@ -609,7 +609,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function getConfirmationPageReceipt(Donation $donation): DonationReceipt
     {

@@ -34,7 +34,7 @@ const isRedirect = (url: string) => {
 };
 
 /**
- * @unreleased replace ModalForm with Campaigns ModalForm.
+ * @since 4.3.0 replace ModalForm with Campaigns ModalForm.
  * @since 3.4.0 add logic for inline redirects.
  * @since 3.2.0 replace form format reveal with new tab.
  * @since 3.0.0

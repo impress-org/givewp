@@ -2,7 +2,7 @@ import {FileProps} from '@givewp/forms/propTypes';
 import {__, sprintf} from '@wordpress/i18n';
 
 /**
- * @unreleased Add aria-required attribute and file size and type validations.
+ * @since 4.3.0 Add aria-required attribute and file size and type validations.
  */
 export default function File({Label, allowedMimeTypes, maxUploadSize, ErrorMessage, fieldError, description, inputProps}: FileProps) {
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;

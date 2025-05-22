@@ -2,7 +2,7 @@ import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
 import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
 
 /**
- * @unreleased Add autoComplete support and aria-labelledby and aria-describedby attributes.
+ * @since 4.3.0 Add autoComplete support and aria-labelledby and aria-describedby attributes.
  */
 export default function Text({
     Label,

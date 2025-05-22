@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 4.2.1
+Stable tag: 4.3.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,20 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.3.0: May 21st, 2025 =
+* New: Added a new Campaign form block and shortcode
+* Enhancement: Improved the performance of the campaign form list table
+* Enhancement: Updated the donation list table to include it's associated Campaign
+* Enhancement: Recurring donation renewals using Stripe will now include meta data
+* Enhancement: Made various improvements to the accessiblity of our donation forms
+* Enhancement: Updated our advanced migration system to offer the ability to rollback a failed migration
+* Enhancement: Updated the campaign admin screen with a sticky header UI
+* Fix: Updated the form to campaign migration to take into account the possibility of multiple upgraded forms which would sometimes cause it to fail
+* Fix: Resolved remaining WP 6.8 _load_textdomain_just_in_time notice for GiveWP core
+* Fix: Updated campaigns admin screen to be translatable
+* Fix: Resolved an issue with sites in subdirectories that are using visual form builder forms were producing an error
+* Fix: Resolved an issue where some custom fields were not showing up on the donor dashboard
 
 = 4.2.1: May 7th, 2025 =
 * Fix: Resolved an issue with PayPal Donations and Fee Recovery when using the global option for donor forced opt-in

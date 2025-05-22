@@ -19,7 +19,7 @@ type GroupedLevels = {
 type Level = {label: string | null; value: number};
 
 /**
- * @unreleased Add proper roles and ARIA attributes
+ * @since 4.3.0 Add proper roles and ARIA attributes
  * @since 3.12.0 add level descriptions.
  * @since 3.0.0
  */

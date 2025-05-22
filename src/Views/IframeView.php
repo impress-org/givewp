@@ -242,7 +242,7 @@ class IframeView
         );
 
         /**
-         * @unreleased remove modal-inner-wrap element to achieve style parity with v3 modals.
+         * @since 4.3.0 remove modal-inner-wrap element to achieve style parity with v3 modals.
          */
         if ($this->modal) {
             $iframe = sprintf(
@@ -266,7 +266,7 @@ class IframeView
     /**
      * Get button HTML.
      *
-     * @unreleased add v3 button classname to match v3 modals.
+     * @since 4.3.0 add v3 button classname to match v3 modals.
      * @since 3.7.0 Escape attributes
      *
      * @return string

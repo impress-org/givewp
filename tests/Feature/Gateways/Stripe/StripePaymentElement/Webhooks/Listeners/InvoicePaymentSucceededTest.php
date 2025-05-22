@@ -25,7 +25,7 @@ class InvoicePaymentSucceededTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased Update Stripe Invoice metadata
+     * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.0
      *
      * @throws Exception
@@ -80,7 +80,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
-     * @unreleased Update Stripe Invoice metadata
+     * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.0
      *
      * @throws Exception
@@ -210,7 +210,7 @@ class InvoicePaymentSucceededTest extends TestCase
     }
 
     /**
-     * @unreleased Update Stripe Invoice metadata
+     * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.0
      *
      * @throws Exception

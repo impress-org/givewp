@@ -8,14 +8,14 @@ use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 4.3.0
  *
  * @extends ModelColumn<Donation>
  */
 class CampaignColumn extends ModelColumn
 {
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * @inheritDoc
      */
@@ -25,7 +25,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * @inheritDoc
      */
@@ -35,7 +35,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * @inheritDoc
      *

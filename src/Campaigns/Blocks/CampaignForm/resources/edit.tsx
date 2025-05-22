@@ -12,7 +12,7 @@ import '../../shared/components/EntitySelector/styles/index.scss';
 import './styles.scss';
 
 /**
- * @unreleased
+ * @since 4.3.0
  *
  * @see 'class-give-block-donation-form.php'
  */
@@ -31,7 +31,7 @@ type CampaignFormBlockAttributes = {
 };
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 export default function Edit({attributes, isSelected, setAttributes, className, clientId}: BlockEditProps<any>) {
     const {

@@ -264,7 +264,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function receipt(): DonationReceipt
     {

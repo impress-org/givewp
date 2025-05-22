@@ -13,7 +13,7 @@ use Give\Donations\ListTable\Columns\StatusColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**
- * @unreleased show campaign title instead of form title
+ * @since 4.3.0 show campaign title instead of form title
  * @since 2.24.0
  */
 class DonationsListTable extends ListTable

@@ -150,7 +150,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * @throws Exception
      */
@@ -179,7 +179,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * @throws Exception
      */
@@ -236,7 +236,7 @@ final class MigrateFormsToCampaignFormsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * @throws Exception
      */
