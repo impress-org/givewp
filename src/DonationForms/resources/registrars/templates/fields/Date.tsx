@@ -6,7 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../styles.module.scss';
 
 /**
- * @unreleased add aria-required attribute.
+ * @since 4.3.0 add aria-required attribute.
  */
 export default function Date({
     Label,

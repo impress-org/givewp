@@ -3,13 +3,13 @@
 namespace Give\Tests\Unit\License\TestTraits;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 trait HasLicenseData
 {
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function getRawLicenseData(array $data = []): array
     {

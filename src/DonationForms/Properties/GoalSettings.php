@@ -5,7 +5,7 @@ namespace Give\DonationForms\Properties;
 use Give\DonationForms\ValueObjects\GoalType;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class GoalSettings
 {

@@ -76,7 +76,7 @@ trait CRUD
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function truncate()
     {

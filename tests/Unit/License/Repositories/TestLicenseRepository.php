@@ -10,7 +10,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\License\TestTraits\HasLicenseData;
 
 /**
- * @unreleased
+ * @since 4.3.0
  * @coversDefaultClass \Give\License\Repositories\LicenseRepository
  */
 class TestLicenseRepository extends TestCase
@@ -24,7 +24,7 @@ class TestLicenseRepository extends TestCase
     protected LicenseRepository $repository;
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function setUp(): void
     {
@@ -34,7 +34,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testHasLicensesReturnsFalseWhenNoLicenseIsStored(): void
     {
@@ -42,7 +42,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testHasLicensesReturnsTrueWhenLicenseIsStored(): void
     {
@@ -51,7 +51,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testGetStoredLicensesReturnsEmptyArrayWhenNoLicenseIsStored(): void
     {
@@ -59,7 +59,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testGetStoredLicensesReturnsArrayWhenLicenseIsStored(): void
     {
@@ -82,7 +82,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testGetLicensesReturnsLicenseDataWhenLicenseIsStored(): void
     {
@@ -113,7 +113,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testHasActiveLicensesReturnsFalseWhenNoLicenseIsValid(): void
     {
@@ -129,7 +129,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testHasActiveLicensesReturnsTrueWhenValidLicenseIsFound(): void
     {
@@ -149,7 +149,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testGetActiveLicensesReturnsEmptyArrayWhenNoLicenseIsValid(): void
     {
@@ -165,7 +165,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testGetActiveLicensesReturnsArrayWhenValidLicenseIsFound(): void
     {
@@ -205,7 +205,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testGetGatewayFeeReturnsDefaultWhenNoLicenseIsStored(): void
     {
@@ -213,7 +213,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      * @dataProvider gatewayFeeDataProvider
      */
     public function testGetPlatformFeePercentageReturnsFeeWhenLicenseIsActive($fee): void
@@ -233,7 +233,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testGetPlatformFeePercentageReturnsZeroWhenLicenseIsActiveAndOptionIsMissing(): void
     {
@@ -251,7 +251,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      * @dataProvider gatewayFeeDataProvider
      */
     public function testGetPlatformFeePercentageReturnsDefaultFeeWhenNoLicensesAreActive(): void
@@ -271,7 +271,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      * @dataProvider gatewayFeeDataProvider
      */
     public function testGetPlatformFeePercentageReturnsDefaultFeeWhenNoLicensesAreFound(): void
@@ -282,7 +282,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testHasPlatformFeePercentageShouldReturnTrue(): void
     {
@@ -301,7 +301,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testHasPlatformFeePercentageShouldReturnTrueWhenLicenseIsExpired(): void
     {
@@ -320,7 +320,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testFindLowestPlatformFeePercentageFromLicensesReturnsNullWhenNoLicensesAreFound(): void
     {
@@ -328,7 +328,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testFindLowestPlatformFeePercentageFromLicensesReturnsNullWhenNoLicensesAreActive(): void
     {
@@ -348,7 +348,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testFindLowestPlatformFeePercentageFromLicensesReturnsLowestFeeWhenMultipleLicensesAreFound(): void
     {
@@ -374,7 +374,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testFindLowestPlatformFeePercentageFromLicensesReturnsZeroWhenGatewayFeeIsZero(): void
     {
@@ -396,7 +396,7 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function gatewayFeeDataProvider(): array
     {

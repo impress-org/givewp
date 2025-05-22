@@ -108,7 +108,7 @@ class RunMigration extends Endpoint
         );
 
         /**
-         * @unreleased
+         * @since 4.3.0
          */
         register_rest_route(
             'give-api/v2',
@@ -273,7 +273,7 @@ class RunMigration extends Endpoint
 
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function rollbackMigration(WP_REST_Request $request): WP_REST_Response
     {

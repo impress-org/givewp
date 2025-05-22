@@ -21,12 +21,12 @@ class ApplicationFee
     protected AccountDetailModel $accountDetail;
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     protected LicenseRepository $licenseRepository;
 
     /**
-     * @unreleased added LicenseRepository
+     * @since 4.3.0 added LicenseRepository
      * @since 2.10.2
      */
     public function __construct(AccountDetailModel $accountDetail)
@@ -38,7 +38,7 @@ class ApplicationFee
     /**
      * Returns true or false based on whether the Stripe fee should be applied or not
      *
-     * @unreleased updated logic to check license for gateway fee
+     * @since 4.3.0 updated logic to check license for gateway fee
      * @since 2.10.2
      */
     public static function canAddFee(): bool

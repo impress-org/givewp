@@ -9,7 +9,7 @@ const LabelTemplate = formTemplates.layouts.fieldLabel;
 const ErrorMessageTemplate = formTemplates.layouts.fieldError;
 
 /**
- * @unreleased include aria-required attribute in all required fields.
+ * @since 4.3.0 include aria-required attribute in all required fields.
  */
 export default function registerFieldAndBuildProps(
     field: Field,

@@ -125,7 +125,7 @@ class Give_Cache_Setting {
 	/**
 	 * Setup
 	 *
-     * @unreleased use init hook for currency and gateway list
+     * @since 4.3.0 use init hook for currency and gateway list
 	 * @since  2.4.0
 	 * @access private
 	 */
