@@ -46,10 +46,14 @@ class DonorsQuery
      * @unreleased
      */
     public function whereDonorsHaveDonations(
-        string $mode = 'live',
+        string $mode = '',
         int $campaignId = 0,
         bool $excludeAnonymousDonors = true
     ): self {
+        if (empty($mode)) {
+            $mode = give_is_test_mode() ? 'test' : 'live';
+        }
+
         $this->query->join(function (JoinQueryBuilder $builder) use ($mode) {
             // The donationmeta1.donation_id should be used in other "donationmeta" joins to make sure we are retrieving data from the proper donation
             $builder->innerJoin('give_donationmeta', 'donationmeta1')
