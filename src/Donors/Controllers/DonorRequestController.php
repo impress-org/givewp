@@ -3,6 +3,7 @@
 namespace Give\Donors\Controllers;
 
 use Exception;
+use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -39,7 +40,14 @@ class DonorRequestController
             ->includeSensitiveData($includeSensitiveData)
             ->exports();
 
-        return new WP_REST_Response($data);
+        $response = new WP_REST_Response($data);
+
+        $response->add_link(
+            'donations',
+            add_query_arg('donorId', $donor->id, rest_url(DonationRoute::NAMESPACE . '/' . DonationRoute::DONATIONS))
+        );
+
+        return $response;
     }
 
     /**
@@ -51,7 +59,6 @@ class DonorRequestController
         $perPage = $request->get_param('per_page');
         $sortColumn = $this->getSortColumn($request->get_param('sort'));
         $sortDirection = $request->get_param('direction');
-        $mode = $request->get_param('mode');
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
@@ -61,18 +68,18 @@ class DonorRequestController
         // Donors only can be donors if they have donations associated with them
         if ($request->get_param('onlyWithDonations')) {
             $query
-                ->join(function (JoinQueryBuilder $builder) use ($mode) {
+                ->join(function (JoinQueryBuilder $builder) {
                     // The donationmeta1.donation_id should be used in other "donationmeta" joins to make sure we are retrieving data from the proper donation
                     $builder
                         ->innerJoin('give_donationmeta', 'donationmeta1')
-                        ->on('donationmeta1.meta_key', DonationMetaKeys::DONOR_ID)
+                        ->on('donationmeta1.meta_key', DonationMetaKeys::DONOR_ID, true)
                         ->andOn('donationmeta1.meta_value', 'ID', false);
 
                     // Include only current payment "mode"
                     $builder
                         ->innerJoin('give_donationmeta', 'donationmeta2')
-                        ->on('donationmeta2.meta_key', DonationMetaKeys::MODE)
-                        ->andOn('donationmeta2.meta_value', $mode)
+                        ->on('donationmeta2.meta_key', DonationMetaKeys::MODE, true)
+                        ->andOn('donationmeta2.meta_value', give_is_test_mode() ? 'test' : 'live', true)
                         ->andOn('donationmeta2.donation_id', 'donationmeta1.donation_id', false);
                 });
 
@@ -83,7 +90,7 @@ class DonorRequestController
                     ->join(function (JoinQueryBuilder $builder) use ($campaignId) {
                         $builder
                             ->innerJoin('give_donationmeta', 'donationmeta3')
-                            ->on('donationmeta3.meta_key', DonationMetaKeys::CAMPAIGN_ID)
+                            ->on('donationmeta3.meta_key', DonationMetaKeys::CAMPAIGN_ID, true)
                             ->andOn('donationmeta3.meta_value', $campaignId, false)
                             ->andOn('donationmeta3.donation_id', 'donationmeta1.donation_id', false);
                     });
@@ -95,7 +102,7 @@ class DonorRequestController
                     ->join(function (JoinQueryBuilder $builder) {
                         $builder
                             ->innerJoin('give_donationmeta', 'donationmeta4')
-                            ->on('donationmeta4.meta_key', DonationMetaKeys::ANONYMOUS)
+                            ->on('donationmeta4.meta_key', DonationMetaKeys::ANONYMOUS, true)
                             ->andOn('donationmeta4.meta_value', 0, false)
                             ->andOn('donationmeta4.donation_id', 'donationmeta1.donation_id', false);
                     });
@@ -173,6 +180,20 @@ class DonorRequestController
 
         if ( ! $donor) {
             return new WP_REST_Response(__('Donor not found', 'give'), 404);
+        }
+
+        $nonEditableFields = [
+            'id',
+            'userId',
+            'createdAt',
+        ];
+
+        foreach ($request->get_params() as $key => $value) {
+            if ( ! in_array($key, $nonEditableFields)) {
+                if ($donor->hasProperty($key)) {
+                    $donor->$key = $value;
+                }
+            }
         }
 
         if ($donor->isDirty()) {
