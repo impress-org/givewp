@@ -68,11 +68,6 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @unreleased
-     */
-    protected static bool $isAnonymous;
-
-    /**
      * @since 2.19.6
      *
      * @param $id
@@ -244,20 +239,13 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public function isAnonymous(): bool
     {
-        if ( ! is_null(static::$isAnonymous)) {
-            return static::$isAnonymous;
-        }
-
         if ($this->donations) {
             foreach ($this->donations as $donation) {
                 if ($donation->anonymous) {
-                    static::$isAnonymous = true;
                     return true;
                 }
             }
         }
-
-        static::$isAnonymous = false;
 
         return false;
     }
