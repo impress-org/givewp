@@ -232,8 +232,25 @@ class RegisterDonorRoutes
                     'type' => 'integer',
                     'description' => esc_html__('Donor ID', 'give'),
                 ],
+                'name' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor name', 'give'),
+                ],
+                'firstName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor first name', 'give'),
+                ],
+                'lastName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor last name', 'give'),
+                ],
+                'email' => [
+                    'type' => 'email',
+                    'description' => esc_html__('Donor email', 'give'),
+                    'format' => 'email'
+                ],
             ],
-            'required' => ['id'],
+            'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
         ];
     }
 }
