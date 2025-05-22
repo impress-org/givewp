@@ -1,0 +1,211 @@
+/**
+ * External Dependencies
+ */
+import {useEffect, useState} from 'react';
+import {JSONSchemaType} from 'ajv';
+import {ajvResolver} from '@hookform/resolvers/ajv';
+import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
+
+/**
+ * WordPress Dependencies
+ */
+import {__} from '@wordpress/i18n';
+import {useDispatch} from '@wordpress/data';
+import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * Internal Dependencies
+ */
+import {Spinner as GiveSpinner} from '@givewp/components';
+import TabsRouter from './Tabs/Router';
+import TabList from './Tabs/TabList';
+import {BreadcrumbSeparatorIcon, DotsIcons} from './Icons';
+import NotificationPlaceholder from './Notifications';
+import {AdminDetailsPageProps} from './types';
+import styles from './AdminDetailsPage.module.scss';
+import ErrorBoundary from './ErrorBoundary';
+import TabPanels from './Tabs/TabPanels';
+import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
+
+import './store';
+
+export default function AdminDetailsPage<T extends Record<string, any>>({
+    objectId,
+    objectType,
+    objectTypePlural,
+    useObjectEntityRecord,
+    resetForm,
+    shouldSaveForm,
+    breadcrumbUrl,
+    StatusBadge,
+    PrimaryActionButton = DefaultPrimaryActionButton,
+    SecondaryActionButton,
+    ContextMenuItems,
+    tabDefinitions,
+    children,
+}: AdminDetailsPageProps<T>) {
+    const [resolver, setResolver] = useState({});
+    const [isSaving, setIsSaving] = useState(false);
+    const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
+
+    const dispatch = useDispatch(`givewp/admin-details-page-notifications`);
+
+    useEffect(() => {
+        apiFetch({
+            path: `/givewp/v3/${objectTypePlural}/${objectId}`,
+            method: 'OPTIONS',
+        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
+            setResolver({
+                resolver: ajvResolver(schema),
+            });
+        });
+    }, []);
+
+    const {entity, hasResolved, save, edit} = useObjectEntityRecord(objectId);
+
+    const methods = useForm<T>({
+        mode: 'onBlur',
+        shouldFocusError: true,
+        ...resolver,
+    });
+
+    const {formState, handleSubmit, reset} = methods;
+
+    // Close context menu when clicked outside
+    useEffect(() => {
+        document.addEventListener('click', (e) => {
+            if (showContextMenu) {
+                return;
+            }
+
+            if (
+                e.target instanceof HTMLElement &&
+                !e.target.closest(`.${styles.donorButtonDots}`) &&
+                !e.target.closest(`.${styles.contextMenu}`)
+            ) {
+                setShowContextMenu(false);
+                (document.querySelector(`.${styles.donorButtonDots}`) as HTMLElement)?.blur();
+            }
+        });
+    }, []);
+
+    // Set default values when entity is loaded
+    useEffect(() => {
+        if (hasResolved) {
+            if (resetForm) {
+                resetForm(reset);
+            } else {
+                reset(entity);
+            }
+        }
+    }, [hasResolved]);
+
+    const onSubmit: SubmitHandler<T> = async (data) => {
+        const shouldSave = shouldSaveForm ? shouldSaveForm(formState.isDirty, data) : formState.isDirty;
+
+        if (shouldSave) {
+            setIsSaving(true);
+
+            edit(data);
+
+            try {
+                const response = await save();
+
+                setIsSaving(false);
+                reset(response);
+
+                dispatch.addSnackbarNotice({
+                    id: `save-success`,
+                    content: __(`${objectType.charAt(0).toUpperCase() + objectType.slice(1)} updated`, 'give'),
+                });
+            } catch (err) {
+                console.error(err);
+                setIsSaving(false);
+
+                dispatch.addSnackbarNotice({
+                    id: `save-error`,
+                    type: 'error',
+                    content: __(`${objectType.charAt(0).toUpperCase() + objectType.slice(1)} update failed`, 'give'),
+                });
+            }
+        }
+    };
+
+    if (!hasResolved) {
+        return (
+            <div className={styles.loadingContainer}>
+                <div className={styles.loadingContainerContent}>
+                    <GiveSpinner />
+                    <div className={styles.loadingContainerContentText}>{__(`Loading ${objectType}...`, 'give')}</div>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <ErrorBoundary>
+            <FormProvider {...methods}>
+                <form id={'givewp-details-form'} onSubmit={handleSubmit(onSubmit)}>
+                    <article className={`interface-interface-skeleton__content ${styles.page}`}>
+                        <TabsRouter tabDefinitions={tabDefinitions}>
+                            <header className={styles.pageHeader}>
+                                <div className={styles.breadcrumb}>
+                                    <a href={breadcrumbUrl}>{objectTypePlural.charAt(0).toUpperCase() + objectTypePlural.slice(1)}</a>
+                                    <BreadcrumbSeparatorIcon />
+                                    <span>{entity.name}</span>
+                                </div>
+                                <div className={styles.flexContainer}>
+                                    <div className={styles.flexRow}>
+                                        <h1 className={styles.pageTitle}>{entity.name}</h1>
+                                        {StatusBadge && <StatusBadge />}
+                                    </div>
+
+                                    <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
+                                        {SecondaryActionButton && (
+                                            <SecondaryActionButton
+                                                className={`button button-tertiary ${styles.secondaryActionButton}`}
+                                            />
+                                        )}
+
+                                        <PrimaryActionButton
+                                            isSaving={isSaving}
+                                            formState={formState}
+                                            className={`button button-primary ${styles.primaryActionButton}`}
+                                        />
+
+                                        {ContextMenuItems && (
+                                            <>
+                                                <button
+                                                    className={`button button-secondary ${styles.contextMenuButton}`}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setShowContextMenu(!showContextMenu);
+                                                    }}
+                                                >
+                                                    <DotsIcons />
+                                                </button>
+
+                                                {!isSaving && showContextMenu && (
+                                                    <div className={styles.contextMenu}>
+                                                        <ContextMenuItems className={styles.contextMenuItem} />
+                                                    </div>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                                <TabList tabDefinitions={tabDefinitions} />
+                            </header>
+
+                            <TabPanels tabDefinitions={tabDefinitions} />
+
+                            {children}
+                        </TabsRouter>
+                    </article>
+                </form>
+
+                <NotificationPlaceholder type="snackbar" />
+            </FormProvider>
+        </ErrorBoundary>
+    );
+}
