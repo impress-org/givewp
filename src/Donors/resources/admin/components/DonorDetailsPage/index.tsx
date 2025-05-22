@@ -1,30 +1,25 @@
-import {__} from '@wordpress/i18n';
-import {useEffect, useState} from '@wordpress/element';
-import {useDispatch} from '@wordpress/data';
-import apiFetch from '@wordpress/api-fetch';
-import {JSONSchemaType} from 'ajv';
-import {ajvResolver} from '@hookform/resolvers/ajv';
-import {Donor} from '../types';
-import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {Spinner as GiveSpinner} from '@givewp/components';
-import {Spinner} from '@wordpress/components';
-import TabsRouter from './Tabs/Router';
-import TabList from './Tabs/TabList';
-import {BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} from '../Icons';
-import NotificationPlaceholder from '../Notifications';
+/**
+ * External Dependencies
+ */
+import { useState } from 'react';
 import cx from 'classnames';
-import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/utils';
 
+/**
+ * WordPress Dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal Dependencies
+*/
+import { TrashIcon, ViewIcon } from '@givewp/components/AdminDetailsPage/Icons';
+import AdminDetailsPage from '@givewp/components/AdminDetailsPage';
+import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
+import { getDonorOptionsWindowData, useDonorEntityRecord } from '@givewp/donors/utils';
 import styles from './DonorDetailsPage.module.scss';
-import DonorDetailsErrorBoundary from './Components/DonorDetailsErrorBoundary';
-import TabPanels from './Tabs/TabPanels';
+import tabDefinitions from './Tabs/definitions';
 
-interface Show {
-    contextMenu?: boolean;
-    confirmationModal?: boolean;
-}
-
-const StatusBadge = ({status}: {status: string}) => {
+const StatusBadge = ({ status }: { status: string }) => {
     const statusMap = {
         current: __('Current', 'give'),
         prospective: __('Prospective', 'give'),
@@ -47,205 +42,73 @@ const StatusBadge = ({status}: {status: string}) => {
     );
 };
 
-export default function DonorDetailsPage({donorId}) {
-    const {adminUrl} = getDonorOptionsWindowData();
-    const [resolver, setResolver] = useState({});
-    const [isSaving, setIsSaving] = useState(false);
-    const [show, _setShowValue] = useState<Show>({
-        contextMenu: false,
-        confirmationModal: false,
-    });
+export default function DonorDetailsPage({ donorId }) {
+    const { adminUrl } = getDonorOptionsWindowData();
+    const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false);
 
-    const dispatch = useDispatch('givewp/donor-notifications');
-
-    const setShow = (data: Show) => {
-        _setShowValue((prevState) => {
-            return {
-                ...prevState,
-                ...data,
-            };
-        });
+    const useObjectEntityRecord = (donorId: number) => {
+        const { donor: entity, ...rest } = useDonorEntityRecord(donorId);
+        return { entity, ...rest };
     };
 
-    useEffect(() => {
-        apiFetch({
-            path: `/givewp/v3/donors/${donorId}`,
-            method: 'OPTIONS',
-        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
-            setResolver({
-                resolver: ajvResolver(schema),
-            });
-        });
-    }, []);
+    const { entity: donor } = useObjectEntityRecord(donorId);
 
-    const {donor, hasResolved, save, edit} = useDonorEntityRecord(donorId);
-
-    const methods = useForm<Donor>({
-        mode: 'onBlur',
-        shouldFocusError: true,
-        ...resolver,
-    });
-
-    const {formState, handleSubmit, reset, setValue} = methods;
-
-    // Close context menu when clicked outside
-    useEffect(() => {
-        document.addEventListener('click', (e) => {
-            if (show.contextMenu) {
-                return;
-            }
-
-            if (
-                e.target instanceof HTMLElement &&
-                !e.target.closest(`.${styles.donorButtonDots}`) &&
-                !e.target.closest(`.${styles.contextMenu}`)
-            ) {
-                setShow({contextMenu: false});
-                (document.querySelector(`.${styles.donorButtonDots}`) as HTMLElement)?.blur();
-            }
-        });
-    }, []);
-
-    // Set default values when donor is loaded
-    useEffect(() => {
-        if (hasResolved) {
-            const {userId, ...rest} = donor;
-            // exclude userId from default values if null
-            if (userId > 0) {
-                reset({...donor, userId});
-            } else {
-                reset({...rest});
-            }
-        }
-    }, [hasResolved]);
-
-    const onSubmit: SubmitHandler<Donor> = async (data) => {
-        const shouldSave = formState.isDirty;
-
-        if (shouldSave) {
-            setIsSaving(true);
-
-            edit(data);
-
-            try {
-                const response = await save();
-
-                setIsSaving(false);
-                reset(response);
-
-                dispatch.addSnackbarNotice({
-                    id: `save-success`,
-                    content: __('Donor updated', 'give'),
-                });
-            } catch (err) {
-                console.error(err);
-                setIsSaving(false);
-
-                dispatch.addSnackbarNotice({
-                    id: `save-error`,
-                    type: 'error',
-                    content: __('Donor update failed', 'give'),
-                });
-            }
-        }
-    };
-
-    if (!hasResolved) {
+    const SendEmailButton = ({ className }: { className: string }) => {
         return (
-            <div className={styles.loadingContainer}>
-                <div className={styles.loadingContainerContent}>
-                    <GiveSpinner />
-                    <div className={styles.loadingContainerContentText}>{__('Loading donor...', 'give')}</div>
-                </div>
-            </div>
+            <button
+                type="button"
+                className={className}
+                onClick={() => { }} // TODO: Add email sending logic
+            >
+                {__('Send Email', 'give')}
+            </button>
         );
-    }
+    };
+
+    const ContextMenuItems = ({ className }: { className: string }) => {
+        return (
+            <>
+                {donor.wpUserPermalink && (
+                    <a
+                        href={donor.wpUserPermalink}
+                        aria-label={__('View WordPress profile', 'give')}
+                        className={className}
+                    >
+                        <ViewIcon /> {__('View WordPress profile', 'give')}
+                    </a>
+                )}
+                <a
+                    href="#"
+                    className={cx(className, styles.archive)}
+                    onClick={() => setShowConfirmationDialog(true)}
+                >
+                    <TrashIcon /> {__('Delete Donor', 'give')}
+                </a>
+            </>
+        );
+    };
 
     return (
-        <DonorDetailsErrorBoundary>
-            <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <article className={`interface-interface-skeleton__content ${styles.page}`}>
-                        <TabsRouter>
-                            <header className={styles.pageHeader}>
-                                <div className={styles.breadcrumb}>
-                                    <a href={`${adminUrl}edit.php?post_type=give_forms&page=give-donors`}>
-                                        {__('Donors', 'give')}
-                                    </a>
-                                    <BreadcrumbSeparatorIcon />
-                                    <span>{donor.name}</span>
-                                </div>
-                                <div className={styles.flexContainer}>
-                                    <div className={styles.flexRow}>
-                                        <h1 className={styles.pageTitle}>{donor.name}</h1>
-                                        <StatusBadge status={donor.status} />
-                                    </div>
-
-                                    <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                                        <button
-                                            type="button"
-                                            className={`button button-tertiary ${styles.sendDonorEmailButton}`}
-                                            onClick={() => {}} // TODO: Add email sending logic
-                                        >
-                                            {__('Send Email', 'give')}
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            disabled={!formState.isDirty}
-                                            className={`button button-primary ${styles.updateDonorButton}`}
-                                        >
-                                            {isSaving ? (
-                                                <>
-                                                    {__('Saving changes', 'give')}
-                                                    <Spinner />
-                                                </>
-                                            ) : (
-                                                __('Save changes', 'give')
-                                            )}
-                                        </button>
-
-                                        <button
-                                            className={`button button-secondary ${styles.donorButtonDots}`}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setShow({contextMenu: !show.contextMenu});
-                                            }}
-                                        >
-                                            <DotsIcons />
-                                        </button>
-
-                                        {!isSaving && show.contextMenu && (
-                                            <div className={styles.contextMenu}>
-                                                {donor.wpUserPermalink && (
-                                                    <a
-                                                        href={donor.wpUserPermalink}
-                                                        aria-label={__('View WordPress profile', 'give')}
-                                                        className={styles.contextMenuItem}
-                                                    >
-                                                        <ViewIcon /> {__('View WordPress profile', 'give')}
-                                                    </a>
-                                                )}
-                                                <a
-                                                    href="#"
-                                                    className={cx(styles.contextMenuItem, styles.archive)}
-                                                    onClick={() => setShow({confirmationModal: true})}
-                                                >
-                                                    <TrashIcon /> {__('Delete Donor', 'give')}
-                                                </a>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                                <TabList />
-                            </header>
-
-                            <TabPanels />
-                        </TabsRouter>
-                    </article>
-                </form>
-
-                <NotificationPlaceholder type="snackbar" />
-            </FormProvider>
-        </DonorDetailsErrorBoundary>
+        <AdminDetailsPage
+            objectId={donorId}
+            objectType="donor"
+            objectTypePlural="donors"
+            useObjectEntityRecord={useObjectEntityRecord}
+            tabDefinitions={tabDefinitions}
+            breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donors`}
+            StatusBadge={() => <StatusBadge status={donor.status} />}
+            SecondaryActionButton={SendEmailButton}
+            ContextMenuItems={ContextMenuItems}
+        >
+            <ConfirmationDialog
+                title={__('Delete Donor', 'give')}
+                actionLabel={__('Delete Donor', 'give')}
+                isOpen={showConfirmationDialog}
+                handleClose={() => setShowConfirmationDialog(false)}
+                handleConfirm={() => { }}
+            >
+                {__('Are you sure you want to delete this donor?', 'give')}
+            </ConfirmationDialog>
+        </AdminDetailsPage>
     );
 }

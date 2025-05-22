@@ -1,9 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import OverviewTab from './Overview';
 import ProfileTab from './Profile';
-import { DonorDetailsTab } from '../types';
+import { Tab } from '@givewp/components/AdminDetailsPage/types';
 
-const donorDetailsTabs: DonorDetailsTab[] = [
+const donorDetailsTabs: Tab[] = [
     {
         id: 'overview',
         title: __('Overview', 'give'),
