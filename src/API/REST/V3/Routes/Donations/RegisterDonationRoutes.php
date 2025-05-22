@@ -14,10 +14,7 @@ use WP_REST_Server;
  */
 class RegisterDonationRoutes
 {
-    /**
-     * @var DonationRequestController
-     */
-    protected $donationRequestController;
+    protected DonationRequestController $donationRequestController;
 
     /**
      * @since 4.0.0
@@ -130,11 +127,6 @@ class RegisterDonationRoutes
                         'type' => 'string',
                         'default' => 'DESC',
                         'enum' => ['ASC', 'DESC'],
-                    ],
-                    'mode' => [
-                        'type' => 'string',
-                        'default' => 'live',
-                        'enum' => ['live', 'test'],
                     ],
                     'campaignId' => [
                         'type' => 'integer',
