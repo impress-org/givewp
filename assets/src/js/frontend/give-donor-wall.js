@@ -81,9 +81,19 @@ class GiveDonorWall {
 
 			// Add donor comment.
 			if ( res.html.length ) {
-				parent
-					.getElementsByClassName( 'give-grid' )[ 0 ]
-					.insertAdjacentHTML( 'beforeend', res.html );
+				const gridContainer = parent.getElementsByClassName( 'give-grid' )[ 0 ];
+				const initialItemCount = gridContainer.children.length;
+				
+				gridContainer.insertAdjacentHTML( 'beforeend', res.html );
+				
+				const firstNewItem = gridContainer.children[initialItemCount];
+				
+				// Focus on the first new item if it exists
+				if (firstNewItem) {
+					firstNewItem.setAttribute('tabindex', '-1');
+					firstNewItem.focus();
+					firstNewItem.setAttribute('aria-label', 'New donor content loaded');
+				}
 			}
 
 			// Update data-shortcode attribute.
