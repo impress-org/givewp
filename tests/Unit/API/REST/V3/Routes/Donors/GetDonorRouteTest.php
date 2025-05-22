@@ -324,7 +324,7 @@ class GetDonorRouteTest extends RestApiTestCase
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertNull($data[$property]);
+            $this->assertArrayNotHasKey($property, $data);
         }
     }
 
