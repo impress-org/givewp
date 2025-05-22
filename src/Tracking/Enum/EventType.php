@@ -20,4 +20,5 @@ final class EventType extends Enum
     const DONATION_METRICS = 'donation-metrics';
     const DONATION_FORM_UPDATED = 'donation-form-updated';
     const SITE_UPDATED = 'site-updated';
+    const CAMPAIGN_UPDATED = 'campaign-updated';
 }
