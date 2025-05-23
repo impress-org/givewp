@@ -83,21 +83,21 @@ class GetDonorRouteTest extends RestApiTestCase
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params([
-            '_embed' => true,
+            '_embed' => 'statistics',
         ]);
 
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
-        $links = $response->get_links();
+        //The $response->get_data() method do not include _embedded data
+        $data = $this->responseToData($response, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donor->id, $data['id']);
-        /*$this->assertArrayHasKey('_embedded', $data);
+        $this->assertArrayHasKey('_embedded', $data);
         $this->assertArrayHasKey('statistics', $data['_embedded']);
         $this->assertIsArray($data['_embedded']['statistics']);
-        $this->assertNotEmpty($data['_embedded']['statistics'][0]);*/
+        $this->assertNotEmpty($data['_embedded']['statistics'][0]);
     }
 
 
