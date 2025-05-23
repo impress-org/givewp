@@ -81,6 +81,62 @@ class GetDonorsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased
+     */
+    public function testGetDonorsShouldReturnSelfLink()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _links data
+        $data = $this->responseToData($response, true);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data[0]['id']);
+        $this->assertArrayHasKey('_links', $data[0]);
+        $this->assertArrayHasKey('self', $data[0]['_links']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonorsShouldReturnStatisticsLink()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _links data
+        $data = $this->responseToData($response, true);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data[0]['id']);
+        $this->assertArrayHasKey('_links', $data[0]);
+        $this->assertArrayHasKey('statistics', $data[0]['_links']);
+    }
+
+    /**
      * @since 4.0.0
      *
      * @throws Exception
