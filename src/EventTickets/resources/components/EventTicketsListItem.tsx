@@ -3,6 +3,9 @@ import {__} from '@wordpress/i18n';
 import {plus, reset as minus} from '@wordpress/icons';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 
+/**
+ * @Unreleased include proper labeling for accessibility. update title to <p> tag.
+ */
 export default function EventTicketsListItem({ticketType, currency, currencyRate, selectedTickets, handleSelect}) {
     const formatter = useCurrencyFormatter(currency);
     const ticketPrice =
