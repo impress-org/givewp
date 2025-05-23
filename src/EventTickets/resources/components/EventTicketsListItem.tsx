@@ -33,12 +33,21 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                                 <Icon icon={plus} />
                             </button>
                         </div>
-                        <p className={'givewp-event-tickets__tickets__ticket__quantity__availability'}>
+                        <p 
+                            className={'givewp-event-tickets__tickets__ticket__quantity__availability'}
+                            role="status"
+                            aria-live="polite"
+                            aria-label={`${remainingTickets} ${__('tickets remaining', 'give')}`}
+                        >
                             {remainingTickets} {__('remaining', 'give')}
                         </p>
                     </>
                 ) : (
-                    <span className={'givewp-event-tickets__tickets__ticket__quantity__sold-out'}>
+                    <span 
+                        className={'givewp-event-tickets__tickets__ticket__quantity__sold-out'}
+                        role="status"
+                        aria-live="polite"
+                    >
                         {__('Sold out', 'give')}
                     </span>
                 )}
