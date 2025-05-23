@@ -25,6 +25,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased Load donors route
      * @since 4.2.0
      */
     public function boot()
