@@ -25,7 +25,10 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                 {remainingTickets > 0 ? (
                     <>
                         <div className={'givewp-event-tickets__tickets__ticket__quantity__input'}>
-                            <button onClick={handleButtonClick(selectedTickets - 1)}>
+                            <button 
+                                onClick={handleButtonClick(selectedTickets - 1)}
+                                aria-label={__('Decrease quantity of', 'give') + ' ' + ticketType.title}
+                            >
                                 <Icon icon={minus} />
                             </button>
                             <input 
@@ -33,7 +36,10 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                                 value={selectedTickets} 
                                 aria-label={__('Ticket quantity', 'give')}
                             />
-                            <button onClick={handleButtonClick(selectedTickets + 1)}>
+                            <button 
+                                onClick={handleButtonClick(selectedTickets + 1)}
+                                aria-label={__('Increase quantity of', 'give') + ' ' + ticketType.title}
+                            >
                                 <Icon icon={plus} />
                             </button>
                         </div>
