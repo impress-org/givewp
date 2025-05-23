@@ -75,6 +75,58 @@ class GetDonorRouteTest extends RestApiTestCase
     /**
      * @unreleased
      */
+    public function testGetDonorShouldReturnSelfLink()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params([
+            '_embed' => 'statistics',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _links data
+        $data = $this->responseToData($response, true);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data['id']);
+        $this->assertArrayHasKey('_links', $data);
+        $this->assertArrayHasKey('self', $data['_links']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonorShouldReturnStatisticsLink()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params([
+            '_embed' => 'statistics',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _links data
+        $data = $this->responseToData($response, true);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data['id']);
+        $this->assertArrayHasKey('_links', $data);
+        $this->assertArrayHasKey('statistics', $data['_links']);
+    }
+
+    /**
+     * @unreleased
+     */
     public function testGetDonorShouldEmbedStatistics()
     {
         /** @var  Donor $donor */
@@ -99,7 +151,6 @@ class GetDonorRouteTest extends RestApiTestCase
         $this->assertIsArray($data['_embedded']['statistics']);
         $this->assertNotEmpty($data['_embedded']['statistics'][0]);
     }
-
 
     /**
      * @throws Exception
