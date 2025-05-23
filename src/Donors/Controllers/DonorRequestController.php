@@ -2,6 +2,7 @@
 
 namespace Give\Donors\Controllers;
 
+use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\DonorsQuery;
@@ -34,7 +35,8 @@ class DonorRequestController
      */
     public function getDonor(WP_REST_Request $request)
     {
-        $donor = Donor::find($request->get_param('id'));
+        $donorId = $request->get_param('id');
+        $donor = Donor::find($donorId);
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
@@ -42,7 +44,34 @@ class DonorRequestController
             return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
         }
 
-        return new WP_REST_Response($this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode));
+        $data = $this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode);
+
+        $selfUrl = rest_url(DonationRoute::NAMESPACE . "/donors/$donorId");
+        $statisticsUrl = $selfUrl . '/statistics';
+
+        $links = [
+            'self' => ['href' => $selfUrl],
+            'statistics' => [
+                'href' => $statisticsUrl,
+                'embeddable' => true,
+            ],
+        ];
+
+        $embed = $request->get_param('_embed');
+        $shouldEmbedStatistics = ($embed === true || (is_string($embed) && false !== strpos($embed, 'statistics')));
+
+        if ($shouldEmbedStatistics) {
+            $stats = $this->getDonorStatistics($request)->get_data();
+
+            $data['_embedded'] = [
+                'statistics' => [$stats],
+            ];
+        }
+
+        $response = new WP_REST_Response($data);
+        $response->add_links($links);
+
+        return $response;
     }
 
     /**

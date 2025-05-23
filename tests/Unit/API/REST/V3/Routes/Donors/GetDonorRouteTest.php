@@ -4,14 +4,14 @@ namespace Unit\API\REST\V3\Routes\Donors;
 
 use Exception;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
-use Give\API\REST\V3\Routes\Donors\RegisterDonorRoutes;
+use Give\API\REST\V3\Routes\Donors\DonorRestController;
+use Give\API\REST\V3\Routes\Donors\DonorStatisticsRestController;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -26,7 +26,13 @@ class GetDonorRouteTest extends RestApiTestCase
      */
     public function setUp(): void
     {
-        Hooks::addAction('rest_api_init', RegisterDonorRoutes::class);
+        add_action('rest_api_init', function () {
+            $donorRestController = new DonorRestController();
+            $donorRestController->register_routes();
+
+            $donorStatisticsRestController = new DonorStatisticsRestController();
+            $donorStatisticsRestController->register_routes();
+        });
 
         parent::setUp();
     }
@@ -82,6 +88,34 @@ class GetDonorRouteTest extends RestApiTestCase
             'totalAmountDonated' => $donor->totalAmountDonated->toArray(),
             'totalNumberOfDonations' => $donor->totalNumberOfDonations,
         ], $data);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonorShouldEmbedStatistics()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params([
+            '_embed' => true,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+        $links = $response->get_links();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data['id']);
+        /*$this->assertArrayHasKey('_embedded', $data);
+        $this->assertArrayHasKey('statistics', $data['_embedded']);
+        $this->assertIsArray($data['_embedded']['statistics']);
+        $this->assertNotEmpty($data['_embedded']['statistics'][0]);*/
     }
 
 
