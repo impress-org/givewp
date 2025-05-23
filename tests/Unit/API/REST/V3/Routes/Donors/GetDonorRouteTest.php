@@ -82,9 +82,6 @@ class GetDonorRouteTest extends RestApiTestCase
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-        $request->set_query_params([
-            '_embed' => 'statistics',
-        ]);
 
         $response = $this->dispatchRequest($request);
 
@@ -108,9 +105,6 @@ class GetDonorRouteTest extends RestApiTestCase
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-        $request->set_query_params([
-            '_embed' => 'statistics',
-        ]);
 
         $response = $this->dispatchRequest($request);
 
