@@ -28,6 +28,19 @@ export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect,
     const [isLoading, setLoading] = useState<boolean>(false);
     const [isEntering, setEntering] = useState<boolean>(false);
 
+    useEffect(() => {
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key === 'Escape' && isOpen) {
+                closeModal();
+            }
+        };
+
+        document.addEventListener('keydown', handleEscape);
+        return () => {
+            document.removeEventListener('keydown', handleEscape);
+        };
+    }, [isOpen]);
+
     // Preload the iframe document
     useEffect(() => {
         const selector = `link[rel="preload"][href="${dataSrcUrl}"][as="document"]`;
