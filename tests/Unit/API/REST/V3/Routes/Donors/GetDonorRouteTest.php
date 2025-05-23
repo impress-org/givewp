@@ -3,7 +3,7 @@
 namespace Unit\API\REST\V3\Routes\Donors;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
@@ -37,7 +37,7 @@ class GetDonorRouteTest extends RestApiTestCase
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -80,7 +80,7 @@ class GetDonorRouteTest extends RestApiTestCase
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params([
             '_embed' => true,
@@ -109,7 +109,7 @@ class GetDonorRouteTest extends RestApiTestCase
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
@@ -131,7 +131,7 @@ class GetDonorRouteTest extends RestApiTestCase
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
@@ -170,7 +170,7 @@ class GetDonorRouteTest extends RestApiTestCase
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -215,7 +215,7 @@ class GetDonorRouteTest extends RestApiTestCase
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -252,7 +252,7 @@ class GetDonorRouteTest extends RestApiTestCase
 
         $donor = $this->createAnonymousDonorWithDonation();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -290,7 +290,7 @@ class GetDonorRouteTest extends RestApiTestCase
 
         $donor = $this->createAnonymousDonorWithDonation();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -316,7 +316,7 @@ class GetDonorRouteTest extends RestApiTestCase
 
         $donor = $this->createAnonymousDonorWithDonation();
 
-        $route = '/' . DonationRoute::NAMESPACE . '/donors/' . $donor->id;
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [

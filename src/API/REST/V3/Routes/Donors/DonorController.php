@@ -134,7 +134,7 @@ class DonorController extends WP_REST_Controller
 
                 return urlencode($value);
             }),
-            rest_url(DonorRoute::DONORS)
+            rest_url(DonorRoute::BASE)
         );
 
         if ($page > 1) {
@@ -160,7 +160,7 @@ class DonorController extends WP_REST_Controller
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
     {
-        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $item['id']));
+        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $request->get_param('id')));
         $links = [
             'self' => ['href' => $self_url],
             'statistics' => [

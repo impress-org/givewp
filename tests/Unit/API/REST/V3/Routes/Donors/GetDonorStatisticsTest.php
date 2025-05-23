@@ -3,7 +3,7 @@
 namespace Unit\API\REST\V3\Routes\Donors;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\Models\Donor;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -37,7 +37,7 @@ class GetDonorStatisticsTest extends RestApiTestCase
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 
-        $route = '/' . DonationRoute::NAMESPACE . "/donors/$donor->id/statistics";
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . "/$donor->id/statistics";
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
