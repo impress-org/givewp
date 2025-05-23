@@ -11,7 +11,7 @@ use WP_REST_Server;
 /**
  * @unreleased
  */
-class DonorStatisticsRestController extends WP_REST_Controller
+class DonorStatisticsController extends WP_REST_Controller
 {
     /**
      * @unreleased

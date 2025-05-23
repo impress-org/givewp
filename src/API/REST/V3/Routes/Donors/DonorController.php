@@ -19,7 +19,7 @@ use WP_REST_Server;
  * @unreleased Extends WP_REST_Controller class and rename methods
  * @since 4.0.0
  */
-class DonorRestController extends WP_REST_Controller
+class DonorController extends WP_REST_Controller
 {
     /**
      * @since 4.0.0

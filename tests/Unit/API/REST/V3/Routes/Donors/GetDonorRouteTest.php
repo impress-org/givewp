@@ -4,8 +4,6 @@ namespace Unit\API\REST\V3\Routes\Donors;
 
 use Exception;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
-use Give\API\REST\V3\Routes\Donors\DonorRestController;
-use Give\API\REST\V3\Routes\Donors\DonorStatisticsRestController;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
@@ -20,22 +18,6 @@ use WP_REST_Server;
 class GetDonorRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @since 4.0.0
-     */
-    public function setUp(): void
-    {
-        add_action('rest_api_init', function () {
-            $donorRestController = new DonorRestController();
-            $donorRestController->register_routes();
-
-            $donorStatisticsRestController = new DonorStatisticsRestController();
-            $donorStatisticsRestController->register_routes();
-        });
-
-        parent::setUp();
-    }
 
     /**
      * @since 4.0.0
