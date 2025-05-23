@@ -6,6 +6,7 @@ import ModalCloseIcon from './ModalClose';
 import {Spinner} from '@wordpress/components';
 import './styles.scss';
 import '../EntitySelector/styles/index.scss';
+import {FocusScope} from 'react-aria';
 
 /**
  * @unreleasaed
@@ -113,35 +114,45 @@ export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect,
                 isDismissable
                 isEntering={isEntering}
             >
-                <button
-                    aria-label={__('Close donation form', 'give')}
-                    aria-hidden="false"
-                    type="button"
-                    className="givewp-donation-form-modal__close"
-                    onClick={closeModal}
+                <Modal 
+                    className="givewp-donation-form-modal"
+                    data-loading={isLoading}
                 >
-                    <ModalCloseIcon />
-                </button>
-                <Modal className="givewp-donation-form-modal">
-                    <Dialog className="givewp-donation-form-modal__dialog" aria-label={__('Donation Form', 'give')}>
-                        <div className="givewp-donation-form-modal__dialog__content">
-                            <IframeResizer
-                                title={__('Donation Form', 'give')}
-                                id={embedId}
-                                src={dataSrcUrl}
-                                checkOrigin={false}
-                                heightCalculationMethod="taggedElement"
-                                style={{
-                                    minWidth: '100%',
-                                    border: 'none',
-                                }}
-                                onInit={(iframe) => {
-                                    iframe.iFrameResizer.resize();
-                                    setLoading(false);
-                                }}
-                            />
-                        </div>
-                    </Dialog>
+                    <FocusScope contain restoreFocus autoFocus>
+                        <Dialog 
+                            className="givewp-donation-form-modal__dialog" 
+                            aria-label={__('Donation Form', 'give')}
+                            role="dialog"
+                            aria-modal="true"
+                        >
+                            <button
+                                aria-label={__('Close donation form', 'give')}
+                                type="button"
+                                className="givewp-donation-form-modal__close"
+                                onClick={closeModal}
+                                tabIndex={0}
+                            >
+                                <ModalCloseIcon />
+                            </button>
+                            <div className="givewp-donation-form-modal__dialog__content">
+                                <IframeResizer
+                                    title={__('Donation Form', 'give')}
+                                    id={embedId}
+                                    src={dataSrcUrl}
+                                    checkOrigin={false}
+                                    heightCalculationMethod="taggedElement"
+                                    style={{
+                                        minWidth: '100%',
+                                        border: 'none',
+                                    }}
+                                    onInit={(iframe) => {
+                                        iframe.iFrameResizer.resize();
+                                        setLoading(false);
+                                    }}
+                                />
+                            </div>
+                        </Dialog>
+                    </FocusScope>
                 </Modal>
             </ModalOverlay>
         </>
