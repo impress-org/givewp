@@ -71,6 +71,9 @@ class GetDonorsRouteTest extends RestApiTestCase
         $dataJson = json_encode($response->get_data());
         $data = json_decode($dataJson, true);
 
+        // Remove additional property add by the prepare_response_for_collection() method
+        unset($data[0]['_links']);
+
         // TODO: show shape of DateTime objects
         $createdAtJson = json_encode($data[0]['createdAt']);
 

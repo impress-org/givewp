@@ -13,6 +13,10 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
+ * The methods using snake case like register_routes() are present in the base class,
+ * and the methods using camel case like escDonor() are available only on this class.
+ *
+ * @unreleased Extends WP_REST_Controller class and rename methods
  * @since 4.0.0
  */
 class DonorRestController extends WP_REST_Controller
@@ -23,12 +27,10 @@ class DonorRestController extends WP_REST_Controller
     public function __construct()
     {
         $this->namespace = DonorRoute::NAMESPACE;
-        $this->rest_base = DonorRoute::DONORS;
+        $this->rest_base = DonorRoute::BASE;
     }
 
     /**
-     * Register the routes for donors.
-     *
      * @since 4.0.0
      */
     public function register_routes()
@@ -37,7 +39,7 @@ class DonorRestController extends WP_REST_Controller
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
-                'permission_callback' => [$this, 'permissions_check'],
+                'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => $this->get_collection_params(),
             ],
         ]);
@@ -46,29 +48,16 @@ class DonorRestController extends WP_REST_Controller
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
-                'permission_callback' => [$this, 'permissions_check'],
+                'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => $this->get_collection_params(),
             ],
         ]);
-
-        // Route: /donors/<id>/statistics
-        /*register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/statistics', [
-            [
-                'methods' => WP_REST_Server::READABLE,
-                'callback' => [$this, 'get_item_statistics'],
-                'permission_callback' => [$this, 'permissions_check'],
-                'args' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                ],
-            ],
-        ]);*/
     }
 
     /**
      * Get a single donor.
+     *
+     * @since 4.0.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -76,8 +65,7 @@ class DonorRestController extends WP_REST_Controller
      */
     public function get_item($request)
     {
-        $donorId = $request->get_param('id');
-        $donor = Donor::find($donorId);
+        $donor = Donor::find($request->get_param('id'));
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
@@ -85,47 +73,16 @@ class DonorRestController extends WP_REST_Controller
             return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
         }
 
-        $data = $this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode);
+        $item = $this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode);
+        $response = $this->prepare_item_for_response($item, $request);
 
-        //$data = $this->prepare_item_for_response($item, $request);
-
-        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $donorId));
-        $links = [
-            'self' => ['href' => $self_url],
-            'statistics' => [
-                'href' => $self_url . '/statistics',
-                'embeddable' => true,
-            ],
-        ];
-
-        $response = rest_ensure_response($data);
-        $response->add_links($links);
-
-        return $response;
-    }
-
-    /**
-     * Prepares the item for the REST response.
-     *
-     * @since 4.7.0
-     *
-     * @param mixed           $item    WordPress representation of the item.
-     * @param WP_REST_Request $request Request object.
-     *
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
-     */
-    public function prepare_item_for_response($item, $request)
-    {
-        return new WP_Error(
-            'invalid-method',
-            /* translators: %s: Method name. */
-            sprintf(__("Method '%s' not implemented. Must be overridden in subclass."), __METHOD__),
-            ['status' => 405]
-        );
+        return rest_ensure_response($response);
     }
 
     /**
      * Get list of donors.
+     *
+     * @since 4.0.0
      *
      * @param WP_REST_Request $request Full details about the request.
      *
@@ -155,8 +112,11 @@ class DonorRestController extends WP_REST_Controller
             ->orderBy($sortColumn, $sortDirection);
 
         $donors = $query->getAll() ?? [];
-        $donors = array_map(function ($donor) use ($includeSensitiveData, $donorAnonymousMode) {
-            return $this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode);
+        $donors = array_map(function ($donor) use ($includeSensitiveData, $donorAnonymousMode, $request) {
+            $item = $this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode);
+            $response = $this->prepare_item_for_response($item, $request);
+
+            return $this->prepare_response_for_collection($response);
         }, $donors);
 
         $totalDonors = empty($donors) ? 0 : Donor::query()->count();
@@ -196,68 +156,27 @@ class DonorRestController extends WP_REST_Controller
     }
 
     /**
-     * Get donor statistics.
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return WP_REST_Response
+     * @unreleased
      */
-    public function get_item_statistics(WP_REST_Request $request): WP_REST_Response
+    public function prepare_item_for_response($item, $request): WP_REST_Response
     {
-        return new WP_REST_Response([
-            'lifetimeDonations' => 300,
-            'highestDonation' => 250,
-            'averageDonation' => 150,
-        ]);
+        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $item['id']));
+        $links = [
+            'self' => ['href' => $self_url],
+            'statistics' => [
+                'href' => $self_url . '/statistics',
+                'embeddable' => true,
+            ],
+        ];
+
+        $response = new WP_REST_Response($item);
+        $response->add_links($links);
+
+        return $response;
     }
 
     /**
      * @unreleased
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return true|WP_Error
-     */
-    public function permissions_check(WP_REST_Request $request)
-    {
-        // Just for tests
-        if (str_contains($request->get_route(), '/statistics')) {
-            return true;
-        }
-
-        $isAdmin = current_user_can('manage_options');
-
-        $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if ( ! $isAdmin && $includeSensitiveData) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to include sensitive data.', 'give'),
-                ['status' => $this->authorization_status_code()]
-            );
-        }
-
-        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-        if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to include anonymous donors.', 'give'),
-                ['status' => $this->authorization_status_code()]
-            );
-        }
-
-        return true;
-    }
-
-    /**
-     * Authorization status code.
-     */
-    public function authorization_status_code(): int
-    {
-        return is_user_logged_in() ? 403 : 401;
-    }
-
-    /**
-     * Get collection parameters.
      */
     public function get_collection_params(): array
     {
@@ -316,6 +235,49 @@ class DonorRestController extends WP_REST_Controller
         return $params;
     }
 
+    /**
+     * @since 4.0.0
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
+     */
+    public function permissionsCheck(WP_REST_Request $request)
+    {
+        $isAdmin = current_user_can('manage_options');
+
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        if ( ! $isAdmin && $includeSensitiveData) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to include sensitive data.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
+        if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to include anonymous donors.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    public function authorizationStatusCode(): int
+    {
+        return is_user_logged_in() ? 403 : 401;
+    }
+
+    /**
+     * @since 4.0.0
+     */
     public function escDonor(
         Donor $donor,
         bool $includeSensitiveData = false,
@@ -377,6 +339,9 @@ class DonorRestController extends WP_REST_Controller
         return $sortColumnsMap[$sortColumn];
     }
 
+    /**
+     * @since 4.0.0
+     */
     private function isAnonymousDonor(Donor $donor): bool
     {
         $isAnonymousDonor = false;
