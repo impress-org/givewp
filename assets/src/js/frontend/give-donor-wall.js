@@ -52,6 +52,7 @@ class GiveDonorWall {
 	/**
 	 * Add click event to load more link
 	 *
+	 * @unreleased focus on new donor content every time a new donor is loaded through the load more button.
 	 * @since  2.2.0
 	 *
 	 * @param {object} evt
