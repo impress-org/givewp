@@ -80,6 +80,7 @@
             line-height: 1.5;
             margin: 0;
         }
+
     }
 
     &__tickets {
@@ -110,17 +111,17 @@
                 flex-direction: column;
                 gap: var(--givewp-spacing-1);
 
-                h5 {
-                    color: var(--givewp-grey-900);
-                    font-size: 1rem;
-                    font-weight: 600;
+                p {
+                    color: var(--givewp-grey-700);
+                    font-size: 0.875rem;
                     line-height: 1.5;
                     margin: 0;
                 }
 
-                p {
-                    color: var(--givewp-grey-700);
-                    font-size: 0.875rem;
+                p:first-child {
+                    color: var(--givewp-grey-900);
+                    font-size: 1rem;
+                    font-weight: 600;
                     line-height: 1.5;
                     margin: 0;
                 }

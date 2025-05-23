@@ -17,7 +17,7 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
     return (
         <div className={'givewp-event-tickets__tickets__ticket'} key={ticketType.id}>
             <div className={'givewp-event-tickets__tickets__ticket__description'}>
-                <h5>{ticketType.title}</h5>
+                <p>{ticketType.title}</p>
                 <p>{ticketPrice}</p>
                 <p>{ticketType.description}</p>
             </div>
