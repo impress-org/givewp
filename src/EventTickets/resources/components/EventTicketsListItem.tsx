@@ -28,7 +28,11 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                             <button onClick={handleButtonClick(selectedTickets - 1)}>
                                 <Icon icon={minus} />
                             </button>
-                            <input type="text" value={selectedTickets} />
+                            <input 
+                                type="text" 
+                                value={selectedTickets} 
+                                aria-label={__('Ticket quantity', 'give')}
+                            />
                             <button onClick={handleButtonClick(selectedTickets + 1)}>
                                 <Icon icon={plus} />
                             </button>
