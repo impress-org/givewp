@@ -2,15 +2,11 @@
 
 namespace Give\API\REST\V3\Routes\Donors;
 
-use DateInterval;
-use DatePeriod;
-use DateTimeImmutable;
 use Exception;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Donors\DonorStatisticsQuery;
 use Give\Donors\Models\Donor;
-use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -43,6 +39,8 @@ class DonorStatisticsController extends WP_REST_Controller
                 'permission_callback' => '__return_true',
                 'args' => [
                     'id' => [
+                        'description' => __('The donor ID.',
+                            'give'),
                         'type' => 'integer',
                         'required' => true,
                     ],
@@ -54,16 +52,10 @@ class DonorStatisticsController extends WP_REST_Controller
                         'enum' => ['live', 'test'],
                     ],
                     'campaignId' => [
-                        'description' => __('The ID of the campaign to filter donors by. Zero or empty values will be considered as "all campaigns".',
+                        'description' => __('The ID of the campaign to filter donors by. Zero or empty mean "all campaigns".',
                             'give'),
                         'type' => 'integer',
                         'default' => 0,
-                    ],
-                    'rangeInDays' => [
-                        'type' => 'integer',
-                        'required' => false,
-                        'sanitize_callback' => 'absint',
-                        'default' => 0, // Zero to mean "all time".
                     ],
                 ],
             ],
@@ -94,33 +86,14 @@ class DonorStatisticsController extends WP_REST_Controller
             $query = $query->filterByCampaign($campaign);
         }
 
-        if ( ! $request->get_param('rangeInDays')) {
-            $item = [
-                'lifetimeDonations' => $query->getLifetimeDonationsAmount(),
-                'highestDonation' => $query->getHighestDonationAmount(),
-                'averageDonation' => $query->getAverageDonationAmount(),
-            ];
-        } else {
-            $days = $request->get_param('rangeInDays');
-            $date = new DateTimeImmutable('now', wp_timezone());
-            $interval = DateInterval::createFromDateString("-$days days");
-            $period = new DatePeriod($date, $interval, 1);
-
-            $item = array_map(function ($targetDate) use ($query, $interval) {
-                $query = $query->between(
-                    Temporal::withStartOfDay($targetDate->add($interval)),
-                    Temporal::withEndOfDay($targetDate)
-                );
-
-                return [
-                    'lifetimeDonations' => $query->getLifetimeDonationsAmount(),
-                    'highestDonation' => $query->getHighestDonationAmount(),
-                    'averageDonation' => $query->getAverageDonationAmount(),
-                ];
-            }, iterator_to_array($period));
-        }
+        $item = [
+            'lifetimeDonations' => $query->getLifetimeDonationsAmount(),
+            'highestDonation' => $query->getHighestDonationAmount(),
+            'averageDonation' => $query->getAverageDonationAmount(),
+        ];
 
         $response = $this->prepare_item_for_response($item, $request);
+
         return rest_ensure_response($response);
     }
 

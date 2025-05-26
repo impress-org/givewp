@@ -219,7 +219,7 @@ class DonorController extends WP_REST_Controller
                 'enum' => ['live', 'test'],
             ],
             'campaignId' => [
-                'description' => __('The ID of the campaign to filter donors by (it only gets applied when "onlyWithDonations" is set to true). Zero or empty values will be considered as "all campaigns".',
+                'description' => __('The ID of the campaign to filter donors by. Zero or empty mean "all campaigns".',
                     'give'),
                 'type' => 'integer',
                 'default' => 0,
