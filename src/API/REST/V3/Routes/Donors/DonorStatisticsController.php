@@ -36,7 +36,7 @@ class DonorStatisticsController extends WP_REST_Controller
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
-                'permission_callback' => '__return_true',
+                'permission_callback' => [$this, 'get_item_permissions_check'],
                 'args' => [
                     'id' => [
                         'description' => __('The donor ID.',
@@ -95,6 +95,18 @@ class DonorStatisticsController extends WP_REST_Controller
         $response = $this->prepare_item_for_response($item, $request);
 
         return rest_ensure_response($response);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return bool
+     */
+    public function get_item_permissions_check($request): bool
+    {
+        return current_user_can('view_give_reports');
     }
 
     /**
