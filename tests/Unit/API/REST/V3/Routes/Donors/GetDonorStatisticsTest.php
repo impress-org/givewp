@@ -87,7 +87,7 @@ class GetDonorStatisticsTest extends RestApiTestCase
 
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
-        
+
         $this->createDonationUsd250Amount($donor->id, $campaignUsd250Amount->id);
         $this->createDonationUsd50Amount($donor->id, $campaignUsd50Amount->id);
 
@@ -97,6 +97,55 @@ class GetDonorStatisticsTest extends RestApiTestCase
         $request->set_query_params(
             [
                 'campaignId' => $campaignUsd50Amount->id,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals([
+            'lifetimeDonations' => 50,
+            'highestDonation' => 50,
+            'averageDonation' => 50,
+        ], $data);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetDonorStatisticsShouldFilterByMode()
+    {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testGetDonorStatisticsShouldReturnAllStatics',
+                'user_pass' => 'testGetDonorStatisticsShouldReturnAllStatics',
+                'user_email' => 'testGetDonorStatisticsShouldReturnAllStatics@test.com',
+            ]
+        );
+        wp_set_current_user($newAdminUser);
+
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $this->createDonationUsd250Amount($donor->id);
+        $donationUsd50Amount = $this->createDonationUsd50Amount($donor->id);
+
+        $donationUsd50Amount->mode = DonationMode::TEST();
+        $donationUsd50Amount->save();
+
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . "/$donor->id/statistics";
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'mode' => DonationMode::TEST,
             ]
         );
 
