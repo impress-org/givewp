@@ -35,48 +35,49 @@ class DonorController extends WP_REST_Controller
      */
     public function register_routes()
     {
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
-            [
-                'methods' => WP_REST_Server::READABLE,
-                'callback' => [$this, 'get_item'],
-                'permission_callback' => [$this, 'permissionsCheck'],
-                'args' => $this->get_collection_params(),
-            ],
-        ]);
-
         register_rest_route($this->namespace, '/' . $this->rest_base, [
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
-                'permission_callback' => [$this, 'permissionsCheck'],
-                'args' => $this->get_collection_params(),
+                'permission_callback' => [$this, 'get_items_permissions_check'],
+                'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
             ],
         ]);
-    }
 
-    /**
-     * Get a single donor.
-     *
-     * @since 4.0.0
-     *
-     * @param WP_REST_Request $request Full data about the request.
-     *
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
-     */
-    public function get_item($request)
-    {
-        $donor = Donor::find($request->get_param('id'));
-        $includeSensitiveData = $request->get_param('includeSensitiveData');
-        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-
-        if ( ! $donor || ($this->isAnonymousDonor($donor) && $donorAnonymousMode->isExcluded())) {
-            return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
-        }
-
-        $item = $this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode);
-        $response = $this->prepare_item_for_response($item, $request);
-
-        return rest_ensure_response($response);
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
+            [
+                'methods' => WP_REST_Server::READABLE,
+                'callback' => [$this, 'get_item'],
+                'permission_callback' => [$this, 'get_item_permissions_check'],
+                'args' => array_merge([
+                    'id' => [
+                        'description' => __('The donor ID.',
+                            'give'),
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                    '_embed' => [
+                        'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "statistics" when we wish to embed only a specific one.',
+                            'give'),
+                        'type' => ['string', 'boolean'],
+                        'default' => false,
+                    ],
+                    'mode' => [
+                        'description' => __('The mode of donations to filter by "live" or "test" (it only gets applied when "_embed" is set).',
+                            'give'),
+                        'type' => 'string',
+                        'default' => 'live',
+                        'enum' => ['live', 'test'],
+                    ],
+                    'campaignId' => [
+                        'description' => __('The ID of the campaign to filter donors by - zero or empty mean "all campaigns" (it only gets applied when "_embed" is set).',
+                            'give'),
+                        'type' => 'integer',
+                        'default' => 0,
+                    ],
+                ], $this->getSharedParams()),
+            ],
+        ]);
     }
 
     /**
@@ -156,15 +157,68 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * Get a single donor.
+     *
+     * @since 4.0.0
+     *
+     * @param WP_REST_Request $request Full data about the request.
+     *
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     */
+    public function get_item($request)
+    {
+        $donor = Donor::find($request->get_param('id'));
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
+
+        if ( ! $donor || ($this->isAnonymousDonor($donor) && $donorAnonymousMode->isExcluded())) {
+            return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
+        }
+
+        $item = $this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode);
+        $response = $this->prepare_item_for_response($item, $request);
+
+        return rest_ensure_response($response);
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
+     */
+    public function get_items_permissions_check($request)
+    {
+        return $this->permissionsCheck($request);
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
+     */
+    public function get_item_permissions_check($request)
+    {
+        return $this->permissionsCheck($request);
+    }
+
+    /**
      * @unreleased
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
     {
         $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $request->get_param('id')));
+        $statistics_url = add_query_arg([
+            'mode' => $request->get_param('mode'),
+            'campaignId' => $request->get_param('campaignId'),
+        ], $self_url . '/statistics');
         $links = [
             'self' => ['href' => $self_url],
             'statistics' => [
-                'href' => $self_url . '/statistics',
+                'href' => $statistics_url,
                 'embeddable' => true,
             ],
         ];
@@ -219,11 +273,22 @@ class DonorController extends WP_REST_Controller
                 'enum' => ['live', 'test'],
             ],
             'campaignId' => [
-                'description' => __('The ID of the campaign to filter donors by. Zero or empty mean "all campaigns".',
+                'description' => __('The ID of the campaign to filter donors by - zero or empty mean "all campaigns" (it only gets applied when "onlyWithDonations" is set to true).',
                     'give'),
                 'type' => 'integer',
                 'default' => 0,
             ],
+        ];
+
+        return $params;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getSharedParams(): array
+    {
+        return [
             'includeSensitiveData' => [
                 'description' => __('Include or not include data that can be used to contact or locate the donors, such as phone number, email, billing address, etc. (require proper permissions)',
                     'give'),
@@ -237,15 +302,7 @@ class DonorController extends WP_REST_Controller
                 'default' => 'exclude',
                 'enum' => ['exclude', 'include', 'redact'],
             ],
-            '_embed' => [
-                'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "statistics" when we wish to embed only a specific one (applied only when retrieving a single donor).',
-                    'give'),
-                'type' => ['string', 'boolean'],
-                'default' => false,
-            ],
         ];
-
-        return $params;
     }
 
     /**
