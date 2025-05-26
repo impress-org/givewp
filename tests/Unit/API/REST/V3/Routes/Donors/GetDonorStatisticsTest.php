@@ -30,6 +30,17 @@ class GetDonorStatisticsTest extends RestApiTestCase
      */
     public function testGetDonorStatistics()
     {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testGetDonorStatistics',
+                'user_pass' => 'testGetDonorStatistics',
+                'user_email' => 'testGetDonorStatistics@test.com',
+            ]
+        );
+
+        wp_set_current_user($newAdminUser);
+
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
         $this->createDonationUsd250Amount($donor->id);
@@ -59,6 +70,17 @@ class GetDonorStatisticsTest extends RestApiTestCase
      */
     public function testGetDonorStatisticsShouldFilterByCampaign()
     {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testGetDonorStatisticsShouldFilterByCampaign',
+                'user_pass' => 'testGetDonorStatisticsShouldFilterByCampaign',
+                'user_email' => 'testGetDonorStatisticsShouldFilterByCampaign@test.com',
+            ]
+        );
+
+        wp_set_current_user($newAdminUser);
+
         /** @var Campaign $campaignUsd250Amount */
         $campaignUsd250Amount = Campaign::factory()->create();
 
@@ -101,6 +123,17 @@ class GetDonorStatisticsTest extends RestApiTestCase
      */
     public function testGetDonorStatisticsShouldFilterByMode()
     {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testGetDonorStatisticsShouldFilterByMode',
+                'user_pass' => 'testGetDonorStatisticsShouldFilterByMode',
+                'user_email' => 'testGetDonorStatisticsShouldFilterByMode@test.com',
+            ]
+        );
+
+        wp_set_current_user($newAdminUser);
+
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 

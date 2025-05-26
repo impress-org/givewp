@@ -239,6 +239,10 @@ class DonorController extends WP_REST_Controller
         $params['page']['default'] = 1;
         $params['per_page']['default'] = 30;
 
+        // Remove default parameters not being used
+        unset($params['context']);
+        unset($params['search']);
+
         $params += [
             'sort' => [
                 'description' => __('The field by which to sort the donors.', 'give'),
