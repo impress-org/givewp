@@ -187,6 +187,7 @@ class DonorController extends WP_REST_Controller
 
         $params += [
             'sort' => [
+                'description' => __('The field by which to sort the donors.', 'give'),
                 'type' => 'string',
                 'default' => 'id',
                 'enum' => [
@@ -200,33 +201,45 @@ class DonorController extends WP_REST_Controller
                 ],
             ],
             'direction' => [
+                'description' => __('The direction of sorting: ascending (ASC) or descending (DESC).', 'give'),
                 'type' => 'string',
                 'default' => 'DESC',
                 'enum' => ['ASC', 'DESC'],
             ],
+            'onlyWithDonations' => [
+                'description' => __('Whether to include only donors who have made donations.', 'give'),
+                'type' => 'boolean',
+                'default' => true,
+            ],
             'mode' => [
+                'description' => __('The mode of donations to filter by "live" or "test" (it only gets applied when "onlyWithDonations" is set to true).',
+                    'give'),
                 'type' => 'string',
                 'default' => 'live',
                 'enum' => ['live', 'test'],
             ],
-            'onlyWithDonations' => [
-                'type' => 'boolean',
-                'default' => true,
-            ],
             'campaignId' => [
+                'description' => __('The ID of the campaign to filter donors by (it only gets applied when "onlyWithDonations" is set to true). Zero or empty values will be considered as "all campaigns".',
+                    'give'),
                 'type' => 'integer',
                 'default' => 0,
             ],
             'includeSensitiveData' => [
+                'description' => __('Include or not include data that can be used to contact or locate the donors, such as phone number, email, billing address, etc. (require proper permissions)',
+                    'give'),
                 'type' => 'boolean',
                 'default' => false,
             ],
             'anonymousDonors' => [
+                'description' => __('Exclude, include, or redact data that can be used to identify the donors, such as ID, first name, last name, etc (require proper permissions).',
+                    'give'),
                 'type' => 'string',
                 'default' => 'exclude',
                 'enum' => ['exclude', 'include', 'redact'],
             ],
             '_embed' => [
+                'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "statistics" when we wish to embed only a specific one (applied only when retrieving a single donor).',
+                    'give'),
                 'type' => ['string', 'boolean'],
                 'default' => false,
             ],
