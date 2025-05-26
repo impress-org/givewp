@@ -89,9 +89,9 @@ class DonorStatisticsController extends WP_REST_Controller
         }
 
         $query = new DonorStatisticsQuery($donor, $request->get_param('mode'));
-        
+
         if ($campaign = Campaign::find($request->get_param('campaignId'))) {
-            $query->filterByCampaign($campaign);
+            $query = $query->filterByCampaign($campaign);
         }
 
         if ( ! $request->get_param('rangeInDays')) {
