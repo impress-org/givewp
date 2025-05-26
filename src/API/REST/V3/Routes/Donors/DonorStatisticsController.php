@@ -116,6 +116,12 @@ class DonorStatisticsController extends WP_REST_Controller
     {
         $self_url = rest_url(sprintf('%s/%s/%d/%s', $this->namespace, $this->rest_base, $request->get_param('id'),
             'statistics'));
+
+        $self_url = add_query_arg([
+            'mode' => $request->get_param('mode'),
+            'campaignId' => $request->get_param('campaignId'),
+        ], $self_url);
+
         $links = [
             'self' => ['href' => $self_url],
         ];
