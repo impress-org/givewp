@@ -56,7 +56,7 @@ function DonationFormBlockApp({
                 href={formUrl} 
                 target={'_blank'} 
                 rel={'noopener noreferrer'}
-                aria-label={`${openFormButton} (Opens in a new tab)`}
+                aria-label={`${openFormButton} ${__('Opens in a new tab', 'give')}`}
             >
                 {openFormButton}
             </a>
