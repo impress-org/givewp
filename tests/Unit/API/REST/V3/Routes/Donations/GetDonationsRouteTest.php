@@ -30,6 +30,8 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     public function setUp(): void
     {
+        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
+
         parent::setUp();
     }
 
@@ -596,7 +598,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'feeAmountRecovered' => new Money(10, 'USD'),
             'firstName' => 'A',
             'lastName' => 'A',
-            'mode' => DonationMode::TEST(),
+            'mode' => DonationMode::LIVE(),
         ]);
 
         if ($campaignId) {
@@ -621,7 +623,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'feeAmountRecovered' => new Money(20, 'USD'),
             'firstName' => 'B',
             'lastName' => 'B',
-            'mode' => DonationMode::TEST(),
+            'mode' => DonationMode::LIVE(),
         ]);
 
         if ($campaignId) {
@@ -646,7 +648,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'feeAmountRecovered' => new Money(30, 'USD'),
             'firstName' => 'C',
             'lastName' => 'C',
-            'mode' => DonationMode::TEST(),
+            'mode' => DonationMode::LIVE(),
         ]);
 
         if ($campaignId) {

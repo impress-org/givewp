@@ -25,6 +25,8 @@ class GetDonationRouteTest extends RestApiTestCase
      */
     public function setUp(): void
     {
+        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
+
         parent::setUp();
     }
 
