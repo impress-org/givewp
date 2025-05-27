@@ -314,9 +314,10 @@ class GetDonorRouteTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(200, $status);
+        $this->assertEquals(0, $data['id']);
 
         $anonymousDataRedacted = [
-            'id',
+            //'id', // This property is Checked above...
             'name',
             'firstName',
             'lastName',
@@ -324,7 +325,7 @@ class GetDonorRouteTest extends RestApiTestCase
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertArrayNotHasKey($property, $data);
+            $this->assertEquals(__('anonymous', 'give'), $data[$property]);
         }
     }
 
