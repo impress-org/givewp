@@ -325,7 +325,7 @@ class GetDonorRouteTest extends RestApiTestCase
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'), $data[$property]);
+            $this->assertFalse($data[$property]);
         }
     }
 
