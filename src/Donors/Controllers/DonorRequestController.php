@@ -59,6 +59,7 @@ class DonorRequestController
         $perPage = $request->get_param('per_page');
         $sortColumn = $this->getSortColumn($request->get_param('sort'));
         $sortDirection = $request->get_param('direction');
+        $mode = $request->get_param('mode');
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
@@ -68,7 +69,7 @@ class DonorRequestController
         // Donors only can be donors if they have donations associated with them
         if ($request->get_param('onlyWithDonations')) {
             $query
-                ->join(function (JoinQueryBuilder $builder) {
+                ->join(function (JoinQueryBuilder $builder) use ($mode) {
                     // The donationmeta1.donation_id should be used in other "donationmeta" joins to make sure we are retrieving data from the proper donation
                     $builder
                         ->innerJoin('give_donationmeta', 'donationmeta1')
@@ -79,7 +80,7 @@ class DonorRequestController
                     $builder
                         ->innerJoin('give_donationmeta', 'donationmeta2')
                         ->on('donationmeta2.meta_key', DonationMetaKeys::MODE, true)
-                        ->andOn('donationmeta2.meta_value', give_is_test_mode() ? 'test' : 'live', true)
+                        ->andOn('donationmeta2.meta_value', $mode, true)
                         ->andOn('donationmeta2.donation_id', 'donationmeta1.donation_id', false);
                 });
 
