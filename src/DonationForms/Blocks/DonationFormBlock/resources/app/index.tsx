@@ -51,7 +51,13 @@ function DonationFormBlockApp({
 
     if (formFormat === 'newTab') {
         return (
-            <a className={'givewp-donation-form-link'} href={formUrl} target={'_blank'} rel={'noopener noreferrer'}>
+            <a 
+                className={'givewp-donation-form-link'} 
+                href={formUrl} 
+                target={'_blank'} 
+                rel={'noopener noreferrer'}
+                aria-label={`${openFormButton} ${__('Opens in a new tab', 'give')}`}
+            >
                 {openFormButton}
             </a>
         );
