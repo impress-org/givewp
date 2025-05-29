@@ -121,8 +121,6 @@ class Give_Donor_Wall {
 
 		$atts      = $this->parse_atts( $atts );
 
-        _give_redirect_form_id($atts['form_id']);
-
 		$donations = $this->get_donation_data( $atts );
 		$html      = '';
 
@@ -368,6 +366,7 @@ class Give_Donor_Wall {
 		$query_atts['tags']          = $atts['tags'];
 		$query_atts['only_comments'] = ( true === $atts['only_comments'] );
 		$query_atts['anonymous']     = ( true === $atts['anonymous'] );
+
 
 		return $query_atts;
 	}
