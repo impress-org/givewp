@@ -1,0 +1,42 @@
+---
+description: GiveWP Model
+globs:
+alwaysApply: false
+---
+# GiveWP Models
+
+GiveWP Models are our preferred way to interact with our data.  They are abstractions of our database layer for business logic usage.
+
+- The framework for models lives in `/src/Framework/Models/`.
+- In order to create a GiveWP model, you will need to create a class that extends `src/Framework/Models/Model.php`.
+- The core GiveWP models are:
+    - Donation: `src/Donations/Models/Donation.php`
+    - Donor: `src/Donors/Models/Donor.php`
+    - Subscription: `src/Subscriptions/Models/Subscription.php`
+    - Campaign: `src/Campagaigns/Models/Campaign.php`,
+    - DonationForm: `src/DonationForms/Models/DonationForm.php`
+
+## GiveWP Repositories
+
+GiveWP models use repositories to abstract away the complex logic of interacting with data.
+
+- The core GiveWP repositories are:
+    - DonationRepository: `src/Donations/Repositories/DonationRepository.php`
+    - DonorRepository: `src/Donors/Repositories/DonorRepository.php`
+    - SubscriptionRepository: `src/Subscriptions/Repositories/SubscriptionRepository.php`
+    - CampaignRepository: `src/Campagaigns/Repositories/CampaignRepository.php`,
+    - DonationFormRepository: `src/DonationForms/Repositories/DonationFormRepository.php`
+
+
+## Legacy GiveWP Models
+
+Our legacy GiveWP models are preserved for backwards compabaility.  We always prefer using GiveWP models over legacy GiveWP models.
+
+- The legacy GiveWP Models are the following:
+    - Give_Payment: `includes/payments/class-give-payment.php`
+    - Give_Donor: `includes/class-give-donor.php`
+    - Give_Donate_Form: `includes/class-give-donate-form.php`
+    - Give_Subscription: `includes/give-subscription.php`
+
+
+
