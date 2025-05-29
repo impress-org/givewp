@@ -20,6 +20,12 @@ use Give\Log\Log;
  */
 class DonorRepository
 {
+    /**
+     * @unreleased
+     *
+     * @var DonorNotesRepository
+     */
+    public $notes;
 
     /**
      * @var string[]
@@ -30,6 +36,14 @@ class DonorRepository
         'lastName',
         'email',
     ];
+
+    /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        $this->notes = give(DonorNotesRepository::class);
+    }
 
     /**
      * Query Donor By ID
@@ -190,7 +204,7 @@ class DonorRepository
             'user_id' => $donor->userId,
             'email' => $donor->email,
             'phone' => $donor->phone,
-            'name' => $donor->name
+            'name' => $donor->name,
         ];
 
         if (isset($donor->totalAmountDonated) && $donor->isDirty('totalAmountDonated')) {

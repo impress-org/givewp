@@ -11,6 +11,7 @@ use Give\Donors\Exceptions\FailedDonorUserCreationException;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Migrations\AddPhoneColumn;
 use Give\Donors\Models\Donor;
+use Give\Donors\Repositories\DonorNotesRepository;
 use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
@@ -30,6 +31,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton('donors', DonorRepositoryProxy::class);
+        give()->singleton('donorNotes', DonorNotesRepository::class);
         give()->singleton(DonorsListTable::class, function () {
             $listTable = new DonorsListTable();
             Hooks::doAction('givewp_donors_list_table', $listTable);
