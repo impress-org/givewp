@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
@@ -47,6 +47,8 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState(false);
     const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
+    const contextMenuButtonRef = useRef<HTMLButtonElement>(null);
+    const contextMenuRef = useRef<HTMLDivElement>(null);
 
     const dispatch = useDispatch(`givewp/admin-details-page-notifications`);
 
@@ -73,21 +75,27 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
 
     // Close context menu when clicked outside
     useEffect(() => {
-        document.addEventListener('click', (e) => {
-            if (showContextMenu) {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (!showContextMenu) {
                 return;
             }
 
             if (
                 e.target instanceof HTMLElement &&
-                !e.target.closest(`.${styles.donorButtonDots}`) &&
-                !e.target.closest(`.${styles.contextMenu}`)
+                !contextMenuButtonRef.current?.contains(e.target) &&
+                !contextMenuRef.current?.contains(e.target)
             ) {
                 setShowContextMenu(false);
-                (document.querySelector(`.${styles.donorButtonDots}`) as HTMLElement)?.blur();
+                contextMenuButtonRef.current?.blur();
             }
-        });
-    }, []);
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showContextMenu]);
 
     // Set default values when entity is loaded
     useEffect(() => {
@@ -176,6 +184,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                                         {ContextMenuItems && (
                                             <>
                                                 <button
+                                                    ref={contextMenuButtonRef}
                                                     className={`button button-secondary ${styles.contextMenuButton}`}
                                                     onClick={(e) => {
                                                         e.preventDefault();
@@ -186,7 +195,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                                                 </button>
 
                                                 {!isSaving && showContextMenu && (
-                                                    <div className={styles.contextMenu}>
+                                                    <div ref={contextMenuRef} className={styles.contextMenu}>
                                                         <ContextMenuItems className={styles.contextMenuItem} />
                                                     </div>
                                                 )}
