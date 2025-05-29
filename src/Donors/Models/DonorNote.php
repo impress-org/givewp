@@ -70,13 +70,15 @@ class DonorNote extends Model implements ModelCrud, ModelHasFactory
      *
      * @throws Exception
      */
-    public function save()
+    public function save(): DonorNote
     {
         if ( ! $this->id) {
             give()->donors->notes->insert($this);
         } else {
             give()->donors->notes->update($this);
         }
+
+        return $this;
     }
 
     /**
