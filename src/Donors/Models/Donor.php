@@ -213,6 +213,16 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder<DonorNote>
+     */
+    public function notes(): ModelQueryBuilder
+    {
+        return give()->donors->notes->queryByDonorId($this->id);
+    }
+
+    /**
      * @since 2.19.6
      *
      * @param object $object

@@ -132,9 +132,6 @@ class TestDonorNoteRepository extends TestCase
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
-        /** @var Donor $donor */
-        $donor = Donor::factory()->create(['donorId' => $donor->id]);
-
         /** @var DonorNote $donorNote */
         $donorNote = DonorNote::factory()->create(
             ['donorId' => $donor->id, 'type' => DonorNoteType::ADMIN()]
@@ -166,9 +163,6 @@ class TestDonorNoteRepository extends TestCase
     {
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
-
-        /** @var Donor $donor */
-        $donor = Donor::factory()->create(['donorId' => $donor->id]);
 
         /** @var DonorNote $donorNote */
         $donorNote = DonorNote::factory()->create(['donorId' => $donor->id]);
