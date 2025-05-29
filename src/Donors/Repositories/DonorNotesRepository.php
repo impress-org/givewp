@@ -57,7 +57,7 @@ class DonorNotesRepository
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
 
 
-        DB::query('START TRANSACTION');
+        DB::beginTransaction();
 
         try {
             DB::table('give_comments')
@@ -80,14 +80,14 @@ class DonorNotesRepository
                     ]);
             }
         } catch (Exception $exception) {
-            DB::query('ROLLBACK');
+            DB::rollback();
 
             Log::error('Failed creating a donor note', compact('donorNote'));
 
             throw new $exception('Failed creating a donor note');
         }
 
-        DB::query('COMMIT');
+        DB::commit();
 
         $donorNote->id = $commentId;
         $donorNote->createdAt = $dateCreated;
@@ -106,7 +106,7 @@ class DonorNotesRepository
 
         Hooks::doAction('givewp_donor_note_updating', $donorNote);
 
-        DB::query('START TRANSACTION');
+        DB::beginTransaction();
 
         try {
             DB::table('give_comments')
@@ -120,14 +120,14 @@ class DonorNotesRepository
                 $this->upsertDonorNoteType($donorNote);
             }
         } catch (Exception $exception) {
-            DB::query('ROLLBACK');
+            DB::rollback();
 
             Log::error('Failed updating a donor note', compact('donorNote'));
 
             throw new $exception('Failed updating a donor note');
         }
 
-        DB::query('COMMIT');
+        DB::commit();
 
         Hooks::doAction('givewp_donor_note_updated', $donorNote);
     }
@@ -139,7 +139,7 @@ class DonorNotesRepository
      */
     public function delete(DonorNote $donorNote): bool
     {
-        DB::query('START TRANSACTION');
+        DB::beginTransaction();
 
         Hooks::doAction('givewp_donor_note_deleting', $donorNote);
 
@@ -152,14 +152,14 @@ class DonorNotesRepository
                 ->where('give_comment_id', $donorNote->id)
                 ->delete();
         } catch (Exception $exception) {
-            DB::query('ROLLBACK');
+            DB::rollback();
 
             Log::error('Failed deleting a donor note', compact('donorNote'));
 
             throw new $exception('Failed deleting a donor note');
         }
 
-        DB::query('COMMIT');
+        DB::commit();
 
         Hooks::doAction('givewp_donor_note_deleted', $donorNote);
 
