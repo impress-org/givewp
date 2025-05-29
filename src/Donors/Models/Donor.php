@@ -20,6 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donor
  *
+ * @unreleased Add "notes" property
  * @since 3.7.0 Add "phone" property
  * @since 2.24.0 add new properties $totalAmountDonated and $totalNumberOfDonations
  * @since 2.19.6
@@ -38,6 +39,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property int $totalNumberOfDonations
  * @property Subscription[] $subscriptions
  * @property Donation[] $donations
+ * @property DonorNote[] $notes
  */
 class Donor extends Model implements ModelCrud, ModelHasFactory
 {
@@ -65,6 +67,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     protected $relationships = [
         'donations' => Relationship::HAS_MANY,
         'subscriptions' => Relationship::HAS_MANY,
+        'notes' => Relationship::HAS_MANY,
     ];
 
     /**
