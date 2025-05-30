@@ -206,7 +206,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased update permissions
+     * @since 4.3.1 update permissions
      * @since 4.0.0
      *
      * @return bool|WP_Error

@@ -90,7 +90,7 @@ class DonationActions extends Endpoint
     }
 
     /**
-     * @unreleased add permissions check for delete
+     * @since 4.3.1 add permissions check for delete
      * @since 2.20.0
      *
      * @param WP_REST_Request $request

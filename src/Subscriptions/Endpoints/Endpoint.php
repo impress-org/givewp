@@ -50,7 +50,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Check user permissions
-     * @unreleased updates permissions
+     * @since 4.3.1 updates permissions
      * @since 2.20.0
      *
      * @return bool|WP_Error
