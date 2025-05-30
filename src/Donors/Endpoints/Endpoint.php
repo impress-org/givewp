@@ -57,7 +57,7 @@ abstract class Endpoint implements RestRoute
      */
     public function permissionsCheck()
     {
-        if (current_user_can('manage_options') || current_user_can('edit_give_payments')) {
+        if (current_user_can('manage_options') || current_user_can('view_give_payments')) {
             return true;
         }
 
