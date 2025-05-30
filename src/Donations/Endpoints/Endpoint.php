@@ -57,7 +57,7 @@ abstract class Endpoint implements RestRoute
      */
     public function permissionsCheck()
     {
-        if (!current_user_can('edit_posts')) {
+        if (!current_user_can('manage_options')) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You don\'t have permission to view Donations', 'give'),
