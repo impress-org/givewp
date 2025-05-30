@@ -42,11 +42,11 @@ abstract class Endpoint implements RestRoute
      */
     public function permissionsCheck()
     {
-        if (current_user_can('manage_options')) {
+        if (current_user_can('manage_options') || current_user_can('edit_give_forms')) {
             return true;
         }
 
-        return current_user_can('edit_give_forms') ?: new WP_Error(
+        return new WP_Error(
             'rest_forbidden',
             esc_html__("You don't have permission to view forms", 'give'),
             ['status' => is_user_logged_in() ? 403 : 401]
