@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 4.3.1: May 30th, 2025 =
-* Fix: Resolved an issue with the Donor wall and filtering by multiple form IDs
+* Fix: Resolved an issue with the Donor wall when filtering by multiple form IDs
 * Security: Updated permissions for various endpoints (CVE-2025-4571)
 
 = 4.3.0: May 21st, 2025 =
