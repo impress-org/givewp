@@ -51,21 +51,22 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Check user permissions
+     * @unreleased update permissions
      * @since 2.20.0
      *
      * @return bool|WP_Error
      */
     public function permissionsCheck()
     {
-        if (!current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You don\'t have permission to view Donations', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if (current_user_can('manage_options')) {
+            return true;
         }
 
-        return true;
+        return current_user_can('edit_give_payment') ?: new WP_Error(
+            'rest_forbidden',
+            esc_html__("You don't have permission to view Donations", 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
     }
 
     /**

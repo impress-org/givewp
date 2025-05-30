@@ -212,7 +212,11 @@ class GetCampaignsListTable implements RestRoute
      */
     public function permissionsCheck()
     {
-        return current_user_can('manage_options') ?: new WP_Error(
+        if (current_user_can('manage_options')) {
+            return true;
+        }
+
+        return current_user_can('edit_give_forms') ?: new WP_Error(
             'rest_forbidden',
             esc_html__("You don't have permission to view Campaigns", 'give'),
             ['status' => is_user_logged_in() ? 403 : 401]
