@@ -82,7 +82,7 @@ class Give_Donor_Wall {
 	/**
 	 * Displays donors in a grid layout.
 	 *
-     * @unreleased remove redundant _give_redirect_form_id() function.
+     * @since 4.3.1 remove redundant _give_redirect_form_id() function.
      * @since 3.7.0 Sanitize attributes
      * @since 2.27.0 Moved AJAX nonce verification to ajax_handler method.
 	 * @since  2.2.0
