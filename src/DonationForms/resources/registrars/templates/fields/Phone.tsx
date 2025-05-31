@@ -6,7 +6,7 @@ import InputMask from 'react-input-mask';
 import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
 
 /**
- * @unreleased Add autoComplete support
+ * @since 4.3.0 Add autoComplete support
  * @since 3.9.0
  */
 export default function Phone({

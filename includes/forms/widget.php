@@ -507,7 +507,7 @@ class Give_Forms_Widget extends WP_Widget {
 
 
 /**
- * @unreleased use widgets_init action and register_widget
+ * @since 4.3.0 use widgets_init action and register_widget
  */
 add_action( 'widgets_init', static function() {
     register_widget( 'Give_Forms_Widget' );

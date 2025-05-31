@@ -5,12 +5,12 @@ namespace Give\License\Migrations;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class RefreshLicensesForPlatformFee extends Migration
 {
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public static function id(): string
     {
@@ -18,7 +18,7 @@ class RefreshLicensesForPlatformFee extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public static function title(): string
     {
@@ -26,7 +26,7 @@ class RefreshLicensesForPlatformFee extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public static function timestamp(): int
     {
@@ -36,7 +36,7 @@ class RefreshLicensesForPlatformFee extends Migration
     /**
      * This migration refreshes the stored licenses (making a request to the License Server API) to retrieve the new gateway_fee property.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function run(): void
     {

@@ -812,7 +812,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 }
 
 /**
- * @unreleased use admin_init action
+ * @since 4.3.0 use admin_init action
  */
 add_action( 'admin_init', static function () {
     new Give_Stripe_Admin_Settings();

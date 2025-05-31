@@ -7,7 +7,7 @@ import {reactSelectStyles, reactSelectThemeStyles} from "./styles/reactSelectSty
 import './styles/index.scss';
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 export type EntityOption = {
     label: string;
@@ -15,7 +15,7 @@ export type EntityOption = {
 };
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 type EntitySelectorProps = {
     id: string;
@@ -33,7 +33,7 @@ type EntitySelectorProps = {
 const savePost = () => dispatch('core/editor').savePost();
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 export default function EntitySelector({
     id,

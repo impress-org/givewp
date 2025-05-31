@@ -3,7 +3,7 @@
 namespace Give\License\ValueObjects;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class LicenseOptionKeys {
     public const LICENSES = 'give_licenses';

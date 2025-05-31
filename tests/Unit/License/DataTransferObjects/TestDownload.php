@@ -6,12 +6,12 @@ use Give\License\DataTransferObjects\Download;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class TestDownload extends TestCase
 {
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testFromDataReturnsDownloadObject(): void
     {

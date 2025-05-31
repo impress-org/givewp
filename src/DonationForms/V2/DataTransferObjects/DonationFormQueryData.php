@@ -18,7 +18,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonationFormQueryData
  *
- * @unreleased add GoalSettings
+ * @since 4.3.0 add GoalSettings
  * @since      2.24.0
  */
 final class DonationFormQueryData
@@ -62,17 +62,17 @@ final class DonationFormQueryData
     public $status;
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public GoalSettings $goalSettings;
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public bool $usesFormBuilder;
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public int $campaignId;
 
@@ -155,7 +155,7 @@ final class DonationFormQueryData
 
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     private function getGoalSettings(object $queryObject): GoalSettings
     {
@@ -197,7 +197,7 @@ final class DonationFormQueryData
 
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function convertGoalType(string $type, bool $isRecurring = false): GoalType
     {

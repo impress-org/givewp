@@ -77,7 +77,7 @@ trait Columns
     }
 
     /**
-     * @unreleased set list table data on columns
+     * @since 4.3.0 set list table data on columns
      * @since 2.24.0
      *
      * @return ModelColumn[]

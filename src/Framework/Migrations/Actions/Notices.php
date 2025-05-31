@@ -7,7 +7,7 @@ use Give\MigrationLog\MigrationLogRepository;
 use Give\MigrationLog\MigrationLogStatus;
 
 /**
- * @unreleased
+ * @since 4.3.0
  *
  * Show reversed migration notice
  */

@@ -29,7 +29,7 @@ use Give\Framework\Support\ValueObjects\Money;
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property DonationFormStatus $status
- * @unreleased
+ * @since 4.3.0
  * @property GoalSettings $goalSettings
  * @property bool $usesFormBuilder
  * @property int $campaignId
