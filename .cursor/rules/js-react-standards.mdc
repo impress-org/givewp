@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
 ---
@@ -11,6 +11,7 @@ alwaysApply: false
 ## General guidelines
 
 - Write modern ES6+ code following WordPress JS standards
+- Always prefer using Typescript over vanilla Javascript
 - Use WordPress data store for state management
 - Follow WordPress component patterns
 - Implement proper WordPress hooks system

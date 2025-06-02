@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
 ---
@@ -14,6 +14,7 @@ alwaysApply: true
 - Prefer to nest elements and modifiers within the block (e.g. &__list or &--dark)
 - Encourage atomic elements (e.g. notices, cards, badges) that are reusable in different areas
 - Prefix atomic and BEM classes with givewp-
+- Prefer to use scss instead of vanilla css
 
 ## CSS Variables
 Reference the following style files to know which CSS variables to use when styling:
