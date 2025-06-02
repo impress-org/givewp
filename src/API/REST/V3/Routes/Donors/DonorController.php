@@ -2,6 +2,7 @@
 
 namespace Give\API\REST\V3\Routes\Donors;
 
+use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\DonorsQuery;
@@ -57,7 +58,7 @@ class DonorController extends WP_REST_Controller
                         'required' => true,
                     ],
                     '_embed' => [
-                        'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "statistics" when we wish to embed only a specific one.',
+                        'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:statistics" when we wish to embed only a specific one.',
                             'give'),
                         'type' => ['string', 'boolean'],
                         'default' => false,
@@ -217,7 +218,7 @@ class DonorController extends WP_REST_Controller
         ], $self_url . '/statistics');
         $links = [
             'self' => ['href' => $self_url],
-            'statistics' => [
+            CURIE::relationUrl('statistics') => [
                 'href' => $statistics_url,
                 'embeddable' => true,
             ],

@@ -133,7 +133,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals($donor->id, $data[0]['id']);
         $this->assertArrayHasKey('_links', $data[0]);
-        $this->assertArrayHasKey('statistics', $data[0]['_links']);
+        $this->assertArrayHasKey('givewp:statistics', $data[0]['_links']);
     }
 
     /**

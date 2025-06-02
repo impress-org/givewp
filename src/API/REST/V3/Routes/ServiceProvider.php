@@ -25,11 +25,13 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Load donors route
+     * @unreleased Load donors route and register CURIE
      * @since 4.2.0
      */
     public function boot()
     {
+        Hooks::addFilter('rest_response_link_curies', CURIE::class, 'registerCURIE');
+
         $this->loadCampaignsRoutes();
         $this->loadDonorsRoutes();
     }

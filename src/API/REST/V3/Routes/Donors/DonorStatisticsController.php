@@ -87,9 +87,11 @@ class DonorStatisticsController extends WP_REST_Controller
         }
 
         $item = [
-            'lifetimeDonations' => $query->getLifetimeDonationsAmount(),
-            'highestDonation' => $query->getHighestDonationAmount(),
-            'averageDonation' => $query->getAverageDonationAmount(),
+            'donations' => [
+                'lifetimeAmount' => $query->getLifetimeDonationsAmount(),
+                'highestAmount' => $query->getHighestDonationAmount(),
+                'averageAmount' => $query->getAverageDonationAmount(),
+            ],
         ];
 
         $response = $this->prepare_item_for_response($item, $request);
