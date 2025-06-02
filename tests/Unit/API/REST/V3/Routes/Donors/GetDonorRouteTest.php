@@ -115,7 +115,7 @@ class GetDonorRouteTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals($donor->id, $data['id']);
         $this->assertArrayHasKey('_links', $data);
-        $this->assertArrayHasKey('statistics', $data['_links']);
+        $this->assertArrayHasKey('givewp:statistics', $data['_links']);
     }
 
     /**
@@ -129,7 +129,7 @@ class GetDonorRouteTest extends RestApiTestCase
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params([
-            '_embed' => 'statistics',
+            '_embed' => 'givewp:statistics',
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -141,9 +141,9 @@ class GetDonorRouteTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals($donor->id, $data['id']);
         $this->assertArrayHasKey('_embedded', $data);
-        $this->assertArrayHasKey('statistics', $data['_embedded']);
-        $this->assertIsArray($data['_embedded']['statistics']);
-        $this->assertNotEmpty($data['_embedded']['statistics'][0]);
+        $this->assertArrayHasKey('givewp:statistics', $data['_embedded']);
+        $this->assertIsArray($data['_embedded']['givewp:statistics']);
+        $this->assertNotEmpty($data['_embedded']['givewp:statistics'][0]);
     }
 
     /**
