@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\LegacySubscriptions\Migrations;
+namespace Give\Subscriptions\Migrations;
 
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
@@ -24,7 +24,7 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
      */
     public static function id(): string
     {
-        return 'legacy_subscriptions_backfill_missing_campaign_id_for_subscription_renewals';
+        return 'subscriptions_backfill_missing_campaign_id_for_legacy_subscription_renewals';
     }
 
     /**

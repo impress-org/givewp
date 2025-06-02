@@ -44,21 +44,6 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('give_subscription_post_create', EnsureSubscriptionHasPaymentMode::class, '__invoke', 10, 2);
         Hooks::addAction('give_recurring_add_subscription_payment', EnsureSubscriptionRenewalHasCampaignId::class, '__invoke', 10, 2);
-
-        // TODO: Uncomment once migration conflict is resolved
-        // $this->registerMigrations();
-    }
-
-    /**
-     * Register LegacySubscriptions migrations
-     *
-     * @unreleased
-     */
-    private function registerMigrations(): void
-    {
-        give(MigrationsRegister::class)->addMigrations([
-            BackfillMissingCampaignIdForSubscriptionRenewals::class,
-        ]);
     }
 
     /**
