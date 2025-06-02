@@ -8,4 +8,11 @@
         justify-content: center;
         margin-top: 16px;
     }
+
+    &__loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
 }
