@@ -5,7 +5,7 @@ alwaysApply: true
 ---
 ---
 description: React Standards
-globs: *.js,*.jsx,*.ts,*tsx
+globs: *.js,*.jsx,*.ts,*.tsx
 alwaysApply: false
 ---
 ## General guidelines
