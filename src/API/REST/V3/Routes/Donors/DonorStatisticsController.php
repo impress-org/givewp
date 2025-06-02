@@ -88,9 +88,9 @@ class DonorStatisticsController extends WP_REST_Controller
 
         $item = [
             'donations' => [
-                'lifetimeDonations' => $query->getLifetimeDonationsAmount(),
-                'highestDonation' => $query->getHighestDonationAmount(),
-                'averageDonation' => $query->getAverageDonationAmount(),
+                'lifetimeAmount' => $query->getLifetimeDonationsAmount(),
+                'highestAmount' => $query->getHighestDonationAmount(),
+                'averageAmount' => $query->getAverageDonationAmount(),
             ],
         ];
 

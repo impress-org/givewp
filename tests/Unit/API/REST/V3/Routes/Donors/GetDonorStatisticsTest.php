@@ -58,9 +58,9 @@ class GetDonorStatisticsTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals([
             'donations' => [
-                'lifetimeDonations' => 300,
-                'highestDonation' => 250,
-                'averageDonation' => 150,
+                'lifetimeAmount' => 300,
+                'highestAmount' => 250,
+                'averageAmount' => 150,
             ],
         ], $data);
     }
@@ -113,9 +113,9 @@ class GetDonorStatisticsTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals([
             'donations' => [
-                'lifetimeDonations' => 50,
-                'highestDonation' => 50,
-                'averageDonation' => 50,
+                'lifetimeAmount' => 50,
+                'highestAmount' => 50,
+                'averageAmount' => 50,
             ],
         ], $data);
     }
@@ -165,9 +165,9 @@ class GetDonorStatisticsTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals([
             'donations' => [
-                'lifetimeDonations' => 50,
-                'highestDonation' => 50,
-                'averageDonation' => 50,
+                'lifetimeAmount' => 50,
+                'highestAmount' => 50,
+                'averageAmount' => 50,
             ],
         ], $data);
     }
