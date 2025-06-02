@@ -49,7 +49,7 @@ class CURIE
     public static function relationUrl(string $rel): string
     {
         if (wp_http_validate_url($rel)) {
-            throw new Exception('The $rel value should be a unique identifier and not a full URL');
+            throw new Exception(__('The $rel value should be a unique identifier, not a full URL.', 'give'));
         }
 
         return trailingslashit(self::$baseUrl) . $rel;
