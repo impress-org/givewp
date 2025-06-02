@@ -31,7 +31,7 @@ GiveWP models use repositories to abstract away the complex logic of interacting
 
 ## Legacy GiveWP Models
 
-Our legacy GiveWP models are preserved for backwards compabaility.  We always prefer using GiveWP models over legacy GiveWP models.
+Our legacy GiveWP models are preserved for backwards compatibility.  We always prefer using GiveWP models over legacy GiveWP models.
 
 - The legacy GiveWP Models are the following:
     - Give_Payment: [class-give-payment.php](mdc:wp-content/plugins/give/includes/payments/class-give-payment.php)
