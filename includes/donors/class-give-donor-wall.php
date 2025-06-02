@@ -82,6 +82,7 @@ class Give_Donor_Wall {
 	/**
 	 * Displays donors in a grid layout.
 	 *
+     * @since 4.3.1 remove redundant _give_redirect_form_id() function.
      * @since 3.7.0 Sanitize attributes
      * @since 2.27.0 Moved AJAX nonce verification to ajax_handler method.
 	 * @since  2.2.0
@@ -120,8 +121,6 @@ class Give_Donor_Wall {
 		$give_settings = give_get_settings();
 
 		$atts      = $this->parse_atts( $atts );
-
-        _give_redirect_form_id($atts['form_id']);
 
 		$donations = $this->get_donation_data( $atts );
 		$html      = '';
@@ -368,6 +367,8 @@ class Give_Donor_Wall {
 		$query_atts['tags']          = $atts['tags'];
 		$query_atts['only_comments'] = ( true === $atts['only_comments'] );
 		$query_atts['anonymous']     = ( true === $atts['anonymous'] );
+
+
 
 		return $query_atts;
 	}

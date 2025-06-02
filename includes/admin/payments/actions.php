@@ -375,8 +375,8 @@ function give_trigger_donation_delete( $data ) {
 
 		$payment_id = absint( $data['purchase_id'] );
 
-		if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
-			wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		if ( ! current_user_can( 'delete_give_payments', $payment_id ) ) {
+			wp_die( __( 'You do not have permission to delete payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		give_delete_donation( $payment_id );

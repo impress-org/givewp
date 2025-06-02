@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.5
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.3.0
+Stable tag: 4.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.3.1: May 30th, 2025 =
+* Fix: Resolved an issue with the Donor wall when filtering by multiple form IDs
+* Security: Updated permissions for various endpoints (CVE-2025-4571)
 
 = 4.3.0: May 21st, 2025 =
 * New: Added a new Campaign form block and shortcode

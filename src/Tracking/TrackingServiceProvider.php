@@ -4,6 +4,7 @@ namespace Give\Tracking;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
+use Give\Tracking\Events\CampaignsTracking;
 use Give\Tracking\Events\DonationFormsTracking;
 use Give\Tracking\Events\DonationMetricsTracking;
 use Give\Tracking\Events\EditedDonationFormsTracking;
@@ -114,5 +115,6 @@ class TrackingServiceProvider implements ServiceProvider
         Hooks::addAction('update_option_give_settings', GivePluginSettingsTracking::class, 'record');
         Hooks::addAction('update_option_active_plugins', PluginsTracking::class, 'record');
         Hooks::addAction('switch_theme', ThemeTracking::class, 'record');
+        Hooks::addAction('givewp_campaign_updated', CampaignsTracking::class, 'record');
     }
 }

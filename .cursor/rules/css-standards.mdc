@@ -1,0 +1,23 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+---
+description: CSS Standards
+globs:
+alwaysApply: true
+---
+## General CSS guidelines
+
+- Use BEM class naming standards
+- Prefer to nest elements and modifiers within the block (e.g. &__list or &--dark)
+- Encourage atomic elements (e.g. notices, cards, badges) that are reusable in different areas
+- Prefix atomic and BEM classes with givewp-
+- Prefer to use scss instead of vanilla css
+
+## CSS Variables
+Reference the following style files to know which CSS variables to use when styling:
+- Spacing (padding, margins, gaps, etc.): [spacing.css](mdc:node_modules/@givewp/design-system-foundation/css/spacing.css)
+- Colors (font colors, backgrounds, etc.): [colors.css](mdc:node_modules/@givewp/design-system-foundation/css/colors.css)
+- Fonts (weights, sizes, etc): [typography.css](mdc:node_modules/@givewp/design-system-foundation/css/typography.css)
