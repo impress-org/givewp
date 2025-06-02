@@ -4,6 +4,7 @@ namespace Give\Donors;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Actions\CreateUserFromDonor;
+use Give\Donors\Actions\LoadDonorOptions;
 use Give\Donors\Actions\SendDonorUserRegistrationNotification;
 use Give\Donors\Actions\UpdateAdminDonorDetails;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
@@ -52,10 +53,6 @@ class ServiceProvider implements ServiceProviderInterface
         // only register new admin page if user hasn't chosen to use the old one
         if (empty($showLegacy)) {
             Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem', 30);
-
-            if (DonorsAdminPage::isShowing()) {
-                Hooks::addAction('admin_enqueue_scripts', DonorsAdminPage::class, 'loadScripts');
-            }
         } elseif (DonorsAdminPage::isShowing()) {
             Hooks::addAction('admin_head', DonorsAdminPage::class, 'renderReactSwitch');
         }
@@ -68,6 +65,9 @@ class ServiceProvider implements ServiceProviderInterface
         ]);
 
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
+
+        $this->registerDonorEntity();
+        $this->loadDonorOptions();
     }
 
     /**
@@ -105,5 +105,21 @@ class ServiceProvider implements ServiceProviderInterface
                 }
             }
         }, 10, 2);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerDonorEntity()
+    {
+        Hooks::addAction('init', Actions\RegisterDonorEntity::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function loadDonorOptions()
+    {
+        Hooks::addAction('init', LoadDonorOptions::class);
     }
 }

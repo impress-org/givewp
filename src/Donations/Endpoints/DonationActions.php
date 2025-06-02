@@ -90,11 +90,12 @@ class DonationActions extends Endpoint
     }
 
     /**
+     * @since 4.3.1 add permissions check for delete
      * @since 2.20.0
      *
      * @param WP_REST_Request $request
      *
-     * @return WP_REST_Response
+     * @return WP_Error
      */
     public function handleRequest(WP_REST_Request $request)
     {
@@ -103,6 +104,13 @@ class DonationActions extends Endpoint
 
         switch ($request->get_param('action')) {
             case 'delete':
+                if ( ! current_user_can('delete_give_payments')) {
+                    return new WP_Error(
+                        'rest_forbidden',
+                        esc_html__('You don\'t have permission to delete Donations', 'give'),
+                        ['status' => $this->authorizationStatusCode()]
+                    );
+                }
                 foreach ($ids as $id) {
                     try {
                         give_delete_donation($id);
