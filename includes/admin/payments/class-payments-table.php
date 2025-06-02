@@ -815,6 +815,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			switch ( $this->current_action() ) {
 
 				case 'delete':
+                    if ( ! current_user_can( 'delete_give_payments' ) ) {
+                        return;
+                    }
+
 					give_delete_donation( $id );
 					break;
 
