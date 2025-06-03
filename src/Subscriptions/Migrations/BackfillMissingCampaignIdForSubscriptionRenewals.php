@@ -97,18 +97,23 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
     {
         $campaignId = null;
 
-        // Find the parent payment ID for this renewal
-        $parentPaymentId = $this->getParentPaymentId($renewalDonationId);
+        // First, try to get the campaignId from the revenue table
+        $campaignId = $this->getCampaignIdFromRevenueTable($renewalDonationId);
 
-        // First, try to get the campaignId from the parent donation (if parent exists)
-        if ($parentPaymentId) {
-            $parentCampaignId = DB::table('give_donationmeta')
-                ->where('donation_id', $parentPaymentId)
-                ->where('meta_key', '_give_campaign_id')
-                ->value('meta_value');
+        if (!$campaignId) {
+            // Find the parent payment ID for this renewal
+            $parentPaymentId = $this->getParentPaymentId($renewalDonationId);
 
-            if (!empty($parentCampaignId)) {
-                $campaignId = (int)$parentCampaignId;
+            // Try to get the campaignId from the parent donation (if parent exists)
+            if ($parentPaymentId) {
+                $parentCampaignId = DB::table('give_donationmeta')
+                    ->where('donation_id', $parentPaymentId)
+                    ->where('meta_key', '_give_campaign_id')
+                    ->value('meta_value');
+
+                if (!empty($parentCampaignId)) {
+                    $campaignId = (int)$parentCampaignId;
+                }
             }
         }
 
@@ -148,6 +153,20 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
             // Use WordPress/GiveWP meta function instead of raw DB insert
             give()->payment_meta->update_meta($renewalDonationId, '_give_campaign_id', $campaignId);
         }
+    }
+
+    /**
+     * Get campaign ID from the revenue table for a given donation
+     *
+     * @unreleased
+     */
+    private function getCampaignIdFromRevenueTable(int $donationId): ?int
+    {
+        $campaignId = DB::table('give_revenue')
+            ->where('donation_id', $donationId)
+            ->value('campaign_id');
+
+        return $campaignId ? (int)$campaignId : null;
     }
 
     /**

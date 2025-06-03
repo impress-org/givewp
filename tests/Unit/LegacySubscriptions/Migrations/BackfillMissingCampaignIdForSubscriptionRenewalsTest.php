@@ -3,7 +3,7 @@
 namespace Unit\LegacySubscriptions\Migrations;
 
 use Give\Framework\Database\DB;
-use Give\LegacySubscriptions\Migrations\BackfillMissingCampaignIdForSubscriptionRenewals;
+use Give\Subscriptions\Migrations\BackfillMissingCampaignIdForSubscriptionRenewals;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -13,6 +13,46 @@ use Give\Tests\TestTraits\RefreshDatabase;
 class BackfillMissingCampaignIdForSubscriptionRenewalsTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @unreleased
+     */
+    public function testMigrationBackfillsCampaignIdFromRevenueTable()
+    {
+        // Create a renewal donation without campaignId but with renewal status
+        $renewalPaymentId = $this->factory->post->create([
+            'post_type' => 'give_payment',
+            'post_status' => 'give_subscription', // Renewal status
+        ]);
+
+        // Add campaign_id to revenue table for this donation
+        DB::table('give_revenue')->insert([
+            'donation_id' => $renewalPaymentId,
+            'form_id' => 1,
+            'campaign_id' => 999,
+            'amount' => 100,
+        ]);
+
+        // Verify the renewal doesn't have a campaignId in meta initially
+        $existingCampaignId = DB::table('give_donationmeta')
+            ->where('donation_id', $renewalPaymentId)
+            ->where('meta_key', '_give_campaign_id')
+            ->value('meta_value');
+
+        $this->assertEmpty($existingCampaignId);
+
+        // Run the migration
+        $migration = new BackfillMissingCampaignIdForSubscriptionRenewals();
+        $migration->runBatch($renewalPaymentId, $renewalPaymentId);
+
+        // Verify the campaignId was backfilled from revenue table
+        $updatedCampaignId = DB::table('give_donationmeta')
+            ->where('donation_id', $renewalPaymentId)
+            ->where('meta_key', '_give_campaign_id')
+            ->value('meta_value');
+
+        $this->assertEquals(999, (int)$updatedCampaignId);
+    }
 
     /**
      * @unreleased
@@ -303,5 +343,78 @@ class BackfillMissingCampaignIdForSubscriptionRenewalsTest extends TestCase
             ->value('meta_value');
 
         $this->assertEquals($campaignId, (int)$updatedCampaignId);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testMigrationPrioritizesRevenueTableOverParentDonation()
+    {
+        // Create a parent payment with a different campaignId
+        $parentPaymentId = $this->factory->post->create([
+            'post_type' => 'give_payment',
+            'post_status' => 'publish',
+        ]);
+
+        // Add campaignId meta to parent payment
+        DB::table('give_donationmeta')->insert([
+            'donation_id' => $parentPaymentId,
+            'meta_key' => '_give_campaign_id',
+            'meta_value' => 777, // Different campaign ID
+        ]);
+
+        // Create a subscription
+        DB::table('give_subscriptions')->insert([
+            'customer_id' => 1,
+            'parent_payment_id' => $parentPaymentId,
+            'period' => 'month',
+            'frequency' => 1,
+            'initial_amount' => 100,
+            'recurring_amount' => 100,
+            'bill_times' => 0,
+            'transaction_id' => 'test_txn_priority',
+            'product_id' => 1,
+            'created' => current_time('mysql'),
+            'expiration' => date('Y-m-d H:i:s', strtotime('+1 month')),
+            'status' => 'active',
+            'profile_id' => 'test_profile_priority',
+            'notes' => '',
+        ]);
+
+        $subscriptionId = DB::last_insert_id();
+
+        // Create a renewal donation
+        $renewalPaymentId = $this->factory->post->create([
+            'post_type' => 'give_payment',
+            'post_status' => 'give_subscription', // Renewal status
+        ]);
+
+        // Add subscription_id meta to renewal payment
+        DB::table('give_donationmeta')->insert([
+            'donation_id' => $renewalPaymentId,
+            'meta_key' => '_give_subscription_id',
+            'meta_value' => $subscriptionId,
+        ]);
+
+        // Add campaign_id to revenue table with different value than parent
+        DB::table('give_revenue')->insert([
+            'donation_id' => $renewalPaymentId,
+            'form_id' => 1,
+            'campaign_id' => 888, // Different from parent's 777
+            'amount' => 100,
+        ]);
+
+        // Run the migration
+        $migration = new BackfillMissingCampaignIdForSubscriptionRenewals();
+        $migration->runBatch($renewalPaymentId, $renewalPaymentId);
+
+        // Verify the campaignId was taken from revenue table (888), not parent (777)
+        $updatedCampaignId = DB::table('give_donationmeta')
+            ->where('donation_id', $renewalPaymentId)
+            ->where('meta_key', '_give_campaign_id')
+            ->value('meta_value');
+
+        $this->assertEquals(888, (int)$updatedCampaignId);
+        $this->assertNotEquals(777, (int)$updatedCampaignId);
     }
 }

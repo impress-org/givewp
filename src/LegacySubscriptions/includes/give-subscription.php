@@ -112,6 +112,26 @@ class Give_Subscription {
 	public $donor;
 
 	/**
+	 * @var int (backward compatibility - maps to donor_id)
+	 */
+	public $customer_id = 0;
+
+	/**
+	 * @var string (backward compatibility - maps to form_id)
+	 */
+	public $product_id = 0;
+
+	/**
+	 * @var string (subscription payment mode)
+	 */
+	public $payment_mode = '';
+
+	/**
+	 * @var string (subscription notes)
+	 */
+	public $notes = '';
+
+	/**
 	 * Give_Subscription constructor.
 	 *
 	 * @param int  $_id_or_object Subscription ID or Object
@@ -1166,11 +1186,7 @@ class Give_Subscription {
 
 		$updated = $this->update( array( 'notes' => $notes ) );
 
-		if ( $updated ) {
-			$this->notes = $this->get_notes();
-		}
-
-		do_action( 'give_subscription_post_add_note', $this->notes, $new_note, $this->id );
+		do_action( 'give_subscription_post_add_note', $this->get_notes(), $new_note, $this->id );
 
 		// Return the formatted note, so we can test, as well as update any displays
 		return $new_note;
