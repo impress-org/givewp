@@ -13,14 +13,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 final class DonationFormsDataRepositoryTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testCountFormsDonations()
     {
@@ -44,7 +44,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testGetRevenueReturnsSumOfDonationsWithoutRecoveredFees()
     {
@@ -70,7 +70,7 @@ final class DonationFormsDataRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testCountFormDonors()
     {

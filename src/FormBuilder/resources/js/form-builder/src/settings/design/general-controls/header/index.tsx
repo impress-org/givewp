@@ -7,7 +7,7 @@ import {upload} from '@wordpress/icons';
 import {ClassicEditor} from '@givewp/form-builder-library';
 
 /**
- * @unreleased set image overlay color and opacity for background image to improve accessibility contrast against text.
+ * @since 4.3.0 set image overlay color and opacity for background image to improve accessibility contrast against text.
  * @since 3.16.2 Replace TextareaControl component with ClassicEditor component on the description option
  */
 export default function Header({dispatch, publishSettings}) {

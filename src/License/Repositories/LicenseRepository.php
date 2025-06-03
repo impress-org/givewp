@@ -6,14 +6,14 @@ use Give\License\DataTransferObjects\License;
 use Give\License\ValueObjects\LicenseOptionKeys;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class LicenseRepository
 {
     /**
      * Check if we have stored licenses in the database.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function hasStoredLicenses(): bool
     {
@@ -23,7 +23,7 @@ class LicenseRepository
     /**
      * Gets the raw, stored licenses from the database.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function getStoredLicenses(): array
     {
@@ -33,7 +33,7 @@ class LicenseRepository
     /**
      * Gets the stored licenses from the database and converts them to License objects.
      *
-     * @unreleased
+     * @since 4.3.0
      * @return License[]
      */
     public function getLicenses(): array
@@ -55,7 +55,7 @@ class LicenseRepository
     /**
      * Returns only the active licenses.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function getActiveLicenses(): array
     {
@@ -73,7 +73,7 @@ class LicenseRepository
     /**
      * Checks if we have any active licenses.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function hasActiveLicenses(): bool
     {
@@ -89,7 +89,7 @@ class LicenseRepository
     /**
      * The platform fee percentage is used by gateways to calculate a platform fee.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function getPlatformFeePercentage(): float
     {
@@ -108,7 +108,7 @@ class LicenseRepository
      * Check if we have an available platform fee percentage set.
      * This can be used to determine if we can charge a platform fee.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function hasPlatformFeePercentage(): bool
     {
@@ -119,7 +119,7 @@ class LicenseRepository
      * The stored platform fee percentage comes from License Server API.
      * When licenses are activated and refreshed, this value is stored in the database.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function getStoredPlatformFeePercentage(): ?float
     {
@@ -133,7 +133,7 @@ class LicenseRepository
     /**
      * Check if we have a stored platform fee percentage.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function hasStoredPlatformFeePercentage(): bool
     {
@@ -145,7 +145,7 @@ class LicenseRepository
      * Since there can be multiple licenses, we need to find the lowest fee from all active licenses.
      * Once we have the lowest fee, we store it in the database for future use.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function findLowestPlatformFeePercentageFromActiveLicenses(): ?float
     {

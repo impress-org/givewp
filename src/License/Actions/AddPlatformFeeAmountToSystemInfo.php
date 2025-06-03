@@ -5,13 +5,13 @@ namespace Give\License\Actions;
 use Give\License\Repositories\LicenseRepository;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class AddPlatformFeeAmountToSystemInfo
 {
     /**
      * Callback for `give_add_system_info_configuration` that adds the platform fee amount to the system info table.
-     * @unreleased
+     * @since 4.3.0
      */
     public function __invoke($settings)
     {

@@ -133,7 +133,7 @@ class MigrateFormsToCampaignForms extends Migration implements ReversibleMigrati
     }
 
     /**
-     * @unreleased Add DISTINCT, whereNotIn and new JOIN to retrieve only the migratedFormId associated with the highest form_id
+     * @since 4.3.0 Add DISTINCT, whereNotIn and new JOIN to retrieve only the migratedFormId associated with the highest form_id
      * @since 4.0.0
      * @return array [{formId, campaignId, migratedFormId}]
      */

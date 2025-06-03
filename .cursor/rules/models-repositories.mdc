@@ -1,0 +1,43 @@
+---
+description: GiveWP Models and Repositories
+globs:
+alwaysApply: false
+---
+# GiveWP Models
+
+GiveWP Models are our preferred way to interact with our data.  They are abstractions of our database layer for business logic usage.
+
+- The framework for models lives in `../src/Framework/Models/`.
+- In order to create a GiveWP model, you will need to create a class that extends
+[Model.php](mdc:wp-content/plugins/give/src/Framework/Models/Model.php)
+- The core GiveWP models are:
+    - Donation: [Donation.php](mdc:wp-content/plugins/give/src/Donations/Models/Donation.php)
+    - Donor: [Donor.php](mdc:wp-content/plugins/give/src/Donors/Models/Donor.php)
+    - Subscription: [Subscription.php](mdc:wp-content/plugins/give/src/Subscriptions/Models/Subscription.php)
+    - Campaign: [Campaign.php](mdc:wp-content/plugins/give/src/Campaigns/Models/Campaign.php)
+    - DonationForm: [DonationForm.php](mdc:wp-content/plugins/give/src/DonationForms/Models/DonationForm.php)
+
+## GiveWP Repositories
+
+GiveWP models use repositories to abstract away the complex logic of interacting with data.
+
+- The core GiveWP repositories are:
+    - DonationRepository: [DonationRepository.php](mdc:wp-content/plugins/give/src/Donations/Repositories/DonationRepository.php)
+    - DonorRepository: [DonorRepository.php](mdc:wp-content/plugins/give/src/Donors/Repositories/DonorRepository.php)
+    - SubscriptionRepository: [SubscriptionRepository.php](mdc:wp-content/plugins/give/src/Subscriptions/Repositories/SubscriptionRepository.php)
+    - CampaignRepository: [CampaignRepository.php](mdc:wp-content/plugins/give/src/Campaigns/Repositories/CampaignRepository.php)
+    - DonationFormRepository: [DonationFormRepository.php](mdc:wp-content/plugins/give/src/DonationForms/Repositories/DonationFormRepository.php)
+
+
+## Legacy GiveWP Models
+
+Our legacy GiveWP models are preserved for backwards compatibility.  We always prefer using GiveWP models over legacy GiveWP models.
+
+- The legacy GiveWP Models are the following:
+    - Give_Payment: [class-give-payment.php](mdc:wp-content/plugins/give/includes/payments/class-give-payment.php)
+    - Give_Donor: [class-give-donor.php](mdc:wp-content/plugins/give/includes/class-give-donor.php)
+    - Give_Donate_Form: [class-give-donate-form.php](mdc:wp-content/plugins/give/includes/class-give-donate-form.php)
+    - Give_Subscription: [give-subscription.php](mdc:wp-content/plugins/give/src/LegacySubscriptions/includes/give-subscription.php)
+
+
+

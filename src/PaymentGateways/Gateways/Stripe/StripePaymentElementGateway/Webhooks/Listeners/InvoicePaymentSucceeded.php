@@ -43,7 +43,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
-     * @unreleased Update Stripe Invoice metadata
+     * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      * @throws \Exception
@@ -120,7 +120,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     protected function updateStripeInvoiceMetaData(Invoice $invoice, Donation $donation)
     {
