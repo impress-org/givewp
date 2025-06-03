@@ -119,7 +119,10 @@ class GetDonorsRouteTest extends RestApiTestCase
         ];
 
         $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+
+        foreach ($sensitiveProperties as $property) {
+            $this->assertEmpty($data[0][$property]);
+        }
     }
 
     /**
