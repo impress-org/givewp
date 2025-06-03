@@ -5,7 +5,7 @@ import {formatDistanceToNow} from 'date-fns';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
 import PrivateNote from '@givewp/src/Admin/components/PrivateNote';
-import {useStatistics} from '@givewp/donors/hooks/useStatistics';
+import {useDonorStatistics, DonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {amountFormatter, formatTimestamp} from '@givewp/src/Admin/utils';
 import {getDonorOptionsWindowData} from '@givewp/donors/utils';
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
@@ -19,30 +19,6 @@ type Transaction = {
     status: 'Completed' | 'Pending' | 'Failed' | 'Refunded';
     timestamp: string;
     amount: string;
-};
-
-/**
- * @unreleased
- */
-type Statistics = {
-    statistics: {
-        lifetimeDonations: number;
-        highestDonation: number | null;
-        averageDonation: number;
-    };
-    donorSince: string;
-    firstDonation: {
-        amount: string;
-        date: string;
-        formTitle: string;
-    } | null;
-    lastDonation: {
-        amount: string;
-        date: string;
-        formTitle: string;
-    } | null;
-    preferredGivingType: 'single' | 'recurring';
-    totalDonations: number;
 };
 
 /**
@@ -83,10 +59,8 @@ const {currency} = getDonorOptionsWindowData();
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
-    const {data: metrics, loading: statsLoading, hasResolved: statsResolved} = useStatistics({donorId: donorId});
-    const {data: donations} = useDonorDonations({donorId, mode: 'test'});
-
-    console.log(donations, 'donations');
+    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved} = useDonorStatistics(donorId, 'test');
+    const {donations} = useDonorDonations({donorId, mode: 'test'});
 
     const transactions: Transaction[] = !donations
         ? []
@@ -97,12 +71,12 @@ export default function DonorDetailsPageOverviewTab() {
               amount: amountFormatter(donation.amount.currency).format(parseFloat(donation.amount.value)),
           }));
 
-    const summaryItems = !metrics
+    const summaryItems = !stats
         ? []
         : [
               {
                   label: __('Donor Since', 'give'),
-                  value: new Date((metrics as Statistics).donorSince).toLocaleDateString(undefined, {
+                  value: new Date(stats.donorSince).toLocaleDateString(undefined, {
                       year: 'numeric',
                       month: 'short',
                       day: 'numeric',
@@ -110,18 +84,16 @@ export default function DonorDetailsPageOverviewTab() {
               },
               {
                   label: __('Last Contributed', 'give'),
-                  value: (metrics as Statistics).lastDonation
-                      ? getRelativeTimeString(new Date((metrics as Statistics).lastDonation.date))
+                  value: stats.donations.firstDonation
+                      ? getRelativeTimeString(new Date(stats.donations.firstDonation.date))
                       : __('Never', 'give'),
               },
               {
                   label: __('First Contribution', 'give'),
-                  value: (metrics as Statistics).firstDonation
+                  value: stats.donations.firstDonation
                       ? {
-                            value1: amountFormatter(currency).format(
-                                parseFloat((metrics as Statistics).firstDonation.amount)
-                            ),
-                            value2: new Date((metrics as Statistics).firstDonation.date).toLocaleDateString(undefined, {
+                            value1: amountFormatter(currency).format(parseFloat(stats.donations.firstDonation.amount)),
+                            value2: new Date(stats.donations.firstDonation.date).toLocaleDateString(undefined, {
                                 year: 'numeric',
                                 month: 'short',
                                 day: 'numeric',
@@ -131,15 +103,12 @@ export default function DonorDetailsPageOverviewTab() {
               },
               {
                   label: __('Donor Type', 'give'),
-                  value:
-                      (metrics as Statistics).preferredGivingType === 'recurring'
-                          ? __('Recurring', 'give')
-                          : __('One Time', 'give'),
+                  value: stats.preferredGivingType === 'recurring' ? __('Recurring', 'give') : __('One Time', 'give'),
                   isPill: true,
               },
               {
                   label: __('Total Donations', 'give'),
-                  value: (metrics as Statistics).totalDonations?.toString() ?? '0',
+                  value: stats.donations.donationCount?.toString() ?? '0',
               },
           ];
 
@@ -147,19 +116,19 @@ export default function DonorDetailsPageOverviewTab() {
         <div className={styles.grid}>
             <StatWidget
                 label={__('Lifetime donations', 'give')}
-                value={metrics?.statistics?.lifetimeDonations ?? 0}
+                value={stats?.donations?.lifetimeAmount ?? 0}
                 formatter={amountFormatter(currency)}
                 loading={statsLoading || !statsResolved}
             />
             <StatWidget
                 label={__('Highest donations', 'give')}
-                value={metrics?.statistics?.highestDonation ?? 0}
+                value={stats?.donations?.highestAmount ?? 0}
                 formatter={amountFormatter(currency)}
                 loading={statsLoading || !statsResolved}
             />
             <StatWidget
                 label={__('Average donations', 'give')}
-                value={metrics?.statistics?.averageDonation ?? 0}
+                value={stats?.donations?.averageAmount ?? 0}
                 formatter={amountFormatter(currency)}
                 loading={statsLoading || !statsResolved}
             />
