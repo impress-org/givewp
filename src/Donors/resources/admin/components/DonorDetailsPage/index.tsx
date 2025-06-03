@@ -46,12 +46,7 @@ export default function DonorDetailsPage({ donorId }) {
     const { adminUrl } = getDonorOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false);
 
-    const useObjectEntityRecord = (donorId: number) => {
-        const { donor: entity, ...rest } = useDonorEntityRecord(donorId);
-        return { entity, ...rest };
-    };
-
-    const { entity: donor } = useObjectEntityRecord(donorId);
+    const { record: donor } = useDonorEntityRecord(donorId);
 
     const SendEmailButton = ({ className }: { className: string }) => {
         return (
@@ -93,7 +88,7 @@ export default function DonorDetailsPage({ donorId }) {
             objectId={donorId}
             objectType="donor"
             objectTypePlural="donors"
-            useObjectEntityRecord={useObjectEntityRecord}
+            useObjectEntityRecord={useDonorEntityRecord}
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donors`}
             StatusBadge={() => <StatusBadge status={donor.status} />}

@@ -14,7 +14,7 @@ export function useDonorEntityRecord(donorId?: number) {
     const urlParams = new URLSearchParams(window.location.search);
 
     const {
-        record: donor,
+        record,
         hasResolved,
         save,
         edit,
@@ -25,7 +25,7 @@ export function useDonorEntityRecord(donorId?: number) {
         edit: (data: Donor | Partial<Donor>) => void;
     } = useEntityRecord('givewp', 'donor', donorId ?? urlParams.get('id'));
 
-    return {donor, hasResolved, save, edit};
+    return {record, hasResolved, save, edit};
 }
 
 /**
