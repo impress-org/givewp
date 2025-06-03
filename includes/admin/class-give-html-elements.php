@@ -289,6 +289,21 @@ class Give_HTML_Elements {
 
         $options = [];
 
+        // Ensure the selected campaign is included in options
+        if (false !== $args['selected'] && $args['selected'] !== 0) {
+            $selectedCampaign = DB::table('give_campaigns')
+                ->select(['id'], ['campaign_title', 'title'])
+                ->where('id', $args['selected'])
+                ->get();
+
+            if ($selectedCampaign) {
+                $selected_title = empty($selectedCampaign->title)
+                    ? sprintf(__('Untitled (#%s)', 'give'), $selectedCampaign->id)
+                    : $selectedCampaign->title;
+                $options[$args['selected']] = esc_html($selected_title);
+            }
+        }
+
         $options[0] = esc_html__('No campaigns found.', 'give');
         if ( ! empty($campaigns)) {
             $options[0] = $args['placeholder'];
@@ -298,10 +313,6 @@ class Give_HTML_Elements {
                     : $campaign->title;
 
                 $options[absint($campaign->id)] = esc_html($campaign_title);
-
-                if (false !== $args['selected'] && $args['selected'] !== 0) {
-                    $options[$args['selected']] = esc_html($campaign_title);
-                }
             }
         }
 
