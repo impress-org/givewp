@@ -51,14 +51,14 @@ class DonorViewModel
         $data = $this->donor->toArray();
 
         if ( ! $this->includeSensitiveData) {
-            $sensitiveData = [
+            $sensitiveDataExcluded = [
                 'userId',
                 'email',
                 'phone',
                 'additionalEmails',
             ];
 
-            foreach ($sensitiveData as $propertyName) {
+            foreach ($sensitiveDataExcluded as $propertyName) {
                 if (isset($data[$propertyName])) {
                     $data[$propertyName] = '';
                 }
@@ -67,7 +67,7 @@ class DonorViewModel
 
 
         if ($this->anonymousMode->isRedacted() && $this->donor->isAnonymous()) {
-            $sensitiveData = [
+            $anonymousDataRedacted = [
                 'id',
                 'name',
                 'firstName',
@@ -75,7 +75,7 @@ class DonorViewModel
                 'prefix',
             ];
 
-            foreach ($sensitiveData as $propertyName) {
+            foreach ($anonymousDataRedacted as $propertyName) {
                 $data[$propertyName] = $propertyName === 'id' ? 0 :  __('anonymous', 'give');
             }
         }
