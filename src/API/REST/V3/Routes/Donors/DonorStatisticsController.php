@@ -57,12 +57,6 @@ class DonorStatisticsController extends WP_REST_Controller
                         'type' => 'integer',
                         'default' => 0,
                     ],
-                    'donorId' => [
-                        'description' => __('The ID of the donor to retrieve statistics for.',
-                            'give'),
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
                 ],
             ],
         ]);
