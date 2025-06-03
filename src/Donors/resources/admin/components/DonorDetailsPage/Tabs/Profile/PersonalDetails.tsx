@@ -93,7 +93,7 @@ export default function DonorPersonalDetails() {
             </AdminSectionField>
 
             <AdminSectionField subtitle={__('Company name', 'give')}>
-                <input {...register('companyName')} />
+                <input {...register('company')} />
             </AdminSectionField>
         </AdminSection>
     );
