@@ -139,7 +139,7 @@ function give_get_payment_by( $field = '', $value = '' ) {
  * This function provides a centralized way to handle campaign ID derivation across different
  * parts of the codebase.
  *
- * @since 3.0.0
+ * @unreleased
  *
  * @param int $form_id The form ID to derive the campaign ID from.
  *
@@ -170,7 +170,7 @@ function give_derive_campaign_id_from_form_id( $form_id ) {
 	/**
 	 * Filter the derived campaign ID.
 	 *
-	 * @since 3.0.0
+	 * @unreleased
 	 *
 	 * @param int $derived_campaign_id The derived campaign ID.
 	 * @param int $form_id The form ID used for derivation.
