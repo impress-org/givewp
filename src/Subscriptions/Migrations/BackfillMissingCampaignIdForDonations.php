@@ -78,119 +78,299 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
             }
 
             $donations = $query->getAll();
+            $donationIds = array_column($donations, 'ID');
 
-            foreach ($donations as $donationRow) {
-                $this->processDonation($donationRow->ID);
+            if (empty($donationIds)) {
+                return;
             }
+
+            // Process donations in bulk
+            $this->processDonationsBulk($donationIds);
+
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException('An error occurred while backfilling missing campaignId for donations', 0, $exception);
         }
     }
 
     /**
-     * Process a single donation to assign missing campaignId
+     * Process multiple donations in bulk to assign missing campaignId
      *
      * @unreleased
      */
-    private function processDonation(int $donationId): void
+    private function processDonationsBulk(array $donationIds): void
     {
-        $campaignId = null;
+        // Step 1: Get campaign IDs from revenue table for all donations
+        $revenueCampaigns = $this->getBulkCampaignIdsFromRevenueTable($donationIds);
 
-        // First, try to get the campaignId from the revenue table
-        $campaignId = $this->getCampaignIdFromRevenueTable($donationId);
+        // Step 2: Get subscription and parent payment data for remaining donations
+        $subscriptionData = $this->getBulkSubscriptionData($donationIds);
 
-        if (!$campaignId) {
-            // Check if this is a renewal donation and try to get campaignId from parent
-            $parentPaymentId = $this->getParentPaymentId($donationId);
+        // Step 3: Get form-to-campaign mappings for remaining donations
+        $formCampaigns = $this->getBulkFormCampaignMappings($donationIds, $revenueCampaigns, $subscriptionData);
 
-            // Try to get the campaignId from the parent donation (if parent exists)
-            if ($parentPaymentId) {
-                $parentCampaignId = DB::table('give_donationmeta')
-                    ->where('donation_id', $parentPaymentId)
-                    ->where('meta_key', '_give_campaign_id')
-                    ->value('meta_value');
+        // Step 4: Prepare bulk insert data
+        $metaInserts = [];
 
-                if (!empty($parentCampaignId)) {
-                    $campaignId = (int)$parentCampaignId;
-                }
+        foreach ($donationIds as $donationId) {
+            $campaignId = null;
+
+            // Priority 1: Revenue table
+            if (isset($revenueCampaigns[$donationId])) {
+                $campaignId = $revenueCampaigns[$donationId];
+            }
+            // Priority 2: Parent payment campaign ID
+            elseif (isset($subscriptionData[$donationId]['parent_campaign_id'])) {
+                $campaignId = $subscriptionData[$donationId]['parent_campaign_id'];
+            }
+            // Priority 3: Form-based campaign mapping
+            elseif (isset($formCampaigns[$donationId])) {
+                $campaignId = $formCampaigns[$donationId];
+            }
+
+            if ($campaignId) {
+                $metaInserts[] = [
+                    'donation_id' => $donationId,
+                    'meta_key' => '_give_campaign_id',
+                    'meta_value' => $campaignId
+                ];
             }
         }
 
-        // If no campaignId found yet, try to find the campaign by form ID
-        if (!$campaignId) {
-            // Try to get form ID from parent payment first, then from donation itself
-            $formId = null;
-
-            if ($parentPaymentId) {
-                $formId = DB::table('give_donationmeta')
-                    ->where('donation_id', $parentPaymentId)
-                    ->where('meta_key', '_give_payment_form_id')
-                    ->value('meta_value');
-            }
-
-            // If no form ID from parent, try to get it from the donation itself
-            if (!$formId) {
-                $formId = DB::table('give_donationmeta')
-                    ->where('donation_id', $donationId)
-                    ->where('meta_key', '_give_payment_form_id')
-                    ->value('meta_value');
-            }
-
-            if ($formId) {
-                // Find campaign associated with this form
-                $campaignFromForm = DB::table('give_campaign_forms')
-                    ->where('form_id', $formId)
-                    ->value('campaign_id');
-
-                if ($campaignFromForm) {
-                    $campaignId = (int)$campaignFromForm;
-                }
-            }
-        }
-
-        if ($campaignId) {
-            // Use WordPress/GiveWP meta function instead of raw DB insert
-            give()->payment_meta->update_meta($donationId, '_give_campaign_id', $campaignId);
+        // Step 5: Bulk insert meta data
+        if (!empty($metaInserts)) {
+            $this->bulkInsertMeta($metaInserts);
         }
     }
 
     /**
-     * Get campaign ID from the revenue table for a given donation
+     * Get campaign IDs from revenue table for multiple donations
      *
      * @unreleased
      */
-    private function getCampaignIdFromRevenueTable(int $donationId): ?int
+    private function getBulkCampaignIdsFromRevenueTable(array $donationIds): array
     {
-        $campaignId = DB::table('give_revenue')
-            ->where('donation_id', $donationId)
-            ->value('campaign_id');
+        $results = DB::table('give_revenue')
+            ->select('donation_id', 'campaign_id')
+            ->whereIn('donation_id', $donationIds)
+            ->where('campaign_id', 0, '>')
+            ->getAll();
 
-        return $campaignId ? (int)$campaignId : null;
+        $campaigns = [];
+        foreach ($results as $row) {
+            $campaigns[$row->donation_id] = (int)$row->campaign_id;
+        }
+
+        return $campaigns;
     }
 
     /**
-     * Get the parent payment ID for a renewal donation
+     * Get subscription and parent payment data for multiple donations
      *
      * @unreleased
      */
-    private function getParentPaymentId(int $donationId): ?int
+    private function getBulkSubscriptionData(array $donationIds): array
     {
-        // Get subscription ID from the donation
-        $subscriptionId = DB::table('give_donationmeta')
-            ->where('donation_id', $donationId)
+        // Get subscription IDs for all donations
+        $subscriptionMeta = DB::table('give_donationmeta')
+            ->select('donation_id', 'meta_value as subscription_id')
+            ->whereIn('donation_id', $donationIds)
             ->where('meta_key', '_give_subscription_id')
-            ->value('meta_value');
+            ->getAll();
 
-        if (!$subscriptionId) {
-            return null;
+        if (empty($subscriptionMeta)) {
+            return [];
         }
 
-        // Get parent payment ID from the subscription
-        $parentPaymentId = DB::table('give_subscriptions')
-            ->where('id', $subscriptionId)
-            ->value('parent_payment_id');
+        $subscriptionIds = array_column($subscriptionMeta, 'subscription_id');
+        $donationToSubscription = [];
+        foreach ($subscriptionMeta as $row) {
+            $donationToSubscription[$row->donation_id] = $row->subscription_id;
+        }
 
-        return $parentPaymentId ? (int)$parentPaymentId : null;
+        // Get parent payment IDs from subscriptions
+        $parentPayments = DB::table('give_subscriptions')
+            ->select('id', 'parent_payment_id')
+            ->whereIn('id', $subscriptionIds)
+            ->where('parent_payment_id', 0, '>')
+            ->getAll();
+
+        if (empty($parentPayments)) {
+            return [];
+        }
+
+        $subscriptionToParent = [];
+        $parentPaymentIds = [];
+        foreach ($parentPayments as $row) {
+            $subscriptionToParent[$row->id] = $row->parent_payment_id;
+            $parentPaymentIds[] = $row->parent_payment_id;
+        }
+
+        // Get campaign IDs from parent payments
+        $parentCampaigns = DB::table('give_donationmeta')
+            ->select('donation_id', 'meta_value as campaign_id')
+            ->whereIn('donation_id', $parentPaymentIds)
+            ->where('meta_key', '_give_campaign_id')
+            ->getAll();
+
+        $parentToCampaign = [];
+        foreach ($parentCampaigns as $row) {
+            $parentToCampaign[$row->donation_id] = (int)$row->campaign_id;
+        }
+
+        // Map back to original donations
+        $result = [];
+        foreach ($donationToSubscription as $donationId => $subscriptionId) {
+            if (isset($subscriptionToParent[$subscriptionId])) {
+                $parentPaymentId = $subscriptionToParent[$subscriptionId];
+                $data = [
+                    'subscription_id' => $subscriptionId,
+                    'parent_payment_id' => $parentPaymentId,
+                ];
+
+                // Only add parent_campaign_id if it exists
+                if (isset($parentToCampaign[$parentPaymentId])) {
+                    $data['parent_campaign_id'] = $parentToCampaign[$parentPaymentId];
+                }
+
+                $result[$donationId] = $data;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get form-to-campaign mappings for multiple donations
+     *
+     * @unreleased
+     */
+    private function getBulkFormCampaignMappings(array $donationIds, array $revenueCampaigns, array $subscriptionData): array
+    {
+        // Filter out donations that already have campaign IDs
+        $remainingDonationIds = array_filter($donationIds, function($id) use ($revenueCampaigns, $subscriptionData) {
+            return !isset($revenueCampaigns[$id]) && !isset($subscriptionData[$id]['parent_campaign_id']);
+        });
+
+        if (empty($remainingDonationIds)) {
+            return [];
+        }
+
+        // First try to get form IDs from parent payments for donations that have subscription data but no parent campaign
+        $parentFormIds = [];
+        foreach ($subscriptionData as $donationId => $data) {
+            if (!isset($revenueCampaigns[$donationId]) && !isset($data['parent_campaign_id']) && isset($data['parent_payment_id'])) {
+                $parentFormIds[$donationId] = $data['parent_payment_id'];
+            }
+        }
+
+        $formMappings = [];
+
+        // Get form IDs from parent payments
+        if (!empty($parentFormIds)) {
+            $parentForms = DB::table('give_donationmeta')
+                ->select('donation_id', 'meta_value as form_id')
+                ->whereIn('donation_id', array_values($parentFormIds))
+                ->where('meta_key', '_give_payment_form_id')
+                ->getAll();
+
+            foreach ($parentForms as $row) {
+                // Map back to original donation ID
+                $originalDonationId = array_search($row->donation_id, $parentFormIds);
+                if ($originalDonationId !== false) {
+                    $formMappings[$originalDonationId] = (int)$row->form_id;
+                }
+            }
+        }
+
+        // Get form IDs directly from remaining donations
+        $directFormIds = DB::table('give_donationmeta')
+            ->select('donation_id', 'meta_value as form_id')
+            ->whereIn('donation_id', $remainingDonationIds)
+            ->where('meta_key', '_give_payment_form_id')
+            ->getAll();
+
+        foreach ($directFormIds as $row) {
+            if (!isset($formMappings[$row->donation_id])) {
+                $formMappings[$row->donation_id] = (int)$row->form_id;
+            }
+        }
+
+        if (empty($formMappings)) {
+            return [];
+        }
+
+        // Get campaign mappings for all form IDs
+        $formIds = array_unique(array_values($formMappings));
+        $formToCampaign = DB::table('give_campaign_forms')
+            ->select('form_id', 'campaign_id')
+            ->whereIn('form_id', $formIds)
+            ->getAll();
+
+        $formCampaignMap = [];
+        foreach ($formToCampaign as $row) {
+            $formCampaignMap[$row->form_id] = (int)$row->campaign_id;
+        }
+
+        // Map back to donations
+        $result = [];
+        foreach ($formMappings as $donationId => $formId) {
+            if (isset($formCampaignMap[$formId])) {
+                $result[$donationId] = $formCampaignMap[$formId];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Bulk insert meta data while avoiding duplicates
+     *
+     * @unreleased
+     */
+    private function bulkInsertMeta(array $metaInserts): void
+    {
+        if (empty($metaInserts)) {
+            return;
+        }
+
+        global $wpdb;
+
+        // Extract donation IDs to check for existing meta
+        $donationIds = array_column($metaInserts, 'donation_id');
+
+        // Check which donations already have the meta key
+        $existingMeta = DB::table('give_donationmeta')
+            ->select('donation_id')
+            ->whereIn('donation_id', $donationIds)
+            ->where('meta_key', '_give_campaign_id')
+            ->getAll();
+
+        $existingDonationIds = array_column($existingMeta, 'donation_id');
+
+        // Filter out donations that already have the meta key
+        $filteredMetaInserts = array_filter($metaInserts, function($meta) use ($existingDonationIds) {
+            return !in_array($meta['donation_id'], $existingDonationIds);
+        });
+
+        if (empty($filteredMetaInserts)) {
+            return;
+        }
+
+        // Perform bulk insert for remaining donations
+        $values = [];
+        $placeholders = [];
+
+        foreach ($filteredMetaInserts as $meta) {
+            $values[] = $meta['donation_id'];
+            $values[] = $meta['meta_key'];
+            $values[] = $meta['meta_value'];
+            $placeholders[] = '(%d, %s, %s)';
+        }
+
+        $sql = "INSERT INTO {$wpdb->prefix}give_donationmeta (donation_id, meta_key, meta_value) VALUES " .
+               implode(', ', $placeholders);
+
+        $wpdb->query($wpdb->prepare($sql, $values));
     }
 
     /**
