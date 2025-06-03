@@ -125,7 +125,7 @@ class DonorController extends WP_REST_Controller
 
         $donors = $query->getAll() ?? [];
         $donors = array_map(function ($donor) use ($includeSensitiveData, $donorAnonymousMode, $request) {
-            $item = (new DonorViewModel($donor))->anonymousMode($donorAnonymousMode)->includeSensitiveData($includeSensitiveData)->exports();                        
+            $item = (new DonorViewModel($donor))->anonymousMode($donorAnonymousMode)->includeSensitiveData($includeSensitiveData)->exports();
             $response = $this->prepare_item_for_response($item, $request);
 
             return $this->prepare_response_for_collection($response);
@@ -194,7 +194,7 @@ class DonorController extends WP_REST_Controller
 
     /**
      * Update a single donor.
-     * 
+     *
      * @unreleased
      */
     public function update_item($request): WP_REST_Response
@@ -221,9 +221,9 @@ class DonorController extends WP_REST_Controller
 
         if ($donor->isDirty()) {
             $donor->save();
-        }        
+        }
 
-        $item = (new DonorViewModel($donor))->exports();
+        $item = (new DonorViewModel($donor))->includeSensitiveData(true)->anonymousMode(DonorAnonymousMode::INCLUDED())->exports();
         $response = $this->prepare_item_for_response($item, $request);
 
         return rest_ensure_response($response);
@@ -323,9 +323,10 @@ class DonorController extends WP_REST_Controller
                     'description' => esc_html__('Donor last name', 'give'),
                 ],
                 'email' => [
-                    'type' => 'email',
+                    'type' => 'string',
                     'description' => esc_html__('Donor email', 'give'),
-                    'format' => 'email'
+                    'format' => 'email',
+                    'pattern' => '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
                 ],
             ],
             'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
@@ -450,7 +451,7 @@ class DonorController extends WP_REST_Controller
     public function authorizationStatusCode(): int
     {
         return is_user_logged_in() ? 403 : 401;
-    }    
+    }
 
     /**
      * @since 4.0.0
@@ -468,5 +469,5 @@ class DonorController extends WP_REST_Controller
         ];
 
         return $sortColumnsMap[$sortColumn];
-    }    
+    }
 }

@@ -67,7 +67,7 @@ class DonorViewModel
         }
 
 
-        if ($this->anonymousMode->isRedacted() && $this->donor->isAnonymous()) {
+        if (isset($this->anonymousMode) && $this->anonymousMode->isRedacted() && $this->donor->isAnonymous()) {
             $anonymousDataRedacted = [
                 'id',
                 'name',
