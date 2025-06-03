@@ -661,4 +661,282 @@ class GiveSubscriptionTest extends TestCase
         $reloadedRenewalPayment = new Give_Payment($renewalPayment->ID);
         $this->assertEquals(999, $reloadedRenewalPayment->campaign_id, 'Campaign ID should persist on renewal payment');
     }
+
+    /**
+     * Test that add_payment automatically adds _give_campaign_id meta to renewal payments
+     * when a campaign exists for the form, without explicitly specifying campaign_id.
+     *
+     * @unreleased
+     */
+    public function testAddPaymentAutomaticallyAddsCampaignIdMeta()
+    {
+        // Create a campaign
+        $campaign = \Give\Campaigns\Models\Campaign::factory()->create([
+            'goalType' => \Give\Campaigns\ValueObjects\CampaignGoalType::AMOUNT(),
+        ]);
+
+        // Get the form associated with the campaign
+        $formId = $campaign->defaultFormId;
+
+        // Create a donor
+        $donor = Donor::factory()->create();
+
+        // Create a parent payment with the campaign form
+        $parentPayment = new Give_Payment();
+        $parentPayment->total = 100;
+        $parentPayment->form_id = $formId;
+        $parentPayment->customer_id = $donor->id;
+        $parentPayment->first_name = $donor->firstName;
+        $parentPayment->last_name = $donor->lastName;
+        $parentPayment->email = $donor->email;
+        $parentPayment->currency = 'USD';
+        $parentPayment->status = 'publish';
+        $parentPayment->gateway = TestGateway::id();
+        $parentPayment->mode = give_is_test_mode() ? 'test' : 'live';
+        $parentPayment->transaction_id = 'parent_campaign_auto';
+        $parentPayment->save();
+
+        // Create a subscription
+        $subscription = new Give_Subscription();
+        $subscriptionId = $subscription->create([
+            'customer_id' => $donor->id,
+            'parent_payment_id' => $parentPayment->ID,
+            'form_id' => $formId,
+            'period' => 'month',
+            'frequency' => 1,
+            'initial_amount' => 100,
+            'recurring_amount' => 80,
+            'status' => 'active',
+        ]);
+        $subscription = new Give_Subscription($subscriptionId);
+
+        // Call add_payment to create a renewal payment WITHOUT specifying campaign_id
+        $renewalArgs = [
+            'amount' => 80,
+            'transaction_id' => 'test_renewal_auto_campaign',
+            'gateway' => TestGateway::id(),
+        ];
+        $result = $subscription->add_payment($renewalArgs);
+
+        // Verify the payment was added successfully
+        $this->assertTrue($result, 'Renewal payment should be created successfully');
+
+        // Get the child payments (renewals)
+        $childPayments = $subscription->get_child_payments();
+        $this->assertCount(1, $childPayments, 'Should have one renewal payment');
+
+        // Get the renewal payment object
+        $renewalPayment = new Give_Payment($childPayments[0]->ID);
+
+        // Verify that campaign_id is automatically derived and accessible
+        $this->assertEquals($campaign->id, $renewalPayment->campaign_id, 'Campaign ID should be automatically derived from form ID');
+
+        // Verify the _give_campaign_id meta was saved to the database
+        $savedCampaignId = give_get_meta($renewalPayment->ID, '_give_campaign_id', true);
+        $this->assertEquals($campaign->id, $savedCampaignId, 'Campaign ID should be saved in payment meta as _give_campaign_id');
+
+        // Verify the campaign meta key exists in the database
+        $metaExists = give_get_meta($renewalPayment->ID, '_give_campaign_id', true);
+        $this->assertNotEmpty($metaExists, '_give_campaign_id meta should exist and not be empty');
+        $this->assertIsNumeric($metaExists, '_give_campaign_id meta should be numeric');
+    }
+
+    /**
+     * Test that the give_derive_campaign_id_from_form_id() utility function works correctly.
+     *
+     * @unreleased
+     */
+    public function testGiveDeriveCampaignIdFromFormIdFunction()
+    {
+        // Test with a form that has no campaign - should return 0
+        $result = give_derive_campaign_id_from_form_id(999999);
+        $this->assertEquals(0, $result, 'Should return 0 for form with no campaign');
+
+        // Create a campaign
+        $campaign = \Give\Campaigns\Models\Campaign::factory()->create([
+            'goalType' => \Give\Campaigns\ValueObjects\CampaignGoalType::AMOUNT(),
+        ]);
+
+        // Get the form associated with the campaign
+        $formId = $campaign->defaultFormId;
+
+        // Test with a form that has a campaign - should return the campaign ID
+        $result = give_derive_campaign_id_from_form_id($formId);
+        $this->assertEquals($campaign->id, $result, 'Should return the correct campaign ID for form with campaign');
+
+        // Test the filter hook
+        add_filter('give_derive_campaign_id_from_form_id', function($derived_campaign_id, $form_id) {
+            if ($form_id === 12345) {
+                return 99999; // Override with custom value for test
+            }
+            return $derived_campaign_id;
+        }, 10, 2);
+
+        $filtered_result = give_derive_campaign_id_from_form_id(12345);
+        $this->assertEquals(99999, $filtered_result, 'Filter should allow overriding the derived campaign ID');
+
+        // Clean up filter
+        remove_all_filters('give_derive_campaign_id_from_form_id');
+    }
+
+    /**
+     * Test debugging the campaign ID setting process in add_payment method.
+     *
+     * @unreleased
+     */
+    public function testAddPaymentCampaignIdDebugging()
+    {
+        // Create a campaign
+        $campaign = \Give\Campaigns\Models\Campaign::factory()->create([
+            'goalType' => \Give\Campaigns\ValueObjects\CampaignGoalType::AMOUNT(),
+        ]);
+
+        // Get the form associated with the campaign
+        $formId = $campaign->defaultFormId;
+
+        // Verify the utility function works first
+        $derivedId = give_derive_campaign_id_from_form_id($formId);
+        $this->assertEquals($campaign->id, $derivedId, 'Utility function should derive correct campaign ID');
+
+        // Create a donor
+        $donor = Donor::factory()->create();
+
+        // Create a parent payment with the campaign form
+        $parentPayment = new Give_Payment();
+        $parentPayment->total = 100;
+        $parentPayment->form_id = $formId;
+        $parentPayment->customer_id = $donor->id;
+        $parentPayment->first_name = $donor->firstName;
+        $parentPayment->last_name = $donor->lastName;
+        $parentPayment->email = $donor->email;
+        $parentPayment->currency = 'USD';
+        $parentPayment->status = 'publish';
+        $parentPayment->gateway = TestGateway::id();
+        $parentPayment->mode = give_is_test_mode() ? 'test' : 'live';
+        $parentPayment->transaction_id = 'parent_debug_test';
+        $parentPayment->save();
+
+        // Create a subscription
+        $subscription = new Give_Subscription();
+        $subscriptionId = $subscription->create([
+            'customer_id' => $donor->id,
+            'parent_payment_id' => $parentPayment->ID,
+            'form_id' => $formId,
+            'period' => 'month',
+            'frequency' => 1,
+            'initial_amount' => 100,
+            'recurring_amount' => 80,
+            'status' => 'active',
+        ]);
+        $subscription = new Give_Subscription($subscriptionId);
+
+        // Call add_payment to create a renewal payment
+        $renewalArgs = [
+            'amount' => 80,
+            'transaction_id' => 'test_renewal_debug',
+            'gateway' => TestGateway::id(),
+        ];
+        $result = $subscription->add_payment($renewalArgs);
+
+        // Verify the payment was added successfully
+        $this->assertTrue($result, 'Renewal payment should be created successfully');
+
+        // Get the child payments (renewals)
+        $childPayments = $subscription->get_child_payments();
+        $this->assertCount(1, $childPayments, 'Should have one renewal payment');
+
+        // Get the renewal payment object
+        $renewalPayment = new Give_Payment($childPayments[0]->ID);
+
+        // Debug: Check what campaign_id property shows
+        $this->assertEquals($campaign->id, $renewalPayment->campaign_id, 'Campaign ID property should be set correctly');
+
+        // Debug: Check if _give_campaign_id meta exists at all
+        $allMeta = get_post_meta($renewalPayment->ID);
+        $this->assertArrayHasKey('_give_campaign_id', $allMeta, '_give_campaign_id meta key should exist');
+
+        // Debug: Check the meta value
+        $savedCampaignId = give_get_meta($renewalPayment->ID, '_give_campaign_id', true);
+        $this->assertEquals($campaign->id, $savedCampaignId, 'Campaign ID should be saved in payment meta');
+
+        // Additional check: Make sure the meta value is actually the right type
+        $this->assertIsNumeric($savedCampaignId, 'Campaign ID meta should be numeric');
+        $this->assertGreaterThan(0, $savedCampaignId, 'Campaign ID meta should be greater than 0');
+    }
+
+    /**
+     * Test that add_payment handles forms without campaigns correctly (should save 0 as campaign_id).
+     *
+     * @unreleased
+     */
+    public function testAddPaymentWithFormWithoutCampaign()
+    {
+        // Use a form ID that doesn't have a campaign
+        $formId = 9999;
+
+        // Verify the utility function returns 0 for forms without campaigns
+        $derivedId = give_derive_campaign_id_from_form_id($formId);
+        $this->assertEquals(0, $derivedId, 'Utility function should return 0 for form without campaign');
+
+        // Create a donor
+        $donor = Donor::factory()->create();
+
+        // Create a parent payment with the non-campaign form
+        $parentPayment = new Give_Payment();
+        $parentPayment->total = 100;
+        $parentPayment->form_id = $formId;
+        $parentPayment->customer_id = $donor->id;
+        $parentPayment->first_name = $donor->firstName;
+        $parentPayment->last_name = $donor->lastName;
+        $parentPayment->email = $donor->email;
+        $parentPayment->currency = 'USD';
+        $parentPayment->status = 'publish';
+        $parentPayment->gateway = TestGateway::id();
+        $parentPayment->mode = give_is_test_mode() ? 'test' : 'live';
+        $parentPayment->transaction_id = 'parent_no_campaign';
+        $parentPayment->save();
+
+        // Create a subscription
+        $subscription = new Give_Subscription();
+        $subscriptionId = $subscription->create([
+            'customer_id' => $donor->id,
+            'parent_payment_id' => $parentPayment->ID,
+            'form_id' => $formId,
+            'period' => 'month',
+            'frequency' => 1,
+            'initial_amount' => 100,
+            'recurring_amount' => 80,
+            'status' => 'active',
+        ]);
+        $subscription = new Give_Subscription($subscriptionId);
+
+        // Call add_payment to create a renewal payment
+        $renewalArgs = [
+            'amount' => 80,
+            'transaction_id' => 'test_renewal_no_campaign',
+            'gateway' => TestGateway::id(),
+        ];
+        $result = $subscription->add_payment($renewalArgs);
+
+        // Verify the payment was added successfully
+        $this->assertTrue($result, 'Renewal payment should be created successfully');
+
+        // Get the child payments (renewals)
+        $childPayments = $subscription->get_child_payments();
+        $this->assertCount(1, $childPayments, 'Should have one renewal payment');
+
+        // Get the renewal payment object
+        $renewalPayment = new Give_Payment($childPayments[0]->ID);
+
+        // Campaign ID should be 0 for forms without campaigns
+        $this->assertEquals(0, $renewalPayment->campaign_id, 'Campaign ID property should be 0 for form without campaign');
+
+        // Verify the _give_campaign_id meta is set to 0
+        $savedCampaignId = give_get_meta($renewalPayment->ID, '_give_campaign_id', true);
+        $this->assertEquals(0, $savedCampaignId, 'Campaign ID meta should be 0 for form without campaign');
+
+        // Verify meta exists (even if it's 0)
+        $allMeta = get_post_meta($renewalPayment->ID);
+        $this->assertArrayHasKey('_give_campaign_id', $allMeta, '_give_campaign_id meta should exist even when 0');
+    }
 }

@@ -560,6 +560,11 @@ class Give_Subscription {
 			$payment->date = $args['post_date'];
 		}
 
+		// Automatically derive campaign_id from form_id if campaign exists
+		if ( empty( $payment->campaign_id ) ) {
+			$payment->campaign_id = give_derive_campaign_id_from_form_id( $payment->form_id );
+		}
+
 		// Increase the earnings for the form in the subscription.
 		give_increase_earnings( $parent->form_id, $args['amount'] );
 		// Increase the donation count for this form as well.
@@ -567,6 +572,12 @@ class Give_Subscription {
 
 		$payment->add_donation( $parent->form_id, array( 'price' => $args['amount'], 'price_id' => $price_id ) );
 		$payment->save();
+
+		// Ensure campaign_id meta is saved (safety net)
+		if ( ! empty( $payment->campaign_id ) ) {
+			$payment->update_meta( '_give_campaign_id', $payment->campaign_id );
+		}
+
 		$payment->update_meta( 'subscription_id', $this->id );
 		$donor->increase_purchase_count( 1 );
 		$donor->increase_value( $args['amount'] );
