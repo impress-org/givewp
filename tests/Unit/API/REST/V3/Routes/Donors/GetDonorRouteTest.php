@@ -314,9 +314,9 @@ class GetDonorRouteTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(200, $status);
+        $this->assertEquals(0, $data['id']);
 
         $anonymousDataRedacted = [
-            'id',
             'name',
             'firstName',
             'lastName',

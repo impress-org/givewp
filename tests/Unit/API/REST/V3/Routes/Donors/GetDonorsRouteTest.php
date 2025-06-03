@@ -506,9 +506,10 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
+        $this->assertEquals($donor1->id, $data[0]['id']);
+        $this->assertEquals(0, $data[1]['id']);
 
         $anonymousDataRedacted = [
-            'id',
             'name',
             'firstName',
             'lastName',
