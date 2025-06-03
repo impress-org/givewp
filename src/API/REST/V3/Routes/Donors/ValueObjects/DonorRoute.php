@@ -19,7 +19,5 @@ use Give\Framework\Support\ValueObjects\Enum;
 class DonorRoute extends Enum
 {
     const NAMESPACE = 'givewp/v3';
-    const BASE = 'donors';
-    const DONORS = 'donors';
-    const DONOR = 'donors/(?P<id>[0-9]+)';
+    const BASE = 'donors';    
 }

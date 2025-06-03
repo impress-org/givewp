@@ -20,7 +20,7 @@ class LoadDonorOptions
             [
                 'isAdmin' => is_admin(),
                 'adminUrl' => admin_url(),
-                'apiRoot' => rest_url(DonorRoute::NAMESPACE . '/' . DonorRoute::DONORS),
+                'apiRoot' => rest_url(DonorRoute::NAMESPACE . '/' . DonorRoute::BASE),
                 'apiNonce' => wp_create_nonce('wp_rest'),
                 'donorsAdminUrl' => admin_url('edit.php?post_type=give_forms&page=give-donors'),
                 'currency' => give_get_currency(),
