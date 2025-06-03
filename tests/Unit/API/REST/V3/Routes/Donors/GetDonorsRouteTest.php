@@ -582,6 +582,17 @@ class GetDonorsRouteTest extends RestApiTestCase
      */
     public function testGetDonorsSortedByColumns($sortableColumn)
     {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => $sortableColumn . 'testGetDonorsSortedByColumns',
+                'user_pass' => $sortableColumn . 'testGetDonorsSortedByColumns',
+                'user_email' => $sortableColumn . 'testGetDonorsSortedByColumns@test.com',
+            ]
+        );
+        wp_set_current_user($newAdminUser);
+
+
         DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
         /** @var Campaign $campaign1 */
@@ -602,6 +613,7 @@ class GetDonorsRouteTest extends RestApiTestCase
          */
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 30,
                 'sort' => $sortableColumn,
@@ -622,6 +634,7 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 30,
                 'sort' => $sortableColumn,
@@ -645,6 +658,7 @@ class GetDonorsRouteTest extends RestApiTestCase
          */
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 3,
                 'sort' => $sortableColumn,
@@ -665,6 +679,7 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 30,
                 'sort' => $sortableColumn,
