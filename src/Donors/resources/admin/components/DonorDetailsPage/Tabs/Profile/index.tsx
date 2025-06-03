@@ -3,12 +3,12 @@ import DonorCustomFields from './CustomFields';
 import DonorEmailAddress from './EmailAddress';
 import DonorPersonalDetails from './PersonalDetails';
 
-import styles from '../../DonorDetailsPage.module.scss';
+import sharedStyles from '@givewp/components/AdminDetailsPage/AdminDetailsPage.module.scss';
 
 export default function DonorDetailsPageProfileTab() {
     return (
         <>
-            <div className={styles.sections}>
+            <div className={sharedStyles.sections}>
                 <DonorPersonalDetails />
                 <DonorAddress />
                 <DonorEmailAddress />

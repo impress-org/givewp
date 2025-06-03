@@ -4,7 +4,7 @@ import {useFormContext} from 'react-hook-form';
 import IntlTelInput from 'intl-tel-input/react';
 
 import styles from '../../DonorDetailsPage.module.scss';
-import sharedStyles from '@givewp/components/src/AdminDetailsPage/AdminDetailsPage.module.scss';
+import sharedStyles from '@givewp/components/AdminDetailsPage/AdminDetailsPage.module.scss';
 import 'intl-tel-input/build/css/intlTelInput.css'
 import { getDonorOptionsWindowData } from '@givewp/donors/utils';
 
@@ -44,7 +44,7 @@ export default function DonorPersonalDetails() {
             <div className={sharedStyles.rightColumn}>
                 <div className={sharedStyles.sectionField}>
                     <div className={sharedStyles.sectionSubtitle}>{__('Name', 'give')}</div>
-                    <div className={sharedStyles.sectionFieldInputWrapper}>
+                    <div className={styles.sectionFieldInputWrapper}>
                         <select {...register('prefix')} className={styles.prefixSelect}>
                             <option value=""></option>
                             {nameTitlePrefixes.map((prefix) => (

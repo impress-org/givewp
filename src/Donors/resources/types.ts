@@ -13,6 +13,7 @@ export type GiveDonorOptions = {
     isRecurringEnabled: boolean;
     defaultForm: string;
     intlTelInputSettings: IntlTelInputSettings;
+    nameTitlePrefixes: string[];
     admin: {
         showCampaignInteractionNotice: boolean
         showFormGoalNotice: boolean

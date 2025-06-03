@@ -91,7 +91,7 @@ export default function DonorDetailsPage({ donorId }) {
             useObjectEntityRecord={useDonorEntityRecord}
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donors`}
-            StatusBadge={() => <StatusBadge status={donor.status} />}
+            StatusBadge={() => <StatusBadge status={donor?.status} />}
             SecondaryActionButton={SendEmailButton}
             ContextMenuItems={ContextMenuItems}
         >
