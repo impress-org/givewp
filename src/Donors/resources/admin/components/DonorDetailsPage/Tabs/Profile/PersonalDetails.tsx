@@ -1,12 +1,19 @@
+/**
+ * External Dependencies
+ */
 import { __ } from '@wordpress/i18n';
 import { useState } from 'react';
 import {useFormContext} from 'react-hook-form';
 import IntlTelInput from 'intl-tel-input/react';
-
-import styles from '../../DonorDetailsPage.module.scss';
-import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import 'intl-tel-input/build/css/intlTelInput.css'
+
+/**
+ * Internal Dependencies
+ */
+import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import { getDonorOptionsWindowData } from '@givewp/donors/utils';
+import Upload from '../../../Inputs/Upload';
+import styles from '../../DonorDetailsPage.module.scss';
 
 const {intlTelInputSettings, nameTitlePrefixes} = getDonorOptionsWindowData();
 
@@ -37,6 +44,20 @@ export default function DonorPersonalDetails() {
             title={__('Personal Details', 'give')}
             description={__('This includes profile photo, name, phone, etc.', 'give')}
         >
+            <AdminSectionField
+                error={errors.avatar ? `${errors.avatar.message}` : undefined}
+            >
+                <Upload
+                    id="givewp-donor-upload-avatar"
+                    label={__('Photo', 'give')}
+                    value={watch('avatar')}
+                    onChange={(avatarUrl, avatarAlt) => {
+                        setValue('avatar', avatarUrl, {shouldDirty: true});
+                    }}
+                    reset={() => setValue('avatar', '', {shouldDirty: true})}
+                />
+            </AdminSectionField>
+
             <AdminSectionField
                 subtitle={__('Name', 'give')}
                 error={errors.title ? `${errors.title.message}` : undefined}
