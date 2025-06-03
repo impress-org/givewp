@@ -1,7 +1,15 @@
+import { __ } from "@wordpress/i18n";
+import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
+
 export default function DonorCustomFields() {
     return (
-        <div>
-            <h1>Custom Fields</h1>
-        </div>
+        <AdminSection
+            title={__('Custom Fields', 'give')}
+            description={__('Manage the custom fields filled by the donor', 'give')}
+        >
+            <AdminSectionField>
+                Custom Fields
+            </AdminSectionField>
+        </AdminSection>
     );
 }

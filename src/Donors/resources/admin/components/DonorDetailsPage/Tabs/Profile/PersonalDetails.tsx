@@ -4,7 +4,7 @@ import {useFormContext} from 'react-hook-form';
 import IntlTelInput from 'intl-tel-input/react';
 
 import styles from '../../DonorDetailsPage.module.scss';
-import sharedStyles from '@givewp/components/AdminDetailsPage/AdminDetailsPage.module.scss';
+import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import 'intl-tel-input/build/css/intlTelInput.css'
 import { getDonorOptionsWindowData } from '@givewp/donors/utils';
 
@@ -33,55 +33,49 @@ export default function DonorPersonalDetails() {
     };
 
     return (
-        <div className={sharedStyles.section}>
-            <div className={sharedStyles.leftColumn}>
-                <div className={sharedStyles.sectionTitle}>{__('Personal Details', 'give')}</div>
-                <div className={sharedStyles.sectionDescription}>
-                    {__( 'This includes profile photo, name, phone, etc.', 'give',)}
+        <AdminSection
+            title={__('Personal Details', 'give')}
+            description={__('This includes profile photo, name, phone, etc.', 'give')}
+        >
+            <AdminSectionField
+                subtitle={__('Name', 'give')}
+                error={errors.title ? `${errors.title.message}` : undefined}
+            >
+                <div className={styles.sectionFieldInputWrapper}>
+                    <select {...register('prefix')} className={styles.prefixSelect}>
+                        <option value=""></option>
+                        {nameTitlePrefixes.map((prefix) => (
+                            <option key={prefix} value={prefix}>{prefix}</option>
+                        ))}
+                    </select>
+                    <input {...register('firstName')} />
+                    <input {...register('lastName')} />
                 </div>
-            </div>
+            </AdminSectionField>
 
-            <div className={sharedStyles.rightColumn}>
-                <div className={sharedStyles.sectionField}>
-                    <div className={sharedStyles.sectionSubtitle}>{__('Name', 'give')}</div>
-                    <div className={styles.sectionFieldInputWrapper}>
-                        <select {...register('prefix')} className={styles.prefixSelect}>
-                            <option value=""></option>
-                            {nameTitlePrefixes.map((prefix) => (
-                                <option key={prefix} value={prefix}>{prefix}</option>
-                            ))}
-                        </select>
-                        <input {...register('firstName')} />
-                        <input {...register('lastName')} />
-                    </div>
-
-                    {errors.title && <div className={sharedStyles.errorMsg}>{`${errors.title.message}`}</div>}
+            <AdminSectionField
+                subtitle={__('Phone', 'give')}
+                error={errors.phone ? `${errors.phone.message}` : undefined}
+            >
+                <div className={styles.phoneInput}>
+                    <IntlTelInput
+                        initialValue={watch('phone')}
+                        onChangeCountry={setCountry}
+                        onChangeNumber={onChangeNumber}
+                        initOptions={{
+                            initialCountry: intlTelInputSettings.initialCountry,
+                            showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
+                            strictMode: intlTelInputSettings.strictMode,
+                            i18n: intlTelInputSettings.i18n,
+                            useFullscreenPopup: intlTelInputSettings.useFullscreenPopup,
+                        }}
+                    />
                 </div>
-                <div className={sharedStyles.sectionField}>
-                    <div className={sharedStyles.sectionSubtitle}>{__('Phone', 'give')}</div>
+            </AdminSectionField>
 
-                    <div className={styles.phoneInput}>
-                        <IntlTelInput
-                            initialValue={watch('phone')}
-                            onChangeCountry={setCountry}
-                            onChangeNumber={onChangeNumber}
-                            initOptions={{
-                                initialCountry: intlTelInputSettings.initialCountry,
-                                showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
-                                strictMode: intlTelInputSettings.strictMode,
-                                i18n: intlTelInputSettings.i18n,
-                                useFullscreenPopup: intlTelInputSettings.useFullscreenPopup,
-                            }}
-                        />
-                    </div>
-
-                    {errors.phone && <div className={sharedStyles.errorMsg}>{`${errors.phone.message}`}</div>}
-                </div>
-                <div className={sharedStyles.sectionField}>
-                    <div className={sharedStyles.sectionSubtitle}>{__('Company name', 'give')}</div>
-                    <input {...register('companyName')} />
-                </div>
-            </div>
-        </div>
+            <AdminSectionField subtitle={__('Company name', 'give')}>
+                <input {...register('companyName')} />
+            </AdminSectionField>
+        </AdminSection>
     );
 }
