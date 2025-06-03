@@ -292,7 +292,7 @@ class Give_HTML_Elements {
         // Ensure the selected campaign is included in options
         if (false !== $args['selected'] && $args['selected'] !== 0) {
             $selectedCampaign = DB::table('give_campaigns')
-                ->select(['id'], ['campaign_title', 'title'])
+                ->select('id', ['campaign_title', 'title'])
                 ->where('id', $args['selected'])
                 ->get();
 
