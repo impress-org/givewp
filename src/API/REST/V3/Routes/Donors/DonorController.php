@@ -262,7 +262,15 @@ class DonorController extends WP_REST_Controller
      */
     public function update_item_permissions_check($request)
     {
-        return current_user_can('manage_options');
+        if (!current_user_can('manage_options')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to update donors.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
     }
 
     /**
