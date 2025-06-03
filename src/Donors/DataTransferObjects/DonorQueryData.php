@@ -56,6 +56,10 @@ final class DonorQueryData
      */
     public $prefix;
     /**
+     * @var int
+     */
+    public $avatarId;
+    /**
      * @var Money
      */
     public $totalAmountDonated;
@@ -88,6 +92,7 @@ final class DonorQueryData
         $self->lastName = $object->lastName;
         $self->createdAt = Temporal::toDateTime($object->createdAt);
         $self->additionalEmails = $object->additionalEmails;
+        $self->avatarId = (int)$object->{DonorMetaKeys::AVATAR_ID()->getKeyAsCamelCase()};
         $self->totalAmountDonated = Money::fromDecimal($object->totalAmountDonated, give_get_currency());
         $self->totalNumberOfDonations = (int)$object->totalNumberOfDonations;
 

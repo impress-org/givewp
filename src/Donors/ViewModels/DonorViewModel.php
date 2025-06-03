@@ -48,7 +48,10 @@ class DonorViewModel
      */
     public function exports(): array
     {
-        $data = $this->donor->toArray();
+        $data = array_merge(
+            $this->donor->toArray(),
+            ['avatarUrl' => $this->getAvatarUrl()],
+        );
 
         if ( ! $this->includeSensitiveData) {
             $sensitiveData = [
@@ -56,6 +59,7 @@ class DonorViewModel
                 'email',
                 'phone',
                 'additionalEmails',
+                'avatarUrl',
             ];
 
             foreach ($sensitiveData as $propertyName) {
@@ -73,13 +77,40 @@ class DonorViewModel
                 'firstName',
                 'lastName',
                 'prefix',
+                'avatarUrl',
             ];
 
             foreach ($sensitiveData as $propertyName) {
-                $data[$propertyName] = $propertyName === 'id' ? 0 :  __('anonymous', 'give');
+                switch ($propertyName) {
+                    case 'id':
+                        $data[$propertyName] = 0;
+                        break;
+                    case 'avatarUrl':
+                        $data[$propertyName] = '';
+                        break;
+                    default:
+                        $data[$propertyName] = __('anonymous', 'give');
+                        break;
+                }
             }
         }
 
         return $data;
+    }
+
+    /**
+     * Get avatar URL from avatar ID with fallback to Gravatar
+     *
+     * @unreleased
+     */
+    private function getAvatarUrl(): ?string
+    {
+        $avatarId = $this->donor->avatarId;
+
+        if ($avatarId) {
+            return wp_get_attachment_url($avatarId);
+        } else {
+            return give_validate_gravatar($this->donor->email) ? get_avatar_url($this->donor->email, ['size' => 80]) : null;
+        }
     }
 }
