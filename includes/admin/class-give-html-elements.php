@@ -289,11 +289,6 @@ class Give_HTML_Elements {
 
         $options = [];
 
-        // Ensure the selected.
-        if (false !== $args['selected'] && $args['selected'] !== 0) {
-            $options[$args['selected']] = get_the_title($args['selected']);
-        }
-
         $options[0] = esc_html__('No campaigns found.', 'give');
         if ( ! empty($campaigns)) {
             $options[0] = $args['placeholder'];
@@ -303,6 +298,10 @@ class Give_HTML_Elements {
                     : $campaign->title;
 
                 $options[absint($campaign->id)] = esc_html($campaign_title);
+
+                if (false !== $args['selected'] && $args['selected'] !== 0) {
+                    $options[$args['selected']] = esc_html($campaign_title);
+                }
             }
         }
 

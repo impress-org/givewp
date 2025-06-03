@@ -452,7 +452,7 @@ $donor_phone_number = Donor::find($donor_id)->phone;
                                                         'name' => 'give-payment-campaign-select',
                                                         'id' => 'give-payment-campaign-select',
                                                         'chosen' => true,
-                                                        'placeholder' => '',
+                                                        'placeholder' => __('Select Campaign', 'give'),
                                                     ]
                                                 );
                                                 ?>
