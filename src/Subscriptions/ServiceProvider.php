@@ -9,7 +9,7 @@ use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\Migrations\AddPaymentModeToSubscriptionTable;
-use Give\Subscriptions\Migrations\BackfillMissingCampaignIdForSubscriptionRenewals;
+use Give\Subscriptions\Migrations\BackfillMissingCampaignIdForDonations;
 use Give\Subscriptions\Migrations\CreateSubscriptionTables;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 
@@ -70,7 +70,7 @@ class ServiceProvider implements ServiceProviderInterface
         $register->addMigrations([
             CreateSubscriptionTables::class,
             AddPaymentModeToSubscriptionTable::class,
-            BackfillMissingCampaignIdForSubscriptionRenewals::class,
+            BackfillMissingCampaignIdForDonations::class,
         ]);
     }
 }

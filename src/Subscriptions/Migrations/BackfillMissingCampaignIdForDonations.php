@@ -9,22 +9,22 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * Class BackfillMissingCampaignIdForSubscriptionRenewals
+ * Class BackfillMissingCampaignIdForDonations
  *
- * This migration backfills missing campaignId for existing subscription renewal donations.
- * It ensures that renewal donations inherit the campaignId from their parent payment,
- * or discovers it through form-campaign associations when the parent has no direct campaignId.
+ * This migration backfills missing campaignId for existing donations.
+ * It ensures that donations have the campaignId from their parent payment (for renewals),
+ * from the revenue table, or discovers it through form-campaign associations.
  *
  * @unreleased
  */
-class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
+class BackfillMissingCampaignIdForDonations extends BatchMigration
 {
     /**
      * @inheritDoc
      */
     public static function id(): string
     {
-        return 'subscriptions_backfill_missing_campaign_id_for_legacy_subscription_renewals';
+        return 'subscriptions_backfill_missing_campaign_id_for_donations';
     }
 
     /**
@@ -32,7 +32,7 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
      */
     public static function title(): string
     {
-        return 'Backfill missing campaignId for legacy subscription renewals';
+        return 'Backfill missing campaignId for donations';
     }
 
     /**
@@ -40,11 +40,11 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
      */
     public static function timestamp(): string
     {
-        return strtotime('2025-06-02 00:00:00');
+        return strtotime('2025-06-03 00:00:00');
     }
 
     /**
-     * Base query to find subscription renewal donations without campaignId
+     * Base query to find donations without campaignId
      *
      * @unreleased
      */
@@ -52,7 +52,6 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
     {
         return DB::table('posts', 'donations')
             ->where('donations.post_type', 'give_payment')
-            ->where('donations.post_status', 'give_subscription') // Renewal status
             ->whereNotExists(function (QueryBuilder $builder) {
                 $builder
                     ->select('meta_id')
@@ -78,31 +77,31 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
                 $query->whereBetween('donations.ID', $firstId, $lastId);
             }
 
-            $renewalDonations = $query->getAll();
+            $donations = $query->getAll();
 
-            foreach ($renewalDonations as $renewalDonationRow) {
-                $this->processRenewalDonation($renewalDonationRow->ID);
+            foreach ($donations as $donationRow) {
+                $this->processDonation($donationRow->ID);
             }
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException('An error occurred while backfilling missing campaignId for subscription renewals', 0, $exception);
+            throw new DatabaseMigrationException('An error occurred while backfilling missing campaignId for donations', 0, $exception);
         }
     }
 
     /**
-     * Process a single renewal donation to assign missing campaignId
+     * Process a single donation to assign missing campaignId
      *
      * @unreleased
      */
-    private function processRenewalDonation(int $renewalDonationId): void
+    private function processDonation(int $donationId): void
     {
         $campaignId = null;
 
         // First, try to get the campaignId from the revenue table
-        $campaignId = $this->getCampaignIdFromRevenueTable($renewalDonationId);
+        $campaignId = $this->getCampaignIdFromRevenueTable($donationId);
 
         if (!$campaignId) {
-            // Find the parent payment ID for this renewal
-            $parentPaymentId = $this->getParentPaymentId($renewalDonationId);
+            // Check if this is a renewal donation and try to get campaignId from parent
+            $parentPaymentId = $this->getParentPaymentId($donationId);
 
             // Try to get the campaignId from the parent donation (if parent exists)
             if ($parentPaymentId) {
@@ -119,7 +118,7 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
 
         // If no campaignId found yet, try to find the campaign by form ID
         if (!$campaignId) {
-            // Try to get form ID from parent payment first, then from renewal donation itself
+            // Try to get form ID from parent payment first, then from donation itself
             $formId = null;
 
             if ($parentPaymentId) {
@@ -129,10 +128,10 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
                     ->value('meta_value');
             }
 
-            // If no form ID from parent, try to get it from the renewal donation itself
+            // If no form ID from parent, try to get it from the donation itself
             if (!$formId) {
                 $formId = DB::table('give_donationmeta')
-                    ->where('donation_id', $renewalDonationId)
+                    ->where('donation_id', $donationId)
                     ->where('meta_key', '_give_payment_form_id')
                     ->value('meta_value');
             }
@@ -151,7 +150,7 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
 
         if ($campaignId) {
             // Use WordPress/GiveWP meta function instead of raw DB insert
-            give()->payment_meta->update_meta($renewalDonationId, '_give_campaign_id', $campaignId);
+            give()->payment_meta->update_meta($donationId, '_give_campaign_id', $campaignId);
         }
     }
 
@@ -174,11 +173,11 @@ class BackfillMissingCampaignIdForSubscriptionRenewals extends BatchMigration
      *
      * @unreleased
      */
-    private function getParentPaymentId(int $renewalDonationId): ?int
+    private function getParentPaymentId(int $donationId): ?int
     {
-        // Get subscription ID from the renewal donation
+        // Get subscription ID from the donation
         $subscriptionId = DB::table('give_donationmeta')
-            ->where('donation_id', $renewalDonationId)
+            ->where('donation_id', $donationId)
             ->where('meta_key', '_give_subscription_id')
             ->value('meta_value');
 
