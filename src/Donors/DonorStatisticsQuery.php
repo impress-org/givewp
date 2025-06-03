@@ -7,6 +7,8 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Donors\ValueObjects\DonorType;
+use Give\Donations\Models\Donation;
 
 /**
  * @unreleased
@@ -106,6 +108,84 @@ class DonorStatisticsQuery extends QueryBuilder
         $query = clone $this;
 
         return $query->count('donation.ID');
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function getFirstDonation()
+    {
+        $query = clone $this;
+        $query->select(
+            'donation.post_date',
+            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0) as amount'
+        );
+        $query->orderBy('post_date', 'ASC');
+        $query->limit(1);
+        $result = $query->get();
+
+        if (!$result) {
+            return null;
+        }
+
+        return [
+            'amount' => (float)$result->amount,
+            'date' => date('Y-m-d H:i:s', strtotime($result->post_date))
+        ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function lastContribution()
+    {
+        $query = clone $this;
+        $query->select('donation.post_date');
+        $query->orderBy('post_date', 'DESC');
+        $query->limit(1);
+        $result = $query->get();
+        
+        if (!$result) {
+            return null;
+        }
+        
+        return human_time_diff(strtotime($result->post_date), current_time('timestamp')) . ' ago';
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return DonorType|null
+     */
+    public function getDonorType()
+    {
+        // Create a new query for checking subscription status
+        $subscriptionQuery = clone $this;
+        $subscriptionQuery->where('donation.post_status', 'give_subscription');
+        $hasSubscription = $subscriptionQuery->count('donation.ID') > 0;
+
+        if ($hasSubscription) {
+            return DonorType::SUBSCRIBER();
+        }
+
+        // Check total number of donations using the original query
+        $totalDonations = $this->getDonationsCount();
+
+        if ($totalDonations === 0) {
+            return DonorType::NEW();
+        }
+
+        return $totalDonations > 1 ? DonorType::REPEAT() : DonorType::SINGLE();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getPreferredGivingType(): string
+    {
+        $donorType = $this->getDonorType();
+        return $donorType && $donorType->isSubscriber() ? 'recurring' : 'single';
     }
 
     /**

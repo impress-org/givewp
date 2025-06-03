@@ -61,7 +61,16 @@ class GetDonorStatisticsTest extends RestApiTestCase
                 'lifetimeAmount' => 300,
                 'highestAmount' => 250,
                 'averageAmount' => 150,
+                'firstDonation' => [
+                    'amount' => '250',
+                    'date' => $data['donations']['firstDonation']['date']
+                ],
+                'lastDonationAmount' => '50',
+                'donationCount' => 2
             ],
+            'donorSince' => $data['donorSince'],
+            'donorType' => $data['donorType'],
+            'preferredGivingType' => 'single'
         ], $data);
     }
 
@@ -116,7 +125,16 @@ class GetDonorStatisticsTest extends RestApiTestCase
                 'lifetimeAmount' => 50,
                 'highestAmount' => 50,
                 'averageAmount' => 50,
+                'firstDonation' => [
+                    'amount' => '50',
+                    'date' => $data['donations']['firstDonation']['date']
+                ],
+                'lastDonationAmount' => '50',
+                'donationCount' => 1
             ],
+            'donorSince' => $data['donorSince'],
+            'donorType' => $data['donorType'],
+            'preferredGivingType' => 'single'
         ], $data);
     }
 
@@ -168,7 +186,16 @@ class GetDonorStatisticsTest extends RestApiTestCase
                 'lifetimeAmount' => 50,
                 'highestAmount' => 50,
                 'averageAmount' => 50,
+                'firstDonation' => [
+                    'amount' => '50',
+                    'date' => $data['donations']['firstDonation']['date']
+                ],
+                'lastDonationAmount' => '50',
+                'donationCount' => 1
             ],
+            'donorSince' => $data['donorSince'],
+            'donorType' => $data['donorType'],
+            'preferredGivingType' => 'single'
         ], $data);
     }
 

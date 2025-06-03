@@ -57,6 +57,12 @@ class DonorStatisticsController extends WP_REST_Controller
                         'type' => 'integer',
                         'default' => 0,
                     ],
+                    'donorId' => [
+                        'description' => __('The ID of the donor to retrieve statistics for.',
+                            'give'),
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
                 ],
             ],
         ]);
@@ -91,7 +97,13 @@ class DonorStatisticsController extends WP_REST_Controller
                 'lifetimeAmount' => $query->getLifetimeDonationsAmount(),
                 'highestAmount' => $query->getHighestDonationAmount(),
                 'averageAmount' => $query->getAverageDonationAmount(),
+                'firstDonation' => $query->getFirstDonation(),
+                'lastContribution' => $query->lastContribution(),
+                'donationCount' => $donor->totalNumberOfDonations,
             ],
+            'donorSince' => $donor->createdAt->format('Y-m-d H:i:s'),
+            'donorType' => $query->getDonorType(),
+            'preferredGivingType' => $query->getPreferredGivingType(),
         ];
 
         $response = $this->prepare_item_for_response($item, $request);
