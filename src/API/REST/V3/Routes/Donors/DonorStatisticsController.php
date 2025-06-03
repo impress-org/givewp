@@ -32,13 +32,13 @@ class DonorStatisticsController extends WP_REST_Controller
      */
     public function register_routes()
     {
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/statistics', [
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<donorId>[\d]+)/statistics', [
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
                 'permission_callback' => [$this, 'get_item_permissions_check'],
                 'args' => [
-                    'id' => [
+                    'donorId' => [
                         'description' => __('The donor ID.',
                             'give'),
                         'type' => 'integer',
