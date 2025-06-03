@@ -32,13 +32,13 @@ class DonorStatisticsController extends WP_REST_Controller
      */
     public function register_routes()
     {
-        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/statistics', [
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<donorId>[\d]+)/statistics', [
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
                 'permission_callback' => [$this, 'get_item_permissions_check'],
                 'args' => [
-                    'id' => [
+                    'donorId' => [
                         'description' => __('The donor ID.',
                             'give'),
                         'type' => 'integer',
@@ -75,7 +75,7 @@ class DonorStatisticsController extends WP_REST_Controller
      */
     public function get_item($request)
     {
-        $donor = Donor::find($request->get_param('id'));
+        $donor = Donor::find($request->get_param('donorId'));
         if ( ! $donor) {
             return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
         }
@@ -116,7 +116,7 @@ class DonorStatisticsController extends WP_REST_Controller
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
     {
-        $self_url = rest_url(sprintf('%s/%s/%d/%s', $this->namespace, $this->rest_base, $request->get_param('id'),
+        $self_url = rest_url(sprintf('%s/%s/%d/%s', $this->namespace, $this->rest_base, $request->get_param('donorId'),
             'statistics'));
 
         $self_url = add_query_arg([

@@ -7,6 +7,7 @@ use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
+use Give\Donors\ViewModels\DonorViewModel;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -15,7 +16,7 @@ use WP_REST_Server;
 
 /**
  * The methods using snake case like register_routes() are present in the base class,
- * and the methods using camel case like escDonor() are available only on this class.
+ * and the methods using camel case like getSharedParams() are available only on this class.
  *
  * @unreleased Extends WP_REST_Controller class and rename methods
  * @since 4.0.0
@@ -42,6 +43,7 @@ class DonorController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
+                'schema' => [$this, 'get_item_schema'],
             ],
         ]);
 
@@ -77,6 +79,14 @@ class DonorController extends WP_REST_Controller
                         'default' => 0,
                     ],
                 ], $this->getSharedParams()),
+                'schema' => [$this, 'get_item_schema'],
+            ],
+            [
+                'methods' => WP_REST_Server::EDITABLE,
+                'callback' => [$this, 'update_item'],
+                'permission_callback' => [$this, 'update_item_permissions_check'],
+                'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::EDITABLE),
+                'schema' => [$this, 'get_item_schema'],
             ],
         ]);
     }
@@ -115,7 +125,7 @@ class DonorController extends WP_REST_Controller
 
         $donors = $query->getAll() ?? [];
         $donors = array_map(function ($donor) use ($includeSensitiveData, $donorAnonymousMode, $request) {
-            $item = $this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode);
+            $item = (new DonorViewModel($donor))->anonymousMode($donorAnonymousMode)->includeSensitiveData($includeSensitiveData)->exports();
             $response = $this->prepare_item_for_response($item, $request);
 
             return $this->prepare_response_for_collection($response);
@@ -172,11 +182,48 @@ class DonorController extends WP_REST_Controller
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
-        if ( ! $donor || ($this->isAnonymousDonor($donor) && $donorAnonymousMode->isExcluded())) {
+        if ( ! $donor || ($donor->isAnonymous() && $donorAnonymousMode->isExcluded())) {
             return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
         }
 
-        $item = $this->escDonor($donor, $includeSensitiveData, $donorAnonymousMode);
+        $item = (new DonorViewModel($donor))->anonymousMode($donorAnonymousMode)->includeSensitiveData($includeSensitiveData)->exports();
+        $response = $this->prepare_item_for_response($item, $request);
+
+        return rest_ensure_response($response);
+    }
+
+    /**
+     * Update a single donor.
+     *
+     * @unreleased
+     */
+    public function update_item($request): WP_REST_Response
+    {
+        $donor = Donor::find($request->get_param('id'));
+
+        if (!$donor) {
+            return new WP_REST_Response(__('Donor not found', 'give'), 404);
+        }
+
+        $nonEditableFields = [
+            'id',
+            'userId',
+            'createdAt',
+        ];
+
+        foreach ($request->get_params() as $key => $value) {
+            if (!in_array($key, $nonEditableFields)) {
+                if ($donor->hasProperty($key)) {
+                    $donor->$key = $value;
+                }
+            }
+        }
+
+        if ($donor->isDirty()) {
+            $donor->save();
+        }
+
+        $item = (new DonorViewModel($donor))->includeSensitiveData(true)->anonymousMode(DonorAnonymousMode::INCLUDED())->exports();
         $response = $this->prepare_item_for_response($item, $request);
 
         return rest_ensure_response($response);
@@ -208,6 +255,26 @@ class DonorController extends WP_REST_Controller
 
     /**
      * @unreleased
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
+     */
+    public function update_item_permissions_check($request)
+    {
+        if (!current_user_can('manage_options')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to update donors.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * @unreleased
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
     {
@@ -228,6 +295,42 @@ class DonorController extends WP_REST_Controller
         $response->add_links($links);
 
         return $response;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function get_item_schema(): array
+    {
+        return [
+            'title' => 'donor',
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Donor ID', 'give'),
+                ],
+                'name' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor name', 'give'),
+                ],
+                'firstName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor first name', 'give'),
+                ],
+                'lastName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor last name', 'give'),
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor email', 'give'),
+                    'format' => 'email',
+                    'pattern' => '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                ],
+            ],
+            'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
+        ];
     }
 
     /**
@@ -353,52 +456,6 @@ class DonorController extends WP_REST_Controller
     /**
      * @since 4.0.0
      */
-    public function escDonor(
-        Donor $donor,
-        bool $includeSensitiveData = false,
-        DonorAnonymousMode $donationAnonymousMode = null
-    ): array {
-        $sensitiveDataExcluded = [];
-        if ( ! $includeSensitiveData) {
-            $sensitiveDataExcluded = [
-                'userId',
-                'email',
-                'phone',
-                'additionalEmails',
-            ];
-        }
-
-        $anonymousDataRedacted = [];
-        if ( ! is_null($donationAnonymousMode) && $donationAnonymousMode->isRedacted() && $this->isAnonymousDonor($donor)) {
-            $anonymousDataRedacted = [
-                'id',
-                'name',
-                'firstName',
-                'lastName',
-                'prefix',
-            ];
-        }
-
-        $donor = $donor->toArray();
-
-        foreach ($sensitiveDataExcluded as $property) {
-            if (array_key_exists($property, $donor)) {
-                unset($donor[$property]);
-            }
-        }
-
-        foreach ($anonymousDataRedacted as $property) {
-            if (array_key_exists($property, $donor)) {
-                $donor[$property] = 'id' === $property ? 0 : __('anonymous', 'give');
-            }
-        }
-
-        return $donor;
-    }
-
-    /**
-     * @since 4.0.0
-     */
     public function getSortColumn(string $sortColumn): string
     {
         $sortColumnsMap = [
@@ -412,24 +469,5 @@ class DonorController extends WP_REST_Controller
         ];
 
         return $sortColumnsMap[$sortColumn];
-    }
-
-    /**
-     * @since 4.0.0
-     */
-    private function isAnonymousDonor(Donor $donor): bool
-    {
-        $isAnonymousDonor = false;
-
-        if ($donor->donations) {
-            foreach ($donor->donations as $donation) {
-                if ($donation->anonymous) {
-                    $isAnonymousDonor = true;
-                    break;
-                }
-            }
-        }
-
-        return $isAnonymousDonor;
     }
 }

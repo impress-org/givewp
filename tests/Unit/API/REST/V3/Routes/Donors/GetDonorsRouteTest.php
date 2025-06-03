@@ -163,10 +163,14 @@ class GetDonorsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
+            'lastName',
         ];
 
         $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+
+        foreach ($sensitiveProperties as $property) {
+            $this->assertEmpty($data[0][$property]);
+        }
     }
 
     /**
@@ -207,6 +211,7 @@ class GetDonorsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
+            'lastName',
         ];
 
         $this->assertEquals(200, $status);
@@ -557,7 +562,6 @@ class GetDonorsRouteTest extends RestApiTestCase
         $this->assertEquals(0, $data[1]['id']);
 
         $anonymousDataRedacted = [
-            //'id', // This property is Checked above...
             'name',
             'firstName',
             'lastName',
@@ -565,7 +569,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+            $this->assertEquals(__('anonymous', 'give'),$data[1][$property]);
         }
     }
 
@@ -578,6 +582,17 @@ class GetDonorsRouteTest extends RestApiTestCase
      */
     public function testGetDonorsSortedByColumns($sortableColumn)
     {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => $sortableColumn . 'testGetDonorsSortedByColumns',
+                'user_pass' => $sortableColumn . 'testGetDonorsSortedByColumns',
+                'user_email' => $sortableColumn . 'testGetDonorsSortedByColumns@test.com',
+            ]
+        );
+        wp_set_current_user($newAdminUser);
+
+
         DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
         /** @var Campaign $campaign1 */
@@ -598,6 +613,7 @@ class GetDonorsRouteTest extends RestApiTestCase
          */
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 30,
                 'sort' => $sortableColumn,
@@ -618,6 +634,7 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 30,
                 'sort' => $sortableColumn,
@@ -641,6 +658,7 @@ class GetDonorsRouteTest extends RestApiTestCase
          */
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 3,
                 'sort' => $sortableColumn,
@@ -661,6 +679,7 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 30,
                 'sort' => $sortableColumn,

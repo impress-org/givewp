@@ -55,6 +55,10 @@ class DonationRequestController
             $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
         }
 
+        if ($donorId = $request->get_param('donorId')) {
+            $query->where('give_donationmeta_attach_meta_donorId.meta_value', $donorId);
+        }
+
         if ($donationAnonymousMode->isExcluded()) {
             // Exclude anonymous donations from results
             $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
