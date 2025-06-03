@@ -5,7 +5,7 @@ import ErrorBoundary from '../ErrorBoundary';
 import styles from '../AdminDetailsPage.module.scss';
 import { useContext } from 'react';
 
-export default function DonorDetailsPageTabPanels({ tabDefinitions }: { tabDefinitions: TabType[] }) {
+export default function TabPanels({ tabDefinitions }: { tabDefinitions: TabType[] }) {
     // @ts-ignore
     const {selectedKey} = useContext(TabsContext);
     const activeTab = tabDefinitions.find((tab) => tab.id === selectedKey);
