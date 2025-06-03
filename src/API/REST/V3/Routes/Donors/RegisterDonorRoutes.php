@@ -167,7 +167,7 @@ class RegisterDonorRoutes
     {
         register_rest_route(
             DonorRoute::NAMESPACE,
-            DonorRoute::DONORS,
+            DonorRoute::DONOR,
             [
                 [
                     'methods' => WP_REST_Server::EDITABLE,
