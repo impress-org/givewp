@@ -3,11 +3,8 @@
 namespace Give\LegacySubscriptions;
 
 use Closure;
-use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\LegacySubscriptions\Actions\EnsureSubscriptionHasPaymentMode;
-use Give\LegacySubscriptions\Actions\EnsureSubscriptionRenewalHasCampaignId;
-use Give\LegacySubscriptions\Migrations\BackfillMissingCampaignIdForSubscriptionRenewals;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -43,7 +40,6 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         Hooks::addAction('give_subscription_post_create', EnsureSubscriptionHasPaymentMode::class, '__invoke', 10, 2);
-        Hooks::addAction('give_recurring_add_subscription_payment', EnsureSubscriptionRenewalHasCampaignId::class, '__invoke', 10, 2);
     }
 
     /**

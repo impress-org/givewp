@@ -171,6 +171,36 @@ function give_insert_payment( $payment_data = [] ) {
 	$payment->gateway        = $gateway;
 	$payment->form_title     = $form_title;
 	$payment->form_id        = $form_id;
+
+	// Set campaign_id: Use explicit value if provided, otherwise derive from form_id
+	if ( ! empty( $payment_data['campaign_id'] ) ) {
+		$payment->campaign_id = $payment_data['campaign_id'];
+	} else {
+		// Try to automatically derive campaign_id from form_id
+		$derived_campaign_id = 0;
+
+		// Method 1: Use modern Campaign model (if available)
+		if ( class_exists( 'Give\\Campaigns\\Models\\Campaign' ) ) {
+			$campaign = \Give\Campaigns\Models\Campaign::findByFormId( $form_id );
+			if ( $campaign ) {
+				$derived_campaign_id = $campaign->id;
+			}
+		}
+
+		// Method 2: Fallback to direct database query
+		if ( ! $derived_campaign_id && class_exists( 'Give\\Framework\\Database\\DB' ) ) {
+			$campaign_id_from_db = \Give\Framework\Database\DB::table( 'give_campaign_forms' )
+				->where( 'form_id', $form_id )
+				->value( 'campaign_id' );
+
+			if ( $campaign_id_from_db ) {
+				$derived_campaign_id = (int) $campaign_id_from_db;
+			}
+		}
+
+		$payment->campaign_id = $derived_campaign_id;
+	}
+
 	$payment->price_id       = $price_id;
 	$payment->donor_id       = ( ! empty( $payment_data['donor_id'] ) ? $payment_data['donor_id'] : '' );
 	$payment->user_id        = $payment_data['user_info']['id'];
