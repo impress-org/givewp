@@ -13,46 +13,156 @@ use Give_Payment;
 /**
  * Unit tests for Give_Subscription class, specifically testing the add_payment method.
  *
- * CAMPAIGN ID FUNCTIONALITY:
- * ===========================
+ * CAMPAIGN ID BACKWARDS COMPATIBILITY:
+ * ===================================
  *
- * The Give_Subscription::add_payment() method is responsible for creating renewal payments
- * for subscriptions. Campaign ID copying functionality is handled by the
- * EnsureSubscriptionRenewalHasCampaignId action which is hooked to the
- * 'give_recurring_add_subscription_payment' action that fires within add_payment.
+ * The Give_Subscription::add_payment() method creates renewal payments for subscriptions.
+ * Campaign ID functionality is now handled through backwards compatibility built directly
+ * into the Give_Payment class and give_insert_payment function, eliminating the need
+ * for separate action hooks.
  *
- * CURRENT IMPLEMENTATION STATUS:
- * ==============================
+ * IMPLEMENTATION STATUS:
+ * =====================
  *
  * ✅ Basic add_payment functionality works correctly
  * ✅ Duplicate transaction ID prevention works
- * ⚠️  Campaign ID copying functionality exists but has implementation issues
+ * ✅ Campaign ID backwards compatibility implemented and working
+ * ✅ Automatic campaign ID derivation from form_id
+ * ✅ Direct campaign_id property access on Give_Payment objects
  *
- * The EnsureSubscriptionRenewalHasCampaignId action is located at:
- * wp-content/plugins/give/src/LegacySubscriptions/Actions/EnsureSubscriptionRenewalHasCampaignId.php
+ * BACKWARDS COMPATIBILITY FEATURES:
+ * ================================
  *
- * This action is hooked in:
- * wp-content/plugins/give/src/LegacySubscriptions/ServiceProvider.php
+ * 1. Campaign ID Property Access:
+ *    - Give_Payment objects now have direct campaign_id property access
+ *    - Properties can be read/written using $payment->campaign_id
+ *    - Values are automatically saved to payment meta (_give_campaign_id)
  *
- * KNOWN ISSUES:
- * =============
+ * 2. Automatic Campaign ID Derivation:
+ *    - When creating payments via give_insert_payment(), campaign_id is automatically
+ *      derived from the form_id if a campaign exists for that form
+ *    - This ensures compatibility with existing code that expects campaign_id
  *
- * There's a type error in the DonationRepository::deriveLegacyDonationParentId() method
- * that prevents the campaign ID copying action from working properly in tests.
- * The method is returning null when it should return an int.
+ * 3. Subscription Renewal Compatibility:
+ *    - Renewal payments created through add_payment() inherit campaign functionality
+ *    - No special action hooks or middleware required
  *
  * TESTING APPROACH:
- * ==================
+ * ================
  *
- * We test the core add_payment functionality separately from the campaign ID copying
- * to isolate the functionality and avoid the type errors. The campaign ID test is
- * documented but skipped due to the implementation issues.
+ * Tests cover both the core add_payment functionality and the new backwards
+ * compatibility features to ensure proper campaign ID handling across all scenarios.
  *
  * @unreleased
  */
 class GiveSubscriptionTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * ========================================
+     * BACKWARDS COMPATIBILITY TESTS
+     * ========================================
+     *
+     * The following tests verify the new backwards compatibility features
+     * for campaign ID functionality built into Give_Payment objects.
+     */
+
+    /**
+     * Test that campaign_id is automatically derived from form_id when creating payments.
+     * This tests the new automatic derivation functionality in give_insert_payment.
+     *
+     * @unreleased
+     */
+    public function testCampaignIdAutomaticallyDerivedFromFormId()
+    {
+        // Create a campaign
+        $campaign = \Give\Campaigns\Models\Campaign::factory()->create([
+            'goalType' => \Give\Campaigns\ValueObjects\CampaignGoalType::AMOUNT(),
+        ]);
+
+        // Get the form associated with the campaign
+        $formId = $campaign->defaultFormId;
+
+        // Create a donor
+        $donor = Donor::factory()->create();
+
+        // Create payment data for give_insert_payment
+        $paymentData = [
+            'price' => 100,
+            'give_form_title' => 'Test Campaign Form',
+            'give_form_id' => $formId,
+            'date' => current_time('mysql'),
+            'user_email' => $donor->email,
+            'purchase_key' => 'test_auto_campaign_' . time(),
+            'currency' => 'USD',
+            'user_info' => [
+                'id' => 0,
+                'email' => $donor->email,
+                'first_name' => $donor->firstName,
+                'last_name' => $donor->lastName,
+                'discount' => 'none',
+            ],
+            'status' => 'pending',
+            'gateway' => TestGateway::id(),
+        ];
+
+        // Create payment using give_insert_payment (this should auto-derive campaign_id)
+        $paymentId = give_insert_payment($paymentData);
+
+        // Verify payment was created
+        $this->assertIsNumeric($paymentId);
+        $this->assertGreaterThan(0, $paymentId);
+
+        // Create payment object and verify campaign_id was automatically derived
+        $payment = new Give_Payment($paymentId);
+        $this->assertEquals($campaign->id, $payment->campaign_id, 'Campaign ID should be automatically derived from form ID');
+    }
+
+    /**
+     * Test that campaign_id property exists and works correctly on legacy Give_Payment objects.
+     * This verifies our new backwards compatibility for campaign_id property access.
+     *
+     * @unreleased
+     */
+    public function testCampaignIdPropertyAccessOnLegacyPayment()
+    {
+        // Create a donor
+        $donor = Donor::factory()->create();
+
+        // Create a payment using legacy Give_Payment class
+        $payment = new Give_Payment();
+        $payment->total = 100;
+        $payment->form_id = 1;
+        $payment->customer_id = $donor->id;
+        $payment->first_name = $donor->firstName;
+        $payment->last_name = $donor->lastName;
+        $payment->email = $donor->email;
+        $payment->currency = 'USD';
+        $payment->status = 'publish';
+        $payment->gateway = TestGateway::id();
+        $payment->mode = give_is_test_mode() ? 'test' : 'live';
+        $payment->transaction_id = 'test_campaign_property';
+        $payment->save();
+
+        // Verify campaign_id defaults to 0
+        $this->assertEquals(0, $payment->campaign_id, 'Campaign ID should default to 0');
+
+        // Set campaign_id using the property
+        $payment->campaign_id = 456;
+        $payment->save();
+
+        // Verify the campaign_id was saved correctly
+        $this->assertEquals(456, $payment->campaign_id, 'Campaign ID should be set to 456');
+
+        // Create a new payment object to verify persistence
+        $reloadedPayment = new Give_Payment($payment->ID);
+        $this->assertEquals(456, $reloadedPayment->campaign_id, 'Campaign ID should persist when reloaded');
+
+        // Verify the meta was saved correctly
+        $savedCampaignId = give_get_meta($payment->ID, '_give_campaign_id', true);
+        $this->assertEquals(456, $savedCampaignId, 'Campaign ID should be saved in payment meta');
+    }
 
     /**
      * Test that add_payment method successfully creates a renewal payment.
@@ -79,7 +189,7 @@ class GiveSubscriptionTest extends TestCase
         $parentPayment->transaction_id = 'parent_txn_123';
         $parentPayment->save();
 
-        // Create a subscription using the legacy create method
+        // Create a subscription
         $subscription = new Give_Subscription();
         $subscriptionId = $subscription->create([
             'customer_id' => $donor->id,
@@ -158,9 +268,6 @@ class GiveSubscriptionTest extends TestCase
         ]);
         $subscription = new Give_Subscription($subscriptionId);
 
-        // Temporarily remove the hook that causes type errors for testing
-        remove_action( 'give_recurring_add_subscription_payment', 'Give\LegacySubscriptions\Actions\EnsureSubscriptionRenewalHasCampaignId' );
-
         $renewalArgs = [
             'amount' => 80,
             'transaction_id' => 'duplicate_txn_123',
@@ -175,21 +282,6 @@ class GiveSubscriptionTest extends TestCase
         $result2 = $subscription->add_payment($renewalArgs);
         $this->assertFalse($result2, 'Adding payment with duplicate transaction ID should return false');
     }
-
-    /**
-     * Note: The EnsureSubscriptionRenewalHasCampaignId action is no longer needed
-     * because we now have backwards compatibility for campaign_id built into the
-     * Give_Payment class and give_insert_payment function. Campaign IDs are automatically
-     * derived from form_id when creating payments, and the campaign_id property is
-     * directly accessible on Give_Payment objects.
-     *
-     * See the following tests for the new functionality:
-     * - testCampaignIdPropertyAccessOnLegacyPayment()
-     * - testCampaignIdAutomaticallyDerivedFromFormId()
-     * - testSubscriptionRenewalCampaignIdAccess()
-     *
-     * @unreleased
-     */
 
     /**
      * Test that add_payment properly handles anonymous donations by copying the _give_anonymous_donation meta.
@@ -232,9 +324,6 @@ class GiveSubscriptionTest extends TestCase
             'status' => 'active',
         ]);
         $subscription = new Give_Subscription($subscriptionId);
-
-        // Temporarily remove the hook that causes type errors for testing
-        remove_action( 'give_recurring_add_subscription_payment', 'Give\LegacySubscriptions\Actions\EnsureSubscriptionRenewalHasCampaignId' );
 
         // Call add_payment to create a renewal payment
         $renewalArgs = [
@@ -294,9 +383,6 @@ class GiveSubscriptionTest extends TestCase
             'status' => 'active',
         ]);
         $subscription = new Give_Subscription($subscriptionId);
-
-        // Temporarily remove the hook that causes type errors for testing
-        remove_action( 'give_recurring_add_subscription_payment', 'Give\LegacySubscriptions\Actions\EnsureSubscriptionRenewalHasCampaignId' );
 
         // Call add_payment with a custom date
         $customDate = '2023-06-15 10:30:00';
@@ -364,9 +450,6 @@ class GiveSubscriptionTest extends TestCase
         $initialPurchaseCount = $donorModel->purchase_count;
         $initialValue = $donorModel->purchase_value;
 
-        // Temporarily remove the hook that causes type errors for testing
-        remove_action( 'give_recurring_add_subscription_payment', 'Give\LegacySubscriptions\Actions\EnsureSubscriptionRenewalHasCampaignId' );
-
         // Call add_payment to create a renewal payment
         $renewalArgs = [
             'amount' => 80,
@@ -422,9 +505,6 @@ class GiveSubscriptionTest extends TestCase
             'status' => 'active',
         ]);
         $subscription = new Give_Subscription($subscriptionId);
-
-        // Temporarily remove the hook that causes type errors for testing
-        remove_action( 'give_recurring_add_subscription_payment', 'Give\LegacySubscriptions\Actions\EnsureSubscriptionRenewalHasCampaignId' );
 
         // Test with an amount that needs sanitization (string with decimal)
         $renewalArgs = [
@@ -484,9 +564,6 @@ class GiveSubscriptionTest extends TestCase
         ]);
         $subscription = new Give_Subscription($subscriptionId);
 
-        // Temporarily remove the hook that causes type errors for testing
-        remove_action( 'give_recurring_add_subscription_payment', 'Give\LegacySubscriptions\Actions\EnsureSubscriptionRenewalHasCampaignId' );
-
         // Call add_payment without specifying gateway (should inherit from parent)
         $renewalArgs = [
             'amount' => 80,
@@ -504,102 +581,6 @@ class GiveSubscriptionTest extends TestCase
 
         $renewalPayment = new Give_Payment($childPayments[0]->ID);
         $this->assertEquals(TestGateway::id(), $renewalPayment->gateway);
-    }
-
-    /**
-     * Test that campaign_id property exists and works correctly on legacy Give_Payment objects.
-     * This verifies our new backwards compatibility for campaign_id property access.
-     *
-     * @unreleased
-     */
-    public function testCampaignIdPropertyAccessOnLegacyPayment()
-    {
-        // Create a donor
-        $donor = Donor::factory()->create();
-
-        // Create a payment using legacy Give_Payment class
-        $payment = new Give_Payment();
-        $payment->total = 100;
-        $payment->form_id = 1;
-        $payment->customer_id = $donor->id;
-        $payment->first_name = $donor->firstName;
-        $payment->last_name = $donor->lastName;
-        $payment->email = $donor->email;
-        $payment->currency = 'USD';
-        $payment->status = 'publish';
-        $payment->gateway = TestGateway::id();
-        $payment->mode = give_is_test_mode() ? 'test' : 'live';
-        $payment->transaction_id = 'test_campaign_property';
-        $payment->save();
-
-        // Verify campaign_id defaults to 0
-        $this->assertEquals(0, $payment->campaign_id, 'Campaign ID should default to 0');
-
-        // Set campaign_id using the property
-        $payment->campaign_id = 456;
-        $payment->save();
-
-        // Verify the campaign_id was saved correctly
-        $this->assertEquals(456, $payment->campaign_id, 'Campaign ID should be set to 456');
-
-        // Create a new payment object to verify persistence
-        $reloadedPayment = new Give_Payment($payment->ID);
-        $this->assertEquals(456, $reloadedPayment->campaign_id, 'Campaign ID should persist when reloaded');
-
-        // Verify the meta was saved correctly
-        $savedCampaignId = give_get_meta($payment->ID, '_give_campaign_id', true);
-        $this->assertEquals(456, $savedCampaignId, 'Campaign ID should be saved in payment meta');
-    }
-
-    /**
-     * Test that campaign_id is automatically derived from form_id when creating payments.
-     * This tests the new automatic derivation functionality in give_insert_payment.
-     *
-     * @unreleased
-     */
-    public function testCampaignIdAutomaticallyDerivedFromFormId()
-    {
-        // Create a campaign
-        $campaign = \Give\Campaigns\Models\Campaign::factory()->create([
-            'goalType' => \Give\Campaigns\ValueObjects\CampaignGoalType::AMOUNT(),
-        ]);
-
-        // Get the form associated with the campaign
-        $formId = $campaign->defaultFormId;
-
-        // Create a donor
-        $donor = Donor::factory()->create();
-
-        // Create payment data for give_insert_payment
-        $paymentData = [
-            'price' => 100,
-            'give_form_title' => 'Test Campaign Form',
-            'give_form_id' => $formId,
-            'date' => current_time('mysql'),
-            'user_email' => $donor->email,
-            'purchase_key' => 'test_auto_campaign_' . time(),
-            'currency' => 'USD',
-            'user_info' => [
-                'id' => 0,
-                'email' => $donor->email,
-                'first_name' => $donor->firstName,
-                'last_name' => $donor->lastName,
-                'discount' => 'none',
-            ],
-            'status' => 'pending',
-            'gateway' => TestGateway::id(),
-        ];
-
-        // Create payment using give_insert_payment (this should auto-derive campaign_id)
-        $paymentId = give_insert_payment($paymentData);
-
-        // Verify payment was created
-        $this->assertIsNumeric($paymentId);
-        $this->assertGreaterThan(0, $paymentId);
-
-        // Create payment object and verify campaign_id was automatically derived
-        $payment = new Give_Payment($paymentId);
-        $this->assertEquals($campaign->id, $payment->campaign_id, 'Campaign ID should be automatically derived from form ID');
     }
 
     /**
