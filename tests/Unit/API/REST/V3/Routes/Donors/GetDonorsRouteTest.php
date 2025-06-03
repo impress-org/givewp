@@ -166,7 +166,10 @@ class GetDonorsRouteTest extends RestApiTestCase
         ];
 
         $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+
+        foreach ($sensitiveProperties as $property) {
+            $this->assertEmpty($data[0][$property]);
+        }
     }
 
     /**
@@ -557,7 +560,6 @@ class GetDonorsRouteTest extends RestApiTestCase
         $this->assertEquals(0, $data[1]['id']);
 
         $anonymousDataRedacted = [
-            //'id', // This property is Checked above...
             'name',
             'firstName',
             'lastName',
@@ -565,7 +567,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+            $this->assertEquals(__('anonymous', 'give'),$data[1][$property]);
         }
     }
 

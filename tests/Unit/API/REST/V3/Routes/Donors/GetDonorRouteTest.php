@@ -378,7 +378,6 @@ class GetDonorRouteTest extends RestApiTestCase
         $this->assertEquals(0, $data['id']);
 
         $anonymousDataRedacted = [
-            //'id', // This property is Checked above...
             'name',
             'firstName',
             'lastName',

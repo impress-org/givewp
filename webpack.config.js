@@ -139,6 +139,7 @@ const alias = {
     '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
     '@givewp/src': path.resolve(__dirname, 'src/'),
     '@givewp/campaigns': srcPath('Campaigns/resources'),
+    '@givewp/donors': srcPath('Donors/resources'),
     ...defaultConfig.resolve.alias,
 };
 

@@ -1,0 +1,38 @@
+.errorBoundary {
+  background-color: #fdecea;
+  color: #611a15;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: sans-serif;
+}
+
+.errorBoundaryParagraph {
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
+}
+
+.errorBoundaryPre {
+  background-color: #fff5f5;
+  color: #c00;
+  border: 1px solid #f1b0b7;
+  padding: 0.5rem;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.errorBoundaryButton {
+  background-color: #c82333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s;
+    &:hover {
+        background-color: #a71d2a;
+    }
+}
