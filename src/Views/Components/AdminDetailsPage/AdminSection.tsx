@@ -23,6 +23,14 @@ export function AdminSectionField({ subtitle, children, error }: AdminSectionFie
     );
 }
 
+export function AdminSectionsWrapper({ children }: { children: ReactNode }) {
+    return (
+        <div className={sharedStyles.sections}>
+            {children}
+        </div>
+    );
+}
+
 export default function AdminSection({ title, description, children }: AdminSectionProps) {
     return (
         <div className={sharedStyles.section}>
