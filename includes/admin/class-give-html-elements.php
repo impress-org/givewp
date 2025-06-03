@@ -11,6 +11,7 @@
 
 // Exit if accessed directly.
 use Give\Framework\Database\DB;
+use Give\Campaigns\Models\Campaign;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -291,10 +292,7 @@ class Give_HTML_Elements {
 
         // Ensure the selected campaign is included in options
         if (false !== $args['selected'] && $args['selected'] !== 0) {
-            $selectedCampaign = DB::table('give_campaigns')
-                ->select('id', ['campaign_title', 'title'])
-                ->where('id', $args['selected'])
-                ->get();
+            $selectedCampaign = Campaign::find((int)$args['selected']);
 
             if ($selectedCampaign) {
                 $selected_title = empty($selectedCampaign->title)
