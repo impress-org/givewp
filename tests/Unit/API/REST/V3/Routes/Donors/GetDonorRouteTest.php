@@ -189,6 +189,7 @@ class GetDonorRouteTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
+            'lastName',
         ];
 
         $this->assertEquals(200, $status);
@@ -234,6 +235,7 @@ class GetDonorRouteTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
+            'lastName',
         ];
 
         $this->assertEquals(200, $status);

@@ -56,6 +56,7 @@ class DonorViewModel
                 'email',
                 'phone',
                 'additionalEmails',
+                'lastName',
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
