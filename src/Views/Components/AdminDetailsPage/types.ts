@@ -35,7 +35,7 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
      * Hook that provides entity data and methods
      */
     useObjectEntityRecord: (id: string | number) => {
-        entity: T;
+        record: T;
         hasResolved: boolean;
         save: () => Promise<T>;
         edit: (data: Partial<T>) => void;
@@ -55,6 +55,16 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
      * URL for the breadcrumb link
      */
     breadcrumbUrl: string;
+
+    /**
+     * Custom title for the breadcrumb (defaults to entity.name)
+     */
+    breadcrumbTitle?: string;
+
+    /**
+     * Custom title for the page header (defaults to entity.name)
+     */
+    pageTitle?: string;
 
     /**
      * Component to display the status badge

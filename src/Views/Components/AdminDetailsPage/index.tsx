@@ -37,6 +37,8 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     resetForm,
     shouldSaveForm,
     breadcrumbUrl,
+    breadcrumbTitle,
+    pageTitle,
     StatusBadge,
     PrimaryActionButton = DefaultPrimaryActionButton,
     SecondaryActionButton,
@@ -63,7 +65,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
         });
     }, []);
 
-    const {entity, hasResolved, save, edit} = useObjectEntityRecord(objectId);
+    const {record, hasResolved, save, edit} = useObjectEntityRecord(objectId);
 
     const methods = useForm<T>({
         mode: 'onBlur',
@@ -103,7 +105,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
             if (resetForm) {
                 resetForm(reset);
             } else {
-                reset(entity);
+                reset(record);
             }
         }
     }, [hasResolved]);
@@ -160,11 +162,11 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                                 <div className={styles.breadcrumb}>
                                     <a href={breadcrumbUrl}>{objectTypePlural.charAt(0).toUpperCase() + objectTypePlural.slice(1)}</a>
                                     <BreadcrumbSeparatorIcon />
-                                    <span>{entity.name}</span>
+                                    <span>{breadcrumbTitle || record.name}</span>
                                 </div>
                                 <div className={styles.flexContainer}>
                                     <div className={styles.flexRow}>
-                                        <h1 className={styles.pageTitle}>{entity.name}</h1>
+                                        <h1 className={styles.pageTitle}>{pageTitle || record.name}</h1>
                                         {StatusBadge && <StatusBadge />}
                                     </div>
 
