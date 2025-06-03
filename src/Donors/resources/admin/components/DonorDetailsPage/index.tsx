@@ -42,11 +42,11 @@ const StatusBadge = ({ status }: { status: string }) => {
     );
 };
 
-export default function DonorDetailsPage({ donorId }) {
+export default function DonorDetailsPage({ donorId }: { donorId: string }) {
     const { adminUrl } = getDonorOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false);
 
-    const { record: donor } = useDonorEntityRecord(donorId);
+    const { record: donor } = useDonorEntityRecord(Number(donorId));
 
     const SendEmailButton = ({ className }: { className: string }) => {
         return (

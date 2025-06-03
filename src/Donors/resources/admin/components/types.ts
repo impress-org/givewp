@@ -10,6 +10,8 @@ export type Donor = {
   phone: string;
   companyName: string;
   additionalEmails: string[];
+  avatarId: number;
+  avatarUrl: string;
   totalAmountDonated: number;
   totalNumberOfDonations: number;
   wpUserPermalink: string;

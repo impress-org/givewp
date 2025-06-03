@@ -27,6 +27,8 @@ export default function DonorPersonalDetails() {
         formState: {errors},
     } = useFormContext();
 
+    const [avatarUrl, setAvatarUrl] = useState<string>(watch('avatarUrl'));
+
     const [country, setCountry] = useState<string>(intlTelInputSettings.initialCountry);
     const onChangeNumber = (number: string) => {
         if (number && !window.intlTelInputUtils.isValidNumber(number, country)) {
@@ -50,11 +52,15 @@ export default function DonorPersonalDetails() {
                 <Upload
                     id="givewp-donor-upload-avatar"
                     label={__('Photo', 'give')}
-                    value={watch('avatar')}
-                    onChange={(avatarUrl, avatarAlt) => {
-                        setValue('avatar', avatarUrl, {shouldDirty: true});
+                    value={avatarUrl}
+                    onChange={(avatarId, avatarUrl) => {
+                        setValue('avatarId', avatarId, {shouldDirty: true});
+                        setAvatarUrl(avatarUrl);
                     }}
-                    reset={() => setValue('avatar', '', {shouldDirty: true})}
+                    reset={() => {
+                        setValue('avatarId', '', {shouldDirty: true});
+                        setAvatarUrl('');
+                    }}
                 />
             </AdminSectionField>
 

@@ -7,12 +7,12 @@ const donorDetailsTabs: Tab[] = [
     {
         id: 'overview',
         title: __('Overview', 'give'),
-        content: () => <OverviewTab />,
+        content: OverviewTab,
     },
     {
         id: 'profile',
         title: __('Profile', 'give'),
-        content: () => <ProfileTab />,
+        content: ProfileTab,
     },
 ];
 

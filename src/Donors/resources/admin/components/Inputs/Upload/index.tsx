@@ -10,7 +10,7 @@ import styles from './styles.module.scss';
 type MediaLibrary = {
     id: string;
     value: string;
-    onChange: (url: string, alt: string) => void;
+    onChange: (id: string, url: string, alt: string) => void;
     reset: () => void;
     label: string;
 };
@@ -49,7 +49,7 @@ export default function UploadMedia({id, value, onChange, label, reset}: MediaLi
                 return;
             }
 
-            onChange(attachment.url, attachment.alt);
+            onChange(attachment.id, attachment.url, attachment.alt);
         });
 
         // Finally, open the modal on click

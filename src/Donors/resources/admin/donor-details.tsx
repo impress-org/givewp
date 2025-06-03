@@ -6,5 +6,5 @@ const urlParams = new URLSearchParams(window.location.search);
 
 if (container) {
     const root = createRoot(container);
-    root.render(<DonorDetailsPage />);
+    root.render(<DonorDetailsPage donorId={urlParams.get('donorId')} />);
 }
