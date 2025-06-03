@@ -4,8 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { useState } from 'react';
 import {useFormContext} from 'react-hook-form';
-import IntlTelInput from 'intl-tel-input/react';
-import 'intl-tel-input/build/css/intlTelInput.css'
 
 /**
  * Internal Dependencies
@@ -13,9 +11,10 @@ import 'intl-tel-input/build/css/intlTelInput.css'
 import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import { getDonorOptionsWindowData } from '@givewp/donors/utils';
 import Upload from '../../../Inputs/Upload';
+import PhoneInput from '../../../Inputs/Phone';
 import styles from '../../DonorDetailsPage.module.scss';
 
-const {intlTelInputSettings, nameTitlePrefixes} = getDonorOptionsWindowData();
+const {nameTitlePrefixes} = getDonorOptionsWindowData();
 
 export default function DonorPersonalDetails() {
     const {
@@ -24,20 +23,22 @@ export default function DonorPersonalDetails() {
         setValue,
         setError,
         trigger,
+        clearErrors,
         formState: {errors},
     } = useFormContext();
 
     const [avatarUrl, setAvatarUrl] = useState<string>(watch('avatarUrl'));
 
-    const [country, setCountry] = useState<string>(intlTelInputSettings.initialCountry);
-    const onChangeNumber = (number: string) => {
-        if (number && !window.intlTelInputUtils.isValidNumber(number, country)) {
-            const errorCode = window.intlTelInputUtils.getValidationError(number, country);
-            setValue('phone', errorCode);
-            setError('phone', {type: 'custom', message: intlTelInputSettings.errorMap[errorCode]});
+    const handlePhoneChange = (value: string) => {
+        setValue('phone', value, {shouldDirty: true});
+        trigger('phone', {shouldFocus: false});
+    };
+
+    const handlePhoneError = (errorMessage: string | null) => {
+        if (errorMessage) {
+            setError('phone', {type: 'custom', message: errorMessage});
         } else {
-            setValue('phone', number);
-            trigger('phone', {shouldFocus: false});
+            clearErrors('phone');
         }
     };
 
@@ -84,20 +85,11 @@ export default function DonorPersonalDetails() {
                 subtitle={__('Phone', 'give')}
                 error={errors.phone ? `${errors.phone.message}` : undefined}
             >
-                <div className={styles.phoneInput}>
-                    <IntlTelInput
-                        initialValue={watch('phone')}
-                        onChangeCountry={setCountry}
-                        onChangeNumber={onChangeNumber}
-                        initOptions={{
-                            initialCountry: intlTelInputSettings.initialCountry,
-                            showSelectedDialCode: intlTelInputSettings.showSelectedDialCode,
-                            strictMode: intlTelInputSettings.strictMode,
-                            i18n: intlTelInputSettings.i18n,
-                            useFullscreenPopup: intlTelInputSettings.useFullscreenPopup,
-                        }}
-                    />
-                </div>
+                <PhoneInput
+                    value={watch('phone')}
+                    onChange={handlePhoneChange}
+                    onError={handlePhoneError}
+                />
             </AdminSectionField>
 
             <AdminSectionField subtitle={__('Company name', 'give')}>
