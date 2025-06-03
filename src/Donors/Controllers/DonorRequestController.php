@@ -201,7 +201,12 @@ class DonorRequestController
             $donor->save();
         }
 
-        return new WP_REST_Response((new DonorViewModel($donor))->exports());
+        return new WP_REST_Response(
+            (new DonorViewModel($donor))
+                ->anonymousMode(new DonorAnonymousMode(DonorAnonymousMode::INCLUDED))
+                ->includeSensitiveData(true)
+                ->exports()
+        );
     }
 
     /**
