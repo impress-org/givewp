@@ -77,9 +77,7 @@ class DonorViewModel
 
             foreach ($sensitiveData as $propertyName) {
                 if (isset($data[$propertyName])) {
-                    $data[$propertyName] =  $propertyName === 'id'
-                        ? 0
-                        :  __('anonymous', 'give');
+                    $data[$propertyName] = $propertyName === 'id' ? 0 :  __('anonymous', 'give');
                 }
             }
         }
