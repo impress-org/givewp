@@ -1,7 +1,262 @@
+import React from 'react';
+import {__} from '@wordpress/i18n';
+import classnames from 'classnames';
+import {formatDistanceToNow} from 'date-fns';
+import StatWidget from '@givewp/src/Admin/components/StatWidget';
+import Header from '@givewp/src/Admin/components/Header';
+import PrivateNote from '@givewp/src/Admin/components/PrivateNote';
+import {useStatistics} from '@givewp/donors/hooks/useStatistics';
+import {amountFormatter, formatTimestamp} from '@givewp/src/Admin/utils';
+import {getDonorOptionsWindowData} from '@givewp/donors/utils';
+import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
+import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetailsPage.module.scss';
+
+/**
+ * @unreleased
+ */
+type Transaction = {
+    campaign: string;
+    status: 'Completed' | 'Pending' | 'Failed' | 'Refunded';
+    timestamp: string;
+    amount: string;
+};
+
+/**
+ * @unreleased
+ */
+type Statistics = {
+    statistics: {
+        lifetimeDonations: number;
+        highestDonation: number | null;
+        averageDonation: number;
+    };
+    donorSince: string;
+    firstDonation: {
+        amount: string;
+        date: string;
+        formTitle: string;
+    } | null;
+    lastDonation: {
+        amount: string;
+        date: string;
+        formTitle: string;
+    } | null;
+    preferredGivingType: 'single' | 'recurring';
+    totalDonations: number;
+};
+
+/**
+ * @unreleased
+ */
+const getRelativeTimeString = (date: Date): string => {
+    const now = new Date();
+    if (date.toDateString() === now.toDateString()) {
+        return 'Today';
+    }
+    return formatDistanceToNow(date, {addSuffix: true});
+};
+
+/**
+ * @unreleased
+ */
+const statusMap: Record<string, 'Completed' | 'Failed' | 'Pending' | 'Refunded'> = {
+    publish: 'Completed',
+    completed: 'Completed',
+    processing: 'Pending',
+    pending: 'Pending',
+    failed: 'Failed',
+    cancelled: 'Failed',
+    abandoned: 'Failed',
+    preapproval: 'Pending',
+    revoked: 'Failed',
+    refunded: 'Refunded',
+};
+
+/**
+ * @unreleased
+ */
+const {currency} = getDonorOptionsWindowData();
+
+/**
+ * @unreleased
+ */
 export default function DonorDetailsPageOverviewTab() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const donorId = parseInt(urlParams.get('id') ?? '0');
+    const {data: metrics, loading: statsLoading, hasResolved: statsResolved} = useStatistics({donorId: donorId});
+    const {data: donations} = useDonorDonations({donorId, mode: 'test'});
+
+    console.log(donations, 'donations');
+
+    const transactions: Transaction[] = !donations
+        ? []
+        : donations.map((donation) => ({
+              campaign: donation.formTitle,
+              status: statusMap[donation.status] || 'Pending',
+              timestamp: donation.createdAt.date,
+              amount: amountFormatter(donation.amount.currency).format(parseFloat(donation.amount.value)),
+          }));
+
+    const summaryItems = !metrics
+        ? []
+        : [
+              {
+                  label: __('Donor Since', 'give'),
+                  value: new Date((metrics as Statistics).donorSince).toLocaleDateString(undefined, {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                  }),
+              },
+              {
+                  label: __('Last Contributed', 'give'),
+                  value: (metrics as Statistics).lastDonation
+                      ? getRelativeTimeString(new Date((metrics as Statistics).lastDonation.date))
+                      : __('Never', 'give'),
+              },
+              {
+                  label: __('First Contribution', 'give'),
+                  value: (metrics as Statistics).firstDonation
+                      ? {
+                            value1: amountFormatter(currency).format(
+                                parseFloat((metrics as Statistics).firstDonation.amount)
+                            ),
+                            value2: new Date((metrics as Statistics).firstDonation.date).toLocaleDateString(undefined, {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                            }),
+                        }
+                      : __('None', 'give'),
+              },
+              {
+                  label: __('Donor Type', 'give'),
+                  value:
+                      (metrics as Statistics).preferredGivingType === 'recurring'
+                          ? __('Recurring', 'give')
+                          : __('One Time', 'give'),
+                  isPill: true,
+              },
+              {
+                  label: __('Total Donations', 'give'),
+                  value: (metrics as Statistics).totalDonations?.toString() ?? '0',
+              },
+          ];
+
     return (
-        <div>
-            <h1>Overview</h1>
+        <div className={styles.grid}>
+            <StatWidget
+                label={__('Lifetime donations', 'give')}
+                value={metrics?.statistics?.lifetimeDonations ?? 0}
+                formatter={amountFormatter(currency)}
+                loading={statsLoading || !statsResolved}
+            />
+            <StatWidget
+                label={__('Highest donations', 'give')}
+                value={metrics?.statistics?.highestDonation ?? 0}
+                formatter={amountFormatter(currency)}
+                loading={statsLoading || !statsResolved}
+            />
+            <StatWidget
+                label={__('Average donations', 'give')}
+                value={metrics?.statistics?.averageDonation ?? 0}
+                formatter={amountFormatter(currency)}
+                loading={statsLoading || !statsResolved}
+            />
+
+            <div className={styles.leftColumn}>
+                <div className={classnames(styles.card, styles.contributionsCard)}>
+                    <Header
+                        title={__('Contributions', 'give')}
+                        subtitle={__("Shows the donor's contribution over time", 'give')}
+                        href="#"
+                        actionText={__('View Detailed Report', 'give')}
+                    />
+                    {/*<TimeSeriesChart endpoint={`/givewp/v3/donations/${donorId}`} />*/}
+                </div>
+
+                <div className={styles.card}>
+                    <Header
+                        title={__('Recent Transactions', 'give')}
+                        subtitle={__('Shows the five recent transactions', 'give')}
+                        href="#"
+                        actionText={__('View All Transactions', 'give')}
+                    />
+                    <div className={styles.transactionList}>
+                        {transactions.map(({status, campaign, timestamp, amount}, index) => (
+                            <div key={index} className={styles.transactionItem}>
+                                <div className={styles.transactionIcon}>
+                                    <span className={styles.timeline} />
+                                    <div className={styles.svgContainer}>
+                                        <svg
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                d="M12 6v6l4 2m6-2c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10z"
+                                                stroke="#4B5563"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div className={styles.transactionInfo}>
+                                    <div className={styles.campaign}>
+                                        <span>
+                                            Donated to <strong>{campaign}</strong> Campaign.
+                                        </span>
+                                        <span className={classnames(styles.status, styles[status.toLowerCase()])}>
+                                            {status}
+                                        </span>
+                                    </div>
+                                    <span className={styles.timestamp}>{formatTimestamp(timestamp)}</span>
+                                </div>
+                                <div className={styles.amount}>{amount}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className={styles.card}>
+                    <Header
+                        title={__('Private Note', 'give')}
+                        subtitle={__('This note will be seen by only admins', 'give')}
+                        actionOnClick={() => {}}
+                        actionText={__('Add note', 'give')}
+                    />
+                    <PrivateNote />
+                </div>
+            </div>
+
+            <div className={styles.rightColumn}>
+                <div className={classnames(styles.card, styles.summaryCard)}>
+                    <Header
+                        title={__('Summary', 'give')}
+                        subtitle={__('Additional information about the donor', 'give')}
+                    />
+                    {summaryItems.map((item, index) => (
+                        <div className={styles.summaryCard} key={index}>
+                            <p className={styles.summaryCardLabel}>{item.label}</p>
+                            {typeof item.value === 'object' ? (
+                                <div className={styles.summaryCardValues}>
+                                    <p>{item.value.value1}</p>
+                                    <p>{item.value.value2}</p>
+                                </div>
+                            ) : (
+                                <strong className={classnames(styles.summaryCardValue, {[styles.pill]: item.isPill})}>
+                                    {item.value}
+                                </strong>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }
