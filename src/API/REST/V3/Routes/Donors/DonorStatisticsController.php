@@ -92,8 +92,8 @@ class DonorStatisticsController extends WP_REST_Controller
                 'highestAmount' => $query->getHighestDonationAmount(),
                 'averageAmount' => $query->getAverageDonationAmount(),
                 'firstDonation' => $query->getFirstDonation(),
-                'lastContribution' => $query->lastContribution(),
-                'donationCount' => $donor->totalNumberOfDonations,
+                'donationCount' => $query->getDonationsCount(),
+                'lastContribution' => $query->getLastContribution()
             ],
             'donorSince' => $donor->createdAt->format('Y-m-d H:i:s'),
             'donorType' => $query->getDonorType(),

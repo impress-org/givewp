@@ -65,8 +65,8 @@ class GetDonorStatisticsTest extends RestApiTestCase
                     'amount' => '250',
                     'date' => $data['donations']['firstDonation']['date']
                 ],
-                'lastDonationAmount' => '50',
-                'donationCount' => 2
+                'donationCount' => 2,
+                'lastContribution' => $data['donations']['lastContribution']
             ],
             'donorSince' => $data['donorSince'],
             'donorType' => $data['donorType'],
@@ -129,8 +129,8 @@ class GetDonorStatisticsTest extends RestApiTestCase
                     'amount' => '50',
                     'date' => $data['donations']['firstDonation']['date']
                 ],
-                'lastDonationAmount' => '50',
-                'donationCount' => 1
+                'donationCount' => 1,
+                'lastContribution' => $data['donations']['lastContribution']
             ],
             'donorSince' => $data['donorSince'],
             'donorType' => $data['donorType'],
@@ -190,8 +190,8 @@ class GetDonorStatisticsTest extends RestApiTestCase
                     'amount' => '50',
                     'date' => $data['donations']['firstDonation']['date']
                 ],
-                'lastDonationAmount' => '50',
-                'donationCount' => 1
+                'donationCount' => 1,
+                'lastContribution' => $data['donations']['lastContribution']
             ],
             'donorSince' => $data['donorSince'],
             'donorType' => $data['donorType'],

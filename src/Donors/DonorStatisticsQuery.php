@@ -138,18 +138,18 @@ class DonorStatisticsQuery extends QueryBuilder
     /**
      * @unreleased
      */
-    public function lastContribution()
+    public function getLastContribution()
     {
         $query = clone $this;
         $query->select('donation.post_date');
         $query->orderBy('post_date', 'DESC');
         $query->limit(1);
         $result = $query->get();
-        
+
         if (!$result) {
             return null;
         }
-        
+
         return human_time_diff(strtotime($result->post_date), current_time('timestamp')) . ' ago';
     }
 

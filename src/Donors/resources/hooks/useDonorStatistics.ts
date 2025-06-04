@@ -13,8 +13,8 @@ export interface DonorStatistics {
             date: string;
         } | null;
         donationCount: number;
+        lastContribution: string | null;
     };
-    lastContribution: string | null;
     donorSince: string;
     donorType: string | null;
     preferredGivingType: 'recurring' | 'single';
