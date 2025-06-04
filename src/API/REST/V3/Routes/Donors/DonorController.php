@@ -214,6 +214,10 @@ class DonorController extends WP_REST_Controller
         foreach ($request->get_params() as $key => $value) {
             if (!in_array($key, $nonEditableFields)) {
                 if ($donor->hasProperty($key)) {
+                    if (!$donor->isPropertyTypeValid($key, $value)) {
+                        $value = null;
+                    }
+
                     $donor->$key = $value;
                 }
             }
