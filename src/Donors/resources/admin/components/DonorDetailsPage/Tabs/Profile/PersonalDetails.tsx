@@ -62,7 +62,7 @@ export default function DonorPersonalDetails() {
                         setAvatarUrl(avatarUrl);
                     }}
                     reset={() => {
-                        setValue('avatarId', '', {shouldDirty: true});
+                        setValue('avatarId', null, {shouldDirty: true});
                         setAvatarUrl('');
                     }}
                 />

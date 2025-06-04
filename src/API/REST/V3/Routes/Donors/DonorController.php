@@ -315,7 +315,7 @@ class DonorController extends WP_REST_Controller
                     'description' => esc_html__('Donor ID', 'give'),
                 ],
                 'prefix' => [
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                     'description' => esc_html__('Donor prefix', 'give'),
                 ],
                 'firstName' => [
@@ -340,17 +340,19 @@ class DonorController extends WP_REST_Controller
                     'errorMessage' => esc_html__('Invalid email address', 'give'),
                 ],
                 'phone' => [
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                     'description' => esc_html__('Donor phone', 'give'),
-                    'pattern' => '^[0-9]{10}$',
+                    'pattern' => '^$|^[\+]?[1-9][\d\s\-\(\)]{7,20}$',
                 ],
                 'company' => [
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                     'description' => esc_html__('Donor company', 'give'),
                 ],
                 'avatarId' => [
-                    'type' => 'integer',
+                    'type' => ['integer', 'string', 'null'],
                     'description' => esc_html__('Donor avatar ID', 'give'),
+                    'pattern' => '^$|^[0-9]+$',
+                    'errorMessage' => esc_html__('Invalid avatar ID', 'give'),
                 ],
             ],
             'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
