@@ -47,4 +47,10 @@
     border-radius: 4px;
     background-color: #e5e7eb;
     border: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--givewp-neutral-200);
+        color: inherit;
+    }
 }

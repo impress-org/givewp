@@ -60,8 +60,8 @@ const {currency} = getDonorOptionsWindowData();
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
-    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId, 'live');
-    const {donations, hasResolved: donationsResolved} = useDonorDonations({donorId, mode: 'live'});
+    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId, 'test');
+    const {donations, hasResolved: donationsResolved} = useDonorDonations({donorId, mode: 'test'});
 
     const transactions: Transaction[] = !donations
         ? []
@@ -153,7 +153,8 @@ export default function DonorDetailsPageOverviewTab() {
                     <Header
                         title={__('Recent Transactions', 'give')}
                         subtitle={__('Shows the five recent transactions', 'give')}
-                        href="#"
+                        //TODO: Update link to Contributions page.
+                        href={`admin.php?page=give-payment-history&donor=${donorId}&mode=test`}
                         actionText={__('View All Transactions', 'give')}
                     />
                     <div className={styles.transactionList}>
