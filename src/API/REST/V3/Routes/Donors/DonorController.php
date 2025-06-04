@@ -43,7 +43,7 @@ class DonorController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
-                'schema' => [$this, 'get_item_schema'],
+                'schema' => [$this, 'get_public_item_schema'],
             ],
         ]);
 
@@ -79,14 +79,14 @@ class DonorController extends WP_REST_Controller
                         'default' => 0,
                     ],
                 ], $this->getSharedParams()),
-                'schema' => [$this, 'get_item_schema'],
+                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
-                'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_item_schema'],
+                'args' => rest_get_endpoint_args_for_schema($this->get_public_item_schema(), WP_REST_Server::EDITABLE),
+                'schema' => [$this, 'get_public_item_schema'],
             ],
         ]);
     }
@@ -214,6 +214,10 @@ class DonorController extends WP_REST_Controller
         foreach ($request->get_params() as $key => $value) {
             if (!in_array($key, $nonEditableFields)) {
                 if ($donor->hasProperty($key)) {
+                    if (!$donor->isPropertyTypeValid($key, $value)) {
+                        $value = null;
+                    }
+
                     $donor->$key = $value;
                 }
             }
@@ -310,23 +314,45 @@ class DonorController extends WP_REST_Controller
                     'type' => 'integer',
                     'description' => esc_html__('Donor ID', 'give'),
                 ],
-                'name' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Donor name', 'give'),
+                'prefix' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor prefix', 'give'),
                 ],
                 'firstName' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor first name', 'give'),
+                    'minLength' => 1,
+                    'maxLength' => 128,
+                    'errorMessage' => esc_html__('First name is required', 'give'),
                 ],
                 'lastName' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor last name', 'give'),
+                    'minLength' => 1,
+                    'maxLength' => 128,
+                    'errorMessage' => esc_html__('Last name is required', 'give'),
                 ],
                 'email' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor email', 'give'),
                     'format' => 'email',
-                    'pattern' => '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                    'pattern' => '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                    'errorMessage' => esc_html__('Invalid email address', 'give'),
+                ],
+                'phone' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor phone', 'give'),
+                    'pattern' => '^$|^[\+]?[1-9][\d\s\-\(\)]{7,20}$',
+                ],
+                'company' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor company', 'give'),
+                ],
+                'avatarId' => [
+                    'type' => ['integer', 'string', 'null'],
+                    'description' => esc_html__('Donor avatar ID', 'give'),
+                    'pattern' => '^$|^[0-9]+$',
+                    'errorMessage' => esc_html__('Invalid avatar ID', 'give'),
                 ],
             ],
             'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
@@ -433,13 +459,15 @@ class DonorController extends WP_REST_Controller
             );
         }
 
-        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-        if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to include anonymous donors.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($request->get_param('anonymousDonors') !== null) {
+            $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
+            if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
+                return new WP_Error(
+                    'rest_forbidden',
+                    esc_html__('You do not have permission to include anonymous donors.', 'give'),
+                    ['status' => $this->authorizationStatusCode()]
+                );
+            }
         }
 
         return true;

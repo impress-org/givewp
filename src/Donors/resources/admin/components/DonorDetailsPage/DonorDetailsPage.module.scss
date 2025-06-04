@@ -327,3 +327,12 @@ $breakpoint-desktop: 900px;
         min-height: 300px;
     }
 }
+
+  .sectionFieldInputWrapper {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+}
+
+.prefixSelect {
+    flex: 1 0 6.625rem;
+}

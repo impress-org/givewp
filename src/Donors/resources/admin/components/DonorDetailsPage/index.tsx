@@ -19,6 +19,9 @@ import { getDonorOptionsWindowData, useDonorEntityRecord } from '@givewp/donors/
 import styles from './DonorDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 
+/**
+ * @unreleased
+ */
 const StatusBadge = ({ status }: { status: string }) => {
     const statusMap = {
         current: __('Current', 'give'),
@@ -42,11 +45,14 @@ const StatusBadge = ({ status }: { status: string }) => {
     );
 };
 
-export default function DonorDetailsPage({ donorId }) {
+/**
+ * @unreleased
+ */
+export default function DonorDetailsPage() {
     const { adminUrl } = getDonorOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false);
 
-    const { record: donor } = useDonorEntityRecord(donorId);
+    const { record: donor } = useDonorEntityRecord();
 
     const SendEmailButton = ({ className }: { className: string }) => {
         return (
@@ -66,6 +72,7 @@ export default function DonorDetailsPage({ donorId }) {
                 {donor.wpUserPermalink && (
                     <a
                         href={donor.wpUserPermalink}
+                        target="_blank"
                         aria-label={__('View WordPress profile', 'give')}
                         className={className}
                     >
@@ -85,13 +92,13 @@ export default function DonorDetailsPage({ donorId }) {
 
     return (
         <AdminDetailsPage
-            objectId={donorId}
+            objectId={donor?.id}
             objectType="donor"
             objectTypePlural="donors"
             useObjectEntityRecord={useDonorEntityRecord}
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donors`}
-            StatusBadge={() => <StatusBadge status={donor.status} />}
+            StatusBadge={() => <StatusBadge status={donor?.status} />}
             SecondaryActionButton={SendEmailButton}
             ContextMenuItems={ContextMenuItems}
         >

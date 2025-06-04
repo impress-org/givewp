@@ -29,6 +29,9 @@ import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
 
 import './store';
 
+/**
+ * @unreleased
+ */
 export default function AdminDetailsPage<T extends Record<string, any>>({
     objectId,
     objectType,
@@ -162,11 +165,11 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                                 <div className={styles.breadcrumb}>
                                     <a href={breadcrumbUrl}>{objectTypePlural.charAt(0).toUpperCase() + objectTypePlural.slice(1)}</a>
                                     <BreadcrumbSeparatorIcon />
-                                    <span>{breadcrumbTitle || record.name}</span>
+                                    <span>{breadcrumbTitle || record?.name}</span>
                                 </div>
                                 <div className={styles.flexContainer}>
                                     <div className={styles.flexRow}>
-                                        <h1 className={styles.pageTitle}>{pageTitle || record.name}</h1>
+                                        <h1 className={styles.pageTitle}>{pageTitle || record?.name}</h1>
                                         {StatusBadge && <StatusBadge />}
                                     </div>
 

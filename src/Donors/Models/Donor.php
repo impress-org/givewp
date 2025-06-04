@@ -34,6 +34,8 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $email
  * @property string $phone
  * @property string[] $additionalEmails
+ * @property int $avatarId
+ * @property string $company
  * @property Money $totalAmountDonated
  * @property int $totalNumberOfDonations
  * @property Subscription[] $subscriptions
@@ -55,6 +57,8 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'phone' => 'string',
         'prefix' => 'string',
         'additionalEmails' => ['array', []],
+        'avatarId' => 'int',
+        'company' => 'string',
         'totalAmountDonated' => Money::class,
         'totalNumberOfDonations' => 'int',
     ];
