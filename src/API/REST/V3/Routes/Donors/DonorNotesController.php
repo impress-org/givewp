@@ -254,7 +254,7 @@ class DonorNotesController extends WP_REST_Controller
         $note->delete();
 
         $response = new WP_REST_Response($noteData);
-        $response->set_status(200);
+        //$response->set_status(200);
 
         return $response;
     }
@@ -433,10 +433,6 @@ class DonorNotesController extends WP_REST_Controller
                 'type' => 'integer',
                 'required' => true,
                 'in' => 'path',
-                'validate_callback' => function ($param, $request) {
-                    $note = DonorNote::find($param);
-                    return !empty($note) && $note->donorId === $request->get_param('donorId');
-                },
             ];
         } else {
             // Remove id if present (for POST)
