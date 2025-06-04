@@ -10,6 +10,7 @@ import {amountFormatter, formatTimestamp} from '@givewp/src/Admin/utils';
 import {getDonorOptionsWindowData} from '@givewp/donors/utils';
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
 import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetailsPage.module.scss';
+import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
 
 /**
  * @unreleased
@@ -60,7 +61,7 @@ export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
     const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved} = useDonorStatistics(donorId, 'test');
-    const {donations} = useDonorDonations({donorId, mode: 'test'});
+    const {donations, hasResolved : donationsResolved} = useDonorDonations({donorId, mode: 'test'});
 
     const transactions: Transaction[] = !donations
         ? []
@@ -141,7 +142,13 @@ export default function DonorDetailsPageOverviewTab() {
                         href="#"
                         actionText={__('View Detailed Report', 'give')}
                     />
-                    {/*<TimeSeriesChart endpoint={`/givewp/v3/donations/${donorId}`} />*/}
+                    <TimeSeriesChart
+                        endpoint={`givewp/v3/donations?page=1&per_page=5&mode=test&donor_id=${donorId}`}
+                        queryParams={{mode: 'test'}}
+                        valueFormatter={(value) => amountFormatter(currency).format(value)}
+                        title={__('Recent Donations', 'give')}
+                        height={300}
+                    />
                 </div>
 
                 <div className={styles.card}>
