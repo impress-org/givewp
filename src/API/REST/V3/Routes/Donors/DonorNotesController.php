@@ -38,12 +38,14 @@ class DonorNotesController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => $this->get_collection_params(),
+                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [$this, 'create_item'],
                 'permission_callback' => [$this, 'create_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::CREATABLE),
+                'schema' => [$this, 'get_public_item_schema'],
             ],
         ]);
 
@@ -52,35 +54,22 @@ class DonorNotesController extends WP_REST_Controller
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
                 'permission_callback' => [$this, 'get_item_permissions_check'],
-                'args' => [
-                    'donorId' => [
-                        'description' => __('The donor ID.', 'give'),
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                    'id' => [
-                        'description' => __('The note ID.', 'give'),
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                ],
+                'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::READABLE),
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
+            [
+                'methods' => WP_REST_Server::EDITABLE,
+                'callback' => [$this, 'update_item'],
+                'permission_callback' => [$this, 'update_item_permissions_check'],
+                'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::EDITABLE),
+                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
                 'callback' => [$this, 'delete_item'],
                 'permission_callback' => [$this, 'delete_item_permissions_check'],
-                'args' => [
-                    'donorId' => [
-                        'description' => __('The donor ID.', 'give'),
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                    'id' => [
-                        'description' => __('The note ID.', 'give'),
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                ],
+                'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::DELETABLE),
+                'schema' => [$this, 'get_public_item_schema'],
             ],
         ]);
     }
@@ -145,31 +134,6 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * Get a single donor note.
-     *
-     * @unreleased
-     *
-     * @param WP_REST_Request $request Full data about the request.
-     *
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
-     */
-    public function get_item($request)
-    {
-        $donor = Donor::find($request->get_param('donorId'));
-        if (!$donor) {
-            return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
-        }
-
-        $note = DonorNote::find($request->get_param('id'));
-        if (!$note || $note->donorId !== $donor->id) {
-            return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
-        }
-
-        $response = $this->prepare_item_for_response($note, $request);
-        return rest_ensure_response($response);
-    }
-
-    /**
      * Create a donor note.
      *
      * @unreleased
@@ -200,6 +164,68 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
+     * Get a single donor note.
+     *
+     * @unreleased
+     *
+     * @param WP_REST_Request $request Full data about the request.
+     *
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     */
+    public function get_item($request)
+    {
+        $donor = Donor::find($request->get_param('donorId'));
+        if (!$donor) {
+            return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
+        }
+
+        $note = DonorNote::find($request->get_param('id'));
+        if (!$note || $note->donorId !== $donor->id) {
+            return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
+        }
+
+        $response = $this->prepare_item_for_response($note, $request);
+        return rest_ensure_response($response);
+    }
+
+    /**
+     * Update a donor note.
+     *
+     * @unreleased
+     *
+     * @param WP_REST_Request $request Full data about the request.
+     *
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @throws Exception
+     */
+    public function update_item($request)
+    {
+        $donor = Donor::find($request->get_param('donorId'));
+        if (!$donor) {
+            return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
+        }
+
+        $note = DonorNote::find($request->get_param('id'));
+        if (!$note || $note->donorId !== $donor->id) {
+            return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
+        }
+
+        if ($request->has_param('content')) {
+            $note->content = $request->get_param('content');
+        }
+
+        if ($request->has_param('type')) {
+            $note->type = new DonorNoteType($request->get_param('type'));
+        }
+
+        $note->save();
+
+        $response = $this->prepare_item_for_response($note, $request);
+        return rest_ensure_response($response);
+    }
+
+    /**
      * Delete a donor note.
      *
      * @unreleased
@@ -222,9 +248,15 @@ class DonorNotesController extends WP_REST_Controller
             return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
         }
 
+        // Store the note data before deletion for the response
+        $noteData = $note->toArray();
+        
         $note->delete();
 
-        return new WP_REST_Response(null, 204);
+        $response = new WP_REST_Response($noteData);
+        $response->set_status(200);
+
+        return $response;
     }
 
     /**
@@ -238,6 +270,14 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * @unreleased
      */
+    public function create_item_permissions_check($request): bool
+    {
+        return current_user_can('edit_give_payments');
+    }
+
+    /**
+     * @unreleased
+     */
     public function get_item_permissions_check($request): bool
     {
         return current_user_can('view_give_reports');
@@ -246,7 +286,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * @unreleased
      */
-    public function create_item_permissions_check($request): bool
+    public function update_item_permissions_check($request): bool
     {
         return current_user_can('edit_give_payments');
     }
@@ -296,24 +336,128 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
+     * Get the donor note schema, conforming to JSON Schema.
+     *
+     * @unreleased
+     *
+     * @return array
+     */
+    public function get_item_schema(): array
+    {
+        $schema = [
+            'schema' => 'http://json-schema.org/draft-07/schema#',
+            'title' => 'donor-note',
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'description' => __('Unique identifier for the note.', 'give'),
+                    'type' => 'integer',
+                    'readonly' => true,
+                ],
+                'donorId' => [
+                    'description' => __('The ID of the donor this note belongs to.', 'give'),
+                    'type' => 'integer',
+                    'required' => true,
+                    'validate_callback' => function ($param) {
+                        $donor = Donor::find($param);
+                        return !empty($donor);
+                    },
+                ],
+                'content' => [
+                    'description' => __('The content of the note.', 'give'),
+                    'type' => 'string',
+                    'required' => true,
+                    'minLength' => 1,
+                ],
+                'type' => [
+                    'description' => __('The type of the note.', 'give'),
+                    'type' => 'string',
+                    'enum' => ['admin', 'donor'],
+                    'default' => 'admin',
+                ],
+                'createdAt' => [
+                    'description' => __('The date the note was created.', 'give'),
+                    'type' => 'string',
+                    'format' => 'date-time',
+                    'readonly' => true,
+                ],
+                'updatedAt' => [
+                    'description' => __('The date the note was last updated.', 'give'),
+                    'type' => 'string',
+                    'format' => 'date-time',
+                    'readonly' => true,
+                ],
+            ],
+        ];
+
+        return $schema;
+    }
+
+    /**
+     * Get the donor note schema for public display.
+     *
+     * @unreleased
+     *
+     * @return array
+     */
+    public function get_public_item_schema(): array
+    {
+        $schema = $this->get_item_schema();
+
+        // Add additional properties for public display
+        $schema['properties']['_links'] = [
+            'description' => __('HATEOAS links for the note.', 'give'),
+            'type' => 'object',
+            'readonly' => true,
+        ];
+
+        return $schema;
+    }
+
+    /**
      * @unreleased
      */
     public function get_endpoint_args_for_item_schema($method = WP_REST_Server::CREATABLE): array
     {
-        $args = [];
+        $args = parent::get_endpoint_args_for_item_schema($method);
+        $schema = $this->get_item_schema();
 
-        if (WP_REST_Server::CREATABLE === $method) {
+        // Common argument for all endpoints
+        $args['donorId'] = $schema['properties']['donorId'];
+        $args['donorId']['in'] = 'path';
+
+        // Arguments for single item endpoints (not for POST)
+        if (in_array($method, [WP_REST_Server::READABLE, WP_REST_Server::EDITABLE, WP_REST_Server::DELETABLE], true)) {
+            $args['id'] = [
+                'description' => __('The note ID.', 'give'),
+                'type' => 'integer',
+                'required' => true,
+                'in' => 'path',
+                'validate_callback' => function ($param, $request) {
+                    $note = DonorNote::find($param);
+                    return !empty($note) && $note->donorId === $request->get_param('donorId');
+                },
+            ];
+        } else {
+            // Remove id if present (for POST)
+            unset($args['id']);
+        }
+
+        // Arguments for create/update endpoints
+        if (in_array($method, [WP_REST_Server::CREATABLE, WP_REST_Server::EDITABLE], true)) {
             $args['content'] = [
                 'description' => __('The content of the note.', 'give'),
                 'type' => 'string',
-                'required' => true,
+                'required' => $method === WP_REST_Server::CREATABLE,
+                'minLength' => 1,
             ];
 
             $args['type'] = [
                 'description' => __('The type of the note.', 'give'),
                 'type' => 'string',
-                'default' => 'admin',
+                'required' => $method === WP_REST_Server::CREATABLE,
                 'enum' => ['admin', 'donor'],
+                'default' => 'admin',
             ];
         }
 
