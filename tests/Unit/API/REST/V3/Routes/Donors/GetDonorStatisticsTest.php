@@ -15,6 +15,7 @@ use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 use WP_REST_Server;
+use DateTime;
 
 /**
  * @unreleased
@@ -212,6 +213,7 @@ class GetDonorStatisticsTest extends RestApiTestCase
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(25000, 'USD'),
             'mode' => DonationMode::LIVE(),
+            'createdAt' => new DateTime('2025-06-04 23:12:26'),
         ]);
 
         if ($campaignId) {
@@ -234,6 +236,7 @@ class GetDonorStatisticsTest extends RestApiTestCase
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(5000, 'USD'),
             'mode' => DonationMode::LIVE(),
+            'createdAt' => new DateTime('2025-06-05 23:12:26'),
         ]);
 
         if ($campaignId) {
