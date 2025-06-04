@@ -8,7 +8,7 @@ export type Donor = {
   lastName: string;
   email: string;
   phone: string;
-  companyName: string;
+  company: string;
   additionalEmails: string[];
   avatarId: number;
   avatarUrl: string;
