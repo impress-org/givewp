@@ -25,7 +25,7 @@ interface AdminSectionFieldProps {
 export function AdminSectionField({ subtitle, children, error }: AdminSectionFieldProps) {
     return (
         <div className={sharedStyles.sectionField}>
-            {subtitle && <div className={sharedStyles.sectionSubtitle}>{subtitle}</div>}
+            {subtitle && <h3 className={sharedStyles.sectionSubtitle}>{subtitle}</h3>}
             {children}
             {error && <div className={sharedStyles.errorMsg}>{error}</div>}
         </div>
@@ -50,7 +50,7 @@ export default function AdminSection({ title, description, children }: AdminSect
     return (
         <div className={sharedStyles.section}>
             <div className={sharedStyles.leftColumn}>
-                <div className={sharedStyles.sectionTitle}>{title}</div>
+                <h2 className={sharedStyles.sectionTitle}>{title}</h2>
                 <div className={sharedStyles.sectionDescription}>
                     {description}
                 </div>
