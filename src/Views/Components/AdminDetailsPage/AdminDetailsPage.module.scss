@@ -312,7 +312,7 @@
                 line-height: 1.56;
                 color: var(--givewp-neutral-900);
                 padding: 0;
-                margin-bottom: var(--givewp-spacing-1);
+                margin: 0 0 var(--givewp-spacing-1);
             }
 
             .sectionDescription {
@@ -322,19 +322,19 @@
             }
 
             .sectionSubtitle {
+                color: var(--givewp-neutral-700);
                 font-size: 1rem;
                 font-weight: 500;
                 line-height: 1.5;
-                color: var(--givewp-neutral-700);
+                margin: 0;
             }
 
             .sectionField {
                 position: relative;
-
                 display: flex;
                 flex-direction: column;
                 gap: var(--givewp-spacing-1);
-                margin-bottom: var(--givewp-spacing-10);
+                margin-bottom: var(--givewp-spacing-6);
 
                 input,
                 textarea,
