@@ -190,13 +190,12 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased updated to repository
      * @since 2.19.6
-     *
-     * @return int
      */
-    public function totalAmountDonated(): int
+    public function totalAmountDonated(): float
     {
-        return array_sum(array_column($this->donations, DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()));
+        return give()->donors->totalAmountDonated($this->id);
     }
 
     /**
