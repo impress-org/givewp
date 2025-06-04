@@ -242,11 +242,11 @@
     }
 
     .summaryCardValue {
-        height: 1.5rem;
         font-size: 1rem;
         font-weight: 600;
         line-height: 1.5;
         color: #1f2937;
+        padding: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
 
         &.pill {
             background-color: #f9fafb;
@@ -257,6 +257,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
+
         }
     }
 
@@ -265,6 +267,7 @@
         flex-direction: column;
         gap: var(--givewp-spacing-1);
         margin: 0;
+        padding: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
 
         p {
             margin: 0;
@@ -288,7 +291,6 @@
 }
 
 .contributionsCard {
-    min-height: 22.313rem;
     display: flex;
     flex-direction: column;
 
@@ -299,4 +301,3 @@
         min-height: 300px;
     }
 }
-
