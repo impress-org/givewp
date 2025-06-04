@@ -37,7 +37,7 @@ class DonorNotesController extends WP_REST_Controller
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
-                'args' => $this->get_collection_params(),
+                'args' => array_merge($this->get_endpoint_args_for_item_schema(WP_REST_Server::READABLE), $this->get_collection_params()),
                 'schema' => [$this, 'get_public_item_schema'],
             ],
             [
@@ -334,6 +334,10 @@ class DonorNotesController extends WP_REST_Controller
         $params['page']['default'] = 1;
         $params['per_page']['default'] = 30;
 
+        // Remove default parameters not being used
+        unset($params['context']);
+        unset($params['search']);
+
         return $params;
     }
 
@@ -457,6 +461,9 @@ class DonorNotesController extends WP_REST_Controller
                 'enum' => ['admin', 'donor'],
                 'default' => 'admin',
             ];
+        } else {
+            unset($args['content']);
+            unset($args['type']);
         }
 
         return $args;
