@@ -144,7 +144,7 @@ export default function DonorDetailsPageOverviewTab() {
                     />
                     <TimeSeriesChart
                         title={__('Contributions', 'give')}
-                        endpoint={`givewp/v3/donations?page=1&per_page=5&mode=test&donor_id=${donorId}`}
+                        endpoint={`givewp/v3/donations?page=1&per_page=5&mode=live&donor_id=${donorId}`}
                         amountFormatter={amountFormatter(currency)}
                     />
                 </div>
@@ -154,7 +154,7 @@ export default function DonorDetailsPageOverviewTab() {
                         title={__('Recent Transactions', 'give')}
                         subtitle={__('Shows the five recent transactions', 'give')}
                         //TODO: Update link to Contributions page.
-                        href={`admin.php?page=give-payment-history&donor=${donorId}&mode=test`}
+                        href={`admin.php?page=give-payment-history&donor=${donorId}`}
                         actionText={__('View All Transactions', 'give')}
                     />
                     <div className={styles.transactionList}>
