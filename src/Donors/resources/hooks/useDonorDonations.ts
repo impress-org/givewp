@@ -36,7 +36,7 @@ interface DonationsQueryParams {
 /**
  * @unreleased
  */
-export function useDonorDonations({donorId, page = 1, perPage = 5, mode = 'live', status = 'publish'}: DonationsQueryParams) {
+export function useDonorDonations({donorId, page = 1, perPage = 5, mode = 'live', status = 'any'}: DonationsQueryParams) {
     const query = {
         page,
         per_page: perPage,
