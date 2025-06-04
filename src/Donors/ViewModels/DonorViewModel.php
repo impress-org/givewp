@@ -57,17 +57,18 @@ class DonorViewModel
         );
 
         if ( ! $this->includeSensitiveData) {
-            $sensitiveData = [
+            $sensitiveDataExcluded = [
                 'userId',
                 'email',
                 'phone',
                 'additionalEmails',
+                'lastName',
                 'avatarUrl',
                 'company',
                 'wpUserPermalink'
             ];
 
-            foreach ($sensitiveData as $propertyName) {
+            foreach ($sensitiveDataExcluded as $propertyName) {
                 if (isset($data[$propertyName])) {
                     $data[$propertyName] = '';
                 }
@@ -75,8 +76,8 @@ class DonorViewModel
         }
 
 
-        if ($this->anonymousMode->isRedacted() && $this->donor->isAnonymous()) {
-            $sensitiveData = [
+        if (isset($this->anonymousMode) && $this->anonymousMode->isRedacted() && $this->donor->isAnonymous()) {
+            $anonymousDataRedacted = [
                 'id',
                 'name',
                 'firstName',
@@ -86,7 +87,7 @@ class DonorViewModel
                 'company'
             ];
 
-            foreach ($sensitiveData as $propertyName) {
+            foreach ($anonymousDataRedacted as $propertyName) {
                 switch ($propertyName) {
                     case 'id':
                         $data[$propertyName] = 0;
