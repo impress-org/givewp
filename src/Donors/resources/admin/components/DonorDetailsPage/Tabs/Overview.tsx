@@ -60,8 +60,8 @@ const {currency} = getDonorOptionsWindowData();
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
-    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved} = useDonorStatistics(donorId, 'test');
-    const {donations, hasResolved : donationsResolved} = useDonorDonations({donorId, mode: 'test'});
+    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved} = useDonorStatistics(donorId, 'live');
+    const {donations, hasResolved : donationsResolved} = useDonorDonations({donorId, mode: 'live'});
 
     const transactions: Transaction[] = !donations
         ? []

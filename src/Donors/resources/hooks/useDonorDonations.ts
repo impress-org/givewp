@@ -32,7 +32,7 @@ interface DonationsQueryParams {
     mode?: 'test' | 'live';
 }
 
-export function useDonorDonations({donorId, page = 1, perPage = 5, mode = 'test'}: DonationsQueryParams) {
+export function useDonorDonations({donorId, page = 1, perPage = 5, mode = 'live'}: DonationsQueryParams) {
     const query = {
         page,
         per_page: perPage,
