@@ -1,197 +1,86 @@
 import React, {useEffect, useState} from 'react';
 import Chart from 'react-apexcharts';
 import apiFetch from '@wordpress/api-fetch';
-import {addQueryArgs} from '@wordpress/url';
+import {ApexOptions} from 'apexcharts';
 
-/**
- * @unreleased
- */
-interface DonationAmount {
-    value: string;
-    valueInMinorUnits: string;
-    currency: string;
+interface TimeSeriesChartProps {
+    endpoint: string;
+    amountFormatter: Intl.NumberFormat;
 }
 
-/**
- * @unreleased
- */
-interface DonationDate {
-    date: string;
-    timezone_type: number;
-    timezone: string;
-}
-
-/**
- * @unreleased
- */
-export interface DonationData {
-    id: number;
-    amount: DonationAmount;
-    createdAt: DonationDate;
-}
-
-/**
- * @unreleased
- */
-export interface TimeSeriesChartProps {
-    endpoint?: string;
-    data?: DonationData[];
-    queryParams?: Record<string, string>;
-    valueFormatter?: (value: number) => string;
-    height?: string | number;
-    width?: string | number;
-    title?: string;
-    colors?: string[];
-    gradientColors?: Array<{offset: number; color: string; opacity: number}>;
-}
-
-/**
- * @unreleased
- */
-const getDefaultData = (days = 7) => {
-    const data = [];
-
-    for (let i = 0; i < days; i++) {
+const getLast7Days = () => {
+    const result = [];
+    for (let i = 6; i >= 0; i--) {
         const date = new Date();
         date.setDate(date.getDate() - i);
-        data.push({x: date.toISOString().split('T')[0], y: 0});
+        result.push(date.toISOString().split('T')[0]); // Format: YYYY-MM-DD
     }
-
-    return data;
+    return result;
 };
 
-/**
- * @unreleased
- */
-const TimeSeriesChart: React.FC<TimeSeriesChartProps> = ({
-    endpoint,
-    data,
-    queryParams = {},
-    valueFormatter = (value) => value.toString(),
-    height = '100%',
-    width = '100%',
-    title = '',
-    colors = ['#60a1e2'],
-    gradientColors = [
-        [{
-            offset: 0,
-            color: '#eee',
-            opacity: 1,
-        },
-        {
-            offset: 0.6,
-            color: '#b7d4f2',
-            opacity: 50,
-        },
-        {
-            offset: 100,
-            color: '#f0f7ff',
-            opacity: 1,
-        }],
-    ],
-}) => {
-    const [max, setMax] = useState(100);
-    const [series, setSeries] = useState([{name: title, data: getDefaultData()}]);
+const normalizeData = (donations, last7Days) => {
+    const map = new Map();
+    donations.forEach((d) => {
+        const date = d.createdAt.date.split(' ')[0];
+        const amount = parseFloat(d.amount.value);
+        map.set(date, (map.get(date) || 0) + amount);
+    });
+
+    return last7Days.map((date) => ({
+        x: date,
+        y: map.get(date) || 0,
+    }));
+};
+
+export default function TimeSeriesChart({endpoint, amountFormatter}: TimeSeriesChartProps) {
+    const [series, setSeries] = useState([{name: 'Time Series Chart', data: []}]);
 
     useEffect(() => {
-        if (data?.length > 0) {
-            setMax(undefined);
-            setSeries([
-                {
-                    name: title,
-                    data: data.map((item) => ({
-                        x: item.createdAt.date.split(' ')[0],
-                        y: parseFloat(item.amount.value),
-                    })),
-                },
-            ]);
-            return;
-        }
+        const last7Days = getLast7Days();
 
-        if (endpoint) {
-            apiFetch({path: addQueryArgs(endpoint, queryParams)}).then(
-                (responseData: DonationData[]) => {
-                    if (responseData?.length > 0) {
-                        setMax(undefined);
-                        setSeries([
-                            {
-                                name: title,
-                                data: responseData.map((item) => ({
-                                    x: item.createdAt.date.split(' ')[0],
-                                    y: parseFloat(item.amount.value),
-                                })),
-                            },
-                        ]);
-                    }
-                }
-            );
-        }
-    }, [endpoint, queryParams, title, data]);
+        apiFetch({path: endpoint}).then((data) => {
+            const normalized = normalizeData(data, last7Days);
+            setSeries([{name: 'Time Series Chart', data: normalized}]);
+        });
+    }, [endpoint]);
 
-    const options = {
+    const options: ApexOptions = {
         chart: {
-            id: 'time-series-chart',
-            zoom: {
-                enabled: false,
-            },
-            toolbar: {
-                show: false,
-            },
-            parentHeightOffset: 0,
-            height: '100%',
-            width: '100%',
-            animations: {
-                enabled: true
-            },
+            type: 'area' as const,
+            toolbar: {show: false},
+            zoom: {enabled: false},
         },
         xaxis: {
-            type: 'datetime' as const,
+            type: 'datetime',
+            labels: {format: 'MMM dd'},
         },
         yaxis: {
             min: 0,
-            max,
-            showForNullSeries: false,
             labels: {
-                formatter: (value) => valueFormatter(Number(value)),
+                formatter: (val) => amountFormatter.format(val),
             },
         },
+        dataLabels: {enabled: false},
         stroke: {
-            color: ['#60a1e2'],
-            width: 1.5,
-            curve: 'smooth' as const,
-            lineCap: 'butt' as const,
-        },
-        dataLabels: {
-            enabled: false,
+            curve: 'smooth',
+            width: 2,
+            colors: ['#60a1e2'],
         },
         fill: {
             type: 'gradient',
             gradient: {
-                colorStops: gradientColors,
+                shadeIntensity: 1,
+                opacityFrom: 0.3,
+                opacityTo: 0,
+                stops: [0, 100],
             },
         },
-        responsive: [{
-            breakpoint: 480,
-            options: {
-                chart: {
-                    height: '100%'
-                }
-            }
-        }]
+        tooltip: {
+            x: {
+                format: 'MMM dd',
+            },
+        },
     };
 
-    const containerStyle = {
-        position: 'relative' as const,
-        height: height,
-        width: width,
-        maxWidth: '100%'
-    };
-
-    return (
-        <div style={containerStyle}>
-            <Chart options={options} series={series} type="area" width="100%" height="100%" />
-        </div>
-    );
-};
-
-export default TimeSeriesChart;
+    return <Chart options={options} series={series} type="area" height="250" />;
+}

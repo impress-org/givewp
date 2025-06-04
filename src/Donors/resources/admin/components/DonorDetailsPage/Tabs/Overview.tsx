@@ -5,12 +5,12 @@ import {formatDistanceToNow} from 'date-fns';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
 import PrivateNote from '@givewp/src/Admin/components/PrivateNote';
-import {useDonorStatistics, DonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
+import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {amountFormatter, formatTimestamp} from '@givewp/src/Admin/utils';
 import {getDonorOptionsWindowData} from '@givewp/donors/utils';
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
-import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetailsPage.module.scss';
 import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
+import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetailsPage.module.scss';
 
 /**
  * @unreleased
@@ -60,8 +60,12 @@ const {currency} = getDonorOptionsWindowData();
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
-    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved} = useDonorStatistics(donorId, 'live');
-    const {donations, hasResolved : donationsResolved} = useDonorDonations({donorId, mode: 'live'});
+    const {
+        statistics: stats,
+        isResolving: statsLoading,
+        hasResolved: statsResolved,
+    } = useDonorStatistics(donorId, 'live');
+    const {donations, hasResolved: donationsResolved} = useDonorDonations({donorId, mode: 'live'});
 
     const transactions: Transaction[] = !donations
         ? []
@@ -144,10 +148,7 @@ export default function DonorDetailsPageOverviewTab() {
                     />
                     <TimeSeriesChart
                         endpoint={`givewp/v3/donations?page=1&per_page=5&mode=test&donor_id=${donorId}`}
-                        queryParams={{mode: 'test'}}
-                        valueFormatter={(value) => amountFormatter(currency).format(value)}
-                        title={__('Recent Donations', 'give')}
-                        height={300}
+                        amountFormatter={amountFormatter(currency)}
                     />
                 </div>
 
