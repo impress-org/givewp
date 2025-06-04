@@ -73,14 +73,14 @@ export default function DonorPersonalDetails() {
                 error={errors.title ? `${errors.title.message}` : undefined}
             >
                 <div className={styles.sectionFieldInputWrapper}>
-                    <select {...register('prefix')} className={styles.prefixSelect}>
+                    <select {...register('prefix')} className={styles.prefixSelect} aria-label={__('Title prefix', 'give')}>
                         <option value=""></option>
                         {nameTitlePrefixes.map((prefix) => (
                             <option key={prefix} value={prefix}>{prefix}</option>
                         ))}
                     </select>
-                    <input {...register('firstName')} />
-                    <input {...register('lastName')} />
+                    <input {...register('firstName')} aria-label={__('First name', 'give')} />
+                    <input {...register('lastName')} aria-label={__('Last name', 'give')} />
                 </div>
             </AdminSectionField>
 
@@ -96,7 +96,7 @@ export default function DonorPersonalDetails() {
             </AdminSectionField>
 
             <AdminSectionField subtitle={__('Company name', 'give')}>
-                <input {...register('company')} />
+                <input {...register('company')} aria-label={__('Company name', 'give')} />
             </AdminSectionField>
         </AdminSection>
     );

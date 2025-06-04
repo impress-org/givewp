@@ -1,6 +1,7 @@
 /**
  * External Dependencies
  */
+import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from 'react';
 import IntlTelInput from 'intl-tel-input/react';
 import 'intl-tel-input/build/css/intlTelInput.css';
@@ -82,6 +83,9 @@ export default function PhoneInput({ id, value, onChange, onError, className }: 
                     i18n: intlTelInputSettings.i18n,
                     useFullscreenPopup: intlTelInputSettings.useFullscreenPopup,
                     utilsScript: intlTelInputSettings.utilsScriptUrl,
+                }}
+                inputProps={{
+                    ariaLabel: __('Phone number', 'give'),
                 }}
             />
         </div>
