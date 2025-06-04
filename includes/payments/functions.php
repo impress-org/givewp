@@ -170,11 +170,10 @@ function give_derive_campaign_id_from_form_id( $form_id ) {
 	/**
 	 * Filter the derived campaign ID.
 	 *
-	 * @unreleased
+	 * @
 	 *
 	 * @param int $derived_campaign_id The derived campaign ID.
 	 * @param int $form_id The form ID used for derivation.
-     * @return int The derived campaign ID.
 	 */
 	return apply_filters( 'give_derive_campaign_id_from_form_id', $derived_campaign_id, $form_id );
 }

@@ -3,11 +3,14 @@
 namespace Give\Tests\Unit\Donors\Repositories;
 
 use Exception;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepository;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -239,5 +242,147 @@ class TestDonorRepository extends TestCase
 
         $this->assertSame($serializedFirstName, $metaValue);
         $this->assertSame(serialize($serializedFirstName), $metaQuery->meta_value);
+    }
+
+    /**
+     * Test totalAmountDonated method calculates the correct sum of intended donation amounts
+     *
+     * @since 3.21.0
+     * @throws Exception
+     */
+    public function testTotalAmountDonatedShouldCalculateCorrectSum(): void
+    {
+        // Create a donor
+        $donor = Donor::factory()->create();
+
+        // Create donations with different amounts and fees
+        $donation1 = \Give\Donations\Models\Donation::factory()->create([
+            'donorId' => $donor->id,
+            'amount' => new Money(10000, 'USD'), // $100.00
+            'feeAmountRecovered' => new Money(290, 'USD'), // $2.90
+            'status' => DonationStatus::COMPLETE()
+        ]);
+
+        $donation2 = \Give\Donations\Models\Donation::factory()->create([
+            'donorId' => $donor->id,
+            'amount' => new Money(5000, 'USD'), // $50.00
+            'feeAmountRecovered' => new Money(145, 'USD'), // $1.45
+            'status' => DonationStatus::COMPLETE()
+        ]);
+
+        $donation3 = \Give\Donations\Models\Donation::factory()->create([
+            'donorId' => $donor->id,
+            'amount' => new Money(2500, 'USD'), // $25.00
+            'feeAmountRecovered' => new Money(0, 'USD'), // No fee
+            'status' => DonationStatus::COMPLETE()
+        ]);
+
+        // Create a donation with different status (should be ignored)
+        \Give\Donations\Models\Donation::factory()->create([
+            'donorId' => $donor->id,
+            'amount' => new Money(1000, 'USD'), // $10.00
+            'feeAmountRecovered' => new Money(0, 'USD'),
+            'status' => DonationStatus::PENDING()
+        ]);
+
+        $repository = new DonorRepository();
+        $totalIntended = $repository->totalAmountDonated($donor->id);
+
+        // Expected: (100.00 - 2.90) + (50.00 - 1.45) + (25.00 - 0) = 97.10 + 48.55 + 25.00 = 170.65
+        // The Money objects store values as decimal amounts, not cents
+        $this->assertEqualsWithDelta(170.65, $totalIntended, 0.01); // Allow for floating point precision
+    }
+
+    /**
+     * Test totalAmountDonated returns zero when donor has no donations
+     *
+     * @since 3.21.0
+     * @throws Exception
+     */
+    public function testTotalAmountDonatedShouldReturnZeroForDonorWithNoDonations(): void
+    {
+        $donor = Donor::factory()->create();
+
+        $repository = new DonorRepository();
+        $totalIntended = $repository->totalAmountDonated($donor->id);
+
+        $this->assertEquals(0.0, $totalIntended);
+    }
+
+    /**
+     * Test totalAmountDonated handles null fee amounts correctly
+     *
+     * @since 3.21.0
+     * @throws Exception
+     */
+    public function testTotalAmountDonatedShouldHandleNullFeeAmounts(): void
+    {
+        $donor = Donor::factory()->create();
+
+        // Create a donation without fee meta (simulating old donations)
+        $donation = \Give\Donations\Models\Donation::factory()->create([
+            'donorId' => $donor->id,
+            'amount' => new Money(5000, 'USD'), // $50.00
+            'status' => DonationStatus::COMPLETE()
+        ]);
+
+        // Remove the fee meta to simulate null/missing fee
+        DB::table('give_donationmeta')
+            ->where('donation_id', $donation->id)
+            ->where('meta_key', DonationMetaKeys::FEE_AMOUNT_RECOVERED)
+            ->delete();
+
+        $repository = new DonorRepository();
+        $totalIntended = $repository->totalAmountDonated($donor->id);
+
+        // Should equal the full amount since fee is null (treated as 0)
+        $this->assertEquals(50.00, $totalIntended);
+    }
+
+    /**
+     * Test totalAmountDonated only includes valid donation statuses
+     *
+     * @since 3.21.0
+     * @throws Exception
+     */
+    public function testTotalAmountDonatedShouldOnlyIncludeValidStatuses(): void
+    {
+        $donor = Donor::factory()->create();
+
+        // Valid statuses
+        \Give\Donations\Models\Donation::factory()->create([
+            'donorId' => $donor->id,
+            'amount' => new Money(1000, 'USD'),
+            'feeAmountRecovered' => new Money(0, 'USD'),
+            'status' => DonationStatus::COMPLETE()
+        ]);
+
+        \Give\Donations\Models\Donation::factory()->create([
+            'donorId' => $donor->id,
+            'amount' => new Money(2000, 'USD'),
+            'feeAmountRecovered' => new Money(0, 'USD'),
+            'status' => DonationStatus::RENEWAL()
+        ]);
+
+        // Invalid statuses (should be ignored)
+        \Give\Donations\Models\Donation::factory()->create([
+            'donorId' => $donor->id,
+            'amount' => new Money(5000, 'USD'),
+            'feeAmountRecovered' => new Money(0, 'USD'),
+            'status' => DonationStatus::PENDING()
+        ]);
+
+        \Give\Donations\Models\Donation::factory()->create([
+            'donorId' => $donor->id,
+            'amount' => new Money(3000, 'USD'),
+            'feeAmountRecovered' => new Money(0, 'USD'),
+            'status' => DonationStatus::FAILED()
+        ]);
+
+        $repository = new DonorRepository();
+        $totalIntended = $repository->totalAmountDonated($donor->id);
+
+        // Should only include 'publish' and 'give_subscription' donations
+        $this->assertEquals(30.00, $totalIntended);
     }
 }

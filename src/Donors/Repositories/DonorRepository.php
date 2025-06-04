@@ -502,4 +502,36 @@ class DonorRepository
     {
         return DB::table('give_donors')->count();
     }
+
+    /**
+     * Calculate total amount donated by a donor (intended amount after subtracting fees)
+     *
+     * @since 3.21.0
+     *
+     * @param int $donorId The donor ID
+     * @return float The total intended amount donated
+     */
+    public function totalAmountDonated(int $donorId): float
+    {
+        return (float) DB::table('posts', 'posts')
+            ->join(function($join) {
+                $join->leftJoin('give_donationmeta', 'donor_meta')
+                     ->on('posts.ID', 'donor_meta.donation_id')
+                     ->andOn('donor_meta.meta_key', DonationMetaKeys::DONOR_ID, true);
+            })
+            ->join(function($join) {
+                $join->leftJoin('give_donationmeta', 'amount_meta')
+                     ->on('posts.ID', 'amount_meta.donation_id')
+                     ->andOn('amount_meta.meta_key', DonationMetaKeys::AMOUNT, true);
+            })
+            ->join(function($join) {
+                $join->leftJoin('give_donationmeta', 'fee_meta')
+                     ->on('posts.ID', 'fee_meta.donation_id')
+                     ->andOn('fee_meta.meta_key', DonationMetaKeys::FEE_AMOUNT_RECOVERED, true);
+            })
+            ->where('posts.post_type', 'give_payment')
+            ->where('donor_meta.meta_value', $donorId)
+            ->whereIn('posts.post_status', ['publish', 'give_subscription'])
+            ->sum('IFNULL(amount_meta.meta_value, 0) - IFNULL(fee_meta.meta_value, 0)');
+    }
 }
