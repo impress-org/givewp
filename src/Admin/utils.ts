@@ -1,3 +1,5 @@
+import {formatDistanceToNow} from 'date-fns';
+
 /**
  * @since 4.0.0
  */
@@ -32,4 +34,17 @@ export function formatTimestamp(timestamp: string): string {
     const time = date.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
 
     return `${dayWithOrdinal} ${month} ${year} • ${time}`;
+}
+
+/**
+ * Returns a relative time string for a given date (e.g. "Today" or "2 days ago")
+ * 
+ * @since unreleased
+ */
+export function getRelativeTimeString(date: Date): string {
+    const now = new Date();
+    if (date.toDateString() === now.toDateString()) {
+        return 'Today';
+    }
+    return formatDistanceToNow(date, {addSuffix: true});
 }

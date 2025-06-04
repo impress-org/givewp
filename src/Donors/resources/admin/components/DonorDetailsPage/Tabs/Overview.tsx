@@ -6,7 +6,7 @@ import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
 import PrivateNote from '@givewp/src/Admin/components/PrivateNote';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
-import {amountFormatter, formatTimestamp} from '@givewp/src/Admin/utils';
+import {amountFormatter, formatTimestamp, getRelativeTimeString} from '@givewp/src/Admin/utils';
 import {getDonorOptionsWindowData} from '@givewp/donors/utils';
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
 import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
@@ -20,17 +20,6 @@ type Transaction = {
     status: 'Completed' | 'Pending' | 'Failed' | 'Refunded';
     timestamp: string;
     amount: string;
-};
-
-/**
- * @unreleased
- */
-const getRelativeTimeString = (date: Date): string => {
-    const now = new Date();
-    if (date.toDateString() === now.toDateString()) {
-        return 'Today';
-    }
-    return formatDistanceToNow(date, {addSuffix: true});
 };
 
 /**
