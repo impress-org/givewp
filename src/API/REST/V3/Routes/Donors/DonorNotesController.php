@@ -219,7 +219,9 @@ class DonorNotesController extends WP_REST_Controller
             $note->type = new DonorNoteType($request->get_param('type'));
         }
 
-        $note->save();
+        if ($note->isDirty()) {
+            $note->save();
+        }
 
         $response = $this->prepare_item_for_response($note, $request);
         return rest_ensure_response($response);
