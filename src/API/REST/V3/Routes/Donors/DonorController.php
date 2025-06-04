@@ -314,23 +314,43 @@ class DonorController extends WP_REST_Controller
                     'type' => 'integer',
                     'description' => esc_html__('Donor ID', 'give'),
                 ],
-                'name' => [
+                'prefix' => [
                     'type' => 'string',
-                    'description' => esc_html__('Donor name', 'give'),
+                    'description' => esc_html__('Donor prefix', 'give'),
                 ],
                 'firstName' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor first name', 'give'),
+                    'minLength' => 1,
+                    'maxLength' => 128,
+                    'errorMessage' => esc_html__('First name is required', 'give'),
                 ],
                 'lastName' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor last name', 'give'),
+                    'minLength' => 1,
+                    'maxLength' => 128,
+                    'errorMessage' => esc_html__('Last name is required', 'give'),
                 ],
                 'email' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor email', 'give'),
                     'format' => 'email',
-                    'pattern' => '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                    'pattern' => '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                    'errorMessage' => esc_html__('Invalid email address', 'give'),
+                ],
+                'phone' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor phone', 'give'),
+                    'pattern' => '^[0-9]{10}$',
+                ],
+                'company' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor company', 'give'),
+                ],
+                'avatarId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Donor avatar ID', 'give'),
                 ],
             ],
             'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
