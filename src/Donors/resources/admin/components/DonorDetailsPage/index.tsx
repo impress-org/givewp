@@ -42,11 +42,11 @@ const StatusBadge = ({ status }: { status: string }) => {
     );
 };
 
-export default function DonorDetailsPage({ donorId }: { donorId: string }) {
+export default function DonorDetailsPage() {
     const { adminUrl } = getDonorOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false);
 
-    const { record: donor } = useDonorEntityRecord(Number(donorId));
+    const { record: donor } = useDonorEntityRecord();
 
     const SendEmailButton = ({ className }: { className: string }) => {
         return (
@@ -66,6 +66,7 @@ export default function DonorDetailsPage({ donorId }: { donorId: string }) {
                 {donor.wpUserPermalink && (
                     <a
                         href={donor.wpUserPermalink}
+                        target="_blank"
                         aria-label={__('View WordPress profile', 'give')}
                         className={className}
                     >
@@ -85,7 +86,7 @@ export default function DonorDetailsPage({ donorId }: { donorId: string }) {
 
     return (
         <AdminDetailsPage
-            objectId={donorId}
+            objectId={donor?.id}
             objectType="donor"
             objectTypePlural="donors"
             useObjectEntityRecord={useDonorEntityRecord}

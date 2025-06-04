@@ -50,7 +50,10 @@ class DonorViewModel
     {
         $data = array_merge(
             $this->donor->toArray(),
-            ['avatarUrl' => $this->getAvatarUrl()],
+            [
+                'avatarUrl' => $this->getAvatarUrl(),
+                'wpUserPermalink' => $this->donor->userId ? get_edit_user_link($this->donor->userId) : null,
+            ],
         );
 
         if ( ! $this->includeSensitiveData) {
@@ -60,6 +63,8 @@ class DonorViewModel
                 'phone',
                 'additionalEmails',
                 'avatarUrl',
+                'company',
+                'wpUserPermalink'
             ];
 
             foreach ($sensitiveData as $propertyName) {
@@ -78,6 +83,7 @@ class DonorViewModel
                 'lastName',
                 'prefix',
                 'avatarUrl',
+                'company'
             ];
 
             foreach ($sensitiveData as $propertyName) {
