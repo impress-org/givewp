@@ -5,6 +5,9 @@ import ErrorBoundary from '../ErrorBoundary';
 import styles from '../AdminDetailsPage.module.scss';
 import { useContext } from 'react';
 
+/**
+ * @unreleased
+ */
 export default function TabPanels({ tabDefinitions }: { tabDefinitions: TabType[] }) {
     // @ts-ignore
     const {selectedKey} = useContext(TabsContext);

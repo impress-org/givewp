@@ -4,6 +4,9 @@ import DonorCustomFields from './CustomFields';
 import DonorEmailAddress from './EmailAddress';
 import DonorPersonalDetails from './PersonalDetails';
 
+/**
+ * @unreleased
+ */
 export default function DonorDetailsPageProfileTab() {
     return (
         <>

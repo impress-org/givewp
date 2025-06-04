@@ -3,6 +3,9 @@ import OverviewTab from './Overview';
 import ProfileTab from './Profile';
 import { Tab } from '@givewp/components/AdminDetailsPage/types';
 
+/**
+ * @unreleased
+ */
 const donorDetailsTabs: Tab[] = [
     {
         id: 'overview',

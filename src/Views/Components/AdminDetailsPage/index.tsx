@@ -29,6 +29,9 @@ import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
 
 import './store';
 
+/**
+ * @unreleased
+ */
 export default function AdminDetailsPage<T extends Record<string, any>>({
     objectId,
     objectType,

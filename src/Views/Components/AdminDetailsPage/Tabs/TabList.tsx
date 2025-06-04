@@ -3,6 +3,9 @@ import { Tab as TabType } from '../types';
 import styles from '../AdminDetailsPage.module.scss';
 import { useContext } from 'react';
 
+/**
+ * @unreleased
+ */
 export default function TabList({ tabDefinitions }: { tabDefinitions: TabType[] }) {
     // @ts-ignore
     const {selectedKey} = useContext(TabsContext);

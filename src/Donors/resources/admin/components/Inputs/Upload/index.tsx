@@ -7,6 +7,9 @@ import _ from 'lodash';
 import {__, sprintf} from '@wordpress/i18n';
 import styles from './styles.module.scss';
 
+/**
+ * @unreleased
+ */
 type MediaLibrary = {
     id: string;
     value: string;
@@ -15,6 +18,9 @@ type MediaLibrary = {
     label: string;
 };
 
+/**
+ * @unreleased
+ */
 export default function UploadMedia({id, value, onChange, label, reset}: MediaLibrary) {
     // The media library uses Backbone.js, which can conflict with lodash.
     _.noConflict();

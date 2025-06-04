@@ -19,6 +19,9 @@ import { getDonorOptionsWindowData, useDonorEntityRecord } from '@givewp/donors/
 import styles from './DonorDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 
+/**
+ * @unreleased
+ */
 const StatusBadge = ({ status }: { status: string }) => {
     const statusMap = {
         current: __('Current', 'give'),
@@ -42,6 +45,9 @@ const StatusBadge = ({ status }: { status: string }) => {
     );
 };
 
+/**
+ * @unreleased
+ */
 export default function DonorDetailsPage() {
     const { adminUrl } = getDonorOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<boolean>(false);

@@ -16,6 +16,9 @@ import styles from '../../DonorDetailsPage.module.scss';
 
 const {nameTitlePrefixes} = getDonorOptionsWindowData();
 
+/**
+ * @unreleased
+ */
 export default function DonorPersonalDetails() {
     const {
         register,
