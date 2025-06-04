@@ -1,13 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import Chart from 'react-apexcharts';
-import apiFetch from '@wordpress/api-fetch';
 import {ApexOptions} from 'apexcharts';
+import apiFetch from '@wordpress/api-fetch';
 
+/**
+ * @unreleased
+ */
 interface TimeSeriesChartProps {
     endpoint: string;
     amountFormatter: Intl.NumberFormat;
+    title?: string;
 }
 
+/**
+ * @unreleased
+ */
 const getLast7Days = () => {
     const result = [];
     for (let i = 6; i >= 0; i--) {
@@ -18,8 +25,12 @@ const getLast7Days = () => {
     return result;
 };
 
+/**
+ * @unreleased
+ */
 const normalizeData = (donations, last7Days) => {
     const map = new Map();
+
     donations.forEach((d) => {
         const date = d.createdAt.date.split(' ')[0];
         const amount = parseFloat(d.amount.value);
@@ -32,15 +43,18 @@ const normalizeData = (donations, last7Days) => {
     }));
 };
 
-export default function TimeSeriesChart({endpoint, amountFormatter}: TimeSeriesChartProps) {
-    const [series, setSeries] = useState([{name: 'Time Series Chart', data: []}]);
+/**
+ * @unreleased
+ */
+export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}: TimeSeriesChartProps) {
+    const [series, setSeries] = useState([{name: title, data: []}]);
 
     useEffect(() => {
         const last7Days = getLast7Days();
 
         apiFetch({path: endpoint}).then((data) => {
             const normalized = normalizeData(data, last7Days);
-            setSeries([{name: 'Time Series Chart', data: normalized}]);
+            setSeries([{name: title, data: normalized}]);
         });
     }, [endpoint]);
 

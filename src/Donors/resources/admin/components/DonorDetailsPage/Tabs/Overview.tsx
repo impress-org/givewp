@@ -60,11 +60,7 @@ const {currency} = getDonorOptionsWindowData();
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
-    const {
-        statistics: stats,
-        isResolving: statsLoading,
-        hasResolved: statsResolved,
-    } = useDonorStatistics(donorId, 'live');
+    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId, 'live');
     const {donations, hasResolved: donationsResolved} = useDonorDonations({donorId, mode: 'live'});
 
     const transactions: Transaction[] = !donations
@@ -147,6 +143,7 @@ export default function DonorDetailsPageOverviewTab() {
                         actionText={__('View Detailed Report', 'give')}
                     />
                     <TimeSeriesChart
+                        title={__('Contributions', 'give')}
                         endpoint={`givewp/v3/donations?page=1&per_page=5&mode=test&donor_id=${donorId}`}
                         amountFormatter={amountFormatter(currency)}
                     />
