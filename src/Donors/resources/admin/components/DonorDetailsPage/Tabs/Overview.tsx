@@ -122,13 +122,13 @@ export default function DonorDetailsPageOverviewTab() {
                 loading={statsLoading || !statsResolved}
             />
             <StatWidget
-                label={__('Highest donations', 'give')}
+                label={__('Highest donation', 'give')}
                 value={stats?.donations?.highestAmount ?? 0}
                 formatter={amountFormatter(currency)}
                 loading={statsLoading || !statsResolved}
             />
             <StatWidget
-                label={__('Average donations', 'give')}
+                label={__('Average donation', 'give')}
                 value={stats?.donations?.averageAmount ?? 0}
                 formatter={amountFormatter(currency)}
                 loading={statsLoading || !statsResolved}
