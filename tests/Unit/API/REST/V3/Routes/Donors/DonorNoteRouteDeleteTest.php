@@ -14,7 +14,7 @@ use WP_REST_Server;
 /**
  * @unreleased
  */
-class DeleteDonorNoteTest extends RestApiTestCase
+class DonorNoteRouteDeleteTest extends RestApiTestCase
 {
     use RefreshDatabase;
 

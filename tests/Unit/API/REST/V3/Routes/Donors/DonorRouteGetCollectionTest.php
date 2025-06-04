@@ -20,7 +20,7 @@ use WP_REST_Server;
 /**
  * @since 4.0.0
  */
-class GetDonorsRouteTest extends RestApiTestCase
+class DonorRouteGetCollectionTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
