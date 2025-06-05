@@ -17,10 +17,10 @@ type TimeSeriesChartProps = {
  */
 type Donation = {
     createdAt: {
-        date: string; // Format: YYYY-MM-DD HH:mm:ss
+        date: string;
     };
     amount: {
-        value: string; // Decimal string
+        value: string;
     };
 };
 
@@ -28,39 +28,30 @@ type Donation = {
  * @unreleased
  */
 type DataPoint = {
-    x: string; // Format: YYYY-MM-DD
+    x: string;
     y: number;
 };
 
 /**
  * @unreleased
  */
-const getLast7Days = () => {
-    const result = [];
-    for (let i = 6; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        result.push(date.toISOString().split('T')[0]); // Format: YYYY-MM-DD
-    }
-    return result;
-};
-
-/**
- * @unreleased
- */
-const normalizeData = (donations: Donation[], last7Days: string[]): DataPoint[] => {
+const normalizeData = (donations: Donation[]): DataPoint[] => {
     const map = new Map<string, number>();
 
+    // Group donations by date with total amounts - fill missing dates with 0.
     donations.forEach((donation) => {
         const date = donation.createdAt.date.split(' ')[0];
         const amount = parseFloat(donation.amount.value);
         map.set(date, (map.get(date) || 0) + amount);
     });
 
-    return last7Days.map((date) => ({
-        x: date,
-        y: map.get(date) || 0,
-    }));
+    // Convert to sorted array of data points.
+    return Array.from(map.entries())
+        .map(([date, amount]) => ({
+            x: date,
+            y: amount,
+        }))
+        .sort((a, b) => a.x.localeCompare(b.x));
 };
 
 /**
@@ -70,10 +61,8 @@ export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}:
     const [series, setSeries] = useState([{name: title, data: []}]);
 
     useEffect(() => {
-        const last7Days = getLast7Days();
-
         apiFetch<Donation[]>({path: endpoint}).then((data) => {
-            const normalized = normalizeData(data, last7Days);
+            const normalized = normalizeData(data);
             setSeries([{name: title, data: normalized}]);
         });
     }, [endpoint]);
