@@ -20,7 +20,7 @@ use DateTime;
 /**
  * @unreleased
  */
-class GetDonorStatisticsTest extends RestApiTestCase
+class DonorStatisticsRouteGetTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
