@@ -3,6 +3,7 @@
 namespace Give\Donors\DataTransferObjects;
 
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\Address;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
@@ -53,6 +54,10 @@ final class DonorQueryData
      */
     public $additionalEmails;
     /**
+     * @var Address[]
+     */
+    public $addresses;
+    /**
      * @var string
      */
     public $prefix;
@@ -98,6 +103,7 @@ final class DonorQueryData
         $self->lastName = $object->lastName;
         $self->createdAt = Temporal::toDateTime($object->createdAt);
         $self->additionalEmails = $object->additionalEmails;
+        $self->addresses = $object->addresses ?? [];
         $self->avatarId = (int)$object->{DonorMetaKeys::AVATAR_ID()->getKeyAsCamelCase()};
         $self->company = $object->{DonorMetaKeys::COMPANY()->getKeyAsCamelCase()};
         $self->totalAmountDonated = Money::fromDecimal($object->totalAmountDonated, give_get_currency());

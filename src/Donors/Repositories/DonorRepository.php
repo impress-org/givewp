@@ -7,6 +7,7 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Exceptions\FailedDonorUpdateException;
 use Give\Donors\Models\Donor;
 use Give\Donors\Models\DonorModelQueryBuilder;
+use Give\Donors\ValueObjects\Address;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Donors\ValueObjects\DonorType;
 use Give\Framework\Database\DB;
@@ -165,6 +166,10 @@ class DonorRepository
                     give()->donor_meta->add_meta($donorId, DonorMetaKeys::ADDITIONAL_EMAILS, $additionalEmail);
                 }
             }
+
+            if (isset($donor->addresses)) {
+                $this->updateAddresses($donor);
+            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -182,6 +187,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased Add support for addresses
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.23.1 use give()->donor_meta to update meta so data is upserted
@@ -226,6 +232,10 @@ class DonorRepository
 
             if (isset($donor->additionalEmails) && $donor->isDirty('additionalEmails')) {
                 $this->updateAdditionalEmails($donor);
+            }
+
+            if (isset($donor->addresses) && $donor->isDirty('addresses')) {
+                $this->updateAddresses($donor);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -411,7 +421,7 @@ class DonorRepository
                 'give_donormeta',
                 'ID',
                 'donor_id',
-                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithoutAdditionalEmails()
+                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithoutExtraMetadata()
             );
     }
 
@@ -434,6 +444,38 @@ class DonorRepository
 
         foreach ($donor->additionalEmails as $additionalEmail) {
             give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDITIONAL_EMAILS, $additionalEmail);
+        }
+    }
+
+    /**
+     * Addresses are stored as indexed meta keys.
+     * In order to update them we need to delete all address-related meta keys and re-insert.
+     *
+     * @unreleased
+     */
+    private function updateAddresses(Donor $donor): void
+    {
+        // Delete all existing address meta keys for this donor
+        DB::table('give_donormeta')
+            ->where('donor_id', $donor->id)
+            ->where(function($query) {
+                $query->where('meta_key', 'like', DonorMetaKeys::ADDRESS_LINE1 . '%')
+                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_LINE2 . '%')
+                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_CITY . '%')
+                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_STATE . '%')
+                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_COUNTRY . '%')
+                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_ZIP . '%');
+            })
+            ->delete();
+
+        // Insert new addresses
+        foreach ($donor->addresses as $index => $address) {
+            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_LINE1 . $index, $address->address1);
+            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_LINE2 . $index, $address->address2);
+            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_CITY . $index, $address->city);
+            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_STATE . $index, $address->state);
+            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_COUNTRY . $index, $address->country);
+            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_ZIP . $index, $address->zip);
         }
     }
 
