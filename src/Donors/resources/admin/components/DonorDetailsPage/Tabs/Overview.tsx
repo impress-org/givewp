@@ -137,7 +137,7 @@ export default function DonorDetailsPageOverviewTab() {
                     />
                     <TimeSeriesChart
                         title={__('Contributions', 'give')}
-                        endpoint={`givewp/v3/donations?mode=live&donor_id=${donorId}`}
+                        endpoint={`givewp/v3/donations?mode=live&donorId=${donorId}`}
                         amountFormatter={amountFormatter(currency)}
                     />
                 </div>
