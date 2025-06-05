@@ -17,10 +17,15 @@ export default ({showImage, showGoal, showDescription, campaign}: {
     return (
         <div
             className="give-campaigns-component-campaign"
-            {...(campaign.pagePermalink && !campaignWindowData.isAdmin && {
-                style: {
+            style={{
+                // @ts-ignore
+                '--givewp-primary-color': campaign.primaryColor ?? '#0b72d9',
+                '--givewp-secondary-color': campaign.secondaryColor ?? '#27ae60',
+                ...(campaign.pagePermalink && !campaignWindowData.isAdmin && {
                     cursor: 'pointer',
-                },
+                })
+            }}
+            {...(campaign.pagePermalink && !campaignWindowData.isAdmin && {
                 onClick: () => window.location = campaign.pagePermalink
             })}
         >

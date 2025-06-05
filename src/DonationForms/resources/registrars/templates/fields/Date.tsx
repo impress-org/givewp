@@ -7,7 +7,8 @@ import styles from '../styles.module.scss';
 import {useEffect, useRef} from "react";
 
 /**
- * @unreleased add aria-required attribute. manually focus the visible input when error is present.
+ * @unreleased manually focus the visible input when error is present.
+ * @since 4.3.0 add aria-required attribute.
  */
 export default function Date({
     Label,

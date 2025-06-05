@@ -118,7 +118,7 @@ jQuery(function () {
 /**
  * Initialize Give Modal buttons in the block editor.
  *
- * @unreleased
+ * @since 4.3.0
  */
 function initializeGiveModalButtons() {
     document.querySelectorAll('.js-give-embed-form-modal-opener').forEach(function (button) {

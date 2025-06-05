@@ -5,6 +5,7 @@ import CampaignCard from '../../shared/components/CampaignCard';
 import {CampaignGridType} from '../types';
 
 import './styles.scss';
+import {Spinner as GiveSpinner} from '@givewp/components';
 
 const getGridSettings = (layout: string) => {
     switch (layout) {
@@ -29,7 +30,9 @@ export default ({attributes}: { attributes: CampaignGridType }) => {
     });
 
     if (!hasResolved) {
-        return null;
+        return <div className="givewp-campaign-grid__loading">
+            <GiveSpinner />
+        </div>;
     }
 
     return (

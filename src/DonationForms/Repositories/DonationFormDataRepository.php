@@ -12,7 +12,7 @@ use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Database\DB;
 
 /**
- * @unreleased
+ * @since 4.3.0
  *
  * Used to optimize the donation forms list table performance and to avoid n+1 problems.
  */
@@ -64,7 +64,7 @@ class DonationFormDataRepository
 
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function setFormsGoals(array $ids): void
     {
@@ -85,7 +85,7 @@ class DonationFormDataRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function setFormsCampaignGoals(array $ids): void
     {
@@ -116,7 +116,7 @@ class DonationFormDataRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * Get revenue for form
      *
@@ -142,7 +142,7 @@ class DonationFormDataRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * Get donations count for form
      *
@@ -168,7 +168,7 @@ class DonationFormDataRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * Get donors count for form
      *
@@ -195,7 +195,7 @@ class DonationFormDataRepository
 
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * Get goal data for form
      *
@@ -230,7 +230,7 @@ class DonationFormDataRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      *
      * @param DonationForm $form
      *

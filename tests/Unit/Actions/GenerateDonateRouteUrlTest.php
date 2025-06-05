@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 class GenerateDonateRouteUrlTest extends TestCase
 {
     /**
-     * @unreleased Use trailingslashit() method to prevent errors on websites installed in subdirectories
+     * @since 4.3.0 Use trailingslashit() method to prevent errors on websites installed in subdirectories
      * @since 3.0.0
      *
      * @return void

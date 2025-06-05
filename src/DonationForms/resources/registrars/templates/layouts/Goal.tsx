@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import type {GoalProps} from '@givewp/forms/propTypes';
 
 /**
- * @unreleased replace <aside> landmark with div for accessibility audit. add aria-hidden="true" to redundant progress text for improved screen reader navigation.
+ * @since 4.3.0 replace <aside> landmark with div for accessibility audit. add aria-hidden="true" to redundant progress text for improved screen reader navigation.
  * @since 3.0.0
  */
 export default function Goal({

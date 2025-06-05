@@ -92,7 +92,7 @@ class GenerateDefaultDonationFormBlockCollection
     }
 
     /**
-     * @unreleased update firstNamePlaceholder and lastNamePlaceholder values.
+     * @since 4.3.0 update firstNamePlaceholder and lastNamePlaceholder values.
      * @since 3.1.0
      */
     protected function createDonorNameBlock(): BlockModel

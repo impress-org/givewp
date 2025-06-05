@@ -19,7 +19,7 @@ interface BlockInspectorControls {
 }
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 export default function DonationFormBlockControls({
     attributes,

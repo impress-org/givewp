@@ -7,6 +7,7 @@
 /.storybook
 /.phpstan
 /.wordpress-org
+/.cursor
 
 /bin
 /tests

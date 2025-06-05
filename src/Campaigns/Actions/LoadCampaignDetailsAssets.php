@@ -11,7 +11,7 @@ use Give\Helpers\Language;
 class LoadCampaignDetailsAssets
 {
     /**
-     * @unreleased set script translations
+     * @since 4.3.0 set script translations
      * @since 4.0.0
      */
     public function __invoke()

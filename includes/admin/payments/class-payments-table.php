@@ -405,7 +405,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-     * @unreleased change donation form to campaign
+     * @since 4.3.0 change donation form to campaign
 	 *
 	 * @return array $columns Array of all the list table columns
 	 */
@@ -466,7 +466,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 *
 	 * @access public
 	 * @since  1.0
-     * @unreleased show campaign name instead of the form name
+     * @since 4.3.0 show campaign name instead of the form name
 	 *
 	 * @return string Column Name
 	 */
@@ -815,6 +815,10 @@ class Give_Payment_History_Table extends WP_List_Table {
 			switch ( $this->current_action() ) {
 
 				case 'delete':
+                    if ( ! current_user_can( 'delete_give_payments' ) ) {
+                        return;
+                    }
+
 					give_delete_donation( $id );
 					break;
 

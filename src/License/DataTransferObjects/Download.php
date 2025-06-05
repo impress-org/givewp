@@ -3,7 +3,7 @@
 namespace Give\License\DataTransferObjects;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class Download
 {
@@ -19,7 +19,7 @@ class Download
     public string $currentVersion;
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public static function fromData(array $data): self
     {

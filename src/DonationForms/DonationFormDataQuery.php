@@ -9,12 +9,12 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 /**
  * Class used for loading the number of donors, donations and revenue amounts for multiple forms
  *
- * @unreleased
+ * @since 4.3.0
  */
 class DonationFormDataQuery extends QueryBuilder
 {
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     private function __construct()
     {
@@ -43,7 +43,7 @@ class DonationFormDataQuery extends QueryBuilder
     /**
      * Subscriptions query for forms
      *
-     * @unreleased
+     * @since 4.3.0
      *
      * @param int[] $formIds
      */
@@ -65,7 +65,7 @@ class DonationFormDataQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function collectIntendedAmounts(): ?array
     {
@@ -79,7 +79,7 @@ class DonationFormDataQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the initial amounts
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function collectInitialAmounts(): ?array
     {
@@ -89,7 +89,7 @@ class DonationFormDataQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function collectDonations(): ?array
     {
@@ -99,7 +99,7 @@ class DonationFormDataQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function collectDonors(): ?array
     {
@@ -110,7 +110,7 @@ class DonationFormDataQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     private function joinDonationMeta($key, $alias): self
     {

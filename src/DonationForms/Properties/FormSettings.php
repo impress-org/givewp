@@ -14,7 +14,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use Give\Framework\Support\Contracts\Jsonable;
 
 /**
- * @unreleased Update default value for Primary color to improve accessibility color contrast.
+ * @since 4.3.0 Update default value for Primary color to improve accessibility color contrast.
  * @since 3.16.0 Added $enableReceiptConfirmationPage property
  * @since 3.12.0 Add goalProgressType
  * @since 3.2.0 Remove addSlashesRecursive method

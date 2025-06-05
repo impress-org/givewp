@@ -6,12 +6,12 @@ use Give\Donations\Models\Donation;
 use Stripe\Invoice;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class UpdateStripeInvoiceMetaData
 {
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function __invoke(Invoice $invoice, Donation $donation)
     {
