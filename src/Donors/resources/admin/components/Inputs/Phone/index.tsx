@@ -85,7 +85,7 @@ export default function PhoneInput({ id, value, onChange, onError, className }: 
                     utilsScript: intlTelInputSettings.utilsScriptUrl,
                 }}
                 inputProps={{
-                    ariaLabel: __('Phone number', 'give'),
+                    'aria-label': __('Phone number', 'give'),
                 }}
             />
         </div>
