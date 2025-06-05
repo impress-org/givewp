@@ -49,7 +49,7 @@ class RegisterFormBuilderRestRoutes
                 return $this->formBuilderResourceController->show($request);
             },
             'permission_callback' => function () {
-                return current_user_can('manage_options');
+                return current_user_can('manage_options') || current_user_can('view_give_forms');
             },
             'args' => [
                 'id' => [
@@ -75,7 +75,7 @@ class RegisterFormBuilderRestRoutes
                 return $this->formBuilderResourceController->update($request);
             },
             'permission_callback' => function () {
-                return current_user_can('manage_options');
+                return current_user_can('manage_options') || current_user_can('edit_give_forms');
             },
             'args' => [
                 'id' => [
