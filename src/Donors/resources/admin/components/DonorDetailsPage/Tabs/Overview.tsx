@@ -4,11 +4,11 @@ import classnames from 'classnames';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
 import PrivateNote from '@givewp/src/Admin/components/PrivateNote';
+import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {amountFormatter, formatTimestamp, getRelativeTimeString} from '@givewp/src/Admin/utils';
 import {getDonorOptionsWindowData} from '@givewp/donors/utils';
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
-import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
 import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetailsPage.module.scss';
 
 /**
@@ -48,8 +48,8 @@ const {currency} = getDonorOptionsWindowData();
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
-    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId, 'test');
-    const {donations, hasResolved: donationsResolved} = useDonorDonations({donorId, mode: 'test'});
+    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId);
+    const {donations, hasResolved: donationsResolved} = useDonorDonations({donorId});
 
     const transactions: Transaction[] = !donations
         ? []
@@ -92,14 +92,19 @@ export default function DonorDetailsPageOverviewTab() {
               },
               {
                   label: __('Donor Type', 'give'),
-                  value: stats.preferredGivingType === 'recurring' ? __('Recurring', 'give') : __('One Time', 'give'),
+                  value: stats.donorType === 'recurring' ? __('Recurring', 'give') : __('One Time', 'give'),
                   isPill: true,
               },
               {
                   label: __('Total Donations', 'give'),
                   value: stats.donations.donationCount?.toString() ?? '0',
               },
+              {
+                  label: __('Preferred Method', 'give'),
+                  value: stats.preferredPaymentMethod || __('None', 'give'),
+              },
           ];
+
 
     return (
         <div className={styles.grid}>
@@ -132,7 +137,7 @@ export default function DonorDetailsPageOverviewTab() {
                     />
                     <TimeSeriesChart
                         title={__('Contributions', 'give')}
-                        endpoint={`givewp/v3/donations?page=1&per_page=5&mode=live&donor_id=${donorId}`}
+                        endpoint={`givewp/v3/donations?mode=live&donor_id=${donorId}`}
                         amountFormatter={amountFormatter(currency)}
                     />
                 </div>

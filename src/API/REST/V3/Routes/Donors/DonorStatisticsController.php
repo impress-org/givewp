@@ -97,7 +97,7 @@ class DonorStatisticsController extends WP_REST_Controller
             ],
             'donorSince' => $donor->createdAt->format('Y-m-d H:i:s'),
             'donorType' => $query->getDonorType(),
-            'preferredGivingType' => $query->getPreferredGivingType(),
+            'preferredPaymentMethod' => $query->preferredPaymentMethod(),
         ];
 
         $response = $this->prepare_item_for_response($item, $request);

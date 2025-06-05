@@ -8,7 +8,6 @@ use Give\Donors\Models\Donor;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Donors\ValueObjects\DonorType;
-use Give\Donations\Models\Donation;
 
 /**
  * @unreleased
@@ -182,10 +181,21 @@ class DonorStatisticsQuery extends QueryBuilder
     /**
      * @unreleased
      */
-    public function getPreferredGivingType(): string
+    public function preferredPaymentMethod(): string
     {
-        $donorType = $this->getDonorType();
-        return $donorType && $donorType->isSubscriber() ? 'recurring' : 'single';
+        $query = clone $this;
+        $query->joinDonationMeta(DonationMetaKeys::GATEWAY, 'gateway');
+        $query->select('gateway.meta_value as gateway');
+        $query->groupBy('gateway.meta_value');
+        $query->orderBy('COUNT(gateway.meta_value)', 'DESC');
+        $query->limit(1);
+        $result = $query->get();
+
+        if (!$result) {
+            return '';
+        }
+
+        return give_get_gateway_checkout_label($result->gateway) ?? $result->gateway;
     }
 
     /**

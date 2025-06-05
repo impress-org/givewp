@@ -18,8 +18,8 @@ export interface DonorStatistics {
         lastContribution: string | null;
     };
     donorSince: string;
-    donorType: string | null;
-    preferredGivingType: 'recurring' | 'single';
+    donorType: 'recurring' | 'single';
+    preferredPaymentMethod: string;
 }
 
 /**
