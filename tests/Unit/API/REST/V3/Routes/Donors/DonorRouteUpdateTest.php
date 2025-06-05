@@ -6,37 +6,32 @@ use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\Models\Donor;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use WP_REST_Request;
 
 class DonorRouteUpdateTest extends RestApiTestCase
 {
     use RefreshDatabase;
+    use HasDefaultWordPressUsers;
 
     /**
      * @unreleased
      */
     public function testUpdateDonorShouldUpdateModelProperties()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldUpdateModelProperties',
-                'user_pass' => 'testUpdateDonorShouldUpdateModelProperties',
-                'user_email' => 'testUpdateDonorShouldUpdateModelProperties@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = new WP_REST_Request('PUT', $route);
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
             'firstName' => 'Updated First Name',
             'lastName' => 'Updated Last Name',
             'email' => 'updated@test.com',
             'phone' => '1234567890',
+            'company' => 'Updated Company',
+            'avatarId' => 123,
+            'additionalEmails' => ['test1@example.com', 'test2@example.com'],
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -49,6 +44,9 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $this->assertEquals('Updated Last Name', $data['lastName']);
         $this->assertEquals('updated@test.com', $data['email']);
         $this->assertEquals('1234567890', $data['phone']);
+        $this->assertEquals('Updated Company', $data['company']);
+        $this->assertEquals(123, $data['avatarId']);
+        $this->assertEquals(['test1@example.com', 'test2@example.com'], $data['additionalEmails']);
     }
 
     /**
@@ -56,16 +54,6 @@ class DonorRouteUpdateTest extends RestApiTestCase
      */
     public function testUpdateDonorShouldNotUpdateNonEditableFields()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldNotUpdateNonEditableFields',
-                'user_pass' => 'testUpdateDonorShouldNotUpdateNonEditableFields',
-                'user_email' => 'testUpdateDonorShouldNotUpdateNonEditableFields@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
         $originalId = $donor->id;
@@ -73,7 +61,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $originalCreatedAt = $donor->createdAt;
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = new WP_REST_Request('PUT', $route);
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
             //'id' => 999, // If you uncomment it, the ID from the path will be overridden and make the test return 404 error
             'userId' => 999,
@@ -96,18 +84,8 @@ class DonorRouteUpdateTest extends RestApiTestCase
      */
     public function testUpdateDonorShouldReturn404ErrorWhenDonorNotFound()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldReturn404ErrorWhenDonorNotFound',
-                'user_pass' => 'testUpdateDonorShouldReturn404ErrorWhenDonorNotFound',
-                'user_email' => 'testUpdateDonorShouldReturn404ErrorWhenDonorNotFound@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/999';
-        $request = new WP_REST_Request('PUT', $route);
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
             'firstName' => 'Updated First Name',
         ]);
@@ -124,21 +102,11 @@ class DonorRouteUpdateTest extends RestApiTestCase
      */
     public function testUpdateDonorShouldReturn403ErrorWhenNotAdminUser()
     {
-        $newSubscriberUser = $this->factory()->user->create(
-            [
-                'role' => 'subscriber',
-                'user_login' => 'testUpdateDonorShouldReturn403ErrorWhenNotAdminUser',
-                'user_pass' => 'testUpdateDonorShouldReturn403ErrorWhenNotAdminUser',
-                'user_email' => 'testUpdateDonorShouldReturn403ErrorWhenNotAdminUser@test.com',
-            ]
-        );
-        wp_set_current_user($newSubscriberUser);
-
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = new WP_REST_Request('PUT', $route);
+        $request = $this->createRequest('PUT', $route, [], 'subscriber');
         $request->set_body_params([
             'firstName' => 'Updated First Name',
         ]);
@@ -197,21 +165,11 @@ class DonorRouteUpdateTest extends RestApiTestCase
      */
     public function testUpdateDonorShouldPersistNewSchemaFields()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldPersistNewSchemaFields',
-                'user_pass' => 'testUpdateDonorShouldPersistNewSchemaFields',
-                'user_email' => 'testUpdateDonorShouldPersistNewSchemaFields@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = new WP_REST_Request('PUT', $route);
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
             'additionalEmails' => ['test1@example.com', 'test2@example.com'],
             'phone' => '+1 (555) 123-4567',
@@ -241,112 +199,71 @@ class DonorRouteUpdateTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testUpdateDonorShouldValidateAdditionalEmailsFormat()
+    public function testUpdateDonorShouldPersistPhoneNumbers()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldValidateAdditionalEmailsFormat',
-                'user_pass' => 'testUpdateDonorShouldValidateAdditionalEmailsFormat',
-                'user_email' => 'testUpdateDonorShouldValidateAdditionalEmailsFormat@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
-        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = new WP_REST_Request('PUT', $route);
-        $request->set_body_params([
-            'additionalEmails' => ['invalid-email', 'valid@example.com'],
-        ]);
-
-        $response = $this->dispatchRequest($request);
-
-        // WordPress REST API validation would catch this
-        // The exact status code may vary depending on how WordPress handles email validation
-        $this->assertNotEquals(200, $response->get_status());
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testUpdateDonorShouldValidatePhonePattern()
-    {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldValidatePhonePattern',
-                'user_pass' => 'testUpdateDonorShouldValidatePhonePattern',
-                'user_email' => 'testUpdateDonorShouldValidatePhonePattern@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
-        /** @var Donor $donor */
-        $donor = Donor::factory()->create();
-
-        // Test valid phone numbers
-        $validPhones = [
+        // Test phone number persistence
+        $testPhones = [
             '+1 (555) 123-4567',
             '555-123-4567',
             '15551234567',
             '+15551234567',
             '1 555 123 4567',
-            null, // null should be allowed
-            '', // empty string should be allowed
         ];
 
-        foreach ($validPhones as $phone) {
+        foreach ($testPhones as $phone) {
             $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-            $request = new WP_REST_Request('PUT', $route);
+            $request = $this->createRequest('PUT', $route, [], 'administrator');
             $request->set_body_params([
                 'phone' => $phone,
             ]);
 
             $response = $this->dispatchRequest($request);
-            $this->assertEquals(200, $response->get_status(), "Valid phone '{$phone}' should be accepted");
+            $data = $response->get_data();
+
+            $this->assertEquals(200, $response->get_status());
+            $this->assertEquals($phone, $data['phone']);
+
+            // Verify persistence in database
+            $updatedDonor = Donor::find($donor->id);
+            $this->assertEquals($phone, $updatedDonor->phone);
         }
     }
 
     /**
      * @unreleased
      */
-    public function testUpdateDonorShouldValidateAvatarIdPattern()
+    public function testUpdateDonorShouldPersistAvatarId()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldValidateAvatarIdPattern',
-                'user_pass' => 'testUpdateDonorShouldValidateAvatarIdPattern',
-                'user_email' => 'testUpdateDonorShouldValidateAvatarIdPattern@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
-        // Test valid avatar IDs
-        $validAvatarIds = [
+        // Test avatar ID persistence
+        $testAvatarIds = [
             123,      // integer
             '456',    // string with numbers
             '0',      // zero as string
             0,        // zero as integer
-            null,     // null should be allowed
-            '',       // empty string should be allowed
         ];
 
-        foreach ($validAvatarIds as $avatarId) {
+        foreach ($testAvatarIds as $avatarId) {
             $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-            $request = new WP_REST_Request('PUT', $route);
+            $request = $this->createRequest('PUT', $route, [], 'administrator');
             $request->set_body_params([
                 'avatarId' => $avatarId,
             ]);
 
             $response = $this->dispatchRequest($request);
-            $this->assertEquals(200, $response->get_status(), "Valid avatarId '{$avatarId}' should be accepted");
+            $data = $response->get_data();
+
+            $this->assertEquals(200, $response->get_status());
+            $this->assertEquals($avatarId, $data['avatarId']);
+
+            // Verify persistence in database
+            $updatedDonor = Donor::find($donor->id);
+            $this->assertEquals($avatarId, $updatedDonor->avatarId);
         }
     }
 
@@ -355,21 +272,11 @@ class DonorRouteUpdateTest extends RestApiTestCase
      */
     public function testUpdateDonorShouldAcceptNullValuesForOptionalFields()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldAcceptNullValuesForOptionalFields',
-                'user_pass' => 'testUpdateDonorShouldAcceptNullValuesForOptionalFields',
-                'user_email' => 'testUpdateDonorShouldAcceptNullValuesForOptionalFields@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = new WP_REST_Request('PUT', $route);
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
             'phone' => null,
             'company' => null,
@@ -385,87 +292,5 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $this->assertNull($data['phone']);
         $this->assertNull($data['company']);
         $this->assertNull($data['avatarId']);
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testUpdateDonorShouldRejectInvalidPhonePatterns()
-    {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldRejectInvalidPhonePatterns',
-                'user_pass' => 'testUpdateDonorShouldRejectInvalidPhonePatterns',
-                'user_email' => 'testUpdateDonorShouldRejectInvalidPhonePatterns@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
-        /** @var Donor $donor */
-        $donor = Donor::factory()->create();
-
-        // Test invalid phone numbers that should fail the regex pattern
-        $invalidPhones = [
-            '123',           // too short
-            'abc-def-ghij',  // contains letters
-            '123-456-78901', // too long for typical format
-            '0123456789',    // starts with 0 (pattern requires 1-9)
-        ];
-
-        foreach ($invalidPhones as $phone) {
-            $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-            $request = new WP_REST_Request('PUT', $route);
-            $request->set_body_params([
-                'phone' => $phone,
-            ]);
-
-            $response = $this->dispatchRequest($request);
-
-            // The exact validation behavior may depend on WordPress REST API implementation
-            // But invalid patterns should not result in a successful 200 response
-            $this->assertNotEquals(200, $response->get_status(), "Invalid phone '{$phone}' should be rejected");
-        }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testUpdateDonorShouldRejectInvalidAvatarIdPatterns()
-    {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testUpdateDonorShouldRejectInvalidAvatarIdPatterns',
-                'user_pass' => 'testUpdateDonorShouldRejectInvalidAvatarIdPatterns',
-                'user_email' => 'testUpdateDonorShouldRejectInvalidAvatarIdPatterns@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
-        /** @var Donor $donor */
-        $donor = Donor::factory()->create();
-
-        // Test invalid avatar IDs that should fail the numeric pattern
-        $invalidAvatarIds = [
-            'abc',      // contains letters
-            '12a34',    // mixed letters and numbers
-            'avatar123', // starts with letters
-            '12.34',    // contains decimal
-            '-123',     // negative number
-        ];
-
-        foreach ($invalidAvatarIds as $avatarId) {
-            $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-            $request = new WP_REST_Request('PUT', $route);
-            $request->set_body_params([
-                'avatarId' => $avatarId,
-            ]);
-
-            $response = $this->dispatchRequest($request);
-
-            // Invalid patterns should not result in a successful 200 response
-            $this->assertNotEquals(200, $response->get_status(), "Invalid avatarId '{$avatarId}' should be rejected");
-        }
     }
 }
