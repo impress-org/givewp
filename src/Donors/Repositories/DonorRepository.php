@@ -310,6 +310,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased Add avatarId and company to core donor meta
      * @since 2.19.6
      */
     private function getCoreDonorMeta(Donor $donor): array
@@ -318,6 +319,8 @@ class DonorRepository
             DonorMetaKeys::FIRST_NAME => $donor->firstName,
             DonorMetaKeys::LAST_NAME => $donor->lastName,
             DonorMetaKeys::PREFIX => $donor->prefix ?? null,
+            DonorMetaKeys::AVATAR_ID => $donor->avatarId ?? null,
+            DonorMetaKeys::COMPANY => $donor->company ?? null,
         ];
     }
 

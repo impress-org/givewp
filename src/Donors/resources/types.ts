@@ -1,3 +1,5 @@
+import { IntlTelInputSettings } from "@givewp/forms/propTypes";
+
 /**
  * @unreleased
  */
@@ -10,6 +12,8 @@ export type GiveDonorOptions = {
     currency: string;
     isRecurringEnabled: boolean;
     defaultForm: string;
+    intlTelInputSettings: IntlTelInputSettings;
+    nameTitlePrefixes: string[];
     admin: {
         showCampaignInteractionNotice: boolean
         showFormGoalNotice: boolean

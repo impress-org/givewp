@@ -8,7 +8,10 @@ export type Donor = {
   lastName: string;
   email: string;
   phone: string;
+  company: string;
   additionalEmails: string[];
+  avatarId: number;
+  avatarUrl: string;
   totalAmountDonated: number;
   totalNumberOfDonations: number;
   wpUserPermalink: string;

@@ -75,6 +75,10 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
             'phone' => $donor->phone,
             'prefix' => $donor->prefix,
             'additionalEmails' => $donor->additionalEmails,
+            'avatarId' => $donor->avatarId,
+            'company' => $donor->company,
+            'avatarUrl' => $donor->avatarId ? wp_get_attachment_url($donor->avatarId) : (give_validate_gravatar($donor->email) ? get_avatar_url($donor->email, ['size' => 80]) : null),
+            'wpUserPermalink' => $donor->userId ? get_edit_user_link($donor->userId) : null,
             'totalAmountDonated' => $donor->totalAmountDonated->toArray(),
             'totalNumberOfDonations' => $donor->totalNumberOfDonations,
         ], $data[0]);

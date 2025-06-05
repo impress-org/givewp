@@ -3,6 +3,9 @@ import type { PressEvent } from 'react-aria-components';
 import { TabsContext, LinkContext, Tabs } from 'react-aria-components';
 import { Tab } from '../types';
 
+/**
+ * @unreleased
+ */
 export default function TabsRouter({ children, tabDefinitions }: { children: React.ReactNode, tabDefinitions: Tab[] }) {
     const [selectedKey, onSelectionChange] = useState(tabDefinitions[0].id);
 

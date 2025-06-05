@@ -74,3 +74,12 @@
 .archive {
     --contextMenuItemColor: var(--givewp-red-600);
 }
+
+.sectionFieldInputWrapper {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+}
+
+.prefixSelect {
+    flex: 1 0 6.625rem;
+}
