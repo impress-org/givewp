@@ -336,8 +336,14 @@ class DonorController extends WP_REST_Controller
                     'type' => 'string',
                     'description' => esc_html__('Donor email', 'give'),
                     'format' => 'email',
-                    'pattern' => '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                    'errorMessage' => esc_html__('Invalid email address', 'give'),
+                ],
+                'additionalEmails' => [
+                    'type' => 'array',
+                    'description' => esc_html__('Donor additional emails', 'give'),
+                    'items' => [
+                        'type' => 'string',
+                        'format' => 'email',
+                    ],
                 ],
                 'phone' => [
                     'type' => ['string', 'null'],
