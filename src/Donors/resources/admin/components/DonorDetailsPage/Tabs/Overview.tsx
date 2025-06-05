@@ -1,7 +1,6 @@
 import React from 'react';
 import {__} from '@wordpress/i18n';
 import classnames from 'classnames';
-import {formatDistanceToNow} from 'date-fns';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
 import PrivateNote from '@givewp/src/Admin/components/PrivateNote';
@@ -142,7 +141,6 @@ export default function DonorDetailsPageOverviewTab() {
                     <Header
                         title={__('Recent Transactions', 'give')}
                         subtitle={__('Shows the five recent transactions', 'give')}
-                        //TODO: Update link to Contributions page.
                         href={`admin.php?page=give-payment-history&donor=${donorId}`}
                         actionText={__('View All Transactions', 'give')}
                     />

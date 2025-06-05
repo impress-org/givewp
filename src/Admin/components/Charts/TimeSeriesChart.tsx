@@ -6,11 +6,31 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * @unreleased
  */
-interface TimeSeriesChartProps {
+type TimeSeriesChartProps = {
     endpoint: string;
     amountFormatter: Intl.NumberFormat;
     title?: string;
-}
+};
+
+/**
+ * @unreleased
+ */
+type Donation = {
+    createdAt: {
+        date: string; // Format: YYYY-MM-DD HH:mm:ss
+    };
+    amount: {
+        value: string; // Decimal string
+    };
+};
+
+/**
+ * @unreleased
+ */
+type DataPoint = {
+    x: string; // Format: YYYY-MM-DD
+    y: number;
+};
 
 /**
  * @unreleased
@@ -28,12 +48,12 @@ const getLast7Days = () => {
 /**
  * @unreleased
  */
-const normalizeData = (donations, last7Days) => {
-    const map = new Map();
+const normalizeData = (donations: Donation[], last7Days: string[]): DataPoint[] => {
+    const map = new Map<string, number>();
 
-    donations.forEach((d) => {
-        const date = d.createdAt.date.split(' ')[0];
-        const amount = parseFloat(d.amount.value);
+    donations.forEach((donation) => {
+        const date = donation.createdAt.date.split(' ')[0];
+        const amount = parseFloat(donation.amount.value);
         map.set(date, (map.get(date) || 0) + amount);
     });
 
@@ -52,7 +72,7 @@ export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}:
     useEffect(() => {
         const last7Days = getLast7Days();
 
-        apiFetch({path: endpoint}).then((data) => {
+        apiFetch<Donation[]>({path: endpoint}).then((data) => {
             const normalized = normalizeData(data, last7Days);
             setSeries([{name: title, data: normalized}]);
         });

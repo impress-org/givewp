@@ -4,14 +4,14 @@ import styles from './styles.module.scss';
 /**
  * @unreleased
  */
-interface HeaderProps {
+type HeaderProps = {
     children?: React.ReactNode;
     title: string;
     subtitle?: string;
     href?: string;
     actionText?: string;
     actionOnClick?: () => void;
-}
+};
 
 /**
  * @unreleased

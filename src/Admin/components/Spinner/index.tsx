@@ -4,9 +4,9 @@ import styles from './Spinner.module.scss';
 
 type SpinnerSize = 'tiny' | 'small' | 'medium' | 'large';
 
-interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
+type SpinnerProps = React.HTMLAttributes<HTMLDivElement> & {
     size?: SpinnerSize;
-}
+};
 
 /**
  * @unreleased
