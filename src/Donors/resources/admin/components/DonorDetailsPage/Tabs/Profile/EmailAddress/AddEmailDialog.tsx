@@ -60,7 +60,7 @@ export default function AddEmailDialog({
         }
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         const trimmedEmail = email.trim();
 
         if (!trimmedEmail) {
@@ -73,7 +73,7 @@ export default function AddEmailDialog({
             return;
         }
 
-        await handleConfirm(trimmedEmail, setAsPrimary);
+        handleConfirm(trimmedEmail, setAsPrimary);
 
         // Reset form
         setEmail('');

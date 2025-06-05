@@ -8,12 +8,14 @@ import { useFormContext } from "react-hook-form";
  * WordPress Dependencies
  */
 import { __ } from "@wordpress/i18n";
+import { useDispatch } from "@wordpress/data";
 
 /**
  * Internal Dependencies
  */
 import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import { DotsIcons, TrashIcon } from "@givewp/components/AdminDetailsPage/Icons";
+import { useDonorEntityRecord } from "@givewp/donors/utils";
 import AddEmailDialog from './AddEmailDialog';
 import DeleteEmailDialog from './DeleteEmailDialog';
 import styles from './styles.module.scss';
@@ -56,13 +58,13 @@ export default function DonorEmailAddress() {
     }, [openDropdown]);
 
     const toggleDropdown = (event: React.MouseEvent<HTMLButtonElement>, emailAddress: string) => {
-        event.stopPropagation();
+        event.preventDefault();
         setOpenDropdown(openDropdown === emailAddress ? null : emailAddress);
     };
 
-    const handleSetAsPrimaryAction = (emailAddress: string) => {
-        setValue('additionalEmails', [email, ...additionalEmails].filter((additionalEmail) => additionalEmail !== emailAddress), { shouldDirty: true });
-        setValue('email', emailAddress, { shouldDirty: true });
+    const handleSetAsPrimaryAction = (emailAddress: string, shouldDirty: boolean = true) => {
+        setValue('additionalEmails', [email, ...additionalEmails].filter((additionalEmail) => additionalEmail !== emailAddress), { shouldDirty });
+        setValue('email', emailAddress, { shouldDirty });
         setOpenDropdown(null);
     };
 
@@ -72,15 +74,17 @@ export default function DonorEmailAddress() {
         setOpenDropdown(null);
     };
 
-    const handleAddEmailConfirm = (newEmail: string, setAsPrimary: boolean) => {
-        // TODO: Implement add email logic
-        console.log('Adding email:', newEmail, 'Set as primary:', setAsPrimary);
-        setIsAddDialogOpen(false);
+    const handleAddEmailConfirm = async (newEmail: string, setAsPrimary: boolean) => {
+        setValue('additionalEmails', [...additionalEmails, newEmail], { shouldDirty: true });
+
+        if (setAsPrimary) {
+            handleSetAsPrimaryAction(newEmail, false);
+        }
     };
 
-    const handleDeleteEmailConfirm = () => {
-        // TODO: Implement delete email logic
-        console.log('Deleting email:', emailToDelete);
+    const handleDeleteEmailConfirm = async () => {
+        setValue('additionalEmails', additionalEmails.filter((additionalEmail) => additionalEmail !== emailToDelete), { shouldDirty: true });
+
         setIsDeleteDialogOpen(false);
         setEmailToDelete('');
     };
