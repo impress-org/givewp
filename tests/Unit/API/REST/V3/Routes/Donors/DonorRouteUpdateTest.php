@@ -8,7 +8,7 @@ use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 
-class UpdateDonorRouteTest extends RestApiTestCase
+class DonorRouteUpdateTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
