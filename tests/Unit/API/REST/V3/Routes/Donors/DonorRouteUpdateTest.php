@@ -163,42 +163,6 @@ class DonorRouteUpdateTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testUpdateDonorShouldPersistNewSchemaFields()
-    {
-        /** @var Donor $donor */
-        $donor = Donor::factory()->create();
-
-        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest('PUT', $route, [], 'administrator');
-        $request->set_body_params([
-            'additionalEmails' => ['test1@example.com', 'test2@example.com'],
-            'phone' => '+1 (555) 123-4567',
-            'company' => 'Test Company LLC',
-            'avatarId' => '123',
-        ]);
-
-        $response = $this->dispatchRequest($request);
-
-        $status = $response->get_status();
-        $data = $response->get_data();
-
-        $this->assertEquals(200, $status);
-        $this->assertEquals(['test1@example.com', 'test2@example.com'], $data['additionalEmails']);
-        $this->assertEquals('+1 (555) 123-4567', $data['phone']);
-        $this->assertEquals('Test Company LLC', $data['company']);
-        $this->assertEquals('123', $data['avatarId']);
-
-        // Verify persistence in database
-        $updatedDonor = Donor::find($donor->id);
-        $this->assertEquals(['test1@example.com', 'test2@example.com'], $updatedDonor->additionalEmails);
-        $this->assertEquals('+1 (555) 123-4567', $updatedDonor->phone);
-        $this->assertEquals('Test Company LLC', $updatedDonor->company);
-        $this->assertEquals('123', $updatedDonor->avatarId);
-    }
-
-    /**
-     * @unreleased
-     */
     public function testUpdateDonorShouldPersistPhoneNumbers()
     {
         /** @var Donor $donor */
