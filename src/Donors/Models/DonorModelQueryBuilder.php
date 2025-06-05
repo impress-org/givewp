@@ -2,7 +2,7 @@
 
 namespace Give\Donors\Models;
 
-use Give\Donors\ValueObjects\Address;
+use Give\Donors\ValueObjects\DonorAddress;
 use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 
@@ -208,7 +208,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
             foreach ($donorAddresses as $addressArray) {
                 // Only create address if we have at least one field
                 if (!empty(array_filter($addressArray))) {
-                    $addresses[$donorId][] = Address::fromArray($addressArray);
+                    $addresses[$donorId][] = DonorAddress::fromArray($addressArray);
                 }
             }
         }

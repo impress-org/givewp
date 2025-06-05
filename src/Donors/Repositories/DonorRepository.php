@@ -7,7 +7,6 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Exceptions\FailedDonorUpdateException;
 use Give\Donors\Models\Donor;
 use Give\Donors\Models\DonorModelQueryBuilder;
-use Give\Donors\ValueObjects\Address;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Donors\ValueObjects\DonorType;
 use Give\Framework\Database\DB;
@@ -168,7 +167,7 @@ class DonorRepository
             }
 
             if (isset($donor->addresses)) {
-                $this->updateAddresses($donor);
+                $this->updateAddresses($donor, $donorId);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -235,7 +234,7 @@ class DonorRepository
             }
 
             if (isset($donor->addresses) && $donor->isDirty('addresses')) {
-                $this->updateAddresses($donor);
+                $this->updateAddresses($donor, $donor->id);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -453,29 +452,29 @@ class DonorRepository
      *
      * @unreleased
      */
-    private function updateAddresses(Donor $donor): void
+    private function updateAddresses(Donor $donor, ?int $donorId): void
     {
+        $id = $donorId ?? $donor->id;
+
         // Delete all existing address meta keys for this donor
         DB::table('give_donormeta')
-            ->where('donor_id', $donor->id)
-            ->where(function($query) {
-                $query->where('meta_key', 'like', DonorMetaKeys::ADDRESS_LINE1 . '%')
-                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_LINE2 . '%')
-                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_CITY . '%')
-                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_STATE . '%')
-                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_COUNTRY . '%')
-                      ->orWhere('meta_key', 'like', DonorMetaKeys::ADDRESS_ZIP . '%');
-            })
+            ->where('donor_id', $id)
+            ->whereLike('meta_key', DonorMetaKeys::ADDRESS_LINE1 . '%')
+            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_LINE2 . '%')
+            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_CITY . '%')
+            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_STATE . '%')
+            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_COUNTRY . '%')
+            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_ZIP . '%')
             ->delete();
 
         // Insert new addresses
         foreach ($donor->addresses as $index => $address) {
-            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_LINE1 . $index, $address->address1);
-            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_LINE2 . $index, $address->address2);
-            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_CITY . $index, $address->city);
-            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_STATE . $index, $address->state);
-            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_COUNTRY . $index, $address->country);
-            give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDRESS_ZIP . $index, $address->zip);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_LINE1 . $index, $address->address1);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_LINE2 . $index, $address->address2);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_CITY . $index, $address->city);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_STATE . $index, $address->state);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_COUNTRY . $index, $address->country);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_ZIP . $index, $address->zip);
         }
     }
 

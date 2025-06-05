@@ -51,6 +51,7 @@ class DonorViewModel
         $data = array_merge(
             $this->donor->toArray(),
             [
+                'addresses' => array_map(fn($address) => $address->toArray(), $this->donor->addresses),
                 'avatarUrl' => $this->getAvatarUrl(),
                 'wpUserPermalink' => $this->donor->userId ? get_edit_user_link($this->donor->userId) : null,
             ],
@@ -65,6 +66,7 @@ class DonorViewModel
                 'lastName',
                 'avatarUrl',
                 'company',
+                'addresses',
                 'wpUserPermalink'
             ];
 
@@ -115,7 +117,7 @@ class DonorViewModel
         $avatarId = $this->donor->avatarId;
 
         if ($avatarId) {
-            return wp_get_attachment_url($avatarId);
+            return wp_get_attachment_image_url($avatarId, ['width' => '80', 'height' => '80']);
         } else {
             return give_validate_gravatar($this->donor->email) ? get_avatar_url($this->donor->email, ['size' => 80]) : null;
         }

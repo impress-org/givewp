@@ -8,7 +8,7 @@ use JsonSerializable;
 /**
  * @unreleased
  */
-final class Address implements JsonSerializable, Arrayable
+final class DonorAddress implements JsonSerializable, Arrayable
 {
     /**
      * @var string
@@ -40,7 +40,7 @@ final class Address implements JsonSerializable, Arrayable
      *
      * @param array $array
      *
-     * @return Address
+     * @return DonorAddress
      */
     public static function fromArray($array)
     {

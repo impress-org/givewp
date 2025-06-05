@@ -3,7 +3,7 @@
 namespace Give\Donors\DataTransferObjects;
 
 use Give\Donors\Models\Donor;
-use Give\Donors\ValueObjects\Address;
+use Give\Donors\ValueObjects\DonorAddress;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
@@ -54,7 +54,7 @@ final class DonorQueryData
      */
     public $additionalEmails;
     /**
-     * @var Address[]
+     * @var DonorAddress[]
      */
     public $addresses;
     /**
