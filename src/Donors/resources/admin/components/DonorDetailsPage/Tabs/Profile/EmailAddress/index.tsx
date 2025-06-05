@@ -30,6 +30,7 @@ export default function DonorEmailAddress() {
 
     const {
         watch,
+        setValue,
     } = useFormContext();
 
     const email = watch('email');
@@ -54,13 +55,14 @@ export default function DonorEmailAddress() {
         }
     }, [openDropdown]);
 
-    const toggleDropdown = (emailAddress: string) => {
+    const toggleDropdown = (event: React.MouseEvent<HTMLButtonElement>, emailAddress: string) => {
+        event.stopPropagation();
         setOpenDropdown(openDropdown === emailAddress ? null : emailAddress);
     };
 
     const handleSetAsPrimaryAction = (emailAddress: string) => {
-        // TODO: Implement set as primary logic
-        console.log('Setting as primary:', emailAddress);
+        setValue('additionalEmails', [email, ...additionalEmails].filter((additionalEmail) => additionalEmail !== emailAddress), { shouldDirty: true });
+        setValue('email', emailAddress, { shouldDirty: true });
         setOpenDropdown(null);
     };
 
@@ -111,7 +113,7 @@ export default function DonorEmailAddress() {
                                         <button
                                             className={styles.menuTrigger}
                                             aria-label={__('Email actions', 'give')}
-                                            onClick={() => toggleDropdown(emailAddress)}
+                                            onClick={(event) => toggleDropdown(event, emailAddress)}
                                         >
                                             <DotsIcons />
                                         </button>
