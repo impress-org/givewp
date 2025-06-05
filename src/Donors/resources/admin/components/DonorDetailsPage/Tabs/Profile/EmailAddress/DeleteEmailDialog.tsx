@@ -30,6 +30,8 @@ export default function DeleteEmailDialog({
     handleClose,
     handleConfirm,
 }: DeleteEmailDialogProps) {
+    const contentId = 'delete-email-content';
+
     return (
         <ModalDialog
             icon={<ErrorIcon />}
@@ -37,10 +39,11 @@ export default function DeleteEmailDialog({
             showHeader={true}
             handleClose={handleClose}
             title={__('Delete email address', 'give')}
+            aria-describedby={contentId}
         >
-            <div className={`${styles.dialog} ${styles.deleteEmailDialog}`}>
+            <div className={`${styles.dialog} ${styles.deleteEmailDialog}`} role="alertdialog">
                 <div className={styles.content}>
-                    <p className={styles.text}>
+                    <p id={contentId} className={styles.text}>
                         {createInterpolateElement(
                             sprintf(__('Are you sure you want to delete <strong>%s</strong>?', 'give'), emailAddress),
                             {
@@ -54,12 +57,15 @@ export default function DeleteEmailDialog({
                     <button
                         className={styles.cancelButton}
                         onClick={handleClose}
+                        aria-label={__('Cancel deletion', 'give')}
                     >
                         {__('Cancel', 'give')}
                     </button>
                     <button
                         className={styles.confirmButton}
                         onClick={handleConfirm}
+                        aria-describedby={contentId}
+                        aria-label={sprintf(__('Confirm deletion of %s', 'give'), emailAddress)}
                     >
                         {__('Delete email address', 'give')}
                     </button>
