@@ -62,9 +62,9 @@ export default function DonorEmailAddress() {
         setOpenDropdown(openDropdown === emailAddress ? null : emailAddress);
     };
 
-    const handleSetAsPrimaryAction = (emailAddress: string, shouldDirty: boolean = true) => {
-        setValue('additionalEmails', [email, ...additionalEmails].filter((additionalEmail) => additionalEmail !== emailAddress), { shouldDirty });
-        setValue('email', emailAddress, { shouldDirty });
+    const handleSetAsPrimaryAction = (emailAddress: string) => {
+        setValue('additionalEmails', [email, ...additionalEmails].filter((additionalEmail) => additionalEmail !== emailAddress), { shouldDirty: true });
+        setValue('email', emailAddress, { shouldDirty: true });
         setOpenDropdown(null);
     };
 
@@ -78,7 +78,7 @@ export default function DonorEmailAddress() {
         setValue('additionalEmails', [...additionalEmails, newEmail], { shouldDirty: true });
 
         if (setAsPrimary) {
-            handleSetAsPrimaryAction(newEmail, false);
+            handleSetAsPrimaryAction(newEmail);
         }
     };
 

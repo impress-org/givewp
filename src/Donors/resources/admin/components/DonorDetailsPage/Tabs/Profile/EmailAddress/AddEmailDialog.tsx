@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 /**
  * WordPress Dependencies
@@ -34,16 +34,28 @@ export default function AddEmailDialog({
     const [email, setEmail] = useState('');
     const [setAsPrimary, setSetAsPrimary] = useState(false);
     const [emailError, setEmailError] = useState('');
+    const emailInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (isOpen && emailInputRef.current) {
+            const timeoutId = setTimeout(() => {
+                emailInputRef.current?.focus();
+            }, 100);
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, [isOpen]);
 
     const handleEmailChange = (value: string) => {
         setEmail(value);
-        // Clear existing errors when user starts typing again
+
         if (emailError) {
             setEmailError('');
         }
     };
 
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.stopPropagation();
         e.preventDefault();
 
         const trimmedEmail = email.trim();
@@ -55,7 +67,6 @@ export default function AddEmailDialog({
 
         handleConfirm(trimmedEmail, setAsPrimary);
 
-        // Reset form
         setEmail('');
         setSetAsPrimary(false);
         setEmailError('');
@@ -63,7 +74,6 @@ export default function AddEmailDialog({
     };
 
     const handleCancel = () => {
-        // Reset form
         setEmail('');
         setSetAsPrimary(false);
         setEmailError('');
@@ -87,6 +97,7 @@ export default function AddEmailDialog({
                                 {__('Email', 'give')}
                             </label>
                             <input
+                                ref={emailInputRef}
                                 id="email"
                                 type="email"
                                 className={`${styles.input} ${emailError ? styles.inputError : ''}`}
