@@ -3,7 +3,7 @@
 namespace Give\License\DataTransferObjects;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class License
 {
@@ -29,7 +29,7 @@ class License
     public array $downloads = [];
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public static function fromData(array $data): self
     {

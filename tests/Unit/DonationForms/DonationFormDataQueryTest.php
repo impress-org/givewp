@@ -12,14 +12,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 final class DonationFormDataQueryTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testCollectInitialAmounts()
     {

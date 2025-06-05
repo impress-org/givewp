@@ -9,14 +9,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class TestLicense extends TestCase
 {
     use HasLicenseData;
     use RefreshDatabase;
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testFromDataReturnsLicenseObject(): void
     {
@@ -44,7 +44,7 @@ class TestLicense extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function testFromDataFormatsDownloads(): void
     {

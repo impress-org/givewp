@@ -8,12 +8,12 @@ use Give\Helpers\Form\Utils;
 use Give\Receipt\DonationReceipt;
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 class AddCustomFieldsToLegacyReceipt
 {
     /**
-     * @unreleased
+     * @since 4.3.0
      */
     public function __invoke(DonationReceipt $receipt)
     {

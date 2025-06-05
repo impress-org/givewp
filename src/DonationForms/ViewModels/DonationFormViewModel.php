@@ -200,7 +200,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased ensure totalRevenue always reflects revenue
+     * @since 4.3.0 ensure totalRevenue always reflects revenue
      * @since 4.1.0 use DonationFormGoalData instead of repository
      * @since 3.0.0
      */

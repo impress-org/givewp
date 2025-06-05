@@ -16,7 +16,7 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @method static DonationFormMetaKeys SET_PRICE()
  * @method static DonationFormMetaKeys PRICE_OPTION()
  * @method static DonationFormMetaKeys GOAL_OPTION()
- * @unreleased
+ * @since 4.3.0
  * @method static DonationFormMetaKeys GOAL_FORMAT()
  * @method static DonationFormMetaKeys RECURRING_GOAL_FORMAT()
  * @method static DonationFormMetaKeys GOAL_AMOUNT()

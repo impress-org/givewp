@@ -13,7 +13,7 @@ export interface FormOption extends Form {
 }
 
 /**
- * @unreleased
+ * @since 4.3.0
  */
 export default function useFormOptions(campaignId?: number): {
     formOptions: FormOption[];

@@ -110,7 +110,7 @@ export default function Authentication({
 }
 
 /**
- * @unreleased replace "Forgot your password" anchor element with a button since it does not contain a valid href attribute.
+ * @since 4.3.0 replace "Forgot your password" anchor element with a button since it does not contain a valid href attribute.
  */
 const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
     const {authUrl} = getWindowData();

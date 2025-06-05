@@ -259,7 +259,7 @@ class DonationFormGoalData implements Arrayable
     /**
      * Get total donation revenue, the exception is for subscription amount goal, it will return the sum of initial amount
      *
-     * @unreleased
+     * @since 4.3.0
      */
     public function getTotalDonationRevenue()
     {
