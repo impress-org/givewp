@@ -34,16 +34,43 @@ type DataPoint = {
 
 /**
  * @unreleased
+ * Generates a range of dates around a target date for displaying a single donation graph.
+ */
+const getCenteredGraphRange = (targetDate: string) => {
+    const result = [];
+    const date = new Date(targetDate);
+
+    for (let i = -3; i <= 3; i++) {
+        const currentDate = new Date(date);
+        currentDate.setDate(date.getDate() + i);
+        result.push(currentDate.toISOString().split('T')[0]);
+    }
+    return result;
+};
+
+/**
+ * @unreleased
  */
 const normalizeData = (donations: Donation[]): DataPoint[] => {
     const map = new Map<string, number>();
 
-    // Group donations by date with total amounts - fill missing dates with 0.
+    // Group donations by date with sum amounts - fill missing dates with 0.
     donations.forEach((donation) => {
         const date = donation.createdAt.date.split(' ')[0];
         const amount = parseFloat(donation.amount.value);
         map.set(date, (map.get(date) || 0) + amount);
     });
+
+    // Set graph range & points for single donations.
+    if (map.size === 1) {
+        const donationDate = donations[0]?.createdAt.date.split(' ')[0];
+        const graphRange = getCenteredGraphRange(donationDate);
+
+        return graphRange.map((date) => ({
+            x: date,
+            y: map.get(date) || 0,
+        }));
+    }
 
     // Convert to sorted array of data points.
     return Array.from(map.entries())
@@ -75,7 +102,7 @@ export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}:
         },
         xaxis: {
             type: 'datetime',
-            labels: {format: 'MMM dd'},
+            labels: {format: 'MMM dd, yyyy'},
         },
         yaxis: {
             min: 0,
@@ -100,7 +127,7 @@ export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}:
         },
         tooltip: {
             x: {
-                format: 'MMM dd',
+                format: 'MMM dd, yyyy',
             },
         },
     };
