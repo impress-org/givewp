@@ -90,7 +90,7 @@
     gap: var(--givewp-spacing-6);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .mainGrid {
         grid-template-columns: 1fr;
         gap: var(--givewp-spacing-3);
@@ -103,5 +103,15 @@
     .nestGrid {
         grid-template-columns: 1fr;
         gap: var(--givewp-spacing-3);
+    }
+
+    /* Only center content when grid becomes single column */
+    .statWidgetAmount {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .statWidgetDisplay {
+        text-align: center;
     }
 }
