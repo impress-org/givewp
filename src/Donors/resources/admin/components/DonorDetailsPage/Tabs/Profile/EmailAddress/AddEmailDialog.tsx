@@ -24,16 +24,6 @@ interface AddEmailDialogProps {
 }
 
 /**
- * Validates email format
- *
- * @unreleased
- */
-const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
-};
-
-/**
  * @unreleased
  */
 export default function AddEmailDialog({
@@ -53,23 +43,13 @@ export default function AddEmailDialog({
         }
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            handleSubmit();
-        }
-    };
+    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
 
-    const handleSubmit = () => {
         const trimmedEmail = email.trim();
 
         if (!trimmedEmail) {
             setEmailError(__('Email is required', 'give'));
-            return;
-        }
-
-        if (!validateEmail(trimmedEmail)) {
-            setEmailError(__('Please enter a valid email address', 'give'));
             return;
         }
 
@@ -79,6 +59,7 @@ export default function AddEmailDialog({
         setEmail('');
         setSetAsPrimary(false);
         setEmailError('');
+        handleClose();
     };
 
     const handleCancel = () => {
@@ -99,74 +80,75 @@ export default function AddEmailDialog({
             title={__('Add an email', 'give')}
         >
             <div className={`${styles.dialog} ${styles.addEmailDialog}`}>
-                <div className={styles.content}>
-                    <div className={styles.formField}>
-                        <label htmlFor="email" className={styles.label}>
-                            {__('Email', 'give')}
-                        </label>
-                        <input
-                            id="email"
-                            type="email"
-                            className={`${styles.input} ${emailError ? styles.inputError : ''}`}
-                            value={email}
-                            onChange={(e) => handleEmailChange(e.target.value)}
-                            placeholder=""
-                            aria-invalid={!!emailError}
-                            aria-describedby={emailError ? 'email-error' : undefined}
-                            aria-required="true"
-                            onKeyDown={handleKeyDown}
-                        />
-                        {emailError && (
+                <form onSubmit={handleFormSubmit}>
+                    <div className={styles.content}>
+                        <div className={styles.formField}>
+                            <label htmlFor="email" className={styles.label}>
+                                {__('Email', 'give')}
+                            </label>
+                            <input
+                                id="email"
+                                type="email"
+                                className={`${styles.input} ${emailError ? styles.inputError : ''}`}
+                                value={email}
+                                onChange={(e) => handleEmailChange(e.target.value)}
+                                placeholder=""
+                                aria-invalid={!!emailError}
+                                aria-describedby={emailError ? 'email-error' : undefined}
+                                aria-required="true"
+                            />
+                            {emailError && (
+                                <div
+                                    id="email-error"
+                                    className={styles.errorMessage}
+                                    role="alert"
+                                    aria-live="polite"
+                                >
+                                    {emailError}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className={styles.checkboxField}>
+                            <label className={styles.checkboxLabel}>
+                                <input
+                                    type="checkbox"
+                                    className={styles.checkbox}
+                                    checked={setAsPrimary}
+                                    onChange={(e) => setSetAsPrimary(e.target.checked)}
+                                    aria-describedby="primary-email-description"
+                                />
+                                <span id="primary-email-description">
+                                    {__('Set as primary email address for this donor', 'give')}
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div className={styles.buttons}>
+                        <button
+                            type="submit"
+                            className={`button button-primary ${styles.addButton}`}
+                            disabled={!isFormValid}
+                            aria-describedby={!isFormValid ? 'submit-button-description' : undefined}
+                        >
+                            {__('Add email', 'give')}
+                        </button>
+
+                        {!isFormValid && (
                             <div
-                                id="email-error"
-                                className={styles.errorMessage}
-                                role="alert"
+                                id="submit-button-description"
+                                className="screen-reader-text"
                                 aria-live="polite"
                             >
-                                {emailError}
+                                {email.trim()
+                                    ? __('Please fix the email validation errors before submitting', 'give')
+                                    : __('Please enter an email address to continue', 'give')
+                                }
                             </div>
                         )}
                     </div>
-
-                    <div className={styles.checkboxField}>
-                        <label className={styles.checkboxLabel}>
-                            <input
-                                type="checkbox"
-                                className={styles.checkbox}
-                                checked={setAsPrimary}
-                                onChange={(e) => setSetAsPrimary(e.target.checked)}
-                                aria-describedby="primary-email-description"
-                            />
-                            <span id="primary-email-description">
-                                {__('Set as primary email address for this donor', 'give')}
-                            </span>
-                        </label>
-                    </div>
-                </div>
-
-                <div className={styles.buttons}>
-                    <button
-                        className={`button button-primary ${styles.addButton}`}
-                        onClick={handleSubmit}
-                        disabled={!isFormValid}
-                        aria-describedby={!isFormValid ? 'submit-button-description' : undefined}
-                    >
-                        {__('Add email', 'give')}
-                    </button>
-
-                    {!isFormValid && (
-                        <div
-                            id="submit-button-description"
-                            className="screen-reader-text"
-                            aria-live="polite"
-                        >
-                            {email.trim()
-                                ? __('Please fix the email validation errors before submitting', 'give')
-                                : __('Please enter an email address to continue', 'give')
-                            }
-                        </div>
-                    )}
-                </div>
+                </form>
             </div>
         </ModalDialog>
     );

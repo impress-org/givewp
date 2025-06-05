@@ -151,7 +151,10 @@ export default function DonorEmailAddress() {
                         <div className={styles.add}>
                             <button
                                 className={styles.addButton}
-                                onClick={() => setIsAddDialogOpen(true)}
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    setIsAddDialogOpen(true);
+                                }}
                             >
                                 {__('Add email', 'give')}
                             </button>
