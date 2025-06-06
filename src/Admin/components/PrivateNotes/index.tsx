@@ -16,7 +16,6 @@ export default function PrivateNotes({donorId, context}: {
     context: [boolean, Dispatch<SetStateAction<boolean>>]
 }) {
     const endpoint = `/givewp/v3/donors/${donorId}/notes`;
-
     const [state, setNoteState] = useState({
         isSavingNote: false,
         currentlyEditing: null,
@@ -40,6 +39,13 @@ export default function PrivateNotes({donorId, context}: {
                 });
             });
     };
+
+    const deleteNote = (id: number) => {
+        apiFetch({path: `/givewp/v3/donors/${donorId}/notes/${id}`, method: 'DELETE', data: {id}})
+            .then( async (response) => {
+                await mutate(response)
+            });
+    }
 
     const setState = (props) => {
         setNoteState((prevState) => {
@@ -96,6 +102,7 @@ export default function PrivateNotes({donorId, context}: {
                 return (
                     <Note
                         note={note}
+                        onDelete={(id: number) => deleteNote(id)}
                     />
                 )
             })}
@@ -107,8 +114,7 @@ export default function PrivateNotes({donorId, context}: {
 /**
  * @unreleased
  */
-const Note = ({note}) => {
-
+const Note = ({note, onDelete}) => {
     const [showMenuIcon, setShowMenuIcon] = useState(false);
     const [showContextMenu, setShowContextMenu] = useState(false);
 
@@ -138,8 +144,7 @@ const Note = ({note}) => {
                                     href="#"
                                     className={style.menuItem}
                                     onClick={() => {
-                                        // updateStatus('active');
-                                        // dispatch.dismissNotification('update-archive-notice');
+
                                     }}
                                 >
                                     <EditIcon /> {__('Edit', 'give')}
@@ -147,7 +152,7 @@ const Note = ({note}) => {
                                 <a
                                     href="#"
                                     className={cx(style.menuItem, style.delete)}
-                                    onClick={() => {}}
+                                    onClick={() => onDelete(note.id)}
                                 >
                                     <DeleteIcon /> {__('Delete', 'give')}
                                 </a>
