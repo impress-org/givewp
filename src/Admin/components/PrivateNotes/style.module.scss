@@ -66,6 +66,14 @@
 }
 
 .note {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.title {
+    display: flex;
     font-size: 1rem;
     font-weight: 500;
     font-stretch: normal;
@@ -82,9 +90,47 @@
     color: #6b7280;
 }
 
-.contextMenu {
-    cursor: pointer;
+.dotsMenu {
     position: absolute;
-    right: 0.75rem;
+    cursor: pointer;
     top: 0.5rem;
+    right: 0.75rem;
 }
+
+.menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-1);
+    z-index: 3;
+    padding: var(--givewp-spacing-1);
+    bottom: 20px;
+    right: 0;
+    width: 203px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: solid 1px var(--givewp-neutral-50);
+    background-color: var(--givewp-shades-white);
+
+    .menuItem {
+        gap: 4px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        padding: var(--givewp-spacing-2);
+        font-size: .875rem;
+        font-weight: 500;
+        line-height: 1.43;
+        color: var(--givewp-neutral-700);
+
+
+        &:hover {
+            background-color: #f3f4f6;
+        }
+    }
+
+    .delete {
+        color: var(--givewp-red-500);
+    }
+}
+

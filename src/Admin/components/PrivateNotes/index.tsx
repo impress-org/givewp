@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import useSWR from 'swr';
 import {Dispatch, SetStateAction, useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
-import {DotsMenuIcon, NotesIcon} from './Icons';
+import {DotsMenuIcon, NotesIcon, EditIcon, DeleteIcon} from './Icons';
 import Spinner from '../Spinner';
 import style from './style.module.scss';
 import cx from 'classnames';
@@ -96,8 +96,6 @@ export default function PrivateNotes({donorId, context}: {
                 return (
                     <Note
                         note={note}
-                        onDelete={() => {}}
-                        onEdit={() => {}}
                     />
                 )
             })}
@@ -109,7 +107,7 @@ export default function PrivateNotes({donorId, context}: {
 /**
  * @unreleased
  */
-const Note = ({note, onDelete, onEdit}) => {
+const Note = ({note}) => {
 
     const [showMenuIcon, setShowMenuIcon] = useState(false);
     const [showContextMenu, setShowContextMenu] = useState(false);
@@ -123,22 +121,40 @@ const Note = ({note, onDelete, onEdit}) => {
                 setShowContextMenu(false);
             }}
         >
-            {showMenuIcon && (
-                <div
-                    className={style.contextMenu}
-                    onClick={() => setShowContextMenu(true)}
-                >
-                    <DotsMenuIcon />
-                    {showContextMenu && (
-                        <div>
-
-                            Context menu
-                        </div>
-                    )}
-                </div>
-            )}
             <div className={style.note}>
-                {note.content}
+                <div className={style.title}>
+                    {note.content}
+                </div>
+
+                {showMenuIcon && (
+                    <div
+                        className={style.dotsMenu}
+                        onClick={() => setShowContextMenu(true)}
+                    >
+                        <DotsMenuIcon />
+                        {showContextMenu && (
+                            <div className={style.menu}>
+                                <a
+                                    href="#"
+                                    className={style.menuItem}
+                                    onClick={() => {
+                                        // updateStatus('active');
+                                        // dispatch.dismissNotification('update-archive-notice');
+                                    }}
+                                >
+                                    <EditIcon /> {__('Edit', 'give')}
+                                </a>
+                                <a
+                                    href="#"
+                                    className={cx(style.menuItem, style.delete)}
+                                    onClick={() => {}}
+                                >
+                                    <DeleteIcon /> {__('Delete', 'give')}
+                                </a>
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
             <div className={style.date}>
                 {formatTimestamp(note.createdAt.date)}
