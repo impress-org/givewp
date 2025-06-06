@@ -74,7 +74,7 @@ export default function DeleteAddressDialog({
                     </button>
                     <button
                         className={styles.confirmButton}
-                        onClick={() => handleConfirm(addressIndex)}
+                        onClick={handleConfirm}
                         aria-describedby={contentId}
                         aria-label={sprintf(__('Confirm deletion of Billing Address %s', 'give'), addressIndex + 1)}
                     >
