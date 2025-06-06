@@ -48,6 +48,13 @@ export default function PrivateNotes({donorId, context}: {
             });
     };
 
+    const editNote = (id: number, content: string) => {
+        apiFetch({path: `/givewp/v3/donors/${donorId}/notes/${id}`, method: 'POST', data: {id, content}})
+            .then(async (response) => {
+                await mutate(response);
+            });
+    };
+
     const setState = (props) => {
         setNoteState((prevState) => {
             return {
@@ -101,7 +108,7 @@ export default function PrivateNotes({donorId, context}: {
                             <Note
                                 note={note}
                                 onDelete={(id: number) => deleteNote(id)}
-                                onEdit={(id: number) => setState({currentlyEditing: id})}
+                                onEdit={(id: number, content: string) => editNote(id, content)}
                             />
                         );
                     })}
@@ -128,6 +135,8 @@ export default function PrivateNotes({donorId, context}: {
 const Note = ({note, onDelete, onEdit}) => {
     const [showMenuIcon, setShowMenuIcon] = useState(false);
     const [showContextMenu, setShowContextMenu] = useState(false);
+    const [currentlyEditing, setCurrentlyEditing] = useState(null);
+    const [content, setContent] = useState('');
 
     return (
         <div
@@ -138,46 +147,82 @@ const Note = ({note, onDelete, onEdit}) => {
                 setShowContextMenu(false);
             }}
         >
-            <div className={style.note}>
-                <div className={style.title}>
-                    {note.content}
-                </div>
+            {currentlyEditing ? (
+                <>
+                    <div className={style.addNoteContainer}>
+                        <textarea
+                            className={style.textarea}
+                            onChange={(e) => setContent(e.target.value)}
+                        >
+                            {note.content}
+                        </textarea>
 
-                {showMenuIcon && (
-                    <div
-                        className={style.dotsMenu}
-                        onClick={() => setShowContextMenu(true)}
-                    >
-                        <DotsMenuIcon />
-                        {showContextMenu && (
-                            <div className={style.menu}>
-                                <a
-                                    href="#"
-                                    className={style.menuItem}
-                                    onClick={() => {
+                        <div className={style.textAreaButtons}>
+                            <button
+                                className={cx(style.button, style.cancelBtn)}
+                                onClick={() => {
+                                    setCurrentlyEditing(null)
+                                }}
+                            >
+                                {__('Cancel', 'give')}
+                            </button>
+                            <button
+                                className={cx(style.button, style.saveBtn)}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    onEdit(note.id, content);
+                                }}
+                            >
+                                {__('Save', 'give')}
+                            </button>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className={style.note}>
+                        <div className={style.title}>
+                            {note.content}
+                        </div>
 
-                                    }}
-                                >
-                                    <EditIcon /> {__('Edit', 'give')}
-                                </a>
-                                <a
-                                    href="#"
-                                    className={cx(style.menuItem, style.delete)}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        onDelete(note.id);
-                                    }}
-                                >
-                                    <DeleteIcon /> {__('Delete', 'give')}
-                                </a>
+                        {showMenuIcon && (
+                            <div
+                                className={style.dotsMenu}
+                                onClick={() => setShowContextMenu(true)}
+                            >
+                                <DotsMenuIcon />
+                                {showContextMenu && (
+                                    <div className={style.menu}>
+                                        <a
+                                            href="#"
+                                            className={style.menuItem}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setCurrentlyEditing(note.id);
+                                            }}
+                                        >
+                                            <EditIcon /> {__('Edit', 'give')}
+                                        </a>
+                                        <a
+                                            href="#"
+                                            className={cx(style.menuItem, style.delete)}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                onDelete(note.id);
+                                            }}
+                                        >
+                                            <DeleteIcon /> {__('Delete', 'give')}
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
-                )}
-            </div>
-            <div className={style.date}>
-                {formatTimestamp(note.createdAt.date)}
-            </div>
+                    <div className={style.date}>
+                        {formatTimestamp(note.createdAt.date)}
+                    </div>
+                </>
+            )}
         </div>
     );
 };
