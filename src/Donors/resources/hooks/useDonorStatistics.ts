@@ -25,18 +25,6 @@ export interface DonorStatistics {
 /**
  * @unreleased
  */
-//TODO: Successfully makes request & returns data but record is undefined.
-
-// export function useDonorStatistics(donorId: number, mode: 'test' | 'live' = 'live') {
-//     const {record, hasResolved, isResolving} = useEntityRecord<DonorStatistics>('givewp', 'donor', `${donorId}/statistics`);
-
-//     return {
-//         statistics: record,
-//         hasResolved,
-//         isResolving
-//     };
-// }
-
 export function useDonorStatistics(donorId: number, mode: 'live' | 'test' = 'live') {
     const [statistics, setStatistics] = useState<DonorStatistics | null>(null);
     const [error, setError] = useState<Error | null>(null);
