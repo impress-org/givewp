@@ -13,126 +13,287 @@ import { __ } from '@wordpress/i18n';
  */
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import styles from './styles.module.scss';
+import { DonorAddress } from '../../../../types';
+import { getDonorOptionsWindowData } from '@givewp/donors/utils';
 
+const { countries } = getDonorOptionsWindowData();
+
+const DEFAULT_ADDRESS: DonorAddress = {
+    country: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zip: '',
+};
 /**
  * @unreleased
  */
-interface AddAddressDialogProps {
+interface AddressDialogProps {
     isOpen: boolean;
     handleClose: () => void;
-    handleConfirm: (newAddress: string, setAsPrimary: boolean) => void;
+    handleConfirm: (address: DonorAddress, addressIndex?: number) => void;
+    address?: DonorAddress;
+    addressIndex?: number;
 }
 
 /**
  * @unreleased
  */
-export default function AddAddressDialog({
+export default function AddressDialog({
     isOpen,
     handleClose,
     handleConfirm,
-}: AddAddressDialogProps) {
-    const [address, setAddress] = useState('');
-    const [setAsPrimary, setSetAsPrimary] = useState(false);
-    const [addressError, setAddressError] = useState('');
-    const addressInputRef = useRef<HTMLTextAreaElement>(null);
+    address: initialAddress,
+    addressIndex,
+}: AddressDialogProps) {
+    const [address, setAddress] = useState<DonorAddress>(DEFAULT_ADDRESS);
+    const [errors, setErrors] = useState<Partial<DonorAddress>>({});
+    const countrySelectRef = useRef<HTMLSelectElement>(null);
+
+    const isEditMode = initialAddress !== undefined && addressIndex !== undefined;
 
     useEffect(() => {
-        if (isOpen && addressInputRef.current) {
-            const timeoutId = setTimeout(() => {
-                addressInputRef.current?.focus();
-            }, 100);
+        if (isOpen) {
+            // Initialize form with existing data when editing
+            setAddress(initialAddress || DEFAULT_ADDRESS);
+            setErrors({});
 
-            return () => clearTimeout(timeoutId);
+            if (countrySelectRef.current) {
+                const timeoutId = setTimeout(() => {
+                    countrySelectRef.current?.focus();
+                }, 100);
+
+                return () => clearTimeout(timeoutId);
+            }
         }
-    }, [isOpen]);
+    }, [isOpen, initialAddress]);
 
-    const handleAddressChange = (value: string) => {
-        setAddress(value);
+    const handleFieldChange = (field: keyof DonorAddress, value: string) => {
+        setAddress(prev => ({
+            ...prev,
+            [field]: value
+        }));
 
-        if (addressError) {
-            setAddressError('');
+        // Clear error for this field if it exists
+        if (errors[field]) {
+            setErrors(prev => ({
+                ...prev,
+                [field]: ''
+            }));
         }
+    };
+
+    const validateForm = (): boolean => {
+        const newErrors: Partial<DonorAddress> = {};
+
+        if (!address.country.trim()) {
+            newErrors.country = __('Country is required', 'give');
+        }
+        if (!address.address1.trim()) {
+            newErrors.address1 = __('Address 1 is required', 'give');
+        }
+        if (!address.city.trim()) {
+            newErrors.city = __('City is required', 'give');
+        }
+        if (!address.state.trim()) {
+            newErrors.state = __('State is required', 'give');
+        }
+        if (!address.zip.trim()) {
+            newErrors.zip = __('Zip/Postal code is required', 'give');
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.stopPropagation();
         e.preventDefault();
 
-        const trimmedAddress = address.trim();
-
-        if (!trimmedAddress) {
-            setAddressError(__('Address is required', 'give'));
+        if (!validateForm()) {
             return;
         }
 
-        handleConfirm(trimmedAddress, setAsPrimary);
+        handleConfirm(address, addressIndex);
 
-        setAddress('');
-        setSetAsPrimary(false);
-        setAddressError('');
+        setAddress(DEFAULT_ADDRESS);
+        setErrors({});
         handleClose();
     };
 
     const handleCancel = () => {
-        setAddress('');
-        setSetAsPrimary(false);
-        setAddressError('');
+        setAddress(DEFAULT_ADDRESS);
+        setErrors({});
         handleClose();
     };
 
-    const isFormValid = address.trim();
+    const isFormValid = address.country.trim() && address.address1.trim() &&
+                       address.city.trim() && address.state.trim() &&
+                       address.zip.trim();
 
     return (
         <ModalDialog
             isOpen={isOpen}
             showHeader={true}
             handleClose={handleCancel}
-            title={__('Add an address', 'give')}
+            title={isEditMode ? __('Edit address', 'give') : __('Add an address', 'give')}
         >
             <div className={`${styles.dialog} ${styles.addAddressDialog}`}>
                 <form onSubmit={handleFormSubmit}>
                     <div className={styles.content}>
                         <div className={styles.formField}>
-                            <label htmlFor="address" className={styles.label}>
-                                {__('Address', 'give')}
+                            <label htmlFor="country" className={styles.label}>
+                                {__('Country', 'give')}
                             </label>
-                            <textarea
-                                ref={addressInputRef}
-                                id="address"
-                                className={`${styles.input} ${styles.textarea} ${addressError ? styles.inputError : ''}`}
-                                value={address}
-                                onChange={(e) => handleAddressChange(e.target.value)}
-                                placeholder=""
-                                rows={3}
-                                aria-invalid={!!addressError}
-                                aria-describedby={addressError ? 'address-error' : undefined}
+                            <select
+                                ref={countrySelectRef}
+                                id="country"
+                                className={`${styles.input} ${styles.select} ${errors.country ? styles.inputError : ''}`}
+                                value={address.country}
+                                onChange={(e) => handleFieldChange('country', e.target.value)}
+                                aria-invalid={!!errors.country}
+                                aria-describedby={errors.country ? 'country-error' : undefined}
                                 aria-required="true"
-                            />
-                            {addressError && (
+                            >
+                                <option value="">{__('Select a country', 'give')}</option>
+                                {Object.entries(countries).map(([code, name]) => (
+                                    <option key={code} value={code}>
+                                        {name}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.country && (
                                 <div
-                                    id="address-error"
+                                    id="country-error"
                                     className={styles.errorMessage}
                                     role="alert"
                                     aria-live="polite"
                                 >
-                                    {addressError}
+                                    {errors.country}
                                 </div>
                             )}
                         </div>
 
-                        <div className={styles.checkboxField}>
-                            <label className={styles.checkboxLabel}>
-                                <input
-                                    type="checkbox"
-                                    className={styles.checkbox}
-                                    checked={setAsPrimary}
-                                    onChange={(e) => setSetAsPrimary(e.target.checked)}
-                                    aria-describedby="primary-address-description"
-                                />
-                                <span id="primary-address-description">
-                                    {__('Set as primary address for this donor', 'give')}
-                                </span>
+                        <div className={styles.formField}>
+                            <label htmlFor="address1" className={styles.label}>
+                                {__('Address 1', 'give')}
                             </label>
+                            <input
+                                type="text"
+                                id="address1"
+                                className={`${styles.input} ${errors.address1 ? styles.inputError : ''}`}
+                                value={address.address1}
+                                onChange={(e) => handleFieldChange('address1', e.target.value)}
+                                aria-invalid={!!errors.address1}
+                                aria-describedby={errors.address1 ? 'address1-error' : undefined}
+                                aria-required="true"
+                            />
+                            {errors.address1 && (
+                                <div
+                                    id="address1-error"
+                                    className={styles.errorMessage}
+                                    role="alert"
+                                    aria-live="polite"
+                                >
+                                    {errors.address1}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className={styles.formField}>
+                            <label htmlFor="address2" className={styles.label}>
+                                {__('Address 2', 'give')}
+                            </label>
+                            <input
+                                type="text"
+                                id="address2"
+                                className={styles.input}
+                                value={address.address2}
+                                onChange={(e) => handleFieldChange('address2', e.target.value)}
+                            />
+                        </div>
+
+                        <div className={styles.formField}>
+                            <label htmlFor="city" className={styles.label}>
+                                {__('City', 'give')}
+                            </label>
+                            <input
+                                type="text"
+                                id="city"
+                                className={`${styles.input} ${errors.city ? styles.inputError : ''}`}
+                                value={address.city}
+                                onChange={(e) => handleFieldChange('city', e.target.value)}
+                                aria-invalid={!!errors.city}
+                                aria-describedby={errors.city ? 'city-error' : undefined}
+                                aria-required="true"
+                            />
+                            {errors.city && (
+                                <div
+                                    id="city-error"
+                                    className={styles.errorMessage}
+                                    role="alert"
+                                    aria-live="polite"
+                                >
+                                    {errors.city}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className={styles.formRow}>
+                            <div className={styles.formField}>
+                                <label htmlFor="state" className={styles.label}>
+                                    {__('State', 'give')}
+                                </label>
+                                <select
+                                    id="state"
+                                    className={`${styles.input} ${styles.select} ${errors.state ? styles.inputError : ''}`}
+                                    value={address.state}
+                                    onChange={(e) => handleFieldChange('state', e.target.value)}
+                                    aria-invalid={!!errors.state}
+                                    aria-describedby={errors.state ? 'state-error' : undefined}
+                                    aria-required="true"
+                                >
+                                    <option value="">{__('Select a state', 'give')}</option>
+                                    {/* TODO: Add state options */}
+                                </select>
+                                {errors.state && (
+                                    <div
+                                        id="state-error"
+                                        className={styles.errorMessage}
+                                        role="alert"
+                                        aria-live="polite"
+                                    >
+                                        {errors.state}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className={styles.formField}>
+                                <label htmlFor="zip" className={styles.label}>
+                                    {__('Zip/Postal code', 'give')}
+                                </label>
+                                <input
+                                    type="text"
+                                    id="zip"
+                                    className={`${styles.input} ${errors.zip ? styles.inputError : ''}`}
+                                    value={address.zip}
+                                    onChange={(e) => handleFieldChange('zip', e.target.value)}
+                                    aria-invalid={!!errors.zip}
+                                    aria-describedby={errors.zip ? 'zip-error' : undefined}
+                                    aria-required="true"
+                                />
+                                {errors.zip && (
+                                    <div
+                                        id="zip-error"
+                                        className={styles.errorMessage}
+                                        role="alert"
+                                        aria-live="polite"
+                                    >
+                                        {errors.zip}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
 
@@ -143,7 +304,7 @@ export default function AddAddressDialog({
                             disabled={!isFormValid}
                             aria-describedby={!isFormValid ? 'submit-button-description' : undefined}
                         >
-                            {__('Add address', 'give')}
+                            {isEditMode ? __('Update address', 'give') : __('Add address', 'give')}
                         </button>
 
                         {!isFormValid && (
@@ -152,10 +313,7 @@ export default function AddAddressDialog({
                                 className="screen-reader-text"
                                 aria-live="polite"
                             >
-                                {address.trim()
-                                    ? __('Please fix the address validation errors before submitting', 'give')
-                                    : __('Please enter an address to continue', 'give')
-                                }
+                                {__('Please fill in all required fields to continue', 'give')}
                             </div>
                         )}
                     </div>
