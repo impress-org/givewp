@@ -18,7 +18,7 @@ export interface DonorStatistics {
         lastContribution: string | null;
     };
     donorSince: string;
-    donorType: 'recurring' | 'single';
+    donorType: string;
     preferredPaymentMethod: string;
 }
 

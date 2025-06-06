@@ -92,7 +92,7 @@ export default function DonorDetailsPageOverviewTab() {
               },
               {
                   label: __('Donor Type', 'give'),
-                  value: stats.donorType === 'recurring' ? __('Recurring', 'give') : __('One Time', 'give'),
+                  value: stats.donorType,
                   isPill: true,
               },
               {

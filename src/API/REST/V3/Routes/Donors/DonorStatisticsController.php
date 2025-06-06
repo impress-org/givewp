@@ -96,7 +96,7 @@ class DonorStatisticsController extends WP_REST_Controller
                 'lastContribution' => $query->getLastContribution()
             ],
             'donorSince' => $donor->createdAt->format('Y-m-d H:i:s'),
-            'donorType' => $query->getDonorType(),
+            'donorType' => $query->getDonorType()->label(),
             'preferredPaymentMethod' => $query->preferredPaymentMethod(),
         ];
 

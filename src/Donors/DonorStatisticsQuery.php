@@ -5,6 +5,7 @@ namespace Give\Donors;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
+use Give\Donors\Repositories\DonorRepository;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Donors\ValueObjects\DonorType;
@@ -154,28 +155,24 @@ class DonorStatisticsQuery extends QueryBuilder
 
     /**
      * @unreleased
-     *
-     * @return DonorType|null
      */
     public function getDonorType()
     {
-        // Create a new query for checking subscription status
-        $subscriptionQuery = clone $this;
-        $subscriptionQuery->where('donation.post_status', 'give_subscription');
-        $hasSubscription = $subscriptionQuery->count('donation.ID') > 0;
+        $donorRepository = give(DonorRepository::class);
+        return $donorRepository->getDonorType($this->getDonorId());
+    }
 
-        if ($hasSubscription) {
-            return DonorType::SUBSCRIBER();
-        }
+    /**
+     * @unreleased
+     */
+    private function getDonorId(): int
+    {
+        $query = clone $this;
+        $query->select('donorId.meta_value as donor_id');
+        $query->limit(1);
+        $result = $query->get();
 
-        // Check total number of donations using the original query
-        $totalDonations = $this->getDonationsCount();
-
-        if ($totalDonations === 0) {
-            return DonorType::NEW();
-        }
-
-        return $totalDonations > 1 ? DonorType::REPEAT() : DonorType::SINGLE();
+        return $result ? (int)$result->donor_id : 0;
     }
 
     /**
