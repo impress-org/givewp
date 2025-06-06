@@ -139,6 +139,7 @@ const alias = {
     '@givewp/promotions': path.resolve(__dirname, 'src/Promotions/sharedResources/'),
     '@givewp/src': path.resolve(__dirname, 'src/'),
     '@givewp/campaigns': srcPath('Campaigns/resources'),
+    '@givewp/donors': srcPath('Donors/resources'),
     ...defaultConfig.resolve.alias,
 };
 
@@ -202,6 +203,8 @@ const entry = {
     campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),
     campaignListTable: srcPath('Campaigns/resources/admin/campaigns-list-table.tsx'),
     formEntity: srcPath('DonationForms/resources/entity.ts'),
+    donorEntity: srcPath('Donors/resources/entity.ts'),
+    donorDetails: srcPath('Donors/resources/admin/donor-details.tsx'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };

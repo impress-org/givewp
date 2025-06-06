@@ -8,6 +8,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class DonorFactory extends ModelFactory
 {
     /**
+     * @unreleased Add "company" property
      * @since 3.7.0 Add "phone" property
      * @since 2.19.6
      */
@@ -21,6 +22,7 @@ class DonorFactory extends ModelFactory
             'name' => trim("$firstName $lastName"),
             'email' => $this->faker->email,
             'phone' => $this->faker->phoneNumber,
+            'company' => $this->faker->company,
             'totalAmountDonated' => new Money(0, 'USD'),
             'totalNumberOfDonations' => 0
         ];

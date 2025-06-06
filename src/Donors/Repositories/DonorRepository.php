@@ -20,6 +20,12 @@ use Give\Log\Log;
  */
 class DonorRepository
 {
+    /**
+     * @unreleased
+     *
+     * @var DonorNotesRepository
+     */
+    public $notes;
 
     /**
      * @var string[]
@@ -30,6 +36,14 @@ class DonorRepository
         'lastName',
         'email',
     ];
+
+    /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        $this->notes = give(DonorNotesRepository::class);
+    }
 
     /**
      * Query Donor By ID
@@ -190,7 +204,7 @@ class DonorRepository
             'user_id' => $donor->userId,
             'email' => $donor->email,
             'phone' => $donor->phone,
-            'name' => $donor->name
+            'name' => $donor->name,
         ];
 
         if (isset($donor->totalAmountDonated) && $donor->isDirty('totalAmountDonated')) {
@@ -296,6 +310,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased Add avatarId and company to core donor meta
      * @since 2.19.6
      */
     private function getCoreDonorMeta(Donor $donor): array
@@ -304,6 +319,8 @@ class DonorRepository
             DonorMetaKeys::FIRST_NAME => $donor->firstName,
             DonorMetaKeys::LAST_NAME => $donor->lastName,
             DonorMetaKeys::PREFIX => $donor->prefix ?? null,
+            DonorMetaKeys::AVATAR_ID => $donor->avatarId ?? null,
+            DonorMetaKeys::COMPANY => $donor->company ?? null,
         ];
     }
 
@@ -402,6 +419,7 @@ class DonorRepository
      * Additional emails are assigned to the same additional_email meta key.
      * In order to update them we need to delete and re-insert.
      *
+     * @unreleased Remove all additional emails and re-insert only the new ones
      * @since 3.20.0 store meta using native WP functions
      * @since 2.19.6
      *
@@ -409,13 +427,10 @@ class DonorRepository
      */
     private function updateAdditionalEmails(Donor $donor)
     {
-        foreach ($donor->additionalEmails as $additionalEmail) {
-            DB::table('give_donormeta')
-                ->where('donor_id', $donor->id)
-                ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
-                ->where('meta_value', $additionalEmail)
-                ->delete();
-        }
+        DB::table('give_donormeta')
+            ->where('donor_id', $donor->id)
+            ->where('meta_key', DonorMetaKeys::ADDITIONAL_EMAILS)
+            ->delete();
 
         foreach ($donor->additionalEmails as $additionalEmail) {
             give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDITIONAL_EMAILS, $additionalEmail);

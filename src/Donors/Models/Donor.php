@@ -20,6 +20,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donor
  *
+ * @unreleased Add "notes" property
  * @since 3.7.0 Add "phone" property
  * @since 2.24.0 add new properties $totalAmountDonated and $totalNumberOfDonations
  * @since 2.19.6
@@ -34,10 +35,13 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $email
  * @property string $phone
  * @property string[] $additionalEmails
+ * @property int $avatarId
+ * @property string $company
  * @property Money $totalAmountDonated
  * @property int $totalNumberOfDonations
  * @property Subscription[] $subscriptions
  * @property Donation[] $donations
+ * @property DonorNote[] $notes
  */
 class Donor extends Model implements ModelCrud, ModelHasFactory
 {
@@ -55,8 +59,10 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'phone' => 'string',
         'prefix' => 'string',
         'additionalEmails' => ['array', []],
+        'avatarId' => 'int',
+        'company' => 'string',
         'totalAmountDonated' => Money::class,
-        'totalNumberOfDonations' => 'int'
+        'totalNumberOfDonations' => 'int',
     ];
 
     /**
@@ -65,6 +71,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     protected $relationships = [
         'donations' => Relationship::HAS_MANY,
         'subscriptions' => Relationship::HAS_MANY,
+        'notes' => Relationship::HAS_MANY,
     ];
 
     /**
@@ -92,7 +99,8 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.19.6
      *
-     * @param  string  $donorEmail
+     * @param string $donorEmail
+     *
      * @return bool
      */
     public function hasEmail(string $donorEmail): bool
@@ -105,7 +113,8 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 2.21.0
      *
-     * @param  int  $userId
+     * @param int $userId
+     *
      * @return Donor|null
      */
     public static function whereUserId(int $userId)
@@ -142,7 +151,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
      */
     public function save()
     {
-        if (!$this->id) {
+        if ( ! $this->id) {
             give()->donors->insert($this);
         } else {
             give()->donors->update($this);
@@ -210,6 +219,16 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder<DonorNote>
+     */
+    public function notes(): ModelQueryBuilder
+    {
+        return give()->donors->notes->queryByDonorId($this->id);
+    }
+
+    /**
      * @since 2.19.6
      *
      * @param object $object
@@ -229,6 +248,23 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     public static function factory(): DonorFactory
     {
         return new DonorFactory(static::class);
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function isAnonymous(): bool
+    {
+        if ($this->donations) {
+            foreach ($this->donations as $donation) {
+                if ($donation->anonymous) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 }
