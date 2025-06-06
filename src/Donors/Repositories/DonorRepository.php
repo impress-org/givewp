@@ -457,26 +457,23 @@ class DonorRepository
         $id = $donorId ?? $donor->id;
         $prefix = DB::prefix('give_donormeta');
 
+        $addressMetaKeys = [
+            DonorMetaKeys::ADDRESS_LINE1,
+            DonorMetaKeys::ADDRESS_LINE2,
+            DonorMetaKeys::ADDRESS_CITY,
+            DonorMetaKeys::ADDRESS_STATE,
+            DonorMetaKeys::ADDRESS_COUNTRY,
+            DonorMetaKeys::ADDRESS_ZIP,
+        ];
+
+        $likeConditions = implode(' OR ', array_fill(0, count($addressMetaKeys), 'meta_key LIKE %s'));
+        $likeValues = array_map(function($key) { return $key . '*'; }, $addressMetaKeys);
+
         $sql = DB::prepare(
             "DELETE FROM {$prefix}
                 WHERE donor_id = %d
-                AND (
-                    meta_key LIKE %s OR
-                    meta_key LIKE %s OR
-                    meta_key LIKE %s OR
-                    meta_key LIKE %s OR
-                    meta_key LIKE %s OR
-                    meta_key LIKE %s
-                )",
-            [
-                $id,
-                '_give_donor_address_billing_line1_*',
-                '_give_donor_address_billing_line2_*',
-                '_give_donor_address_billing_city_*',
-                '_give_donor_address_billing_state_*',
-                '_give_donor_address_billing_country_*',
-                '_give_donor_address_billing_zip_*',
-            ]
+                AND ({$likeConditions})",
+            array_merge([$id], $likeValues)
         );
 
         try {
