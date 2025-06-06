@@ -8,7 +8,6 @@ import { useFormContext } from "react-hook-form";
  * WordPress Dependencies
  */
 import { __ } from "@wordpress/i18n";
-import { useDispatch } from "@wordpress/data";
 
 /**
  * Internal Dependencies
@@ -89,7 +88,7 @@ export default function DonorEmailAddress() {
         setOpenDropdown(null);
     };
 
-    const handleAddEmailConfirm = async (newEmail: string, setAsPrimary: boolean) => {
+    const handleAddEmailConfirm = (newEmail: string, setAsPrimary: boolean) => {
         setValue('additionalEmails', [...additionalEmails, newEmail], { shouldDirty: true });
 
         if (setAsPrimary) {
@@ -97,7 +96,7 @@ export default function DonorEmailAddress() {
         }
     };
 
-    const handleDeleteEmailConfirm = async () => {
+    const handleDeleteEmailConfirm = () => {
         setValue('additionalEmails', additionalEmails.filter((additionalEmail) => additionalEmail !== emailToDelete), { shouldDirty: true });
 
         setIsDeleteDialogOpen(false);
