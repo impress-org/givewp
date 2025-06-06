@@ -2,11 +2,14 @@ import {__} from '@wordpress/i18n';
 import useSWR from 'swr';
 import {Dispatch, SetStateAction, useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
-import {DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon} from './Icons';
+import {ConfirmationDialogIcon, DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon} from './Icons';
 import Spinner from '../Spinner';
+import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import style from './style.module.scss';
 import cx from 'classnames';
 import {formatTimestamp} from '@givewp/src/Admin/utils';
+import ArchiveCampaignDialog
+    from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ArchiveCampaignDialog';
 
 /**
  * @unreleased
@@ -137,6 +140,7 @@ const Note = ({note, onDelete, onEdit}) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [currentlyEditing, setCurrentlyEditing] = useState(null);
     const [content, setContent] = useState('');
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     return (
         <div
@@ -161,7 +165,7 @@ const Note = ({note, onDelete, onEdit}) => {
                             <button
                                 className={cx(style.button, style.cancelBtn)}
                                 onClick={() => {
-                                    setCurrentlyEditing(null)
+                                    setCurrentlyEditing(null);
                                 }}
                             >
                                 {__('Cancel', 'give')}
@@ -208,7 +212,7 @@ const Note = ({note, onDelete, onEdit}) => {
                                             className={cx(style.menuItem, style.delete)}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                onDelete(note.id);
+                                                setShowDeleteDialog(true);
                                             }}
                                         >
                                             <DeleteIcon /> {__('Delete', 'give')}
@@ -223,6 +227,58 @@ const Note = ({note, onDelete, onEdit}) => {
                     </div>
                 </>
             )}
+            <ConfirmationDialog
+                title={__('Delete Note', 'give')}
+                isOpen={showDeleteDialog}
+                handleClose={() => setShowDeleteDialog(false)}
+                handleConfirm={() => {
+                    onDelete(note.id);
+                }}
+            />
         </div>
     );
 };
+
+
+function ConfirmationDialog({
+    isOpen,
+    title,
+    handleClose,
+    handleConfirm
+}: {
+    isOpen: boolean;
+    handleClose: () => void;
+    handleConfirm: () => void;
+    title: string;
+}) {
+    return (
+        <ModalDialog
+            icon={<ConfirmationDialogIcon />}
+            isOpen={isOpen}
+            showHeader={true}
+            handleClose={handleClose}
+            title={title}
+        >
+            <>
+                <div className={style.dialogContent}>
+                    {__('Are you sure you want to delete this note?', 'give')}
+                </div>
+                <div className={style.dialogButtons}>
+                    <button
+                        className={style.cancelButton}
+                        onClick={handleClose}
+                    >
+                        {__('Cancel', 'give')}
+                    </button>
+                    <button
+                        className={style.confirmButton}
+                        onClick={handleConfirm}
+                    >
+                        {__('Delete note', 'give')}
+                    </button>
+                </div>
+            </>
+        </ModalDialog>
+    );
+}
+

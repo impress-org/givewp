@@ -135,3 +135,52 @@
     }
 }
 
+.dialogContent {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--givewp-neutral-700);
+}
+
+.dialogButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-2);
+    margin-top: var(--givewp-spacing-6);
+
+    button {
+        cursor: pointer;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+        border: none;
+    }
+
+    .cancelButton {
+        border: 1px solid var(--givewp-neutral-300);
+        background-color: var(--givewp-shades-white);
+        color: var(--givewp-neutral-900);
+
+        &:hover {
+            background-color: var(--givewp-neutral-50);
+        }
+    }
+
+    .confirmButton {
+        border: 1px solid var(--givewp-red-500);
+        background-color: var(--givewp-red-500);
+        color: var(--givewp-shades-white);
+
+        &:hover {
+            border: 1px solid var(--givewp-red-400);
+            background-color: var(--givewp-red-400);
+        }
+    }
+}
+
