@@ -5,8 +5,10 @@ namespace Give\Donors;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
+use Give\Donors\Repositories\DonorRepository;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Donors\ValueObjects\DonorType;
 
 /**
  * @unreleased
@@ -106,6 +108,91 @@ class DonorStatisticsQuery extends QueryBuilder
         $query = clone $this;
 
         return $query->count('donation.ID');
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function getFirstDonation()
+    {
+        $query = clone $this;
+        $query->select(
+            'donation.post_date',
+            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0) as amount'
+        );
+        $query->orderBy('post_date', 'ASC');
+        $query->limit(1);
+        $result = $query->get();
+
+        if (!$result) {
+            return null;
+        }
+
+        return [
+            'amount' => (float)$result->amount,
+            'date' => date('Y-m-d H:i:s', strtotime($result->post_date))
+        ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getLastContribution()
+    {
+        $query = clone $this;
+        $query->select('donation.post_date');
+        $query->orderBy('post_date', 'DESC');
+        $query->limit(1);
+        $result = $query->get();
+
+        if (!$result) {
+            return null;
+        }
+
+        return human_time_diff(strtotime($result->post_date), current_time('timestamp')) . ' ago';
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getDonorType()
+    {
+        $donorRepository = give(DonorRepository::class);
+        return $donorRepository->getDonorType($this->getDonorId());
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getDonorId(): int
+    {
+        $query = clone $this;
+        $query->select('donorId.meta_value as donor_id');
+        $query->limit(1);
+        $result = $query->get();
+
+        return $result ? (int)$result->donor_id : 0;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function preferredPaymentMethod(): string
+    {
+        $query = clone $this;
+        $query->joinDonationMeta(DonationMetaKeys::GATEWAY, 'gateway');
+        $query->select('gateway.meta_value as gateway');
+        $query->groupBy('gateway.meta_value');
+        $query->orderBy('COUNT(gateway.meta_value)', 'DESC');
+        $query->limit(1);
+        $result = $query->get();
+
+        if (!$result) {
+            return '';
+        }
+
+        return give_get_gateway_checkout_label($result->gateway) ?? $result->gateway;
     }
 
     /**

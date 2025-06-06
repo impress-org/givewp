@@ -82,6 +82,7 @@ class RegisterDonationRoutes
     /**
      * Get Donations route
      *
+     * @unreleased add status parameter.
      * @since 4.0.0
      */
     public function registerGetDonations()
@@ -135,6 +136,23 @@ class RegisterDonationRoutes
                         'type' => 'string',
                         'default' => 'live',
                         'enum' => ['live', 'test'],
+                    ],
+                    'status' => [
+                        'type' => 'string',
+                        'default' => 'any',
+                        'enum' => [
+                            'any',
+                            'publish',
+                            'give_subscription',
+                            'pending',
+                            'processing',
+                            'refunded',
+                            'revoked',
+                            'failed',
+                            'cancelled',
+                            'abandoned',
+                            'preapproval'
+                        ],
                     ],
                     'campaignId' => [
                         'type' => 'integer',
