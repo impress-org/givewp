@@ -33,6 +33,7 @@ class DonationRequestController
     }
 
     /**
+     * @unreleased Allow dynamic status filtering.
      * @since 4.0.0
      */
     public function getDonations(WP_REST_Request $request): WP_REST_Response
