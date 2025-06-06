@@ -37,16 +37,14 @@ class DonationRequestController
      */
     public function getDonations(WP_REST_Request $request): WP_REST_Response
     {
-
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-
         $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
-
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
         $sortColumn = $this->getSortColumn($request->get_param('sort'));
         $sortDirection = $request->get_param('direction');
         $mode = $request->get_param('mode');
+        $status = $request->get_param('status');
 
         $query = Donation::query();
 
@@ -67,8 +65,10 @@ class DonationRequestController
         // Include only current payment "mode"
         $query->where('give_donationmeta_attach_meta_mode.meta_value', $mode);
 
-        // Include only valid statuses
-        $query->whereIn('post_status', ['publish', 'give_subscription']);
+        // Filter by status if not 'any'
+        if ($status !== 'any') {
+            $query->where('post_status', $status);
+        }
 
         $query
             ->limit($perPage)

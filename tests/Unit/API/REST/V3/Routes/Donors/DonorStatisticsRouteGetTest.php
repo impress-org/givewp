@@ -15,6 +15,7 @@ use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 use WP_REST_Server;
+use DateTime;
 
 /**
  * @unreleased
@@ -61,7 +62,16 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
                 'lifetimeAmount' => 300,
                 'highestAmount' => 250,
                 'averageAmount' => 150,
+                'firstDonation' => [
+                    'amount' => '250',
+                    'date' => $data['donations']['firstDonation']['date']
+                ],
+                'donationCount' => 2,
+                'lastContribution' => $data['donations']['lastContribution']
             ],
+            'donorSince' => $data['donorSince'],
+            'donorType' => $data['donorType'],
+            'preferredGivingType' => 'single'
         ], $data);
     }
 
@@ -116,7 +126,16 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
                 'lifetimeAmount' => 50,
                 'highestAmount' => 50,
                 'averageAmount' => 50,
+                'firstDonation' => [
+                    'amount' => '50',
+                    'date' => $data['donations']['firstDonation']['date']
+                ],
+                'donationCount' => 1,
+                'lastContribution' => $data['donations']['lastContribution']
             ],
+            'donorSince' => $data['donorSince'],
+            'donorType' => $data['donorType'],
+            'preferredGivingType' => 'single'
         ], $data);
     }
 
@@ -168,7 +187,16 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
                 'lifetimeAmount' => 50,
                 'highestAmount' => 50,
                 'averageAmount' => 50,
+                'firstDonation' => [
+                    'amount' => '50',
+                    'date' => $data['donations']['firstDonation']['date']
+                ],
+                'donationCount' => 1,
+                'lastContribution' => $data['donations']['lastContribution']
             ],
+            'donorSince' => $data['donorSince'],
+            'donorType' => $data['donorType'],
+            'preferredGivingType' => 'single'
         ], $data);
     }
 
@@ -185,6 +213,7 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(25000, 'USD'),
             'mode' => DonationMode::LIVE(),
+            'createdAt' => new DateTime('2025-06-04 23:12:26'),
         ]);
 
         if ($campaignId) {
@@ -207,6 +236,7 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
             'status' => DonationStatus::COMPLETE(),
             'amount' => new Money(5000, 'USD'),
             'mode' => DonationMode::LIVE(),
+            'createdAt' => new DateTime('2025-06-05 23:12:26'),
         ]);
 
         if ($campaignId) {

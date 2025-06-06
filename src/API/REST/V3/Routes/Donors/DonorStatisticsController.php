@@ -91,7 +91,13 @@ class DonorStatisticsController extends WP_REST_Controller
                 'lifetimeAmount' => $query->getLifetimeDonationsAmount(),
                 'highestAmount' => $query->getHighestDonationAmount(),
                 'averageAmount' => $query->getAverageDonationAmount(),
+                'firstDonation' => $query->getFirstDonation(),
+                'donationCount' => $query->getDonationsCount(),
+                'lastContribution' => $query->getLastContribution()
             ],
+            'donorSince' => $donor->createdAt->format('Y-m-d H:i:s'),
+            'donorType' => $query->getDonorType(),
+            'preferredPaymentMethod' => $query->preferredPaymentMethod(),
         ];
 
         $response = $this->prepare_item_for_response($item, $request);
