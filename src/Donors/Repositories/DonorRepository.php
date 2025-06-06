@@ -165,6 +165,10 @@ class DonorRepository
                     give()->donor_meta->add_meta($donorId, DonorMetaKeys::ADDITIONAL_EMAILS, $additionalEmail);
                 }
             }
+
+            if (isset($donor->addresses)) {
+                $this->updateAddresses($donor, $donorId);
+            }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
 
@@ -182,6 +186,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased Add support for addresses
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.23.1 use give()->donor_meta to update meta so data is upserted
@@ -226,6 +231,10 @@ class DonorRepository
 
             if (isset($donor->additionalEmails) && $donor->isDirty('additionalEmails')) {
                 $this->updateAdditionalEmails($donor);
+            }
+
+            if (isset($donor->addresses) && $donor->isDirty('addresses')) {
+                $this->updateAddresses($donor, $donor->id);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -411,7 +420,7 @@ class DonorRepository
                 'give_donormeta',
                 'ID',
                 'donor_id',
-                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithoutAdditionalEmails()
+                ...DonorMetaKeys::getColumnsForAttachMetaQueryWithoutExtraMetadata()
             );
     }
 
@@ -434,6 +443,52 @@ class DonorRepository
 
         foreach ($donor->additionalEmails as $additionalEmail) {
             give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDITIONAL_EMAILS, $additionalEmail);
+        }
+    }
+
+    /**
+     * Addresses are stored as indexed meta keys.
+     * In order to update them we need to delete all address-related meta keys and re-insert.
+     *
+     * @unreleased
+     */
+    private function updateAddresses(Donor $donor, ?int $donorId): void
+    {
+        $id = $donorId ?? $donor->id;
+        $prefix = DB::prefix('give_donormeta');
+
+        $addressMetaKeys = [
+            DonorMetaKeys::ADDRESS_LINE1,
+            DonorMetaKeys::ADDRESS_LINE2,
+            DonorMetaKeys::ADDRESS_CITY,
+            DonorMetaKeys::ADDRESS_STATE,
+            DonorMetaKeys::ADDRESS_COUNTRY,
+            DonorMetaKeys::ADDRESS_ZIP,
+        ];
+
+        $likeConditions = implode(' OR ', array_fill(0, count($addressMetaKeys), 'meta_key LIKE %s'));
+        $likeValues = array_map(function($key) { return $key . '*'; }, $addressMetaKeys);
+
+        $sql = DB::prepare(
+            "DELETE FROM {$prefix}
+                WHERE donor_id = %d
+                AND ({$likeConditions})",
+            array_merge([$id], $likeValues)
+        );
+
+        try {
+            DB::query( str_replace('*', '%', $sql));
+        } catch (Exception $e) {
+            Log::error('Failed deleting donor addresses', compact('donor', 'id', 'sql'));
+        }
+
+        foreach ($donor->addresses as $index => $address) {
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_LINE1 . $index, $address->address1);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_LINE2 . $index, $address->address2);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_CITY . $index, $address->city);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_STATE . $index, $address->state);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_COUNTRY . $index, $address->country);
+            give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_ZIP . $index, $address->zip);
         }
     }
 

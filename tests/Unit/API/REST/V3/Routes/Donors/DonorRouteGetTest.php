@@ -67,8 +67,9 @@ class DonorRouteGetTest extends RestApiTestCase
             'phone' => $donor->phone,
             'prefix' => $donor->prefix,
             'company' => $donor->company,
+            'addresses' => array_map(fn($address) => $address->toArray(), $donor->addresses),
             'avatarId' => $donor->avatarId,
-            'avatarUrl' => $donor->avatarId ? wp_get_attachment_url($donor->avatarId) : (give_validate_gravatar($donor->email) ? get_avatar_url($donor->email, ['size' => 80]) : null),
+            'avatarUrl' => null,
             'wpUserPermalink' => $donor->userId ? get_edit_user_link($donor->userId) : null,
             'additionalEmails' => $donor->additionalEmails,
             'totalAmountDonated' => $donor->totalAmountDonated->toArray(),
@@ -194,6 +195,7 @@ class DonorRouteGetTest extends RestApiTestCase
             'phone',
             'additionalEmails',
             'lastName',
+            'addresses',
         ];
 
         $this->assertEquals(200, $status);
@@ -240,6 +242,7 @@ class DonorRouteGetTest extends RestApiTestCase
             'phone',
             'additionalEmails',
             'lastName',
+            'addresses',
         ];
 
         $this->assertEquals(200, $status);

@@ -1,3 +1,6 @@
+/**
+ * @unreleased
+ */
 export type Donor = {
   id: number;
   userId?: number;
@@ -18,4 +21,19 @@ export type Donor = {
   status: DonorStatus;
 };
 
+/**
+ * @unreleased
+ */
 export type DonorStatus = 'current' | 'prospective' | 'retained' | 'lapsed' | 'new' | 'recaptured' | 'recurring';
+
+/**
+ * @unreleased
+ */
+export type DonorAddress = {
+    address1: string;
+    address2: string;
+    city: string;
+    state: string;
+    country: string;
+    zip: string;
+};
