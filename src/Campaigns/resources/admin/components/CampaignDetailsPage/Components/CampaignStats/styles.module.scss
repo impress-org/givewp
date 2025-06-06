@@ -78,6 +78,9 @@
     font-weight: 600;
     line-height: 44px;
     color: var(--givewp-neutral-900);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
 }
 
 .revenueWidget {
@@ -140,4 +143,73 @@
         grid-template-columns: 1fr;
         gap: var(--givewp-spacing-3);
     }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+// Skeleton Utilities
+@mixin skeleton-base {
+    background: linear-gradient(
+        90deg,
+        var(--givewp-neutral-100) 25%,
+        var(--givewp-neutral-200) 50%,
+        var(--givewp-neutral-100) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--givewp-rounded-4);
+}
+
+// Skeleton Components
+.skeletonNumber {
+    @include skeleton-base;
+    height: 44px;
+    width: 120px;
+}
+
+.skeletonButton {
+    @include skeleton-base;
+    height: 32px;
+    width: 100px;
+    margin: 0 4px;
+}
+
+.skeletonHeader {
+    @include skeleton-base;
+    height: 24px;
+    width: 60%;
+    margin-bottom: 8px;
+}
+
+.skeletonSubHeader {
+    @include skeleton-base;
+    height: 16px;
+    width: 80%;
+}
+
+.skeletonValue {
+    @include skeleton-base;
+    height: 44px;
+    width: 70%;
+    margin: 16px 0;
+}
+
+.skeletonFooter {
+    @include skeleton-base;
+    height: 18px;
+    width: 40%;
+}
+
+.skeletonChart {
+    @include skeleton-base;
+    height: 200px;
+    width: 100%;
+    margin-top: 16px;
 }
