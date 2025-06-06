@@ -71,7 +71,7 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
             ],
             'donorSince' => $data['donorSince'],
             'donorType' => $data['donorType'],
-            'preferredGivingType' => 'single'
+            'preferredPaymentMethod' => $data['preferredPaymentMethod']
         ], $data);
     }
 
@@ -135,7 +135,7 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
             ],
             'donorSince' => $data['donorSince'],
             'donorType' => $data['donorType'],
-            'preferredGivingType' => 'single'
+            'preferredPaymentMethod' => $data['preferredPaymentMethod']
         ], $data);
     }
 
@@ -196,7 +196,7 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
             ],
             'donorSince' => $data['donorSince'],
             'donorType' => $data['donorType'],
-            'preferredGivingType' => 'single'
+            'preferredPaymentMethod' => $data['preferredPaymentMethod']
         ], $data);
     }
 
