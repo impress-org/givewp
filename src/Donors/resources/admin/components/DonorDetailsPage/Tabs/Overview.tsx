@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import classnames from 'classnames';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
-import PrivateNote from '@givewp/src/Admin/components/PrivateNote';
+import PrivateNotes from '@givewp/src/Admin/components/PrivateNotes';
 import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {amountFormatter, formatTimestamp, getRelativeTimeString} from '@givewp/src/Admin/utils';
@@ -48,17 +48,18 @@ const {currency} = getDonorOptionsWindowData();
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
-    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId);
+    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved} = useDonorStatistics(donorId);
     const {donations, hasResolved: donationsResolved} = useDonorDonations({donorId});
+    const [isAddingNote, setIsAddingNote] = useState(false);
 
     const transactions: Transaction[] = !donations
         ? []
         : donations.map((donation) => ({
-              campaign: donation.formTitle,
-              status: statusMap[donation.status] || 'Pending',
-              timestamp: donation.createdAt.date,
-              amount: amountFormatter(donation.amount.currency).format(parseFloat(donation.amount.value)),
-          }));
+            campaign: donation.formTitle,
+            status: statusMap[donation.status] || 'Pending',
+            timestamp: donation.createdAt.date,
+            amount: amountFormatter(donation.amount.currency).format(parseFloat(donation.amount.value)),
+        }));
 
     const summaryItems = !stats
         ? []
@@ -194,10 +195,13 @@ export default function DonorDetailsPageOverviewTab() {
                     <Header
                         title={__('Private Note', 'give')}
                         subtitle={__('This note will be seen by only admins', 'give')}
-                        actionOnClick={() => {}}
+                        actionOnClick={() => setIsAddingNote(true)}
                         actionText={__('Add note', 'give')}
                     />
-                    <PrivateNote />
+                    <PrivateNotes
+                        donorId={donorId}
+                        context={[isAddingNote, setIsAddingNote]}
+                    />
                 </div>
             </div>
 

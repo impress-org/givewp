@@ -1,0 +1,90 @@
+.notesContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+}
+
+.addNoteContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.textarea {
+    width: 100%;
+    min-height: 5rem;
+    padding: 0.75rem;
+}
+
+.textAreaButtons {
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    gap: 0.75rem;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cancelBtn {
+    background-color: #fff;
+    border: solid 1px #d92d0b;
+    color: #d92d0b;
+}
+
+.saveBtn {
+    background-color: #2271b1;
+    border: solid 1px #2271b1;
+    color: #fff;
+}
+
+.noteContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    border: solid 1px #e5e7eb;
+    background-color: #fff;
+
+    &:hover {
+        background-color: #f9fafb;
+    }
+}
+
+.note {
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    color: #060c1a;
+}
+
+.date {
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1.67;
+    color: #6b7280;
+}
+
+.contextMenu {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
