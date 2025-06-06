@@ -14,7 +14,7 @@ import { __, sprintf } from "@wordpress/i18n";
  */
 import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import { DotsIcons, TrashIcon } from "@givewp/components/AdminDetailsPage/Icons";
-import AddAddressDialog from './AddAddressDialog';
+import EditAddressDialog from './EditAddressDialog';
 import DeleteAddressDialog from './DeleteAddressDialog';
 import styles from './styles.module.scss';
 import { DonorAddress as DonorAddressType } from "../../../../types";
@@ -25,7 +25,7 @@ import FormattedAddress from "./FormattedAddress";
  */
 export default function DonorAddress() {
     const [openDropdown, setOpenDropdown] = useState<number | null>(null);
-    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [addressToDelete, setAddressToDelete] = useState<number | null>(null);
     const [addressToEdit, setAddressToEdit] = useState<number | null>(null);
@@ -81,7 +81,7 @@ export default function DonorAddress() {
 
     const handleEditAddressAction = (addressIndex: number) => {
         setAddressToEdit(addressIndex);
-        setIsAddDialogOpen(true);
+        setIsEditDialogOpen(true);
         setOpenDropdown(null);
     };
 
@@ -103,12 +103,17 @@ export default function DonorAddress() {
         setOpenDropdown(null);
     };
 
-    const handleAddAddressConfirm = (newAddress: string, setAsPrimary: boolean) => {
-        setValue('addresses', [...addresses, newAddress], { shouldDirty: true });
-
-        if (setAsPrimary) {
-            handleSetAsPrimaryAction(addresses.length);
+    const handleEditAddressConfirm = (newAddress: DonorAddressType, addressIndex?: number) => {
+        if (addressIndex !== undefined) {
+            const newAddresses = [...addresses];
+            newAddresses[addressIndex] = newAddress;
+            setValue('addresses', newAddresses, { shouldDirty: true });
+        } else {
+            setValue('addresses', [...addresses, newAddress], { shouldDirty: true });
         }
+
+        setIsEditDialogOpen(false);
+        setAddressToEdit(null);
     };
 
     const handleDeleteAddressConfirm = () => {
@@ -240,7 +245,8 @@ export default function DonorAddress() {
                                 className={styles.addButton}
                                 onClick={(event) => {
                                     event.preventDefault();
-                                    setIsAddDialogOpen(true);
+                                    setIsEditDialogOpen(true);
+                                    setAddressToEdit(null);
                                 }}
                                 aria-label={`${__('Add new address. Currently', 'give')} ${addresses.length} ${addresses.length === 1 ? __('address', 'give') : __('addresses', 'give')} ${__('total', 'give')}`}
                                 aria-describedby={descriptionId}
@@ -252,10 +258,12 @@ export default function DonorAddress() {
                 </AdminSectionField>
             </AdminSection>
 
-            <AddAddressDialog
-                isOpen={isAddDialogOpen}
-                handleClose={() => setIsAddDialogOpen(false)}
-                handleConfirm={handleAddAddressConfirm}
+            <EditAddressDialog
+                isOpen={isEditDialogOpen}
+                handleClose={() => setIsEditDialogOpen(false)}
+                handleConfirm={handleEditAddressConfirm}
+                address={addresses[addressToEdit]}
+                addressIndex={addressToEdit}
             />
 
             <DeleteAddressDialog

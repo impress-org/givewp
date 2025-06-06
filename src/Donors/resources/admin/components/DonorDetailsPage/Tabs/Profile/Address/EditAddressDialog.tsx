@@ -41,7 +41,7 @@ interface AddressDialogProps {
 /**
  * @unreleased
  */
-export default function AddressDialog({
+export default function EditAddressDialog({
     isOpen,
     handleClose,
     handleConfirm,
