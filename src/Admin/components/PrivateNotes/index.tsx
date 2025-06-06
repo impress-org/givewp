@@ -8,8 +8,6 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import style from './style.module.scss';
 import cx from 'classnames';
 import {formatTimestamp} from '@givewp/src/Admin/utils';
-import ArchiveCampaignDialog
-    from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/ArchiveCampaignDialog';
 
 /**
  * @unreleased
