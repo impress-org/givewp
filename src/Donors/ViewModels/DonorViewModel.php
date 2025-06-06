@@ -51,7 +51,7 @@ class DonorViewModel
         $data = array_merge(
             $this->donor->toArray(),
             [
-                'addresses' => array_map(fn($address) => $address->toArray(), $this->donor->addresses),
+                'addresses' => array_map(function($address) { return $address->toArray(); }, $this->donor->addresses),
                 'avatarUrl' => $this->getAvatarUrl(),
                 'wpUserPermalink' => $this->donor->userId ? get_edit_user_link($this->donor->userId) : null,
             ],

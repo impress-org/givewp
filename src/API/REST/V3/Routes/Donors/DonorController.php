@@ -7,6 +7,7 @@ use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorAddress;
 use Give\Donors\ViewModels\DonorViewModel;
 use WP_Error;
 use WP_REST_Controller;
@@ -214,6 +215,13 @@ class DonorController extends WP_REST_Controller
         foreach ($request->get_params() as $key => $value) {
             if (!in_array($key, $nonEditableFields)) {
                 if ($donor->hasProperty($key)) {
+                    if ($key === 'addresses') {
+                        $donor->addresses = array_map(function($address) {
+                            return DonorAddress::fromArray($address);
+                        }, $value);
+                        continue;
+                    }
+
                     if (!$donor->isPropertyTypeValid($key, $value)) {
                         $value = null;
                     }

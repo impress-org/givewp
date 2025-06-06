@@ -457,16 +457,25 @@ class DonorRepository
         $id = $donorId ?? $donor->id;
 
         // Delete all existing address meta keys for this donor
-        DB::table('give_donormeta')
+        $metaIds = DB::table('give_donormeta')
+            ->select('meta_id')
             ->where('donor_id', $id)
-            ->whereLike('meta_key', DonorMetaKeys::ADDRESS_LINE1 . '%')
-            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_LINE2 . '%')
-            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_CITY . '%')
-            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_STATE . '%')
-            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_COUNTRY . '%')
-            ->orWhereLike('meta_key', DonorMetaKeys::ADDRESS_ZIP . '%')
-            ->delete();
+            ->where(function($query) {
+            $query->whereLike('meta_key', '_give_donor_address_billing_line1_%')
+                  ->orWhereLike('meta_key', '_give_donor_address_billing_line2_%')
+                  ->orWhereLike('meta_key', '_give_donor_address_billing_city_%')
+                  ->orWhereLike('meta_key', '_give_donor_address_billing_state_%')
+                  ->orWhereLike('meta_key', '_give_donor_address_billing_country_%')
+                  ->orWhereLike('meta_key', '_give_donor_address_billing_zip_%');
+            })
+            ->getAll('ARRAY_A');
 
+        if (!empty($metaIds)) {
+            DB::table('give_donormeta')
+                ->where('donor_id', $id)
+                ->whereIn('meta_id', array_column($metaIds, 'meta_id'))
+                ->delete();
+        }
         // Insert new addresses
         foreach ($donor->addresses as $index => $address) {
             give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_LINE1 . $index, $address->address1);
