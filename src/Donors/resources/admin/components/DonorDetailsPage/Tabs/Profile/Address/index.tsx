@@ -57,7 +57,7 @@ export default function DonorAddress() {
     };
 
     const handleEditAddressConfirm = (newAddress: DonorAddressType, addressIndex?: number) => {
-        if (addressIndex !== undefined) {
+        if (addressIndex !== null) {
             const newAddresses = [...addresses];
             newAddresses[addressIndex] = newAddress;
             setValue('addresses', newAddresses, { shouldDirty: true });
