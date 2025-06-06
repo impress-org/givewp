@@ -4,8 +4,12 @@
 import { getDonorOptionsWindowData } from '@givewp/donors/utils';
 import { __ } from '@wordpress/i18n';
 
-const { states } = getDonorOptionsWindowData();
+const donorOptionsData = getDonorOptionsWindowData();
+const { states } = donorOptionsData;
 
+/**
+ * @unreleased
+ */
 export interface StateOption {
     value: string;
     label: string;
@@ -16,13 +20,18 @@ export interface StateOption {
  *
  * @unreleased
  */
-export const getStatesForCountry = (countryCode: string): {
+export interface StatesConfig {
     hasStates: boolean;
     states: StateOption[];
     stateLabel: string;
     isRequired: boolean;
     showField: boolean;
-} => {
+}
+
+/**
+ * @unreleased
+ */
+export const getStatesForCountry = (countryCode: string): StatesConfig => {
     if (!countryCode) {
         return {
             hasStates: false,
@@ -33,10 +42,16 @@ export const getStatesForCountry = (countryCode: string): {
         };
     }
 
-    const showField = !states.noStatesCountries.includes(countryCode);
-    const isRequired = showField && !states.statesNotRequiredCountries.includes(countryCode);
-    const stateLabel = states.labels[countryCode] || __('State', 'give');
-    const countryStates = states.list[countryCode] || {};
+    // Safety checks for states data
+    const noStatesCountries = states?.noStatesCountries || [];
+    const statesNotRequiredCountries = states?.statesNotRequiredCountries || [];
+    const stateLabels = states?.labels || {};
+    const statesList = states?.list || {};
+
+    const showField = !noStatesCountries.includes(countryCode);
+    const isRequired = showField && !statesNotRequiredCountries.includes(countryCode);
+    const stateLabel = stateLabels[countryCode] || __('State', 'give');
+    const countryStates = statesList[countryCode] || {};
 
     const stateOptions: StateOption[] = Object.entries(countryStates).map(([value, label]) => ({
         value,

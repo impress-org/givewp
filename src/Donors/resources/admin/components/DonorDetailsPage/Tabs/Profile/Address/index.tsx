@@ -44,7 +44,7 @@ export default function DonorAddress() {
     const handleSetAsPrimaryAction = (addressIndex: number) => {
         if (addressIndex >= 0 && addressIndex < addresses.length) {
             const selectedAddress = addresses[addressIndex];
-            const remainingAddresses = addresses.filter((_: any, index: number) => index !== addressIndex);
+            const remainingAddresses = addresses.filter((_, index: number) => index !== addressIndex);
             const reorderedAddresses = [selectedAddress, ...remainingAddresses];
 
             setValue('addresses', reorderedAddresses, { shouldDirty: true });
@@ -70,7 +70,7 @@ export default function DonorAddress() {
     };
 
     const handleDeleteAddressConfirm = () => {
-        setValue('addresses', addresses.filter((_: any, index: number) => index !== addressToDelete), { shouldDirty: true });
+        setValue('addresses', addresses.filter((_, index: number) => index !== addressToDelete), { shouldDirty: true });
 
         setIsDeleteDialogOpen(false);
         setAddressToDelete(null);
@@ -123,7 +123,11 @@ export default function DonorAddress() {
                                     setIsEditDialogOpen(true);
                                     setAddressToEdit(null);
                                 }}
-                                aria-label={`${__('Add new address. Currently', 'give')} ${addresses.length} ${addresses.length === 1 ? __('address', 'give') : __('addresses', 'give')} ${__('total', 'give')}`}
+                                aria-label={
+                                    addresses.length === 0
+                                        ? __('Add the first address for this donor', 'give')
+                                        : `${__('Add new address. Currently', 'give')} ${addresses.length} ${addresses.length === 1 ? __('address', 'give') : __('addresses', 'give')} ${__('total', 'give')}`
+                                }
                                 aria-describedby={descriptionId}
                             >
                                 {__('Add address', 'give')}

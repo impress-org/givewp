@@ -15,7 +15,7 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import styles from './styles.module.scss';
 import { DonorAddress } from '../../../../types';
 import { getDonorOptionsWindowData } from '@givewp/donors/utils';
-import { getStatesForCountry, StateOption } from './addressUtils';
+import { getStatesForCountry, StatesConfig } from './addressUtils';
 
 const { countries } = getDonorOptionsWindowData();
 
@@ -50,13 +50,7 @@ export default function EditAddressDialog({
 }: AddressDialogProps) {
     const [address, setAddress] = useState<DonorAddress>(DEFAULT_ADDRESS);
     const [errors, setErrors] = useState<Partial<DonorAddress>>({});
-    const [stateConfig, setStateConfig] = useState<{
-        hasStates: boolean;
-        states: StateOption[];
-        stateLabel: string;
-        isRequired: boolean;
-        showField: boolean;
-    }>({
+    const [stateConfig, setStateConfig] = useState<StatesConfig>({
         hasStates: false,
         states: [],
         stateLabel: __('State', 'give'),
