@@ -14,6 +14,7 @@ import type {CampaignOverViewStat} from './types';
 import styles from './styles.module.scss';
 import CampaignDetailsErrorBoundary
     from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/CampaignDetailsErrorBoundary';
+import SkeletonLoader from './SkeletonLoader';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
@@ -29,20 +30,23 @@ export const filterOptions = [
 ];
 
 const fetchCampaignOverviewStats = async (days: number, setLoading: Function, setStats: Function) => {
-        setLoading(true);
+    setLoading(true);
 
-        try {
-            const response = await apiFetch({
-                path: addQueryArgs(`/givewp/v3/campaigns/${campaignId}/statistics`, {rangeInDays: days}),
-            });
+    try {
+        // Add artificial delay of 1.5 seconds
+        await new Promise(resolve => setTimeout(resolve, 300));
+        
+        const response = await apiFetch({
+            path: addQueryArgs(`/givewp/v3/campaigns/${campaignId}/statistics`, {rangeInDays: days}),
+        });
 
-            setStats(response as CampaignOverViewStat[]);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching campaign stats:', error);
-            setLoading(false);
-        }
-    };
+        setStats(response as CampaignOverViewStat[]);
+        setLoading(false);
+    } catch (error) {
+        console.error('Error fetching campaign stats:', error);
+        setLoading(false);
+    }
+};
 
 const CampaignStats = () => {
     const [dayRange, setDayRange] = useState<number>(0);
@@ -54,11 +58,20 @@ const CampaignStats = () => {
      */
     const [stats, setStats] = useState<CampaignOverViewStat[]>([]);
     const {campaign} = useCampaignEntityRecord();
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
     useEffect(() => {
-        fetchCampaignOverviewStats(dayRange, setLoading, setStats);
+        fetchCampaignOverviewStats(dayRange, setLoading, setStats).then(() => {
+            if (isInitialLoad) {
+                setIsInitialLoad(false);
+            }
+        });
     }, [dayRange]);
+
+    if (loading && isInitialLoad) {
+        return <SkeletonLoader />;
+    }
 
     const widgetDescription = filterOptions.find((option) => option.value === dayRange)?.description;
 
