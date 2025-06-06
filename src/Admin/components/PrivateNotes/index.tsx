@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import useSWR from 'swr';
 import {Dispatch, SetStateAction, useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
-import {DotsMenuIcon, NotesIcon, EditIcon, DeleteIcon} from './Icons';
+import {DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon} from './Icons';
 import Spinner from '../Spinner';
 import style from './style.module.scss';
 import cx from 'classnames';
@@ -27,6 +27,7 @@ export default function PrivateNotes({donorId, context}: {
     const {
         data,
         isLoading,
+        isValidating,
         mutate,
     } = useSWR<[]>(endpoint, (url) => apiFetch({path: url}), {revalidateOnFocus: false});
 
@@ -42,10 +43,10 @@ export default function PrivateNotes({donorId, context}: {
 
     const deleteNote = (id: number) => {
         apiFetch({path: `/givewp/v3/donors/${donorId}/notes/${id}`, method: 'DELETE', data: {id}})
-            .then( async (response) => {
-                await mutate(response)
+            .then(async (response) => {
+                await mutate(response);
             });
-    }
+    };
 
     const setState = (props) => {
         setNoteState((prevState) => {
@@ -56,7 +57,7 @@ export default function PrivateNotes({donorId, context}: {
         });
     };
 
-    if (isLoading) {
+    if (isLoading || isValidating) {
         return (
             <div style={{margin: '0 auto'}}>
                 <Spinner />
@@ -64,15 +65,7 @@ export default function PrivateNotes({donorId, context}: {
         );
     }
 
-    if (!data?.length) {
-        return (
-            <div style={{margin: '0 auto'}}>
-                <NotesIcon />
-                <p>{__('No notes yet', 'give')}</p>
-            </div>
-        );
-    }
-
+    console.log(isAddingNote);
     return (
         <div className={style.notesContainer}>
             {isAddingNote && (
@@ -91,30 +84,48 @@ export default function PrivateNotes({donorId, context}: {
                         </button>
                         <button
                             className={cx(style.button, style.saveBtn)}
-                            onClick={() => saveNote()}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                saveNote();
+                            }}
                         >
                             {__('Save', 'give')}
                         </button>
                     </div>
                 </div>
             )}
-            {data.map((note) => {
-                return (
-                    <Note
-                        note={note}
-                        onDelete={(id: number) => deleteNote(id)}
-                    />
-                )
-            })}
+            {data.length ? (
+                <>
+                    {data.map((note) => {
+                        return (
+                            <Note
+                                note={note}
+                                onDelete={(id: number) => deleteNote(id)}
+                                onEdit={(id: number) => setState({currentlyEditing: id})}
+                            />
+                        );
+                    })}
+                </>
+            ) : (
+                <>
+                    {!isAddingNote && (
+                        <div style={{margin: '0 auto'}}>
+                            <NotesIcon />
+                            <p>{__('No notes yet', 'give')}</p>
+                        </div>
+                    )}
+                </>
+            )}
         </div>
-    );
+    )
+        ;
 }
 
 
 /**
  * @unreleased
  */
-const Note = ({note, onDelete}) => {
+const Note = ({note, onDelete, onEdit}) => {
     const [showMenuIcon, setShowMenuIcon] = useState(false);
     const [showContextMenu, setShowContextMenu] = useState(false);
 
@@ -152,7 +163,10 @@ const Note = ({note, onDelete}) => {
                                 <a
                                     href="#"
                                     className={cx(style.menuItem, style.delete)}
-                                    onClick={() => onDelete(note.id)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        onDelete(note.id);
+                                    }}
                                 >
                                     <DeleteIcon /> {__('Delete', 'give')}
                                 </a>
