@@ -15,6 +15,12 @@ export type GiveDonorOptions = {
     intlTelInputSettings: IntlTelInputSettings;
     nameTitlePrefixes: string[];
     countries: {[countryCode: string]: string};
+    states: {
+        list: {[countryCode: string]: {[stateCode: string]: string}};
+        labels: {[countryCode: string]: string};
+        noStatesCountries: string[];
+        statesNotRequiredCountries: string[];
+    };
     admin: {
         showCampaignInteractionNotice: boolean
         showFormGoalNotice: boolean

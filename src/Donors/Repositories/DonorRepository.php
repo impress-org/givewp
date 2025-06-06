@@ -455,28 +455,36 @@ class DonorRepository
     private function updateAddresses(Donor $donor, ?int $donorId): void
     {
         $id = $donorId ?? $donor->id;
+        $prefix = DB::prefix('give_donormeta');
 
-        // Delete all existing address meta keys for this donor
-        $metaIds = DB::table('give_donormeta')
-            ->select('meta_id')
-            ->where('donor_id', $id)
-            ->where(function($query) {
-            $query->whereLike('meta_key', '_give_donor_address_billing_line1_%')
-                  ->orWhereLike('meta_key', '_give_donor_address_billing_line2_%')
-                  ->orWhereLike('meta_key', '_give_donor_address_billing_city_%')
-                  ->orWhereLike('meta_key', '_give_donor_address_billing_state_%')
-                  ->orWhereLike('meta_key', '_give_donor_address_billing_country_%')
-                  ->orWhereLike('meta_key', '_give_donor_address_billing_zip_%');
-            })
-            ->getAll('ARRAY_A');
+        $sql = DB::prepare(
+            "DELETE FROM {$prefix}
+                WHERE donor_id = %d
+                AND (
+                    meta_key LIKE %s OR
+                    meta_key LIKE %s OR
+                    meta_key LIKE %s OR
+                    meta_key LIKE %s OR
+                    meta_key LIKE %s OR
+                    meta_key LIKE %s
+                )",
+            [
+                $id,
+                '_give_donor_address_billing_line1_*',
+                '_give_donor_address_billing_line2_*',
+                '_give_donor_address_billing_city_*',
+                '_give_donor_address_billing_state_*',
+                '_give_donor_address_billing_country_*',
+                '_give_donor_address_billing_zip_*',
+            ]
+        );
 
-        if (!empty($metaIds)) {
-            DB::table('give_donormeta')
-                ->where('donor_id', $id)
-                ->whereIn('meta_id', array_column($metaIds, 'meta_id'))
-                ->delete();
+        try {
+            DB::query( str_replace('*', '%', $sql));
+        } catch (Exception $e) {
+            Log::error('Failed deleting donor addresses', compact('donor', 'id', 'sql'));
         }
-        // Insert new addresses
+
         foreach ($donor->addresses as $index => $address) {
             give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_LINE1 . $index, $address->address1);
             give()->donor_meta->add_meta($id, DonorMetaKeys::ADDRESS_LINE2 . $index, $address->address2);

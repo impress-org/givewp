@@ -15,6 +15,7 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import styles from './styles.module.scss';
 import { DonorAddress } from '../../../../types';
 import { getDonorOptionsWindowData } from '@givewp/donors/utils';
+import { getStatesForCountry, StateOption } from './addressUtils';
 
 const { countries } = getDonorOptionsWindowData();
 
@@ -49,6 +50,19 @@ export default function AddressDialog({
 }: AddressDialogProps) {
     const [address, setAddress] = useState<DonorAddress>(DEFAULT_ADDRESS);
     const [errors, setErrors] = useState<Partial<DonorAddress>>({});
+    const [stateConfig, setStateConfig] = useState<{
+        hasStates: boolean;
+        states: StateOption[];
+        stateLabel: string;
+        isRequired: boolean;
+        showField: boolean;
+    }>({
+        hasStates: false,
+        states: [],
+        stateLabel: __('State', 'give'),
+        isRequired: false,
+        showField: true,
+    });
     const countrySelectRef = useRef<HTMLSelectElement>(null);
 
     const isEditMode = initialAddress !== undefined && addressIndex !== undefined;
@@ -68,6 +82,13 @@ export default function AddressDialog({
             }
         }
     }, [isOpen, initialAddress]);
+
+    useEffect(() => {
+        if (address.country) {
+            const config = getStatesForCountry(address.country);
+            setStateConfig(config);
+        }
+    }, [address.country]);
 
     const handleFieldChange = (field: keyof DonorAddress, value: string) => {
         setAddress(prev => ({
@@ -90,15 +111,19 @@ export default function AddressDialog({
         if (!address.country.trim()) {
             newErrors.country = __('Country is required', 'give');
         }
+
         if (!address.address1.trim()) {
             newErrors.address1 = __('Address 1 is required', 'give');
         }
+
         if (!address.city.trim()) {
             newErrors.city = __('City is required', 'give');
         }
-        if (!address.state.trim()) {
-            newErrors.state = __('State is required', 'give');
+
+        if (stateConfig.showField && stateConfig.isRequired && !address.state.trim()) {
+            newErrors.state = __(`${stateConfig.stateLabel} is required`, 'give');
         }
+
         if (!address.zip.trim()) {
             newErrors.zip = __('Zip/Postal code is required', 'give');
         }
@@ -128,9 +153,11 @@ export default function AddressDialog({
         handleClose();
     };
 
-    const isFormValid = address.country.trim() && address.address1.trim() &&
-                       address.city.trim() && address.state.trim() &&
-                       address.zip.trim();
+    const isFormValid = address.country.trim() &&
+        address.address1.trim() &&
+        address.city.trim() &&
+        (!stateConfig.showField || !stateConfig.isRequired || address.state.trim()) &&
+        address.zip.trim();
 
     return (
         <ModalDialog
@@ -241,33 +268,53 @@ export default function AddressDialog({
                         </div>
 
                         <div className={styles.formRow}>
-                            <div className={styles.formField}>
-                                <label htmlFor="state" className={styles.label}>
-                                    {__('State', 'give')}
-                                </label>
-                                <select
-                                    id="state"
-                                    className={`${styles.input} ${styles.select} ${errors.state ? styles.inputError : ''}`}
-                                    value={address.state}
-                                    onChange={(e) => handleFieldChange('state', e.target.value)}
-                                    aria-invalid={!!errors.state}
-                                    aria-describedby={errors.state ? 'state-error' : undefined}
-                                    aria-required="true"
-                                >
-                                    <option value="">{__('Select a state', 'give')}</option>
-                                    {/* TODO: Add state options */}
-                                </select>
-                                {errors.state && (
-                                    <div
-                                        id="state-error"
-                                        className={styles.errorMessage}
-                                        role="alert"
-                                        aria-live="polite"
-                                    >
-                                        {errors.state}
-                                    </div>
-                                )}
-                            </div>
+                            {stateConfig.showField && (
+                                <div className={styles.formField}>
+                                    <label htmlFor="state" className={styles.label}>
+                                        {stateConfig.stateLabel}
+                                    </label>
+                                    {stateConfig.hasStates ? (
+                                        <select
+                                            id="state"
+                                            className={`${styles.input} ${styles.select} ${errors.state ? styles.inputError : ''}`}
+                                            value={address.state}
+                                            onChange={(e) => handleFieldChange('state', e.target.value)}
+                                            aria-invalid={!!errors.state}
+                                            aria-describedby={errors.state ? 'state-error' : undefined}
+                                            aria-required={stateConfig.isRequired}
+                                        >
+                                            <option value="">{__(`Select a ${stateConfig.stateLabel.toLowerCase()}`, 'give')}</option>
+                                            {stateConfig.states.map((state) => (
+                                                <option key={state.value} value={state.value}>
+                                                    {state.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            id="state"
+                                            className={`${styles.input} ${errors.state ? styles.inputError : ''}`}
+                                            value={address.state}
+                                            onChange={(e) => handleFieldChange('state', e.target.value)}
+                                            aria-invalid={!!errors.state}
+                                            aria-describedby={errors.state ? 'state-error' : undefined}
+                                            aria-required={stateConfig.isRequired}
+                                            placeholder={stateConfig.stateLabel}
+                                        />
+                                    )}
+                                    {errors.state && (
+                                        <div
+                                            id="state-error"
+                                            className={styles.errorMessage}
+                                            role="alert"
+                                            aria-live="polite"
+                                        >
+                                            {errors.state}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
 
                             <div className={styles.formField}>
                                 <label htmlFor="zip" className={styles.label}>

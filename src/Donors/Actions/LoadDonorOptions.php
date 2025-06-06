@@ -29,6 +29,12 @@ class LoadDonorOptions
                 'intlTelInputSettings' => IntlTelInput::getSettings(),
                 'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
                 'countries' => give_get_country_list(),
+                'states' => [
+                    'list' => give_states_list(),
+                    'labels' => give_get_states_label(),
+                    'noStatesCountries' => array_keys(give_no_states_country_list()),
+                    'statesNotRequiredCountries' => array_keys(give_states_not_required_country_list()),
+                ],
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION')
                     ? GIVE_RECURRING_VERSION
                     : null,
