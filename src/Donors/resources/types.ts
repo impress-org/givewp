@@ -14,6 +14,7 @@ export type GiveDonorOptions = {
     defaultForm: string;
     intlTelInputSettings: IntlTelInputSettings;
     nameTitlePrefixes: string[];
+    countries: {[countryCode: string]: string};
     admin: {
         showCampaignInteractionNotice: boolean
         showFormGoalNotice: boolean
