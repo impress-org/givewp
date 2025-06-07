@@ -10,12 +10,12 @@ export interface DonorStatistics {
         lifetimeAmount: number;
         highestAmount: number;
         averageAmount: number;
-        firstDonation: {
+        first: {
             amount: string;
             date: string;
         } | null;
-        donationCount: number;
-        lastContribution: string | null;
+        count: number;
+        last: string | null;
     };
     donorSince: string;
     donorType: string;

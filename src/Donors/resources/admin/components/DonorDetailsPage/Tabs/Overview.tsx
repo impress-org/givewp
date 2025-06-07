@@ -73,16 +73,16 @@ export default function DonorDetailsPageOverviewTab() {
               },
               {
                   label: __('Last Contributed', 'give'),
-                  value: stats.donations.firstDonation
-                      ? getRelativeTimeString(new Date(stats.donations.firstDonation.date))
+                  value: stats.donations.first
+                      ? getRelativeTimeString(new Date(stats.donations.first.date))
                       : __('Never', 'give'),
               },
               {
                   label: __('First Contribution', 'give'),
-                  value: stats.donations.firstDonation
+                  value: stats.donations.first
                       ? {
-                            value1: amountFormatter(currency).format(parseFloat(stats.donations.firstDonation.amount)),
-                            value2: new Date(stats.donations.firstDonation.date).toLocaleDateString(undefined, {
+                            value1: amountFormatter(currency).format(parseFloat(stats.donations.first.amount)),
+                            value2: new Date(stats.donations.first.date).toLocaleDateString(undefined, {
                                 year: 'numeric',
                                 month: 'short',
                                 day: 'numeric',
@@ -97,7 +97,7 @@ export default function DonorDetailsPageOverviewTab() {
               },
               {
                   label: __('Total Donations', 'give'),
-                  value: stats.donations.donationCount?.toString() ?? '0',
+                  value: stats.donations.count?.toString() ?? '0',
               },
               {
                   label: __('Preferred Method', 'give'),
