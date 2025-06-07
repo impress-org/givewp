@@ -100,3 +100,62 @@ export const WarningIcon = () => (
         />
     </svg>
 );
+
+export const ProfileIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M6 40c4.672-4.955 11.014-8 18-8 6.986 0 13.328 3.045 18 8m-9-25a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"
+            stroke="#060C1A"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
+/**
+ * @unreleased
+ */
+export const EditIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M6.417 2.331h-2.45c-.98 0-1.47 0-1.845.19a1.75 1.75 0 0 0-.765.766c-.19.374-.19.864-.19 1.844v4.9c0 .98 0 1.47.19 1.845.168.329.436.597.765.764.375.191.865.191 1.845.191h4.9c.98 0 1.47 0 1.844-.19a1.75 1.75 0 0 0 .765-.765c.19-.375.19-.865.19-1.845v-2.45m-7 1.75h.978c.285 0 .428 0 .562-.032.119-.029.233-.076.337-.14.118-.072.219-.173.42-.375l5.579-5.578a1.237 1.237 0 1 0-1.75-1.75L5.213 7.034c-.201.202-.302.303-.374.42a1.167 1.167 0 0 0-.14.338c-.032.134-.032.277-.032.562v.977z"
+            stroke="#4B5563"
+            strokeWidth="1.167"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
+/**
+ * @unreleased
+ */
+export const SetAsPrimaryIcon = () => (
+    <svg
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+    >
+        <path d="M7 4.668v4.667M4.667 7h4.666" stroke="#4B5563" strokeWidth="1.167" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M1.75 4.55c0-.98 0-1.47.19-1.844a1.75 1.75 0 0 1 .766-.765c.374-.191.864-.191 1.844-.191h4.9c.98 0 1.47 0 1.845.19.329.169.597.436.764.766.191.374.191.864.191 1.844v4.9c0 .98 0 1.47-.19 1.845a1.75 1.75 0 0 1-.766.764c-.374.191-.864.191-1.844.191h-4.9c-.98 0-1.47 0-1.844-.19a1.75 1.75 0 0 1-.765-.766c-.191-.374-.191-.864-.191-1.844v-4.9z" stroke="#000" strokeWidth="1.167" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
+
+/**
+ * @unreleased
+ */
+export const AddressBlankSlateIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            d="M10 28.573C6.297 30.206 4 32.483 4 35c0 4.97 8.954 9 20 9s20-4.03 20-9c0-2.518-2.297-4.794-6-6.427M36 16c0 8.127-9 12-12 18-3-6-12-9.873-12-18 0-6.627 5.373-12 12-12s12 5.373 12 12zm-10 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"
+            stroke="#9CA0AF"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);

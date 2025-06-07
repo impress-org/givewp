@@ -32,6 +32,14 @@ class DonorRouteUpdateTest extends RestApiTestCase
             'company' => 'Updated Company',
             'avatarId' => 123,
             'additionalEmails' => ['test1@example.com', 'test2@example.com'],
+            'addresses' => [[
+                'address1' => '123 Main St',
+                'address2' => 'Apt 4B',
+                'city' => 'Anytown',
+                'state' => 'CA',
+                'country' => 'US',
+                'zip' => '12345',
+            ]],
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -47,6 +55,14 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $this->assertEquals('Updated Company', $data['company']);
         $this->assertEquals(123, $data['avatarId']);
         $this->assertEquals(['test1@example.com', 'test2@example.com'], $data['additionalEmails']);
+        $this->assertEquals([[
+            'address1' => '123 Main St',
+            'address2' => 'Apt 4B',
+            'city' => 'Anytown',
+            'state' => 'CA',
+            'country' => 'US',
+            'zip' => '12345',
+        ]], $data['addresses']);
     }
 
     /**
@@ -256,5 +272,74 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $this->assertNull($data['phone']);
         $this->assertNull($data['company']);
         $this->assertNull($data['avatarId']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testUpdateDonorShouldPersistAddressData()
+    {
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $addressData = [
+            'address1' => '456 Oak Avenue',
+            'address2' => 'Suite 300',
+            'city' => 'Springfield',
+            'state' => 'IL',
+            'country' => 'USA',
+            'zip' => '62701',
+        ];
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
+        $request->set_body_params([
+            'addresses' => [$addressData],
+        ]);
+
+        $response = $this->dispatchRequest($request);
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $response->get_status());
+        $this->assertEquals([$addressData], $data['addresses']);
+
+        // Verify persistence in database by reloading donor
+        $updatedDonor = Donor::find($donor->id);
+        $this->assertNotEmpty($updatedDonor->addresses);
+        $this->assertEquals($addressData['address1'], $updatedDonor->addresses[0]->address1);
+        $this->assertEquals($addressData['city'], $updatedDonor->addresses[0]->city);
+        $this->assertEquals($addressData['country'], $updatedDonor->addresses[0]->country);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testUpdateDonorShouldAcceptPartialAddressData()
+    {
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $partialAddressData = [
+            'address1' => '789 Elm Street',
+            'city' => 'Chicago',
+            'country' => 'USA',
+        ];
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
+        $request->set_body_params([
+            'addresses' => [$partialAddressData],
+        ]);
+
+        $response = $this->dispatchRequest($request);
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $response->get_status());
+        $this->assertEquals('789 Elm Street', $data['addresses'][0]['address1']);
+        $this->assertEquals('Chicago', $data['addresses'][0]['city']);
+        $this->assertEquals('USA', $data['addresses'][0]['country']);
+        $this->assertEquals('', $data['addresses'][0]['address2']); // Should be empty
+        $this->assertEquals('', $data['addresses'][0]['state']); // Should be empty
+        $this->assertEquals('', $data['addresses'][0]['zip']); // Should be empty
     }
 }

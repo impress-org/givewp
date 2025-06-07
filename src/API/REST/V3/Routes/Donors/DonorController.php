@@ -7,6 +7,7 @@ use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorAddress;
 use Give\Donors\ViewModels\DonorViewModel;
 use WP_Error;
 use WP_REST_Controller;
@@ -214,6 +215,13 @@ class DonorController extends WP_REST_Controller
         foreach ($request->get_params() as $key => $value) {
             if (!in_array($key, $nonEditableFields)) {
                 if ($donor->hasProperty($key)) {
+                    if ($key === 'addresses') {
+                        $donor->addresses = array_map(function($address) {
+                            return DonorAddress::fromArray($address);
+                        }, $value);
+                        continue;
+                    }
+
                     if (!$donor->isPropertyTypeValid($key, $value)) {
                         $value = null;
                     }
@@ -359,6 +367,40 @@ class DonorController extends WP_REST_Controller
                     'description' => esc_html__('Donor avatar ID', 'give'),
                     'pattern' => '^$|^[0-9]+$',
                     'errorMessage' => esc_html__('Invalid avatar ID', 'give'),
+                ],
+                'addresses' => [
+                    'type' => 'array',
+                    'description' => esc_html__('Donor addresses', 'give'),
+                    'items' => [
+                        'type' => 'object',
+                        'description' => esc_html__('Donor address', 'give'),
+                        'properties' => [
+                            'address1' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address line 1', 'give'),
+                            ],
+                            'address2' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address line 2', 'give'),
+                            ],
+                            'city' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address city', 'give'),
+                            ],
+                            'state' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address state', 'give'),
+                            ],
+                            'country' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address country', 'give'),
+                            ],
+                            'zip' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address zip', 'give'),
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
