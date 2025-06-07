@@ -1,9 +1,11 @@
 import type {BillingAddressProps} from '@givewp/forms/propTypes';
-import {FC, useEffect, useState} from 'react';
+import {FC, useEffect, useState, useRef} from 'react';
 import {__} from '@wordpress/i18n';
 import {ErrorMessage} from '@hookform/error-message';
 import {useCallback} from '@wordpress/element';
 import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
+import {useDonationFormStateDispatch} from '@givewp/forms/app/store';
+import {setFormRefs} from '@givewp/forms/app/store/reducer';
 
 /**
  * @since 3.0.0
@@ -210,6 +212,7 @@ function StateFieldContainer({
 }
 
 /**
+ * @unreleased Set the billingAddress ref in the global form context for flexible access across the application.
  * @since 3.4.0 Update city and zip components before rendering to display required asterisk
  * @since 3.0.0
  */
@@ -219,6 +222,13 @@ export default function BillingAddress({
     apiUrl,
     name,
 }: BillingAddressProps) {
+    const billingAddressRef = useRef<HTMLDivElement>(null);
+    const dispatch = useDonationFormStateDispatch();
+
+    useEffect(() => {
+        dispatch(setFormRefs({ billingAddress: billingAddressRef }));
+    }, [dispatch]);
+
     // these are necessary to set the required indicator on the city and zip field labels
     // the actual validation will come from the server as we don't yet have the ability to update the actual client validation rules here
     const [cityRequired, setCityRequired] = useState(false);
@@ -228,7 +238,7 @@ export default function BillingAddress({
     const ZipWithRequired = () => <Zip validationRules={{required: zipRequired}} />;
 
     return (
-        <>
+        <div ref={billingAddressRef}>
             <fieldset>
                 {groupLabel && <legend>{groupLabel}</legend>}
                 <Country />
@@ -244,6 +254,6 @@ export default function BillingAddress({
                 />
                 <ZipWithRequired />
             </fieldset>
-        </>
+        </div>
     );
 }

@@ -1,6 +1,7 @@
 import type {DonationTotals} from '@givewp/forms/app/store/donation-summary';
 import {useDonationSummaryContext} from '@givewp/forms/app/store/donation-summary';
 import type {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
+import { useDonationFormState } from '@givewp/forms/app/store';
 
 /**
  * Zero decimal currencies are currencies that do not have a minor unit.
@@ -87,24 +88,37 @@ const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
 const normalizeAmount = (amount: number) => Math.round(amount * 100) / 100;
 
 /**
+ * @unreleased Uses refs from the global form context to ensure the billing address fields are available.
  * @since 4.0.0
  */
 export default function useFormData() {
     const {totals} = useDonationSummaryContext();
     const {useWatch} = window.givewp.form.hooks;
+    const { refs } = useDonationFormState();
+    const billingAddressGroupExists = !!refs?.billingAddress?.current;
 
     const firstName = useWatch({name: 'firstName'}) as string;
     const lastName = useWatch({name: 'lastName'}) as string | undefined;
     const email = useWatch({name: 'email'}) as string;
     const phone = useWatch({name: 'phone'}) as string | undefined;
-    const billingAddress = {
-        addressLine1: useWatch({name: 'address1'}) as string | undefined,
-        addressLine2: useWatch({name: 'address2'}) as string | undefined,
-        city: useWatch({name: 'city'}) as string | undefined,
-        state: useWatch({name: 'state'}) as string | undefined,
-        postalCode: useWatch({name: 'zip'}) as string | undefined,
-        country: useWatch({name: 'country'}) as string | undefined,
-    };
+
+    const billingAddress = billingAddressGroupExists
+        ? {
+            addressLine1: useWatch({name: 'address1'}) as string | undefined,
+            addressLine2: useWatch({name: 'address2'}) as string | undefined,
+            city: useWatch({name: 'city'}) as string | undefined,
+            state: useWatch({name: 'state'}) as string | undefined,
+            postalCode: useWatch({name: 'zip'}) as string | undefined,
+            country: useWatch({name: 'country'}) as string | undefined,
+        }
+        : {
+            addressLine1: undefined,
+            addressLine2: undefined,
+            city: undefined,
+            state: undefined,
+            postalCode: undefined,
+            country: undefined,
+        };
     const amount = useWatch({name: 'amount'}) as string;
     const currency = useWatch({name: 'currency'}) as string;
     const subscriptionPeriod = useWatch({name: 'subscriptionPeriod'}) as subscriptionPeriod | undefined;

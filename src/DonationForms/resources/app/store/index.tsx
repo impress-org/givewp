@@ -1,7 +1,7 @@
-import {createContext, ReactNode, useContext, useReducer} from 'react';
+import {createContext, ReactNode, useContext, useReducer, MutableRefObject} from 'react';
 import type {Gateway} from '@givewp/forms/types';
-import reducer from '@givewp/forms/app/store/reducer';
 import {ObjectSchema} from 'joi';
+import reducer from '@givewp/forms/app/store/reducer';
 
 const StoreContext = createContext(null);
 StoreContext.displayName = 'DonationFormState';
@@ -9,12 +9,18 @@ StoreContext.displayName = 'DonationFormState';
 const StoreContextDispatch = createContext(null);
 StoreContextDispatch.displayName = 'DonationFormStateDispatch';
 
+/**
+ * @unreleased Adds a refs property to the state to store references to form elements.
+ */
+interface DonationFormState {
+    gateways: Gateway[];
+    defaultValues: object;
+    validationSchema: ObjectSchema;
+    refs?: Record<string, MutableRefObject<HTMLElement | null> | null>;
+}
+
 type PropTypes = {
-    initialState: {
-        gateways: Gateway[];
-        defaultValues: object;
-        validationSchema: ObjectSchema;
-    };
+    initialState: DonationFormState;
     children: ReactNode;
 };
 
@@ -31,7 +37,7 @@ const DonationFormStateProvider = ({initialState, children}: PropTypes) => {
     );
 };
 
-const useDonationFormState = () => useContext<PropTypes['initialState']>(StoreContext);
+const useDonationFormState = () => useContext<DonationFormState>(StoreContext);
 const useDonationFormStateDispatch = () => useContext(StoreContextDispatch);
 
 export {DonationFormStateProvider, useDonationFormState, useDonationFormStateDispatch};
