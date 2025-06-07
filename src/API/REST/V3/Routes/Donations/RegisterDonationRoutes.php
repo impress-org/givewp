@@ -138,21 +138,24 @@ class RegisterDonationRoutes
                         'enum' => ['live', 'test'],
                     ],
                     'status' => [
-                        'type' => 'string',
-                        'default' => 'any',
-                        'enum' => [
-                            'any',
-                            'publish',
-                            'give_subscription',
-                            'pending',
-                            'processing',
-                            'refunded',
-                            'revoked',
-                            'failed',
-                            'cancelled',
-                            'abandoned',
-                            'preapproval'
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => [
+                                'any',
+                                'publish',
+                                'give_subscription',
+                                'pending',
+                                'processing',
+                                'refunded',
+                                'revoked',
+                                'failed',
+                                'cancelled',
+                                'abandoned',
+                                'preapproval'
+                            ],
                         ],
+                        'default' => ['any'],
                     ],
                     'campaignId' => [
                         'type' => 'integer',
