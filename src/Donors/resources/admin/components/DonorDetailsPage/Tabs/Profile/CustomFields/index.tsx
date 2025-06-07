@@ -1,0 +1,37 @@
+import { __ } from "@wordpress/i18n";
+import { useFormContext } from "react-hook-form";
+import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
+import BlankSlate from './BlankSlate';
+import styles from './styles.module.scss';
+
+interface CustomField {
+    label: string;
+    value: string;
+}
+
+export default function CustomFields() {
+    const { watch } = useFormContext();
+    const customFields: CustomField[] = watch('customFields') || [];
+
+    return (
+        <AdminSection
+            title={__('Custom Fields', 'give')}
+            description={__('Custom fields filled by the donor', 'give')}
+        >
+            <AdminSectionField>
+                {!customFields.length ? (
+                    <BlankSlate />
+                ) : (
+                    <div className={styles.customFields}>
+                        {customFields.map((field, index) => (
+                            <div key={index} className={styles.field}>
+                                <div className={styles.label}>{field.label}</div>
+                                <div className={styles.value} dangerouslySetInnerHTML={{ __html: field.value }} />
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </AdminSectionField>
+        </AdminSection>
+    );
+}
