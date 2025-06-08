@@ -346,7 +346,7 @@
                 }
 
                 input, select {
-                    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+                    padding: var(--givewp-spacing-4);
 
                     &:not([type="checkbox"]) {
                         height: auto;
@@ -410,12 +410,12 @@
             input,
             select {
                 font-size: 1rem;
-                line-height: 2;
+                line-height: 1.5;
                 display: block;
                 width: 100%;
                 border: 1px solid #9ca0af;
-                border-radius: var(--givewp-spacing-1);
-                padding: var(--givewp-spacing-2);
+                border-radius: var(--givewp-rounded-4);
+                padding: var(--givewp-spacing-4);
             }
         }
     }

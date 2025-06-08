@@ -178,7 +178,7 @@ export default function EditAddressDialog({
                                 aria-required="true"
                             >
                                 <option value="">{__('Select a country', 'give')}</option>
-                                {Object.entries(countries).map(([code, name]) => (
+                                {Object.entries(countries).filter(([code]) => code !== '').map(([code, name]) => (
                                     <option key={code} value={code}>
                                         {name}
                                     </option>
