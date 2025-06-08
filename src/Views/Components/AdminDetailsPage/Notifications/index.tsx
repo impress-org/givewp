@@ -12,7 +12,7 @@ export default ({type}: {type: 'snackbar' | 'notice'}) => {
 
     return (
         <div className={styles[`${type}Container`]}>
-            {notifications.map(notification => <Notification notification={notification} />)}
+            {notifications.map(notification => <Notification key={notification.id} notification={notification} />)}
         </div>
     );
 }
