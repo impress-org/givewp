@@ -157,29 +157,30 @@ class DonorViewModel
     {
         $forms = $this->getUniqueDonationFormsForDonor();
 
-        if (!$forms) {
+        if (empty($forms)) {
             return [];
         }
 
-        $fields = array_reduce($forms, function ($fields, DonationForm $form) {
-            return $fields + $this->getDisplayedDonorMetaFieldsForForm($form);
-        }, []);
+        $allFields = [];
+        foreach ($forms as $form) {
+            $allFields = array_merge($allFields, $this->getDisplayedDonorMetaFieldsForForm($form));
+        }
 
-        return array_reduce($fields, function($customFields, Field $field) {
+        $customFields = [];
+        foreach ($allFields as $field) {
             $value = $this->getFieldValue($field);
-            $label = method_exists($field, 'getLabel') ? $field->getLabel() : $field->getName();
 
             if (empty($value)) {
-                return $customFields;
+                continue;
             }
 
             $customFields[] = [
-                'label' => $label,
+                'label' => method_exists($field, 'getLabel') ? $field->getLabel() : $field->getName(),
                 'value' => $value,
             ];
+        }
 
-            return $customFields;
-        }, []);
+        return $customFields;
     }
 
     /**
@@ -189,17 +190,31 @@ class DonorViewModel
      */
     private function getUniqueDonationFormsForDonor(): array
     {
-        $formIds = array_map(static function (Donation $donation) {
-            return $donation->formId;
-        }, $this->donor->donations()->getAll() ?? []);
+        $donations = $this->donor->donations()->getAll();
 
-        $formIds = array_filter($formIds, static function ($formId) {
-            return !give(DonationFormRepository::class)->isLegacyForm($formId);
-        });
+        if (empty($donations)) {
+            return [];
+        }
 
-        return array_filter(array_map(static function ($formId) {
-            return DonationForm::find($formId);
-        }, array_unique($formIds)));
+        $uniqueFormIds = [];
+        foreach ($donations as $donation) {
+            $formId = $donation->formId;
+
+            // Skip legacy forms and avoid duplicates
+            if (!give(DonationFormRepository::class)->isLegacyForm($formId) && !in_array($formId, $uniqueFormIds, true)) {
+                $uniqueFormIds[] = $formId;
+            }
+        }
+
+        $forms = [];
+        foreach ($uniqueFormIds as $formId) {
+            $form = DonationForm::find($formId);
+            if ($form !== null) {
+                $forms[] = $form;
+            }
+        }
+
+        return $forms;
     }
 
     /**
@@ -209,7 +224,7 @@ class DonorViewModel
      */
     private function getDisplayedDonorMetaFieldsForForm(DonationForm $form): array
     {
-        return array_filter($form->schema()->getFields(), static function ($field) {
+        return array_filter($form->schema()->getFields(), static function (Field $field): bool {
             return $field->shouldShowInAdmin() && $field->shouldStoreAsDonorMeta();
         });
     }
@@ -219,7 +234,7 @@ class DonorViewModel
      *
      * @unreleased
      */
-    private function getFieldValue(Field $field)
+    private function getFieldValue(Field $field): string
     {
         $metaValue = give()->donor_meta->get_meta($this->donor->id, $field->getName(), true);
 
@@ -228,9 +243,10 @@ class DonorViewModel
         }
 
         if ($field->getType() === Types::FILE) {
-            return wp_get_attachment_link($metaValue);
+            $attachmentLink = wp_get_attachment_link($metaValue);
+            return $attachmentLink ?: '';
         }
 
-        return $metaValue;
+        return (string) $metaValue;
     }
 }
