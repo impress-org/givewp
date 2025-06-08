@@ -346,7 +346,14 @@
                 }
 
                 input, select {
+                    border-radius: var(--givewp-rounded-4);
+                    border: 1px solid #9ca0af;
+                    display: block;
+                    font-size: 1rem;
+                    line-height: 1.5;
+                    max-width: 100%;
                     padding: var(--givewp-spacing-4);
+                    width: 100%;
 
                     &:not([type="checkbox"]) {
                         height: auto;
@@ -401,21 +408,6 @@
                 font-size: 14px;
                 padding: var(--givewp-spacing-2) 0;
                 color: #ff0000;
-            }
-
-            select {
-                max-width: 100%;
-            }
-
-            input,
-            select {
-                font-size: 1rem;
-                line-height: 1.5;
-                display: block;
-                width: 100%;
-                border: 1px solid #9ca0af;
-                border-radius: var(--givewp-rounded-4);
-                padding: var(--givewp-spacing-4);
             }
         }
     }
