@@ -49,6 +49,8 @@ export default function DonorDetailsPageOverviewTab() {
     const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId, mode);
     const {donations} = useDonorDonations({donorId, mode});
     const {record: donor} = useDonorEntityRecord(donorId);
+    const donationChartEndpoint = `givewp/v3/donations?mode=${mode}&donorId=${donorId}`;
+    const donationsListUrl = `admin.php?page=give-payment-history&donor=${donorId}`;
 
     const transactions: Transaction[] = !donations
         ? []
@@ -128,7 +130,7 @@ export default function DonorDetailsPageOverviewTab() {
                     />
                     <TimeSeriesChart
                         title={__('Contributions', 'give')}
-                        endpoint={`givewp/v3/donations?mode=live&donorId=${donorId}`}
+                        endpoint={donationChartEndpoint}
                         amountFormatter={amountFormatter(currency)}
                     />
                 </div>
@@ -137,7 +139,7 @@ export default function DonorDetailsPageOverviewTab() {
                     <Header
                         title={__('Recent Transactions', 'give')}
                         subtitle={__('Shows the five recent transactions', 'give')}
-                        href={`admin.php?page=give-payment-history&donor=${donorId}`}
+                        href={donationsListUrl}
                         actionText={__('View All Transactions', 'give')}
                     />
                     <div className={styles.transactionList}>
