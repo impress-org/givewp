@@ -12,6 +12,8 @@ import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import {__} from '@wordpress/i18n';
 import {useDispatch} from '@wordpress/data';
 import apiFetch from '@wordpress/api-fetch';
+import { SlotFillProvider } from '@wordpress/components';
+import { PluginArea } from '@wordpress/plugins';
 
 /**
  * Internal Dependencies
@@ -26,6 +28,7 @@ import styles from './AdminDetailsPage.module.scss';
 import ErrorBoundary from './ErrorBoundary';
 import TabPanels from './Tabs/TabPanels';
 import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
+import AdminSection, { AdminSectionField, AdminSectionsWrapper } from './AdminSection';
 
 import './store';
 
@@ -56,6 +59,8 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     const contextMenuRef = useRef<HTMLDivElement>(null);
 
     const dispatch = useDispatch(`givewp/admin-details-page-notifications`);
+
+    exposeSharedComponents();
 
     useEffect(() => {
         apiFetch({
@@ -158,68 +163,85 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     return (
         <ErrorBoundary>
             <FormProvider {...methods}>
-                <form id={'givewp-details-form'} onSubmit={handleSubmit(onSubmit)}>
-                    <article className={`interface-interface-skeleton__content ${styles.page}`}>
-                        <TabsRouter tabDefinitions={tabDefinitions}>
-                            <header className={styles.pageHeader}>
-                                <div className={styles.breadcrumb}>
-                                    <a href={breadcrumbUrl}>{objectTypePlural.charAt(0).toUpperCase() + objectTypePlural.slice(1)}</a>
-                                    <BreadcrumbSeparatorIcon />
-                                    <span>{breadcrumbTitle || record?.name}</span>
-                                </div>
-                                <div className={styles.flexContainer}>
-                                    <div className={styles.flexRow}>
-                                        <h1 className={styles.pageTitle}>{pageTitle || record?.name}</h1>
-                                        {StatusBadge && <StatusBadge />}
+                <SlotFillProvider>
+                    <form id={'givewp-details-form'} onSubmit={handleSubmit(onSubmit)}>
+                        <article className={`interface-interface-skeleton__content ${styles.page}`}>
+                            <TabsRouter tabDefinitions={tabDefinitions}>
+                                <header className={styles.pageHeader}>
+                                    <div className={styles.breadcrumb}>
+                                        <a href={breadcrumbUrl}>{objectTypePlural.charAt(0).toUpperCase() + objectTypePlural.slice(1)}</a>
+                                        <BreadcrumbSeparatorIcon />
+                                        <span>{breadcrumbTitle || record?.name}</span>
                                     </div>
+                                    <div className={styles.flexContainer}>
+                                        <div className={styles.flexRow}>
+                                            <h1 className={styles.pageTitle}>{pageTitle || record?.name}</h1>
+                                            {StatusBadge && <StatusBadge />}
+                                        </div>
 
-                                    <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
-                                        {SecondaryActionButton && (
-                                            <SecondaryActionButton
-                                                className={`button button-tertiary ${styles.secondaryActionButton}`}
+                                        <div className={`${styles.flexRow} ${styles.justifyContentEnd}`}>
+                                            {SecondaryActionButton && (
+                                                <SecondaryActionButton
+                                                    className={`button button-tertiary ${styles.secondaryActionButton}`}
+                                                />
+                                            )}
+
+                                            <PrimaryActionButton
+                                                isSaving={isSaving}
+                                                formState={formState}
+                                                className={`button button-primary ${styles.primaryActionButton}`}
                                             />
-                                        )}
 
-                                        <PrimaryActionButton
-                                            isSaving={isSaving}
-                                            formState={formState}
-                                            className={`button button-primary ${styles.primaryActionButton}`}
-                                        />
+                                            {ContextMenuItems && (
+                                                <>
+                                                    <button
+                                                        ref={contextMenuButtonRef}
+                                                        className={`button button-secondary ${styles.contextMenuButton}`}
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            setShowContextMenu(!showContextMenu);
+                                                        }}
+                                                    >
+                                                        <DotsIcons />
+                                                    </button>
 
-                                        {ContextMenuItems && (
-                                            <>
-                                                <button
-                                                    ref={contextMenuButtonRef}
-                                                    className={`button button-secondary ${styles.contextMenuButton}`}
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        setShowContextMenu(!showContextMenu);
-                                                    }}
-                                                >
-                                                    <DotsIcons />
-                                                </button>
-
-                                                {!isSaving && showContextMenu && (
-                                                    <div ref={contextMenuRef} className={styles.contextMenu}>
-                                                        <ContextMenuItems className={styles.contextMenuItem} />
-                                                    </div>
-                                                )}
-                                            </>
-                                        )}
+                                                    {!isSaving && showContextMenu && (
+                                                        <div ref={contextMenuRef} className={styles.contextMenu}>
+                                                            <ContextMenuItems className={styles.contextMenuItem} />
+                                                        </div>
+                                                    )}
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                                <TabList tabDefinitions={tabDefinitions} />
-                            </header>
+                                    <TabList tabDefinitions={tabDefinitions} />
+                                </header>
 
-                            <TabPanels tabDefinitions={tabDefinitions} />
+                                <TabPanels tabDefinitions={tabDefinitions} />
 
-                            {children}
-                        </TabsRouter>
-                    </article>
-                </form>
+                                {children}
+                            </TabsRouter>
+                        </article>
+                    </form>
 
-                <NotificationPlaceholder type="snackbar" />
+                    <NotificationPlaceholder type="snackbar" />
+
+                    <PluginArea scope={`givewp-${objectTypePlural}-details-page`} />
+                </SlotFillProvider>
             </FormProvider>
         </ErrorBoundary>
     );
+}
+
+const exposeSharedComponents = (): void => {
+    (window as any).givewp = (window as any).givewp || {};
+    (window as any).givewp.admin = (window as any).givewp.admin || {};
+    (window as any).givewp.admin.components = (window as any).givewp.admin.components || {};
+
+    Object.assign((window as any).givewp.admin, {
+        components: {
+            AdminSection,
+            AdminSectionField,
+        }
+    });
 }
