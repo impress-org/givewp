@@ -60,7 +60,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
 
     const dispatch = useDispatch(`givewp/admin-details-page-notifications`);
 
-    exposeSharedComponents();
+    exposeAdminComponentsAndHooks();
 
     useEffect(() => {
         apiFetch({
@@ -233,10 +233,11 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     );
 }
 
-const exposeSharedComponents = (): void => {
+const exposeAdminComponentsAndHooks = (): void => {
     (window as any).givewp = (window as any).givewp || {};
     (window as any).givewp.admin = (window as any).givewp.admin || {};
     (window as any).givewp.admin.components = (window as any).givewp.admin.components || {};
+    (window as any).givewp.admin.hooks = (window as any).givewp.admin.hooks || {};
 
     Object.assign((window as any).givewp.admin, {
         components: {
