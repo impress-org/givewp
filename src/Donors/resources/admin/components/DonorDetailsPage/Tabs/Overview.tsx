@@ -53,7 +53,6 @@ export default function DonorDetailsPageOverviewTab() {
     const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId);
     const {donations} = useDonorDonations({donorId});
     const {record: donor} = useDonorEntityRecord(donorId);
-    console.log('donor', donor);
 
     const transactions: Transaction[] = !donations
         ? []
