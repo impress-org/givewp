@@ -52,10 +52,10 @@ class TestDonorStatisticsQueryMethods extends TestCase
         $donor = Donor::factory()->create();
         $query = new DonorStatisticsQuery($donor);
 
-        $this->assertTrue(method_exists($query, 'getLastContribution'));
+        $this->assertTrue(method_exists($query, 'getLastDonation'));
 
         // With no donations, should return null
-        $result = $query->getLastContribution();
+        $result = $query->getLastDonation();
         $this->assertNull($result);
     }
 
@@ -176,7 +176,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
 
         // Test first and last donation
         $firstDonation = $query->getFirstDonation();
-        $lastContribution = $query->getLastContribution();
+        $lastContribution = $query->getLastDonation();
         $this->assertNotNull($firstDonation);
         $this->assertNotNull($lastContribution);
         $this->assertIsArray($firstDonation);
@@ -194,7 +194,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     public function testStatisticsWithMultipleDonations()
     {
         $donor = Donor::factory()->create();
-        
+
         // Create donations with different amounts and dates
         $firstDonation = Donation::factory()->create([
             'donorId' => $donor->id,
@@ -227,7 +227,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
 
         // Test first and last donations
         $firstResult = $query->getFirstDonation();
-        $lastResult = $query->getLastContribution();
+        $lastResult = $query->getLastDonation();
         $this->assertNotNull($firstResult);
         $this->assertNotNull($lastResult);
         $this->assertIsArray($firstResult);
@@ -268,7 +268,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     public function testPreferredPaymentMethodWithDonations()
     {
         $donor = Donor::factory()->create();
-        
+
         // Create donations with different payment methods
         Donation::factory()->create([
             'donorId' => $donor->id,
@@ -330,31 +330,31 @@ class TestDonorStatisticsQueryMethods extends TestCase
         $unfilteredQuery = new DonorStatisticsQuery($donor);
         $totalAmount = $unfilteredQuery->getLifetimeDonationsAmount();
         $totalCount = $unfilteredQuery->getDonationsCount();
-        
+
         // Should have both donations: $100 + $200 = $300, count = 2
         $this->assertEquals(300, $totalAmount);
         $this->assertEquals(2, $totalCount);
 
         // Test filtering by campaign1 (should only include $100 donation)
         $filteredQuery = $unfilteredQuery->filterByCampaign($campaign1);
-        
+
         // The filtered query should be a different instance
         $this->assertInstanceOf(DonorStatisticsQuery::class, $filteredQuery);
         $this->assertNotSame($unfilteredQuery, $filteredQuery);
-        
+
         // Verify filtered results only include campaign1 data
         $filteredAmount = $filteredQuery->getLifetimeDonationsAmount();
         $filteredCount = $filteredQuery->getDonationsCount();
-        
+
         // Should only have campaign1 donation: $100, count = 1
         $this->assertEquals(100, $filteredAmount);
         $this->assertEquals(1, $filteredCount);
-        
+
         // Test filtering by campaign2 (should only include $200 donation)
         $campaign2FilteredQuery = $unfilteredQuery->filterByCampaign($campaign2);
         $campaign2Amount = $campaign2FilteredQuery->getLifetimeDonationsAmount();
         $campaign2Count = $campaign2FilteredQuery->getDonationsCount();
-        
+
         // Should only have campaign2 donation: $200, count = 1
         $this->assertEquals(200, $campaign2Amount);
         $this->assertEquals(1, $campaign2Count);
@@ -368,7 +368,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     public function testStatisticsWithPendingDonations()
     {
         $donor = Donor::factory()->create();
-        
+
         // Create a pending donation
         Donation::factory()->create([
             'donorId' => $donor->id,
@@ -395,7 +395,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     public function testModeFiltering()
     {
         $donor = Donor::factory()->create();
-        
+
         // Create live donation
         Donation::factory()->create([
             'donorId' => $donor->id,

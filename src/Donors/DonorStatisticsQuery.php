@@ -26,7 +26,7 @@ class DonorStatisticsQuery extends QueryBuilder
     public function __construct(Donor $donor, $mode = '')
     {
         $this->donor = $donor;
-        
+
         $this->from('posts', 'donation');
         $this->where('post_type', 'give_payment');
 
@@ -145,10 +145,13 @@ class DonorStatisticsQuery extends QueryBuilder
     /**
      * @unreleased
      */
-    public function getLastContribution()
+    public function getLastDonation()
     {
         $query = clone $this;
-        $query->select('donation.post_date');
+        $query->select(
+            'donation.post_date',
+            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0) as amount'
+        );
         $query->orderBy('post_date', 'DESC');
         $query->limit(1);
         $result = $query->get();
@@ -157,7 +160,10 @@ class DonorStatisticsQuery extends QueryBuilder
             return null;
         }
 
-        return human_time_diff(strtotime($result->post_date), current_time('timestamp')) . ' ago';
+        return [
+            'amount' => (float)$result->amount,
+            'date' => date('Y-m-d H:i:s', strtotime($result->post_date)),
+        ];
     }
 
     /**
