@@ -1,5 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import { useFormContext } from "react-hook-form";
+import { Interweave } from 'interweave';
 import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import BlankSlate from './BlankSlate';
 import styles from './styles.module.scss';
@@ -26,7 +27,7 @@ export default function CustomFields() {
                         {customFields.map((field, index) => (
                             <div key={index} className={styles.field}>
                                 <div className={styles.label}>{field.label}</div>
-                                <div className={styles.value} dangerouslySetInnerHTML={{ __html: field.value }} />
+                                <Interweave className={styles.value} content={field.value} />
                             </div>
                         ))}
                     </div>
