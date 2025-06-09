@@ -176,14 +176,17 @@ class TestDonorStatisticsQueryMethods extends TestCase
 
         // Test first and last donation
         $firstDonation = $query->getFirstDonation();
-        $lastContribution = $query->getLastDonation();
+        $lastDonation = $query->getLastDonation();
         $this->assertNotNull($firstDonation);
-        $this->assertNotNull($lastContribution);
+        $this->assertNotNull($lastDonation);
         $this->assertIsArray($firstDonation);
         $this->assertArrayHasKey('amount', $firstDonation);
         $this->assertArrayHasKey('date', $firstDonation);
         $this->assertEquals(100, $firstDonation['amount']);
-        $this->assertIsString($lastContribution);
+        $this->assertIsArray($lastDonation);
+        $this->assertArrayHasKey('amount', $lastDonation);
+        $this->assertArrayHasKey('date', $lastDonation);
+        $this->assertEquals(100, $lastDonation['amount']);
     }
 
     /**
@@ -233,7 +236,10 @@ class TestDonorStatisticsQueryMethods extends TestCase
         $this->assertIsArray($firstResult);
         $this->assertArrayHasKey('amount', $firstResult);
         $this->assertEquals(50, $firstResult['amount']); // First donation was $50
-        $this->assertIsString($lastResult); // Returns "X ago" format
+        $this->assertIsArray($lastResult); // Returns array with amount and date
+        $this->assertArrayHasKey('amount', $lastResult);
+        $this->assertArrayHasKey('date', $lastResult);
+        $this->assertEquals(75, $lastResult['amount']); // Last donation was $75
     }
 
     /**
