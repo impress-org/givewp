@@ -159,3 +159,17 @@ export const AddressBlankSlateIcon = () => (
         />
     </svg>
 );
+
+/**
+ * @unreleased
+ */
+export const CustomFieldsBlankSlateIcon = () => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M32.586 12.586a2 2 0 0 1 2.828 0l10 10a2 2 0 0 1 0 2.829l-10 10a2 2 0 1 1-2.828-2.829L41.172 24l-8.586-8.585a2 2 0 0 1 0-2.829zM15.414 12.586a2 2 0 0 1 0 2.829L6.828 24l8.586 8.586a2 2 0 1 1-2.828 2.829l-10-10a2 2 0 0 1 0-2.829l10-10a2 2 0 0 1 2.828 0zM28.434 4.048a2 2 0 0 1 1.518 2.386l-8 36a2 2 0 0 1-3.904-.867l8-36a2 2 0 0 1 2.386-1.519z"
+            fill="#9CA0AF"
+        />
+    </svg>
+);

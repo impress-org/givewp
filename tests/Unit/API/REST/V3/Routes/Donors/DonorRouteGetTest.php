@@ -70,6 +70,7 @@ class DonorRouteGetTest extends RestApiTestCase
             'addresses' => array_map(fn($address) => $address->toArray(), $donor->addresses),
             'avatarId' => $donor->avatarId,
             'avatarUrl' => null,
+            'customFields' => [],
             'wpUserPermalink' => $donor->userId ? get_edit_user_link($donor->userId) : null,
             'additionalEmails' => $donor->additionalEmails,
             'totalAmountDonated' => $donor->totalAmountDonated->toArray(),

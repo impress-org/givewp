@@ -79,6 +79,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
             'company' => $donor->company,
             'addresses' => array_map(fn($address) => $address->toArray(), $donor->addresses),
             'avatarUrl' => null,
+            'customFields' => [],
             'wpUserPermalink' => $donor->userId ? get_edit_user_link($donor->userId) : null,
             'totalAmountDonated' => $donor->totalAmountDonated->toArray(),
             'totalNumberOfDonations' => $donor->totalNumberOfDonations,
