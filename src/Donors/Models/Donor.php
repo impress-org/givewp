@@ -8,6 +8,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Donors\Factories\DonorFactory;
+use Give\Donors\ValueObjects\DonorAddress;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -35,6 +36,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $email
  * @property string $phone
  * @property string[] $additionalEmails
+ * @property DonorAddress[] $addresses
  * @property int $avatarId
  * @property string $company
  * @property Money $totalAmountDonated
@@ -59,6 +61,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'phone' => 'string',
         'prefix' => 'string',
         'additionalEmails' => ['array', []],
+        'addresses' => ['array', []],
         'avatarId' => 'int',
         'company' => 'string',
         'totalAmountDonated' => Money::class,

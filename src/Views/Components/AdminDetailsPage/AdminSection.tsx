@@ -1,5 +1,13 @@
+/**
+ * External Dependencies
+ */
 import { ReactNode } from 'react';
+
+/**
+ * Internal Dependencies
+ */
 import sharedStyles from '@givewp/components/AdminDetailsPage/AdminDetailsPage.module.scss';
+import ErrorBoundary from './ErrorBoundary';
 
 /**
  * @unreleased
@@ -24,11 +32,13 @@ interface AdminSectionFieldProps {
  */
 export function AdminSectionField({ subtitle, children, error }: AdminSectionFieldProps) {
     return (
-        <div className={sharedStyles.sectionField}>
-            {subtitle && <h3 className={sharedStyles.sectionSubtitle}>{subtitle}</h3>}
-            {children}
-            {error && <div className={sharedStyles.errorMsg}>{error}</div>}
-        </div>
+        <ErrorBoundary>
+            <div className={sharedStyles.sectionField}>
+                {subtitle && <h3 className={sharedStyles.sectionSubtitle}>{subtitle}</h3>}
+                {children}
+                {error && <div className={sharedStyles.errorMsg}>{error}</div>}
+            </div>
+        </ErrorBoundary>
     );
 }
 
@@ -48,17 +58,19 @@ export function AdminSectionsWrapper({ children }: { children: ReactNode }) {
  */
 export default function AdminSection({ title, description, children }: AdminSectionProps) {
     return (
-        <div className={sharedStyles.section}>
-            <div className={sharedStyles.leftColumn}>
-                <h2 className={sharedStyles.sectionTitle}>{title}</h2>
-                <div className={sharedStyles.sectionDescription}>
-                    {description}
+        <ErrorBoundary>
+            <div className={sharedStyles.section}>
+                <div className={sharedStyles.leftColumn}>
+                    <h2 className={sharedStyles.sectionTitle}>{title}</h2>
+                    <div className={sharedStyles.sectionDescription}>
+                        {description}
+                    </div>
+                </div>
+
+                <div className={sharedStyles.rightColumn}>
+                    {children}
                 </div>
             </div>
-
-            <div className={sharedStyles.rightColumn}>
-                {children}
-            </div>
-        </div>
+        </ErrorBoundary>
     );
 }

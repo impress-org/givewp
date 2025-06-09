@@ -497,4 +497,151 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$this->assertEquals( 0, $payment->total );
 	}
 
+	/**
+	 * Test Campaign ID Get
+	 */
+	public function test_campaign_id_get() {
+		$payment = new Give_Payment( $this->_payment_id );
+
+		// Initially should be 0 (default)
+		$this->assertEquals( 0, $payment->campaign_id );
+	}
+
+	/**
+	 * Test Campaign ID Set and Save
+	 */
+	public function test_campaign_id_set_and_save() {
+		$payment = new Give_Payment( $this->_payment_id );
+
+		// Set a campaign ID
+		$campaign_id = 12345;
+		$payment->campaign_id = $campaign_id;
+		$payment->save();
+
+		// Verify it was saved correctly by creating a new payment object
+		$payment_check = new Give_Payment( $this->_payment_id );
+		$this->assertEquals( $campaign_id, $payment_check->campaign_id );
+
+		// Also verify the meta was saved correctly
+		$saved_campaign_id = give_get_meta( $this->_payment_id, '_give_campaign_id', true );
+		$this->assertEquals( $campaign_id, $saved_campaign_id );
+	}
+
+	/**
+	 * Test Campaign ID Meta Direct Update
+	 */
+	public function test_campaign_id_meta_direct_update() {
+		$campaign_id = 67890;
+
+		// Set the meta directly
+		give_update_meta( $this->_payment_id, '_give_campaign_id', $campaign_id );
+
+		// Create a new payment object and verify it reads the meta correctly
+		$payment = new Give_Payment( $this->_payment_id );
+		$this->assertEquals( $campaign_id, $payment->campaign_id );
+	}
+
+	/**
+	 * Test Campaign ID Filter
+	 */
+	public function test_campaign_id_filter() {
+		$payment = new Give_Payment( $this->_payment_id );
+		$original_campaign_id = 11111;
+		$filtered_campaign_id = 22222;
+
+		// Set an original campaign ID
+		$payment->campaign_id = $original_campaign_id;
+		$payment->save();
+
+		// Add a filter to modify the campaign ID
+		add_filter( 'give_payment_campaign_id', function( $campaign_id, $payment_id, $payment ) use ( $filtered_campaign_id ) {
+			return $filtered_campaign_id;
+		}, 10, 3 );
+
+		// Create a new payment object and verify the filter is applied
+		$payment_check = new Give_Payment( $this->_payment_id );
+		$this->assertEquals( $filtered_campaign_id, $payment_check->campaign_id );
+
+		// Remove the filter
+		remove_all_filters( 'give_payment_campaign_id' );
+	}
+
+	/**
+	 * Test Campaign ID in give_insert_payment Function
+	 */
+	public function test_campaign_id_insert_payment() {
+		$campaign_id = 98765;
+
+		// Create payment data with campaign_id
+		$payment_data = [
+			'price'           => 25.00,
+			'give_form_title' => 'Test Campaign Form',
+			'give_form_id'    => $this->_payment_id, // Using existing payment's form for simplicity
+			'currency'        => 'USD',
+			'user_info'       => [
+				'id'         => 1,
+				'first_name' => 'John',
+				'last_name'  => 'Doe',
+				'email'      => 'john.doe@example.com',
+			],
+			'status'          => 'pending',
+			'gateway'         => 'manual',
+			'purchase_key'    => 'test_key_' . time(),
+			'campaign_id'     => $campaign_id, // This is what we're testing
+		];
+
+		// Insert the payment using the function
+		$new_payment_id = give_insert_payment( $payment_data );
+
+		// Verify the payment was created
+		$this->assertGreaterThan( 0, $new_payment_id );
+
+		// Create a payment object and verify campaign_id was set correctly
+		$payment = new Give_Payment( $new_payment_id );
+		$this->assertEquals( $campaign_id, $payment->campaign_id );
+
+		// Verify the meta was saved correctly
+		$saved_campaign_id = give_get_meta( $new_payment_id, '_give_campaign_id', true );
+		$this->assertEquals( $campaign_id, $saved_campaign_id );
+
+		// Clean up
+		Give_Helper_Payment::delete_payment( $new_payment_id );
+	}
+
+	/**
+	 * Test Campaign ID Default Value in give_insert_payment Function
+	 */
+	public function test_campaign_id_insert_payment_default() {
+		// Create payment data without campaign_id
+		$payment_data = [
+			'price'           => 15.00,
+			'give_form_title' => 'Test Default Campaign Form',
+			'give_form_id'    => $this->_payment_id, // Using existing payment's form for simplicity
+			'currency'        => 'USD',
+			'user_info'       => [
+				'id'         => 1,
+				'first_name' => 'Jane',
+				'last_name'  => 'Smith',
+				'email'      => 'jane.smith@example.com',
+			],
+			'status'          => 'pending',
+			'gateway'         => 'manual',
+			'purchase_key'    => 'test_key_default_' . time(),
+			// No campaign_id provided - should default to 0
+		];
+
+		// Insert the payment using the function
+		$new_payment_id = give_insert_payment( $payment_data );
+
+		// Verify the payment was created
+		$this->assertGreaterThan( 0, $new_payment_id );
+
+		// Create a payment object and verify campaign_id defaults to 0
+		$payment = new Give_Payment( $new_payment_id );
+		$this->assertEquals( 0, $payment->campaign_id );
+
+		// Clean up
+		Give_Helper_Payment::delete_payment( $new_payment_id );
+	}
+
 }
