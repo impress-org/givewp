@@ -33,7 +33,17 @@ export default function PrivateNotes({donorId, context}: {
         isLoading,
         isValidating,
         mutate,
-    } = useSWR<[]>(endpoint, (url) => apiFetch({path: url}), {revalidateOnFocus: false});
+    } = useSWR<{ data: any[]; totalPages: string; totalItems: string }>(endpoint, async (url) => {
+        const response = await apiFetch({path: url, parse: false}) as Response;
+        const data = await response.json();
+        return {
+            data,
+            totalPages: response.headers.get('X-WP-TotalPages'),
+            totalItems: response.headers.get('X-WP-Total'),
+        };
+    }, {revalidateOnFocus: false});
+
+    console.log(data)
 
     const saveNote = () => {
         setState({isSavingNote: true});
@@ -116,9 +126,9 @@ export default function PrivateNotes({donorId, context}: {
                     </div>
                 </div>
             )}
-            {data.length ? (
+            {data?.data?.length ? (
                 <>
-                    {data.map((note) => {
+                    {data.data.map((note) => {
                         return (
                             <Note
                                 note={note}
