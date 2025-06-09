@@ -70,7 +70,7 @@ export default function DonorDetailsPageOverviewTab() {
               },
               {
                   label: __('Last Contributed', 'give'),
-                  value: stats.donations.first
+                  value: stats.donations.last
                       ? getRelativeTimeString(new Date(stats.donations.last.date))
                       : __('Never', 'give'),
               },
