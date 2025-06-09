@@ -24,7 +24,7 @@ type DonorNote = {
 type NoteState = {
     isSavingNote: boolean;
     note: string;
-    page: number;
+    perPage: number;
 }
 
 /**
@@ -38,7 +38,7 @@ export default function PrivateNotes({donorId, context}: {
     const [state, setNoteState] = useState<NoteState>({
         isSavingNote: false,
         note: '',
-        page: 1,
+        perPage: 5,
     });
 
     const [isAddingNote, setIsAddingNote] = context;
@@ -50,13 +50,16 @@ export default function PrivateNotes({donorId, context}: {
         isLoading,
         isValidating,
         mutate,
-    } = useSWR<{ data: DonorNote[]; totalPages: string; totalItems: string }>(endpoint, async (url) => {
-        const response = await apiFetch({path: addQueryArgs(url, {page: state.page, per_page: 5}) , parse: false}) as Response;
+    } = useSWR<{data: DonorNote[]; totalPages: number; totalItems: number}>(endpoint, async (url) => {
+        const response = await apiFetch({
+            path: addQueryArgs(url, {page: 1, per_page: state.perPage}),
+            parse: false,
+        }) as Response;
         const data = await response.json();
         return {
             data,
-            totalPages: response.headers.get('X-WP-TotalPages'),
-            totalItems: response.headers.get('X-WP-Total'),
+            totalPages: Number(response.headers.get('X-WP-TotalPages')),
+            totalItems: Number(response.headers.get('X-WP-Total')),
         };
     }, {revalidateOnFocus: false});
 
@@ -90,7 +93,7 @@ export default function PrivateNotes({donorId, context}: {
             .then(async (response) => {
                 await mutate(response);
                 dispatch.addSnackbarNotice({
-                    id: 'delete-note',
+                    id: 'edit-note',
                     content: __('Private note edited', 'give'),
                 });
             });
@@ -163,6 +166,27 @@ export default function PrivateNotes({donorId, context}: {
                     )}
                 </>
             )}
+
+            <div className={style.showMoreContainer}>
+                {data?.data?.length && data.totalItems > state.perPage && (
+                    <button
+                        className={style.showMoreButton}
+                        onClick={async (e) => {
+                            e.preventDefault();
+                            setNoteState((prevState) => {
+                                return {
+                                    ...prevState,
+                                    perPage: prevState.perPage += 5,
+                                };
+                            });
+
+                            await mutate(endpoint);
+                        }}>
+                        {__('Show more', 'give')}
+                    </button>
+                )}
+            </div>
+            <NotificationPlaceholder type="snackbar" />
         </div>
     );
 }
@@ -277,7 +301,6 @@ const Note = ({note, onDelete, onEdit}) => {
                     }}
                 />
             </div>
-            <NotificationPlaceholder type="snackbar" />
         </>
     );
 };

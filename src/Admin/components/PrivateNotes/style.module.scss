@@ -184,3 +184,16 @@
     }
 }
 
+.showMoreContainer {
+    gap: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.showMoreButton {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: solid 1px #9ca0af;
+}
+
