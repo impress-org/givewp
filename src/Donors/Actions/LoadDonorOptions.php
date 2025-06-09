@@ -28,6 +28,7 @@ class LoadDonorOptions
                 'currencySymbol' => give_currency_symbol(),
                 'intlTelInputSettings' => IntlTelInput::getSettings(),
                 'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
+                'mode' => give_is_test_mode() ? 'test' : 'live',
                 'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION')
                     ? GIVE_RECURRING_VERSION
                     : null,

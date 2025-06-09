@@ -42,16 +42,12 @@ const statusMap: Record<string, 'Completed' | 'Failed' | 'Pending' | 'Refunded'>
 /**
  * @unreleased
  */
-const {currency} = getDonorOptionsWindowData();
-
-/**
- * @unreleased
- */
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
-    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId);
-    const {donations} = useDonorDonations({donorId});
+    const {currency, mode} = getDonorOptionsWindowData();
+    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId, mode);
+    const {donations} = useDonorDonations({donorId, mode});
     const {record: donor} = useDonorEntityRecord(donorId);
 
     const transactions: Transaction[] = !donations
