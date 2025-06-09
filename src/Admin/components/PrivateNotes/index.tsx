@@ -1,4 +1,5 @@
 import {__} from '@wordpress/i18n';
+import {addQueryArgs} from '@wordpress/url';
 import useSWR from 'swr';
 import {Dispatch, SetStateAction, useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
@@ -20,6 +21,12 @@ type DonorNote = {
     };
 }
 
+type NoteState = {
+    isSavingNote: boolean;
+    note: string;
+    page: number;
+}
+
 /**
  * @unreleased
  */
@@ -28,9 +35,10 @@ export default function PrivateNotes({donorId, context}: {
     context: [boolean, Dispatch<SetStateAction<boolean>>]
 }) {
     const endpoint = `/givewp/v3/donors/${donorId}/notes`;
-    const [state, setNoteState] = useState({
+    const [state, setNoteState] = useState<NoteState>({
         isSavingNote: false,
         note: '',
+        page: 1,
     });
 
     const [isAddingNote, setIsAddingNote] = context;
@@ -43,7 +51,7 @@ export default function PrivateNotes({donorId, context}: {
         isValidating,
         mutate,
     } = useSWR<{ data: DonorNote[]; totalPages: string; totalItems: string }>(endpoint, async (url) => {
-        const response = await apiFetch({path: url, parse: false}) as Response;
+        const response = await apiFetch({path: addQueryArgs(url, {page: state.page, per_page: 5}) , parse: false}) as Response;
         const data = await response.json();
         return {
             data,
