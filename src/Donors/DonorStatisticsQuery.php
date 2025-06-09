@@ -18,8 +18,15 @@ class DonorStatisticsQuery extends QueryBuilder
     /**
      * @unreleased
      */
+    private Donor $donor;
+
+    /**
+     * @unreleased
+     */
     public function __construct(Donor $donor, $mode = '')
     {
+        $this->donor = $donor;
+        
         $this->from('posts', 'donation');
         $this->where('post_type', 'give_payment');
 
@@ -159,20 +166,7 @@ class DonorStatisticsQuery extends QueryBuilder
     public function getDonorType()
     {
         $donorRepository = give(DonorRepository::class);
-        return $donorRepository->getDonorType($this->getDonorId());
-    }
-
-    /**
-     * @unreleased
-     */
-    private function getDonorId(): int
-    {
-        $query = clone $this;
-        $query->select('donorId.meta_value as donor_id');
-        $query->limit(1);
-        $result = $query->get();
-
-        return $result ? (int)$result->donor_id : 0;
+        return $donorRepository->getDonorType($this->donor->id);
     }
 
     /**
