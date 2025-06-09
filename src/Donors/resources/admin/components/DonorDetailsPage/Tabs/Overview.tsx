@@ -1,5 +1,6 @@
 import React from 'react';
 import {__} from '@wordpress/i18n';
+import {dateI18n} from '@wordpress/date';
 import classnames from 'classnames';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
@@ -7,8 +8,9 @@ import PrivateNote from '@givewp/src/Admin/components/PrivateNote';
 import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {amountFormatter, formatTimestamp, getRelativeTimeString} from '@givewp/src/Admin/utils';
-import {getDonorOptionsWindowData} from '@givewp/donors/utils';
+import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/utils';
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
+
 import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetailsPage.module.scss';
 
 /**
@@ -49,7 +51,9 @@ export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
     const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId);
-    const {donations, hasResolved: donationsResolved} = useDonorDonations({donorId});
+    const {donations} = useDonorDonations({donorId});
+    const {record: donor} = useDonorEntityRecord(donorId);
+    console.log('donor', donor);
 
     const transactions: Transaction[] = !donations
         ? []
@@ -65,11 +69,7 @@ export default function DonorDetailsPageOverviewTab() {
         : [
               {
                   label: __('Donor Since', 'give'),
-                  value: new Date(stats.donorSince).toLocaleDateString(undefined, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                  }),
+                  value: dateI18n('M j, Y', donor?.createdAt.date, undefined),
               },
               {
                   label: __('Last Contributed', 'give'),
@@ -82,11 +82,7 @@ export default function DonorDetailsPageOverviewTab() {
                   value: stats.donations.first
                       ? {
                             value1: amountFormatter(currency).format(parseFloat(stats.donations.first.amount)),
-                            value2: new Date(stats.donations.first.date).toLocaleDateString(undefined, {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                            }),
+                            value2: dateI18n('M j, Y', stats.donations.first.date, undefined),
                         }
                       : __('None', 'give'),
               },

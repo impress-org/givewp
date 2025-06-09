@@ -1,7 +1,11 @@
 export type Donor = {
   id: number;
   userId?: number;
-  createdAt: string;
+  createdAt: {
+    date: string;
+    timezone: string;
+    timezoneType: number;
+  };
   name: string;
   prefix: string;
   firstName: string;

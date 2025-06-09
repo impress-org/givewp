@@ -95,11 +95,10 @@ class DonorStatisticsController extends WP_REST_Controller
                 'count' => $query->getDonationsCount(),
                 'last' => $query->getLastContribution()
             ],
-            'donorSince' => $donor->createdAt->format('Y-m-d H:i:s'),
             'donorType' => $query->getDonorType(),
             'preferredPaymentMethod' => $query->preferredPaymentMethod(),
         ];
-
+        
         $response = $this->prepare_item_for_response($item, $request);
 
         return rest_ensure_response($response);
