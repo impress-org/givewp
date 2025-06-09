@@ -314,25 +314,50 @@ class TestDonorStatisticsQueryMethods extends TestCase
         // Create donations for different campaigns
         Donation::factory()->create([
             'donorId' => $donor->id,
-            'formId' => $campaign1->id,
+            'campaignId' => $campaign1->id,
             'amount' => new Money(10000, 'USD'), // $100.00
             'status' => DonationStatus::COMPLETE()
         ]);
 
         Donation::factory()->create([
             'donorId' => $donor->id,
-            'formId' => $campaign2->id,
+            'campaignId' => $campaign2->id,
             'amount' => new Money(20000, 'USD'), // $200.00
             'status' => DonationStatus::COMPLETE()
         ]);
 
-        // Test filtering by campaign1
-        $query = new DonorStatisticsQuery($donor);
-        $filteredQuery = $query->filterByCampaign($campaign1);
+        // Test unfiltered query (should include both donations)
+        $unfilteredQuery = new DonorStatisticsQuery($donor);
+        $totalAmount = $unfilteredQuery->getLifetimeDonationsAmount();
+        $totalCount = $unfilteredQuery->getDonationsCount();
+        
+        // Should have both donations: $100 + $200 = $300, count = 2
+        $this->assertEquals(300, $totalAmount);
+        $this->assertEquals(2, $totalCount);
 
+        // Test filtering by campaign1 (should only include $100 donation)
+        $filteredQuery = $unfilteredQuery->filterByCampaign($campaign1);
+        
         // The filtered query should be a different instance
         $this->assertInstanceOf(DonorStatisticsQuery::class, $filteredQuery);
-        $this->assertNotSame($query, $filteredQuery);
+        $this->assertNotSame($unfilteredQuery, $filteredQuery);
+        
+        // Verify filtered results only include campaign1 data
+        $filteredAmount = $filteredQuery->getLifetimeDonationsAmount();
+        $filteredCount = $filteredQuery->getDonationsCount();
+        
+        // Should only have campaign1 donation: $100, count = 1
+        $this->assertEquals(100, $filteredAmount);
+        $this->assertEquals(1, $filteredCount);
+        
+        // Test filtering by campaign2 (should only include $200 donation)
+        $campaign2FilteredQuery = $unfilteredQuery->filterByCampaign($campaign2);
+        $campaign2Amount = $campaign2FilteredQuery->getLifetimeDonationsAmount();
+        $campaign2Count = $campaign2FilteredQuery->getDonationsCount();
+        
+        // Should only have campaign2 donation: $200, count = 1
+        $this->assertEquals(200, $campaign2Amount);
+        $this->assertEquals(1, $campaign2Count);
     }
 
     /**
