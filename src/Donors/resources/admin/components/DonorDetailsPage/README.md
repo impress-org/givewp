@@ -27,6 +27,10 @@ declare global {
                     AdminSection: React.ComponentType<any>;
                     AdminSectionField: React.ComponentType<any>;
                 };
+                hooks: {
+                    useFormContext: () => any;
+                    useFormState: () => any;
+                };
             };
         };
     }
@@ -52,8 +56,16 @@ Use the `Fill` component to add content to the donor details page:
 import { Fill } from "@wordpress/components";
 
 export default function YourCustomSection() {
-    // Access GiveWP admin components from the global window object
+    // Access GiveWP admin components and hooks from the global window object
     const { AdminSection, AdminSectionField } = window.givewp.admin.components;
+    const { useFormContext, useFormState } = window.givewp.admin.hooks;
+
+    // Use the form hooks to access form data and state
+    const { watch, setValue } = useFormContext();
+    const { isDirty, isValid } = useFormState();
+
+    // Example: Watch a specific form field
+    const donorEmail = watch('email');
 
     return (
         <Fill name="GiveWP/DonorDetails/Profile/Sections">
@@ -63,12 +75,18 @@ export default function YourCustomSection() {
             >
                 <AdminSectionField subtitle="Field Label">
                     <p>Your custom content goes here.</p>
+                    <p>Current email: {donorEmail}</p>
                 </AdminSectionField>
 
-                <AdminSectionField subtitle="Another Field">
+                <AdminSectionField subtitle="Form Actions">
                     <div>
-                        <p>You can add any React components or HTML here.</p>
-                        <button>Custom Button</button>
+                        <p>Form is dirty: {isDirty ? 'Yes' : 'No'}</p>
+                        <p>Form is valid: {isValid ? 'Yes' : 'No'}</p>
+                        <button
+                            onClick={() => setValue('customField', 'new value')}
+                        >
+                            Update Custom Field
+                        </button>
                     </div>
                 </AdminSectionField>
             </AdminSection>
@@ -95,6 +113,41 @@ Access these components via `window.givewp.admin.components`:
 
 - **AdminSection**: Container for your section with title and description
 - **AdminSectionField**: Individual field within a section with subtitle
+
+### GiveWP Admin Hooks
+
+Access these React hooks via `window.givewp.admin.hooks`:
+
+- **useFormContext**: Access to react-hook-form context methods (watch, setValue, getValues, etc.)
+- **useFormState**: Access to form state information (isDirty, isValid, errors, etc.)
+
+These hooks provide access to the form context established by the donor details page, allowing you to:
+- Read current form values
+- Update form fields programmatically
+- Check form validation state
+- Access form errors and other state
+
+#### Example Hook Usage
+
+```typescript
+const { watch, setValue, getValues } = useFormContext();
+const { isDirty, isValid, errors } = useFormState();
+
+// Watch specific fields
+const donorName = watch('name');
+const donorEmail = watch('email');
+
+// Update fields
+setValue('customField', 'new value');
+
+// Get all form values
+const allValues = getValues();
+
+// Check form state
+if (isDirty && isValid) {
+    // Form has changes and is valid
+}
+```
 
 ## Example Use Cases
 

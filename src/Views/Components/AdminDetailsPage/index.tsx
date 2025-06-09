@@ -4,7 +4,7 @@
 import {useEffect, useState, useRef} from 'react';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
-import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
+import {FormProvider, SubmitHandler, useForm, useFormContext, useFormState} from 'react-hook-form';
 
 /**
  * WordPress Dependencies
@@ -242,6 +242,10 @@ const exposeSharedComponents = (): void => {
         components: {
             AdminSection,
             AdminSectionField,
+        },
+        hooks: {
+            useFormContext,
+            useFormState,
         }
     });
 }
