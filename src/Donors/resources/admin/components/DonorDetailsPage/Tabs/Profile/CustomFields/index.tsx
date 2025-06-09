@@ -11,8 +11,8 @@ interface CustomField {
 }
 
 export default function CustomFields() {
-    const { watch } = useFormContext();
-    const customFields: CustomField[] = watch('customFields') || [];
+    const { getValues } = useFormContext();
+    const customFields: CustomField[] = getValues('customFields') || [];
 
     return (
         <AdminSection
