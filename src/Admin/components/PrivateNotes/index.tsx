@@ -11,6 +11,15 @@ import style from './style.module.scss';
 import cx from 'classnames';
 import {formatTimestamp} from '@givewp/src/Admin/utils';
 
+type DonorNote = {
+    id: number;
+    donorId: number;
+    content: string;
+    createdAt: {
+        date: string;
+    };
+}
+
 /**
  * @unreleased
  */
@@ -33,7 +42,7 @@ export default function PrivateNotes({donorId, context}: {
         isLoading,
         isValidating,
         mutate,
-    } = useSWR<{ data: any[]; totalPages: string; totalItems: string }>(endpoint, async (url) => {
+    } = useSWR<{ data: DonorNote[]; totalPages: string; totalItems: string }>(endpoint, async (url) => {
         const response = await apiFetch({path: url, parse: false}) as Response;
         const data = await response.json();
         return {
@@ -42,8 +51,6 @@ export default function PrivateNotes({donorId, context}: {
             totalItems: response.headers.get('X-WP-Total'),
         };
     }, {revalidateOnFocus: false});
-
-    console.log(data)
 
     const saveNote = () => {
         setState({isSavingNote: true});
