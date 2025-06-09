@@ -166,7 +166,8 @@ class DonorStatisticsQuery extends QueryBuilder
     public function getDonorType()
     {
         $donorRepository = give(DonorRepository::class);
-        return $donorRepository->getDonorType($this->donor->id);
+        $donorType = $donorRepository->getDonorType($this->donor->id);
+        return $donorType ? $donorType->label() : __('Unknown', 'give');
     }
 
     /**

@@ -86,8 +86,6 @@ class DonorStatisticsController extends WP_REST_Controller
             $query = $query->filterByCampaign($campaign);
         }
 
-        $donorType = $query->getDonorType();
-        
         $item = [
             'donations' => [
                 'lifetimeAmount' => $query->getLifetimeDonationsAmount(),
@@ -98,7 +96,7 @@ class DonorStatisticsController extends WP_REST_Controller
                 'last' => $query->getLastContribution()
             ],
             'donorSince' => $donor->createdAt->format('Y-m-d H:i:s'),
-            'donorType' => $donorType ? $donorType->label() : __('Unknown', 'give'),
+            'donorType' => $query->getDonorType(),
             'preferredPaymentMethod' => $query->preferredPaymentMethod(),
         ];
 
