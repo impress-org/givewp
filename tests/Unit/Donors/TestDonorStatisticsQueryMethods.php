@@ -296,6 +296,8 @@ class TestDonorStatisticsQueryMethods extends TestCase
 
         // Should return the most used payment method (stripe appears twice)
         $this->assertNotEmpty($preferredMethod);
+        // Check that it contains "stripe" since stripe appears twice vs manual once
+        $this->assertStringContainsStringIgnoringCase('stripe', $preferredMethod);
     }
 
     /**
