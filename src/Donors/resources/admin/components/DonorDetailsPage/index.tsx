@@ -55,14 +55,18 @@ export default function DonorDetailsPage() {
     const { record: donor } = useDonorEntityRecord();
 
     const SendEmailButton = ({ className }: { className: string }) => {
+        if (!donor?.email) {
+            return null;
+        }
+
         return (
-            <button
-                type="button"
+            <a
+                href={`mailto:${donor.email}`}
                 className={className}
-                onClick={() => { }} // TODO: Add email sending logic
+                aria-label={__('Send email to donor', 'give')}
             >
                 {__('Send Email', 'give')}
-            </button>
+            </a>
         );
     };
 
