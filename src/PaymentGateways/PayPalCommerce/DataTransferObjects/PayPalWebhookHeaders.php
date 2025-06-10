@@ -43,7 +43,7 @@ class PayPalWebhookHeaders
      * A strange thing here is that the headers are inconsistent between live and sandbox mode, so this also checks for
      * both forms of the headers (studly case and all caps).
      *
-     * @unreleased Normalize header keys to lowercase and replace underscores with hyphens.
+     * @since 4.3.2 Normalize header keys to lowercase and replace underscores with hyphens.
      * @since 2.9.0
      *
      * @param array $headers
@@ -57,7 +57,7 @@ class PayPalWebhookHeaders
         foreach ($headers as $key => $value) {
             $normalizedHeaders[str_replace('_', '-', strtolower($key))] = $value;
         }
-    
+
         $headerKeys = [
             'transmissionId' => 'paypal-transmission-id',
             'transmissionTime' => 'paypal-transmission-time',
@@ -65,10 +65,10 @@ class PayPalWebhookHeaders
             'certUrl' => 'paypal-cert-url',
             'authAlgo' => 'paypal-auth-algo',
         ];
-    
+
         $payPalHeaders = new self();
         $missingKeys = [];
-    
+
         foreach ($headerKeys as $property => $expectedKey) {
             if (isset($normalizedHeaders[$expectedKey])) {
                 $payPalHeaders->$property = $normalizedHeaders[$expectedKey];
@@ -76,7 +76,7 @@ class PayPalWebhookHeaders
                 $missingKeys[] = $expectedKey;
             }
         }
-    
+
         if ( ! empty($missingKeys)) {
             PaymentGatewayLog::error(
                 'Missing PayPal webhook header',
@@ -85,10 +85,10 @@ class PayPalWebhookHeaders
                     'headers' => $headers,
                 ]
             );
-    
+
             throw new HttpHeaderException("Missing PayPal headers: " . implode(', ', $missingKeys));
         }
-    
+
         return $payPalHeaders;
     }
 }

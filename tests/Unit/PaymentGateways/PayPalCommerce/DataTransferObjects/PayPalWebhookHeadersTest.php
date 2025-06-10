@@ -8,12 +8,12 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.3.2
  */
 class PayPalWebhookHeadersTest extends TestCase
-{        
+{
     /**
-     * @unreleased
+     * @since 4.3.2
      *
      * @return array
      */
@@ -29,7 +29,7 @@ class PayPalWebhookHeadersTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      *
      * @return void
      */
@@ -45,7 +45,7 @@ class PayPalWebhookHeadersTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      *
      * @return void
      */
@@ -62,7 +62,7 @@ class PayPalWebhookHeadersTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      *
      * @return void
      */
@@ -86,7 +86,7 @@ class PayPalWebhookHeadersTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      *
      * @return void
      */
@@ -110,7 +110,7 @@ class PayPalWebhookHeadersTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      *
      * @return void
      */
@@ -125,7 +125,7 @@ class PayPalWebhookHeadersTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      *
      * @return void
      */
@@ -136,4 +136,4 @@ class PayPalWebhookHeadersTest extends TestCase
 
         PayPalWebhookHeaders::fromHeaders([]);
     }
-} 
+}

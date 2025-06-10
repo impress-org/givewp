@@ -6,7 +6,7 @@ use Give\Framework\Exceptions\Contracts\LoggableException;
 use Give\Framework\Exceptions\Traits\Loggable;
 
 /**
- * @unreleased Extends \Exception instead of \HttpHeaderException 
+ * @since 4.3.2 Extends \Exception instead of \HttpHeaderException
  */
 class HttpHeaderException extends \Exception implements LoggableException
 {
