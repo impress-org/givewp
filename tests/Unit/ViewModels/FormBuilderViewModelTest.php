@@ -104,7 +104,7 @@ class FormBuilderViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased Add country, state, city, zip, address1, and address2 to the disallowed field names.     
+     * @since 4.3.2 Add country, state, city, zip, address1, and address2 to the disallowed field names.
      */
     private function getDisallowedFieldNames(): array
     {
@@ -124,7 +124,7 @@ class FormBuilderViewModelTest extends TestCase
                 'city',
                 'zip',
                 'address1',
-                'address2',                
+                'address2',
             ]
         );
 

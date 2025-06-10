@@ -287,6 +287,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix: Resolved an issue with the visual form builder route user roles
 * Fix: Resolved an issue with error focus on Date and File fields
 * Fix: Resolved an issue where some servers were experiencing a "Missing PayPal webhook header" error
+* Fix: Resolved a conflict with custom text fields that use the same name as the billing address block field names
 
 = 4.3.1: May 30th, 2025 =
 * Fix: Resolved an issue with the Donor wall when filtering by multiple form IDs
