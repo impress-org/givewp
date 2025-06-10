@@ -10,6 +10,7 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
+use Give\License\Repositories\LicenseRepository;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
 use Give\ValueObjects\Money;
@@ -607,12 +608,18 @@ function give_stripe_set_app_info( $form_id = 0 ) {
  *
  * Note: This function is for internal purpose only.
  *
+ * @since 4.3.0 updated to use LicenseRepository
  * @since 2.5.0
  *
- * @return int
+ * @return float
  */
 function give_stripe_get_application_fee_percentage() {
-	return 2;
+    /**
+     * @var LicenseRepository $licenseRepository
+     */
+    $licenseRepository = give(LicenseRepository::class);
+
+    return $licenseRepository->getPlatformFeePercentage();
 }
 
 /**

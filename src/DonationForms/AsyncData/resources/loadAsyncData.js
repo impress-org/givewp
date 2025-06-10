@@ -7,7 +7,9 @@
  * 2) When the user adds a block in the WP block editor
  * 3) When the user scrolls the mouse
  * 4) When the user resizes the screen
+ * 5) When the "Forms" tab of the campaign details page gets updated
  *
+ * @since 4.1.0 Add support to campaign details page (the "Forms" tab)
  * @since 3.16.0
  */
 document.addEventListener('DOMContentLoaded', () => {
@@ -346,5 +348,29 @@ document.addEventListener('DOMContentLoaded', () => {
             // start observing a DOM node
             resizeObserver.observe(wpBlockEditorContent);
         }
+    };
+
+    // Trigger the async logic every time the "Forms" tab of the campaign details page gets updated
+    window.onload = function () {
+        const campaignsPage = document.querySelector('#give-admin-campaigns-root');
+
+        if (!campaignsPage) {
+            return;
+        }
+
+        const observer = new MutationObserver(() => {
+            const params = new URLSearchParams(window.location.search);
+            const isCampaignFormsTab = params.get('tab') === 'forms';
+
+            if (isCampaignFormsTab) {
+                window.GiveDonationFormsAsyncData.scriptDebug && console.log('Campaigns Page mutated on Forms Tab');
+                maybeLoadAsyncData();
+            }
+        });
+
+        observer.observe(campaignsPage, {
+            childList: true,
+            subtree: true,
+        });
     };
 });

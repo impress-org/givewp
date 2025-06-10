@@ -40,6 +40,7 @@ const removeTimezoneFromDateISOString = (date: string) => {
 /**
  * Event Form Modal component
  *
+ * @since 3.20.0 Added placeholder to event description field
  * @since 3.6.0
  */
 export default function EventFormModal({isOpen, handleClose, apiSettings, title, event}: EventModalProps) {
@@ -96,7 +97,11 @@ export default function EventFormModal({isOpen, handleClose, apiSettings, title,
             </div>
             <div className="givewp-event-tickets__form-row">
                 <label htmlFor="description">{__('Description', 'give')}</label>
-                <textarea {...register('description')} rows={4} />
+                <textarea
+                    {...register('description')}
+                    rows={4}
+                    placeholder={__('Briefly describe the details of your event', 'give')}
+                />
             </div>
             <div className="givewp-event-tickets__form-row givewp-event-tickets__form-row--half">
                 <div className="givewp-event-tickets__form-column">

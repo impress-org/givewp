@@ -18,11 +18,14 @@ export default function Steps({steps}: { steps: StepObject[] }) {
     const previousStep = usePrevious(currentStep);
 
     /**
+     * @since 4.0.0 prevent scroll on initial step.
      * @since 3.16.0 Scroll to the top of the iframe when the step changes.
      */
     useEffect(() => {
-        /* @ts-ignore */
-        window.parent.document.getElementById(window.parentIFrame?.getId())?.scrollIntoView()
+        if (currentStep > 0) {
+            /* @ts-ignore */
+            window.parent.document.getElementById(window.parentIFrame?.getId())?.scrollIntoView()
+        }
     }, [currentStep]);
 
     const stepElements = steps?.map(({id, element}) => {

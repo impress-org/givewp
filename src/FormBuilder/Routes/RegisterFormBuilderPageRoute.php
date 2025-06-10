@@ -3,6 +3,7 @@
 namespace Give\FormBuilder\Routes;
 
 
+use Give\Campaigns\Models\Campaign;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\Views\View;
@@ -20,6 +21,8 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
+     * @unreleased update capability to edit_give_forms
+     * @since 4.0.0 set parent slug to empty string
      * @since 3.0.0
      *
      * @return void
@@ -27,10 +30,10 @@ class RegisterFormBuilderPageRoute
     public function __invoke()
     {
         add_submenu_page(
-            null, // do not display in menu, just register page
+            '', // do not display in menu, just register page
             'Visual Donation Form Builder', // ignored
             'Add Form', // ignored
-            'manage_options',
+            'edit_give_forms',
             FormBuilderRouteBuilder::SLUG,
             [$this, 'renderPage'],
             1
@@ -58,6 +61,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
+     * @since 3.22.0 Add locale support
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
      *
@@ -74,6 +78,9 @@ class RegisterFormBuilderPageRoute
         if (!get_post($donationFormId)) {
             wp_die(__('Donation form does not exist.'));
         }
+
+        $locale = give_clean($_GET['locale']) ?? '';
+        Language::switchToLocale($locale);
 
         wp_enqueue_style(
             '@givewp/form-builder/registrars',
@@ -164,6 +171,16 @@ class RegisterFormBuilderPageRoute
             'actionUrl' => admin_url('admin-ajax.php?action=givewp_additional_payment_gateways_hide_notice'),
             'isDismissed' => get_user_meta(get_current_user_id(), 'givewp-additional-payment-gateways-notice-dismissed', true),
         ]);
+
+        /**
+         * @since 4.0.0
+         */
+        if ($campaign = Campaign::findByFormId($donationFormId)) {
+            wp_localize_script('@givewp/form-builder/script', 'headerContainer', [
+                'campaignUrl' => admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id),
+            ]);
+        }
+
 
         View::render('FormBuilder.admin-form-builder');
     }

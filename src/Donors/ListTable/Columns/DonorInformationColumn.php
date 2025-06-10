@@ -38,7 +38,7 @@ class DonorInformationColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Use email to get avatar URL
+     * @since 3.20.0 Use email to get avatar URL
      * @since 2.24.0
      *
      * @inheritDoc

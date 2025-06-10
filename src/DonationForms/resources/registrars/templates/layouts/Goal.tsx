@@ -2,6 +2,7 @@ import {__} from '@wordpress/i18n';
 import type {GoalProps} from '@givewp/forms/propTypes';
 
 /**
+ * @since 4.3.0 replace <aside> landmark with div for accessibility audit. add aria-hidden="true" to redundant progress text for improved screen reader navigation.
  * @since 3.0.0
  */
 export default function Goal({
@@ -18,13 +19,13 @@ export default function Goal({
 }: GoalProps) {
     return (
         <>
-            <aside className="givewp-layouts-goal__stats-panel">
+            <div className="givewp-layouts-goal__stats-panel">
                 <ul className="givewp-layouts-goal__stats-panel__list">
                     <Stat value={totalRevenueFormatted} label={__('Raised', 'give')} />
                     <Stat value={totalCountValue} label={totalCountLabel} />
                     <Stat value={targetAmountFormatted} label={__('Goal', 'give')} />
                 </ul>
-            </aside>
+            </div>
             <div className="givewp-layouts-goal__progress">
                 <label htmlFor="goal-progress" className="givewp-layouts-goal__progress__description">
                     {__(`${currentAmountFormatted} of ${targetAmountFormatted} ${goalLabel}`, 'give')}
@@ -36,7 +37,7 @@ export default function Goal({
                     max={100}
                     aria-label={__(`${currentAmount} of ${targetAmount} ${goalLabel} goal`, 'give')}
                 ></progress>
-                <div className="givewp-layouts-goal__progress__markers">
+                <div className="givewp-layouts-goal__progress__markers" aria-hidden={true}>
                     <span className="givewp-layouts-goal__progress__marker">
                         {currentAmountFormatted} {goalLabel}
                     </span>

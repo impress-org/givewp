@@ -32,6 +32,7 @@ export interface MultiSelectProps extends SelectableFieldProps {
 export interface CheckboxProps extends FieldProps {
     value: string | number;
     helpText?: string;
+    inputProps: UseFormRegisterReturn & {checked: boolean};
 }
 
 export interface TextareaProps extends FieldProps {
@@ -45,6 +46,7 @@ export interface FieldHasDescriptionProps extends FieldProps {
 
 export interface FileProps extends FieldHasDescriptionProps {
     allowedMimeTypes: string[];
+    maxUploadSize: number;
 }
 
 export interface DateProps extends Omit<FieldHasDescriptionProps, 'placeholder'> {

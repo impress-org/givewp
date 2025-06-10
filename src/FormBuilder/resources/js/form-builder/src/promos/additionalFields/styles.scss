@@ -5,6 +5,21 @@
     margin: 0;
 }
 
+.block-editor-inserter__panel-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    border: 1px solid #5BA65E;
+    padding: .25rem .75rem;
+    border-radius: 8px;
+
+    p {
+        font-weight: 500;
+        margin-top: .5rem;
+        padding: 0;
+    }
+}
+
 .block-editor-inserter__panel-content-link {
     display: flex;
     justify-content: center;

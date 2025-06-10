@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Repositories;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -10,8 +11,11 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Receipts\DonationReceipt;
+use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
@@ -166,6 +170,31 @@ class DonationRepository
     }
 
     /**
+     * @since 4.0.0
+     */
+    public function getByReceiptId(string $receiptId): ?Donation
+    {
+        return $this->queryByReceiptId($receiptId)->get();
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    public function queryByReceiptId(string $receiptId): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('post_type', 'give_payment')
+            ->whereIn('ID', function (QueryBuilder $builder) use ($receiptId) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', DonationMetaKeys::PURCHASE_KEY)
+                    ->where('meta_value', $receiptId);
+            });
+    }
+
+    /**
+     * @since 3.20.0 store meta using native WP functions
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
@@ -204,12 +233,7 @@ class DonationRepository
             $donationMeta = $this->getCoreDonationMetaForDatabase($donation);
 
             foreach ($donationMeta as $metaKey => $metaValue) {
-                DB::table('give_donationmeta')
-                    ->insert([
-                        'donation_id' => $donationId,
-                        'meta_key' => $metaKey,
-                        'meta_value' => $metaValue,
-                    ]);
+                give()->payment_meta->add_meta($donationId, $metaKey, $metaValue);
             }
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
@@ -324,6 +348,7 @@ class DonationRepository
     }
 
     /**
+     * @since 4.0.0 added campaignId
      * @since 3.9.0 Added meta for phone property
      * @since 3.2.0 added meta for honorific property
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate
@@ -356,8 +381,14 @@ class DonationRepository
                 ),
             DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
             DonationMetaKeys::LEVEL_ID => $donation->levelId,
-            DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous
+            DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous,
+            DonationMetaKeys::CAMPAIGN_ID => $donation->campaignId,
         ];
+
+        // If the donation is not associated with a campaign, try to find the campaign ID by the form ID
+        if (!$donation->campaignId && $campaign = give()->campaigns->getByFormId($donation->formId)) {
+            $meta[DonationMetaKeys::CAMPAIGN_ID] = $campaign->id;
+        }
 
         if ($donation->feeAmountRecovered !== null) {
             $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
@@ -575,5 +606,15 @@ class DonationRepository
             ->limit(1)
             ->orderBy('post_date', 'DESC')
             ->get();
+    }
+
+    /**
+     * @since 4.3.0
+     */
+    public function getConfirmationPageReceipt(Donation $donation): DonationReceipt
+    {
+        $receipt = new DonationReceipt($donation);
+
+        return (new DonationReceiptBuilder($receipt))->toConfirmationPage();
     }
 }

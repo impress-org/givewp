@@ -63,6 +63,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('give_embed_footer', CheckoutGateway::class, 'maybeHandleRedirect', 99999);
 
         $this->registerPayPalDonationsMigrationBanners();
+        $this->maybeHidePayPalStandard();
     }
 
     /**
@@ -96,5 +97,53 @@ class ServiceProvider implements ServiceProviderInterface
         // Banner for the migration from PayPal Standard to PayPal Donations.
         give(GatewaySettingPageBanner::class)->setupHook();
         give(PayPalStandardToDonationsMigrationGlobalBanner::class)->setHook();
+    }
+
+    /**
+     * @since 4.1.0
+     */
+    private function maybeHidePayPalStandard()
+    {
+        if ( ! is_admin()) {
+            return;
+        }
+
+        $isPayPalStandardConnected = is_email(give_get_option('paypal_email', false));
+        $alwaysShowPayPalStandardAdminOptions = defined('GIVE_ALWAYS_SHOW_PAYPAL_STANDARD_ADMIN_OPTIONS') && GIVE_ALWAYS_SHOW_PAYPAL_STANDARD_ADMIN_OPTIONS;
+
+
+        add_filter('give_settings_payment_gateways_menu_groups',
+            function ($groups) use ($isPayPalStandardConnected, $alwaysShowPayPalStandardAdminOptions) {
+                if ($isPayPalStandardConnected || $alwaysShowPayPalStandardAdminOptions) {
+                    return $groups;
+                }
+
+                if (isset($groups['v2']['gateways']['paypal'])) {
+                    unset($groups['v2']['gateways']['paypal']);
+                }
+
+                if (isset($groups['v3']['gateways']['paypal'])) {
+                    unset($groups['v3']['gateways']['paypal']);
+                }
+
+                return $groups;
+            },
+            999
+        );
+
+        add_filter('give_get_groups_paypal',
+            function ($groups) use ($isPayPalStandardConnected, $alwaysShowPayPalStandardAdminOptions) {
+                if ($isPayPalStandardConnected || $alwaysShowPayPalStandardAdminOptions) {
+                    return $groups;
+                }
+
+                if (isset($groups['paypal'])) {
+                    unset($groups['paypal']);
+                }
+
+                return $groups;
+            },
+            999
+        );
     }
 }

@@ -3,8 +3,10 @@ import {useEffect, useState} from 'react';
 import IntlTelInput from 'intl-tel-input/react';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import InputMask from 'react-input-mask';
+import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
 
 /**
+ * @since 4.3.0 Add autoComplete support
  * @since 3.9.0
  */
 export default function Phone({
@@ -17,6 +19,7 @@ export default function Phone({
     fieldError,
     intlTelInputSettings,
 }: PhoneProps) {
+    const autoComplete = autoCompleteAttr(inputProps?.name);
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
     const {useFormContext} = window.givewp.form.hooks;
     const {setValue, setError, trigger} = useFormContext();
@@ -83,7 +86,7 @@ export default function Phone({
             ) : phoneFormat === 'domestic' ? (
                 <InputMask type={'phone'} {...inputProps} mask={'(999) 999-9999'} placeholder={placeholder} />
             ) : (
-                <input type={'phone'} placeholder={placeholder} {...inputProps} />
+                <input type={'phone'} placeholder={placeholder} {...inputProps} autoComplete={autoComplete} />
             )}
 
             <ErrorMessage />

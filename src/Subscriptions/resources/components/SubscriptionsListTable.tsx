@@ -25,18 +25,18 @@ const API = new ListTableApi(window.GiveSubscriptions);
 
 const filters: Array<FilterConfig> = [
     {
-        name: 'search',
-        type: 'search',
-        inlineSize: '14rem',
-        text: __('Name, Email, or  ID', 'give'),
-        ariaLabel: __('search donations', 'give'),
-    },
-    {
         name: 'form',
         type: 'formselect',
         text: __('Select Form', 'give'),
         ariaLabel: __('filter donation forms by status', 'give'),
         options: window.GiveSubscriptions.forms,
+    },
+    {
+        name: 'search',
+        type: 'search',
+        inlineSize: '14rem',
+        text: __('Name, Email, or  ID', 'give'),
+        ariaLabel: __('search donations', 'give'),
     },
     {
         name: 'toggle',
@@ -120,7 +120,7 @@ const bulkActions: Array<BulkActionsConfig> = [
  */
 const ListTableBlankSlate = (
     <BlankSlate
-        imagePath={`${window.GiveSubscriptions.pluginUrl}/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
+        imagePath={`${window.GiveSubscriptions.pluginUrl}build/assets/dist/images/list-table/blank-slate-recurring-icon.svg`}
         description={__('No subscriptions found', 'give')}
         href={'https://docs.givewp.com/subscriptions'}
         linkText={__('Recurring Donations.', 'give')}

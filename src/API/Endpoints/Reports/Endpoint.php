@@ -220,13 +220,15 @@ abstract class Endpoint implements RestRoute
     /**
      * Check permissions
      *
+     * @since 3.22.2 change permissions to view_give_reports
+     *
      * @param WP_REST_Request $request Current request.
      *
      * @return bool|WP_Error
      */
     public function permissionsCheck($request)
     {
-        if ( ! current_user_can('read')) {
+        if ( ! current_user_can('view_give_reports')) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You cannot view the reports resource.', 'give'),

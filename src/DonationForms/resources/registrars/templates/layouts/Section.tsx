@@ -1,16 +1,21 @@
 import type {SectionProps} from '@givewp/forms/propTypes';
 
-const SectionHeader = ({name, label, description}: {name: string; label?: string; description?: string}) => {
-    return label.length > 0 || description.length > 0 ? (
+/**
+ * @since 4.3.0 update legend to use the description prop.
+ */
+const Legend = ({name, description}: {name: string; description?: string}) => {
+    return description.length > 0 ? (
         <div className="givewp-layouts-section__fieldset__legend">
-            {label.length > 0 && <legend id={name}>{label}</legend>}
-            {description.length > 0 && <p>{description}</p>}
+            {description.length > 0 && <legend id={name}>{description}</legend>}
         </div>
     ) : (
         <></>
     );
 };
 
+/**
+ * @since 4.3.0 use h3 tag for the section label.
+ */
 export default function Section({
     section: {name, label, description},
     hideLabel,
@@ -18,13 +23,15 @@ export default function Section({
     children,
 }: SectionProps) {
     return (
-        <fieldset className="givewp-layouts-section__fieldset" aria-labelledby={name}>
-            <SectionHeader
-                name={name}
-                label={hideLabel ? '' : label}
-                description={hideDescription ? '' : description}
-            />
-            <div className="givewp-section-nodes">{children}</div>
-        </fieldset>
+        <>
+            {hideLabel ? '' : label.length > 0 && <h3 id={name} className="givewp-layouts-section__header">{label}</h3>}
+            <fieldset className="givewp-layouts-section__fieldset" aria-labelledby={name}>
+                <Legend
+                    name={name}
+                    description={hideDescription ? '' : description}
+                />
+                <div className="givewp-section-nodes">{children}</div>
+            </fieldset>
+        </>
     );
 }

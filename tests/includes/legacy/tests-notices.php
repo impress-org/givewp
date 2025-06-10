@@ -10,7 +10,7 @@ class Tests_Notices extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.8.17
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 

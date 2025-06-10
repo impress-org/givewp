@@ -2,7 +2,9 @@
 
 namespace Give\API\Endpoints\Migrations;
 
+use Give\Framework\Migrations\Contracts\BatchMigration;
 use Give\Framework\Migrations\Contracts\Migration;
+use Give\Framework\Migrations\Contracts\ReversibleMigration;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\MigrationLog\Helpers\MigrationHelper;
 use Give\MigrationLog\MigrationLogRepository;
@@ -161,6 +163,8 @@ class GetMigrations extends Endpoint
                 'run_order' => $this->migrationHelper->getRunOrderForMigration($migration->getId()),
                 'source' => $migrationClass::source(),
                 'title' => $migrationClass::title(),
+                'isBatchMigration' => is_subclass_of($migrationClass, BatchMigration::class),
+                'isReversible' => is_subclass_of($migrationClass, ReversibleMigration::class),
             ];
         }
 
@@ -175,6 +179,7 @@ class GetMigrations extends Endpoint
                 'run_order' => $this->migrationHelper->getRunOrderForMigration($migration::id()),
                 'source' => $migration::source(),
                 'title' => $migration::title(),
+                'isBatchMigration' => is_subclass_of($migration, BatchMigration::class)
             ];
         }
 

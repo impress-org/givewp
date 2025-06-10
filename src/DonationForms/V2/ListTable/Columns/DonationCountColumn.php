@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Give\DonationForms\V2\ListTable\Columns;
 
+use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -38,6 +39,7 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
+     * @since 4.3.0 use DonationFormDataRepository
      * @since 3.16.0 Add filter to change the cell value content
      * @since 3.14.0 Use the "getDonationCount()" method from progress bar model to ensure the correct donation count will be used
      * @since 2.24.0
@@ -48,7 +50,12 @@ class DonationCountColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $totalDonations = $model->totalNumberOfDonations;
+        /**
+         * @var DonationFormDataRepository $donationFormData
+         */
+        $donationFormData = $this->getListTableData();
+
+        $totalDonations = $donationFormData->getDonationsCount($model);
 
         $label = $totalDonations > 0
             ? sprintf(

@@ -8,18 +8,29 @@ const formTemplates = window.givewp.form.templates;
 const LabelTemplate = formTemplates.layouts.fieldLabel;
 const ErrorMessageTemplate = formTemplates.layouts.fieldError;
 
+/**
+ * @since 4.3.0 include aria-required attribute in all required fields.
+ */
 export default function registerFieldAndBuildProps(
     field: Field,
     register: UseFormReturn['register'],
     errors
 ): FieldProps {
     const fieldError = getErrorByFieldName(errors, field.name);
+    const validationOptions = buildRegisterValidationOptions(field.validationRules);
+
+    const baseInputProps = register(field.name, validationOptions);
+
+    const inputProps = {
+        ...baseInputProps,
+        'aria-required': !!field.validationRules?.required ? 'true' : undefined,
+    };
 
     return {
         ...field,
-        inputProps: register(field.name, buildRegisterValidationOptions(field.validationRules)),
+        inputProps: inputProps,
         fieldError,
-        Label: () => <LabelTemplate label={field.label} required={field.validationRules.required} />,
+        Label: () => <LabelTemplate label={field.label} required={field.validationRules?.required} />,
         ErrorMessage: () => <ErrorMessageTemplate error={fieldError} name={field.name} />,
     };
 }

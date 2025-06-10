@@ -1,8 +1,9 @@
-import type { BillingAddressProps } from "@givewp/forms/propTypes";
-import { FC, useEffect, useState } from "react";
-import { __ } from "@wordpress/i18n";
-import { ErrorMessage } from "@hookform/error-message";
-import { useCallback } from "@wordpress/element";
+import type {BillingAddressProps} from '@givewp/forms/propTypes';
+import {FC, useEffect, useState} from 'react';
+import {__} from '@wordpress/i18n';
+import {ErrorMessage} from '@hookform/error-message';
+import {useCallback} from '@wordpress/element';
+import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
 
 /**
  * @since 3.0.0
@@ -43,6 +44,7 @@ async function getStates(url, country) {
 /**
  * This component is used to dynamically update the state field based on the country value
  *
+ * @since 4.3.0 Add autoComplete support
  * @since 3.4.0 Set current state value to the state input field
  * @since 3.0.0
  */
@@ -129,6 +131,8 @@ function StateFieldContainer({
         return <HiddenStateField />;
     }
 
+    const autoComplete = autoCompleteAttr('state');
+
     if (states.length > 0) {
         return (
             /**
@@ -142,6 +146,8 @@ function StateFieldContainer({
                         onChange={updateStateValue}
                         disabled={statesLoading}
                         aria-invalid={fieldError ? 'true' : 'false'}
+                        aria-required={stateRequired ? 'true' : 'false'}
+                        autoComplete={autoComplete}
                     >
                         {statesLoading ? (
                             <>
@@ -187,6 +193,8 @@ function StateFieldContainer({
                     aria-invalid={fieldError ? 'true' : 'false'}
                     placeholder={statesLoading ? __('Loading...', 'give') : ''}
                     disabled={statesLoading}
+                    aria-required={stateRequired ? 'true' : 'false'}
+                    autoComplete={autoComplete}
                 />
 
                 <HiddenStateField />
@@ -216,8 +224,8 @@ export default function BillingAddress({
     const [cityRequired, setCityRequired] = useState(false);
     const [zipRequired, setZipRequired] = useState(false);
 
-    const CityWithRequired = () => <City validationRules={{required: cityRequired}} />
-    const ZipWithRequired = () => <Zip validationRules={{required: zipRequired}} />
+    const CityWithRequired = () => <City validationRules={{required: cityRequired}} />;
+    const ZipWithRequired = () => <Zip validationRules={{required: zipRequired}} />;
 
     return (
         <>

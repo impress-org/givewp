@@ -18,7 +18,7 @@ const amountFormatter = new Intl.NumberFormat(navigator.language || navigator.la
  * @since 3.6.0
  */
 const BlankSlate = ({openModal}) => {
-    const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}/assets/dist/images/list-table/blank-slate-event-tickets-icon.svg`;
+    const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}build/assets/dist/images/list-table/blank-slate-event-tickets-icon.svg`;
     return (
         <div className={styles.container}>
             <img src={imagePath} alt={__('No ticket created yet', 'give')} />
@@ -40,6 +40,7 @@ export default function TicketTypesSection() {
     const {
         apiRoot,
         apiNonce,
+        currencyCode,
         event,
         event: {ticketTypes},
     }: GiveEventTicketsDetails = window.GiveEventTicketsDetails;
@@ -101,7 +102,7 @@ export default function TicketTypesSection() {
                         })}
                     />
                     <TicketTypeFormModal
-                        apiSettings={{apiRoot, apiNonce}}
+                        apiSettings={{apiRoot, apiNonce, currencyCode}}
                         isOpen={isOpen}
                         handleClose={closeModal}
                         eventId={event?.id}

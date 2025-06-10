@@ -109,6 +109,9 @@ export default function Authentication({
     );
 }
 
+/**
+ * @since 4.3.0 replace "Forgot your password" anchor element with a button since it does not contain a valid href attribute.
+ */
 const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
     const {authUrl} = getWindowData();
     const {useWatch, useFormContext} = window.givewp.form.hooks;
@@ -150,20 +153,22 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
             {!!errorMessage && <FieldError error={errorMessage} name={nodeName} />}
 
             <div className={styles['authentication__login-form__buttons-wrapper']}>
+                <div className={styles['authentication__login-form__reset-wrapper']}>
+                    {__('Forgot your password?', 'give')}
+                    <button
+                        className={styles['authentication__login-form__reset-button']}
+                        onClick={(event) => {
+                            event.preventDefault();
+                            const passwordResetUrl = getRedirectUrl(new URL(lostPasswordUrl));
+                            window.top.location.assign(passwordResetUrl);
+                        }}
+                    >
+                        <span>{__('Reset', 'give')}</span>
+                    </button>
+                </div>
                 <button className={styles['authentication__login-form__login-button']} onClick={tryLogin}>
                     {__('Log In', 'give')}
                 </button>
-                <a
-                    className={styles['authentication__login-form__reset-button']}
-                    onClick={(event) => {
-                        event.preventDefault();
-                        const passwordResetUrl = getRedirectUrl(new URL(lostPasswordUrl));
-
-                        window.top.location.assign(passwordResetUrl);
-                    }}
-                >
-                    {__('Forgot your password?', 'give')} <span>{__('Reset', 'give')}</span>
-                </a>
             </div>
         </div>
     );

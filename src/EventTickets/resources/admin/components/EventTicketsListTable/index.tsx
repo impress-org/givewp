@@ -60,7 +60,7 @@ const bulkActions: Array<BulkActionsConfig> = [
  * @since 3.6.0
  */
 const ListTableBlankSlate = () => {
-    const imagePath = `${window.GiveEventTickets.pluginUrl}/assets/dist/images/list-table/blank-slate-events-icon.svg`;
+    const imagePath = `${window.GiveEventTickets.pluginUrl}build/assets/dist/images/list-table/blank-slate-events-icon.svg`;
     return (
         <div className={styles.container}>
             <img src={imagePath} alt={__('No event created yet', 'give')} />
@@ -78,9 +78,15 @@ const ListTableBlankSlate = () => {
     );
 };
 
+/**
+ * EventTicketsListTable
+ *
+ * @since 3.20.0 Add wrapper class for the EventTicketsListTable
+ * @since 3.6.0
+ */
 export default function EventTicketsListTable() {
     return (
-        <>
+        <div className={styles.listTable}>
             <Feedback />
             <ListTablePage
                 title={__('Events', 'give')}
@@ -94,6 +100,6 @@ export default function EventTicketsListTable() {
             >
                 <CreateEventModal />
             </ListTablePage>
-        </>
+        </div>
     );
 }

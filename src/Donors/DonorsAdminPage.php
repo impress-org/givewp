@@ -73,7 +73,7 @@ class DonorsAdminPage
             'dismissedRecommendations' => $this->getDismissedRecommendations(),
         ];
 
-        EnqueueScript::make('give-admin-donors', 'assets/dist/js/give-admin-donors.js')
+        EnqueueScript::make('give-admin-donors', 'build/assets/dist/js/give-admin-donors.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveDonors', $data)->enqueue();
@@ -84,6 +84,8 @@ class DonorsAdminPage
             [],
             null
         );
+
+        wp_enqueue_style('givewp-design-system-foundation');
     }
 
     /**
@@ -173,7 +175,7 @@ class DonorsAdminPage
         $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
 
         $optionName = 'givewp_donors_fee_recovery_recommendation_dismissed';
-        
+
         $dismissed = get_option($optionName, false);
 
         if ($dismissed || $feeRecoveryAddonIsActive) {

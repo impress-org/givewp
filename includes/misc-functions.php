@@ -9,8 +9,9 @@
  * @since       1.0
  */
 
-use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\License\PremiumAddonsListManager;
+use Give\License\Repositories\LicenseRepository;
+use Give\License\ValueObjects\LicenseOptionKeys;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -2423,6 +2424,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
+ * @since 4.3.0 updated to store platform fee percentage
  * @since 2.27.0 delete update_plugins transient instead of invalidate it
  * @since  2.5.0
  *
@@ -2520,6 +2522,12 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
 
+    $platform_fee_percentage = get_platform_fee_from_licenses();
+
+    if (!is_null($platform_fee_percentage)) {
+        update_option( LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, $platform_fee_percentage, 'no' );
+    }
+
 	// Tell WordPress to look for updates.
 	if ( $wp_check_updates ) {
 		delete_site_transient('update_plugins');
@@ -2529,6 +2537,17 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 		'give_licenses'     => $give_licenses,
 		'give_get_versions' => $tmp_update_plugins,
 	];
+}
+
+/**
+ * Get platform fee from stored licenses
+ */
+function get_platform_fee_from_licenses(): ?float
+{
+    /** @var LicenseRepository $repository */
+    $repository = give(LicenseRepository::class);
+
+    return $repository->findLowestPlatformFeePercentageFromActiveLicenses();
 }
 
 /**

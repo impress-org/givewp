@@ -135,6 +135,16 @@ function give_is_success_page() {
 }
 
 /**
+ * @since 4.0.0
+ *
+ * @return bool
+ */
+function give_is_campaign_page() {
+    $currentId = get_the_ID();
+
+    return (bool)get_post_meta( $currentId, 'give_campaign_id', true );
+}
+/**
  * Send To Success Page
  *
  * Sends the user to the success page.

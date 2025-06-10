@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import {__} from '@wordpress/i18n';
 
 /**
  * @since 3.0.0
@@ -18,6 +19,7 @@ type GroupedLevels = {
 type Level = {label: string | null; value: number};
 
 /**
+ * @since 4.3.0 Add proper roles and ARIA attributes
  * @since 3.12.0 add level descriptions.
  * @since 3.0.0
  */
@@ -42,6 +44,8 @@ export default function DonationAmountLevels({name, currency, levels, onLevelCli
             className={classNames('givewp-fields-amount__levels-container', {
                 'givewp-fields-amount__levels-container--has-descriptions': groupedLevels.labeled.length > 0,
             })}
+            role="radiogroup"
+            aria-label={__('Donation Amount', 'give')}
         >
             {allLevels.map((level, index) => {
                 const label = formatter.format(level.value);
@@ -53,6 +57,7 @@ export default function DonationAmountLevels({name, currency, levels, onLevelCli
                         className={classNames('givewp-fields-amount__level-container', {
                             'givewp-fields-amount__level-container--col': hasDescription,
                         })}
+                        key={index}
                     >
                         <button
                             className={classNames('givewp-fields-amount__level', {
@@ -60,6 +65,8 @@ export default function DonationAmountLevels({name, currency, levels, onLevelCli
                                 'givewp-fields-amount__level--description': hasDescription,
                             })}
                             type="button"
+                            role="radio"
+                            aria-checked={selected}
                             onClick={() => {
                                 onLevelClick(level.value);
                             }}

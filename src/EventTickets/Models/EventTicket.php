@@ -15,6 +15,7 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * @since 3.6.0
@@ -23,12 +24,16 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
 {
     /**
      * @inheritdoc
+     *
+     * @since 3.20.0 Add amount to the properties array
+     * @since      3.6.0
      */
     protected $properties = [
         'id' => 'int', // @todo Maybe use UUID instead of auto-incrementing integer
         'eventId' => 'int',
         'ticketTypeId' => 'int',
         'donationId' => 'int',
+        'amount' => Money::class,
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
     ];
@@ -144,7 +149,6 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
         return give(EventTicketTypeRepository::class)->queryById($this->ticketTypeId);
     }
 
-
     /**
      * @since 3.6.0
      *
@@ -156,6 +160,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
+     * @since 3.20.0 Add amount to the properties array
      * @since 3.6.0
      *
      * @param object $object
@@ -167,6 +172,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
             'eventId' => (int)$object->event_id,
             'ticketTypeId' => (int)$object->ticket_type_id,
             'donationId' => (int)$object->donation_id,
+            'amount' => new Money($object->amount, give_get_currency()),
             'createdAt' => Temporal::toDateTime($object->created_at),
             'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);

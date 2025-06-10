@@ -10,6 +10,7 @@
  */
 
 // Exit if accessed directly.
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 
 if (!defined('ABSPATH')) {
@@ -312,6 +313,19 @@ function give_update_payment_details( $data ) {
 		$payment->update_payment_setup( $payment->ID );
 	}
 
+    // Update payment campaign.
+    $donation = Donation::find($payment->ID);
+
+    if ($donation) {
+        $new_campaign_id = absint($data['give-payment-campaign-select']);
+        $current_campaign_id = absint($donation->campaignId);
+
+        if ($new_campaign_id && $new_campaign_id !== $current_campaign_id) {
+            $donation->campaignId = $new_campaign_id;
+            $donation->save();
+        }
+    }
+
 	$comment_id                  = isset( $data['give_comment_id'] ) ? absint( $data['give_comment_id'] ) : 0;
 	$has_anonymous_setting_field = give_is_anonymous_donation_field_enabled( $payment->form_id );
 
@@ -361,8 +375,8 @@ function give_trigger_donation_delete( $data ) {
 
 		$payment_id = absint( $data['purchase_id'] );
 
-		if ( ! current_user_can( 'edit_give_payments', $payment_id ) ) {
-			wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		if ( ! current_user_can( 'delete_give_payments', $payment_id ) ) {
+			wp_die( __( 'You do not have permission to delete payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		give_delete_donation( $payment_id );

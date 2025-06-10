@@ -1,5 +1,9 @@
 import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
+import autoCompleteAttr from '@givewp/forms/registrars/templates/fields/utils/autoCompleteAttr';
 
+/**
+ * @since 4.3.0 Add autoComplete support
+ */
 export default function Email({
     Label,
     ErrorMessage,
@@ -8,6 +12,7 @@ export default function Email({
     fieldError,
     inputProps,
 }: FieldHasDescriptionProps) {
+    const autoComplete = autoCompleteAttr(inputProps?.name);
     const FieldDescription = window.givewp.form.templates.layouts.fieldDescription;
 
     return (
@@ -19,6 +24,7 @@ export default function Email({
                 aria-invalid={fieldError ? 'true' : 'false'}
                 placeholder={placeholder}
                 {...inputProps}
+                autoComplete={autoComplete}
             />
 
             <ErrorMessage />

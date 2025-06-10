@@ -33,18 +33,19 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @since 4.3.0 return early if the form model is not found
      * @since 3.4.0 updated to check for metaKey first and then fallback to name
      * @since 3.3.0 updated conditional to check for scopes and added support for retrieving values programmatically with Fields API
      * @since 3.0.0
      */
     protected function getCustomFields(Donation $donation): array
     {
-        if (give(DonationFormRepository::class)->isLegacyForm($donation->formId)) {
-            return [];
-        }
-
         /** @var DonationForm $form */
         $form = DonationForm::find($donation->formId);
+
+        if (!$form) {
+            return [];
+        }
 
         $customFields = array_filter($form->schema()->getFields(), static function (Field $field) {
             return $field->shouldShowInReceipt();

@@ -134,6 +134,7 @@ add_shortcode( 'donation_history', 'give_donation_history' );
  *
  * Show the Give donation form.
  *
+ * @since 4.3.0 Add check for 'modal' in display_style to allow v2 forms to be shown in a modal.
  * @since 3.7.0 Sanitize attributes
  * @since 3.4.0 Add additional validations to check if the form is valid and has the 'published' status.
  * @since 2.30.0 Add short-circuit filter to allow for custom output.
@@ -188,7 +189,7 @@ function give_form_shortcode( $atts ) {
 	ob_start();
 
 	if ( ! FormUtils::isLegacyForm( $formId ) ) {
-		$showIframeInModal = 'button' === $atts['display_style'];
+		$showIframeInModal = 'button' === $atts['display_style'] || 'modal' === $atts['display_style'];
 		$iframeView        = new IframeView();
 
 		ConfirmDonation::storePostedDataInDonationSession();

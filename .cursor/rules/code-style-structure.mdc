@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: General Rules
+globs: 
+alwaysApply: true
+---
+### Code Standards to follow
+
+- Use Laravel naming conventions for functions and classes  
+- Prefix any global php functions or hooks with `give_`
+- Use camel case for PHP and JS functions
+- Follow WordPress React component naming patterns

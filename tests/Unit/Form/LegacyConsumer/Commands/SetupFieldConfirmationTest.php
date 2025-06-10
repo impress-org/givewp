@@ -34,8 +34,8 @@ final class SetupFieldConfirmationTest extends TestCase
         do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
         $output = ob_get_clean();
 
-        $this->assertContains( 'foobar', $output, 'Donation confirmation does not have custom field value.' );
-        $this->assertContains( 'My Text Field', $output, 'Donation confirmation does not have custom field value label.' );
+        $this->assertStringContainsString( 'foobar', $output, 'Donation confirmation does not have custom field value.' );
+        $this->assertStringContainsString('My Text Field', $output, 'Donation confirmation does not have custom field value label.' );
     }
 
     public function testNotConfirmationHasEmptyDonationMeta() {
@@ -55,8 +55,8 @@ final class SetupFieldConfirmationTest extends TestCase
         do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
         $output = ob_get_clean();
 
-        $this->assertNotContains( 'foobar', $output, 'Donation confirmation has empty custom field value.' );
-        $this->assertNotContains( 'My Text Field', $output, 'Donation confirmation has empty custom field value label.' );
+        $this->assertStringNotContainsString( 'foobar', $output, 'Donation confirmation has empty custom field value.' );
+        $this->assertStringNotContainsString( 'My Text Field', $output, 'Donation confirmation has empty custom field value label.' );
     }
 
     public function testNotConfirmationHasDonationMeta() {
@@ -76,8 +76,8 @@ final class SetupFieldConfirmationTest extends TestCase
         do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
         $output = ob_get_clean();
 
-        $this->assertNotContains( 'foobar', $output, 'Donation confirmation shows hidden custom field value.' );
-        $this->assertNotContains( 'My Text Field', $output, 'Donation confirmation shows hidden custom field value label.' );
+        $this->assertStringNotContainsString( 'foobar', $output, 'Donation confirmation shows hidden custom field value.' );
+        $this->assertStringNotContainsString( 'My Text Field', $output, 'Donation confirmation shows hidden custom field value label.' );
     }
 
     /*
@@ -105,8 +105,8 @@ final class SetupFieldConfirmationTest extends TestCase
         do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
         $output = ob_get_clean();
 
-        $this->assertContains( 'foobar', $output, 'Donation confirmation does not have custom field donor meta.' );
-        $this->assertContains( 'My Text Field', $output, 'Donation confirmation does not have custom field donor meta label.' );
+        $this->assertStringContainsString( 'foobar', $output, 'Donation confirmation does not have custom field donor meta.' );
+        $this->assertStringContainsString( 'My Text Field', $output, 'Donation confirmation does not have custom field donor meta label.' );
     }
 
     public function testNotConfirmationHasEmptyDonorMeta() {
@@ -128,8 +128,8 @@ final class SetupFieldConfirmationTest extends TestCase
         do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
         $output = ob_get_clean();
 
-        $this->assertNotContains( 'foobar', $output, 'Donation confirmation has empty custom field donor meta value.' );
-        $this->assertNotContains( 'My Text Field', $output, 'Donation confirmation has empty custom field donor meta value label.' );
+        $this->assertStringNotContainsString( 'foobar', $output, 'Donation confirmation has empty custom field donor meta value.' );
+        $this->assertStringNotContainsString( 'My Text Field', $output, 'Donation confirmation has empty custom field donor meta value label.' );
     }
 
     public function testNotConfirmationHasDonorMeta() {
@@ -151,7 +151,7 @@ final class SetupFieldConfirmationTest extends TestCase
         do_action( 'give_payment_receipt_after', get_post( $paymentID ), [] );
         $output = ob_get_clean();
 
-        $this->assertNotContains( 'foobar', $output, 'Donation confirmation shows hidden custom field donor metea value.' );
-        $this->assertNotContains( 'My Text Field', $output, 'Donation confirmation shows hidden custom field donor meta value label.' );
+        $this->assertStringNotContainsString( 'foobar', $output, 'Donation confirmation shows hidden custom field donor metea value.' );
+        $this->assertStringNotContainsString( 'My Text Field', $output, 'Donation confirmation shows hidden custom field donor meta value label.' );
     }
 }

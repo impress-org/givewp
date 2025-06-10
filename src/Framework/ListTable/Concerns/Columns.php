@@ -77,12 +77,19 @@ trait Columns
     }
 
     /**
+     * @since 4.3.0 set list table data on columns
      * @since 2.24.0
      *
      * @return ModelColumn[]
      */
     public function getColumns(): array
     {
+        foreach($this->columns as $column) {
+            if ($column->isUsingListTableData()) {
+                $column->setListTableData($this->getData());
+            }
+        }
+
         return $this->columns;
     }
 

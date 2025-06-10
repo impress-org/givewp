@@ -1,9 +1,8 @@
-import IframeResizer from 'iframe-resizer-react';
 import {useSelect} from '@wordpress/data';
-
+import {__} from '@wordpress/i18n';
+import IframeResizer from 'iframe-resizer-react';
+import ModalForm from '@givewp/src/Campaigns/Blocks/shared/components/ModalForm';
 import '../styles/index.scss';
-import FormModal from '../../common/FormModal';
-import {useState} from '@wordpress/element';
 
 /**
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage"
@@ -19,6 +18,7 @@ export interface BlockPreviewProps {
 }
 
 /**
+ * @since 4.3.0 replace ModalForm with Campaigns ModalForm.
  * @since 3.2.0 replace reveal for newTab display.
  * @since 3.0.0
  */
@@ -31,7 +31,6 @@ export default function DonationFormBlockPreview({
 }: BlockPreviewProps) {
     // @ts-ignore
     const selectedBlock = useSelect((select) => select('core/block-editor').getSelectedBlock(), []);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
     const isBlockSelected = selectedBlock?.clientId === clientId;
 
     const enableIframe = isBlockSelected ? 'auto' : 'none';
@@ -44,18 +43,16 @@ export default function DonationFormBlockPreview({
             {openFormButton}
         </a>
     ) : isModalDisplay ? (
-        <FormModal openFormButton={openFormButton} isOpen={isOpen} onChange={() => setIsOpen(!isOpen)}>
-            <IframeResizer
-                src={`/?givewp-route=donation-form-view&form-id=${formId}`}
-                checkOrigin={false}
-                style={{
-                    minWidth: '100%',
-                    pointerEvents: enableIframe,
-                }}
-            />
-        </FormModal>
+        <ModalForm
+            dataSrc={`/?givewp-route=donation-form-view&form-id=${formId}`}
+            embedId={''}
+            buttonText={openFormButton}
+            isFormRedirect={false}
+            formViewUrl={''}
+        />
     ) : (
         <IframeResizer
+            title={__('Donation Form', 'give')}
             src={`/?givewp-route=donation-form-view&form-id=${formId}`}
             checkOrigin={false}
             style={{

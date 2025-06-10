@@ -402,25 +402,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
-// Payment Gateways Settings dialog
-document.addEventListener('DOMContentLoaded', () => {
-    const dialog = document.getElementById('give-payment-gateway-settings-dialog');
-
-    if (dialog === null) {
-        return;
-    }
-
-    Array.from(
-        dialog.querySelectorAll(
-            '#give-payment-gateway-settings-dialog__close, .give-payment-gateway-settings-dialog__content-button'
-        )
-    ).forEach((element) => {
-        element.addEventListener('click', (e) => {
-            e.preventDefault();
-            dialog.close();
-        });
-    });
-
-    dialog.showModal();
-});

@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\Donations\Endpoints;
 
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Models\Donation;
@@ -23,13 +24,16 @@ class TestListDonations extends TestCase
      */
     public function testShouldReturnListWithSameSize()
     {
-        $donations = Donation::factory()->count(5)->create();
+        $campaign = Campaign::factory()->create();
+        $donations = Donation::factory()->count(5)->create([
+            'campaignId' => $campaign->id
+        ]);
 
         $mockRequest = $this->getMockRequest();
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', give_is_test_mode());
 
         $listDonations = give(ListDonations::class);
@@ -47,13 +51,16 @@ class TestListDonations extends TestCase
      */
     public function testShouldReturnListWithSameData()
     {
-        $donations = Donation::factory()->count(5)->create();
+        $campaign = Campaign::factory()->create();
+        $donations = Donation::factory()->count(5)->create([
+            'campaignId' => $campaign->id
+        ]);
         $sortDirection = ['asc', 'desc'][round(rand(0, 1))];
         $mockRequest = $this->getMockRequest();
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
         $mockRequest->set_param('testMode', give_is_test_mode());
@@ -65,6 +72,44 @@ class TestListDonations extends TestCase
         $response = $listDonations->handleRequest($mockRequest);
 
         $this->assertSame($expectedItems, $response->data['items']);
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldFilterInvalidDateArgument_missingMonthDay()
+    {
+        $listDonation = give(ListDonations::class);
+        $key = 'start';
+        $value = '2020';
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param($key, $value);
+
+        $response = $listDonation->validateDate($value, $mockRequest, $key);
+        $this->assertFalse($response);
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @return void
+     * @throws Exception
+     */
+    public function testShouldFilterInvalidDateArgument_InvalidChar()
+    {
+        $listDonation = give(ListDonations::class);
+        $key = 'start';
+        $value = '2020-mar-02';
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param($key, $value);
+
+        $response = $listDonation->validateDate($value, $mockRequest, $key);
+        $this->assertFalse($response);
     }
 
     /**
@@ -93,7 +138,7 @@ class TestListDonations extends TestCase
         foreach ( $donations as $donation ) {
             $expectedItem = [];
             foreach ( $columns as $column ) {
-                $expectedItem[$column::getId()] = $column->getCellValue($donation);
+                $expectedItem[$column::getId()] = $column->getCellValue($donation, 'en-US');
             }
             $expectedItems[] = $expectedItem;
         }

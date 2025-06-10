@@ -3,6 +3,9 @@
 namespace Give\DonationForms\V2\Models;
 
 use DateTime;
+use Give\DonationForms\Models\DonationForm as ModelsDonationForm;
+use Give\DonationForms\Properties\GoalSettings;
+use Give\DonationForms\V2\Actions\ConvertV2FormToV3Form;
 use Give\DonationForms\V2\DataTransferObjects\DonationFormQueryData;
 use Give\DonationForms\V2\Properties\DonationFormLevel;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
@@ -26,6 +29,10 @@ use Give\Framework\Support\ValueObjects\Money;
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property DonationFormStatus $status
+ * @since 4.3.0
+ * @property GoalSettings $goalSettings
+ * @property bool $usesFormBuilder
+ * @property int $campaignId
  */
 class DonationForm extends Model implements ModelReadOnly
 {
@@ -42,6 +49,9 @@ class DonationForm extends Model implements ModelReadOnly
         'createdAt' => DateTime::class,
         'updatedAt' => DateTime::class,
         'status' => DonationFormStatus::class,
+        'goalSettings' => GoalSettings::class,
+        'usesFormBuilder' => 'bool',
+        'campaignId' => 'int',
     ];
 
     /**
@@ -83,5 +93,13 @@ class DonationForm extends Model implements ModelReadOnly
     public static function fromQueryBuilderObject($object): DonationForm
     {
         return DonationFormQueryData::fromObject($object)->toDonationForm();
+    }
+
+    /**
+     * @since 4.2.0
+     */
+    public function toV3Form(): ModelsDonationForm
+    {
+        return (new ConvertV2FormToV3Form($this))();
     }
 }

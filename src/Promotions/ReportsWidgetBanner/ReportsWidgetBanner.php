@@ -34,7 +34,7 @@ class ReportsWidgetBanner extends SaleBanners
     {
         wp_enqueue_script(
             'give-in-plugin-upsells-sale-banners',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-upsell-sale-banner.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-upsell-sale-banner.js',
             [],
             GIVE_VERSION,
             true
@@ -56,7 +56,7 @@ class ReportsWidgetBanner extends SaleBanners
      */
     public static function isShowing(): bool
     {
-        $hasBanners = !empty((new ReportsWidgetBanner)->getVisibleBanners());
+        $hasBanners = !empty((new ReportsWidgetBanner())->getVisibleBanners());
         $isDashboardWidgetPage = admin_url() . 'index.php' === get_site_url() . $_SERVER['REQUEST_URI'];
 
         return $hasBanners && $isDashboardWidgetPage;

@@ -5,6 +5,9 @@ namespace Give\Framework\Support\Facades\DateTime;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
+use Exception;
+use Give\Log\Log;
 
 /**
  * @since 2.19.6
@@ -54,26 +57,76 @@ class TemporalFacade
     /**
      * Immutably returns a new DateTime instance with the microseconds set to 0.
      *
+     * @since 4.0.0 Extracted new immutableOrClone method.
      * @since 2.20.0
      */
     public function withoutMicroseconds(DateTimeInterface $dateTime)
     {
-        if ($dateTime instanceof DateTimeImmutable) {
-            return $dateTime->setTime(
+        return $this
+            ->immutableOrClone($dateTime)
+            ->setTime(
                 $dateTime->format('H'),
                 $dateTime->format('i'),
                 $dateTime->format('s')
             );
+    }
+
+    /**
+     * Immutably returns a new DateTime instance with the time set to the start of the day.
+     *
+     * @since 4.0.0
+     */
+    public function withStartOfDay(DateTimeInterface $dateTime): DateTimeInterface
+    {
+        return $this
+            ->immutableOrClone($dateTime)
+            ->setTime(0, 0, 0, 0);
+    }
+
+    /**
+     * Immutably returns a new DateTime instance with the time set to the end of the day.
+     *
+     * @since 4.0.0
+     */
+    public function withEndOfDay(DateTimeInterface $dateTime): DateTimeInterface
+    {
+        return $this
+            ->immutableOrClone($dateTime)
+            ->setTime(23, 59, 59, 999999);
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    public function immutableOrClone(DateTimeInterface $dateTime): DateTimeInterface
+    {
+        return $dateTime instanceof DateTimeImmutable
+            ? $dateTime
+            : clone $dateTime;
+    }
+
+    /**
+     * @since 3.20.0
+     */
+    public function getDateTimestamp(string $date, string $timezone = ''): int
+    {
+        try {
+            $timezone = empty($timezone) ? wp_timezone_string() : $timezone;
+            $timezone = new DateTimeZone($timezone);
+            $date = new DateTime($date, $timezone);
+
+            return $date->getTimestamp();
+        } catch (Exception $e) {
+            Log::error(
+                'Failed to parse date string into a timestamp',
+                [
+                    'input_date' => $date,
+                    'input_timezone' => $timezone,
+                    'error_code' => $e->getCode(),
+                    'error_message' => $e->getMessage(),
+                ]
+            );
+            return 0;
         }
-
-        $newDateTime = clone $dateTime;
-
-        $newDateTime->setTime(
-            $newDateTime->format('H'),
-            $newDateTime->format('i'),
-            $newDateTime->format('s')
-        );
-
-        return $newDateTime;
     }
 }

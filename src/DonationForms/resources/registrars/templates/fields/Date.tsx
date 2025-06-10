@@ -4,7 +4,12 @@ import {format, parse} from 'date-fns';
 import {DateProps} from '@givewp/forms/propTypes';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../styles.module.scss';
+import {useEffect, useRef} from "react";
 
+/**
+ * @unreleased manually focus the visible input when error is present.
+ * @since 4.3.0 add aria-required attribute.
+ */
 export default function Date({
     Label,
     ErrorMessage,
@@ -18,18 +23,28 @@ export default function Date({
     const {setValue} = useFormContext();
     const value = useWatch({name: inputProps.name});
 
+    const ref = useRef(null);
+
     dateFormat = dateFormat.replace('mm', 'MM');
 
+    useEffect(() => {
+        if (fieldError && ref.current) {
+            ref.current.focus();
+        }
+    }, [fieldError]);
+
     return (
-        <label className={styles.dateField}>
+        <label ref={ref} className={styles.dateField}>
             <Label />
             {description && <FieldDescription description={description} />}
             <input type="hidden" {...inputProps} />
             <DatePicker
+                id={inputProps.name}
                 ariaInvalid={fieldError ? 'true' : 'false'}
                 dateFormat={dateFormat}
                 selected={value ? parse(value, dateFormat, new window.Date()) : null}
                 onChange={(date) => setValue(inputProps.name, date ? format(date, dateFormat) : '')}
+                ariaRequired={inputProps['aria-required']}
             />
 
             <ErrorMessage />

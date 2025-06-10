@@ -1,0 +1,57 @@
+.tooltip {
+    position: absolute;
+    z-index: 11;
+    width: 377px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px 24px 24px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
+    border: solid 2px var(--givewp-neutral-400);
+    background-color: var(--givewp-shades-white);
+
+    h3 {
+        padding-bottom: 8px;
+        margin: 0;
+        font-size: 1rem;
+        color: var(--givewp-neutral-900);
+        line-height: 1.5rem;
+    }
+}
+
+.defaultForm {
+    top: 420px;
+    left: 100px;
+}
+
+.campaignSettings {
+    right: 20px;
+    top: 150px;
+}
+
+.campaignList {
+    left: 20px;
+    top: 90px;
+}
+
+.campaignForm {
+    left: 250px;
+    top: 150px;
+}
+
+.close {
+    cursor: pointer;
+    position: absolute;
+    right: 13px;
+    top: 13px;
+}
+
+.content {
+    font-size: 0.875rem;
+    color: var(--givewp-neutral-700);
+    font-weight: normal;
+    line-height: 1.25rem;
+}

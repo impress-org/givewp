@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\UpdateStripeInvoiceMetaData;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Decorators\SubscriptionModelDecorator;
 use Give\Subscriptions\Models\Subscription;
 use Stripe\Event;
@@ -42,6 +43,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
+     * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      * @throws \Exception
@@ -60,11 +62,14 @@ class InvoicePaymentSucceeded
 
         if ($initialDonation = give()->donations->getByGatewayTransactionId($invoice->payment_intent)) {
             $this->handleInitialDonation($initialDonation);
+            $this->updateStripeInvoiceMetaData($invoice, $initialDonation);
         } else {
             $subscriptionModel = $this->getSubscriptionModelDecorator($subscription);
 
             if ($subscriptionModel->shouldCreateRenewal()) {
                 $subscriptionModel = $subscriptionModel->handleRenewal($invoice);
+                $renewalDonation = $subscriptionModel->subscription->donations[0];
+                $this->updateStripeInvoiceMetaData($invoice, $renewalDonation);
             }
 
             if ($subscriptionModel->shouldEndSubscription()) {
@@ -112,5 +117,13 @@ class InvoicePaymentSucceeded
     protected function cancelSubscription(SubscriptionModelDecorator $subscriptionModel)
     {
         $subscriptionModel->cancelSubscription();
+    }
+
+    /**
+     * @since 4.3.0
+     */
+    protected function updateStripeInvoiceMetaData(Invoice $invoice, Donation $donation)
+    {
+        give(UpdateStripeInvoiceMetaData::class)($invoice, $donation);
     }
 }

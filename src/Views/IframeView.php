@@ -241,16 +241,21 @@ class IframeView
             $loader
         );
 
+        /**
+         * @since 4.3.0 remove modal-inner-wrap element to achieve style parity with v3 modals.
+         */
         if ($this->modal) {
             $iframe = sprintf(
-                '<div class="modal-inner-wrap">
+                '
 					<div class="modal-content">
-		    			<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%3$s" rel="nofollow">%2$s<span>&times;</span></a>
+		    			<a href="#" class="close-btn js-give-embed-form-modal-closer" aria-label="%3$s" data-form-id="%3$s" rel="nofollow">%2$s
+		    			    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" class="givewp-donation-form-modal__close__icon"><path stroke="black" stroke-width="2" d="M13 11.8l6.1-6.3-1-1-6.1 6.2-6.1-6.2-1 1 6.1 6.3-6.5 6.7 1 1 6.5-6.6 6.5 6.6 1-1z"></path></svg>
+		    			</a>
 						%1$s
 					</div>
-				</div>',
+		            ',
                 $iframe,
-                esc_html__('Close', 'give'),
+                '',
                 $this->uniqueId
             );
         }
@@ -261,6 +266,7 @@ class IframeView
     /**
      * Get button HTML.
      *
+     * @since 4.3.0 add v3 button classname to match v3 modals.
      * @since 3.7.0 Escape attributes
      *
      * @return string
@@ -271,8 +277,9 @@ class IframeView
             '<div class="js-give-embed-form-modal-launcher-wrap">
 				<button
 				type="button"
-				class="js-give-embed-form-modal-opener"
-				data-form-id="%1$s"%3$s>%2$s</button>
+				class="js-give-embed-form-modal-opener givewp-donation-form-modal__open"
+				data-form-id="%1$s"%3$s
+				>%2$s</button>
 			</div>',
             esc_attr($this->uniqueId),
             esc_html($this->buttonTitle),

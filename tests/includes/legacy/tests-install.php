@@ -11,7 +11,7 @@ class Tests_Activation extends Give_Unit_Test_Case {
 	 *
 	 * @since 1.3.2
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 

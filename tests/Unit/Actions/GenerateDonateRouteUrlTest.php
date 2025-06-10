@@ -9,6 +9,7 @@ use Give\Tests\TestCase;
 class GenerateDonateRouteUrlTest extends TestCase
 {
     /**
+     * @since 4.3.0 Use trailingslashit() method to prevent errors on websites installed in subdirectories
      * @since 3.0.0
      *
      * @return void
@@ -26,7 +27,7 @@ class GenerateDonateRouteUrlTest extends TestCase
             'givewp-route-signature-expiration' => $signature->expiration,
         ];
 
-        $mockUrl = esc_url_raw(add_query_arg($queryArgs, home_url()));
+        $mockUrl = esc_url_raw(add_query_arg($queryArgs, trailingslashit(home_url())));
 
         $this->assertSame($mockUrl, $url);
     }

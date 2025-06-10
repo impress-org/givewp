@@ -20,6 +20,7 @@ class EventTicketRepository
 {
 
     /**
+     * @since 3.20.0 Add "amount" column to the properties array
      * @since 3.6.0
      *
      * @var string[]
@@ -28,6 +29,7 @@ class EventTicketRepository
         'eventId',
         'ticketTypeId',
         'donationId',
+        'amount',
     ];
 
     /**
@@ -50,6 +52,7 @@ class EventTicketRepository
     }
 
     /**
+     * @since 3.20.0 Add "amount" column to the insert statement
      * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
@@ -70,6 +73,7 @@ class EventTicketRepository
                     'event_id' => $eventTicket->eventId,
                     'ticket_type_id' => $eventTicket->ticketTypeId,
                     'donation_id' => $eventTicket->donationId,
+                    'amount' => $eventTicket->amount->formatToMinorAmount(),
                     'created_at' => $createdDateTime->format('Y-m-d H:i:s'),
                     'updated_at' => $createdDateTime->format('Y-m-d H:i:s'),
                 ]);
@@ -93,6 +97,7 @@ class EventTicketRepository
     }
 
     /**
+     * @since 3.20.0 Add "amount" column to the update statement
      * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
@@ -115,6 +120,7 @@ class EventTicketRepository
                     'event_id' => $eventTicket->eventId,
                     'ticket_type_id' => $eventTicket->ticketTypeId,
                     'donation_id' => $eventTicket->donationId,
+                    'amount' => $eventTicket->amount->formatToMinorAmount(),
                     'updated_at' => $updatedDateTime->format('Y-m-d H:i:s'),
                 ]);
         } catch (Exception $exception) {
@@ -175,6 +181,8 @@ class EventTicketRepository
     }
 
     /**
+     * @since 3.20.0 Add "amount" column to the select statement
+     * @since      3.6.0
      * @return ModelQueryBuilder<EventTicket>
      */
     public function prepareQuery(): ModelQueryBuilder
@@ -187,6 +195,7 @@ class EventTicketRepository
                 'event_id',
                 'ticket_type_id',
                 'donation_id',
+                'amount',
                 'created_at',
                 'updated_at'
             );
@@ -224,6 +233,7 @@ class EventTicketRepository
     }
 
     /**
+     * @since 3.20.0 Refactored to use event ticket amount instead of ticket type price
      * @since 3.6.0
      */
     public function getTotalByDonation(Donation $donation): Money
@@ -232,10 +242,8 @@ class EventTicketRepository
         $currency = $donation->amount->getCurrency();
 
         return array_reduce($eventTickets, static function (Money $carry, EventTicket $eventTicket) {
-            $ticketType = $eventTicket->ticketType()->get();
-
             return $carry->add(
-                $ticketType->price
+                $eventTicket->amount
             );
         }, new Money(0, $currency));
     }
