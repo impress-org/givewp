@@ -105,6 +105,6 @@ class DonorsAdminPage
      */
     public static function isShowingDetailsPage(): bool
     {
-        return isset($_GET['id'], $_GET['page'], $_GET['view']) && 'give-donors' === $_GET['page'] && 'donor-details' === $_GET['view'];
+        return isset($_GET['id'], $_GET['page'], $_GET['view']) && 'give-donors' === $_GET['page'] && 'overview' === $_GET['view'];
     }
 }
