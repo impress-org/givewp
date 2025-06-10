@@ -1,9 +1,14 @@
 {
     "compilerOptions": {
+        "jsx": "react",
         "baseUrl": ".",
         "paths": {
-            "@givewp/components": ["./src/Views/Components/index.js"],
-            "@givewp/promotions/*": ["./src/Promotions/sharedResources/*"]
+            "@givewp/components": [
+                "./src/Views/Components/index.js"
+            ],
+            "@givewp/promotions/*": [
+                "./src/Promotions/sharedResources/*"
+            ]
         }
     }
 }

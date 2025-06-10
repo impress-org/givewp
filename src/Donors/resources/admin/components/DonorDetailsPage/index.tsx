@@ -73,7 +73,7 @@ export default function DonorDetailsPage() {
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
-                {donor.wpUserPermalink && (
+                {donor?.wpUserPermalink && (
                     <a
                         href={donor.wpUserPermalink}
                         target="_blank"

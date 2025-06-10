@@ -14,6 +14,7 @@ export type GiveDonorOptions = {
     defaultForm: string;
     intlTelInputSettings: IntlTelInputSettings;
     nameTitlePrefixes: string[];
+    mode: 'test' | 'live';
     countries: {[countryCode: string]: string};
     states: {
         list: {[countryCode: string]: {[stateCode: string]: string}};
