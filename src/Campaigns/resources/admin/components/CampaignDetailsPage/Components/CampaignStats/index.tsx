@@ -33,9 +33,6 @@ const fetchCampaignOverviewStats = async (days: number, setLoading: Function, se
     setLoading(true);
 
     try {
-        // Add artificial delay of 1.5 seconds
-        await new Promise(resolve => setTimeout(resolve, 300));
-        
         const response = await apiFetch({
             path: addQueryArgs(`/givewp/v3/campaigns/${campaignId}/statistics`, {rangeInDays: days}),
         });
