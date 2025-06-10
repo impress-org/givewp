@@ -6,9 +6,6 @@ use Give\Donors\Actions\LoadDonorDetailsAssets;
 use Give\Donors\Actions\LoadDonorsListTableAssets;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Models\Donor;
-use Give\Framework\Database\DB;
-use Give\Helpers\Hooks;
-use Give\Helpers\Utils;
 
 class DonorsAdminPage
 {
@@ -48,11 +45,8 @@ class DonorsAdminPage
             }
 
             give(LoadDonorDetailsAssets::class)();
-        } else {
-            // TODO: Remove this once the new view is fully launched
-            if (self::isShowing()) {
-                give(LoadDonorsListTableAssets::class)();
-            }
+        } elseif (self::isShowing()) {
+            give(LoadDonorsListTableAssets::class)();
         }
 
         echo '<div id="give-admin-donors-root"></div>';
@@ -105,6 +99,16 @@ class DonorsAdminPage
      */
     public static function isShowingDetailsPage(): bool
     {
-        return isset($_GET['id'], $_GET['page'], $_GET['view']) && 'give-donors' === $_GET['page'] && 'overview' === $_GET['view'];
+        return isset($_GET['id'], $_GET['page']) && 'give-donors' === $_GET['page'];
+    }
+
+    /**
+     * Get the URL for the details page
+     *
+     * @unreleased
+     */
+    public static function getDetailsPageUrl(int $donorId): string
+    {
+        return admin_url("edit.php?post_type=give_forms&page=give-donors&id=$donorId");
     }
 }
