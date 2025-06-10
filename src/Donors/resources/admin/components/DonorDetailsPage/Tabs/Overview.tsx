@@ -49,7 +49,7 @@ export default function DonorDetailsPageOverviewTab() {
     const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId, mode);
     const {donations} = useDonorDonations({donorId, mode});
     const {record: donor} = useDonorEntityRecord(donorId);
-    const donationChartEndpoint = `givewp/v3/donations?mode=${mode}&donorId=${donorId}`;
+    const donationChartEndpoint = `givewp/v3/donations?mode=${mode}&donorId=${donorId}&status[]=publish`;
     const donationsListUrl = `admin.php?page=give-payment-history&donor=${donorId}`;
 
     const transactions: Transaction[] = !donations
