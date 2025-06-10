@@ -1,5 +1,8 @@
 import {createSlotFill} from '@wordpress/components';
 
+/**
+ * @unreleased
+ */
 const {Slot: ProfileSectionsSlot, Fill: ProfileSectionsFill} = createSlotFill('GiveWP/DonorDetails/Profile/Sections');
 
 export {
