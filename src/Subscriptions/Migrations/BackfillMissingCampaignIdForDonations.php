@@ -15,7 +15,7 @@ use Give\Framework\QueryBuilder\QueryBuilder;
  * It ensures that donations have the campaignId from their parent payment (for renewals),
  * from the revenue table, or discovers it through form-campaign associations.
  *
- * @unreleased
+ * @since 4.3.2
  */
 class BackfillMissingCampaignIdForDonations extends BatchMigration
 {
@@ -46,7 +46,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     /**
      * Base query to find donations without campaignId
      *
-     * @unreleased
+     * @since 4.3.2
      */
     protected function query(): QueryBuilder
     {
@@ -95,7 +95,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     /**
      * Process multiple donations in bulk to assign missing campaignId
      *
-     * @unreleased
+     * @since 4.3.2
      */
     private function processDonationsBulk(array $donationIds): void
     {
@@ -145,7 +145,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     /**
      * Get campaign IDs from revenue table for multiple donations
      *
-     * @unreleased
+     * @since 4.3.2
      */
     private function getBulkCampaignIdsFromRevenueTable(array $donationIds): array
     {
@@ -166,7 +166,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     /**
      * Get subscription and parent payment data for multiple donations
      *
-     * @unreleased
+     * @since 4.3.2
      */
     private function getBulkSubscriptionData(array $donationIds): array
     {
@@ -242,7 +242,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     /**
      * Get form-to-campaign mappings for multiple donations
      *
-     * @unreleased
+     * @since 4.3.2
      */
     private function getBulkFormCampaignMappings(array $donationIds, array $revenueCampaigns, array $subscriptionData): array
     {
@@ -325,7 +325,7 @@ class BackfillMissingCampaignIdForDonations extends BatchMigration
     /**
      * Bulk insert meta data while avoiding duplicates
      *
-     * @unreleased
+     * @since 4.3.2
      */
     private function bulkInsertMeta(array $metaInserts): void
     {

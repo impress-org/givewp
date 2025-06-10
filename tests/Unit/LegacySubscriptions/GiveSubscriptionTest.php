@@ -53,7 +53,7 @@ use Give_Payment;
  * Tests cover both the core add_payment functionality and the new backwards
  * compatibility features to ensure proper campaign ID handling across all scenarios.
  *
- * @unreleased
+ * @since 4.3.2
  */
 class GiveSubscriptionTest extends TestCase
 {
@@ -72,7 +72,7 @@ class GiveSubscriptionTest extends TestCase
      * Test that campaign_id is automatically derived from form_id when creating payments.
      * This tests the new automatic derivation functionality in give_insert_payment.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testCampaignIdAutomaticallyDerivedFromFormId()
     {
@@ -123,7 +123,7 @@ class GiveSubscriptionTest extends TestCase
      * Test that campaign_id property exists and works correctly on legacy Give_Payment objects.
      * This verifies our new backwards compatibility for campaign_id property access.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testCampaignIdPropertyAccessOnLegacyPayment()
     {
@@ -167,7 +167,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment method successfully creates a renewal payment.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentCreatesRenewalPayment()
     {
@@ -232,7 +232,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment method returns false when payment with same transaction ID already exists.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentReturnsFalseWhenPaymentExists()
     {
@@ -286,7 +286,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment properly handles anonymous donations by copying the _give_anonymous_donation meta.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentCopiesAnonymousDonationMeta()
     {
@@ -348,7 +348,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment properly handles custom post_date when provided.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentWithCustomDate()
     {
@@ -409,7 +409,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment correctly increases form and donor statistics.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentIncreasesStatistics()
     {
@@ -470,7 +470,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment sanitizes amounts correctly, especially for webhook responses.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentSanitizesAmounts()
     {
@@ -528,7 +528,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment handles missing gateway parameter correctly.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentWithMissingGateway()
     {
@@ -587,7 +587,7 @@ class GiveSubscriptionTest extends TestCase
      * Test that subscription renewal payments can access campaign_id through the Give_Payment object.
      * This verifies the backwards compatibility works in the subscription renewal context.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testSubscriptionRenewalCampaignIdAccess()
     {
@@ -666,7 +666,7 @@ class GiveSubscriptionTest extends TestCase
      * Test that add_payment automatically adds _give_campaign_id meta to renewal payments
      * when a campaign exists for the form, without explicitly specifying campaign_id.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentAutomaticallyAddsCampaignIdMeta()
     {
@@ -744,7 +744,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that the give_derive_campaign_id_from_form_id() utility function works correctly.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testGiveDeriveCampaignIdFromFormIdFunction()
     {
@@ -782,7 +782,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test debugging the campaign ID setting process in add_payment method.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentCampaignIdDebugging()
     {
@@ -867,7 +867,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment handles forms without campaigns correctly (should save 0 as campaign_id).
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testAddPaymentWithFormWithoutCampaign()
     {
