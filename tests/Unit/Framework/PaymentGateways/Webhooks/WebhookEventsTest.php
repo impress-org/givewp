@@ -491,9 +491,9 @@ class WebhookEventsTest extends TestCase
      *
      * @param string $returnFormat OBJECT, ARRAY_A, or ids.
      */
-    private function getAllEvents(string $gatewayId, string $returnFormat = OBJECT): array
+    private function getAllEvents(string $gatewayId): array
     {
-        return AsBackgroundJobs::getActionsByGroup($this->getGroup($gatewayId), $returnFormat);
+        return AsBackgroundJobs::getActionsByGroup($this->getGroup($gatewayId));
     }
 
     /**
