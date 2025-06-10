@@ -3,6 +3,7 @@ import DonorAddress from './Address';
 import DonorCustomFields from './CustomFields';
 import DonorEmailAddress from './EmailAddress';
 import DonorPersonalDetails from './PersonalDetails';
+import { ProfileSectionsSlot } from '../../slots';
 
 /**
  * @unreleased
@@ -15,6 +16,7 @@ export default function DonorDetailsPageProfileTab() {
                 <DonorAddress />
                 <DonorEmailAddress />
                 <DonorCustomFields />
+                <ProfileSectionsSlot />
             </AdminSectionsWrapper>
         </>
     );
