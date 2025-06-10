@@ -173,7 +173,7 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
         }
 
         return gateways.filter(({id}) => currencySwitcherSetting.gateways.includes(id));
-    }, [currency, currencySwitcherSettings, gateways]);
+    }, [currency]);
 
     /**
      * Filter gateways that support subscription/recurring donations.
@@ -221,7 +221,7 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
         } else {
             setValue(inputProps.name, null);
         }
-    }, [gatewayOptions, defaultValue, setValue, inputProps.name]);
+    }, [gatewayOptions]);
 
     return (
         <>
