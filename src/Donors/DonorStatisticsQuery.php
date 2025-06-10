@@ -173,7 +173,23 @@ class DonorStatisticsQuery extends QueryBuilder
     {
         $donorRepository = give(DonorRepository::class);
         $donorType = $donorRepository->getDonorType($this->donor->id);
-        return $donorType ? $donorType->label() : null;
+        
+        if (!$donorType) {
+            return null;
+        }
+
+        switch ($donorType->getValue()) {
+            case DonorType::NEW:
+                return __('No Donations', 'give');
+            case DonorType::SUBSCRIBER:
+                return __('Subscriber', 'give');
+            case DonorType::REPEAT:
+                return __('Repeat', 'give');
+            case DonorType::SINGLE:
+                return __('One-time', 'give');
+            default:
+                return $donorType->label();
+        }
     }
 
     /**
