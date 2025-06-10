@@ -226,7 +226,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
 
                     <NotificationPlaceholder type="snackbar" />
 
-                    <PluginArea scope={`givewp-${objectTypePlural}-details-page`} />
+                    <PluginArea scope={`givewp-${objectType}-details-page`} />
                 </SlotFillProvider>
             </FormProvider>
         </ErrorBoundary>

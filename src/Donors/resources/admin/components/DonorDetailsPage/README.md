@@ -43,7 +43,7 @@ registerPlugin(
     'givewp-{addonName}-{referenceToSlotName}', // Unique plugin name.
     {
         render: YourCustomSection,
-        scope: 'givewp-donors-details-page', // Required scope for donor details page
+        scope: 'givewp-donor-details-page', // Required scope for donor details page
     }
 );
 ```
@@ -101,7 +101,7 @@ export default function YourCustomSection() {
 
 - **name**: A unique identifier for your plugin extension
 - **render**: The React component to render
-- **scope**: Must be `'givewp-donors-details-page'` for donor details page extensions
+- **scope**: Must be `'givewp-donor-details-page'` for donor details page extensions
 
 ### Fill Component
 
@@ -158,7 +158,7 @@ if (isDirty && isValid) {
 
 ## Important Notes
 
-- The plugin scope `givewp-donors-details-page` is required for donor details page extensions
+- The plugin scope `givewp-donor-details-page` is required for donor details page extensions
 - All GiveWP admin components are available through the global `window.givewp.admin.components` object
 - Your component will be automatically inserted into the donor details page
 - Follow WordPress React patterns and accessibility guidelines
