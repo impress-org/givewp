@@ -161,6 +161,10 @@ class RegisterDonationRoutes
                         'type' => 'integer',
                         'default' => 0,
                     ],
+                    'donorId' => [
+                        'type' => 'integer',
+                        'default' => 0,
+                    ],
                     'includeSensitiveData' => [
                         'type' => 'boolean',
                         'default' => false,
