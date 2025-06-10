@@ -273,9 +273,19 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 4.3.2: June 3rd, 2025 =
-* Fix: [Add specific fixes and improvements for 4.3.2 here]
-* Enhancement: [Add specific enhancements for 4.3.2 here]
+= 4.3.2: June 11th, 2025 =
+* Enhancement: Improved accessibility across form modal and new tab display styles
+* Enhancement: Added focus border to donation confirmation donor-dashboard link
+* Enhancement: Added aria-support to donation confirmation secure badge
+* Enhancement: Replaced definition list tags in donation confirmation field lists for better semantic structure
+* Fix: Resolved an issue with additional keyboard focus on new donor wall items
+* Fix: Resolved accessibility issues with event ticket elements
+* Fix: Resolved an issue with aria labels in form-grid progress bar
+* Fix: Resolved an issue with campaign colors for grid and block goal progress
+* Fix: Resolved backwards compatibility issues for campaign_id in legacy objects and gateways
+* Fix: Resolved an issue where the Campaign Grid block does not show any Campaigns when the Campaign filter is used
+* Fix: Resolved an issue with the visual form builder route user roles
+* Fix: Resolved an issue with error focus on Date and File fields
 
 = 4.3.1: May 30th, 2025 =
 * Fix: Resolved an issue with the Donor wall when filtering by multiple form IDs
