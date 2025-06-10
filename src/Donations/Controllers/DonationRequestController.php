@@ -33,6 +33,7 @@ class DonationRequestController
     }
 
     /**
+     * @unreleased Allow dynamic status filtering.
      * @since 4.0.0
      */
     public function getDonations(WP_REST_Request $request): WP_REST_Response
@@ -66,8 +67,8 @@ class DonationRequestController
         $query->where('give_donationmeta_attach_meta_mode.meta_value', $mode);
 
         // Filter by status if not 'any'
-        if ($status !== 'any') {
-            $query->where('post_status', $status);
+        if (!in_array('any', (array)$status, true)) {
+            $query->whereIn('post_status', (array)$status);
         }
 
         $query

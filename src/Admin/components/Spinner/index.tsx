@@ -2,8 +2,14 @@ import classNames from 'classnames';
 
 import styles from './Spinner.module.scss';
 
+/**
+ * @unreleased
+ */
 type SpinnerSize = 'tiny' | 'small' | 'medium' | 'large';
 
+/**
+ * @unreleased
+ */
 type SpinnerProps = React.HTMLAttributes<HTMLDivElement> & {
     size?: SpinnerSize;
 };

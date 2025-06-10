@@ -62,16 +62,15 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
                 'lifetimeAmount' => 300,
                 'highestAmount' => 250,
                 'averageAmount' => 150,
-                'firstDonation' => [
+                'first' => [
                     'amount' => '250',
-                    'date' => $data['donations']['firstDonation']['date']
+                    'date' => $data['donations']['first']['date']
                 ],
-                'donationCount' => 2,
-                'lastContribution' => $data['donations']['lastContribution']
+                'count' => 2,
+                'last' => $data['donations']['last']
             ],
-            'donorSince' => $data['donorSince'],
             'donorType' => $data['donorType'],
-            'preferredGivingType' => 'single'
+            'preferredPaymentMethod' => $data['preferredPaymentMethod']
         ], $data);
     }
 
@@ -126,16 +125,15 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
                 'lifetimeAmount' => 50,
                 'highestAmount' => 50,
                 'averageAmount' => 50,
-                'firstDonation' => [
+                'first' => [
                     'amount' => '50',
-                    'date' => $data['donations']['firstDonation']['date']
+                    'date' => $data['donations']['first']['date']
                 ],
-                'donationCount' => 1,
-                'lastContribution' => $data['donations']['lastContribution']
+                'count' => 1,
+                'last' => $data['donations']['last']
             ],
-            'donorSince' => $data['donorSince'],
             'donorType' => $data['donorType'],
-            'preferredGivingType' => 'single'
+            'preferredPaymentMethod' => $data['preferredPaymentMethod']
         ], $data);
     }
 
@@ -187,16 +185,15 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
                 'lifetimeAmount' => 50,
                 'highestAmount' => 50,
                 'averageAmount' => 50,
-                'firstDonation' => [
+                'first' => [
                     'amount' => '50',
-                    'date' => $data['donations']['firstDonation']['date']
+                    'date' => $data['donations']['first']['date']
                 ],
-                'donationCount' => 1,
-                'lastContribution' => $data['donations']['lastContribution']
+                'count' => 1,
+                'last' => $data['donations']['last']
             ],
-            'donorSince' => $data['donorSince'],
             'donorType' => $data['donorType'],
-            'preferredGivingType' => 'single'
+            'preferredPaymentMethod' => $data['preferredPaymentMethod']
         ], $data);
     }
 

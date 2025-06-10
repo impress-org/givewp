@@ -10,33 +10,23 @@ export interface DonorStatistics {
         lifetimeAmount: number;
         highestAmount: number;
         averageAmount: number;
-        firstDonation: {
+        count: number;
+        first: {
             amount: string;
             date: string;
         } | null;
-        donationCount: number;
-        lastContribution: string | null;
+        last: {
+            amount: string;
+            date: string;
+        } | null;
     };
-    donorSince: string;
-    donorType: 'recurring' | 'single';
+    donorType: string;
     preferredPaymentMethod: string;
 }
 
 /**
  * @unreleased
  */
-//TODO: Successfully makes request & returns data but record is undefined.
-
-// export function useDonorStatistics(donorId: number, mode: 'test' | 'live' = 'live') {
-//     const {record, hasResolved, isResolving} = useEntityRecord<DonorStatistics>('givewp', 'donor', `${donorId}/statistics`);
-
-//     return {
-//         statistics: record,
-//         hasResolved,
-//         isResolving
-//     };
-// }
-
 export function useDonorStatistics(donorId: number, mode: 'live' | 'test' = 'live') {
     const [statistics, setStatistics] = useState<DonorStatistics | null>(null);
     const [error, setError] = useState<Error | null>(null);

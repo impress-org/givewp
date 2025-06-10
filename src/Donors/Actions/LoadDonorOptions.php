@@ -44,6 +44,7 @@ class LoadDonorOptions
             'states' => $this->getStatesData(),
             'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
             'admin' => $isAdmin ? [] : null,
+            'mode' => give_is_test_mode() ? 'test' : 'live'
         ];
     }
 

@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {__} from '@wordpress/i18n';
+import {dateI18n} from '@wordpress/date';
 import classnames from 'classnames';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
@@ -7,8 +8,9 @@ import PrivateNotes from '@givewp/src/Admin/components/PrivateNotes';
 import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {amountFormatter, formatTimestamp, getRelativeTimeString} from '@givewp/src/Admin/utils';
-import {getDonorOptionsWindowData} from '@givewp/donors/utils';
+import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/utils';
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
+
 import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetailsPage.module.scss';
 
 /**
@@ -40,16 +42,15 @@ const statusMap: Record<string, 'Completed' | 'Failed' | 'Pending' | 'Refunded'>
 /**
  * @unreleased
  */
-const {currency} = getDonorOptionsWindowData();
-
-/**
- * @unreleased
- */
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donorId = parseInt(urlParams.get('id') ?? '0');
-    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved} = useDonorStatistics(donorId);
-    const {donations, hasResolved: donationsResolved} = useDonorDonations({donorId});
+    const {currency, mode} = getDonorOptionsWindowData();
+    const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId, mode);
+    const {donations} = useDonorDonations({donorId, mode});
+    const {record: donor} = useDonorEntityRecord(donorId);
+    const donationChartEndpoint = `givewp/v3/donations?mode=${mode}&donorId=${donorId}`;
+    const donationsListUrl = `admin.php?page=give-payment-history&donor=${donorId}`;
     const [isAddingNote, setIsAddingNote] = useState(false);
 
     const transactions: Transaction[] = !donations
@@ -66,39 +67,31 @@ export default function DonorDetailsPageOverviewTab() {
         : [
               {
                   label: __('Donor Since', 'give'),
-                  value: new Date(stats.donorSince).toLocaleDateString(undefined, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                  }),
+                  value: dateI18n('M j, Y', donor?.createdAt.date, undefined),
               },
               {
                   label: __('Last Contributed', 'give'),
-                  value: stats.donations.firstDonation
-                      ? getRelativeTimeString(new Date(stats.donations.firstDonation.date))
+                  value: stats.donations.last
+                      ? getRelativeTimeString(new Date(stats.donations.last.date))
                       : __('Never', 'give'),
               },
               {
                   label: __('First Contribution', 'give'),
-                  value: stats.donations.firstDonation
+                  value: stats.donations.first
                       ? {
-                            value1: amountFormatter(currency).format(parseFloat(stats.donations.firstDonation.amount)),
-                            value2: new Date(stats.donations.firstDonation.date).toLocaleDateString(undefined, {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                            }),
+                            value1: amountFormatter(currency).format(parseFloat(stats.donations.first.amount)),
+                            value2: dateI18n('M j, Y', stats.donations.first.date, undefined),
                         }
                       : __('None', 'give'),
               },
               {
                   label: __('Donor Type', 'give'),
-                  value: stats.donorType === 'recurring' ? __('Recurring', 'give') : __('One Time', 'give'),
+                  value: stats.donorType,
                   isPill: true,
               },
               {
                   label: __('Total Donations', 'give'),
-                  value: stats.donations.donationCount?.toString() ?? '0',
+                  value: stats.donations.count?.toString() ?? '0',
               },
               {
                   label: __('Preferred Method', 'give'),
@@ -138,7 +131,7 @@ export default function DonorDetailsPageOverviewTab() {
                     />
                     <TimeSeriesChart
                         title={__('Contributions', 'give')}
-                        endpoint={`givewp/v3/donations?mode=live&donorId=${donorId}`}
+                        endpoint={donationChartEndpoint}
                         amountFormatter={amountFormatter(currency)}
                     />
                 </div>
@@ -147,7 +140,7 @@ export default function DonorDetailsPageOverviewTab() {
                     <Header
                         title={__('Recent Transactions', 'give')}
                         subtitle={__('Shows the five recent transactions', 'give')}
-                        href={`admin.php?page=give-payment-history&donor=${donorId}`}
+                        href={donationsListUrl}
                         actionText={__('View All Transactions', 'give')}
                     />
                     <div className={styles.transactionList}>

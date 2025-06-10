@@ -1,7 +1,6 @@
 import {useEntityRecord} from '@wordpress/core-data';
 import {Donor} from '@givewp/donors/admin/components/types';
 import type {GiveDonorOptions} from '@givewp/donors/types';
-import apiFetch from '@wordpress/api-fetch';
 
 declare const window: {
     GiveDonorOptions: GiveDonorOptions;
