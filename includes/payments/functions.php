@@ -133,6 +133,53 @@ function give_get_payment_by( $field = '', $value = '' ) {
 }
 
 /**
+ * Derive Campaign ID from Form ID
+ *
+ * Automatically derives a campaign ID from a form ID when a campaign exists for that form.
+ * This function provides a centralized way to handle campaign ID derivation across different
+ * parts of the codebase.
+ *
+ * @unreleased
+ *
+ * @param int $form_id The form ID to derive the campaign ID from.
+ *
+ * @return int The derived campaign ID, or 0 if no campaign is found.
+ */
+function give_derive_campaign_id_from_form_id( $form_id ) {
+	$derived_campaign_id = 0;
+
+	// Method 1: Use modern Campaign model (if available)
+	if ( class_exists( 'Give\\Campaigns\\Models\\Campaign' ) ) {
+		$campaign = \Give\Campaigns\Models\Campaign::findByFormId( $form_id );
+		if ( $campaign ) {
+			$derived_campaign_id = $campaign->id;
+		}
+	}
+
+	// Method 2: Fallback to direct database query
+	if ( ! $derived_campaign_id && class_exists( 'Give\\Framework\\Database\\DB' ) ) {
+		$campaign_id_from_db = \Give\Framework\Database\DB::table( 'give_campaign_forms' )
+			->where( 'form_id', $form_id )
+			->value( 'campaign_id' );
+
+		if ( $campaign_id_from_db ) {
+			$derived_campaign_id = (int) $campaign_id_from_db;
+		}
+	}
+
+	/**
+	 * Filter the derived campaign ID.
+	 *
+	 * @unreleased
+	 *
+	 * @param int $derived_campaign_id The derived campaign ID.
+	 * @param int $form_id The form ID used for derivation.
+     * @return int The derived campaign ID.
+	 */
+	return apply_filters( 'give_derive_campaign_id_from_form_id', $derived_campaign_id, $form_id );
+}
+
+/**
  * Insert Payment
  *
  * @since  1.0
@@ -171,6 +218,16 @@ function give_insert_payment( $payment_data = [] ) {
 	$payment->gateway        = $gateway;
 	$payment->form_title     = $form_title;
 	$payment->form_id        = $form_id;
+
+	// Set campaign_id: Use explicit value if provided, otherwise derive from form_id
+	if ( ! empty( $payment_data['campaign_id'] ) ) {
+		$payment->campaign_id = $payment_data['campaign_id'];
+	} else {
+		// Try to automatically derive campaign_id from form_id
+		$derived_campaign_id = give_derive_campaign_id_from_form_id( $form_id );
+		$payment->campaign_id = $derived_campaign_id;
+	}
+
 	$payment->price_id       = $price_id;
 	$payment->donor_id       = ( ! empty( $payment_data['donor_id'] ) ? $payment_data['donor_id'] : '' );
 	$payment->user_id        = $payment_data['user_info']['id'];
