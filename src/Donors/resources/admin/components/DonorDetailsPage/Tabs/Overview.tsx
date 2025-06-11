@@ -12,6 +12,7 @@ import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/ut
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
 
 import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetailsPage.module.scss';
+import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 
 /**
  * @unreleased
@@ -221,6 +222,8 @@ export default function DonorDetailsPageOverviewTab() {
                     ))}
                 </div>
             </div>
+
+            <NotificationPlaceholder type="snackbar" />
         </div>
     );
 }

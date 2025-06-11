@@ -5,7 +5,6 @@ import {Dispatch, SetStateAction, useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import {useDispatch} from '@wordpress/data';
 import {ConfirmationDialogIcon, DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon} from './Icons';
-import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 import Spinner from '../Spinner';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import style from './style.module.scss';
@@ -89,7 +88,7 @@ export default function PrivateNotes({donorId, context}: {
     };
 
     const editNote = (id: number, content: string) => {
-        apiFetch({path: `/givewp/v3/donors/${donorId}/notes/${id}`, method: 'POST', data: {id, content}})
+        apiFetch({path: `/givewp/v3/donors/${donorId}/notes/${id}`, method: 'PATCH', data: {content}})
             .then(async (response) => {
                 await mutate(response);
                 dispatch.addSnackbarNotice({
@@ -149,6 +148,7 @@ export default function PrivateNotes({donorId, context}: {
                     {data.data.map((note) => {
                         return (
                             <Note
+                                key={note.id}
                                 note={note}
                                 onDelete={(id: number) => deleteNote(id)}
                                 onEdit={(id: number, content: string) => editNote(id, content)}
@@ -186,7 +186,6 @@ export default function PrivateNotes({donorId, context}: {
                     </button>
                 )}
             </div>
-            <NotificationPlaceholder type="snackbar" />
         </div>
     );
 }
@@ -199,7 +198,7 @@ const Note = ({note, onDelete, onEdit}) => {
     const [showMenuIcon, setShowMenuIcon] = useState(false);
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [currentlyEditing, setCurrentlyEditing] = useState(null);
-    const [content, setContent] = useState('');
+    const [content, setContent] = useState(note.content);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     return (
@@ -218,9 +217,8 @@ const Note = ({note, onDelete, onEdit}) => {
                         <textarea
                             className={style.textarea}
                             onChange={(e) => setContent(e.target.value)}
-                        >
-                            {note.content}
-                        </textarea>
+                            value={content}
+                        ></textarea>
 
                             <div className={style.textAreaButtons}>
                                 <button
