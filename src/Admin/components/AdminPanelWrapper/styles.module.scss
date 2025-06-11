@@ -14,7 +14,6 @@ $breakpoint-desktop: 900px;
     display: flex;
     gap: var(--givewp-spacing-4);
     
-    // Make child elements (StatWidgets) grow equally
     > * {
         flex: 1;
     }
