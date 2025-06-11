@@ -52,7 +52,6 @@ export default function DonorDetailsPageOverviewTab() {
     const {record: donor} = useDonorEntityRecord(donorId);
     const donationChartEndpoint = `givewp/v3/donations?mode=${mode}&donorId=${donorId}`;
     const donationsListUrl = `admin.php?page=give-payment-history&donor=${donorId}`;
-    const [isAddingNote, setIsAddingNote] = useState(false);
 
     const transactions: Transaction[] = !donations
         ? []
@@ -186,16 +185,7 @@ export default function DonorDetailsPageOverviewTab() {
                 </div>
 
                 <div className={styles.card}>
-                    <Header
-                        title={__('Private Note', 'give')}
-                        subtitle={__('This note will be seen by only admins', 'give')}
-                        actionOnClick={() => setIsAddingNote(true)}
-                        actionText={__('Add note', 'give')}
-                    />
-                    <PrivateNotes
-                        donorId={donorId}
-                        context={[isAddingNote, setIsAddingNote]}
-                    />
+                    <PrivateNotes donorId={donorId} />
                 </div>
             </div>
 

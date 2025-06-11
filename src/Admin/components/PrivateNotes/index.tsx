@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {addQueryArgs} from '@wordpress/url';
 import useSWR from 'swr';
-import {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import {useDispatch} from '@wordpress/data';
 import {ConfirmationDialogIcon, DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon} from './Icons';
@@ -10,6 +10,7 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import style from './style.module.scss';
 import cx from 'classnames';
 import {formatTimestamp} from '@givewp/src/Admin/utils';
+import Header from '@givewp/src/Admin/components/Header';
 
 type DonorNote = {
     id: number;
@@ -21,6 +22,7 @@ type DonorNote = {
 }
 
 type NoteState = {
+    isAddingNote: boolean;
     isSavingNote: boolean;
     note: string;
     perPage: number;
@@ -29,18 +31,14 @@ type NoteState = {
 /**
  * @unreleased
  */
-export default function PrivateNotes({donorId, context}: {
-    donorId: number,
-    context: [boolean, Dispatch<SetStateAction<boolean>>]
-}) {
+export default function PrivateNotes({donorId}: {donorId: number}) {
     const endpoint = `/givewp/v3/donors/${donorId}/notes`;
     const [state, setNoteState] = useState<NoteState>({
+        isAddingNote: false,
         isSavingNote: false,
         note: '',
         perPage: 5,
     });
-
-    const [isAddingNote, setIsAddingNote] = context;
 
     const dispatch = useDispatch('givewp/admin-details-page-notifications');
 
@@ -67,7 +65,7 @@ export default function PrivateNotes({donorId, context}: {
         apiFetch({path: endpoint, method: 'POST', data: {content: state.note}})
             .then((response) => {
                 mutate(response).then(() => {
-                    setIsAddingNote(false);
+                    setState({isAddingNote: false})
                     dispatch.addSnackbarNotice({
                         id: 'add-note',
                         content: __('You added a private note', 'give'),
@@ -116,77 +114,85 @@ export default function PrivateNotes({donorId, context}: {
     }
 
     return (
-        <div className={style.notesContainer}>
-            {isAddingNote && (
-                <div className={style.addNoteContainer}>
+        <>
+            <Header
+                title={__('Private Note', 'give')}
+                subtitle={__('This note will be seen by only admins', 'give')}
+                actionOnClick={() => setState({isAddingNote: true})}
+                actionText={__('Add note', 'give')}
+            />
+            <div className={style.notesContainer}>
+                {state.isAddingNote && (
+                    <div className={style.addNoteContainer}>
                     <textarea
                         className={style.textarea}
                         onChange={(e) => setState({note: e.target.value})}
                     ></textarea>
 
-                    <div className={style.textAreaButtons}>
-                        <button
-                            className={cx(style.button, style.cancelBtn)}
-                            onClick={() => setIsAddingNote(false)}
-                        >
-                            {__('Cancel', 'give')}
-                        </button>
-                        <button
-                            className={cx(style.button, style.saveBtn)}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                saveNote();
-                            }}
-                        >
-                            {__('Save', 'give')}
-                        </button>
-                    </div>
-                </div>
-            )}
-            {data?.data?.length ? (
-                <>
-                    {data.data.map((note) => {
-                        return (
-                            <Note
-                                key={note.id}
-                                note={note}
-                                onDelete={(id: number) => deleteNote(id)}
-                                onEdit={(id: number, content: string) => editNote(id, content)}
-                            />
-                        );
-                    })}
-                </>
-            ) : (
-                <>
-                    {!isAddingNote && (
-                        <div style={{margin: '0 auto'}}>
-                            <NotesIcon />
-                            <p>{__('No notes yet', 'give')}</p>
+                        <div className={style.textAreaButtons}>
+                            <button
+                                className={cx(style.button, style.cancelBtn)}
+                                onClick={() => setState({isAddingNote: false})}
+                            >
+                                {__('Cancel', 'give')}
+                            </button>
+                            <button
+                                className={cx(style.button, style.saveBtn)}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    saveNote();
+                                }}
+                            >
+                                {__('Save', 'give')}
+                            </button>
                         </div>
-                    )}
-                </>
-            )}
-
-            <div className={style.showMoreContainer}>
-                {data?.data?.length && data.totalItems > state.perPage && (
-                    <button
-                        className={style.showMoreButton}
-                        onClick={async (e) => {
-                            e.preventDefault();
-                            setNoteState((prevState) => {
-                                return {
-                                    ...prevState,
-                                    perPage: prevState.perPage += 5,
-                                };
-                            });
-
-                            await mutate(endpoint);
-                        }}>
-                        {__('Show more', 'give')}
-                    </button>
+                    </div>
                 )}
+                {data?.data?.length ? (
+                    <>
+                        {data.data.map((note) => {
+                            return (
+                                <Note
+                                    key={note.id}
+                                    note={note}
+                                    onDelete={(id: number) => deleteNote(id)}
+                                    onEdit={(id: number, content: string) => editNote(id, content)}
+                                />
+                            );
+                        })}
+                    </>
+                ) : (
+                    <>
+                        {!state.isAddingNote && (
+                            <div style={{margin: '0 auto'}}>
+                                <NotesIcon />
+                                <p>{__('No notes yet', 'give')}</p>
+                            </div>
+                        )}
+                    </>
+                )}
+
+                <div className={style.showMoreContainer}>
+                    {data?.data?.length && data.totalItems > state.perPage && (
+                        <button
+                            className={style.showMoreButton}
+                            onClick={async (e) => {
+                                e.preventDefault();
+                                setNoteState((prevState) => {
+                                    return {
+                                        ...prevState,
+                                        perPage: prevState.perPage += 5,
+                                    };
+                                });
+
+                                await mutate(endpoint);
+                            }}>
+                            {__('Show more', 'give')}
+                        </button>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
