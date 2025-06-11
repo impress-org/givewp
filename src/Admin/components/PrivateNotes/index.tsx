@@ -164,7 +164,7 @@ export default function PrivateNotes({donorId}: {donorId: number}) {
                 ) : (
                     <>
                         {!state.isAddingNote && (
-                            <div style={{margin: '0 auto'}}>
+                            <div style={{margin: '0 auto', textAlign: 'center'}}>
                                 <NotesIcon />
                                 <p>{__('No notes yet', 'give')}</p>
                             </div>
@@ -173,7 +173,7 @@ export default function PrivateNotes({donorId}: {donorId: number}) {
                 )}
 
                 <div className={style.showMoreContainer}>
-                    {data?.data?.length && data.totalItems > state.perPage && (
+                    {data?.data?.length > 0 && data.totalItems > state.perPage && (
                         <button
                             className={style.showMoreButton}
                             onClick={async (e) => {
