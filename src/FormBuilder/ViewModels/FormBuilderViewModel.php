@@ -361,6 +361,7 @@ class FormBuilderViewModel
      * as not to be too confusing. This array is used to prevent the user from creating meta keys that conflict with the
      * existing meta or field names.
      *
+     * @since 4.3.2 Add country, state, city, zip, address1, and address2 to the disallowed field names.
      * @since 3.0.0
      */
     protected function getDisallowedFieldNames(): array
@@ -376,6 +377,12 @@ class FormBuilderViewModel
                 'login',
                 'consent',
                 'donation-summary',
+                'country',
+                'state',
+                'city',
+                'zip',
+                'address1',
+                'address2',
             ]
         );
 

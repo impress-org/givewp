@@ -103,6 +103,9 @@ class FormBuilderViewModelTest extends TestCase
         );
     }
 
+    /**
+     * @since 4.3.2 Add country, state, city, zip, address1, and address2 to the disallowed field names.
+     */
     private function getDisallowedFieldNames(): array
     {
         $disallowedFieldNames = array_merge(
@@ -116,6 +119,12 @@ class FormBuilderViewModelTest extends TestCase
                 'login',
                 'consent',
                 'donation-summary',
+                'country',
+                'state',
+                'city',
+                'zip',
+                'address1',
+                'address2',
             ]
         );
 

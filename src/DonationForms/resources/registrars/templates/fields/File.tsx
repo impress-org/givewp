@@ -3,7 +3,7 @@ import {__, sprintf} from '@wordpress/i18n';
 import {useEffect, useRef} from "react";
 
 /**
- * @unreleased manually focus the visible input when error is present.
+ * @since 4.3.2 manually focus the visible input when error is present.
  * @since 4.3.0 Add aria-required attribute and file size and type validations.
  */
 

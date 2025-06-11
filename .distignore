@@ -65,6 +65,7 @@ phpunit.xml
 phpunit.xml.dist
 CHANGELOG.md
 README.md
+RELEASING.md
 readme.md
 phpcs.ruleset.xml
 phpcs.xml.dist

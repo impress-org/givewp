@@ -37,7 +37,7 @@ class RegisterFormBuilderRestRoutes
     /**
      * Get Request
      *
-     * @unreleased update capability to add edit_give_forms
+     * @since 4.3.2 update capability to add edit_give_forms
      * @since 3.0.0
      *
      * @return void
@@ -64,7 +64,7 @@ class RegisterFormBuilderRestRoutes
     /**
      * Post Request
      *
-     * @unreleased update capability to add edit_give_forms
+     * @since 4.3.2 update capability to add edit_give_forms
      * @since 3.0.0
      *
      * @return void

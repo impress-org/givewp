@@ -8,7 +8,7 @@ use Give\Tracking\Contracts\TrackData;
 use Give\Tracking\Repositories\TrackEvents;
 
 /**
- * @unreleased
+ * @since 4.3.2
  */
 class CampaignsData implements TrackData
 {

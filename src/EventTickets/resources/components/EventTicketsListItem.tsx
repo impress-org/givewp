@@ -4,7 +4,7 @@ import {plus, reset as minus} from '@wordpress/icons';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 
 /**
- * @Unreleased include proper labeling for accessibility. update title to <p> tag.
+ * @since 4.3.2 include proper labeling for accessibility. update title to <p> tag.
  */
 export default function EventTicketsListItem({ticketType, currency, currencyRate, selectedTickets, handleSelect}) {
     const formatter = useCurrencyFormatter(currency);
@@ -28,25 +28,25 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                 {remainingTickets > 0 ? (
                     <>
                         <div className={'givewp-event-tickets__tickets__ticket__quantity__input'}>
-                            <button 
+                            <button
                                 onClick={handleButtonClick(selectedTickets - 1)}
                                 aria-label={__('Decrease quantity of', 'give') + ' ' + ticketType.title}
                             >
                                 <Icon icon={minus} />
                             </button>
-                            <input 
-                                type="text" 
-                                value={selectedTickets} 
+                            <input
+                                type="text"
+                                value={selectedTickets}
                                 aria-label={__('Ticket quantity', 'give')}
                             />
-                            <button 
+                            <button
                                 onClick={handleButtonClick(selectedTickets + 1)}
                                 aria-label={__('Increase quantity of', 'give') + ' ' + ticketType.title}
                             >
                                 <Icon icon={plus} />
                             </button>
                         </div>
-                        <p 
+                        <p
                             className={'givewp-event-tickets__tickets__ticket__quantity__availability'}
                             role="status"
                             aria-live="polite"
@@ -56,7 +56,7 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                         </p>
                     </>
                 ) : (
-                    <span 
+                    <span
                         className={'givewp-event-tickets__tickets__ticket__quantity__sold-out'}
                         role="status"
                         aria-live="polite"
