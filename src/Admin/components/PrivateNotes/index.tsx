@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {addQueryArgs} from '@wordpress/url';
 import useSWR from 'swr';
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import {useDispatch} from '@wordpress/data';
 import {ConfirmationDialogIcon, DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon} from './Icons';
@@ -31,7 +31,7 @@ type NoteState = {
 /**
  * @unreleased
  */
-export default function PrivateNotes({donorId}: {donorId: number}) {
+export default function PrivateNotes({donorId}: {donorId: numberØ}) {
     const endpoint = `/givewp/v3/donors/${donorId}/notes`;
     const [state, setNoteState] = useState<NoteState>({
         isAddingNote: false,
