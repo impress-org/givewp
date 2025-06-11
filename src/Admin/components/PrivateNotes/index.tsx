@@ -31,7 +31,7 @@ type NoteState = {
 /**
  * @unreleased
  */
-export default function PrivateNotes({donorId}: {donorId: numberØ}) {
+export default function PrivateNotes({donorId}: {donorId: number}) {
     const endpoint = `/givewp/v3/donors/${donorId}/notes`;
     const [state, setNoteState] = useState<NoteState>({
         isAddingNote: false,
