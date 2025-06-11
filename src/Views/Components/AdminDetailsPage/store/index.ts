@@ -17,7 +17,7 @@ export const store = createReduxStore('givewp/admin-details-page-notifications',
             case 'ADD_NOTIFICATION':
                 const notificationExist = state.filter((notification: { id: string }) => notification.id === action.notification.id);
                 if (!notificationExist.length) {
-                    state.push(action.notification);
+                    return [...state, action.notification];
                 }
                 return state;
 

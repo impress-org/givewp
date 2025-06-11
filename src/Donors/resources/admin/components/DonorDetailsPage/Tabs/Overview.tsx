@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {dateI18n} from '@wordpress/date';
 import classnames from 'classnames';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
-import PrivateNote from '@givewp/src/Admin/components/PrivateNote';
+import PrivateNotes from '@givewp/src/Admin/components/PrivateNotes';
 import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {amountFormatter, formatTimestamp, getRelativeTimeString} from '@givewp/src/Admin/utils';
@@ -12,6 +12,7 @@ import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/ut
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
 
 import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetailsPage.module.scss';
+import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 
 /**
  * @unreleased
@@ -49,17 +50,17 @@ export default function DonorDetailsPageOverviewTab() {
     const {statistics: stats, isResolving: statsLoading, hasResolved: statsResolved,} = useDonorStatistics(donorId, mode);
     const {donations} = useDonorDonations({donorId, mode});
     const {record: donor} = useDonorEntityRecord(donorId);
-    const donationChartEndpoint = `givewp/v3/donations?mode=${mode}&donorId=${donorId}&status[]=publish`;
+    const donationChartEndpoint = `givewp/v3/donations?mode=${mode}&donorId=${donorId}`;
     const donationsListUrl = `admin.php?page=give-payment-history&donor=${donorId}`;
 
     const transactions: Transaction[] = !donations
         ? []
         : donations.map((donation) => ({
-              campaign: donation.formTitle,
-              status: statusMap[donation.status] || 'Pending',
-              timestamp: donation.createdAt.date,
-              amount: amountFormatter(donation.amount.currency).format(parseFloat(donation.amount.value)),
-          }));
+            campaign: donation.formTitle,
+            status: statusMap[donation.status] || 'Pending',
+            timestamp: donation.createdAt.date,
+            amount: amountFormatter(donation.amount.currency).format(parseFloat(donation.amount.value)),
+        }));
 
     const summaryItems = !stats
         ? []
@@ -125,8 +126,8 @@ export default function DonorDetailsPageOverviewTab() {
                     <Header
                         title={__('Contributions', 'give')}
                         subtitle={__("Shows the donor's contribution over time", 'give')}
-                        // href="#"
-                        // actionText={__('View Detailed Report', 'give')}
+                        href="#"
+                        actionText={__('View Detailed Report', 'give')}
                     />
                     <TimeSeriesChart
                         title={__('Contributions', 'give')}
@@ -184,13 +185,7 @@ export default function DonorDetailsPageOverviewTab() {
                 </div>
 
                 <div className={styles.card}>
-                    <Header
-                        title={__('Private Note', 'give')}
-                        subtitle={__('This note will be seen by only admins', 'give')}
-                        actionOnClick={() => {}}
-                        actionText={__('Add note', 'give')}
-                    />
-                    <PrivateNote />
+                    <PrivateNotes donorId={donorId} />
                 </div>
             </div>
 
@@ -217,6 +212,8 @@ export default function DonorDetailsPageOverviewTab() {
                     ))}
                 </div>
             </div>
+
+            <NotificationPlaceholder type="snackbar" />
         </div>
     );
 }

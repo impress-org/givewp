@@ -173,7 +173,7 @@ class DonorStatisticsQuery extends QueryBuilder
     {
         $donorRepository = give(DonorRepository::class);
         $donorType = $donorRepository->getDonorType($this->donor->id);
-        
+
         if (!$donorType) {
             return null;
         }
