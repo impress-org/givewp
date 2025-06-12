@@ -1,6 +1,6 @@
 $breakpoint-desktop: 900px;
 
-.grid {
+.overview {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--givewp-spacing-4);
@@ -11,14 +11,14 @@ $breakpoint-desktop: 900px;
     }
 }
 
-.leftColumn, .rightColumn {
+.left, .right {
     display: flex;
     flex-direction: column;
     gap: var(--givewp-spacing-6);
     margin-top: var(--givewp-spacing-2);
 }
 
-.leftColumn {
+.left{
     grid-column: span 2;
 
     @media (max-width: $breakpoint-desktop) {
@@ -26,6 +26,6 @@ $breakpoint-desktop: 900px;
     }
 }
 
-.rightColumn {
+.right {
     grid-column: span 1;
 }
