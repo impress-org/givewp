@@ -78,17 +78,12 @@ $borderColor: #9A9A9A;
         align-items: center;
         justify-content: space-between;
         background: var(--givewp-shades-white);
-        border-radius: var(--givewp-rounded-4);
         transition: all 0.2s ease-in-out;
-        border: solid 1px transparent;
+        border: none;
+        outline: none;
 
         &.invalid {
             border-color: red;
-        }
-
-        &:focus-within {
-            border-color: var(--givewp-primary-color);
-            outline: 1px solid var(--givewp-primary-color);
         }
     }
 
@@ -99,12 +94,16 @@ $borderColor: #9A9A9A;
         font-weight: normal;
         line-height: 1.5;
         color: var(--givewp-grey-900);
-        border: none;
-        outline: none;
         box-shadow: none;
         width: 100%;
         text-align: center;
-        padding: 0;
+        border-radius: var(--givewp-rounded-4);
+        padding: var(--givewp-spacing-4) 0;
+        transition: border-color 0.2s ease, outline-color 0.2s ease;
+
+        &:focus {
+            outline: 2px solid var(--givewp-primary-color);
+        }
 
         &::placeholder {
             opacity: 0.6;
