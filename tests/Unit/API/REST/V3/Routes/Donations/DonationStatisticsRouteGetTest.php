@@ -25,17 +25,6 @@ class DonationStatisticsRouteGetTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function setUp(): void
-    {
-        $donationsStatisticsController = new DonationStatisticsController();
-        $donationsStatisticsController->register_routes();
-
-        parent::setUp();
-    }
-
-    /**
-     * @unreleased
-     */
     public function testGetDonationStatistics()
     {
         $newAdminUser = $this->factory()->user->create(

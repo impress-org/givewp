@@ -22,17 +22,6 @@ class GetDonationRouteTest extends RestApiTestCase
     /**
      * @since 4.0.0
      */
-    public function setUp(): void
-    {
-        $donationsController = new DonationController();
-        $donationsController->register_routes();
-
-        parent::setUp();
-    }
-
-    /**
-     * @since 4.0.0
-     */
     public function testGetDonationShouldReturnAllModelProperties()
     {
         /** @var  Donation $donation */
