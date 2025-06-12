@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes\Donations;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
+use Give\Framework\Receipts\DonationReceipt;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -63,6 +64,8 @@ class DonationStatisticsController extends WP_REST_Controller
             return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
         }
 
+        $receipt = $donation->receipt();
+
         $item = [
             'donation' => [
                 'amount' => $donation->amount->formatToDecimal(),
@@ -79,6 +82,12 @@ class DonationStatisticsController extends WP_REST_Controller
             'campaign' => [
                 'id' => $donation->campaignId,
                 'title' => $donation->campaign->title,
+            ],
+            'receipt' => [
+                'donationDetails' => $receipt->donationDetails->toArray(),
+                'subscriptionDetails' => $receipt->subscriptionDetails->toArray(),
+                'eventTicketsDetails' => $receipt->eventTicketsDetails->toArray(),
+                'additionalDetails' => $receipt->additionalDetails->toArray(),
             ],
         ];
 
