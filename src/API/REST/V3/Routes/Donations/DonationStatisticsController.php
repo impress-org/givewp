@@ -73,6 +73,7 @@ class DonationStatisticsController extends WP_REST_Controller
                 'status' => $donation->status->getValue(),
                 'date' => $donation->createdAt->format('Y-m-d H:i:s'),
                 'paymentMethod' => $donation->gatewayId,
+                'mode' => $donation->mode->getValue(),
             ],
             'donor' => [
                 'id' => $donation->donorId,
