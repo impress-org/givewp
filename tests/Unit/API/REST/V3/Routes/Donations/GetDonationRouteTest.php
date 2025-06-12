@@ -1,13 +1,12 @@
 <?php
 
-namespace Unit\API\REST\V3\Routes\Donations;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\RegisterDonationRoutes;
+use Give\API\REST\V3\Routes\Donations\DonationController;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -25,7 +24,8 @@ class GetDonationRouteTest extends RestApiTestCase
      */
     public function setUp(): void
     {
-        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
+        $donationsController = new DonationController();
+        $donationsController->register_routes();
 
         parent::setUp();
     }

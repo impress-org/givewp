@@ -1,9 +1,9 @@
 <?php
 
-namespace Unit\API\REST\V3\Routes\Donations;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\RegisterDonationRoutes;
+use Give\API\REST\V3\Routes\Donations\DonationController;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Campaigns\Models\Campaign;
@@ -12,7 +12,6 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -30,7 +29,8 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     public function setUp(): void
     {
-        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
+        $donationsController = new DonationController();
+        $donationsController->register_routes();
 
         parent::setUp();
     }
@@ -127,7 +127,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
         ];
 
         $this->assertEquals(200, $status);
@@ -172,7 +172,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
         ];
 
         $this->assertEquals(200, $status);
@@ -454,7 +454,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @since 4.0.0
+     * @since        4.0.0
      *
      * @dataProvider sortableColumnsDataProvider
      *

@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
+use Give\API\REST\V3\Routes\Donations\DonationStatisticsController;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
@@ -20,6 +21,17 @@ use WP_REST_Server;
 class DonationStatisticsRouteGetTest extends RestApiTestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @unreleased
+     */
+    public function setUp(): void
+    {
+        $donationsStatisticsController = new DonationStatisticsController();
+        $donationsStatisticsController->register_routes();
+
+        parent::setUp();
+    }
 
     /**
      * @unreleased
@@ -84,7 +96,7 @@ class DonationStatisticsRouteGetTest extends RestApiTestCase
                 'subscriptionDetails' => $data['receipt']['subscriptionDetails'],
                 'eventTicketsDetails' => $data['receipt']['eventTicketsDetails'],
                 'additionalDetails' => $data['receipt']['additionalDetails'],
-            ]
+            ],
         ], $data);
     }
 
