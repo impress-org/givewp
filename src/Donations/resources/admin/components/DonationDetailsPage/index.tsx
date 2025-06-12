@@ -100,7 +100,7 @@ export default function DonationDetailsPage() {
                 title={__('Refund Donation', 'give')}
                 actionLabel={__('Refund Donation', 'give')}
                 isOpen={showConfirmationDialog === 'refund'}
-                variant="info"
+                variant="regular"
                 handleClose={() => setShowConfirmationDialog(null)}
                 handleConfirm={() => { }}
             >
