@@ -316,6 +316,9 @@ const Note = ({note, onDelete, onEdit}) => {
 };
 
 
+/**
+ * @unreleased
+ */
 function ConfirmationDialog({
     isOpen,
     title,
