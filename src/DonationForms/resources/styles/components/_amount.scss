@@ -78,9 +78,9 @@ $borderColor: #9A9A9A;
         align-items: center;
         justify-content: space-between;
         background: var(--givewp-shades-white);
-        border: solid 1px var(--givewp-grey-400);
         border-radius: var(--givewp-rounded-4);
-        padding: var(--givewp-spacing-4) 0;
+        transition: all 0.2s ease-in-out;
+        border: solid 1px transparent;
 
         &.invalid {
             border-color: red;
