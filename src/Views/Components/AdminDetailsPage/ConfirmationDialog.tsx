@@ -1,6 +1,7 @@
+import cx from 'classnames';
 import {__} from '@wordpress/i18n'
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import {ErrorIcon} from './Icons';
+import {ErrorIcon, WarningIcon} from './Icons';
 import styles from './AdminDetailsPage.module.scss'
 
 /**
@@ -9,6 +10,8 @@ import styles from './AdminDetailsPage.module.scss'
 export default function ConfirmationDialog({
     isOpen,
     title,
+    icon,
+    variant = 'error',
     handleClose,
     handleConfirm,
     className,
@@ -19,13 +22,15 @@ export default function ConfirmationDialog({
     handleClose: () => void;
     handleConfirm: () => void;
     title: string;
+    icon?: React.ReactElement;
+    variant?: 'error' | 'regular';
     className?: string;
     actionLabel: string;
     children: React.ReactNode;
 }) {
     return (
         <ModalDialog
-            icon={<ErrorIcon />}
+            icon={icon || (variant === 'error' && <ErrorIcon />)}
             isOpen={isOpen}
             showHeader={true}
             handleClose={handleClose}
@@ -33,10 +38,10 @@ export default function ConfirmationDialog({
             wrapperClassName={className}
         >
             <>
-                <div className={styles.archiveDialogContent}>
+                <div className={styles.confirmationDialogContent}>
                     {children}
                 </div>
-                <div className={styles.archiveDialogButtons}>
+                <div className={styles.confirmationDialogButtons}>
                     <button
                         className={styles.cancelButton}
                         onClick={handleClose}
@@ -45,7 +50,7 @@ export default function ConfirmationDialog({
                         {__('Cancel', 'give')}
                     </button>
                     <button
-                        className={styles.confirmButton}
+                        className={cx(styles.confirmButton, styles[`confirmButton--${variant}`])}
                         onClick={handleConfirm}
                     >
                         {actionLabel}
