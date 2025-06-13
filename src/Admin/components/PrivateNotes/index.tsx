@@ -12,6 +12,9 @@ import cx from 'classnames';
 import {formatTimestamp} from '@givewp/src/Admin/utils';
 import Header from '@givewp/src/Admin/components/Header';
 
+/**
+ * @unreleased
+ */
 type DonorNote = {
     id: number;
     donorId: number;
@@ -21,6 +24,9 @@ type DonorNote = {
     };
 }
 
+/**
+ * @unreleased
+ */
 type NoteState = {
     isAddingNote: boolean;
     isSavingNote: boolean;
@@ -310,6 +316,9 @@ const Note = ({note, onDelete, onEdit}) => {
 };
 
 
+/**
+ * @unreleased
+ */
 function ConfirmationDialog({
     isOpen,
     title,
