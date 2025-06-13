@@ -51,6 +51,10 @@ const filters: Array<FilterConfig> = [
         text: __('Test', 'give'),
         ariaLabel: __('View Test Donations', 'give'),
     },
+    {
+        name: 'donor',
+        type: 'hidden',
+    },
 ];
 
 const bulkActions: Array<BulkActionsConfig> = [

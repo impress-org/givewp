@@ -26,9 +26,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_register_default_donor_views( $views ) {
 
 	$default_views = array(
-		'overview' => 'give_donor_view',
-		'delete'   => 'give_donor_delete_view',
-		'notes'    => 'give_donor_notes_view',
+		'legacy-overview' => 'give_donor_view',
+		'legacy-delete'   => 'give_donor_delete_view',
+		'legacy-notes'    => 'give_donor_notes_view',
 	);
 
 	return array_merge( $views, $default_views );
@@ -49,10 +49,10 @@ add_filter( 'give_donor_views', 'give_register_default_donor_views', 1, 1 );
 function give_register_default_donor_tabs( $tabs ) {
 
 	$default_tabs = array(
-		'overview' => array(
+		'legacy-overview' => array(
 			'title' => __( 'Donor Profile', 'give' ),
 		),
-		'notes'    => array(
+		'legacy-notes'    => array(
 			'title' => __( 'Donor Notes', 'give' ),
 		),
 	);
@@ -73,7 +73,7 @@ add_filter( 'give_donor_tabs', 'give_register_default_donor_tabs', 1, 1 );
  */
 function give_register_delete_donor_tab( $tabs ) {
 
-	$tabs['delete'] = array(
+	$tabs['legacy-delete'] = array(
 		'title' => __( 'Delete Donor', 'give' ),
 	);
 

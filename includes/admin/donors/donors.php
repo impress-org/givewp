@@ -337,7 +337,7 @@ function give_donor_view( $donor ) {
 	?>
 	<div id="donor-summary" class="info-wrapper donor-section postbox">
 		<form id="edit-donor-info" method="post"
-			  action="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) ); ?>">
+			  action="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) ); ?>">
 			<div class="donor-info">
 				<div class="donor-bio-header clearfix">
 					<div class="avatar-wrap left" id="donor-avatar">
@@ -830,7 +830,7 @@ function give_donor_view( $donor ) {
 						<td>
 							<?php if ( 'primary' !== $key ) : ?>
 								<?php
-								$base_url    = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id );
+								$base_url    = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id );
 								$promote_url = wp_nonce_url(
 									add_query_arg(
 										array(
@@ -1188,7 +1188,7 @@ function give_donor_delete_view( $donor ) {
 					<input type="submit" disabled="disabled" id="give-delete-donor" class="button-primary"
 						   value="<?php _e( 'Delete Donor', 'give' ); ?>"/>
 					<a id="give-delete-donor-cancel"
-					   href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>"
+					   href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ); ?>"
 					   class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
 				</span>
 

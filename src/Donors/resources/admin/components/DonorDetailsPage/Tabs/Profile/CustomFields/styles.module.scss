@@ -1,0 +1,46 @@
+.customFields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-6);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+}
+
+.label {
+    color: var(--givewp-neutral-700);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.value {
+    background-color: var(--givewp-neutral-50);
+    border-radius: var(--givewp-rounded-4);
+    border: 1px solid var(--givewp-neutral-300);
+    color: var(--givewp-neutral-400);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: var(--givewp-spacing-4);
+}
+
+.blankSlate {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-4);
+    justify-content: center;
+    text-align: center;
+
+    .description {
+        color: var(--givewp-neutral-500);
+        font-size: 0.875rem;
+        line-height: 1.43;
+        margin: 0;
+        max-width: 24rem;
+    }
+}
