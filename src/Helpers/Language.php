@@ -14,7 +14,7 @@ class Language
     {
         $giveRelativePath = self::getRelativePath();
 
-        $locale = is_admin() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
+        $locale = is_admin() && ! wp_doing_ajax() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
         $locale = apply_filters('plugin_locale', $locale, 'give'); // Traditional WordPress plugin locale filter.
 
         // Setup paths to current locale file.
