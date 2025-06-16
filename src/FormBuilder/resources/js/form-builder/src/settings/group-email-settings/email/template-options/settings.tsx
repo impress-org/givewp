@@ -29,10 +29,10 @@ const EmailTemplateSettings = ({notification, templateTagsRef, settings, setSett
 
     const option = {
         status: config.defaultValues.notification ?? 'global',
-        email_subject: config.defaultValues.email_subject,
-        email_header: config.defaultValues.email_header,
-        email_message: config.defaultValues.email_message.replace(/\n/g, '<br />'),
-        email_content_type: config.defaultValues.email_content_type,
+        email_subject: config.defaultValues?.email_subject,
+        email_header: config.defaultValues?.email_header,
+        email_message: config.defaultValues?.email_message?.replace(/\n/g, '<br />'),
+        email_content_type: config.defaultValues?.email_content_type,
         recipient: [emailDefaultAddress],
         ...emailTemplateOptions[notification],
     };

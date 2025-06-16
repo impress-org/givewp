@@ -30,7 +30,6 @@ import TabPanels from './Tabs/TabPanels';
 import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
 import AdminSection, { AdminSectionField, AdminSectionsWrapper } from './AdminSection';
 
-
 import './store';
 
 /**
