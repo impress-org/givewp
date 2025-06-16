@@ -12,14 +12,14 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorNoteRouteDeleteTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testDeleteDonorNote()
     {
@@ -55,7 +55,7 @@ class DonorNoteRouteDeleteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testDeleteDonorNoteShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -88,4 +88,4 @@ class DonorNoteRouteDeleteTest extends RestApiTestCase
 
         $this->assertEquals(403, $status);
     }
-} 
+}

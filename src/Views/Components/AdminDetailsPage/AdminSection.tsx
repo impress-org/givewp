@@ -10,7 +10,7 @@ import sharedStyles from '@givewp/components/AdminDetailsPage/AdminDetailsPage.m
 import ErrorBoundary from './ErrorBoundary';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 interface AdminSectionProps {
     title: string;
@@ -19,7 +19,7 @@ interface AdminSectionProps {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 interface AdminSectionFieldProps {
     subtitle?: string;
@@ -28,7 +28,7 @@ interface AdminSectionFieldProps {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export function AdminSectionField({ subtitle, children, error }: AdminSectionFieldProps) {
     return (
@@ -43,7 +43,7 @@ export function AdminSectionField({ subtitle, children, error }: AdminSectionFie
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export function AdminSectionsWrapper({ children }: { children: ReactNode }) {
     return (
@@ -54,7 +54,7 @@ export function AdminSectionsWrapper({ children }: { children: ReactNode }) {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function AdminSection({ title, description, children }: AdminSectionProps) {
     return (

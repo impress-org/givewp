@@ -33,7 +33,7 @@ import AdminSection, { AdminSectionField, AdminSectionsWrapper } from './AdminSe
 import './store';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function AdminDetailsPage<T extends Record<string, any>>({
     objectId,

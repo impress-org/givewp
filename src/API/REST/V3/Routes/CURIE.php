@@ -5,7 +5,7 @@ namespace Give\API\REST\V3\Routes;
 use Give\Framework\Exceptions\Primitives\Exception;
 
 /**
- * @unreleased
+ * @since 4.4.0
  *
  * WordPress version 4.5 introduced support for Compact URIs, or CURIEs. This makes it possible to
  * reference links by a much simpler identifier than the full URL which could easily be quite lengthy.
@@ -21,7 +21,7 @@ class CURIE
     private static $baseUrl = 'https://relations.givewp.com/';
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @see https://developer.wordpress.org/rest-api/extending-the-rest-api/modifying-responses/#registering-a-curie
      */
@@ -37,7 +37,7 @@ class CURIE
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * To use the $response->add_link() with a custom link, you need to use a URI that is under your control, so GiveWP
      * uses it to generate the URL, which is transformed into givewp:$rel when generating the response by using a CURIE.

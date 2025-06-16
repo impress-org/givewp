@@ -17,7 +17,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use DateTime;
 
 /**
- * @unreleased
+ * @since 4.4.0
  *
  * @coversDefaultClass \Give\Donors\DonorStatisticsQuery
  */
@@ -28,7 +28,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test that getFirstDonation method exists and returns expected type
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetFirstDonationMethodExists()
     {
@@ -45,7 +45,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test that getLastContribution method exists and returns expected type
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetLastContributionMethodExists()
     {
@@ -62,7 +62,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test that getDonorType method exists and returns expected type
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetDonorTypeMethodExists()
     {
@@ -81,7 +81,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test that preferredPaymentMethod method exists and returns expected type
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testPreferredPaymentMethodMethodExists()
     {
@@ -98,7 +98,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test the filterByCampaign method works correctly
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testFilterByCampaign()
     {
@@ -115,7 +115,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test that all core calculation methods work without errors
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testCoreCalculationMethods()
     {
@@ -138,7 +138,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test the joinDonationMeta method works correctly
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testJoinDonationMeta()
     {
@@ -154,7 +154,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test statistics with a single donation
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testStatisticsWithSingleDonation()
     {
@@ -192,7 +192,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test statistics with multiple donations
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testStatisticsWithMultipleDonations()
     {
@@ -245,7 +245,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test donor type method exists and works
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testDonorTypeWithDonations()
     {
@@ -269,7 +269,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test preferred payment method calculation
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testPreferredPaymentMethodWithDonations()
     {
@@ -309,7 +309,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test filtering by campaign with donations
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testCampaignFilteringWithDonations()
     {
@@ -369,7 +369,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test statistics with only pending donations (should not count incomplete donations)
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testStatisticsWithPendingDonations()
     {
@@ -396,7 +396,7 @@ class TestDonorStatisticsQueryMethods extends TestCase
     /**
      * Test mode filtering (live vs test)
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function testModeFiltering()
     {

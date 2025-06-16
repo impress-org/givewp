@@ -14,12 +14,12 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorNotesController extends WP_REST_Controller
 {
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function __construct()
     {
@@ -28,7 +28,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function register_routes()
     {
@@ -83,7 +83,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get a collection of donor notes.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -142,7 +142,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Create a donor note.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -172,7 +172,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get a single donor note.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -197,7 +197,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Update a donor note.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -236,7 +236,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Delete a donor note.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -258,7 +258,7 @@ class DonorNotesController extends WP_REST_Controller
 
         // Store the note data before deletion for the response
         $noteData = $note->toArray();
-        
+
         $note->delete();
 
         $response = new WP_REST_Response($noteData);
@@ -268,7 +268,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function get_items_permissions_check($request): bool
     {
@@ -276,7 +276,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function create_item_permissions_check($request): bool
     {
@@ -284,7 +284,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function get_item_permissions_check($request): bool
     {
@@ -292,7 +292,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function update_item_permissions_check($request): bool
     {
@@ -300,7 +300,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function delete_item_permissions_check($request): bool
     {
@@ -308,7 +308,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function prepare_item_for_response($note, $request): WP_REST_Response
     {
@@ -331,7 +331,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function get_collection_params(): array
     {
@@ -339,7 +339,7 @@ class DonorNotesController extends WP_REST_Controller
 
         $params['page']['default'] = 1;
         $params['per_page']['default'] = 30;
-        
+
         // Remove default parameters not being used
         unset($params['context']);
         unset($params['search']);
@@ -350,7 +350,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get the donor note schema, conforming to JSON Schema.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @return array
      */
@@ -404,7 +404,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get the donor note schema for public display.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @return array
      */
@@ -423,7 +423,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function get_endpoint_args_for_item_schema($method = WP_REST_Server::CREATABLE): array
     {

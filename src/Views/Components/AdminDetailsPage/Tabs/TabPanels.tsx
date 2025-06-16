@@ -6,7 +6,7 @@ import styles from '../AdminDetailsPage.module.scss';
 import { useContext } from 'react';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function TabPanels({ tabDefinitions }: { tabDefinitions: TabType[] }) {
     // @ts-ignore

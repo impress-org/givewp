@@ -15,7 +15,7 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 interface AddEmailDialogProps {
     isOpen: boolean;
@@ -24,7 +24,7 @@ interface AddEmailDialogProps {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function AddEmailDialog({
     isOpen,

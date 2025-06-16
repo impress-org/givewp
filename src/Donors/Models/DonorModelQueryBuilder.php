@@ -120,7 +120,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     /**
      * Attach addresses to query results later so that we can avoid additional Group By on the main query
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @param array|object $queryResults
      *
@@ -144,7 +144,7 @@ class DonorModelQueryBuilder extends ModelQueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @param array $donorIds Array of donor ids
      * @param bool  $single Return addresses for the first donor id
