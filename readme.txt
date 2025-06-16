@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 4.4.0: June 18th, 2025 =
-* New: The donor admin details screen has been upgraded to a new design!
+* New: The donor admin details screen has been upgraded to a new design and experience!
 * Enhancement: When using the the visual form builder with recurring donations, the gateway options will now only display the ones that support recurring donations
 * Fix: Resolved an issue with recurring donation email templates in the visual form builder settings
 * Fix: Resolved an issue with the campaign page donate button and option-based forms
