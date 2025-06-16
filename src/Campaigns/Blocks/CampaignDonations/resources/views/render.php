@@ -46,7 +46,7 @@ $blockInlineStyles = sprintf(
             </h3>
             <p class="givewp-campaign-donations-block__empty-description">
                 <?php
-                esc_html_e('Be the one to mate it happen!', 'give'); ?>
+                esc_html_e('Be the one to make it happen!', 'give'); ?>
             </p>
 
             <div class="givewp-campaign-donations-block__empty-icon">
