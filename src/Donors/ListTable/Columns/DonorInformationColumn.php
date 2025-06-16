@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Give\Donors\ListTable\Columns;
 
+use Give\Donors\DonorsAdminPage;
 use Give\Donors\Models\Donor;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -55,10 +56,12 @@ class DonorInformationColumn extends ModelColumn
             </div>
         ';
 
+        $url = DonorsAdminPage::getDetailsPageUrl($model->id);
+
         return sprintf(
             $template,
             get_avatar_url($model->email, ['size' => 64]),
-            admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id=$model->id"),
+            $url,
             trim("$model->firstName $model->lastName"),
             $model->email
         );

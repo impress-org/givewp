@@ -29,25 +29,27 @@ class TestEagerLoader extends TestCase
         Subscription::factory()->create(); // Also creates an associated donor.
 
         /**
-         * 4 queries are expected:
+         * 5 queries are expected:
          * 1. To get the donors
          * 2. To get the donors additional emails
-         * 3. To get the first donor's subscriptions
-         * 4. To get the second donor's subscriptions
+         * 3. To get the donors addresses
+         * 4. To get the first donor's subscriptions
+         * 5. To get the second donor's subscriptions
          */
-        $this->assertQueryCount(4, function() {
+        $this->assertQueryCount(5, function() {
             foreach(Donor::query()->getAll() as $donor) {
                 $donor->subscriptions;
             }
         });
 
         /**
-         * 3 queries are expected:
+         * 4 queries are expected:
          * 1. To get the donors
          * 2. To get the donors additional emails
-         * 3. To get the subscriptions
+         * 3. To get the donors addresses
+         * 4. To get the subscriptions
          */
-        $this->assertQueryCount(3, function() {
+        $this->assertQueryCount(4, function() {
             $eagerLoaderQuery = new EagerLoader(Donor::class, Subscription::class, 'subscriptions', 'customer_id', 'donorId');
             $eagerLoaderQuery->getAll();
         });

@@ -3,7 +3,6 @@
 namespace Unit\API\REST\V3\Routes\Donors;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donors\RegisterDonorRoutes;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
@@ -13,7 +12,6 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -22,19 +20,9 @@ use WP_REST_Server;
 /**
  * @since 4.0.0
  */
-class GetDonorsRouteTest extends RestApiTestCase
+class DonorRouteGetCollectionTest extends RestApiTestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @since 4.0.0
-     */
-    public function setUp(): void
-    {
-        Hooks::addAction('rest_api_init', RegisterDonorRoutes::class);
-
-        parent::setUp();
-    }
 
     /**
      * @since 4.0.0
@@ -54,7 +42,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var  Donor $donor */
         $donor = Donor::factory()->create();
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -68,6 +56,9 @@ class GetDonorsRouteTest extends RestApiTestCase
         $status = $response->get_status();
         $dataJson = json_encode($response->get_data());
         $data = json_decode($dataJson, true);
+
+        // Remove additional property add by the prepare_response_for_collection() method
+        unset($data[0]['_links']);
 
         // TODO: show shape of DateTime objects
         $createdAtJson = json_encode($data[0]['createdAt']);
@@ -84,9 +75,71 @@ class GetDonorsRouteTest extends RestApiTestCase
             'phone' => $donor->phone,
             'prefix' => $donor->prefix,
             'additionalEmails' => $donor->additionalEmails,
+            'avatarId' => $donor->avatarId,
+            'company' => $donor->company,
+            'addresses' => array_map(fn($address) => $address->toArray(), $donor->addresses),
+            'avatarUrl' => null,
+            'customFields' => [],
+            'wpUserPermalink' => $donor->userId ? get_edit_user_link($donor->userId) : null,
             'totalAmountDonated' => $donor->totalAmountDonated->toArray(),
             'totalNumberOfDonations' => $donor->totalNumberOfDonations,
         ], $data[0]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonorsShouldReturnSelfLink()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _links data
+        $data = $this->responseToData($response, true);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data[0]['id']);
+        $this->assertArrayHasKey('_links', $data[0]);
+        $this->assertArrayHasKey('self', $data[0]['_links']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonorsShouldReturnStatisticsLink()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'onlyWithDonations' => false,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _links data
+        $data = $this->responseToData($response, true);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data[0]['id']);
+        $this->assertArrayHasKey('_links', $data[0]);
+        $this->assertArrayHasKey('givewp:statistics', $data[0]['_links']);
     }
 
     /**
@@ -98,7 +151,7 @@ class GetDonorsRouteTest extends RestApiTestCase
     {
         Donor::factory()->create();
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -116,10 +169,15 @@ class GetDonorsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
+            'lastName',
+            'addresses',
         ];
 
         $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+
+        foreach ($sensitiveProperties as $property) {
+            $this->assertEmpty($data[0][$property]);
+        }
     }
 
     /**
@@ -141,7 +199,7 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         Donor::factory()->create();
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -160,6 +218,8 @@ class GetDonorsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
+            'lastName',
+            'addresses',
         ];
 
         $this->assertEquals(200, $status);
@@ -185,7 +245,7 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         Donor::factory()->create();
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -216,7 +276,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donor1 = $this->createDonor1WithDonation($campaign->id);
         $donor2 = Donor::factory()->create();
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -249,7 +309,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donor1 = $this->createDonor1WithDonation($campaign->id);
         $donor2 = Donor::factory()->create();
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -284,7 +344,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         /** @var  Donor $donor2 */
         $donor2 = Donor::factory()->create();
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
         $request->set_query_params(
@@ -343,7 +403,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donor1 = $this->createDonor1WithDonation($campaign->id);
         $donor2 = $this->createDonor2WithDonation($campaign->id);
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -377,7 +437,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donor1 = $this->createDonor1WithDonation($campaign->id);
         $donor2 = $this->createDonor2WithDonation($campaign->id, true);
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $response = $this->dispatchRequest($request);
 
@@ -414,7 +474,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donor1 = $this->createDonor1WithDonation($campaign->id);
         $donor2 = $this->createDonor2WithDonation($campaign->id, true);
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -459,7 +519,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $this->createDonor1WithDonation($campaign->id);
         $this->createDonor2WithDonation($campaign->id, true);
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -490,7 +550,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donor1 = $this->createDonor1WithDonation($campaign->id);
         $donor2 = $this->createDonor2WithDonation($campaign->id, true);
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
@@ -510,7 +570,6 @@ class GetDonorsRouteTest extends RestApiTestCase
         $this->assertEquals(0, $data[1]['id']);
 
         $anonymousDataRedacted = [
-            //'id', // This property is Checked above...
             'name',
             'firstName',
             'lastName',
@@ -518,7 +577,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+            $this->assertEquals(__('anonymous', 'give'),$data[1][$property]);
         }
     }
 
@@ -531,6 +590,17 @@ class GetDonorsRouteTest extends RestApiTestCase
      */
     public function testGetDonorsSortedByColumns($sortableColumn)
     {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => $sortableColumn . 'testGetDonorsSortedByColumns',
+                'user_pass' => $sortableColumn . 'testGetDonorsSortedByColumns',
+                'user_email' => $sortableColumn . 'testGetDonorsSortedByColumns@test.com',
+            ]
+        );
+        wp_set_current_user($newAdminUser);
+
+
         DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
         /** @var Campaign $campaign1 */
@@ -543,7 +613,7 @@ class GetDonorsRouteTest extends RestApiTestCase
         $donor2 = $this->createDonor2WithDonation($campaign1->id);
         $donor3 = $this->createDonor3WithDonation($campaign2->id);
 
-        $route = '/' . DonorRoute::NAMESPACE . '/donors';
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
 
         /**
@@ -551,6 +621,7 @@ class GetDonorsRouteTest extends RestApiTestCase
          */
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 30,
                 'sort' => $sortableColumn,
@@ -571,6 +642,7 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 30,
                 'sort' => $sortableColumn,
@@ -594,6 +666,7 @@ class GetDonorsRouteTest extends RestApiTestCase
          */
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 3,
                 'sort' => $sortableColumn,
@@ -614,6 +687,7 @@ class GetDonorsRouteTest extends RestApiTestCase
 
         $request->set_query_params(
             [
+                'includeSensitiveData' => true,
                 'page' => 1,
                 'per_page' => 30,
                 'sort' => $sortableColumn,
