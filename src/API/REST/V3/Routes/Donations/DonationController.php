@@ -46,6 +46,15 @@ class DonationController extends WP_REST_Controller
                 'callback' => [$this, 'get_item'],
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => [
+                    '_embed' => [
+                        'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:statistics" when we wish to embed only a specific one.',
+                            'give'),
+                        'type' => [
+                            'string',
+                            'boolean'
+                        ],
+                        'default' => false,
+                    ],
                     'id' => [
                         'type' => 'integer',
                         'required' => true,
