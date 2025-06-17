@@ -72,7 +72,7 @@
 }
 
 .archive {
-    --contextMenuItemColor: var(--givewp-red-600);
+    --contextMenuItemColor: var(--givewp-red-500);
 }
 
 $breakpoint-desktop: 900px;
@@ -124,7 +124,6 @@ $breakpoint-desktop: 900px;
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 1rem;
     box-sizing: border-box;
 }
 
@@ -146,6 +145,7 @@ $breakpoint-desktop: 900px;
     flex-direction: column;
     align-items: flex-start;
     margin-left: var(--givewp-spacing-2);
+    gap: 0.313rem;
 }
 
 .transactionIcon {
@@ -199,7 +199,11 @@ $breakpoint-desktop: 900px;
         font-size: 1rem;
         font-weight: 500;
         line-height: 1.5;
-        color: #4b5563;
+        color: var(--givewp-neutral-700);
+    }
+
+    strong {
+        color: var(--givewp-neutral-900);
     }
 }
 
@@ -216,11 +220,11 @@ $breakpoint-desktop: 900px;
     align-items: center;
     justify-content: center;
     max-height: fit-content;
-    margin-left: var(--givewp-spacing-2);
     padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
     border-radius: 9999px;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
     text-transform: capitalize;
 
     &.completed {
@@ -264,7 +268,7 @@ $breakpoint-desktop: 900px;
         font-weight: 500;
         line-height: 1.5;
         color: #4b5563;
-        padding: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
+        padding: var(--givewp-spacing-3) 0;
         margin: 0;
     }
 
@@ -273,18 +277,20 @@ $breakpoint-desktop: 900px;
         font-weight: 600;
         line-height: 1.5;
         color: #1f2937;
-        padding: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
+        padding: var(--givewp-spacing-3) 0;
 
         &.pill {
-            background-color: #f9fafb;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            color: #060c1a;
-            border: solid 1px #374151;
-            display: flex;
             align-items: center;
+            background-color: #f9fafb;
+            border-radius: 9999px;
+            border: solid 1px #374151;
+            color: #060c1a;
+            display: flex;
+            font-size: 0.75rem;
             justify-content: center;
-            margin: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
+            line-height: 1.5;
+            margin: var(--givewp-spacing-3) 0;
+            padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
         }
     }
 
