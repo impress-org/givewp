@@ -121,8 +121,16 @@ class DonationController extends WP_REST_Controller
             ->orderBy($sortColumn, $sortDirection);
 
         $donations = $query->getAll() ?? [];
-        $donations = array_map(function ($donation) use ($includeSensitiveData, $donationAnonymousMode) {
-            return $this->escDonation($donation, $includeSensitiveData, $donationAnonymousMode);
+        $donations = array_map(function ($donation) use ($includeSensitiveData, $donationAnonymousMode, $request) {
+            $item = $this->escDonation(
+                $donation,
+                $includeSensitiveData,
+                $donationAnonymousMode
+            );
+
+            return $this->prepare_response_for_collection(
+                $this->prepare_item_for_response($item, $request)
+            );
         }, $donations);
 
         $totalDonations = empty($donations) ? 0 : Donation::query()->count();
@@ -174,7 +182,15 @@ class DonationController extends WP_REST_Controller
             return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
         }
 
-        return new WP_REST_Response($this->escDonation($donation, $includeSensitiveData, $donationAnonymousMode));
+        $item = $this->escDonation(
+            $donation,
+            $includeSensitiveData,
+            $donationAnonymousMode
+        );
+
+        return new WP_REST_Response(
+            $this->prepare_item_for_response($item, $request)
+        );
     }
 
     /**
