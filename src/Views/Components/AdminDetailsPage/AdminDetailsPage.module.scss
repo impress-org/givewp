@@ -379,6 +379,10 @@
                         }
                     }
                 }
+
+                select {
+                    background-position: right var(--givewp-spacing-4) top 50%;
+                }
             }
 
             .sectionField:last-child {
