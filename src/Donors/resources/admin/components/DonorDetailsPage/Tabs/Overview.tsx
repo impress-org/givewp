@@ -126,8 +126,6 @@ export default function DonorDetailsPageOverviewTab() {
                     <Header
                         title={__('Contributions', 'give')}
                         subtitle={__("Shows the donor's contribution over time", 'give')}
-                        href="#"
-                        actionText={__('View Detailed Report', 'give')}
                     />
                     <TimeSeriesChart
                         title={__('Contributions', 'give')}

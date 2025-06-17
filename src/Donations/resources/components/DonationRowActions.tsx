@@ -31,7 +31,7 @@ export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters
             <RowAction
                 href={
                     window.GiveDonations.adminUrl +
-                    `edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=${item.id}`
+                    `edit.php?post_type=give_forms&page=give-payment-history&id=${item.id}`
                 }
                 displayText={__('Edit', 'give')}
             />
