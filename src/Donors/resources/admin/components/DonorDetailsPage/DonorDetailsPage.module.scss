@@ -264,7 +264,7 @@ $breakpoint-desktop: 900px;
         font-weight: 500;
         line-height: 1.5;
         color: #4b5563;
-        padding: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
+        padding: var(--givewp-spacing-3) 0;
         margin: 0;
     }
 
@@ -273,18 +273,20 @@ $breakpoint-desktop: 900px;
         font-weight: 600;
         line-height: 1.5;
         color: #1f2937;
-        padding: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
+        padding: var(--givewp-spacing-3) 0;
 
         &.pill {
-            background-color: #f9fafb;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            color: #060c1a;
-            border: solid 1px #374151;
-            display: flex;
             align-items: center;
+            background-color: #f9fafb;
+            border-radius: 9999px;
+            border: solid 1px #374151;
+            color: #060c1a;
+            display: flex;
+            font-size: 0.75rem;
             justify-content: center;
-            margin: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
+            line-height: 1.5;
+            margin: var(--givewp-spacing-3) 0;
+            padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
         }
     }
 
