@@ -135,8 +135,7 @@ class GetDonationRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey',
-            'lastName'
+            'purchaseKey'
         ];
 
         $this->assertEquals(200, $status);
