@@ -2,9 +2,11 @@
 
 namespace Give\API\REST\V3\Routes\Donations;
 
+use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
+use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -354,6 +356,31 @@ class DonationController extends WP_REST_Controller
         ];
 
         return $params;
+    }
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function prepare_item_for_response($item, $request): WP_REST_Response
+    {
+        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $request->get_param('id')));
+        $statistics_url = add_query_arg([
+            'mode' => $request->get_param('mode'),
+            'campaignId' => $request->get_param('campaignId'),
+        ], $self_url . '/statistics');
+        $links = [
+            'self' => ['href' => $self_url],
+            CURIE::relationUrl('statistics') => [
+                'href' => $statistics_url,
+                'embeddable' => true,
+            ],
+        ];
+
+        $response = new WP_REST_Response($item);
+        $response->add_links($links);
+
+        return $response;
     }
 
     /**
