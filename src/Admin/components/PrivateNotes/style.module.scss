@@ -13,27 +13,27 @@
 }
 
 .textarea {
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--givewp-neutral-900);
     width: 100%;
-    min-height: 5rem;
-    padding: 0.75rem;
+    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
 }
 
 .textAreaButtons {
     display: flex;
-    flex-direction: row;
-    align-content: space-between;
-    gap: 0.75rem;
+    gap: var(--givewp-spacing-2);
+    align-items: center;
 }
 
 .button {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    padding: 0.5rem 1rem;
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     border-radius: 4px;
     cursor: pointer;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    font-weight: 500;
 }
 
 .cancelBtn {
@@ -197,3 +197,9 @@
     border: solid 1px #9ca0af;
 }
 
+.noNotesText {
+    font-size: 0.875rem;
+    line-height: 1.43;
+    color: var(--givewp-neutral-500);
+    margin: var(--givewp-spacing-4) 0 0;
+}
