@@ -218,6 +218,7 @@ class DonationController extends WP_REST_Controller
                 'phone',
                 'billingAddress',
                 'purchaseKey',
+                'lastName'
             ];
         }
 
