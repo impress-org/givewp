@@ -3,7 +3,6 @@
 namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\DonationController;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -107,7 +106,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = json_decode($response->get_data(), true);
+        $data = $response->get_data()->data;
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);
@@ -129,7 +128,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = $response->get_data()->data;
 
         $sensitiveData = [
             'donorIp',
@@ -176,7 +175,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = $response->get_data()->data;
 
         $sensitiveData = [
             'donorIp',
@@ -280,7 +279,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = $response->get_data()->data;
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);
@@ -344,7 +343,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = $response->get_data()->data;
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);
