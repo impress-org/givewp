@@ -50,7 +50,10 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $dataJson = json_encode($response->get_data());
+
+        $data = $response->get_data()->data;
+        $dataJson = json_encode($data);
+
         $data = json_decode($dataJson, true);
 
         // TODO: show shape of DateTime objects
@@ -104,7 +107,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = json_decode($response->get_data(), true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);
