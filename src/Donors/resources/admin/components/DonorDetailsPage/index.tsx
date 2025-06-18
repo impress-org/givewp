@@ -83,13 +83,13 @@ export default function DonorDetailsPage() {
                         <ViewIcon /> {__('View WordPress profile', 'give')}
                     </a>
                 )}
-                <a
+                {/* <a
                     href="#"
                     className={cx(className, styles.archive)}
                     onClick={() => setShowConfirmationDialog(true)}
                 >
                     <TrashIcon /> {__('Delete Donor', 'give')}
-                </a>
+                </a> */}
             </>
         );
     };
