@@ -33,7 +33,7 @@ class LoadDonationOptions
         return [
             'isAdmin' => $isAdmin,
             'adminUrl' => admin_url(),
-            'apiRoot' => rest_url(DonationRoute::NAMESPACE . '/' . DonationRoute::DONATIONS),
+            'apiRoot' => rest_url(DonationRoute::NAMESPACE . '/' . DonationRoute::BASE),
             'apiNonce' => wp_create_nonce('wp_rest'),
             'donationsAdminUrl' => admin_url('edit.php?post_type=give_forms&page=give-payment-history'),
             'currency' => give_get_currency(),
