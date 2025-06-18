@@ -4,7 +4,6 @@ namespace Give\API\REST\V3\Routes\Donations;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
-use Give\Framework\Receipts\DonationReceipt;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
