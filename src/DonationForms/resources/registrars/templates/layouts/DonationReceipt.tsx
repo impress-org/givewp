@@ -4,7 +4,7 @@ import {DonationReceiptProps} from '@givewp/forms/propTypes';
 import {Interweave} from 'interweave';
 
 /**
- * @unreleased include aria-live and role attributes to the secure badge for screen readers.
+ * @since 4.3.2 include aria-live and role attributes to the secure badge for screen readers.
  * @since 3.0.0
  */
 const SecureBadge = () => {
@@ -17,7 +17,7 @@ const SecureBadge = () => {
 };
 
 /**
- * @unreleased replace <dl> tag with <div>. The <dl> element is reserved for definition lists, the content here represents labeled key-value pairs.
+ * @since 4.3.2 replace <dl> tag with <div>. The <dl> element is reserved for definition lists, the content here represents labeled key-value pairs.
  * @since 3.4.0 updated to render value using Interweave
  * @since 3.0.0
  */

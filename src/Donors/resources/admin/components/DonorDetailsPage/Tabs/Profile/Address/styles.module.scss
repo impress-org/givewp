@@ -1,0 +1,335 @@
+.donorAddress {
+    display: flex;
+    flex-direction: column;
+
+    .addresses {
+        display: grid;
+        gap: var(--givewp-spacing-4);
+        grid-template-columns: repeat(auto-fit, minmax(calc(50% - var(--givewp-spacing-4) / 2), 1fr));
+    }
+
+    .item {
+        border: 1px solid var(--givewp-neutral-100);
+        border-radius: var(--givewp-rounded-4);
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-3);
+        padding: var(--givewp-spacing-4);
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-2);
+    }
+
+    .address {
+        color: var(--givewp-neutral-900);
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-width: 70%;
+    }
+
+    .badge {
+        align-items: center;
+        border-radius: var(--givewp-rounded-full);
+        display: inline-flex;
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 1.5;
+        margin-right: auto;
+        padding: calc(var(--givewp-spacing-1) / 2) var(--givewp-spacing-3);
+
+        &.badgePrimary {
+            background-color: var(--givewp-neutral-100);
+            color: var(--givewp-neutral-900);
+        }
+    }
+
+    .actions {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .menuTrigger {
+        align-items: center;
+        background: none;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        height: 2rem;
+        justify-content: center;
+        padding: var(--givewp-spacing-1);
+        transition: background-color 0.15s ease;
+        width: 2rem;
+
+        svg {
+            height: 1.5rem;
+            transform: rotate(90deg);
+            width: 1.5rem;
+        }
+
+        &:hover {
+            background-color: var(--givewp-neutral-100);
+            color: var(--givewp-neutral-900);
+        }
+    }
+
+    .dropdown {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+        z-index: 9999;
+        padding: var(--givewp-spacing-1);
+        top: 100%;
+        right: 0;
+        width: 203px;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border: solid 1px var(--givewp-neutral-50);
+        background-color: var(--givewp-shades-white);
+
+        .dropdownItem {
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--givewp-neutral-700);
+            cursor: pointer;
+            display: flex;
+            font-size: .875rem;
+            font-weight: 500;
+            gap: var(--givewp-spacing-2);
+            line-height: 1.43;
+            padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+            text-decoration: none;
+
+            &:hover {
+                background-color: #f3f4f6;
+            }
+
+            &.delete {
+                color: var(--givewp-red-500);
+            }
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+
+        span {
+            color: var(--givewp-neutral-500);
+            font-size: 0.875rem;
+            font-weight: 500;
+            line-height: 1.43;
+        }
+    }
+
+    .blankSlate {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-4);
+        justify-content: center;
+        text-align: center;
+
+        .description {
+            color: var(--givewp-neutral-500);
+            font-size: 0.875rem;
+            line-height: 1.43;
+            margin: 0;
+            max-width: 24rem;
+        }
+    }
+
+    .add {
+        display: flex;
+        justify-content: center;
+        margin-top: var(--givewp-spacing-4);
+    }
+
+    .addButton {
+        background: none;
+        border-radius: var(--givewp-rounded-4);
+        border: 1px solid var(--givewp-neutral-300);
+        color: var(--givewp-neutral-900);
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-size: var(--givewp-font-size-sm);
+        font-weight: 500;
+        line-height: 1.43;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: var(--givewp-neutral-50);
+        }
+    }
+}
+
+// Base Dialog Styles
+.dialog {
+    .content {
+        .text {
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--givewp-neutral-700);
+        }
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-2);
+        margin-top: var(--givewp-spacing-6);
+
+        button {
+            cursor: pointer;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+            border: none;
+        }
+    }
+}
+
+// Add Address Dialog Specific Styles
+.addAddressDialog {
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+    }
+
+    .formRow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--givewp-spacing-4);
+    }
+
+    .label {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--givewp-neutral-900);
+    }
+
+    .formField {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+
+        .input {
+            border-radius: var(--givewp-rounded-4);
+            border: 1px solid var(--givewp-neutral-300);
+            color: var(--givewp-neutral-900);
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-top: var(--givewp-spacing-1);
+            padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+            transition: all 0.2s ease;
+
+            &.inputError {
+                border-color: var(--givewp-red-400);
+            }
+
+            &:focus {
+                border-color: rgb(34, 113, 177);
+                box-shadow: rgb(34, 113, 177) 0px 0px 0px 1px;
+                outline: none;
+            }
+
+            &.inputError:focus {
+                border-color: var(--givewp-red-400);
+                box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            }
+        }
+
+        .select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1rem;
+            cursor: pointer;
+            max-width: none;
+            width: 100%;
+        }
+
+        .errorMessage {
+            color: var(--givewp-red-500);
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.43;
+            margin-top: var(--givewp-spacing-1);
+        }
+    }
+
+    .buttons {
+        margin-top: var(--givewp-spacing-10);
+
+        .addButton {
+            padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
+        }
+    }
+}
+
+// Delete Address Dialog Specific Styles
+.deleteAddressDialog {
+    .content {
+        .text {
+            margin: 0;
+        }
+
+        .address {
+            display: flex;
+            flex-direction: column;
+            margin-top: var(--givewp-spacing-4);
+
+            span {
+                color: var(--givewp-neutral-500);
+                font-size: 0.875rem;
+                font-weight: 500;
+                line-height: 1.43;
+            }
+        }
+    }
+
+    button {
+        &.cancelButton {
+            border: 1px solid var(--givewp-neutral-300);
+            background-color: var(--givewp-shades-white);
+            color: var(--givewp-neutral-900);
+
+            &:hover {
+                background-color: var(--givewp-neutral-50);
+            }
+        }
+
+        &.confirmButton {
+            border: 1px solid var(--givewp-red-400);
+            background-color: var(--givewp-red-400);
+            color: var(--givewp-shades-white);
+
+            &:hover {
+                border: 1px solid var(--givewp-red-500);
+                background-color: var(--givewp-red-500);
+            }
+        }
+    }
+}

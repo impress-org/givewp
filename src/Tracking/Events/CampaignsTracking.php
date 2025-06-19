@@ -9,18 +9,18 @@ use Give\Tracking\TrackingData\DonationFormsData;
 use Give\Tracking\TrackRegisterer;
 
 /**
- * @unreleased
+ * @since 4.3.2
  */
 class CampaignsTracking extends TrackEvent
 {
     /**
-     * @unreleased
+     * @since 4.3.2
      * @var string
      */
     protected $dataClassName = CampaignsData::class;
 
     /**
-     * @unreleased
+     * @since 4.3.2
      */
     public function __construct(TrackRegisterer $track)
     {

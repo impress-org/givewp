@@ -1,0 +1,74 @@
+.controlWrapper {
+    align-items: center;
+    display: flex;
+    gap: var(--givewp-spacing-6);
+    position: relative;
+}
+
+.control {
+    background-color: var(--givewp-neutral-50);
+    border-radius: var(--givewp-rounded-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 5rem;
+    overflow: hidden;
+    position: relative;
+    width: 5rem;
+
+    svg {
+        height: 3rem;
+        width: 3rem;
+    }
+
+    .image {
+        border-radius: var(--givewp-rounded-full);
+        display: block;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transition: filter 0.3s ease;
+        width: 100%;
+    }
+}
+
+.options {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+    margin-top: var(--givewp-spacing-2);
+
+    button {
+        background: none;
+        border-radius: var(--givewp-rounded-4);
+        border: 1px solid var(--givewp-neutral-300);
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-size: var(--givewp-font-size-sm);
+        font-weight: 500;
+        line-height: 1.43;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: var(--givewp-neutral-50);
+        }
+    }
+
+    .remove {
+        color: var(--givewp-red-400);
+        border-color: var(--givewp-red-400);
+
+        &:hover {
+            background-color: var(--givewp-red-25);
+        }
+    }
+
+    .update {
+        color: var(--givewp-neutral-900);
+        border-color: var(--givewp-neutral-300);
+
+        &:hover {
+            background-color: var(--givewp-neutral-50);
+        }
+    }
+}

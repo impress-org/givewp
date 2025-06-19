@@ -1,0 +1,205 @@
+.notesContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+}
+
+.addNoteContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.textarea {
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--givewp-neutral-900);
+    width: 100%;
+    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+}
+
+.textAreaButtons {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+    align-items: center;
+}
+
+.button {
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    font-weight: 500;
+}
+
+.cancelBtn {
+    background-color: #fff;
+    border: solid 1px #d92d0b;
+    color: #d92d0b;
+}
+
+.saveBtn {
+    background-color: #2271b1;
+    border: solid 1px #2271b1;
+    color: #fff;
+}
+
+.noteContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    border: solid 1px #e5e7eb;
+    background-color: #fff;
+
+    &:hover {
+        background-color: #f9fafb;
+    }
+}
+
+.note {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.title {
+    display: flex;
+    font-size: 1rem;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    color: #060c1a;
+}
+
+.date {
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1.67;
+    color: #6b7280;
+}
+
+.dotsMenu {
+    position: absolute;
+    cursor: pointer;
+    top: 0.5rem;
+    right: 0.75rem;
+}
+
+.menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-1);
+    z-index: 3;
+    padding: var(--givewp-spacing-1);
+    bottom: 20px;
+    right: 0;
+    width: 203px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: solid 1px var(--givewp-neutral-50);
+    background-color: var(--givewp-shades-white);
+
+    .menuItem {
+        gap: 4px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        padding: var(--givewp-spacing-2);
+        font-size: .875rem;
+        font-weight: 500;
+        line-height: 1.43;
+        color: var(--givewp-neutral-700);
+
+
+        &:hover {
+            background-color: #f3f4f6;
+        }
+    }
+
+    .delete {
+        color: var(--givewp-red-500);
+    }
+}
+
+.dialogContent {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--givewp-neutral-700);
+}
+
+.dialogButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-2);
+    margin-top: var(--givewp-spacing-6);
+
+    button {
+        cursor: pointer;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+        border: none;
+    }
+
+    .cancelButton {
+        border: 1px solid var(--givewp-neutral-300);
+        background-color: var(--givewp-shades-white);
+        color: var(--givewp-neutral-900);
+
+        &:hover {
+            background-color: var(--givewp-neutral-50);
+        }
+    }
+
+    .confirmButton {
+        border: 1px solid var(--givewp-red-500);
+        background-color: var(--givewp-red-500);
+        color: var(--givewp-shades-white);
+
+        &:hover {
+            border: 1px solid var(--givewp-red-400);
+            background-color: var(--givewp-red-400);
+        }
+    }
+}
+
+.showMoreContainer {
+    gap: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.showMoreButton {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: solid 1px #9ca0af;
+}
+
+.noNotesText {
+    font-size: 0.875rem;
+    line-height: 1.43;
+    color: var(--givewp-neutral-500);
+    margin: var(--givewp-spacing-4) 0 0;
+}

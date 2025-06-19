@@ -2,10 +2,10 @@
 Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
-Requires at least: 6.5
+Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.3.1
+Stable tag: 4.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,29 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.4.0: June 18th, 2025 =
+* New: The donor admin details screen has been upgraded to a new design and experience!
+* Enhancement: When using the the visual form builder with recurring donations, the gateway options will now only display the ones that support recurring donations
+* Fix: Resolved an issue with recurring donation email templates in the visual form builder settings
+* Fix: Resolved an issue with the campaign page donate button and option-based forms
+
+
+= 4.3.2: June 11th, 2025 =
+* Enhancement: Improved accessibility across form modal and new tab display styles
+* Enhancement: Added focus border to donation confirmation donor-dashboard link
+* Enhancement: Added aria-support to donation confirmation secure badge
+* Enhancement: Replaced definition list tags in donation confirmation field lists for better semantic structure
+* Fix: Resolved an issue with additional keyboard focus on new donor wall items
+* Fix: Resolved accessibility issues with event ticket elements
+* Fix: Resolved an issue with aria labels in form-grid progress bar
+* Fix: Resolved an issue with campaign colors for grid and block goal progress
+* Fix: Resolved backwards compatibility issues for campaign_id in legacy objects and gateways
+* Fix: Resolved an issue where the Campaign Grid block does not show any Campaigns when the Campaign filter is used
+* Fix: Resolved an issue with the visual form builder route user roles
+* Fix: Resolved an issue with error focus on Date and File fields
+* Fix: Resolved an issue where some servers were experiencing a "Missing PayPal webhook header" error
+* Fix: Resolved a conflict with custom text fields that use the same name as the billing address block field names
 
 = 4.3.1: May 30th, 2025 =
 * Fix: Resolved an issue with the Donor wall when filtering by multiple form IDs

@@ -39,7 +39,7 @@ use Give_Payment;
  * - Modern donation creation which uses DonationRepository
  * - Legacy form processing which may set campaign meta
  *
- * @unreleased
+ * @since 4.3.2
  */
 class GiveInsertPaymentTest extends TestCase
 {
@@ -48,7 +48,7 @@ class GiveInsertPaymentTest extends TestCase
     /**
      * Test that give_insert_payment creates a payment successfully.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testGiveInsertPaymentCreatesPaymentSuccessfully()
     {
@@ -95,7 +95,7 @@ class GiveInsertPaymentTest extends TestCase
     /**
      * Test that give_insert_payment returns false with invalid data.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testGiveInsertPaymentReturnsFalseWithInvalidData()
     {
@@ -112,7 +112,7 @@ class GiveInsertPaymentTest extends TestCase
      * Test that campaign ID is set when payment is created for a form with an associated campaign.
      * This test documents the expected behavior for campaign ID functionality.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testCampaignIdIsSetForPaymentWithCampaignAssociatedForm()
     {
@@ -184,7 +184,7 @@ class GiveInsertPaymentTest extends TestCase
      * Test that campaign ID can be explicitly set in payment meta after creation.
      * This tests the mechanism by which campaign IDs are stored and retrieved.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testCampaignIdCanBeExplicitlySetInPaymentMeta()
     {
@@ -236,7 +236,7 @@ class GiveInsertPaymentTest extends TestCase
     /**
      * Test that multiple payments can have different campaign IDs.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testMultiplePaymentsCanHaveDifferentCampaignIds()
     {
@@ -314,7 +314,7 @@ class GiveInsertPaymentTest extends TestCase
      * Test that the give_insert_payment action hook fires correctly.
      * This is where campaign ID setting typically happens through extensions.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testGiveInsertPaymentActionHookFires()
     {
@@ -371,7 +371,7 @@ class GiveInsertPaymentTest extends TestCase
      * Test that give_insert_payment correctly sets campaign_id when provided in payment data.
      * This tests the new direct campaign_id property support in the Give_Payment class.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testGiveInsertPaymentSetsCampaignIdFromPaymentData()
     {
@@ -423,7 +423,7 @@ class GiveInsertPaymentTest extends TestCase
     /**
      * Test that give_insert_payment defaults campaign_id to 0 when not provided.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testGiveInsertPaymentDefaultsCampaignIdToZero()
     {
@@ -466,7 +466,7 @@ class GiveInsertPaymentTest extends TestCase
     /**
      * Test that give_insert_payment handles empty campaign_id correctly.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testGiveInsertPaymentHandlesEmptyCampaignId()
     {
@@ -509,7 +509,7 @@ class GiveInsertPaymentTest extends TestCase
     /**
      * Test that give_insert_payment preserves numeric campaign_id values correctly.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testGiveInsertPaymentPreservesNumericCampaignId()
     {
@@ -555,7 +555,7 @@ class GiveInsertPaymentTest extends TestCase
      * Test that give_insert_payment automatically derives campaign_id from form_id when not explicitly provided.
      * When a form is associated with a campaign, the payment should automatically inherit the campaign ID.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testGiveInsertPaymentDerivesCampaignIdFromFormId()
     {
@@ -615,7 +615,7 @@ class GiveInsertPaymentTest extends TestCase
      * Test that explicit campaign_id takes precedence over form-derived campaign_id.
      * When both form_id and campaign_id are provided, the explicit campaign_id should be used.
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testExplicitCampaignIdTakesPrecedenceOverFormDerived()
     {

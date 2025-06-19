@@ -26,14 +26,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * - Edge cases and error handling
  * - Performance optimization verification
  *
- * @unreleased
+ * @since 4.3.2
  */
 class BackfillMissingCampaignIdForDonationsTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.3.2
      */
     public function testMigrationBackfillsCampaignIdFromRevenueTable()
     {
@@ -73,7 +73,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      */
     public function testMigrationBackfillsCampaignIdFromParentDonation()
     {
@@ -152,7 +152,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      */
     public function testMigrationBackfillsCampaignIdFromFormWhenParentHasNone()
     {
@@ -244,7 +244,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      */
     public function testMigrationIgnoresDonationsWithExistingCampaignId()
     {
@@ -285,7 +285,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     /**
      * Test that migration includes non-renewal donations
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testMigrationIncludesNonRenewalDonations()
     {
@@ -309,7 +309,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     /**
      * Test migration backfills campaignId for regular donations from form association
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testMigrationBackfillsCampaignIdForRegularDonationFromForm()
     {
@@ -368,7 +368,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      */
     public function testMigrationBackfillsCampaignIdFromRenewalFormWhenNoParentPayment()
     {
@@ -427,7 +427,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.3.2
      */
     public function testMigrationPrioritizesRevenueTableOverParentDonation()
     {
@@ -502,7 +502,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     /**
      * Test bulk processing of multiple donations with different scenarios
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testBulkProcessingHandlesMultipleDonationsEfficiently()
     {
@@ -613,7 +613,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     /**
      * Test that bulk processing prioritizes correctly
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testBulkProcessingPrioritizesRevenuTableOverOtherSources()
     {
@@ -677,7 +677,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     /**
      * Test that bulk processing ignores donations with existing campaign IDs
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testBulkProcessingIgnoresDonationsWithExistingCampaignIds()
     {
@@ -729,7 +729,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     /**
      * Test bulk processing handles edge cases gracefully
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testBulkProcessingHandlesEdgeCasesGracefully()
     {
@@ -773,7 +773,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     /**
      * Test that empty batch processing is handled gracefully
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testBulkProcessingHandlesEmptyBatchGracefully()
     {
@@ -793,7 +793,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     /**
      * Test that bulk processing prevents duplicate campaign_id meta entries
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testBulkProcessingPreventsDuplicateCampaignIdMeta()
     {
@@ -848,7 +848,7 @@ class BackfillMissingCampaignIdForDonationsTest extends TestCase
     /**
      * Test bulk processing with mixed scenarios - some donations have existing campaign IDs
      *
-     * @unreleased
+     * @since 4.3.2
      */
     public function testBulkProcessingWithMixedExistingCampaignIds()
     {

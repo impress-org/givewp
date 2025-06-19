@@ -52,7 +52,7 @@ class GiveDonorWall {
 	/**
 	 * Add click event to load more link
 	 *
-	 * @unreleased focus on new donor content every time a new donor is loaded through the load more button.
+	 * @since 4.3.2 focus on new donor content every time a new donor is loaded through the load more button.
 	 * @since  2.2.0
 	 *
 	 * @param {object} evt
@@ -84,11 +84,11 @@ class GiveDonorWall {
 			if ( res.html.length ) {
 				const gridContainer = parent.getElementsByClassName( 'give-grid' )[ 0 ];
 				const initialItemCount = gridContainer.children.length;
-				
+
 				gridContainer.insertAdjacentHTML( 'beforeend', res.html );
-				
+
 				const firstNewItem = gridContainer.children[initialItemCount];
-				
+
 				// Focus on the first new item if it exists
 				if (firstNewItem) {
 					firstNewItem.setAttribute('tabindex', '-1');

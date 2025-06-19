@@ -53,6 +53,9 @@
             "@givewp/campaigns/*": [
                 "./src/Campaigns/resources/*"
             ],
+            "@givewp/donors/*": [
+                "./src/Donors/resources/*"
+            ],
             "@givewp/src/*": [
                 "./src/*"
             ]

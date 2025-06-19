@@ -147,7 +147,7 @@ final class Give_Payment {
 	/**
 	 * The Donation Campaign ID
 	 *
-	 * @unreleased
+	 * @since 4.3.2
 	 * @access protected
 	 *
 	 * @var    string|int
@@ -1851,7 +1851,7 @@ final class Give_Payment {
 	/**
 	 * Setup the campaign ID.
 	 *
-	 * @unreleased
+	 * @since 4.3.2
 	 * @access private
 	 *
 	 * @return int The Campaign ID
@@ -2086,7 +2086,7 @@ final class Give_Payment {
 	/**
 	 * Retrieve payment campaign id
 	 *
-	 * @unreleased
+	 * @since 4.3.2
 	 * @access private
 	 *
 	 * @return string|int Payment campaign id
