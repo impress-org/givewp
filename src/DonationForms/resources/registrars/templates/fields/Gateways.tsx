@@ -139,7 +139,7 @@ const TestModeNotice = () => {
  * - Displays contextual messages when no gateways are available
  * - Shows test mode notice when applicable
  *
- * @unreleased filter gateways based on donation type
+ * @since 4.4.0 filter gateways based on donation type
  * @since 3.0.0
  */
 export default function Gateways({isTestMode, defaultValue, inputProps, gateways}: GatewayFieldProps) {

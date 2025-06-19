@@ -6,7 +6,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use JsonSerializable;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 final class DonorAddress implements JsonSerializable, Arrayable
 {
@@ -36,7 +36,7 @@ final class DonorAddress implements JsonSerializable, Arrayable
     public $zip;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @param array $array
      *
@@ -57,7 +57,7 @@ final class DonorAddress implements JsonSerializable, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function toArray(): array
     {
@@ -72,7 +72,7 @@ final class DonorAddress implements JsonSerializable, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
@@ -81,7 +81,7 @@ final class DonorAddress implements JsonSerializable, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function toString(): string
     {
@@ -98,7 +98,7 @@ final class DonorAddress implements JsonSerializable, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function isEmpty(): bool
     {

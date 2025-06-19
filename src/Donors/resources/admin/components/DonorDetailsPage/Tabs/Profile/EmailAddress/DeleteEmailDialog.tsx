@@ -12,7 +12,7 @@ import { ErrorIcon } from '@givewp/components/AdminDetailsPage/Icons';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 interface DeleteEmailDialogProps {
     isOpen: boolean;
@@ -22,7 +22,7 @@ interface DeleteEmailDialogProps {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function DeleteEmailDialog({
     isOpen,

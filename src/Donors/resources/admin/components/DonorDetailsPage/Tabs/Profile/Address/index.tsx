@@ -21,7 +21,7 @@ import styles from './styles.module.scss';
 import { DonorAddress as DonorAddressType } from "../../../../types";
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function DonorAddress() {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);

@@ -3,19 +3,19 @@ import classNames from 'classnames';
 import styles from './Spinner.module.scss';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 type SpinnerSize = 'tiny' | 'small' | 'medium' | 'large';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 type SpinnerProps = React.HTMLAttributes<HTMLDivElement> & {
     size?: SpinnerSize;
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 const Spinner = ({size = 'small', ...rest}: SpinnerProps) => {
     const spinnerClasses = classNames({

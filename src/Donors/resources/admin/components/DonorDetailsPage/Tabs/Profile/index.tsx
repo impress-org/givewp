@@ -6,7 +6,7 @@ import DonorPersonalDetails from './PersonalDetails';
 import { ProfileSectionsSlot } from '../../slots';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function DonorDetailsPageProfileTab() {
     return (

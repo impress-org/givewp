@@ -9,7 +9,7 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorsQuery
 {
@@ -19,7 +19,7 @@ class DonorsQuery
     protected $query;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function __construct()
     {
@@ -29,7 +29,7 @@ class DonorsQuery
     /**
      * Delegates methods not defined locally to the underlying query.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @return mixed
      */
@@ -43,7 +43,7 @@ class DonorsQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function whereDonorsHaveDonations(
         string $mode = '',
@@ -101,7 +101,7 @@ class DonorsQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function limit(int $limit): self
     {
@@ -111,7 +111,7 @@ class DonorsQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function offset(int $offset): self
     {
@@ -121,7 +121,7 @@ class DonorsQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function orderBy(string $column, string $direction = 'ASC'): self
     {
@@ -131,7 +131,7 @@ class DonorsQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function getAll(): array
     {

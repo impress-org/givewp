@@ -9,6 +9,7 @@
     }
 
     .post-type-give_forms #wpbody {
+        -webkit-font-smoothing: antialiased;
         box-sizing: border-box;
         background-color: #f9fafb;
         min-height: calc(100vh - 32px);
@@ -387,6 +388,10 @@
                             transform: none;
                         }
                     }
+                }
+
+                select {
+                    background-position: right var(--givewp-spacing-4) top 50%;
                 }
             }
 

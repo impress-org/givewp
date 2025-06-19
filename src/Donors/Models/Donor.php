@@ -21,7 +21,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donor
  *
- * @unreleased Add "notes" property
+ * @since 4.4.0 Add "notes" property
  * @since 3.7.0 Add "phone" property
  * @since 2.24.0 add new properties $totalAmountDonated and $totalNumberOfDonations
  * @since 2.19.6
@@ -222,7 +222,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @return ModelQueryBuilder<DonorNote>
      */
@@ -255,7 +255,7 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
 
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function isAnonymous(): bool
     {

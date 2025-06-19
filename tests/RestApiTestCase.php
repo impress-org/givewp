@@ -173,7 +173,7 @@ class RestApiTestCase extends TestCase
     /**
      * Converts a response to data to send.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @param WP_REST_Response $response  Response object.
      * @param bool|string[]    $embed     Whether to embed all links, a filtered list of link relations, or no links.

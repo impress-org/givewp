@@ -17,7 +17,7 @@ import styles from './styles.module.scss';
 import { DonorAddress as DonorAddressType } from "../../../../types";
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 interface AddressItemProps {
     address: DonorAddressType;
@@ -29,7 +29,7 @@ interface AddressItemProps {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function AddressItem({
     address,

@@ -6,7 +6,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
- * @unreleased Add AVATAR_ID and COMPANY
+ * @since 4.4.0 Add AVATAR_ID and COMPANY
  * @since 2.19.6
  *
  * @method static DonorMetaKeys FIRST_NAME()
@@ -40,7 +40,7 @@ class DonorMetaKeys extends Enum
     const COMPANY = '_give_donor_company';
 
     /**
-     * @unreleased Remove address meta keys from columns
+     * @since 4.4.0 Remove address meta keys from columns
      * @since 2.24.0 change function to remove ADDITIONAL_EMAILS from columns
      *
      * @return array

@@ -13,14 +13,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorViewModelTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -37,7 +37,7 @@ class DonorViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -92,7 +92,7 @@ class DonorViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -145,7 +145,7 @@ class DonorViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -164,7 +164,7 @@ class DonorViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */

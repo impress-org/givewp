@@ -31,7 +31,7 @@ class DonorsAdminPage
     /**
      * Render admin page container
      *
-     * @unreleased Add new details page view
+     * @since 4.4.0 Add new details page view
      * @since 2.20.0
      */
     public function render()
@@ -94,7 +94,7 @@ class DonorsAdminPage
 
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public static function isShowingDetailsPage(): bool
     {
@@ -104,7 +104,7 @@ class DonorsAdminPage
     /**
      * Get the URL for the details page
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public static function getDetailsPageUrl(int $donorId): string
     {

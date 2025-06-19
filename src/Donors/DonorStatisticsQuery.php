@@ -11,17 +11,17 @@ use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Donors\ValueObjects\DonorType;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorStatisticsQuery extends QueryBuilder
 {
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     private Donor $donor;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function __construct(Donor $donor, $mode = '')
     {
@@ -49,7 +49,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function filterByCampaign(Campaign $campaign): self
     {
@@ -62,7 +62,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @return int|float
      */
@@ -76,7 +76,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function getHighestDonationAmount()
     {
@@ -95,7 +95,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function getAverageDonationAmount()
     {
@@ -108,7 +108,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function getDonationsCount(): int
     {
@@ -119,7 +119,7 @@ class DonorStatisticsQuery extends QueryBuilder
 
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function getFirstDonation()
     {
@@ -143,7 +143,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function getLastDonation()
     {
@@ -167,7 +167,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function getDonorType()
     {
@@ -193,7 +193,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function preferredPaymentMethod(): string
     {
@@ -213,7 +213,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function joinDonationMeta($key, $alias): self
     {

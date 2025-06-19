@@ -21,7 +21,7 @@ use Give\Log\Log;
 class DonorRepository
 {
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @var DonorNotesRepository
      */
@@ -38,7 +38,7 @@ class DonorRepository
     ];
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function __construct()
     {
@@ -186,7 +186,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased Add support for addresses
+     * @since 4.4.0 Add support for addresses
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
      * @since 2.23.1 use give()->donor_meta to update meta so data is upserted
@@ -319,7 +319,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased Add avatarId and company to core donor meta
+     * @since 4.4.0 Add avatarId and company to core donor meta
      * @since 2.19.6
      */
     private function getCoreDonorMeta(Donor $donor): array
@@ -428,7 +428,7 @@ class DonorRepository
      * Additional emails are assigned to the same additional_email meta key.
      * In order to update them we need to delete and re-insert.
      *
-     * @unreleased Remove all additional emails and re-insert only the new ones
+     * @since 4.4.0 Remove all additional emails and re-insert only the new ones
      * @since 3.20.0 store meta using native WP functions
      * @since 2.19.6
      *
@@ -450,7 +450,7 @@ class DonorRepository
      * Addresses are stored as indexed meta keys.
      * In order to update them we need to delete all address-related meta keys and re-insert.
      *
-     * @unreleased
+     * @since 4.4.0
      */
     private function updateAddresses(Donor $donor, ?int $donorId): void
     {

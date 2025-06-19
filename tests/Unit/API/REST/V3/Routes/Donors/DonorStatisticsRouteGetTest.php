@@ -18,14 +18,14 @@ use WP_REST_Server;
 use DateTime;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorStatisticsRouteGetTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -75,7 +75,7 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -138,7 +138,7 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -198,7 +198,7 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -221,7 +221,7 @@ class DonorStatisticsRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */

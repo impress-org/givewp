@@ -108,7 +108,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     private function registerDonorEntity()
     {
@@ -116,7 +116,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     private function loadDonorOptions()
     {

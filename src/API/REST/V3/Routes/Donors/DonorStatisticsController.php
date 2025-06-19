@@ -14,12 +14,12 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorStatisticsController extends WP_REST_Controller
 {
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function __construct()
     {
@@ -28,7 +28,7 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function register_routes()
     {
@@ -65,7 +65,7 @@ class DonorStatisticsController extends WP_REST_Controller
     /**
      * Get a single donor statistics.
      *
-     * @unreleased
+     * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -105,7 +105,7 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @param WP_REST_Request $request
      *
@@ -117,7 +117,7 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
     {

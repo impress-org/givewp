@@ -4,7 +4,7 @@ import { TabsContext, LinkContext, Tabs } from 'react-aria-components';
 import { Tab } from '../types';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function TabsRouter({ children, tabDefinitions }: { children: React.ReactNode, tabDefinitions: Tab[] }) {
     const [selectedKey, onSelectionChange] = useState(tabDefinitions[0].id);

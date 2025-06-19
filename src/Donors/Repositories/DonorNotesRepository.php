@@ -14,12 +14,12 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorNotesRepository
 {
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @var string[]
      */
@@ -29,7 +29,7 @@ class DonorNotesRepository
     ];
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function getById(int $noteId): ?DonorNote
     {
@@ -39,7 +39,7 @@ class DonorNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -96,7 +96,7 @@ class DonorNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -133,7 +133,7 @@ class DonorNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -167,7 +167,7 @@ class DonorNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function queryByDonorId(int $donorId): ModelQueryBuilder
     {
@@ -177,7 +177,7 @@ class DonorNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @return void
      */
@@ -195,7 +195,7 @@ class DonorNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @return ModelQueryBuilder<DonorNote>
      */
@@ -220,7 +220,7 @@ class DonorNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     private function upsertDonorNoteType(DonorNote $donorNote)
     {

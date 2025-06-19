@@ -14,7 +14,7 @@ use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.4.0
  *
  * @property int           $id
  * @property int           $donorId
@@ -44,7 +44,7 @@ class DonorNote extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public static function find($id): ?DonorNote
     {
@@ -52,7 +52,7 @@ class DonorNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -66,7 +66,7 @@ class DonorNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -82,7 +82,7 @@ class DonorNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -92,7 +92,7 @@ class DonorNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @return ModelQueryBuilder<DonorNote>
      */
@@ -102,7 +102,7 @@ class DonorNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @return ModelQueryBuilder<Donor>
      */
@@ -112,7 +112,7 @@ class DonorNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public static function fromQueryBuilderObject($object): DonorNote
     {
@@ -126,7 +126,7 @@ class DonorNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public static function factory(): DonorNoteFactory
     {

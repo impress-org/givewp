@@ -28,7 +28,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Load donors route and register CURIE
+     * @since 4.4.0 Load donors route and register CURIE
      * @since 4.2.0
      */
     public function boot()
@@ -52,7 +52,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     private function loadDonorsRoutes()
     {
@@ -69,7 +69,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     private function loadDonationsRoutes()
     {

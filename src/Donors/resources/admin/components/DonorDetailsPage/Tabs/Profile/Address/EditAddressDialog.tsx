@@ -28,7 +28,7 @@ const DEFAULT_ADDRESS: DonorAddress = {
     zip: '',
 };
 /**
- * @unreleased
+ * @since 4.4.0
  */
 interface AddressDialogProps {
     isOpen: boolean;
@@ -39,7 +39,7 @@ interface AddressDialogProps {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function EditAddressDialog({
     isOpen,
