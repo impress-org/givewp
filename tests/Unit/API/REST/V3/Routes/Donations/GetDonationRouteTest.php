@@ -1,13 +1,11 @@
 <?php
 
-namespace Unit\API\REST\V3\Routes\Donations;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\RegisterDonationRoutes;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -19,16 +17,6 @@ use WP_REST_Server;
 class GetDonationRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @since 4.0.0
-     */
-    public function setUp(): void
-    {
-        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
-
-        parent::setUp();
-    }
 
     /**
      * @since 4.0.0
@@ -61,7 +49,10 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $dataJson = json_encode($response->get_data());
+
+        $data = $response->get_data()->data;
+        $dataJson = json_encode($data);
+
         $data = json_decode($dataJson, true);
 
         // TODO: show shape of DateTime objects
@@ -115,7 +106,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = $response->get_data()->data;
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);
@@ -137,7 +128,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = $response->get_data()->data;
 
         $sensitiveData = [
             'donorIp',
@@ -183,7 +174,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = $response->get_data()->data;
 
         $sensitiveData = [
             'donorIp',
@@ -287,7 +278,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = $response->get_data()->data;
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);
@@ -351,7 +342,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $data = $response->get_data()->data;
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);

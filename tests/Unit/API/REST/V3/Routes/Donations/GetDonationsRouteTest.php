@@ -1,9 +1,9 @@
 <?php
 
-namespace Unit\API\REST\V3\Routes\Donations;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\RegisterDonationRoutes;
+use Give\API\REST\V3\Routes\Donations\DonationController;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Campaigns\Models\Campaign;
@@ -12,7 +12,6 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -24,16 +23,6 @@ use WP_REST_Server;
 class GetDonationsRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @since 4.0.0
-     */
-    public function setUp(): void
-    {
-        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
-
-        parent::setUp();
-    }
 
     /**
      * @since 4.0.0
@@ -67,6 +56,9 @@ class GetDonationsRouteTest extends RestApiTestCase
         $status = $response->get_status();
         $dataJson = json_encode($response->get_data());
         $data = json_decode($dataJson, true);
+
+        // Remove additional property add by the prepare_response_for_collection() method
+        unset($data[0]['_links']);
 
         // TODO: show shape of DateTime objects
         $createdAtJson = json_encode($data[0]['createdAt']);
@@ -127,7 +119,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
         ];
 
         $this->assertEquals(200, $status);
@@ -172,7 +164,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
         ];
 
         $this->assertEquals(200, $status);
@@ -454,7 +446,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @since 4.0.0
+     * @since        4.0.0
      *
      * @dataProvider sortableColumnsDataProvider
      *
