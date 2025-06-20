@@ -37,7 +37,7 @@ select:not(.givewp-fields-amount__currency-select) {
     }
 }
 
-input[type="text"]:not([name="amount"], [name="amount-custom"]),
+input[type="text"],
 input[type="password"],
 input[type="email"],
 textarea {
