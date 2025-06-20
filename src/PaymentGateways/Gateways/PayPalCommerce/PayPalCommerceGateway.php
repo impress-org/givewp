@@ -95,7 +95,7 @@ class PayPalCommerceGateway extends PayPalCommerce
 
         $disableFunding = ['credit'];
         if (!$acceptCreditCard) {
-            $disableFunding = 'credit,card';
+            $disableFunding[] = 'card';
         }
 
         $data = [
