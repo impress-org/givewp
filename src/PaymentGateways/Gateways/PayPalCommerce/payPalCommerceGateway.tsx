@@ -434,7 +434,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         const {isRecurring} = window.givewp.form.hooks.useFormData();
 
         const [{options}, dispatch] = usePayPalScriptReducer();
-        const shouldShowCardFields = -1 !== options.components.indexOf('card-fields');
+        const shouldShowCardFields = -1 !== options.components.indexOf('card-fields') && !options.disableFunding.includes('card');
 
         useEffect(() => {
             const options = getPayPalScriptOptions({isSubscription: isRecurring});

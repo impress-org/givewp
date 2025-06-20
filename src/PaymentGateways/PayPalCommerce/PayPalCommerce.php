@@ -188,6 +188,20 @@ class PayPalCommerce extends PaymentGateway
                 ],
             ],
             [
+                'name' => esc_html__('Accept Credit Card', 'give'),
+                'id' => 'paypal_commerce_accept_credit_card',
+                'type' => 'radio_inline',
+                'desc' => esc_html__(
+                    'Displays a button or hosted fields (depending on Payment Field Type) allowing Donors to pay with Credit Card.',
+                    'give'
+                ),
+                'default' => 'enabled',
+                'options' => [
+                    'enabled' => esc_html__('Enabled', 'give'),
+                    'disabled' => esc_html__('Disabled', 'give'),
+                ],
+            ],
+            [
                 'name' => esc_html__('Payment Field Type', 'give'),
                 'desc' => sprintf(
                     esc_html__(
