@@ -94,7 +94,7 @@ class PayPalCommerceGateway extends PayPalCommerce
         $fieldsEnabled = 'auto' === $paymentFieldType && $merchantDetailModel->supportsCustomPayments;
 
         $disableFunding = ['credit'];
-        if (!$acceptCreditCard) {
+        if (!$acceptCreditCard && !$fieldsEnabled) {
             $disableFunding[] = 'card';
         }
 
