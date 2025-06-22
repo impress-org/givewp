@@ -43,3 +43,25 @@
         background-color: var(--givewp-shades-white);
     }
 }
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--givewp-spacing-4);
+}
+
+.radioOptions {
+    display: flex;
+    gap: var(--givewp-spacing-6);
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: var(--givewp-spacing-2);
+
+    span {
+        color: var(--givewp-neutral-500);
+        font-weight: 500;
+    }
+}

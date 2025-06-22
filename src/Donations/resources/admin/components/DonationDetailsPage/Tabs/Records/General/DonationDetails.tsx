@@ -1,84 +1,139 @@
 import { __ } from '@wordpress/i18n';
-import AdminSection from '@givewp/components/AdminDetailsPage/AdminSection';
+import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
+import styles from '../styles.module.scss';
+import { useFormContext } from 'react-hook-form';
+import { CurrencyControl } from '@givewp/form-builder-library';
+import { CurrencyCode } from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
+import { getDonationOptionsWindowData } from '@givewp/donations/utils';
+import { useEffect } from 'react';
+
+const { donationStatuses, campaignsWithForms } = getDonationOptionsWindowData();
 
 /**
  * @unreleased
  */
 export default function DonationDetails() {
+    const { getValues, setValue, register, watch } = useFormContext();
+    const amount = getValues('amount');
+    const campaignId = watch('campaignId');
+    const formId = watch('formId');
+    const anonymous = watch('anonymous');
+    const createdAt = watch('createdAt');
+
+    useEffect(() => {
+        if (!campaignId) {
+            return;
+        }
+
+        const campaignFormIds = Object.keys(campaignsWithForms[campaignId]?.forms).map(Number);
+        if (!campaignFormIds.includes(formId)) {
+            setValue('formId', campaignsWithForms[campaignId]?.defaultFormId, {shouldDirty: true});
+        }
+    }, [campaignId]);
+
+    const campaignForms = campaignsWithForms[campaignId]?.forms;
+
     return (
         <AdminSection
             title={__('Donation details', 'give')}
             description={__('This includes the donation information', 'give')}
         >
             <div>
-                {/* Amount and Status fields */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                    <div>
-                        <label>{__('Amount', 'give')}</label>
-                        <input type="text" value="$300" disabled style={{ width: '100%', padding: '0.5rem' }} />
-                    </div>
-                    <div>
-                        <label>{__('Status', 'give')}</label>
-                        <select disabled style={{ width: '100%', padding: '0.5rem' }}>
-                            <option>{__('Completed', 'give')}</option>
+                <div className={styles.formRow}>
+                    {/* TODO: Make AdminSectionField render a label component instead of a heading */}
+                    <AdminSectionField>
+                        <label htmlFor="amount">{__('Amount', 'give')}</label>
+                        <CurrencyControl
+                            name="amount"
+                            currency={amount.currency as CurrencyCode}
+                            disabled={false}
+                            placeholder={__('Enter amount', 'give')}
+                            value={amount.value}
+                            onValueChange={(value) => {
+                                setValue('amount', {
+                                    value: Number(value ?? 0),
+                                    currency: amount.currency,
+                                }, {shouldDirty: true});
+                            }}
+                        />
+                    </AdminSectionField>
+                    <AdminSectionField>
+                        <label htmlFor="status">{__('Status', 'give')}</label>
+                        <select id="status" name="status" {...register('status')}>
+                            {donationStatuses && Object.entries(donationStatuses).map(([value, label]) => (
+                                <option key={value} value={value}>
+                                    {label as string}
+                                </option>
+                            ))}
                         </select>
-                    </div>
+                    </AdminSectionField>
                 </div>
 
-                {/* Donation date and time */}
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>{__('Donation date and time', 'give')}</label>
-                    <input type="text" value="7th Mar, 2025, 10:00 AM" disabled style={{ width: '100%', padding: '0.5rem' }} />
-                </div>
-
-                {/* Campaign and Form fields */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                    <div>
-                        <label>{__('Campaign', 'give')}</label>
-                        <select disabled style={{ width: '100%', padding: '0.5rem' }}>
-                            <option>{__('WordCamp Fundraising', 'give')}</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>{__('Form', 'give')}</label>
-                        <select disabled style={{ width: '100%', padding: '0.5rem' }}>
-                            <option>{__('Fundraising Form', 'give')}</option>
-                        </select>
-                    </div>
-                </div>
-
-                {/* Fund */}
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>{__('Fund', 'give')}</label>
-                    <select disabled style={{ width: '100%', padding: '0.5rem' }}>
-                        <option>{__('General', 'give')}</option>
-                    </select>
-                </div>
-
-                {/* Donor comment */}
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>{__('Donor comment', 'give')}</label>
-                    <textarea
-                        placeholder={__('Add a comment', 'give')}
-                        disabled
-                        style={{ width: '100%', padding: '0.5rem', minHeight: '80px' }}
+                <AdminSectionField>
+                    <label htmlFor="date">{__('Donation date and time', 'give')}</label>
+                    <input
+                        type="datetime-local"
+                        id="date"
+                        value={createdAt.date ? createdAt.date.replace(' ', 'T').slice(0, 16) : ''}
+                        onChange={(e) => {
+                            setValue('createdAt', {
+                                ...createdAt,
+                                date: e.target.value,
+                            }, {shouldDirty: true});
+                        }}
                     />
+                </AdminSectionField>
+
+                <div className={styles.formRow}>
+                    <AdminSectionField>
+                        <label htmlFor="campaignId">{__('Campaign', 'give')}</label>
+                        <select id="campaignId" {...register('campaignId', {valueAsNumber: true})}>
+                            {campaignsWithForms && Object.entries(campaignsWithForms).map(([campaignId, campaign]) => (
+                                <option key={campaignId} value={campaignId}>
+                                    {campaign.title}
+                                </option>
+                            ))}
+                        </select>
+                    </AdminSectionField>
+                    <AdminSectionField>
+                        <label htmlFor="formId">{__('Form', 'give')}</label>
+                        <select id="formId" {...register('formId', {valueAsNumber: true})}>
+                            {campaignForms && Object.entries(campaignForms).map(([formId, formTitle]) => (
+                                <option key={formId} value={formId}>
+                                    {formTitle}
+                                </option>
+                            ))}
+                        </select>
+                    </AdminSectionField>
                 </div>
 
-                {/* Anonymous donation */}
-                <div>
-                    <label>{__('Anonymous donation', 'give')}</label>
-                    <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <input type="radio" name="anonymous" value="yes" defaultChecked disabled />
-                            {__('Yes, please', 'give')}
-                        </label>
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <input type="radio" name="anonymous" value="no" disabled />
-                            {__('No, thank you', 'give')}
-                        </label>
-                    </div>
-                </div>
+                <AdminSectionField>
+                    <fieldset className={styles.radioField}>
+                        <legend>{__('Anonymous donation', 'give')}</legend>
+                        <div className={styles.radioOptions}>
+                            <label htmlFor="anonymous-yes" className={styles.radioLabel}>
+                                <input
+                                    type="radio"
+                                    id="anonymous-yes"
+                                    value="true"
+                                    defaultChecked={anonymous === true}
+                                    {...register('anonymous')}
+                                />
+                                <span>{__('Yes, please', 'give')}</span>
+                            </label>
+                            <label htmlFor="anonymous-no" className={styles.radioLabel}>
+                                <input
+                                    type="radio"
+                                    id="anonymous-no"
+                                    value="false"
+                                    defaultChecked={anonymous === false}
+                                    {...register('anonymous')}
+                                />
+                                <span>{__('No, thank you', 'give')}</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </AdminSectionField>
             </div>
         </AdminSection>
     );
