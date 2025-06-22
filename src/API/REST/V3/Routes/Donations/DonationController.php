@@ -514,14 +514,28 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Purchase key (sensitive data)', 'give'),
                 ],
                 'createdAt' => [
-                    'type' => 'string',
+                    'type' => 'object',
                     'description' => esc_html__('Donation creation date', 'give'),
-                    'format' => 'date-time',
+                    'properties' => [
+                        'date' => [
+                            'type' => 'string',
+                        ],
+                        'timezone' => [
+                            'type' => 'string',
+                        ],
+                    ],
                 ],
                 'updatedAt' => [
-                    'type' => 'string',
+                    'type' => 'object',
                     'description' => esc_html__('Donation last update date', 'give'),
-                    'format' => 'date-time',
+                    'properties' => [
+                        'date' => [
+                            'type' => 'string',
+                        ],
+                        'timezone' => [
+                            'type' => 'string',
+                        ],
+                    ],
                 ],
             ],
             'required' => ['id', 'donorId', 'amount', 'currency', 'status', 'gatewayId', 'mode', 'createdAt'],
