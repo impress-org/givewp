@@ -8,10 +8,10 @@ export type GiveDonationOptions = {
     adminUrl: string;
     apiRoot: string;
     apiNonce: string;
-    donorsAdminUrl: string;
+    donationsAdminUrl: string;
     currency: string;
+    currencySymbol: string;
     isRecurringEnabled: boolean;
-    defaultForm: string;
     intlTelInputSettings: IntlTelInputSettings;
     nameTitlePrefixes: string[];
     countries: {[countryCode: string]: string};
@@ -21,12 +21,15 @@ export type GiveDonationOptions = {
         noStatesCountries: string[];
         statesNotRequiredCountries: string[];
     };
-    admin: {
-        showCampaignInteractionNotice: boolean
-        showFormGoalNotice: boolean
-        showExistingUserIntroNotice: boolean
-        showCampaignListTableNotice: boolean
-        showCampaignFormNotice: boolean
-        showCampaignSettingsNotice: boolean
-    }
+    donationStatuses: {[statusCode: string]: string};
+    campaignsWithForms: {
+        [campaignId: string]: {
+            title: string;
+            defaultFormId: string;
+            forms: {
+                [formId: string]: string;
+            };
+        };
+    };
+    mode: 'test' | 'live';
 }

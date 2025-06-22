@@ -3,6 +3,8 @@
 namespace Give\Donations\Actions;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Database\DB;
 use Give\Helpers\IntlTelInput;
 
 /**
@@ -37,13 +39,14 @@ class LoadDonationOptions
             'apiNonce' => wp_create_nonce('wp_rest'),
             'donationsAdminUrl' => admin_url('edit.php?post_type=give_forms&page=give-payment-history'),
             'currency' => give_get_currency(),
-            'currencySymbol' => give_currency_symbol(),
             'intlTelInputSettings' => IntlTelInput::getSettings(),
             'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
             'countries' => $this->decodeHtmlEntities(give_get_country_list()),
             'states' => $this->getStatesData(),
+            'donationStatuses' => DonationStatus::labels(),
+            'campaignsWithForms' => $this->getCampaignsWithForms(),
             'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
-            'admin' => $isAdmin ? [] : null,
+            'mode' => give_is_test_mode() ? 'test' : 'live',
         ];
     }
 
@@ -60,6 +63,55 @@ class LoadDonationOptions
             'noStatesCountries' => array_keys(give_no_states_country_list()),
             'statesNotRequiredCountries' => array_keys(give_states_not_required_country_list()),
         ];
+    }
+
+    /**
+     * Get campaigns with their forms using Campaign query builder
+     *
+     * @unreleased
+     */
+    private function getCampaignsWithForms(): array
+    {
+        $campaignsWithForms = [];
+
+        $results = DB::table('give_campaigns', 'campaigns')
+            ->select(
+                ['campaigns.id', 'campaignId'],
+                ['campaigns.campaign_title', 'campaignTitle'],
+                ['campaigns.form_id', 'defaultFormId'],
+                ['posts.ID', 'formId'],
+                ['posts.post_title', 'formTitle']
+            )
+            ->leftJoin('give_campaign_forms', 'campaigns.id', 'campaign_forms.campaign_id', 'campaign_forms')
+            ->leftJoin('posts', 'campaign_forms.form_id', 'posts.ID', 'posts')
+            ->where('posts.post_type', 'give_forms')
+            ->orderBy('campaigns.id', 'DESC')
+            ->orderBy('posts.ID', 'DESC')
+            ->getAll(ARRAY_A);
+
+        foreach ($results as $row) {
+            [
+                'campaignId' => $campaignId,
+                'campaignTitle' => $campaignTitle,
+                'defaultFormId' => $defaultFormId,
+                'formId' => $formId,
+                'formTitle' => $formTitle
+            ] = $row;
+
+            if (!isset($campaignsWithForms[$campaignId])) {
+                $campaignsWithForms[$campaignId] = [
+                    'title' => $campaignTitle,
+                    'defaultFormId' => $defaultFormId,
+                    'forms' => []
+                ];
+            }
+
+            if ($formId && $formTitle) {
+                $campaignsWithForms[$campaignId]['forms'][$formId] = $formTitle;
+            }
+        }
+
+        return $campaignsWithForms;
     }
 
     /**
