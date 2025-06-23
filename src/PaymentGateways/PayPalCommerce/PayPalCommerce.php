@@ -134,6 +134,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @unreleased Add Accept Credit Card (Smart Buttons Only) setting.
      * @since 3.0.0 Conditionally add "Transaction Type" setting.
      * @since 2.33.0 Register new payment field type setting.
      * @since 2.27.3 Enable Venmo payment method by default.
