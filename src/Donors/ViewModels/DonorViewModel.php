@@ -78,16 +78,14 @@ class DonorViewModel
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
-                if (isset($data[$propertyName])) {
-                    switch ($propertyName) {
-                        case 'additionalEmails':
-                        case 'customFields':
-                            $data[$propertyName] = [];
-                            break;
-                        default:
-                            $data[$propertyName] = '';
-                            break;
-                    }
+    switch ($propertyName) {
+                    case 'additionalEmails':
+                    case 'customFields':
+                        $data[$propertyName] = [];
+                        break;
+                    default:
+                        $data[$propertyName] = '';
+                        break;
                 }
             }
         }

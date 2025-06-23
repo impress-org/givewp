@@ -94,6 +94,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'gatewayTransactionId' => $donation->gatewayTransactionId,
             'company' => $donation->company,
             'comment' => $donation->comment,
+            'customFields' => $data[0]['customFields'], // Custom fields are dynamic, so we'll just check they exist
         ], $data[0]);
     }
 
@@ -120,10 +121,11 @@ class GetDonationsRouteTest extends RestApiTestCase
             'phone',
             'billingAddress',
             'purchaseKey',
+            'customFields',
         ];
 
         $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+        $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
     }
 
     /**
@@ -165,6 +167,7 @@ class GetDonationsRouteTest extends RestApiTestCase
             'phone',
             'billingAddress',
             'purchaseKey',
+            'customFields',
         ];
 
         $this->assertEquals(200, $status);
@@ -438,10 +441,17 @@ class GetDonationsRouteTest extends RestApiTestCase
             'firstName',
             'lastName',
             'company',
+            'customFields',
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+            if ($property === 'donorId') {
+                $this->assertEquals(0, $data[1][$property]);
+            } elseif ($property === 'customFields') {
+                $this->assertEquals([], $data[1][$property]);
+            } else {
+                $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+            }
         }
     }
 

@@ -69,16 +69,14 @@ class DonationViewModel
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
-                if (isset($data[$propertyName])) {
-                    switch ($propertyName) {
-                        case 'billingAddress':
-                        case 'customFields':
-                            $data[$propertyName] = [];
-                            break;
-                        default:
-                            $data[$propertyName] = '';
-                            break;
-                    }
+                switch ($propertyName) {
+                    case 'billingAddress':
+                    case 'customFields':
+                        $data[$propertyName] = [];
+                        break;
+                    default:
+                        $data[$propertyName] = '';
+                        break;
                 }
             }
         }
@@ -94,18 +92,16 @@ class DonationViewModel
             ];
 
             foreach ($anonymousDataRedacted as $propertyName) {
-                if (isset($data[$propertyName])) {
-                    switch ($propertyName) {
-                        case 'donorId':
-                            $data[$propertyName] = 0;
-                            break;
-                        case 'customFields':
-                            $data[$propertyName] = [];
-                            break;
-                        default:
-                            $data[$propertyName] = __('anonymous', 'give');
-                            break;
-                    }
+                switch ($propertyName) {
+                    case 'donorId':
+                        $data[$propertyName] = 0;
+                        break;
+                    case 'customFields':
+                        $data[$propertyName] = [];
+                        break;
+                    default:
+                        $data[$propertyName] = __('anonymous', 'give');
+                        break;
                 }
             }
         }
