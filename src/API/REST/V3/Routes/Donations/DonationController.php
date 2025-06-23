@@ -6,6 +6,7 @@ use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
+use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Controller;
@@ -135,11 +136,10 @@ class DonationController extends WP_REST_Controller
 
         $donations = $query->getAll() ?? [];
         $donations = array_map(function ($donation) use ($includeSensitiveData, $donationAnonymousMode, $request) {
-            $item = $this->escDonation(
-                $donation,
-                $includeSensitiveData,
-                $donationAnonymousMode
-            );
+            $item = (new DonationViewModel($donation))
+                ->anonymousMode($donationAnonymousMode)
+                ->includeSensitiveData($includeSensitiveData)
+                ->exports();
 
             return $this->prepare_response_for_collection(
                 $this->prepare_item_for_response($item, $request)
@@ -195,63 +195,17 @@ class DonationController extends WP_REST_Controller
             return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
         }
 
-        $item = $this->escDonation(
-            $donation,
-            $includeSensitiveData,
-            $donationAnonymousMode
-        );
+        $item = (new DonationViewModel($donation))
+            ->anonymousMode($donationAnonymousMode)
+            ->includeSensitiveData($includeSensitiveData)
+            ->exports();
 
         $response = $this->prepare_item_for_response($item, $request);
 
         return rest_ensure_response($response);
     }
 
-    /**
-     * @unreleased
-     */
-    public function escDonation(
-        Donation $donation,
-        bool $includeSensitiveData = false,
-        DonationAnonymousMode $donationAnonymousMode = null
-    ): array {
-        $sensitiveDataExcluded = [];
-        if ( ! $includeSensitiveData) {
-            $sensitiveDataExcluded = [
-                'donorIp',
-                'email',
-                'phone',
-                'billingAddress',
-                'purchaseKey'
-            ];
-        }
 
-        $anonymousDataRedacted = [];
-        if ($donation->anonymous && $donationAnonymousMode->isRedacted()) {
-            $anonymousDataRedacted = [
-                'donorId',
-                'honorific',
-                'firstName',
-                'lastName',
-                'company',
-            ];
-        }
-
-        $donation = $donation->toArray();
-
-        foreach ($sensitiveDataExcluded as $property) {
-            if (array_key_exists($property, $donation)) {
-                unset($donation[$property]);
-            }
-        }
-
-        foreach ($anonymousDataRedacted as $property) {
-            if (array_key_exists($property, $donation)) {
-                $donation[$property] = __('anonymous', 'give');
-            }
-        }
-
-        return $donation;
-    }
 
     /**
      * @unreleased
