@@ -35,7 +35,7 @@ class LoadDonationOptions
         return [
             'isAdmin' => $isAdmin,
             'adminUrl' => admin_url(),
-            'apiRoot' => rest_url(DonationRoute::NAMESPACE . '/' . DonationRoute::BASE),
+            'apiRoot' => rest_url(DonationRoute::NAMESPACE),
             'apiNonce' => wp_create_nonce('wp_rest'),
             'donationsAdminUrl' => admin_url('edit.php?post_type=give_forms&page=give-payment-history'),
             'currency' => give_get_currency(),
@@ -45,6 +45,7 @@ class LoadDonationOptions
             'states' => $this->getStatesData(),
             'donationStatuses' => DonationStatus::labels(),
             'campaignsWithForms' => $this->getCampaignsWithForms(),
+            'donors' => $this->getDonors(),
             'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
             'mode' => give_is_test_mode() ? 'test' : 'live',
         ];
@@ -130,5 +131,30 @@ class LoadDonationOptions
         return array_map(function($item) {
             return html_entity_decode($item, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8');
         }, $data);
+    }
+
+    /**
+     * Get donor ids with their names
+     *
+     * @unreleased
+     */
+    private function getDonors(): array
+    {
+        $results = DB::table('give_donors', 'donors')
+            ->select(
+                ['donors.id', 'donorId'],
+                ['donors.name', 'donorName'],
+                ['donors.email', 'donorEmail'],
+            )
+            ->orderBy('donors.id', 'DESC')
+            ->getAll(ARRAY_A);
+
+        $donors = [];
+
+        foreach ($results as $row) {
+            $donors[$row['donorId']] = $row['donorName'] . ' (' . $row['donorEmail'] . ')';
+        }
+
+        return $donors;
     }
 }

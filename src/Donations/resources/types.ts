@@ -31,5 +31,8 @@ export type GiveDonationOptions = {
             };
         };
     };
+    donors: {
+        [donorId: string]: string;
+    };
     mode: 'test' | 'live';
 }
