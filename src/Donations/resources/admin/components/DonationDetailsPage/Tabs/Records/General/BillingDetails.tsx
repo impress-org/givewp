@@ -1,72 +1,113 @@
 import { __ } from '@wordpress/i18n';
-import AdminSection from '@givewp/components/AdminDetailsPage/AdminSection';
+import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
+import styles from '../styles.module.scss';
+import { useFormContext } from 'react-hook-form';
+import { getDonationOptionsWindowData } from '@givewp/donations/utils';
+import { useEffect, useState } from 'react';
+import { getStatesForCountry, StatesConfig } from './addressUtils';
+
+const { countries } = getDonationOptionsWindowData();
 
 /**
  * @unreleased
  */
 export default function BillingDetails() {
+    const [stateConfig, setStateConfig] = useState<StatesConfig>({
+        hasStates: false,
+        states: [],
+        stateLabel: __('State', 'give'),
+        isRequired: false,
+        showField: true,
+    });
+    const { register, watch } = useFormContext();
+    const { country } = watch('billingAddress');
+
+    useEffect(() => {
+        if (country) {
+            const config = getStatesForCountry(country);
+            setStateConfig(config);
+        }
+    }, [country]);
+
     return (
         <AdminSection
             title={__('Billing details', 'give')}
             description={__('This includes the billing name, email and address', 'give')}
         >
             <div>
-                {/* First name and Last name */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
-                    <div>
-                        <label>{__('First name', 'give')}</label>
-                        <input type="text" value="Ana" disabled style={{ width: '100%', padding: '0.5rem' }} />
-                    </div>
-                    <div>
-                        <label>{__('Last name', 'give')}</label>
-                        <input type="text" value="Doe" disabled style={{ width: '100%', padding: '0.5rem' }} />
-                    </div>
+                <div className={styles.formRow}>
+                    <AdminSectionField>
+                        <label htmlFor="firstName">{__('First name', 'give')}</label>
+                        <input id="firstName" {...register('firstName')} />
+                    </AdminSectionField>
+                    <AdminSectionField>
+                        <label htmlFor="lastName">{__('Last name', 'give')}</label>
+                        <input id="lastName" {...register('lastName')} />
+                    </AdminSectionField>
                 </div>
 
-                {/* Email */}
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>{__('Email', 'give')}</label>
-                    <input type="email" value="johndoe@example.com" disabled style={{ width: '100%', padding: '0.5rem' }} />
-                </div>
+                <AdminSectionField>
+                    <label htmlFor="email">{__('Email', 'give')}</label>
+                    <input id="email" {...register('email')} />
+                </AdminSectionField>
 
-                {/* Country */}
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>{__('Country', 'give')}</label>
-                    <select disabled style={{ width: '100%', padding: '0.5rem' }}>
-                        <option>{__('United States', 'give')}</option>
+                <AdminSectionField>
+                    <label htmlFor="country" className={styles.label}>
+                        {__('Country', 'give')}
+                    </label>
+                    <select
+                        id="country"
+                        {...register('billingAddress.country')}
+                    >
+                        <option value="">{__('Select a country', 'give')}</option>
+                        {Object.entries(countries).filter(([code]) => code !== '').map(([code, name]) => (
+                            <option key={code} value={code}>
+                                {name}
+                            </option>
+                        ))}
                     </select>
-                </div>
+                </AdminSectionField>
 
-                {/* Address 1 */}
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>{__('Address 1', 'give')}</label>
-                    <input type="text" disabled style={{ width: '100%', padding: '0.5rem' }} />
-                </div>
+                <AdminSectionField>
+                    <label htmlFor="address1">{__('Address 1', 'give')}</label>
+                    <input id="address1" {...register('billingAddress.address1')} />
+                </AdminSectionField>
 
-                {/* Address 2 */}
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>{__('Address 2', 'give')}</label>
-                    <input type="text" disabled style={{ width: '100%', padding: '0.5rem' }} />
-                </div>
+                <AdminSectionField>
+                    <label htmlFor="address2">{__('Address 2', 'give')}</label>
+                    <input id="address2" {...register('billingAddress.address2')} />
+                </AdminSectionField>
 
-                {/* City */}
-                <div style={{ marginBottom: '1rem' }}>
-                    <label>{__('City', 'give')}</label>
-                    <input type="text" disabled style={{ width: '100%', padding: '0.5rem' }} />
-                </div>
+                <AdminSectionField>
+                    <label htmlFor="city">{__('City', 'give')}</label>
+                    <input id="city" {...register('billingAddress.city')} />
+                </AdminSectionField>
 
-                {/* State and Zip */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                    <div>
-                        <label>{__('State / Province / County', 'give')}</label>
-                        <select disabled style={{ width: '100%', padding: '0.5rem' }}>
-                            <option>{__('Select a state', 'give')}</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>{__('Zip / Postal Code', 'give')}</label>
-                        <input type="text" disabled style={{ width: '100%', padding: '0.5rem' }} />
-                    </div>
+                <div className={styles.formRow}>
+                    {stateConfig.showField && (
+                        <AdminSectionField>
+                            <label htmlFor="state" className={styles.label}>
+                                {stateConfig.stateLabel}
+                            </label>
+                            {stateConfig.hasStates ? (
+                                <select id="state" {...register('billingAddress.state')}>
+                                    <option value="">{__(`Select a ${stateConfig.stateLabel.toLowerCase()}`, 'give')}</option>
+                                    {stateConfig.states.map((state) => (
+                                        <option key={state.value} value={state.value}>
+                                            {state.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <input type="text" id="state" {...register('billingAddress.state')} />
+                            )}
+                        </AdminSectionField>
+                    )}
+
+                    <AdminSectionField>
+                        <label htmlFor="zip">{__('Zip/Postal code', 'give')}</label>
+                        <input id="zip" {...register('billingAddress.zip')} />
+                    </AdminSectionField>
                 </div>
             </div>
         </AdminSection>
