@@ -43,7 +43,7 @@ export default function DonationStats({ amount, isResolving, feeAmountRecovered 
                 value={typeof feeAmountRecovered === 'string' ? parseFloat(feeAmountRecovered) : feeAmountRecovered}
                 formatter={amountFormatter(currency)}
                 loading={isResolving}
-                href={`${adminUrl}edit.php?post_type=give_forms&page=give-settings&tab=gateways`}
+                href={'https://givewp.com/addons/fee-recovery/'}
                 inActive={!isFeeRecoveryEnabled}
             />
         </div>
