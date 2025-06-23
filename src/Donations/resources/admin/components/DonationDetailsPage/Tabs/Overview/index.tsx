@@ -19,7 +19,9 @@ export default function DonationDetailsPageOverviewTab() {
         return null;
     }
 
-    console.log(statistics);
+    const eventTicketDetails = statistics.receipt?.donationDetails?.find(
+        (detail) => detail.label === "Event Tickets"
+    );
 
     return (
         <div className={styles.overview}>
@@ -27,6 +29,7 @@ export default function DonationDetailsPageOverviewTab() {
                 amount={statistics.donation.amount}
                 isResolving={isResolving}
                 feeAmountRecovered={statistics.donation.feeAmountRecovered}
+                eventTicketAmount={eventTicketDetails?.value}
             />
 
             <div className={styles.left}>

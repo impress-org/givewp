@@ -14,13 +14,18 @@ interface DonationStatsProps {
     amount: string;
     isResolving: boolean;
     feeAmountRecovered: string | number;
+    eventTicketAmount?: string | number;
 }
 
 /**
  * @unreleased
  */
-export default function DonationStats({ amount, isResolving, feeAmountRecovered }: DonationStatsProps) {
+export default function DonationStats({ amount, isResolving, feeAmountRecovered, eventTicketAmount }: DonationStatsProps) {
     const { eventTicketsEnabled, adminUrl, isFeeRecoveryEnabled, currency } = getDonationOptionsWindowData();
+
+    const parsedEventTicketAmount = typeof eventTicketAmount === 'string'
+        ? parseFloat(eventTicketAmount.replace(/[^0-9.-]+/g, ''))
+        : eventTicketAmount || 0;
 
     return (
         <div className={styles.container}>
@@ -33,7 +38,7 @@ export default function DonationStats({ amount, isResolving, feeAmountRecovered 
             {eventTicketsEnabled && (
                 <StatWidget
                     label={__('Event Ticket', 'give')}
-                    value={0}
+                    value={parsedEventTicketAmount}
                     formatter={amountFormatter(currency)}
                     loading={isResolving}
                 />
