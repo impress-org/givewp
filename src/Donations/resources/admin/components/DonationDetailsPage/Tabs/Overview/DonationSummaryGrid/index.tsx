@@ -1,20 +1,38 @@
 import { __ } from '@wordpress/i18n';
 import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
-import { useDonationEntityRecord } from '@givewp/donations/utils';
-import { useEntityRecord } from '@wordpress/core-data';
-import { Campaign } from '@givewp/campaigns/admin/components/types';
-import { Donor } from '@givewp/donors/admin/components/types';
-import { formatTimestamp } from '@givewp/src/Admin/utils';
 import classnames from 'classnames';
 import styles from './styles.module.scss';
+import { formatTimestamp } from '@givewp/src/Admin/utils';
 
-export default function DonationSummaryGrid() {
-    const { record: donation, hasResolved } = useDonationEntityRecord();
-    const { record: donor } = useEntityRecord<Donor>('givewp', 'donor', donation.donorId);
-    const { record: campaign } = useEntityRecord<Campaign>('givewp', 'campaign', donation.campaignId);
-    const donorPageUrl = `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donation.donorId}`;
-    const campaignPageUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${donation.campaignId}&tab=overview`;
+/**
+ * @unreleased
+ */
+export type DonationSummaryGridProps = {
+    campaignTitle: string;
+    donorName: string;
+    donorEmail: string;
+    gatewayId: string;
+    donationDate: string;
+    donationType: string;
+    donorId: number;
+    campaignId: number;
+};
 
+/**
+ * @unreleased
+ */
+export default function DonationSummaryGrid({
+    campaignTitle,
+    donorName,
+    donorEmail,
+    gatewayId,
+    donationDate,
+    donationType,
+    donorId,
+    campaignId,
+}: DonationSummaryGridProps) {
+    const donorPageUrl = `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donorId}`;
+    const campaignPageUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaignId}&tab=overview`;
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -27,32 +45,32 @@ export default function DonationSummaryGrid() {
                 <div className={classnames(styles.card, styles.campaignCard)} role="region" aria-labelledby="campaign-name-label">
                     <h3 id="campaign-name-label">{__('Campaign name', 'give')}</h3>
                     <a href={campaignPageUrl} className={styles.campaignLink}>
-                        {campaign?.title}
+                        {campaignTitle}
                     </a>
                 </div>
 
                 {/* Donation Info */}
                 <div className={styles.card} role="region" aria-labelledby="donation-info-label">
                     <h3 id="donation-info-label">{__('Donation info', 'give')}</h3>
-                    <time className={styles.date} dateTime={donation.createdAt.date}>
-                        {formatTimestamp(donation.createdAt.date, true)}
+                    <time className={styles.date} dateTime={donationDate}>
+                        {formatTimestamp(donationDate, true)}
                     </time>
                     <span className={styles.badge} aria-label={__('Donation type: One-time', 'give')}>
-                        {donation.type}
+                        {donationType}
                     </span>
                 </div>
 
                 {/* Associated Donor */}
                 <div className={styles.card} role="region" aria-labelledby="donor-label">
                     <h3 id="donor-label">{__('Associated donor', 'give')}</h3>
-                    <a className={styles.donorLink} href={donorPageUrl}>{donor?.name}</a>
-                    <p>{donor?.email}</p>
+                    <a className={styles.donorLink} href={donorPageUrl}>{donorName}</a>
+                    <p>{donorEmail}</p>
                 </div>
 
                 {/* Gateway Info */}
                 <div className={styles.card} role="region" aria-labelledby="gateway-label">
                     <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
-                    <strong>{donation.gatewayId}</strong>
+                    <strong>{gatewayId}</strong>
                     <a className={styles.gatewayLink} href={'#'} target="_blank" rel="noopener noreferrer">
                         {__('View donation on gateway', 'give')}
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">

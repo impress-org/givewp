@@ -11,27 +11,22 @@ import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatis
  * @unreleased
  */
 interface DonationStatsProps {
-    donationId: number;
-    mode?: 'live' | 'test';
-    campaignId?: number;
+    amount: string;
+    isResolving: boolean;
+    feeAmountRecovered: string | number;
 }
 
 /**
  * @unreleased
  */
-export default function DonationStats({ donationId, mode = 'live', campaignId = 0 }: DonationStatsProps) {
-    const { statistics, hasResolved, isResolving } = useDonationStatistics(donationId, mode, campaignId);
+export default function DonationStats({ amount, isResolving, feeAmountRecovered }: DonationStatsProps) {
     const { eventTicketsEnabled, adminUrl, isFeeRecoveryEnabled, currency } = getDonationOptionsWindowData();
-
-    if (!hasResolved || !statistics) {
-        return null;
-    }
 
     return (
         <div className={styles.container}>
             <StatWidget
                 label={__('Donation amount', 'give')}
-                value={parseFloat(statistics.donation.amount) || 0}
+                value={parseFloat(amount) || 0}
                 formatter={amountFormatter(currency)}
                 loading={isResolving}
             />
@@ -45,7 +40,7 @@ export default function DonationStats({ donationId, mode = 'live', campaignId = 
             )}
             <StatWidget
                 label={__('Fees recovered', 'give')}
-                value={statistics.donation.feeAmountRecovered ? parseFloat(String(statistics.donation.feeAmountRecovered)) : 0}
+                value={typeof feeAmountRecovered === 'string' ? parseFloat(feeAmountRecovered) : feeAmountRecovered}
                 formatter={amountFormatter(currency)}
                 loading={isResolving}
                 href={`${adminUrl}edit.php?post_type=give_forms&page=give-settings&tab=gateways`}
