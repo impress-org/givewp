@@ -367,7 +367,7 @@
                     font-weight: 500;
                 }
 
-                input, select {
+                input, textarea, select {
                     border-radius: var(--givewp-rounded-4);
                     border: 1px solid #9ca0af;
                     display: block;
@@ -379,6 +379,10 @@
 
                     &:not([type="checkbox"]) {
                         height: auto;
+                    }
+
+                    &::-webkit-datetime-edit {
+                        line-height: inherit;
                     }
 
                     &:focus {

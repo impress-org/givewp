@@ -107,6 +107,13 @@ export default function DonationDetails() {
                     </AdminSectionField>
                 </div>
 
+                {/* TODO: Add Fund field */}
+
+                <AdminSectionField>
+                    <label htmlFor="comment">{__('Donor comment', 'give')}</label>
+                    <textarea id="comment" {...register('comment')} rows={3} placeholder={__('Add a comment', 'give')} />
+                </AdminSectionField>
+
                 <AdminSectionField>
                     <fieldset className={styles.radioField}>
                         <legend>{__('Anonymous donation', 'give')}</legend>
