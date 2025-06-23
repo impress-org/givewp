@@ -28,5 +28,7 @@ export type GiveDonationOptions = {
         showCampaignListTableNotice: boolean
         showCampaignFormNotice: boolean
         showCampaignSettingsNotice: boolean
-    }
+    };
+    eventTicketsEnabled: boolean;
+    isFeeRecoveryEnabled: boolean;
 }

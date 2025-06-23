@@ -3,6 +3,7 @@
 namespace Give\Donations\Actions;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\Helpers\IntlTelInput;
 
 /**
@@ -44,6 +45,8 @@ class LoadDonationOptions
             'states' => $this->getStatesData(),
             'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
             'admin' => $isAdmin ? [] : null,
+            'eventTicketsEnabled' => FeatureFlag::eventTickets(),
+            'isFeeRecoveryEnabled' => defined('GIVE_FEE_RECOVERY_VERSION'),
         ];
     }
 

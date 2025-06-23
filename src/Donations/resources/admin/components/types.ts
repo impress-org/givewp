@@ -6,7 +6,9 @@ export type Donation = {
   campaignId: number;
   formId: number;
   formTitle: string;
-  createdAt: string;
+  createdAt: {
+    date: string;
+  };
   updatedAt: string;
   status: DonationStatus;
   mode: DonationMode;
