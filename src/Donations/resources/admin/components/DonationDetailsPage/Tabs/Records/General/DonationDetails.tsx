@@ -6,6 +6,7 @@ import { CurrencyControl } from '@givewp/form-builder-library';
 import { CurrencyCode } from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
 import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 import { useEffect } from 'react';
+import cx from 'classnames';
 
 const { donationStatuses, campaignsWithForms } = getDonationOptionsWindowData();
 
@@ -19,6 +20,7 @@ export default function DonationDetails() {
     const formId = watch('formId');
     const anonymous = watch('anonymous');
     const createdAt = watch('createdAt');
+    const status = watch('status');
 
     useEffect(() => {
         if (!campaignId) {
@@ -59,13 +61,15 @@ export default function DonationDetails() {
                     </AdminSectionField>
                     <AdminSectionField>
                         <label htmlFor="status">{__('Status', 'give')}</label>
-                        <select id="status" name="status" {...register('status')}>
-                            {donationStatuses && Object.entries(donationStatuses).map(([value, label]) => (
-                                <option key={value} value={value}>
-                                    {label as string}
-                                </option>
-                            ))}
-                        </select>
+                        <div className={cx(styles.statusSelect, styles[`statusSelect--${status}`])}>
+                            <select id="status" className={styles.statusSelectInput} {...register('status')}>
+                                {donationStatuses && Object.entries(donationStatuses).map(([value, label]) => (
+                                    <option key={value} value={value}>
+                                        {label as string}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </AdminSectionField>
                 </div>
 
