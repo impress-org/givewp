@@ -4,8 +4,6 @@ namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
@@ -59,15 +57,18 @@ class DonationRouteUpdateTest extends RestApiTestCase
         /** @var Donation $donation */
         $donation = Donation::factory()->create();
         $originalId = $donation->id;
-        $originalCreatedAt = $donation->createdAt;
         $originalPurchaseKey = $donation->purchaseKey;
         $originalDonorIp = $donation->donorIp;
         $originalMode = $donation->mode->getValue();
+        $originalType = $donation->type->getValue();
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id;
         $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
-            'firstName' => 'Should Not Update', // This should be ignored as a test
+            'purchaseKey' => '999999',
+            'donorIp' => '192.168.1.1',
+            'mode' => 'live',
+            'type' => 'renewal',
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -77,13 +78,10 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals($originalId, $data['id']);
-        $this->assertEquals($originalCreatedAt, $data['createdAt']);
         $this->assertEquals($originalPurchaseKey, $data['purchaseKey']);
         $this->assertEquals($originalDonorIp, $data['donorIp']);
         $this->assertEquals($originalMode, $data['mode']);
-
-        // The firstName should have been updated since it's not in the non-editable list
-        $this->assertEquals('Should Not Update', $data['firstName']);
+        $this->assertEquals($originalType, $data['type']);
     }
 
     /**

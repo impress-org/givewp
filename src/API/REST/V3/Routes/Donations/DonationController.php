@@ -6,9 +6,13 @@ use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -256,7 +260,6 @@ class DonationController extends WP_REST_Controller
 
         $nonEditableFields = [
             'id',
-            'createdAt',
             'updatedAt',
             'purchaseKey',
             'donorIp',
@@ -268,8 +271,13 @@ class DonationController extends WP_REST_Controller
         foreach ($request->get_params() as $key => $value) {
             if (!in_array($key, $nonEditableFields, true)) {
                 if (in_array($key, $donation::propertyKeys(), true)) {
-                    if ($donation->isPropertyTypeValid($key, $value)) {
-                        $donation->$key = $value;
+                    try {
+                        $processedValue = $this->processFieldValue($key, $value);
+                        if ($donation->isPropertyTypeValid($key, $processedValue)) {
+                            $donation->$key = $processedValue;
+                        }
+                    } catch (Exception $e) {
+                        continue;
                     }
                 }
             }
@@ -287,6 +295,55 @@ class DonationController extends WP_REST_Controller
         $response = $this->prepare_item_for_response($item, $request);
 
         return rest_ensure_response($response);
+    }
+
+    /**
+     * Process field values for special data types before setting them on the donation model.
+     *
+     * @unreleased
+     */
+    private function processFieldValue(string $key, $value)
+    {
+        switch ($key) {
+            case 'amount':
+            case 'feeAmountRecovered':
+                if (is_array($value)) {
+                    // Handle Money object array format: ['amount' => 10000, 'currency' => 'USD']
+                    if (isset($value['amount']) && isset($value['currency'])) {
+                        return new Money($value['amount'], $value['currency']);
+                    }
+                }
+                return $value;
+
+            case 'status':
+                if (is_string($value)) {
+                    return new DonationStatus($value);
+                }
+                return $value;
+
+            case 'billingAddress':
+                if (is_array($value)) {
+                    return BillingAddress::fromArray($value);
+                }
+                return $value;
+
+            case 'createdAt':
+                if (is_string($value)) {
+                    try {
+                        $dateTime = Temporal::toDateTime($value); // Y-m-d H:i:s
+                        if ($dateTime === false) {
+                            throw new InvalidArgumentException("Invalid date format for {$key}: {$value}. Expected Y-m-d H:i:s format.");
+                        }
+                        return $dateTime;
+                    } catch (Exception $e) {
+                        throw new InvalidArgumentException("Invalid date format for {$key}: {$value}. Expected Y-m-d H:i:s format.");
+                    }
+                }
+                return $value;
+
+            default:
+                return $value;
+        }
     }
 
     /**
