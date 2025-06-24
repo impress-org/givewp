@@ -14,7 +14,7 @@ import { DonorAddress } from '../../../../types';
 import FormattedAddress from './FormattedAddress';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 interface DeleteAddressDialogProps {
     isOpen: boolean;
@@ -25,7 +25,7 @@ interface DeleteAddressDialogProps {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function DeleteAddressDialog({
     isOpen,

@@ -1,7 +1,7 @@
 import { IntlTelInputSettings } from "@givewp/forms/propTypes";
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export type GiveDonorOptions = {
     isAdmin: boolean;
@@ -22,12 +22,4 @@ export type GiveDonorOptions = {
         noStatesCountries: string[];
         statesNotRequiredCountries: string[];
     };
-    admin: {
-        showCampaignInteractionNotice: boolean
-        showFormGoalNotice: boolean
-        showExistingUserIntroNotice: boolean
-        showCampaignListTableNotice: boolean
-        showCampaignFormNotice: boolean
-        showCampaignSettingsNotice: boolean
-    }
 }

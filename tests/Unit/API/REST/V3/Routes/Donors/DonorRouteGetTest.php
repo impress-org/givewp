@@ -79,7 +79,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetDonorShouldReturnSelfLink()
     {
@@ -102,7 +102,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetDonorShouldReturnStatisticsLink()
     {
@@ -125,7 +125,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetDonorShouldEmbedStatistics()
     {

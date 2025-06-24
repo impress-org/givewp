@@ -19,7 +19,7 @@ use WP_REST_Server;
  * The methods using snake case like register_routes() are present in the base class,
  * and the methods using camel case like getSharedParams() are available only on this class.
  *
- * @unreleased Extends WP_REST_Controller class and rename methods
+ * @since 4.4.0 Extends WP_REST_Controller class and rename methods
  * @since 4.0.0
  */
 class DonorController extends WP_REST_Controller
@@ -196,7 +196,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
-     * @unreleased
+     * @since 4.4.0
      */
     public function update_item($request): WP_REST_Response
     {
@@ -266,7 +266,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @param WP_REST_Request $request
      *
@@ -286,7 +286,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
     {
@@ -310,7 +310,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function get_item_schema(): array
     {
@@ -408,7 +408,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function get_collection_params(): array
     {
@@ -466,7 +466,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function getSharedParams(): array
     {

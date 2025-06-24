@@ -15,7 +15,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testUpdateDonorShouldUpdateModelProperties()
     {
@@ -66,7 +66,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testUpdateDonorShouldNotUpdateNonEditableFields()
     {
@@ -96,7 +96,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testUpdateDonorShouldReturn404ErrorWhenDonorNotFound()
     {
@@ -114,7 +114,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testUpdateDonorShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -135,7 +135,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     /*public function testUpdateDonorShouldValidateRequiredFields()
     {
@@ -177,7 +177,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }*/
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testUpdateDonorShouldPersistPhoneNumbers()
     {
@@ -213,7 +213,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testUpdateDonorShouldPersistAvatarId()
     {
@@ -248,7 +248,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testUpdateDonorShouldAcceptNullValuesForOptionalFields()
     {
@@ -275,7 +275,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testUpdateDonorShouldPersistAddressData()
     {
@@ -312,7 +312,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testUpdateDonorShouldAcceptPartialAddressData()
     {

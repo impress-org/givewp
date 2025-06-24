@@ -10,7 +10,7 @@ import { AddressBlankSlateIcon } from "@givewp/components/AdminDetailsPage/Icons
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function BlankSlate() {
     return (

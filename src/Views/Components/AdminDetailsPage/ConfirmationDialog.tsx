@@ -5,7 +5,7 @@ import {ErrorIcon, WarningIcon} from './Icons';
 import styles from './AdminDetailsPage.module.scss'
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function ConfirmationDialog({
     isOpen,

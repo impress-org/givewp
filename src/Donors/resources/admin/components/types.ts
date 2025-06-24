@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export type Donor = {
   id: number;
@@ -26,12 +26,12 @@ export type Donor = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export type DonorStatus = 'current' | 'prospective' | 'retained' | 'lapsed' | 'new' | 'recaptured' | 'recurring';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export type DonorAddress = {
     address1: string;

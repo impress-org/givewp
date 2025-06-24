@@ -19,7 +19,7 @@ import DeleteEmailDialog from './DeleteEmailDialog';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function DonorEmailAddress() {
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);

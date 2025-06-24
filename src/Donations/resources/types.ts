@@ -8,10 +8,10 @@ export type GiveDonationOptions = {
     adminUrl: string;
     apiRoot: string;
     apiNonce: string;
-    donorsAdminUrl: string;
+    donationsAdminUrl: string;
     currency: string;
+    currencySymbol: string;
     isRecurringEnabled: boolean;
-    defaultForm: string;
     intlTelInputSettings: IntlTelInputSettings;
     nameTitlePrefixes: string[];
     countries: {[countryCode: string]: string};
@@ -31,4 +31,18 @@ export type GiveDonationOptions = {
     };
     eventTicketsEnabled: boolean;
     isFeeRecoveryEnabled: boolean;
+    donationStatuses: {[statusCode: string]: string};
+    campaignsWithForms: {
+        [campaignId: string]: {
+            title: string;
+            defaultFormId: string;
+            forms: {
+                [formId: string]: string;
+            };
+        };
+    };
+    donors: {
+        [donorId: string]: string;
+    };
+    mode: 'test' | 'live';
 }

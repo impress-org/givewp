@@ -21,21 +21,13 @@ import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 import { amountFormatter } from '@givewp/components/AdminDetailsPage/utils';
 
+const { donationStatuses } = getDonationOptionsWindowData();
+
 /**
  * @unreleased
  */
 const StatusBadge = ({ status }: { status: string }) => {
-    const statusMap = {
-        pending: __('Pending', 'give'),
-        processing: __('Processing', 'give'),
-        publish: __('Completed', 'give'),
-        refunded: __('Refunded', 'give'),
-        failed: __('Failed', 'give'),
-        cancelled: __('Cancelled', 'give'),
-        abandoned: __('Abandoned', 'give'),
-        preapproval: __('Preapproval', 'give'),
-        revoked: __('Revoked', 'give'),
-    };
+    const statusMap = donationStatuses;
 
     if (!statusMap[status]) {
         return null;
@@ -57,8 +49,6 @@ export default function DonationDetailsPage() {
 
     const { record: donation } = useDonationEntityRecord();
     const currencyFormatter = amountFormatter(donation?.amount?.currency ?? defaultCurrency);
-
-    console.log(donation);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (

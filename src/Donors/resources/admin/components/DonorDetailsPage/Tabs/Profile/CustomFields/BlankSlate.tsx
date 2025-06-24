@@ -10,7 +10,7 @@ import { CustomFieldsBlankSlateIcon } from '@givewp/components/AdminDetailsPage/
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function BlankSlate() {
     return (

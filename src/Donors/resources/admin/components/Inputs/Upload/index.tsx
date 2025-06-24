@@ -20,7 +20,7 @@ import { ProfileIcon } from '@givewp/components/AdminDetailsPage/Icons';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 type MediaLibrary = {
     id: string;
@@ -31,7 +31,7 @@ type MediaLibrary = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function UploadMedia({id, value, onChange, label, reset}: MediaLibrary) {
     // The media library uses Backbone.js, which can conflict with lodash.

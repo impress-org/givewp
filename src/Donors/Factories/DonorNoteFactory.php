@@ -5,12 +5,12 @@ namespace Give\Donors\Factories;
 use Give\Framework\Models\Factories\ModelFactory;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorNoteFactory extends ModelFactory
 {
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function definition(): array
     {

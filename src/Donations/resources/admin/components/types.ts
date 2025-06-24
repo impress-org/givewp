@@ -1,3 +1,5 @@
+
+
 /**
  * @unreleased
  */
@@ -10,7 +12,7 @@ export type Donation = {
     date: string;
   };
   updatedAt: string;
-  status: DonationStatus;
+  status: string;
   mode: DonationMode;
   type: DonationType;
   amount: {
@@ -38,13 +40,9 @@ export type Donation = {
   gatewayTransactionId: string;
   company: string;
   comment: string;
-  wpUserPermalink?: string;
 };
 
-/**
- * @unreleased
- */
-export type DonationStatus = 'pending' | 'processing' | 'publish' | 'refunded' | 'failed' | 'cancelled' | 'abandoned' | 'preapproval' | 'revoked';
+
 
 /**
  * @unreleased

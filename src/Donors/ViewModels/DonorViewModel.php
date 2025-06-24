@@ -11,7 +11,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Types;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorViewModel
 {
@@ -20,7 +20,7 @@ class DonorViewModel
     private bool $includeSensitiveData = false;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function __construct(Donor $donor)
     {
@@ -28,7 +28,7 @@ class DonorViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function includeSensitiveData(bool $includeSensitiveData = true): DonorViewModel
     {
@@ -39,7 +39,7 @@ class DonorViewModel
 
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function anonymousMode(DonorAnonymousMode $mode): DonorViewModel
     {
@@ -49,7 +49,7 @@ class DonorViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function exports(): array
     {
@@ -78,16 +78,14 @@ class DonorViewModel
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
-                if (isset($data[$propertyName])) {
-                    switch ($propertyName) {
-                        case 'additionalEmails':
-                        case 'customFields':
-                            $data[$propertyName] = [];
-                            break;
-                        default:
-                            $data[$propertyName] = '';
-                            break;
-                    }
+    switch ($propertyName) {
+                    case 'additionalEmails':
+                    case 'customFields':
+                        $data[$propertyName] = [];
+                        break;
+                    default:
+                        $data[$propertyName] = '';
+                        break;
                 }
             }
         }
@@ -135,7 +133,7 @@ class DonorViewModel
     /**
      * Get avatar URL from avatar ID with fallback to Gravatar
      *
-     * @unreleased
+     * @since 4.4.0
      */
     private function getAvatarUrl(): ?string
     {
@@ -151,7 +149,7 @@ class DonorViewModel
     /**
      * Get custom fields for the donor
      *
-     * @unreleased
+     * @since 4.4.0
      */
     private function getCustomFields(): array
     {
@@ -186,7 +184,7 @@ class DonorViewModel
     /**
      * Get unique donation forms for the donor
      *
-     * @unreleased
+     * @since 4.4.0
      */
     private function getUniqueDonationFormsForDonor(): array
     {
@@ -220,7 +218,7 @@ class DonorViewModel
     /**
      * Get displayed donor meta fields for a form
      *
-     * @unreleased
+     * @since 4.4.0
      */
     private function getDisplayedDonorMetaFieldsForForm(DonationForm $form): array
     {
@@ -232,7 +230,7 @@ class DonorViewModel
     /**
      * Get field value for a custom field
      *
-     * @unreleased
+     * @since 4.4.0
      */
     private function getFieldValue(Field $field): string
     {

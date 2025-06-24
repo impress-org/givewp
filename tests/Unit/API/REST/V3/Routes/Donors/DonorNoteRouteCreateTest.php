@@ -10,14 +10,14 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorNoteRouteCreateTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testCreateDonorNote()
     {
@@ -53,7 +53,7 @@ class DonorNoteRouteCreateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testCreateDonorNoteShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -83,4 +83,4 @@ class DonorNoteRouteCreateTest extends RestApiTestCase
 
         $this->assertEquals(403, $status);
     }
-} 
+}

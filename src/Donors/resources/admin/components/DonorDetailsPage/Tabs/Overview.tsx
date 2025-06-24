@@ -15,7 +15,7 @@ import styles from '@givewp/donors/admin/components/DonorDetailsPage/DonorDetail
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 type Transaction = {
     campaign: string;
@@ -25,7 +25,7 @@ type Transaction = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 const statusMap: Record<string, 'Completed' | 'Failed' | 'Pending' | 'Refunded'> = {
     publish: 'Completed',
@@ -41,7 +41,7 @@ const statusMap: Record<string, 'Completed' | 'Failed' | 'Pending' | 'Refunded'>
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);

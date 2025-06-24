@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 type HeaderProps = {
     children?: React.ReactNode;
@@ -14,7 +14,7 @@ type HeaderProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function Header({title, subtitle, href, actionText, actionOnClick}: HeaderProps) {
     return (
@@ -38,14 +38,14 @@ export default function Header({title, subtitle, href, actionText, actionOnClick
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export function HeaderText({children}: {children: React.ReactNode}) {
     return <h2 className={styles.headerText}>{children}</h2>;
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export function SubHeaderText({children}: {children: React.ReactNode}) {
     return <p className={styles.subHeaderText}>{children}</p>;

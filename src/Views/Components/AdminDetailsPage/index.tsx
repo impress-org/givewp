@@ -33,7 +33,7 @@ import AdminSection, { AdminSectionField, AdminSectionsWrapper } from './AdminSe
 import './store';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function AdminDetailsPage<T extends Record<string, any>>({
     objectId,
@@ -63,6 +63,10 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     exposeAdminComponentsAndHooks();
 
     useEffect(() => {
+        if (!objectId) {
+            return;
+        }
+
         apiFetch({
             path: `/givewp/v3/${objectTypePlural}/${objectId}`,
             method: 'OPTIONS',
@@ -71,7 +75,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                 resolver: ajvResolver(schema),
             });
         });
-    }, []);
+    }, [objectId]);
 
     const {record, hasResolved, save, edit} = useObjectEntityRecord(objectId);
 

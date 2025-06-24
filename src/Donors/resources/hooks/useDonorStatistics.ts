@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react';
 import apiFetch from '@wordpress/api-fetch';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export interface DonorStatistics {
     donations: {
@@ -25,7 +25,7 @@ export interface DonorStatistics {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export function useDonorStatistics(donorId: number, mode: 'live' | 'test' = 'live') {
     const [statistics, setStatistics] = useState<DonorStatistics | null>(null);
