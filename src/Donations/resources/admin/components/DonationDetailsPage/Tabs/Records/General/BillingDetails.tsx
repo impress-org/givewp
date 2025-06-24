@@ -1,4 +1,4 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import styles from '../styles.module.scss';
 import { useFormContext } from 'react-hook-form';
@@ -91,7 +91,7 @@ export default function BillingDetails() {
                             </label>
                             {stateConfig.hasStates ? (
                                 <select id="state" {...register('billingAddress.state')}>
-                                    <option value="">{__(`Select a ${stateConfig.stateLabel.toLowerCase()}`, 'give')}</option>
+                                    <option value="">{sprintf(__('Select a %s', 'give'), stateConfig.stateLabel.toLowerCase())}</option>
                                     {stateConfig.states.map((state) => (
                                         <option key={state.value} value={state.value}>
                                             {state.label}
