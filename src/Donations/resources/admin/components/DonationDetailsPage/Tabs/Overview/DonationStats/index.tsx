@@ -11,21 +11,29 @@ import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatis
  * @unreleased
  */
 interface DonationStatsProps {
-    amount: string;
+    donation: {
+        amount: string;
+        feeAmountRecovered: string | number;
+        status: string;
+        date: string;
+        paymentMethod: string;
+        mode: string;
+    };
+    details?: Array<{ label: string; [key: string]: any }>;
     isResolving: boolean;
-    feeAmountRecovered: string | number;
-    eventTicketAmount?: string | number;
 }
 
 /**
  * @unreleased
  */
-export default function DonationStats({ amount, isResolving, feeAmountRecovered, eventTicketAmount }: DonationStatsProps) {
+export default function DonationStats({ donation, details, isResolving }: DonationStatsProps) {
     const { eventTicketsEnabled, adminUrl, isFeeRecoveryEnabled, currency } = getDonationOptionsWindowData();
 
-    const parsedEventTicketAmount = typeof eventTicketAmount === 'string'
-        ? parseFloat(eventTicketAmount.replace(/[^0-9.-]+/g, ''))
-        : eventTicketAmount || 0;
+    const amount = donation.amount;
+    const feeAmountRecovered = donation.feeAmountRecovered;
+    const eventTicketDetails = details?.filter(
+        (detail: any) => detail.label === "Event Tickets"
+    ) || [];
 
     return (
         <div className={styles.container}>
@@ -38,14 +46,14 @@ export default function DonationStats({ amount, isResolving, feeAmountRecovered,
             {eventTicketsEnabled && (
                 <StatWidget
                     label={__('Event Ticket', 'give')}
-                    value={parsedEventTicketAmount}
+                    value={parseFloat((eventTicketDetails[0]?.value || '').replace(/[^0-9.]/g, '')) || 0}
                     formatter={amountFormatter(currency)}
                     loading={isResolving}
                 />
             )}
             <StatWidget
                 label={__('Fees recovered', 'give')}
-                value={typeof feeAmountRecovered === 'string' ? parseFloat(feeAmountRecovered) : feeAmountRecovered}
+                value={parseFloat(String(feeAmountRecovered))}
                 formatter={amountFormatter(currency)}
                 loading={isResolving}
                 href={'https://givewp.com/addons/fee-recovery/'}

@@ -19,34 +19,25 @@ export default function DonationDetailsPageOverviewTab() {
         return null;
     }
 
-    const eventTicketDetails = statistics.receipt?.donationDetails?.find(
-        (detail) => detail.label === "Event Tickets"
-    );
-
     return (
         <div className={styles.overview}>
             <DonationStats
-                amount={statistics.donation.amount}
+                donation={statistics.donation}
+                details={statistics.receipt?.donationDetails}
                 isResolving={isResolving}
-                feeAmountRecovered={statistics.donation.feeAmountRecovered}
-                eventTicketAmount={eventTicketDetails?.value}
             />
 
             <div className={styles.left}>
                 <DonationSummaryGrid
-                    campaignTitle={statistics.campaign.title}
-                    donorName={statistics.donor.name}
-                    donorEmail={statistics.donor.email}
-                    gatewayId={statistics.donation.paymentMethod}
-                    donationDate={statistics.donation.date}
+                    campaign={statistics.campaign}
+                    donor={statistics.donor}
+                    donation={statistics.donation}
                     donationType={donation?.type}
-                    donorId={statistics.donor.id}
-                    campaignId={statistics.campaign.id}
                 />
              </div>
 
             <div className={styles.right}>
-                <DonationDetailedReceipt donationId={donationId} />
+                {/* <DonationDetailedReceipt donationId={donationId} /> */}
             </div>
 
         </div>

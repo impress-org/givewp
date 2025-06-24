@@ -8,31 +8,37 @@ import { formatTimestamp } from '@givewp/src/Admin/utils';
  * @unreleased
  */
 export type DonationSummaryGridProps = {
-    campaignTitle: string;
-    donorName: string;
-    donorEmail: string;
-    gatewayId: string;
-    donationDate: string;
+    campaign: {
+        id: number;
+        title: string;
+    };
+    donor: {
+        id: number;
+        name: string;
+        email: string;
+    };
+    donation: {
+        amount: string;
+        feeAmountRecovered: string | number;
+        status: string;
+        date: string;
+        paymentMethod: string;
+        mode: string;
+    };
     donationType: string;
-    donorId: number;
-    campaignId: number;
 };
 
 /**
  * @unreleased
  */
 export default function DonationSummaryGrid({
-    campaignTitle,
-    donorName,
-    donorEmail,
-    gatewayId,
-    donationDate,
+    campaign,
+    donor,
+    donation,
     donationType,
-    donorId,
-    campaignId,
 }: DonationSummaryGridProps) {
-    const donorPageUrl = `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donorId}`;
-    const campaignPageUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaignId}&tab=overview`;
+    const donorPageUrl = `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`;
+    const campaignPageUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaign.id}&tab=overview`;
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -45,15 +51,15 @@ export default function DonationSummaryGrid({
                 <div className={classnames(styles.card, styles.campaignCard)} role="region" aria-labelledby="campaign-name-label">
                     <h3 id="campaign-name-label">{__('Campaign name', 'give')}</h3>
                     <a href={campaignPageUrl} className={styles.campaignLink}>
-                        {campaignTitle}
+                        {campaign.title}
                     </a>
                 </div>
 
                 {/* Donation Info */}
                 <div className={styles.card} role="region" aria-labelledby="donation-info-label">
                     <h3 id="donation-info-label">{__('Donation info', 'give')}</h3>
-                    <time className={styles.date} dateTime={donationDate}>
-                        {formatTimestamp(donationDate, true)}
+                    <time className={styles.date} dateTime={donation.date}>
+                        {formatTimestamp(donation.date, true)}
                     </time>
                     <span className={styles.badge} aria-label={__('Donation type: One-time', 'give')}>
                         {donationType}
@@ -63,14 +69,14 @@ export default function DonationSummaryGrid({
                 {/* Associated Donor */}
                 <div className={classnames(styles.card, styles.donorCard)} role="region" aria-labelledby="donor-label">
                     <h3 id="donor-label">{__('Associated donor', 'give')}</h3>
-                    <a className={styles.donorLink} href={donorPageUrl}>{donorName}</a>
-                    <p>{donorEmail}</p>
+                    <a className={styles.donorLink} href={donorPageUrl}>{donor.name}</a>
+                    <p>{donor.email}</p>
                 </div>
 
                 {/* Gateway Info */}
                 <div className={styles.card} role="region" aria-labelledby="gateway-label">
                     <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
-                    <strong>{gatewayId}</strong>
+                    <strong>{donation.paymentMethod}</strong>
                     <a className={styles.gatewayLink} href={'#'} target="_blank" rel="noopener noreferrer">
                         {__('View donation on gateway', 'give')}
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
