@@ -29,7 +29,6 @@ export type GiveDonationOptions = {
         showCampaignFormNotice: boolean
         showCampaignSettingsNotice: boolean
     };
-    eventTicketsEnabled: boolean;
     isFeeRecoveryEnabled: boolean;
     donationStatuses: {[statusCode: string]: string};
     campaignsWithForms: {

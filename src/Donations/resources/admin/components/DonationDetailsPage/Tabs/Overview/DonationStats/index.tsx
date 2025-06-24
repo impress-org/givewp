@@ -27,13 +27,16 @@ interface DonationStatsProps {
  * @unreleased
  */
 export default function DonationStats({ donation, details, isResolving }: DonationStatsProps) {
-    const { eventTicketsEnabled, adminUrl, isFeeRecoveryEnabled, currency } = getDonationOptionsWindowData();
+    const { adminUrl, isFeeRecoveryEnabled, currency } = getDonationOptionsWindowData();
 
     const amount = donation.amount;
     const feeAmountRecovered = donation.feeAmountRecovered;
     const eventTicketDetails = details?.filter(
         (detail: any) => detail.label === "Event Tickets"
     ) || [];
+
+    const eventTicketValue = parseFloat((eventTicketDetails[0]?.value || '').replace(/[^0-9.]/g, ''));
+    const shouldShowEventTicketStat = eventTicketValue > 0;
 
     return (
         <div className={styles.container}>
@@ -43,10 +46,10 @@ export default function DonationStats({ donation, details, isResolving }: Donati
                 formatter={amountFormatter(currency)}
                 loading={isResolving}
             />
-            {eventTicketsEnabled && (
+            {shouldShowEventTicketStat && (
                 <StatWidget
                     label={__('Event Ticket', 'give')}
-                    value={parseFloat((eventTicketDetails[0]?.value || '').replace(/[^0-9.]/g, '')) || 0}
+                    value={eventTicketValue}
                     formatter={amountFormatter(currency)}
                     loading={isResolving}
                 />
