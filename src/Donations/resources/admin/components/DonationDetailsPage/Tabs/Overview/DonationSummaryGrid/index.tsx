@@ -61,7 +61,7 @@ export default function DonationSummaryGrid({
                 </div>
 
                 {/* Associated Donor */}
-                <div className={styles.card} role="region" aria-labelledby="donor-label">
+                <div className={classnames(styles.card, styles.donorCard)} role="region" aria-labelledby="donor-label">
                     <h3 id="donor-label">{__('Associated donor', 'give')}</h3>
                     <a className={styles.donorLink} href={donorPageUrl}>{donorName}</a>
                     <p>{donorEmail}</p>
