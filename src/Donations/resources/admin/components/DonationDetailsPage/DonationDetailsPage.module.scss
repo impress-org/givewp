@@ -1,4 +1,8 @@
 .statusBadge {
+    --statusBadgeIconColor: var(--givewp-grey-500);
+    --statusBadgeBgColor: var(--givewp-grey-25);
+    --statusBadgeTextColor: var(--givewp-grey-900);
+
     align-items: center;
     background-color: var(--statusBadgeBgColor);
     border-radius: var(--givewp-rounded-full);
@@ -13,55 +17,27 @@
     text-align: center;
 
     &.statusBadge--pending {
-        --statusBadgeIconColor: var(--givewp-orange-600);
+        --statusBadgeIconColor: var(--givewp-orange-500);
         --statusBadgeBgColor: var(--givewp-orange-25);
         --statusBadgeTextColor: var(--givewp-orange-900);
     }
 
     &.statusBadge--processing {
-        --statusBadgeIconColor: var(--givewp-blue-600);
+        --statusBadgeIconColor: var(--givewp-blue-500);
         --statusBadgeBgColor: var(--givewp-blue-25);
         --statusBadgeTextColor: var(--givewp-blue-900);
     }
 
     &.statusBadge--publish {
-        --statusBadgeIconColor: var(--givewp-green-600);
+        --statusBadgeIconColor: var(--givewp-green-500);
         --statusBadgeBgColor: var(--givewp-green-25);
         --statusBadgeTextColor: var(--givewp-green-900);
     }
 
-    &.statusBadge--refunded {
-        --statusBadgeIconColor: var(--givewp-purple-500);
-        --statusBadgeBgColor: var(--givewp-purple-25);
-        --statusBadgeTextColor: var(--givewp-purple-900);
-    }
-
-    &.statusBadge--failed {
-        --statusBadgeIconColor: var(--givewp-red-600);
-        --statusBadgeBgColor: var(--givewp-red-25);
-        --statusBadgeTextColor: var(--givewp-red-900);
-    }
-
-    &.statusBadge--cancelled {
-        --statusBadgeIconColor: var(--givewp-red-600);
-        --statusBadgeBgColor: var(--givewp-red-25);
-        --statusBadgeTextColor: var(--givewp-red-900);
-    }
-
-    &.statusBadge--abandoned {
-        --statusBadgeIconColor: var(--givewp-yellow-600);
-        --statusBadgeBgColor: var(--givewp-yellow-25);
-        --statusBadgeTextColor: var(--givewp-yellow-900);
-    }
-
-    &.statusBadge--preapproval {
-        --statusBadgeIconColor: var(--givewp-esmerald-600);
-        --statusBadgeBgColor: var(--givewp-esmerald-25);
-        --statusBadgeTextColor: var(--givewp-esmerald-900);
-    }
-
+    &.statusBadge--failed,
+    &.statusBadge--cancelled,
     &.statusBadge--revoked {
-        --statusBadgeIconColor: var(--givewp-red-600);
+        --statusBadgeIconColor: var(--givewp-red-500);
         --statusBadgeBgColor: var(--givewp-red-25);
         --statusBadgeTextColor: var(--givewp-red-900);
     }

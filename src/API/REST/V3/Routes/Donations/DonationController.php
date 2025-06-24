@@ -6,6 +6,7 @@ use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
+use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use WP_Error;
 use WP_REST_Controller;
@@ -75,6 +76,7 @@ class DonationController extends WP_REST_Controller
                         ],
                     ],
                 ],
+                'schema' => [$this, 'get_public_item_schema'],
             ],
         ]);
 
@@ -84,6 +86,7 @@ class DonationController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => $this->get_collection_params(),
+                'schema' => [$this, 'get_public_item_schema'],
             ],
         ]);
     }
@@ -133,11 +136,10 @@ class DonationController extends WP_REST_Controller
 
         $donations = $query->getAll() ?? [];
         $donations = array_map(function ($donation) use ($includeSensitiveData, $donationAnonymousMode, $request) {
-            $item = $this->escDonation(
-                $donation,
-                $includeSensitiveData,
-                $donationAnonymousMode
-            );
+            $item = (new DonationViewModel($donation))
+                ->anonymousMode($donationAnonymousMode)
+                ->includeSensitiveData($includeSensitiveData)
+                ->exports();
 
             return $this->prepare_response_for_collection(
                 $this->prepare_item_for_response($item, $request)
@@ -193,63 +195,17 @@ class DonationController extends WP_REST_Controller
             return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
         }
 
-        $item = $this->escDonation(
-            $donation,
-            $includeSensitiveData,
-            $donationAnonymousMode
-        );
+        $item = (new DonationViewModel($donation))
+            ->anonymousMode($donationAnonymousMode)
+            ->includeSensitiveData($includeSensitiveData)
+            ->exports();
 
-        return new WP_REST_Response(
-            $this->prepare_item_for_response($item, $request)
-        );
+        $response = $this->prepare_item_for_response($item, $request);
+
+        return rest_ensure_response($response);
     }
 
-    /**
-     * @unreleased
-     */
-    public function escDonation(
-        Donation $donation,
-        bool $includeSensitiveData = false,
-        DonationAnonymousMode $donationAnonymousMode = null
-    ): array {
-        $sensitiveDataExcluded = [];
-        if ( ! $includeSensitiveData) {
-            $sensitiveDataExcluded = [
-                'donorIp',
-                'email',
-                'phone',
-                'billingAddress',
-                'purchaseKey'
-            ];
-        }
 
-        $anonymousDataRedacted = [];
-        if ($donation->anonymous && $donationAnonymousMode->isRedacted()) {
-            $anonymousDataRedacted = [
-                'donorId',
-                'honorific',
-                'firstName',
-                'lastName',
-                'company',
-            ];
-        }
-
-        $donation = $donation->toArray();
-
-        foreach ($sensitiveDataExcluded as $property) {
-            if (array_key_exists($property, $donation)) {
-                unset($donation[$property]);
-            }
-        }
-
-        foreach ($anonymousDataRedacted as $property) {
-            if (array_key_exists($property, $donation)) {
-                $donation[$property] = __('anonymous', 'give');
-            }
-        }
-
-        return $donation;
-    }
 
     /**
      * @unreleased
@@ -398,13 +354,15 @@ class DonationController extends WP_REST_Controller
             );
         }
 
-        $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
-        if ( ! $isAdmin && $donationAnonymousMode->isIncluded()) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to include anonymous donations.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($request->get_param('anonymousDonations') !== null) {
+            $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+            if ( ! $isAdmin && $donationAnonymousMode->isIncluded()) {
+                return new WP_Error(
+                    'rest_forbidden',
+                    esc_html__('You do not have permission to include anonymous donations.', 'give'),
+                    ['status' => $this->authorizationStatusCode()]
+                );
+            }
         }
 
         return true;
@@ -416,5 +374,125 @@ class DonationController extends WP_REST_Controller
     public function authorizationStatusCode(): int
     {
         return is_user_logged_in() ? 403 : 401;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function get_item_schema(): array
+    {
+        return [
+            'title' => 'donation',
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Donation ID', 'give'),
+                ],
+                'donorId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Donor ID', 'give'),
+                ],
+                'firstName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor first name', 'give'),
+                ],
+                'lastName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor last name', 'give'),
+                ],
+                'honorific' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor honorific/prefix', 'give'),
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor email', 'give'),
+                    'format' => 'email',
+                ],
+                'phone' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor phone', 'give'),
+                ],
+                'company' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor company', 'give'),
+                ],
+                'amount' => [
+                    'type' => 'number',
+                    'description' => esc_html__('Donation amount', 'give'),
+                ],
+                'feeAmountRecovered' => [
+                    'type' => ['number', 'null'],
+                    'description' => esc_html__('Fee amount recovered', 'give'),
+                ],
+                'currency' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donation currency', 'give'),
+                ],
+                'status' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donation status', 'give'),
+                ],
+                'gatewayId' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Payment gateway ID', 'give'),
+                ],
+                'mode' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donation mode (live or test)', 'give'),
+                    'enum' => ['live', 'test'],
+                ],
+                'anonymous' => [
+                    'type' => 'boolean',
+                    'description' => esc_html__('Whether the donation is anonymous', 'give'),
+                ],
+                'billingAddress' => [
+                    'type' => ['object', 'null'],
+                    'description' => esc_html__('Billing address', 'give'),
+                    'properties' => [
+                        'address1' => ['type' => 'string'],
+                        'address2' => ['type' => 'string'],
+                        'city' => ['type' => 'string'],
+                        'state' => ['type' => 'string'],
+                        'country' => ['type' => 'string'],
+                        'zip' => ['type' => 'string'],
+                    ],
+                ],
+                'donorIp' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor IP address (sensitive data)', 'give'),
+                ],
+                'purchaseKey' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Purchase key (sensitive data)', 'give'),
+                ],
+                'createdAt' => [
+                    'type' => 'object',
+                    'description' => esc_html__('Donation creation date', 'give'),
+                    'properties' => [
+                        'date' => [
+                            'type' => 'string',
+                        ],
+                        'timezone' => [
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+                'updatedAt' => [
+                    'type' => 'object',
+                    'description' => esc_html__('Donation last update date', 'give'),
+                    'properties' => [
+                        'date' => [
+                            'type' => 'string',
+                        ],
+                        'timezone' => [
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+            ],
+            'required' => ['id', 'donorId', 'amount', 'currency', 'status', 'gatewayId', 'mode', 'createdAt'],
+        ];
     }
 }

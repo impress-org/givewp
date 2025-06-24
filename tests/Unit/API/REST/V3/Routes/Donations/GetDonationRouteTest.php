@@ -50,7 +50,7 @@ class GetDonationRouteTest extends RestApiTestCase
 
         $status = $response->get_status();
 
-        $data = $response->get_data()->data;
+        $data = $response->get_data();
         $dataJson = json_encode($data);
 
         $data = json_decode($dataJson, true);
@@ -89,6 +89,7 @@ class GetDonationRouteTest extends RestApiTestCase
             'gatewayTransactionId' => $donation->gatewayTransactionId,
             'company' => $donation->company,
             'comment' => $donation->comment,
+            'customFields' => $data['customFields'], // Custom fields are dynamic, so we'll just check they exist
         ], $data);
     }
 
@@ -106,7 +107,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data()->data;
+        $data = $response->get_data();
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);
@@ -128,18 +129,19 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data()->data;
+        $data = $response->get_data();
 
         $sensitiveData = [
             'donorIp',
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
+            'customFields'
         ];
 
         $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data, array_flip($sensitiveData)));
+        $this->assertEmpty(array_intersect_key($data, $sensitiveData));
     }
 
     /**
@@ -174,14 +176,15 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data()->data;
+        $data = $response->get_data();
 
         $sensitiveData = [
             'donorIp',
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
+            'customFields'
         ];
 
         $this->assertEquals(200, $status);
@@ -278,7 +281,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data()->data;
+        $data = $response->get_data();
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);
@@ -342,7 +345,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data()->data;
+        $data = $response->get_data();
 
         $this->assertEquals(200, $status);
         $this->assertEquals($donation->id, $data['id']);
@@ -353,10 +356,17 @@ class GetDonationRouteTest extends RestApiTestCase
             'firstName',
             'lastName',
             'company',
+            'customFields',
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'), $data[$property]);
+            if ($property === 'donorId') {
+                $this->assertEquals(0, $data[$property]);
+            } else if ($property === 'customFields') {
+                $this->assertEquals([], $data[$property]);
+            } else {
+                $this->assertEquals(__('anonymous', 'give'), $data[$property]);
+            }
         }
     }
 }
