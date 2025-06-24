@@ -28,14 +28,14 @@ interface DonationStatsProps {
  */
 export default function DonationStats({ donation, details, isResolving }: DonationStatsProps) {
     const { adminUrl, isFeeRecoveryEnabled, currency } = getDonationOptionsWindowData();
-
+    const getEventTicketValue = (details, label) => {
+        const found = details?.find(detail => detail.label === label);
+        return found?.value;
+    };
     const amount = donation.amount;
     const feeAmountRecovered = donation.feeAmountRecovered;
-    const eventTicketDetails = details?.filter(
-        (detail: any) => detail.label === "Event Tickets"
-    ) || [];
-
-    const eventTicketValue = parseFloat((eventTicketDetails[0]?.value || '').replace(/[^0-9.]/g, ''));
+    // Handle event ticket value for Statwidget Ex: "$100.00" to "100.00"
+    const eventTicketValue = parseFloat((getEventTicketValue(details, "Event Tickets") || '').replace(/[^0-9.]/g, ''));
     const shouldShowEventTicketStat = eventTicketValue > 0;
 
     return (

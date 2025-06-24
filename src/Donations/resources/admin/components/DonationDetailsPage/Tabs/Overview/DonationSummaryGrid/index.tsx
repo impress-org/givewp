@@ -26,6 +26,7 @@ export type DonationSummaryGridProps = {
         mode: string;
         gatewayViewUrl?: string | null;
     };
+    details?: Array<{ label: string; [key: string]: any }>;
     donationType: string;
 };
 
@@ -37,10 +38,16 @@ export default function DonationSummaryGrid({
     donor,
     donation,
     donationType,
+    details,
 }: DonationSummaryGridProps) {
     const donorPageUrl = `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`;
     const campaignPageUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaign.id}&tab=overview`;
     const donationTypeDisplay = donationType === 'single' ? __('One-time', 'give') : __('Repeat', 'give');
+    const getPaymentMethodValue = (details, label) => {
+        const found = details?.find(detail => detail.label === label);
+        return found?.value;
+    };
+    const paymentMethod = getPaymentMethodValue(details, "Payment Method");
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -78,7 +85,7 @@ export default function DonationSummaryGrid({
                 {/* Gateway Info */}
                 <div className={styles.card} role="region" aria-labelledby="gateway-label">
                     <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
-                    <strong>{donation.paymentMethod}</strong>
+                    <strong>{paymentMethod}</strong>
                     {donation.gatewayViewUrl && (
                         <a className={styles.gatewayLink} href={donation.gatewayViewUrl} target="_blank" rel="noopener noreferrer">
                             {__('View donation on gateway', 'give')}
