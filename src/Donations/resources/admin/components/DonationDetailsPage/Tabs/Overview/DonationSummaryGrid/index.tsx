@@ -40,7 +40,7 @@ export default function DonationSummaryGrid({
 }: DonationSummaryGridProps) {
     const donorPageUrl = `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`;
     const campaignPageUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaign.id}&tab=overview`;
-    const donationTypeDisplay = donationType === 'single' ? __('One-Time', 'give') : __('Repeat', 'give');
+    const donationTypeDisplay = donationType === 'single' ? __('One-time', 'give') : __('Repeat', 'give');
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
