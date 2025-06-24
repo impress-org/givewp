@@ -39,6 +39,7 @@ export default function DonationSummaryGrid({
 }: DonationSummaryGridProps) {
     const donorPageUrl = `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`;
     const campaignPageUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaign.id}&tab=overview`;
+    const donationTypeDisplay = donationType === 'single' ? __('One-Time', 'give') : __('Repeat', 'give');
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -62,7 +63,7 @@ export default function DonationSummaryGrid({
                         {formatTimestamp(donation.date, true)}
                     </time>
                     <span className={styles.badge} aria-label={__('Donation type: One-time', 'give')}>
-                        {donationType}
+                        {donationType && donationTypeDisplay}
                     </span>
                 </div>
 
