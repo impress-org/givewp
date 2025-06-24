@@ -13,9 +13,9 @@ export default function DonationDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donationId = parseInt(urlParams.get('id') ?? '0');
     const { statistics, hasResolved, isResolving } = useDonationStatistics(donationId);
-    const { record: donation } = useDonationEntityRecord();
+    const { record: donation, hasResolved: hasResolvedDonation } = useDonationEntityRecord();
 
-    if (!hasResolved || !statistics) {
+    if (!hasResolved || hasResolvedDonation) {
         return null;
     }
 
