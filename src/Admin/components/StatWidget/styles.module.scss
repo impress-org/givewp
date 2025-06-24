@@ -53,7 +53,7 @@
     color: var(--givewp-neutral-300);
 }
 
-.upgradeLink {
+.upgradeLink{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -67,10 +67,14 @@
     text-transform: uppercase;
     cursor: pointer;
 
-    &:hover {
+    &:hover, &:active, &:focus {
         color: var(--givewp-shades-white);
         background: var(--givewp-green-600);
     }
+}
+
+.upgradeLink:visited {
+    background: var(--givewp-green-500);
 }
 
 .revenueWidget {
