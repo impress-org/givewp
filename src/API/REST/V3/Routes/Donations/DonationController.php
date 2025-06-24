@@ -2,6 +2,7 @@
 
 namespace Give\API\REST\V3\Routes\Donations;
 
+use DateTime;
 use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
@@ -11,7 +12,6 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Controller;
@@ -308,9 +308,9 @@ class DonationController extends WP_REST_Controller
             case 'amount':
             case 'feeAmountRecovered':
                 if (is_array($value)) {
-                    // Handle Money object array format: ['amount' => 10000, 'currency' => 'USD']
+                    // Handle Money object array format: ['amount' => 100.00, 'currency' => 'USD']
                     if (isset($value['amount']) && isset($value['currency'])) {
-                        return new Money($value['amount'], $value['currency']);
+                        return Money::fromDecimal($value['amount'], $value['currency']);
                     }
                 }
                 return $value;
