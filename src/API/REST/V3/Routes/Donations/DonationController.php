@@ -6,8 +6,13 @@ use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
+use Give\Donations\Properties\BillingAddress;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -78,6 +83,25 @@ class DonationController extends WP_REST_Controller
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
             ],
+            [
+                'methods' => WP_REST_Server::EDITABLE,
+                'callback' => [$this, 'update_item'],
+                'permission_callback' => [$this, 'update_item_permissions_check'],
+                'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::EDITABLE),
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
+            [
+                'methods' => WP_REST_Server::DELETABLE,
+                'callback' => [$this, 'delete_item'],
+                'permission_callback' => [$this, 'delete_item_permissions_check'],
+                'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                ],
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base, [
@@ -86,6 +110,22 @@ class DonationController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => $this->get_collection_params(),
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
+            [
+                'methods' => WP_REST_Server::DELETABLE,
+                'callback' => [$this, 'delete_items'],
+                'permission_callback' => [$this, 'delete_items_permissions_check'],
+                'args' => [
+                    'ids' => [
+                        'description' => __('Array of donation IDs to delete', 'give'),
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'integer',
+                        ],
+                        'required' => true,
+                    ],
+                ],
                 'schema' => [$this, 'get_public_item_schema'],
             ],
         ]);
@@ -205,7 +245,173 @@ class DonationController extends WP_REST_Controller
         return rest_ensure_response($response);
     }
 
+    /**
+     * Update a single donation.
+     *
+     * @unreleased
+     */
+    public function update_item($request): WP_REST_Response
+    {
+        $donation = Donation::find($request->get_param('id'));
 
+        if (!$donation) {
+            return new WP_REST_Response(__('Donation not found', 'give'), 404);
+        }
+
+        $nonEditableFields = [
+            'id',
+            'updatedAt',
+            'purchaseKey',
+            'donorIp',
+            'type',
+            'mode',
+            'gatewayTransactionId',
+        ];
+
+        foreach ($request->get_params() as $key => $value) {
+            if (!in_array($key, $nonEditableFields, true)) {
+                if (in_array($key, $donation::propertyKeys(), true)) {
+                    try {
+                        $processedValue = $this->processFieldValue($key, $value);
+                        if ($donation->isPropertyTypeValid($key, $processedValue)) {
+                            $donation->$key = $processedValue;
+                        }
+                    } catch (Exception $e) {
+                        continue;
+                    }
+                }
+            }
+        }
+
+        if ($donation->isDirty()) {
+            $donation->save();
+        }
+
+        $item = (new DonationViewModel($donation))
+            ->includeSensitiveData(true)
+            ->anonymousMode(new DonationAnonymousMode('include'))
+            ->exports();
+
+        $response = $this->prepare_item_for_response($item, $request);
+
+        return rest_ensure_response($response);
+    }
+
+    /**
+     * Process field values for special data types before setting them on the donation model.
+     *
+     * @unreleased
+     */
+    private function processFieldValue(string $key, $value)
+    {
+        switch ($key) {
+            case 'amount':
+            case 'feeAmountRecovered':
+                if (is_array($value)) {
+                    // Handle Money object array format: ['amount' => 10000, 'currency' => 'USD']
+                    if (isset($value['amount']) && isset($value['currency'])) {
+                        return new Money($value['amount'], $value['currency']);
+                    }
+                }
+                return $value;
+
+            case 'status':
+                if (is_string($value)) {
+                    return new DonationStatus($value);
+                }
+                return $value;
+
+            case 'billingAddress':
+                if (is_array($value)) {
+                    return BillingAddress::fromArray($value);
+                }
+                return $value;
+
+            case 'createdAt':
+                if (is_string($value)) {
+                    try {
+                        $dateTime = Temporal::toDateTime($value); // Y-m-d H:i:s
+                        if ($dateTime === false) {
+                            throw new InvalidArgumentException("Invalid date format for {$key}: {$value}. Expected Y-m-d H:i:s format.");
+                        }
+                        return $dateTime;
+                    } catch (Exception $e) {
+                        throw new InvalidArgumentException("Invalid date format for {$key}: {$value}. Expected Y-m-d H:i:s format.");
+                    }
+                }
+                return $value;
+
+            default:
+                return $value;
+        }
+    }
+
+    /**
+     * Delete a single donation.
+     *
+     * @unreleased
+     */
+    public function delete_item($request): WP_REST_Response
+    {
+        $donation = Donation::find($request->get_param('id'));
+
+        if (!$donation) {
+            return new WP_REST_Response(['message' => __('Donation not found', 'give')], 404);
+        }
+
+        $item = (new DonationViewModel($donation))
+            ->includeSensitiveData(true)
+            ->anonymousMode(new DonationAnonymousMode('include'))
+            ->exports();
+
+        $deleted = $donation->delete();
+
+        if (!$deleted) {
+            return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
+        }
+
+        return new WP_REST_Response(['deleted' => true, 'previous' => $item], 200);
+    }
+
+    /**
+     * Delete multiple donations.
+     *
+     * @unreleased
+     */
+    public function delete_items($request): WP_REST_Response
+    {
+        $ids = $request->get_param('ids');
+        $deleted = [];
+        $errors = [];
+
+        foreach ($ids as $id) {
+            $donation = Donation::find($id);
+
+            if (!$donation) {
+                $errors[] = ['id' => $id, 'message' => __('Donation not found', 'give')];
+                continue;
+            }
+
+            $item = (new DonationViewModel($donation))
+                ->includeSensitiveData(true)
+                ->anonymousMode(new DonationAnonymousMode('include'))
+                ->exports();
+
+            if ($donation->delete()) {
+                $deleted[] = ['id' => $id, 'previous' => $item];
+            } else {
+                $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
+            }
+        }
+
+        return new WP_REST_Response([
+            'deleted' => $deleted,
+            'errors' => $errors,
+            'total_requested' => count($ids),
+            'total_deleted' => count($deleted),
+            'total_errors' => count($errors),
+        ], 200);
+    }
 
     /**
      * @unreleased
@@ -319,21 +525,29 @@ class DonationController extends WP_REST_Controller
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
     {
-        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $request->get_param('id')));
-        $statistics_url = add_query_arg([
-            'mode' => $request->get_param('mode'),
-            'campaignId' => $request->get_param('campaignId'),
-        ], $self_url . '/statistics');
-        $links = [
-            'self' => ['href' => $self_url],
-            CURIE::relationUrl('statistics') => [
-                'href' => $statistics_url,
-                'embeddable' => true,
-            ],
-        ];
+        $donationId = $request->get_param('id') ?? $item['id'] ?? null;
+
+        if ($donationId) {
+            $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $donationId));
+            $statistics_url = add_query_arg([
+                'mode' => $request->get_param('mode'),
+                'campaignId' => $request->get_param('campaignId'),
+            ], $self_url . '/statistics');
+            $links = [
+                'self' => ['href' => $self_url],
+                CURIE::relationUrl('statistics') => [
+                    'href' => $statistics_url,
+                    'embeddable' => true,
+                ],
+            ];
+        } else {
+            $links = [];
+        }
 
         $response = new WP_REST_Response($item);
-        $response->add_links($links);
+        if (!empty($links)) {
+            $response->add_links($links);
+        }
 
         return $response;
     }
@@ -363,6 +577,54 @@ class DonationController extends WP_REST_Controller
                     ['status' => $this->authorizationStatusCode()]
                 );
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function update_item_permissions_check($request)
+    {
+        if (!current_user_can('manage_options')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to update donations.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function delete_item_permissions_check($request)
+    {
+        if (!current_user_can('manage_options')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to delete donations.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function delete_items_permissions_check($request)
+    {
+        if (!current_user_can('manage_options')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to delete donations.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
         }
 
         return true;
@@ -488,6 +750,23 @@ class DonationController extends WP_REST_Controller
                         ],
                         'timezone' => [
                             'type' => 'string',
+                        ],
+                    ],
+                ],
+                'customFields' => [
+                    'type' => 'array',
+                    'description' => esc_html__('Custom fields (sensitive data)', 'give'),
+                    'items' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'label' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Field label', 'give'),
+                            ],
+                            'value' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Field value', 'give'),
+                            ],
                         ],
                     ],
                 ],
