@@ -1,6 +1,9 @@
 import { __ } from "@wordpress/i18n";
 import styles from "./styles.module.scss";
 
+    /**
+     * @unreleased
+     */
 export default function ReceiptActions() {
     return (
         <>

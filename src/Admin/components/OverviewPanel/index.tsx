@@ -1,6 +1,9 @@
 import React from 'react';
 import styles from './styles.module.scss';
 
+/**
+ * @unreleased
+ */
 interface OverviewPanelProps {
     children: React.ReactNode;
     className?: string;
