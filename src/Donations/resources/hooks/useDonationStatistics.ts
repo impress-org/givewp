@@ -12,6 +12,7 @@ export interface DonationStatistics {
         date: string;
         paymentMethod: string;
         mode: string;
+        gatewayViewUrl?: string | null;
     };
     donor: {
         id: number;

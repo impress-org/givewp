@@ -73,6 +73,7 @@ class DonationStatisticsController extends WP_REST_Controller
                 'date' => $donation->createdAt->format('Y-m-d H:i:s'),
                 'paymentMethod' => $donation->gatewayId,
                 'mode' => $donation->mode->getValue(),
+                'gatewayViewUrl' => $this->getGatewayViewUrl($donation),
             ],
             'donor' => [
                 'id' => $donation->donorId,
@@ -130,5 +131,36 @@ class DonationStatisticsController extends WP_REST_Controller
         $response->add_links($links);
 
         return $response;
+    }
+
+    /**
+     * Generate a dashboard URL to view this donation on the gateway, if possible.
+     *
+     * @param Donation $donation
+     * @return string|null
+     */
+    private function getGatewayViewUrl(Donation $donation): ?string
+    {
+        $gatewayId = $donation->gatewayId;
+        $transactionId = $donation->gatewayTransactionId ?? null;
+        $mode = $donation->mode->getValue();
+
+        if (!$transactionId) {
+            return null;
+        }
+
+        switch ($gatewayId) {
+            case 'paypal-commerce':
+                $base = 'https://www.paypal.com/';
+                return $base . 'activity/payment/' . urlencode($transactionId);
+            case 'stripe_payment_element':
+            case 'stripe':
+                $base = $mode === 'live'
+                    ? 'https://dashboard.stripe.com/payments/'
+                    : 'https://dashboard.stripe.com/test/payments/';
+                return $base . urlencode($transactionId);
+            default:
+                return null;
+        }
     }
 }
