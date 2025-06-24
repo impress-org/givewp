@@ -79,7 +79,7 @@ export default function DonationSummaryGrid({
                 <div className={styles.card} role="region" aria-labelledby="gateway-label">
                     <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
                     <strong>{donation.paymentMethod}</strong>
-                    {donation.gatewayViewUrl ? (
+                    {donation.gatewayViewUrl && (
                         <a className={styles.gatewayLink} href={donation.gatewayViewUrl} target="_blank" rel="noopener noreferrer">
                             {__('View donation on gateway', 'give')}
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -93,10 +93,6 @@ export default function DonationSummaryGrid({
                                 />
                             </svg>
                         </a>
-                    ) : (
-                        <span className={styles.gatewayLink} style={{ opacity: 0.5, pointerEvents: 'none' }}>
-                            {__('View donation on gateway', 'give')}
-                        </span>
                     )}
                 </div>
             </div>
