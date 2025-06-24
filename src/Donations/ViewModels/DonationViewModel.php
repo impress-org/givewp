@@ -8,6 +8,7 @@ use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Types;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * @unreleased
@@ -54,6 +55,8 @@ class DonationViewModel
         $data = array_merge(
             $this->donation->toArray(),
             [
+                'createdAt' => Temporal::getFormattedDateTime($this->donation->createdAt),
+                'updatedAt' => Temporal::getFormattedDateTime($this->donation->updatedAt),
                 'customFields' => $this->getCustomFields(),
             ]
         );

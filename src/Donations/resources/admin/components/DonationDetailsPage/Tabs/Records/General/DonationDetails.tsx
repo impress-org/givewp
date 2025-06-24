@@ -78,13 +78,7 @@ export default function DonationDetails() {
                     <input
                         type="datetime-local"
                         id="date"
-                        value={createdAt.date ? createdAt.date.replace(' ', 'T').slice(0, 16) : ''}
-                        onChange={(e) => {
-                            setValue('createdAt', {
-                                ...createdAt,
-                                date: e.target.value,
-                            }, {shouldDirty: true});
-                        }}
+                        {...register('createdAt')}
                     />
                 </AdminSectionField>
 

@@ -330,13 +330,9 @@ class DonationController extends WP_REST_Controller
             case 'createdAt':
                 if (is_string($value)) {
                     try {
-                        $dateTime = Temporal::toDateTime($value); // Y-m-d H:i:s
-                        if ($dateTime === false) {
-                            throw new InvalidArgumentException("Invalid date format for {$key}: {$value}. Expected Y-m-d H:i:s format.");
-                        }
-                        return $dateTime;
-                    } catch (Exception $e) {
-                        throw new InvalidArgumentException("Invalid date format for {$key}: {$value}. Expected Y-m-d H:i:s format.");
+                        return new DateTime( $value, wp_timezone());
+                    } catch (\Exception $e) {
+                        throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
                     }
                 }
                 return $value;
@@ -730,28 +726,12 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Purchase key (sensitive data)', 'give'),
                 ],
                 'createdAt' => [
-                    'type' => 'object',
+                    'type' => 'string',
                     'description' => esc_html__('Donation creation date', 'give'),
-                    'properties' => [
-                        'date' => [
-                            'type' => 'string',
-                        ],
-                        'timezone' => [
-                            'type' => 'string',
-                        ],
-                    ],
                 ],
                 'updatedAt' => [
-                    'type' => 'object',
+                    'type' => 'string',
                     'description' => esc_html__('Donation last update date', 'give'),
-                    'properties' => [
-                        'date' => [
-                            'type' => 'string',
-                        ],
-                        'timezone' => [
-                            'type' => 'string',
-                        ],
-                    ],
                 ],
                 'customFields' => [
                     'type' => 'array',
