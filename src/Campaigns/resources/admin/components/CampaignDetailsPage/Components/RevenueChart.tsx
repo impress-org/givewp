@@ -4,6 +4,7 @@ import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
 import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';
 import {__} from '@wordpress/i18n';
+import styles from './CampaignStats/styles.module.scss';
 
 const campaignId = new URLSearchParams(window.location.search).get('id');
 
@@ -24,6 +25,7 @@ const RevenueChart = () => {
     const currencyFormatter = amountFormatter(currency);
     const [max, setMax] = useState(100);
     const [series, setSeries] = useState([{name: __('Revenue', 'give'), data: getDefaultData()}]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         apiFetch({path: addQueryArgs('/givewp/v3/campaigns/' + campaignId + '/revenue')}).then(
@@ -44,6 +46,7 @@ const RevenueChart = () => {
                         },
                     ]);
                 }
+                setLoading(false);
             }
         );
     }, []);
@@ -111,6 +114,10 @@ const RevenueChart = () => {
             },
         },
     };
+
+    if (loading) {
+        return <div className={styles.skeletonChartArea} />;
+    }
 
     return <Chart options={options} series={series} type="area" width="100%" height="100%" />;
 };

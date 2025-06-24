@@ -210,3 +210,11 @@
     width: 100%;
     margin-top: 16px;
 }
+
+.skeletonChartArea {
+    @include skeleton-base;
+    height: 300px;
+    width: 100%;
+    border-radius: var(--givewp-rounded-8);
+    margin-top: 16px;
+}

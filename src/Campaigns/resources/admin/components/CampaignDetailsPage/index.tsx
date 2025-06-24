@@ -20,6 +20,7 @@ import {createCampaignPage, getCampaignOptionsWindowData, useCampaignEntityRecor
 import styles from './CampaignDetailsPage.module.scss';
 import {useEntityRecord} from '@wordpress/core-data';
 import CampaignDetailsErrorBoundary from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/CampaignDetailsErrorBoundary';
+import SkeletonLoader from './Components/CampaignStats/SkeletonLoader';
 
 interface Show {
     contextMenu?: boolean;
@@ -275,11 +276,8 @@ export default function CampaignsDetailsPage({campaignId}) {
 
     if (!hasResolved) {
         return (
-            <div className={styles.loadingContainer}>
-                <div className={styles.loadingContainerContent}>
-                    <GiveSpinner />
-                    <div className={styles.loadingContainerContentText}>{__('Loading campaign...', 'give')}</div>
-                </div>
+            <div className={styles.page}>
+                <SkeletonLoader />
             </div>
         );
     }
