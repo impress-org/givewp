@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './styles.module.scss';
 import DonationStats from './DonationStats';
 import DonationSummaryGrid from './DonationSummaryGrid';
-import DonationDetailedReceipt from './DonationDetailedReceipt';
 import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
 
@@ -15,7 +14,7 @@ export default function DonationDetailsPageOverviewTab() {
     const { statistics, hasResolved, isResolving } = useDonationStatistics(donationId);
     const { record: donation, hasResolved: hasResolvedDonation } = useDonationEntityRecord();
 
-    if (!hasResolved || hasResolvedDonation) {
+    if (!hasResolved || !hasResolvedDonation) {
         return null;
     }
 
@@ -37,7 +36,6 @@ export default function DonationDetailsPageOverviewTab() {
              </div>
 
             <div className={styles.right}>
-                {/* <DonationDetailedReceipt donationId={donationId} /> */}
             </div>
 
         </div>
