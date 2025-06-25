@@ -32,11 +32,14 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerWebhookEventHandlers();
     }
 
+    /**
+     * @unreleased     
+     */
     private function registerWebhookEventHandlers()
     {
-        add_action('give_init', function () {
+        add_action('init', function () {
             $registeredPaymentGatewayIds = give()->gateways->getPaymentGateways();
-            foreach ($registeredPaymentGatewayIds as $gatewayId) {
+            foreach ($registeredPaymentGatewayIds as $gatewayId => $class) {
                 $this->addDonationStatusEventHandlers($gatewayId);
                 $this->addSubscriptionStatusEventHandlers($gatewayId);
                 $this->addSubscriptionFirstDonationEventHandler($gatewayId);
@@ -54,7 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
             if ($eventHandlerClass = (new GetEventHandlerClassByDonationStatus())($status)) {
                 Hooks::addAction(
                     sprintf('givewp_%s_webhook_event_donation_status_%s', $gatewayId, $status->getValue()),
-                    $eventHandlerClass
+                    $eventHandlerClass, '__invoke', 10, 3
                 );
             }
         }
@@ -66,10 +69,11 @@ class ServiceProvider implements ServiceProviderInterface
     private function addSubscriptionStatusEventHandlers(string $gatewayId)
     {
         foreach (SubscriptionStatus::values() as $status) {
-            if ($eventHandlerClass = (new GetEventHandlerClassBySubscriptionStatus())($status)) {
+            if ($eventHandlerClass = (new GetEventHandlerClassBySubscriptionStatus())($status)) {                
+                $parameterCount = $status->isActive() ? 3 : 2;                
                 Hooks::addAction(
                     sprintf('givewp_%s_webhook_event_subscription_status_%s', $gatewayId, $status->getValue()),
-                    $eventHandlerClass
+                    $eventHandlerClass, '__invoke', 10, $parameterCount
                 );
             }
         }
@@ -82,7 +86,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction(
             sprintf('givewp_%s_webhook_event_subscription_first_donation', $gatewayId),
-            SubscriptionFirstDonationCompleted::class
+            SubscriptionFirstDonationCompleted::class, '__invoke', 10, 4
         );
     }
 
@@ -93,7 +97,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction(
             sprintf('givewp_%s_webhook_event_subscription_renewal_donation', $gatewayId),
-            SubscriptionRenewalDonationCreated::class
+            SubscriptionRenewalDonationCreated::class, '__invoke', 10, 2
         );
     }
 }
