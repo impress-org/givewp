@@ -1,8 +1,9 @@
 import { __ } from '@wordpress/i18n';
-import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import classnames from 'classnames';
-import styles from './styles.module.scss';
+import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
+import PaymentMethodIcon from './PaymentMethodIcon';
 import { formatTimestamp } from '@givewp/src/Admin/utils';
+import styles from './styles.module.scss';
 
 /**
  * @unreleased
@@ -85,7 +86,10 @@ export default function DonationSummaryGrid({
                 {/* Gateway Info */}
                 <div className={styles.card} role="region" aria-labelledby="gateway-label">
                     <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
-                    <strong>{paymentMethod}</strong>
+                    <strong className={styles.paymentMethod}>
+                        <PaymentMethodIcon paymentMethod={donation?.paymentMethod} />
+                        {paymentMethod}
+                    </strong>
                     {donation.gatewayViewUrl && (
                         <a className={styles.gatewayLink} href={donation.gatewayViewUrl} target="_blank" rel="noopener noreferrer">
                             {__('View donation on gateway', 'give')}

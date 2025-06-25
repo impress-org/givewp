@@ -77,6 +77,12 @@
   text-decoration: none;
 }
 
+.paymentMethod {
+  display: flex;
+  align-items: center;
+  gap: var(--givewp-spacing-1);
+}
+
 
 .gatewayLink {
   display: flex;
