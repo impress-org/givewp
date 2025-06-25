@@ -14,7 +14,7 @@ export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], 
 /**
  * @since unreleased
  */
-export function formatTimestamp(timestamp: string): string {
+export function formatTimestamp(timestamp: string, useComma: boolean = false): string {
     const date = new Date(timestamp);
     
     const day = date.getDate();
@@ -32,8 +32,9 @@ export function formatTimestamp(timestamp: string): string {
     const month = date.toLocaleString('en-US', { month: 'long' });
     const year = date.getFullYear();
     const time = date.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
+    const separator = useComma ? ', ' : ' • ';
 
-    return `${dayWithOrdinal} ${month} ${year} • ${time}`;
+    return `${dayWithOrdinal} ${month} ${year}${separator}${time}`;
 }
 
 /**

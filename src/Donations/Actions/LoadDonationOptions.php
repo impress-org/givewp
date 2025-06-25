@@ -4,8 +4,9 @@ namespace Give\Donations\Actions;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Framework\Database\DB;
 use Give\Helpers\IntlTelInput;
+use Give\BetaFeatures\Facades\FeatureFlag;
+use Give\Framework\Database\DB;
 
 /**
  * The purpose of this action is to have a centralized place for localizing options used on many different places
@@ -47,6 +48,9 @@ class LoadDonationOptions
             'campaignsWithForms' => $this->getCampaignsWithForms(),
             'donors' => $this->getDonors(),
             'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
+            'admin' => $isAdmin ? [] : null,
+            'eventTicketsEnabled' => FeatureFlag::eventTickets(),
+            'isFeeRecoveryEnabled' => defined('GIVE_FEE_RECOVERY_VERSION'),
             'mode' => give_is_test_mode() ? 'test' : 'live',
         ];
     }
