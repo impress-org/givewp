@@ -70,7 +70,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
 }
 
 .statWidgetDisplay {
@@ -217,4 +217,11 @@
     width: 100%;
     border-radius: var(--givewp-rounded-8);
     margin-top: 16px;
+}
+
+.headerSkeleton {
+    @include skeleton-base;
+    height: 138px;
+    width: 100%;
+    margin-bottom: 1rem;
 }

@@ -3,6 +3,7 @@ import styles from './styles.module.scss';
 const SkeletonLoader = () => {
     return (
         <>
+            <div className={styles.headerSkeleton} />
             <div className={styles.dateRangeFilter}>
                 {[1, 2, 3, 4, 5].map((i) => (
                     <div key={i} className={styles.skeletonButton} />
