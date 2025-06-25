@@ -31,7 +31,7 @@ class WebhookEventsTest extends TestCase
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->paymentAbandoned('123456');
+        $webhookEvents->donationAbandoned('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
@@ -52,7 +52,7 @@ class WebhookEventsTest extends TestCase
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->paymentCancelled('123456');
+        $webhookEvents->donationCancelled('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
@@ -73,7 +73,7 @@ class WebhookEventsTest extends TestCase
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->paymentCompleted('123456');
+        $webhookEvents->donationCompleted('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
@@ -94,7 +94,7 @@ class WebhookEventsTest extends TestCase
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->paymentFailed('123456');
+        $webhookEvents->donationFailed('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
@@ -115,7 +115,7 @@ class WebhookEventsTest extends TestCase
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->paymentPending('123456');
+        $webhookEvents->donationPending('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
@@ -136,7 +136,7 @@ class WebhookEventsTest extends TestCase
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->paymentPreapproval('123456');
+        $webhookEvents->donationPreapproval('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
@@ -157,7 +157,7 @@ class WebhookEventsTest extends TestCase
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->paymentProcessing('123456');
+        $webhookEvents->donationProcessing('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
@@ -178,7 +178,7 @@ class WebhookEventsTest extends TestCase
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->paymentRefunded('123456');
+        $webhookEvents->donationRefunded('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
@@ -199,7 +199,7 @@ class WebhookEventsTest extends TestCase
 
         // Creates a new event
         $webhookEvents = new WebhookEvents($gatewayId);
-        $webhookEvents->paymentRevoked('123456');
+        $webhookEvents->donationRevoked('123456');
 
         $events = $this->getAllEvents($gatewayId);
 
