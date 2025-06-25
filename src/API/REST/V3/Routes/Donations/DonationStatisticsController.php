@@ -135,11 +135,27 @@ class DonationStatisticsController extends WP_REST_Controller
 
     /**
      * Generate a dashboard URL to view this donation on the gateway, if possible.
-     *
      * @unreleased
      */
     private function getGatewayViewUrl(Donation $donation): ?string
     {
-        return apply_filters('give_payment_details_transaction_id-' . $donation->gatewayId, $donation->gatewayTransactionId, $donation->id);
+        $link = apply_filters('give_payment_details_transaction_id-' . $donation->gatewayId, $donation->gatewayTransactionId, $donation->id);
+
+        // If no link is returned, return null
+        if (empty($link)) {
+            return null;
+        }
+
+        // Extract URL from anchor tag using regex
+        if (preg_match('/href=["\']([^"\']+)["\']/', $link, $matches)) {
+            return $matches[1];
+        }
+
+        // If it's already a URL (not an anchor tag), return as is
+        if (filter_var($link, FILTER_VALIDATE_URL)) {
+            return $link;
+        }
+
+        return null;
     }
 }
