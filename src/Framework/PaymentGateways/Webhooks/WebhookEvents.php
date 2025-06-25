@@ -27,7 +27,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function paymentAbandoned(
+    public function donationAbandoned(
         string $gatewayTransactionId,
         string $message = '',
         $skipRecurringDonations = false
@@ -38,7 +38,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function paymentCancelled(
+    public function donationCancelled(
         string $gatewayTransactionId,
         string $message = '',
         $skipRecurringDonations = false
@@ -49,7 +49,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function paymentCompleted(
+    public function donationCompleted(
         string $gatewayTransactionId,
         string $message = '',
         $skipRecurringDonations = false
@@ -60,7 +60,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function paymentFailed(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    public function donationFailed(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
         $this->setDonationStatus(DonationStatus::FAILED(), $gatewayTransactionId, $message, $skipRecurringDonations);
     }
@@ -68,7 +68,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function paymentPending(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    public function donationPending(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
         $this->setDonationStatus(DonationStatus::PENDING(), $gatewayTransactionId, $message, $skipRecurringDonations);
     }
@@ -76,7 +76,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function paymentPreapproval(
+    public function donationPreapproval(
         string $gatewayTransactionId,
         string $message = '',
         $skipRecurringDonations = false
@@ -88,7 +88,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function paymentProcessing(
+    public function donationProcessing(
         string $gatewayTransactionId,
         string $message = '',
         $skipRecurringDonations = false
@@ -101,7 +101,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function paymentRefunded(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    public function donationRefunded(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
         $this->setDonationStatus(DonationStatus::REFUNDED(), $gatewayTransactionId, $message, $skipRecurringDonations);
     }
@@ -109,7 +109,7 @@ class WebhookEvents
     /**
      * @unreleased
      */
-    public function paymentRevoked(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    public function donationRevoked(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
         $this->setDonationStatus(DonationStatus::REVOKED(), $gatewayTransactionId, $message, $skipRecurringDonations);
     }
