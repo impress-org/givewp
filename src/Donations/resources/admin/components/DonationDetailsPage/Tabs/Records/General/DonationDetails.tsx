@@ -121,8 +121,9 @@ export default function DonationDetails() {
                                     type="radio"
                                     id="anonymous-yes"
                                     value="true"
-                                    defaultChecked={anonymous === true}
-                                    {...register('anonymous')}
+                                    {...register('anonymous', {
+                                        setValueAs: (value) => value.toString()
+                                    })}
                                 />
                                 <span>{__('Yes, please', 'give')}</span>
                             </label>
@@ -131,8 +132,9 @@ export default function DonationDetails() {
                                     type="radio"
                                     id="anonymous-no"
                                     value="false"
-                                    defaultChecked={anonymous === false}
-                                    {...register('anonymous')}
+                                    {...register('anonymous', {
+                                        setValueAs: (value) => value.toString()
+                                    })}
                                 />
                                 <span>{__('No, thank you', 'give')}</span>
                             </label>
