@@ -15,11 +15,18 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFirstDonationCompleted
 {
     /**
+     * @unreleased Add $gatewaySubscriptionId parameter to handle the case where the donation is not found by gateway transaction ID.
      * @since 3.6.0
      */
-    public function __invoke(string $gatewayTransactionId, string $message = '', bool $setSubscriptionActive = true)
+    public function __invoke(string $gatewayTransactionId, string $message = '', bool $setSubscriptionActive = true, string $gatewaySubscriptionId = '')
     {
         $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+    
+        if (! $donation && $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId)) {        
+            $donation = $subscription->initialDonation();
+            $donation->gatewayTransactionId = $gatewayTransactionId;
+            $donation->save();
+        }
 
         if ( ! $donation || ! $donation->type->isSubscription() || $donation->id !== $donation->subscription->initialDonation()->id) {
             return;
