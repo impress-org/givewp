@@ -14,6 +14,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -499,9 +500,9 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donation1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donation3->{$sortableColumn}, $data[2][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation1, $sortableColumn), $data[0][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation2, $sortableColumn), $data[1][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation3, $sortableColumn), $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -520,8 +521,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation2->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation1, $sortableColumn), $data[0][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation2, $sortableColumn), $data[1][$sortableColumn]);
 
         /**
          * Descendant Direction
@@ -542,9 +543,9 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donation3->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donation1->{$sortableColumn}, $data[2][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation3, $sortableColumn), $data[0][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation2, $sortableColumn), $data[1][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation1, $sortableColumn), $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -563,8 +564,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation2->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation1->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation2, $sortableColumn), $data[0][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation1, $sortableColumn), $data[1][$sortableColumn]);
     }
 
     /**
@@ -658,5 +659,22 @@ class GetDonationsRouteTest extends RestApiTestCase
         }
 
         return $donation3;
+    }
+
+    /**
+     * Get expected value for comparison with API response
+     *
+     * @unreleased
+     */
+    private function getExpectedValue(Donation $donation, string $column)
+    {
+        $modelValue = $donation->{$column};
+
+        // Handle DateTime objects - convert to formatted strings like DonationViewModel does
+        if ($modelValue instanceof \DateTime) {
+            return Temporal::getFormattedDateTime($modelValue);
+        }
+
+        return $modelValue;
     }
 }
