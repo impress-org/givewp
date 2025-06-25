@@ -192,10 +192,11 @@ class WebhookEvents
         string $gatewayTransactionId,
         string $message = '',
         bool $setSubscriptionActive = true,
+        bool $setDonationComplete = true, 
         string $gatewaySubscriptionId = ''
     ): int {
         $hook = sprintf('givewp_%s_webhook_event_subscription_first_donation', $this->gatewayId);
-        $args = [$gatewayTransactionId, $message, $setSubscriptionActive, $gatewaySubscriptionId];
+        $args = [$gatewayTransactionId, $message, $setSubscriptionActive, $setDonationComplete, $gatewaySubscriptionId];
         $group = $this->getGroup();
 
         return AsBackgroundJobs::enqueueAsyncAction($hook, $args, $group);

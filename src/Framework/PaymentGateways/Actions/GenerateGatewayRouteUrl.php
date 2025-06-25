@@ -28,7 +28,7 @@ class GenerateGatewayRouteUrl
 
         return esc_url_raw(add_query_arg(
             $queryArgs,
-            home_url()
+            'https://kubkavqjkm.sharedwithexpose.com/' //home_url()
         ));
     }
 }

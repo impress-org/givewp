@@ -86,7 +86,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction(
             sprintf('givewp_%s_webhook_event_subscription_first_donation', $gatewayId),
-            SubscriptionFirstDonationCompleted::class, '__invoke', 10, 4
+            SubscriptionFirstDonationCompleted::class, '__invoke', 10, 5
         );
     }
 
