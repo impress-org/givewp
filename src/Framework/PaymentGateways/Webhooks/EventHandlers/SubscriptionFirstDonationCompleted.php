@@ -22,7 +22,7 @@ class SubscriptionFirstDonationCompleted
     {
         $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
     
-        if (! $donation && $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId)) {        
+        if (! $donation && ! empty($gatewaySubscriptionId) && $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId)) {        
             $donation = $subscription->initialDonation();
             $donation->gatewayTransactionId = $gatewayTransactionId;
             $donation->save();
