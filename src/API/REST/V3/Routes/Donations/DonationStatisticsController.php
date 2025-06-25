@@ -136,31 +136,10 @@ class DonationStatisticsController extends WP_REST_Controller
     /**
      * Generate a dashboard URL to view this donation on the gateway, if possible.
      *
-     * @param Donation $donation
-     * @return string|null
+     * @unreleased
      */
     private function getGatewayViewUrl(Donation $donation): ?string
     {
-        $gatewayId = $donation->gatewayId;
-        $transactionId = $donation->gatewayTransactionId ?? null;
-        $mode = $donation->mode->getValue();
-
-        if (!$transactionId) {
-            return null;
-        }
-
-        switch ($gatewayId) {
-            case 'paypal-commerce':
-                $base = 'https://www.paypal.com/';
-                return $base . 'activity/payment/' . urlencode($transactionId);
-            case 'stripe_payment_element':
-            case 'stripe':
-                $base = $mode === 'live'
-                    ? 'https://dashboard.stripe.com/payments/'
-                    : 'https://dashboard.stripe.com/test/payments/';
-                return $base . urlencode($transactionId);
-            default:
-                return null;
-        }
+        return apply_filters('give_payment_details_transaction_id-' . $donation->gatewayId, $donation->gatewayTransactionId, $donation->id);
     }
 }
