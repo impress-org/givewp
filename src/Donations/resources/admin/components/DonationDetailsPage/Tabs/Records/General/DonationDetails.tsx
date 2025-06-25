@@ -53,7 +53,7 @@ export default function DonationDetails() {
                             value={amount.value}
                             onValueChange={(value) => {
                                 setValue('amount', {
-                                    value: Number(value ?? 0),
+                                    amount: Number(value ?? 0),
                                     currency: amount.currency,
                                 }, {shouldDirty: true});
                             }}

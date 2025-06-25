@@ -677,20 +677,39 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Donor company', 'give'),
                 ],
                 'amount' => [
-                    'type' => 'number',
+                    'type' => ['object', 'null'],
+                    'properties' => [
+                        'amount' => [
+                            'type' => 'number',
+                        ],
+                        'amountInMinorUnits' => [
+                            'type' => 'number',
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                        ],
+                    ],
                     'description' => esc_html__('Donation amount', 'give'),
                 ],
                 'feeAmountRecovered' => [
-                    'type' => ['number', 'null'],
+                    'type' => ['object', 'null'],
+                    'properties' => [
+                        'amount' => [
+                            'type' => 'number',
+                        ],
+                        'amountInMinorUnits' => [
+                            'type' => 'number',
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                        ],
+                    ],
                     'description' => esc_html__('Fee amount recovered', 'give'),
-                ],
-                'currency' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Donation currency', 'give'),
                 ],
                 'status' => [
                     'type' => 'string',
                     'description' => esc_html__('Donation status', 'give'),
+                    'enum' => array_values(DonationStatus::toArray()),
                 ],
                 'gatewayId' => [
                     'type' => 'string',
