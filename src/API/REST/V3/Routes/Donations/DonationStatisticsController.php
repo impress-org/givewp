@@ -135,32 +135,27 @@ class DonationStatisticsController extends WP_REST_Controller
 
     /**
      * Generate a dashboard URL to view this donation on the gateway, if possible.
-     *
-     * @param Donation $donation
-     * @return string|null
+     * @unreleased
      */
     private function getGatewayViewUrl(Donation $donation): ?string
     {
-        $gatewayId = $donation->gatewayId;
-        $transactionId = $donation->gatewayTransactionId ?? null;
-        $mode = $donation->mode->getValue();
+        $link = apply_filters('give_payment_details_transaction_id-' . $donation->gatewayId, $donation->gatewayTransactionId, $donation->id);
 
-        if (!$transactionId) {
+        // If no link is returned, return null
+        if (empty($link)) {
             return null;
         }
 
-        switch ($gatewayId) {
-            case 'paypal-commerce':
-                $base = 'https://www.paypal.com/';
-                return $base . 'activity/payment/' . urlencode($transactionId);
-            case 'stripe_payment_element':
-            case 'stripe':
-                $base = $mode === 'live'
-                    ? 'https://dashboard.stripe.com/payments/'
-                    : 'https://dashboard.stripe.com/test/payments/';
-                return $base . urlencode($transactionId);
-            default:
-                return null;
+        // Extract URL from anchor tag using regex
+        if (preg_match('/href=["\']([^"\']+)["\']/', $link, $matches)) {
+            return $matches[1];
         }
+
+        // If it's already a URL (not an anchor tag), return as is
+        if (filter_var($link, FILTER_VALIDATE_URL)) {
+            return $link;
+        }
+
+        return null;
     }
 }
