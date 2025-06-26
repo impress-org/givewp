@@ -83,6 +83,13 @@
   gap: var(--givewp-spacing-1);
 }
 
+.donationType {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 
 .gatewayLink {
   display: flex;

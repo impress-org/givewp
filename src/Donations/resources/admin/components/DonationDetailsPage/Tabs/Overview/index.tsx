@@ -18,7 +18,7 @@ export default function DonationDetailsPageOverviewTab() {
         return null;
     }
 
-    console.log(statistics);
+    console.log(donation);
 
     return (
         <div className={styles.overview}>
@@ -35,6 +35,7 @@ export default function DonationDetailsPageOverviewTab() {
                     donation={statistics.donation}
                     details={statistics.receipt?.donationDetails}
                     donationType={donation?.type}
+                    subscriptionId={donation?.subscriptionId}
                 />
              </div>
 
