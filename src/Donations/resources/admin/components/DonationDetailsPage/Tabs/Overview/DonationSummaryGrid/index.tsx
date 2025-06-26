@@ -47,7 +47,8 @@ export default function DonationSummaryGrid({
     const donorPageUrl = `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`;
     const campaignPageUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaign.id}&tab=overview`;
     const subscriptionPageUrl = `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${subscriptionId}`;
-    const donationTypeDisplay = donationType === 'single' ? __('One-time', 'give') : __('Recurring', 'give');
+    const isRecurringDonation = donationType !== 'single'
+    const donationTypeDisplay = isRecurringDonation ? __('Recurring', 'give') : __('One-time', 'give');
     const getPaymentMethodValue = (details, label) => {
         const found = details?.find(detail => detail.label === label);
         return found?.value;
@@ -83,7 +84,7 @@ export default function DonationSummaryGrid({
                         <span className={styles.badge} aria-label={donationTypeDisplay}>
                             {donationType && donationTypeDisplay}
                         </span>
-                        {donationType !== 'single' && (
+                        {isRecurringDonation && (
                             <a
                                 className={styles.gatewayLink}
                                 href={subscriptionPageUrl}
