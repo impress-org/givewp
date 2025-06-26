@@ -11,9 +11,11 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardL
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPausable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
+use Give\Framework\PaymentGateways\Contracts\WebhookNotificationsListener;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
+use Give\Framework\PaymentGateways\Webhooks\Webhook;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
@@ -43,6 +45,15 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public $subscriptionModule;
 
     /**
+     * @unreleased
+     *
+     * @var Webhook $webhook
+     */
+    public $webhook;
+
+    /**
+     * @unreleased Add the webhookEvents property
+     *
      * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
      *
@@ -55,6 +66,25 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         $this->subscriptionModule = $subscriptionModule;
+        $this->webhook = new Webhook($this);
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function webhook(): Webhook
+    {
+        $instance = new static();
+
+        return $instance->webhook;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function canListeningWebhookNotifications(): bool
+    {
+        return $this instanceof WebhookNotificationsListener;
     }
 
     /**

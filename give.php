@@ -251,6 +251,7 @@ final class Give
         Give\FeatureFlags\OptionBasedFormEditor\ServiceProvider::class,
         Give\ThirdPartySupport\ServiceProvider::class,
         Give\API\REST\V3\Routes\ServiceProvider::class,
+        Give\Framework\PaymentGateways\ServiceProvider::class,
     ];
 
     /**
