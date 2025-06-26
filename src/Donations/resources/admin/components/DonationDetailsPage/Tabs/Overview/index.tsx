@@ -1,6 +1,7 @@
 import styles from './styles.module.scss';
 import DonationStats from './DonationStats';
 import DonationSummaryGrid from './DonationSummaryGrid';
+import DonationReceipt from './DonationReceipt';
 import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
 import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
@@ -38,8 +39,11 @@ export default function DonationDetailsPageOverviewTab() {
                 <div className={styles.card}>
                     <DonationNotes donationId={donationId} />
                 </div>
+             </div>
+
+            <div className={styles.right}>
+                <DonationReceipt />
             </div>
-            <div className={styles.right}></div>
         </div>
     );
 }
