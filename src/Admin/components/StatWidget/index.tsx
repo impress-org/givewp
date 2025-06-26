@@ -49,7 +49,7 @@ export default function StatWidget({
                             <Spinner size="small" />
                         </span>
                     )}
-                {inActive && (<a className={styles.upgradeLink} href={href}>{__('Upgrade', 'give')}</a>)}
+                {inActive && (<a className={styles.upgradeLink} href={href} data-tooltip={__('Keep 100% of your fundraising revenue by providing donors with the option to cover the credit card processing fees', 'give')}>{__('Upgrade', 'give')}</a>)}
                 </div>
                 {previousValue !== null && <PercentChangePill value={value} comparison={previousValue} />}
             </div>

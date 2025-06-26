@@ -71,6 +71,43 @@
         color: var(--givewp-shades-white);
         background: var(--givewp-green-600);
     }
+
+    &::before {
+        display: none !important;
+    }
+
+    &::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: var(--givewp-shades-white);
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-3);
+        border-radius: 4px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+        font-weight: 300;
+        z-index: 99999999;;
+        font-size: 0.75rem;
+        line-height: 1.33;
+        letter-spacing: 0.12px;
+        color: #4b5563;   
+        height: 5rem; 
+        width: 15rem;
+        text-align: left;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+        text-transform: none;
+    }
+
+    &:hover::after,
+    &:focus::after {
+        opacity: 1;
+    }
 }
 
 .upgradeLink:visited {
