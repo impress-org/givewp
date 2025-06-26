@@ -2,6 +2,7 @@
 
 namespace Give\API\REST\V3\Routes\Donations;
 
+use DateTime;
 use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
@@ -11,7 +12,6 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Controller;
@@ -308,9 +308,9 @@ class DonationController extends WP_REST_Controller
             case 'amount':
             case 'feeAmountRecovered':
                 if (is_array($value)) {
-                    // Handle Money object array format: ['amount' => 10000, 'currency' => 'USD']
+                    // Handle Money object array format: ['amount' => 100.00, 'currency' => 'USD']
                     if (isset($value['amount']) && isset($value['currency'])) {
-                        return new Money($value['amount'], $value['currency']);
+                        return Money::fromDecimal($value['amount'], $value['currency']);
                     }
                 }
                 return $value;
@@ -330,13 +330,9 @@ class DonationController extends WP_REST_Controller
             case 'createdAt':
                 if (is_string($value)) {
                     try {
-                        $dateTime = Temporal::toDateTime($value); // Y-m-d H:i:s
-                        if ($dateTime === false) {
-                            throw new InvalidArgumentException("Invalid date format for {$key}: {$value}. Expected Y-m-d H:i:s format.");
-                        }
-                        return $dateTime;
-                    } catch (Exception $e) {
-                        throw new InvalidArgumentException("Invalid date format for {$key}: {$value}. Expected Y-m-d H:i:s format.");
+                        return new DateTime( $value, wp_timezone());
+                    } catch (\Exception $e) {
+                        throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
                     }
                 }
                 return $value;
@@ -681,20 +677,39 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Donor company', 'give'),
                 ],
                 'amount' => [
-                    'type' => 'number',
+                    'type' => ['object', 'null'],
+                    'properties' => [
+                        'amount' => [
+                            'type' => 'number',
+                        ],
+                        'amountInMinorUnits' => [
+                            'type' => 'number',
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                        ],
+                    ],
                     'description' => esc_html__('Donation amount', 'give'),
                 ],
                 'feeAmountRecovered' => [
-                    'type' => ['number', 'null'],
+                    'type' => ['object', 'null'],
+                    'properties' => [
+                        'amount' => [
+                            'type' => 'number',
+                        ],
+                        'amountInMinorUnits' => [
+                            'type' => 'number',
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                        ],
+                    ],
                     'description' => esc_html__('Fee amount recovered', 'give'),
-                ],
-                'currency' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Donation currency', 'give'),
                 ],
                 'status' => [
                     'type' => 'string',
                     'description' => esc_html__('Donation status', 'give'),
+                    'enum' => array_values(DonationStatus::toArray()),
                 ],
                 'gatewayId' => [
                     'type' => 'string',
@@ -730,28 +745,12 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Purchase key (sensitive data)', 'give'),
                 ],
                 'createdAt' => [
-                    'type' => 'object',
+                    'type' => 'string',
                     'description' => esc_html__('Donation creation date', 'give'),
-                    'properties' => [
-                        'date' => [
-                            'type' => 'string',
-                        ],
-                        'timezone' => [
-                            'type' => 'string',
-                        ],
-                    ],
                 ],
                 'updatedAt' => [
-                    'type' => 'object',
+                    'type' => 'string',
                     'description' => esc_html__('Donation last update date', 'give'),
-                    'properties' => [
-                        'date' => [
-                            'type' => 'string',
-                        ],
-                        'timezone' => [
-                            'type' => 'string',
-                        ],
-                    ],
                 ],
                 'customFields' => [
                     'type' => 'array',

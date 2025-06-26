@@ -53,7 +53,7 @@ export default function DonationDetails() {
                             value={amount.value}
                             onValueChange={(value) => {
                                 setValue('amount', {
-                                    value: Number(value ?? 0),
+                                    amount: Number(value ?? 0),
                                     currency: amount.currency,
                                 }, {shouldDirty: true});
                             }}
@@ -78,13 +78,7 @@ export default function DonationDetails() {
                     <input
                         type="datetime-local"
                         id="date"
-                        value={createdAt.date ? createdAt.date.replace(' ', 'T').slice(0, 16) : ''}
-                        onChange={(e) => {
-                            setValue('createdAt', {
-                                ...createdAt,
-                                date: e.target.value,
-                            }, {shouldDirty: true});
-                        }}
+                        {...register('createdAt')}
                     />
                 </AdminSectionField>
 
@@ -127,8 +121,9 @@ export default function DonationDetails() {
                                     type="radio"
                                     id="anonymous-yes"
                                     value="true"
-                                    defaultChecked={anonymous === true}
-                                    {...register('anonymous')}
+                                    {...register('anonymous', {
+                                        setValueAs: (value) => value.toString()
+                                    })}
                                 />
                                 <span>{__('Yes, please', 'give')}</span>
                             </label>
@@ -137,8 +132,9 @@ export default function DonationDetails() {
                                     type="radio"
                                     id="anonymous-no"
                                     value="false"
-                                    defaultChecked={anonymous === false}
-                                    {...register('anonymous')}
+                                    {...register('anonymous', {
+                                        setValueAs: (value) => value.toString()
+                                    })}
                                 />
                                 <span>{__('No, thank you', 'give')}</span>
                             </label>

@@ -2,14 +2,12 @@
     background-color: var(--givewp-neutral-50);
     border-radius: var(--givewp-rounded-8);
     display: flex;
-    gap: var(--givewp-spacing-2);
     margin-bottom: var(--givewp-spacing-2);
     padding: var(--givewp-spacing-2);
 }
 
 .tabItem {
     align-items: center;
-    border-radius: var(--givewp-rounded-4);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -19,8 +17,18 @@
     line-height: 1.43;
     padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
 
+    &:first-child {
+        border-top-left-radius: var(--givewp-rounded-4);
+        border-bottom-left-radius: var(--givewp-rounded-4);
+    }
+
+    &:last-child {
+        border-top-right-radius: var(--givewp-rounded-4);
+        border-bottom-right-radius: var(--givewp-rounded-4);
+    }
+
     &:hover {
-        background-color: var(--givewp-neutral-25);
+        background-color: var(--givewp-neutral-100);
     }
 
     &:before {
