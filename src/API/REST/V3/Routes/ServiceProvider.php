@@ -7,6 +7,7 @@ use Give\API\REST\V3\Routes\Campaigns\GetCampaignRevenue;
 use Give\API\REST\V3\Routes\Campaigns\GetCampaignStatistics;
 use Give\API\REST\V3\Routes\Campaigns\RegisterCampaignRoutes;
 use Give\API\REST\V3\Routes\Donations\DonationController;
+use Give\API\REST\V3\Routes\Donations\DonationNotesController;
 use Give\API\REST\V3\Routes\Donations\DonationStatisticsController;
 use Give\API\REST\V3\Routes\Donors\DonorController;
 use Give\API\REST\V3\Routes\Donors\DonorNotesController;
@@ -79,6 +80,9 @@ class ServiceProvider implements ServiceProviderInterface
 
             $donationStatisticsController = new DonationStatisticsController();
             $donationStatisticsController->register_routes();
+
+            $donationNotesController = new DonationNotesController();
+            $donationNotesController->register_routes();
         });
     }
 }
