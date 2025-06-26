@@ -79,8 +79,8 @@
 
 .paymentMethod {
   display: flex;
-  align-items: center;
-  gap: var(--givewp-spacing-1);
+  align-items: flex-end;
+  gap: var(--givewp-spacing-2);
 }
 
 .donationType {
