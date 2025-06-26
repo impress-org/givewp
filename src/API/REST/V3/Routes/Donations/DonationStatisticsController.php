@@ -6,6 +6,7 @@ use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\Donations\Models\Donation;
 use Give\EventTickets\Repositories\EventTicketRepository;
+use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -170,11 +171,11 @@ class DonationStatisticsController extends WP_REST_Controller
      */
     private function getIntentedAmount(Donation $donation): string
     {
-        $totalTicketAmount = $this->getEventTicketAmount($donation);
-
-        if (is_null($totalTicketAmount)) {
+        if (!FeatureFlag::eventTickets()) {
             return $donation->intendedAmount()->formatToDecimal();
         }
+
+        $totalTicketAmount =  give(EventTicketRepository::class)->getTotalByDonation($donation);
 
         return $donation->intendedAmount()
             ->subtract($totalTicketAmount)
