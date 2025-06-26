@@ -116,7 +116,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         formData.append('give_last', lastName);
         formData.append('give_email', email);
 
-        if (country) {
+        if (country && country.length === 2) {
             formData.append('card_address', addressLine1);
             formData.append('card_address_2', addressLine2);
             formData.append('card_city', city);

@@ -4,6 +4,7 @@ namespace Give\Donors;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Actions\CreateUserFromDonor;
+use Give\Donors\Actions\LoadDonorOptions;
 use Give\Donors\Actions\SendDonorUserRegistrationNotification;
 use Give\Donors\Actions\UpdateAdminDonorDetails;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
@@ -11,6 +12,7 @@ use Give\Donors\Exceptions\FailedDonorUserCreationException;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Migrations\AddPhoneColumn;
 use Give\Donors\Models\Donor;
+use Give\Donors\Repositories\DonorNotesRepository;
 use Give\Donors\Repositories\DonorRepositoryProxy;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
@@ -30,6 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
     public function register()
     {
         give()->singleton('donors', DonorRepositoryProxy::class);
+        give()->singleton('donorNotes', DonorNotesRepository::class);
         give()->singleton(DonorsListTable::class, function () {
             $listTable = new DonorsListTable();
             Hooks::doAction('givewp_donors_list_table', $listTable);
@@ -50,10 +53,6 @@ class ServiceProvider implements ServiceProviderInterface
         // only register new admin page if user hasn't chosen to use the old one
         if (empty($showLegacy)) {
             Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem', 30);
-
-            if (DonorsAdminPage::isShowing()) {
-                Hooks::addAction('admin_enqueue_scripts', DonorsAdminPage::class, 'loadScripts');
-            }
         } elseif (DonorsAdminPage::isShowing()) {
             Hooks::addAction('admin_head', DonorsAdminPage::class, 'renderReactSwitch');
         }
@@ -66,6 +65,9 @@ class ServiceProvider implements ServiceProviderInterface
         ]);
 
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
+
+        $this->registerDonorEntity();
+        $this->loadDonorOptions();
     }
 
     /**
@@ -103,5 +105,21 @@ class ServiceProvider implements ServiceProviderInterface
                 }
             }
         }, 10, 2);
+    }
+
+    /**
+     * @since 4.4.0
+     */
+    private function registerDonorEntity()
+    {
+        Hooks::addAction('init', Actions\RegisterDonorEntity::class);
+    }
+
+    /**
+     * @since 4.4.0
+     */
+    private function loadDonorOptions()
+    {
+        Hooks::addAction('init', LoadDonorOptions::class);
     }
 }

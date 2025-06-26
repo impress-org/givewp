@@ -134,6 +134,7 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
+     * @unreleased Add Accept Credit Card (Smart Buttons Only) setting.
      * @since 3.0.0 Conditionally add "Transaction Type" setting.
      * @since 2.33.0 Register new payment field type setting.
      * @since 2.27.3 Enable Venmo payment method by default.
@@ -204,6 +205,20 @@ class PayPalCommerce extends PaymentGateway
                     'smart-buttons' => esc_html__('Smart Buttons Only', 'give'),
                 ],
                 'default' => 'auto',
+            ],
+            [
+                'name' => esc_html__('Accept Credit Card (Smart Buttons Only)', 'give'),
+                'id' => 'paypal_commerce_accept_credit_card',
+                'type' => 'radio_inline',
+                'desc' => esc_html__(
+                    'Displays a button allowing Donors to pay with Credit Card. This option is only available if "Smart Buttons Only" is selected on Payment Field Type.',
+                    'give'
+                ),
+                'default' => 'enabled',
+                'options' => [
+                    'enabled' => esc_html__('Enabled', 'give'),
+                    'disabled' => esc_html__('Disabled', 'give'),
+                ],
             ],
             [
                 'name' => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),

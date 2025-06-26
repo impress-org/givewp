@@ -171,6 +171,26 @@ class RestApiTestCase extends TestCase
     }
 
     /**
+     * Converts a response to data to send.
+     *
+     * @since 4.4.0
+     *
+     * @param WP_REST_Response $response  Response object.
+     * @param bool|string[]    $embed     Whether to embed all links, a filtered list of link relations, or no links.
+     *
+     * @return array {
+     *     Data with sub-requests embedded.
+     *
+     * @type array             $_links    Links.
+     * @type array             $_embedded Embedded objects.
+     *                                    }
+     */
+    public function responseToData(WP_REST_Response $response, $embed): array
+    {
+        return $this->server->response_to_data($response, $embed);
+    }
+
+    /**
      * Asserts that the response is a WP error response with the specified code and status (if provided).
      *
      * @since 2.26.0

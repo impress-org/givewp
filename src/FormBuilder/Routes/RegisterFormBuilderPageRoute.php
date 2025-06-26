@@ -21,6 +21,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
+     * @since 4.3.2 update capability to edit_give_forms
      * @since 4.0.0 set parent slug to empty string
      * @since 3.0.0
      *
@@ -32,7 +33,7 @@ class RegisterFormBuilderPageRoute
             '', // do not display in menu, just register page
             'Visual Donation Form Builder', // ignored
             'Add Form', // ignored
-            'manage_options',
+            'edit_give_forms',
             FormBuilderRouteBuilder::SLUG,
             [$this, 'renderPage'],
             1

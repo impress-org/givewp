@@ -4,11 +4,29 @@ import {ErrorBoundary} from 'react-error-boundary';
 import {__, sprintf} from '@wordpress/i18n';
 import {createInterpolateElement, useEffect, useMemo} from '@wordpress/element';
 import cx from 'classnames';
+import {isDonationTypeSubscription} from '@givewp/forms/types';
+
+interface EmptyMessageProps {
+    message: string;
+}
+
+interface GatewayMissingMessageProps {
+    donationAmountMinimumNotReached?: boolean;
+    currencyNotSupported?: boolean;
+    subscriptionNotSupported?: boolean;
+}
+
+interface GatewayFieldsErrorFallbackProps {
+    error: Error;
+    resetErrorBoundary: () => void;
+}
 
 /**
+ * Empty message component displayed when no payment gateways are available.
+ *
  * @since 3.20.0
  */
-function EmptyMessage({message}: {message: string}) {
+function EmptyMessage({message}: EmptyMessageProps) {
     return (
         <div className="givewp-fields-gateways__gateway--empty">
             <p>
@@ -23,16 +41,17 @@ function EmptyMessage({message}: {message: string}) {
 }
 
 /**
+ * Component that displays contextual messages when no gateways are available.
+ * Handles different scenarios like minimum donation amount, currency support, and subscription support.
+ *
  * @since 3.20.0 updated message to account for minimum donation amount
  * @since 3.0.0
  */
 function GatewayMissingMessage({
     donationAmountMinimumNotReached,
     currencyNotSupported,
-}: {
-    donationAmountMinimumNotReached?: boolean;
-    currencyNotSupported?: boolean;
-}) {
+    subscriptionNotSupported,
+}: GatewayMissingMessageProps) {
     let message = __(
         'No gateways have been enabled yet.  To get started accepting donations, enable a compatible payment gateway in your settings.',
         'give'
@@ -45,15 +64,23 @@ function GatewayMissingMessage({
             'The selected currency is not supported by any of the available payment gateways.  Please select a different currency or contact the site administrator for assistance.',
             'give'
         );
+    } else if (subscriptionNotSupported) {
+        message = __(
+            'No gateways support recurring payments. Please select a different payment gateway or contact the site administrator for assistance.',
+            'give'
+        );
     }
 
     return <EmptyMessage message={message} />;
 }
 
 /**
+ * Error fallback component for gateway fields that fail to render.
+ * Provides user-friendly error message and reload functionality.
+ *
  * @since 3.0.0
  */
-function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
+function GatewayFieldsErrorFallback({error, resetErrorBoundary}: GatewayFieldsErrorFallbackProps) {
     return (
         <div role="alert">
             <p>
@@ -71,6 +98,9 @@ function GatewayFieldsErrorFallback({error, resetErrorBoundary}) {
 }
 
 /**
+ * Notice component displayed when the donation form is in test mode.
+ * Informs users that no live donations will be processed.
+ *
  * @since 3.0.0
  */
 const TestModeNotice = () => {
@@ -100,6 +130,16 @@ const TestModeNotice = () => {
 };
 
 /**
+ * Main Gateways component that handles payment gateway selection and display.
+ *
+ * This component:
+ * - Filters available gateways based on donation amount, currency, and subscription support
+ * - Handles currency switcher settings to show only compatible gateways
+ * - Automatically selects appropriate default gateway when options change
+ * - Displays contextual messages when no gateways are available
+ * - Shows test mode notice when applicable
+ *
+ * @since 4.4.0 filter gateways based on donation type
  * @since 3.0.0
  */
 export default function Gateways({isTestMode, defaultValue, inputProps, gateways}: GatewayFieldProps) {
@@ -108,13 +148,19 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
     const {setValue} = useFormContext();
     const {currencySwitcherSettings} = useDonationFormSettings();
 
+    // Watch form values that affect gateway availability
     const donationAmount = useWatch({name: 'amount'});
     const currency = useWatch({name: 'currency'});
     const activeGatewayId = useWatch({name: 'gatewayId'});
+    const donationType = useWatch({name: 'donationType'});
+    const isSubscription = isDonationTypeSubscription(donationType);
 
     const donationAmountMinimumNotReached = donationAmount === 0;
 
-    // filter gateway options if currency switcher settings are present
+    /**
+     * Filter gateway options based on currency switcher settings.
+     * If currency switcher is enabled, only show gateways that support the selected currency.
+     */
     const gatewayOptionsWithCurrencySettings = useMemo(() => {
         if (currencySwitcherSettings.length <= 1) {
             return gateways;
@@ -129,14 +175,47 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
         return gateways.filter(({id}) => currencySwitcherSetting.gateways.includes(id));
     }, [currency]);
 
-    const gatewayOptions = useMemo(() => {
-        return donationAmountMinimumNotReached ? [] : gatewayOptionsWithCurrencySettings;
-    }, [donationAmountMinimumNotReached, gatewayOptionsWithCurrencySettings]);
+    /**
+     * Filter gateways that support subscription/recurring donations.
+     */
+    const gatewayOptionsWithSubscriptionSupport = useMemo(() => {
+        return gatewayOptionsWithCurrencySettings.filter(({supportsSubscriptions}) => supportsSubscriptions);
+    }, [gatewayOptionsWithCurrencySettings]);
 
-    // reset the default /selected gateway based on the gateway options available
+    /**
+     * Final filtered gateway options based on all criteria:
+     * - Donation amount must be greater than zero
+     * - For subscriptions, gateway must support recurring payments
+     * - Gateway must support the selected currency
+     */
+    const gatewayOptions = useMemo(() => {
+        if (donationAmountMinimumNotReached) {
+            return [];
+        }
+
+        if (isSubscription) {
+            return gatewayOptionsWithSubscriptionSupport.length > 0 ? gatewayOptionsWithSubscriptionSupport : [];
+        }
+
+        return gatewayOptionsWithCurrencySettings.length > 0 ? gatewayOptionsWithCurrencySettings : [];
+    }, [
+        donationAmountMinimumNotReached,
+        gatewayOptionsWithSubscriptionSupport,
+        gatewayOptionsWithCurrencySettings,
+        isSubscription,
+    ]);
+
+    /**
+     * Automatically set the selected gateway when available options change.
+     * - If default gateway is still available, keep it selected
+     * - Otherwise, select the first available gateway
+     * - If no gateways available, clear the selection
+     */
     useEffect(() => {
         if (gatewayOptions.length > 0) {
-            const optionsDefaultValue = gatewayOptions.includes(defaultValue) ? defaultValue : gatewayOptions[0].id;
+            const optionsDefaultValue = gatewayOptions.find(option => option.id === defaultValue)
+                ? defaultValue
+                : gatewayOptions[0].id;
 
             setValue(inputProps.name, optionsDefaultValue);
         } else {
@@ -150,7 +229,7 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
                 <>
                     {isTestMode && <TestModeNotice />}
                     <ul className="givewp-fields-gateways__list" style={{listStyleType: 'none', padding: 0}}>
-                        {gatewayOptions.map((gateway, index) => (
+                        {gatewayOptions.map((gateway) => (
                             <GatewayOption
                                 gateway={gateway}
                                 defaultChecked={gateway.id === defaultValue}
@@ -164,7 +243,8 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
             ) : (
                 <GatewayMissingMessage
                     donationAmountMinimumNotReached={donationAmountMinimumNotReached}
-                    currencyNotSupported={gatewayOptionsWithCurrencySettings.length > 1}
+                    currencyNotSupported={gatewayOptionsWithCurrencySettings.length === 0 && !donationAmountMinimumNotReached}
+                    subscriptionNotSupported={isSubscription && gatewayOptionsWithSubscriptionSupport.length === 0}
                 />
             )}
 
@@ -178,6 +258,15 @@ export default function Gateways({isTestMode, defaultValue, inputProps, gateways
 }
 
 /**
+ * Individual gateway option component that renders a radio button with gateway information.
+ *
+ * Features:
+ * - Radio button input for gateway selection
+ * - Gateway-specific styling and icons
+ * - Dynamic icon selection based on gateway type
+ * - Error boundary for gateway-specific fields
+ * - Conditional rendering of gateway fields when active
+ *
  * @since 3.0.0
  */
 function GatewayOption({gateway, defaultChecked, inputProps, isActive}: GatewayOptionProps) {
@@ -187,6 +276,7 @@ function GatewayOption({gateway, defaultChecked, inputProps, isActive}: GatewayO
         'givewp-fields-gateways__gateway--active': isActive,
     });
 
+    // Determine appropriate icon based on gateway type
     let fontAwesomeClass = 'fa-solid fa-gear';
     if (gateway.id.includes('stripe') || gateway.id.includes('card')) {
         fontAwesomeClass = 'fa-solid fa-credit-card';
