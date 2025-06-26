@@ -3,9 +3,9 @@
 namespace Give\DonorDashboards\Repositories;
 
 use Give\Framework\Database\DB;
+use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Receipt\DonationReceipt;
-use Give\Receipt\LineItem;
-use Give\ValueObjects\Money;
 use Give_Payment;
 
 /**
@@ -14,19 +14,34 @@ use Give_Payment;
 class Donations
 {
     /**
+     * Array of cached donor donation ids
+     *
+     * @unreleased
+     *
+     * @var array<int, int[]>
+     */
+    private static $donationIdsCache = [];
+
+    /**
      * Get donations count for donor
      *
      * @since 2.10.0
      *
      * @param int $donorId
      *
-     * @return int
+     * @return int|null
      */
     public function getDonationCount($donorId)
     {
-        $aggregate = $this->getDonationAggregate('count(revenue.id)', $donorId);
+        $query = $this->getRevenueDonationDataQuery($donorId);
 
-        return $aggregate ? $aggregate->result : null;
+        if (! $query) {
+            return null;
+        }
+
+        $count = $query->count('revenue.id');
+
+        return $count ?: null;
     }
 
     /**
@@ -36,16 +51,22 @@ class Donations
      *
      * @param int $donorId
      *
-     * @return string
+     * @return string|null
      */
     public function getRevenue($donorId)
     {
-        $currencyCode = give_get_option('currency');
-        $aggregate = $this->getDonationAggregate('sum(revenue.amount)', $donorId);
+        $query = $this->getRevenueDonationDataQuery($donorId);
 
-        return $aggregate ?
+        if (! $query) {
+            return null;
+        }
+
+        $currencyCode = give_get_option('currency');
+        $revenue = $query->sum('revenue.amount');
+
+        return $revenue ?
             $this->getAmountWithSeparators(
-                Money::ofMinor($aggregate->result, $currencyCode)->getAmount(),
+                (new Money($revenue, $currencyCode))->formatToDecimal(),
                 $currencyCode
             ) :
             null;
@@ -58,47 +79,120 @@ class Donations
      *
      * @param int $donorId
      *
-     * @return string
+     * @return string|null
      */
     public function getAverageRevenue($donorId)
     {
-        $currencyCode = give_get_option('currency');
-        $aggregate = $this->getDonationAggregate('avg(revenue.amount)', $donorId);
+        $query = $this->getRevenueDonationDataQuery($donorId);
 
-        return $aggregate ?
+        if (! $query) {
+            return null;
+        }
+
+        $currencyCode = give_get_option('currency');
+        $average = $query->avg('revenue.amount');
+
+        return $average ?
             $this->getAmountWithSeparators(
-                Money::ofMinor($aggregate->result, $currencyCode)->getAmount(),
+                (new Money(round($average), $currencyCode))->formatToDecimal(),
                 $currencyCode
             ) :
             null;
     }
 
     /**
-     * Generates a donation aggregate for a given donor
+     * Get formatted donations summary for a donor.
      *
-     * @param string $rawAggregate raw SELECT to determine what to aggregate over
-     * @param int    $donorId
+     * This summary includes count, total revenue, and average donation amount.
+     * The revenue and average are formatted as decimal strings.
      *
-     * @return object
+     * @unreleased
+     *
+     * @param  int  $donorId
+     *
+     * @return array{count: int|null, revenue: string|null, average: string|null}
      */
-    private function getDonationAggregate($rawAggregate, $donorId)
+    public function getFormattedDonationsSummary($donorId)
     {
-        global $wpdb;
+        $summary = $this->getDonationsSummary($donorId);
 
-        return DB::get_row(
-            DB::prepare(
-                "
-				SELECT {$rawAggregate} as result
-				FROM {$wpdb->give_revenue} as revenue
-					INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
-					INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON revenue.donation_id = donationmeta.donation_id
-				WHERE donationmeta.meta_key = '_give_payment_donor_id'
-					AND donationmeta.meta_value = %d
-					AND posts.post_status IN ( 'publish', 'give_subscription', 'pending' )
-			",
-                $donorId
-            )
-        );
+        if (! $summary) {
+            return [
+                'count'   => null,
+                'revenue' => null,
+                'average' => null,
+            ];
+        }
+
+        $currencyCode = give_get_option('currency');
+
+        return [
+            'count'   => $summary->count,
+            'revenue' => $summary->revenue ? $this->getAmountWithSeparators(
+                (new Money($summary->revenue, $currencyCode))->formatToDecimal(),
+                $currencyCode
+            ) : null,
+            'average' => $summary->average ? $this->getAmountWithSeparators(
+                (new Money(round((float) $summary->average), $currencyCode))->formatToDecimal(),
+                $currencyCode
+            ) : null,
+        ];
+    }
+
+    /**
+     * Get donations summary for a donor
+     *
+     * @unreleased
+     *
+     * @param int $donorId
+     *
+     * @return object{count: int|null, revenue: string|null, average: string|null}|null
+     */
+    private function getDonationsSummary($donorId)
+    {
+        $query = $this->getRevenueDonationDataQuery($donorId);
+
+        if (! $query) {
+            return null;
+        }
+
+        $summary = $query
+            ->select(['COUNT(revenue.id)', 'count'], ['SUM(revenue.amount)', 'revenue'], ['AVG(revenue.amount)', 'average'])
+            ->get();
+
+        if (! $summary) {
+            return null;
+        }
+
+        $summary->count = (int)$summary->count ?: null;
+
+        return $summary;
+    }
+
+    /**
+     * Build a query to fetch donation revenue data from the revenue table for a specific donor.
+     *
+     * @unreleased
+     *
+     * @param int $donorId
+     *
+     * @return QueryBuilder|null
+     */
+    private function getRevenueDonationDataQuery($donorId)
+    {
+        $donationIds = $this->getDonationIDs($donorId);
+
+        if (empty($donationIds)) {
+            return null;
+        }
+
+        $revenueStatuses = ['publish', 'give_subscription', 'pending'];
+
+        return (new QueryBuilder())
+            ->from('give_revenue', 'revenue')
+            ->innerJoin('posts', 'posts.ID', 'revenue.donation_id', 'posts')
+            ->whereIn('posts.ID', $donationIds)
+            ->whereIn('posts.post_status', $revenueStatuses);
     }
 
     /**
@@ -112,25 +206,33 @@ class Donations
      */
     protected function getDonationIDs($donorId)
     {
+        if (isset(self::$donationIdsCache[$donorId])) {
+            return self::$donationIdsCache[$donorId];
+        }
+
         $statusKeys = give_get_payment_status_keys();
         $statusQuery = "'" . implode("','", $statusKeys) . "'";
 
         global $wpdb;
 
-        return DB::get_col(
+        $donationIds = DB::get_col(
             DB::prepare(
                 "
-				SELECT revenue.donation_id as id
-				FROM {$wpdb->give_revenue} as revenue
-					INNER JOIN {$wpdb->posts} as posts ON revenue.donation_id = posts.ID
-					INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON revenue.donation_id = donationmeta.donation_id
+				SELECT posts.ID as id
+				FROM {$wpdb->posts} as posts
+					INNER JOIN {$wpdb->prefix}give_donationmeta as donationmeta ON posts.ID = donationmeta.donation_id
 				WHERE donationmeta.meta_key = '_give_payment_donor_id'
 					AND donationmeta.meta_value = %d
+					AND posts.post_type = 'give_payment'
 					AND posts.post_status IN ( {$statusQuery} )
 			",
                 $donorId
             )
         );
+
+        self::$donationIdsCache[$donorId] = $donationIds;
+
+        return $donationIds;
     }
 
     /**
@@ -145,7 +247,7 @@ class Donations
      */
     public function getDonations($donorId)
     {
-        $ids = $this->getDonationIds($donorId);
+        $ids = $this->getDonationIDs($donorId);
 
         if (empty($ids)) {
             return null;
@@ -252,7 +354,7 @@ class Donations
         $sectionIndex = 0;
         foreach ($receipt as $section) {
             // Continue if section does not have line items.
-            if ( ! $section->getLineItems()) {
+            if (! $section->getLineItems()) {
                 continue;
             }
 
@@ -273,7 +375,7 @@ class Donations
             /* @var LineItem $lineItem */
             foreach ($section as $lineItem) {
                 // Continue if line item does not have value.
-                if ( ! $lineItem->value) {
+                if (! $lineItem->value) {
                     continue;
                 }
 

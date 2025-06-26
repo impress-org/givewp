@@ -60,9 +60,8 @@ class DonationsRoute extends RouteAbstract
         // If the provided donor ID is valid, attempt to query data
         try {
             $donations = $repository->getDonations($donorId);
-            $count = $repository->getDonationCount($donorId);
-            $revenue = $repository->getRevenue($donorId);
-            $average = $repository->getAverageRevenue($donorId);
+            $summary = $repository->getFormattedDonationsSummary($donorId);
+
             $currency = [
                 'symbol' => give_currency_symbol(give_get_currency(), true),
                 'position' => give_get_currency_position(),
@@ -75,9 +74,9 @@ class DonationsRoute extends RouteAbstract
                     'body_response' => [
                         [
                             'donations' => $donations,
-                            'count' => $count,
-                            'revenue' => $revenue,
-                            'average' => $average,
+                            'count' => $summary['count'],
+                            'revenue' => $summary['revenue'],
+                            'average' => $summary['average'],
                             'currency' => $currency,
                         ],
                     ],
