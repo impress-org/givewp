@@ -48,7 +48,7 @@ export default function DonationStats({ donation, details, isResolving }: Donati
             />
             {shouldShowEventTicketStat && (
                 <StatWidget
-                    label={__('Event Ticket', 'give')}
+                    label={__('Event ticket', 'give')}
                     value={eventTicketValue}
                     formatter={amountFormatter(currency)}
                     loading={isResolving}
