@@ -71,6 +71,8 @@ class DonationStatisticsRouteGetTest extends RestApiTestCase
                 'paymentMethod' => $data['donation']['paymentMethod'],
                 'mode' => $data['donation']['mode'],
                 'gatewayViewUrl' => $data['donation']['gatewayViewUrl'],
+                'intendedAmount' => $data['donation']['intendedAmount'],
+                'eventTicketAmount' => $data['donation']['eventTicketAmount'],
             ],
             'donor' => [
                 'id' => $donor->id,
