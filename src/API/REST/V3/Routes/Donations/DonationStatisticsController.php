@@ -68,9 +68,10 @@ class DonationStatisticsController extends WP_REST_Controller
 
         $item = [
             'donation' => [
-                'amount' => $this->getIntentedAmount($donation),
-                'totalAmount' => $donation->amount->formatToDecimal(),
+                'amount' => $donation->amount->formatToDecimal(),
+                'intendedAmount' => $this->getIntentedAmount($donation),
                 'feeAmountRecovered' => $donation->feeAmountRecovered ? $donation->feeAmountRecovered->formatToDecimal() : 0,
+                'eventTicketAmount' => $this->getEventTicketAmount($donation),
                 'status' => $donation->status->getValue(),
                 'date' => $donation->createdAt->format('Y-m-d H:i:s'),
                 'paymentMethod' => $donation->gatewayId,
@@ -173,5 +174,13 @@ class DonationStatisticsController extends WP_REST_Controller
         return $donation->intendedAmount()
             ->subtract($totalTicketAmount)
             ->formatToDecimal();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getEventTicketAmount(Donation $donation): string
+    {
+        return give(EventTicketRepository::class)->getTotalByDonation($donation)->formatToDecimal();
     }
 }
