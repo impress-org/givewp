@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes\Donations;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
+use Give\EventTickets\Repositories\EventTicketRepository;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -68,7 +69,9 @@ class DonationStatisticsController extends WP_REST_Controller
         $item = [
             'donation' => [
                 'amount' => $donation->amount->formatToDecimal(),
+                'intendedAmount' => $this->getIntentedAmount($donation),
                 'feeAmountRecovered' => $donation->feeAmountRecovered ? $donation->feeAmountRecovered->formatToDecimal() : 0,
+                'eventTicketAmount' => $this->getEventTicketAmount($donation),
                 'status' => $donation->status->getValue(),
                 'date' => $donation->createdAt->format('Y-m-d H:i:s'),
                 'paymentMethod' => $donation->gatewayId,
@@ -157,5 +160,27 @@ class DonationStatisticsController extends WP_REST_Controller
         }
 
         return null;
+    }
+
+    /**
+     * Get the intended amount of the donation, which is the amount without event tickets and fees.
+     * Currently Event tickets is still in beta, so we need to subtract the total ticket amount from the core intended amount (which is the amount without fees).
+     * @unreleased
+     */
+    private function getIntentedAmount(Donation $donation): string
+    {
+        $totalTicketAmount = give(EventTicketRepository::class)->getTotalByDonation($donation);
+
+        return $donation->intendedAmount()
+            ->subtract($totalTicketAmount)
+            ->formatToDecimal();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getEventTicketAmount(Donation $donation): string
+    {
+        return give(EventTicketRepository::class)->getTotalByDonation($donation)->formatToDecimal();
     }
 }

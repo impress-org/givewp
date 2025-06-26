@@ -1,11 +1,9 @@
-import React from 'react';
+
 import {__} from '@wordpress/i18n';
-import classnames from 'classnames';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import {amountFormatter} from '@givewp/src/Admin/utils';
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from './styles.module.scss';
-import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 
 /**
  * @unreleased
@@ -13,6 +11,8 @@ import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatis
 interface DonationStatsProps {
     donation: {
         amount: string;
+        intendedAmount: string;
+        eventTicketAmount?: string | null;
         feeAmountRecovered: string | number;
         status: string;
         date: string;
@@ -28,21 +28,16 @@ interface DonationStatsProps {
  */
 export default function DonationStats({ donation, details, isResolving }: DonationStatsProps) {
     const { adminUrl, isFeeRecoveryEnabled, currency } = getDonationOptionsWindowData();
-    const getEventTicketValue = (details, label) => {
-        const found = details?.find(detail => detail.label === label);
-        return found?.value;
-    };
-    const amount = donation.amount;
-    const feeAmountRecovered = donation.feeAmountRecovered;
+    const {intendedAmount, feeAmountRecovered, eventTicketAmount} = donation;
     // Handle event ticket value for Statwidget Ex: "$100.00" to "100.00"
-    const eventTicketValue = parseFloat((getEventTicketValue(details, "Event Tickets") || '').replace(/[^0-9.]/g, ''));
+    const eventTicketValue = parseFloat(eventTicketAmount);
     const shouldShowEventTicketStat = eventTicketValue > 0;
 
     return (
         <div className={styles.container}>
             <StatWidget
                 label={__('Donation amount', 'give')}
-                value={parseFloat(amount) || 0}
+                value={parseFloat(intendedAmount) || 0}
                 formatter={amountFormatter(currency)}
                 loading={isResolving}
             />
@@ -64,4 +59,4 @@ export default function DonationStats({ donation, details, isResolving }: Donati
             />
         </div>
     );
-} 
+}
