@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './styles.module.scss';
 import DonationStats from './DonationStats';
 import DonationSummaryGrid from './DonationSummaryGrid';
+import DonationReceipt from './DonationReceipt';
 import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
 
@@ -38,6 +39,7 @@ export default function DonationDetailsPageOverviewTab() {
              </div>
 
             <div className={styles.right}>
+                <DonationReceipt />
             </div>
 
         </div>
