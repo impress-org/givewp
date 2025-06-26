@@ -9,7 +9,7 @@ use Give\Helpers\Language;
 use Give\Helpers\Utils;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class LoadDonorsListTableAssets
 {

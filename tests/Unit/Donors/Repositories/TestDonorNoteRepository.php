@@ -19,7 +19,7 @@ class TestDonorNoteRepository extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @return void
      *
@@ -38,7 +38,7 @@ class TestDonorNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -68,7 +68,7 @@ class TestDonorNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -86,7 +86,7 @@ class TestDonorNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -105,7 +105,7 @@ class TestDonorNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -123,7 +123,7 @@ class TestDonorNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */
@@ -155,7 +155,7 @@ class TestDonorNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      *
      * @throws Exception
      */

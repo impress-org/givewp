@@ -12,14 +12,14 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class DonorNoteRouteGetCollectionTest extends RestApiTestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetDonorNotesShouldReturnAllModelProperties()
     {
@@ -68,7 +68,7 @@ class DonorNoteRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetDonorNotesShouldReturnSelfLink()
     {
@@ -107,7 +107,7 @@ class DonorNoteRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetDonorNotesWithPagination()
     {
@@ -124,14 +124,14 @@ class DonorNoteRouteGetCollectionTest extends RestApiTestCase
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
 
-        
+
         DonorNote::create([
             'donorId' => $donor->id,
             'content' => 'Test note 1',
             'type' => DonorNoteType::ADMIN(),
         ]);
 
-        
+
         DonorNote::create([
             'donorId' => $donor->id,
             'content' => 'Test note 2',
@@ -159,7 +159,7 @@ class DonorNoteRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function testGetDonorNotesShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -185,4 +185,4 @@ class DonorNoteRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(403, $status);
     }
-} 
+}

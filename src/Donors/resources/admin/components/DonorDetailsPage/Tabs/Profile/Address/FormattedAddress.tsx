@@ -9,14 +9,14 @@ import { getDonorOptionsWindowData } from "@givewp/donors/utils";
 import { DonorAddress } from "../../../../types";
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 interface FormattedAddressProps {
     address: DonorAddress;
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function FormattedAddress({ address }: FormattedAddressProps) {
     const { countries } = getDonorOptionsWindowData();

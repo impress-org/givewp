@@ -29,7 +29,7 @@ type NoteState = {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function PrivateNotes({donorId}: {donorId: number}) {
     const endpoint = `/givewp/v3/donors/${donorId}/notes`;
@@ -198,7 +198,7 @@ export default function PrivateNotes({donorId}: {donorId: number}) {
 
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 const Note = ({note, onDelete, onEdit}) => {
     const [showContextMenu, setShowContextMenu] = useState(false);

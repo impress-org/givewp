@@ -40,7 +40,7 @@ class DonorRepositoryProxy
      * The Give_DB_Donors class extends Give_DB which has & assigns public properties that we need to
      * dynamically assign to this proxy class or else they won't be accessible.
      *
-     * @unreleased Add "notes" property
+     * @since 4.4.0 Add "notes" property
      * @since 2.19.6
      */
     public function __construct(

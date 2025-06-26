@@ -9,7 +9,7 @@ use Give\Helpers\IntlTelInput;
  * The purpose of this action is to have a centralized place for localizing options used on many different places
  * by donor scripts (list tables, blocks, etc.)
  *
- * @unreleased
+ * @since 4.4.0
  */
 class LoadDonorOptions
 {
@@ -24,7 +24,7 @@ class LoadDonorOptions
      * Get all donor options for localization
      *
      * @return array
-     * @unreleased
+     * @since 4.4.0
      */
     private function getDonorOptions(): array
     {
@@ -51,7 +51,7 @@ class LoadDonorOptions
     /**
      * Get states data with decoded HTML entities
      *
-     * @unreleased
+     * @since 4.4.0
      */
     private function getStatesData(): array
     {
@@ -66,7 +66,7 @@ class LoadDonorOptions
     /**
      * Decode HTML entities from an array of strings or nested arrays
      *
-     * @unreleased
+     * @since 4.4.0
      */
     private function decodeHtmlEntities(array $data, bool $isNested = false): array
     {

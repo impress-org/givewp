@@ -6,12 +6,12 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 class LoadDonorDetailsAssets
 {
     /**
-     * @unreleased
+     * @since 4.4.0
      */
     public function __invoke()
     {
