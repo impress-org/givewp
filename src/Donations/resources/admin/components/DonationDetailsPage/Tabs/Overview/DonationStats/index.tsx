@@ -19,40 +19,39 @@ interface DonationStatsProps {
         paymentMethod: string;
         mode: string;
     };
-    details?: Array<{ label: string; [key: string]: any }>;
     isResolving: boolean;
+    currency: string;
 }
 
 /**
  * @unreleased
  */
-export default function DonationStats({ donation, details, isResolving }: DonationStatsProps) {
-    const { adminUrl, isFeeRecoveryEnabled, currency } = getDonationOptionsWindowData();
+export default function DonationStats({ donation, isResolving, currency }: DonationStatsProps) {
+    const { isFeeRecoveryEnabled, currency: defaultCurrency } = getDonationOptionsWindowData();
     const {intendedAmount, feeAmountRecovered, eventTicketAmount} = donation;
-    // Handle event ticket value for Statwidget Ex: "$100.00" to "100.00"
     const eventTicketValue = parseFloat(eventTicketAmount);
-    const shouldShowEventTicketStat = eventTicketValue > 0;
+    const shouldShowEventTicketStat = eventTicketValue > 0;    
 
     return (
         <div className={styles.container}>
             <StatWidget
                 label={__('Donation amount', 'give')}
                 value={parseFloat(intendedAmount) || 0}
-                formatter={amountFormatter(currency)}
+                formatter={amountFormatter(currency ?? defaultCurrency)}
                 loading={isResolving}
             />
             {shouldShowEventTicketStat && (
                 <StatWidget
                     label={__('Event ticket', 'give')}
                     value={eventTicketValue}
-                    formatter={amountFormatter(currency)}
+                    formatter={amountFormatter(currency ?? defaultCurrency)}
                     loading={isResolving}
                 />
             )}
             <StatWidget
                 label={__('Fees recovered', 'give')}
                 value={parseFloat(String(feeAmountRecovered))}
-                formatter={amountFormatter(currency)}
+                formatter={amountFormatter(currency ?? defaultCurrency)}
                 loading={isResolving}
                 href={'https://givewp.com/addons/fee-recovery/'}
                 inActive={!isFeeRecoveryEnabled}
