@@ -1,9 +1,9 @@
-import React from 'react';
 import styles from './styles.module.scss';
 import DonationStats from './DonationStats';
 import DonationSummaryGrid from './DonationSummaryGrid';
 import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
+import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
 
 /**
  * @unreleased
@@ -35,11 +35,11 @@ export default function DonationDetailsPageOverviewTab() {
                     donationType={donation?.type}
                     subscriptionId={donation?.subscriptionId}
                 />
-             </div>
-
-            <div className={styles.right}>
+                <div className={styles.card}>
+                    <DonationNotes donationId={donationId} />
+                </div>
             </div>
-
+            <div className={styles.right}></div>
         </div>
     );
 }

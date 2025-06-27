@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {dateI18n} from '@wordpress/date';
 import classnames from 'classnames';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import Header from '@givewp/src/Admin/components/Header';
-import PrivateNotes from '@givewp/src/Admin/components/PrivateNotes';
+import {DonorNotes} from '@givewp/src/Admin/components/PrivateNotes';
 import TimeSeriesChart from '@givewp/src/Admin/components/Charts/TimeSeriesChart';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {amountFormatter, formatTimestamp, getRelativeTimeString} from '@givewp/src/Admin/utils';
@@ -183,7 +182,7 @@ export default function DonorDetailsPageOverviewTab() {
                 </div>
 
                 <div className={styles.card}>
-                    <PrivateNotes donorId={donorId} />
+                    <DonorNotes donorId={donorId} />
                 </div>
             </div>
 
