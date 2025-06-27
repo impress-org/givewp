@@ -9,19 +9,14 @@ class DeregisterEntityScripts
 {
     public function __invoke()
     {
-        $entities = [
-            'givewp-campaign-entity',
-            'givewp-form-entity',
-            'givewp-donor-entity',
-        ];
+        global $wp_scripts;
 
-        if (
-            isset($_GET['page'])
-            && $_GET['page'] == 'et_theme_builder'
-        ) {
-            foreach ($entities as $entity) {
-                wp_dequeue_script($entity);
-                wp_deregister_script($entity);
+        $registered_scripts = $wp_scripts->registered;
+
+        foreach ($registered_scripts as $handle => $script) {
+            if (preg_match('/^givewp-.*-entity$/', $handle)) {
+                wp_dequeue_script($handle);
+                wp_deregister_script($handle);
             }
         }
     }
