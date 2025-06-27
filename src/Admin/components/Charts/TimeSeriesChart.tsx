@@ -4,7 +4,7 @@ import {ApexOptions} from 'apexcharts';
 import apiFetch from '@wordpress/api-fetch';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 type TimeSeriesChartProps = {
     endpoint: string;
@@ -13,7 +13,7 @@ type TimeSeriesChartProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 type Donation = {
     createdAt: {
@@ -25,7 +25,7 @@ type Donation = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 type DataPoint = {
     x: string;
@@ -33,7 +33,7 @@ type DataPoint = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  * Generates a range of dates around a target date for displaying a single donation graph.
  */
 const getCenteredGraphRange = (targetDate: string) => {
@@ -49,7 +49,7 @@ const getCenteredGraphRange = (targetDate: string) => {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 const normalizeData = (donations: Donation[]): DataPoint[] => {
     const map = new Map<string, number>();
@@ -82,7 +82,7 @@ const normalizeData = (donations: Donation[]): DataPoint[] => {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}: TimeSeriesChartProps) {
     const [series, setSeries] = useState([{name: title, data: []}]);

@@ -15,7 +15,7 @@ import styles from './styles.module.scss';
 const { intlTelInputSettings } = getDonorOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 type PhoneInputProps = {
     id?: string;
@@ -26,7 +26,7 @@ type PhoneInputProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function PhoneInput({ id, value, onChange, onError, className }: PhoneInputProps) {
     const [country, setCountry] = useState<string>(intlTelInputSettings.initialCountry);

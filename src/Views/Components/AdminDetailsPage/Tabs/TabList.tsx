@@ -4,7 +4,7 @@ import styles from '../AdminDetailsPage.module.scss';
 import { useContext } from 'react';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function TabList({ tabDefinitions }: { tabDefinitions: TabType[] }) {
     // @ts-ignore

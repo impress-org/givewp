@@ -11,7 +11,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonorObjectData
  *
- * @unreleased Add "avatarId" and "company" properties
+ * @since 4.4.0 Add "avatarId" and "company" properties
  * @since 2.19.6
  */
 final class DonorQueryData
@@ -81,7 +81,7 @@ final class DonorQueryData
     /**
      * Convert data from donor object to Donor Model
      *
-     * @unreleased Add "avatarId" and "company" properties
+     * @since 4.4.0 Add "avatarId" and "company" properties
      * @since 3.7.0 Add "phone" property
      * @since 2.24.0 add $totalAmountDonated and $totalNumberOfDonations
      * @since 2.20.0 add donor prefix property

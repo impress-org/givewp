@@ -5,7 +5,7 @@ import PercentChangePill
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export type StatWidgetProps = {
     label: string;
@@ -17,7 +17,7 @@ export type StatWidgetProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function StatWidget({
     label,

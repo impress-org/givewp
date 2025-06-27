@@ -35,7 +35,7 @@ type NoteState = {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function PrivateNotes({donorId}: {donorId: number}) {
     const endpoint = `/givewp/v3/donors/${donorId}/notes`;
@@ -172,7 +172,7 @@ export default function PrivateNotes({donorId}: {donorId: number}) {
                         {!state.isAddingNote && (
                             <div style={{margin: '0 auto', textAlign: 'center'}}>
                                 <NotesIcon />
-                                <p>{__('No notes yet', 'give')}</p>
+                                <p className={style.noNotesText}>{__('No notes yet', 'give')}</p>
                             </div>
                         )}
                     </>
@@ -204,10 +204,9 @@ export default function PrivateNotes({donorId}: {donorId: number}) {
 
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 const Note = ({note, onDelete, onEdit}) => {
-    const [showMenuIcon, setShowMenuIcon] = useState(false);
     const [showContextMenu, setShowContextMenu] = useState(false);
     const [currentlyEditing, setCurrentlyEditing] = useState(null);
     const [content, setContent] = useState(note.content);
@@ -216,21 +215,18 @@ const Note = ({note, onDelete, onEdit}) => {
     return (
         <>
             <div
-                className={style.noteContainer}
-                onMouseEnter={() => setShowMenuIcon(true)}
                 onMouseLeave={() => {
-                    setShowMenuIcon(false);
                     setShowContextMenu(false);
                 }}
             >
                 {currentlyEditing ? (
                     <>
                         <div className={style.addNoteContainer}>
-                        <textarea
-                            className={style.textarea}
-                            onChange={(e) => setContent(e.target.value)}
-                            value={content}
-                        ></textarea>
+                            <textarea
+                                className={style.textarea}
+                                onChange={(e) => setContent(e.target.value)}
+                                value={content}
+                            ></textarea>
 
                             <div className={style.textAreaButtons}>
                                 <button
@@ -257,12 +253,12 @@ const Note = ({note, onDelete, onEdit}) => {
                     </>
                 ) : (
                     <>
-                        <div className={style.note}>
-                            <div className={style.title}>
-                                {note.content}
-                            </div>
+                        <div className={style.noteContainer}>
+                            <div className={style.note}>
+                                <div className={style.title}>
+                                    {note.content}
+                                </div>
 
-                            {showMenuIcon && (
                                 <div
                                     className={style.dotsMenu}
                                     onClick={() => setShowContextMenu(true)}
@@ -295,10 +291,10 @@ const Note = ({note, onDelete, onEdit}) => {
                                         </div>
                                     )}
                                 </div>
-                            )}
-                        </div>
-                        <div className={style.date}>
-                            {formatTimestamp(note.createdAt.date)}
+                            </div>
+                            <div className={style.date}>
+                                {formatTimestamp(note.createdAt.date)}
+                            </div>
                         </div>
                     </>
                 )}

@@ -82,7 +82,7 @@ class RegisterDonationRoutes
     /**
      * Get Donations route
      *
-     * @unreleased add status parameter.
+     * @since 4.4.0 add status parameter.
      * @since 4.0.0
      */
     public function registerGetDonations()

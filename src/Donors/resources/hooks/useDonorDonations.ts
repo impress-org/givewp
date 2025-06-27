@@ -1,10 +1,10 @@
 /**
- * @unreleased
+ * @since 4.4.0
  */
 import {useEntityRecords} from '@wordpress/core-data';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export interface DonationResponse {
     id: number;
@@ -23,7 +23,7 @@ export interface DonationResponse {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 interface DonationsQueryParams {
     donorId: number;
@@ -36,7 +36,7 @@ interface DonationsQueryParams {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export function useDonorDonations({donorId, page = 1, perPage = 5, mode = 'live', status = 'any', sort = 'createdAt', direction = 'DESC'}: DonationsQueryParams) {
     const query = {

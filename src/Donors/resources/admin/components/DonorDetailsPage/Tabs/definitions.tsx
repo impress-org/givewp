@@ -4,7 +4,7 @@ import ProfileTab from './Profile';
 import { Tab } from '@givewp/components/AdminDetailsPage/types';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 const donorDetailsTabs: Tab[] = [
     {

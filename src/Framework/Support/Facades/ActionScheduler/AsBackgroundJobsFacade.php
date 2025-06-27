@@ -79,8 +79,8 @@ class AsBackgroundJobsFacade
      * @since 4.0.0 - switch parameter $status position with $returnFormat position
      *
      * @param string $group        The group to assign this job to.
-     * @param string $returnFormat OBJECT, ARRAY_A, or ids.
      * @param string $status ActionScheduler_Store::STATUS_COMPLETE or ActionScheduler_Store::STATUS_PENDING
+     * @param string $returnFormat OBJECT, ARRAY_A, or ids.     
      *
      * @return array
      */

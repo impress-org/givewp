@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 /**
  * Interface for controlling UI element visibility
  *
- * @unreleased
+ * @since 4.4.0
  */
 export interface Show {
     contextMenu?: boolean;
@@ -13,7 +13,7 @@ export interface Show {
 /**
  * Props for the AdminDetailsPage component
  *
- * @unreleased
+ * @since 4.4.0
  */
 export interface AdminDetailsPageProps<T extends Record<string, any>> {
     /**
@@ -98,7 +98,7 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export type Tab = {
     id: string;
@@ -108,7 +108,7 @@ export type Tab = {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export type Notification = {
     id: string;
@@ -122,7 +122,7 @@ export type Notification = {
 }
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 declare module "@wordpress/data" {
     export function select(key: 'givewp/admin-details-page-notifications'): {

@@ -20,7 +20,7 @@ import styles from './DonorDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 const StatusBadge = ({ status }: { status: string }) => {
     const statusMap = {
@@ -46,7 +46,7 @@ const StatusBadge = ({ status }: { status: string }) => {
 };
 
 /**
- * @unreleased
+ * @since 4.4.0
  */
 export default function DonorDetailsPage() {
     const { adminUrl } = getDonorOptionsWindowData();
