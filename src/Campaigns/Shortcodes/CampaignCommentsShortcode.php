@@ -18,9 +18,6 @@ class CampaignCommentsShortcode
         $this->loadAssets();
         $attributes = $this->parseAttributes($atts);
 
-        // var_dump($attributes);
-        // die();
-
         $renderFile = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignComments/render.php';
 
         ob_start();
