@@ -4,6 +4,7 @@ import AuthorizeControl from './authorize-control';
 import SquareControl from './square-control';
 import StripeControl from './stripe-control';
 import CardControl from './card-control';
+import StripePaymentElementControl from './stripe-payment-element-control';
 
 import './style.scss';
 
@@ -16,8 +17,11 @@ const PaymentMethodControl = (props) => {
         case 'stripe_apple_pay':
         case 'stripe_becs':
         case 'stripe_checkout':
-        case 'stripe_google_pay': {
+        case 'stripe_google_pay':{
             return <StripeControl {...props} />;
+        }
+        case 'stripe_payment_element': {
+            return <StripePaymentElementControl {...props} />;
         }
         case 'authorize': {
             return <AuthorizeControl {...props} />;

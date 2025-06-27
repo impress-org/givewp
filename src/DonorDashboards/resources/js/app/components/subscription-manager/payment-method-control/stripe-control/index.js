@@ -1,6 +1,7 @@
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import {useState, useEffect} from 'react';
+import StripePaymentElementControl from '../stripe-payment-element-control';
 
 import StripeCardControl from './stripe-card-control';
 
@@ -20,7 +21,11 @@ const StripeControl = ({gateway, label, forwardedRef}) => {
 
     return (
         <Elements stripe={stripePromise} fonts={fonts}>
-            <StripeCardControl forwardedRef={forwardedRef} label={label} />
+            {gateway.id === 'stripe_payment_element' ? (
+                <StripePaymentElementControl  />
+            ) : (
+                <StripeCardControl forwardedRef={forwardedRef} label={label} />
+            )}
         </Elements>
     );
 };

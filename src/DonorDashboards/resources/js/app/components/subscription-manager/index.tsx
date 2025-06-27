@@ -115,6 +115,7 @@ const SubscriptionManager = ({id, subscription}) => {
                     forwardedRef={gatewayRef}
                     label={__('Payment Method', 'give')}
                     gateway={subscription.gateway}
+                    currency={subscription.payment.currency}
                 />
             )}
 
