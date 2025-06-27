@@ -9,6 +9,10 @@ class DeregisterEntityScripts
 {
     public function __invoke()
     {
+        if ( ! isset($_GET['page']) || $_GET['page'] !== 'et_theme_builder') {
+            return;
+        }
+
         global $wp_scripts;
 
         $registered_scripts = $wp_scripts->registered;
