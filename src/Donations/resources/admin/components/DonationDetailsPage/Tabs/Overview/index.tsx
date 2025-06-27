@@ -22,7 +22,7 @@ export default function DonationDetailsPageOverviewTab() {
         <div className={styles.overview}>
             <DonationStats
                 donation={statistics.donation}
-                details={statistics.receipt?.donationDetails}
+                currency={donation?.amount?.currency}
                 isResolving={isResolving}
             />
 
