@@ -97,7 +97,11 @@ $breakpoint-desktop: 900px;
         font-size: 1rem;
         font-weight: 500;
         line-height: 1.5;
-        color: #4b5563;
+        color: var(--givewp-neutral-700);
+    }
+
+    strong {
+        color: var(--givewp-neutral-900);
     }
 }
 
