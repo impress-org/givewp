@@ -1,11 +1,9 @@
-import React from 'react';
+
 import {__} from '@wordpress/i18n';
-import classnames from 'classnames';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import {amountFormatter} from '@givewp/src/Admin/utils';
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from './styles.module.scss';
-import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 
 /**
  * @unreleased
@@ -13,55 +11,51 @@ import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatis
 interface DonationStatsProps {
     donation: {
         amount: string;
+        intendedAmount: string;
+        eventTicketAmount?: string | null;
         feeAmountRecovered: string | number;
         status: string;
         date: string;
         paymentMethod: string;
         mode: string;
     };
-    details?: Array<{ label: string; [key: string]: any }>;
     isResolving: boolean;
+    currency: string;
 }
 
 /**
  * @unreleased
  */
-export default function DonationStats({ donation, details, isResolving }: DonationStatsProps) {
-    const { adminUrl, isFeeRecoveryEnabled, currency } = getDonationOptionsWindowData();
-    const getEventTicketValue = (details, label) => {
-        const found = details?.find(detail => detail.label === label);
-        return found?.value;
-    };
-    const amount = donation.amount;
-    const feeAmountRecovered = donation.feeAmountRecovered;
-    // Handle event ticket value for Statwidget Ex: "$100.00" to "100.00"
-    const eventTicketValue = parseFloat((getEventTicketValue(details, "Event Tickets") || '').replace(/[^0-9.]/g, ''));
-    const shouldShowEventTicketStat = eventTicketValue > 0;
+export default function DonationStats({ donation, isResolving, currency }: DonationStatsProps) {
+    const { isFeeRecoveryEnabled, currency: defaultCurrency } = getDonationOptionsWindowData();
+    const {intendedAmount, feeAmountRecovered, eventTicketAmount} = donation;
+    const eventTicketValue = parseFloat(eventTicketAmount);
+    const shouldShowEventTicketStat = eventTicketValue > 0;    
 
     return (
         <div className={styles.container}>
             <StatWidget
                 label={__('Donation amount', 'give')}
-                value={parseFloat(amount) || 0}
-                formatter={amountFormatter(currency)}
+                value={parseFloat(intendedAmount) || 0}
+                formatter={amountFormatter(currency ?? defaultCurrency)}
                 loading={isResolving}
             />
             {shouldShowEventTicketStat && (
                 <StatWidget
                     label={__('Event ticket', 'give')}
                     value={eventTicketValue}
-                    formatter={amountFormatter(currency)}
+                    formatter={amountFormatter(currency ?? defaultCurrency)}
                     loading={isResolving}
                 />
             )}
             <StatWidget
                 label={__('Fees recovered', 'give')}
                 value={parseFloat(String(feeAmountRecovered))}
-                formatter={amountFormatter(currency)}
+                formatter={amountFormatter(currency ?? defaultCurrency)}
                 loading={isResolving}
                 href={'https://givewp.com/addons/fee-recovery/'}
                 inActive={!isFeeRecoveryEnabled}
             />
         </div>
     );
-} 
+}

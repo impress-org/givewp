@@ -125,7 +125,7 @@ export default function DonationDetails() {
                                         setValueAs: (value) => value.toString()
                                     })}
                                 />
-                                <span>{__('Yes, please', 'give')}</span>
+                                <span>{__('Yes', 'give')}</span>
                             </label>
                             <label htmlFor="anonymous-no" className={styles.radioLabel}>
                                 <input
@@ -136,7 +136,7 @@ export default function DonationDetails() {
                                         setValueAs: (value) => value.toString()
                                     })}
                                 />
-                                <span>{__('No, thank you', 'give')}</span>
+                                <span>{__('No', 'give')}</span>
                             </label>
                         </div>
                     </fieldset>
