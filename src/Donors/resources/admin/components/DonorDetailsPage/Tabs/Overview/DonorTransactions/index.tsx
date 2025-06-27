@@ -2,6 +2,7 @@ import React from 'react';
 import {__} from '@wordpress/i18n';
 import classnames from 'classnames';
 import Header from '@givewp/src/Admin/components/Header';
+import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import {formatTimestamp} from '@givewp/src/Admin/utils';
 import {amountFormatter} from '@givewp/src/Admin/utils';
 import {getDonorOptionsWindowData} from '@givewp/donors/utils';
@@ -60,7 +61,7 @@ export default function DonorTransactions({donorId}: DonorTransactionsProps) {
         }));
 
     return (
-        <div className={styles.card}>
+        <OverviewPanel> 
             <Header
                 title={__('Recent Transactions', 'give')}
                 subtitle={__('Shows the five recent transactions', 'give')}
@@ -106,6 +107,6 @@ export default function DonorTransactions({donorId}: DonorTransactionsProps) {
                     </div>
                 ))}
             </div>
-        </div>
+        </OverviewPanel>
     );
 } 
