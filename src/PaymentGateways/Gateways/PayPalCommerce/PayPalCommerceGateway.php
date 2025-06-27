@@ -72,6 +72,7 @@ class PayPalCommerceGateway extends PayPalCommerce
     /**
      * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
      *
+     * @unreleased Add support for disabling credit card funding via Smart Buttons Only.
      * @since 3.0.0
      * @throws Exception
      */
@@ -85,11 +86,18 @@ class PayPalCommerceGateway extends PayPalCommerce
 
         // Add hosted fields if payment field type is auto and connect account type supports custom payments.
         $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
+        $acceptCreditCard = give_is_setting_enabled(give_get_option('paypal_commerce_accept_credit_card', 'enabled'));
+
         $paymentComponents[] = 'buttons';
 
         $formIsV3 = Utils::isV3Form($formId);
         $venmoEnabled = give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'));
         $fieldsEnabled = 'auto' === $paymentFieldType && $merchantDetailModel->supportsCustomPayments;
+
+        $disableFunding = ['credit'];
+        if (!$acceptCreditCard && !$fieldsEnabled) {
+            $disableFunding[] = 'card';
+        }
 
         $data = [
             'intent' => 'capture',
@@ -105,7 +113,7 @@ class PayPalCommerceGateway extends PayPalCommerce
             $data = array_merge($data, [
                 'dataNamespace' => 'givewp/paypal-commerce',
                 'clientId' => $merchantDetailModel->clientId,
-                'disableFunding' => 'credit',
+                'disableFunding' => $disableFunding,
                 'dataPartnerAttributionId' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
                 'dataClientToken' => $merchantDetailRepository->getClientToken(),
                 'components' => implode(',', $paymentComponents),
@@ -123,7 +131,7 @@ class PayPalCommerceGateway extends PayPalCommerce
                 // data-namespace is required for multiple PayPal SDKs to load in harmony.
                 'data-namespace' => 'givewp/paypal-commerce',
                 'client-id' => $merchantDetailModel->clientId,
-                'disable-funding' => 'credit',
+                'disable-funding' => $disableFunding,
                 'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
                 'data-client-token' => $merchantDetailRepository->getClientToken(),
                 'components' => implode(',', $paymentComponents),

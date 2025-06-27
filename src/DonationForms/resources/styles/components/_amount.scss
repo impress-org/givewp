@@ -73,44 +73,10 @@ $borderColor: #9A9A9A;
         justify-content: space-between;
     }
 
-    &__input-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: var(--givewp-shades-white);
-        border: solid 1px var(--givewp-grey-400);
-        border-radius: var(--givewp-rounded-4);
-        padding: var(--givewp-spacing-4) 0;
-
-        &.invalid {
-            border-color: red;
-        }
-
-        &:focus-within {
-            border-color: var(--givewp-primary-color);
-            outline: 1px solid var(--givewp-primary-color);
-        }
-    }
-
-    &__input {
-        height: fit-content;
-        background-color: rgb(255, 255, 255);
-        font-size: var(--givewp-font-size-headline-md);
-        font-weight: normal;
-        line-height: 1.5;
-        color: var(--givewp-grey-900);
-        border: none;
-        outline: none;
-        box-shadow: none;
-        width: 100%;
+    &__input-custom {
         text-align: center;
-        padding: 0;
-
-        &::placeholder {
-            opacity: 0.6;
-            font-weight: 300;
-            color: var(--givewp-grey-400);
-        }
+        padding: var(--givewp-spacing-7) 0;
+        font-weight: 500;
     }
 
     &__levels-container {

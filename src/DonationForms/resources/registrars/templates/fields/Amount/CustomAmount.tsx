@@ -3,7 +3,6 @@ import {__} from '@wordpress/i18n';
 import CurrencyInput from 'react-currency-input-field';
 import {CurrencyInputOnChangeValues} from 'react-currency-input-field/dist/components/CurrencyInputProps';
 
-import styles from "../../styles.module.scss"
 import {useEffect, useRef} from "react";
 /**
  * @since 3.0.0
@@ -51,7 +50,7 @@ const CustomAmount = ({defaultValue, fieldError, currency, value, onValueChange}
                      */
                     groupSeparator.replace(/\u00A0/g, ' ')
                 }
-                className={`${styles.customAmount} givewp-fields-amount__input givewp-fields-amount__input-custom`}
+                className='givewp-fields-amount__input givewp-fields-amount__input-custom'
                 aria-label={__('Enter custom amount', 'give')}
                 aria-describedby={fieldError ? 'givewp-field-error-amount' : undefined}
                 aria-invalid={fieldError ? 'true' : 'false'}
