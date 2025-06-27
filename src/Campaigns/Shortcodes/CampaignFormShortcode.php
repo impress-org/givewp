@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Campaigns\Blocks\CampaignForm;
+namespace Give\Campaigns\Shortcodes;
 
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
