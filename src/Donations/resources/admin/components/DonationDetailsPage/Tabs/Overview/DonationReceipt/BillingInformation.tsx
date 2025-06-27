@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -7,24 +7,34 @@ import { __ } from '@wordpress/i18n';
 type BillingInformationProps = {
   name: string;
   email: string;
-  address: string[];
+  address: {
+    address1?: string;
+    address2?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+    [key: string]: any;
+  };
 };
 
 /**
  * @unreleased
  */
 export default function BillingInformation({ name, email, address }: BillingInformationProps) {
+  const { address1, address2, city, state, zip, country } = address;
   return (
-      <address>
-        <p>
-          {name} (<a href={`mailto:${email}`}>{email}</a>)<br />
-          {address.map((line, index) => (
-            <Fragment key={index}>
-              {line}
-              {index < address.length - 1 && <br />}
-            </Fragment>
-          ))}
-        </p>
-      </address>
-    );
+    <address>
+      <p>
+        {name} (<a href={`mailto:${email}`}>{email}</a>)
+        <br />
+        {address1 && address1}
+        <br />
+        {address2 && address2 !== '' && address2 && <br />}
+        {city && city}, {state && state} {zip && zip}
+        <br/>
+        {country && country}
+      </p>
+    </address>
+  );
 } 
