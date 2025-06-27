@@ -3,7 +3,7 @@ import DonationStats from './DonationStats';
 import DonationSummaryGrid from './DonationSummaryGrid';
 import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
-import {DonationNotes, DonorNotes} from '@givewp/src/Admin/components/PrivateNotes';
+import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
 
 /**
  * @unreleased
@@ -32,23 +32,14 @@ export default function DonationDetailsPageOverviewTab() {
                     donor={statistics.donor}
                     donation={statistics.donation}
                     details={statistics.receipt?.donationDetails}
-                    isResolving={isResolving}
+                    donationType={donation?.type}
+                    subscriptionId={donation?.subscriptionId}
                 />
-                <div className={styles.left}>
-                    <DonationSummaryGrid
-                        campaign={statistics.campaign}
-                        donor={statistics.donor}
-                        donation={statistics.donation}
-                        details={statistics.receipt?.donationDetails}
-                        donationType={donation?.type}
-                        subscriptionId={donation?.subscriptionId}
-                    />
-
-                    <div className={styles.card}>
-                        <DonationNotes donationId={donationId} />
-                    </div>
+                <div className={styles.card}>
+                    <DonationNotes donationId={donationId} />
                 </div>
             </div>
-        </>
+            <div className={styles.right}></div>
+        </div>
     );
 }
