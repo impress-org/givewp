@@ -45,14 +45,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public $subscriptionModule;
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @var Webhook $webhook
      */
     public $webhook;
 
     /**
-     * @unreleased Add the webhookEvents property
+     * @since 4.5.0 Add the webhookEvents property
      *
      * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
@@ -70,7 +70,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public static function webhook(): Webhook
     {
@@ -80,7 +80,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function canListeningWebhookNotifications(): bool
     {

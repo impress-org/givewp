@@ -8,7 +8,7 @@ use Give\ServiceProviders\ServiceProvider as CoreServiceProvider;
 use Give\ThirdPartyCompatibility\Divi\DeregisterEntityScripts;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class ServiceProvider implements CoreServiceProvider
 {
