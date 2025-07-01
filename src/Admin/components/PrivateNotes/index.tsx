@@ -29,10 +29,23 @@ type NoteState = {
 }
 
 /**
+ * @unreleased
+ */
+export function DonorNotes({donorId}: {donorId: number}) {
+    return <PrivateNotes endpoint={`/givewp/v3/donors/${donorId}/notes`} />
+}
+
+/**
+ * @unreleased
+ */
+export function DonationNotes({donationId}: {donationId: number}) {
+    return <PrivateNotes endpoint={`/givewp/v3/donations/${donationId}/notes`} />
+}
+
+/**
  * @since 4.4.0
  */
-export default function PrivateNotes({donorId}: {donorId: number}) {
-    const endpoint = `/givewp/v3/donors/${donorId}/notes`;
+function PrivateNotes({endpoint}: {endpoint: string}) {
     const [state, setNoteState] = useState<NoteState>({
         isAddingNote: false,
         isSavingNote: false,
@@ -75,7 +88,7 @@ export default function PrivateNotes({donorId}: {donorId: number}) {
     };
 
     const deleteNote = (id: number) => {
-        apiFetch({path: `/givewp/v3/donors/${donorId}/notes/${id}`, method: 'DELETE', data: {id}})
+        apiFetch({path: `${endpoint}/${id}`, method: 'DELETE', data: {id}})
             .then(async (response) => {
                 await mutate(response);
                 dispatch.addSnackbarNotice({
@@ -86,7 +99,7 @@ export default function PrivateNotes({donorId}: {donorId: number}) {
     };
 
     const editNote = (id: number, content: string) => {
-        apiFetch({path: `/givewp/v3/donors/${donorId}/notes/${id}`, method: 'PATCH', data: {content}})
+        apiFetch({path: `${endpoint}/${id}`, method: 'PATCH', data: {content}})
             .then(async (response) => {
                 await mutate(response);
                 dispatch.addSnackbarNotice({

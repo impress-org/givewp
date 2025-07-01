@@ -173,3 +173,12 @@ export const CustomFieldsBlankSlateIcon = () => (
         />
     </svg>
 );
+
+/**
+ * @unreleased
+ */
+export const RefundIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5.08 2.164a.583.583 0 0 0-.826-.825L1.921 3.672a.583.583 0 0 0 0 .825L4.254 6.83a.583.583 0 0 0 .825-.825L3.742 4.668h4.425a2.917 2.917 0 0 1 0 5.833H2.333a.583.583 0 0 0 0 1.167h5.834a4.083 4.083 0 0 0 0-8.167H3.742l1.337-1.337z" fill="#000"/>
+    </svg>
+);
