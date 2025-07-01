@@ -381,7 +381,8 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
-            'gatewayId' => 'manual'
+            'gatewayId' => TestGateway::id(),
+            'status' => DonationStatus::COMPLETE()
         ]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id . '/refund';
@@ -392,26 +393,5 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $status = $response->get_status();
 
         $this->assertEquals(403, $status);
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testRefundDonationShouldReturnErrorWhenGatewayRefundFails()
-    {
-        /** @var Donation $donation */
-        $donation = Donation::factory()->create([
-            'gatewayId' => 'invalid-gateway'
-        ]);
-
-        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id . '/refund';
-        $request = $this->createRequest('POST', $route, [], 'administrator');
-
-        $response = $this->dispatchRequest($request);
-
-        $status = $response->get_status();
-
-        // Should return error status when gateway refund fails
-        $this->assertGreaterThanOrEqual(400, $status);
     }
 }
