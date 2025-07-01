@@ -271,14 +271,4 @@ class PayPalStandard extends PaymentGateway
          */
         return apply_filters('give_get_settings_paypal_standard', $setting);
     }
-
-    /**
-     * @since 2.20.0
-     * @inerhitDoc
-     * @throws Exception
-     */
-    public function refundDonation(Donation $donation)
-    {
-        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
-    }
 }

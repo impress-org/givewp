@@ -106,14 +106,4 @@ class CreditCardGateway extends PaymentGateway
     {
         return $this->getCreditCardFormHTML($formId, $args);
     }
-
-    /**
-     * @since 2.20.0
-     * @inerhitDoc
-     * @throws Exception
-     */
-    public function refundDonation(Donation $donation)
-    {
-        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
-    }
 }

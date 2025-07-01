@@ -1,5 +1,13 @@
 import { IntlTelInputSettings } from "@givewp/forms/propTypes";
 
+type Gateway = {
+    enabled: boolean;
+    id: string;
+    label: string;
+    supportsRefund: boolean;
+    supportsSubscriptions: boolean;
+};
+
 /**
  * @unreleased
  */
@@ -44,4 +52,5 @@ export type GiveDonationOptions = {
         [donorId: string]: string;
     };
     mode: 'test' | 'live';
+    gateways: Gateway[];
 }
