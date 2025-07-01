@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import cx from 'classnames';
 
 /**
@@ -20,6 +20,8 @@ import { getDonationOptionsWindowData, useDonationEntityRecord } from '@givewp/d
 import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 import { amountFormatter } from '@givewp/components/AdminDetailsPage/utils';
+import useDonationRefund from '@givewp/donations/hooks/useDonationRefund';
+import { Donation } from '../types';
 
 const { donationStatuses } = getDonationOptionsWindowData();
 
@@ -41,19 +43,34 @@ const StatusBadge = ({ status }: { status: string }) => {
 };
 
 /**
+ * TODO: figure out how we should check if a donation can be refunded using the gateway api
+ * @unreleased
+ */
+const canRefund = (donation: Donation) => {
+    const { gateways } = getDonationOptionsWindowData();
+
+    //find the gateway in the gateways array
+    const gateway = gateways.find((gateway) => gateway.id === donation.gatewayId && gateway.enabled);
+
+    return gateway?.supportsRefund;
+};
+
+/**
  * @unreleased
  */
 export default function DonationDetailsPage() {
     const { adminUrl, currency: defaultCurrency } = getDonationOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
-
     const { record: donation } = useDonationEntityRecord();
+    const {refund, isRefunding, isRefunded} = useDonationRefund(donation?.id);
+    const canRefundDonation = useMemo(() => donation?.gatewayId ? canRefund(donation) : false, [donation?.gatewayId]);
+
     const currencyFormatter = amountFormatter(donation?.amount?.currency ?? defaultCurrency);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
-                {donation.status === 'publish' && (
+                {canRefundDonation && (
                     <a
                         href="#"
                         className={className}
@@ -89,10 +106,11 @@ export default function DonationDetailsPage() {
             <ConfirmationDialog
                 title={__('Refund Donation', 'give')}
                 actionLabel={__('Refund Donation', 'give')}
-                isOpen={showConfirmationDialog === 'refund'}
+                isOpen={showConfirmationDialog === 'refund' && !isRefunded}
                 variant="regular"
                 handleClose={() => setShowConfirmationDialog(null)}
-                handleConfirm={() => { }}
+                handleConfirm={() => refund()}
+                isConfirming={isRefunding}
             >
                 {
                     createInterpolateElement(

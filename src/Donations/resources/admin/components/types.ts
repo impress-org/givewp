@@ -42,8 +42,6 @@ export type Donation = {
   comment: string;
 };
 
-
-
 /**
  * @unreleased
  */
@@ -53,6 +51,8 @@ export type DonationMode = 'test' | 'live';
  * @unreleased
  */
 export type DonationType = 'single' | 'renewal';
+
+
 
 /**
  * @unreleased

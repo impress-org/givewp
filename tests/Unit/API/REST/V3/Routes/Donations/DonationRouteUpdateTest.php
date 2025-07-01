@@ -4,6 +4,8 @@ namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
@@ -319,5 +321,93 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $this->assertNull($data['company']);
         $this->assertNull($data['comment']);
         $this->assertNull($data['honorific']);
+    }
+
+        /**
+     * @unreleased
+     */
+    public function testRefundDonationShouldRefundDonationSuccessfully()
+    {
+        /** @var PaymentGatewayRegister $registrar */
+        $registrar = give(PaymentGatewayRegister::class);
+        if (!$registrar->hasPaymentGateway(TestGateway::id())) {
+            $registrar->registerGateway(TestGateway::class);
+        }
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayId' => 'manual'
+        ]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id . '/refund';
+        $request = $this->createRequest('POST', $route, [], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(200, $status);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testRefundDonationShouldReturn404ErrorWhenDonationNotFound()
+    {
+        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/999999/refund';
+        $request = $this->createRequest('POST', $route, [], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(404, $status);
+    }
+
+        /**
+     * @unreleased
+     */
+    public function testRefundDonationShouldReturn403ErrorWhenNotAdminUser()
+    {
+        /** @var PaymentGatewayRegister $registrar */
+        $registrar = give(PaymentGatewayRegister::class);
+        if (!$registrar->hasPaymentGateway(TestGateway::id())) {
+            $registrar->registerGateway(TestGateway::class);
+        }
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayId' => 'manual'
+        ]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id . '/refund';
+        $request = $this->createRequest('POST', $route, [], 'subscriber');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(403, $status);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testRefundDonationShouldReturnErrorWhenGatewayRefundFails()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayId' => 'invalid-gateway'
+        ]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id . '/refund';
+        $request = $this->createRequest('POST', $route, [], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        // Should return error status when gateway refund fails
+        $this->assertGreaterThanOrEqual(400, $status);
     }
 }
