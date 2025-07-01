@@ -67,16 +67,9 @@ class HandleGatewayPaymentCommand
         if ($command instanceof PaymentRefunded) {
             $handler = new PaymentRefundedHandler($command);
             $handler->handle($donation);
-            $url = isset($_REQUEST['_wp_http_referer']) ? home_url($_REQUEST['_wp_http_referer']) : null;
+            $url = isset($_REQUEST['_wp_http_referer']) ? home_url($_REQUEST['_wp_http_referer']) : home_url('/');
 
-            if ($url) {
-                return new RedirectResponse($url);
-            }
-
-            return new JsonResponse([
-                'status' => 'success',
-                'message' => __('Refund completed successfully', 'give'),
-            ]);
+            return new RedirectResponse($url);
         }
 
         if ($command instanceof RedirectOffsite) {
