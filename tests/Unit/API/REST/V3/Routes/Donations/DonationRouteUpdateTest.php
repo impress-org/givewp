@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\RestApiTestCase;
@@ -336,7 +337,8 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
         /** @var Donation $donation */
         $donation = Donation::factory()->create([
-            'gatewayId' => 'manual'
+            'gatewayId' => TestGateway::id(),
+            'status' => DonationStatus::COMPLETE()
         ]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id . '/refund';
@@ -345,8 +347,10 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
+        $data = $response->get_data();
 
         $this->assertEquals(200, $status);
+        $this->assertTrue($data['status']->isRefunded());
     }
 
     /**

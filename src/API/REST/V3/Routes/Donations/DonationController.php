@@ -12,7 +12,8 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\PaymentGateways\Controllers\GatewayPaymentController;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Controller;
@@ -326,10 +327,26 @@ class DonationController extends WP_REST_Controller
             return new WP_REST_Response(__('Donation not found', 'give'), 404);
         }
 
-        $controller = new GatewayPaymentController($donation->gateway());
-        $response = $controller->refund($donation);
+        $gateway = $donation->gateway();
 
-        return rest_ensure_response($response);
+        if (!$gateway->supportsRefund()) {
+            return new WP_REST_Response(__('Refunds are not supported for this gateway', 'give'), 400);
+        }
+
+        try {
+            $command = $gateway->refundDonation($donation);
+
+            if ($command instanceof PaymentRefunded) {
+                $handler = new PaymentRefundedHandler($command);
+                $handler->handle($donation);
+            }
+
+            $response = $this->prepare_item_for_response($donation->toArray(), $request);
+
+            return rest_ensure_response($response);
+        } catch (\Exception $exception) {
+            return new WP_REST_Response(__('Failed to refund donation', 'give'), 500);
+        }
     }
 
     /**

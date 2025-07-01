@@ -73,7 +73,7 @@ class HandleGatewayPaymentCommand
                 return new RedirectResponse($url);
             }
 
-            return new RespondToBrowser([
+            return new JsonResponse([
                 'status' => 'success',
                 'message' => __('Refund completed successfully', 'give'),
             ]);

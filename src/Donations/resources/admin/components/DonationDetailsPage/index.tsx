@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import cx from 'classnames';
 
 /**
@@ -13,7 +13,7 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal Dependencies
 */
-import { RefundIcon, TrashIcon, ViewIcon } from '@givewp/components/AdminDetailsPage/Icons';
+import { RefundIcon, TrashIcon } from '@givewp/components/AdminDetailsPage/Icons';
 import AdminDetailsPage from '@givewp/components/AdminDetailsPage';
 import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
 import { getDonationOptionsWindowData, useDonationEntityRecord } from '@givewp/donations/utils';
@@ -21,7 +21,6 @@ import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 import { amountFormatter } from '@givewp/components/AdminDetailsPage/utils';
 import useDonationRefund from '@givewp/donations/hooks/useDonationRefund';
-import { Donation } from '../types';
 
 const { donationStatuses } = getDonationOptionsWindowData();
 
@@ -43,34 +42,20 @@ const StatusBadge = ({ status }: { status: string }) => {
 };
 
 /**
- * TODO: figure out how we should check if a donation can be refunded using the gateway api
- * @unreleased
- */
-const canRefund = (donation: Donation) => {
-    const { gateways } = getDonationOptionsWindowData();
-
-    //find the gateway in the gateways array
-    const gateway = gateways.find((gateway) => gateway.id === donation.gatewayId && gateway.enabled);
-
-    return gateway?.supportsRefund;
-};
-
-/**
  * @unreleased
  */
 export default function DonationDetailsPage() {
     const { adminUrl, currency: defaultCurrency } = getDonationOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
     const { record: donation } = useDonationEntityRecord();
-    const {refund, isRefunding, isRefunded} = useDonationRefund(donation?.id);
-    const canRefundDonation = useMemo(() => donation?.gatewayId ? canRefund(donation) : false, [donation?.gatewayId]);
+    const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
 
     const currencyFormatter = amountFormatter(donation?.amount?.currency ?? defaultCurrency);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
-                {canRefundDonation && (
+                {canRefund && (
                     <a
                         href="#"
                         className={className}
@@ -88,6 +73,17 @@ export default function DonationDetailsPage() {
                 </a>
             </>
         );
+    };
+
+    /**
+     * @unreleased
+     */
+    const handleRefund = async () => {
+        try {
+            await refund();
+        } catch (error) {
+            setShowConfirmationDialog(null);
+        }
     };
 
     return (
@@ -109,7 +105,7 @@ export default function DonationDetailsPage() {
                 isOpen={showConfirmationDialog === 'refund' && !isRefunded}
                 variant="regular"
                 handleClose={() => setShowConfirmationDialog(null)}
-                handleConfirm={() => refund()}
+                handleConfirm={handleRefund}
                 isConfirming={isRefunding}
             >
                 {
