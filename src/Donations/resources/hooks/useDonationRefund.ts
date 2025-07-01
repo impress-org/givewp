@@ -34,6 +34,16 @@ export default function useDonationRefund(donation: Donation) {
     const [isRefunded, setIsRefunded] = useState(false);
     const dispatch = useDispatch('givewp/admin-details-page-notifications');
     const canRefund = useMemo(() => (donation ? canRefundDonation(donation) : false), [donation?.gatewayId, donation?.status]);
+    const {invalidateResolution, invalidateResolutionForStore} = useDispatch('core');
+
+    /**
+     * TODO: This is a temporary solution to invalidate the donation cache.
+     * There is most likely a better way to do this.
+     */
+    const invalidateDonationCache = () => {
+        invalidateResolution('getEntityRecords', ['givewp', 'donation']);
+        invalidateResolutionForStore();
+    };
 
     const refund = async () => {
         setIsRefunding(true);
@@ -42,6 +52,9 @@ export default function useDonationRefund(donation: Donation) {
         if (isResponseDonation(response) && response.status === 'refunded') {
             setIsRefunding(false);
             setIsRefunded(true);
+
+            invalidateDonationCache();
+
             dispatch.addSnackbarNotice({
                 id: 'refund-donation',
                 content: __('Refund completed successfully', 'give'),

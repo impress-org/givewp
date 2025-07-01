@@ -132,12 +132,18 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @inheritDoc
+     * @unreleased updated to use PaymentGatewayRefundable interface
      *
      * @since 2.29.0
      */
     public function supportsRefund(): bool
     {
-        return $this instanceof PaymentGatewayRefundable;
+        if ($this instanceof PaymentGatewayRefundable) {
+            return true;
+        }
+
+        // backward compatibility for add-on legacy gateways that don't implement the PaymentGatewayRefundable interface
+        return method_exists($this, 'refundDonation');
     }
 
     /**

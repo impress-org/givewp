@@ -14,6 +14,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
 use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Controller;
@@ -334,7 +335,8 @@ class DonationController extends WP_REST_Controller
         }
 
         try {
-            $command = $gateway->refundDonation($donation);
+            /** @var PaymentGatewayRefundable $gateway */
+            $command =  $gateway->refundDonation($donation);
 
             if ($command instanceof PaymentRefunded) {
                 $handler = new PaymentRefundedHandler($command);
