@@ -288,16 +288,6 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @since 2.20.0
-     * @inerhitDoc
-     * @throws Exception
-     */
-    public function refundDonation(Donation $donation)
-    {
-        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
-    }
-
-    /**
      * @since 4.0.0
      */
     private function shouldUpdateOrder(Donation $donation, $payPalOrder): bool
