@@ -223,15 +223,3 @@
         }
     }
 }
-
-
-.customAmount{
-    color: #4d4d4d;
-    font-weight: 500;
-
-    &::placeholder{
-        color: var(--givewp-grey-500);
-        font-weight: 500;
-        opacity: 0.6;
-    }
-}

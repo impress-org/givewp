@@ -2,40 +2,13 @@
 
 namespace Give\Donors;
 
+use Give\Donors\Actions\LoadDonorDetailsAssets;
+use Give\Donors\Actions\LoadDonorsListTableAssets;
 use Give\Donors\ListTable\DonorsListTable;
-use Give\Framework\Database\DB;
-use Give\Helpers\EnqueueScript;
-use Give\Helpers\Utils;
+use Give\Donors\Models\Donor;
 
 class DonorsAdminPage
 {
-    /**
-     * Root URL for this page's endpoints
-     * @var string
-     */
-    private $apiRoot;
-
-    /**
-     * Nonce for authentication with WP REST API
-     * @var string
-     */
-    private $apiNonce;
-
-    /**
-     * @var string
-     */
-    private $adminUrl;
-
-    /**
-     * @since 2.20.0
-     */
-    public function __construct()
-    {
-        $this->apiRoot = esc_url_raw(rest_url('give-api/v2/admin/donors'));
-        $this->apiNonce = wp_create_nonce('wp_rest');
-        $this->adminUrl = admin_url();
-    }
-
     /**
      * @since 2.20.0
      */
@@ -57,66 +30,25 @@ class DonorsAdminPage
     }
 
     /**
-     * @since 2.27.1 Pass dissmissedRecommendations
-     *
-     * @since      2.20.0
-     */
-    public function loadScripts()
-    {
-        $data = [
-            'apiRoot' => $this->apiRoot,
-            'apiNonce' => $this->apiNonce,
-            'forms' => $this->getForms(),
-            'table' => give(DonorsListTable::class)->toArray(),
-            'adminUrl' => $this->adminUrl,
-            'pluginUrl' => GIVE_PLUGIN_URL,
-            'dismissedRecommendations' => $this->getDismissedRecommendations(),
-        ];
-
-        EnqueueScript::make('give-admin-donors', 'build/assets/dist/js/give-admin-donors.js')
-            ->loadInFooter()
-            ->registerTranslations()
-            ->registerLocalizeData('GiveDonors', $data)->enqueue();
-
-        wp_enqueue_style(
-            'give-admin-ui-font',
-            'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400..700&display=swap',
-            [],
-            null
-        );
-
-        wp_enqueue_style('givewp-design-system-foundation');
-    }
-
-    /**
-     * Preload initial table data
-     * @since 2.20.0
-     */
-    public function getForms()
-    {
-        $options = DB::table('posts')
-            ->select(
-                ['ID', 'value'],
-                ['post_title', 'text']
-            )
-            ->where('post_type', 'give_forms')
-            ->whereIn('post_status', ['publish', 'draft', 'pending', 'private'])
-            ->getAll(ARRAY_A);
-
-        return array_merge([
-            [
-                'value' => '0',
-                'text' => __('Any', 'give'),
-            ],
-        ], $options);
-    }
-
-    /**
      * Render admin page container
+     *
+     * @since 4.4.0 Add new details page view
      * @since 2.20.0
      */
     public function render()
     {
+        if (self::isShowingDetailsPage()) {
+            $donor = Donor::find(absint($_GET['id']));
+
+            if ( ! $donor) {
+                wp_die(__('Donor not found', 'give'), 404);
+            }
+
+            give(LoadDonorDetailsAssets::class)();
+        } elseif (self::isShowing()) {
+            give(LoadDonorsListTableAssets::class)();
+        }
+
         echo '<div id="give-admin-donors-root"></div>';
     }
 
@@ -161,28 +93,22 @@ class DonorsAdminPage
         return isset($_GET['page']) && $_GET['page'] === 'give-donors' && ! isset($_GET['id']);
     }
 
+
     /**
-     * Retrieve a list of dismissed recommendations.
-     *
-     * @since 2.27.1
-     *
-     * @return array
+     * @since 4.4.0
      */
-    private function getDismissedRecommendations(): array
+    public static function isShowingDetailsPage(): bool
     {
-        $dismissedRecommendations = [];
-
-        $feeRecoveryAddonIsActive = Utils::isPluginActive('give-fee-recovery/give-fee-recovery.php');
-
-        $optionName = 'givewp_donors_fee_recovery_recommendation_dismissed';
-
-        $dismissed = get_option($optionName, false);
-
-        if ($dismissed || $feeRecoveryAddonIsActive) {
-            $dismissedRecommendations[] = $optionName;
-        }
-
-        return $dismissedRecommendations;
+        return isset($_GET['id'], $_GET['page']) && 'give-donors' === $_GET['page'];
     }
 
+    /**
+     * Get the URL for the details page
+     *
+     * @since 4.4.0
+     */
+    public static function getDetailsPageUrl(int $donorId): string
+    {
+        return admin_url("edit.php?post_type=give_forms&page=give-donors&id=$donorId");
+    }
 }

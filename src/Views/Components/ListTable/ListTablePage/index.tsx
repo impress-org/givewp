@@ -39,7 +39,7 @@ export interface ListTablePageProps {
 export interface FilterConfig {
     // required
     name: string;
-    type: 'select' | 'formselect' | 'search' | 'checkbox';
+    type: 'select' | 'formselect' | 'search' | 'checkbox' | 'hidden';
 
     // optional
     ariaLabel?: string;

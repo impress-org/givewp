@@ -1,0 +1,323 @@
+.donorEmailAddress {
+    display: flex;
+    flex-direction: column;
+
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--givewp-spacing-3) 0;
+
+        &:not(:first-child) {
+            border-top: 1px solid var(--givewp-neutral-100);
+        }
+    }
+
+    .address {
+        color: var(--givewp-neutral-900);
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .badge {
+        align-items: center;
+        border-radius: var(--givewp-rounded-full);
+        display: inline-flex;
+        font-size: 0.75rem;
+        font-weight: 600;
+        line-height: 1.5;
+        padding: calc(var(--givewp-spacing-1) / 2) var(--givewp-spacing-3);
+
+        &.badgePrimary {
+            background-color: var(--givewp-neutral-100);
+            color: var(--givewp-neutral-900);
+        }
+    }
+
+    .actions {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .menuTrigger {
+        align-items: center;
+        background: none;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        height: 2rem;
+        justify-content: center;
+        padding: var(--givewp-spacing-1);
+        transition: background-color 0.15s ease;
+        width: 2rem;
+
+        svg {
+            height: 1.5rem;
+            transform: rotate(90deg);
+            width: 1.5rem;
+        }
+
+        &:hover {
+            background-color: var(--givewp-neutral-100);
+            color: var(--givewp-neutral-900);
+        }
+    }
+
+    .dropdown {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+        z-index: 9999;
+        padding: var(--givewp-spacing-1);
+        top: 100%;
+        right: 0;
+        width: 203px;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        border: solid 1px var(--givewp-neutral-50);
+        background-color: var(--givewp-shades-white);
+
+        .dropdownItem {
+            align-items: center;
+            background: none;
+            border: none;
+            color: var(--givewp-neutral-700);
+            cursor: pointer;
+            display: flex;
+            font-size: .875rem;
+            font-weight: 500;
+            gap: var(--givewp-spacing-2);
+            line-height: 1.43;
+            padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+            text-decoration: none;
+
+            &:hover {
+                background-color: #f3f4f6;
+            }
+
+            &.delete {
+                color: var(--givewp-red-500);
+            }
+        }
+    }
+
+    .add {
+        display: flex;
+        justify-content: center;
+        margin-top: var(--givewp-spacing-2);
+    }
+
+    .addButton {
+        background: none;
+        border-radius: var(--givewp-rounded-4);
+        border: 1px solid var(--givewp-neutral-300);
+        color: var(--givewp-neutral-900);
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-size: var(--givewp-font-size-sm);
+        font-weight: 500;
+        line-height: 1.43;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: var(--givewp-neutral-50);
+        }
+    }
+}
+
+// Base Dialog Styles
+.dialog {
+    .content {
+        .text {
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--givewp-neutral-700);
+        }
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-2);
+        margin-top: var(--givewp-spacing-6);
+
+        button {
+            cursor: pointer;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+            border: none;
+        }
+    }
+
+
+}
+
+// Add Email Dialog Specific Styles
+.addEmailDialog {
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+    }
+
+    .label,
+    .checkboxLabel {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .label {
+        color: var(--givewp-neutral-900);
+    }
+
+    .checkboxLabel {
+        align-items: center;
+        color: var(--givewp-neutral-700);
+        display: flex;
+        gap: var(--givewp-spacing-2);
+    }
+
+    .formField {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+
+        .input {
+            border-radius: var(--givewp-rounded-4);
+            border: 1px solid var(--givewp-neutral-300);
+            color: var(--givewp-neutral-900);
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-top: var(--givewp-spacing-1);
+            padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+            transition: all 0.2s ease;
+
+            &.inputError {
+                border-color: var(--givewp-red-400);
+            }
+
+            &:focus {
+                border-color: rgb(34, 113, 177);
+                box-shadow: rgb(34, 113, 177) 0px 0px 0px 1px;
+                outline: none;
+            }
+
+            &.inputError:focus {
+                border-color: var(--givewp-red-400);
+                box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            }
+        }
+
+        .errorMessage {
+            color: var(--givewp-red-500);
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.43;
+            margin-top: var(--givewp-spacing-1);
+        }
+    }
+
+    .checkboxField {
+        .checkbox {
+            --transition: 0.2s ease;
+
+            appearance: none;
+            background-color: transparent;
+            border-radius: var(--givewp-rounded-1, 0.25rem);
+            border: solid 1px var(--givewp-grey-400);
+            color: #2271b1;
+            cursor: pointer;
+            flex-shrink: 0;
+            font-size: inherit;
+            height: 1.25rem;
+            margin: 0;
+            transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+            vertical-align: middle;
+            width: 1.25rem;
+
+            &::before {
+                content: none;
+            }
+
+            &:focus {
+                border-color: transparent;
+                box-shadow: #2271b1 0px 0px 0px 0.125rem;
+                outline: none;
+            }
+
+            &:checked,
+            &:checked:active,
+            &:checked:focus {
+                background-color: #2271b1;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27rgb%28255, 255, 255%29%27 stroke-width=%274%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpolyline points=%2720 6 9 17 4 12%27%3E%3C/polyline%3E%3C/svg%3E");
+                background-position: center;
+                background-size: 0.75em auto;
+                background-repeat: no-repeat;
+                border-color: #2271b1;
+            }
+
+            &[aria-invalid="false"] {
+                border-color: var(--givewp-green-500);
+            }
+
+            &[aria-invalid="true"] {
+                border-color: var(--givewp-red-400);
+            }
+        }
+    }
+
+    .buttons {
+        margin-top: var(--givewp-spacing-10);
+
+        .addButton {
+            padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
+        }
+    }
+}
+
+// Delete Email Dialog Specific Styles
+.deleteEmailDialog {
+    .content {
+        .text {
+            margin: 0;
+        }
+    }
+
+    button {
+        &.cancelButton {
+            border: 1px solid var(--givewp-neutral-300);
+            background-color: var(--givewp-shades-white);
+            color: var(--givewp-neutral-900);
+
+            &:hover {
+                background-color: var(--givewp-neutral-50);
+            }
+        }
+
+        &.confirmButton {
+            border: 1px solid var(--givewp-red-400);
+            background-color: var(--givewp-red-400);
+            color: var(--givewp-shades-white);
+
+            &:hover {
+                border: 1px solid var(--givewp-red-500);
+                background-color: var(--givewp-red-500);
+            }
+        }
+    }
+}

@@ -1,0 +1,344 @@
+.statusBadge {
+    align-items: center;
+    background-color: var(--statusBadgeBgColor);
+    border-radius: var(--givewp-rounded-full);
+    border: 1px solid var(--statusBadgeIconColor);
+    display: flex;
+    gap: var(--givewp-spacing-1);
+    justify-content: center;
+    padding: calc(var(--givewp-spacing-1) - 1px) var(--givewp-spacing-3) calc(var(--givewp-spacing-1) - 1px) calc(var(--givewp-spacing-1) - 1px);
+
+    &.statusBadge--current {
+        --statusBadgeIconColor: var(--givewp-green-600);
+        --statusBadgeBgColor: var(--givewp-green-25);
+        --statusBadgeTextColor: var(--givewp-green-900);
+    }
+
+    &.statusBadge--prospective {
+        --statusBadgeIconColor: var(--givewp-orange-600);
+        --statusBadgeBgColor: var(--givewp-orange-25);
+        --statusBadgeTextColor: var(--givewp-orange-900);
+    }
+
+    &.statusBadge--retained {
+        --statusBadgeIconColor: var(--givewp-esmerald-600);
+        --statusBadgeBgColor: var(--givewp-esmerald-25);
+        --statusBadgeTextColor: var(--givewp-esmerald-900);
+    }
+
+    &.statusBadge--lapsed {
+        --statusBadgeIconColor: var(--givewp-red-600);
+        --statusBadgeBgColor: var(--givewp-red-25);
+        --statusBadgeTextColor: var(--givewp-red-900);
+    }
+
+    &.statusBadge--new {
+        --statusBadgeIconColor: var(--givewp-purple-500);
+        --statusBadgeBgColor: var(--givewp-purple-25);
+        --statusBadgeTextColor: var(--givewp-purple-900);
+    }
+
+    &.statusBadge--recaptured {
+        --statusBadgeIconColor: var(--givewp-yellow-600);
+        --statusBadgeBgColor: var(--givewp-yellow-25);
+        --statusBadgeTextColor: var(--givewp-yellow-900);
+    }
+
+    &.statusBadge--recurring {
+        --statusBadgeIconColor: var(--givewp-blue-600);
+        --statusBadgeBgColor: var(--givewp-blue-25);
+        --statusBadgeTextColor: var(--givewp-blue-900);
+    }
+}
+
+.statusBadgeIcon {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--statusBadgeBgColor);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 50%;
+    background-color: var(--statusBadgeIconColor);
+}
+
+.statusBadgeText {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--statusBadgeTextColor);
+}
+
+.archive {
+    --contextMenuItemColor: var(--givewp-red-500);
+}
+
+$breakpoint-desktop: 900px;
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--givewp-spacing-4);
+
+    @media (max-width: $breakpoint-desktop) {
+        grid-template-columns: 1fr;
+        gap: var(--givewp-spacing-6);
+    }
+}
+
+.leftColumn, .rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-6);
+    margin-top: var(--givewp-spacing-2);
+}
+
+.leftColumn {
+    grid-column: span 2;
+
+    @media (max-width: $breakpoint-desktop) {
+        grid-column: span 1;
+    }
+}
+
+.rightColumn {
+    grid-column: span 1;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 1rem 1.5rem 1.5rem;
+    border-radius: 8px;
+    border: solid 1px #f3f4f6;
+    background-color: var(--givewp-shades-white);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.transactionList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.transactionItem {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--givewp-spacing-3);
+    padding: var(--givewp-spacing-4) 0;
+
+    @media (max-width: $breakpoint-desktop) {
+        flex-wrap: wrap;
+    }
+}
+
+.transactionInfo {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: var(--givewp-spacing-2);
+    gap: 0.313rem;
+}
+
+.transactionIcon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.svgContainer {
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+    border-radius: 100px;
+    background-color: #f9fafb;
+    z-index: 1;
+}
+
+.timeline {
+    position: absolute;
+    top: -100%;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.125rem;
+    background-color: #d1d5db;
+    z-index: 0;
+}
+
+.transactionItem:first-child .timeline {
+    top: 50%;
+}
+
+.transactionItem:last-child .timeline {
+    bottom: 50%;
+}
+
+.campaign {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--givewp-spacing-1);
+
+    @media (max-width: $breakpoint-desktop) {
+        flex-wrap: wrap;
+        gap: var(--givewp-spacing-2);
+    }
+
+    span:first-child {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--givewp-neutral-700);
+    }
+
+    strong {
+        color: var(--givewp-neutral-900);
+    }
+}
+
+.timestamp {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.43;
+    text-align: left;
+    color: #6b7280;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: fit-content;
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    text-transform: capitalize;
+
+    &.completed {
+        background-color: var(--givewp-green-100);
+        color: var(--givewp-green-900);
+    }
+
+    &.failed {
+        background-color: var(--givewp-red-100);
+        color: var(--givewp-red-900);
+    }
+
+    &.pending {
+        background-color: var(--givewp-blue-100);
+        color: var(--givewp-red-900);
+    }
+}
+
+.amount {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.56;
+    color: #1f2937;
+}
+
+.summaryCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: solid 1px #f3f4f6;
+    background-color: var(--givewp-shades-white);
+
+    @media (max-width: $breakpoint-desktop) {
+        flex-wrap: wrap;
+    }
+
+    .summaryCardLabel {
+        flex-grow: 1;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        color: #4b5563;
+        padding: var(--givewp-spacing-3) 0;
+        margin: 0;
+    }
+
+    .summaryCardValue {
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.5;
+        color: #1f2937;
+        padding: var(--givewp-spacing-3) 0;
+
+        &.pill {
+            align-items: center;
+            background-color: #f9fafb;
+            border-radius: 9999px;
+            border: solid 1px #374151;
+            color: #060c1a;
+            display: flex;
+            font-size: 0.75rem;
+            justify-content: center;
+            line-height: 1.5;
+            margin: var(--givewp-spacing-3) 0;
+            padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+        }
+    }
+
+    .summaryCardValues {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+        margin: 0;
+        padding: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
+
+        p {
+            margin: 0;
+
+            &:first-child {
+                font-size: 1rem;
+                font-weight: 600;
+                line-height: 1.5;
+                color: #459948;
+                text-align: right;
+            }
+
+            &:last-child {
+                font-size: 0.875rem;
+                font-weight: 500;
+                line-height: 1.43;
+                color: #4b5563;
+            }
+        }
+    }
+}
+
+.contributionsCard {
+    display: flex;
+    flex-direction: column;
+
+    > div:last-child {
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        min-height: 300px;
+    }
+}
+
+  .sectionFieldInputWrapper {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+}
+
+.prefixSelect {
+    flex: 1 0 6.625rem;
+}
