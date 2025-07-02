@@ -83,6 +83,7 @@ export default function DonorDetailsPage() {
                         <ViewIcon /> {__('View WordPress profile', 'give')}
                     </a>
                 )}
+
                 {/* <a
                     href="#"
                     className={cx(className, styles.archive)}
