@@ -9,14 +9,14 @@ import {getDonorOptionsWindowData} from '@givewp/donors/utils';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 interface DonorContributionsProps {
     donorId: number;
 }
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 export default function DonorContributions({donorId}: DonorContributionsProps) {
     const {currency, mode} = getDonorOptionsWindowData();

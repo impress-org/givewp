@@ -106,7 +106,7 @@ class DonationQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
-     * @unreleased update to account for exchange rate
+     * @since 4.5.0 update to account for exchange rate
      * @since 3.14.0 Use the NULLIF function to prevent zero values that can generate a wrong final result and use $this->includeOnlyValidStatuses() and $this->includeOnlyCurrentMode()
      * @since 3.12.0
      * @return int|float

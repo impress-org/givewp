@@ -13,7 +13,7 @@ import {formatTimestamp} from '@givewp/src/Admin/utils';
 import Header from '@givewp/src/Admin/components/Header';
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 type DonorNote = {
     id: number;
@@ -25,7 +25,7 @@ type DonorNote = {
 }
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 type NoteState = {
     isAddingNote: boolean;
@@ -313,7 +313,7 @@ const Note = ({note, onDelete, onEdit}) => {
 
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 function ConfirmationDialog({
     isOpen,

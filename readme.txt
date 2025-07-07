@@ -276,10 +276,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 4.5.0: July 9th, 2025 =
 * New: Added a new PayPal setting to optionally accept credit cards when using Smart Buttons
 New: Added shortcodes for givewp_campaign_donations, givewp_campaign_donors, and givewp_campaign_comments
-* Fix: Resolved a Divi compatibility issues
+* Enhancement: Added core Stripe gateway support for customers in countries BR, IN, MY, MX, SG, TH
+* Fix: Resolved a Divi compatibility issue
+* Fix: Ensure campaign overview and goal statistics are calculated in the base currency
 * Fix: Resolved a style issue causing a double border around the custom amount field
-* Dev: Added API for gateway webhook events
 * Fix: Resolved an issue with translations that use ajax (Open-source contribution  @Genevieve-K)
+* Fix: Resolved PHP 8.1+ compatibility issues with Form Goal Settings
+* Fix: Resolved an issue with the global css form setting where some characters were being encoded
+* Fix: Resolved an issue with the terms and conditions modal not working properly in Firefox
+* Dev: Added API for gateway webhook events
 
 = 4.4.0: June 18th, 2025 =
 * New: The donor admin details screen has been upgraded to a new design and experience!
