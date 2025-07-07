@@ -179,7 +179,7 @@ Here’s a few ways you can contribute to GiveWP:
 
 = Minimum Requirements =
 
-* WordPress 6.5 or greater
+* WordPress 6.6 or greater
 * PHP version 7.4 or greater
 * MySQL version 5.7 or greater
 * MariaDB version 10 or later
