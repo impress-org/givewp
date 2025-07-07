@@ -275,8 +275,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 4.5.0: July 9th, 2025 =
 * New: Added a new PayPal setting to optionally accept credit cards when using Smart Buttons
-New: Added shortcodes for givewp_campaign_donations, givewp_campaign_donors, and givewp_campaign_comments
-* Enhancement: Added support for the gateway transaction ID to the donation importer
+* New: Added shortcodes for givewp_campaign_donations, givewp_campaign_donors, and givewp_campaign_comments
+* New: Added support for the gateway transaction ID to the donation importer
 * Enhancement: Added core Stripe gateway support for customers in countries BR, IN, MY, MX, SG, TH
 * Fix: Resolved a Divi compatibility issue
 * Fix: Ensure campaign overview and goal statistics are calculated in the base currency
