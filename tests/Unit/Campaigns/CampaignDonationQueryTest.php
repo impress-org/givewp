@@ -118,6 +118,82 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
+     * @unreleased
+     */
+    public function testSumIntendedAmountWithExchangeRates()
+    {
+        $campaign = Campaign::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
+
+        // Donation in EUR with 1.2 exchange rate (1 USD = 1.2 EUR)
+        // €120 / 1.2 = $100 USD
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(12000, 'EUR'), // €120.00
+            'feeAmountRecovered' => new Money(0, 'EUR'),
+            'exchangeRate' => '1.2',
+        ]);
+
+        // Donation in GBP with 0.8 exchange rate (1 USD = 0.8 GBP)
+        // £80 / 0.8 = $100 USD
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(8000, 'GBP'), // £80.00
+            'feeAmountRecovered' => new Money(0, 'GBP'),
+            'exchangeRate' => '0.8',
+        ]);
+
+        // Donation in USD with default exchange rate (no conversion)
+        // $50 / 1 = $50 USD
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(5000, 'USD'), // $50.00
+            'feeAmountRecovered' => new Money(0, 'USD'),
+            'exchangeRate' => '1',
+        ]);
+
+        $query = new CampaignDonationQuery($campaign);
+
+        // Total should be: $100 + $100 + $50 = $250
+        $this->assertEquals(250.00, $query->sumIntendedAmount());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testSumIntendedAmountWithExchangeRatesAndFees()
+    {
+        $campaign = Campaign::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
+
+        // Donation in EUR: (€120 - €20 fee) / 1.25 = €100 / 1.25 = $80.00 USD
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(12000, 'EUR'), // €120.00
+            'feeAmountRecovered' => new Money(2000, 'EUR'), // €20.00
+            'exchangeRate' => '1.25',
+        ]);
+
+        // Donation in GBP: (£80 - £16 fee) / 0.8 = £64 / 0.8 = $80.00 USD
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(8000, 'GBP'), // £80.00
+            'feeAmountRecovered' => new Money(1600, 'GBP'), // £16.00
+            'exchangeRate' => '0.8',
+        ]);
+
+        $query = new CampaignDonationQuery($campaign);
+
+        // Total should be: $80.00 + $80.00 = $160.00
+        $this->assertEquals(160.00, $query->sumIntendedAmount());
+    }
+
+    /**
      * @since 4.0.0
      */
     public function testGetDonationsByDate(): void
@@ -214,6 +290,62 @@ final class CampaignDonationQueryTest extends TestCase
         $this->assertEquals($expectedDataForMonthQuery, $query->getDonationsByDate('MONTH'));
         $this->assertEquals($expectedDataForYearQuery, $query->getDonationsByDate('YEAR'));
         $this->assertEquals($dates[0], $query->getOldestDonationDate());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonationsByDateWithExchangeRates(): void
+    {
+        $campaign = Campaign::factory()->create();
+        $form = DonationForm::find($campaign->defaultFormId);
+
+        // Create donations with different exchange rates on the same date
+        $testDate = '2024-01-01';
+
+        // Donation in EUR: €120 / 1.2 = $100 USD
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(12000, 'EUR'),
+            'feeAmountRecovered' => new Money(0, 'EUR'),
+            'exchangeRate' => '1.2',
+            'createdAt' => date_create($testDate . ' 00:00:00'),
+        ]);
+
+        // Donation in GBP: £80 / 0.8 = $100 USD
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(8000, 'GBP'),
+            'feeAmountRecovered' => new Money(0, 'GBP'),
+            'exchangeRate' => '0.8',
+            'createdAt' => date_create($testDate . ' 00:00:00'),
+        ]);
+
+        // Donation in USD: $50 / 1 = $50 USD
+        Donation::factory()->create([
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(5000, 'USD'),
+            'feeAmountRecovered' => new Money(0, 'USD'),
+            'exchangeRate' => '1',
+            'createdAt' => date_create($testDate . ' 00:00:00'),
+        ]);
+
+        $expectedDataForDayQuery = [
+            (object)[
+                'date_created' => $testDate,
+                'amount' => 250.00, // $100 + $100 + $50 = $250
+                'year' => $this->getYear($testDate),
+                'month' => $this->getMonth($testDate),
+                'day' => $this->getDay($testDate),
+            ]
+        ];
+
+        $query = new CampaignDonationQuery($campaign);
+
+        $this->assertEquals($expectedDataForDayQuery, $query->getDonationsByDate('DAY'));
     }
 
     /**

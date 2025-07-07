@@ -70,9 +70,10 @@ class DonationFormDataQuery extends QueryBuilder
     public function collectIntendedAmounts(): ?array
     {
         return (clone $this)
-            ->select('SUM(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) as sum')
+            ->select('SUM((IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) / IFNULL(exchangeRate.meta_value, 1)) as sum')
             ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount')
             ->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered')
+            ->joinDonationMeta(DonationMetaKeys::EXCHANGE_RATE, 'exchangeRate')
             ->getAll(ARRAY_A);
     }
 
