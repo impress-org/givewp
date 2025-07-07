@@ -106,7 +106,7 @@ If you are a GiveWP customer with an active license of any of our popular add-on
 
 GiveWP comes with several payment gateway options:
 
-* **Stripe Donations** -- Accept donations through any payment method (like Apple Pay, Google Pay, or ACH) activated in your Stripe accounts.
+* **Stripe Donations** -- Accept donations through any payment method (like Apple Pay, Google Pay, or ACH) activated in your Stripe accounts. Additional fees may apply for free users. Read our [Stripe documentation](https://docs.givewp.com/stripe-fees) for more information.
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
 * **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account.
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.

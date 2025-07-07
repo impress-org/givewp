@@ -1,0 +1,136 @@
+$breakpoint-desktop: 900px;
+
+.transactionList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.transactionItem {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--givewp-spacing-3);
+    padding: var(--givewp-spacing-4) 0;
+
+    @media (max-width: $breakpoint-desktop) {
+        flex-wrap: wrap;
+    }
+}
+
+.transactionInfo {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: var(--givewp-spacing-2);
+    gap: 0.313rem;
+}
+
+.transactionIcon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.svgContainer {
+    position: relative;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.5rem;
+    border-radius: 100px;
+    background-color: #f9fafb;
+    z-index: 1;
+}
+
+.timeline {
+    position: absolute;
+    top: -100%;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.125rem;
+    background-color: #d1d5db;
+    z-index: 0;
+}
+
+.transactionItem:first-child .timeline {
+    top: 50%;
+}
+
+.transactionItem:last-child .timeline {
+    bottom: 50%;
+}
+
+.campaign {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--givewp-spacing-1);
+
+    @media (max-width: $breakpoint-desktop) {
+        flex-wrap: wrap;
+        gap: var(--givewp-spacing-2);
+    }
+
+    span:first-child {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--givewp-neutral-700);
+    }
+
+    strong {
+        color: var(--givewp-neutral-900);
+    }
+}
+
+.timestamp {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.43;
+    text-align: left;
+    color: #6b7280;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: fit-content;
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    text-transform: capitalize;
+
+    &.completed {
+        background-color: var(--givewp-green-100);
+        color: var(--givewp-green-900);
+    }
+
+    &.failed {
+        background-color: var(--givewp-red-100);
+        color: var(--givewp-red-900);
+    }
+
+    &.pending {
+        background-color: var(--givewp-blue-100);
+        color: var(--givewp-red-900);
+    }
+
+    &.refunded {
+        background-color: var(--givewp-orange-100);
+        color: var(--givewp-orange-900);
+    }
+}
+
+.amount {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.56;
+    color: #1f2937;
+} 
