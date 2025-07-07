@@ -13,13 +13,14 @@ import { createInterpolateElement } from '@wordpress/element';
 /**
  * Internal Dependencies
 */
-import { RefundIcon, TrashIcon, ViewIcon } from '@givewp/components/AdminDetailsPage/Icons';
+import { RefundIcon, TrashIcon } from '@givewp/components/AdminDetailsPage/Icons';
 import AdminDetailsPage from '@givewp/components/AdminDetailsPage';
 import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
 import { getDonationOptionsWindowData, useDonationEntityRecord } from '@givewp/donations/utils';
 import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 import { amountFormatter } from '@givewp/components/AdminDetailsPage/utils';
+import useDonationRefund from '@givewp/donations/hooks/useDonationRefund';
 
 const { donationStatuses } = getDonationOptionsWindowData();
 
@@ -46,14 +47,15 @@ const StatusBadge = ({ status }: { status: string }) => {
 export default function DonationDetailsPage() {
     const { adminUrl, currency: defaultCurrency } = getDonationOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
-
     const { record: donation } = useDonationEntityRecord();
+    const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
+
     const currencyFormatter = amountFormatter(donation?.amount?.currency ?? defaultCurrency);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
-                {donation.status === 'publish' && (
+                {canRefund && (
                     <a
                         href="#"
                         className={className}
@@ -73,6 +75,17 @@ export default function DonationDetailsPage() {
         );
     };
 
+    /**
+     * @unreleased
+     */
+    const handleRefund = async () => {
+        try {
+            await refund();
+        } catch (error) {
+            setShowConfirmationDialog(null);
+        }
+    };
+
     return (
         <AdminDetailsPage
             objectId={donation?.id}
@@ -89,10 +102,11 @@ export default function DonationDetailsPage() {
             <ConfirmationDialog
                 title={__('Refund Donation', 'give')}
                 actionLabel={__('Refund Donation', 'give')}
-                isOpen={showConfirmationDialog === 'refund'}
+                isOpen={showConfirmationDialog === 'refund' && !isRefunded}
                 variant="regular"
                 handleClose={() => setShowConfirmationDialog(null)}
-                handleConfirm={() => { }}
+                handleConfirm={handleRefund}
+                isConfirming={isRefunding}
             >
                 {
                     createInterpolateElement(

@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPausable;
@@ -131,12 +132,18 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @inheritDoc
+     * @unreleased updated to use PaymentGatewayRefundable interface
      *
      * @since 2.29.0
      */
     public function supportsRefund(): bool
     {
-        return $this->isFunctionImplementedInGatewayClass('refundDonation');
+        if ($this instanceof PaymentGatewayRefundable) {
+            return true;
+        }
+
+        // backward compatibility for add-on legacy gateways that don't implement the PaymentGatewayRefundable interface
+        return method_exists($this, 'refundDonation');
     }
 
     /**

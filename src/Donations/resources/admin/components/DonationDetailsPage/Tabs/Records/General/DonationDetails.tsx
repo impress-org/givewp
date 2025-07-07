@@ -18,8 +18,6 @@ export default function DonationDetails() {
     const amount = getValues('amount');
     const campaignId = watch('campaignId');
     const formId = watch('formId');
-    const anonymous = watch('anonymous');
-    const createdAt = watch('createdAt');
     const status = watch('status');
 
     useEffect(() => {
@@ -78,6 +76,7 @@ export default function DonationDetails() {
                     <input
                         type="datetime-local"
                         id="date"
+                        step="1"
                         {...register('createdAt')}
                     />
                 </AdminSectionField>

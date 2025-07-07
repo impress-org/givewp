@@ -7,6 +7,8 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Helpers\IntlTelInput;
 use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\Framework\Database\DB;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\PaymentGateways\PaymentGateway;
 
 /**
  * The purpose of this action is to have a centralized place for localizing options used on many different places
@@ -52,6 +54,7 @@ class LoadDonationOptions
             'eventTicketsEnabled' => FeatureFlag::eventTickets(),
             'isFeeRecoveryEnabled' => defined('GIVE_FEE_RECOVERY_VERSION'),
             'mode' => give_is_test_mode() ? 'test' : 'live',
+            'gateways' => $this->getGateways(),
         ];
     }
 
@@ -160,5 +163,30 @@ class LoadDonationOptions
         }
 
         return $donors;
+    }
+
+    /**
+     * Get gateways
+     *
+     * @unreleased
+     */
+    private function getGateways(): array
+    {
+        $enabledGateways = array_keys(give_get_enabled_payment_gateways());
+
+        $gateways = array_map(static function ($gatewayClass) use ($enabledGateways) {
+            /** @var PaymentGateway $gateway */
+            $gateway = give($gatewayClass);
+
+            return [
+                'id' => $gateway::id(),
+                'enabled' => in_array($gateway::id(), $enabledGateways, true),
+                'label' => $gateway->getName(),
+                'supportsSubscriptions' => $gateway->supportsSubscriptions(),
+                'supportsRefund' => $gateway->supportsRefund(),
+            ];
+        }, give()->gateways->getPaymentGateways());
+
+        return array_values($gateways);
     }
 }

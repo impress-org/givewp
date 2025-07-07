@@ -12,6 +12,9 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
 use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Controller;
@@ -123,6 +126,21 @@ class DonationController extends WP_REST_Controller
                         'items' => [
                             'type' => 'integer',
                         ],
+                        'required' => true,
+                    ],
+                ],
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
+        ]);
+
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/refund', [
+            [
+                'methods' => WP_REST_Server::EDITABLE,
+                'callback' => [$this, 'refund_item'],
+                'permission_callback' => [$this, 'refund_item_permissions_check'],
+                'args' => [
+                    'id' => [
+                        'type' => 'integer',
                         'required' => true,
                     ],
                 ],
@@ -295,6 +313,42 @@ class DonationController extends WP_REST_Controller
         $response = $this->prepare_item_for_response($item, $request);
 
         return rest_ensure_response($response);
+    }
+
+    /**
+     * Refund a single donation.
+     *
+     * @unreleased
+     */
+    public function refund_item($request)
+    {
+        $donation = Donation::find($request->get_param('id'));
+
+        if (!$donation) {
+            return new WP_REST_Response(__('Donation not found', 'give'), 404);
+        }
+
+        $gateway = $donation->gateway();
+
+        if (!$gateway->supportsRefund()) {
+            return new WP_REST_Response(__('Refunds are not supported for this gateway', 'give'), 400);
+        }
+
+        try {
+            /** @var PaymentGatewayRefundable $gateway */
+            $command =  $gateway->refundDonation($donation);
+
+            if ($command instanceof PaymentRefunded) {
+                $handler = new PaymentRefundedHandler($command);
+                $handler->handle($donation);
+            }
+
+            $response = $this->prepare_item_for_response($donation->toArray(), $request);
+
+            return rest_ensure_response($response);
+        } catch (\Exception $exception) {
+            return new WP_REST_Response(__('Failed to refund donation', 'give'), 500);
+        }
     }
 
     /**
@@ -619,6 +673,23 @@ class DonationController extends WP_REST_Controller
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to delete donations.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * TODO: check permissions for refunding donations
+     * @unreleased
+     */
+    public function refund_item_permissions_check($request)
+    {
+        if (!current_user_can('manage_options')) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to refund donations.', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
