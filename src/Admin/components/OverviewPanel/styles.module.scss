@@ -1,0 +1,12 @@
+.panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 1rem 1.5rem 1.5rem;
+    border-radius: 8px;
+    border: solid 1px #f3f4f6;
+    background-color: var(--givewp-shades-white);
+    width: 100%;
+    box-sizing: border-box;
+} 

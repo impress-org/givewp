@@ -1,7 +1,22 @@
+import cx from 'classnames';
 import {__} from '@wordpress/i18n'
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import {ErrorIcon} from './Icons';
+import {ErrorIcon, WarningIcon} from './Icons';
 import styles from './AdminDetailsPage.module.scss'
+import { Spinner } from '@wordpress/components';
+
+export type ConfirmationDialogProps = {
+    isOpen: boolean;
+    handleClose: () => void;
+    handleConfirm: () => void;
+    title: string;
+    icon?: React.ReactElement;
+    variant?: 'error' | 'regular';
+    className?: string;
+    actionLabel: string;
+    children: React.ReactNode;
+    isConfirming?: boolean;
+}
 
 /**
  * @since 4.4.0
@@ -9,23 +24,18 @@ import styles from './AdminDetailsPage.module.scss'
 export default function ConfirmationDialog({
     isOpen,
     title,
+    icon,
+    variant = 'error',
     handleClose,
     handleConfirm,
     className,
     actionLabel,
     children,
-}: {
-    isOpen: boolean;
-    handleClose: () => void;
-    handleConfirm: () => void;
-    title: string;
-    className?: string;
-    actionLabel: string;
-    children: React.ReactNode;
-}) {
+    isConfirming = false,
+}: ConfirmationDialogProps) {
     return (
         <ModalDialog
-            icon={<ErrorIcon />}
+            icon={icon || (variant === 'error' && <ErrorIcon />)}
             isOpen={isOpen}
             showHeader={true}
             handleClose={handleClose}
@@ -33,22 +43,23 @@ export default function ConfirmationDialog({
             wrapperClassName={className}
         >
             <>
-                <div className={styles.archiveDialogContent}>
+                <div className={styles.confirmationDialogContent}>
                     {children}
                 </div>
-                <div className={styles.archiveDialogButtons}>
+                <div className={styles.confirmationDialogButtons}>
                     <button
                         className={styles.cancelButton}
                         onClick={handleClose}
-
+                        disabled={isConfirming}
                     >
                         {__('Cancel', 'give')}
                     </button>
                     <button
-                        className={styles.confirmButton}
+                        className={cx(styles.confirmButton, styles[`confirmButton--${variant}`])}
                         onClick={handleConfirm}
+                        disabled={isConfirming}
                     >
-                        {actionLabel}
+                        {actionLabel} {isConfirming && <Spinner />}
                     </button>
                 </div>
             </>
