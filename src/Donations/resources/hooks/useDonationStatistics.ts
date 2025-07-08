@@ -7,7 +7,9 @@ import apiFetch from '@wordpress/api-fetch';
 export interface DonationStatistics {
     donation: {
         amount: string;
+        baseAmount: string;
         intendedAmount: string;
+        baseIntendedAmount?: string;
         eventTicketAmount?: string | null;
         feeAmountRecovered: string | number;
         status: string;
