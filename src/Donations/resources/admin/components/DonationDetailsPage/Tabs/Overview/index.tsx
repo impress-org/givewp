@@ -19,11 +19,13 @@ export default function DonationDetailsPageOverviewTab() {
         return null;
     }
 
+    console.log(donation);
+    console.log(statistics);
+
     return (
         <div className={styles.overview}>
             <DonationStats
-                donation={statistics.donation}
-                currency={donation?.amount?.currency}
+                stats={statistics?.donation}
                 isResolving={isResolving}
             />
 
@@ -42,7 +44,7 @@ export default function DonationDetailsPageOverviewTab() {
              </div>
 
             <div className={styles.right}>
-                <DonationReceipt />
+                <DonationReceipt donation={donation} stats={statistics} />
             </div>
         </div>
     );
