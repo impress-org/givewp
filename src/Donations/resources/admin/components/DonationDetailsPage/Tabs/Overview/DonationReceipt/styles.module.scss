@@ -103,7 +103,11 @@
 }
 
 .currencyRow:last-child {
-    margin-bottom: 0;
+    margin-bottom: var(--givewp-spacing-6);
+}
+
+.totalRow {
+    padding: var(--givewp-spacing-4) 0;
 }
 
 .eventLabel {
@@ -114,10 +118,15 @@
     p {
         margin: 0;
         padding: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.43;
+        color: #1f2937;
     }
 
     .eventLink {
-        font-family: Inter;
         font-size: 0.75rem;
         font-weight: 500;
         line-height: 1.5;
@@ -128,13 +137,17 @@
     }
 }
 
-.close {
+.toggleCurrencyRows {
+    padding-right: 0;
     color: var(--givewp-neutral-900);
     text-decoration: underline;
     align-self: flex-end;
     margin-bottom: var(--givewp-spacing-4);
     font-size: 0.875rem;
     font-weight: 500;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 
     &:hover {
         text-decoration: none;
@@ -176,14 +189,9 @@
     }
 }
 
-.sections .rows {
-    margin-bottom: var(--givewp-spacing-6);
-}
-
 .sections .address {
     margin-bottom: 0;
 }
-
 
 .actions {
     display: flex;
