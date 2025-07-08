@@ -81,6 +81,7 @@ class DonationStatisticsController extends WP_REST_Controller
                 'paymentMethod' => $donation->gatewayId,
                 'mode' => $donation->mode->getValue(),
                 'gatewayViewUrl' => $this->getGatewayViewUrl($donation),
+                'eventTicketDetails' => $this->getEventTicketDetails($donation),
             ],
             'donor' => [
                 'id' => $donation->donorId,
@@ -213,5 +214,49 @@ class DonationStatisticsController extends WP_REST_Controller
             ->subtract($totalTicketAmount)
             ->inBaseCurrency($donation->exchangeRate)
             ->formatToDecimal();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getEventTicketDetails($donation): array
+    {
+        $details = [];
+        $eventTickets = give(EventTicketRepository::class)->queryByDonationId($donation->id)->getAll();
+        if (empty($eventTickets)) {
+            return $details;
+        }
+        $byEvent = [];
+        foreach ($eventTickets as $eventTicket) {
+            $ticketType = $eventTicket->ticketType()->get();
+            $event = $eventTicket->event()->get();
+            $eventId = $event->id;
+            $ticketTypeId = $ticketType->id;
+            if (!isset($byEvent[$eventId])) {
+                $byEvent[$eventId] = [
+                    'eventId' => $eventId,
+                    'eventName' => $event->title,
+                    'ticketTypes' => [],
+                ];
+            }
+            // Find if this ticket type already exists for this event
+            $found = false;
+            foreach ($byEvent[$eventId]['ticketTypes'] as &$ticketTypeEntry) {
+                if ($ticketTypeEntry['ticketTypeId'] === $ticketTypeId) {
+                    $ticketTypeEntry['quantity'] += 1;
+                    $found = true;
+                    break;
+                }
+            }
+            unset($ticketTypeEntry);
+            if (!$found) {
+                $byEvent[$eventId]['ticketTypes'][] = [
+                    'ticketTypeId' => $ticketTypeId,
+                    'ticketName' => $ticketType->title,
+                    'quantity' => 1,
+                ];
+            }
+        }
+        return array_values($byEvent);
     }
 }

@@ -13,12 +13,13 @@ type DonationBreakdownProps = {
   intendedAmount?: string;
   feeAmountRecovered?: string;
   eventTicketAmount?: string | null;
+  eventTicketDetails?: EventTicketDetails | EventTicketDetails[] | null;
   currency?: string;
   baseTotal?: string;
   exchangeRate?: string | number;
 };
 
-export default function DonationBreakdown({ amount, intendedAmount, feeAmountRecovered, eventTicketAmount, currency, baseTotal, exchangeRate }: DonationBreakdownProps){
+export default function DonationBreakdown({ amount, intendedAmount, feeAmountRecovered, eventTicketAmount, eventTicketDetails, currency, baseTotal, exchangeRate }: DonationBreakdownProps){
   const {currency: defaultCurrency } = getDonationOptionsWindowData();
 
 const donationAmount =  amountFormatter(currency).format(parseFloat(amount))
@@ -29,11 +30,18 @@ const baseTotalAmount =  amountFormatter(defaultCurrency).format(parseFloat(base
 const showFeeRecoveredRow = !!feeAmountRecovered && parseFloat(feeAmountRecovered) > 0;
 const showEventTicketRow = !!eventTicketAmount && parseFloat(eventTicketAmount) > 0;
 
+// Ensure eventTicketDetails is always an array for EventLabel
+const eventTicketDetailsArray = eventTicketDetails
+  ? Array.isArray(eventTicketDetails)
+    ? eventTicketDetails
+    : [eventTicketDetails]
+  : [];
+
 return (
     <div className={styles.rowContainer}>
       <Row className={styles.donationRow} label={__("Donation amount", 'give')} value={donationIntendedAmount} />
       {showEventTicketRow && (
-        <Row className={styles.donationRow} label={<EventLabel />} value={eventTicketAmount} />
+        <Row className={styles.donationRow} label={<EventLabel events={eventTicketDetailsArray} />} value={eventTicketAmount} />
       )}
       {showFeeRecoveredRow && (
         <Row className={styles.donationRow} label={__('Fee Recoverd')} value={donationFeeAmountRecovered} />
@@ -74,21 +82,38 @@ function Row({ label, value, children, className }: RowProps) {
   );
 }
 
-function EventLabel({ eventName = __('Event name', 'give'), ticketType = __('Standard', 'give'), ticketCount = 1, onEventClick }: EventLabelProps) {
+function EventLabel({ events = [] }: EventLabelProps) {
   return (
     <div className={styles.eventLabel}>
-      <p>{`${ticketType} (x${ticketCount})`}</p>
-      <a href="#" className={styles.eventLink} onClick={onEventClick}>{eventName}</a>
+      {events.map((event, eventIdx) => (
+        <div key={event.eventId}>
+          {event.ticketTypes.map((ticket, ticketIdx) => (
+            <p key={ticket.ticketTypeId}>
+              {`${ticket.ticketName} (x${ticket.quantity})`}
+            </p>
+          ))}
+          <a href={`/wp-admin/edit.php?post_type=give_forms&page=give-event-tickets&id=${event.eventId}`} className={styles.eventLink}>{event.eventName}</a>
+        </div>
+      ))}
     </div>
-  )
+  );
 }
 
 /**
  * @unreleased
  */
 export type EventLabelProps = {
-  eventName?: string;
-  ticketType?: string;
-  ticketCount?: number;
-  onEventClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  events?: Array<{
+    eventId: number;
+    eventName: string;
+    ticketTypes: Array<{
+      ticketTypeId: number;
+      ticketName: string;
+      quantity: number;
+    }>;
+  }>;
+};
+
+export type EventTicketDetails = {
+  [key: string]: any;
 };

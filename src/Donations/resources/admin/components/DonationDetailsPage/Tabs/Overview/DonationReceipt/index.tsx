@@ -40,6 +40,7 @@ export default function DonationReceipt({ donation, stats }: DonationReceiptComp
                 currency={donation?.amount?.currency}
                 baseTotal={stats?.donation?.amount}
                 exchangeRate={donation?.exchangeRate}
+                eventTicketDetails={stats?.donation?.eventTicketDetails}
               />
             </section>
 

@@ -17,6 +17,12 @@ export interface DonationStatistics {
         paymentMethod: string;
         mode: string;
         gatewayViewUrl?: string | null;
+        eventTicketDetails?: Array<{
+            eventName: string;
+            ticketTypeId: number;
+            ticketName: string;
+            quantity: number;
+        }>;
     };
     donor: {
         id: number;
