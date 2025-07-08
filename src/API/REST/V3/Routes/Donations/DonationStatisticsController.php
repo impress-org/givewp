@@ -71,8 +71,10 @@ class DonationStatisticsController extends WP_REST_Controller
         $item = [
             'donation' => [
                 'amount' => $donation->amount->formatToDecimal(),
+                'baseAmount' => $donation->amountInBaseCurrency()->formatToDecimal(),
                 'intendedAmount' => $this->getIntentedAmount($donation),
-                'feeAmountRecovered' => $donation->feeAmountRecovered ? $donation->feeAmountRecovered->formatToDecimal() : 0,
+                'baseIntendedAmount' => $this->getBaseIntendedAmount($donation),
+                'feeAmountRecovered' => $donation->feeAmountRecovered ? $donation->feeAmountRecovered->inBaseCurrency($donation->exchangeRate)->formatToDecimal() : "0",
                 'eventTicketAmount' => $this->getEventTicketAmount($donation),
                 'status' => $donation->status->getValue(),
                 'date' => $donation->createdAt->format('Y-m-d H:i:s'),
@@ -179,6 +181,7 @@ class DonationStatisticsController extends WP_REST_Controller
 
         return $donation->intendedAmount()
             ->subtract($totalTicketAmount)
+            ->inBaseCurrency($donation->exchangeRate)
             ->formatToDecimal();
     }
 
@@ -192,5 +195,23 @@ class DonationStatisticsController extends WP_REST_Controller
         }
 
         return give(EventTicketRepository::class)->getTotalByDonation($donation)->formatToDecimal();
+    }
+
+    /**
+     * Get the base intended amount of the donation, which is the intended amount in base currency without subtracting event ticket amounts.
+     * @unreleased
+     */
+    private function getBaseIntendedAmount(Donation $donation): string
+    {
+        if (!FeatureFlag::eventTickets()) {
+            return $donation->intendedAmountInBaseCurrency()->formatToDecimal();
+        }
+
+        $totalTicketAmount = give(EventTicketRepository::class)->getTotalByDonation($donation);
+
+        return $donation->intendedAmount()
+            ->subtract($totalTicketAmount)
+            ->inBaseCurrency($donation->exchangeRate)
+            ->formatToDecimal();
     }
 }
