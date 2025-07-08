@@ -5,22 +5,18 @@ import DonationBreakdown from './DonationBreakdown';
 import BillingInformation from './BillingInformation';
 import ReceiptActions from './ReceiptActions';
 import styles from './styles.module.scss';
+import { DonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
+import type { Donation } from '../../../../types';
+
+interface DonationReceiptComponentProps {
+  donation: Donation;
+  stats: DonationStatistics;
+}
 
 /**
  * @unreleased
  */
-export default function DonationReceipt() {
-  const billingInfo = {
-    name: 'John Doe',
-    email: 'johndoe25@example.com',
-    address: [
-      '1234 Elm Street',
-      'Apt 567',
-      'Springfield, CA 90210',
-      __('United States', 'give')
-    ]
-  };
-  
+export default function DonationReceipt({ donation, stats }: DonationReceiptComponentProps) {  
   return (
     <OverviewPanel>
       <aside
@@ -36,12 +32,20 @@ export default function DonationReceipt() {
 
           <div className={styles.sections}>
             <section className={styles.rows} aria-label={__('Donation breakdown', 'give')}>
-              <DonationBreakdown />
+              <DonationBreakdown 
+                amount={stats?.donation?.baseAmount}
+                intendedAmount={stats?.donation?.intendedAmount}
+                feeAmountRecovered={String(stats?.donation?.feeAmountRecovered)}
+                eventTicketAmount={stats?.donation?.eventTicketAmount}
+                currency={donation?.amount?.currency}
+                baseTotal={stats?.donation?.amount}
+                exchangeRate={donation?.exchangeRate}
+              />
             </section>
 
             <section className={styles.address} aria-labelledby="billing-information">
               <h3 id="billing-information">{__('Billing information', 'give')}</h3>
-              <BillingInformation {...billingInfo} />
+              <BillingInformation name={stats?.donor?.name} email={stats?.donor?.email} address={donation?.billingAddress} />
             </section>
           </div>
         </div>
