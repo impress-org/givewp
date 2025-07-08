@@ -65,14 +65,16 @@ class DonationStatisticsRouteGetTest extends RestApiTestCase
         $this->assertEquals([
             'donation' => [
                 'amount' => $data['donation']['amount'],
+                'baseAmount' => $data['donation']['baseAmount'],
+                'intendedAmount' => $data['donation']['intendedAmount'],
+                'baseIntendedAmount' => $data['donation']['baseIntendedAmount'],
                 'feeAmountRecovered' => $data['donation']['feeAmountRecovered'],
+                'eventTicketAmount' => $data['donation']['eventTicketAmount'],
                 'status' => $data['donation']['status'],
                 'date' => $data['donation']['date'],
                 'paymentMethod' => $data['donation']['paymentMethod'],
                 'mode' => $data['donation']['mode'],
                 'gatewayViewUrl' => $data['donation']['gatewayViewUrl'],
-                'intendedAmount' => $data['donation']['intendedAmount'],
-                'eventTicketAmount' => $data['donation']['eventTicketAmount'],
             ],
             'donor' => [
                 'id' => $donor->id,
