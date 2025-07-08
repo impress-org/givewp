@@ -17,6 +17,7 @@ import { RefundIcon, TrashIcon, ViewIcon } from '@givewp/components/AdminDetails
 import AdminDetailsPage from '@givewp/components/AdminDetailsPage';
 import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
 import { getDonationOptionsWindowData, useDonationEntityRecord } from '@givewp/donations/utils';
+import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 import { amountFormatter } from '@givewp/components/AdminDetailsPage/utils';
@@ -47,8 +48,9 @@ export default function DonationDetailsPage() {
     const { adminUrl, currency: defaultCurrency } = getDonationOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
 
-    const { record: donation } = useDonationEntityRecord();
-    const currencyFormatter = amountFormatter(donation?.amount?.currency ?? defaultCurrency);
+    const { record: donation } = useDonationEntityRecord()
+    const {statistics} = useDonationStatistics()
+    const currencyFormatter = amountFormatter(defaultCurrency);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
@@ -82,7 +84,7 @@ export default function DonationDetailsPage() {
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donations`}
             breadcrumbTitle={sprintf('#%s', donation?.id)}
-            pageTitle={currencyFormatter.format(donation?.amount?.value)}
+            pageTitle={currencyFormatter.format(parseFloat(statistics?.donation?.baseAmount))}
             StatusBadge={() => <StatusBadge status={donation?.status} />}
             ContextMenuItems={ContextMenuItems}
         >
