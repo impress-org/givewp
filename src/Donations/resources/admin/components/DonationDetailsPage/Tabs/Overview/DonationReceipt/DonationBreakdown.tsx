@@ -23,7 +23,7 @@ const eventTicketDetails = [
 ]
 
 export default function DonationBreakdown(){
-const [showCurrencyRows, setShowCurrencyRows] = useState<boolean>(false);
+const [showCurrencyRows, setShowCurrencyRows] = useState<boolean>(true);
 
 const handleShowCurrencyRows = () => {
   setShowCurrencyRows(!showCurrencyRows);
