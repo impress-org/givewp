@@ -13,12 +13,14 @@ export default function DonationReceipt() {
   const billingInfo = {
     name: 'John Doe',
     email: 'johndoe25@example.com',
-    address: [
-      '1234 Elm Street',
-      'Apt 567',
-      'Springfield, CA 90210',
-      __('United States', 'give')
-    ]
+    address: {
+      country: 'US',
+      address1: '6082 Main St',
+      address2: '',
+      city: 'Houston',
+      state: 'TX',
+      zip: '48254',
+    },
   };
   
   return (
