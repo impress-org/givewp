@@ -21,6 +21,7 @@ import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 import { amountFormatter } from '@givewp/components/AdminDetailsPage/utils';
 import useDonationRefund from '@givewp/donations/hooks/useDonationRefund';
+import { useDonationDelete } from '@givewp/donations/hooks/useDonationDelete';
 
 const { donationStatuses } = getDonationOptionsWindowData();
 
@@ -49,7 +50,7 @@ export default function DonationDetailsPage() {
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
     const { record: donation } = useDonationEntityRecord();
     const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
-
+    const {deleteDonation} = useDonationDelete();
     const currencyFormatter = amountFormatter(donation?.amount?.currency ?? defaultCurrency);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
@@ -85,6 +86,21 @@ export default function DonationDetailsPage() {
             setShowConfirmationDialog(null);
         }
     };
+
+    /**
+     * @unreleased
+     */
+    const handleDelete = async () => {
+        try {
+            await deleteDonation(donation?.id);
+            setShowConfirmationDialog(null);
+            window.location.href = `${adminUrl}edit.php?post_type=give_forms&page=give-payment-history`;
+        } catch (error) {
+            // Optional: show a toast or fallback UI
+            setShowConfirmationDialog(null);
+        }
+    };
+    
 
     return (
         <AdminDetailsPage
@@ -122,13 +138,13 @@ export default function DonationDetailsPage() {
                 }
             </ConfirmationDialog>
             <ConfirmationDialog
-                title={__('Delete Donation', 'give')}
-                actionLabel={__('Delete Donation', 'give')}
+                title={__('Move donation to trash', 'give')}
+                actionLabel={__('Trash Donation', 'give')}
                 isOpen={showConfirmationDialog === 'delete'}
                 handleClose={() => setShowConfirmationDialog(null)}
-                handleConfirm={() => { }}
+                handleConfirm={handleDelete}
             >
-                {__('Are you sure you want to delete this donation?', 'give')}
+                {__('Are you sure you want to move this donation to the trash? You can restore it later if needed.', 'give')}
             </ConfirmationDialog>
         </AdminDetailsPage>
     );
