@@ -61,7 +61,7 @@ return (
             ? __('Close donation base currency details', 'give')
             : __('Open donation base currency details', 'give')
         }      >
-        {showCurrencyRows ? __('Close', 'give') : __('Open', 'give')}
+        {showCurrencyRows ? __('Close', 'give') : __('View details', 'give')}
       </button>
       {showCurrencyRows && (
         <>

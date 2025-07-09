@@ -57,6 +57,10 @@
     padding: var(--givewp-spacing-3) 0;
     width: 100%;
 
+    li, dd {
+        margin-bottom: 0;
+    }
+
     .label {
         margin: 0;
         display: flex;
@@ -132,6 +136,7 @@
         font-size: 0.75rem;
         font-weight: 500;
         line-height: 1.125rem;
+        text-decoration: none;
 
         &:hover {
             text-decoration: underline;
@@ -141,8 +146,8 @@
 
 .toggleCurrencyRows {
     padding-right: 0;
-    color: var(--givewp-neutral-900);
-    text-decoration: underline;
+    color: var(--givewp-neutral-700);
+    text-decoration: none;
     align-self: flex-end;
     margin-bottom: var(--givewp-spacing-4);
     font-size: 0.875rem;
@@ -153,7 +158,8 @@
     cursor: pointer;
 
     &:hover {
-        text-decoration: none;
+        text-decoration: underline;
+        color: var(--givewp-neutral-900);
     }
 }
 
@@ -201,10 +207,9 @@
     gap: var(--givewp-spacing-4);
     margin-top: var(--givewp-spacing-4);
 
-    button {
+    .actionButton {
         flex: 1 1 0;
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
-        border: 1px solid var(--givewp-neutral-200);
         border-radius: 4px;
         background: var(--givewp-shades-white);
         color: var(--givewp-neutral-700);
@@ -213,6 +218,10 @@
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
+    }
+
+    .actionButton:first-child {
+        border: 1px solid var(--givewp-neutral-200);
 
         &:hover {
             background: var(--givewp-neutral-50);
@@ -220,8 +229,15 @@
         }
     }
 
-    button:last-child {
+    .actionButton:last-child {
         background-color: #2271b1;
         color: var(--givewp-shades-white);
+        border: none;
+        outline: none;
+        box-shadow: none;
+
+        &:hover {
+            background-color: #135e96;;
+        }
     }
 }
