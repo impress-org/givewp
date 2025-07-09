@@ -207,7 +207,7 @@
     gap: var(--givewp-spacing-4);
     margin-top: var(--givewp-spacing-4);
 
-    .actionButton {
+    .action {
         flex: 1 1 0;
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
         border-radius: 4px;
@@ -220,8 +220,12 @@
         transition: all 0.2s ease;
     }
 
-    .actionButton:first-child {
+    .action:first-child {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: 1px solid var(--givewp-neutral-200);
+        text-decoration: none;
 
         &:hover {
             background: var(--givewp-neutral-50);
@@ -229,7 +233,17 @@
         }
     }
 
-    .actionButton:last-child {
+    .actionDisabled {
+        background: var(--givewp-neutral-200);
+        pointer-events: none;
+        cursor: default;
+
+        &:hover {
+            background: var(--givewp-neutral-200);
+        }
+    }
+
+    .action:last-child {
         background-color: #2271b1;
         color: var(--givewp-shades-white);
         border: none;
