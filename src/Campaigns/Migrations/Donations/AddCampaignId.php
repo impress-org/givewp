@@ -92,13 +92,9 @@ class AddCampaignId extends BatchMigration implements ReversibleMigration
                 return;
             }
 
-            $donationIds = array_column($donations, 'ID');
-            
             // Delete existing DonationMetaKeys::CAMPAIGN_ID records for these donations to prevent duplicates
-            DB::table('give_donationmeta')
-                ->whereIn('donation_id', $donationIds)
-                ->where('meta_key', DonationMetaKeys::CAMPAIGN_ID)
-                ->delete();
+            $donationIds = implode(', ', array_column($donations, 'ID'));            
+            DB::query("DELETE FROM " . DB::prefix('give_donationmeta') . " WHERE donation_id IN ($donationIds) AND meta_key = '" . DonationMetaKeys::CAMPAIGN_ID . "'");
 
             $donationMeta = [];
 
