@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
+import EventLabel from './EventsLabel';
 import styles from './styles.module.scss';
 
 const eventTicketDetails = [
@@ -97,41 +98,6 @@ function Row({ label, value, children, className }: RowProps) {
       <dd className={styles.value}>
           {value}
       </dd>
-    </div>
-  );
-}
-
-/**
- * @unreleased
- */
-export type EventLabelProps = {
-  events?: Array<{
-    eventId: number;
-    eventName: string;
-    ticketTypes: Array<{
-      ticketTypeId: number;
-      ticketName: string;
-      quantity: number;
-    }>;
-  }>;
-};
-
-/**
- * @unreleased
- */
-function EventLabel({ events = [] }: EventLabelProps) {
-  return (
-    <div className={styles.eventLabel}>
-      {events.map((event, eventIdx) => (
-        <div key={event.eventId} className={styles.eventLabel}>
-          {event.ticketTypes.map((ticket, ticketIdx) => (
-            <p key={ticket.ticketTypeId}>
-              {`${ticket.ticketName} (x${ticket.quantity})`}
-            </p>
-          ))}
-          <a href={`/wp-admin/edit.php?post_type=give_forms&page=give-event-tickets&id=${event.eventId}`} className={styles.eventLink}>{event.eventName}</a>
-        </div>
-      ))}
     </div>
   );
 }
