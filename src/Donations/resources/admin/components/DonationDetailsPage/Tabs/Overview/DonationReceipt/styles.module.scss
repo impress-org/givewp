@@ -64,6 +64,7 @@
         gap: var(--givewp-spacing-3);
         color: var(--givewp-neutral-700);
         font-size: 0.875rem;
+        line-height: 1.25rem;
         font-weight: 500;
 
         strong {
@@ -77,14 +78,15 @@
 
     .value {
         font-size: 0.875rem;
+        line-height: 1.25rem;
         font-weight: 500;
-        color: #4b5563;
+        color: var(--givewp-neutral-700);
 
         strong {
             font-size: 1.125rem;
             font-weight: 600;
-            line-height: 1.56;
-            color: #060c1a;
+            line-height: 1.75rem;
+            color: var(--givewp-neutral-900);
         }
     }
 }
@@ -122,14 +124,14 @@
         padding: 0;
         font-size: 0.875rem;
         font-weight: 500;
-        line-height: 1.43;
-        color: #1f2937;
+        line-height: 1.25rem;
+        color: var(--givewp-neutral-700);
     }
 
     .eventLink {
         font-size: 0.75rem;
         font-weight: 500;
-        line-height: 1.5;
+        line-height: 1.125rem;
 
         &:hover {
             text-decoration: underline;
@@ -144,6 +146,7 @@
     align-self: flex-end;
     margin-bottom: var(--givewp-spacing-4);
     font-size: 0.875rem;
+    line-height: 1.25rem;
     font-weight: 500;
     background-color: transparent;
     border: none;
@@ -159,23 +162,22 @@
 
     h3 {
         margin: var(--givewp-spacing-3) 0 var(--givewp-spacing-1) 0;
-        font-size: 1rem;
+        font-size: 0.875rem;
         font-weight: 600;
-        color: var(--givewp-neutral-900);
+        color: var(--givewp-neutral-700);
     }
 
     address {
         margin: 0;
         font-style: normal;
-        color: var(--givewp-neutral-600);
 
         p {
             margin: 0;
             font-size: 0.875rem;
+            line-height: 1.25rem;
             font-weight: 500;
-            line-height: 1.43;
             text-align: left;
-            color: #4b5563;
+            color: var(--givewp-neutral-500);
         }
 
         a {
@@ -207,6 +209,7 @@
         background: var(--givewp-shades-white);
         color: var(--givewp-neutral-700);
         font-size: 0.875rem;
+        line-height: 1.25rem;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
