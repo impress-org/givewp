@@ -26,7 +26,7 @@ export default function BillingInformation({ name, email, address }: BillingInfo
   return (
     <address>
       <p>
-        {name} (<a href={`mailto:${email}`}>{email}</a>)
+        {name} ({email})
         <br />
         {address1 && address1}
         <br />
