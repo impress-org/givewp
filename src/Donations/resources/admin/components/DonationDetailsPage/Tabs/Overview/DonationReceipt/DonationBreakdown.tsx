@@ -22,6 +22,9 @@ const eventTicketDetails = [
   }
 ]
 
+/**
+ * @unreleased
+ */
 export default function DonationBreakdown(){
 const [showCurrencyRows, setShowCurrencyRows] = useState<boolean>(true);
 
@@ -98,6 +101,24 @@ function Row({ label, value, children, className }: RowProps) {
   );
 }
 
+/**
+ * @unreleased
+ */
+export type EventLabelProps = {
+  events?: Array<{
+    eventId: number;
+    eventName: string;
+    ticketTypes: Array<{
+      ticketTypeId: number;
+      ticketName: string;
+      quantity: number;
+    }>;
+  }>;
+};
+
+/**
+ * @unreleased
+ */
 function EventLabel({ events = [] }: EventLabelProps) {
   return (
     <div className={styles.eventLabel}>
@@ -114,22 +135,3 @@ function EventLabel({ events = [] }: EventLabelProps) {
     </div>
   );
 }
-
-/**
- * @unreleased
- */
-export type EventLabelProps = {
-  events?: Array<{
-    eventId: number;
-    eventName: string;
-    ticketTypes: Array<{
-      ticketTypeId: number;
-      ticketName: string;
-      quantity: number;
-    }>;
-  }>;
-};
-
-export type EventTicketDetails = {
-  [key: string]: any;
-};
