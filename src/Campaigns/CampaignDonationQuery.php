@@ -50,7 +50,7 @@ class CampaignDonationQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
-     * @unreleased update to account for exchange rate
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.0.0
      *
      * @return int|float
@@ -110,7 +110,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased update to account for exchange rate
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.0.0
      */
     public function getDonationsByDate($groupBy = 'DATE'): array

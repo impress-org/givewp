@@ -11,7 +11,7 @@ import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 export type Transaction = {
     campaign: string;
@@ -21,7 +21,7 @@ export type Transaction = {
 };
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 const statusMap: Record<string, 'Completed' | 'Failed' | 'Pending' | 'Refunded'> = {
     publish: 'Completed',
@@ -37,14 +37,14 @@ const statusMap: Record<string, 'Completed' | 'Failed' | 'Pending' | 'Refunded'>
 };
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 interface DonorTransactionsProps {
     donorId: number;
 }
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 export default function DonorTransactions({donorId}: DonorTransactionsProps) {
     const {mode} = getDonorOptionsWindowData();
@@ -61,7 +61,7 @@ export default function DonorTransactions({donorId}: DonorTransactionsProps) {
         }));
 
     return (
-        <OverviewPanel> 
+        <OverviewPanel>
             <Header
                 title={__('Recent Transactions', 'give')}
                 subtitle={__('Shows the five recent transactions', 'give')}
@@ -109,4 +109,4 @@ export default function DonorTransactions({donorId}: DonorTransactionsProps) {
             </div>
         </OverviewPanel>
     );
-} 
+}

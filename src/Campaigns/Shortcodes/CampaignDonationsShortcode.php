@@ -6,12 +6,12 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class CampaignDonationsShortcode
 {
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function renderShortcode($atts): string
     {
@@ -26,7 +26,7 @@ class CampaignDonationsShortcode
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function loadAssets()
     {
@@ -54,7 +54,7 @@ class CampaignDonationsShortcode
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     private function parseAttributes($atts): array
     {
@@ -80,4 +80,4 @@ class CampaignDonationsShortcode
             'loadMoreButtonText' => (string) $atts['load_more_button_text'],
         ];
     }
-} 
+}

@@ -118,7 +118,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSumIntendedAmountWithExchangeRates()
     {
@@ -162,7 +162,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSumIntendedAmountWithExchangeRatesAndFees()
     {
@@ -293,7 +293,7 @@ final class CampaignDonationQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testGetDonationsByDateWithExchangeRates(): void
     {

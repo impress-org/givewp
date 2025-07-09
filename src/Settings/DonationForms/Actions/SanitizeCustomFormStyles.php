@@ -3,12 +3,12 @@
 namespace Give\Settings\DonationForms\Actions;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class SanitizeCustomFormStyles
 {
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function __invoke($value, $option, $raw_value)
     {
