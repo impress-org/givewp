@@ -49,9 +49,9 @@ return (
         <Row className={styles.donationRow} label={<EventLabel events={eventTicketDetailsArray} />} value={"$100.00"} />
       )}
       {showFeeRecoveredRow && (
-        <Row className={styles.donationRow} label={__('Fee Recoverd')} value={'1.00'} />
+        <Row className={styles.donationRow} label={__('Fee Recoverd')} value={'$1.00'} />
       )}
-      <Row className={styles.totalRow} label={<strong>{__("Total", 'give')}</strong>} value={<strong>{'371.00'}</strong>} />
+      <Row className={styles.totalRow} label={<strong>{__("Total", 'give')}</strong>} value={<strong>{'$371.00'}</strong>} />
       <button
         className={styles.toggleCurrencyRows}
         onClick={handleShowCurrencyRows}
