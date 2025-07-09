@@ -6,13 +6,14 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\BatchMigration;
+use Give\Framework\Migrations\Contracts\ReversibleMigration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * @since 4.0.0
  */
-class AddCampaignId extends BatchMigration
+class AddCampaignId extends BatchMigration implements ReversibleMigration
 {
     /**
      * @inheritDoc
@@ -50,6 +51,10 @@ class AddCampaignId extends BatchMigration
 
     /**
      * @inheritDoc
+     * 
+     * @unreleased Prevent DonationMetaKeys::CAMPAIGN_ID records duplicates
+     * @since 4.0.0
+     * 
      * @throws DatabaseMigrationException
      */
     public function runBatch($firstId, $lastId)
@@ -82,6 +87,18 @@ class AddCampaignId extends BatchMigration
             }
 
             $donations = $query->getAll();
+
+            if (empty($donations)) {
+                return;
+            }
+
+            $donationIds = array_column($donations, 'ID');
+            
+            // Delete existing DonationMetaKeys::CAMPAIGN_ID records for these donations to prevent duplicates
+            DB::table('give_donationmeta')
+                ->whereIn('donation_id', $donationIds)
+                ->where('meta_key', DonationMetaKeys::CAMPAIGN_ID)
+                ->delete();
 
             $donationMeta = [];
 
@@ -156,5 +173,17 @@ class AddCampaignId extends BatchMigration
             ->where('ID', $lastProcessedId, '>')
             ->limit(1)
             ->count();
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @unreleased
+     */
+    public function reverse(): void
+    {
+        DB::table('give_donationmeta')
+            ->where('meta_key', DonationMetaKeys::CAMPAIGN_ID)
+            ->delete();
     }
 }
