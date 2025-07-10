@@ -42,7 +42,7 @@ export default function DonationDetailsPageOverviewTab() {
              </div>
 
             <div className={styles.right}>
-                <DonationReceipt />
+                <DonationReceipt stats={statistics?.donation} />
             </div>
         </div>
     );

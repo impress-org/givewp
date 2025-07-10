@@ -5,11 +5,16 @@ import DonationBreakdown from './DonationBreakdown';
 import BillingInformation from './BillingInformation';
 import ReceiptActions from './ReceiptActions';
 import styles from './styles.module.scss';
+import { DonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
+
+export type DonationReceiptProps = {
+ stats: DonationStatistics['donation'];
+}
 
 /**
  * @unreleased
  */
-export default function DonationReceipt() {
+export default function DonationReceipt({stats}: DonationReceiptProps) {
   const billingInfo = {
     name: 'John Doe',
     email: 'johndoe25@example.com',
@@ -49,7 +54,7 @@ export default function DonationReceipt() {
         </div>
 
         <nav className={styles.actions} aria-label={__('Receipt actions', 'give')}>
-          <ReceiptActions />
+          <ReceiptActions pdfReceiptUrl={stats?.pdfReceiptUrl} />
         </nav>
       </aside>
     </OverviewPanel>
