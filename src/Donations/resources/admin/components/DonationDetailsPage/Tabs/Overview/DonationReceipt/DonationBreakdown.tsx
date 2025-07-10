@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import EventLabel from './EventsLabel';
+import CurrencyBreakdownArrowIcon from './icon';
 import styles from './styles.module.scss';
 
 const eventTicketDetails = [
@@ -52,25 +53,7 @@ return (
         <Row className={styles.donationRow} label={__('Fee Recoverd')} value={'$1.00'} />
       )}
       <Row className={styles.totalRow} label={<strong>{__("Total", 'give')}</strong>} value={<strong>{'$371.00'}</strong>} />
-      <button
-        className={styles.toggleCurrencyRows}
-        onClick={handleShowCurrencyRows}
-        type="button"
-        aria-label={
-          showCurrencyRows
-            ? __('Close donation base currency details', 'give')
-            : __('Open donation base currency details', 'give')
-        }      >
-        {showCurrencyRows ? __('Close', 'give') : __('View details', 'give')}
-      </button>
-      {showCurrencyRows && (
-        <>
-          <Row className={styles.currencyRow} label={__("Exchange rate", 'give')} value={'1.14'} />
-          <Row className={styles.currencyRow} label={__("Base currency", 'give')} value={__("Euro (€)", 'give')} />
-          <Row className={styles.currencyRow} label={__("Base total", 'give')} value={"€264.14"} />
-        </>
-      )}
-
+      <Row className={styles.currencyRow} label={__("Currency breakdown", 'give')} value={<>€344.21 <CurrencyBreakdownArrowIcon/> $371.00</>} />
     </div>
   );
 }

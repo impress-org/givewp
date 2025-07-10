@@ -104,12 +104,18 @@
 }
 
 .currencyRow {
-    padding: 0;
-    margin-bottom: var(--givewp-spacing-2);
-}
+    padding: var(--givewp-spacing-4) 0;
+    border-top: solid 1px #f3f4f6;
 
-.currencyRow:last-child {
-    margin-bottom: var(--givewp-spacing-6);
+    .value {
+        display: flex;
+        align-items: center;
+        gap: var(--givewp-spacing-1);
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.67;
+        color: #4b5563;
+    }
 }
 
 .totalRow {
