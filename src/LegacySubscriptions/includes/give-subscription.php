@@ -656,7 +656,11 @@ class Give_Subscription {
 		}
 
 		$last_day   = cal_days_in_month( CAL_GREGORIAN, date( 'n', $base_date ), date( 'Y', $base_date ) );
-		$expiration = date( 'Y-m-d H:i:s', strtotime( '+1 ' . $this->period . ' 23:59:59', $base_date ) );
+		if ( $this->period == "quarter" ) {
+				$expiration = date( 'Y-m-d H:i:s', strtotime( '+3 months 23:59:59', $base_date ) );
+		} else {
+				$expiration = date( 'Y-m-d H:i:s', strtotime( '+1 ' . $this->period . ' 23:59:59', $base_date ) );
+		}
 
 		if ( date( 'j', $base_date ) == $last_day && 'day' != $this->period ) {
 			$expiration = date( 'Y-m-d H:i:s', strtotime( $expiration . ' +2 days' ) );
