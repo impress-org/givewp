@@ -104,12 +104,24 @@
 }
 
 .currencyRow {
-    padding: 0;
-    margin-bottom: var(--givewp-spacing-2);
-}
+    padding: var(--givewp-spacing-4) 0;
+    border-top: solid 1px #f3f4f6;
 
-.currencyRow:last-child {
-    margin-bottom: var(--givewp-spacing-6);
+    .label {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #1f2937;
+    }
+
+    .value {
+        display: flex;
+        align-items: center;
+        gap: var(--givewp-spacing-1);
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.67;
+        color: #4b5563;
+    }
 }
 
 .totalRow {
@@ -141,25 +153,6 @@
         &:hover {
             text-decoration: underline;
         }
-    }
-}
-
-.toggleCurrencyRows {
-    padding-right: 0;
-    color: var(--givewp-neutral-700);
-    text-decoration: none;
-    align-self: flex-end;
-    margin-bottom: var(--givewp-spacing-4);
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    font-weight: 500;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-
-    &:hover {
-        text-decoration: underline;
-        color: var(--givewp-neutral-900);
     }
 }
 
@@ -207,7 +200,7 @@
     gap: var(--givewp-spacing-4);
     margin-top: var(--givewp-spacing-4);
 
-    .action {
+    .actionButton {
         flex: 1 1 0;
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
         border-radius: 4px;
@@ -218,20 +211,20 @@
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
-    }
 
-    .action {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #2271b1;
-        color: var(--givewp-shades-white);
-        border: none;
-        outline: none;
-        box-shadow: none;
+        .action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #2271b1;
+            color: var(--givewp-shades-white);
+            border: none;
+            outline: none;
+            box-shadow: none;
 
-        &:hover {
-            background-color: #135e96;;
+            &:hover {
+                background-color: #135e96;;
+            }
         }
     }
 }

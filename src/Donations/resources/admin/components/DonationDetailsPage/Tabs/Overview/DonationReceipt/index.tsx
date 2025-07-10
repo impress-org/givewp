@@ -14,7 +14,7 @@ export type DonationReceiptProps = {
 /**
  * @unreleased
  */
-export default function DonationReceipt({stats}: DonationReceiptProps) {
+export default function DonationReceipt() {
   const billingInfo = {
     name: 'John Doe',
     email: 'johndoe25@example.com',
@@ -27,7 +27,7 @@ export default function DonationReceipt({stats}: DonationReceiptProps) {
       zip: '48254',
     },
   };
-  
+
   return (
     <OverviewPanel>
       <aside

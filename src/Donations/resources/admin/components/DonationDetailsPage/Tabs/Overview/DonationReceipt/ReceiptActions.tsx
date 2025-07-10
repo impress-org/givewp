@@ -3,7 +3,6 @@ import { useState } from "react";
 import useResendReceipt from '../../../../../../hooks/useResendReceipt';
 import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
 import styles from "./styles.module.scss";
-import classnames from "classnames";
 
 
  /**
@@ -16,7 +15,7 @@ export default function ReceiptActions() {
   const handleConfirmationModal = () => {
     setShowConfirmationDialog(true);
   }
- 
+
     return (
         <>
           <button className={styles.action} type="button" aria-label={__('Resend donation receipt to email', 'give')} onClick={handleConfirmationModal} disabled={loading}>
