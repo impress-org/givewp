@@ -107,6 +107,12 @@
     padding: var(--givewp-spacing-4) 0;
     border-top: solid 1px #f3f4f6;
 
+    .label {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #1f2937;
+    }
+
     .value {
         display: flex;
         align-items: center;
