@@ -8,7 +8,7 @@ import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notific
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 export default function DonorDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);

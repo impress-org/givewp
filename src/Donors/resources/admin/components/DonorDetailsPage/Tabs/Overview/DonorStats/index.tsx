@@ -6,14 +6,14 @@ import {amountFormatter} from '@givewp/src/Admin/utils';
 import {getDonorOptionsWindowData} from '@givewp/donors/utils';
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 interface DonorStatsProps {
     donorId: number;
 }
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 export default function DonorStats({donorId}: DonorStatsProps) {
     const {currency, mode} = getDonorOptionsWindowData();
@@ -41,4 +41,4 @@ export default function DonorStats({donorId}: DonorStatsProps) {
             />
         </>
     );
-} 
+}

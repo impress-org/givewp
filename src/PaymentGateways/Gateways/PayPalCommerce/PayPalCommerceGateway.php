@@ -72,7 +72,7 @@ class PayPalCommerceGateway extends PayPalCommerce
     /**
      * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
      *
-     * @unreleased Add support for disabling credit card funding via Smart Buttons Only.
+     * @since 4.5.0 Add support for disabling credit card funding via Smart Buttons Only.
      * @since 3.0.0
      * @throws Exception
      */

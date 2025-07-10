@@ -11,7 +11,7 @@ import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/ut
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 export type SummaryItem = {
     label: string;
@@ -23,14 +23,14 @@ export type SummaryItem = {
 };
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 interface SummaryProps {
     donorId: number;
 }
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 export default function Summary({donorId}: SummaryProps) {
     const {currency, mode} = getDonorOptionsWindowData();
@@ -97,4 +97,4 @@ export default function Summary({donorId}: SummaryProps) {
             ))}
         </OverviewPanel>
     );
-} 
+}
