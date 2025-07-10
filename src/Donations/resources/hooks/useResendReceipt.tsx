@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { __ } from '@wordpress/i18n';
 
+/**
+ * @unreleased
+ */
 export default function useResendReceipt() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(__('Resend Receipt', 'give'));
