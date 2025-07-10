@@ -156,25 +156,6 @@
     }
 }
 
-.toggleCurrencyRows {
-    padding-right: 0;
-    color: var(--givewp-neutral-700);
-    text-decoration: none;
-    align-self: flex-end;
-    margin-bottom: var(--givewp-spacing-4);
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    font-weight: 500;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-
-    &:hover {
-        text-decoration: underline;
-        color: var(--givewp-neutral-900);
-    }
-}
-
 .address {
     border-top: dotted 1px #d1d5db;
 
