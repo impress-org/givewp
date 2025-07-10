@@ -23,7 +23,7 @@ export default function ReceiptActions() {
           </button>
           <ConfirmationDialog
                 variant="regular"
-                title={__('Resend Receipt ', 'give')}
+                title={__('Resend Receipt', 'give')}
                 actionLabel={__('Resend Receipt', 'give')}
                 isOpen={showConfirmationDialog}
                 handleClose={() => setShowConfirmationDialog(null)}

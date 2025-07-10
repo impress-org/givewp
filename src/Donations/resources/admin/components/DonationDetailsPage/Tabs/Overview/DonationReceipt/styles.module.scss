@@ -223,3 +223,13 @@
      }
 }
 
+
+:global(div[aria-label*="Resend Receipt"] .givewp-modal-content button:last-child) {
+    background-color: #2271b1;
+
+    &:hover {
+        background-color:#135e96;
+    }  
+}
+  
+   
