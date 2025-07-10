@@ -79,7 +79,6 @@ class DonationStatisticsController extends WP_REST_Controller
                 'paymentMethod' => $donation->gatewayId,
                 'mode' => $donation->mode->getValue(),
                 'gatewayViewUrl' => $this->getGatewayViewUrl($donation),
-                'pdfReceiptUrl' => $this->getPdfReceiptUrl($donation),
             ],
             'donor' => [
                 'id' => $donation->donorId,
@@ -193,17 +192,6 @@ class DonationStatisticsController extends WP_REST_Controller
         }
 
         return give(EventTicketRepository::class)->getTotalByDonation($donation)->formatToDecimal();
-    }
-
-    /**
-     * @unreleased
-     */
-    private function getPdfReceiptUrl(Donation $donation): string
-    {
-        if (class_exists('Give_PDF_Receipts') && function_exists('give_pdf_receipts')) {
-            return html_entity_decode(give_pdf_receipts()->engine->get_pdf_receipt_url($donation->id));
-        }
-        return '';
     }
 }
 

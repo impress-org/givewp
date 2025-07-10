@@ -220,33 +220,10 @@
         transition: all 0.2s ease;
     }
 
-    .action:first-child {
+    .action {
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 1px solid var(--givewp-neutral-200);
-        text-decoration: none;
-
-        &:hover {
-            background: var(--givewp-neutral-50);
-            border-color: var(--givewp-neutral-300);
-        }
-    }
-
-    .actionDisabled {
-        pointer-events: none;
-        cursor: default;
-        color: #a7aaad;
-        background: #f6f7f7;
-        border-color: #dcdcde;
-        cursor: default;
-
-        &:hover {
-            background: var(--givewp-neutral-200);
-        }
-    }
-
-    .action:last-child {
         background-color: #2271b1;
         color: var(--givewp-shades-white);
         border: none;

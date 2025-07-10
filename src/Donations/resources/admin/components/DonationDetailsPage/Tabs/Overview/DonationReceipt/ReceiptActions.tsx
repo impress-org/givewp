@@ -9,7 +9,7 @@ import classnames from "classnames";
  /**
  * @unreleased
  */
-export default function ReceiptActions({pdfReceiptUrl}: {pdfReceiptUrl: string}) {
+export default function ReceiptActions() {
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const { loading, message, handleResendReceipt } = useResendReceipt();
 
@@ -19,11 +19,6 @@ export default function ReceiptActions({pdfReceiptUrl}: {pdfReceiptUrl: string})
  
     return (
         <>
-          <a className={classnames(styles.action, styles.actionLink, {
-            [styles.actionDisabled]: !pdfReceiptUrl,
-          })} href={pdfReceiptUrl} aria-label={__('Download donation receipt', 'give')}>
-            {__('Download receipt', 'give')}
-          </a>
           <button className={styles.action} type="button" aria-label={__('Resend donation receipt to email', 'give')} onClick={handleConfirmationModal} disabled={loading}>
             {loading ? __('Resending...', 'give') : message}
           </button>

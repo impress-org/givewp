@@ -54,7 +54,7 @@ export default function DonationReceipt({stats}: DonationReceiptProps) {
         </div>
 
         <nav className={styles.actions} aria-label={__('Receipt actions', 'give')}>
-          <ReceiptActions pdfReceiptUrl={stats?.pdfReceiptUrl} />
+          <ReceiptActions />
         </nav>
       </aside>
     </OverviewPanel>

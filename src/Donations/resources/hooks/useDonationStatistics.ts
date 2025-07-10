@@ -15,7 +15,6 @@ export interface DonationStatistics {
         paymentMethod: string;
         mode: string;
         gatewayViewUrl?: string | null;
-        pdfReceiptUrl?: string;
     };
     donor: {
         id: number;
