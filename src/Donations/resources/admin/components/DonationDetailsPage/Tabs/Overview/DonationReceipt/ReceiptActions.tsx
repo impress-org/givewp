@@ -17,11 +17,10 @@ export default function ReceiptActions({pdfReceiptUrl}: {pdfReceiptUrl: string})
     setShowConfirmationDialog(true);
   }
  
-
     return (
         <>
           <a className={classnames(styles.action, styles.actionLink, {
-            [styles.actionDisabled]: true,
+            [styles.actionDisabled]: !pdfReceiptUrl,
           })} href={pdfReceiptUrl} aria-label={__('Download donation receipt', 'give')}>
             {__('Download receipt', 'give')}
           </a>
