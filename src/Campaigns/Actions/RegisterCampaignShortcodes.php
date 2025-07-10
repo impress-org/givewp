@@ -10,13 +10,13 @@ use Give\Campaigns\Shortcodes\CampaignDonorsShortcode;
 use Give\Campaigns\Shortcodes\CampaignDonationsShortcode;
 
 /**
- * @unreleased new imports to support the Shortcodes directory. 
+ * @since 4.5.0 new imports to support the Shortcodes directory.
  * @since 4.2.0
  */
 class RegisterCampaignShortcodes
 {
     /**
-     * @unreleased new shortcodes for CampaignDonors, CampaignComments, CampaignDonations.
+     * @since 4.5.0 new shortcodes for CampaignDonors, CampaignComments, CampaignDonations.
      * @since 4.2.0
      */
     public function __invoke()

@@ -32,7 +32,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Add custom form styles sanitization
+     * @since 4.5.0 Add custom form styles sanitization
      * @since 3.17.0
      */
     private function registerSecuritySettings(): void

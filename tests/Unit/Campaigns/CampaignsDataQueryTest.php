@@ -66,7 +66,7 @@ final class CampaignsDataQueryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testCollectIntendedAmountsWithExchangeRates()
     {

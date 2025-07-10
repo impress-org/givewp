@@ -63,7 +63,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased update to account for exchange rate
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      *
      * @return int|float
@@ -78,7 +78,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased update to account for exchange rate
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
     public function getHighestDonationAmount()
@@ -98,7 +98,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased update to account for exchange rate
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
     public function getAverageDonationAmount()
@@ -123,7 +123,7 @@ class DonorStatisticsQuery extends QueryBuilder
 
 
     /**
-     * @unreleased update to account for exchange rate
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
     public function getFirstDonation()
@@ -148,7 +148,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased update to account for exchange rate
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
     public function getLastDonation()
