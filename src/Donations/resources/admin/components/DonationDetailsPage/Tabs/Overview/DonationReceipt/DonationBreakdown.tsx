@@ -28,7 +28,6 @@ const eventTicketDetails = [
  * @unreleased
  */
 export default function DonationBreakdown(){
-
 const showFeeRecoveredRow = true;
 const showEventTicketRow = true;
 

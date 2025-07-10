@@ -194,4 +194,3 @@ class DonationStatisticsController extends WP_REST_Controller
         return give(EventTicketRepository::class)->getTotalByDonation($donation)->formatToDecimal();
     }
 }
-
