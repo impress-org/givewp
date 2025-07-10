@@ -2,7 +2,6 @@ import styles from './styles.module.scss';
 import DonationStats from './DonationStats';
 import DonationSummaryGrid from './DonationSummaryGrid';
 import DonationReceipt from './DonationReceipt';
-import DonationReceipt from './DonationReceipt';
 import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
 import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
