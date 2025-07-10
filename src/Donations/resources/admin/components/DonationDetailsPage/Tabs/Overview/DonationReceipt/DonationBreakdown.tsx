@@ -4,29 +4,23 @@ import classnames from 'classnames';
 import EventLabel from './EventsLabel';
 import CurrencyBreakdownArrowIcon from './icon';
 import styles from './styles.module.scss';
-import { getDonationOptionsWindowData, useDonationEntityRecord } from '@givewp/donations/utils';
-import { amountFormatter } from '@givewp/components/AdminDetailsPage/utils';
+import { getDonationOptionsWindowData } from '@givewp/donations/utils';
+import { Donation } from '@givewp/donations/admin/components/types';
+import { useNormalizeDonation } from '@givewp/donations/hooks/useNormalizeDonation';
+import { amountFormatter } from '@givewp/src/Admin/utils';
 
 /**
  * @unreleased
  */
-export default function DonationBreakdown() {
+export default function DonationBreakdown({ donation }: { donation: Donation }) {
   const { isFeeRecoveryEnabled, currency: defaultCurrency } = getDonationOptionsWindowData();
-  const { record: donation } = useDonationEntityRecord();
+  const donorAmount = donation?.amount?.value ?? 0;
+  const donorAmountFormatter = amountFormatter(donation?.amount?.currency);
+  const {formatter, amount, feeAmountRecovered, eventTicketAmount} = useNormalizeDonation(donation);
 
   const showFeeRecoveredRow = isFeeRecoveryEnabled;
   const showEventTicketRow = false; // Placeholder for future event ticket logic
   const showCurrencyBreakdownRow = donation?.amount?.currency !== defaultCurrency;
-
-  const currencyFormatter = amountFormatter(defaultCurrency);
-  const baseCurrencyFormatter = amountFormatter(donation?.amount?.currency);
-
-  const donationAmount = donation?.amount?.value ?? 0;
-  const feeRecoveredAmount = donation?.feeAmountRecovered?.value ?? 0;
-  const baseAmount = donation?.amount?.value * (Number(donation?.exchangeRate) ?? 0);
-  // TODO: Add event ticket amount when available
-  // @ts-ignore
-  const eventTicketAmount = donation?.eventTicketAmount?.value ?? 0;
 
   // Placeholder for event ticket details, to be replaced with real data
   const eventTicketDetailsArray: any[] = [];
@@ -36,14 +30,14 @@ export default function DonationBreakdown() {
           <Row
               className={styles.donationRow}
               label={__('Donation amount', 'give')}
-              value={currencyFormatter.format(donationAmount)}
+              value={formatter.format(amount)}
           />
 
           {showEventTicketRow && (
               <Row
                   className={styles.donationRow}
                   label={<EventLabel events={eventTicketDetailsArray} />}
-                  value={currencyFormatter.format(eventTicketAmount)}
+                  value={formatter.format(eventTicketAmount)}
               />
           )}
 
@@ -51,14 +45,14 @@ export default function DonationBreakdown() {
               <Row
                   className={styles.donationRow}
                   label={__('Fee Recovered', 'give')}
-                  value={currencyFormatter.format(feeRecoveredAmount)}
+                  value={formatter.format(feeAmountRecovered)}
               />
           )}
 
           <Row
               className={styles.totalRow}
               label={<strong>{__('Total', 'give')}</strong>}
-              value={<strong>{currencyFormatter.format(donationAmount)}</strong>}
+              value={<strong>{formatter.format(amount)}</strong>}
           />
 
           {showCurrencyBreakdownRow && (
@@ -67,9 +61,9 @@ export default function DonationBreakdown() {
                   label={__('Currency breakdown', 'give')}
                   value={
                       <>
-                          {currencyFormatter.format(donationAmount)}
+                          {donorAmountFormatter.format(donorAmount)}
                           <CurrencyBreakdownArrowIcon />
-                          {baseCurrencyFormatter.format(baseAmount)}
+                          {formatter.format(amount)}
                       </>
                   }
               />

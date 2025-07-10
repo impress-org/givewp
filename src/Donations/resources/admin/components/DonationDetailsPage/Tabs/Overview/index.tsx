@@ -21,11 +21,7 @@ export default function DonationDetailsPageOverviewTab() {
 
     return (
         <div className={styles.overview}>
-            <DonationStats
-                donation={statistics.donation}
-                currency={donation?.amount?.currency}
-                isResolving={isResolving}
-            />
+            <DonationStats donationStats={statistics.donation} donation={donation} isResolving={isResolving} />
 
             <div className={styles.left}>
                 <DonationSummaryGrid
@@ -39,10 +35,10 @@ export default function DonationDetailsPageOverviewTab() {
                 <div className={styles.card}>
                     <DonationNotes donationId={donationId} />
                 </div>
-             </div>
+            </div>
 
             <div className={styles.right}>
-                <DonationReceipt />
+                <DonationReceipt donation={donation} />
             </div>
         </div>
     );

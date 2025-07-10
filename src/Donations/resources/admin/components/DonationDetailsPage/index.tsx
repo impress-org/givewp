@@ -50,7 +50,7 @@ export default function DonationDetailsPage() {
     const { record: donation } = useDonationEntityRecord();
     const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
 
-    const currencyFormatter = amountFormatter(donation?.amount?.currency ?? defaultCurrency);
+    const currencyFormatter = amountFormatter(defaultCurrency);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (

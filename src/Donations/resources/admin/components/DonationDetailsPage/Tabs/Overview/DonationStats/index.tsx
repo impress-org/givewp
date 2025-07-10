@@ -1,15 +1,16 @@
 
 import {__} from '@wordpress/i18n';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
-import {amountFormatter} from '@givewp/src/Admin/utils';
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from './styles.module.scss';
+import {Donation} from '@givewp/donations/admin/components/types';
+import { useNormalizeDonation } from '@givewp/donations/hooks/useNormalizeDonation';
 
 /**
  * @unreleased
  */
 interface DonationStatsProps {
-    donation: {
+    donationStats: {
         amount: string;
         intendedAmount: string;
         eventTicketAmount?: string | null;
@@ -20,38 +21,38 @@ interface DonationStatsProps {
         mode: string;
     };
     isResolving: boolean;
-    currency: string;
+    donation: Donation;
 }
 
 /**
  * @unreleased
  */
-export default function DonationStats({ donation, isResolving, currency }: DonationStatsProps) {
-    const { isFeeRecoveryEnabled, currency: defaultCurrency } = getDonationOptionsWindowData();
-    const {intendedAmount, feeAmountRecovered, eventTicketAmount} = donation;
-    const eventTicketValue = parseFloat(eventTicketAmount);
-    const shouldShowEventTicketStat = eventTicketValue > 0;    
+export default function DonationStats({ donationStats, donation, isResolving }: DonationStatsProps) {
+    const {isFeeRecoveryEnabled} = getDonationOptionsWindowData();
+    const {eventTicketAmount} = donationStats;
+    const shouldShowEventTicketStat = Number(eventTicketAmount) > 0;
+    const {formatter, intendedAmount, feeAmountRecovered} = useNormalizeDonation(donation);
 
     return (
         <div className={styles.container}>
             <StatWidget
                 label={__('Donation amount', 'give')}
-                value={parseFloat(intendedAmount) || 0}
-                formatter={amountFormatter(currency ?? defaultCurrency)}
+                value={intendedAmount}
+                formatter={formatter}
                 loading={isResolving}
             />
             {shouldShowEventTicketStat && (
                 <StatWidget
                     label={__('Event ticket', 'give')}
-                    value={eventTicketValue}
-                    formatter={amountFormatter(currency ?? defaultCurrency)}
+                    value={Number(eventTicketAmount)}
+                    formatter={formatter}
                     loading={isResolving}
                 />
             )}
             <StatWidget
                 label={__('Fees recovered', 'give')}
-                value={parseFloat(String(feeAmountRecovered))}
-                formatter={amountFormatter(currency ?? defaultCurrency)}
+                value={feeAmountRecovered}
+                formatter={formatter}
                 loading={isResolving}
                 href={'https://givewp.com/addons/fee-recovery/'}
                 inActive={!isFeeRecoveryEnabled}

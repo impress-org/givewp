@@ -1,17 +1,16 @@
-import React from 'react';
+
 import { __ } from '@wordpress/i18n';
 import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import DonationBreakdown from './DonationBreakdown';
 import BillingInformation from './BillingInformation';
 import ReceiptActions from './ReceiptActions';
 import styles from './styles.module.scss';
-import { useDonationEntityRecord } from '@givewp/donations/utils';
+import { Donation } from '@givewp/donations/admin/components/types';
 
 /**
  * @unreleased
  */
-export default function DonationReceipt() {
-  const { record: donation } = useDonationEntityRecord();
+export default function DonationReceipt({ donation }: { donation: Donation }) {
   const billingInfo = {
     name: donation?.firstName + ' ' + donation?.lastName,
     email: donation?.email,
@@ -40,7 +39,7 @@ export default function DonationReceipt() {
 
           <div className={styles.sections}>
             <section className={styles.rows} aria-label={__('Donation breakdown', 'give')}>
-              <DonationBreakdown />
+              <DonationBreakdown donation={donation} />
             </section>
 
             <section className={styles.address} aria-labelledby="billing-information">
