@@ -119,29 +119,29 @@ class DonationViewModel
      */
     private function getCustomFields(): array
     {
-        $form = $this->getDonationForm();
-
-        if (!$form) {
-            return [];
-        }
-
         $customFields = [];
-        $displayedFields = $this->getDisplayedDonationMetaFieldsForForm($form);
 
-        foreach ($displayedFields as $field) {
-            $value = $this->getFieldValue($field);
+        // get custom fields from v3 forms
+        $v3Form = $this->getDonationForm();
 
-            if (empty($value)) {
-                continue;
+        if ($v3Form) {
+            $displayedFields = $this->getDisplayedDonationMetaFieldsForForm($v3Form);
+
+            foreach ($displayedFields as $field) {
+                $value = $this->getFieldValue($field);
+
+                if (empty($value)) {
+                    continue;
+                }
+
+                $customFields[] = [
+                    'label' => method_exists($field, 'getLabel') ? $field->getLabel() : $field->getName(),
+                    'value' => $value,
+                ];
             }
-
-            $customFields[] = [
-                'label' => method_exists($field, 'getLabel') ? $field->getLabel() : $field->getName(),
-                'value' => $value,
-            ];
         }
 
-        return $customFields;
+        return apply_filters('givewp_donation_details_custom_fields', $customFields, $this->donation->id);
     }
 
     /**
