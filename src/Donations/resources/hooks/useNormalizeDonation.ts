@@ -16,14 +16,18 @@ export function useNormalizeDonation(donation: Donation) {
     const {currency} = getDonationOptionsWindowData();
     const exchangeRate = Number(donation?.exchangeRate ?? 1);
     const donationAmountValue = Number(donation?.amount?.value ?? 0);
-    const intendedAmountValue = Number(donation?.amount?.value ?? 0) - Number(donation?.feeAmountRecovered?.value ?? 0);
     const feeAmountRecoveredValue = Number(donation?.feeAmountRecovered?.value ?? 0);
     // @ts-ignore
     const eventTicketValue = Number(donation?.eventTicketAmount?.value ?? 0);
+    const intendedAmountValue = donationAmountValue - feeAmountRecoveredValue + eventTicketValue;
 
     return {
         currency,
-        formatter: amountFormatter(currency),
+        formatter: amountFormatter(currency, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            roundingMode: 'ceil',
+        }),
         amount: normalizeAmount(donationAmountValue, exchangeRate),
         intendedAmount: normalizeAmount(intendedAmountValue, exchangeRate),
         feeAmountRecovered: normalizeAmount(feeAmountRecoveredValue, exchangeRate),

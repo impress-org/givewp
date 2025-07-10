@@ -16,7 +16,7 @@ export default function DonationBreakdown({ donation }: { donation: Donation }) 
   const { isFeeRecoveryEnabled, currency: defaultCurrency } = getDonationOptionsWindowData();
   const donorAmount = donation?.amount?.value ?? 0;
   const donorAmountFormatter = amountFormatter(donation?.amount?.currency);
-  const {formatter, amount, feeAmountRecovered, eventTicketAmount} = useNormalizeDonation(donation);
+  const {formatter, amount, intendedAmount, feeAmountRecovered, eventTicketAmount} = useNormalizeDonation(donation);
 
   const showFeeRecoveredRow = isFeeRecoveryEnabled;
   const showEventTicketRow = false; // Placeholder for future event ticket logic
@@ -30,7 +30,7 @@ export default function DonationBreakdown({ donation }: { donation: Donation }) 
           <Row
               className={styles.donationRow}
               label={__('Donation amount', 'give')}
-              value={formatter.format(amount)}
+              value={formatter.format(intendedAmount)}
           />
 
           {showEventTicketRow && (
