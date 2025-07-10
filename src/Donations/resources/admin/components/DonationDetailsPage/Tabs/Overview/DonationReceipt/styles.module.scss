@@ -234,8 +234,11 @@
     }
 
     .actionDisabled {
-        background: var(--givewp-neutral-200);
         pointer-events: none;
+        cursor: default;
+        color: #a7aaad;
+        background: #f6f7f7;
+        border-color: #dcdcde;
         cursor: default;
 
         &:hover {
