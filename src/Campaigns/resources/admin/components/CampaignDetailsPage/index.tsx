@@ -71,24 +71,24 @@ export default function CampaignsDetailsPage({campaignId}) {
           if (headerRef.current) {
             const height = headerRef.current.offsetHeight;
             setHeaderHeight(height);
-            
+
             // Update CSS variable directly
             document.documentElement.style.setProperty('--header-height', `${height}px`);
           }
         };
-        
+
         // Initial measurement
         updateHeaderHeight();
-        
+
         // Listen for resize events
         window.addEventListener('resize', updateHeaderHeight);
-        
+
         // Use ResizeObserver to detect content changes
         const resizeObserver = new ResizeObserver(updateHeaderHeight);
         if (headerRef.current) {
           resizeObserver.observe(headerRef.current);
         }
-        
+
         // Clean up
         return () => {
           window.removeEventListener('resize', updateHeaderHeight);
@@ -120,11 +120,11 @@ export default function CampaignsDetailsPage({campaignId}) {
 
     // Close context menu when clicked outside
     useEffect(() => {
-        document.addEventListener('click', (e) => {
-            if (show.contextMenu) {
-                return;
-            }
+        if (!show.contextMenu) {
+            return;
+        }
 
+        const handleClickOutside = (e: MouseEvent) => {
             if (
                 e.target instanceof HTMLElement &&
                 !e.target.closest(`.${styles.campaignButtonDots}`) &&
@@ -133,8 +133,14 @@ export default function CampaignsDetailsPage({campaignId}) {
                 setShow({contextMenu: false});
                 (document.querySelector(`.${styles.campaignButtonDots}`) as HTMLElement)?.blur();
             }
-        });
-    }, []);
+        };
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [show.contextMenu]);
 
     // Set default values when campaign is loaded
     useEffect(() => {
