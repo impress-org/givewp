@@ -58,7 +58,7 @@ class DonationController extends WP_REST_Controller
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => [
                     '_embed' => [
-                        'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:statistics" when we wish to embed only a specific one.',
+                        'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:donor" when we wish to embed only a specific one.',
                             'give'),
                         'type' => [
                             'string',
@@ -579,14 +579,16 @@ class DonationController extends WP_REST_Controller
 
         if ($donationId) {
             $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $donationId));
-            $statistics_url = add_query_arg([
-                'mode' => $request->get_param('mode'),
-                'campaignId' => $request->get_param('campaignId'),
-            ], $self_url . '/statistics');
+            $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
+            $campaign_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'campaigns', $item['campaignId']));
             $links = [
                 'self' => ['href' => $self_url],
-                CURIE::relationUrl('statistics') => [
-                    'href' => $statistics_url,
+                CURIE::relationUrl('donor') => [
+                    'href' => $donor_url,
+                    'embeddable' => true,
+                ],
+                CURIE::relationUrl('campaign') => [
+                    'href' => $campaign_url,
                     'embeddable' => true,
                 ],
             ];
@@ -777,6 +779,22 @@ class DonationController extends WP_REST_Controller
                     ],
                     'description' => esc_html__('Fee amount recovered', 'give'),
                 ],
+                'eventTicketsAmount' => [
+                    'type' => ['object', 'null'],
+                    'readonly' => true,
+                    'properties' => [
+                        'amount' => [
+                            'type' => 'number',
+                        ],
+                        'amountInMinorUnits' => [
+                            'type' => 'number',
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                        ],
+                    ],
+                    'description' => esc_html__('Event tickets amount', 'give'),
+                ],
                 'status' => [
                     'type' => 'string',
                     'description' => esc_html__('Donation status', 'give'),
@@ -825,6 +843,7 @@ class DonationController extends WP_REST_Controller
                 ],
                 'customFields' => [
                     'type' => 'array',
+                    'readonly' => true,
                     'description' => esc_html__('Custom fields (sensitive data)', 'give'),
                     'items' => [
                         'type' => 'object',

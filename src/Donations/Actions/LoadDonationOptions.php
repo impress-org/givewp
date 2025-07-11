@@ -7,7 +7,6 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Helpers\IntlTelInput;
 use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\Framework\Database\DB;
-use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\PaymentGateways\PaymentGateway;
 
 /**

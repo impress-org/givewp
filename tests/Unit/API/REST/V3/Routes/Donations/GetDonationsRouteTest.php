@@ -96,6 +96,14 @@ class GetDonationsRouteTest extends RestApiTestCase
             'company' => $donation->company,
             'comment' => $donation->comment,
             'customFields' => $data[0]['customFields'], // Custom fields are dynamic, so we'll just check they exist
+            'eventTicketsAmount' => $data[0]['eventTicketsAmount'],
+            'eventTickets' => [],
+            'gateway' => array_merge(
+                $donation->gateway()->toArray(),
+                [
+                    'transactionUrl' => $donation->gateway()->getTransactionUrl($donation),
+                ]
+            )
         ], $data[0]);
     }
 

@@ -141,6 +141,7 @@ const alias = {
     '@givewp/campaigns': srcPath('Campaigns/resources'),
     '@givewp/donors': srcPath('Donors/resources'),
     '@givewp/donations': srcPath('Donations/resources'),
+    '@givewp/admin': srcPath('Admin'),
     ...defaultConfig.resolve.alias,
 };
 

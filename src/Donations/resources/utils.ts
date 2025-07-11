@@ -15,16 +15,18 @@ export function useDonationEntityRecord(donationId?: number) {
     const {
         record,
         hasResolved,
+        isResolving,
         save,
         edit,
     }: {
         record: Donation;
         hasResolved: boolean;
+        isResolving: boolean;
         save: () => any;
         edit: (data: Donation | Partial<Donation>) => void;
     } = useEntityRecord('givewp', 'donation', donationId ?? urlParams.get('id'));
 
-    return {record, hasResolved, save, edit};
+    return {record, hasResolved, isResolving, save, edit};
 }
 
 /**

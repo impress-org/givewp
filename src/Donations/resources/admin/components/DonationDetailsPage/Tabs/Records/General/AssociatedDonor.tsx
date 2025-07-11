@@ -4,6 +4,7 @@ import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 import { useFormContext } from 'react-hook-form';
 import styles from '../styles.module.scss';
 
+//TODO replace with donors API
 const { donors } = getDonationOptionsWindowData();
 
 /**
