@@ -404,6 +404,7 @@ class DonationController extends WP_REST_Controller
     public function delete_item($request): WP_REST_Response
     {
         $donation = Donation::find($request->get_param('id'));
+        $force = $request->get_param('force');
 
         if (!$donation) {
             return new WP_REST_Response(['message' => __('Donation not found', 'give')], 404);
@@ -414,7 +415,17 @@ class DonationController extends WP_REST_Controller
             ->anonymousMode(new DonationAnonymousMode('include'))
             ->exports();
 
-        $deleted = $donation->delete();
+        if ($force) {
+            // Permanently delete the donation
+            $deleted = $donation->delete();
+        } else {
+            // Move the donation to trash (soft delete)
+            $trashed = wp_trash_post($donation->id);
+        }
+
+        if (!$trashed) {
+            return new WP_REST_Response(['message' => __('Failed to trash donation', 'give')], 500);
+        }
 
         if (!$deleted) {
             return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
@@ -563,6 +574,11 @@ class DonationController extends WP_REST_Controller
                     'include',
                     'redact',
                 ],
+            ],
+            'force' => [
+                'type' => 'boolean',
+                'default' => false,
+                'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
             ],
         ];
 
