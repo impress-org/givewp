@@ -412,6 +412,7 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 	 *
 	 * @param int $payment_id Payment ID.
 	 *
+	 * @unreleased add false to the second parameter of wp_delete_post to prevent the deletion of the payment meta.
 	 * @since 1.0
 	 */
 	do_action( 'give_payment_delete', $payment_id );
@@ -420,11 +421,10 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 		// Remove the payment ID from the donor.
 		$donor->remove_payment( $payment_id );
 	}
+    // Remove the payment.
+    wp_delete_post( $payment_id, true );
 
-	// Remove the payment.
-	wp_delete_post( $payment_id, true );
-
-	Give()->payment_meta->delete_all_meta( $payment_id );
+    Give()->payment_meta->delete_all_meta( $payment_id );
 
 	/**
 	 * Fires after payment deleted.
