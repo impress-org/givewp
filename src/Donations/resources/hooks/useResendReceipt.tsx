@@ -39,7 +39,10 @@ export default function useResendReceipt() {
                 throw new Error(await response.text());
             }
         } catch (error: any) {
-            setMessage(__('Failed to resend receipt: ', 'give') + error.message);
+            dispatch.addSnackbarNotice({
+                id: 'resend-receipt-error',
+                content: __('Failed to resend receipt', 'give'),
+            });
         } finally {
             setLoading(false);
             setHasResolved(true);
