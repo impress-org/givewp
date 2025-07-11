@@ -245,6 +245,9 @@ class ListDonations extends Endpoint
 
         $hasWhereConditions = $search || $start || $end || $campaignId || $donor;
 
+        $query->where('post_type', 'give_payment');
+        $query->where('post_status', 'trash', '<>');
+
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
