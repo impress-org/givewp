@@ -781,6 +781,7 @@ class DonationController extends WP_REST_Controller
                 ],
                 'eventTicketsAmount' => [
                     'type' => ['object', 'null'],
+                    'readonly' => true,
                     'properties' => [
                         'amount' => [
                             'type' => 'number',
@@ -842,6 +843,7 @@ class DonationController extends WP_REST_Controller
                 ],
                 'customFields' => [
                     'type' => 'array',
+                    'readonly' => true,
                     'description' => esc_html__('Custom fields (sensitive data)', 'give'),
                     'items' => [
                         'type' => 'object',
