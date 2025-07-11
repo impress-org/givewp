@@ -6,9 +6,9 @@ import { useDispatch } from '@wordpress/data';
  * @unreleased
  */
 export default function useResendReceipt() {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const [message, setMessage] = useState<string | null>(__('Resend Receipt', 'give'));
-    const [hasResolved, setHasResolved] = useState(false);
+    const [hasResolved, setHasResolved] = useState<boolean>(false);
 
     const urlParams = new URLSearchParams(window.location.search);
     const donationId = urlParams.get('id');
