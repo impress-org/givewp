@@ -3,11 +3,13 @@
 namespace Give\Tests\Unit\Donations\Models;
 
 use Exception;
+use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
+use Give\EventTickets\Models\EventTicket;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -172,5 +174,85 @@ class TestDonation extends TestCase
         ]);
 
         self::assertMoneyEquals(new Money(5000, 'USD'), $donation->intendedAmount());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationShouldGetEventTicketsAmount()
+    {
+        if (!FeatureFlag::eventTickets()) {
+            define('GIVE_EVENT_TICKETS_ENABLED', true);
+        }
+
+        $donation = Donation::factory()->create([
+            'amount' => new Money(5000, 'USD'),
+        ]);
+
+        $eventTicket = EventTicket::factory()->create([
+            'donationId' => $donation->id,
+            'amount' => new Money(1000, 'USD'),
+        ]);
+
+        self::assertMoneyEquals(new Money(1000, 'USD'), $donation->eventTicketsAmount());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationShouldGetEventTicketsAmountWhenFeatureFlagIsDisabled()
+    {
+        if (FeatureFlag::eventTickets()) {
+            define('GIVE_EVENT_TICKETS_ENABLED', false);
+        }
+
+        $donation = Donation::factory()->create([
+            'amount' => new Money(5000, 'USD'),
+        ]);
+
+        self::assertMoneyEquals(new Money(0, 'USD'), $donation->eventTicketsAmount());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationShouldGetEventTickets()
+    {
+        if (!FeatureFlag::eventTickets()) {
+            define('GIVE_EVENT_TICKETS_ENABLED', true);
+        }
+
+        $donation = Donation::factory()->create();
+
+        $eventTicket = EventTicket::factory()->create([
+            'donationId' => $donation->id,
+            'amount' => new Money(1000, 'USD'),
+        ]);
+
+        $eventTicket2 = EventTicket::factory()->create([
+            'donationId' => $donation->id,
+            'amount' => new Money(1000, 'USD'),
+        ]);
+
+        $this->assertCount(2, $donation->eventTickets);
+
+        $this->assertEquals($eventTicket->id, $donation->eventTickets[0]->id);
+        $this->assertEquals($eventTicket2->id, $donation->eventTickets[1]->id);
+        $this->assertEquals($eventTicket->amount, $donation->eventTickets[0]->amount);
+        $this->assertEquals($eventTicket2->amount, $donation->eventTickets[1]->amount);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testDonationShouldGetEventTicketsWhenFeatureFlagIsDisabled()
+    {
+        if (FeatureFlag::eventTickets()) {
+            define('GIVE_EVENT_TICKETS_ENABLED', false);
+        }
+
+        $donation = Donation::factory()->create();
+
+        $this->assertEmpty($donation->eventTickets);
     }
 }

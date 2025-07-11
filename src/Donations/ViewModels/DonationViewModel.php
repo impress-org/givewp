@@ -6,6 +6,7 @@ use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donations\Models\Donation;
+use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Types;
 use Give\Framework\Support\Facades\DateTime\Temporal;
@@ -58,6 +59,8 @@ class DonationViewModel
                 'createdAt' => Temporal::getFormattedDateTime($this->donation->createdAt),
                 'updatedAt' => Temporal::getFormattedDateTime($this->donation->updatedAt),
                 'customFields' => $this->getCustomFields(),
+                'eventTicketsAmount' => $this->donation->eventTicketsAmount(),
+                'eventTickets' => $this->getEventTickets(),
             ]
         );
 
@@ -191,5 +194,13 @@ class DonationViewModel
         }
 
         return (string) $metaValue;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getEventTickets(): array
+    {
+        return give(EventTicketRepository::class)->getEventTicketDetails($this->donation);
     }
 }

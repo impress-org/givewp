@@ -40,6 +40,56 @@ export type Donation = {
   gatewayTransactionId: string;
   company: string;
   comment: string;
+  eventTicketsAmount: {
+    value: number;
+    currency: string;
+  };
+  eventTickets: EventTicket[];
+};
+
+export type Event = {
+    id: number;
+    title: string;
+    description: string;
+    startDateTime: string;
+    endDateTime: string;
+    ticketCloseDateTime: string;
+    createdAt: {
+        date: string;
+    };
+    updatedAt: {
+        date: string;
+    };
+};
+
+export type EventTicketType = {
+    id: number;
+    eventId: number;
+    title: string;
+    description: string;
+    price: {
+        value: number;
+        currency: string;
+    };
+    capacity: number;
+};
+/**
+ * @unreleased
+ */
+export type EventTicket = {
+    id: number;
+    event: Event;
+    ticketType: EventTicketType;
+    amount: {
+        value: number;
+        currency: string;
+    };
+    createdAt: {
+        date: string;
+    };
+    updatedAt: {
+        date: string;
+    }
 };
 
 /**

@@ -5,7 +5,7 @@ import EventLabel from './EventsLabel';
 import CurrencyBreakdownArrowIcon from './icon';
 import styles from './styles.module.scss';
 import { getDonationOptionsWindowData } from '@givewp/donations/utils';
-import { Donation } from '@givewp/donations/admin/components/types';
+import type { Donation } from '@givewp/donations/admin/components/types';
 import { useNormalizeDonation } from '@givewp/donations/hooks/useNormalizeDonation';
 import { amountFormatter } from '@givewp/src/Admin/utils';
 
@@ -13,7 +13,7 @@ import { amountFormatter } from '@givewp/src/Admin/utils';
  * @unreleased
  */
 export default function DonationBreakdown({ donation }: { donation: Donation }) {
-  const { isFeeRecoveryEnabled, currency: defaultCurrency } = getDonationOptionsWindowData();
+  const {isFeeRecoveryEnabled, currency: defaultCurrency, eventTicketsEnabled} = getDonationOptionsWindowData();
   const baseCurrencyFormatter = amountFormatter(defaultCurrency, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -21,14 +21,11 @@ export default function DonationBreakdown({ donation }: { donation: Donation }) 
   });
 
   const baseCurrencyAmount = (donation?.amount?.value ?? 0) / Number(donation?.exchangeRate ?? 1);
-  const {formatter, amount, intendedAmount, feeAmountRecovered, eventTicketAmount} = useNormalizeDonation(donation);
+  const {formatter, amount, intendedAmount, feeAmountRecovered, eventTicketsAmount} = useNormalizeDonation(donation);
 
   const showFeeRecoveredRow = isFeeRecoveryEnabled;
-  const showEventTicketRow = false; // Placeholder for future event ticket logic
+  const showEventTicketRow = eventTicketsEnabled && Number(donation?.eventTicketsAmount?.value ?? 0) > 0;
   const showCurrencyBreakdownRow = donation?.amount?.currency !== defaultCurrency;
-
-  // Placeholder for event ticket details, to be replaced with real data
-  const eventTicketDetailsArray: any[] = [];
 
   return (
       <div className={styles.rowContainer}>
@@ -41,8 +38,8 @@ export default function DonationBreakdown({ donation }: { donation: Donation }) 
           {showEventTicketRow && (
               <Row
                   className={styles.donationRow}
-                  label={<EventLabel events={eventTicketDetailsArray} />}
-                  value={formatter.format(eventTicketAmount)}
+                  label={<EventLabel eventTickets={donation?.eventTickets} />}
+                  value={formatter.format(eventTicketsAmount)}
               />
           )}
 

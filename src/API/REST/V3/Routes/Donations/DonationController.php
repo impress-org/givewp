@@ -777,6 +777,21 @@ class DonationController extends WP_REST_Controller
                     ],
                     'description' => esc_html__('Fee amount recovered', 'give'),
                 ],
+                'eventTicketsAmount' => [
+                    'type' => ['object', 'null'],
+                    'properties' => [
+                        'amount' => [
+                            'type' => 'number',
+                        ],
+                        'amountInMinorUnits' => [
+                            'type' => 'number',
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                        ],
+                    ],
+                    'description' => esc_html__('Event tickets amount', 'give'),
+                ],
                 'status' => [
                     'type' => 'string',
                     'description' => esc_html__('Donation status', 'give'),

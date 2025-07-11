@@ -13,7 +13,7 @@ interface DonationStatsProps {
     donationStats: {
         amount: string;
         intendedAmount: string;
-        eventTicketAmount?: string | null;
+        eventTicketsAmount?: string | null;
         feeAmountRecovered: string | number;
         status: string;
         date: string;
@@ -27,11 +27,10 @@ interface DonationStatsProps {
 /**
  * @unreleased
  */
-export default function DonationStats({ donationStats, donation, isResolving }: DonationStatsProps) {
-    const {isFeeRecoveryEnabled} = getDonationOptionsWindowData();
-    const {eventTicketAmount} = donationStats;
-    const shouldShowEventTicketStat = Number(eventTicketAmount) > 0;
-    const {formatter, intendedAmount, feeAmountRecovered} = useNormalizeDonation(donation);
+export default function DonationStats({ donation, isResolving }: DonationStatsProps) {
+    const {isFeeRecoveryEnabled, eventTicketsEnabled} = getDonationOptionsWindowData();
+    const shouldShowEventTicketStat = eventTicketsEnabled && Number(donation?.eventTicketsAmount?.value ?? 0) > 0;
+    const {formatter, intendedAmount, feeAmountRecovered, eventTicketsAmount} = useNormalizeDonation(donation);
 
     return (
         <div className={styles.container}>
@@ -44,7 +43,7 @@ export default function DonationStats({ donationStats, donation, isResolving }: 
             {shouldShowEventTicketStat && (
                 <StatWidget
                     label={__('Event ticket', 'give')}
-                    value={Number(eventTicketAmount)}
+                    value={Number(eventTicketsAmount)}
                     formatter={formatter}
                     loading={isResolving}
                 />

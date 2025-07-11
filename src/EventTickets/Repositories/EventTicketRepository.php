@@ -2,6 +2,7 @@
 
 namespace Give\EventTickets\Repositories;
 
+use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\Donations\Models\Donation;
 use Give\EventTickets\Models\EventTicket;
 use Give\Framework\Database\DB;
@@ -181,6 +182,7 @@ class EventTicketRepository
     }
 
     /**
+     * @unreleased Add support for feature flag when disabled
      * @since 3.20.0 Add "amount" column to the select statement
      * @since      3.6.0
      * @return ModelQueryBuilder<EventTicket>
@@ -188,6 +190,20 @@ class EventTicketRepository
     public function prepareQuery(): ModelQueryBuilder
     {
         $builder = new ModelQueryBuilder(EventTicket::class);
+
+        if (!FeatureFlag::eventTickets()) {
+            // Check if the table exists when feature flag is disabled
+            if (!$this->tableExists('give_event_tickets')) {
+                // Return a query builder that safely returns empty results using a table that always exists
+                // We use the posts table with an impossible condition to ensure 0 results and countability
+                global $wpdb;
+                return $builder->from($wpdb->posts)
+                    ->select('NULL as id', 'NULL as event_id', 'NULL as ticket_type_id', 'NULL as donation_id', 'NULL as amount', 'NULL as created_at', 'NULL as updated_at')
+                    ->where('1', '0'); // This ensures no results are returned but queries remain countable
+            }
+
+            return $builder->from('give_event_tickets');
+        }
 
         return $builder->from('give_event_tickets')
             ->select(
@@ -199,6 +215,23 @@ class EventTicketRepository
                 'created_at',
                 'updated_at'
             );
+    }
+
+    /**
+     * Check if a database table exists
+     *
+     * @unreleased
+     * @param string $tableName
+     * @return bool
+     */
+    private function tableExists(string $tableName): bool
+    {
+        global $wpdb;
+
+        $prefixedTableName = $wpdb->prefix . $tableName;
+        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($prefixedTableName));
+
+        return (bool) $wpdb->get_var($query);
     }
 
     /**
@@ -246,5 +279,23 @@ class EventTicketRepository
                 $eventTicket->amount
             );
         }, new Money(0, $currency));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getEventTicketDetails(Donation $donation): array
+    {
+        $details = [];
+        $eventTickets = $this->queryByDonationId($donation->id)->getAll() ?? [];
+
+        foreach ($eventTickets as $eventTicket) {
+            $details[] = array_merge($eventTicket->toArray(), [
+                'event' => $eventTicket->event->toArray(),
+                'ticketType' => $eventTicket->ticketType->toArray(),
+            ]);
+        }
+
+        return $details;
     }
 }
