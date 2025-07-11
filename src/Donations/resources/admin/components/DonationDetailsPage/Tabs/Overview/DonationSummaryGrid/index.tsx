@@ -8,6 +8,7 @@ import ExternalLinkIcon from './icon';
 import type {Donation} from '@givewp/donations/admin/components/types';
 import { useDonorEntityRecord } from '@givewp/donors/utils';
 import { useCampaignEntityRecord } from '@givewp/campaigns/utils';
+import Spinner from '@givewp/src/Admin/components/Spinner';
 
 /**
  * @unreleased
@@ -22,13 +23,6 @@ export type DonationSummaryGridProps = {
 function CampaignCard({donation}: {donation: Donation}) {
     const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(donation?.campaignId);
 
-    if (!hasResolvedCampaign) {
-        // TODO: Add loading state
-        return null;
-    }
-
-      const campaignPageUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaign.id}&tab=overview`;
-
     return (
         <div
             className={classnames(styles.card, styles.campaignCard)}
@@ -36,9 +30,15 @@ function CampaignCard({donation}: {donation: Donation}) {
             aria-labelledby="campaign-name-label"
         >
             <h3 id="campaign-name-label">{__('Campaign name', 'give')}</h3>
-            <a href={campaignPageUrl} className={styles.campaignLink}>
-                {campaign.title}
-            </a>
+            {!hasResolvedCampaign && <Spinner />}
+            {hasResolvedCampaign && (
+                <a
+                    href={`edit.php?post_type=give_forms&page=give-campaigns&id=${campaign?.id}&tab=overview`}
+                    className={styles.campaignLink}
+                >
+                    {campaign.title}
+                </a>
+            )}
         </div>
     );
 }
@@ -47,22 +47,20 @@ function CampaignCard({donation}: {donation: Donation}) {
  * @unreleased
  */
 function DonorCard({donation}: {donation: Donation}) {
-    const {record: donor, hasResolved: hasResolvedDonor, isResolving: isResolvingDonor} = useDonorEntityRecord(donation?.donorId);
-
-    if (!hasResolvedDonor || isResolvingDonor) {
-        // TODO: Add loading state
-        return null;
-    }
-
-    const donorPageUrl = `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`;
+    const {record: donor, hasResolved: hasResolvedDonor} = useDonorEntityRecord(donation?.donorId);
 
     return (
         <div className={classnames(styles.card, styles.donorCard)} role="region" aria-labelledby="donor-label">
          <h3 id="donor-label">{__('Associated donor', 'give')}</h3>
-         <a className={styles.donorLink} href={donorPageUrl}>
-             {donor.name}
-         </a>
-         <p>{donor.email}</p>
+         {!hasResolvedDonor && <Spinner />}
+         {hasResolvedDonor && (
+            <>
+                <a className={styles.donorLink} href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`}>
+                    {donor.name}
+                </a>
+                <p>{donor.email}</p>
+            </>
+         )}
      </div>
     );
 }
