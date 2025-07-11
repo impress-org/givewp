@@ -182,7 +182,9 @@ class TestDonation extends TestCase
     public function testDonationShouldGetEventTicketsAmount()
     {
         if (!FeatureFlag::eventTickets()) {
-            define('GIVE_EVENT_TICKETS_ENABLED', true);
+            if (!defined('GIVE_EVENT_TICKETS_ENABLED')) {
+                define('GIVE_EVENT_TICKETS_ENABLED', true);
+            }
         }
 
         $donation = Donation::factory()->create([
@@ -203,7 +205,9 @@ class TestDonation extends TestCase
     public function testDonationShouldGetEventTicketsAmountWhenFeatureFlagIsDisabled()
     {
         if (FeatureFlag::eventTickets()) {
-            define('GIVE_EVENT_TICKETS_ENABLED', false);
+            if (!defined('GIVE_EVENT_TICKETS_ENABLED')) {
+                define('GIVE_EVENT_TICKETS_ENABLED', false);
+            }
         }
 
         $donation = Donation::factory()->create([
@@ -219,7 +223,9 @@ class TestDonation extends TestCase
     public function testDonationShouldGetEventTickets()
     {
         if (!FeatureFlag::eventTickets()) {
-            define('GIVE_EVENT_TICKETS_ENABLED', true);
+            if (!defined('GIVE_EVENT_TICKETS_ENABLED')) {
+                define('GIVE_EVENT_TICKETS_ENABLED', true);
+            }
         }
 
         $donation = Donation::factory()->create();
@@ -248,7 +254,9 @@ class TestDonation extends TestCase
     public function testDonationShouldGetEventTicketsWhenFeatureFlagIsDisabled()
     {
         if (FeatureFlag::eventTickets()) {
-            define('GIVE_EVENT_TICKETS_ENABLED', false);
+            if (!defined('GIVE_EVENT_TICKETS_ENABLED')) {
+                define('GIVE_EVENT_TICKETS_ENABLED', false);
+            }
         }
 
         $donation = Donation::factory()->create();
