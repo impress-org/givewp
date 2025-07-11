@@ -3,6 +3,9 @@ import styles from './styles.module.scss'; // adjust path as needed
 import type {EventTicket} from '@givewp/donations/admin/components/types';
 
 
+/**
+ * @unreleased
+ */
 type EventTicketWithQuantity = EventTicket & { quantity?: number };
 
 /**
@@ -12,6 +15,11 @@ export type EventLabelProps = {
     eventTickets?: EventTicketWithQuantity[];
 };
 
+/**
+ * This function is used to prepare the event tickets for the event label.
+ * It is used to group the event tickets by ticket type and add the quantity to the event ticket.
+ * @unreleased
+ */
 const prepareEventTickets = (eventTickets: EventTicketWithQuantity[]) => {
     const tickets = eventTickets.reduce((acc: Record<number, EventTicketWithQuantity>, eventTicket) => {
         const ticketTypeId = eventTicket.ticketType.id;
