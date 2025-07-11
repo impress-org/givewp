@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { __ } from '@wordpress/i18n';
+import { useDispatch } from '@wordpress/data';
 
 /**
  * @unreleased
@@ -11,6 +12,7 @@ export default function useResendReceipt() {
 
     const urlParams = new URLSearchParams(window.location.search);
     const donationId = urlParams.get('id');
+    const dispatch = useDispatch('givewp/admin-details-page-notifications');
 
     const handleResendReceipt = async () => {
         if (!donationId) {
@@ -41,6 +43,10 @@ export default function useResendReceipt() {
         } finally {
             setLoading(false);
             setHasResolved(true);
+            dispatch.addSnackbarNotice({
+                id: 'resend-receipt',
+                content: __('Receipt has been resent successfully', 'give'),
+            });
         }
     };
 
