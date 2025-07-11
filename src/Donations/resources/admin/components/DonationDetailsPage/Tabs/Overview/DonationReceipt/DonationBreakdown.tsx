@@ -6,7 +6,7 @@ import CurrencyBreakdownArrowIcon from './icon';
 import styles from './styles.module.scss';
 import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 import type { Donation } from '@givewp/donations/admin/components/types';
-import { useNormalizeDonation } from '@givewp/donations/hooks/useNormalizeDonation';
+import { useDonationAmounts } from '@givewp/donations/hooks';
 import { amountFormatter } from '@givewp/src/Admin/utils';
 
 /**
@@ -21,7 +21,7 @@ export default function DonationBreakdown({ donation }: { donation: Donation }) 
   });
 
   const baseCurrencyAmount = (donation?.amount?.value ?? 0) / Number(donation?.exchangeRate ?? 1);
-  const {formatter, amount, intendedAmount, feeAmountRecovered, eventTicketsAmount} = useNormalizeDonation(donation);
+  const {formatter, amount, intendedAmount, feeAmountRecovered, eventTicketsAmount} = useDonationAmounts(donation);
 
   const showFeeRecoveredRow = isFeeRecoveryEnabled;
   const showEventTicketRow = eventTicketsEnabled && Number(donation?.eventTicketsAmount?.value ?? 0) > 0;

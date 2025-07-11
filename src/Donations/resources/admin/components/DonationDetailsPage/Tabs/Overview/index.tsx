@@ -4,6 +4,7 @@ import DonationSummaryGrid from './DonationSummaryGrid';
 import DonationReceipt from './DonationReceipt';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
 import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
+import Spinner from '@givewp/src/Admin/components/Spinner';
 
 /**
  * @unreleased
@@ -13,9 +14,9 @@ export default function DonationDetailsPageOverviewTab() {
     const donationId = parseInt(urlParams.get('id') ?? '0');
     const {record: donation, hasResolved: hasResolvedDonation, isResolving: isResolvingDonation } = useDonationEntityRecord(donationId);
 
-    if (!hasResolvedDonation || isResolvingDonation) {
+    if (!hasResolvedDonation || isResolvingDonation || !donation) {
         // TODO: Add loading state
-        return null;
+        return <Spinner />;
     }
 
     return (

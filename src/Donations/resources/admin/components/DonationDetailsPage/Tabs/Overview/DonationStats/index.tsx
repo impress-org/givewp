@@ -4,7 +4,7 @@ import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from './styles.module.scss';
 import {Donation} from '@givewp/donations/admin/components/types';
-import { useNormalizeDonation } from '@givewp/donations/hooks/useNormalizeDonation';
+import { useDonationAmounts } from '@givewp/donations/hooks';
 
 /**
  * @unreleased
@@ -20,7 +20,7 @@ interface DonationStatsProps {
 export default function DonationStats({ donation, isResolving }: DonationStatsProps) {
     const {isFeeRecoveryEnabled, eventTicketsEnabled} = getDonationOptionsWindowData();
     const shouldShowEventTicketStat = eventTicketsEnabled && Number(donation?.eventTicketsAmount?.value ?? 0) > 0;
-    const {formatter, intendedAmount, feeAmountRecovered, eventTicketsAmount} = useNormalizeDonation(donation);
+    const {formatter, intendedAmount, feeAmountRecovered, eventTicketsAmount} = useDonationAmounts(donation);
 
     return (
         <div className={styles.container}>

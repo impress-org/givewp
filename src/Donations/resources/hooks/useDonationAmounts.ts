@@ -1,20 +1,13 @@
 import { Donation } from '@givewp/donations/admin/components/types';
 import { getDonationOptionsWindowData } from '@givewp/donations/utils';
-import {amountFormatter} from '@givewp/src/Admin/utils';
+import {amountFormatter} from '@givewp/admin/utils';
 
 /**
+ * This hook is used to get the donation amounts and the formatter for the donation amounts.
  * @unreleased
  */
-const normalizeAmount = (amount: number, exchangeRate: number = 1) => {
-    return amount / exchangeRate;
-}
-
-/**
- * @unreleased
- */
-export function useNormalizeDonation(donation: Donation) {
+export default function useDonationAmounts(donation: Donation) {
     const {currency: baseCurrency, eventTicketsEnabled} = getDonationOptionsWindowData();
-    const exchangeRate = Number(donation?.exchangeRate ?? 1);
     const donationAmountValue = Number(donation?.amount?.value ?? 0);
     const feeAmountRecoveredValue = Number(donation?.feeAmountRecovered?.value ?? 0);
     const eventTicketsAmountValue = Number(donation?.eventTicketsAmount?.value ?? 0);

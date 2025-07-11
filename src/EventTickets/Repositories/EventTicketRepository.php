@@ -4,14 +4,17 @@ namespace Give\EventTickets\Repositories;
 
 use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\EventTickets\Models\EventTicket;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
+use Give\Helpers\Table;
 use Give\Log\Log;
 
 /**
@@ -182,7 +185,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased Add support for feature flag when disabled
+     * @unreleased Add support for feature flag when disabled and include donation currency
      * @since 3.20.0 Add "amount" column to the select statement
      * @since      3.6.0
      * @return ModelQueryBuilder<EventTicket>
@@ -205,16 +208,22 @@ class EventTicketRepository
             return $builder->from('give_event_tickets');
         }
 
-        return $builder->from('give_event_tickets')
+        return $builder->from('give_event_tickets', 'tickets')
             ->select(
-                'id',
-                'event_id',
-                'ticket_type_id',
-                'donation_id',
-                'amount',
-                'created_at',
-                'updated_at'
-            );
+                ['tickets.id', 'id'],
+                ['tickets.event_id', 'event_id'],
+                ['tickets.ticket_type_id', 'ticket_type_id'],
+                ['tickets.amount', 'amount'],
+                ['tickets.created_at', 'created_at'],
+                ['tickets.updated_at', 'updated_at'],
+            )
+            ->selectRaw("tickets.donation_id as donation_id")
+            ->attachMeta(
+                 'give_donationmeta',
+                 'tickets.donation_id',
+                 'donation_id',
+                 [DonationMetaKeys::CURRENCY, 'currency']
+             );
     }
 
     /**
@@ -240,7 +249,7 @@ class EventTicketRepository
     public function queryByEventId(int $eventId): ModelQueryBuilder
     {
         return $this->prepareQuery()
-            ->where('event_id', $eventId);
+            ->where('tickets.event_id', $eventId);
     }
 
     /**
@@ -249,7 +258,7 @@ class EventTicketRepository
     public function queryByTicketTypeId(int $ticketTypeId): ModelQueryBuilder
     {
         return $this->prepareQuery()
-            ->where('ticket_type_id', $ticketTypeId);
+            ->where('tickets.ticket_type_id', $ticketTypeId);
     }
 
     /**
@@ -262,23 +271,21 @@ class EventTicketRepository
     public function queryByDonationId(int $donationId): ModelQueryBuilder
     {
         return $this->prepareQuery()
-            ->where('donation_id', $donationId);
+            ->where('tickets.donation_id', $donationId);
     }
 
     /**
+     * @unreleased Ensure the currency is the same as the donation amount currency
      * @since 3.20.0 Refactored to use event ticket amount instead of ticket type price
      * @since 3.6.0
      */
     public function getTotalByDonation(Donation $donation): Money
     {
         $eventTickets = $this->queryByDonationId($donation->id)->getAll() ?? [];
-        $currency = $donation->amount->getCurrency();
 
         return array_reduce($eventTickets, static function (Money $carry, EventTicket $eventTicket) {
-            return $carry->add(
-                $eventTicket->amount
-            );
-        }, new Money(0, $currency));
+            return $carry->add($eventTicket->amount);
+        }, new Money(0, $donation->amount->getCurrency()));
     }
 
     /**

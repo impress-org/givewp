@@ -14,6 +14,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class ConvertEventTicketsBlockToFieldsApi
 {
     /**
+     * @unreleased Add support for currency conversion
      * @since 3.20.0 Set event end date and time.
      * @since 3.12.2 Remove event ID from field name
      * @since 3.6.0
@@ -45,9 +46,11 @@ class ConvertEventTicketsBlockToFieldsApi
 
                     array_walk($ticketPurchaseData, new GenerateTicketsFromPurchaseData($donation));
 
-                    $donation->amount = array_reduce($ticketPurchaseData, function (Money $carry, TicketPurchaseData $purchaseData) {
+                    $donation->amount = array_reduce($ticketPurchaseData, function (Money $carry, TicketPurchaseData $purchaseData) use ($donation) {
+                        $ticketTypePrice = new Money($purchaseData->ticketType->price->getAmount(), $donation->amount->getCurrency());
+
                         return $carry->add(
-                            $purchaseData->ticketType->price->multiply($purchaseData->quantity)
+                            $ticketTypePrice->multiply($purchaseData->quantity)
                         );
                     }, $donation->amount);
 

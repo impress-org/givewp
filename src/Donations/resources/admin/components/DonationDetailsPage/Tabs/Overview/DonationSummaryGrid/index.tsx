@@ -71,8 +71,8 @@ function DonorCard({donation}: {donation: Donation}) {
 export default function DonationSummaryGrid({
     donation,
 }: DonationSummaryGridProps) {
-     const subscriptionPageUrl = `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${donation.subscriptionId}`;
-     const isRecurringDonation = donation.type !== 'single';
+     const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${donation?.subscriptionId}` : null;
+     const isRecurringDonation = !!donation?.subscriptionId;
      const donationTypeDisplay = isRecurringDonation ? __('Recurring', 'give') : __('One-time', 'give');
 
     return (

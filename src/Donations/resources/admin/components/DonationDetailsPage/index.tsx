@@ -19,9 +19,8 @@ import ConfirmationDialog from '@givewp/components/AdminDetailsPage/Confirmation
 import { getDonationOptionsWindowData, useDonationEntityRecord } from '@givewp/donations/utils';
 import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
-import { amountFormatter } from '@givewp/components/AdminDetailsPage/utils';
 import useDonationRefund from '@givewp/donations/hooks/useDonationRefund';
-import { useNormalizeDonation } from '@givewp/donations/hooks/useNormalizeDonation';
+import { useDonationAmounts } from '@givewp/donations/hooks';
 
 const { donationStatuses } = getDonationOptionsWindowData();
 
@@ -49,7 +48,7 @@ export default function DonationDetailsPage() {
     const { adminUrl} = getDonationOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
     const { record: donation } = useDonationEntityRecord();
-    const {formatter} = useNormalizeDonation(donation);
+    const {formatter} = useDonationAmounts(donation);
     const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
