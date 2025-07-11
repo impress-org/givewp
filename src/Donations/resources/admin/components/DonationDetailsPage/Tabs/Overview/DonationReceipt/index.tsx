@@ -5,6 +5,11 @@ import DonationBreakdown from './DonationBreakdown';
 import BillingInformation from './BillingInformation';
 import ReceiptActions from './ReceiptActions';
 import styles from './styles.module.scss';
+import { DonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
+
+export type DonationReceiptProps = {
+ stats: DonationStatistics['donation'];
+}
 
 /**
  * @unreleased
@@ -22,7 +27,7 @@ export default function DonationReceipt() {
       zip: '48254',
     },
   };
-  
+
   return (
     <OverviewPanel>
       <aside
