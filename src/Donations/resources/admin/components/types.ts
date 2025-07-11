@@ -1,4 +1,10 @@
 
+type PaymentGateway = {
+    id: string;
+    name: string;
+    label: string;
+    transactionUrl: string;
+}
 
 /**
  * @unreleased
@@ -8,9 +14,7 @@ export type Donation = {
   campaignId: number;
   formId: number;
   formTitle: string;
-  createdAt: {
-    date: string;
-  };
+  createdAt: string;
   updatedAt: string;
   status: string;
   mode: DonationMode;
@@ -45,6 +49,7 @@ export type Donation = {
     currency: string;
   };
   eventTickets: EventTicket[];
+  gateway: PaymentGateway;
 };
 
 export type Event = {
@@ -54,12 +59,8 @@ export type Event = {
     startDateTime: string;
     endDateTime: string;
     ticketCloseDateTime: string;
-    createdAt: {
-        date: string;
-    };
-    updatedAt: {
-        date: string;
-    };
+    createdAt: string;
+    updatedAt: string;
 };
 
 export type EventTicketType = {
@@ -84,12 +85,8 @@ export type EventTicket = {
         value: number;
         currency: string;
     };
-    createdAt: {
-        date: string;
-    };
-    updatedAt: {
-        date: string;
-    }
+    createdAt: string;
+    updatedAt: string;
 };
 
 /**

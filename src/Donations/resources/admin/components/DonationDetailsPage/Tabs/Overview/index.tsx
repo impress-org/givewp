@@ -2,7 +2,6 @@ import styles from './styles.module.scss';
 import DonationStats from './DonationStats';
 import DonationSummaryGrid from './DonationSummaryGrid';
 import DonationReceipt from './DonationReceipt';
-import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
 import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
 
@@ -12,25 +11,20 @@ import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
 export default function DonationDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donationId = parseInt(urlParams.get('id') ?? '0');
-    const { statistics, hasResolved, isResolving } = useDonationStatistics(donationId);
-    const { record: donation, hasResolved: hasResolvedDonation } = useDonationEntityRecord();
+    const {record: donation, hasResolved: hasResolvedDonation, isResolving: isResolvingDonation } = useDonationEntityRecord(donationId);
 
-    if (!hasResolved || !hasResolvedDonation) {
+    if (!hasResolvedDonation || isResolvingDonation) {
+        // TODO: Add loading state
         return null;
     }
 
     return (
         <div className={styles.overview}>
-            <DonationStats donationStats={statistics.donation} donation={donation} isResolving={isResolving} />
+            <DonationStats donation={donation} isResolving={isResolvingDonation} />
 
             <div className={styles.left}>
                 <DonationSummaryGrid
-                    campaign={statistics.campaign}
-                    donor={statistics.donor}
-                    donation={statistics.donation}
-                    details={statistics.receipt?.donationDetails}
-                    donationType={donation?.type}
-                    subscriptionId={donation?.subscriptionId}
+                    donation={donation}
                 />
                 <div className={styles.card}>
                     <DonationNotes donationId={donationId} />

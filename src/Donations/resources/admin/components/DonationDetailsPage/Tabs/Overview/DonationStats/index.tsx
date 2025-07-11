@@ -10,16 +10,6 @@ import { useNormalizeDonation } from '@givewp/donations/hooks/useNormalizeDonati
  * @unreleased
  */
 interface DonationStatsProps {
-    donationStats: {
-        amount: string;
-        intendedAmount: string;
-        eventTicketsAmount?: string | null;
-        feeAmountRecovered: string | number;
-        status: string;
-        date: string;
-        paymentMethod: string;
-        mode: string;
-    };
     isResolving: boolean;
     donation: Donation;
 }

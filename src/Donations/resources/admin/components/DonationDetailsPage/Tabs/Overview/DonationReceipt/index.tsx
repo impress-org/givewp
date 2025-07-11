@@ -5,7 +5,7 @@ import DonationBreakdown from './DonationBreakdown';
 import BillingInformation from './BillingInformation';
 import ReceiptActions from './ReceiptActions';
 import styles from './styles.module.scss';
-import { Donation } from '@givewp/donations/admin/components/types';
+import type { Donation } from '@givewp/donations/admin/components/types';
 
 /**
  * @unreleased

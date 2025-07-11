@@ -61,6 +61,7 @@ class DonationViewModel
                 'customFields' => $this->getCustomFields(),
                 'eventTicketsAmount' => $this->donation->eventTicketsAmount(),
                 'eventTickets' => $this->getEventTickets(),
+                'gateway' => $this->getGatewayDetails(),
             ]
         );
 
@@ -202,5 +203,18 @@ class DonationViewModel
     private function getEventTickets(): array
     {
         return give(EventTicketRepository::class)->getEventTicketDetails($this->donation);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getGatewayDetails(): array
+    {
+        return array_merge(
+            $this->donation->gateway()->toArray(),
+            [
+                'transactionUrl' => $this->donation->gateway()->getTransactionUrl($this->donation),
+            ]
+        );
     }
 }
