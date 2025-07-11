@@ -8,21 +8,20 @@ export function useDonationDelete() {
     const [error, setError] = useState<Error | null>(null);
     const [isResolving, setIsResolving] = useState(false);
     const [hasResolved, setHasResolved] = useState(false);
-  
+
     async function deleteDonation(donationId: number) {
       if (!donationId) return;
-  
+
       setIsResolving(true);
       setHasResolved(false);
       setError(null);
-  
+
       try {
         await apiFetch({
-          // TODO: Update this to use the new API endpoint
-          path: `${donationId}`,
+          path: `/givewp/v3/donations/${donationId}`,
           method: 'DELETE',
         });
-  
+
         setHasResolved(true);
       } catch (err) {
         setError(err as Error);
@@ -31,7 +30,7 @@ export function useDonationDelete() {
         setIsResolving(false);
       }
     }
-  
+
     return {
       deleteDonation,
       error,
@@ -39,4 +38,3 @@ export function useDonationDelete() {
       hasResolved,
     };
   }
-  
