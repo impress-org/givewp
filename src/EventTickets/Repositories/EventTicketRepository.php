@@ -10,7 +10,6 @@ use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\ModelQueryBuilder;
-use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Helpers\Hooks;
@@ -41,6 +40,10 @@ class EventTicketRepository
      */
     public function getById(int $id): ?EventTicket
     {
+        if (!$this->isFeatureActive()) {
+            return null;
+        }
+
         return $this->prepareQuery()
             ->where('id', $id)
             ->get();
@@ -63,6 +66,10 @@ class EventTicketRepository
      */
     public function insert(EventTicket $eventTicket)
     {
+        if (!$this->isFeatureActive()) {
+            throw new Exception('Event tickets feature is not active');
+        }
+
         $this->validate($eventTicket);
 
         Hooks::doAction('givewp_events_event_ticket_creating', $eventTicket);
@@ -108,6 +115,10 @@ class EventTicketRepository
      */
     public function update(EventTicket $eventTicket)
     {
+        if (!$this->isFeatureActive()) {
+            throw new Exception('Event tickets feature is not active');
+        }
+
         $this->validate($eventTicket);
 
         Hooks::doAction('givewp_events_event_ticket_updating', $eventTicket);
@@ -149,6 +160,10 @@ class EventTicketRepository
      */
     public function delete(EventTicket $eventTicket): bool
     {
+        if (!$this->isFeatureActive()) {
+            throw new Exception('Event tickets feature is not active');
+        }
+
         DB::query('START TRANSACTION');
 
         Hooks::doAction('givewp_events_event_ticket_deleting', $eventTicket);
@@ -173,6 +188,17 @@ class EventTicketRepository
     }
 
     /**
+     * Check if the event tickets feature is active and table exists
+     *
+     * @unreleased
+     * @return bool
+     */
+    private function isFeatureActive(): bool
+    {
+        return FeatureFlag::eventTickets() && $this->tableExists('give_event_tickets');
+    }
+
+    /**
      * @since 3.6.0
      */
     private function validate(EventTicket $eventTicket): void
@@ -194,18 +220,13 @@ class EventTicketRepository
     {
         $builder = new ModelQueryBuilder(EventTicket::class);
 
-        if (!FeatureFlag::eventTickets()) {
-            // Check if the table exists when feature flag is disabled
-            if (!$this->tableExists('give_event_tickets')) {
-                // Return a query builder that safely returns empty results using a table that always exists
-                // We use the posts table with an impossible condition to ensure 0 results and countability
-                global $wpdb;
-                return $builder->from($wpdb->posts)
-                    ->select('NULL as id', 'NULL as event_id', 'NULL as ticket_type_id', 'NULL as donation_id', 'NULL as amount', 'NULL as created_at', 'NULL as updated_at')
-                    ->where('1', '0'); // This ensures no results are returned but queries remain countable
-            }
-
-            return $builder->from('give_event_tickets');
+        if (!$this->isFeatureActive()) {
+            // Return a query builder that safely returns empty results
+            // Use a subquery that will never return results but handles all possible column references
+            return $builder->from(
+                DB::raw('(SELECT NULL as id, NULL as event_id, NULL as ticket_type_id, NULL as donation_id, NULL as amount, NULL as created_at, NULL as updated_at, NULL as currency WHERE 1 = 0)'),
+                'tickets'
+            );
         }
 
         return $builder->from('give_event_tickets', 'tickets')
@@ -230,8 +251,6 @@ class EventTicketRepository
      * Check if a database table exists
      *
      * @unreleased
-     * @param string $tableName
-     * @return bool
      */
     private function tableExists(string $tableName): bool
     {
