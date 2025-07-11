@@ -96,7 +96,6 @@ export default function DonationDetailsPage() {
             setShowConfirmationDialog(null);
             window.location.href = `${adminUrl}edit.php?post_type=give_forms&page=give-payment-history`;
         } catch (error) {
-            // Optional: show a toast or fallback UI
             setShowConfirmationDialog(null);
         }
     };

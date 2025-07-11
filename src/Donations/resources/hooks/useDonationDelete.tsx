@@ -4,7 +4,6 @@ import apiFetch from '@wordpress/api-fetch';
 /**
  * @unreleased
  */
-// Hook
 export function useDonationDelete() {
     const [error, setError] = useState<Error | null>(null);
     const [isResolving, setIsResolving] = useState(false);
@@ -19,7 +18,8 @@ export function useDonationDelete() {
   
       try {
         await apiFetch({
-          path: `give-api/v2/admin/donations/delete?ids=${donationId}`,
+          // TODO: Update this to use the new API endpoint
+          path: `${donationId}`,
           method: 'DELETE',
         });
   
