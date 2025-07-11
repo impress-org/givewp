@@ -19,6 +19,7 @@ import ConfirmationDialog from '@givewp/components/AdminDetailsPage/Confirmation
 import { getDonationOptionsWindowData, useDonationEntityRecord } from '@givewp/donations/utils';
 import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
+import { amountFormatter } from '@givewp/components/AdminDetailsPage/utils';
 import useDonationRefund from '@givewp/donations/hooks/useDonationRefund';
 import { useNormalizeDonation } from '@givewp/donations/hooks/useNormalizeDonation';
 
@@ -45,10 +46,10 @@ const StatusBadge = ({ status }: { status: string }) => {
  * @unreleased
  */
 export default function DonationDetailsPage() {
-    const { adminUrl } = getDonationOptionsWindowData();
+    const { adminUrl} = getDonationOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
     const { record: donation } = useDonationEntityRecord();
-    const {formatter, amount} = useNormalizeDonation(donation);
+    const {formatter} = useNormalizeDonation(donation);
     const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
@@ -94,7 +95,7 @@ export default function DonationDetailsPage() {
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donations`}
             breadcrumbTitle={sprintf('#%s', donation?.id)}
-            pageTitle={formatter.format(amount)}
+            pageTitle={formatter.format(donation?.amount?.value)}
             StatusBadge={() => <StatusBadge status={donation?.status} />}
             ContextMenuItems={ContextMenuItems}
         >
@@ -111,7 +112,7 @@ export default function DonationDetailsPage() {
                     createInterpolateElement(
                         sprintf(
                             __('Refund <strong>%s</strong> to <strong>%s</strong>', 'give'),
-                            formatter.format(amount),
+                            formatter.format(donation?.amount?.value),
                             donation?.firstName
                         ),
                         {

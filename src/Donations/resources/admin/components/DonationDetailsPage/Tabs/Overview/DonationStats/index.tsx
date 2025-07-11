@@ -32,7 +32,6 @@ export default function DonationStats({ donationStats, donation, isResolving }: 
     const {eventTicketAmount} = donationStats;
     const shouldShowEventTicketStat = Number(eventTicketAmount) > 0;
     const {formatter, intendedAmount, feeAmountRecovered} = useNormalizeDonation(donation);
-    console.log({feeAmountRecovered});
 
     return (
         <div className={styles.container}>

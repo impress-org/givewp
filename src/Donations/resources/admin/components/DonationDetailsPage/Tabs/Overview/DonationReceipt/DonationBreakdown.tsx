@@ -14,8 +14,13 @@ import { amountFormatter } from '@givewp/src/Admin/utils';
  */
 export default function DonationBreakdown({ donation }: { donation: Donation }) {
   const { isFeeRecoveryEnabled, currency: defaultCurrency } = getDonationOptionsWindowData();
-  const donorAmount = donation?.amount?.value ?? 0;
-  const donorAmountFormatter = amountFormatter(donation?.amount?.currency);
+  const baseCurrencyFormatter = amountFormatter(defaultCurrency, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    roundingMode: 'trunc',
+  });
+
+  const baseCurrencyAmount = (donation?.amount?.value ?? 0) / Number(donation?.exchangeRate ?? 1);
   const {formatter, amount, intendedAmount, feeAmountRecovered, eventTicketAmount} = useNormalizeDonation(donation);
 
   const showFeeRecoveredRow = isFeeRecoveryEnabled;
@@ -61,7 +66,7 @@ export default function DonationBreakdown({ donation }: { donation: Donation }) 
                   label={__('Currency breakdown', 'give')}
                   value={
                       <>
-                          {donorAmountFormatter.format(donorAmount)}
+                          {baseCurrencyFormatter.format(baseCurrencyAmount)}
                           <CurrencyBreakdownArrowIcon />
                           {formatter.format(amount)}
                       </>
