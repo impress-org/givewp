@@ -23,6 +23,8 @@ export default function ReceiptActions() {
     setShowConfirmationDialog(true);
   }
 
+  console.log(loading);
+
     return (
         <>
           <button className={styles.action} type="button" aria-label={__('Resend donation receipt to email', 'give')} onClick={handleConfirmationModal} disabled={loading}>
@@ -35,9 +37,11 @@ export default function ReceiptActions() {
                 isOpen={showConfirmationDialog}
                 handleClose={() => setShowConfirmationDialog(null)}
                 handleConfirm={()=>{handleResendReceipt()}}
+                isConfirming={loading}
+                spinner={'arc'}
             >
                 {__('Are you sure you want to resend the donation receipt?', 'give')}
-            </ConfirmationDialog>
+          </ConfirmationDialog>
         </>
     );
 }
