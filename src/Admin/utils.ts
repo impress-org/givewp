@@ -7,7 +7,7 @@ export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], 
     return new Intl.NumberFormat(navigator.language, {
         style: 'currency',
         currency: currency,
-        ...options
+        ...options,
     });
 }
 
@@ -16,7 +16,7 @@ export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], 
  */
 export function formatTimestamp(timestamp: string, useComma: boolean = false): string {
     const date = new Date(timestamp);
-    
+
     const day = date.getDate();
     const ordinal = (day: number): string => {
         if (day > 3 && day < 21) return 'th';
@@ -39,7 +39,7 @@ export function formatTimestamp(timestamp: string, useComma: boolean = false): s
 
 /**
  * Returns a relative time string for a given date (e.g. "Today" or "2 days ago")
- * 
+ *
  * @since unreleased
  */
 export function getRelativeTimeString(date: Date): string {
