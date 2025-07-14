@@ -26,6 +26,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use JsonSerializable;
 
 /**
+ * @unreleased Added JSONSerializable and Arrayable interfaces
  * @since 2.30.0 added enqueueScript() and formSettings() methods.
  * @since 2.18.0
  */
