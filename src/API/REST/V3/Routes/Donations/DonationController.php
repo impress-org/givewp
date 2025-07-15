@@ -128,6 +128,11 @@ class DonationController extends WP_REST_Controller
                         ],
                         'required' => true,
                     ],
+                    'force' => [
+                        'type' => 'boolean',
+                        'default' => false,
+                        'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
+                    ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
             ],
@@ -443,6 +448,7 @@ class DonationController extends WP_REST_Controller
     public function delete_items($request): WP_REST_Response
     {
         $ids = $request->get_param('ids');
+        $force = $request->get_param('force');
         $deleted = [];
         $errors = [];
 
@@ -459,11 +465,21 @@ class DonationController extends WP_REST_Controller
                 ->anonymousMode(new DonationAnonymousMode('include'))
                 ->exports();
 
-            if ($donation->delete()) {
-                $deleted[] = ['id' => $id, 'previous' => $item];
-            } else {
-                $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
-            }
+                if ($force) {
+                    if ($donation->delete()) {
+                        $deleted[] = ['id' => $id, 'previous' => $item];
+                    } else {
+                        $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
+                    }
+                } else {
+                    $trashed = wp_trash_post($donation->id);
+        
+                    if ($trashed && !is_wp_error($trashed)) {
+                        $deleted[] = ['id' => $id, 'previous' => $item];
+                    } else {
+                        $errors[] = ['id' => $id, 'message' => __('Failed to trash donation', 'give')];
+                    }
+                }
         }
 
         return new WP_REST_Response([
