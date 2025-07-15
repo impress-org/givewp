@@ -9,7 +9,7 @@ export function useDonationDelete() {
     const [isResolving, setIsResolving] = useState(false);
     const [hasResolved, setHasResolved] = useState(false);
 
-    async function deleteDonation(donationId: number) {
+    async function deleteDonation(donationId: number, force: boolean = false) {
       if (!donationId) return;
 
       setIsResolving(true);
@@ -18,7 +18,7 @@ export function useDonationDelete() {
 
       try {
         await apiFetch({
-          path: `/givewp/v3/donations/${donationId}`,
+          path: `/givewp/v3/donations/${donationId}?force=${force}`,
           method: 'DELETE',
         });
 
