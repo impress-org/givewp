@@ -1033,6 +1033,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
+ * @unreleased Escape donor note
  * @since  1.0
  *
  * @param  Give_Donor $donor The donor object being displayed.
@@ -1086,7 +1087,7 @@ function give_donor_notes_view( $donor ) {
 				<?php foreach ( $donor_notes as $key => $note ) : ?>
 					<div class="donor-note-wrapper dashboard-comment-wrap comment-item">
 					<span class="note-content-wrap">
-						<?php echo stripslashes( $note ); ?>
+						<?php echo stripslashes( esc_html( $note ) ); ?>
 					</span>
 					</div>
 				<?php endforeach; ?>
