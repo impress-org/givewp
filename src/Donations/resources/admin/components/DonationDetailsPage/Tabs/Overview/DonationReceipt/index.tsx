@@ -23,7 +23,6 @@ export default function DonationReceipt({ donation }: { donation: Donation }) {
       zip: donation?.billingAddress?.zip,
     },
   };
-
   return (
     <OverviewPanel>
       <aside

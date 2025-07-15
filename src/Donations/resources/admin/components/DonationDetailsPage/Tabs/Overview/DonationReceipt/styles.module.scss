@@ -200,29 +200,17 @@
     gap: var(--givewp-spacing-4);
     margin-top: var(--givewp-spacing-4);
 
-    .actionButton {
+    .action {
+        display: flex;
+        align-items: center;            
+        justify-content: center;
         flex: 1 1 0;
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
         border-radius: 4px;
-        background: var(--givewp-shades-white);
-        color: var(--givewp-neutral-700);
         font-size: 0.875rem;
         line-height: 1.25rem;
         font-weight: 500;
         cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .actionButton:first-child {
-        border: 1px solid var(--givewp-neutral-200);
-
-        &:hover {
-            background: var(--givewp-neutral-50);
-            border-color: var(--givewp-neutral-300);
-        }
-    }
-
-    .actionButton:last-child {
         background-color: #2271b1;
         color: var(--givewp-shades-white);
         border: none;
@@ -230,7 +218,17 @@
         box-shadow: none;
 
         &:hover {
-            background-color: #135e96;;
-        }
-    }
+             background-color: #135e96;;
+         }
+     }
 }
+
+:global(div[aria-label*="Resend Receipt"] .givewp-modal-content button:last-child) {
+    background-color: #2271b1;
+
+    &:hover {
+        background-color:#135e96;
+    }  
+}
+  
+   
