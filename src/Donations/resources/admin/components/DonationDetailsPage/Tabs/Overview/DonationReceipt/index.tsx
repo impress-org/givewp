@@ -11,6 +11,18 @@ import type { Donation } from '@givewp/donations/admin/components/types';
  * @unreleased
  */
 export default function DonationReceipt({ donation }: { donation: Donation }) {
+  const billingInfo = {
+    name: donation?.firstName + ' ' + donation?.lastName,
+    email: donation?.email,
+    address: {
+      country: donation?.billingAddress?.country,
+      address1: donation?.billingAddress?.address1,
+      address2: donation?.billingAddress?.address2,
+      city: donation?.billingAddress?.city,
+      state: donation?.billingAddress?.state,
+      zip: donation?.billingAddress?.zip,
+    },
+  };
   return (
     <OverviewPanel>
       <aside
