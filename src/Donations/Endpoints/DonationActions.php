@@ -123,6 +123,13 @@ class DonationActions extends Endpoint
                 break;
 
             case 'setStatus':
+                if ( ! current_user_can('view_give_payments')) {
+                    return new WP_Error(
+                        'rest_forbidden',
+                        esc_html__('You don\'t have permission to change donation statuses', 'give'),
+                        ['status' => $this->authorizationStatusCode()]
+                    );
+                }
                 foreach ($ids as $id) {
                     $updated = give_update_payment_status($id, $request->get_param('status'));
                     $updated ? $successes[] = $id : $errors[] = $id;
