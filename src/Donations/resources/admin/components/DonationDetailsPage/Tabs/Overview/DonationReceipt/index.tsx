@@ -1,33 +1,16 @@
-import React from 'react';
+
 import { __ } from '@wordpress/i18n';
 import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import DonationBreakdown from './DonationBreakdown';
 import BillingInformation from './BillingInformation';
 import ReceiptActions from './ReceiptActions';
 import styles from './styles.module.scss';
-import { DonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
-
-export type DonationReceiptProps = {
- stats: DonationStatistics['donation'];
-}
+import type { Donation } from '@givewp/donations/admin/components/types';
 
 /**
  * @unreleased
  */
-export default function DonationReceipt() {
-  const billingInfo = {
-    name: 'John Doe',
-    email: 'johndoe25@example.com',
-    address: {
-      country: 'US',
-      address1: '6082 Main St',
-      address2: '',
-      city: 'Houston',
-      state: 'TX',
-      zip: '48254',
-    },
-  };
-
+export default function DonationReceipt({ donation }: { donation: Donation }) {
   return (
     <OverviewPanel>
       <aside
@@ -43,7 +26,7 @@ export default function DonationReceipt() {
 
           <div className={styles.sections}>
             <section className={styles.rows} aria-label={__('Donation breakdown', 'give')}>
-              <DonationBreakdown />
+              <DonationBreakdown donation={donation} />
             </section>
 
             <section className={styles.address} aria-labelledby="billing-information">
