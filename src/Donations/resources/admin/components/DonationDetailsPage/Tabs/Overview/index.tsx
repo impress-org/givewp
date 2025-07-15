@@ -2,9 +2,9 @@ import styles from './styles.module.scss';
 import DonationStats from './DonationStats';
 import DonationSummaryGrid from './DonationSummaryGrid';
 import DonationReceipt from './DonationReceipt';
-import { useDonationStatistics } from '@givewp/donations/hooks/useDonationStatistics';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
 import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
+import Spinner from '@givewp/src/Admin/components/Spinner';
 
 /**
  * @unreleased
@@ -12,37 +12,28 @@ import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
 export default function DonationDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donationId = parseInt(urlParams.get('id') ?? '0');
-    const { statistics, hasResolved, isResolving } = useDonationStatistics(donationId);
-    const { record: donation, hasResolved: hasResolvedDonation } = useDonationEntityRecord();
+    const {record: donation, hasResolved: hasResolvedDonation, isResolving: isResolvingDonation } = useDonationEntityRecord(donationId);
 
-    if (!hasResolved || !hasResolvedDonation) {
-        return null;
+    if (!hasResolvedDonation || isResolvingDonation || !donation) {
+        // TODO: Add loading state
+        return <Spinner />;
     }
 
     return (
         <div className={styles.overview}>
-            <DonationStats
-                donation={statistics.donation}
-                currency={donation?.amount?.currency}
-                isResolving={isResolving}
-            />
+            <DonationStats donation={donation} isResolving={isResolvingDonation} />
 
             <div className={styles.left}>
                 <DonationSummaryGrid
-                    campaign={statistics.campaign}
-                    donor={statistics.donor}
-                    donation={statistics.donation}
-                    details={statistics.receipt?.donationDetails}
-                    donationType={donation?.type}
-                    subscriptionId={donation?.subscriptionId}
+                    donation={donation}
                 />
                 <div className={styles.card}>
                     <DonationNotes donationId={donationId} />
                 </div>
-             </div>
+            </div>
 
             <div className={styles.right}>
-                <DonationReceipt />
+                <DonationReceipt donation={donation} />
             </div>
         </div>
     );
