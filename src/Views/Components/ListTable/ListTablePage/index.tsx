@@ -367,8 +367,30 @@ export default function ListTablePage({
                         id={styles.confirm}
                         onClick={async (event) => {
                             dialog.current?.hide();
-                            await modalContent.action(selectedIds);
-                            await mutate();
+                            try {
+                                await modalContent.action(selectedIds);
+                                await mutate();
+                            } catch (error) {
+                                console.error('Bulk action error:', error);
+                                
+                                // Create a user-friendly error message
+                                let errorMessage = __('An error occurred while performing this action.', 'give');
+                                
+                                if (error.message && error.message.includes('permission')) {
+                                    errorMessage = __('You don\'t have permission to perform this action.', 'give');
+                                } else if (error.message && error.message.includes('403')) {
+                                    errorMessage = __('Access denied. You don\'t have permission to perform this action.', 'give');
+                                } else if (error.message) {
+                                    // Try to extract a meaningful message from the error
+                                    const match = error.message.match(/You don't have permission[^"]*|You don&#039;t have permission[^"]*/i);
+                                    if (match) {
+                                        errorMessage = match[0].replace(/&#039;/g, "'");
+                                    }
+                                }
+                                
+                                // Show error as a notice/alert
+                                alert(errorMessage);
+                            }
                         }}
                     >
                         {modalContent?.confirmButtonText ?? __('Confirm', 'give')}
