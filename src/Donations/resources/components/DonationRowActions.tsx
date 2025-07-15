@@ -3,7 +3,6 @@ import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePag
 import {__, sprintf} from '@wordpress/i18n';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import {useSWRConfig} from 'swr';
-import ListTableApi from '@givewp/components/ListTable/api';
 import { useDonationDelete } from '@givewp/donations/hooks/useDonationDelete';
 
 
@@ -12,7 +11,10 @@ export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters
     const {deleteDonation} = useDonationDelete();
 
 
-    const deleteItem = async (selected) => await deleteDonation(item.id);
+    const deleteItem = async (selected) => {
+        await deleteDonation(item.id);
+        window.location.reload();
+    };
 
     const confirmDelete = (selected) => <p>{sprintf(__('Are you sure you want to move donation #%d to the trash? You can restore it later if needed.', 'give'), item.id)}</p>;
 
