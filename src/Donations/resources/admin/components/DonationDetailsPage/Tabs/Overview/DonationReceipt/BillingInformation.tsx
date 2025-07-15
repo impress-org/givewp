@@ -27,14 +27,11 @@ export default function BillingInformation({ name, email, address }: BillingInfo
     <address>
       <p>
         {name} ({email})
-        <br />
-        {address1 && address1}
-        <br />
-        {address2 && address2 !== '' && address2 && <br />}
-        {city && city}, {state && state} {zip && zip}
-        <br/>
-        {country && country}
+        {address1 && address1.length > 0 && <><br />{address1}</>}
+        {address2 && address2.length > 0 && <><br />{address2}</>}
+        {city && city.length > 0 && <><br />{city},</>} {state && state} {zip && zip}
+        {country && <><br />{country}</>}
       </p>
     </address>
   );
-} 
+}
