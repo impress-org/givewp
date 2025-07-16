@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-
-import styles from './Spinner.module.scss';
+import styles from './style.module.scss';
 
 /**
  * @since 4.4.0
