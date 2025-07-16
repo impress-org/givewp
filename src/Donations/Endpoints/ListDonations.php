@@ -127,7 +127,7 @@ class ListDonations extends Endpoint
                             'columns',
                         ],
                     ],
-                    'postStatus' => [
+                    'status' => [
                         'type' => 'string',
                         'required' => false,
                         'default' => 'active',
@@ -135,7 +135,7 @@ class ListDonations extends Endpoint
                             'active',
                             'trash',
                         ],
-                        'description' => 'Filter donations by WordPress post status: active (all except trash), or trash.'
+                        'description' => 'Filter donations by status: active (all except trash), or trash.'
                     ],
                 ],
             ]
@@ -251,7 +251,7 @@ class ListDonations extends Endpoint
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
         $campaignId = $this->request->get_param('campaignId');
-        $postStatus = $this->request->get_param('postStatus');
+        $status = $this->request->get_param('status');
 
         $dependencies = [
             DonationMetaKeys::MODE(),
@@ -261,9 +261,9 @@ class ListDonations extends Endpoint
 
         $query->where('post_type', 'give_payment');
 
-        if ($postStatus === 'trash') {
+        if ($status === 'trash') {
             $query->where('post_status', 'trash');
-        } elseif ($postStatus === 'active') {
+        } elseif ($status === 'active') {
             $query->where('post_status', 'trash', '<>');
         }
 
