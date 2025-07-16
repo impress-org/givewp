@@ -4,6 +4,7 @@ import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import {ErrorIcon, WarningIcon} from './Icons';
 import styles from './AdminDetailsPage.module.scss'
 import { Spinner } from '@wordpress/components';
+import ArcSpinner from '@givewp/src/Admin/components/Spinner/ArcSpinner';
 
 export type ConfirmationDialogProps = {
     isOpen: boolean;
@@ -16,6 +17,7 @@ export type ConfirmationDialogProps = {
     actionLabel: string;
     children: React.ReactNode;
     isConfirming?: boolean;
+    spinner?: 'regular' | 'arc' | 'none';
 }
 
 /**
@@ -32,6 +34,7 @@ export default function ConfirmationDialog({
     actionLabel,
     children,
     isConfirming = false,
+    spinner ='none',
 }: ConfirmationDialogProps) {
     return (
         <ModalDialog
@@ -59,7 +62,8 @@ export default function ConfirmationDialog({
                         onClick={handleConfirm}
                         disabled={isConfirming}
                     >
-                        {actionLabel} {isConfirming && <Spinner />}
+                        {actionLabel}
+                        {isConfirming ? (spinner === 'arc' ? <ArcSpinner /> : <Spinner />) : null}
                     </button>
                 </div>
             </>
