@@ -39,6 +39,8 @@ class DonationStatus extends Enum
     const ABANDONED = 'abandoned';
     const PREAPPROVAL = 'preapproval';
     const REVOKED = 'revoked';
+    const TRASH = 'trash';
+
 
     /**
      * @deprecated 2.23.0 Use DonationStatus::COMPLETE
@@ -63,6 +65,7 @@ class DonationStatus extends Enum
             self::PREAPPROVAL => __('Preapproval', 'give'),
             self::REVOKED => __('Revoked', 'give'),
             self::RENEWAL => __('Renewal', 'give'),
+            self::TRASH => __('Trash', 'give'),
         ];
     }
 
