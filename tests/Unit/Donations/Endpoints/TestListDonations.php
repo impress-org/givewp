@@ -35,12 +35,13 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('postStatus', 'active'); // Use new param
 
         $listDonations = give(ListDonations::class);
 
         $response = $listDonations->handleRequest($mockRequest);
 
-        $this->assertSameSize($donations, $response->data['items']);
+        $this->assertSame(count($donations), count($response->data['items']));
     }
 
     /**
@@ -64,6 +65,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
         $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('postStatus', 'active'); // Use new param
 
         $expectedItems = $this->getMockColumns($donations,$sortDirection);
 
@@ -148,6 +150,28 @@ class TestListDonations extends TestCase
         }
 
         return $expectedItems;
+    }
+
+    // Add a test for filtering by postStatus 'trash'
+    public function testShouldReturnEmptyListForTrashedDonations()
+    {
+        $campaign = Campaign::factory()->create();
+        $donations = Donation::factory()->count(3)->create([
+            'campaignId' => $campaign->id
+        ]);
+        // Simulate trashing all donations
+        foreach ($donations as $donation) {
+            wp_trash_post($donation->id);
+        }
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('postStatus', 'active');
+        $listDonations = give(ListDonations::class);
+        $response = $listDonations->handleRequest($mockRequest);
+        $this->assertSame(0, count($response->data['items']));
+        // Now fetch trashed
+        $mockRequest->set_param('postStatus', 'trash');
+        $response = $listDonations->handleRequest($mockRequest);
+        $this->assertSame(count($donations), count($response->data['items']));
     }
 }
 
