@@ -727,14 +727,17 @@ class DonationController extends WP_REST_Controller
                 'firstName' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor first name', 'give'),
+                    'format' => 'text-field',
                 ],
                 'lastName' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor last name', 'give'),
+                    'format' => 'text-field',
                 ],
                 'honorific' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor honorific/prefix', 'give'),
+                    'enum' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
                 ],
                 'email' => [
                     'type' => 'string',
@@ -744,10 +747,12 @@ class DonationController extends WP_REST_Controller
                 'phone' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor phone', 'give'),
+                    'format' => 'text-field',
                 ],
                 'company' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor company', 'give'),
+                    'format' => 'text-field',
                 ],
                 'amount' => [
                     'type' => ['object', 'null'],
@@ -756,10 +761,11 @@ class DonationController extends WP_REST_Controller
                             'type' => 'number',
                         ],
                         'amountInMinorUnits' => [
-                            'type' => 'number',
+                            'type' => 'integer',
                         ],
                         'currency' => [
                             'type' => 'string',
+                            'format' => 'text-field',
                         ],
                     ],
                     'description' => esc_html__('Donation amount', 'give'),
@@ -771,10 +777,11 @@ class DonationController extends WP_REST_Controller
                             'type' => 'number',
                         ],
                         'amountInMinorUnits' => [
-                            'type' => 'number',
+                            'type' => 'integer',
                         ],
                         'currency' => [
                             'type' => 'string',
+                            'format' => 'text-field',
                         ],
                     ],
                     'description' => esc_html__('Fee amount recovered', 'give'),
@@ -787,10 +794,11 @@ class DonationController extends WP_REST_Controller
                             'type' => 'number',
                         ],
                         'amountInMinorUnits' => [
-                            'type' => 'number',
+                            'type' => 'integer',
                         ],
                         'currency' => [
                             'type' => 'string',
+                            'format' => 'text-field',
                         ],
                     ],
                     'description' => esc_html__('Event tickets amount', 'give'),
@@ -803,6 +811,7 @@ class DonationController extends WP_REST_Controller
                 'gatewayId' => [
                     'type' => 'string',
                     'description' => esc_html__('Payment gateway ID', 'give'),
+                    'format' => 'text-field',
                 ],
                 'mode' => [
                     'type' => 'string',
@@ -817,29 +826,33 @@ class DonationController extends WP_REST_Controller
                     'type' => ['object', 'null'],
                     'description' => esc_html__('Billing address', 'give'),
                     'properties' => [
-                        'address1' => ['type' => 'string'],
-                        'address2' => ['type' => 'string'],
-                        'city' => ['type' => 'string'],
-                        'state' => ['type' => 'string'],
-                        'country' => ['type' => 'string'],
-                        'zip' => ['type' => 'string'],
+                        'address1' => ['type' => 'string', 'format' => 'text-field'],
+                        'address2' => ['type' => 'string', 'format' => 'text-field'],
+                        'city' => ['type' => 'string', 'format' => 'text-field'],
+                        'state' => ['type' => 'string', 'format' => 'text-field'],
+                        'country' => ['type' => 'string', 'format' => 'text-field'],
+                        'zip' => ['type' => 'string', 'format' => 'text-field'],
                     ],
                 ],
                 'donorIp' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor IP address (sensitive data)', 'give'),
+                    'format' => 'text-field',
                 ],
                 'purchaseKey' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Purchase key (sensitive data)', 'give'),
+                    'format' => 'text-field',
                 ],
                 'createdAt' => [
                     'type' => 'string',
                     'description' => esc_html__('Donation creation date', 'give'),
+                    'format' => 'date-time',
                 ],
                 'updatedAt' => [
                     'type' => 'string',
                     'description' => esc_html__('Donation last update date', 'give'),
+                    'format' => 'date-time',
                 ],
                 'customFields' => [
                     'type' => 'array',
@@ -851,10 +864,12 @@ class DonationController extends WP_REST_Controller
                             'label' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Field label', 'give'),
+                                'format' => 'text-field',
                             ],
                             'value' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Field value', 'give'),
+                                'format' => 'text-field',
                             ],
                         ],
                     ],
