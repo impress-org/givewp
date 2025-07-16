@@ -365,14 +365,14 @@ class DonationRepository
 
         try {
             $previousStatus = DB::table('posts')
-                ->where('id', $donation->id)
+                ->where('ID', $donation->id)
                 ->value('post_status');
 
             give()->payment_meta->update_meta($donation->id, '_wp_trash_meta_status', $previousStatus);
             give()->payment_meta->update_meta($donation->id, '_wp_trash_meta_time', time());
 
             DB::table('posts')
-                ->where('id', $donation->id)
+                ->where('ID', $donation->id)
                 ->update(['post_status' => 'trash']);
         } catch (Exception $exception) {
             DB::query('ROLLBACK');
