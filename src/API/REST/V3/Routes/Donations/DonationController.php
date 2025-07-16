@@ -22,6 +22,8 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
+use Give\Log\Log;
+
 /**
  * @unreleased
  */
@@ -409,7 +411,7 @@ class DonationController extends WP_REST_Controller
     public function delete_item($request): WP_REST_Response
     {
         $donation = Donation::find($request->get_param('id'));
-        $force = $request->get_param('force');
+        $force = filter_var($request->get_param('force'), FILTER_VALIDATE_BOOLEAN);
 
         if (!$donation) {
             return new WP_REST_Response(['message' => __('Donation not found', 'give')], 404);
@@ -423,6 +425,7 @@ class DonationController extends WP_REST_Controller
         if ($force) {
             // Permanently delete the donation
             $deleted = $donation->delete();
+            Log::error('Deleted donation', ['donation' => $donation]);
 
             if (!$deleted) {
                 return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
@@ -431,6 +434,9 @@ class DonationController extends WP_REST_Controller
         } else {
             // Move the donation to trash (soft delete)
             $trashed = $donation->trash();
+
+            Log::error('Trashed donation', ['donation' => $donation]);
+
 
             if (!$trashed) {
                 return new WP_REST_Response(['message' => __('Failed to trash donation', 'give')], 500);
@@ -448,7 +454,7 @@ class DonationController extends WP_REST_Controller
     public function delete_items($request): WP_REST_Response
     {
         $ids = $request->get_param('ids');
-        $force = $request->get_param('force');
+        $force = filter_var($request->get_param('force'), FILTER_VALIDATE_BOOLEAN);
         $deleted = [];
         $errors = [];
 
