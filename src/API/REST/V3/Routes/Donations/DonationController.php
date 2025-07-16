@@ -430,7 +430,7 @@ class DonationController extends WP_REST_Controller
 
         } else {
             // Move the donation to trash (soft delete)
-            $trashed = wp_trash_post($donation->id);
+            $trashed = $donation->trash();
 
             if (!$trashed) {
                 return new WP_REST_Response(['message' => __('Failed to trash donation', 'give')], 500);
@@ -472,7 +472,7 @@ class DonationController extends WP_REST_Controller
                         $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
                     }
                 } else {
-                    $trashed = wp_trash_post($donation->id);
+                    $trashed = $donation->trash();
         
                     if ($trashed) {
                         $deleted[] = ['id' => $id, 'previous' => $item];
