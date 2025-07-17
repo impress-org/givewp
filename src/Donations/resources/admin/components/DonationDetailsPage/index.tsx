@@ -20,8 +20,9 @@ import { getDonationOptionsWindowData, useDonationEntityRecord } from '@givewp/d
 import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 import useDonationRefund from '@givewp/donations/hooks/useDonationRefund';
-import { useDonationDelete } from '@givewp/donations/hooks/useDonationDelete';
 import { useDonationAmounts } from '@givewp/donations/hooks';
+import { useDispatch } from '@wordpress/data';
+import { store as coreDataStore } from '@wordpress/core-data';
 
 const { donationStatuses } = getDonationOptionsWindowData();
 
@@ -51,8 +52,8 @@ export default function DonationDetailsPage() {
     const { record: donation } = useDonationEntityRecord();
     const {formatter} = useDonationAmounts(donation);
     const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
-    const {deleteDonation} = useDonationDelete();
-
+    const { deleteEntityRecord } = useDispatch( coreDataStore );
+    
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
@@ -92,7 +93,7 @@ export default function DonationDetailsPage() {
      */
     const handleDelete = async () => {
         try {
-            await deleteDonation(donation?.id);
+            await deleteEntityRecord('givewp', 'donation', donation?.id, {force: false})
             setShowConfirmationDialog(null);
             window.location.href = donationsAdminUrl;
         } catch (error) {

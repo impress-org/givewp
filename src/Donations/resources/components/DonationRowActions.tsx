@@ -2,17 +2,18 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {__, sprintf} from '@wordpress/i18n';
 import RowAction from '@givewp/components/ListTable/RowAction';
-import {useSWRConfig} from 'swr';
-import { useDonationDelete } from '@givewp/donations/hooks/useDonationDelete';
+import { store as coreDataStore } from '@wordpress/core-data';
+import { useDispatch } from '@wordpress/data';
 
-
+/**
+ * @unreleased Soft delete donations with Donation v3 API.
+ */
 export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
     const showConfirmModal = useContext(ShowConfirmModalContext);
-    const {deleteDonation} = useDonationDelete();
-
+	const { deleteEntityRecord } = useDispatch( coreDataStore );
 
     const deleteItem = async (selected) => {
-        await deleteDonation(item.id);
+        await deleteEntityRecord('givewp', 'donation', item.id, {force: false});
         window.location.reload();
     };
 
