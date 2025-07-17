@@ -94,7 +94,6 @@ export default function DonationDetailsPage() {
     const handleDelete = async () => {
         try {
             await deleteEntityRecord('givewp', 'donation', donation?.id, {force: false})
-            setShowConfirmationDialog(null);
             window.location.href = donationsAdminUrl;
         } catch (error) {
             setShowConfirmationDialog(null);
