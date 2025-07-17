@@ -22,8 +22,6 @@ use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
-use Give\Log\Log;
-
 /**
  * @unreleased
  */
@@ -430,7 +428,6 @@ class DonationController extends WP_REST_Controller
         if ($force) {
             // Permanently delete the donation
             $deleted = $donation->delete();
-            Log::error('Deleted donation', ['donation' => $donation]);
 
             if (!$deleted) {
                 return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
@@ -439,9 +436,6 @@ class DonationController extends WP_REST_Controller
         } else {
             // Move the donation to trash (soft delete)
             $trashed = $donation->trash();
-
-            Log::error('Trashed donation', ['donation' => $donation]);
-
 
             if (!$trashed) {
                 return new WP_REST_Response(['message' => __('Failed to trash donation', 'give')], 500);
