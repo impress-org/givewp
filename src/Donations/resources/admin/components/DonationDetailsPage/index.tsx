@@ -111,7 +111,7 @@ export default function DonationDetailsPage() {
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donations`}
             breadcrumbTitle={sprintf('#%s', donation?.id)}
-            pageTitle={formatter.format(donation?.amount?.value)}
+            pageTitle={donation?.amount?.value != null ? formatter.format(donation?.amount?.value) : ''}
             StatusBadge={() => <StatusBadge status={donation?.status} />}
             ContextMenuItems={ContextMenuItems}
         >
