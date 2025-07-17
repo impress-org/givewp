@@ -414,7 +414,7 @@ class DonationController extends WP_REST_Controller
     public function delete_item($request): WP_REST_Response
     {
         $donation = Donation::find($request->get_param('id'));
-        $force = filter_var($request->get_param('force'), FILTER_VALIDATE_BOOLEAN);
+        $force = $request->get_param('force');
 
         if (!$donation) {
             return new WP_REST_Response(['message' => __('Donation not found', 'give')], 404);
@@ -453,7 +453,7 @@ class DonationController extends WP_REST_Controller
     public function delete_items($request): WP_REST_Response
     {
         $ids = $request->get_param('ids');
-        $force = filter_var($request->get_param('force'), FILTER_VALIDATE_BOOLEAN);
+        $force = $request->get_param('force');
         $deleted = [];
         $errors = [];
 
