@@ -35,14 +35,6 @@ export default function DonationDetails() {
 
     const campaignForms = campaignsWithForms[campaignId]?.forms;
 
-    const handlePhoneChange = (value: string) => {
-        setValue('phone', value, { shouldDirty: true });
-    };
-
-    const handlePhoneError = (errorMessage: string | null) => {
-        setError('phone', { message: errorMessage });
-    };
-
     return (
         <AdminSection
             title={__('Donation details', 'give')}
@@ -131,8 +123,8 @@ export default function DonationDetails() {
                     <PhoneInput
                         id="phone"
                         value={watch('phone')}
-                        onChange={handlePhoneChange}
-                        onError={handlePhoneError}
+                        onChange={(value) => setValue('phone', value, { shouldDirty: true })}
+                        onError={(errorMessage) => setError('phone', { message: errorMessage })}
                     />
                 </AdminSectionField>
 
