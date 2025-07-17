@@ -782,10 +782,12 @@ class DonationController extends WP_REST_Controller
                 'phone' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor phone', 'give'),
+                    'format' => 'text-field',
                 ],
                 'company' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor company', 'give'),
+                    'format' => 'text-field',
                 ],
                 'amount' => [
                     'type' => ['object', 'null'],
