@@ -136,7 +136,8 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $donationId = $donation->id;
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id;
-        $request = $this->createRequest('DELETE', $route, ['force' => 'true'], 'administrator');
+        $request = $this->createRequest('DELETE', $route, [], 'administrator');
+        $request->set_query_params(['force' => 'true']);
 
         $response = $this->dispatchRequest($request);
 
@@ -223,7 +224,8 @@ class DonationRouteUpdateTest extends RestApiTestCase
         }, $donations);
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE;
-        $request = $this->createRequest('DELETE', $route, ['force' => 'true'], 'administrator');
+        $request = $this->createRequest('DELETE', $route, [], 'administrator');
+        $request->set_query_params(['force' => 'true']);
         $request->set_body_params([
             'ids' => $donationIds,
         ]);
@@ -265,7 +267,8 @@ class DonationRouteUpdateTest extends RestApiTestCase
         ];
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE;
-        $request = $this->createRequest('DELETE', $route, ['force' => 'true'], 'administrator');
+        $request = $this->createRequest('DELETE', $route, [], 'administrator');
+        $request->set_query_params(['force' => 'true']);
         $request->set_body_params([
             'ids' => $donationIds,
         ]);
@@ -307,6 +310,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE;
         $request = $this->createRequest('DELETE', $route, [], 'subscriber');
+        $request->set_query_params(['force' => 'true']);
         $request->set_body_params([
             'ids' => $donationIds,
         ]);

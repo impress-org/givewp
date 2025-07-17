@@ -104,6 +104,11 @@ class DonationController extends WP_REST_Controller
                         'type' => 'integer',
                         'required' => true,
                     ],
+                    'force' => [
+                        'type' => 'boolean',
+                        'default' => false,
+                        'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
+                    ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
             ],
