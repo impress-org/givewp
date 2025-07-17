@@ -2,28 +2,25 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {__, sprintf} from '@wordpress/i18n';
 import RowAction from '@givewp/components/ListTable/RowAction';
-import {useSWRConfig} from 'swr';
-import ListTableApi from '@givewp/components/ListTable/api';
+import { store as coreDataStore } from '@wordpress/core-data';
+import { useDispatch } from '@wordpress/data';
 
-const API = new ListTableApi(window.GiveDonations);
-
+/**
+ * @unreleased Soft delete donations with Donation v3 API.
+ */
 export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
     const showConfirmModal = useContext(ShowConfirmModalContext);
-    const {mutate} = useSWRConfig();
+	const { deleteEntityRecord } = useDispatch( coreDataStore );
 
-    const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
-        const response = await API.fetchWithArgs(endpoint, {ids: [id]}, method);
-        setUpdateErrors(response);
-        await mutate(parameters);
-        return response;
+    const deleteItem = async (selected) => {
+        await deleteEntityRecord('givewp', 'donation', item.id, {force: false});
+        window.location.reload();
     };
 
-    const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
-
-    const confirmDelete = (selected) => <p>{sprintf(__('Are you sure you want to delete the following donation #%d?', 'give'), item.id)}</p>;
+    const confirmDelete = (selected) => <p>{sprintf(__('Are you sure you want to move donation #%d to the trash? You can restore it later if needed.', 'give'), item.id)}</p>;
 
     const confirmModal = (event) => {
-        showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
+        showConfirmModal(__('Move donation to trash', 'give'), confirmDelete, deleteItem, 'danger', __('Trash Donation', 'give'));
     };
 
     return (
