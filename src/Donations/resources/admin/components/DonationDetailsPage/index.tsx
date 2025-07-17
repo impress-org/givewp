@@ -71,7 +71,7 @@ export default function DonationDetailsPage() {
                     className={cx(className, styles.archive)}
                     onClick={() => setShowConfirmationDialog('delete')}
                 >
-                    <TrashIcon /> {__('Trash Donation', 'give')}
+                    <TrashIcon /> {__('Trash donation', 'give')}
                 </a>
             </>
         );
