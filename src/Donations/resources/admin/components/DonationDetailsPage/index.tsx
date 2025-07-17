@@ -46,7 +46,7 @@ const StatusBadge = ({ status }: { status: string }) => {
  * @unreleased
  */
 export default function DonationDetailsPage() {
-    const { adminUrl} = getDonationOptionsWindowData();
+    const { adminUrl, donationsAdminUrl} = getDonationOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
     const { record: donation } = useDonationEntityRecord();
     const {formatter} = useDonationAmounts(donation);
@@ -94,7 +94,7 @@ export default function DonationDetailsPage() {
         try {
             await deleteDonation(donation?.id);
             setShowConfirmationDialog(null);
-            window.location.href = `${adminUrl}edit.php?post_type=give_forms&page=give-payment-history`;
+            window.location.href = donationsAdminUrl;
         } catch (error) {
             setShowConfirmationDialog(null);
         }
