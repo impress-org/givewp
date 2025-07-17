@@ -21,6 +21,8 @@ import styles from './DonationDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 import useDonationRefund from '@givewp/donations/hooks/useDonationRefund';
 import { useDonationAmounts } from '@givewp/donations/hooks';
+import { useDispatch } from '@wordpress/data';
+import { store as coreDataStore } from '@wordpress/core-data';
 
 const { donationStatuses } = getDonationOptionsWindowData();
 
@@ -45,12 +47,13 @@ const StatusBadge = ({ status }: { status: string }) => {
  * @unreleased
  */
 export default function DonationDetailsPage() {
-    const { adminUrl} = getDonationOptionsWindowData();
+    const { adminUrl, donationsAdminUrl} = getDonationOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
     const { record: donation } = useDonationEntityRecord();
     const {formatter} = useDonationAmounts(donation);
     const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
-
+    const { deleteEntityRecord } = useDispatch( coreDataStore );
+    
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
@@ -85,6 +88,20 @@ export default function DonationDetailsPage() {
         }
     };
 
+    /**
+     * @unreleased
+     */
+    const handleDelete = async () => {
+        try {
+            await deleteEntityRecord('givewp', 'donation', donation?.id, {force: false})
+            setShowConfirmationDialog(null);
+            window.location.href = donationsAdminUrl;
+        } catch (error) {
+            setShowConfirmationDialog(null);
+        }
+    };
+    
+
     return (
         <AdminDetailsPage
             objectId={donation?.id}
@@ -94,7 +111,7 @@ export default function DonationDetailsPage() {
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donations`}
             breadcrumbTitle={sprintf('#%s', donation?.id)}
-            pageTitle={formatter.format(donation?.amount?.value)}
+            pageTitle={donation?.amount?.value != null ? formatter.format(donation?.amount?.value) : ''}
             StatusBadge={() => <StatusBadge status={donation?.status} />}
             ContextMenuItems={ContextMenuItems}
         >
@@ -121,13 +138,13 @@ export default function DonationDetailsPage() {
                 }
             </ConfirmationDialog>
             <ConfirmationDialog
-                title={__('Delete Donation', 'give')}
-                actionLabel={__('Delete Donation', 'give')}
+                title={__('Move donation to trash', 'give')}
+                actionLabel={__('Trash Donation', 'give')}
                 isOpen={showConfirmationDialog === 'delete'}
                 handleClose={() => setShowConfirmationDialog(null)}
-                handleConfirm={() => { }}
+                handleConfirm={handleDelete}
             >
-                {__('Are you sure you want to delete this donation?', 'give')}
+                {__('Are you sure you want to move this donation to the trash? You can restore it later if needed.', 'give')}
             </ConfirmationDialog>
         </AdminDetailsPage>
     );
