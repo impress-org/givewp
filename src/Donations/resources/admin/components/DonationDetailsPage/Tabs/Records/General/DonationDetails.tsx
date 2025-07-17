@@ -1,13 +1,24 @@
+/**
+ * External dependencies
+ */
+import cx from 'classnames';
 import { useEffect } from 'react';
+import { CurrencyCode } from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
+import { CurrencyControl } from '@givewp/form-builder-library';
+
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
+import { useFormContext } from 'react-hook-form';
+
+/**
+ * Internal dependencies
+*/
 import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import { formatDateTimeLocal } from '@givewp/components/AdminDetailsPage/utils';
-import { useFormContext } from 'react-hook-form';
-import { CurrencyControl } from '@givewp/form-builder-library';
-import { CurrencyCode } from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
 import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 import styles from '../styles.module.scss';
-import cx from 'classnames';
 
 const { donationStatuses, campaignsWithForms } = getDonationOptionsWindowData();
 
