@@ -76,10 +76,7 @@
         width: 0.75rem;
     }
 
-    &--pending {
-        --statusOptionColor: var(--givewp-orange-500);
-    }
-
+    &--pending,
     &--processing {
         --statusOptionColor: var(--givewp-blue-500);
     }

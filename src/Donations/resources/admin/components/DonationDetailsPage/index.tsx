@@ -29,7 +29,7 @@ const { donationStatuses } = getDonationOptionsWindowData();
 /**
  * @unreleased
  */
-const StatusBadge = ({ status }: { status: string }) => {
+const StatusBadge = ({ status, isTest }: { status: string, isTest: boolean }) => {
     const statusMap = donationStatuses;
 
     if (!statusMap[status]) {
@@ -37,9 +37,16 @@ const StatusBadge = ({ status }: { status: string }) => {
     }
 
     return (
-        <div className={`${styles.statusBadge} ${styles[`statusBadge--${status}`]}`}>
-            {statusMap[status]}
-        </div>
+        <>
+            <div className={`${styles.statusBadge} ${styles[`statusBadge--${status}`]}`}>
+                {statusMap[status]}
+            </div>
+            {isTest && (
+                <div className={`${styles.statusBadge} ${styles.testBadge}`}>
+                    {__('Test Donation', 'give')}
+                </div>
+            )}
+        </>
     );
 };
 
@@ -112,7 +119,7 @@ export default function DonationDetailsPage() {
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donations`}
             breadcrumbTitle={sprintf('#%s', donation?.id)}
             pageTitle={donation?.amount?.value != null ? formatter.format(donation?.amount?.value) : ''}
-            StatusBadge={() => <StatusBadge status={donation?.status} />}
+            StatusBadge={() => <StatusBadge status={donation?.status} isTest={donation?.mode === 'test'} />}
             ContextMenuItems={ContextMenuItems}
         >
             <ConfirmationDialog
