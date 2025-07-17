@@ -1,11 +1,12 @@
+import { useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
-import styles from '../styles.module.scss';
+import { formatDateTimeLocal } from '@givewp/components/AdminDetailsPage/utils';
 import { useFormContext } from 'react-hook-form';
 import { CurrencyControl } from '@givewp/form-builder-library';
 import { CurrencyCode } from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
 import { getDonationOptionsWindowData } from '@givewp/donations/utils';
-import { useEffect } from 'react';
+import styles from '../styles.module.scss';
 import cx from 'classnames';
 
 const { donationStatuses, campaignsWithForms } = getDonationOptionsWindowData();
@@ -19,6 +20,7 @@ export default function DonationDetails() {
     const campaignId = watch('campaignId');
     const formId = watch('formId');
     const status = watch('status');
+    const createdAt = watch('createdAt');
 
     useEffect(() => {
         if (!campaignId) {
@@ -76,8 +78,10 @@ export default function DonationDetails() {
                     <input
                         type="datetime-local"
                         id="date"
-                        step="1"
-                        {...register('createdAt')}
+                        value={formatDateTimeLocal(createdAt)}
+                        onChange={(e) => {
+                            setValue('createdAt', formatDateTimeLocal(e.target.value), {shouldDirty: true});
+                        }}
                     />
                 </AdminSectionField>
 
