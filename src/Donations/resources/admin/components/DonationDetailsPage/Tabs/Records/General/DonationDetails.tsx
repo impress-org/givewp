@@ -19,6 +19,8 @@ import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetails
 import { formatDateTimeLocal } from '@givewp/components/AdminDetailsPage/utils';
 import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 import styles from '../styles.module.scss';
+// TODO: Move to shared components
+import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 
 const { donationStatuses, campaignsWithForms } = getDonationOptionsWindowData();
 
@@ -26,7 +28,7 @@ const { donationStatuses, campaignsWithForms } = getDonationOptionsWindowData();
  * @unreleased
  */
 export default function DonationDetails() {
-    const { getValues, setValue, register, watch } = useFormContext();
+    const { getValues, setValue, register, watch, setError } = useFormContext();
     const amount = getValues('amount');
     const campaignId = watch('campaignId');
     const formId = watch('formId');
@@ -128,6 +130,21 @@ export default function DonationDetails() {
                 <AdminSectionField>
                     <label htmlFor="comment">{__('Donor comment', 'give')}</label>
                     <textarea id="comment" {...register('comment')} rows={3} placeholder={__('Add a comment', 'give')} />
+                </AdminSectionField>
+
+                <AdminSectionField>
+                    <label htmlFor="company">{__('Company', 'give')}</label>
+                    <input id="company" {...register('company')} placeholder={__('Enter company', 'give')} />
+                </AdminSectionField>
+
+                <AdminSectionField>
+                    <label htmlFor="phone">{__('Phone', 'give')}</label>
+                    <PhoneInput
+                        id="phone"
+                        value={watch('phone')}
+                        onChange={(value) => setValue('phone', value, { shouldDirty: true })}
+                        onError={(errorMessage) => setError('phone', { message: errorMessage })}
+                    />
                 </AdminSectionField>
 
                 <AdminSectionField>

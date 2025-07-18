@@ -137,6 +137,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id;
         $request = $this->createRequest('DELETE', $route, [], 'administrator');
+        $request->set_query_params(['force' => 'true']);
 
         $response = $this->dispatchRequest($request);
 
@@ -151,6 +152,27 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $deletedDonation = Donation::find($donationId);
         $this->assertNull($deletedDonation);
     }
+
+        /**
+     * @unreleased
+     */
+    public function testDeleteDonationShouldTrashDonationWhenForceIsFalse()
+    {
+    /** @var Donation $donation */
+    $donation = Donation::factory()->create();
+
+    $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id;
+    $request = $this->createRequest('DELETE', $route, ['force' => 'false'], 'administrator');
+
+    $response = $this->dispatchRequest($request);
+
+    $this->assertEquals(200, $response->get_status());
+
+    $trashedDonation = Donation::find($donation->id);
+    $this->assertNotNull($trashedDonation);
+    $this->assertEquals('trash', $trashedDonation->status->getValue());
+    }
+
 
     /**
      * @unreleased
@@ -203,6 +225,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE;
         $request = $this->createRequest('DELETE', $route, [], 'administrator');
+        $request->set_query_params(['force' => 'true']);
         $request->set_body_params([
             'ids' => $donationIds,
         ]);
@@ -245,6 +268,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE;
         $request = $this->createRequest('DELETE', $route, [], 'administrator');
+        $request->set_query_params(['force' => 'true']);
         $request->set_body_params([
             'ids' => $donationIds,
         ]);
@@ -262,8 +286,10 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $this->assertCount(1, $data['errors']);
 
         // Verify valid donations are deleted and invalid ID error is reported
-        $this->assertNull(Donation::find($donations[0]->id));
-        $this->assertNull(Donation::find($donations[1]->id));
+        $deletedDonation = Donation::find($donations[0]->id);
+        $this->assertNull($deletedDonation);
+        $deletedDonation = Donation::find($donations[1]->id);
+        $this->assertNull($deletedDonation);
         $this->assertEquals(999999, $data['errors'][0]['id']);
     }
 
@@ -284,6 +310,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE;
         $request = $this->createRequest('DELETE', $route, [], 'subscriber');
+        $request->set_query_params(['force' => 'true']);
         $request->set_body_params([
             'ids' => $donationIds,
         ]);

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 interface OverviewPanelProps {
     children: React.ReactNode;
@@ -10,12 +10,12 @@ interface OverviewPanelProps {
 }
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 export default function OverviewPanel({ children, className = '' }: OverviewPanelProps) {
     return (
-        <section className={`${styles.panel} ${className}`}>
+        <div className={`${styles.panel} ${className}`}>
             {children}
-        </section>
+        </div>
     );
-} 
+}

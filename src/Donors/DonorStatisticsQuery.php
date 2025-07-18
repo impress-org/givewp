@@ -46,6 +46,7 @@ class DonorStatisticsQuery extends QueryBuilder
 
         $this->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
         $this->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
+        $this->joinDonationMeta(DonationMetaKeys::EXCHANGE_RATE, 'exchangeRate');
     }
 
     /**
@@ -62,6 +63,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      *
      * @return int|float
@@ -71,18 +73,19 @@ class DonorStatisticsQuery extends QueryBuilder
         $query = clone $this;
 
         return $query->sum(
-            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)'
+            '(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) / IFNULL(exchangeRate.meta_value, 1)'
         );
     }
 
     /**
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
     public function getHighestDonationAmount()
     {
         $query = clone $this;
 
-        $query->select('IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0) as highestDonationAmount');
+        $query->select('(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) / IFNULL(exchangeRate.meta_value, 1) as highestDonationAmount');
         $query->orderBy('CAST(amount.meta_value AS DECIMAL)', 'DESC');
         $query->limit(1);
         $result = $query->get();
@@ -95,6 +98,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
     public function getAverageDonationAmount()
@@ -119,6 +123,7 @@ class DonorStatisticsQuery extends QueryBuilder
 
 
     /**
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
     public function getFirstDonation()
@@ -126,7 +131,7 @@ class DonorStatisticsQuery extends QueryBuilder
         $query = clone $this;
         $query->select(
             'donation.post_date',
-            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0) as amount'
+            '(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) / IFNULL(exchangeRate.meta_value, 1) as amount'
         );
         $query->orderBy('post_date', 'ASC');
         $query->limit(1);
@@ -143,6 +148,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.4.0
      */
     public function getLastDonation()
@@ -150,7 +156,7 @@ class DonorStatisticsQuery extends QueryBuilder
         $query = clone $this;
         $query->select(
             'donation.post_date',
-            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0) as amount'
+            '(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) / IFNULL(exchangeRate.meta_value, 1) as amount'
         );
         $query->orderBy('post_date', 'DESC');
         $query->limit(1);

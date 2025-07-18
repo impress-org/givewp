@@ -352,6 +352,43 @@ class DonationRepository
         return true;
     }
 
+     /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function trash(Donation $donation): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_donation_trashing', $donation);
+
+        try {
+            $previousStatus = DB::table('posts')
+                ->where('ID', $donation->id)
+                ->value('post_status');
+
+            give()->payment_meta->update_meta($donation->id, '_wp_trash_meta_status', $previousStatus);
+            give()->payment_meta->update_meta($donation->id, '_wp_trash_meta_time', time());
+
+            DB::table('posts')
+                ->where('ID', $donation->id)
+                ->update(['post_status' => 'trash']);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed trashing a donation', compact('donation'));
+
+            throw new $exception('Failed trashing a donation');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_donation_trashed', $donation);
+
+        return true;
+    }
+
     /**
      * @since 4.0.0 added campaignId
      * @since 3.9.0 Added meta for phone property

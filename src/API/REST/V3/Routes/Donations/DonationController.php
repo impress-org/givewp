@@ -102,6 +102,11 @@ class DonationController extends WP_REST_Controller
                         'type' => 'integer',
                         'required' => true,
                     ],
+                    'force' => [
+                        'type' => 'boolean',
+                        'default' => false,
+                        'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
+                    ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
             ],
@@ -127,6 +132,11 @@ class DonationController extends WP_REST_Controller
                             'type' => 'integer',
                         ],
                         'required' => true,
+                    ],
+                    'force' => [
+                        'type' => 'boolean',
+                        'default' => false,
+                        'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
@@ -406,6 +416,7 @@ class DonationController extends WP_REST_Controller
     public function delete_item($request): WP_REST_Response
     {
         $donation = Donation::find($request->get_param('id'));
+        $force = $request->get_param('force');
 
         if (!$donation) {
             return new WP_REST_Response(['message' => __('Donation not found', 'give')], 404);
@@ -416,10 +427,21 @@ class DonationController extends WP_REST_Controller
             ->anonymousMode(new DonationAnonymousMode('include'))
             ->exports();
 
-        $deleted = $donation->delete();
+        if ($force) {
+            // Permanently delete the donation
+            $deleted = $donation->delete();
 
-        if (!$deleted) {
-            return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
+            if (!$deleted) {
+                return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
+            }
+
+        } else {
+            // Move the donation to trash (soft delete)
+            $trashed = $donation->trash();
+
+            if (!$trashed) {
+                return new WP_REST_Response(['message' => __('Failed to trash donation', 'give')], 500);
+            }
         }
 
         return new WP_REST_Response(['deleted' => true, 'previous' => $item], 200);
@@ -433,6 +455,7 @@ class DonationController extends WP_REST_Controller
     public function delete_items($request): WP_REST_Response
     {
         $ids = $request->get_param('ids');
+        $force = $request->get_param('force');
         $deleted = [];
         $errors = [];
 
@@ -449,11 +472,21 @@ class DonationController extends WP_REST_Controller
                 ->anonymousMode(new DonationAnonymousMode('include'))
                 ->exports();
 
-            if ($donation->delete()) {
-                $deleted[] = ['id' => $id, 'previous' => $item];
-            } else {
-                $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
-            }
+                if ($force) {
+                    if ($donation->delete()) {
+                        $deleted[] = ['id' => $id, 'previous' => $item];
+                    } else {
+                        $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
+                    }
+                } else {
+                    $trashed = $donation->trash();
+        
+                    if ($trashed) {
+                        $deleted[] = ['id' => $id, 'previous' => $item];
+                    } else {
+                        $errors[] = ['id' => $id, 'message' => __('Failed to trash donation', 'give')];
+                    }
+                }
         }
 
         return new WP_REST_Response([
@@ -565,6 +598,11 @@ class DonationController extends WP_REST_Controller
                     'include',
                     'redact',
                 ],
+            ],
+            'force' => [
+                'type' => 'boolean',
+                'default' => false,
+                'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
             ],
         ];
 
@@ -746,10 +784,12 @@ class DonationController extends WP_REST_Controller
                 'phone' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor phone', 'give'),
+                    'format' => 'text-field',
                 ],
                 'company' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor company', 'give'),
+                    'format' => 'text-field',
                 ],
                 'amount' => [
                     'type' => ['object', 'null'],

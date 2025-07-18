@@ -18,7 +18,7 @@ use Give\PaymentGateways\Gateways\TestGateway\Views\LegacyFormFieldMarkup;
 /**
  * A gateway for testing the donation process. No actual payment is processed and only form validation is performed.
  *
- * @unreleased Implements the WebhookNotificationsListener interface
+ * @since 4.5.0 Implements the WebhookNotificationsListener interface
  * @since 3.0.0 change to Test Donations and manual id to replace legacy gateway
  * @since 2.18.0
  */
@@ -113,7 +113,7 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
     /**
      * This method implementation is a sample that demonstrates how we can handle webhook notifications
      *
-     * @unreleased
+     * @since 4.5.0
      */
     public function webhookNotificationsListener()
     {
@@ -123,7 +123,7 @@ class TestGateway extends PaymentGateway implements WebhookNotificationsListener
             /**
              * Allow developers to handle the webhook notification.
              *
-             * @unreleased
+             * @since 4.5.0
              *
              * @param array $webhookNotification
              */
