@@ -54,6 +54,7 @@
 }
 
 .upgradeLink{
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,27 +78,28 @@
     }
 
     &::after {
-        content: attr(data-tooltip);
+        content: attr(data-feerecovery-tooltip);
         position: absolute;
-        left: 0;
-        bottom: 100%;
+        right: -2.5rem;
+        bottom: calc(100% + 0.625rem);
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         background: var(--givewp-shades-white);
         padding: var(--givewp-spacing-2) var(--givewp-spacing-3);
         border-radius: 4px;
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.2s;
-        font-weight: 300;
+        font-weight: 500;
         z-index: 99999999;;
         font-size: 0.75rem;
         line-height: 1.33;
         letter-spacing: 0.12px;
         color: #4b5563;   
-        height: 5rem; 
+        height: auto;
+        min-height: 5rem; 
         width: 15rem;
         text-align: left;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
