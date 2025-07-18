@@ -27,6 +27,7 @@
         font-size: 1.25rem;
         font-weight: 600;
         line-height: 1.56;
+        text-align: center;
     }
 
     p {
@@ -202,7 +203,7 @@
 
     .action {
         display: flex;
-        align-items: center;            
+        align-items: center;
         justify-content: center;
         flex: 1 1 0;
         padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
@@ -228,7 +229,6 @@
 
     &:hover {
         background-color:#135e96;
-    }  
+    }
 }
-  
-   
+
