@@ -56,8 +56,6 @@ class DonationViewModel
         $data = array_merge(
             $this->donation->toArray(),
             [
-                'createdAt' => Temporal::getFormattedDateTime($this->donation->createdAt),
-                'updatedAt' => Temporal::getFormattedDateTime($this->donation->updatedAt),
                 'customFields' => $this->getCustomFields(),
                 'eventTicketsAmount' => $this->donation->eventTicketsAmount(),
                 'eventTickets' => $this->getEventTickets(),

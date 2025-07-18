@@ -1,12 +1,24 @@
-import { __ } from '@wordpress/i18n';
-import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
-import styles from '../styles.module.scss';
-import { useFormContext } from 'react-hook-form';
-import { CurrencyControl } from '@givewp/form-builder-library';
-import { CurrencyCode } from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
-import { getDonationOptionsWindowData } from '@givewp/donations/utils';
-import { useEffect } from 'react';
+/**
+ * External dependencies
+ */
 import cx from 'classnames';
+import { useEffect } from 'react';
+import { CurrencyCode } from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
+import { CurrencyControl } from '@givewp/form-builder-library';
+
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { useFormContext } from 'react-hook-form';
+
+/**
+ * Internal dependencies
+*/
+import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
+import { formatDateTimeLocal } from '@givewp/components/AdminDetailsPage/utils';
+import { getDonationOptionsWindowData } from '@givewp/donations/utils';
+import styles from '../styles.module.scss';
 // TODO: Move to shared components
 import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 
@@ -21,6 +33,7 @@ export default function DonationDetails() {
     const campaignId = watch('campaignId');
     const formId = watch('formId');
     const status = watch('status');
+    const createdAt = watch('createdAt');
 
     useEffect(() => {
         if (!campaignId) {
@@ -78,8 +91,14 @@ export default function DonationDetails() {
                     <input
                         type="datetime-local"
                         id="date"
-                        step="1"
-                        {...register('createdAt')}
+                        value={formatDateTimeLocal(createdAt?.date)}
+                        onChange={(e) => {
+                            setValue('createdAt', {
+                                date: formatDateTimeLocal(e.target.value),
+                                timezone: createdAt?.timezone,
+                                timezone_type: createdAt?.timezone_type,
+                            }, {shouldDirty: true});
+                        }}
                     />
                 </AdminSectionField>
 

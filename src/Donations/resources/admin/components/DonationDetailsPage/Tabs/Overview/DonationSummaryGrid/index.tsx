@@ -88,8 +88,8 @@ export default function DonationSummaryGrid({
                 {/* Donation Info */}
                 <div className={styles.card} role="region" aria-labelledby="donation-info-label">
                     <h3 id="donation-info-label">{__('Donation info', 'give')}</h3>
-                    <time className={styles.date} dateTime={donation.createdAt}>
-                        {formatTimestamp(donation.createdAt, true)}
+                    <time className={styles.date} dateTime={donation.createdAt?.date}>
+                        {formatTimestamp(donation.createdAt?.date, true)}
                     </time>
                     <div className={styles.donationType}>
                         <span className={styles.badge} aria-label={donationTypeDisplay}>

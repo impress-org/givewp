@@ -392,12 +392,14 @@ class DonationController extends WP_REST_Controller
                 return $value;
 
             case 'createdAt':
-                if (is_string($value)) {
-                    try {
+                try {
+                    if (is_string($value)) {
                         return new DateTime( $value, wp_timezone());
-                    } catch (\Exception $e) {
-                        throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
+                    } elseif (is_array($value)) {
+                        return new DateTime($value['date'], new \DateTimeZone($value['timezone']));
                     }
+                } catch (\Exception $e) {
+                    throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
                 }
                 return $value;
 
@@ -918,12 +920,44 @@ class DonationController extends WP_REST_Controller
                     'format' => 'text-field',
                 ],
                 'createdAt' => [
-                    'type' => 'string',
+                    'type' => ['object', 'null'],
+                    'properties' => [
+                        'date' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Date', 'give'),
+                            'format' => 'date-time',
+                        ],
+                        'timezone' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Timezone of the date', 'give'),
+                            'format' => 'text-field',
+                        ],
+                        'timezone_type' => [
+                            'type' => 'integer',
+                            'description' => esc_html__('Timezone type', 'give'),
+                        ],
+                    ],
                     'description' => esc_html__('Donation creation date', 'give'),
                     'format' => 'date-time',
                 ],
                 'updatedAt' => [
-                    'type' => 'string',
+                    'type' => ['object', 'null'],
+                    'properties' => [
+                        'date' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Date', 'give'),
+                            'format' => 'date-time',
+                        ],
+                        'timezone' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Timezone of the date', 'give'),
+                            'format' => 'text-field',
+                        ],
+                        'timezone_type' => [
+                            'type' => 'integer',
+                            'description' => esc_html__('Timezone type', 'give'),
+                        ],
+                    ],
                     'description' => esc_html__('Donation last update date', 'give'),
                     'format' => 'date-time',
                 ],

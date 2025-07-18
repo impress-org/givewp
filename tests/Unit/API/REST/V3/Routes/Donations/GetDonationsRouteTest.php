@@ -61,11 +61,19 @@ class GetDonationsRouteTest extends RestApiTestCase
         // Remove additional property add by the prepare_response_for_collection() method
         unset($data[0]['_links']);
 
-        // TODO: show shape of DateTime objects
-        $createdAtJson = json_encode($data[0]['createdAt']);
-        $updatedAtJson = json_encode($data[0]['updatedAt']);
-
         $this->assertEquals(200, $status);
+
+        // Verify DateTime object structure for createdAt and updatedAt
+        $this->assertIsArray($data[0]['createdAt']);
+        $this->assertArrayHasKey('date', $data[0]['createdAt']);
+        $this->assertArrayHasKey('timezone', $data[0]['createdAt']);
+        $this->assertArrayHasKey('timezone_type', $data[0]['createdAt']);
+
+        $this->assertIsArray($data[0]['updatedAt']);
+        $this->assertArrayHasKey('date', $data[0]['updatedAt']);
+        $this->assertArrayHasKey('timezone', $data[0]['updatedAt']);
+        $this->assertArrayHasKey('timezone_type', $data[0]['updatedAt']);
+
         $this->assertEquals([
             'id' => $donation->id,
             'campaignId' => $donation->campaignId,
@@ -73,8 +81,8 @@ class GetDonationsRouteTest extends RestApiTestCase
             'formTitle' => $donation->formTitle,
             'purchaseKey' => $donation->purchaseKey,
             'donorIp' => $donation->donorIp,
-            'createdAt' => json_decode($createdAtJson, true),
-            'updatedAt' => json_decode($updatedAtJson, true),
+            'createdAt' => $data[0]['createdAt'], // Keep actual DateTime object structure
+            'updatedAt' => $data[0]['updatedAt'], // Keep actual DateTime object structure
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),
@@ -676,13 +684,6 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     private function getExpectedValue(Donation $donation, string $column)
     {
-        $modelValue = $donation->{$column};
-
-        // Handle DateTime objects - convert to formatted strings like DonationViewModel does
-        if ($modelValue instanceof \DateTime) {
-            return Temporal::getFormattedDateTime($modelValue);
-        }
-
-        return $modelValue;
+        return $donation->{$column};
     }
 }
