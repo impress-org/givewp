@@ -647,10 +647,11 @@ class DonationController extends WP_REST_Controller
      */
     public function permissionsCheck(WP_REST_Request $request)
     {
-        $isAdmin = current_user_can('manage_options');
-
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if ( ! $isAdmin && $includeSensitiveData) {
+        $includeAnonymousDonations = $request->get_param('anonymousDonations');
+        $canEditDonations = $this->canEditDonations();
+
+        if ($includeSensitiveData && !$canEditDonations) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to include sensitive data.', 'give'),
@@ -658,9 +659,10 @@ class DonationController extends WP_REST_Controller
             );
         }
 
-        if ($request->get_param('anonymousDonations') !== null) {
-            $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
-            if ( ! $isAdmin && $donationAnonymousMode->isIncluded()) {
+        if ($includeAnonymousDonations !== null) {
+            $anonymousMode = new DonationAnonymousMode($includeAnonymousDonations);
+
+            if ($anonymousMode->isIncluded() && !$canEditDonations) {
                 return new WP_Error(
                     'rest_forbidden',
                     esc_html__('You do not have permission to include anonymous donations.', 'give'),
@@ -677,15 +679,15 @@ class DonationController extends WP_REST_Controller
      */
     public function update_item_permissions_check($request)
     {
-        if (!current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to update donations.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($this->canEditDonations()) {
+            return true;
         }
 
-        return true;
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to update donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
     }
 
     /**
@@ -693,15 +695,15 @@ class DonationController extends WP_REST_Controller
      */
     public function delete_item_permissions_check($request)
     {
-        if (!current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to delete donations.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($this->canDeleteDonations()) {
+            return true;
         }
 
-        return true;
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to delete donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
     }
 
     /**
@@ -709,32 +711,65 @@ class DonationController extends WP_REST_Controller
      */
     public function delete_items_permissions_check($request)
     {
-        if (!current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to delete donations.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($this->canDeleteDonations()) {
+            return true;
         }
 
-        return true;
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to delete donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
     }
 
     /**
-     * TODO: check permissions for refunding donations
      * @unreleased
      */
     public function refund_item_permissions_check($request)
     {
-        if (!current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to refund donations.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($this->canRefundDonations()) {
+            return true;
         }
 
-        return true;
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to refund donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
+    }
+
+    /**
+     * Check if current user can edit donations.
+     *
+     * @unreleased
+     */
+    private function canEditDonations(): bool
+    {
+        return current_user_can('manage_options')
+            || (
+                current_user_can('edit_give_payments')
+                && current_user_can('view_give_payments')
+            );
+    }
+
+    /**
+     * Check if current user can delete donations.
+     *
+     * @unreleased
+     */
+    private function canDeleteDonations(): bool
+    {
+        return current_user_can('manage_options') || current_user_can('delete_give_payments');
+    }
+
+    /**
+     * Check if current user can refund donations.
+     *
+     * @unreleased
+     */
+    private function canRefundDonations(): bool
+    {
+        return current_user_can('manage_options') || current_user_can('edit_give_payments');
     }
 
     /**
@@ -765,14 +800,17 @@ class DonationController extends WP_REST_Controller
                 'firstName' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor first name', 'give'),
+                    'format' => 'text-field',
                 ],
                 'lastName' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor last name', 'give'),
+                    'format' => 'text-field',
                 ],
                 'honorific' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor honorific/prefix', 'give'),
+                    'enum' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
                 ],
                 'email' => [
                     'type' => 'string',
@@ -796,10 +834,11 @@ class DonationController extends WP_REST_Controller
                             'type' => 'number',
                         ],
                         'amountInMinorUnits' => [
-                            'type' => 'number',
+                            'type' => 'integer',
                         ],
                         'currency' => [
                             'type' => 'string',
+                            'format' => 'text-field',
                         ],
                     ],
                     'description' => esc_html__('Donation amount', 'give'),
@@ -811,10 +850,11 @@ class DonationController extends WP_REST_Controller
                             'type' => 'number',
                         ],
                         'amountInMinorUnits' => [
-                            'type' => 'number',
+                            'type' => 'integer',
                         ],
                         'currency' => [
                             'type' => 'string',
+                            'format' => 'text-field',
                         ],
                     ],
                     'description' => esc_html__('Fee amount recovered', 'give'),
@@ -827,10 +867,11 @@ class DonationController extends WP_REST_Controller
                             'type' => 'number',
                         ],
                         'amountInMinorUnits' => [
-                            'type' => 'number',
+                            'type' => 'integer',
                         ],
                         'currency' => [
                             'type' => 'string',
+                            'format' => 'text-field',
                         ],
                     ],
                     'description' => esc_html__('Event tickets amount', 'give'),
@@ -843,6 +884,7 @@ class DonationController extends WP_REST_Controller
                 'gatewayId' => [
                     'type' => 'string',
                     'description' => esc_html__('Payment gateway ID', 'give'),
+                    'format' => 'text-field',
                 ],
                 'mode' => [
                     'type' => 'string',
@@ -857,29 +899,33 @@ class DonationController extends WP_REST_Controller
                     'type' => ['object', 'null'],
                     'description' => esc_html__('Billing address', 'give'),
                     'properties' => [
-                        'address1' => ['type' => 'string'],
-                        'address2' => ['type' => 'string'],
-                        'city' => ['type' => 'string'],
-                        'state' => ['type' => 'string'],
-                        'country' => ['type' => 'string'],
-                        'zip' => ['type' => 'string'],
+                        'address1' => ['type' => 'string', 'format' => 'text-field'],
+                        'address2' => ['type' => 'string', 'format' => 'text-field'],
+                        'city' => ['type' => 'string', 'format' => 'text-field'],
+                        'state' => ['type' => 'string', 'format' => 'text-field'],
+                        'country' => ['type' => 'string', 'format' => 'text-field'],
+                        'zip' => ['type' => 'string', 'format' => 'text-field'],
                     ],
                 ],
                 'donorIp' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor IP address (sensitive data)', 'give'),
+                    'format' => 'text-field',
                 ],
                 'purchaseKey' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Purchase key (sensitive data)', 'give'),
+                    'format' => 'text-field',
                 ],
                 'createdAt' => [
                     'type' => 'string',
                     'description' => esc_html__('Donation creation date', 'give'),
+                    'format' => 'date-time',
                 ],
                 'updatedAt' => [
                     'type' => 'string',
                     'description' => esc_html__('Donation last update date', 'give'),
+                    'format' => 'date-time',
                 ],
                 'customFields' => [
                     'type' => 'array',
@@ -891,10 +937,12 @@ class DonationController extends WP_REST_Controller
                             'label' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Field label', 'give'),
+                                'format' => 'text-field',
                             ],
                             'value' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Field value', 'give'),
+                                'format' => 'text-field',
                             ],
                         ],
                     ],
