@@ -89,9 +89,13 @@ export default function DonationDetails() {
                     <input
                         type="datetime-local"
                         id="date"
-                        value={formatDateTimeLocal(createdAt)}
+                        value={formatDateTimeLocal(createdAt?.date)}
                         onChange={(e) => {
-                            setValue('createdAt', formatDateTimeLocal(e.target.value), {shouldDirty: true});
+                            setValue('createdAt', {
+                                date: formatDateTimeLocal(e.target.value),
+                                timezone: createdAt?.timezone,
+                                timezone_type: createdAt?.timezone_type,
+                            }, {shouldDirty: true});
                         }}
                     />
                 </AdminSectionField>
