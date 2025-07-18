@@ -55,11 +55,19 @@ class GetDonationRouteTest extends RestApiTestCase
 
         $data = json_decode($dataJson, true);
 
-        // TODO: show shape of DateTime objects
-        $createdAtJson = json_encode($data['createdAt']);
-        $updatedAtJson = json_encode($data['updatedAt']);
-
         $this->assertEquals(200, $status);
+
+        // Verify DateTime object structure for createdAt and updatedAt
+        $this->assertIsArray($data['createdAt']);
+        $this->assertArrayHasKey('date', $data['createdAt']);
+        $this->assertArrayHasKey('timezone', $data['createdAt']);
+        $this->assertArrayHasKey('timezone_type', $data['createdAt']);
+
+        $this->assertIsArray($data['updatedAt']);
+        $this->assertArrayHasKey('date', $data['updatedAt']);
+        $this->assertArrayHasKey('timezone', $data['updatedAt']);
+        $this->assertArrayHasKey('timezone_type', $data['updatedAt']);
+
         $this->assertEquals([
             'id' => $donation->id,
             'campaignId' => $donation->campaignId,
@@ -67,8 +75,8 @@ class GetDonationRouteTest extends RestApiTestCase
             'formTitle' => $donation->formTitle,
             'purchaseKey' => $donation->purchaseKey,
             'donorIp' => $donation->donorIp,
-            'createdAt' => json_decode($createdAtJson, true),
-            'updatedAt' => json_decode($updatedAtJson, true),
+            'createdAt' => $data['createdAt'], // Keep actual DateTime object structure
+            'updatedAt' => $data['updatedAt'], // Keep actual DateTime object structure
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),
