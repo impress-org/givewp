@@ -609,11 +609,11 @@ class DonationController extends WP_REST_Controller
      */
     public function permissionsCheck(WP_REST_Request $request)
     {
-        $canEditDonations = current_user_can('manage_options') ||
-            (current_user_can('edit_give_payments') && current_user_can('view_give_payments'));
-
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if ( !$canEditDonations && $includeSensitiveData) {
+        $includeAnonymousDonations = $request->get_param('anonymousDonations');
+        $canEditDonations = $this->canEditDonations();
+
+        if ($includeSensitiveData && !$canEditDonations) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to include sensitive data.', 'give'),
@@ -621,9 +621,10 @@ class DonationController extends WP_REST_Controller
             );
         }
 
-        if ($request->get_param('anonymousDonations') !== null) {
-            $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
-            if ( !$canEditDonations && $donationAnonymousMode->isIncluded()) {
+        if ($includeAnonymousDonations !== null) {
+            $anonymousMode = new DonationAnonymousMode($includeAnonymousDonations);
+
+            if ($anonymousMode->isIncluded() && !$canEditDonations) {
                 return new WP_Error(
                     'rest_forbidden',
                     esc_html__('You do not have permission to include anonymous donations.', 'give'),
@@ -640,15 +641,15 @@ class DonationController extends WP_REST_Controller
      */
     public function update_item_permissions_check($request)
     {
-        if (!current_user_can('edit_give_payments') && !current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to update donations.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($this->canEditDonations()) {
+            return true;
         }
 
-        return true;
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to update donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
     }
 
     /**
@@ -656,15 +657,15 @@ class DonationController extends WP_REST_Controller
      */
     public function delete_item_permissions_check($request)
     {
-        if (!current_user_can('delete_give_payments') && !current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to delete donations.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($this->canDeleteDonations()) {
+            return true;
         }
 
-        return true;
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to delete donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
     }
 
     /**
@@ -672,15 +673,15 @@ class DonationController extends WP_REST_Controller
      */
     public function delete_items_permissions_check($request)
     {
-        if (!current_user_can('delete_give_payments') && !current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to delete donations.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($this->canDeleteDonations()) {
+            return true;
         }
 
-        return true;
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to delete donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
     }
 
     /**
@@ -688,15 +689,49 @@ class DonationController extends WP_REST_Controller
      */
     public function refund_item_permissions_check($request)
     {
-        if (!current_user_can('edit_give_payments') && !current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to refund donations.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if ($this->canRefundDonations()) {
+            return true;
         }
 
-        return true;
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to refund donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
+    }
+
+    /**
+     * Check if current user can edit donations.
+     *
+     * @unreleased
+     */
+    private function canEditDonations(): bool
+    {
+        return current_user_can('manage_options')
+            || (
+                current_user_can('edit_give_payments')
+                && current_user_can('view_give_payments')
+            );
+    }
+
+    /**
+     * Check if current user can delete donations.
+     *
+     * @unreleased
+     */
+    private function canDeleteDonations(): bool
+    {
+        return current_user_can('manage_options') || current_user_can('delete_give_payments');
+    }
+
+    /**
+     * Check if current user can refund donations.
+     *
+     * @unreleased
+     */
+    private function canRefundDonations(): bool
+    {
+        return current_user_can('manage_options') || current_user_can('edit_give_payments');
     }
 
     /**
