@@ -262,6 +262,7 @@ class DonationRepository
     }
 
     /**
+     * @unreleased Turn createdAt property updatable
      * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
@@ -277,6 +278,8 @@ class DonationRepository
 
         Hooks::doAction('givewp_donation_updating', $donation);
 
+        $dateCreated = Temporal::withoutMicroseconds($donation->createdAt);
+        $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
         $now = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
         $nowFormatted = Temporal::getFormattedDateTime($now);
 
@@ -286,6 +289,8 @@ class DonationRepository
             DB::table('posts')
                 ->where('ID', $donation->id)
                 ->update([
+                    'post_date' => $dateCreatedFormatted,
+                    'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_modified' => $nowFormatted,
                     'post_modified_gmt' => get_gmt_from_date($nowFormatted),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
@@ -343,6 +348,43 @@ class DonationRepository
         DB::query('COMMIT');
 
         Hooks::doAction('givewp_donation_deleted', $donation);
+
+        return true;
+    }
+
+     /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function trash(Donation $donation): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_donation_trashing', $donation);
+
+        try {
+            $previousStatus = DB::table('posts')
+                ->where('ID', $donation->id)
+                ->value('post_status');
+
+            give()->payment_meta->update_meta($donation->id, '_wp_trash_meta_status', $previousStatus);
+            give()->payment_meta->update_meta($donation->id, '_wp_trash_meta_time', time());
+
+            DB::table('posts')
+                ->where('ID', $donation->id)
+                ->update(['post_status' => 'trash']);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed trashing a donation', compact('donation'));
+
+            throw new $exception('Failed trashing a donation');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_donation_trashed', $donation);
 
         return true;
     }

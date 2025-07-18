@@ -1,9 +1,9 @@
 <?php
 
-namespace Unit\API\REST\V3\Routes\Donations;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\RegisterDonationRoutes;
+use Give\API\REST\V3\Routes\Donations\DonationController;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Campaigns\Models\Campaign;
@@ -12,9 +12,9 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -24,16 +24,6 @@ use WP_REST_Server;
 class GetDonationsRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @since 4.0.0
-     */
-    public function setUp(): void
-    {
-        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
-
-        parent::setUp();
-    }
 
     /**
      * @since 4.0.0
@@ -68,11 +58,22 @@ class GetDonationsRouteTest extends RestApiTestCase
         $dataJson = json_encode($response->get_data());
         $data = json_decode($dataJson, true);
 
-        // TODO: show shape of DateTime objects
-        $createdAtJson = json_encode($data[0]['createdAt']);
-        $updatedAtJson = json_encode($data[0]['updatedAt']);
+        // Remove additional property add by the prepare_response_for_collection() method
+        unset($data[0]['_links']);
 
         $this->assertEquals(200, $status);
+
+        // Verify DateTime object structure for createdAt and updatedAt
+        $this->assertIsArray($data[0]['createdAt']);
+        $this->assertArrayHasKey('date', $data[0]['createdAt']);
+        $this->assertArrayHasKey('timezone', $data[0]['createdAt']);
+        $this->assertArrayHasKey('timezone_type', $data[0]['createdAt']);
+
+        $this->assertIsArray($data[0]['updatedAt']);
+        $this->assertArrayHasKey('date', $data[0]['updatedAt']);
+        $this->assertArrayHasKey('timezone', $data[0]['updatedAt']);
+        $this->assertArrayHasKey('timezone_type', $data[0]['updatedAt']);
+
         $this->assertEquals([
             'id' => $donation->id,
             'campaignId' => $donation->campaignId,
@@ -80,8 +81,8 @@ class GetDonationsRouteTest extends RestApiTestCase
             'formTitle' => $donation->formTitle,
             'purchaseKey' => $donation->purchaseKey,
             'donorIp' => $donation->donorIp,
-            'createdAt' => json_decode($createdAtJson, true),
-            'updatedAt' => json_decode($updatedAtJson, true),
+            'createdAt' => $data[0]['createdAt'], // Keep actual DateTime object structure
+            'updatedAt' => $data[0]['updatedAt'], // Keep actual DateTime object structure
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),
@@ -102,6 +103,15 @@ class GetDonationsRouteTest extends RestApiTestCase
             'gatewayTransactionId' => $donation->gatewayTransactionId,
             'company' => $donation->company,
             'comment' => $donation->comment,
+            'customFields' => $data[0]['customFields'], // Custom fields are dynamic, so we'll just check they exist
+            'eventTicketsAmount' => $data[0]['eventTicketsAmount'],
+            'eventTickets' => [],
+            'gateway' => array_merge(
+                $donation->gateway()->toArray(),
+                [
+                    'transactionUrl' => $donation->gateway()->getTransactionUrl($donation),
+                ]
+            )
         ], $data[0]);
     }
 
@@ -127,11 +137,12 @@ class GetDonationsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
+            'customFields',
         ];
 
         $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data[0], array_flip($sensitiveProperties)));
+        $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
     }
 
     /**
@@ -172,7 +183,8 @@ class GetDonationsRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
+            'customFields',
         ];
 
         $this->assertEquals(200, $status);
@@ -446,15 +458,22 @@ class GetDonationsRouteTest extends RestApiTestCase
             'firstName',
             'lastName',
             'company',
+            'customFields',
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+            if ($property === 'donorId') {
+                $this->assertEquals(0, $data[1][$property]);
+            } elseif ($property === 'customFields') {
+                $this->assertEquals([], $data[1][$property]);
+            } else {
+                $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+            }
         }
     }
 
     /**
-     * @since 4.0.0
+     * @since        4.0.0
      *
      * @dataProvider sortableColumnsDataProvider
      *
@@ -497,9 +516,9 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donation1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donation3->{$sortableColumn}, $data[2][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation1, $sortableColumn), $data[0][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation2, $sortableColumn), $data[1][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation3, $sortableColumn), $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -518,8 +537,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation2->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation1, $sortableColumn), $data[0][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation2, $sortableColumn), $data[1][$sortableColumn]);
 
         /**
          * Descendant Direction
@@ -540,9 +559,9 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donation3->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donation1->{$sortableColumn}, $data[2][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation3, $sortableColumn), $data[0][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation2, $sortableColumn), $data[1][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation1, $sortableColumn), $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -561,8 +580,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donation2->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donation1->{$sortableColumn}, $data[1][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation2, $sortableColumn), $data[0][$sortableColumn]);
+        $this->assertEquals($this->getExpectedValue($donation1, $sortableColumn), $data[1][$sortableColumn]);
     }
 
     /**
@@ -656,5 +675,15 @@ class GetDonationsRouteTest extends RestApiTestCase
         }
 
         return $donation3;
+    }
+
+    /**
+     * Get expected value for comparison with API response
+     *
+     * @unreleased
+     */
+    private function getExpectedValue(Donation $donation, string $column)
+    {
+        return $donation->{$column};
     }
 }

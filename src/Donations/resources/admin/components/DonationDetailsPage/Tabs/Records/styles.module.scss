@@ -1,0 +1,120 @@
+.tabList {
+    background-color: var(--givewp-neutral-50);
+    border-radius: var(--givewp-rounded-8);
+    display: flex;
+    margin-bottom: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-2);
+}
+
+.tabItem {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.875rem;
+    font-weight: 500;
+    justify-content: center;
+    line-height: 1.43;
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+
+    &:first-child {
+        border-top-left-radius: var(--givewp-rounded-4);
+        border-bottom-left-radius: var(--givewp-rounded-4);
+    }
+
+    &:last-child {
+        border-top-right-radius: var(--givewp-rounded-4);
+        border-bottom-right-radius: var(--givewp-rounded-4);
+    }
+
+    &:hover {
+        background-color: var(--givewp-neutral-100);
+    }
+
+    &:before {
+        content: attr(data-text);
+        font-weight: 600;
+        height: 0;
+        visibility: hidden;
+        overflow: hidden;
+        user-select: none;
+        pointer-events: none;
+        speak: none;
+    }
+}
+
+.activeTabItem {
+    background-color: var(--givewp-shades-white);
+    font-weight: 600;
+
+    &:hover {
+        background-color: var(--givewp-shades-white);
+    }
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--givewp-spacing-4);
+}
+
+.statusSelect {
+    --statusOptionColor: var(--givewp-grey-500);
+    position: relative;
+
+    &::before {
+        background-color: var(--statusOptionColor);
+        border-radius: 50%;
+        content: '';
+        display: inline-block;
+        height: 0.75rem;
+        left: var(--givewp-spacing-4);
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0.75rem;
+    }
+
+    &--pending,
+    &--processing {
+        --statusOptionColor: var(--givewp-blue-500);
+    }
+
+    &--publish {
+        --statusOptionColor: var(--givewp-green-500);
+    }
+
+    &--failed,
+    &--cancelled,
+    &--revoked {
+        --statusOptionColor: var(--givewp-red-500);
+    }
+
+    select.statusSelectInput {
+        padding-left: calc(var(--givewp-spacing-6) + 0.75rem);
+    }
+}
+
+.radioOptions {
+    display: flex;
+    gap: var(--givewp-spacing-6);
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: var(--givewp-spacing-2);
+
+    span {
+        color: var(--givewp-neutral-500);
+        font-weight: 500;
+    }
+}
+
+.fieldDescription {
+    color: var(--givewp-neutral-500);
+    font-size: 0.875rem;
+    line-height: 1.43;
+    margin: 0 0 var(--givewp-spacing-1);
+}

@@ -63,6 +63,10 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     exposeAdminComponentsAndHooks();
 
     useEffect(() => {
+        if (!objectId) {
+            return;
+        }
+
         apiFetch({
             path: `/givewp/v3/${objectTypePlural}/${objectId}`,
             method: 'OPTIONS',
@@ -71,7 +75,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                 resolver: ajvResolver(schema),
             });
         });
-    }, []);
+    }, [objectId]);
 
     const {record, hasResolved, save, edit} = useObjectEntityRecord(objectId);
 

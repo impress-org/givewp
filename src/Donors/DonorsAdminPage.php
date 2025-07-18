@@ -4,7 +4,6 @@ namespace Give\Donors;
 
 use Give\Donors\Actions\LoadDonorDetailsAssets;
 use Give\Donors\Actions\LoadDonorsListTableAssets;
-use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Models\Donor;
 
 class DonorsAdminPage
