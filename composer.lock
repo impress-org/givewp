@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe372bf0f7c091641f329e298e7a1748",
+    "content-hash": "4024e5c40650c55f1d01a04f357bfe08",
     "packages": [
         {
             "name": "composer/installers",
@@ -423,16 +423,16 @@
         },
         {
             "name": "stellarwp/admin-notices",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/admin-notices.git",
-                "reference": "5c1302fb1de5b212ec6e05385e48e3859fd6b690"
+                "reference": "1d4c25adb2fe4fc959bea3f4501c58bb7586509d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/admin-notices/zipball/5c1302fb1de5b212ec6e05385e48e3859fd6b690",
-                "reference": "5c1302fb1de5b212ec6e05385e48e3859fd6b690",
+                "url": "https://api.github.com/repos/stellarwp/admin-notices/zipball/1d4c25adb2fe4fc959bea3f4501c58bb7586509d",
+                "reference": "1d4c25adb2fe4fc959bea3f4501c58bb7586509d",
                 "shasum": ""
             },
             "require": {
@@ -470,9 +470,9 @@
             "description": "A handy package for easily displaying admin notices in WordPress with simple to complex visibility conditions",
             "support": {
                 "issues": "https://github.com/stellarwp/admin-notices/issues",
-                "source": "https://github.com/stellarwp/admin-notices/tree/2.0.0"
+                "source": "https://github.com/stellarwp/admin-notices/tree/2.0.1"
             },
-            "time": "2024-11-20T00:41:13+00:00"
+            "time": "2025-07-10T17:44:44+00:00"
         },
         {
             "name": "stellarwp/arrays",
@@ -621,16 +621,16 @@
         },
         {
             "name": "stellarwp/validation",
-            "version": "1.4.1",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/validation.git",
-                "reference": "0f0d0dbc28b9b0780c61f81a6462c467e6d0358f"
+                "reference": "cf610086713a8a20ad640b7f0da2bcf0e8a826a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/validation/zipball/0f0d0dbc28b9b0780c61f81a6462c467e6d0358f",
-                "reference": "0f0d0dbc28b9b0780c61f81a6462c467e6d0358f",
+                "url": "https://api.github.com/repos/stellarwp/validation/zipball/cf610086713a8a20ad640b7f0da2bcf0e8a826a4",
+                "reference": "cf610086713a8a20ad640b7f0da2bcf0e8a826a4",
                 "shasum": ""
             },
             "require": {
@@ -643,7 +643,9 @@
                 "codeception/module-phpbrowser": "^1.0.0",
                 "lucatume/di52": "^3.0",
                 "lucatume/wp-browser": "^3.0.14",
-                "phpunit/phpunit": "~6.0"
+                "phpstan/phpstan": "^1.12",
+                "phpunit/phpunit": "~6.0",
+                "szepeviktor/phpstan-wordpress": "^1.3"
             },
             "type": "library",
             "autoload": {
@@ -668,9 +670,9 @@
             "description": "An end-to-end ready PHP validation library",
             "support": {
                 "issues": "https://github.com/stellarwp/validation/issues",
-                "source": "https://github.com/stellarwp/validation/tree/1.4.1"
+                "source": "https://github.com/stellarwp/validation/tree/1.5.0"
             },
-            "time": "2023-08-15T15:24:53+00:00"
+            "time": "2025-06-18T20:38:33+00:00"
         },
         {
             "name": "stripe/stripe-php",

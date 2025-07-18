@@ -14,12 +14,12 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\DonationRefunded;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\DonationRevoked;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class GetEventHandlerClassByDonationStatus
 {
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function __invoke(DonationStatus $status): string
     {

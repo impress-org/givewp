@@ -3,7 +3,7 @@
 namespace Give\ThirdPartyCompatibility\Divi;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class DeregisterEntityScripts
 {

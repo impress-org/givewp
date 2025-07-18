@@ -57,7 +57,8 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
             $connected .= '</a>.';
 
             $disconnected = sprintf(
-                __( '<em><strong>Note:</strong> Email sending is currently disabled. <a href="' . admin_url( '/tools.php?page=sendwp' ) . '">Click here</a> to enable it.</em>', 'give' )
+                __( '<em><strong>Note:</strong> Email sending is currently disabled. <a href="%s">Click here</a> to enable it.</em>', 'give' ),
+                esc_url( admin_url( '/tools.php?page=sendwp' ) )
             );
 
             // Checks if SendWP is connected

@@ -202,7 +202,6 @@ const entry = {
     campaignFormBlockApp: srcPath('Campaigns/Blocks/CampaignForm/resources/app.tsx'),
     campaignPagePostTypeEditor: srcPath('Campaigns/resources/editor/campaign-page-post-type-editor.tsx'),
     campaignWelcomeBannerCss: srcPath('Promotions/Campaigns/resources/css/styles.scss'),
-    campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),
     campaignListTable: srcPath('Campaigns/resources/admin/campaigns-list-table.tsx'),
     formEntity: srcPath('DonationForms/resources/entity.ts'),
     donorEntity: srcPath('Donors/resources/entity.ts'),

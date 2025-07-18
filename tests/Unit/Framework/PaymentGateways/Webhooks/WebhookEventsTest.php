@@ -15,14 +15,14 @@ use ReflectionClass;
 use ReflectionException;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class WebhookEventsTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testPaymentAbandoned()
     {
@@ -43,7 +43,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testPaymentCancelled()
     {
@@ -64,7 +64,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testPaymentCompleted()
     {
@@ -85,7 +85,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testPaymentFailed()
     {
@@ -106,7 +106,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testPaymentPending()
     {
@@ -127,7 +127,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testPaymentPreapproval()
     {
@@ -148,7 +148,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testPaymentProcessing()
     {
@@ -169,7 +169,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testPaymentRefunded()
     {
@@ -190,7 +190,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testPaymentRevoked()
     {
@@ -211,7 +211,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionActive()
     {
@@ -232,7 +232,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionCancelled()
     {
@@ -253,7 +253,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionCompleted()
     {
@@ -274,7 +274,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionExpired()
     {
@@ -295,7 +295,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionFailing()
     {
@@ -316,7 +316,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionPaused()
     {
@@ -337,7 +337,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionPending()
     {
@@ -358,7 +358,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionSuspended()
     {
@@ -379,7 +379,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionFirstDonation()
     {
@@ -400,7 +400,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testSubscriptionRenewalDonation()
     {
@@ -421,7 +421,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @throws ReflectionException
      */
@@ -454,7 +454,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @throws ReflectionException
      */
@@ -487,7 +487,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @param string $returnFormat OBJECT, ARRAY_A, or ids.
      */
@@ -497,7 +497,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @return int Total deleted webhook events (action scheduler background jobs).
      */
@@ -512,7 +512,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     private function getDonationStatusHookName(string $gatewayId, DonationStatus $status): string
     {
@@ -520,7 +520,7 @@ class WebhookEventsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     private function getSubscriptionStatusHookName(string $gatewayId, SubscriptionStatus $status): string
     {

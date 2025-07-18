@@ -314,16 +314,30 @@ const Migrations = () => {
 
             return (
                 <>
-                    {migration.isReversible && migration.status === 'failed' ? (
-                        <button
-                            className="button"
-                            onClick={() => openMigrationRunModal({
-                                action: 'rollback',
-                                ...migration,
-                            })
-                        }>
-                            {__('Reverse Update', 'give')}
-                        </button>
+                    {migration.isReversible && (migration.status === 'failed' || migration.status === 'success') ? (
+                        <>
+                            {migration.status === 'success' && (
+                                <button
+                                    style={{marginRight: '0.5rem'}}
+                                    className="button"
+                                    onClick={() => openMigrationRunModal({
+                                        action: 'run',
+                                        ...migration,
+                                    })}
+                                >
+                                    {__('Re-run Update', 'give')}
+                                </button>                                
+                            )}
+                            <button
+                                className="button"
+                                onClick={() => openMigrationRunModal({
+                                    action: 'rollback',
+                                    ...migration,
+                                })
+                            }>
+                                {__('Reverse Update', 'give')}
+                            </button>
+                        </>
                     ) : (
                         <button
                             className="button"

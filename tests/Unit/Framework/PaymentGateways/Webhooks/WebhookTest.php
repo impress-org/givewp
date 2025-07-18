@@ -10,14 +10,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class WebhookTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @throws Exception
      */
@@ -31,7 +31,7 @@ class WebhookTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @throws Exception
      */
@@ -46,7 +46,7 @@ class WebhookTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @throws Exception
      */
