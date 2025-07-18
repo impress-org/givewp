@@ -71,7 +71,7 @@ export default function DonationDetailsPage() {
                     className={cx(className, styles.archive)}
                     onClick={() => setShowConfirmationDialog('delete')}
                 >
-                    <TrashIcon /> {__('Delete Donation', 'give')}
+                    <TrashIcon /> {__('Trash donation', 'give')}
                 </a>
             </>
         );
@@ -94,7 +94,6 @@ export default function DonationDetailsPage() {
     const handleDelete = async () => {
         try {
             await deleteEntityRecord('givewp', 'donation', donation?.id, {force: false})
-            setShowConfirmationDialog(null);
             window.location.href = donationsAdminUrl;
         } catch (error) {
             setShowConfirmationDialog(null);
@@ -110,7 +109,7 @@ export default function DonationDetailsPage() {
             useObjectEntityRecord={useDonationEntityRecord}
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donations`}
-            breadcrumbTitle={sprintf('#%s', donation?.id)}
+            breadcrumbTitle={donation?.id && sprintf('#%s', donation?.id)}
             pageTitle={donation?.amount?.value != null ? formatter.format(donation?.amount?.value) : ''}
             StatusBadge={() => <StatusBadge status={donation?.status} />}
             ContextMenuItems={ContextMenuItems}

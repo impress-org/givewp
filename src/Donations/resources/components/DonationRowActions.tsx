@@ -35,7 +35,7 @@ export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters
             <RowAction
                 onClick={confirmModal}
                 actionId={item.id}
-                displayText={__('Delete', 'give')}
+                displayText={__('Trash', 'give')}
                 hiddenText={item.name}
                 highlight
             />
