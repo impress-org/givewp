@@ -6,10 +6,13 @@ use Give\API\REST\V3\Routes\Campaigns\GetCampaignComments;
 use Give\API\REST\V3\Routes\Campaigns\GetCampaignRevenue;
 use Give\API\REST\V3\Routes\Campaigns\GetCampaignStatistics;
 use Give\API\REST\V3\Routes\Campaigns\RegisterCampaignRoutes;
-use Give\API\REST\V3\Routes\Donations\RegisterDonationRoutes;
+use Give\API\REST\V3\Routes\Donations\DonationController;
+use Give\API\REST\V3\Routes\Donations\DonationNotesController;
 use Give\API\REST\V3\Routes\Donors\DonorController;
 use Give\API\REST\V3\Routes\Donors\DonorNotesController;
 use Give\API\REST\V3\Routes\Donors\DonorStatisticsController;
+use Give\API\REST\V3\Routes\Subscriptions\SubscriptionController;
+use Give\API\REST\V3\Routes\Subscriptions\SubscriptionNotesController;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -36,7 +39,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         $this->loadCampaignsRoutes();
         $this->loadDonorsRoutes();
-        $this->loadDonnationsRoutes();
+        $this->loadDonationsRoutes();
+        $this->loadSubscriptionsRoutes();
     }
 
     /**
@@ -70,8 +74,28 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @since 4.4.0
      */
-    private function loadDonnationsRoutes()
+    private function loadDonationsRoutes()
     {
-        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
+        add_action('rest_api_init', function () {
+            $donationsController = new DonationController();
+            $donationsController->register_routes();
+
+            $donationNotesController = new DonationNotesController();
+            $donationNotesController->register_routes();
+        });
+    }
+
+    /**
+     * @unreleased
+     */
+    private function loadSubscriptionsRoutes()
+    {
+        add_action('rest_api_init', function () {
+            $subscriptionsController = new SubscriptionController();
+            $subscriptionsController->register_routes();
+
+            $subscriptionNotesController = new SubscriptionNotesController();
+            $subscriptionNotesController->register_routes();
+        });
     }
 }
