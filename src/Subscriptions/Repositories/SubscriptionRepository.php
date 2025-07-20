@@ -16,6 +16,7 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * @since 2.19.6
@@ -274,6 +275,43 @@ class SubscriptionRepository
         DB::query('COMMIT');
 
         Hooks::doAction('givewp_subscription_deleted', $subscription);
+
+        return true;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function trash(Subscription $subscription): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_subscription_trashing', $subscription);
+
+        try {
+            $previousStatus = DB::table('give_subscriptions')
+                ->where('id', $subscription->id)
+                ->value('status');
+
+            give()->subscription_meta->update_meta($subscription->id, '_wp_trash_meta_status', $previousStatus);
+            give()->subscription_meta->update_meta($subscription->id, '_wp_trash_meta_time', time());
+
+            DB::table('give_subscriptions')
+                ->where('id', $subscription->id)
+                ->update(['status' => SubscriptionStatus::TRASHED()->getValue()]);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed trashing a subscription', compact('subscription'));
+
+            throw new $exception('Failed trashing a subscription');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_subscription_trashed', $subscription);
 
         return true;
     }
