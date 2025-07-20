@@ -99,9 +99,10 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
 export type Tab = {
     id: string;
     title: string;
-    content: FC;
-    fullwidth?: boolean;
-};
+} & (
+        | { link: string; content?: never; fullwidth?: boolean }
+        | { link?: never; content: FC; fullwidth?: boolean }
+    );
 
 /**
  * @since 4.4.0
