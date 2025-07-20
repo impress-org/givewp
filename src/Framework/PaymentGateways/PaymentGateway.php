@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPausable;
@@ -21,8 +22,11 @@ use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
 use ReflectionException;
 use ReflectionMethod;
+use Give\Framework\Support\Contracts\Arrayable;
+use JsonSerializable;
 
 /**
+ * @unreleased Added JSONSerializable and Arrayable interfaces
  * @since 2.30.0 added enqueueScript() and formSettings() methods.
  * @since 2.18.0
  */
@@ -30,7 +34,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
                                          SubscriptionDashboardLinkable,
                                          SubscriptionAmountEditable,
                                          SubscriptionPaymentMethodEditable,
-                                         SubscriptionTransactionsSynchronizable
+                                         SubscriptionTransactionsSynchronizable,
+    JsonSerializable,
+    Arrayable
 {
     use HandleHttpResponses;
     use HasRouteMethods {
@@ -131,12 +137,18 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @inheritDoc
+     * @unreleased updated to use PaymentGatewayRefundable interface
      *
      * @since 2.29.0
      */
     public function supportsRefund(): bool
     {
-        return $this->isFunctionImplementedInGatewayClass('refundDonation');
+        if ($this instanceof PaymentGatewayRefundable) {
+            return true;
+        }
+
+        // backward compatibility for add-on legacy gateways that don't implement the PaymentGatewayRefundable interface
+        return method_exists($this, 'refundDonation');
     }
 
     /**
@@ -415,4 +427,50 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
         return ($reflector->getDeclaringClass()->getName() === get_class($this));
     }
+
+    /**
+     * @unreleased
+     */
+    public function getTransactionUrl(Donation $donation): ?string
+    {
+        $link = apply_filters('give_payment_details_transaction_id-' . $donation->gatewayId, $donation->gatewayTransactionId, $donation->id);
+
+        // If no link is returned, return null
+        if (empty($link)) {
+            return null;
+        }
+
+        // Extract URL from anchor tag using regex
+        if (preg_match('/href=["\']([^"\']+)["\']/', $link, $matches)) {
+            return $matches[1];
+        }
+
+        // If it's already a URL (not an anchor tag), return as is
+        if (filter_var($link, FILTER_VALIDATE_URL)) {
+            return $link;
+        }
+
+        return null;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id(),
+            'name' => $this->getName(),
+            'label' => $this->getPaymentMethodLabel(),
+        ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
 }
