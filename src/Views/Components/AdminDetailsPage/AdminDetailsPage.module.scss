@@ -157,6 +157,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
 
     &:before {
         content: attr(data-text);
@@ -167,10 +168,11 @@
         user-select: none;
         pointer-events: none;
         speak: none;
-      }
+    }
 }
 
 @media screen and (min-width: 48rem) {
+
     .tabs [data-reach-tab],
     .tabs [role='tab'] {
         font-size: 1rem;

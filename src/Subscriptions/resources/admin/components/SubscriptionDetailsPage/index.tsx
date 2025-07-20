@@ -58,8 +58,6 @@ export default function SubscriptionDetailsPage() {
     const {formatter} = useSubscriptionAmounts(subscription);
     const { deleteEntityRecord } = useDispatch( coreDataStore );
 
-    console.log(subscription);
-
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
