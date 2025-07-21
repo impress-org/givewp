@@ -108,6 +108,9 @@ if (isCampaignDetailsPage) {
     });
 }
 
+/**
+ * @unreleased add option based form editor enabled check.
+ */
 const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
