@@ -7,7 +7,7 @@ import cx from 'classnames';
 /**
  * WordPress Dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal Dependencies
@@ -58,6 +58,30 @@ export default function SubscriptionDetailsPage() {
     const { formatter } = useSubscriptionAmounts(subscription);
     const { deleteEntityRecord } = useDispatch(coreDataStore);
 
+    const PageTitle = () => {
+        if (subscription?.amount?.value == null) {
+            return null;
+        }
+        const periodsLabels = {
+            day: _n('day', 'days', subscription?.frequency, 'give'),
+            week: _n('week', 'weeks', subscription?.frequency, 'give'),
+            month: _n('month', 'months', subscription?.frequency, 'give'),
+            year: _n('year', 'years', subscription?.frequency, 'give'),
+        };
+
+        const period = [
+            __('every', 'give'),
+            subscription?.frequency > 1 ? subscription?.frequency : '',
+            periodsLabels[subscription?.period],
+        ].filter(Boolean).join(' ');
+
+        return (
+            <>
+                {formatter.format(subscription?.amount?.value)} <span className={styles.period}>{period}</span>
+            </>
+        );
+    };
+
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
@@ -94,7 +118,7 @@ export default function SubscriptionDetailsPage() {
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-subscriptions`}
             breadcrumbTitle={subscription?.id && sprintf('#%s', subscription?.id)}
-            pageTitle={subscription?.amount?.value != null ? formatter.format(subscription?.amount?.value) + ' / ' + subscription?.period : ''}
+            pageTitle={<PageTitle />}
             StatusBadge={() => <StatusBadge status={subscription?.status} isTest={subscription?.mode === 'test'} />}
             ContextMenuItems={ContextMenuItems}
         >
