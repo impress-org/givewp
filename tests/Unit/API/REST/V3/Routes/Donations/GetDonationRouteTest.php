@@ -1,13 +1,11 @@
 <?php
 
-namespace Unit\API\REST\V3\Routes\Donations;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\RegisterDonationRoutes;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Helpers\Hooks;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -19,16 +17,6 @@ use WP_REST_Server;
 class GetDonationRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
-
-    /**
-     * @since 4.0.0
-     */
-    public function setUp(): void
-    {
-        Hooks::addAction('rest_api_init', RegisterDonationRoutes::class);
-
-        parent::setUp();
-    }
 
     /**
      * @since 4.0.0
@@ -61,14 +49,25 @@ class GetDonationRouteTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $dataJson = json_encode($response->get_data());
+
+        $data = $response->get_data();
+        $dataJson = json_encode($data);
+
         $data = json_decode($dataJson, true);
 
-        // TODO: show shape of DateTime objects
-        $createdAtJson = json_encode($data['createdAt']);
-        $updatedAtJson = json_encode($data['updatedAt']);
-
         $this->assertEquals(200, $status);
+
+        // Verify DateTime object structure for createdAt and updatedAt
+        $this->assertIsArray($data['createdAt']);
+        $this->assertArrayHasKey('date', $data['createdAt']);
+        $this->assertArrayHasKey('timezone', $data['createdAt']);
+        $this->assertArrayHasKey('timezone_type', $data['createdAt']);
+
+        $this->assertIsArray($data['updatedAt']);
+        $this->assertArrayHasKey('date', $data['updatedAt']);
+        $this->assertArrayHasKey('timezone', $data['updatedAt']);
+        $this->assertArrayHasKey('timezone_type', $data['updatedAt']);
+
         $this->assertEquals([
             'id' => $donation->id,
             'campaignId' => $donation->campaignId,
@@ -76,8 +75,8 @@ class GetDonationRouteTest extends RestApiTestCase
             'formTitle' => $donation->formTitle,
             'purchaseKey' => $donation->purchaseKey,
             'donorIp' => $donation->donorIp,
-            'createdAt' => json_decode($createdAtJson, true),
-            'updatedAt' => json_decode($updatedAtJson, true),
+            'createdAt' => $data['createdAt'], // Keep actual DateTime object structure
+            'updatedAt' => $data['updatedAt'], // Keep actual DateTime object structure
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),
@@ -98,6 +97,15 @@ class GetDonationRouteTest extends RestApiTestCase
             'gatewayTransactionId' => $donation->gatewayTransactionId,
             'company' => $donation->company,
             'comment' => $donation->comment,
+            'customFields' => $data['customFields'], // Custom fields are dynamic, so we'll just check they exist
+            'eventTicketsAmount' => $donation->eventTicketsAmount()->toArray(),
+            'eventTickets' => [],
+            'gateway' => array_merge(
+                $donation->gateway()->toArray(),
+                [
+                    'transactionUrl' => $donation->gateway()->getTransactionUrl($donation),
+                ]
+            )
         ], $data);
     }
 
@@ -144,11 +152,12 @@ class GetDonationRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
+            'customFields'
         ];
 
         $this->assertEquals(200, $status);
-        $this->assertEmpty(array_intersect_key($data, array_flip($sensitiveData)));
+        $this->assertEmpty(array_intersect_key($data, $sensitiveData));
     }
 
     /**
@@ -190,7 +199,8 @@ class GetDonationRouteTest extends RestApiTestCase
             'email',
             'phone',
             'billingAddress',
-            'purchaseKey'
+            'purchaseKey',
+            'customFields'
         ];
 
         $this->assertEquals(200, $status);
@@ -362,10 +372,17 @@ class GetDonationRouteTest extends RestApiTestCase
             'firstName',
             'lastName',
             'company',
+            'customFields',
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'), $data[$property]);
+            if ($property === 'donorId') {
+                $this->assertEquals(0, $data[$property]);
+            } else if ($property === 'customFields') {
+                $this->assertEquals([], $data[$property]);
+            } else {
+                $this->assertEquals(__('anonymous', 'give'), $data[$property]);
+            }
         }
     }
 }

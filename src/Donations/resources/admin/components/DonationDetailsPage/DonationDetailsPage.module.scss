@@ -1,0 +1,49 @@
+.statusBadge {
+    --statusBadgeBgColor: var(--givewp-grey-25);
+    --statusBadgeTextColor: var(--givewp-grey-900);
+
+    align-items: center;
+    background-color: var(--statusBadgeBgColor);
+    border-radius: var(--givewp-rounded-full);
+    border: 1px solid var(--statusBadgeBorderColor);
+    color: var(--statusBadgeTextColor);
+    display: flex;
+    font-size: 0.75rem;
+    font-weight: 600;
+    gap: var(--givewp-spacing-1);
+    justify-content: center;
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+    text-align: center;
+
+    &.statusBadge--pending,
+    &.statusBadge--processing {
+        --statusBadgeBgColor: var(--givewp-blue-100);
+        --statusBadgeTextColor: var(--givewp-blue-900);
+    }
+
+    &.statusBadge--publish {
+        --statusBadgeBgColor: var(--givewp-green-100);
+        --statusBadgeTextColor: var(--givewp-green-900);
+    }
+
+    &.statusBadge--failed,
+    &.statusBadge--cancelled,
+    &.statusBadge--revoked {
+        --statusBadgeBgColor: var(--givewp-red-100);
+        --statusBadgeTextColor: var(--givewp-red-900);
+    }
+
+    &.testBadge {
+        --statusBadgeBgColor: var(--givewp-orange-400);
+        --statusBadgeTextColor: var(--givewp-shades-white);
+    }
+}
+
+.archive {
+    --contextMenuItemColor: var(--givewp-red-600);
+}
+
+.sectionFieldInputWrapper {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+}
