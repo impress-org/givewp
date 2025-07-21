@@ -115,7 +115,7 @@ export default function DonationDetailsPage() {
             objectTypePlural="donations"
             useObjectEntityRecord={useDonationEntityRecord}
             tabDefinitions={tabDefinitions}
-            breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donations`}
+            breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-payment-history`}
             breadcrumbTitle={donation?.id && sprintf('#%s', donation?.id)}
             pageTitle={donation?.amount?.value != null ? formatter.format(donation?.amount?.value) : ''}
             StatusBadge={() => <StatusBadge status={donation?.status} isTest={donation?.mode === 'test'} />}
