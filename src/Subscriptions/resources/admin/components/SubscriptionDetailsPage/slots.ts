@@ -1,11 +1,11 @@
-import {createSlotFill} from '@wordpress/components';
+import { createSlotFill } from '@wordpress/components';
 
 /**
  * @unreleased
  */
-const {Slot: AdditionalInfoSlot, Fill: AdditionalInfoFill} = createSlotFill('GiveWP/DonationDetails/Records/AdditionalInfo');
+const { Slot: RecordsSlot, Fill: RecordsFill } = createSlotFill('GiveWP/SubscriptionDetails/Records');
 
 export {
-    AdditionalInfoSlot,
-    AdditionalInfoFill,
+    RecordsSlot,
+    RecordsFill,
 };
