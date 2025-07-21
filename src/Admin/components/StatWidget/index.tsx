@@ -12,7 +12,7 @@ import { __ } from '@wordpress/i18n';
  */
 export type StatWidgetProps = {
     label: string;
-    value: number;
+    value: number | string | React.ReactNode;
     description?: string;
     formatter: Intl.NumberFormat;
     loading?: boolean;
@@ -43,7 +43,7 @@ export default function StatWidget({
             <div className={styles.statWidgetAmount}>
                 <div className={classnames(styles.statWidgetDisplay, {[styles.inActive]: inActive})}>
                     {!loading ? (
-                        formatter?.format(value) ?? value
+                        formatter?.format(parseFloat(value as string)) ?? value
                     ) : (
                         <span>
                             <Spinner size="small" />
@@ -51,7 +51,7 @@ export default function StatWidget({
                     )}
                 {inActive && (<a className={styles.upgradeLink} href={href} data-feerecovery-tooltip={__('Keep 100% of your fundraising revenue by providing donors with the option to cover the credit card processing fees', 'give')}>{__('Upgrade', 'give')}</a>)}
                 </div>
-                {previousValue !== null && <PercentChangePill value={value} comparison={previousValue} />}
+                {previousValue !== null && <PercentChangePill value={parseFloat(value as string)} comparison={previousValue} />}
             </div>
             {description && (
                 <footer>
