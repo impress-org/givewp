@@ -240,6 +240,14 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased
+     */
+    public function trash(): bool
+    {
+        return give()->subscriptions->trash($this);
+    }
+
+    /**
      * @since 2.20.0
      *
      * @param bool $force Set to true to ignore the status of the subscription
