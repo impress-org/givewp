@@ -3,6 +3,7 @@
 namespace Give\Donations\Models;
 
 use DateTime;
+use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Factories\DonationFactory;
@@ -11,6 +12,8 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
+use Give\EventTickets\Models\EventTicket;
+use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -26,6 +29,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donation
  *
+ * @unreleased Add event tickets property
  * @since 3.9.0 Add phone property
  * @since 2.23.0 add type property; remove parentId property
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
@@ -61,6 +65,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property Campaign $campaign
  * @property Subscription $subscription
  * @property DonationNote[] $notes
+ * @property EventTicket[] $eventTickets
  * @property string $company
  * @property string $comment
  */
@@ -108,6 +113,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'donor' => Relationship::BELONGS_TO,
         'subscription' => Relationship::BELONGS_TO,
         'notes' => Relationship::HAS_MANY,
+        'eventTickets' => Relationship::HAS_MANY,
     ];
 
     /**
@@ -164,6 +170,16 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     public function delete(): bool
     {
         return give()->donations->delete($this);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function trash(): bool
+    {
+        return give()->donations->trash($this);
     }
 
     /**
@@ -241,6 +257,22 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         return $this->feeAmountRecovered === null
             ? $this->amount
             : $this->amount->subtract($this->feeAmountRecovered);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function eventTicketsAmount(): Money
+    {
+        return give(EventTicketRepository::class)->getTotalByDonation($this);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function eventTickets(): ModelQueryBuilder
+    {
+        return give(EventTicketRepository::class)->queryByDonationId($this->id);
     }
 
     /**

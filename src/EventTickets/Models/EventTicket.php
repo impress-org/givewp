@@ -172,7 +172,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
             'eventId' => (int)$object->event_id,
             'ticketTypeId' => (int)$object->ticket_type_id,
             'donationId' => (int)$object->donation_id,
-            'amount' => new Money($object->amount, give_get_currency()),
+            'amount' => new Money($object->amount, $object->currency),
             'createdAt' => Temporal::toDateTime($object->created_at),
             'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);

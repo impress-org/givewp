@@ -12,14 +12,5 @@ dispatch(coreStore).addEntities([
         plural: 'donors',
         label: __('Donor', 'give'),
         supportsPagination: true,
-    },
-    {
-        name: 'donations',
-        kind: 'givewp/v3',
-        baseURL: '/givewp/v3/donations',
-        baseURLParams: {},
-        plural: 'donations',
-        label: __('Donations', 'give'),
-        supportsPagination: true,
-    },
+    }
 ]);

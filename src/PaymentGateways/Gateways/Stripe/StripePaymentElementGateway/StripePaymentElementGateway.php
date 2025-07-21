@@ -158,12 +158,4 @@ class StripePaymentElementGateway extends PaymentGateway
             ],
         ]);
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function refundDonation(Donation $donation)
-    {
-        // TODO: Implement refundDonation() method.
-    }
 }
