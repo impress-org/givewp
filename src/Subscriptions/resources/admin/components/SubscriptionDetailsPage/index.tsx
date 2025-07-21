@@ -52,11 +52,11 @@ const StatusBadge = ({ status, isTest }: { status: string, isTest: boolean }) =>
  * @unreleased
  */
 export default function SubscriptionDetailsPage() {
-    const { adminUrl, subscriptionsAdminUrl} = getSubscriptionOptionsWindowData();
+    const { adminUrl, subscriptionsAdminUrl } = getSubscriptionOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
     const { record: subscription } = useSubscriptionEntityRecord();
-    const {formatter} = useSubscriptionAmounts(subscription);
-    const { deleteEntityRecord } = useDispatch( coreDataStore );
+    const { formatter } = useSubscriptionAmounts(subscription);
+    const { deleteEntityRecord } = useDispatch(coreDataStore);
 
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
@@ -77,7 +77,7 @@ export default function SubscriptionDetailsPage() {
      */
     const handleDelete = async () => {
         try {
-            await deleteEntityRecord('givewp', 'subscription', subscription?.id, {force: false})
+            await deleteEntityRecord('givewp', 'subscription', subscription?.id, { force: false })
             window.location.href = subscriptionsAdminUrl;
         } catch (error) {
             setShowConfirmationDialog(null);
@@ -94,7 +94,7 @@ export default function SubscriptionDetailsPage() {
             tabDefinitions={tabDefinitions}
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-subscriptions`}
             breadcrumbTitle={subscription?.id && sprintf('#%s', subscription?.id)}
-            pageTitle={subscription?.amount?.value != null ? formatter.format(subscription?.amount?.value) : ''}
+            pageTitle={subscription?.amount?.value != null ? formatter.format(subscription?.amount?.value) + ' / ' + subscription?.period : ''}
             StatusBadge={() => <StatusBadge status={subscription?.status} isTest={subscription?.mode === 'test'} />}
             ContextMenuItems={ContextMenuItems}
         >

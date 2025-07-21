@@ -21,8 +21,6 @@ const subscriptionDetailsTabs: Tab[] = [
     {
         id: 'donations',
         title: __('Donations', 'give'),
-        // TODO: Define if using the link or content
-        // link: `${adminUrl}edit.php?post_type=give_forms&page=give-payment-history&subscription_id=${subscriptionId}`,
         content: DonationsTab,
     },
     {
