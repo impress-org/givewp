@@ -60,7 +60,7 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
     /**
      * Custom title for the page header (defaults to entity.name)
      */
-    pageTitle?: string;
+    pageTitle?: string | React.ReactNode;
 
     /**
      * Component to display the status badge
