@@ -82,6 +82,17 @@ export default function SubscriptionDetailsPage() {
         );
     };
 
+    function SecondaryActionButton({ className }: { className: string }) {
+        return (
+            <button
+                type="button"
+                className={className}
+            >
+                {__('Sync subscription', 'give')}
+            </button>
+        );
+    }
+
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
@@ -119,6 +130,7 @@ export default function SubscriptionDetailsPage() {
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-subscriptions`}
             breadcrumbTitle={subscription?.id && sprintf('#%s', subscription?.id)}
             pageTitle={<PageTitle />}
+            SecondaryActionButton={SecondaryActionButton}
             StatusBadge={() => <StatusBadge status={subscription?.status} isTest={subscription?.mode === 'test'} />}
             ContextMenuItems={ContextMenuItems}
         >
