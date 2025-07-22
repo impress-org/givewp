@@ -381,7 +381,7 @@ class DonationNotesController extends WP_REST_Controller
                 'type' => [
                     'description' => __('The type of the note.', 'give'),
                     'type' => 'string',
-                    'enum' => ['admin', 'donation'],
+                    'enum' => ['admin', 'donor'],
                     'default' => 'admin',
                 ],
                 'createdAt' => [
