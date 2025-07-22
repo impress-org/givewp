@@ -108,6 +108,9 @@ if (isCampaignDetailsPage) {
     });
 }
 
+/**
+ * @unreleased add option based form editor enabled check.
+ */
 const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
@@ -123,7 +126,7 @@ const columnFilters: Array<ColumnFilterConfig> = [
                 <>
                     <div className={styles.titleContainer}>
                         <div className={styles.migratedForm}>
-                            {item?.v3form && <CubeTooltip />}
+                            {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && <CubeTooltip />}
                             <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                         </div>
                         {item?.isDefaultCampaignForm && (
