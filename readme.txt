@@ -278,7 +278,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix: Resolved an issue with the bulk actions selector on the campaign forms list
 * Fix: Resolved an issue with PayPal donations and zero decimal currencies like Japanese Yen
 * Fix: Resolved an issue with some form migrations using different goal formats and PHP 8.1+
-* Security: Added additional sanitization and escpaing to donor notes (CVE-2025-7205)
+* Security: Added additional sanitization and escaping to donor notes (CVE-2025-7205)
 * Security: Added additional auth checks for certain Give user roles (CVE-2025-7221)
 
 = 4.5.0: July 9th, 2025 =
