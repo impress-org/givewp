@@ -65,7 +65,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      *
      * @param  SubscriptionModule|null  $subscriptionModule
      */
-    public function __construct(SubscriptionModule $subscriptionModule = null)
+    public function __construct(?SubscriptionModule $subscriptionModule = null)
     {
         if ($subscriptionModule !== null) {
             $subscriptionModule->setGateway($this);
@@ -468,6 +468,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * @since 4.6.0
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->toArray();
