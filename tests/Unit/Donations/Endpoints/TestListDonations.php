@@ -35,6 +35,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('status', 'active');
 
         $listDonations = give(ListDonations::class);
 

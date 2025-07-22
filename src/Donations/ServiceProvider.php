@@ -2,6 +2,8 @@
 
 namespace Give\Donations;
 
+use Give\Donations\Actions\LoadDonationOptions;
+use Give\Donations\Actions\RegisterDonationEntity;
 use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
@@ -54,6 +56,8 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootLegacyListeners();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
+        $this->registerDonationEntity();
+        $this->loadDonationOptions();
 
         give(MigrationsRegister::class)->addMigrations([
             AddMissingDonorIdToDonationComments::class,
@@ -120,10 +124,6 @@ class ServiceProvider implements ServiceProviderInterface
         // only register new admin page if user hasn't chosen to use the old one
         if (empty($showLegacy)) {
             Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem', 20);
-
-            if (DonationsAdminPage::isShowing()) {
-                Hooks::addAction('admin_enqueue_scripts', DonationsAdminPage::class, 'loadScripts');
-            }
         }
     }
 
@@ -147,5 +147,21 @@ class ServiceProvider implements ServiceProviderInterface
 
             (new UpdateDonorMetaWithLastDonatedCurrency())($donation);
         });
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerDonationEntity()
+    {
+        Hooks::addAction('init', RegisterDonationEntity::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function loadDonationOptions()
+    {
+        Hooks::addAction('init', LoadDonationOptions::class);
     }
 }

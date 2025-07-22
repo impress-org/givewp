@@ -321,6 +321,7 @@ class DonorController extends WP_REST_Controller
                 'id' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donor ID', 'give'),
+                    'readonly' => true,
                 ],
                 'prefix' => [
                     'type' => ['string', 'null'],

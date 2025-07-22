@@ -1,0 +1,5 @@
+.container {
+    display: flex;
+    gap: var(--givewp-spacing-4);
+    grid-column: span 3;
+}

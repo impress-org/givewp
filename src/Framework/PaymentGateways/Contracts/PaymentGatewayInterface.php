@@ -100,13 +100,4 @@ interface PaymentGatewayInterface extends SubscriptionModuleInterface
      * @throws Exception
      */
     public function createPayment(Donation $donation, $gatewayData);
-
-    /**
-     * @since 2.20.0
-     *
-     * @param Donation $donation
-     *
-     * @return mixed
-     */
-    public function refundDonation(Donation $donation);
 }
