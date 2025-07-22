@@ -15,7 +15,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class ConvertEventTicketsBlockToFieldsApi
 {
     /**
-     * @unreleased Add support for currency conversion
+     * @since 4.6.0 Add support for currency conversion
      * @since 3.20.0 Set event end date and time.
      * @since 3.12.2 Remove event ID from field name
      * @since 3.6.0

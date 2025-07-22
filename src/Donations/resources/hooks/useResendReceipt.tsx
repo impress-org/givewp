@@ -3,7 +3,7 @@ import { __ } from '@wordpress/i18n';
 import { useDispatch } from '@wordpress/data';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function useResendReceipt() {
     const [loading, setLoading] = useState<boolean>(false);

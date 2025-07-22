@@ -150,7 +150,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     private function registerDonationEntity()
     {
@@ -158,7 +158,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     private function loadDonationOptions()
     {

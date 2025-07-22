@@ -17,7 +17,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\LegacyDonationFormAdapter;
 use stdClass;
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 final class TestDonationFormQueryData extends TestCase
 {
@@ -25,7 +25,7 @@ final class TestDonationFormQueryData extends TestCase
     use LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testFromObjectShouldCreateDonationFormQueryDataFromQueryObject()
     {
@@ -44,7 +44,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testFromObjectShouldHandleNullGoalFormat()
     {
@@ -59,7 +59,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testFromObjectShouldHandleEmptyGoalFormat()
     {
@@ -74,7 +74,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testToDonationFormShouldReturnDonationForm()
     {
@@ -91,7 +91,7 @@ final class TestDonationFormQueryData extends TestCase
 
     /**
      * @dataProvider donationFormLevelsProvider
-     * @unreleased
+     * @since 4.6.0
      */
     public function testGetDonationFormLevels(string $priceOption, array $expectedLevels)
     {
@@ -116,7 +116,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testGetDonationFormLevelsShouldReturnEmptyArrayWhenMultiLevelsIsNull()
     {
@@ -131,7 +131,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testGetDonationFormLevelsShouldReturnEmptyArrayWhenSetPriceIsNull()
     {
@@ -147,7 +147,7 @@ final class TestDonationFormQueryData extends TestCase
 
     /**
      * @dataProvider goalTypeProvider
-     * @unreleased
+     * @since 4.6.0
      */
     public function testConvertGoalTypeShouldReturnCorrectGoalType(string $type, bool $isRecurring, GoalType $expected)
     {
@@ -158,7 +158,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testConvertGoalTypeShouldHandleNullType()
     {
@@ -169,7 +169,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testConvertGoalTypeShouldHandleInvalidType()
     {
@@ -180,7 +180,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testConvertGoalTypeShouldReturnRecurringGoalTypeWhenIsRecurringIsTrue()
     {
@@ -191,7 +191,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testFromObjectShouldHandleNullGoalFormatInGoalSettings()
     {
@@ -205,7 +205,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function donationFormLevelsProvider(): array
     {
@@ -245,7 +245,7 @@ final class TestDonationFormQueryData extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function goalTypeProvider(): array
     {
@@ -270,7 +270,7 @@ final class TestDonationFormQueryData extends TestCase
     /**
      * Create a mock query object from a donation form
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function createMockQueryObject(DonationForm $form): stdClass
     {
@@ -294,4 +294,4 @@ final class TestDonationFormQueryData extends TestCase
 
         return $queryObject;
     }
-} 
+}

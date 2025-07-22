@@ -13,7 +13,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
  * The purpose of this action is to have a centralized place for localizing options used on many different places
  * by donation scripts (list tables, blocks, etc.)
  *
- * @unreleased
+ * @since 4.6.0
  */
 class LoadDonationOptions
 {
@@ -28,7 +28,7 @@ class LoadDonationOptions
      * Get all donation options for localization
      *
      * @return array
-     * @unreleased
+     * @since 4.6.0
      */
     private function getDonationOptions(): array
     {
@@ -60,7 +60,7 @@ class LoadDonationOptions
     /**
      * Get states data with decoded HTML entities
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function getStatesData(): array
     {
@@ -75,7 +75,7 @@ class LoadDonationOptions
     /**
      * Get campaigns with their forms using Campaign query builder
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function getCampaignsWithForms(): array
     {
@@ -124,7 +124,7 @@ class LoadDonationOptions
     /**
      * Decode HTML entities from an array of strings or nested arrays
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function decodeHtmlEntities(array $data, bool $isNested = false): array
     {
@@ -142,7 +142,7 @@ class LoadDonationOptions
     /**
      * Get donor ids with their names
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function getDonors(): array
     {
@@ -167,7 +167,7 @@ class LoadDonationOptions
     /**
      * Get gateways
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function getGateways(): array
     {

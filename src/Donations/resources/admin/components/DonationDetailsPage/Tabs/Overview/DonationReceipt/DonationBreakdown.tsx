@@ -10,7 +10,7 @@ import { useDonationAmounts } from '@givewp/donations/hooks';
 import { amountFormatter } from '@givewp/src/Admin/utils';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationBreakdown({ donation }: { donation: Donation }) {
   const {isFeeRecoveryEnabled, currency: defaultCurrency, eventTicketsEnabled} = getDonationOptionsWindowData();
@@ -75,7 +75,7 @@ export default function DonationBreakdown({ donation }: { donation: Donation }) 
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 type RowProps = {
   label?: React.ReactNode;
@@ -85,7 +85,7 @@ type RowProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function Row({ label, value, children, className }: RowProps) {
   return (

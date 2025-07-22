@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 import { __ } from '@wordpress/i18n';
 
 /**
- * @unreleased add href & inActive props to handle Fee Recovery widget.
+ * @since 4.6.0 add href & inActive props to handle Fee Recovery widget.
  * @since 4.4.0
  */
 export type StatWidgetProps = {
@@ -22,7 +22,7 @@ export type StatWidgetProps = {
 };
 
 /**
- * @unreleased use new props to handle Fee Recovery widget.
+ * @since 4.6.0 use new props to handle Fee Recovery widget.
  * @since 4.4.0
  */
 export default function StatWidget({
@@ -58,7 +58,7 @@ export default function StatWidget({
                     <div>{description}</div>
                 </footer>
             )}
-        
+
         </div>
     );
 }

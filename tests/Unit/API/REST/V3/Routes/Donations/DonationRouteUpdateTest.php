@@ -12,7 +12,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 class DonationRouteUpdateTest extends RestApiTestCase
 {
@@ -20,7 +20,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testUpdateDonationShouldUpdateModelProperties()
     {
@@ -53,7 +53,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testUpdateDonationShouldNotUpdateNonEditableFields()
     {
@@ -88,7 +88,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testUpdateDonationShouldReturn404ErrorWhenDonationNotFound()
     {
@@ -106,7 +106,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testUpdateDonationShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -127,7 +127,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDeleteDonationShouldDeleteDonation()
     {
@@ -154,7 +154,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
         /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDeleteDonationShouldTrashDonationWhenForceIsFalse()
     {
@@ -175,7 +175,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDeleteDonationShouldReturn404ErrorWhenDonationNotFound()
     {
@@ -190,7 +190,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDeleteDonationShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -208,7 +208,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDeleteMultipleDonationsShouldDeleteAllValidDonations()
     {
@@ -250,7 +250,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDeleteMultipleDonationsShouldHandleMixedValidAndInvalidIds()
     {
@@ -294,7 +294,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDeleteMultipleDonationsShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -323,7 +323,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testUpdateDonationShouldAcceptNullValuesForOptionalFields()
     {
@@ -352,7 +352,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
         /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testRefundDonationShouldRefundDonationSuccessfully()
     {
@@ -381,7 +381,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testRefundDonationShouldReturn404ErrorWhenDonationNotFound()
     {
@@ -396,7 +396,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
         /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testRefundDonationShouldReturn403ErrorWhenNotAdminUser()
     {

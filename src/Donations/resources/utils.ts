@@ -7,7 +7,7 @@ declare const window: {
 } & Window;
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export function useDonationEntityRecord(donationId?: number) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -30,7 +30,7 @@ export function useDonationEntityRecord(donationId?: number) {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export function getDonationOptionsWindowData(): GiveDonationOptions {
     return window.GiveDonationOptions;

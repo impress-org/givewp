@@ -7,7 +7,7 @@ import {Donation} from '@givewp/donations/admin/components/types';
 import { useDonationAmounts } from '@givewp/donations/hooks';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 interface DonationStatsProps {
     isResolving: boolean;
@@ -15,7 +15,7 @@ interface DonationStatsProps {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationStats({ donation, isResolving }: DonationStatsProps) {
     const {isFeeRecoveryEnabled, eventTicketsEnabled} = getDonationOptionsWindowData();

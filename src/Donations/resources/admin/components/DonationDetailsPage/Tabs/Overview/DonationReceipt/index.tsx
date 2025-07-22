@@ -8,7 +8,7 @@ import styles from './styles.module.scss';
 import type { Donation } from '@givewp/donations/admin/components/types';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationReceipt({ donation }: { donation: Donation }) {
   return (

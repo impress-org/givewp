@@ -26,7 +26,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use JsonSerializable;
 
 /**
- * @unreleased Added JSONSerializable and Arrayable interfaces
+ * @since 4.6.0 Added JSONSerializable and Arrayable interfaces
  * @since 2.30.0 added enqueueScript() and formSettings() methods.
  * @since 2.18.0
  */
@@ -137,7 +137,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @inheritDoc
-     * @unreleased updated to use PaymentGatewayRefundable interface
+     * @since 4.6.0 updated to use PaymentGatewayRefundable interface
      *
      * @since 2.29.0
      */
@@ -429,7 +429,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function getTransactionUrl(Donation $donation): ?string
     {
@@ -454,7 +454,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function toArray(): array
     {
@@ -466,7 +466,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function jsonSerialize()
     {

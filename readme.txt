@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.5.0
+Stable tag: 4.6.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.6.0: July 23rd, 2025 =
+* New: The donation admin details screen has been upgraded to a new design and experience!
+* Fix: Resolved an issue with the bulk actions selector on the campaign forms list
+* Fix: Resovled an issue with PayPal donations and zero decimal currencies like Japanese Yen
+* Fix: Resolved an issue with some form migrations using different goal formats and PHP 8.1+
+* Security: Added additional sanitization and escpaing to donor notes (CVE-2025-7205)
+* Security: Added additional auth checks for certain Give user roles (CVE-2025-7221)
 
 = 4.5.0: July 9th, 2025 =
 * New: Added a new PayPal setting to optionally accept credit cards when using Smart Buttons

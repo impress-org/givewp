@@ -49,7 +49,7 @@ class DonationsAdminPage
     /**
      * Render admin page container
      *
-     * @unreleased Add new details page view
+     * @since 4.6.0 Add new details page view
      * @since 2.20.0
      */
     public function render()
@@ -88,7 +88,7 @@ class DonationsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public static function isShowingDetailsPage(): bool
     {

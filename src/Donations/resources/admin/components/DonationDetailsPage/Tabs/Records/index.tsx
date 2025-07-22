@@ -8,7 +8,7 @@ import cx from 'classnames';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationDetailsPageRecordsTab() {
     const [selectedKey, setSelectedKey] = useState('general');

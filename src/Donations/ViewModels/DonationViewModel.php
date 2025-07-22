@@ -12,7 +12,7 @@ use Give\Framework\FieldsAPI\Types;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 class DonationViewModel
 {
@@ -21,7 +21,7 @@ class DonationViewModel
     private bool $includeSensitiveData = false;
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function __construct(Donation $donation)
     {
@@ -29,7 +29,7 @@ class DonationViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function includeSensitiveData(bool $includeSensitiveData = true): DonationViewModel
     {
@@ -39,7 +39,7 @@ class DonationViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function anonymousMode(DonationAnonymousMode $mode): DonationViewModel
     {
@@ -49,7 +49,7 @@ class DonationViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function exports(): array
     {
@@ -117,7 +117,7 @@ class DonationViewModel
     /**
      * Get custom fields for the donation
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function getCustomFields(): array
     {
@@ -149,7 +149,7 @@ class DonationViewModel
     /**
      * Get donation form for the donation
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function getDonationForm(): ?DonationForm
     {
@@ -165,7 +165,7 @@ class DonationViewModel
     /**
      * Get displayed donation meta fields for a form
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function getDisplayedDonationMetaFieldsForForm(DonationForm $form): array
     {
@@ -177,7 +177,7 @@ class DonationViewModel
     /**
      * Get field value for a custom field
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function getFieldValue(Field $field): string
     {
@@ -196,7 +196,7 @@ class DonationViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     private function getEventTickets(): array
     {
@@ -204,7 +204,7 @@ class DonationViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     private function getGatewayDetails(): array
     {

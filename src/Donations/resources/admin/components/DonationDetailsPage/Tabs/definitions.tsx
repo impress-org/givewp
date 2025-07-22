@@ -4,7 +4,7 @@ import RecordsTab from './Records';
 import { Tab } from '@givewp/components/AdminDetailsPage/types';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 const donationDetailsTabs: Tab[] = [
     {

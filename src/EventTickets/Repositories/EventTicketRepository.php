@@ -190,7 +190,7 @@ class EventTicketRepository
     /**
      * Check if the event tickets feature is active and table exists
      *
-     * @unreleased
+     * @since 4.6.0
      * @return bool
      */
     private function isFeatureActive(): bool
@@ -211,7 +211,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased Add support for feature flag when disabled and include donation currency
+     * @since 4.6.0 Add support for feature flag when disabled and include donation currency
      * @since 3.20.0 Add "amount" column to the select statement
      * @since      3.6.0
      * @return ModelQueryBuilder<EventTicket>
@@ -250,7 +250,7 @@ class EventTicketRepository
     /**
      * Check if a database table exists
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function tableExists(string $tableName): bool
     {
@@ -294,7 +294,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased Ensure the currency is the same as the donation amount currency
+     * @since 4.6.0 Ensure the currency is the same as the donation amount currency
      * @since 3.20.0 Refactored to use event ticket amount instead of ticket type price
      * @since 3.6.0
      */
@@ -308,7 +308,7 @@ class EventTicketRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function getEventTicketDetails(Donation $donation): array
     {

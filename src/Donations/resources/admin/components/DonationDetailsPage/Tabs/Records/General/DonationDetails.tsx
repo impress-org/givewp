@@ -25,7 +25,7 @@ import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 const { donationStatuses, campaignsWithForms } = getDonationOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationDetails() {
     const { getValues, setValue, register, watch, setError } = useFormContext();

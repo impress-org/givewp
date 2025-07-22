@@ -6,12 +6,12 @@ use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 interface PaymentGatewayRefundable
 {
     /**
-     * @unreleased
+     * @since 4.6.0
      *
      * @return GatewayCommand
      */

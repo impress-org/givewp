@@ -9,7 +9,7 @@ type Gateway = {
 };
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export type GiveDonationOptions = {
     isAdmin: boolean;

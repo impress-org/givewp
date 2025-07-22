@@ -4,7 +4,7 @@ import AssociatedDonor from './AssociatedDonor';
 import BillingDetails from './BillingDetails';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationDetailsPageRecordsGeneralTab() {
     return (

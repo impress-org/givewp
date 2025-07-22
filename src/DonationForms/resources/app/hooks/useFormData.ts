@@ -87,7 +87,7 @@ const getSubscriptionTotal = (totals: DonationTotals, amount: number) => {
 const normalizeAmount = (amount: number) => Math.round(amount * 100) / 100;
 
 /**
- * @unreleased Set minor units for donation and subscription amounts when currency is zero decimal
+ * @since 4.6.0 Set minor units for donation and subscription amounts when currency is zero decimal
  * @since 4.0.0
  */
 export default function useFormData() {
@@ -119,10 +119,10 @@ export default function useFormData() {
     const subscriptionAmountTotalInMinorUnits = amountToMinorUnit(subscriptionAmountTotal.toString(), currency);
 
     const donationAmount = zeroDecimalCurrencies.includes(currency) ? amountTotalInMinorUnits : amountTotal;
-    const subscriptionAmount = zeroDecimalCurrencies.includes(currency) ? subscriptionAmountTotalInMinorUnits : subscriptionAmountTotal;    
+    const subscriptionAmount = zeroDecimalCurrencies.includes(currency) ? subscriptionAmountTotalInMinorUnits : subscriptionAmountTotal;
 
     const isOneTime = donationType === 'single';
-    const isRecurring = donationType === 'subscription';    
+    const isRecurring = donationType === 'subscription';
 
     return {
         firstName,

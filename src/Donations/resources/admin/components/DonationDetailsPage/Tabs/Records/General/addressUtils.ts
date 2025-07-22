@@ -8,7 +8,7 @@ const donorOptionsData = getDonorOptionsWindowData();
 const { states } = donorOptionsData;
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export interface StateOption {
     value: string;
@@ -18,7 +18,7 @@ export interface StateOption {
 /**
  * Get states configuration for a given country
  *
- * @unreleased
+ * @since 4.6.0
  */
 export interface StatesConfig {
     hasStates: boolean;
@@ -29,7 +29,7 @@ export interface StatesConfig {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export const getStatesForCountry = (countryCode: string): StatesConfig => {
     if (!countryCode) {

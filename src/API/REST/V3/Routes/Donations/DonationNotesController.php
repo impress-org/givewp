@@ -14,12 +14,12 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 class DonationNotesController extends WP_REST_Controller
 {
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function __construct()
     {
@@ -28,7 +28,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function register_routes()
     {
@@ -83,7 +83,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Get a collection of donation notes.
      *
-     * @unreleased
+     * @since 4.6.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -142,7 +142,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Create a donation note.
      *
-     * @unreleased
+     * @since 4.6.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -172,7 +172,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Get a single donation note.
      *
-     * @unreleased
+     * @since 4.6.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -197,7 +197,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Update a donation note.
      *
-     * @unreleased
+     * @since 4.6.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -236,7 +236,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Delete a donation note.
      *
-     * @unreleased
+     * @since 4.6.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -268,7 +268,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function get_items_permissions_check($request): bool
     {
@@ -276,7 +276,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function create_item_permissions_check($request): bool
     {
@@ -284,7 +284,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function get_item_permissions_check($request): bool
     {
@@ -292,7 +292,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function update_item_permissions_check($request): bool
     {
@@ -300,7 +300,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function delete_item_permissions_check($request): bool
     {
@@ -308,7 +308,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function prepare_item_for_response($note, $request): WP_REST_Response
     {
@@ -331,7 +331,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function get_collection_params(): array
     {
@@ -350,7 +350,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Get the donation note schema, conforming to JSON Schema.
      *
-     * @unreleased
+     * @since 4.6.0
      *
      * @return array
      */
@@ -403,7 +403,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Get the donation note schema for public display.
      *
-     * @unreleased
+     * @since 4.6.0
      *
      * @return array
      */

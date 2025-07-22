@@ -109,7 +109,7 @@ if (isCampaignDetailsPage) {
 }
 
 /**
- * @unreleased add option based form editor enabled check.
+ * @since 4.6.0 add option based form editor enabled check.
  */
 const columnFilters: Array<ColumnFilterConfig> = [
     {
