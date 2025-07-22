@@ -58,6 +58,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public $webhook;
 
     /**
+     * @unreleased add explicit nullable type to subscriptionModule parameter
      * @since 4.5.0 Add the webhookEvents property
      *
      * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.

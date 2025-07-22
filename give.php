@@ -593,6 +593,7 @@ final class Give
  *
  * Example: <?php $give = Give(); ?>
  *
+ * @unreleased add explicit nullable type to give function
  * @since    2.8.0 add parameter for quick retrieval from container
  * @since    1.0
  *
@@ -602,7 +603,7 @@ final class Give
  *
  * @return Give|T
  */
-function give(string $abstract = null)
+function give(?string $abstract = null)
 {
     static $instance = null;
 
