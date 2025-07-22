@@ -44,6 +44,7 @@ export type PayPalSubscriber = {
 };
 
 /**
+ * @unreleased Removed data-client-token from the SDK options.
  * @since 4.0.0
  */
 export type PayPalCommerceGatewaySettings = {
@@ -62,7 +63,6 @@ export type PayPalCommerceGatewaySettings = {
         "intent": string,
         "vault": string,
         "data-partner-attribution-id": string,
-        "data-client-token": string,
         "currency": string,
         "enable-funding": string
     }
