@@ -72,6 +72,7 @@ class PayPalCommerceGateway extends PayPalCommerce
     /**
      * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
      *
+     * @unreleased Removed data-client-token from the SDK options.
      * @since 4.5.0 Add support for disabling credit card funding via Smart Buttons Only.
      * @since 3.0.0
      * @throws Exception
@@ -115,7 +116,6 @@ class PayPalCommerceGateway extends PayPalCommerce
                 'clientId' => $merchantDetailModel->clientId,
                 'disableFunding' => $disableFunding,
                 'dataPartnerAttributionId' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-                'dataClientToken' => $merchantDetailRepository->getClientToken(),
                 'components' => implode(',', $paymentComponents),
             ]);
 
@@ -133,7 +133,6 @@ class PayPalCommerceGateway extends PayPalCommerce
                 'client-id' => $merchantDetailModel->clientId,
                 'disable-funding' => $disableFunding,
                 'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-                'data-client-token' => $merchantDetailRepository->getClientToken(),
                 'components' => implode(',', $paymentComponents),
             ]);
 
