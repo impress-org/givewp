@@ -376,6 +376,7 @@ class DonationNotesController extends WP_REST_Controller
                     'type' => 'string',
                     'required' => true,
                     'minLength' => 1,
+                    'format' => 'text-field',
                 ],
                 'type' => [
                     'description' => __('The type of the note.', 'give'),
@@ -452,6 +453,7 @@ class DonationNotesController extends WP_REST_Controller
                 'type' => 'string',
                 'required' => $method === WP_REST_Server::CREATABLE,
                 'minLength' => 1,
+                'format' => 'text-field',
             ];
 
             $args['type'] = [
