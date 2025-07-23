@@ -72,7 +72,7 @@ class PayPalCommerceGateway extends PayPalCommerce
     /**
      * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
      *
-     * @unreleased Removed data-client-token from the SDK options.
+     * @unreleased Removed data-client-token from the SDK options for v3 forms.  For v2 forms, we still need to pass the client token only when hosted fields are enabled.
      * @since 4.5.0 Add support for disabling credit card funding via Smart Buttons Only.
      * @since 3.0.0
      * @throws Exception
@@ -125,6 +125,7 @@ class PayPalCommerceGateway extends PayPalCommerce
         } else {
             if ($fieldsEnabled) {
                 $paymentComponents[] = 'hosted-fields';
+                $data['data-client-token'] = $merchantDetailRepository->getClientToken();
             }
 
             $data = array_merge($data, [
