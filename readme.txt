@@ -280,6 +280,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix: Resolved an issue with some form migrations using different goal formats and PHP 8.1+
 * Security: Added additional sanitization and escaping to donor notes (CVE-2025-7205)
 * Security: Added additional auth checks for certain Give user roles (CVE-2025-7221)
+* Security: Removed PayPal donations client token when not being used
 
 = 4.5.0: July 9th, 2025 =
 * New: Added a new PayPal setting to optionally accept credit cards when using Smart Buttons
