@@ -44,7 +44,7 @@ export type PayPalSubscriber = {
 };
 
 /**
- * @unreleased Removed data-client-token from the SDK options.
+ * @since 4.6.0 Removed data-client-token from the SDK options.
  * @since 4.0.0
  */
 export type PayPalCommerceGatewaySettings = {
