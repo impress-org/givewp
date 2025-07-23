@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes\Subscriptions;
 
 use DateTime;
 use Give\API\REST\V3\Routes\CURIE;
+use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -47,15 +48,51 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function register_routes()
     {
+        register_rest_route($this->namespace, '/'.$this->rest_base, [
+            [
+                'methods' => WP_REST_Server::READABLE,
+                'callback' => [$this, 'get_items'],
+                'permission_callback' => [$this, 'get_items_permissions_check'],
+                'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
+            [
+                'methods' => WP_REST_Server::DELETABLE,
+                'callback' => [$this, 'deleteItems'],
+                'permission_callback' => [$this, 'delete_items_permissions_check'],
+                'args' => [
+                    'ids' => [
+                        'description' => __('Array of subscription IDs to delete', 'give'),
+                        'type' => 'array',
+                        'items' => [
+                            'type' => 'integer',
+                        ],
+                        'required' => true,
+                    ],
+                    'force' => [
+                        'description' => __('Whether to permanently delete (force=true) or move to trash (force=false, default).', 'give'),
+                        'type' => 'boolean',
+                        'default' => false,                        
+                    ],
+                ],
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
+        ]);
+
         register_rest_route($this->namespace, '/'.$this->rest_base.'/(?P<id>[\d]+)', [
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
-                'permission_callback' => [$this, 'permissionsCheck'],
-                'args' => [
+                'permission_callback' => [$this, 'get_item_permissions_check'],
+                'args' => array_merge([
+                    'id' => [
+                        'description' => __('The subscription ID.', 'give'),
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
                     '_embed' => [
                         'description' => __(
-                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:subscription" when we wish to embed only a specific one.',
+                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:donation" when we wish to embed only a specific one.',
                             'give'
                         ),
                         'type' => [
@@ -63,12 +100,8 @@ class SubscriptionController extends WP_REST_Controller
                             'boolean',
                         ],
                         'default' => false,
-                    ],
-                    'id' => [
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                ],
+                    ],                    
+                ], $this->getSharedParams()),
                 'schema' => [$this, 'get_public_item_schema'],
             ],
             [
@@ -84,44 +117,14 @@ class SubscriptionController extends WP_REST_Controller
                 'permission_callback' => [$this, 'delete_item_permissions_check'],
                 'args' => [
                     'id' => [
+                        'description' => __('The subscription ID.', 'give'),
                         'type' => 'integer',
                         'required' => true,
                     ],
                     'force' => [
+                        'description' => __('Whether to permanently delete (force=true) or move to trash (force=false, default).', 'give'),
                         'type' => 'boolean',
-                        'default' => false,
-                        'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
-                    ],
-                ],
-                'schema' => [$this, 'get_public_item_schema'],
-            ],
-        ]);
-
-        register_rest_route($this->namespace, '/'.$this->rest_base, [
-            [
-                'methods' => WP_REST_Server::READABLE,
-                'callback' => [$this, 'get_items'],
-                'permission_callback' => [$this, 'permissionsCheck'],
-                'args' => $this->get_collection_params(),
-                'schema' => [$this, 'get_public_item_schema'],
-            ],
-            [
-                'methods' => WP_REST_Server::DELETABLE,
-                'callback' => [$this, 'delete_items'],
-                'permission_callback' => [$this, 'delete_items_permissions_check'],
-                'args' => [
-                    'ids' => [
-                        'description' => __('Array of subscription IDs to delete', 'give'),
-                        'type' => 'array',
-                        'items' => [
-                            'type' => 'integer',
-                        ],
-                        'required' => true,
-                    ],
-                    'force' => [
-                        'type' => 'boolean',
-                        'default' => false,
-                        'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
+                        'default' => false,                        
                     ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
@@ -166,7 +169,10 @@ class SubscriptionController extends WP_REST_Controller
             ->offset(($page - 1) * $perPage)
             ->orderBy($sortColumn, $sortDirection);
 
+        $sql = $query->getSQL();
+            
         $subscriptions = $query->getAll() ?? [];
+
         $subscriptions = array_map(function ($subscription) use ($request) {
             $item = (new SubscriptionViewModel($subscription))->exports();
 
@@ -277,6 +283,90 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * Delete a single subscription.
+     *
+     * @unreleased
+     */
+    public function delete_item($request): WP_REST_Response
+    {
+        $subscription = Subscription::find($request->get_param('id'));
+        $force = $request->get_param('force');
+
+        if (! $subscription) {
+            return new WP_REST_Response(['message' => __('Subscription not found', 'give')], 404);
+        }
+
+        $item = (new SubscriptionViewModel($subscription))->exports();
+
+        if ($force) {
+            // Permanently delete the subscription
+            $deleted = $subscription->delete();
+
+            if (! $deleted) {
+                return new WP_REST_Response(['message' => __('Failed to delete subscription', 'give')], 500);
+            }
+        } else {
+            // Move the subscription to trash (soft delete)
+            $trashed = $subscription->trash();
+
+            if (! $trashed) {
+                return new WP_REST_Response(['message' => __('Failed to trash subscription', 'give')], 500);
+            }
+        }
+
+        return new WP_REST_Response(['deleted' => true, 'previous' => $item], 200);
+    }
+
+    /**
+     * Delete multiple subscriptions.
+     *
+     * @unreleased
+     */
+    public function deleteItems($request): WP_REST_Response
+    {
+        $ids = $request->get_param('ids');
+        $force = $request->get_param('force');
+        $deleted = [];
+        $errors = [];
+
+        foreach ($ids as $id) {
+            $subscription = Subscription::find($id);
+
+            if (! $subscription) {
+                $errors[] = ['id' => $id, 'message' => __('Subscription not found', 'give')];
+
+                continue;
+            }
+
+            $item = (new SubscriptionViewModel($subscription))->exports();
+
+            if ($force) {
+                if ($subscription->delete()) {
+                    $deleted[] = ['id' => $id, 'previous' => $item];
+                } else {
+                    $errors[] = ['id' => $id, 'message' => __('Failed to delete subscription', 'give')];
+                }
+            } else {
+                $trashed = $subscription->trash();
+
+                if ($trashed) {
+                    $deleted[] = ['id' => $id, 'previous' => $item];
+                } else {
+                    $errors[] = ['id' => $id, 'message' => __('Failed to trash subscription', 'give')];
+                }
+            }
+        }
+
+        return new WP_REST_Response([
+            'deleted' => $deleted,
+            'errors' => $errors,
+            'total_requested' => count($ids),
+            'total_deleted' => count($deleted),
+            'total_errors' => count($errors),
+        ], 200);
+    }    
+
+    /**
      * Process field values for special data types before setting them on the subscription model.
      *
      * @unreleased
@@ -326,90 +416,6 @@ class SubscriptionController extends WP_REST_Controller
             default:
                 return $value;
         }
-    }
-
-    /**
-     * Delete a single subscription.
-     *
-     * @unreleased
-     */
-    public function delete_item($request): WP_REST_Response
-    {
-        $subscription = Subscription::find($request->get_param('id'));
-        $force = $request->get_param('force');
-
-        if (! $subscription) {
-            return new WP_REST_Response(['message' => __('Subscription not found', 'give')], 404);
-        }
-
-        $item = (new SubscriptionViewModel($subscription))->exports();
-
-        if ($force) {
-            // Permanently delete the subscription
-            $deleted = $subscription->delete();
-
-            if (! $deleted) {
-                return new WP_REST_Response(['message' => __('Failed to delete subscription', 'give')], 500);
-            }
-        } else {
-            // Move the subscription to trash (soft delete)
-            $trashed = $subscription->trash();
-
-            if (! $trashed) {
-                return new WP_REST_Response(['message' => __('Failed to trash subscription', 'give')], 500);
-            }
-        }
-
-        return new WP_REST_Response(['deleted' => true, 'previous' => $item], 200);
-    }
-
-    /**
-     * Delete multiple subscriptions.
-     *
-     * @unreleased
-     */
-    public function delete_items($request): WP_REST_Response
-    {
-        $ids = $request->get_param('ids');
-        $force = $request->get_param('force');
-        $deleted = [];
-        $errors = [];
-
-        foreach ($ids as $id) {
-            $subscription = Subscription::find($id);
-
-            if (! $subscription) {
-                $errors[] = ['id' => $id, 'message' => __('Subscription not found', 'give')];
-
-                continue;
-            }
-
-            $item = (new SubscriptionViewModel($subscription))->exports();
-
-            if ($force) {
-                if ($subscription->delete()) {
-                    $deleted[] = ['id' => $id, 'previous' => $item];
-                } else {
-                    $errors[] = ['id' => $id, 'message' => __('Failed to delete subscription', 'give')];
-                }
-            } else {
-                $trashed = $subscription->trash();
-
-                if ($trashed) {
-                    $deleted[] = ['id' => $id, 'previous' => $item];
-                } else {
-                    $errors[] = ['id' => $id, 'message' => __('Failed to trash subscription', 'give')];
-                }
-            }
-        }
-
-        return new WP_REST_Response([
-            'deleted' => $deleted,
-            'errors' => $errors,
-            'total_requested' => count($ids),
-            'total_deleted' => count($deleted),
-            'total_errors' => count($errors),
-        ], 200);
     }
 
     /**
@@ -502,18 +508,30 @@ class SubscriptionController extends WP_REST_Controller
                 'type' => 'integer',
                 'default' => 0,
             ],
-            'includeSensitiveData' => [
-                'type' => 'boolean',
-                'default' => false,
-            ],
-            'force' => [
-                'type' => 'boolean',
-                'default' => false,
-                'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
-            ],
         ];
 
         return $params;
+    }
+    
+    /**
+     * @unreleased
+     */
+    public function getSharedParams(): array
+    {
+        return [
+            'includeSensitiveData' => [
+                'description' => __('Include or not include data that can be used to contact or locate the donors, such as phone number, email, billing address, etc. (require proper permissions)', 'give'),
+                'type' => 'boolean',
+                'default' => false,
+            ],
+            'anonymousDonors' => [
+                'description' => __('Exclude, include, or redact data that can be used to identify the donors, such as ID, first name, last name, etc (require proper permissions).',
+                    'give'),
+                'type' => 'string',
+                'default' => 'exclude',
+                'enum' => ['exclude', 'include', 'redact'],
+            ],
+        ];
     }
 
     /**
@@ -528,6 +546,7 @@ class SubscriptionController extends WP_REST_Controller
         if ($subscriptionId) {
             $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $subscriptionId));
             $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
+            //$campaign_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'campaigns', $item['campaignId']));
             $donationForm_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'forms', $item['donationFormId']));
             $links = [
                 'self' => ['href' => $self_url],
@@ -535,7 +554,11 @@ class SubscriptionController extends WP_REST_Controller
                     'href' => $donor_url,
                     'embeddable' => true,
                 ],
-                CURIE::relationUrl('donationForm') => [
+                /*CURIE::relationUrl('campaign') => [
+                    'href' => $campaign_url,
+                    'embeddable' => true,
+                ],*/
+                CURIE::relationUrl('form') => [
                     'href' => $donationForm_url,
                     'embeddable' => true,
                 ],
@@ -554,12 +577,17 @@ class SubscriptionController extends WP_REST_Controller
 
     /**
      * @unreleased
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
      */
-    public function permissionsCheck(WP_REST_Request $request)
-    {
-        $canEditSubscriptions = $this->canEditSubscriptions();
+    public function permissionsCheckForGetMethods(WP_REST_Request $request)
+    {        
+        $isAdmin = $this->canEditSubscriptions();        
 
-        if (! $canEditSubscriptions) {
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        if ( ! $isAdmin && $includeSensitiveData) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to include sensitive data.', 'give'),
@@ -567,55 +595,103 @@ class SubscriptionController extends WP_REST_Controller
             );
         }
 
+        if ($request->get_param('anonymousDonors') !== null) {
+            $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
+            if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
+                return new WP_Error(
+                    'rest_forbidden',
+                    esc_html__('You do not have permission to include anonymous donors.', 'give'),
+                    ['status' => $this->authorizationStatusCode()]
+                );
+            }
+        }        
+
         return true;
     }
 
     /**
      * @unreleased
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
+     */
+    public function get_items_permissions_check($request)
+    {
+        return $this->permissionsCheckForGetMethods($request);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
+     */
+    public function get_item_permissions_check($request)
+    {
+        return $this->permissionsCheckForGetMethods($request);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
      */
     public function update_item_permissions_check($request)
     {
-        if ($this->canEditSubscriptions()) {
-            return true;
-        }
+        if (! $this->canEditSubscriptions()) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to update subscriptions.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );   
+        }        
 
-        return new WP_Error(
-            'rest_forbidden',
-            esc_html__('You do not have permission to update subscriptions.', 'give'),
-            ['status' => $this->authorizationStatusCode()]
-        );
+        return true;
     }
 
     /**
      * @unreleased
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
      */
     public function delete_item_permissions_check($request)
     {
-        if ($this->canDeleteSubscriptions()) {
-            return true;
+        if (! $this->canDeleteSubscriptions()) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to delete subscriptions.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+            
         }
 
-        return new WP_Error(
-            'rest_forbidden',
-            esc_html__('You do not have permission to delete subscriptions.', 'give'),
-            ['status' => $this->authorizationStatusCode()]
-        );
+        return true;
     }
 
     /**
      * @unreleased
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
      */
     public function delete_items_permissions_check($request)
     {
         if ($this->canDeleteSubscriptions()) {
-            return true;
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to delete subscriptions.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
         }
 
-        return new WP_Error(
-            'rest_forbidden',
-            esc_html__('You do not have permission to delete subscriptions.', 'give'),
-            ['status' => $this->authorizationStatusCode()]
-        );
+        return true;
     }
 
     /**
@@ -739,6 +815,7 @@ class SubscriptionController extends WP_REST_Controller
                 'mode' => [
                     'type' => 'string',
                     'description' => esc_html__('Subscription mode (live or test)', 'give'),
+                    'default' => 'live',
                     'enum' => ['live', 'test'],
                 ],
                 'createdAt' => [
