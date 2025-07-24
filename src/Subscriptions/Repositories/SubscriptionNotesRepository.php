@@ -44,7 +44,7 @@ class SubscriptionNotesRepository
     public function getById(int $noteId)
     {
         return $this->prepareQuery()
-            ->where('comment_ID', $noteId)
+            ->where('comments.comment_ID', $noteId)
             ->get();
     }
 
@@ -76,6 +76,7 @@ class SubscriptionNotesRepository
                     'comment_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'comment_post_ID' => $subscriptionNote->subscriptionId,
                     'comment_type' => self::COMMENT_TYPE,
+                    'user_id' => is_admin() ? get_current_user_id() : 0,
                 ]);
 
             $commentId = DB::last_insert_id();
@@ -124,6 +125,7 @@ class SubscriptionNotesRepository
                     'comment_content' => $subscriptionNote->content,
                     'comment_post_ID' => $subscriptionNote->subscriptionId,
                     'comment_type' => self::COMMENT_TYPE,
+                    'user_id' => is_admin() ? get_current_user_id() : 0,
                 ]);
 
             if ($subscriptionNote->isDirty('type') && $subscriptionNote->type->isDonor()) {
@@ -182,8 +184,8 @@ class SubscriptionNotesRepository
     public function queryBySubscriptionId(int $subscriptionId): ModelQueryBuilder
     {
         return $this->prepareQuery()
-            ->where('comment_post_ID', $subscriptionId)
-            ->orderBy('comment_ID', 'DESC');
+            ->where('comments.comment_post_ID', $subscriptionId)
+            ->orderBy('comments.comment_ID', 'DESC');
     }
 
     /**
@@ -213,20 +215,20 @@ class SubscriptionNotesRepository
     {
         $builder = new ModelQueryBuilder(SubscriptionNote::class);
 
-        return $builder->from('comments')
+        return $builder->from('comments', 'comments')
             ->select(
-                ['comment_ID', 'id'],
-                ['comment_post_ID', 'subscriptionId'],
-                ['comment_content', 'content'],
-                ['comment_date', 'createdAt']
+                ['comments.comment_ID', 'id'],
+                ['comments.comment_post_ID', 'subscriptionId'],
+                ['comments.comment_content', 'content'],
+                ['comments.comment_date', 'createdAt']
             )
             ->attachMeta(
                 'commentmeta',
-                'comment_ID',
+                'comments.comment_ID',
                 'comment_ID',
                 ...SubscriptionNoteMetaKeys::getColumnsForAttachMetaQuery()
             )
-            ->where('comment_type', self::COMMENT_TYPE);
+            ->where('comments.comment_type', self::COMMENT_TYPE);
     }
 
     /**

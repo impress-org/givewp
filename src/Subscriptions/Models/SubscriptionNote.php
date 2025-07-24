@@ -18,7 +18,6 @@ use Give\Subscriptions\DataTransferObjects\SubscriptionNoteQueryData;
  * @unreleased
  *
  * @property int $id
- * @property int $userId
  * @property string $content
  * @property int $subscriptionId
  * @property SubscriptionNoteType $type
@@ -32,7 +31,6 @@ class SubscriptionNote extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
-        'userId' => 'int',
         'content' => 'string',
         'subscriptionId' => 'int',
         'type' => SubscriptionNoteType::class,

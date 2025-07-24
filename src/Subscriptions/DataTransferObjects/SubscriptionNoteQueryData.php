@@ -21,10 +21,6 @@ final class SubscriptionNoteQueryData
     /**
      * @var string
      */
-    public $userId;
-    /**
-     * @var string
-     */
     public $content;
     /**
      * @var int
@@ -49,7 +45,6 @@ final class SubscriptionNoteQueryData
         $self = new static();
 
         $self->id = (int)$subscriptionNoteQueryObject->id;
-        $self->userId = (int)$subscriptionNoteQueryObject->userId ?? 0;
         $self->content = $subscriptionNoteQueryObject->content;
         $self->subscriptionId = (int)$subscriptionNoteQueryObject->subscriptionId;
         $self->type = $subscriptionNoteQueryObject->type ? new SubscriptionNoteType($subscriptionNoteQueryObject->type) : SubscriptionNoteType::ADMIN();

@@ -27,7 +27,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_model_instantiation()
+    public function testModelInstantiation()
     {
         $subscriptionNote = new SubscriptionNote([
             'subscriptionId' => 123,
@@ -47,13 +47,12 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_properties_are_correctly_typed()
+    public function testPropertiesAreCorrectlyTyped()
     {
         $createdAt = Temporal::getCurrentDateTime();
 
         $subscriptionNote = new SubscriptionNote([
             'id' => 1,
-            'userId' => 1,
             'content' => 'Test content',
             'subscriptionId' => 123,
             'type' => SubscriptionNoteType::DONOR(),
@@ -61,7 +60,6 @@ class TestSubscriptionNote extends TestCase
         ]);
 
         $this->assertIsInt($subscriptionNote->id);
-        $this->assertIsInt($subscriptionNote->userId);
         $this->assertIsString($subscriptionNote->content);
         $this->assertIsInt($subscriptionNote->subscriptionId);
         $this->assertInstanceOf(SubscriptionNoteType::class, $subscriptionNote->type);
@@ -73,7 +71,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_query_should_return_model_query_builder()
+    public function testQueryShouldReturnModelQueryBuilder()
     {
         $queryBuilder = SubscriptionNote::query();
 
@@ -87,7 +85,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @throws Exception
      */
-    public function test_factory_should_create_subscription_note()
+    public function testFactoryShouldCreateSubscriptionNote()
     {
         $subscriptionNote = SubscriptionNote::factory()->make([
             'subscriptionId' => 123,
@@ -104,7 +102,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_factory_method_returns_correct_factory()
+    public function testFactoryMethodReturnsCorrectFactory()
     {
         $factory = SubscriptionNote::factory();
 
@@ -116,13 +114,12 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_from_query_builder_object_should_create_subscription_note_from_object()
+    public function testFromQueryBuilderObjectShouldCreateSubscriptionNoteFromObject()
     {
         $createdAt = Temporal::getCurrentDateTime();
 
         $object = (object) [
             'id' => 1,
-            'userId' => 1,
             'content' => 'Test content from object',
             'subscriptionId' => 123,
             'type' => SubscriptionNoteType::DONOR(),
@@ -133,7 +130,6 @@ class TestSubscriptionNote extends TestCase
 
         $this->assertInstanceOf(SubscriptionNote::class, $subscriptionNote);
         $this->assertEquals(1, $subscriptionNote->id);
-        $this->assertEquals(1, $subscriptionNote->userId);
         $this->assertEquals('Test content from object', $subscriptionNote->content);
         $this->assertEquals(123, $subscriptionNote->subscriptionId);
         $this->assertEquals(SubscriptionNoteType::DONOR(), $subscriptionNote->type->getValue());
@@ -145,7 +141,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_from_query_builder_object_should_default_to_admin_type_when_type_is_null()
+    public function testFromQueryBuilderObjectShouldDefaultToAdminTypeWhenTypeIsNull()
     {
         $object = (object) [
             'id' => 1,
@@ -166,7 +162,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_from_query_builder_object_should_default_to_admin_type_when_type_is_empty()
+    public function testFromQueryBuilderObjectShouldDefaultToAdminTypeWhenTypeIsEmpty()
     {
         $object = (object) [
             'id' => 1,
@@ -189,7 +185,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @throws Exception
      */
-    public function test_subscription_relationship_returns_query_builder()
+    public function testSubscriptionRelationshipReturnsQueryBuilder()
     {
         $subscription = Subscription::factory()->createWithDonation();
         $subscriptionNote = new SubscriptionNote([
@@ -208,7 +204,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_model_has_correct_property_definitions()
+    public function testModelHasCorrectPropertyDefinitions()
     {
         $subscriptionNote = new SubscriptionNote;
 
@@ -219,7 +215,6 @@ class TestSubscriptionNote extends TestCase
 
         $expectedProperties = [
             'id' => 'int',
-            'userId' => 'int',
             'content' => 'string',
             'subscriptionId' => 'int',
             'type' => SubscriptionNoteType::class,
@@ -234,7 +229,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_model_has_correct_relationship_definitions()
+    public function testModelHasCorrectRelationshipDefinitions()
     {
         $subscriptionNote = new SubscriptionNote;
 
@@ -252,7 +247,7 @@ class TestSubscriptionNote extends TestCase
      *
      * @return void
      */
-    public function test_type_enum_values()
+    public function testTypeEnumValues()
     {
         $adminType = SubscriptionNoteType::ADMIN();
         $donorType = SubscriptionNoteType::DONOR();
