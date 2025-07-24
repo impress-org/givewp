@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Campaigns\Actions;
+namespace Give\ThirdPartySupport\Elementor\Actions;
 
 use Give\Campaigns\Models\CampaignPage;
 
@@ -80,11 +80,6 @@ class SetupElementorCampaignTemplate
      */
     private function setupElementorData(int $pageId, int $campaignId, string $shortDescription): void
     {
-        // Include the template file if not already loaded
-        if (!function_exists('givewp_get_elementor_campaign_template')) {
-            require_once __DIR__ . '/../Templates/elementor-campaign-template.php';
-        }
-
         // Get the template data structure
         $templateData = $this->getElementorTemplateData($campaignId, $shortDescription);
 
@@ -140,7 +135,7 @@ class SetupElementorCampaignTemplate
                     ]
                 ],
                 'elements' => [
-                    // Left Column (60% - Campaign Image)
+                    // Left Column (60% - Post Featured Image)
                     [
                         'id' => $this->generateElementorId(),
                         'elType' => 'column',
@@ -152,9 +147,29 @@ class SetupElementorCampaignTemplate
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
-                                'widgetType' => 'shortcode',
+                                'widgetType' => 'theme-post-featured-image',
                                 'settings' => [
-                                    'shortcode' => "[givewp_campaign campaign_id=\"{$campaignId}\" show_image=\"true\" show_description=\"false\" show_goal=\"false\"]"
+                                    'width' => [
+                                        'unit' => '%',
+                                        'size' => 100
+                                    ],
+                                    'max_width' => [
+                                        'unit' => '%',
+                                        'size' => 100
+                                    ],
+                                    'height' => [
+                                        'unit' => 'vh',
+                                        'size' => 40
+                                    ],
+                                    'object-fit' => 'cover',
+                                    'border_radius' => [
+                                        'unit' => 'px',
+                                        'top' => 8,
+                                        'right' => 8,
+                                        'bottom' => 8,
+                                        'left' => 8,
+                                        'isLinked' => true
+                                    ]
                                 ]
                             ]
                         ]
@@ -177,13 +192,13 @@ class SetupElementorCampaignTemplate
                                     'shortcode' => "[givewp_campaign campaign_id=\"{$campaignId}\" show_image=\"false\" show_description=\"false\" show_goal=\"true\"]"
                                 ]
                             ],
-                            // Campaign Stats (HTML widget)
+                            // Campaign Stats (Shortcode - to be implemented)
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
-                                'widgetType' => 'html',
+                                'widgetType' => 'shortcode',
                                 'settings' => [
-                                    'html' => $this->getCampaignStatsHtml($campaignId)
+                                    'shortcode' => "[givewp_campaign_stats campaign_id=\"{$campaignId}\"]"
                                 ]
                             ],
                             // Donate Button
@@ -290,36 +305,6 @@ class SetupElementorCampaignTemplate
                 ]
             ]
         ];
-    }
-
-    /**
-     * Generate campaign stats HTML
-     *
-     * @since 4.0.0
-     * @param int $campaignId
-     * @return string
-     */
-    private function getCampaignStatsHtml(int $campaignId): string
-    {
-        return '
-        <div class="givewp-campaign-stats" style="margin: 20px 0;">
-            <div class="campaign-stat" style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 5px 0;">
-                <span class="stat-label" style="font-weight: normal; color: #666;">Total Donations</span>
-                <span class="stat-value" id="campaign-total-' . $campaignId . '" style="font-weight: bold; color: #333;">Loading...</span>
-            </div>
-            <div class="campaign-stat" style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 5px 0;">
-                <span class="stat-label" style="font-weight: normal; color: #666;">Average Donation</span>
-                <span class="stat-value" id="campaign-average-' . $campaignId . '" style="font-weight: bold; color: #333;">Loading...</span>
-            </div>
-        </div>
-
-        <script>
-        // Load campaign stats dynamically
-        document.addEventListener("DOMContentLoaded", function() {
-            // You can implement AJAX calls here to load real campaign statistics
-            // For now, showing placeholder text
-        });
-        </script>';
     }
 
     /**
