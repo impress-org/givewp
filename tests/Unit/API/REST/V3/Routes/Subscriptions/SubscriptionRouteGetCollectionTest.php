@@ -22,6 +22,7 @@ use WP_REST_Server;
 class SubscriptionRouteGetCollectionTest extends RestApiTestCase
 {
     use RefreshDatabase;
+    
     /**
      * @unreleased
      */
@@ -58,10 +59,19 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         // Remove additional property add by the prepare_response_for_collection() method
         unset($data[0]['_links']);
 
-        // TODO: show shape of DateTime objects
-        $createdAtJson = json_encode($data[0]['createdAt']);
-
         $this->assertEquals(200, $status);
+
+        // Verify DateTime object structure for createdAt and renewsAt
+        $this->assertIsArray($data[0]['createdAt']);
+        $this->assertArrayHasKey('date', $data[0]['createdAt']);
+        $this->assertArrayHasKey('timezone', $data[0]['createdAt']);
+        $this->assertArrayHasKey('timezone_type', $data[0]['createdAt']);
+
+        $this->assertIsArray($data[0]['renewsAt']);
+        $this->assertArrayHasKey('date', $data[0]['renewsAt']);
+        $this->assertArrayHasKey('timezone', $data[0]['renewsAt']);
+        $this->assertArrayHasKey('timezone_type', $data[0]['renewsAt']);
+
         $this->assertEquals([
             'id' => $subscription->id,
             'donorId' => $subscription->donorId,
@@ -76,14 +86,14 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
             'gatewayId' => TestGateway::id(), 
             'gatewaySubscriptionId' => $subscription->gatewaySubscriptionId,
             'mode' => 'live', 
-            'createdAt' => json_decode($createdAtJson, true),
+            'createdAt' => $data[0]['createdAt'],
             'renewsAt' => $data[0]['renewsAt'], 
-            'gateway' => [
-                'id' => 'manual',
-                'label' => 'Test Donation',
-                'subscriptionUrl' => '',
-                'name' => 'Test Donation', 
-            ],
+            'gateway' => array_merge(
+                $subscription->gateway()->toArray(),
+                [
+                    'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),
+                ]
+            )
         ], $data[0]);
     }
 
@@ -217,6 +227,150 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         $status = $response->get_status();
 
         $this->assertEquals(403, $status);
+    }
+
+        /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetSubscriptionsShouldNotIncludeAnonymousDonors()
+    {
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
+        $subscription1 = $this->createSubscription('live', 'active', 100);
+        $subscription2 = $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($subscription1->id, $data[0]['id']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetSubscriptionsShouldIncludeAnonymousDonors()
+    {
+        $newAdminUser = $this->factory()->user->create(
+            [
+                'role' => 'administrator',
+                'user_login' => 'testGetSubscriptionsShouldIncludeAnonymousDonors',
+                'user_pass' => 'testGetSubscriptionsShouldIncludeAnonymousDonors',
+                'user_email' => 'testGetSubscriptionsShouldIncludeAnonymousDonors@test.com',
+            ]
+        );
+        wp_set_current_user($newAdminUser);
+
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
+        $subscription1 = $this->createSubscription('live', 'active', 100);
+        $subscription2 = $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'anonymousDonors' => 'include',
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($subscription1->id, $data[0]['id']);
+        $this->assertEquals($subscription2->id, $data[1]['id']);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetSubscriptionsShouldReturn403ErrorWhenNotAdminUserIncludeAnonymousDonors()
+    {
+        $newSubscriberUser = $this->factory()->user->create(
+            [
+                'role' => 'subscriber',
+                'user_login' => 'testGetSubscriptionsShouldReturn403ErrorAnonymousDonors',
+                'user_pass' => 'testGetSubscriptionsShouldReturn403ErrorAnonymousDonors',
+                'user_email' => 'testGetSubscriptionsShouldReturn403ErrorAnonymousDonors@test.com',
+            ]
+        );
+        wp_set_current_user($newSubscriberUser);
+
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
+        $this->createSubscription('live', 'active', 100);
+        $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'anonymousDonors' => 'include',
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(403, $status);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testGetSubscriptionsShouldRedactAnonymousDonors()
+    {
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
+        $subscription1 = $this->createSubscription('live', 'active', 100);
+        $subscription2 = $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'anonymousDonors' => 'redact',
+                'direction' => 'ASC',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(2, count($data));
+        $this->assertEquals($subscription1->id, $data[0]['id']);
+        $this->assertEquals(0, $data[1]['donorId']);
+
+        /*$anonymousDataRedacted = [
+            'donorId',
+        ];
+
+        foreach ($anonymousDataRedacted as $property) {
+            $this->assertEquals(0, $data[1][$property]);
+        }*/
     }
 
     /**
@@ -472,8 +626,36 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
             'period' => SubscriptionPeriod::MONTH(),
             'frequency' => 1,
             'installments' => 0,
-            'transactionId' => 'test-transaction-123',
+            //'transactionId' => 'test-transaction-123',
             'mode' => new SubscriptionMode($mode),
         ]);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    private function createSubscriptionWithAnonymousDonor(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
+    {
+        return Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'amount' => new Money($amount, 'USD'),
+            'status' => new SubscriptionStatus($status),
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
+            'installments' => 0,
+            //'transactionId' => 'test-transaction-123',
+            'mode' => new SubscriptionMode($mode),
+        ], [
+            'anonymous' => true,
+        ]);
+
+        /*$subscription = $this->createSubscription($mode, $status, $amount);
+        $subscription->initialDonation()->anonymous = true; 
+        $subscription->initialDonation()->save();*/
+        
+
+        return $subscription;
     }    
 }
