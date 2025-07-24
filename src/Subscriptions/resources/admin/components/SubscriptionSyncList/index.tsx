@@ -2,25 +2,39 @@ import { useState } from "react";
 import { __ } from "@wordpress/i18n";
 import classnames from 'classnames';
 import SyncDetails,{ PaymentDetails } from "./Details";
+import { SubscriptionSyncResponse } from "../../../hooks/useSubscriptionSync";
 import styles from './styles.module.scss';
 
 /**
  * @unreleased
  */
-export default function SubscriptionSyncList() {
+type SubscriptionSyncListProps = {
+    syncResult: SubscriptionSyncResponse;
+}
+
+/**
+ * @unreleased
+ */
+export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncListProps) {
+    const { details, missingTransactions, presentTransactions } = syncResult;
+
+    const statusUpdated = details?.currentStatus !== details?.gatewayStatus;
+    const periodUpdated = details?.currentPeriod !== details?.gatewayPeriod;
+    const createdAtUpdated = details?.currentCreatedAt !== details?.gatewayCreatedAt;
+
     return (
         <div className={styles.list}>
-            <SyncItem title="Subscription status" isUpdated={true}>
-                <SyncDetails isUpdated={true} />
+            <SyncItem title="Subscription status" isUpdated={statusUpdated}>
+                <SyncDetails isUpdated={statusUpdated} currentValue={details?.currentStatus} />
             </SyncItem>
-            <SyncItem title="Billing period" isUpdated={false}>
-                <SyncDetails isUpdated={false} />
+            <SyncItem title="Billing period" isUpdated={periodUpdated}>
+                <SyncDetails isUpdated={periodUpdated} currentValue={details?.currentPeriod} />
             </SyncItem>
-            <SyncItem title="Date created" isUpdated={true}>
-                <SyncDetails isUpdated={true} />
+            <SyncItem title="Date created" isUpdated={createdAtUpdated}>
+                <SyncDetails isUpdated={createdAtUpdated} currentValue={details?.currentCreatedAt} />
             </SyncItem>
             <SyncItem title="Subscription payments" isUpdated={false}>
-                <PaymentDetails payment={[]} />
+                <PaymentDetails payment={missingTransactions || []} />
             </SyncItem>
         </div>
     );
@@ -31,7 +45,7 @@ export default function SubscriptionSyncList() {
  */
 type SyncItemProps = {
     title: string;
-    isUpdated: boolean;
+    isUpdated: boolean | null;
     children: React.ReactNode;
 }
 
@@ -40,6 +54,9 @@ type SyncItemProps = {
  */
 function SyncItem({ title, isUpdated, children }: SyncItemProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    // Add debugging for the SyncItem
+    console.log(`SyncItem "${title}" isUpdated:`, isUpdated);
 
     return (
         <div className={styles.item}>
