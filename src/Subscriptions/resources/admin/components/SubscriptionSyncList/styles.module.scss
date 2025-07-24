@@ -1,0 +1,200 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-3);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: auto;
+    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+    border: solid 1px #e5e7eb;
+    border-radius: 8px;
+}
+
+.itemContent {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--givewp-spacing-3);
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.itemHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+
+    & div:first-child {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-2);
+    }
+}
+
+.itemTitle {
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #1f2937;
+}
+
+.itemPill {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.5;  
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+    border-radius: 12px;
+    background-color: #cef2cf;
+    color: #022603;
+}
+
+.itemUpdated {
+    background-color: #cef2cf;
+    background-color: #beb6f2;
+}
+
+.itemButton {
+    border: none;
+    background: none;
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.43;
+    color: #060c1a;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.syncDetails {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.detail {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+    width: 100%;
+}
+
+.detailContainer{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: var(--givewp-spacing-3);
+    background-color: #f9fafb;
+}
+
+.detailWrapper, .accurateDetailWrapper{
+    flex: 1;
+    align-self: stretch;
+    display: flex;
+    justify-content:space-between;
+    gap: var(--givewp-spacing-2);
+    align-items: center;
+    width: 100%;
+    border-radius: .5rem;
+    background-color: #f9fafb;
+}
+
+.accurateDetailWrapper{
+    padding: var(--givewp-spacing-3);
+}
+
+.detailItem {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-1);
+}
+
+.detailTitle {
+    display: inline-block;
+    margin: 0 0 var(--givewp-spacing-2) 0;
+    padding: 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.24px;
+    color: #4b5563;
+}
+
+.detailLabel {
+    margin: 0;
+    padding: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #4b5563;
+}
+
+.detailStatus {
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.43;
+    color: #060c1a;
+}
+
+.paymentDetails {    
+    align-self: stretch;
+    display: flex;
+    justify-content:space-between;
+    justify-content: flex-start;
+    gap: var(--givewp-spacing-2);
+    align-items: center;
+    width: 100%;
+    padding: var(--givewp-spacing-3);
+    border-radius: .5rem;
+    background-color: #f9fafb;
+}
+
+.paymentsContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-1);
+}
+
+.paymentIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    width: 32px;
+    padding: 4px;
+    border-radius: 999px;
+    background-color: #f4f2ff;
+}
+
+.paymentDescription {
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.43;
+    color: #001326;
+}
+
+.paymentDate {
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.43;
+    color: #6b7280;
+}
