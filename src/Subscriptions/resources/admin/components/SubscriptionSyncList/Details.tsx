@@ -9,12 +9,13 @@ import styles from "./styles.module.scss";
  */
 type SyncDetailsProps = {
     isUpdated: boolean;
+    currentValue: string;
   }
   
 /**
  * @unreleased
  */
-export default function SyncDetails({ isUpdated }: SyncDetailsProps) {
+export default function SyncDetails({ isUpdated, currentValue }: SyncDetailsProps) {
   return (
     <div className={styles.syncDetails}>
       {isUpdated ? (
@@ -24,7 +25,7 @@ export default function SyncDetails({ isUpdated }: SyncDetailsProps) {
             <div className={styles.detailWrapper}>
               <div className={styles.detailItem}>
                   <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
-                  <p className={styles.detailStatus}>{__('Active', 'give')}</p>
+                  <p className={styles.detailStatus}>{currentValue}</p>
                 </div>
                 <XCircleIcon />
                 <div className={styles.detailItem}>

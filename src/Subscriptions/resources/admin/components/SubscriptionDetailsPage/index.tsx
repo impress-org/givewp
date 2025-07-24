@@ -182,7 +182,7 @@ export default function SubscriptionDetailsPage() {
                     )
                 }
             >
-                {hasResolved ? <SubscriptionSyncList /> : __('This will update the subscription details using the most recent data from the gateway. However, no changes will be made to existing payments.', 'give')}
+                {hasResolved ? <SubscriptionSyncList syncResult={syncResult} /> : __('This will update the subscription details using the most recent data from the gateway. However, no changes will be made to existing payments.', 'give')}
             </ConfirmationDialog>
         </AdminDetailsPage>
     );
