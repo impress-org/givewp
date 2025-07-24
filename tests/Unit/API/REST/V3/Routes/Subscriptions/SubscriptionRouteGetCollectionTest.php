@@ -4,10 +4,6 @@ namespace Unit\API\REST\V3\Routes\Subscriptions;
 
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
-use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationMode;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
@@ -21,7 +17,7 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @since 4.0.0
+ * @unreleased
  */
 class SubscriptionRouteGetCollectionTest extends RestApiTestCase
 {
@@ -29,8 +25,10 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testGetSubscriptionsShouldReturnAllModelProperties()
+    public function testGetSubscriptionsShouldReturnAllViewModelProperties()
     {
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
         $newAdminUser = $this->factory()->user->create(
             [
                 'role' => 'administrator',
@@ -41,7 +39,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         );
         wp_set_current_user($newAdminUser);        
 
-        $subscription = $this->createSubscriptionWithMode('live');        
+        $subscription = $this->createSubscription();        
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -94,7 +92,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      */
     public function testGetSubscriptionsShouldReturnSelfLink()
     {        
-        $subscription = $this->createSubscriptionWithMode('live');
+        $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);        
@@ -118,7 +116,9 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      */
     public function testGetSubscriptionsShouldNotIncludeSensitiveData()
     {
-        $this->createSubscriptionWithMode('live');
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
+        $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);        
@@ -147,6 +147,8 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      */
     public function testGetSubscriptionsShouldIncludeSensitiveData()
     {
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
         $newAdminUser = $this->factory()->user->create(
             [
                 'role' => 'administrator',
@@ -157,7 +159,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         );
         wp_set_current_user($newAdminUser);
 
-        $this->createSubscriptionWithMode('live');
+        $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -188,6 +190,8 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      */
     public function testGetSubscriptionsShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
     {
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
         $newSubscriberUser = $this->factory()->user->create(
             [
                 'role' => 'subscriber',
@@ -198,7 +202,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         );
         wp_set_current_user($newSubscriberUser);
 
-        $this->createSubscriptionWithMode('live');
+        $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -224,9 +228,9 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
         
-        $subscription1 = $this->createSubscriptionWithMode('live');
+        $subscription1 = $this->createSubscription();
         
-        $subscription2 = $this->createSubscriptionWithMode('live');
+        $subscription2 = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -278,10 +282,10 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      */
     public function testGetSubscriptionsByDonorId()
     {
-        Subscription::query()->delete();        
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
-        $subscription1 = $this->$this->createSubscriptionWithMode('live');
-        $subscription2 = $this->$this->createSubscriptionWithMode('live');
+        $subscription1 = $this->createSubscription();
+        $subscription2 = $this->createSubscription();
         $donor1 = $subscription1->donor;
         $donor2 = $subscription2->donor;
 
@@ -310,11 +314,10 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      */
     public function testGetSubscriptionsByStatus()
     {
-        Subscription::query()->delete();
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
-        $subscription1 = $this->$this->createSubscriptionWithMode('live');
-        $subscription2 = $this->$this->createSubscriptionWithMode('live');
-        
+        $subscription1 = $this->createSubscription('live', SubscriptionStatus::ACTIVE);
+        $subscription2 = $this->createSubscription('live', SubscriptionStatus::CANCELLED);
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -330,7 +333,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(200, $status);
-        $this->assertEquals(2, count($data));
+        $this->assertEquals(1, count($data));
         $this->assertEquals($subscription1->id, $data[0]['id']);
     }
 
@@ -341,10 +344,10 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      */
     public function testGetSubscriptionsByMode()
     {
-        Subscription::query()->delete();
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
-        $subscription1 = $this->createSubscriptionWithMode('test');
-        $subscription2 = $this->createSubscriptionWithMode('live');
+        $subscription1 = $this->createSubscription('test');
+        $subscription2 = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -385,9 +388,9 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
 
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
-        $subscription1 = $this->createSubscription1();
-        $subscription2 = $this->createSubscription2();
-        $subscription3 = $this->createSubscription3();
+        $subscription1 = $this->createSubscription('live', 'active', 100);
+        $subscription2 = $this->createSubscription('live', 'active', 200);
+        $subscription3 = $this->createSubscription('live', 'active', 300);
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -453,114 +456,24 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
             ['amount'],
             ['donorId'],
         ];
-    }
+    }    
 
     /**
      * @unreleased
      *
      * @throws Exception
      */
-    private function createSubscriptionForDonor(int $donorId): Subscription
-    {
-        return Subscription::factory()->create([
-            'donorId' => $donorId,
-            'status' => SubscriptionStatus::ACTIVE(),
-            'mode' => new SubscriptionMode('live'),
-        ]);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
-    private function createSubscriptionWithStatus(SubscriptionStatus $status): Subscription
-    {
-        return Subscription::factory()->create([
-            'status' => $status,
-            'mode' => new SubscriptionMode('live'),
-        ]);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
-    private function createSubscriptionWithMode(string $mode): Subscription
+    private function createSubscription(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
     {
         return Subscription::factory()->createWithDonation([
             'gatewayId' => TestGateway::id(),
-            'amount' => new Money(10000, 'USD'),
-            'status' => SubscriptionStatus::ACTIVE(),
+            'amount' => new Money($amount, 'USD'),
+            'status' => new SubscriptionStatus($status),
             'period' => SubscriptionPeriod::MONTH(),
             'frequency' => 1,
             'installments' => 0,
             'transactionId' => 'test-transaction-123',
             'mode' => new SubscriptionMode($mode),
         ]);
-    }
-
-    /**
-     * @since 4.0.0
-     *
-     * @throws Exception
-     */
-    private function createSubscription1(): Subscription
-    {
-        /** @var Donor $donor1 */
-        $donor1 = Donor::factory()->create();
-
-        return Subscription::factory()->create([
-            'donorId' => $donor1->id,
-            'status' => SubscriptionStatus::ACTIVE(),
-            'amount' => new Money(100, 'USD'),
-            'period' => SubscriptionPeriod::MONTH(),
-            'frequency' => 1,
-            'mode' => new SubscriptionMode('live'),
-            'gatewayId' => TestGateway::id(),   
-        ]);
-    }
-
-    /**
-     * @since 4.0.0
-     *
-     * @throws Exception
-     */
-    private function createSubscription2(): Subscription
-    {
-        /** @var Donor $donor2 */
-        $donor2 = Donor::factory()->create();
-
-        return Subscription::factory()->create([
-            'donorId' => $donor2->id,
-            'status' => SubscriptionStatus::ACTIVE(),
-            'amount' => new Money(200, 'USD'),
-            'period' => SubscriptionPeriod::MONTH(),
-            'frequency' => 1,
-            'mode' => new SubscriptionMode('live'),
-            'gatewayId' => TestGateway::id(),   
-        ]);
-    }
-
-    /**
-     * @since 4.0.0
-     *
-     * @throws Exception
-     */
-    private function createSubscription3(): Subscription
-    {
-        /** @var Donor $donor3 */
-        $donor3 = Donor::factory()->create();
-
-        return Subscription::factory()->create([
-            'donorId' => $donor3->id,
-            'status' => SubscriptionStatus::ACTIVE(),
-            'amount' => new Money(300, 'USD'),
-            'period' => SubscriptionPeriod::MONTH(),
-            'frequency' => 1,
-            'mode' => new SubscriptionMode('live'),
-            'gatewayId' => TestGateway::id(),   
-        ]);
-    }
+    }    
 }
