@@ -123,16 +123,16 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * Get Subscription notes
      *
-     * @unreleased Deprecated in favor of ->notes()
+     * @deprecated Access notes via $subscription->notes()->getAll() instead.
      * @since 2.19.6
-     *
-     * @deprecated Access notes via $subscription->notes() instead.
      *
      * @return object[]
      */
     public function getNotes(): array
     {
-        return $this->notes()->get()->toArray();
+        _give_deprecated_function(__METHOD__, '4.6.0', '$subscription->notes()->getAll()');
+
+        return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
     /**

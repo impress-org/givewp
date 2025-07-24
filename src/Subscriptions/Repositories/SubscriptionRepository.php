@@ -123,21 +123,24 @@ class SubscriptionRepository
     }
 
     /**
+     * @deprecated Use give()->subscriptions->notes()->queryBySubscriptionId()->getAll() instead.
      * @since 2.19.6
      *
      * @return object[]
      */
     public function getNotesBySubscriptionId(int $id): array
     {
-        $notes = DB::table('comments')
-            ->select(
-                ['comment_content', 'note'],
-                ['comment_date', 'date']
-            )
-            ->where('comment_post_ID', $id)
-            ->where('comment_type', 'give_sub_note')
-            ->orderBy('comment_date', 'DESC')
-            ->getAll();
+        _give_deprecated_function(__METHOD__, '4.6.0', 'give()->subscriptions->notes()->queryBySubscriptionId()->getAll()');
+
+        $notes = array_map(
+            static function ($note) {
+                return array_merge($note->toArray(), [
+                    'note' => $note->comment_content,
+                    'date' => $note->comment_date,
+                ]);
+            },
+            $this->notes->queryBySubscriptionId($id)->getAll()
+        );
 
         if (!$notes) {
             return [];
