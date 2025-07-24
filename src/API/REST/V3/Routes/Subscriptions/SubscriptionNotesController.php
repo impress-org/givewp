@@ -104,7 +104,7 @@ class SubscriptionNotesController extends WP_REST_Controller
         $perPage = $request->get_param('per_page');
 
         $query = SubscriptionNote::query()
-            ->where('subscriptionId', $subscription->id)
+            ->where('comments.comment_post_ID', $subscription->id)
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->orderBy('createdAt', 'DESC');
@@ -116,7 +116,7 @@ class SubscriptionNotesController extends WP_REST_Controller
             return $this->prepare_response_for_collection($item);
         }, $notes);
 
-        $totalNotes = SubscriptionNote::query()->where('subscriptionId', $subscription->id)->count();
+        $totalNotes = SubscriptionNote::query()->where('comments.comment_post_ID', $subscription->id)->count();
         $totalPages = (int)ceil($totalNotes / $perPage);
 
         $response = rest_ensure_response($notes);
