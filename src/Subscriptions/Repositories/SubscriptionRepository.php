@@ -19,10 +19,16 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
+ * @unreleased Add notes repository
  * @since 2.19.6
  */
 class SubscriptionRepository
 {
+    /**
+     * @var SubscriptionNotesRepository
+     */
+    public $notes;
+
     /**
      * @var string[]
      */
@@ -34,6 +40,14 @@ class SubscriptionRepository
         'status',
         'donationFormId',
     ];
+
+    /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        $this->notes = give(SubscriptionNotesRepository::class);
+    }
 
     /**
      * @since 2.19.6

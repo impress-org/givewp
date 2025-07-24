@@ -1,0 +1,259 @@
+<?php
+
+namespace Give\Subscriptions\Repositories;
+
+use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Models\ModelQueryBuilder;
+use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Helpers\Hooks;
+use Give\Log\Log;
+use Give\Subscriptions\Models\SubscriptionNote;
+use Give\Subscriptions\ValueObjects\SubscriptionNoteMetaKeys;
+use Give\Subscriptions\ValueObjects\SubscriptionNoteType;
+
+/**
+ * NOTE: This repository is still using the old comments table.
+ * In the future, we will migrate to the new comments table.
+ *
+ * @unreleased
+ */
+class SubscriptionNotesRepository
+{
+    /**
+     * @unreleased
+     *
+     * @var string[]
+     */
+    private $requiredSubscriptionProperties = [
+        'subscriptionId',
+        'content',
+    ];
+
+    /**
+     * @unreleased
+     */
+    private const COMMENT_TYPE = 'give_sub_note';
+
+    /**
+     * @unreleased
+     *
+     * @return SubscriptionNote|null
+     */
+    public function getById(int $noteId)
+    {
+        return $this->prepareQuery()
+            ->where('comment_ID', $noteId)
+            ->get();
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function insert(SubscriptionNote $subscriptionNote)
+    {
+        if (! $subscriptionNote->type) {
+            $subscriptionNote->type = SubscriptionNoteType::ADMIN();
+        }
+
+        $this->validateSubscriptionNote($subscriptionNote);
+
+        Hooks::doAction('givewp_subscription_note_creating', $subscriptionNote);
+
+        $dateCreated = Temporal::withoutMicroseconds($subscriptionNote->createdAt ?: Temporal::getCurrentDateTime());
+        $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
+
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('comments')
+                ->insert([
+                    'comment_content' => $subscriptionNote->content,
+                    'comment_date' => $dateCreatedFormatted,
+                    'comment_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
+                    'comment_post_ID' => $subscriptionNote->subscriptionId,
+                    'comment_type' => self::COMMENT_TYPE,
+                ]);
+
+            $commentId = DB::last_insert_id();
+
+            if ($subscriptionNote->type->isDonor()) {
+                DB::table('commentmeta')
+                    ->insert([
+                        'comment_ID' => $commentId,
+                        'meta_key' => SubscriptionNoteMetaKeys::TYPE,
+                        'meta_value' => SubscriptionNoteType::DONOR,
+                    ]);
+            }
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed creating a subscription note', compact('subscriptionNote'));
+
+            throw new $exception('Failed creating a subscription note');
+        }
+
+        DB::query('COMMIT');
+
+        $subscriptionNote->id = $commentId;
+        $subscriptionNote->createdAt = $dateCreated;
+
+        Hooks::doAction('givewp_subscription_note_created', $subscriptionNote);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function update(SubscriptionNote $subscriptionNote)
+    {
+        $this->validateSubscriptionNote($subscriptionNote);
+
+        Hooks::doAction('givewp_subscription_note_updating', $subscriptionNote);
+
+        DB::query('START TRANSACTION');
+
+        try {
+            DB::table('comments')
+                ->where('comment_ID', $subscriptionNote->id)
+                ->update([
+                    'comment_content' => $subscriptionNote->content,
+                    'comment_post_ID' => $subscriptionNote->subscriptionId,
+                    'comment_type' => self::COMMENT_TYPE,
+                ]);
+
+            if ($subscriptionNote->isDirty('type') && $subscriptionNote->type->isDonor()) {
+                $this->upsertSubscriptionNoteType($subscriptionNote);
+            }
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed updating a subscription note', compact('subscriptionNote'));
+
+            throw new $exception('Failed updating a subscription note');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_subscription_note_updated', $subscriptionNote);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function delete(SubscriptionNote $subscriptionNote): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_subscription_note_deleting', $subscriptionNote);
+
+        try {
+            DB::table('comments')
+                ->where('comment_ID', $subscriptionNote->id)
+                ->delete();
+
+            DB::table('commentmeta')
+                ->where('comment_ID', $subscriptionNote->id)
+                ->delete();
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed deleting a subscription note', compact('subscriptionNote'));
+
+            throw new $exception('Failed deleting a subscription note');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_subscription_note_deleted', $subscriptionNote);
+
+        return true;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function queryBySubscriptionId(int $subscriptionId): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('comment_post_ID', $subscriptionId)
+            ->orderBy('comment_ID', 'DESC');
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     */
+    private function validateSubscriptionNote(SubscriptionNote $subscriptionNote)
+    {
+        foreach ($this->requiredSubscriptionProperties as $key) {
+            if (! isset($subscriptionNote->$key)) {
+                throw new InvalidArgumentException("'$key' is required.");
+            }
+        }
+
+        if (! $subscriptionNote->subscription) {
+            throw new InvalidArgumentException('Invalid subscriptionId, Subscription does not exist');
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder<SubscriptionNote>
+     */
+    public function prepareQuery(): ModelQueryBuilder
+    {
+        $builder = new ModelQueryBuilder(SubscriptionNote::class);
+
+        return $builder->from('comments')
+            ->select(
+                ['comment_ID', 'id'],
+                ['comment_post_ID', 'subscriptionId'],
+                ['comment_content', 'content'],
+                ['comment_date', 'createdAt']
+            )
+            ->attachMeta(
+                'commentmeta',
+                'comment_ID',
+                'comment_ID',
+                ...SubscriptionNoteMetaKeys::getColumnsForAttachMetaQuery()
+            )
+            ->where('comment_type', self::COMMENT_TYPE);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function upsertSubscriptionNoteType(SubscriptionNote $subscriptionNote)
+    {
+        $table = DB::table('commentmeta');
+
+        $query = $table
+            ->where('comment_ID', $subscriptionNote->id)
+            ->where('meta_key', SubscriptionNoteMetaKeys::TYPE)
+            ->get();
+
+        if (! $query) {
+            $table->insert([
+                'comment_ID' => $subscriptionNote->id,
+                'meta_key' => SubscriptionNoteMetaKeys::TYPE,
+                'meta_value' => $subscriptionNote->type->getValue(),
+            ]);
+        } else {
+            $table
+                ->where('comment_ID', $subscriptionNote->id)
+                ->where('meta_key', SubscriptionNoteMetaKeys::TYPE)
+                ->update([
+                    'meta_value' => $subscriptionNote->type->getValue(),
+                ]);
+        }
+    }
+}
