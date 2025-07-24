@@ -143,6 +143,8 @@ class SubscriptionController extends WP_REST_Controller
         $sortDirection = $request->get_param('direction');
         $mode = $request->get_param('mode');
         $status = $request->get_param('status');
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
         $query = Subscription::query();
 
@@ -173,8 +175,8 @@ class SubscriptionController extends WP_REST_Controller
             
         $subscriptions = $query->getAll() ?? [];
 
-        $subscriptions = array_map(function ($subscription) use ($request) {
-            $item = (new SubscriptionViewModel($subscription))->exports();
+        $subscriptions = array_map(function ($subscription) use ($donorAnonymousMode, $includeSensitiveData, $request) {
+            $item = (new SubscriptionViewModel($subscription))->anonymousMode($donorAnonymousMode)->includeSensitiveData($includeSensitiveData)->exports();
 
             return $this->prepare_response_for_collection(
                 $this->prepare_item_for_response($item, $request)
@@ -222,13 +224,16 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function get_item($request)
     {
-        $subscription = Subscription::find($request->get_param('id'));
+        $subscription = Subscription::find($request->get_param('id'));        
 
         if (! $subscription) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
-        $item = (new SubscriptionViewModel($subscription))->exports();
+        $includeSensitiveData = $request->get_param('includeSensitiveData');
+        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
+
+        $item = (new SubscriptionViewModel($subscription))->anonymousMode($donorAnonymousMode)->includeSensitiveData($includeSensitiveData)->exports();
 
         $response = $this->prepare_item_for_response($item, $request);
 

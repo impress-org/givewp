@@ -71,7 +71,7 @@ class SubscriptionViewModel
             }
         }
 
-        if (isset($this->anonymousMode) && $this->anonymousMode->isRedacted() && $this->subscription->donor->anonymous) {
+        if (isset($this->anonymousMode ) && $this->anonymousMode->isRedacted() && $this->subscription->donor->isAnonymous()) {
             $anonymousDataRedacted = [
                 'donorId',                
             ];
@@ -97,9 +97,9 @@ class SubscriptionViewModel
     private function getGatewayDetails(): array
     {
         return array_merge(
-            $this->subscription->initialDonation()->gateway()->toArray(),
+            $this->subscription->gateway()->toArray(),
             [
-                'subscriptionUrl' => $this->subscription->initialDonation()->gateway()->gatewayDashboardSubscriptionUrl($this->subscription),
+                'subscriptionUrl' => $this->subscription->gateway()->gatewayDashboardSubscriptionUrl($this->subscription),
             ]
         );
     }
