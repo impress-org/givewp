@@ -426,13 +426,13 @@ class SubscriptionController extends WP_REST_Controller
         $sortColumnsMap = [
             'id' => 'id',
             'createdAt' => 'created',
-            'updatedAt' => 'created', // subscriptions table doesn't have updated column, use created
+            //'updatedAt' => 'created', // subscriptions table doesn't have updated column, use created
             'status' => 'status',
             'amount' => 'recurring_amount',
-            'feeAmountRecovered' => 'recurring_fee_amount',
+            //'feeAmountRecovered' => 'recurring_fee_amount',
             'donorId' => 'customer_id',
-            'firstName' => 'customer_id', // would need join for actual firstName
-            'lastName' => 'customer_id',  // would need join for actual lastName
+            //'firstName' => 'customer_id', // would need join for actual firstName
+            //'lastName' => 'customer_id',  // would need join for actual lastName
         ];
 
         return $sortColumnsMap[$sortColumn] ?? 'id';
@@ -459,13 +459,13 @@ class SubscriptionController extends WP_REST_Controller
                 'enum' => [
                     'id',
                     'createdAt',
-                    'updatedAt',
+                    //'updatedAt',
                     'status',
                     'amount',
-                    'feeAmountRecovered',
+                    //'feeAmountRecovered',
                     'donorId',
-                    'firstName',
-                    'lastName',
+                    //'firstName',
+                    //'lastName',
                 ],
             ],
             'direction' => [
