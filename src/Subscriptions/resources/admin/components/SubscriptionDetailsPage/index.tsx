@@ -60,7 +60,7 @@ export default function SubscriptionDetailsPage() {
     const { formatter } = useSubscriptionAmounts(subscription);
     const { deleteEntityRecord } = useDispatch(coreDataStore);
     const { syncSubscription, isLoading, hasResolved, syncResult } = useSubscriptionSync();
-    
+
     const PageTitle = () => {
         if (subscription?.amount?.value == null) {
             return null;
@@ -166,7 +166,7 @@ export default function SubscriptionDetailsPage() {
                 isConfirming={isLoading}
                 title={__('Sync subscription details', 'give')}
                 actionLabel={isLoading ? __('Syncing', 'give') : !hasResolved ? __('Proceed to sync', 'give') : __('Resync', 'give')}
-                isOpen={true}
+                isOpen={showConfirmationDialog === 'sync'}
                 handleClose={() => {
                     setShowConfirmationDialog(null);
                 }}
@@ -182,10 +182,7 @@ export default function SubscriptionDetailsPage() {
                     )
                 }
             >
-                {true ? 
-                <SubscriptionSyncList />
-                :
-                __('This will update the subscription details using the most recent data from the gateway. However, no changes will be made to existing payments.', 'give')}
+                {hasResolved ? <SubscriptionSyncList /> : __('This will update the subscription details using the most recent data from the gateway. However, no changes will be made to existing payments.', 'give')}
             </ConfirmationDialog>
         </AdminDetailsPage>
     );
