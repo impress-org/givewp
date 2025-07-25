@@ -17,9 +17,9 @@ type SyncDetailsProps = {
  * @unreleased
  */
 export default function SyncDetails({ isAccurate, currentValue, gatewayValue }: SyncDetailsProps) {
-    if(isAccurate) {
-        return <SyncAccurateDetails />;
-    }
+  if(isAccurate) {
+    return <SyncAccurateDetails />;
+  }
 
   return (
     <div className={styles.syncDetails}>
@@ -38,6 +38,20 @@ export default function SyncDetails({ isAccurate, currentValue, gatewayValue }: 
               </div>
             </div>
           </div>
+          <div className={styles.detailContainer}>
+            <p className={styles.detailTitle}>{__('NEW', 'give')}</p>
+            <div className={styles.detailWrapper}>
+                <div className={styles.detailItem}>
+                  <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
+                  <p className={styles.detailStatus}>{__('Completed', 'give')}</p>
+                </div>
+                <CheckCircleIcon />
+                <div className={styles.detailItem}>
+                  <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
+                  <p className={styles.detailStatus}>{__('Completed', 'give')}</p>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
   );
@@ -47,6 +61,7 @@ export default function SyncDetails({ isAccurate, currentValue, gatewayValue }: 
  * @unreleased
  */
 type SyncPaymentDetailsProps = {
+  isAccurate: boolean;
   payment: {
     gatewayTransactionId: string;
     id: number;
@@ -55,13 +70,12 @@ type SyncPaymentDetailsProps = {
     status: string;
     type: string;
   } | null;
-  isAccurate: boolean;
 }
 
 /**
  * @unreleased
  */
-export function SyncPaymentDetails({ payment, isAccurate }: SyncPaymentDetailsProps) {   
+export function SyncPaymentDetails({ payment, isAccurate}: SyncPaymentDetailsProps) {   
     if(isAccurate) {
         return <SyncAccurateDetails />;
     }
