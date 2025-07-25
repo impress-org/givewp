@@ -15,9 +15,10 @@ trait RefreshDatabase {
     public function refreshDatabase()
     {
 	    $giveTables = DB::get_col("SHOW TABLES LIKE '%give%'");
-        $wpTables = DB::get_col("SHOW TABLES LIKE '%post%'");
+        $wpCommentTables = DB::get_col("SHOW TABLES LIKE '%comment%'");
+        $wpPostTables = DB::get_col("SHOW TABLES LIKE '%post%'");
 
-        foreach (array_merge($giveTables, $wpTables) as $table) {
+        foreach (array_merge($giveTables, $wpCommentTables, $wpPostTables) as $table) {
             DB::query("TRUNCATE TABLE $table");
         }
     }
