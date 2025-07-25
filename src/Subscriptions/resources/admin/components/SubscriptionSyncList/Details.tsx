@@ -9,16 +9,16 @@ import styles from "./styles.module.scss";
  */
 type SyncDetailsProps = {
     isAccurate: boolean;
-    currentValue: string;
-    gatewayValue?: string;
+    platform: string;
+    gateway: string;
   }
   
 /**
  * @unreleased
  */
-export default function SyncDetails({ isAccurate, currentValue, gatewayValue }: SyncDetailsProps) {
+export default function SyncDetails({ isAccurate, platform, gateway }: SyncDetailsProps) {
   if(isAccurate) {
-    return <SyncAccurateDetails />;
+    return <SyncAccurateDetails platform={platform} gateway={gateway} />;
   }
 
   return (
@@ -29,12 +29,12 @@ export default function SyncDetails({ isAccurate, currentValue, gatewayValue }: 
             <div className={styles.detailWrapper}>
               <div className={styles.detailItem}>
                   <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
-                  <p className={styles.detailStatus}>{currentValue}</p>
+                  <p className={styles.detailValue}>{platform}</p>
                 </div>
                 <XCircleIcon />
                 <div className={styles.detailItem}>
                   <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
-                  <p className={styles.detailStatus}>{gatewayValue || __('Completed', 'give')}</p>
+                  <p className={styles.detailValue}>{gateway}</p>
               </div>
             </div>
           </div>
@@ -43,12 +43,12 @@ export default function SyncDetails({ isAccurate, currentValue, gatewayValue }: 
             <div className={styles.detailWrapper}>
                 <div className={styles.detailItem}>
                   <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
-                  <p className={styles.detailStatus}>{__('Completed', 'give')}</p>
+                  <p className={styles.detailValue}>{gateway}</p>
                 </div>
                 <CheckCircleIcon />
                 <div className={styles.detailItem}>
                   <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
-                  <p className={styles.detailStatus}>{__('Completed', 'give')}</p>
+                  <p className={styles.detailValue}>{gateway}</p>
                 </div>
               </div>
             </div>
@@ -61,7 +61,7 @@ export default function SyncDetails({ isAccurate, currentValue, gatewayValue }: 
  * @unreleased
  */
 type SyncPaymentDetailsProps = {
-  isAccurate: boolean;
+
   payment: {
     gatewayTransactionId: string;
     id: number;
@@ -70,18 +70,21 @@ type SyncPaymentDetailsProps = {
     status: string;
     type: string;
   } | null;
+  isAccurate?: boolean;
+  platform?: string;
+  gateway?: string;
 }
 
 /**
  * @unreleased
  */
-export function SyncPaymentDetails({ payment, isAccurate}: SyncPaymentDetailsProps) {   
+export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: SyncPaymentDetailsProps) {   
     if(isAccurate) {
-        return <SyncAccurateDetails />;
+        return <SyncAccurateDetails platform={platform} gateway={gateway} />;
     }
 
     const PaymentAmount = () => (
-        <strong className={styles.paymentDescriptionAmount}>{payment.amount}</strong>
+        <strong className={styles.paymentDescriptionAmount}>{payment?.amount}</strong>
     );
 
     const description = createInterpolateElement(
@@ -91,33 +94,39 @@ export function SyncPaymentDetails({ payment, isAccurate}: SyncPaymentDetailsPro
 
     return (
       <div className={styles.paymentDetails}>
-        <div key={payment.id} className={classnames(styles.paymentItem)}>
+        <div className={classnames(styles.paymentItem)}>
             <div className={styles.paymentIcon}>
                 <HandHeartIcon />
             </div>
             <div className={styles.paymentsContent}>
                 <p className={styles.paymentDescription}>{description}</p>
-                <p className={styles.paymentDate}>{payment.createdAt}</p>
+                <p className={styles.paymentDate}>{payment?.createdAt}</p>
             </div>
         </div>
       </div>
     );
 }
 
+type SyncAccurateDetailsProps = {
+  key?: string;
+  platform?: string;
+  gateway?: string;
+}
+
 /**
  * @unreleased
  */
-function SyncAccurateDetails() {
+function SyncAccurateDetails({key, platform, gateway}: SyncAccurateDetailsProps) {
   return (
-      <div className={styles.accurateDetailWrapper}>
+      <div key={key} className={styles.accurateDetailWrapper}>
         <div className={styles.detailItem}>
           <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
-          <p className={styles.detailStatus}>{__('Completed', 'give')}</p>
+          <p className={styles.detailValue}>{platform || __('Completed', 'give')}</p>
         </div>
         <CheckCircleIcon />
         <div className={styles.detailItem}>
           <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
-          <p className={styles.detailStatus}>{__('Completed', 'give')}</p>
+          <p className={styles.detailValue}>{gateway || __('Completed', 'give')}</p>
         </div>
     </div>
   );

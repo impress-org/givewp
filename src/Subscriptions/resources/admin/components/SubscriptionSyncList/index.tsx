@@ -16,7 +16,7 @@ type SubscriptionSyncListProps = {
  * @unreleased
  */
 export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncListProps) {
-    const { details, missingTransactions } = syncResult;
+    const { details, missingTransactions, presentTransactions } = syncResult;
 
     const statusUpdated = details?.currentStatus !== details?.gatewayStatus;
     const periodUpdated = details?.currentPeriod !== details?.gatewayPeriod;
@@ -27,16 +27,16 @@ export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncLis
     return (
         <div className={styles.list}>
             <SyncItem title="Subscription status" isAccurate={!statusUpdated}>
-                <SyncDetails isAccurate={!statusUpdated} currentValue={details?.currentStatus} />
+                <SyncDetails isAccurate={!statusUpdated} platform={details?.currentStatus} gateway={details?.gatewayStatus} />
             </SyncItem>
             <SyncItem title="Billing period" isAccurate={!periodUpdated}>
-                <SyncDetails isAccurate={!periodUpdated} currentValue={details?.currentPeriod} />
+                <SyncDetails isAccurate={!periodUpdated} platform={details?.currentPeriod} gateway={details?.gatewayPeriod} />
             </SyncItem>
             <SyncItem title="Date created" isAccurate={!createdAtUpdated}>
-                <SyncDetails isAccurate={!createdAtUpdated} currentValue={details?.currentCreatedAt} />
+                <SyncDetails isAccurate={!createdAtUpdated} platform={details?.currentCreatedAt} gateway={details?.gatewayCreatedAt} />
             </SyncItem>
             <SyncItem title="Subscription payments" isAccurate={!paymentsUpdated}>
-                {transactions?.map((transaction) => (<SyncPaymentDetails key={transaction?.id} payment={transaction} isAccurate={!paymentsUpdated}/>))}
+                {transactions?.map((transaction) => (<SyncPaymentDetails key={transaction?.id} isAccurate={!paymentsUpdated} payment={transaction} />))}
             </SyncItem>
         </div>
     );
