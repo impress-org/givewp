@@ -16,6 +16,7 @@ use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 use WP_REST_Server;
+use Give\Donors\Models\Donor;
 
 /**
  * @unreleased
@@ -235,7 +236,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    /*public function testGetSubscriptionsShouldNotIncludeAnonymousDonors()
+    public function testGetSubscriptionsShouldNotIncludeAnonymousDonors()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
@@ -252,7 +253,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
         $this->assertEquals($subscription1->id, $data[0]['id']);
-    }*/
+    }
 
     /**
      * @unreleased
@@ -339,12 +340,12 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    /*public function testGetSubscriptionsShouldRedactAnonymousDonors()
+    public function testGetSubscriptionsShouldRedactAnonymousDonors()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
         $subscription1 = $this->createSubscription('live', 'active', 100);
-        $subscription2 = $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);
+        $subscription2 = $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);        
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -365,14 +366,14 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         $this->assertEquals($subscription1->id, $data[0]['id']);
         $this->assertEquals(0, $data[1]['donorId']);
 
-        $anonymousDataRedacted = [
+        /*$anonymousDataRedacted = [
             'donorId',
         ];
 
         foreach ($anonymousDataRedacted as $property) {
             $this->assertEquals(0, $data[1][$property]);
-        }
-    }*/
+        }*/
+    }
 
     /**
      * @unreleased
@@ -662,8 +663,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
             'status' => new SubscriptionStatus($status),
             'period' => SubscriptionPeriod::MONTH(),
             'frequency' => 1,
-            'installments' => 0,
-            //'transactionId' => 'test-transaction-123',
+            'installments' => 0,            
             'mode' => new SubscriptionMode($mode),
         ]);
     }
@@ -674,27 +674,25 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      * @throws Exception
      */
     private function createSubscriptionWithAnonymousDonor(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
-    {
+    {        
+        $donor = Donor::factory()->create();
+
         return Subscription::factory()->createWithDonation([
             'gatewayId' => TestGateway::id(),
             'amount' => new Money($amount, 'USD'),
             'status' => new SubscriptionStatus($status),
             'period' => SubscriptionPeriod::MONTH(),
             'frequency' => 1,
-            'installments' => 0,
-            //'transactionId' => 'test-transaction-123',
+            'installments' => 0,            
             'mode' => new SubscriptionMode($mode),
+            'donorId' => $donor->id,
         ], [
             'anonymous' => true,
-        ]);
-
-        /*$subscription = $this->createSubscription($mode, $status, $amount);
-        $subscription->initialDonation()->anonymous = true; 
-        $subscription->initialDonation()->save();*/
-        
+            'donorId' => $donor->id,
+        ]);                
 
         return $subscription;
-    }    
+    }
 
     /**
      * @unreleased

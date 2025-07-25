@@ -154,6 +154,10 @@ class SubscriptionController extends WP_REST_Controller
             $query->whereCampaignId($campaignId);
         }
 
+        if ($donorAnonymousMode->isExcluded()) {
+            $query->excludeAnonymousDonors();
+        }
+
         if ($donorId = $request->get_param('donorId')) {
             $query->whereDonorId($donorId);
         }

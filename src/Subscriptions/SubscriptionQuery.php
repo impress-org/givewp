@@ -59,6 +59,21 @@ class SubscriptionQuery
     /**
      * @unreleased
      */
+    public function excludeAnonymousDonors(): self
+    {
+        $this->query->join(function (JoinQueryBuilder $builder) {
+            $builder->innerJoin('give_donationmeta', 'donationMetaAnonymous')
+                ->on('donationMetaAnonymous.meta_key', DonationMetaKeys::ANONYMOUS, true)
+                ->andOn('donationMetaAnonymous.meta_value', '0')
+                ->andOn('donationMetaAnonymous.donation_id', 'parent_payment_id');
+        });
+
+        return $this;
+    }
+
+    /**
+     * @unreleased
+     */
     public function whereDonorId(int $donorId): self
     {
         $this->query->where('customer_id', $donorId);
