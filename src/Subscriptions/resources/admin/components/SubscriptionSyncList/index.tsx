@@ -21,20 +21,22 @@ export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncLis
     const statusUpdated = details?.currentStatus !== details?.gatewayStatus;
     const periodUpdated = details?.currentPeriod !== details?.gatewayPeriod;
     const createdAtUpdated = details?.currentCreatedAt !== details?.gatewayCreatedAt;
+    const paymentsUpdated = missingTransactions?.length > 0;
+    const transactions = paymentsUpdated ? missingTransactions : [null];
 
     return (
         <div className={styles.list}>
-            <SyncItem title="Subscription status" isUpdated={statusUpdated}>
-                <SyncDetails isUpdated={statusUpdated} currentValue={details?.currentStatus} />
+            <SyncItem title="Subscription status" isAccurate={!statusUpdated}>
+                <SyncDetails isAccurate={!statusUpdated} currentValue={details?.currentStatus} />
             </SyncItem>
-            <SyncItem title="Billing period" isUpdated={periodUpdated}>
-                <SyncDetails isUpdated={periodUpdated} currentValue={details?.currentPeriod} />
+            <SyncItem title="Billing period" isAccurate={!periodUpdated}>
+                <SyncDetails isAccurate={!periodUpdated} currentValue={details?.currentPeriod} />
             </SyncItem>
-            <SyncItem title="Date created" isUpdated={createdAtUpdated}>
-                <SyncDetails isUpdated={createdAtUpdated} currentValue={details?.currentCreatedAt} />
+            <SyncItem title="Date created" isAccurate={!createdAtUpdated}>
+                <SyncDetails isAccurate={!createdAtUpdated} currentValue={details?.currentCreatedAt} />
             </SyncItem>
-            <SyncItem title="Subscription payments" isUpdated={false}>
-                {missingTransactions?.map(transaction => (<SyncPaymentDetails payment={transaction} />))}
+            <SyncItem title="Subscription payments" isAccurate={!paymentsUpdated}>
+                {transactions?.map((transaction) => (<SyncPaymentDetails key={transaction?.id} payment={transaction} isAccurate={!paymentsUpdated}/>))}
             </SyncItem>
         </div>
     );
@@ -45,14 +47,14 @@ export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncLis
  */
 type SyncItemProps = {
     title: string;
-    isUpdated: boolean | null;
+    isAccurate: boolean | null;
     children: React.ReactNode;
 }
 
 /**
  * @unreleased
  */
-function SyncItem({ title, isUpdated, children }: SyncItemProps) {
+function SyncItem({ title, isAccurate, children }: SyncItemProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
@@ -62,10 +64,10 @@ function SyncItem({ title, isUpdated, children }: SyncItemProps) {
                     <div>
                         <span
                             className={classnames(styles.itemPill, {
-                                [styles.itemUpdated]: isUpdated,
+                                [styles.itemAccurate]: isAccurate,
                             })}
                         >
-                            {isUpdated ? __('UPDATED', 'give') : __('ACCURATE', 'give')}
+                            {isAccurate ? __('ACCURATE', 'give') : __('UPDATED', 'give')}
                         </span>
                         <h2 className={styles.itemTitle}>{title}</h2>
                     </div>
@@ -73,7 +75,7 @@ function SyncItem({ title, isUpdated, children }: SyncItemProps) {
                         className={styles.itemButton}
                         onClick={() => setIsOpen(!isOpen)}
                     >
-                        {isOpen ? 'Close' : 'View details'}
+                        {isOpen ? __('Close', 'give') : __('View details', 'give')}
                     </button>
                 </div>
 
