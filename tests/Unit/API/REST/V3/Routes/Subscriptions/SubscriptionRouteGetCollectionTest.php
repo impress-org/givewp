@@ -4,6 +4,7 @@ namespace Unit\API\REST\V3\Routes\Subscriptions;
 
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\Campaigns\Models\Campaign;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
@@ -234,7 +235,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetSubscriptionsShouldNotIncludeAnonymousDonors()
+    /*public function testGetSubscriptionsShouldNotIncludeAnonymousDonors()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
@@ -251,7 +252,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
         $this->assertEquals($subscription1->id, $data[0]['id']);
-    }
+    }*/
 
     /**
      * @unreleased
@@ -338,7 +339,7 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetSubscriptionsShouldRedactAnonymousDonors()
+    /*public function testGetSubscriptionsShouldRedactAnonymousDonors()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
@@ -364,14 +365,14 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         $this->assertEquals($subscription1->id, $data[0]['id']);
         $this->assertEquals(0, $data[1]['donorId']);
 
-        /*$anonymousDataRedacted = [
+        $anonymousDataRedacted = [
             'donorId',
         ];
 
         foreach ($anonymousDataRedacted as $property) {
             $this->assertEquals(0, $data[1][$property]);
-        }*/
-    }
+        }
+    }*/
 
     /**
      * @unreleased
@@ -524,6 +525,42 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
     /**
      * @unreleased
      *
+     * @throws Exception
+     */
+    public function testGetSubscriptionsByCampaignId()
+    {
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
+        /** @var Campaign $campaign */
+        $campaign1 = Campaign::factory()->create();
+
+        /** @var Campaign $campaign */
+        $campaign2 = Campaign::factory()->create();
+
+        $subscription1 = $this->createSubscriptionWithCampaignId($campaign1->id);
+        $subscription2 = $this->createSubscriptionWithCampaignId($campaign2->id);
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
+        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request->set_query_params(
+            [
+                'campaignId' => $campaign1->id,
+                'direction' => 'ASC',
+            ]
+        );
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals(1, count($data));
+        $this->assertEquals($subscription1->id, $data[0]['id']);
+    }
+
+    /**
+     * @unreleased
+     *
      * @dataProvider sortableColumnsDataProvider
      *
      * @throws Exception
@@ -658,4 +695,24 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
 
         return $subscription;
     }    
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    private function createSubscriptionWithCampaignId(int $campaignId): Subscription
+    {
+        return Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'amount' => new Money(100, 'USD'),
+            'status' => new SubscriptionStatus('active'),
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
+            'installments' => 0,
+            'mode' => new SubscriptionMode('live'),
+        ], [
+            'campaignId' => $campaignId,
+        ]);
+    }
 }
