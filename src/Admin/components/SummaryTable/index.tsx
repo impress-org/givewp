@@ -45,6 +45,9 @@ export default function SummaryTable({data,}: SummaryTableProps) {
   );
 }
 
+/**
+ * @unreleased
+ */
   const renderValue = (value: SummaryItem['value'], isPill?: boolean) => {
     const isObjectWithValues = typeof value === 'object' && value !== null && 'value1' in value && 'value2' in value;
     const isSingleValue = React.isValidElement(value) || typeof value === 'string';
