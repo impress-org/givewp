@@ -2,6 +2,8 @@
 
 namespace Give\ThirdPartySupport\Elementor\Widgets;
 
+use Elementor\Widget_Base;
+
 /**
  * Elementor Give Donor Wall Widget.
  *
@@ -10,7 +12,7 @@ namespace Give\ThirdPartySupport\Elementor\Widgets;
  * @unreleased migrated from givewp-elementor-widgets
  */
 
-class GiveDonorWallWidget extends \Elementor\Widget_Base
+class GiveDonorWallWidget extends Widget_Base
 {
     /**
      * Get widget name.

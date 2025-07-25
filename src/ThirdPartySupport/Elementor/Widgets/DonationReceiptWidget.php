@@ -2,6 +2,8 @@
 
 namespace Give\ThirdPartySupport\Elementor\Widgets;
 
+use Elementor\Widget_Base;
+
 /**
  * Elementor Donation Receipt Widget.
  *
@@ -10,7 +12,7 @@ namespace Give\ThirdPartySupport\Elementor\Widgets;
  * @unreleased migrated from givewp-elementor-widgets
  */
 
-class DonationReceiptWidget extends \Elementor\Widget_Base
+class DonationReceiptWidget extends Widget_Base
 {
     /**
      * Get widget name.

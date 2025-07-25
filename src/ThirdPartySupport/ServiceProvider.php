@@ -61,9 +61,14 @@ class ServiceProvider implements ServiceProviderInterface
         $this->elementor();
     }
 
+    /**
+     * Register core widgets with priority 11 to override any widgets from previously migrated plugin givewp-elementor-widgets
+     *
+     * @since @unreleased
+     */
     private function elementor()
     {
-        if ( ! class_exists( '\Elementor\Plugin' ) ) {
+        if ( ! defined( 'ELEMENTOR_VERSION' ) ) {
             return;
         }
 
@@ -86,6 +91,8 @@ class ServiceProvider implements ServiceProviderInterface
                 $widgets_manager->register(new GiveSubscriptionsWidget());
             }
         }, 11, 1);
+
+        $this->deactivateGivewpElementorWidgets();
     }
 
     /**
@@ -113,11 +120,36 @@ class ServiceProvider implements ServiceProviderInterface
         ];
 
         foreach ($old_widget_names as $widget_name) {
-             try {
-                 $widgets_manager->unregister($widget_name);
-             } catch (\Exception $e) {
-                 // Widget doesn't exist, continue silently
-             }
+            $widgets_manager->unregister($widget_name);
          }
+    }
+
+    /**
+     * Deactivate the GiveWP Elementor Widgets plugin if it is installed and activated
+     *
+     * @since @unreleased
+     */
+    private function deactivateGivewpElementorWidgets()
+    {
+        if ( ! defined('GiveWP_DW_4_Elementor_VERSION' ) ) {
+            return;
+        }
+
+        if ( ! is_plugin_active('givewp-elementor-widgets/givewp-elementor-widgets.php') ) {
+            return;
+        }
+
+        deactivate_plugins(['givewp-elementor-widgets/givewp-elementor-widgets.php']);
+
+        add_action('admin_notices', function () {
+            Give()->notices->register_notice([
+                'id' => 'givewp-elementor-widgets-plugin-deactivated',
+                'description' => __(
+                    'The GiveWP Elementor Widgets plugin is no longer needed, since the widgets are included in your current version of GiveWP. To prevent conflicts, the plugin has been deactivated and can be safely deleted.',
+                    'give'
+                ),
+                'type' => 'info',
+            ]);
+        });
     }
 }

@@ -3,6 +3,7 @@
 namespace Give\ThirdPartySupport\Elementor\Widgets;
 
 use Give\MultiFormGoals\MultiFormGoal\Shortcode;
+use Elementor\Widget_Base;
 
 /**
  * Elementor Give Multi Form Goal Widget.
@@ -12,7 +13,7 @@ use Give\MultiFormGoals\MultiFormGoal\Shortcode;
  * @unreleased migrated from givewp-elementor-widgets
  */
 
-class GiveMultiFormGoalWidget extends \Elementor\Widget_Base
+class GiveMultiFormGoalWidget extends Widget_Base
 {
     /**
      * GiveMultiFormGoalWidget constructor.

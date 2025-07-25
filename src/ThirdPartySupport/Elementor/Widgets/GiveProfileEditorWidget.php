@@ -2,6 +2,8 @@
 
 namespace Give\ThirdPartySupport\Elementor\Widgets;
 
+use Elementor\Widget_Base;
+
 /**
  * Elementor Give Profile Editor Widget.
  *
@@ -10,7 +12,7 @@ namespace Give\ThirdPartySupport\Elementor\Widgets;
  * @unreleased migrated from givewp-elementor-widgets
  */
 
-class GiveProfileEditorWidget extends \Elementor\Widget_Base
+class GiveProfileEditorWidget extends Widget_Base
 {
     /**
      * Get widget name.

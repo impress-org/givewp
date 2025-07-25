@@ -3,6 +3,7 @@
 namespace Give\ThirdPartySupport\Elementor\Widgets;
 
 use Give\Framework\Database\DB;
+use Elementor\Widget_Base;
 
 /**
  * Elementor Give Totals Widget.
@@ -12,7 +13,7 @@ use Give\Framework\Database\DB;
  * @unreleased migrated from givewp-elementor-widgets
  */
 
-class GiveTotalsWidget extends \Elementor\Widget_Base
+class GiveTotalsWidget extends Widget_Base
 {
     /**
      * Get widget name.
