@@ -55,6 +55,8 @@ final class SubscriptionNoteQueryData
 
     /**
      * Convert DTO to Subscription Note
+     *
+     * @unreleased
      */
     public function toSubscriptionNote(): SubscriptionNote
     {

@@ -4,6 +4,9 @@ namespace Give\Subscriptions\Factories;
 
 use Give\Framework\Models\Factories\ModelFactory;
 
+/**
+ * @unreleased
+ */
 class SubscriptionNoteFactory extends ModelFactory
 {
     /**

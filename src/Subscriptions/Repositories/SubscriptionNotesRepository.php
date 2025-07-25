@@ -38,10 +38,8 @@ class SubscriptionNotesRepository
 
     /**
      * @unreleased
-     *
-     * @return SubscriptionNote|null
      */
-    public function getById(int $noteId)
+    public function getById(int $noteId): ?SubscriptionNote
     {
         return $this->prepareQuery()
             ->where('comments.comment_ID', $noteId)
@@ -53,7 +51,7 @@ class SubscriptionNotesRepository
      *
      * @throws Exception|InvalidArgumentException
      */
-    public function insert(SubscriptionNote $subscriptionNote)
+    public function insert(SubscriptionNote $subscriptionNote): void
     {
         if (! $subscriptionNote->type) {
             $subscriptionNote->type = SubscriptionNoteType::ADMIN();
@@ -110,7 +108,7 @@ class SubscriptionNotesRepository
      *
      * @throws Exception|InvalidArgumentException
      */
-    public function update(SubscriptionNote $subscriptionNote)
+    public function update(SubscriptionNote $subscriptionNote): void
     {
         $this->validateSubscriptionNote($subscriptionNote);
 
@@ -190,10 +188,8 @@ class SubscriptionNotesRepository
 
     /**
      * @unreleased
-     *
-     * @return void
      */
-    private function validateSubscriptionNote(SubscriptionNote $subscriptionNote)
+    private function validateSubscriptionNote(SubscriptionNote $subscriptionNote): void
     {
         foreach ($this->requiredSubscriptionProperties as $key) {
             if (! isset($subscriptionNote->$key)) {
@@ -234,7 +230,7 @@ class SubscriptionNotesRepository
     /**
      * @unreleased
      */
-    private function upsertSubscriptionNoteType(SubscriptionNote $subscriptionNote)
+    private function upsertSubscriptionNoteType(SubscriptionNote $subscriptionNote): void
     {
         $table = DB::table('commentmeta');
 

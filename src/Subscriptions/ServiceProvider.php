@@ -20,6 +20,8 @@ class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * @inheritDoc
+     *
+     * @unreleased Register Subscription Repository to container
      */
     public function register()
     {
