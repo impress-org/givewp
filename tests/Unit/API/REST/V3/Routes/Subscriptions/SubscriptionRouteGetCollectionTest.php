@@ -657,6 +657,8 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      */
     private function createSubscription(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
     {
+        $donor = Donor::factory()->create();
+
         return Subscription::factory()->createWithDonation([
             'gatewayId' => TestGateway::id(),
             'amount' => new Money($amount, 'USD'),
@@ -665,6 +667,10 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
             'frequency' => 1,
             'installments' => 0,            
             'mode' => new SubscriptionMode($mode),
+            'donorId' => $donor->id,
+        ], [
+            'anonymous' => false,
+            'donorId' => $donor->id,
         ]);
     }
 
@@ -701,6 +707,8 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
      */
     private function createSubscriptionWithCampaignId(int $campaignId): Subscription
     {
+        $donor = Donor::factory()->create();
+
         return Subscription::factory()->createWithDonation([
             'gatewayId' => TestGateway::id(),
             'amount' => new Money(100, 'USD'),
@@ -709,8 +717,11 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
             'frequency' => 1,
             'installments' => 0,
             'mode' => new SubscriptionMode('live'),
+            'donorId' => $donor->id,
         ], [
             'campaignId' => $campaignId,
+            'anonymous' => false,
+            'donorId' => $donor->id,
         ]);
     }
 }
