@@ -192,13 +192,21 @@ class SetupElementorCampaignTemplate
                                     'shortcode' => "[givewp_campaign campaign_id=\"{$campaignId}\" show_image=\"false\" show_description=\"false\" show_goal=\"true\"]"
                                 ]
                             ],
-                            // Campaign Stats (Shortcode - to be implemented)
+                            // Campaign Stats
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
                                 'widgetType' => 'shortcode',
                                 'settings' => [
-                                    'shortcode' => "[givewp_campaign_stats campaign_id=\"{$campaignId}\"]"
+                                    'shortcode' => "[givewp_campaign_stats campaign_id=\"{$campaignId}\" statistic=\"top-donation\"]"
+                                ]
+                            ],
+                            [
+                                'id' => $this->generateElementorId(),
+                                'elType' => 'widget',
+                                'widgetType' => 'shortcode',
+                                'settings' => [
+                                    'shortcode' => "[givewp_campaign_stats campaign_id=\"{$campaignId}\" statistic=\"average-donation\"]"
                                 ]
                             ],
                             // Donate Button

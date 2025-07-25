@@ -8,6 +8,8 @@ use Give\Campaigns\Shortcodes\CampaignGridShortcode;
 use Give\Campaigns\Shortcodes\CampaignCommentsShortcode;
 use Give\Campaigns\Shortcodes\CampaignDonorsShortcode;
 use Give\Campaigns\Shortcodes\CampaignDonationsShortcode;
+use Give\Campaigns\Shortcodes\CampaignStatsShortcode;
+use Give\Campaigns\Shortcodes\CampaignGoalShortcode;
 
 /**
  * @since 4.5.0 new imports to support the Shortcodes directory.
@@ -27,5 +29,7 @@ class RegisterCampaignShortcodes
         add_shortcode('givewp_campaign_comments', [new CampaignCommentsShortcode(), 'renderShortcode']);
         add_shortcode('givewp_campaign_donors', [new CampaignDonorsShortcode(), 'renderShortcode']);
         add_shortcode('givewp_campaign_donations', [new CampaignDonationsShortcode(), 'renderShortcode']);
+        add_shortcode('givewp_campaign_stats', [new CampaignStatsShortcode(), 'renderShortcode']);
+        add_shortcode('givewp_campaign_goal', [new CampaignGoalShortcode(), 'renderShortcode']);
     }
 }
