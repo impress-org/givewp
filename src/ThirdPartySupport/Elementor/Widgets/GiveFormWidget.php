@@ -43,7 +43,7 @@ class GiveFormWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('Give Form (core)', 'dw4elementor');
+        return __('GiveWP Donation Form', 'give');
     }
 
     /**
@@ -58,7 +58,7 @@ class GiveFormWidget extends Widget_Base
      */
     public function get_icon()
     {
-        return 'dw4elementor-icon';
+        return 'give-icon';
     }
 
     /**
@@ -107,7 +107,7 @@ class GiveFormWidget extends Widget_Base
         $this->start_controls_section(
             'give_form_settings',
             [
-                'label' => __('GiveWP Form Widget', 'dw4elementor'),
+                'label' => __('GiveWP Form Widget', 'give'),
                 'tab'   => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -115,9 +115,9 @@ class GiveFormWidget extends Widget_Base
         $this->add_control(
             'form_id',
             [
-                'label'       => __('Form ID', 'dw4elementor'),
+                'label'       => __('Form ID', 'give'),
                 'type'        => \Elementor\Controls_Manager::SELECT,
-                'description' => __('Choose the GiveWP Form you want to embed.', 'dw4elementor'),
+                'description' => __('Choose the GiveWP Form you want to embed.', 'give'),
                 'default'     => '',
                 'options'     => $forms,
             ]
@@ -126,11 +126,11 @@ class GiveFormWidget extends Widget_Base
         $this->add_control(
             'show_title',
             [
-                'label'       => __('Show Form Title', 'dw4elementor'),
+                'label'       => __('Show Form Title', 'give'),
                 'type'        => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show/hide the GiveWP form title.', 'dw4elementor'),
-                'label_on'    => __('Show', 'dw4elementor'),
-                'label_off'   => __('Hide', 'dw4elementor'),
+                'description' => __('Show/hide the GiveWP form title.', 'give'),
+                'label_on'    => __('Show', 'give'),
+                'label_off'   => __('Hide', 'give'),
                 'default'     => 'yes',
                 'conditions'  => [
                     'terms' => [
@@ -147,11 +147,11 @@ class GiveFormWidget extends Widget_Base
         $this->add_control(
             'show_goal',
             [
-                'label'        => __('Show Goal', 'dw4elementor'),
+                'label'        => __('Show Goal', 'give'),
                 'type'         => \Elementor\Controls_Manager::SWITCHER,
-                'description'  => __('Show/hide the progress bar and goal for this form.', 'dw4elementor'),
-                'label_on'     => __('Show', 'dw4elementor'),
-                'label_off'    => __('Hide', 'dw4elementor'),
+                'description'  => __('Show/hide the progress bar and goal for this form.', 'give'),
+                'label_on'     => __('Show', 'give'),
+                'label_off'    => __('Hide', 'give'),
                 'return_value' => 'yes',
                 'default'      => 'yes',
             ]
@@ -160,11 +160,11 @@ class GiveFormWidget extends Widget_Base
         $this->add_control(
             'show_content',
             [
-                'label'        => __('Show Form Content', 'dw4elementor'),
+                'label'        => __('Show Form Content', 'give'),
                 'type'         => \Elementor\Controls_Manager::SWITCHER,
-                'description'  => __('Show/hide the content of this form.', 'dw4elementor'),
-                'label_on'     => __('Show', 'dw4elementor'),
-                'label_off'    => __('Hide', 'dw4elementor'),
+                'description'  => __('Show/hide the content of this form.', 'give'),
+                'label_on'     => __('Show', 'give'),
+                'label_off'    => __('Hide', 'give'),
                 'return_value' => 'yes',
                 'default'      => 'no',
                 'conditions'   => [
@@ -182,14 +182,14 @@ class GiveFormWidget extends Widget_Base
         $this->add_control(
             'display_style',
             [
-                'label'       => __('Form Display Style', 'dw4elementor'),
+                'label'       => __('Form Display Style', 'give'),
                 'type'        => \Elementor\Controls_Manager::SELECT,
-                'description' => __('Choose which display to use for this GiveWP form.', 'dw4elementor'),
+                'description' => __('Choose which display to use for this GiveWP form.', 'give'),
                 'options'     => [
-                    'onpage' => __('Full Form', 'dw4elementor'),
-                    'button' => __('Button Only', 'dw4elementor'),
-                    'modal'  => __('Modal Reveal', 'dw4elementor'),
-                    'reveal' => __('Reveal', 'dw4elementor'),
+                    'onpage' => __('Full Form', 'give'),
+                    'button' => __('Button Only', 'give'),
+                    'modal'  => __('Modal Reveal', 'give'),
+                    'reveal' => __('Reveal', 'give'),
                 ],
                 'default'     => 'onpage',
             ]
@@ -198,10 +198,10 @@ class GiveFormWidget extends Widget_Base
         $this->add_control(
             'continue_button_title',
             [
-                'label'       => __('Reveal Button Text', 'dw4elementor'),
+                'label'       => __('Reveal Button Text', 'give'),
                 'type'        => \Elementor\Controls_Manager::TEXT,
-                'description' => __('Text on the button that reveals the form.', 'dw4elementor'),
-                'default'     => __('Continue to Donate', 'dw4elementor'),
+                'description' => __('Text on the button that reveals the form.', 'give'),
+                'default'     => __('Continue to Donate', 'give'),
                 'condition'   => [
                     'display_style!' => 'onpage',
                 ],
@@ -211,11 +211,11 @@ class GiveFormWidget extends Widget_Base
         $this->add_control(
             'v3_notice',
             [
-                'label'           => __('Important Note', 'dw4elementor'),
+                'label'           => __('Important Note', 'give'),
                 'type'            => \Elementor\Controls_Manager::RAW_HTML,
                 'raw'             => esc_html__(
                     'Form Display Style changes will not be visible for Donation forms created using the Visual Form Builder. Save the page and view it on the front end.',
-                    'dw4elementor'
+                    'give'
                 ),
                 'content_classes' => 'give-elementor-notice',
                 'conditions'      => [
@@ -235,19 +235,19 @@ class GiveFormWidget extends Widget_Base
             [
                 'label'           => '',
                 'type'            => \Elementor\Controls_Manager::RAW_HTML,
-                'content_classes' => 'dw4e-info',
+                'content_classes' => 'give-info',
                 'raw'             => '
-					<div class="dw4e">
+					<div class="give">
 						<p class="info-head">
-							' . __('GIVEWP FORM WIDGET', 'dw4elementor') . '</p>
+							' . __('GIVEWP FORM WIDGET', 'give') . '</p>
 						<p class="info-message">' . __(
                         'This is the GiveWP Form widget. Choose which form you want to embed on this page with it\'s form "ID".',
-                        'dw4elementor'
+                        'give'
                     ) . '</p>
-						<p class="dw4e-docs-links">
-							<a href="https://givewp.com/documentation/core/shortcodes/give_form/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=dw4elementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __(
+						<p class="give-docs-links">
+							<a href="https://givewp.com/documentation/core/shortcodes/give_form/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=givelementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __(
                                          'Visit the GiveWP Docs for more info on the GiveWP Form.',
-                                         'dw4elementor'
+                                         'give'
                                      ) . '</a>
 						</p>
 				</div>',
@@ -274,7 +274,7 @@ class GiveFormWidget extends Widget_Base
         $showGoal             = isset($settings['show_goal']) ? $settings['show_goal'] : 'true';
         $showContent          = isset($settings['show_content']) ? $settings['show_content'] : 'true';
         $displayStyle         = isset($settings['display_style']) ? $settings['display_style'] : 'onpage';
-        $continueButtonTitle = isset($settings['continue_button_title']) ? $settings['continue_button_title'] : __('Continue to Donate', 'dw4elementor');
+        $continueButtonTitle = isset($settings['continue_button_title']) ? $settings['continue_button_title'] : __('Continue to Donate', 'give');
 
         if (isset($_POST['action']) && $_POST['action'] === 'elementor_ajax') {
             // is this v3 form?

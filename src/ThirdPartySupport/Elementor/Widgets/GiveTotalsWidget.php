@@ -42,7 +42,7 @@ class GiveTotalsWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('Give Totals', 'dw4elementor');
+        return __('GiveWP Totals', 'give');
     }
 
     /**
@@ -57,7 +57,7 @@ class GiveTotalsWidget extends Widget_Base
      */
     public function get_icon()
     {
-        return 'dw4elementor-icon';
+        return 'give-icon';
     }
 
     /**
@@ -101,7 +101,7 @@ class GiveTotalsWidget extends Widget_Base
         $this->start_controls_section(
             'give_totals_settings',
             [
-                'label' => __('GiveWP Totals Widget', 'dw4elementor'),
+                'label' => __('GiveWP Totals Widget', 'give'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -109,9 +109,9 @@ class GiveTotalsWidget extends Widget_Base
         $this->add_control(
             'forms',
             [
-                'label' => __('Forms', 'dw4elementor'),
+                'label' => __('Forms', 'give'),
                 'type' => \Elementor\Controls_Manager::SELECT2,
-                'description' => __('Choose the forms you want to combine in this total.', 'dw4elementor'),
+                'description' => __('Choose the forms you want to combine in this total.', 'give'),
                 'separator' => 'after',
                 'options' => $this->getDonationForms(),
                 'multiple' => true,
@@ -122,9 +122,9 @@ class GiveTotalsWidget extends Widget_Base
         $this->add_control(
             'total_goal',
             [
-                'label' => __('Goal Amount', 'dw4elementor'),
+                'label' => __('Goal Amount', 'give'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'description' => __('Designate a goal amount.', 'dw4elementor'),
+                'description' => __('Designate a goal amount.', 'give'),
                 'default' => '10000'
             ]
         );
@@ -132,9 +132,9 @@ class GiveTotalsWidget extends Widget_Base
         $this->add_control(
             'message',
             [
-                'label' => __('Message:', 'dw4elementor'),
+                'label' => __('Message:', 'give'),
                 'type' => \Elementor\Controls_Manager::TEXTAREA,
-                'description' => __('(Optional) The total goal you want to reflect in your message.', 'dw4elementor'),
+                'description' => __('(Optional) The total goal you want to reflect in your message.', 'give'),
                 'default' => __('Hey! We\'ve raised {total} of the {total_goal} we are trying to raise for this campaign!', 'give'),
             ]
         );
@@ -142,9 +142,9 @@ class GiveTotalsWidget extends Widget_Base
         $this->add_control(
             'link',
             [
-                'label' => __('Link', 'dw4elementor'),
+                'label' => __('Link', 'give'),
                 'type' => \Elementor\Controls_Manager::URL,
-                'description' => __('The url of where you want to link donors to encourage them to donate toward the goal.', 'dw4elementor'),
+                'description' => __('The url of where you want to link donors to encourage them to donate toward the goal.', 'give'),
                 'show_external' => false,
                 'default' => [
                     'url' => 'https://example.org',
@@ -157,21 +157,21 @@ class GiveTotalsWidget extends Widget_Base
         $this->add_control(
             'link_text',
             [
-                'label' => __('Link Text', 'dw4elementor'),
+                'label' => __('Link Text', 'give'),
                 'type' => \Elementor\Controls_Manager::TEXTAREA,
-                'description' => __('The text you want to hyperlink with your link.', 'dw4elementor'),
-                'default' => __('Donate Now', 'dw4elementor'),
+                'description' => __('The text you want to hyperlink with your link.', 'give'),
+                'default' => __('Donate Now', 'give'),
             ]
         );
 
         $this->add_control(
             'show_progress',
             [
-                'label' => __('Show Progress', 'dw4elementor'),
+                'label' => __('Show Progress', 'give'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show or hide a the progress bar.', 'dw4elementor'),
-                'label_on' => __('Show', 'dw4elementor'),
-                'label_off' => __('Hide', 'dw4elementor'),
+                'description' => __('Show or hide a the progress bar.', 'give'),
+                'label_on' => __('Show', 'give'),
+                'label_off' => __('Hide', 'give'),
                 'default' => 'yes'
             ]
         );
@@ -179,18 +179,18 @@ class GiveTotalsWidget extends Widget_Base
         $this->add_control(
             'cats',
             [
-                'label' => __('Categories', 'dw4elementor'),
+                'label' => __('Categories', 'give'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'description' => __('Comma separated list of GiveWP category IDs you want to combine into this total.', 'dw4elementor'),
+                'description' => __('Comma separated list of GiveWP category IDs you want to combine into this total.', 'give'),
             ]
         );
 
         $this->add_control(
             'tags',
             [
-                'label' => __('Tags', 'dw4elementor'),
+                'label' => __('Tags', 'give'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'description' => __('Comma separated list of GiveWP tag IDs you want to combine into this total.', 'dw4elementor'),
+                'description' => __('Comma separated list of GiveWP tag IDs you want to combine into this total.', 'give'),
             ]
         );
 
@@ -199,14 +199,14 @@ class GiveTotalsWidget extends Widget_Base
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
-                'content_classes' => 'dw4e-info',
+                'content_classes' => 'give-info',
                 'raw' => '
-					<div class="dw4e">
+					<div class="give">
 						<p class="info-head">
-							' . __('GIVEWP TOTALS WIDGET', 'dw4elementor') . '</p>
-						<p class="info-message">' . __('This is the GiveWP Totals widget. Use this to display a total of one or many forms.', 'dw4elementor') . '</p>
-						<p class="dw4e-docs-links">
-							<a href="https://givewp.com/documentation/core/shortcodes/give_totals/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=dw4elementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Totals.', 'dw4elementor') . '</a>
+							' . __('GIVEWP TOTALS WIDGET', 'give') . '</p>
+						<p class="info-message">' . __('This is the GiveWP Totals widget. Use this to display a total of one or many forms.', 'give') . '</p>
+						<p class="give-docs-links">
+							<a href="https://givewp.com/documentation/core/shortcodes/give_totals/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=givelementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Totals.', 'give') . '</a>
 						</p>
 				</div>'
             ]

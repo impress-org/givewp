@@ -1,0 +1,83 @@
+@font-face {
+  font-family: 'give-icomoon';
+  src: url('./fonts/icomoon.eot');
+  src: url('./fonts/icomoon.eot') format('embedded-opentype'),
+  url('./fonts/icomoon.woff') format('woff'),
+  url('./fonts/icomoon.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.elementor-element .give-icon:before {
+    font-family: 'give-icomoon';
+    font-size: 2rem;
+    width: 2rem;
+    height: 2rem;
+    content: "\e800";
+    font-style: normal;
+}
+
+[class*="elementor-control"] .give-info {
+    background-color: #68bb6c;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 12px;
+    line-height: 1.5;
+    position: relative;
+    font-size: 0.75rem;
+}
+
+[class*="elementor-control"] .give-info .info-head {
+    line-height: 2;
+    font-weight: 900;
+    text-shadow: 1px 1px 1px rgba(50,50,50,0.5);
+}
+
+[class*="elementor-control"] .give-info .give-docs-links {
+    position: relative;
+    width: calc(100% + 24px);
+    left: -12px;
+    bottom: -10px;
+    padding: 12px;
+    border-radius: 0  0 8px 8px;
+    background-color: #a4d6a6;
+}
+
+[class*="elementor-control"] .give-info .give-docs-links a {
+    color: #333;
+    line-height: 1.15rem;
+}
+
+[class*="elementor-control"] .give-info .give-docs-links a i {
+    font-size: 2rem;
+    display: block;
+    float: left;
+    margin: 0 10px 0 0;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.elementor-control-all_forms .elementor-choices input:checked+[data-tooltip="Yes"] {
+    background: #8BC34A;
+}
+
+.elementor-control-all_forms .elementor-choices input:checked+[data-tooltip="No"] {
+    background: #c13f16;
+}
+
+.give-elementor-notice {
+    padding: 10px 0;
+    color: #c13f16;
+}
+
+/*
+ * Hide Link Options
+ * Until this issue is resolved:
+ * https://github.com/elementor/elementor/issues/11214
+ *
+ */
+
+.elementor-control-give_register_settings + .elementor-control-link .elementor-control-url-more,
+.elementor-control-give_login_settings + .elementor-control-login_url .elementor-control-url-more {
+     display: none;
+ }

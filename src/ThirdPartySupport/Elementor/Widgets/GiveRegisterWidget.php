@@ -41,7 +41,7 @@ class GiveRegisterWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('Give Register', 'dw4elementor');
+        return __('GiveWP Register', 'give');
     }
 
     /**
@@ -56,7 +56,7 @@ class GiveRegisterWidget extends Widget_Base
      */
     public function get_icon()
     {
-        return 'dw4elementor-icon';
+        return 'give-icon';
     }
 
     /**
@@ -100,7 +100,7 @@ class GiveRegisterWidget extends Widget_Base
         $this->start_controls_section(
             'give_register_settings',
             [
-                'label' => __('GiveWP Register Widget', 'dw4elementor'),
+                'label' => __('GiveWP Register Widget', 'give'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -108,9 +108,9 @@ class GiveRegisterWidget extends Widget_Base
         $this->add_control(
             'link',
             [
-                'label' => __('Link', 'dw4elementor'),
+                'label' => __('Link', 'give'),
                 'type' => \Elementor\Controls_Manager::URL,
-                'description' => __('The url you want to redirect users to after they submit the registration form.', 'dw4elementor'),
+                'description' => __('The url you want to redirect users to after they submit the registration form.', 'give'),
                 'show_external' => false,
                 'default' => [
                     'url' => '',
@@ -125,15 +125,15 @@ class GiveRegisterWidget extends Widget_Base
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
-                'content_classes' => 'dw4e-info',
+                'content_classes' => 'give-info',
                 'raw' => '
-					<div class="dw4e">
+					<div class="give">
 						<p class="info-head">
-							' . __('GIVEWP REGISTER WIDGET', 'dw4elementor') . '</p>
-						<p class="info-message">' . __('This is the GiveWP Register widget. Allow your visitors to register on your website.', 'dw4elementor') . '</p>
-						<p class="info-message">' . __('This is a sample register form with all fields exposed. This is only to help position and style the form with Elementor. If you want to see the live form, go to this page while logged out or in an Icognito browser.', 'dw4elementor') . '</p>
-						<p class="dw4e-docs-links">
-							<a href="https://givewp.com/documentation/core/shortcodes/give_register/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=dw4elementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Register feature.', 'dw4elementor') . '</a>
+							' . __('GIVEWP REGISTER WIDGET', 'give') . '</p>
+						<p class="info-message">' . __('This is the GiveWP Register widget. Allow your visitors to register on your website.', 'give') . '</p>
+						<p class="info-message">' . __('This is a sample register form with all fields exposed. This is only to help position and style the form with Elementor. If you want to see the live form, go to this page while logged out or in an Icognito browser.', 'give') . '</p>
+						<p class="give-docs-links">
+							<a href="https://givewp.com/documentation/core/shortcodes/give_register/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=givelementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Register feature.', 'give') . '</a>
 						</p>
 				</div>'
             ]

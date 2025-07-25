@@ -41,7 +41,7 @@ class GiveProfileEditorWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('Give Profile Editor', 'dw4elementor');
+        return __('GiveWP Profile Editor', 'give');
     }
 
     /**
@@ -56,7 +56,7 @@ class GiveProfileEditorWidget extends Widget_Base
      */
     public function get_icon()
     {
-        return 'dw4elementor-icon';
+        return 'give-icon';
     }
 
     /**
@@ -100,7 +100,7 @@ class GiveProfileEditorWidget extends Widget_Base
         $this->start_controls_section(
             'give_profile_editor_settings',
             [
-                'label' => __('GiveWP Profile Editor Widget', 'dw4elementor'),
+                'label' => __('GiveWP Profile Editor Widget', 'give'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -110,14 +110,14 @@ class GiveProfileEditorWidget extends Widget_Base
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
-                'content_classes' => 'dw4e-info',
+                'content_classes' => 'give-info',
                 'raw' => '
-					<div class="dw4e">
+					<div class="give">
 						<p class="info-head">
-							' . __('GIVEWP PROFILE EDITOR WIDGET', 'dw4elementor') . '</p>
-						<p class="info-message">' . __('This is the GiveWP Profile Editor widget. The Profile Editor has no settings at all, just drop it on your page and it\'s ready to go.', 'dw4elementor') . '</p>
-						<p class="dw4e-docs-links">
-							<a href="https://givewp.com/documentation/core/shortcodes/give_profile_editor/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=dw4elementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Profile Editor.', 'dw4elementor') . '</a>
+							' . __('GIVEWP PROFILE EDITOR WIDGET', 'give') . '</p>
+						<p class="info-message">' . __('This is the GiveWP Profile Editor widget. The Profile Editor has no settings at all, just drop it on your page and it\'s ready to go.', 'give') . '</p>
+						<p class="give-docs-links">
+							<a href="https://givewp.com/documentation/core/shortcodes/give_profile_editor/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=givelementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Profile Editor.', 'give') . '</a>
 						</p>
 				</div>'
             ]

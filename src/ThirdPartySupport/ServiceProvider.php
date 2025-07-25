@@ -68,7 +68,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function elementor()
     {
-        if ( ! defined( 'ELEMENTOR_VERSION' ) ) {
+        if (!defined('ELEMENTOR_VERSION')) {
             return;
         }
 
@@ -93,6 +93,10 @@ class ServiceProvider implements ServiceProviderInterface
         }, 11, 1);
 
         $this->deactivateGivewpElementorWidgets();
+
+        add_action('elementor/editor/before_enqueue_scripts', function () {
+            wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);
+        });
     }
 
     /**
@@ -131,11 +135,11 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function deactivateGivewpElementorWidgets()
     {
-        if ( ! defined('GiveWP_DW_4_Elementor_VERSION' ) ) {
+        if (!defined('GiveWP_DW_4_Elementor_VERSION' ) ) {
             return;
         }
 
-        if ( ! is_plugin_active('givewp-elementor-widgets/givewp-elementor-widgets.php') ) {
+        if (!is_plugin_active('givewp-elementor-widgets/givewp-elementor-widgets.php') ) {
             return;
         }
 

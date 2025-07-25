@@ -41,7 +41,7 @@ class GiveGoalWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('Give Goal', 'dw4elementor');
+        return __('GiveWP Goal', 'give');
     }
 
     /**
@@ -56,7 +56,7 @@ class GiveGoalWidget extends Widget_Base
      */
     public function get_icon()
     {
-        return 'dw4elementor-icon';
+        return 'give-icon';
     }
 
     /**
@@ -100,7 +100,7 @@ class GiveGoalWidget extends Widget_Base
         $this->start_controls_section(
             'give_login_settings',
             [
-                'label' => __('GiveWP Goal Widget', 'dw4elementor'),
+                'label' => __('GiveWP Goal Widget', 'give'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -108,7 +108,7 @@ class GiveGoalWidget extends Widget_Base
         $this->add_control(
             'form_id',
             [
-                'label' => __('Form ID', 'dw4elementor'),
+                'label' => __('Form ID', 'give'),
                 'type' => \Elementor\Controls_Manager::TEXT,
                 'input_type' => 'number'
             ]
@@ -117,11 +117,11 @@ class GiveGoalWidget extends Widget_Base
         $this->add_control(
             'show_text',
             [
-                'label' => __('Show Text', 'dw4elementor'),
+                'label' => __('Show Text', 'give'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show or hide the goal text.', 'dw4elementor'),
-                'label_on' => __('Show', 'dw4elementor'),
-                'label_off' => __('Hide', 'dw4elementor'),
+                'description' => __('Show or hide the goal text.', 'give'),
+                'label_on' => __('Show', 'give'),
+                'label_off' => __('Hide', 'give'),
                 'default' => 'yes'
             ]
         );
@@ -129,11 +129,11 @@ class GiveGoalWidget extends Widget_Base
         $this->add_control(
             'show_bar',
             [
-                'label' => __('Show Progress Bar', 'dw4elementor'),
+                'label' => __('Show Progress Bar', 'give'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show or hide progress bar.', 'dw4elementor'),
-                'label_on' => __('Show', 'dw4elementor'),
-                'label_off' => __('Hide', 'dw4elementor'),
+                'description' => __('Show or hide progress bar.', 'give'),
+                'label_on' => __('Show', 'give'),
+                'label_off' => __('Hide', 'give'),
                 'default' => 'yes'
             ]
         );
@@ -143,14 +143,14 @@ class GiveGoalWidget extends Widget_Base
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
-                'content_classes' => 'dw4e-info',
+                'content_classes' => 'give-info',
                 'raw' => '
-					<div class="dw4e">
+					<div class="give">
 						<p class="info-head">
-							' . __('GIVEWP GOAL WIDGET', 'dw4elementor') . '</p>
-						<p class="info-message">' . __('This is the GiveWP Goal widget. Choose how you want your form goal to be displayed. Note that this widget only supports forms that have a goal enabled. If you want to show progress of any form or multiple forms, use the "GiveWP Totals" widget instead.', 'dw4elementor') . '</p>
-						<p class="dw4e-docs-links">
-							<a href="https://givewp.com/documentation/core/shortcodes/give_goal/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=dw4elementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Goal.', 'dw4elementor') . '</a>
+							' . __('GIVEWP GOAL WIDGET', 'give') . '</p>
+						<p class="info-message">' . __('This is the GiveWP Goal widget. Choose how you want your form goal to be displayed. Note that this widget only supports forms that have a goal enabled. If you want to show progress of any form or multiple forms, use the "GiveWP Totals" widget instead.', 'give') . '</p>
+						<p class="give-docs-links">
+							<a href="https://givewp.com/documentation/core/shortcodes/give_goal/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=givelementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Goal.', 'give') . '</a>
 						</p>
 				</div>'
             ]

@@ -41,7 +41,7 @@ class GiveLoginWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('Give Login', 'dw4elementor');
+        return __('GiveWP Login', 'give');
     }
 
     /**
@@ -56,7 +56,7 @@ class GiveLoginWidget extends Widget_Base
      */
     public function get_icon()
     {
-        return 'dw4elementor-icon';
+        return 'give-icon';
     }
 
     /**
@@ -100,7 +100,7 @@ class GiveLoginWidget extends Widget_Base
         $this->start_controls_section(
             'give_login_settings',
             [
-                'label' => __('GiveWP Login Widget', 'dw4elementor'),
+                'label' => __('GiveWP Login Widget', 'give'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -108,7 +108,7 @@ class GiveLoginWidget extends Widget_Base
         $this->add_control(
             'login_url',
             [
-                'label' => __('Redirect URL', 'dw4elementor'),
+                'label' => __('Redirect URL', 'give'),
                 'type' => \Elementor\Controls_Manager::URL,
                 'show_external' => false,
             ]
@@ -119,15 +119,15 @@ class GiveLoginWidget extends Widget_Base
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
-                'content_classes' => 'dw4e-info',
+                'content_classes' => 'give-info',
                 'raw' => '
-					<div class="dw4e">
+					<div class="give">
 						<p class="info-head">
-							' . __('GIVEWP LOGIN WIDGET', 'dw4elementor') . '</p>
-						<p class="info-message">' . __('This is the GiveWP Login widget.', 'dw4elementor') . '</p>
-						<p class="info-message">' . __('This is a sample Login form with all fields exposed. This is only to help position and style the form with Elementor. If you want to see the live form, go to this page while logged out or in an Icognito browser.', 'dw4elementor') . '</p>
-						<p class="dw4e-docs-links">
-							<a href="https://givewp.com/documentation/core/shortcodes/give_login/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=dw4elementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Login.', 'dw4elementor') . '</a>
+							' . __('GIVEWP LOGIN WIDGET', 'give') . '</p>
+						<p class="info-message">' . __('This is the GiveWP Login widget.', 'give') . '</p>
+						<p class="info-message">' . __('This is a sample Login form with all fields exposed. This is only to help position and style the form with Elementor. If you want to see the live form, go to this page while logged out or in an Icognito browser.', 'give') . '</p>
+						<p class="give-docs-links">
+							<a href="https://givewp.com/documentation/core/shortcodes/give_login/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=givelementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Login.', 'give') . '</a>
 						</p>
 				</div>'
             ]
@@ -158,14 +158,14 @@ class GiveLoginWidget extends Widget_Base
 		<div class="givewp-elementor-widget give-login-shortcode-wrap">
 			<form id="give-login-form" class="give-form">
 				<fieldset>
-					<legend><?php _e('Log into Your Account', 'dw4elementor'); ?></legend>
+					<legend><?php _e('Log into Your Account', 'give'); ?></legend>
 					<div class="give-login-username give-login">
-						<label for="give_user_login"><?php _e('Username or Email Address', 'dw4elementor'); ?></label>
+						<label for="give_user_login"><?php _e('Username or Email Address', 'give'); ?></label>
 						<input name="give_user_login" id="give_user_login" class="give-required give-input" type="text" required="" aria-required="true">
 					</div>
 
 					<div class="give-login-password give-login">
-						<label for="give_user_pass"><?php _e('Password', 'dw4elementor'); ?></label>
+						<label for="give_user_pass"><?php _e('Password', 'give'); ?></label>
 						<input name="give_user_pass" id="give_user_pass" class="give-password give-required give-input" type="password" required="" aria-required="true">
 					</div>
 
@@ -175,7 +175,7 @@ class GiveLoginWidget extends Widget_Base
 
 					<div class="give-lost-password give-login">
 						<a href="<?php echo get_site_url(); ?>/wp-login.php?action=lostpassword">
-							<?php _e('Reset Password', 'dw4elementor'); ?></a>
+							<?php _e('Reset Password', 'give'); ?></a>
 					</div>
 				</fieldset>
 			</form>

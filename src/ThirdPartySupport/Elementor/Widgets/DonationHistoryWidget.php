@@ -41,7 +41,7 @@ class DonationHistoryWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('Donation History', 'dw4elementor');
+        return __('GiveWP Donation History', 'give');
     }
 
     /**
@@ -56,7 +56,7 @@ class DonationHistoryWidget extends Widget_Base
      */
     public function get_icon()
     {
-        return 'dw4elementor-icon';
+        return 'give-icon';
     }
 
     /**
@@ -100,7 +100,7 @@ class DonationHistoryWidget extends Widget_Base
         $this->start_controls_section(
             'donation_history_settings',
             [
-                'label' => __('Donation History Widget', 'dw4elementor'),
+                'label' => __('Donation History Widget', 'give'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
@@ -108,11 +108,11 @@ class DonationHistoryWidget extends Widget_Base
         $this->add_control(
             'form_id',
             [
-                'label' => __('ID', 'dw4elementor'),
+                'label' => __('ID', 'give'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show or hide the "ID" column.', 'dw4elementor'),
-                'label_on' => __('Show', 'dw4elementor'),
-                'label_off' => __('Hide', 'dw4elementor'),
+                'description' => __('Show or hide the "ID" column.', 'give'),
+                'label_on' => __('Show', 'give'),
+                'label_off' => __('Hide', 'give'),
                 'default' => 'yes'
             ]
         );
@@ -120,11 +120,11 @@ class DonationHistoryWidget extends Widget_Base
         $this->add_control(
             'date',
             [
-                'label' => __('Date', 'dw4elementor'),
+                'label' => __('Date', 'give'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show or hide a column with the date of the donation.', 'dw4elementor'),
-                'label_on' => __('Show', 'dw4elementor'),
-                'label_off' => __('Hide', 'dw4elementor'),
+                'description' => __('Show or hide a column with the date of the donation.', 'give'),
+                'label_on' => __('Show', 'give'),
+                'label_off' => __('Hide', 'give'),
                 'default' => 'yes'
             ]
         );
@@ -132,11 +132,11 @@ class DonationHistoryWidget extends Widget_Base
         $this->add_control(
             'donor',
             [
-                'label' => __('Donor', 'dw4elementor'),
+                'label' => __('Donor', 'give'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show or hide a column with the donors full name.', 'dw4elementor'),
-                'label_on' => __('Show', 'dw4elementor'),
-                'label_off' => __('Hide', 'dw4elementor'),
+                'description' => __('Show or hide a column with the donors full name.', 'give'),
+                'label_on' => __('Show', 'give'),
+                'label_off' => __('Hide', 'give'),
                 'default' => 'no'
             ]
         );
@@ -144,11 +144,11 @@ class DonationHistoryWidget extends Widget_Base
         $this->add_control(
             'amount',
             [
-                'label' => __('Amount', 'dw4elementor'),
+                'label' => __('Amount', 'give'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show or hide a column with the amount of the donation.', 'dw4elementor'),
-                'label_on' => __('Show', 'dw4elementor'),
-                'label_off' => __('Hide', 'dw4elementor'),
+                'description' => __('Show or hide a column with the amount of the donation.', 'give'),
+                'label_on' => __('Show', 'give'),
+                'label_off' => __('Hide', 'give'),
                 'default' => 'yes'
             ]
         );
@@ -156,11 +156,11 @@ class DonationHistoryWidget extends Widget_Base
         $this->add_control(
             'status',
             [
-                'label' => __('Status', 'dw4elementor'),
+                'label' => __('Status', 'give'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show or hide a column with the status of the payment.', 'dw4elementor'),
-                'label_on' => __('Show', 'dw4elementor'),
-                'label_off' => __('Hide', 'dw4elementor'),
+                'description' => __('Show or hide a column with the status of the payment.', 'give'),
+                'label_on' => __('Show', 'give'),
+                'label_off' => __('Hide', 'give'),
                 'default' => 'no'
             ]
         );
@@ -168,11 +168,11 @@ class DonationHistoryWidget extends Widget_Base
         $this->add_control(
             'method',
             [
-                'label' => __('Payment Method', 'dw4elementor'),
+                'label' => __('Payment Method', 'give'),
                 'type' => \Elementor\Controls_Manager::SWITCHER,
-                'description' => __('Show or hide a column with the name of the payment method.', 'dw4elementor'),
-                'label_on' => __('Show', 'dw4elementor'),
-                'label_off' => __('Hide', 'dw4elementor'),
+                'description' => __('Show or hide a column with the name of the payment method.', 'give'),
+                'label_on' => __('Show', 'give'),
+                'label_off' => __('Hide', 'give'),
                 'default' => 'no'
             ]
         );
@@ -182,14 +182,14 @@ class DonationHistoryWidget extends Widget_Base
             [
                 'label' => '',
                 'type' => \Elementor\Controls_Manager::RAW_HTML,
-                'content_classes' => 'dw4e-info',
+                'content_classes' => 'give-info',
                 'raw' => '
-					<div class="dw4e">
+					<div class="give">
 						<p class="info-head">
-							' . __('GIVEWP DONATION HISTORY WIDGET', 'dw4elementor') . '</p>
-						<p class="info-message">' . __('This is the GiveWP Donation History widget. Choose which columns you want to have appear for your donors history.', 'dw4elementor') . '</p>
-						<p class="dw4e-docs-links">
-							<a href="https://givewp.com/documentation/core/shortcodes/donation_history/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=dw4elementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Donation History.', 'dw4elementor') . '</a>
+							' . __('GIVEWP DONATION HISTORY WIDGET', 'give') . '</p>
+						<p class="info-message">' . __('This is the GiveWP Donation History widget. Choose which columns you want to have appear for your donors history.', 'give') . '</p>
+						<p class="give-docs-links">
+							<a href="https://givewp.com/documentation/core/shortcodes/donation_history/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=givelementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __('Visit the GiveWP Docs for more info on the GiveWP Donation History.', 'give') . '</a>
 						</p>
 				</div>'
             ]
