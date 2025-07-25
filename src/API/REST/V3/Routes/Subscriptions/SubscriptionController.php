@@ -2,22 +2,17 @@
 
 namespace Give\API\REST\V3\Routes\Subscriptions;
 
-use DateTime;
 use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionCollectionParams;
-use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionFields;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionItemSchema;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionSharedParamsForGetMethods;
+use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionFields;
 use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionPermissions;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\SubscriptionQuery;
-use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
-use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Subscriptions\ViewModels\SubscriptionViewModel;
 use WP_Error;
 use WP_REST_Controller;
@@ -171,6 +166,8 @@ class SubscriptionController extends WP_REST_Controller
             $query->whereStatus((array)$status);
         }
 
+        $totalQuery = $query->clone();
+
         $query
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
@@ -188,7 +185,7 @@ class SubscriptionController extends WP_REST_Controller
             );
         }, $subscriptions);
 
-        $totalSubscriptions = empty($subscriptions) ? 0 : Subscription::query()->count();
+        $totalSubscriptions = empty($subscriptions) ? 0 : $totalQuery->count();
         $totalPages = (int) ceil($totalSubscriptions / $perPage);
 
         $response = rest_ensure_response($subscriptions);
@@ -415,7 +412,7 @@ class SubscriptionController extends WP_REST_Controller
         $params += give(GetSubscriptionCollectionParams::class)();
 
         return $params;
-    }    
+    }
 
     /**
      * @unreleased

@@ -26,6 +26,21 @@ class SubscriptionQuery
     }
 
     /**
+     * Clone the query with all current conditions applied
+     *
+     * @unreleased
+     */
+    public function clone(): self
+    {
+        $cloned = new self();
+        
+        // Copy the internal query state by cloning the ModelQueryBuilder
+        $cloned->query = clone $this->query;
+        
+        return $cloned;
+    }
+
+    /**
      * Delegates methods not defined locally to the underlying query.
      *
      * @unreleased
@@ -143,5 +158,13 @@ class SubscriptionQuery
     public function getAll(): array
     {
         return $this->query->getAll() ?? [];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function count(): int
+    {
+        return $this->query->count();
     }
 }
