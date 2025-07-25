@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { __ } from "@wordpress/i18n";
 import classnames from 'classnames';
-import SyncDetails,{ PaymentDetails } from "./Details";
+import SyncDetails,{ SyncPaymentDetails } from "./Details";
 import { SubscriptionSyncResponse } from "../../../hooks/useSubscriptionSync";
 import styles from './styles.module.scss';
 
@@ -16,7 +16,7 @@ type SubscriptionSyncListProps = {
  * @unreleased
  */
 export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncListProps) {
-    const { details, missingTransactions, presentTransactions } = syncResult;
+    const { details, missingTransactions } = syncResult;
 
     const statusUpdated = details?.currentStatus !== details?.gatewayStatus;
     const periodUpdated = details?.currentPeriod !== details?.gatewayPeriod;
@@ -34,7 +34,7 @@ export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncLis
                 <SyncDetails isUpdated={createdAtUpdated} currentValue={details?.currentCreatedAt} />
             </SyncItem>
             <SyncItem title="Subscription payments" isUpdated={false}>
-                <PaymentDetails payment={missingTransactions || []} />
+                {missingTransactions?.map(transaction => (<SyncPaymentDetails payment={transaction} />))}
             </SyncItem>
         </div>
     );
@@ -54,9 +54,6 @@ type SyncItemProps = {
  */
 function SyncItem({ title, isUpdated, children }: SyncItemProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-
-    // Add debugging for the SyncItem
-    console.log(`SyncItem "${title}" isUpdated:`, isUpdated);
 
     return (
         <div className={styles.item}>

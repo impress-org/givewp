@@ -66,23 +66,28 @@ export default function SyncDetails({ isUpdated, currentValue }: SyncDetailsProp
       )}
     </div>
   );
-}
-
-
+} 
 
 /**
  * @unreleased
  */
-type PaymentDetailsProps = {
-  payment: any;
+type SyncPaymentDetailsProps = {
+  payment: {
+    gatewayTransactionId: string;
+    id: number;
+    amount: string;
+    createdAt: string;
+    status: string;
+    type: string;
+  };
 }
 
 /**
  * @unreleased
  */
-export function PaymentDetails({ payment }: PaymentDetailsProps) {
+export function SyncPaymentDetails({ payment }: SyncPaymentDetailsProps) {    
     const PaymentAmount = () => (
-        <strong className={styles.paymentDescriptionAmount}>$100.00</strong>
+        <strong className={styles.paymentDescriptionAmount}>{payment?.amount}</strong>
     );
 
     const description = createInterpolateElement(
@@ -91,14 +96,16 @@ export function PaymentDetails({ payment }: PaymentDetailsProps) {
     );
 
     return (
-        <div className={classnames(styles.paymentDetails)}>
+      <div className={styles.paymentDetails}>
+        <div key={payment?.id} className={classnames(styles.paymentItem)}>
             <div className={styles.paymentIcon}>
                 <HandHeartIcon />
             </div>
             <div className={styles.paymentsContent}>
                 <p className={styles.paymentDescription}>{description}</p>
-                <p className={styles.paymentDate}>14th May, 2025 10:30 AM</p>
+                <p className={styles.paymentDate}>{payment?.createdAt}</p>
             </div>
         </div>
+      </div>
     );
 }
