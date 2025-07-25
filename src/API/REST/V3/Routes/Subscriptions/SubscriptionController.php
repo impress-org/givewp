@@ -5,6 +5,11 @@ namespace Give\API\REST\V3\Routes\Subscriptions;
 use DateTime;
 use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
+use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionCollectionParams;
+use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionFields;
+use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionItemSchema;
+use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionSharedParamsForGetMethods;
+use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionPermissions;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -54,7 +59,7 @@ class SubscriptionController extends WP_REST_Controller
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
-                'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
+                'args' => array_merge($this->get_collection_params(), give(GetSubscriptionSharedParamsForGetMethods::class)()),
                 'schema' => [$this, 'get_public_item_schema'],
             ],
             [
@@ -102,7 +107,7 @@ class SubscriptionController extends WP_REST_Controller
                         ],
                         'default' => false,
                     ],
-                ], $this->getSharedParams()),
+                ], give(GetSubscriptionSharedParamsForGetMethods::class)()),
                 'schema' => [$this, 'get_public_item_schema'],
             ],
             [
@@ -265,7 +270,7 @@ class SubscriptionController extends WP_REST_Controller
             if (! in_array($key, $nonEditableFields, true)) {
                 if (in_array($key, $subscription::propertyKeys(), true)) {
                     try {
-                        $processedValue = $this->processFieldValue($key, $value);
+                        $processedValue = SubscriptionFields::processValue($key, $value);
                         if ($subscription->isPropertyTypeValid($key, $processedValue)) {
                             $subscription->$key = $processedValue;
                         }
@@ -371,57 +376,7 @@ class SubscriptionController extends WP_REST_Controller
         ], 200);
     }
 
-    /**
-     * Process field values for special data types before setting them on the subscription model.
-     *
-     * @unreleased
-     */
-    private function processFieldValue(string $key, $value)
-    {
-        switch ($key) {
-            case 'amount':
-            case 'feeAmountRecovered':
-                if (is_array($value)) {
-                    // Handle Money object array format: ['amount' => 100.00, 'currency' => 'USD']
-                    if (isset($value['amount']) && isset($value['currency'])) {
-                        return Money::fromDecimal($value['amount'], $value['currency']);
-                    }
-                }
 
-                return $value;
-
-            case 'status':
-                if (is_string($value)) {
-                    return new SubscriptionStatus($value);
-                }
-
-                return $value;
-
-            case 'period':
-                if (is_string($value)) {
-                    return new SubscriptionPeriod($value);
-                }
-
-                return $value;
-
-            case 'createdAt':
-            case 'renewsAt':
-                try {
-                    if (is_string($value)) {
-                        return new DateTime($value, wp_timezone());
-                    } elseif (is_array($value)) {
-                        return new DateTime($value['date'], new \DateTimeZone($value['timezone']));
-                    }
-                } catch (\Exception $e) {
-                    throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
-                }
-
-                return $value;
-
-            default:
-                return $value;
-        }
-    }
 
     /**
      * @unreleased
@@ -457,87 +412,10 @@ class SubscriptionController extends WP_REST_Controller
         unset($params['context']);
         unset($params['search']);
 
-        $params += [
-            'sort' => [
-                'type' => 'string',
-                'default' => 'id',
-                'enum' => [
-                    'id',
-                    'createdAt',
-                    //'updatedAt',
-                    'status',
-                    'amount',
-                    //'feeAmountRecovered',
-                    'donorId',
-                    //'firstName',
-                    //'lastName',
-                ],
-            ],
-            'direction' => [
-                'type' => 'string',
-                'default' => 'DESC',
-                'enum' => ['ASC', 'DESC'],
-            ],
-            // Note: 'mode' parameter exists for API consistency but isn't used in queries
-            // since subscriptions table doesn't have a mode column
-            'mode' => [
-                'type' => 'string',
-                'default' => 'live',
-                'enum' => ['live', 'test'],
-            ],
-            'status' => [
-                'type' => 'array',
-                'items' => [
-                    'type' => 'string',
-                    'enum' => [
-                        'any',
-                        'pending',
-                        'active',
-                        'expired',
-                        'completed',
-                        'failing',
-                        'cancelled',
-                        'suspended',
-                        'paused',
-                        'refunded',
-                        'abandoned',
-                    ],
-                ],
-                'default' => ['any'],
-            ],
-            'campaignId' => [
-                'type' => 'integer',
-                'default' => 0,
-            ],
-            'donorId' => [
-                'type' => 'integer',
-                'default' => 0,
-            ],
-        ];
+        $params += give(GetSubscriptionCollectionParams::class)();
 
         return $params;
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getSharedParams(): array
-    {
-        return [
-            'includeSensitiveData' => [
-                'description' => __('Include or not include data that can be used to contact or locate the donors, such as phone number, email, billing address, etc. (require proper permissions)', 'give'),
-                'type' => 'boolean',
-                'default' => false,
-            ],
-            'anonymousDonors' => [
-                'description' => __('Exclude, include, or redact data that can be used to identify the donors, such as ID, first name, last name, etc (require proper permissions).',
-                    'give'),
-                'type' => 'string',
-                'default' => 'exclude',
-                'enum' => ['exclude', 'include', 'redact'],
-            ],
-        ];
-    }
+    }    
 
     /**
      * @unreleased
@@ -587,43 +465,9 @@ class SubscriptionController extends WP_REST_Controller
      *
      * @return true|WP_Error
      */
-    public function permissionsCheckForGetMethods(WP_REST_Request $request)
-    {
-        $isAdmin = $this->canEditSubscriptions();
-
-        $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if ( ! $isAdmin && $includeSensitiveData) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to include sensitive data.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        if ($request->get_param('anonymousDonors') !== null) {
-            $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-            if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
-                return new WP_Error(
-                    'rest_forbidden',
-                    esc_html__('You do not have permission to include anonymous donors.', 'give'),
-                    ['status' => $this->authorizationStatusCode()]
-                );
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @unreleased
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return true|WP_Error
-     */
     public function get_items_permissions_check($request)
     {
-        return $this->permissionsCheckForGetMethods($request);
+        return SubscriptionPermissions::validationForGetMethods($request);
     }
 
     /**
@@ -635,7 +479,7 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function get_item_permissions_check($request)
     {
-        return $this->permissionsCheckForGetMethods($request);
+        return SubscriptionPermissions::validationForGetMethods($request);
     }
 
     /**
@@ -647,15 +491,7 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function update_item_permissions_check($request)
     {
-        if (! $this->canEditSubscriptions()) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to update subscriptions.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        return true;
+        return SubscriptionPermissions::validationForUpdateMethod($request);
     }
 
     /**
@@ -667,15 +503,7 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function delete_item_permissions_check($request)
     {
-        if (! $this->canDeleteSubscriptions()) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to delete subscriptions.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        return true;
+        return SubscriptionPermissions::validationForDeleteMethods($request);
     }
 
     /**
@@ -687,47 +515,7 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function delete_items_permissions_check($request)
     {
-        if ($this->canDeleteSubscriptions()) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to delete subscriptions.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        return true;
-    }
-
-    /**
-     * Check if current user can edit subscriptions.
-     *
-     * @unreleased
-     */
-    private function canEditSubscriptions(): bool
-    {
-        return current_user_can('manage_options')
-               || (
-                   current_user_can('edit_give_payments')
-                   && current_user_can('view_give_payments')
-               );
-    }
-
-    /**
-     * Check if current user can delete subscriptions.
-     *
-     * @unreleased
-     */
-    private function canDeleteSubscriptions(): bool
-    {
-        return current_user_can('manage_options') || current_user_can('delete_give_payments');
-    }
-
-    /**
-     * @unreleased
-     */
-    public function authorizationStatusCode(): int
-    {
-        return is_user_logged_in() ? 403 : 401;
+        return SubscriptionPermissions::validationForDeleteMethods($request);
     }
 
     /**
@@ -735,148 +523,6 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function get_item_schema(): array
     {
-        return [
-            'title' => 'subscription',
-            'type' => 'object',
-            'properties' => [
-                'id' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Subscription ID', 'give'),
-                ],
-                'donorId' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Donor ID', 'give'),
-                ],
-                'donationFormId' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Donation form ID', 'give'),
-                ],
-                'amount' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'amount' => [
-                            'type' => 'number',
-                        ],
-                        'amountInMinorUnits' => [
-                            'type' => 'integer',
-                        ],
-                        'currency' => [
-                            'type' => 'string',
-                            'format' => 'text-field',
-                        ],
-                    ],
-                    'description' => esc_html__('Subscription amount', 'give'),
-                ],
-                'feeAmountRecovered' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'amount' => [
-                            'type' => 'number',
-                        ],
-                        'amountInMinorUnits' => [
-                            'type' => 'integer',
-                        ],
-                        'currency' => [
-                            'type' => 'string',
-                            'format' => 'text-field',
-                        ],
-                    ],
-                    'description' => esc_html__('Fee amount recovered', 'give'),
-                ],
-                'status' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Subscription status', 'give'),
-                    'enum' => array_values(SubscriptionStatus::toArray()),
-                ],
-                'period' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Subscription billing period', 'give'),
-                    'enum' => ['day', 'week', 'month', 'quarter', 'year'],
-                ],
-                'frequency' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Billing frequency', 'give'),
-                ],
-                'installments' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Number of installments (0 for unlimited)', 'give'),
-                ],
-                'transactionId' => [
-                    'type' => ['string', 'null'],
-                    'description' => esc_html__('Transaction ID', 'give'),
-                    'format' => 'text-field',
-                ],
-                'gatewayId' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Payment gateway ID', 'give'),
-                    'format' => 'text-field',
-                ],
-                'gatewaySubscriptionId' => [
-                    'type' => ['string', 'null'],
-                    'description' => esc_html__('Gateway subscription ID', 'give'),
-                    'format' => 'text-field',
-                ],
-                'mode' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Subscription mode (live or test)', 'give'),
-                    'default' => 'live',
-                    'enum' => ['live', 'test'],
-                ],
-                'createdAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
-                            'format' => 'date-time',
-                        ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
-                        ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
-                        ],
-                    ],
-                    'description' => esc_html__('Subscription creation date', 'give'),
-                    'format' => 'date-time',
-                ],
-                'renewsAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
-                            'format' => 'date-time',
-                        ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
-                        ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
-                        ],
-                    ],
-                    'description' => esc_html__('Next renewal date', 'give'),
-                    'format' => 'date-time',
-                ],
-            ],
-            'required' => [
-                'id',
-                'donorId',
-                'donationFormId',
-                'amount',
-                'status',
-                'period',
-                'frequency',
-                'gatewayId',
-                'mode',
-                'createdAt',
-            ],
-        ];
+        return give(GetSubscriptionItemSchema::class)();
     }
 }
