@@ -69,8 +69,8 @@ class SubscriptionViewModel
                         break;
                 }
             }
-        }
-
+        }        
+        
         if (isset($this->anonymousMode ) && $this->anonymousMode->isRedacted() && $this->subscription->donor->isAnonymous()) {
             $anonymousDataRedacted = [
                 'donorId',                
