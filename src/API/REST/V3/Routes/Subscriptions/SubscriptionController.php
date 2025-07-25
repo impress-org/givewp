@@ -10,6 +10,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\SubscriptionQuery;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Subscriptions\ViewModels\SubscriptionViewModel;
@@ -72,7 +73,7 @@ class SubscriptionController extends WP_REST_Controller
                     'force' => [
                         'description' => __('Whether to permanently delete (force=true) or move to trash (force=false, default).', 'give'),
                         'type' => 'boolean',
-                        'default' => false,                        
+                        'default' => false,
                     ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
@@ -100,7 +101,7 @@ class SubscriptionController extends WP_REST_Controller
                             'boolean',
                         ],
                         'default' => false,
-                    ],                    
+                    ],
                 ], $this->getSharedParams()),
                 'schema' => [$this, 'get_public_item_schema'],
             ],
@@ -124,7 +125,7 @@ class SubscriptionController extends WP_REST_Controller
                     'force' => [
                         'description' => __('Whether to permanently delete (force=true) or move to trash (force=false, default).', 'give'),
                         'type' => 'boolean',
-                        'default' => false,                        
+                        'default' => false,
                     ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
@@ -146,24 +147,19 @@ class SubscriptionController extends WP_REST_Controller
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
-        $query = Subscription::query();
+        $query = new SubscriptionQuery();
+        $query->whereMode($mode);
 
-        // TODO: Add campaignId filter
-        // if ($campaignId = $request->get_param('campaignId')) {
-        //     // Filter by CampaignId
-        //     $query->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
-        // }
-
-        if ($donorId = $request->get_param('donorId')) {
-            $query->where('customer_id', $donorId);
+        if ($campaignId = $request->get_param('campaignId')) {
+            $query->whereCampaignId($campaignId);
         }
 
-        // Include only current payment "mode"
-        $query->where('payment_mode', $mode);
+        if ($donorId = $request->get_param('donorId')) {
+            $query->whereDonorId($donorId);
+        }
 
-        // Filter by status if not 'any'
         if (! in_array('any', (array) $status, true)) {
-            $query->whereIn('status', (array) $status);
+            $query->whereStatus((array)$status);
         }
 
         $query
@@ -172,7 +168,7 @@ class SubscriptionController extends WP_REST_Controller
             ->orderBy($sortColumn, $sortDirection);
 
         $sql = $query->getSQL();
-            
+
         $subscriptions = $query->getAll() ?? [];
 
         $subscriptions = array_map(function ($subscription) use ($donorAnonymousMode, $includeSensitiveData, $request) {
@@ -224,7 +220,7 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function get_item($request)
     {
-        $subscription = Subscription::find($request->get_param('id'));        
+        $subscription = Subscription::find($request->get_param('id'));
 
         if (! $subscription) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
@@ -369,7 +365,7 @@ class SubscriptionController extends WP_REST_Controller
             'total_deleted' => count($deleted),
             'total_errors' => count($errors),
         ], 200);
-    }    
+    }
 
     /**
      * Process field values for special data types before setting them on the subscription model.
@@ -517,7 +513,7 @@ class SubscriptionController extends WP_REST_Controller
 
         return $params;
     }
-    
+
     /**
      * @unreleased
      */
@@ -588,8 +584,8 @@ class SubscriptionController extends WP_REST_Controller
      * @return true|WP_Error
      */
     public function permissionsCheckForGetMethods(WP_REST_Request $request)
-    {        
-        $isAdmin = $this->canEditSubscriptions();        
+    {
+        $isAdmin = $this->canEditSubscriptions();
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         if ( ! $isAdmin && $includeSensitiveData) {
@@ -609,7 +605,7 @@ class SubscriptionController extends WP_REST_Controller
                     ['status' => $this->authorizationStatusCode()]
                 );
             }
-        }        
+        }
 
         return true;
     }
@@ -652,8 +648,8 @@ class SubscriptionController extends WP_REST_Controller
                 'rest_forbidden',
                 esc_html__('You do not have permission to update subscriptions.', 'give'),
                 ['status' => $this->authorizationStatusCode()]
-            );   
-        }        
+            );
+        }
 
         return true;
     }
@@ -673,7 +669,6 @@ class SubscriptionController extends WP_REST_Controller
                 esc_html__('You do not have permission to delete subscriptions.', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
-            
         }
 
         return true;
