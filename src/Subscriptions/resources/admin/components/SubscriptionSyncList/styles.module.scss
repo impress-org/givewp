@@ -150,17 +150,27 @@
     color: #060c1a;
 }
 
-.paymentDetails {    
+.paymentDetails {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+    max-height: 5rem;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.paymentItem {    
     align-self: stretch;
     display: flex;
     justify-content:space-between;
     justify-content: flex-start;
     gap: var(--givewp-spacing-2);
     align-items: center;
-    width: 100%;
+    width: auto;
     padding: var(--givewp-spacing-3);
     border-radius: .5rem;
     background-color: #f9fafb;
+
 }
 
 .paymentsContent {
