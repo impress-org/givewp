@@ -34,14 +34,14 @@ interface SummaryTableProps {
  */
 export default function SummaryTable({data,}: SummaryTableProps) {
   return (
-    <>
+    <div className={styles.summaryTableContainer}>
         {data.map((item, index) => (
             <div className={styles.summaryTable} key={index}>
                 <p className={styles.summaryTableLabel}>{item.label}</p>
                 {renderValue(item.value, item.isPill)}
             </div>
         ))}
-    </>
+    </div>
   );
 }
 
