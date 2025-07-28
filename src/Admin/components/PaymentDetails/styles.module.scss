@@ -40,6 +40,10 @@
   .campaignCard {
     justify-content: flex-start;
   }
+
+  .campaignCard div, .donorCard div {
+    margin: 0 auto;
+  }
   
   .card h3 {
     font-size: 0.875rem;
@@ -50,7 +54,8 @@
   
   .card p {
     margin: 0 0 0.5rem 0;
-    color: var(--givewp-gray-900);
+    font-size: 0.875rem;
+    color: #4b5563;
   }
   
   .card p:last-child {
