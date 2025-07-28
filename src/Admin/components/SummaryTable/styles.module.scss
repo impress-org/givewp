@@ -1,5 +1,12 @@
 $breakpoint-desktop: 900px;
 
+.summaryTableContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--givewp-spacing-2);
+  width: 100%;
+}
+
 .summaryPanel, .summaryTable {
   display: flex;
   justify-content: space-between;
