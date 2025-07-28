@@ -388,22 +388,15 @@ class SubscriptionController extends WP_REST_Controller
         if ($subscriptionId) {
             $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $subscriptionId));
             $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
-            //$campaign_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'campaigns', $item['campaignId']));
-            $donationForm_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'forms', $item['donationFormId']));
+            $donor_url = add_query_arg([
+                'mode' => $request->get_param('mode'),      
+            ], $donor_url);
             $links = [
                 'self' => ['href' => $self_url],
                 CURIE::relationUrl('donor') => [
                     'href' => $donor_url,
                     'embeddable' => true,
-                ],
-                /*CURIE::relationUrl('campaign') => [
-                    'href' => $campaign_url,
-                    'embeddable' => true,
-                ],*/
-                CURIE::relationUrl('form') => [
-                    'href' => $donationForm_url,
-                    'embeddable' => true,
-                ],
+                ],                
             ];
         } else {
             $links = [];
