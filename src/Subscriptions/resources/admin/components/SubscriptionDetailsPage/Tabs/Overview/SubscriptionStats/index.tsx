@@ -31,7 +31,7 @@ export default function SubscriptionStats({totalContributions, paymentsCompleted
     return (
         <div className={styles.container}>
             <StatWidget
-                label={__('Total contributions so far', 'give')}
+                label={__('Total contribution so far', 'give')}
                 value={totalContributions}
                 formatter={amountFormatter(currency)}
                 loading={loading}
