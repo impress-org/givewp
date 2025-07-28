@@ -16,12 +16,13 @@ class GetSubscriptionCollectionParams
     {
         return [
             'sort' => [
+                'description' => esc_html__('Sort field for subscription results', 'give'),
                 'type' => 'string',
                 'default' => 'id',
                 'enum' => [
                     'id',
                     'createdAt',
-                    'renewsAt',
+                    'renewsAt', 
                     'status',
                     'amount',
                     'feeAmountRecovered',
@@ -31,16 +32,19 @@ class GetSubscriptionCollectionParams
                 ],
             ],
             'direction' => [
+                'description' => esc_html__('Sort direction for subscription results', 'give'),
                 'type' => 'string',
                 'default' => 'DESC',
                 'enum' => ['ASC', 'DESC'],
             ],            
             'mode' => [
+                'description' => esc_html__('Subscription mode (live or test)', 'give'),
                 'type' => 'string',
                 'default' => 'live',
                 'enum' => ['live', 'test'],
             ],
             'status' => [
+                'description' => esc_html__('Filter subscriptions by status', 'give'),
                 'type' => 'array',
                 'items' => [
                     'type' => 'string',
@@ -49,10 +53,12 @@ class GetSubscriptionCollectionParams
                 'default' => ['any'],
             ],
             'campaignId' => [
+                'description' => esc_html__('Filter subscriptions by campaign ID', 'give'),
                 'type' => 'integer',
                 'default' => 0,
             ],
             'donorId' => [
+                'description' => esc_html__('Filter subscriptions by donor ID', 'give'),
                 'type' => 'integer',
                 'default' => 0,
             ],

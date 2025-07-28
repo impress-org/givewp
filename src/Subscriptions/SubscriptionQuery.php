@@ -4,7 +4,6 @@ namespace Give\Subscriptions;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\ValueObjects\DonorMetaKeys;
-use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Subscriptions\Models\Subscription;
