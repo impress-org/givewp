@@ -7,7 +7,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor Donation Receipt Widget.
  *
- * Elementor widget that inserts the GiveWP [give_receipt] shrotcode to output a donor's full Donation Receipt table.
+ * Elementor widget that inserts the GiveWP [give_receipt] shortcode to output a donor's full Donation Receipt table.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */

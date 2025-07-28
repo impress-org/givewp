@@ -7,7 +7,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor Give Donor Wall Widget.
  *
- * Elementor widget that inserts the GiveWP [give_donor_wall] shrotcode to output a form total with options.
+ * Elementor widget that inserts the GiveWP [give_donor_wall] shortcode to output a form total with options.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */

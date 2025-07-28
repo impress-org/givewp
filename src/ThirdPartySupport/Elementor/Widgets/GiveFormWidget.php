@@ -10,7 +10,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor Give Form Widget.
  *
- * Elementor widget that inserts the GiveWP [give_form] shrotcode to output a form total with options.
+ * Elementor widget that inserts the GiveWP [give_form] shortcode to output a form total with options.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */
@@ -330,7 +330,7 @@ class GiveFormWidget extends Widget_Base
     /**
      * Get forms using legacy template from list of forms returned by GiveFormWidget::getDonationFormsOptions
      *
-     * @unlreased
+     * @unreleased
      *
      * @param array $forms
      *
@@ -352,7 +352,7 @@ class GiveFormWidget extends Widget_Base
     /**
      * Get forms using classic template from list of forms returned by GiveFormWidget::getDonationFormsOptions
      *
-     * @unlreased
+     * @unreleased
      *
      * @param array $forms
      *
@@ -374,7 +374,7 @@ class GiveFormWidget extends Widget_Base
     /**
      * Get v3 forms from list of forms returned by GiveFormWidget::getDonationFormsOptions
      *
-     * @unlreased
+     * @unreleased
      *
      * @param array $forms
      *

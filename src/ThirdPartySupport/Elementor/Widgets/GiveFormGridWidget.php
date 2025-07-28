@@ -7,7 +7,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor Give Form Grid Widget.
  *
- * Elementor widget that inserts the GiveWP [give_form_grid] shrotcode to output a form total with options.
+ * Elementor widget that inserts the GiveWP [give_form_grid] shortcode to output a form total with options.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */
@@ -92,7 +92,6 @@ class GiveFormGridWidget extends Widget_Base
      *
      * Adds different input fields to allow the user to change and customize the widget settings.
      *
-     * @unreleased migrated from givewp-elementor-widgets
      * @unreleased migrated from givewp-elementor-widgets
      * @access protected
      */
@@ -423,7 +422,6 @@ class GiveFormGridWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
-     * @unreleased migrated from givewp-elementor-widgets
      * @unreleased migrated from givewp-elementor-widgets
      * @access protected
      */
