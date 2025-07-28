@@ -3,6 +3,8 @@
 namespace Give\Subscriptions;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\ValueObjects\DonorMetaKeys;
+use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Subscriptions\Models\Subscription;
@@ -54,6 +56,22 @@ class SubscriptionQuery
         }
 
         return $this->query->$method(...$args);
+    }
+
+     /**
+     * @unreleased
+     */
+    public function selectDonorNames(): self
+    {        
+        $this->query->attachMeta(
+            'give_donormeta',
+            'customer_id',
+            'donor_id',
+            [DonorMetaKeys::FIRST_NAME, 'firstName'],
+            [DonorMetaKeys::LAST_NAME, 'lastName']
+        );
+
+        return $this;
     }
 
     /**

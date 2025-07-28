@@ -2,6 +2,8 @@
 
 namespace Give\API\REST\V3\Routes\Subscriptions\Actions;
 
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
+
 /**
  * @unreleased
  */
@@ -19,22 +21,20 @@ class GetSubscriptionCollectionParams
                 'enum' => [
                     'id',
                     'createdAt',
-                    //'updatedAt',
+                    'renewsAt',
                     'status',
                     'amount',
-                    //'feeAmountRecovered',
+                    'feeAmountRecovered',
                     'donorId',
-                    //'firstName',
-                    //'lastName',
+                    'firstName',
+                    'lastName',
                 ],
             ],
             'direction' => [
                 'type' => 'string',
                 'default' => 'DESC',
                 'enum' => ['ASC', 'DESC'],
-            ],
-            // Note: 'mode' parameter exists for API consistency but isn't used in queries
-            // since subscriptions table doesn't have a mode column
+            ],            
             'mode' => [
                 'type' => 'string',
                 'default' => 'live',
@@ -44,19 +44,7 @@ class GetSubscriptionCollectionParams
                 'type' => 'array',
                 'items' => [
                     'type' => 'string',
-                    'enum' => [
-                        'any',
-                        'pending',
-                        'active',
-                        'expired',
-                        'completed',
-                        'failing',
-                        'cancelled',
-                        'suspended',
-                        'paused',
-                        'refunded',
-                        'abandoned',
-                    ],
+                    'enum' => ['any', ...array_values(SubscriptionStatus::toArray())],
                 ],
                 'default' => ['any'],
             ],

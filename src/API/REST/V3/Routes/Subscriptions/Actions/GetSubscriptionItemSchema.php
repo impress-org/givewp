@@ -2,6 +2,7 @@
 
 namespace Give\API\REST\V3\Routes\Subscriptions\Actions;
 
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
@@ -65,12 +66,12 @@ class GetSubscriptionItemSchema
                 'status' => [
                     'type' => 'string',
                     'description' => esc_html__('Subscription status', 'give'),
-                    'enum' => array_values(SubscriptionStatus::toArray()),
+                    'enum' => ['any', ...array_values(SubscriptionStatus::toArray())],
                 ],
                 'period' => [
                     'type' => 'string',
                     'description' => esc_html__('Subscription billing period', 'give'),
-                    'enum' => ['day', 'week', 'month', 'quarter', 'year'],
+                    'enum' => array_values(SubscriptionPeriod::toArray()),
                 ],
                 'frequency' => [
                     'type' => 'integer',

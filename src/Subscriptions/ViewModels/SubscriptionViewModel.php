@@ -49,9 +49,13 @@ class SubscriptionViewModel
      */
     public function exports(): array
     {
+        $donor = $this->subscription->donor()->get();
+        
         $data = array_merge(
             $this->subscription->toArray(),
             [
+                'firstName' => $donor ? $donor->firstName : '',
+                'lastName' => $donor ? $donor->lastName : '',
                 'gateway' => $this->getGatewayDetails(),
             ]
         );
@@ -73,7 +77,9 @@ class SubscriptionViewModel
         
         if (isset($this->anonymousMode ) && $this->anonymousMode->isRedacted() && $this->subscription->donor->isAnonymous()) {
             $anonymousDataRedacted = [
-                'donorId',                
+                'donorId',
+                'firstName',
+                'lastName',
             ];
 
             foreach ($anonymousDataRedacted as $propertyName) {

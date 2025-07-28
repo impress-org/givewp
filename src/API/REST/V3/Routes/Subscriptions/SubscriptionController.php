@@ -166,14 +166,17 @@ class SubscriptionController extends WP_REST_Controller
             $query->whereStatus((array)$status);
         }
 
+        // Add donor names selection if sorting by firstName or lastName
+        if (in_array($sortColumn, ['firstName', 'lastName'], true)) {
+            $query->selectDonorNames();
+        }
+
         $totalQuery = $query->clone();
 
         $query
-            ->limit($perPage)
-            ->offset(($page - 1) * $perPage)
-            ->orderBy($sortColumn, $sortDirection);
-
-        $sql = $query->getSQL();
+        ->limit($perPage)
+        ->offset(($page - 1) * $perPage)
+        ->orderBy($sortColumn, $sortDirection);        
 
         $subscriptions = $query->getAll() ?? [];
 
@@ -324,9 +327,7 @@ class SubscriptionController extends WP_REST_Controller
         return new WP_REST_Response(['deleted' => true, 'previous' => $item], 200);
     }
 
-    /**
-     * Delete multiple subscriptions.
-     *
+    /**     
      * @unreleased
      */
     public function deleteItems($request): WP_REST_Response
@@ -383,13 +384,13 @@ class SubscriptionController extends WP_REST_Controller
         $sortColumnsMap = [
             'id' => 'id',
             'createdAt' => 'created',
-            //'updatedAt' => 'created', // subscriptions table doesn't have updated column, use created
+            'renewsAt' => 'expiration',
             'status' => 'status',
             'amount' => 'recurring_amount',
-            //'feeAmountRecovered' => 'recurring_fee_amount',
+            'feeAmountRecovered' => 'recurring_fee_amount',
             'donorId' => 'customer_id',
-            //'firstName' => 'customer_id', // would need join for actual firstName
-            //'lastName' => 'customer_id',  // would need join for actual lastName
+            'firstName' => 'firstName',
+            'lastName' => 'lastName',
         ];
 
         return $sortColumnsMap[$sortColumn] ?? 'id';

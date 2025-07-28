@@ -2,6 +2,7 @@
 
 namespace Unit\API\REST\V3\Routes\Subscriptions;
 
+use DateTime;
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\Campaigns\Models\Campaign;
@@ -74,6 +75,8 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         $this->assertArrayHasKey('timezone', $data[0]['renewsAt']);
         $this->assertArrayHasKey('timezone_type', $data[0]['renewsAt']);
 
+        $donor = $subscription->donor()->get();
+        
         $this->assertEquals([
             'id' => $subscription->id,
             'donorId' => $subscription->donorId,
@@ -89,7 +92,9 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
             'gatewaySubscriptionId' => $subscription->gatewaySubscriptionId,
             'mode' => 'live', 
             'createdAt' => $data[0]['createdAt'],
-            'renewsAt' => $data[0]['renewsAt'], 
+            'renewsAt' => $data[0]['renewsAt'],
+            'firstName' => $donor ? $donor->firstName : '',
+            'lastName' => $donor ? $donor->lastName : '',
             'gateway' => array_merge(
                 $subscription->gateway()->toArray(),
                 [
@@ -366,13 +371,14 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         $this->assertEquals($subscription1->id, $data[0]['id']);
         $this->assertEquals(0, $data[1]['donorId']);
 
-        /*$anonymousDataRedacted = [
-            'donorId',
+        $anonymousDataRedacted = [            
+            'firstName',
+            'lastName',
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(0, $data[1][$property]);
-        }*/
+            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
+        }
     }
 
     /**
@@ -580,9 +586,9 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
 
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
-        $subscription1 = $this->createSubscription('live', 'active', 100);
-        $subscription2 = $this->createSubscription('live', 'active', 200);
-        $subscription3 = $this->createSubscription('live', 'active', 300);
+        $subscription1 = $this->createSubscriptionSort1();
+        $subscription2 = $this->createSubscriptionSort2();
+        $subscription3 = $this->createSubscriptionSort3();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -607,9 +613,21 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($subscription1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($subscription2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($subscription3->{$sortableColumn}, $data[2][$sortableColumn]);
+        
+        // For firstName and lastName, get the value from the donor
+        if (in_array($sortableColumn, ['firstName', 'lastName'], true)) {
+            $expected1 = $subscription1->donor()->get()->{$sortableColumn};
+            $expected2 = $subscription2->donor()->get()->{$sortableColumn};
+            $expected3 = $subscription3->donor()->get()->{$sortableColumn};
+        } else {
+            $expected1 = $subscription1->{$sortableColumn};
+            $expected2 = $subscription2->{$sortableColumn};
+            $expected3 = $subscription3->{$sortableColumn};
+        }
+        
+        $this->assertEquals($expected1, $data[0][$sortableColumn]);
+        $this->assertEquals($expected2, $data[1][$sortableColumn]);
+        $this->assertEquals($expected3, $data[2][$sortableColumn]);
 
         /**
          * Descendant Direction
@@ -631,9 +649,21 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($subscription3->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($subscription2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($subscription1->{$sortableColumn}, $data[2][$sortableColumn]);
+        
+        // For firstName and lastName, get the value from the donor
+        if (in_array($sortableColumn, ['firstName', 'lastName'], true)) {
+            $expected3 = $subscription3->donor()->get()->{$sortableColumn};
+            $expected2 = $subscription2->donor()->get()->{$sortableColumn};
+            $expected1 = $subscription1->donor()->get()->{$sortableColumn};
+        } else {
+            $expected3 = $subscription3->{$sortableColumn};
+            $expected2 = $subscription2->{$sortableColumn};
+            $expected1 = $subscription1->{$sortableColumn};
+        }
+        
+        $this->assertEquals($expected3, $data[0][$sortableColumn]);
+        $this->assertEquals($expected2, $data[1][$sortableColumn]);
+        $this->assertEquals($expected1, $data[2][$sortableColumn]);
     }
 
     /**
@@ -644,9 +674,13 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
         return [
             ['id'],
             ['createdAt'],
+            ['renewsAt'],
             ['status'],
             ['amount'],
+            ['feeAmountRecovered'],
             ['donorId'],
+            ['firstName'],
+            ['lastName'],
         ];
     }    
 
@@ -667,11 +701,80 @@ class SubscriptionRouteGetCollectionTest extends RestApiTestCase
             'frequency' => 1,
             'installments' => 0,            
             'mode' => new SubscriptionMode($mode),
-            'donorId' => $donor->id,
+            'donorId' => $donor->id,            
         ], [
             'anonymous' => false,
             'donorId' => $donor->id,
         ]);
+    }
+
+    /**
+     * @unreleased     
+     * 
+     * @throws Exception 
+     */
+    private function createSubscriptionSort1()
+    {
+        $subscription1 = $this->createSubscription('live', 'active');
+        $subscription1->amount = new Money(100, 'USD');
+        $subscription1->feeAmountRecovered = new Money(10, 'USD');
+        $subscription1->renewsAt = new DateTime('2025-01-01');
+        
+        // Set donor names directly
+        $donor = $subscription1->donor()->get();
+        $donor->firstName = 'A';
+        $donor->lastName = 'A';
+        $donor->save();
+        
+        $subscription1->save();                
+
+        return $subscription1;
+    }
+
+    /**
+     * @unreleased
+     * 
+     * @throws Exception 
+     */
+    private function createSubscriptionSort2()
+    {        
+        $subscription2 = $this->createSubscription('live', 'active');
+        $subscription2->amount = new Money(200, 'USD');
+        $subscription2->feeAmountRecovered = new Money(20, 'USD');
+        $subscription2->renewsAt = new DateTime('2025-01-02');
+        
+        // Set donor names directly
+        $donor = $subscription2->donor()->get();
+        $donor->firstName = 'B';
+        $donor->lastName = 'B';
+        $donor->save();
+        
+        $subscription2->save();                
+
+        return $subscription2;
+    }
+
+    /**
+     * @unreleased     
+     * 
+     * @throws Exception 
+     */
+    private function createSubscriptionSort3()
+    {        
+        $subscription3 = $this->createSubscription('live', 'active');
+        $subscription3->amount = new Money(300, 'USD');
+        $subscription3->feeAmountRecovered = new Money(30, 'USD');
+        $subscription3->renewsAt = new DateTime('2025-01-03');
+        
+        // Set donor names directly
+        $donor = $subscription3->donor()->get();
+        $donor->firstName = 'C';
+        $donor->lastName = 'C';
+        $donor->save();
+        
+        $subscription3->save();                
+
+        return $subscription3;
     }
 
     /**
