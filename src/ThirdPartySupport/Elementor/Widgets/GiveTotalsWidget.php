@@ -8,7 +8,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor Give Totals Widget.
  *
- * Elementor widget that inserts the GiveWP [give_totals] shrotcode to output a form total with options.
+ * Elementor widget that inserts the GiveWP [give_totals] shortcode to output a form total with options.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */

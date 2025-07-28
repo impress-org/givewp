@@ -107,11 +107,11 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function deactivateGivewpElementorWidgets()
     {
-        if (!defined('GiveWP_DW_4_Elementor_VERSION' ) ) {
+        if (!defined('GiveWP_DW_4_Elementor_VERSION')) {
             return;
         }
 
-        if (!is_plugin_active('givewp-elementor-widgets/givewp-elementor-widgets.php') ) {
+        if (!is_plugin_active('givewp-elementor-widgets/givewp-elementor-widgets.php')) {
             return;
         }
 

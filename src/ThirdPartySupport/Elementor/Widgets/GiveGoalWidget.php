@@ -7,7 +7,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor Give Goal Widget.
  *
- * Elementor widget that inserts the GiveWP [give_goal] shrotcode to output a login form.
+ * Elementor widget that inserts the GiveWP [give_goal] shortcode to output a login form.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */

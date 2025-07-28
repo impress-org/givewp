@@ -7,7 +7,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor Give Login Widget.
  *
- * Elementor widget that inserts the GiveWP [give_login] shrotcode to output a login form.
+ * Elementor widget that inserts the GiveWP [give_login] shortcode to output a login form.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */

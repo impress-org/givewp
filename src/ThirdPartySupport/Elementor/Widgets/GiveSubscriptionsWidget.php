@@ -7,7 +7,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor GiveWP Subscriptions Widget.
  *
- * Elementor widget that inserts the GiveWP [give_subscriptions] shrotcode to output a donor's full donation history table.
+ * Elementor widget that inserts the GiveWP [give_subscriptions] shortcode to output a donor's full donation history table.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */

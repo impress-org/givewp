@@ -7,7 +7,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor Give Profile Editor Widget.
  *
- * Elementor widget that inserts the GiveWP [give_profile_editor] shrotcode to output a login form.
+ * Elementor widget that inserts the GiveWP [give_profile_editor] shortcode to output a login form.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */

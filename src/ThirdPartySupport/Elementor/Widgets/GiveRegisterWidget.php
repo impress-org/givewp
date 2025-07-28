@@ -7,7 +7,7 @@ use Elementor\Widget_Base;
 /**
  * Elementor Give Register Widget.
  *
- * Elementor widget that inserts the GiveWP [give_register] shrotcode to output a form total with options.
+ * Elementor widget that inserts the GiveWP [give_register] shortcode to output a form total with options.
  *
  * @unreleased migrated from givewp-elementor-widgets
  */
