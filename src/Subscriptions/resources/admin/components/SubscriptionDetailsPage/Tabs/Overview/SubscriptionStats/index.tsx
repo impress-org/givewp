@@ -24,7 +24,7 @@ export default function SubscriptionStats({totalContributions, paymentsCompleted
 
     const paymentProgress = (
         <div className={styles.paymentProgress}>
-          {paymentsCompleted} / <span className={styles.installments}>{ongoingInstallments ? '∞' : totalInstallments}</span>
+          {paymentsCompleted} / <span>{ongoingInstallments ? '∞' : totalInstallments}</span>
         </div>
       );
 
