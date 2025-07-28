@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes\Subscriptions;
 
 use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
+use Give\API\REST\V3\Routes\Helpers\Headers;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionCollectionParams;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionItemSchema;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionSharedParamsForGetMethods;
@@ -165,18 +166,13 @@ class SubscriptionController extends WP_REST_Controller
         if (! in_array('any', (array) $status, true)) {
             $query->whereStatus((array)$status);
         }
-
-        // Add donor names selection if sorting by firstName or lastName
+        
         if (in_array($sortColumn, ['firstName', 'lastName'], true)) {
             $query->selectDonorNames();
         }
 
         $totalQuery = $query->clone();
-
-        $query
-        ->limit($perPage)
-        ->offset(($page - 1) * $perPage)
-        ->orderBy($sortColumn, $sortDirection);        
+        $query->limit($perPage)->offset(($page - 1) * $perPage)->orderBy($sortColumn, $sortDirection);
 
         $subscriptions = $query->getAll() ?? [];
 
@@ -189,37 +185,8 @@ class SubscriptionController extends WP_REST_Controller
         }, $subscriptions);
 
         $totalSubscriptions = empty($subscriptions) ? 0 : $totalQuery->count();
-        $totalPages = (int) ceil($totalSubscriptions / $perPage);
-
-        $response = rest_ensure_response($subscriptions);
-        $response->header('X-WP-Total', $totalSubscriptions);
-        $response->header('X-WP-TotalPages', $totalPages);
-
-        $base = add_query_arg(
-            map_deep($request->get_query_params(), function ($value) {
-                if (is_bool($value)) {
-                    $value = $value ? 'true' : 'false';
-                }
-
-                return urlencode($value);
-            }),
-            rest_url(SubscriptionRoute::BASE)
-        );
-
-        if ($page > 1) {
-            $prevPage = $page - 1;
-
-            if ($prevPage > $totalPages) {
-                $prevPage = $totalPages;
-            }
-
-            $response->link_header('prev', add_query_arg('page', $prevPage, $base));
-        }
-
-        if ($totalPages > $page) {
-            $nextPage = $page + 1;
-            $response->link_header('next', add_query_arg('page', $nextPage, $base));
-        }
+        $response = rest_ensure_response($subscriptions);        
+        $response = Headers::addPagination($response, $request, $totalSubscriptions, $perPage, $this->rest_base);
 
         return $response;
     }
@@ -245,9 +212,7 @@ class SubscriptionController extends WP_REST_Controller
         return rest_ensure_response($response);
     }
 
-    /**
-     * Update a single donation.
-     *
+    /**     
      * @unreleased
      */
     public function update_item($request): WP_REST_Response
@@ -293,8 +258,6 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * Delete a single subscription.
-     *
      * @unreleased
      */
     public function delete_item($request): WP_REST_Response
@@ -308,15 +271,13 @@ class SubscriptionController extends WP_REST_Controller
 
         $item = (new SubscriptionViewModel($subscription))->exports();
 
-        if ($force) {
-            // Permanently delete the subscription
+        if ($force) { // Permanently delete the subscription            
             $deleted = $subscription->delete();
 
             if (! $deleted) {
                 return new WP_REST_Response(['message' => __('Failed to delete subscription', 'give')], 500);
             }
-        } else {
-            // Move the subscription to trash (soft delete)
+        } else { // Move the subscription to trash (soft delete)            
             $trashed = $subscription->trash();
 
             if (! $trashed) {
