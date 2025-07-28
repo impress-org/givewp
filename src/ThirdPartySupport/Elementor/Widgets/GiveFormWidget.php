@@ -2,7 +2,6 @@
 
 namespace Give\ThirdPartySupport\Elementor\Widgets;
 
-use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Helpers\Form\Utils;
 use Elementor\Widget_Base;
@@ -100,8 +99,6 @@ class GiveFormWidget extends Widget_Base
     protected function register_controls()
     {
         $forms        = $this->getDonationFormsOptions();
-        $legacyForms  = $this->getLegacyForms($forms);
-        $classicForms = $this->getClassicForms($forms);
         $v3Forms      = $this->getV3Forms($forms);
 
         $this->start_controls_section(
@@ -115,10 +112,10 @@ class GiveFormWidget extends Widget_Base
         $this->add_control(
             'form_id',
             [
-                'label'       => __('Form ID', 'give'),
+                'label'       => __('Donation Form', 'give'),
                 'type'        => \Elementor\Controls_Manager::SELECT,
                 'description' => __('Choose the GiveWP Form you want to embed.', 'give'),
-                'default'     => '',
+                'default'     => !empty($forms) ? array_keys($forms)[0] : '',
                 'options'     => $forms,
             ]
         );
@@ -137,7 +134,7 @@ class GiveFormWidget extends Widget_Base
                         [
                             'name'     => 'form_id',
                             'operator' => '!in',
-                            'value'    => $classicForms,
+                            'value'    => $v3Forms,
                         ],
                     ],
                 ],
@@ -154,6 +151,15 @@ class GiveFormWidget extends Widget_Base
                 'label_off'    => __('Hide', 'give'),
                 'return_value' => 'yes',
                 'default'      => 'yes',
+                'conditions'   => [
+                    'terms' => [
+                        [
+                            'name'     => 'form_id',
+                            'operator' => '!in',
+                            'value'    => $v3Forms,
+                        ],
+                    ],
+                ],
             ]
         );
 
@@ -171,8 +177,8 @@ class GiveFormWidget extends Widget_Base
                     'terms' => [
                         [
                             'name'     => 'form_id',
-                            'operator' => 'in',
-                            'value'    => $legacyForms,
+                            'operator' => '!in',
+                            'value'    => $v3Forms,
                         ],
                     ],
                 ],
@@ -208,52 +214,6 @@ class GiveFormWidget extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'v3_notice',
-            [
-                'label'           => __('Important Note', 'give'),
-                'type'            => \Elementor\Controls_Manager::RAW_HTML,
-                'raw'             => esc_html__(
-                    'Form Display Style changes will not be visible for Donation forms created using the Visual Form Builder. Save the page and view it on the front end.',
-                    'give'
-                ),
-                'content_classes' => 'give-elementor-notice',
-                'conditions'      => [
-                    'terms' => [
-                        [
-                            'name'     => 'form_id',
-                            'operator' => 'in',
-                            'value'    => $v3Forms,
-                        ],
-                    ],
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'give_form_info',
-            [
-                'label'           => '',
-                'type'            => \Elementor\Controls_Manager::RAW_HTML,
-                'content_classes' => 'give-info',
-                'raw'             => '
-					<div class="give">
-						<p class="info-head">
-							' . __('GIVEWP FORM WIDGET', 'give') . '</p>
-						<p class="info-message">' . __(
-                        'This is the GiveWP Form widget. Choose which form you want to embed on this page with it\'s form "ID".',
-                        'give'
-                    ) . '</p>
-						<p class="give-docs-links">
-							<a href="https://givewp.com/documentation/core/shortcodes/give_form/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=givelementor" rel="noopener noreferrer" target="_blank"><i class="fa fa-book" aria-hidden="true"></i>' . __(
-                                         'Visit the GiveWP Docs for more info on the GiveWP Form.',
-                                         'give'
-                                     ) . '</a>
-						</p>
-				</div>',
-            ]
-        );
-
         $this->end_controls_section();
     }
 
@@ -275,20 +235,6 @@ class GiveFormWidget extends Widget_Base
         $showContent          = isset($settings['show_content']) ? $settings['show_content'] : 'true';
         $displayStyle         = isset($settings['display_style']) ? $settings['display_style'] : 'onpage';
         $continueButtonTitle = isset($settings['continue_button_title']) ? $settings['continue_button_title'] : __('Continue to Donate', 'give');
-
-        if (isset($_POST['action']) && $_POST['action'] === 'elementor_ajax') {
-            // is this v3 form?
-            if (Utils::isV3Form($formId)) {
-                if ($donationForm = DonationForm::find($formId)) {
-                    $donationForm->settings->showHeading        = boolval($showTitle);
-                    $donationForm->settings->enableDonationGoal = boolval($showGoal);
-                    $donationForm->save();
-                }
-            } else {
-                // For some strange reason, passing show_goal attr to give_form shortcode doesn't work, so in order for this to work we have to enable/disable goal by updating meta
-                give_update_meta($formId, '_give_goal_option', $showGoal ? 'enabled' : 'disabled');
-            }
-        }
 
         $shortcode = sprintf(
             '[give_form id="%s" show_title="%s" show_goal="%s" show_content="%s" display_style="%s" continue_button_title="%s"]',
@@ -328,50 +274,6 @@ class GiveFormWidget extends Widget_Base
     }
 
     /**
-     * Get forms using legacy template from list of forms returned by GiveFormWidget::getDonationFormsOptions
-     *
-     * @unlreased
-     *
-     * @param array $forms
-     *
-     * @return array
-     */
-    private function getLegacyForms($forms)
-    {
-        $data = [];
-
-        foreach (array_keys($forms) as $formId) {
-            if ('legacy' === $this->getFormTemplate($formId)) {
-                $data[] = (string)$formId;
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * Get forms using classic template from list of forms returned by GiveFormWidget::getDonationFormsOptions
-     *
-     * @unlreased
-     *
-     * @param array $forms
-     *
-     * @return array
-     */
-    private function getClassicForms($forms)
-    {
-        $data = [];
-
-        foreach (array_keys($forms) as $formId) {
-            if ('classic' === $this->getFormTemplate($formId)) {
-                $data[] = (string)$formId;
-            }
-        }
-
-        return $data;
-    }
-
-    /**
      * Get v3 forms from list of forms returned by GiveFormWidget::getDonationFormsOptions
      *
      * @unlreased
@@ -394,16 +296,14 @@ class GiveFormWidget extends Widget_Base
     }
 
     /**
-     * Get form template
+     * Get custom help URL.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @inheritDoc
      *
-     * @param $formId
-     *
-     * @return string
+     * @unreleased
      */
-    private function getFormTemplate($formId)
+    public function get_custom_help_url(): string
     {
-        return Give()->form_meta->get_meta($formId, '_give_form_template', true);
+        return 'https://givewp.com/documentation/core/shortcodes/give_form/?utm_source=plugin_settings&utm_medium=referral&utm_campaign=Free_Addons&utm_content=givelementor';
     }
 }
