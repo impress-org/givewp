@@ -73,8 +73,9 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         // Register core widgets with priority 11 to override any widgets from previously migrated plugin givewp-elementor-widgets
-        add_action('elementor/widgets/register', function (\Elementor\Widgets_Manager $widgets_manager) {
+        add_action('elementor/widgets/register', function ($widgets_manager) {
             // Register new core widgets
+            /** @var \Elementor\Widgets_Manager $widgets_manager */
             $widgets_manager->register(new DonationHistoryWidget());
             $widgets_manager->register(new DonationReceiptWidget());
             $widgets_manager->register(new GiveDonorWallWidget());
@@ -97,35 +98,6 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('elementor/editor/before_enqueue_scripts', function () {
             wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);
         });
-    }
-
-    /**
-     * TODO: check if this is needed.
-     * Unregister old widgets from givewp-elementor-widgets plugin to prevent conflicts
-     *
-     * @since @unreleased
-     */
-    private function unregisterOldElementorWidgets(\Elementor\Widgets_Manager $widgets_manager)
-    {
-        // Widget names from the old givewp-elementor-widgets plugin
-        $old_widget_names = [
-            'Donation History',
-            'GiveWP Donation Receipt',
-            'GiveWP Donor Wall',
-            'GiveWP Form Grid',
-            'GiveWP Donation Form',
-            'GiveWP Goal',
-            'GiveWP Login',
-            'GiveWP Multi Form Goal Block',
-            'GiveWP Profile Editor',
-            'GiveWP Register',
-            'GiveWP Totals',
-            'GiveWP Subscriptions',
-        ];
-
-        foreach ($old_widget_names as $widget_name) {
-            $widgets_manager->unregister($widget_name);
-         }
     }
 
     /**
