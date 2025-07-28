@@ -28,7 +28,7 @@ export default function SubscriptionPaymentDetails({subscription}: SubscriptionD
             <PaymentDetails
                 record={subscription}
                 gatewayLinkLabel={__('View subscription on gateway', 'give')}
-                infoCardTitle={__('Subscription info', 'give')}
+                infoCardTitle={__('Next payment`', 'give')}
                 infoCardBadgeLabel={infoCardBadgeLabel}
                 infoCardClassName={isOngoing ? styles.unlimited : styles.limited}
             />   
