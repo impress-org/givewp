@@ -23,7 +23,7 @@ function CampaignCard({record}: {record: Donation}) {
             role="region"
             aria-labelledby="campaign-name-label"
         >
-            <h3 id="campaign-name-label">{__('Campaign name', 'give')}</h3>
+            <h3 id="campaign-name-label">{__('Campaign details', 'give')}</h3>
             {!hasResolvedCampaign && <Spinner />}
             {hasResolvedCampaign && (
                 <a
