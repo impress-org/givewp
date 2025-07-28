@@ -22,6 +22,9 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
+ * The methods using snake case like register_routes() are present in the base class,
+ * and the methods using camel case like deleteItems() are available only on this class.
+ * 
  * @unreleased
  */
 class SubscriptionController extends WP_REST_Controller
