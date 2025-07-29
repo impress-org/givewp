@@ -4,7 +4,7 @@ namespace Give\Donors;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Actions\CreateUserFromDonor;
-use Give\Donors\Actions\LoadDonorOptions;
+use Give\Donors\Actions\LoadDonorAdminOptions;
 use Give\Donors\Actions\SendDonorUserRegistrationNotification;
 use Give\Donors\Actions\UpdateAdminDonorDetails;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
@@ -123,7 +123,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('admin_enqueue_scripts', function () {
             if (DonorsAdminPage::isShowingDetailsPage()) {
-                give(LoadDonorOptions::class)();
+                give(LoadDonorAdminOptions::class)();
             }
         });
     }

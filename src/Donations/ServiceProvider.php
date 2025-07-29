@@ -2,7 +2,7 @@
 
 namespace Give\Donations;
 
-use Give\Donations\Actions\LoadDonationOptions;
+use Give\Donations\Actions\LoadDonationAdminOptions;
 use Give\Donations\Actions\RegisterDonationEntity;
 use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
@@ -165,7 +165,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('admin_enqueue_scripts', function () {
             if (DonationsAdminPage::isShowingDetailsPage()) {
-                give(LoadDonationOptions::class)();
+                give(LoadDonationAdminOptions::class)();
             }
         });
     }

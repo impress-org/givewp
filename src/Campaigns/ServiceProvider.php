@@ -10,7 +10,7 @@ use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
 use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
-use Give\Campaigns\Actions\LoadCampaignOptions;
+use Give\Campaigns\Actions\LoadCampaignAdminOptions;
 use Give\Campaigns\Actions\PreventDeleteDefaultForm;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
 use Give\Campaigns\Actions\RenderDonateButton;
@@ -236,7 +236,7 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addAction('admin_enqueue_scripts', function () {
             if (CampaignsAdminPage::isShowingDetailsPage()) {
-                give(LoadCampaignOptions::class)();
+                give(LoadCampaignAdminOptions::class)();
             }
         });
     }

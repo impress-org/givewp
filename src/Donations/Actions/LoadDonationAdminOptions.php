@@ -13,9 +13,10 @@ use Give\Framework\PaymentGateways\PaymentGateway;
  * The purpose of this action is to have a centralized place for localizing options used on many different places
  * by donation scripts (list tables, blocks, etc.)
  *
+ * @unreleased Rename to LoadDonationAdminOptions
  * @since 4.6.0
  */
-class LoadDonationOptions
+class LoadDonationAdminOptions
 {
     public function __invoke()
     {
