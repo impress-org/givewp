@@ -121,6 +121,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function loadDonorOptions()
     {
-        Hooks::addAction('admin_init', LoadDonorOptions::class);
+        if (DonorsAdminPage::isShowingDetailsPage()) {
+            Hooks::addAction('admin_init', LoadDonorOptions::class);
+        }
     }
 }

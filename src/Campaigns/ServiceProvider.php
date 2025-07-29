@@ -229,15 +229,17 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased Move to admin_init hook
      * @since 4.0.0
      */
     private function loadCampaignOptions()
     {
-        Hooks::addAction('admin_init', LoadCampaignOptions::class);
+        if (CampaignsAdminPage::isShowingDetailsPage()) {
+            Hooks::addAction('admin_init', LoadCampaignOptions::class);
+        }
     }
 
     /**
-     * @unreleased Move to admin_init hook
      * @since 4.0.0
      *
      * @return void
