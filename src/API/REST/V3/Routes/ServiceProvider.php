@@ -11,6 +11,8 @@ use Give\API\REST\V3\Routes\Donations\DonationNotesController;
 use Give\API\REST\V3\Routes\Donors\DonorController;
 use Give\API\REST\V3\Routes\Donors\DonorNotesController;
 use Give\API\REST\V3\Routes\Donors\DonorStatisticsController;
+use Give\API\REST\V3\Routes\Subscriptions\SubscriptionController;
+use Give\API\REST\V3\Routes\Subscriptions\SubscriptionNotesController;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -38,6 +40,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->loadCampaignsRoutes();
         $this->loadDonorsRoutes();
         $this->loadDonationsRoutes();
+        $this->loadSubscriptionsRoutes();
     }
 
     /**
@@ -79,6 +82,20 @@ class ServiceProvider implements ServiceProviderInterface
 
             $donationNotesController = new DonationNotesController();
             $donationNotesController->register_routes();
+        });
+    }
+
+    /**
+     * @unreleased
+     */
+    private function loadSubscriptionsRoutes()
+    {
+        add_action('rest_api_init', function () {
+            $subscriptionsController = new SubscriptionController();
+            $subscriptionsController->register_routes();
+
+            $subscriptionNotesController = new SubscriptionNotesController();
+            $subscriptionNotesController->register_routes();
         });
     }
 }

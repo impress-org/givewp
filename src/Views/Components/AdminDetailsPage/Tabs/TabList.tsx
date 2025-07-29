@@ -15,7 +15,13 @@ export default function TabList({ tabDefinitions }: { tabDefinitions: TabType[] 
     return (
         <ReactAriaTabList className={`${styles.tabs} ${isFullWidth ? styles.fullWidth : ''}`}>
             {tabDefinitions.map((tab) => (
-                <Tab key={tab.id} id={tab.id} data-href={`#${tab.id}`} data-text={tab.title}>
+                <Tab
+                    key={tab.id}
+                    id={tab.id}
+                    data-text={tab.title}
+                    {...(tab.link && { href: tab.link })}
+                    {...(tab.content && { 'data-href': `#${tab.id}` })}
+                >
                     {tab.title}
                 </Tab>
             ))}
