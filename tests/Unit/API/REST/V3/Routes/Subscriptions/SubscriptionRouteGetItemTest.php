@@ -12,7 +12,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use WP_REST_Request;
+use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use WP_REST_Server;
 use Give\Donors\Models\Donor;
 
@@ -22,26 +22,17 @@ use Give\Donors\Models\Donor;
 class SubscriptionRouteGetItemTest extends RestApiTestCase
 {
     use RefreshDatabase;
+    use HasDefaultWordPressUsers;
 
     /**
      * @unreleased
      */
     public function testGetSubscriptionShouldReturnAllViewModelProperties()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testGetSubscriptionShouldReturnAllModelProperties',
-                'user_pass' => 'testGetSubscriptionShouldReturnAllModelProperties',
-                'user_email' => 'testGetSubscriptionShouldReturnAllModelProperties@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(
             [
                 'includeSensitiveData' => true,
@@ -104,7 +95,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -126,7 +117,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -150,7 +141,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -176,20 +167,10 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
      */
     public function testGetSubscriptionShouldIncludeSensitiveData()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testGetSubscriptionShouldIncludeSensitiveData',
-                'user_pass' => 'testGetSubscriptionShouldIncludeSensitiveData',
-                'user_email' => 'testGetSubscriptionShouldIncludeSensitiveData@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(
             [
                 'includeSensitiveData' => true,
@@ -217,20 +198,10 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
      */
     public function testGetSubscriptionShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
     {
-        $newSubscriberUser = $this->factory()->user->create(
-            [
-                'role' => 'subscriber',
-                'user_login' => 'testGetSubscriptionShouldReturn403ErrorSensitiveData',
-                'user_pass' => 'testGetSubscriptionShouldReturn403ErrorSensitiveData',
-                'user_email' => 'testGetSubscriptionShouldReturn403ErrorSensitiveData@test.com',
-            ]
-        );
-        wp_set_current_user($newSubscriberUser);
-
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'subscriber');
         $request->set_query_params(
             [
                 'includeSensitiveData' => true,
@@ -252,7 +223,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     public function testGetSubscriptionShouldReturn404ErrorWhenSubscriptionNotFound()
     {
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/999';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -271,7 +242,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $subscription = $this->createSubscriptionWithAnonymousDonor();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
                 'anonymousDonors' => 'redact',
