@@ -22,7 +22,7 @@ use Give\Donors\Models\Donor;
 /**
  * @unreleased
  */
-class SubscriptionRouteGetCollectionTest extends RestApiTestCase
+class SubscriptionRouteGetItemsTest extends RestApiTestCase
 {
     use RefreshDatabase;
     
