@@ -253,7 +253,7 @@ class SubscriptionController extends WP_REST_Controller
             $subscription->save();
         }
 
-        $item = (new SubscriptionViewModel($subscription))->exports();
+        $item = (new SubscriptionViewModel($subscription))->includeSensitiveData(true)->exports();
 
         $response = $this->prepare_item_for_response($item, $request);
 

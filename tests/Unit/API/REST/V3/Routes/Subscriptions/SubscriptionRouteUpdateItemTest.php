@@ -3,8 +3,12 @@
 namespace Unit\API\REST\V3\Routes\Subscriptions;
 
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -24,13 +28,25 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     public function testUpdateSubscriptionShouldUpdateModelProperties()
     {
         $subscription = $this->createSubscription();
+        $newDonor = Donor::factory()->create();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
         $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
-            'status' => 'cancelled',
+            'status' => SubscriptionStatus::CANCELLED,
             'frequency' => 2,
             'installments' => 12,
+            'amount' => ['amount' => 150.00, 'currency' => 'USD'],
+            'feeAmountRecovered' => ['amount' => 5.00, 'currency' => 'USD'],
+            'period' => SubscriptionPeriod::QUARTER,
+            'renewAt' => [
+                'date' => '2025-01-15T12:00:00.000000',
+                'timezone' => 'America/New_York',
+                'timezone_type' => 3,
+            ],
+            'transactionId' => 'txn_test_123',
+            'donorId' => $newDonor->id,
+            'donationFormId' => 2,
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -39,15 +55,38 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(200, $status);
-        $this->assertEquals('cancelled', $data['status']);
+        $this->assertEquals('cancelled', $data['status']->getValue());
         $this->assertEquals(2, $data['frequency']);
         $this->assertEquals(12, $data['installments']);
+        $this->assertEquals(150.00, $data['amount']->formatToDecimal());
+        $this->assertEquals('USD', $data['amount']->getCurrency()->getCode());
+        $this->assertEquals(5.00, $data['feeAmountRecovered']->formatToDecimal());
+        $this->assertEquals('USD', $data['feeAmountRecovered']->getCurrency()->getCode());
+        $this->assertEquals('quarter', $data['period']->getValue());
+        $this->assertArrayHasKey('renewsAt', $data);
+        $this->assertEquals('txn_test_123', $data['transactionId']);
+        $this->assertEquals($newDonor->id, $data['donorId']);
+        $this->assertEquals(2, $data['donationFormId']);
+
+        // Verify persistence in database
+        $updatedSubscription = Subscription::find($subscription->id);
+        $this->assertEquals('cancelled', $updatedSubscription->status->getValue());
+        $this->assertEquals(2, $updatedSubscription->frequency);
+        $this->assertEquals(12, $updatedSubscription->installments);
+        $this->assertEquals(150.00, $updatedSubscription->amount->formatToDecimal());
+        $this->assertEquals('USD', $updatedSubscription->amount->getCurrency()->getCode());
+        $this->assertEquals(5.00, $updatedSubscription->feeAmountRecovered->formatToDecimal());
+        $this->assertEquals('USD', $updatedSubscription->feeAmountRecovered->getCurrency()->getCode());
+        $this->assertEquals('quarter', $updatedSubscription->period->getValue());
+        $this->assertEquals('txn_test_123', $updatedSubscription->transactionId);
+        $this->assertEquals($newDonor->id, $updatedSubscription->donorId);
+        $this->assertEquals(2, $updatedSubscription->donationFormId);
     }
 
     /**
      * @unreleased
      */
-    /*public function testUpdateSubscriptionShouldNotUpdateNonEditableFields()
+    public function testUpdateSubscriptionShouldNotUpdateNonEditableFields()
     {
         $subscription = $this->createSubscription();
         $originalId = $subscription->id;
@@ -59,8 +98,12 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
         $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
-            'id' => 999,
-            'createdAt' => '2024-01-01',
+            'id' => $subscription->id,
+            'createdAt' => [
+                'date' => '2024-01-01T00:00:00.000000',
+                'timezone' => 'America/New_York',
+                'timezone_type' => 3,
+            ],
             'mode' => 'test',
             'gatewayId' => 'test_gateway',
             'gatewaySubscriptionId' => 'test_subscription_id',
@@ -77,7 +120,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $this->assertEquals($originalMode, $data['mode']);
         $this->assertEquals($originalGatewayId, $data['gatewayId']);
         $this->assertEquals($originalGatewaySubscriptionId, $data['gatewaySubscriptionId']);
-    }*/
+    }
 
     /**
      * @unreleased
@@ -87,7 +130,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/999';
         $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
-            'status' => 'cancelled',
+            'status' => SubscriptionStatus::CANCELLED,
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -107,7 +150,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
         $request = $this->createRequest('PUT', $route, [], 'subscriber');
         $request->set_body_params([
-            'status' => 'cancelled',
+            'status' => SubscriptionStatus::CANCELLED,
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -119,110 +162,84 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
 
     /**
      * @unreleased
+     * @dataProvider subscriptionStatusProvider
      */
-    public function testUpdateSubscriptionShouldPersistStatusChanges()
+    public function testUpdateSubscriptionShouldPersistStatusChanges(string $status)
     {
         $subscription = $this->createSubscription();
 
-        $testStatuses = [
-            'active',
-            'cancelled',
-            'expired',
-            'suspended',
-            'completed',
-        ];
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
+        $request->set_body_params([
+            'status' => $status,
+        ]);
 
-        foreach ($testStatuses as $status) {
-            $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-            $request = $this->createRequest('PUT', $route, [], 'administrator');
-            $request->set_body_params([
-                'status' => $status,
-            ]);
+        $response = $this->dispatchRequest($request);
+        $data = $response->get_data();
 
-            $response = $this->dispatchRequest($request);
-            $data = $response->get_data();
+        $this->assertEquals(200, $response->get_status());
+        $this->assertEquals($status, $data['status']);
 
-            $this->assertEquals(200, $response->get_status());
-            $this->assertEquals($status, $data['status']);
+        // Verify persistence in database
+        $updatedSubscription = Subscription::find($subscription->id);
+        $this->assertEquals($status, $updatedSubscription->status->getValue());
+    }
 
-            // Verify persistence in database
-            $updatedSubscription = Subscription::find($subscription->id);
-            $this->assertEquals($status, $updatedSubscription->status->getValue());
-        }
+    /**
+     * @unreleased
+     * @dataProvider subscriptionPeriodProvider
+     */
+    public function testUpdateSubscriptionShouldPersistPeriodChanges(string $period)
+    {
+        $subscription = $this->createSubscription();
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
+        $request->set_body_params([
+            'period' => $period,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+        $data = $response->get_data();
+
+        $this->assertEquals(200, $response->get_status());
+        $this->assertEquals($period, $data['period']->getValue());
+
+        // Verify persistence in database
+        $updatedSubscription = Subscription::find($subscription->id);
+        $this->assertEquals($period, $updatedSubscription->period->getValue());
+    }
+
+    /**
+     * @unreleased     
+     */
+    public function subscriptionStatusProvider(): array
+    {
+        return array_map(
+            static function ($status) {
+                return [$status];
+            },
+            SubscriptionStatus::toArray()
+        );
+    }
+
+    /**
+     * @unreleased     
+     */
+    public function subscriptionPeriodProvider(): array
+    {
+        return array_map(
+            static function ($period) {
+                return [$period];
+            },
+            array_values(SubscriptionPeriod::toArray())
+        );
     }
 
     /**
      * @unreleased
      */
-    public function testUpdateSubscriptionShouldPersistFrequencyChanges()
-    {
-        $subscription = $this->createSubscription();
-
-        $testFrequencies = [
-            1,   // monthly
-            2,   // bi-monthly
-            3,   // quarterly
-            6,   // semi-annually
-            12,  // annually
-        ];
-
-        foreach ($testFrequencies as $frequency) {
-            $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-            $request = $this->createRequest('PUT', $route, [], 'administrator');
-            $request->set_body_params([
-                'frequency' => $frequency,
-            ]);
-
-            $response = $this->dispatchRequest($request);
-            $data = $response->get_data();
-
-            $this->assertEquals(200, $response->get_status());
-            $this->assertEquals($frequency, $data['frequency']);
-
-            // Verify persistence in database
-            $updatedSubscription = Subscription::find($subscription->id);
-            $this->assertEquals($frequency, $updatedSubscription->frequency);
-        }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testUpdateSubscriptionShouldPersistInstallmentsChanges()
-    {
-        $subscription = $this->createSubscription();
-
-        $testInstallments = [
-            0,   // unlimited
-            1,   // one-time
-            6,   // 6 payments
-            12,  // 12 payments
-            24,  // 24 payments
-        ];
-
-        foreach ($testInstallments as $installments) {
-            $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-            $request = $this->createRequest('PUT', $route, [], 'administrator');
-            $request->set_body_params([
-                'installments' => $installments,
-            ]);
-
-            $response = $this->dispatchRequest($request);
-            $data = $response->get_data();
-
-            $this->assertEquals(200, $response->get_status());
-            $this->assertEquals($installments, $data['installments']);
-
-            // Verify persistence in database
-            $updatedSubscription = Subscription::find($subscription->id);
-            $this->assertEquals($installments, $updatedSubscription->installments);
-        }
-    }
-
-    /**
-     * @unreleased
-     */
-    /*public function testUpdateSubscriptionShouldHandleInvalidStatusValues()
+    public function testUpdateSubscriptionShouldReturn400ErrorForInvalidStatus()
     {
         $subscription = $this->createSubscription();
         $originalStatus = $subscription->status->getValue();
@@ -238,41 +255,66 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $status = $response->get_status();
         $data = $response->get_data();
 
-        $this->assertEquals(200, $status);
-        // Should not change the status if invalid
-        $this->assertEquals($originalStatus, $data['status']);
-    }*/
+        // Should return 400 Bad Request for invalid status
+        $this->assertEquals(400, $status);
+        $this->assertEquals('rest_invalid_param', $data['code']);
+        $this->assertStringContainsString('Invalid parameter(s): status', $data['message']);
+
+        // Verify the subscription status was not changed
+        $updatedSubscription = Subscription::find($subscription->id);
+        $this->assertEquals($originalStatus, $updatedSubscription->status->getValue());
+    }
 
     /**
      * @unreleased
      */
-    public function testUpdateSubscriptionShouldHandleMultipleFieldUpdates()
+    public function testUpdateSubscriptionShouldReturn400ErrorForInvalidAmount()
     {
         $subscription = $this->createSubscription();
+        $originalAmount = $subscription->amount->formatToDecimal();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
         $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
-            'status' => 'cancelled',
-            'frequency' => 3,
-            'installments' => 6,
+            'amount' => 'invalid_amount',
         ]);
 
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
 
-        $this->assertEquals(200, $status);
-        $this->assertEquals('cancelled', $data['status']);
-        $this->assertEquals(3, $data['frequency']);
-        $this->assertEquals(6, $data['installments']);
+        // Should return 400 Bad Request for invalid amount
+        $this->assertEquals(400, $status);
 
-        // Verify all changes persisted in database
+        // Verify the subscription amount was not changed
         $updatedSubscription = Subscription::find($subscription->id);
-        $this->assertEquals('cancelled', $updatedSubscription->status->getValue());
-        $this->assertEquals(3, $updatedSubscription->frequency);
-        $this->assertEquals(6, $updatedSubscription->installments);
+        $this->assertEquals($originalAmount, $updatedSubscription->amount->formatToDecimal());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testUpdateSubscriptionShouldReturn400ErrorForInvalidPeriod()
+    {
+        $subscription = $this->createSubscription();
+        $originalPeriod = $subscription->period->getValue();
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
+        $request->set_body_params([
+            'period' => 'invalid_period',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        // Should return 400 Bad Request for invalid period
+        $this->assertEquals(400, $status);
+
+        // Verify the subscription period was not changed
+        $updatedSubscription = Subscription::find($subscription->id);
+        $this->assertEquals($originalPeriod, $updatedSubscription->period->getValue());
     }
 
     /**
@@ -280,16 +322,16 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
      */
     private function createSubscription(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
     {
-        $donor = \Give\Donors\Models\Donor::factory()->create();
+        $donor = Donor::factory()->create();
 
         return Subscription::factory()->createWithDonation([
-            'gatewayId' => \Give\PaymentGateways\Gateways\TestGateway\TestGateway::id(),
+            'gatewayId' => TestGateway::id(),
             'amount' => new Money($amount, 'USD'),
             'status' => new SubscriptionStatus($status),
-            'period' => \Give\Subscriptions\ValueObjects\SubscriptionPeriod::MONTH(),
+            'period' => SubscriptionPeriod::MONTH(),
             'frequency' => 1,
             'installments' => 0,
-            'mode' => new \Give\Subscriptions\ValueObjects\SubscriptionMode($mode),
+            'mode' => new SubscriptionMode($mode),
             'donorId' => $donor->id,
         ], [
             'anonymous' => false,
