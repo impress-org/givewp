@@ -3,7 +3,7 @@
 namespace Give\API\REST\V3\Routes\Donations;
 
 use DateTime;
-use Give\API\REST\V3\Routes\CURIE;
+use Give\API\REST\V3\Routes\Helpers\CURIE;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;

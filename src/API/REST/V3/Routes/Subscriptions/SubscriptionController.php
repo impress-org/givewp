@@ -2,7 +2,7 @@
 
 namespace Give\API\REST\V3\Routes\Subscriptions;
 
-use Give\API\REST\V3\Routes\CURIE;
+use Give\API\REST\V3\Routes\Helpers\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Helpers\Headers;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionCollectionParams;
