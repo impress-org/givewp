@@ -116,6 +116,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased Move to admin_init hook
      * @since 4.4.0
      */
     private function loadDonorOptions()
