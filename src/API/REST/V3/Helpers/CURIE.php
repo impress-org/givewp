@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\API\REST\V3\Routes\Helpers;
+namespace Give\API\REST\V3\Helpers;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 
