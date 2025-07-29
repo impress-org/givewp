@@ -234,7 +234,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function loadCampaignOptions()
     {
-        Hooks::addAction('admin_enqueue_scripts', function () {
+        add_action('admin_enqueue_scripts', function () {
             if (CampaignsAdminPage::isShowingDetailsPage()) {
                 give(LoadCampaignAdminOptions::class)();
             }

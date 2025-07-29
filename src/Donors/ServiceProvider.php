@@ -121,7 +121,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function loadDonorOptions()
     {
-        Hooks::addAction('admin_enqueue_scripts', function () {
+        add_action('admin_enqueue_scripts', function () {
             if (DonorsAdminPage::isShowingDetailsPage()) {
                 give(LoadDonorAdminOptions::class)();
             }
