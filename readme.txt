@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 4.6.1: July 29th, 2025 =
-* Security: Resolved an issue where unused donor information was being loaded in the source code of some public pages, outside of the intended admin screens
+* Security: Addressed an issue with donor information visibility
 
 = 4.6.0: July 23rd, 2025 =
 * New: The donation admin details screen has been upgraded to a new design and experience!
