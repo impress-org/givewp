@@ -8,7 +8,7 @@ use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
  * The purpose of this action is to have a centralized place for localizing options used on many different places
  * by campaign scripts (list tables, blocks, etc.)
  *
- * @unreleased Rename to LoadCampaignAdminOptions
+ * @since 4.6.1 Rename to LoadCampaignAdminOptions
  * @since 4.0.0
  */
 class LoadCampaignAdminOptions

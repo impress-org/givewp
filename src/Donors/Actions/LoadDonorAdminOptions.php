@@ -9,7 +9,7 @@ use Give\Helpers\IntlTelInput;
  * The purpose of this action is to have a centralized place for localizing options used on many different places
  * by donor scripts (list tables, blocks, etc.)
  *
- * @unreleased Rename to LoadDonorAdminOptions
+ * @since 4.6.1 Rename to LoadDonorAdminOptions
  * @since 4.4.0
  */
 class LoadDonorAdminOptions

@@ -13,7 +13,7 @@ use Give\Helpers\Language;
 class LoadCampaignsListTableAssets
 {
     /**
-     * @unreleased Load campaign admin options on list table
+     * @since 4.6.1 Load campaign admin options on list table
      *
      * @since 4.3.0 set script translations
      * @since 4.0.0

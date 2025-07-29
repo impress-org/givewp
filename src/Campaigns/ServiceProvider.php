@@ -229,7 +229,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Move to admin_enqueue_scripts hook
+     * @since 4.6.1 Move to admin_enqueue_scripts hook
      * @since 4.0.0
      */
     private function loadCampaignAdminOptions()

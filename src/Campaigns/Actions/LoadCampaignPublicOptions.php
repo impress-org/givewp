@@ -8,7 +8,7 @@ use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
  * The purpose of this action is to have a centralized place for localizing options used on frontend
  * by campaign scripts (blocks, etc.)
  *
- * @unreleased
+ * @since 4.6.1
  */
 class LoadCampaignPublicOptions
 {

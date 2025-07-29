@@ -14,7 +14,7 @@ class RegisterCampaignBlocks
     private $campaignBlocks = [];
 
     /**
-     * @unreleased Load campaign public options on frontend
+     * @since 4.6.1 Load campaign public options on frontend
      * @since 4.0.0
      */
     public function __invoke()
@@ -33,7 +33,7 @@ class RegisterCampaignBlocks
     }
 
     /**
-     * @unreleased Load campaign admin options on block editor
+     * @since 4.6.1 Load campaign admin options on block editor
      * @since 4.3.0 set script translations
      * @since 4.0.0
      */
@@ -98,7 +98,7 @@ class RegisterCampaignBlocks
     }
 
     /**
-     * @unreleased
+     * @since 4.6.1
      */
     private function loadCampaignPublicOptions(): void
     {

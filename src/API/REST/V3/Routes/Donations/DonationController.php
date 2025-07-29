@@ -783,7 +783,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Change type of billing address properties to accept null values
+     * @since 4.6.1 Change type of billing address properties to accept null values
      * @since 4.6.0
      */
     public function get_item_schema(): array

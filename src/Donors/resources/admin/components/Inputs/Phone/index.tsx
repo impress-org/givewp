@@ -25,7 +25,7 @@ type PhoneInputProps = {
 };
 
 /**
- * @unreleased Add intlTelInputSettings to props
+ * @since 4.6.1 Add intlTelInputSettings to props
  * @since 4.4.0
  */
 export default function PhoneInput({ id, value, onChange, onError, className, intlTelInputSettings }: PhoneInputProps) {
