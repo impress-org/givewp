@@ -57,7 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
         $this->registerDonationEntity();
-        $this->loadDonationOptions();
+        $this->loadDonationAdminOptions();
 
         give(MigrationsRegister::class)->addMigrations([
             AddMissingDonorIdToDonationComments::class,
@@ -161,7 +161,7 @@ class ServiceProvider implements ServiceProviderInterface
      * @unreleased Move to admin_enqueue_scripts hook
      * @since 4.6.0
      */
-    private function loadDonationOptions()
+    private function loadDonationAdminOptions()
     {
         add_action('admin_enqueue_scripts', function () {
             if (DonationsAdminPage::isShowingDetailsPage()) {

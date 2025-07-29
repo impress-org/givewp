@@ -67,7 +67,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
 
         $this->registerDonorEntity();
-        $this->loadDonorOptions();
+        $this->loadDonorAdminOptions();
     }
 
     /**
@@ -119,7 +119,7 @@ class ServiceProvider implements ServiceProviderInterface
      * @unreleased Move to admin_enqueue_scripts hook
      * @since 4.4.0
      */
-    private function loadDonorOptions()
+    private function loadDonorAdminOptions()
     {
         add_action('admin_enqueue_scripts', function () {
             if (DonorsAdminPage::isShowingDetailsPage()) {

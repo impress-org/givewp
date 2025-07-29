@@ -69,7 +69,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerCampaignEntity();
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
-        $this->loadCampaignOptions();
+        $this->loadCampaignAdminOptions();
         $this->addNewBadgeToMenu();
     }
 
@@ -232,7 +232,7 @@ class ServiceProvider implements ServiceProviderInterface
      * @unreleased Move to admin_enqueue_scripts hook
      * @since 4.0.0
      */
-    private function loadCampaignOptions()
+    private function loadCampaignAdminOptions()
     {
         add_action('admin_enqueue_scripts', function () {
             if (CampaignsAdminPage::isShowingDetailsPage()) {
