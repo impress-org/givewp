@@ -120,6 +120,6 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function loadDonorOptions()
     {
-        Hooks::addAction('init', LoadDonorOptions::class);
+        Hooks::addAction('admin_init', LoadDonorOptions::class);
     }
 }
