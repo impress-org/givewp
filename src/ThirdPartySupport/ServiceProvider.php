@@ -98,6 +98,17 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('elementor/editor/before_enqueue_scripts', function () {
             wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);
         });
+
+        add_action('elementor/elements/categories_registered', function($elements_manager) {
+            /** @var \Elementor\Elements_Manager $elements_manager */
+            $elements_manager->add_category(
+                'givewp-category',
+                [
+                    'title' => __('GiveWP', 'give'),
+                    'icon' => 'dashicons dashicons-give',
+                ]
+            );
+        });
     }
 
     /**
