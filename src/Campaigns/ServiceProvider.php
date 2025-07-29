@@ -229,14 +229,16 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Move to admin_init hook
+     * @unreleased Move to admin_enqueue_scripts hook
      * @since 4.0.0
      */
     private function loadCampaignOptions()
     {
-        if (CampaignsAdminPage::isShowingDetailsPage()) {
-            Hooks::addAction('admin_init', LoadCampaignOptions::class);
-        }
+        Hooks::addAction('admin_enqueue_scripts', function () {
+            if (CampaignsAdminPage::isShowingDetailsPage()) {
+                give(LoadCampaignOptions::class)();
+            }
+        });
     }
 
     /**

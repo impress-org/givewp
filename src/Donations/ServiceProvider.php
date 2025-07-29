@@ -158,13 +158,15 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Move to admin_init hook
+     * @unreleased Move to admin_enqueue_scripts hook
      * @since 4.6.0
      */
     private function loadDonationOptions()
     {
-        if (DonationsAdminPage::isShowingDetailsPage()) {
-            Hooks::addAction('admin_init', LoadDonationOptions::class);
-        }
+        Hooks::addAction('admin_enqueue_scripts', function () {
+            if (DonationsAdminPage::isShowingDetailsPage()) {
+                give(LoadDonationOptions::class)();
+            }
+        });
     }
 }
