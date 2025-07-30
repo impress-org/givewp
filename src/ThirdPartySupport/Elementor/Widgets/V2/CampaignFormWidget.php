@@ -71,15 +71,6 @@ class CampaignFormWidget extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'continue_button_title',
-            [
-                'label' => __('Continue Button Title', 'give'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => __('Continue to Donate', 'give'),
-            ]
-        );
-
         $this->add_control('use_default_form', [
             'label' => __('Use Default Form', 'give'),
             'type' => \Elementor\Controls_Manager::SWITCHER,
@@ -104,6 +95,15 @@ class CampaignFormWidget extends Widget_Base
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => ['onpage' => __('On Page', 'give'), 'modal' => __('Modal', 'give'), 'newTab' => __('New Tab', 'give')],
                 'default' => 'onpage',
+            ]
+        );
+
+        $this->add_control(
+            'donate_button_text',
+            [
+                'label' => __('Donate Button Text', 'give'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Donate Now', 'give'),
             ]
         );
 
@@ -152,13 +152,13 @@ class CampaignFormWidget extends Widget_Base
         $campaignId = $this->get_settings('campaign_id');
         $displayStyle = $this->get_settings('display_style');
         $useDefaultForm = $this->get_settings('use_default_form');
-        $continueButtonTitle = $this->get_settings('continue_button_title');
+        $donateButtonText = $this->get_settings('donate_button_text');
 
         if (empty($campaignId)) {
             return;
         }
 
-        echo do_shortcode(sprintf('[givewp_campaign_form campaign_id="%s" display_style="%s" use_default_form="%s" continue_button_title="%s"]', $campaignId, $displayStyle, $useDefaultForm, $continueButtonTitle));
+        echo do_shortcode(sprintf('[givewp_campaign_form campaign_id="%s" display_style="%s" use_default_form="%s" continue_button_title="%s"]', $campaignId, $displayStyle, $useDefaultForm, $donateButtonText));
     }
 
     protected function content_template(): void {}
