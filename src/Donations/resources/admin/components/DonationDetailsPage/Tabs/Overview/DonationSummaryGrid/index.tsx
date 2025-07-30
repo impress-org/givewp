@@ -31,12 +31,12 @@ function CampaignCard({donation}: {donation: Donation}) {
         >
             <h3 id="campaign-name-label">{__('Campaign name', 'give')}</h3>
             {!hasResolvedCampaign && <Spinner />}
-            {hasResolvedCampaign && (
+            {hasResolvedCampaign && campaign && (
                 <a
                     href={`edit.php?post_type=give_forms&page=give-campaigns&id=${campaign?.id}&tab=overview`}
                     className={styles.campaignLink}
                 >
-                    {campaign.title}
+                    {campaign?.title}
                 </a>
             )}
         </div>

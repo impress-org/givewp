@@ -49,6 +49,13 @@ export function DonationNotes({donationId}: {donationId: number}) {
 }
 
 /**
+ * @unreleased
+ */
+export function SubscriptionNotes({subscriptionId}: {subscriptionId: number}) {
+    return <PrivateNotes endpoint={`/givewp/v3/subscriptions/${subscriptionId}/notes`} />
+}
+
+/**
  * @since 4.4.0
  */
 function PrivateNotes({endpoint}: {endpoint: string}) {

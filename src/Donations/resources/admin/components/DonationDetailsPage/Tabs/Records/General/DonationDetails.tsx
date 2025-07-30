@@ -108,7 +108,7 @@ export default function DonationDetails() {
                         <select id="campaignId" {...register('campaignId', {valueAsNumber: true})}>
                             {campaignsWithForms && Object.entries(campaignsWithForms).map(([campaignId, campaign]) => (
                                 <option key={campaignId} value={campaignId}>
-                                    {campaign.title}
+                                    {campaign?.title}
                                 </option>
                             ))}
                         </select>
