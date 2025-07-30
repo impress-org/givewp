@@ -8,6 +8,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -17,6 +18,7 @@ use WP_REST_Server;
 class GetDonationRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
+    use HasDefaultWordPressUsers;
 
     /**
      * @since 4.0.0
@@ -26,19 +28,8 @@ class GetDonationRouteTest extends RestApiTestCase
         /** @var  Donation $donation */
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
-        $newAdminUser = self::factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testGetDonationShouldReturnAllModelProperties',
-                'user_pass' => 'testGetDonationShouldReturnAllModelProperties',
-                'user_email' => 'testGetDonationShouldReturnAllModelProperties@test.com',
-            ]
-        );
-
-        wp_set_current_user($newAdminUser);
-
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $request->set_query_params(
             [
@@ -118,7 +109,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -140,7 +131,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -167,21 +158,11 @@ class GetDonationRouteTest extends RestApiTestCase
      */
     public function testGetDonationShouldIncludeSensitiveData()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testGetDonationShouldIncludeSensitiveData',
-                'user_pass' => 'testGetDonationShouldIncludeSensitiveData',
-                'user_email' => 'testGetDonationShouldIncludeSensitiveData@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         /** @var  Donation $donation */
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $request->set_query_params(
             [
@@ -214,21 +195,11 @@ class GetDonationRouteTest extends RestApiTestCase
      */
     public function testGetDonationShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
     {
-        $newSubscriberUser = $this->factory()->user->create(
-            [
-                'role' => 'subscriber',
-                'user_login' => 'testGetDonationShouldReturn403ErrorSensitiveData',
-                'user_pass' => 'testGetDonationShouldReturn403ErrorSensitiveData',
-                'user_email' => 'testGetDonationShouldReturn403ErrorSensitiveData@test.com',
-            ]
-        );
-        wp_set_current_user($newSubscriberUser);
-
         /** @var  Donation $donation */
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'subscriber');
 
         $request->set_query_params(
             [
@@ -255,7 +226,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
 
         $response = $this->dispatchRequest($request);
@@ -272,21 +243,11 @@ class GetDonationRouteTest extends RestApiTestCase
      */
     public function testGetDonationShouldIncludeAnonymousDonation()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testGetDonationsShouldIncludeAnonymousDonations',
-                'user_pass' => 'testGetDonationsShouldIncludeAnonymousDonations',
-                'user_email' => 'testGetDonationsShouldIncludeAnonymousDonations@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         /** @var  Donation $donation */
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $request->set_query_params(
             [
@@ -310,21 +271,11 @@ class GetDonationRouteTest extends RestApiTestCase
      */
     public function testGetDonationShouldReturn403ErrorWhenNotAdminUserIncludeAnonymousDonation()
     {
-        $newSubscriberUser = $this->factory()->user->create(
-            [
-                'role' => 'subscriber',
-                'user_login' => 'testGetDonationShouldReturn403ErrorAnonymousDonation',
-                'user_pass' => 'testGetDonationShouldReturn403ErrorAnonymousDonation',
-                'user_email' => 'testGetDonationShouldReturn403ErrorAnonymousDonation@test.com',
-            ]
-        );
-        wp_set_current_user($newSubscriberUser);
-
         /** @var  Donation $donation */
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'subscriber');
 
         $request->set_query_params(
             [
@@ -350,7 +301,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $request->set_query_params(
             [

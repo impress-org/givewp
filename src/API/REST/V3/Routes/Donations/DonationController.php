@@ -193,6 +193,10 @@ class DonationController extends WP_REST_Controller
             $query->where('give_donationmeta_attach_meta_donorId.meta_value', $donorId);
         }
 
+        if ($subscriptionId = $request->get_param('subscriptionId')) {
+            $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', $subscriptionId);
+        }
+
         if ($donationAnonymousMode->isExcluded()) {
             // Exclude anonymous donations from results
             $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
@@ -210,6 +214,8 @@ class DonationController extends WP_REST_Controller
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->orderBy($sortColumn, $sortDirection);
+
+        $SQL = $query->getSQL();
 
         $donations = $query->getAll() ?? [];
         $donations = array_map(function ($donation) use ($includeSensitiveData, $donationAnonymousMode, $request) {
@@ -817,6 +823,10 @@ class DonationController extends WP_REST_Controller
                 'type' => 'integer',
                 'default' => 0,
             ],
+            'subscriptionId' => [
+                'type' => 'integer',
+                'default' => 0,
+            ],
             'includeSensitiveData' => [
                 'type' => 'boolean',
                 'default' => false,
@@ -1190,7 +1200,7 @@ class DonationController extends WP_REST_Controller
                     'format' => 'text-field',
                 ],
                 'comment' => [
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                     'description' => esc_html__('Donation comment', 'give'),
                     'format' => 'text-field',
                 ],
