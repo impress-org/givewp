@@ -9,8 +9,10 @@ use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ViewModels\DonationViewModel;
-use Give\Framework\Exceptions\Primitives\Exception;
+use Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
@@ -118,6 +120,13 @@ class DonationController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => $this->get_collection_params(),
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
+            [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [$this, 'create_item'],
+                'permission_callback' => [$this, 'create_item_permissions_check'],
+                'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::CREATABLE),
                 'schema' => [$this, 'get_public_item_schema'],
             ],
             [
@@ -274,6 +283,42 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * Create a single donation.
+     *
+     * @unreleased
+     */
+    public function create_item($request): WP_REST_Response
+    {                                   
+        try {            
+            $donationAttributes = $this->processCreateAttributes($request->get_params());
+                        
+            if (is_wp_error($donationAttributes)) {
+                return new WP_REST_Response([
+                    'message' => $donationAttributes->get_error_message(),
+                    'error' => $donationAttributes->get_error_code()
+                ], 400);
+            }
+            
+            $donation = Donation::create($donationAttributes);
+            
+            $item = (new DonationViewModel($donation))
+                ->includeSensitiveData(true)
+                ->anonymousMode(new DonationAnonymousMode('include'))
+                ->exports();
+
+            $response = $this->prepare_item_for_response($item, $request);
+            $response->set_status(201);
+
+            return rest_ensure_response($response);
+        } catch (Exception $e) {
+            return new WP_REST_Response([
+                'message' => __('Failed to create donation', 'give'),
+                'error' => $e->getMessage()
+            ], 400);
+        }
+    }
+
+    /**
      * Update a single donation.
      *
      * @since 4.6.0
@@ -385,6 +430,18 @@ class DonationController extends WP_REST_Controller
                 }
                 return $value;
 
+            case 'type':
+                if (is_string($value)) {
+                    return new DonationType($value);
+                }
+                return $value;
+
+            case 'mode':
+                if (is_string($value)) {
+                    return new DonationMode($value);
+                }
+                return $value;
+
             case 'billingAddress':
                 if (is_array($value)) {
                     return BillingAddress::fromArray($value);
@@ -406,6 +463,46 @@ class DonationController extends WP_REST_Controller
             default:
                 return $value;
         }
+    }
+
+    /**
+     * Process attributes for creating a new donation.
+     *
+     * @unreleased
+     */
+    private function processCreateAttributes(array $params)
+    {
+        $attributes = [];
+        
+        // Required fields
+        $requiredFields = ['donorId', 'amount', 'gatewayId', 'mode', 'formId', 'firstName', 'email'];
+        foreach ($requiredFields as $field) {
+            if (!isset($params[$field])) {
+                return new WP_Error(
+                    'missing_required_field',
+                    sprintf(__('Missing required field: %s', 'give'), $field),
+                    ['status' => 400]
+                );
+            }
+        }
+        
+        // Process each field
+        foreach ($params as $key => $value) {
+            if ($key === 'id' || $key === 'createdAt' || $key === 'updatedAt') {
+                // Skip these fields as they are auto-generated
+                continue;
+            }
+            
+            $processedValue = $this->processFieldValue($key, $value);
+            $attributes[$key] = $processedValue;
+        }
+        
+        // Set timestamps
+        $now = new DateTime('now', wp_timezone());
+        $attributes['createdAt'] = $now;
+        $attributes['updatedAt'] = $now;
+        
+        return $attributes;
     }
 
     /**
@@ -695,6 +792,22 @@ class DonationController extends WP_REST_Controller
     /**
      * @since 4.6.0
      */
+    public function create_item_permissions_check($request)
+    {
+        if ($this->canEditDonations()) {
+            return true;
+        }
+
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to create donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
+    }
+
+    /**
+     * @unreleased
+     */
     public function delete_item_permissions_check($request)
     {
         if ($this->canDeleteDonations()) {
@@ -795,7 +908,10 @@ class DonationController extends WP_REST_Controller
                 'id' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donation ID', 'give'),
+                    'readonly' => true,
                 ],
+
+
                 'donorId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donor ID', 'give'),
@@ -883,6 +999,13 @@ class DonationController extends WP_REST_Controller
                     'type' => 'string',
                     'description' => esc_html__('Donation status', 'give'),
                     'enum' => array_values(DonationStatus::toArray()),
+                    'default' => DonationStatus::PENDING,
+                ],
+                'type' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donation type', 'give'),
+                    'enum' => array_values(DonationType::toArray()),
+                    'default' => DonationType::SINGLE,
                 ],
                 'gatewayId' => [
                     'type' => 'string',
@@ -897,6 +1020,44 @@ class DonationController extends WP_REST_Controller
                 'anonymous' => [
                     'type' => 'boolean',
                     'description' => esc_html__('Whether the donation is anonymous', 'give'),
+                    'default' => false,
+                ],
+                'campaignId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Campaign ID', 'give'),
+                ],
+                'formId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Form ID', 'give'),
+                ],
+                'formTitle' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Form title', 'give'),
+                    'format' => 'text-field',
+                ],
+                'subscriptionId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Subscription ID', 'give'),
+                ],
+                'levelId' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Level ID', 'give'),
+                    'format' => 'text-field',
+                ],
+                'gatewayTransactionId' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Gateway transaction ID', 'give'),
+                    'format' => 'text-field',
+                ],
+                'exchangeRate' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Exchange rate', 'give'),
+                    'format' => 'text-field',
+                ],
+                'comment' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donation comment', 'give'),
+                    'format' => 'text-field',
                 ],
                 'billingAddress' => [
                     'type' => ['object', 'null'],
@@ -983,7 +1144,7 @@ class DonationController extends WP_REST_Controller
                     ],
                 ],
             ],
-            'required' => ['id', 'donorId', 'amount', 'currency', 'status', 'gatewayId', 'mode', 'createdAt'],
+            'required' => ['donorId', 'amount', 'gatewayId', 'mode', 'formId', 'firstName', 'email'],
         ];
     }
 }
