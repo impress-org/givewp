@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\ThirdPartySupport\Elementor\Widgets;
+namespace Give\ThirdPartySupport\Elementor\Widgets\V1;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
@@ -43,7 +43,7 @@ class GiveFormWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('GiveWP Donation Form', 'give');
+        return __('Give Donation Form (Legacy)', 'give');
     }
 
     /**
@@ -73,7 +73,7 @@ class GiveFormWidget extends Widget_Base
      */
     public function get_categories()
     {
-        return ['givewp-category'];
+        return ['givewp-category-legacy'];
     }
 
     /**

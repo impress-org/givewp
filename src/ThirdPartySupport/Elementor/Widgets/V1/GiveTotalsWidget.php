@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\ThirdPartySupport\Elementor\Widgets;
+namespace Give\ThirdPartySupport\Elementor\Widgets\V1;
 
 use Give\Framework\Database\DB;
 use Elementor\Widget_Base;
@@ -42,7 +42,7 @@ class GiveTotalsWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('GiveWP Totals', 'give');
+        return __('Give Totals (Legacy)', 'give');
     }
 
     /**
@@ -72,7 +72,7 @@ class GiveTotalsWidget extends Widget_Base
      */
     public function get_categories()
     {
-        return ['givewp-category'];
+        return ['givewp-category-legacy'];
     }
 
     /**

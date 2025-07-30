@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\ThirdPartySupport\Elementor\Widgets;
+namespace Give\ThirdPartySupport\Elementor\Widgets\V1;
 
 use Elementor\Widget_Base;
 
@@ -41,7 +41,7 @@ class DonationReceiptWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('GiveWP Donation Receipt', 'give');
+        return __('Give Donation Receipt (Legacy)', 'give');
     }
 
     /**
@@ -71,7 +71,7 @@ class DonationReceiptWidget extends Widget_Base
      */
     public function get_categories()
     {
-        return ['givewp-category'];
+        return ['givewp-category-legacy'];
     }
 
     /**

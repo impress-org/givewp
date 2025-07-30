@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\ThirdPartySupport\Elementor\Widgets;
+namespace Give\ThirdPartySupport\Elementor\Widgets\V1;
 
 use Give\MultiFormGoals\MultiFormGoal\Shortcode;
 use Elementor\Widget_Base;
@@ -46,7 +46,7 @@ class GiveMultiFormGoalWidget extends Widget_Base
      */
     public function get_title()
     {
-        return __('GiveWP Multi Form Goal', 'give');
+        return __('Give Multi Form Goal (Legacy)', 'give');
     }
 
     /**
@@ -74,7 +74,7 @@ class GiveMultiFormGoalWidget extends Widget_Base
      */
     public function get_categories()
     {
-        return ['givewp-category'];
+        return ['givewp-category-legacy'];
     }
 
     /**

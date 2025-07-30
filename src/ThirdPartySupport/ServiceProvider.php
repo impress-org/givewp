@@ -2,21 +2,14 @@
 
 namespace Give\ThirdPartySupport;
 
+use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgets;
+use Give\ThirdPartySupport\Elementor\Actions\UnregisterV1Widgets;
+use Give\ThirdPartySupport\Elementor\Settings\RegisterSection;
+use Give\ThirdPartySupport\Elementor\Settings\RegisterSettings;
 use Give\ThirdPartySupport\Polylang\Helpers\Polylang;
 use Give\ThirdPartySupport\WPML\Helpers\WPML;
-use Give\ThirdPartySupport\Elementor\Widgets\DonationHistoryWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\DonationReceiptWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveDonorWallWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveFormGridWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveFormWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveGoalWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveLoginWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveMultiFormGoalWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveProfileEditorWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveRegisterWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveSubscriptionsWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\GiveTotalsWidget;
 
 /**
  * @since 3.22.0
@@ -68,32 +61,16 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function elementor()
     {
+        $this->registerElementorSettings();
+
         if (!defined('ELEMENTOR_VERSION')) {
             return;
         }
 
-        // Register core widgets with priority 11 to override any widgets from previously migrated plugin givewp-elementor-widgets
-        add_action('elementor/widgets/register', function ($widgets_manager) {
-            // Register new core widgets
-            /** @var \Elementor\Widgets_Manager $widgets_manager */
-            $widgets_manager->register(new DonationHistoryWidget());
-            $widgets_manager->register(new DonationReceiptWidget());
-            $widgets_manager->register(new GiveDonorWallWidget());
-            $widgets_manager->register(new GiveFormGridWidget());
-            $widgets_manager->register(new GiveFormWidget());
-            $widgets_manager->register(new GiveGoalWidget());
-            $widgets_manager->register(new GiveLoginWidget());
-            $widgets_manager->register(new GiveMultiFormGoalWidget());
-            $widgets_manager->register(new GiveProfileEditorWidget());
-            $widgets_manager->register(new GiveRegisterWidget());
-            $widgets_manager->register(new GiveTotalsWidget());
+        // Deactivate the GiveWP Elementor Widgets plugin if it is installed and activated
+        $this->maybeDeactivateGivewpElementorWidgets();
 
-            if (defined('GIVE_RECURRING_VERSION')) {
-                $widgets_manager->register(new GiveSubscriptionsWidget());
-            }
-        }, 11, 1);
-
-        $this->deactivateGivewpElementorWidgets();
+        Hooks::addFilter('elementor/widgets/register', RegisterWidgets::class, '__invoke');
 
         add_action('elementor/editor/before_enqueue_scripts', function () {
             wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);
@@ -102,13 +79,19 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('elementor/elements/categories_registered', function($elements_manager) {
             /** @var \Elementor\Elements_Manager $elements_manager */
             $elements_manager->add_category(
-                'givewp-category',
+                'givewp-category-legacy',
                 [
-                    'title' => __('GiveWP', 'give'),
+                    'title' => __('GiveWP (Legacy)', 'give'),
                     'icon' => 'dashicons dashicons-give',
                 ]
             );
         });
+    }
+
+    public function registerElementorSettings()
+    {
+        Hooks::addFilter('give_get_sections_display', RegisterSection::class);
+        Hooks::addFilter('give_get_settings_display', RegisterSettings::class);
     }
 
     /**
@@ -116,15 +99,23 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @since @unreleased
      */
-    private function deactivateGivewpElementorWidgets()
+    private function maybeDeactivateGivewpElementorWidgets()
     {
+        // This would determine if the old version of the GiveWP Elementor Widgets plugin is installed
         if (!defined('GiveWP_DW_4_Elementor_VERSION')) {
             return;
         }
 
+        // This would determine if the old version of the GiveWP Elementor Widgets plugin is activated
         if (!is_plugin_active('givewp-elementor-widgets/givewp-elementor-widgets.php')) {
             return;
         }
+
+        // update the option to enable the legacy widgets
+        give_update_option('givewp_elementor_legacy_widgets_enabled', 'enabled');
+
+        // Unregister the legacy widgets from the GiveWP Elementor Widgets plugin to prevent conflicts with the new widgets that are registered in the RegisterWidgets class
+        Hooks::addFilter('elementor/widgets/register', UnregisterV1Widgets::class, '__invoke', 10, 1);
 
         deactivate_plugins(['givewp-elementor-widgets/givewp-elementor-widgets.php']);
 
@@ -132,7 +123,7 @@ class ServiceProvider implements ServiceProviderInterface
             Give()->notices->register_notice([
                 'id' => 'givewp-elementor-widgets-plugin-deactivated',
                 'description' => __(
-                    'The GiveWP Elementor Widgets plugin is no longer needed, since the widgets are included in your current version of GiveWP. To prevent conflicts, the plugin has been deactivated and can be safely deleted.',
+                    'The GiveWP Elementor Widgets plugin is no longer needed, since the widgets are included in your current version of GiveWP.  Rest assured, all of your widgets currently being used will remain working properly.  To prevent potential conflicts, the plugin has been deactivated and can be safely deleted.',
                     'give'
                 ),
                 'type' => 'info',
