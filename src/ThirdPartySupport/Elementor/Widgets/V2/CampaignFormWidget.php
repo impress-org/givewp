@@ -35,11 +35,11 @@ class CampaignFormWidget extends Widget_Base
     }
 
     public function get_script_depends(): array {
-        return ['givewp-campaign-form-app'];
+        return [];
     }
 
     public function get_style_depends(): array {
-        return ['givewp-design-system-foundation', 'givewp-campaign-form-app'];
+        return ['givewp-design-system-foundation'];
     }
 
     public function has_widget_inner_wrapper(): bool {

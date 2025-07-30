@@ -76,24 +76,6 @@ class ServiceProvider implements ServiceProviderInterface
 
         add_action('elementor/editor/before_enqueue_scripts', function () {
             wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);
-
-            $handleName = 'givewp-campaign-form-app';
-            $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignFormBlockApp.asset.php');
-
-            wp_register_script(
-                $handleName,
-                GIVE_PLUGIN_URL . 'build/campaignFormBlockApp.js',
-                $asset['dependencies'],
-                $asset['version'],
-                true
-            );
-
-            wp_register_style(
-                $handleName,
-                GIVE_PLUGIN_URL . 'build/campaignFormBlockApp.css',
-                [],
-                $asset['version']
-            );
         });
 
         add_action('elementor/elements/categories_registered', function($elements_manager) {
