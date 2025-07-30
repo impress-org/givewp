@@ -339,12 +339,6 @@ class DonationController extends WP_REST_Controller
             $response->set_status(201);
 
             return rest_ensure_response($response);
-        } catch (\WP_Error $e) {
-            $status = $e->get_error_data()['status'] ?? 400;
-            return new WP_REST_Response([
-                'message' => $e->get_error_message(),
-                'error' => $e->get_error_code()
-            ], $status);
         } catch (\Exception $e) {
             return new WP_REST_Response([
                 'message' => __('Failed to create donation', 'give'),
