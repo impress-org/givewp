@@ -24,6 +24,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased added support for Elementor
      * @since 3.22.0
      */
     public function boot()
@@ -68,7 +69,7 @@ class ServiceProvider implements ServiceProviderInterface
         }
 
         // Deactivate the GiveWP Elementor Widgets plugin if it is installed and activated
-        $this->maybeDeactivateGivewpElementorWidgets();
+        $this->maybeDeactivateGivewpElementorWidgetsAddon();
 
         Hooks::addFilter('elementor/widgets/register', RegisterWidgets::class, '__invoke');
 
@@ -88,6 +89,11 @@ class ServiceProvider implements ServiceProviderInterface
         });
     }
 
+    /**
+     * Register the GiveWP Elementor Widgets settings
+     *
+     * @since @unreleased
+     */
     public function registerElementorSettings()
     {
         Hooks::addFilter('give_get_sections_display', RegisterSection::class);
@@ -99,7 +105,7 @@ class ServiceProvider implements ServiceProviderInterface
      *
      * @since @unreleased
      */
-    private function maybeDeactivateGivewpElementorWidgets()
+    private function maybeDeactivateGivewpElementorWidgetsAddon()
     {
         // This would determine if the old version of the GiveWP Elementor Widgets plugin is installed
         if (!defined('GiveWP_DW_4_Elementor_VERSION')) {
