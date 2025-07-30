@@ -9,7 +9,6 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
-use WP_REST_Request;
 use WP_REST_Server;
 
 /**

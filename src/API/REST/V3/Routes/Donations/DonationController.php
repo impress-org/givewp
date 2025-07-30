@@ -873,6 +873,15 @@ class DonationController extends WP_REST_Controller
                     'embeddable' => true,
                 ],
             ];
+
+            // Add subscription link when subscriptionId is greater than 0
+            if (isset($item['subscriptionId']) && $item['subscriptionId'] > 0) {
+                $subscription_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'subscriptions', $item['subscriptionId']));
+                $links[CURIE::relationUrl('subscription')] = [
+                    'href' => $subscription_url,
+                    'embeddable' => true,
+                ];
+            }
         } else {
             $links = [];
         }
