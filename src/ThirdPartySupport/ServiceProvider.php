@@ -2,6 +2,7 @@
 
 namespace Give\ThirdPartySupport;
 
+use Give\Framework\EnqueueScript;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -76,6 +77,24 @@ class ServiceProvider implements ServiceProviderInterface
 
         add_action('elementor/editor/before_enqueue_scripts', function () {
             wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);
+        });
+
+        add_action('wp_enqueue_scripts', function () {
+            $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorCampaignFormWidget.asset.php');
+            $scriptName = 'givewp-elementor-campaign-form-widget';
+
+            wp_enqueue_style(
+                $scriptName,
+                GIVE_PLUGIN_URL . 'build/elementorCampaignFormWidget.css',
+            );
+
+            wp_register_script(
+                $scriptName,
+                GIVE_PLUGIN_URL . 'build/elementorCampaignFormWidget.js',
+                array_merge($scriptAsset['dependencies'], ['elementor-frontend']),
+                $scriptAsset['version'],
+                true
+            );
         });
 
         add_action('elementor/elements/categories_registered', function($elements_manager) {

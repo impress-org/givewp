@@ -39,7 +39,7 @@ const isRedirect = (url: string) => {
  * @since 3.2.0 replace form format reveal with new tab.
  * @since 3.0.0
  */
-function DonationFormBlockApp({
+export default function DonationFormBlockApp({
     formFormat,
     dataSrc,
     embedId,
@@ -51,10 +51,10 @@ function DonationFormBlockApp({
 
     if (formFormat === 'newTab') {
         return (
-            <a 
-                className={'givewp-donation-form-link'} 
-                href={formUrl} 
-                target={'_blank'} 
+            <a
+                className={'givewp-donation-form-link'}
+                href={formUrl}
+                target={'_blank'}
                 rel={'noopener noreferrer'}
                 aria-label={`${openFormButton} ${__('Opens in a new tab', 'give')}`}
             >

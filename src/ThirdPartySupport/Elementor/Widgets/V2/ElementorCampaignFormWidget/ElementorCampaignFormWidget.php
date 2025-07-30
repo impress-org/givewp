@@ -1,57 +1,70 @@
 <?php
-namespace Give\ThirdPartySupport\Elementor\Widgets\V2;
+
+namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignFormWidget;
 
 use Elementor\Widget_Base;
 use Give\Campaigns\Models\Campaign;
 
-class CampaignFormWidget extends Widget_Base
+class ElementorCampaignFormWidget extends Widget_Base
 {
-    public function get_name(): string {
+    public function get_name(): string
+    {
         return 'givewp_campaign_form';
     }
 
-    public function get_title(): string {
+    public function get_title(): string
+    {
         return __('GiveWP Campaign Form', 'give');
     }
 
-    public function get_icon(): string {
+    public function get_icon(): string
+    {
         return 'give-icon';
     }
 
-    public function get_categories(): array {
+    public function get_categories(): array
+    {
         return ['givewp-category'];
     }
 
-    public function get_keywords(): array {
+    public function get_keywords(): array
+    {
         return ['give', 'givewp', 'campaign', 'form'];
     }
 
-    public function get_custom_help_url(): string {
+    public function get_custom_help_url(): string
+    {
         return 'https://givewp.com/documentation/';
     }
 
-    protected function get_upsale_data(): array {
+    protected function get_upsale_data(): array
+    {
         return [];
     }
 
-    public function get_script_depends(): array {
-        return [];
+    public function get_script_depends(): array
+    {
+        return ['givewp-elementor-campaign-form-widget'];
     }
 
-    public function get_style_depends(): array {
-        return ['givewp-design-system-foundation'];
+    public function get_style_depends(): array
+    {
+        return ['givewp-design-system-foundation', 'givewp-elementor-campaign-form-widget'];
     }
 
-    public function has_widget_inner_wrapper(): bool {
+    public function has_widget_inner_wrapper(): bool
+    {
+        return false;
+    }
+
+    protected function is_dynamic_content(): bool
+    {
         return true;
     }
 
-    protected function is_dynamic_content(): bool {
-        return true;
-    }
 
-
-    protected function register_controls(): void {
+    protected function register_controls(): void
+    {
         $campaignOptions = $this->getCampaignOptions();
 
         $this->start_controls_section(
@@ -68,6 +81,7 @@ class CampaignFormWidget extends Widget_Base
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => $campaignOptions,
                 'default' => array_key_first($campaignOptions),
+                'frontend_available' => true,
             ]
         );
 
@@ -75,6 +89,7 @@ class CampaignFormWidget extends Widget_Base
             'label' => __('Use Default Form', 'give'),
             'type' => \Elementor\Controls_Manager::SWITCHER,
             'default' => 'yes',
+            'frontend_available' => true,
         ]);
 
         //TODO: need to hook into js to get the form options based on the campaign id
@@ -86,6 +101,7 @@ class CampaignFormWidget extends Widget_Base
             'condition'  => [
                 'use_default_form!' => 'yes',
             ],
+            'frontend_available' => true,
         ]);
 
         $this->add_control(
@@ -95,6 +111,7 @@ class CampaignFormWidget extends Widget_Base
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'options' => ['onpage' => __('On Page', 'give'), 'modal' => __('Modal', 'give'), 'newTab' => __('New Tab', 'give')],
                 'default' => 'onpage',
+                'frontend_available' => true,
             ]
         );
 
@@ -103,14 +120,19 @@ class CampaignFormWidget extends Widget_Base
             [
                 'label' => __('Donate Button Text', 'give'),
                 'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => __('Donate Now', 'give'),
+                'default' => __('Continue to Donate', 'give'),
+                'frontend_available' => true,
+                'condition' => [
+                    'display_style!' => 'onpage',
+                ],
             ]
         );
 
         $this->end_controls_section();
     }
 
-    protected function getCampaignOptions(): array {
+    protected function getCampaignOptions(): array
+    {
         $campaigns = Campaign::query()->getAll();
 
         if (empty($campaigns)) {
@@ -126,7 +148,8 @@ class CampaignFormWidget extends Widget_Base
         return $options;
     }
 
-    protected function getFormOptions(int $campaignId): array {
+    protected function getFormOptions(int $campaignId): array
+    {
         $campaign = Campaign::find($campaignId);
 
         if (!$campaign) {
@@ -148,7 +171,8 @@ class CampaignFormWidget extends Widget_Base
         return $options;
     }
 
-    protected function render(): void {
+    protected function render(): void
+    {
         $campaignId = $this->get_settings('campaign_id');
         $displayStyle = $this->get_settings('display_style');
         $useDefaultForm = $this->get_settings('use_default_form');
@@ -160,6 +184,4 @@ class CampaignFormWidget extends Widget_Base
 
         echo do_shortcode(sprintf('[givewp_campaign_form campaign_id="%s" display_style="%s" use_default_form="%s" continue_button_title="%s"]', $campaignId, $displayStyle, $useDefaultForm, $donateButtonText));
     }
-
-    protected function content_template(): void {}
 }

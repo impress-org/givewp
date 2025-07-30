@@ -14,7 +14,7 @@ use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveProfileEditorWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveRegisterWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveSubscriptionsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveTotalsWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\V2\CampaignFormWidget;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignFormWidget\ElementorCampaignFormWidget;
 
 /**
  * @unreleased
@@ -66,6 +66,6 @@ class RegisterWidgets
      */
     private function registerV2Widgets($widgets_manager)
     {
-        $widgets_manager->register(new CampaignFormWidget());
+        $widgets_manager->register(new ElementorCampaignFormWidget());
     }
 }
