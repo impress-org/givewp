@@ -168,6 +168,12 @@ class SubscriptionNotesController extends WP_REST_Controller
             'type' => new SubscriptionNoteType($request->get_param('type')),
         ]);
 
+        $fieldsUpdate = $this->update_additional_fields_for_object($note, $request);
+
+        if (is_wp_error($fieldsUpdate)) {
+            return $fieldsUpdate;
+        }
+
         $response = $this->prepare_item_for_response($note, $request);
         $response->set_status(201);
 
@@ -233,6 +239,12 @@ class SubscriptionNotesController extends WP_REST_Controller
 
         if ($note->isDirty()) {
             $note->save();
+        }
+
+        $fieldsUpdate = $this->update_additional_fields_for_object($note, $request);
+
+        if (is_wp_error($fieldsUpdate)) {
+            return $fieldsUpdate;
         }
 
         $response = $this->prepare_item_for_response($note, $request);
@@ -336,6 +348,7 @@ class SubscriptionNotesController extends WP_REST_Controller
 
         $response = new WP_REST_Response($note->toArray());
         $response->add_links($links);
+        $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
         return $response;
     }
@@ -366,9 +379,9 @@ class SubscriptionNotesController extends WP_REST_Controller
      */
     public function get_item_schema(): array
     {
-        return [
+        $schema = [
             'schema' => 'http://json-schema.org/draft-07/schema#',
-            'title' => 'subscription-note',
+            'title' => 'givewp/subscription-note',
             'type' => 'object',
             'properties' => [
                 'id' => [
@@ -401,6 +414,8 @@ class SubscriptionNotesController extends WP_REST_Controller
                 ],
             ],
         ];
+
+        return $this->add_additional_fields_schema($schema);
     }
 
     /**
