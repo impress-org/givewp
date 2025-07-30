@@ -783,6 +783,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.6.1 Change type of billing address properties to accept null values
      * @since 4.6.0
      */
     public function get_item_schema(): array
@@ -901,12 +902,12 @@ class DonationController extends WP_REST_Controller
                     'type' => ['object', 'null'],
                     'description' => esc_html__('Billing address', 'give'),
                     'properties' => [
-                        'address1' => ['type' => 'string', 'format' => 'text-field'],
-                        'address2' => ['type' => 'string', 'format' => 'text-field'],
-                        'city' => ['type' => 'string', 'format' => 'text-field'],
-                        'state' => ['type' => 'string', 'format' => 'text-field'],
-                        'country' => ['type' => 'string', 'format' => 'text-field'],
-                        'zip' => ['type' => 'string', 'format' => 'text-field'],
+                        'address1' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'address2' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'city' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'state' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'country' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'zip' => ['type' => ['string', 'null'], 'format' => 'text-field'],
                     ],
                 ],
                 'donorIp' => [
