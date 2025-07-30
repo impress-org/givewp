@@ -4,9 +4,9 @@ namespace Give\API\REST\V3\Routes\Subscriptions;
 
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
-use Give\Donations\Models\DonationNote;
-use Give\Donations\ValueObjects\DonationNoteType;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\Models\SubscriptionNote;
+use Give\Subscriptions\ValueObjects\SubscriptionNoteType;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -103,8 +103,8 @@ class SubscriptionNotesController extends WP_REST_Controller
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
 
-        $query = DonationNote::query()
-            ->where('comment_parent', $subscription->id)
+        $query = SubscriptionNote::query()
+            ->where('comments.comment_post_ID', $subscription->id)
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->orderBy('createdAt', 'DESC');
@@ -116,7 +116,7 @@ class SubscriptionNotesController extends WP_REST_Controller
             return $this->prepare_response_for_collection($item);
         }, $notes);
 
-        $totalNotes = DonationNote::query()->where('comment_parent', $subscription->id)->count();
+        $totalNotes = SubscriptionNote::query()->where('comments.comment_post_ID', $subscription->id)->count();
         $totalPages = (int)ceil($totalNotes / $perPage);
 
         $response = rest_ensure_response($notes);
@@ -162,11 +162,17 @@ class SubscriptionNotesController extends WP_REST_Controller
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
-        $note = DonationNote::create([
+        $note = SubscriptionNote::create([
             'subscriptionId' => $subscription->id,
             'content' => $request->get_param('content'),
-            'type' => new DonationNoteType($request->get_param('type')),
+            'type' => new SubscriptionNoteType($request->get_param('type')),
         ]);
+
+        $fieldsUpdate = $this->update_additional_fields_for_object($note, $request);
+
+        if (is_wp_error($fieldsUpdate)) {
+            return $fieldsUpdate;
+        }
 
         $response = $this->prepare_item_for_response($note, $request);
         $response->set_status(201);
@@ -190,7 +196,7 @@ class SubscriptionNotesController extends WP_REST_Controller
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
-        $note = DonationNote::find($request->get_param('id'));
+        $note = SubscriptionNote::find($request->get_param('id'));
         if ( ! $note || $note->subscriptionId !== $subscription->id) {
             return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
         }
@@ -218,7 +224,7 @@ class SubscriptionNotesController extends WP_REST_Controller
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
-        $note = DonationNote::find($request->get_param('id'));
+        $note = SubscriptionNote::find($request->get_param('id'));
         if ( ! $note || $note->subscriptionId !== $subscription->id) {
             return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
         }
@@ -228,11 +234,17 @@ class SubscriptionNotesController extends WP_REST_Controller
         }
 
         if ($request->has_param('type')) {
-            $note->type = new DonationNoteType($request->get_param('type'));
+            $note->type = new SubscriptionNoteType($request->get_param('type'));
         }
 
         if ($note->isDirty()) {
             $note->save();
+        }
+
+        $fieldsUpdate = $this->update_additional_fields_for_object($note, $request);
+
+        if (is_wp_error($fieldsUpdate)) {
+            return $fieldsUpdate;
         }
 
         $response = $this->prepare_item_for_response($note, $request);
@@ -258,7 +270,7 @@ class SubscriptionNotesController extends WP_REST_Controller
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
-        $note = DonationNote::find($request->get_param('id'));
+        $note = SubscriptionNote::find($request->get_param('id'));
         if ( ! $note || $note->subscriptionId !== $subscription->id) {
             return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
         }
@@ -336,6 +348,7 @@ class SubscriptionNotesController extends WP_REST_Controller
 
         $response = new WP_REST_Response($note->toArray());
         $response->add_links($links);
+        $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
         return $response;
     }
@@ -366,9 +379,9 @@ class SubscriptionNotesController extends WP_REST_Controller
      */
     public function get_item_schema(): array
     {
-        return [
+        $schema = [
             'schema' => 'http://json-schema.org/draft-07/schema#',
-            'title' => 'subscription-note',
+            'title' => 'givewp/subscription-note',
             'type' => 'object',
             'properties' => [
                 'id' => [
@@ -376,16 +389,16 @@ class SubscriptionNotesController extends WP_REST_Controller
                     'type' => 'integer',
                     'readonly' => true,
                 ],
-                'subscriptionId' => [
-                    'description' => __('The ID of the subscription this note belongs to.', 'give'),
-                    'type' => 'integer',
-                    'required' => true,
-                ],
                 'content' => [
                     'description' => __('The content of the note.', 'give'),
                     'type' => 'string',
                     'required' => true,
                     'minLength' => 1,
+                ],
+                'subscriptionId' => [
+                    'description' => __('The ID of the subscription this note belongs to.', 'give'),
+                    'type' => 'integer',
+                    'required' => true,
                 ],
                 'type' => [
                     'description' => __('The type of the note.', 'give'),
@@ -399,14 +412,10 @@ class SubscriptionNotesController extends WP_REST_Controller
                     'format' => 'date-time',
                     'readonly' => true,
                 ],
-                'updatedAt' => [
-                    'description' => __('The date the note was last updated.', 'give'),
-                    'type' => 'string',
-                    'format' => 'date-time',
-                    'readonly' => true,
-                ],
             ],
         ];
+
+        return $this->add_additional_fields_schema($schema);
     }
 
     /**

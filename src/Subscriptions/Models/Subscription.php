@@ -73,6 +73,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     protected $relationships = [
         'donor' => Relationship::BELONGS_TO,
         'donations' => Relationship::HAS_MANY,
+        'notes' => Relationship::HAS_MANY,
     ];
 
     /**
@@ -110,14 +111,27 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder<SubscriptionNote>
+     */
+    public function notes(): ModelQueryBuilder
+    {
+        return give()->subscriptions->notes->queryBySubscriptionId($this->id);
+    }
+
+    /**
      * Get Subscription notes
      *
+     * @deprecated Access notes via $subscription->notes()->getAll() instead.
      * @since 2.19.6
      *
      * @return object[]
      */
     public function getNotes(): array
     {
+        _give_deprecated_function(__METHOD__, '4.6.0', '$subscription->notes()->getAll()');
+
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
