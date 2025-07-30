@@ -10,10 +10,14 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Donors\Models\Donor;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\PaymentGateways\Gateways\Offline\OfflineGateway;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\Subscriptions\Models\Subscription;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use GiveAddon\OffSiteGateway\Gateway\OffSiteGateway;
+use WP_REST_Request;
 
 /**
  * @unreleased
@@ -159,12 +163,11 @@ class DonationRouteCreateTest extends RestApiTestCase
             'company' => 'Test Company',
             'honorific' => 'Mr.',
             'status' => 'publish',
-            'type' => 'subscription',
+            'type' => 'single',
             'anonymous' => true,
             'campaignId' => 123,
             'formId' => $this->form->id,
             'formTitle' => $this->form->title,
-            'subscriptionId' => 789,
             'levelId' => 'premium',
             'gatewayTransactionId' => 'txn_123456',
             'exchangeRate' => '1.0',
@@ -194,12 +197,11 @@ class DonationRouteCreateTest extends RestApiTestCase
         $this->assertEquals('Test Company', $data['company']);
         $this->assertEquals('Mr.', $data['honorific']);
         $this->assertEquals('publish', $data['status']);
-        $this->assertEquals('subscription', $data['type']);
+        $this->assertEquals('single', $data['type']);
         $this->assertTrue($data['anonymous']);
         $this->assertEquals(123, $data['campaignId']);
         $this->assertEquals($this->form->id, $data['formId']);
         $this->assertEquals($this->form->title, $data['formTitle']);
-        $this->assertEquals(789, $data['subscriptionId']);
         $this->assertEquals('premium', $data['levelId']);
         $this->assertEquals('txn_123456', $data['gatewayTransactionId']);
         $this->assertEquals('1.0', $data['exchangeRate']);
@@ -539,4 +541,358 @@ class DonationRouteCreateTest extends RestApiTestCase
         $this->assertArrayHasKey('lastName', $data);
         $this->assertArrayHasKey('email', $data);
     }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldReturn400ErrorWhenSubscriptionIdProvidedButTypeIsSingle()
+    {
+        $subscription = Subscription::factory()->create();
+        
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+                 $request->set_body_params([
+             'donorId' => $this->donor->id,
+             'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+             'gatewayId' => TestGateway::id(),
+             'mode' => 'test',
+             'formId' => $this->form->id,
+             'firstName' => 'John',
+             'email' => 'john@example.com',
+             'subscriptionId' => $subscription->id,
+             'type' => 'single',
+         ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(400, $response->get_status());
+        $data = $response->get_data();
+        $this->assertStringContainsString('When subscriptionId is provided, type must be "subscription" or "renewal"', $data['message']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldReturn400ErrorWhenSubscriptionIdZeroButTypeIsSubscription()
+    {
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+                 $request->set_body_params([
+             'donorId' => $this->donor->id,
+             'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+             'gatewayId' => TestGateway::id(),
+             'mode' => 'test',
+             'formId' => $this->form->id,
+             'firstName' => 'John',
+             'email' => 'john@example.com',
+             'subscriptionId' => 0,
+             'type' => 'subscription',
+         ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(400, $response->get_status());
+        $data = $response->get_data();
+        $this->assertStringContainsString('When subscriptionId is zero, type can only be "single"', $data['message']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldReturn404ErrorWhenSubscriptionNotFound()
+    {
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+                 $request->set_body_params([
+             'donorId' => $this->donor->id,
+             'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+             'gatewayId' => TestGateway::id(),
+             'mode' => 'test',
+             'formId' => $this->form->id,
+             'firstName' => 'John',
+             'email' => 'john@example.com',
+             'subscriptionId' => 99999,
+             'type' => 'renewal',
+         ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(404, $response->get_status());
+        $data = $response->get_data();
+        $this->assertStringContainsString('Subscription not found', $data['message']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldReturn400ErrorWhenSubscriptionDonationAlreadyExists()
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        
+        // Try to create another subscription donation for the same subscription
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+                 $request->set_body_params([
+             'donorId' => $this->donor->id,
+             'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+             'gatewayId' => TestGateway::id(),
+             'mode' => 'test',
+             'formId' => $this->form->id,
+             'firstName' => 'John',
+             'email' => 'john@example.com',
+             'subscriptionId' => $subscription->id,
+             'type' => 'subscription',
+         ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(400, $response->get_status());
+        $data = $response->get_data();
+        $this->assertStringContainsString('A subscription donation already exists for this subscription', $data['message']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldReturn400ErrorWhenSubscriptionInstallmentsExceeded()
+    {
+        $subscription = Subscription::factory()->createWithDonation([
+            'installments' => 1, // Only 1 installment allowed
+        ]);
+        
+        // Try to create another donation (should fail)
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(400, $response->get_status());
+        $data = $response->get_data();
+        $this->assertStringContainsString('Cannot create donation: subscription installments limit reached', $data['message']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldSucceedWithValidSubscriptionData()
+    {
+        $subscription = Subscription::factory()->createWithDonation([
+            'installments' => 5, // Allow multiple installments
+        ]);
+        
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+        $this->assertEquals('renewal', $data['type']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldSucceedWithValidRenewalData()
+    {
+        $subscription = Subscription::factory()->createWithDonation([
+            'installments' => 5, // Allow multiple installments
+        ]);
+        
+        // Create renewal donation
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+        $this->assertEquals('renewal', $data['type']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldSetTypeToSingleWhenNotProvided()
+    {
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            // Don't set type or subscriptionId
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+        $this->assertEquals('single', $data['type']);
+        $this->assertEquals(0, $data['subscriptionId']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateRenewalShouldSucceedWithMinimalParameters()
+    {
+        $subscription = Subscription::factory()->createWithDonation([
+            'installments' => 5, // Allow multiple installments
+        ]);
+        
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+        $this->assertEquals('renewal', $data['type']);
+    }
+
+    /**
+     * @unreleased
+     */
+    /*public function testCreateSubscriptionDonationShouldReturn400ErrorWhenGatewayMismatch()
+    {
+        $subscription = Subscription::factory()->create([
+            'gatewayId' => TestGateway::id(),
+        ]);
+        
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => OffSiteGateway::id(), // Different gateway
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => $subscription->id,
+            'type' => 'subscription',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(400, $response->get_status());
+        $data = $response->get_data();
+        $this->assertStringContainsString('Gateway ID must match the subscription gateway for subscription and renewal donations', $data['message']);
+    }*/
+
+    /**
+     * @unreleased
+     */
+    /*public function testCreateSubscriptionDonationShouldSucceedWhenGatewayMatches()
+    {
+        $subscription = Subscription::factory()->create([
+            'gatewayId' => TestGateway::id(),
+        ]);
+
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => TestGateway::id(), // Same gateway
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => $subscription->id,
+            'type' => 'subscription',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+        $this->assertEquals('subscription', $data['type']);
+        $this->assertEquals(TestGateway::id(), $data['gatewayId']);
+    }*/
+
+    /**
+     * @unreleased
+     */
+    /*public function testCreateRenewalDonationShouldReturn400ErrorWhenGatewayMismatch()
+    {
+        $subscription = Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'installments' => 12, // Set higher installments to avoid limit
+        ]);
+
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+            'gatewayId' => OfflineGateway , // Different gateway
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(400, $response->get_status());
+        $data = $response->get_data();
+        $this->assertStringContainsString('Gateway ID must match the subscription gateway for subscription and renewal donations', $data['message']);
+    }*/
+
+    /**
+     * @unreleased
+     */
+    /*public function testCreateRenewalDonationShouldSucceedWhenGatewayMatches()
+    {
+        $subscription = Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'installments' => 12, // Set higher installments to avoid limit
+        ]);
+
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+            'gatewayId' => TestGateway::id(), // Same gateway
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+        $this->assertEquals('renewal', $data['type']);
+        $this->assertEquals(TestGateway::id(), $data['gatewayId']);
+    }*/
 } 
