@@ -18,6 +18,7 @@ use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Subscriptions\Models\Subscription;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -214,8 +215,6 @@ class DonationController extends WP_REST_Controller
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
             ->orderBy($sortColumn, $sortDirection);
-
-        $SQL = $query->getSQL();
 
         $donations = $query->getAll() ?? [];
         $donations = array_map(function ($donation) use ($includeSensitiveData, $donationAnonymousMode, $request) {
@@ -531,24 +530,11 @@ class DonationController extends WP_REST_Controller
             if ($key === 'id' || $key === 'createdAt' || $key === 'updatedAt') {
                 // Skip these fields as they are auto-generated
                 continue;
-            }
-            
-            // For renewals, only process subscriptionId and type
-            if ($isRenewal && !in_array($key, ['subscriptionId', 'type'])) {
-                continue;
-            }
+            }                        
             
             $processedValue = $this->processFieldValue($key, $value);
             $attributes[$key] = $processedValue;
-        }
-        
-        // Set default values for type and subscriptionId if not provided
-        if (!isset($attributes['type'])) {
-            $attributes['type'] = \Give\Donations\ValueObjects\DonationType::SINGLE();
-        }
-        if (!isset($attributes['subscriptionId'])) {
-            $attributes['subscriptionId'] = 0;
-        }        
+        }            
         
         // Validate subscription-related rules
         $subscriptionValidation = $this->validateSubscriptionRules($attributes);
@@ -581,7 +567,7 @@ class DonationController extends WP_REST_Controller
             }
             
             // Validate subscription exists
-            $subscription = \Give\Subscriptions\Models\Subscription::find($subscriptionId);
+            $subscription = Subscription::find($subscriptionId);
             if (!$subscription) {
                 return new WP_Error(
                     'subscription_not_found',
@@ -603,7 +589,7 @@ class DonationController extends WP_REST_Controller
             // When creating a subscription or renewal donation, ensure gatewayId matches the subscription's gateway
             if (in_array($type->getValue(), ['subscription', 'renewal'], true)) {
                 $donationGatewayId = $attributes['gatewayId'] ?? null;
-                if ($donationGatewayId && $donationGatewayId !== $subscription->gatewayId) {
+                if ($donationGatewayId && $subscription->gatewayId && $donationGatewayId !== $subscription->gatewayId) {
                     return new WP_Error(
                         'gateway_mismatch_for_subscription_donation',
                         __('Gateway ID must match the subscription gateway for subscription and renewal donations', 'give'),
