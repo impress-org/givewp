@@ -2,6 +2,7 @@
 
 namespace Give\ThirdPartySupport;
 
+use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -115,6 +116,9 @@ class ServiceProvider implements ServiceProviderInterface
                 $donationFormWidgetScriptName,
                 GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.css',
             );
+
+            // this necessary for the form grid widget to display the goal progress bar
+            give(LoadAsyncDataAssets::class)->registerAssets();
         });
 
         add_action('elementor/elements/categories_registered', function($elements_manager) {
