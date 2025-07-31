@@ -3,21 +3,14 @@
 namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
-use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donations\ValueObjects\DonationType;
-use Give\Donations\ValueObjects\DonationMode;
 use Give\Donors\Models\Donor;
 use Give\DonationForms\Models\DonationForm;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\Offline\OfflineGateway;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
-use GiveAddon\OffSiteGateway\Gateway\OffSiteGateway;
-use WP_REST_Request;
 
 /**
  * @unreleased
@@ -628,17 +621,17 @@ class DonationRouteCreateTest extends RestApiTestCase
         
         // Try to create another subscription donation for the same subscription
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
-                 $request->set_body_params([
-             'donorId' => $this->donor->id,
-             'amount' => ['amount' => 100.00, 'currency' => 'USD'],
-             'gatewayId' => TestGateway::id(),
-             'mode' => 'test',
-             'formId' => $this->form->id,
-             'firstName' => 'John',
-             'email' => 'john@example.com',
-             'subscriptionId' => $subscription->id,
-             'type' => 'subscription',
-         ]);
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => $subscription->id,
+            'type' => 'subscription',
+        ]);
 
         $response = $this->dispatchRequest($request);
 
@@ -789,40 +782,15 @@ class DonationRouteCreateTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    /*public function testCreateSubscriptionDonationShouldReturn400ErrorWhenGatewayMismatch()
+    public function testCreateSubscriptionDonationShouldSucceedWhenGatewayMatches()
     {
         $subscription = Subscription::factory()->create([
             'gatewayId' => TestGateway::id(),
         ]);
-        
-        $request = $this->createRequest('POST', $this->route, [], 'administrator');
-        $request->set_body_params([
-            'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
-            'gatewayId' => OffSiteGateway::id(), // Different gateway
-            'mode' => 'test',
-            'formId' => $this->form->id,
-            'firstName' => 'John',
-            'email' => 'john@example.com',
-            'subscriptionId' => $subscription->id,
-            'type' => 'subscription',
-        ]);
 
-        $response = $this->dispatchRequest($request);
-
-        $this->assertEquals(400, $response->get_status());
-        $data = $response->get_data();
-        $this->assertStringContainsString('Gateway ID must match the subscription gateway for subscription and renewal donations', $data['message']);
-    }*/
-
-    /**
-     * @unreleased
-     */
-    /*public function testCreateSubscriptionDonationShouldSucceedWhenGatewayMatches()
-    {
-        $subscription = Subscription::factory()->create([
-            'gatewayId' => TestGateway::id(),
-        ]);
+        $subscription->gatewayId = TestGateway::id();
+        $subscription->save();
+        $subscription = Subscription::find($subscription->id);
 
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
@@ -844,12 +812,12 @@ class DonationRouteCreateTest extends RestApiTestCase
         $this->assertEquals($subscription->id, $data['subscriptionId']);
         $this->assertEquals('subscription', $data['type']);
         $this->assertEquals(TestGateway::id(), $data['gatewayId']);
-    }*/
+    }
 
     /**
      * @unreleased
      */
-    /*public function testCreateRenewalDonationShouldReturn400ErrorWhenGatewayMismatch()
+    public function testCreateRenewalDonationShouldReturn400ErrorWhenGatewayMismatch()
     {
         $subscription = Subscription::factory()->createWithDonation([
             'gatewayId' => TestGateway::id(),
@@ -860,7 +828,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'subscriptionId' => $subscription->id,
             'type' => 'renewal',
-            'gatewayId' => OfflineGateway , // Different gateway
+            'gatewayId' => OfflineGateway::id(), // Different gateway
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -868,12 +836,12 @@ class DonationRouteCreateTest extends RestApiTestCase
         $this->assertEquals(400, $response->get_status());
         $data = $response->get_data();
         $this->assertStringContainsString('Gateway ID must match the subscription gateway for subscription and renewal donations', $data['message']);
-    }*/
+    }
 
     /**
      * @unreleased
      */
-    /*public function testCreateRenewalDonationShouldSucceedWhenGatewayMatches()
+    public function testCreateRenewalDonationShouldSucceedWhenGatewayMatches()
     {
         $subscription = Subscription::factory()->createWithDonation([
             'gatewayId' => TestGateway::id(),
@@ -894,5 +862,5 @@ class DonationRouteCreateTest extends RestApiTestCase
         $this->assertEquals($subscription->id, $data['subscriptionId']);
         $this->assertEquals('renewal', $data['type']);
         $this->assertEquals(TestGateway::id(), $data['gatewayId']);
-    }*/
+    }
 } 
