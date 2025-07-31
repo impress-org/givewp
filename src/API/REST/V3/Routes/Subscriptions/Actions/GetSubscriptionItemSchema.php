@@ -80,6 +80,7 @@ class GetSubscriptionItemSchema
                 'installments' => [
                     'type' => 'integer',
                     'description' => esc_html__('Number of installments (0 for unlimited)', 'give'),
+                    'default' => 0,
                 ],
                 'transactionId' => [
                     'type' => ['string', 'null'],
