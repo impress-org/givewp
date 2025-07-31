@@ -3,11 +3,12 @@
 namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget;
 
 use Elementor\Widget_Base;
-use Exception;
-use Give\Framework\Database\DB;
+use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
 
 class ElementorDonationFormWidget extends Widget_Base
 {
+    use HasFormOptions;
+
     public function get_name(): string
     {
         return 'givewp_donation_form';
@@ -162,26 +163,5 @@ class ElementorDonationFormWidget extends Widget_Base
         }
 
         echo do_shortcode(sprintf('[give_form display_style="%s" continue_button_title="%s" id="%s"]', $displayStyle, $donateButtonText, $formId));
-    }
-
-    public function getCampaignsWithForms()
-    {
-        try {
-            $query = DB::table('posts', 'forms')
-                ->select(
-                    ['forms.ID', 'id'],
-                    ['forms.post_title', 'title'],
-                    ['campaigns.campaign_title', 'campaign_title'],
-                    ['campaigns.id', 'campaign_id']
-                )
-                ->innerJoin('give_campaign_forms', 'forms.ID', 'campaign_forms.form_id', 'campaign_forms')
-                ->innerJoin('give_campaigns', 'campaign_forms.campaign_id', 'campaigns.id', 'campaigns')
-                ->where('forms.post_status', 'publish');
-
-            return $query->getAll();
-        } catch (Exception $e) {
-            error_log('getCampaignsWithForms error: ' . $e->getMessage());
-            return [];
-        }
     }
 }
