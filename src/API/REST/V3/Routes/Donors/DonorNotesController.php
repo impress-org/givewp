@@ -142,6 +142,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Create a donor note.
      *
+     * @unreleased Add support updating custom fields
      * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -197,6 +198,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Update a donor note.
      *
+     * @unreleased Add support for updating custom fields
      * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -227,6 +229,11 @@ class DonorNotesController extends WP_REST_Controller
 
         if ($note->isDirty()) {
             $note->save();
+        }
+
+        $fieldsUpdate = $this->update_additional_fields_for_object($note, $request);
+        if (is_wp_error($fieldsUpdate)) {
+            return $fieldsUpdate;
         }
 
         $response = $this->prepare_item_for_response($note, $request);
@@ -308,6 +315,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Add support for adding custom fields to the response
      * @since 4.4.0
      */
     public function prepare_item_for_response($note, $request): WP_REST_Response
@@ -326,6 +334,7 @@ class DonorNotesController extends WP_REST_Controller
 
         $response = new WP_REST_Response($note->toArray());
         $response->add_links($links);
+        $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
         return $response;
     }
@@ -350,6 +359,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get the donor note schema, conforming to JSON Schema.
      *
+     * @unreleased Change title to givewp/donor-note and add custom fields schema
      * @since 4.4.0
      *
      * @return array
@@ -358,7 +368,7 @@ class DonorNotesController extends WP_REST_Controller
     {
         $schema = [
             'schema' => 'http://json-schema.org/draft-07/schema#',
-            'title' => 'donor-note',
+            'title' => 'givewp/donor-note',
             'type' => 'object',
             'properties' => [
                 'id' => [
@@ -398,7 +408,7 @@ class DonorNotesController extends WP_REST_Controller
             ],
         ];
 
-        return $schema;
+        return $this->add_additional_fields_schema($schema);
     }
 
     /**
