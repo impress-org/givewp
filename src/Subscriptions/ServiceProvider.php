@@ -13,16 +13,20 @@ use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\Migrations\AddPaymentModeToSubscriptionTable;
 use Give\Subscriptions\Migrations\BackfillMissingCampaignIdForDonations;
 use Give\Subscriptions\Migrations\CreateSubscriptionTables;
+use Give\Subscriptions\Repositories\SubscriptionNotesRepository;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * @inheritDoc
+     *
+     * @unreleased Register Subscription Repository to container
      */
     public function register()
     {
         give()->singleton('subscriptions', SubscriptionRepository::class);
+        give()->singleton('subscriptionNotes', SubscriptionNotesRepository::class);
         give()->singleton(SubscriptionsListTable::class, function() {
             $listTable = new SubscriptionsListTable();
             Hooks::doAction('givewp_subscriptions_list_table', $listTable);
