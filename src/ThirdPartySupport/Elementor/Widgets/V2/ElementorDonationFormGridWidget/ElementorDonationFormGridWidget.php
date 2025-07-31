@@ -181,8 +181,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
                 'type' => \Elementor\Controls_Manager::SELECT2,
                 'description' => __('Select specific forms to include in the grid.', 'give'),
                 'multiple' => true,
-                'options' => [],
-                'groups' => $this->getFormOptionsWithCampaigns(),
+                'options' => $this->getFormOptions(),
                 'condition' => [
                     'selection_type' => 'include'
                 ],
@@ -196,8 +195,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
                 'type' => \Elementor\Controls_Manager::SELECT2,
                 'description' => __('Select specific forms to exclude from the grid.', 'give'),
                 'multiple' => true,
-                'options' => [],
-                'groups' => $this->getFormOptionsWithCampaigns(),
+                'options' => $this->getFormOptions(),
                 'condition' => [
                     'selection_type' => 'exclude'
                 ],

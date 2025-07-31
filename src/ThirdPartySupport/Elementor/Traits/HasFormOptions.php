@@ -60,6 +60,24 @@ trait HasFormOptions
     }
 
     /**
+     * Get flattened form options from campaigns
+     *
+     * @unreleased
+     *
+     * @return array
+     */
+    public function getFormOptions(): array
+    {
+        $forms = $this->getForms();
+
+        foreach ($forms as $form) {
+            $options[$form->id] = $form->title;
+        }
+
+        return $options;
+    }
+
+    /**
      * Query campaigns with forms
      *
      * @unreleased
@@ -85,5 +103,27 @@ trait HasFormOptions
             error_log('getCampaignsWithForms error: ' . $e->getMessage());
             return [];
         }
+    }
+
+    /**
+     * Get forms
+     *
+     * @unreleased
+     *
+     * @return array
+     */
+    public function getForms(): array
+    {
+        $forms = DB::table('posts')
+            ->select(
+                ['ID', 'id'],
+                ['post_title', 'title']
+            )
+            ->where('post_type', 'give_forms')
+            ->where('post_status', 'publish')
+            ->orderBy('post_title')
+            ->getAll();
+
+        return $forms;
     }
 }
