@@ -5,6 +5,7 @@ namespace Give\API\REST\V3\Routes\Subscriptions\Helpers;
 use DateTime;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -44,6 +45,17 @@ class SubscriptionFields
                     return new SubscriptionPeriod($value);
                 }
 
+                return $value;
+
+            case 'mode':
+                if (is_string($value)) {
+                    return new SubscriptionMode($value);
+                }
+
+                return $value;
+
+            case 'gatewayId':
+                // Gateway ID is a simple string, no special processing needed
                 return $value;
 
             case 'createdAt':

@@ -2,6 +2,7 @@
 
 namespace Give\API\REST\V3\Routes\Subscriptions;
 
+use DateTime;
 use Give\API\REST\V3\Helpers\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Helpers\Headers;
@@ -59,6 +60,13 @@ class SubscriptionController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => array_merge($this->get_collection_params(), give(GetSubscriptionSharedParamsForGetMethods::class)()),
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
+            [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [$this, 'create_item'],
+                'permission_callback' => [$this, 'create_item_permissions_check'],
+                'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::CREATABLE),
                 'schema' => [$this, 'get_public_item_schema'],
             ],
             [
@@ -211,6 +219,62 @@ class SubscriptionController extends WP_REST_Controller
         $item = (new SubscriptionViewModel($subscription))->anonymousMode($donorAnonymousMode)->includeSensitiveData($includeSensitiveData)->exports();
 
         $response = $this->prepare_item_for_response($item, $request);
+
+        return rest_ensure_response($response);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function create_item($request): WP_REST_Response
+    {
+        $attributes = [];
+        $requiredFields = [
+            'donorId',
+            'donationFormId',
+            'amount',
+            'status',
+            'period',
+            'frequency',
+            'gatewayId',
+        ];
+
+        // Validate required fields
+        foreach ($requiredFields as $field) {
+            $value = $request->get_param($field);
+            if (empty($value)) {
+                return new WP_REST_Response([
+                    'message' => sprintf(__('Field "%s" is required', 'give'), $field)
+                ], 400);
+            }
+        }
+
+        // Process all request parameters
+        foreach ($request->get_params() as $key => $value) {
+            if (in_array($key, Subscription::propertyKeys(), true)) {
+                try {
+                    $processedValue = SubscriptionFields::processValue($key, $value);
+                    $attributes[$key] = $processedValue;
+                } catch (Exception $e) {
+                    return new WP_REST_Response([
+                        'message' => sprintf(__('Invalid value for field "%s": %s', 'give'), $key, $e->getMessage())
+                    ], 400);
+                }
+            }
+        }
+
+        try {
+            $subscription = Subscription::create($attributes);
+        } catch (Exception $e) {
+            return new WP_REST_Response([
+                'message' => sprintf(__('Failed to create subscription: %s', 'give'), $e->getMessage())
+            ], 500);
+        }
+
+        $item = (new SubscriptionViewModel($subscription))->includeSensitiveData(true)->exports();
+
+        $response = $this->prepare_item_for_response($item, $request);
+        $response->set_status(201);
 
         return rest_ensure_response($response);
     }
@@ -445,6 +509,18 @@ class SubscriptionController extends WP_REST_Controller
      * @return true|WP_Error
      */
     public function update_item_permissions_check($request)
+    {
+        return SubscriptionPermissions::validationForUpdateMethod($request);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @param WP_REST_Request $request
+     *
+     * @return true|WP_Error
+     */
+    public function create_item_permissions_check($request)
     {
         return SubscriptionPermissions::validationForUpdateMethod($request);
     }
