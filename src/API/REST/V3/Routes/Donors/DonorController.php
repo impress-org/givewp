@@ -503,6 +503,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Add support for additional fields
      * @since 4.4.0
      */
     public function getSharedParams(): array
@@ -524,6 +525,14 @@ class DonorController extends WP_REST_Controller
                 'type' => 'string',
                 'default' => 'exclude',
                 'enum' => ['exclude', 'include', 'redact'],
+            ],
+            'additionalFields' => [
+                'description' => __(
+                    'Additional custom fields to include in the response. Use * for all fields or a comma-separated list of field names.',
+                    'give'
+                ),
+                'type' => 'string',
+                'default' => '',
             ],
         ];
     }

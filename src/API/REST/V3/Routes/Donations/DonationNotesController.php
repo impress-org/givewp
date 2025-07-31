@@ -42,7 +42,15 @@ class DonationNotesController extends WP_REST_Controller
                         'description' => __('The ID of the donation this note belongs to.', 'give'),
                         'type' => 'integer',
                         'required' => true,
-                    ]
+                    ],
+                    'additionalFields' => [
+                        'description' => __(
+                            'Additional custom fields to include in the response. Use * for all fields or a comma-separated list of field names.',
+                            'give'
+                        ),
+                        'type' => 'string',
+                        'default' => '',
+                    ],
                 ], $this->get_collection_params()) ,
                 'schema' => [$this, 'get_public_item_schema'],
             ],
@@ -438,6 +446,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Add support for additional fields
      * @since 4.4.0
      */
     public function get_endpoint_args_for_item_schema($method = WP_REST_Server::CREATABLE): array
@@ -448,6 +457,14 @@ class DonationNotesController extends WP_REST_Controller
         // Common argument for all endpoints
         $args['donationId'] = $schema['properties']['donationId'];
         $args['donationId']['in'] = 'path';
+        $args['additionalFields'] = [
+            'description' => __(
+                'Additional custom fields to include in the response. Use * for all fields or a comma-separated list of field names.',
+                'give'
+            ),
+            'type' => 'string',
+            'default' => '',
+        ];
 
         // Arguments for single item endpoints (not for POST)
         if (in_array($method, [WP_REST_Server::READABLE, WP_REST_Server::EDITABLE, WP_REST_Server::DELETABLE], true)) {
@@ -479,6 +496,7 @@ class DonationNotesController extends WP_REST_Controller
                 'enum' => ['admin', 'donation'],
                 'default' => 'admin',
             ];
+            unset($args['additionalFields']);
         } else {
             unset($args['content']);
             unset($args['type']);

@@ -8,7 +8,7 @@ dispatch(coreStore).addEntities([
         name: 'donor',
         kind: 'givewp',
         baseURL: '/givewp/v3/donors',
-        baseURLParams: {includeSensitiveData: true, anonymousDonors: 'include'},
+        baseURLParams: {includeSensitiveData: true, anonymousDonors: 'include', additionalFields: '*'},
         plural: 'donors',
         label: __('Donor', 'give'),
         supportsPagination: true,

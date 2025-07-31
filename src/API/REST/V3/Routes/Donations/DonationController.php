@@ -47,6 +47,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Add support for additional fields
      * @since 4.6.0
      */
     public function register_routes()
@@ -82,6 +83,14 @@ class DonationController extends WP_REST_Controller
                             'include',
                             'redact',
                         ],
+                    ],
+                    'additionalFields' => [
+                        'description' => __(
+                            'Additional custom fields to include in the response. Use * for all fields or a comma-separated list of field names.',
+                            'give'
+                        ),
+                        'type' => 'string',
+                        'default' => '',
                     ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
@@ -137,6 +146,14 @@ class DonationController extends WP_REST_Controller
                         'type' => 'boolean',
                         'default' => false,
                         'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
+                    ],
+                    'additionalFields' => [
+                        'description' => __(
+                            'Additional custom fields to include in the response. Use * for all fields or a comma-separated list of field names.',
+                            'give'
+                        ),
+                        'type' => 'string',
+                        'default' => '',
                     ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],

@@ -433,6 +433,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Add support for additional fields
      * @since 4.6.0 Add format to content argument
      * @since 4.4.0
      */
@@ -444,6 +445,14 @@ class DonorNotesController extends WP_REST_Controller
         // Common argument for all endpoints
         $args['donorId'] = $schema['properties']['donorId'];
         $args['donorId']['in'] = 'path';
+        $args['additionalFields'] = [
+            'description' => __(
+                'Additional custom fields to include in the response. Use * for all fields or a comma-separated list of field names.',
+                'give'
+            ),
+            'type' => 'string',
+            'default' => '',
+        ];
 
         // Arguments for single item endpoints (not for POST)
         if (in_array($method, [WP_REST_Server::READABLE, WP_REST_Server::EDITABLE, WP_REST_Server::DELETABLE], true)) {
@@ -475,6 +484,7 @@ class DonorNotesController extends WP_REST_Controller
                 'enum' => ['admin', 'donor'],
                 'default' => 'admin',
             ];
+            unset($args['additionalFields']);
         } else {
             unset($args['content']);
             unset($args['type']);
