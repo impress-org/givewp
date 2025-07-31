@@ -67,7 +67,7 @@ class RegisterWidgets
      */
     private function registerV2Widgets($widgets_manager)
     {
-        //$widgets_manager->register(new ElementorCampaignFormWidget());
+        $widgets_manager->register(new ElementorCampaignFormWidget());
         $widgets_manager->register(new ElementorDonationFormWidget());
     }
 }

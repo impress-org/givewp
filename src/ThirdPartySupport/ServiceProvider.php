@@ -2,7 +2,6 @@
 
 namespace Give\ThirdPartySupport;
 
-use Give\ThirdPartySupport\Elementor\Controls\ElementorDonationFormControl\ElementorDonationFormControl;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -74,13 +73,6 @@ class ServiceProvider implements ServiceProviderInterface
         $this->maybeDeactivateGivewpElementorWidgetsAddon();
 
         Hooks::addFilter('elementor/widgets/register', RegisterWidgets::class, '__invoke');
-
-        add_action(
-            'elementor/controls/register',
-            function ($controls_manager) {
-                $controls_manager->register(new ElementorDonationFormControl());
-            }
-        );
 
         add_action('elementor/editor/before_enqueue_scripts', function () {
             wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);

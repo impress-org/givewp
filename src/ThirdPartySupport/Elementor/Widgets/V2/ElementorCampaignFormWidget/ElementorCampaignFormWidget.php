@@ -102,8 +102,9 @@ class ElementorCampaignFormWidget extends Widget_Base
             'condition'  => [
                 'use_default_form!' => 'yes',
             ],
+            'placeholder' => __('Select Form', 'give'),
             'frontend_available' => true,
-            'groups' => $formOptionsGroup,
+            //'groups' => $formOptionsGroup,
         ]);
 
         $this->add_control(
