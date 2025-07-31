@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {createRoot} from '@wordpress/element';
 import DonationFormBlockApp from '@givewp/src/DonationForms/Blocks/DonationFormBlock/resources/app';
 
@@ -6,7 +5,7 @@ import './widget.scss';
 
 export default class CampaignFormWidget extends elementorModules.frontend.handlers.Base {
     render() {
-        const roots = document.querySelectorAll('.root-data-givewp-embed');
+        const roots = document.querySelectorAll(`[data-id="${this.getID()}"] .root-data-givewp-embed`);
 
         roots.forEach((root) => {
             let dataSrcUrl = root.getAttribute('data-src');
@@ -38,13 +37,7 @@ export default class CampaignFormWidget extends elementorModules.frontend.handle
     }
 
     onInit() {
-        console.log('onInit');
         this.render();
-    }
-
-    onElementChange(propertyName) {
-        console.log('onElementChange', propertyName);
-        console.log(this.getElementSettings());
     }
 }
 
@@ -54,10 +47,10 @@ export default class CampaignFormWidget extends elementorModules.frontend.handle
  * When Elementor frontend was initiated, and the widget is ready, register the widet
  * JS handler.
  */
-window.addEventListener( 'elementor/frontend/init', () => {
-	const addHandler = ( $element ) => {
-		elementorFrontend.elementsHandler.addHandler( CampaignFormWidget, { $element } );
-	};
+window.addEventListener('elementor/frontend/init', () => {
+    const addHandler = ($element) => {
+        elementorFrontend.elementsHandler.addHandler(CampaignFormWidget, {$element});
+    };
 
-	elementorFrontend.hooks.addAction( 'frontend/element_ready/givewp_campaign_form.default', addHandler );
-} );
+    elementorFrontend.hooks.addAction('frontend/element_ready/givewp_campaign_form.default', addHandler);
+});

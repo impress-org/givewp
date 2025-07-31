@@ -15,6 +15,7 @@ use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveRegisterWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveSubscriptionsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveTotalsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignFormWidget\ElementorCampaignFormWidget;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget\ElementorDonationFormWidget;
 
 /**
  * @unreleased
@@ -66,6 +67,7 @@ class RegisterWidgets
      */
     private function registerV2Widgets($widgets_manager)
     {
-        $widgets_manager->register(new ElementorCampaignFormWidget());
+        //$widgets_manager->register(new ElementorCampaignFormWidget());
+        $widgets_manager->register(new ElementorDonationFormWidget());
     }
 }

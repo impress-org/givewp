@@ -2,7 +2,7 @@
 
 namespace Give\ThirdPartySupport;
 
-use Give\Framework\EnqueueScript;
+use Give\ThirdPartySupport\Elementor\Controls\ElementorDonationFormControl\ElementorDonationFormControl;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -75,25 +75,53 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addFilter('elementor/widgets/register', RegisterWidgets::class, '__invoke');
 
+        add_action(
+            'elementor/controls/register',
+            function ($controls_manager) {
+                $controls_manager->register(new ElementorDonationFormControl());
+            }
+        );
+
         add_action('elementor/editor/before_enqueue_scripts', function () {
             wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);
         });
 
         add_action('wp_enqueue_scripts', function () {
-            $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorCampaignFormWidget.asset.php');
-            $scriptName = 'givewp-elementor-campaign-form-widget';
+            $campaignFormWidgetScriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorCampaignFormWidget.asset.php');
+            $campaignFormWidgetScriptName = 'givewp-elementor-campaign-form-widget';
 
-            wp_enqueue_style(
-                $scriptName,
+            wp_register_style(
+                $campaignFormWidgetScriptName,
                 GIVE_PLUGIN_URL . 'build/elementorCampaignFormWidget.css',
             );
 
             wp_register_script(
-                $scriptName,
+                $campaignFormWidgetScriptName,
                 GIVE_PLUGIN_URL . 'build/elementorCampaignFormWidget.js',
-                array_merge($scriptAsset['dependencies'], ['elementor-frontend']),
-                $scriptAsset['version'],
+                array_merge($campaignFormWidgetScriptAsset['dependencies'], ['elementor-frontend']),
+                $campaignFormWidgetScriptAsset['version'],
                 true
+            );
+
+            $donationFormWidgetScriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorDonationFormWidget.asset.php');
+            $donationFormWidgetScriptName = 'givewp-elementor-donation-form-widget';
+
+            wp_register_style(
+                $donationFormWidgetScriptName,
+                GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.css',
+            );
+
+            wp_register_script(
+                $donationFormWidgetScriptName,
+                GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.js',
+                array_merge($donationFormWidgetScriptAsset['dependencies'], ['elementor-frontend']),
+                $donationFormWidgetScriptAsset['version'],
+                true
+            );
+
+            wp_register_style(
+                $donationFormWidgetScriptName,
+                GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.css',
             );
         });
 

@@ -1,21 +1,21 @@
 <?php
 
-namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignFormWidget;
+namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget;
 
 use Elementor\Widget_Base;
 use Exception;
 use Give\Framework\Database\DB;
 
-class ElementorCampaignFormWidget extends Widget_Base
+class ElementorDonationFormWidget extends Widget_Base
 {
     public function get_name(): string
     {
-        return 'givewp_campaign_form';
+        return 'givewp_donation_form';
     }
 
     public function get_title(): string
     {
-        return __('GiveWP Campaign Form', 'give');
+        return __('GiveWP Donation Form', 'give');
     }
 
     public function get_icon(): string
@@ -30,7 +30,7 @@ class ElementorCampaignFormWidget extends Widget_Base
 
     public function get_keywords(): array
     {
-        return ['give', 'givewp', 'campaign', 'form'];
+        return ['give', 'givewp', 'donation', 'form'];
     }
 
     public function get_custom_help_url(): string
@@ -45,12 +45,12 @@ class ElementorCampaignFormWidget extends Widget_Base
 
     public function get_script_depends(): array
     {
-        return ['givewp-elementor-campaign-form-widget'];
+        return ['givewp-elementor-donation-form-widget'];
     }
 
     public function get_style_depends(): array
     {
-        return ['givewp-design-system-foundation', 'givewp-elementor-campaign-form-widget'];
+        return ['givewp-design-system-foundation', 'givewp-elementor-donation-form-widget'];
     }
 
     public function has_widget_inner_wrapper(): bool
@@ -66,43 +66,20 @@ class ElementorCampaignFormWidget extends Widget_Base
 
     protected function register_controls(): void
     {
-        [$campaignOptions, $formOptionsGroup] = $this->getCampaignAndFormOptions();
+        $formOptionsGroup = $this->getFormOptionsWithCampaigns();
 
         $this->start_controls_section(
-            'campaign_section',
+            'donation_form_section',
             [
-                'label' => __('Campaign', 'give'),
+                'label' => __('Donation Form', 'give'),
             ]
         );
 
-        $this->add_control(
-            'campaign_id',
-            [
-                'label' => __('Campaign', 'give'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'options' => $campaignOptions,
-                'default' => array_key_first($campaignOptions),
-                'frontend_available' => true,
-            ]
-        );
-
-        $this->add_control('use_default_form', [
-            'label' => __('Use Default Form', 'give'),
-            'type' => \Elementor\Controls_Manager::SWITCHER,
-            'default' => 'yes',
-            'frontend_available' => true,
-        ]);
-
-        //TODO: need to hook into js to get the form options based on the campaign id
         $this->add_control('form_id', [
             'label' => __('Form', 'give'),
             'type' => \Elementor\Controls_Manager::SELECT,
             'options' => [],
-            'default' => '',
-            'condition'  => [
-                'use_default_form!' => 'yes',
-            ],
-            'frontend_available' => true,
+            'default' => !empty($formOptionsGroup) ? array_key_first($formOptionsGroup[0]['options']) : '',
             'groups' => $formOptionsGroup,
         ]);
 
@@ -133,12 +110,12 @@ class ElementorCampaignFormWidget extends Widget_Base
         $this->end_controls_section();
     }
 
-        protected function getCampaignAndFormOptions(): array
+    protected function getFormOptionsWithCampaigns(): array
     {
         $campaignsWithForms = $this->getCampaignsWithForms();
 
         if (empty($campaignsWithForms)) {
-            return [[], []];
+            return [];
         }
 
         $campaignOptions = [];
@@ -170,23 +147,21 @@ class ElementorCampaignFormWidget extends Widget_Base
 
         $formOptionsGroup = array_values($campaignGroups);
 
-        return [$campaignOptions, $formOptionsGroup];
+        return $formOptionsGroup;
     }
 
     protected function render(): void
     {
         $settings = $this->get_settings_for_display();
-        $campaignId = $settings['campaign_id'];
         $displayStyle = $settings['display_style'];
-        $useDefaultForm = $settings['use_default_form'];
         $donateButtonText = $settings['donate_button_text'];
         $formId = $settings['form_id'];
 
-        if (empty($campaignId)) {
+        if (empty($formId)) {
             return;
         }
 
-        echo do_shortcode(sprintf('[givewp_campaign_form campaign_id="%s" display_style="%s" use_default_form="%s" continue_button_title="%s" id="%s"]', $campaignId, $displayStyle, $useDefaultForm, $donateButtonText, $formId));
+        echo do_shortcode(sprintf('[give_form display_style="%s" continue_button_title="%s" id="%s"]', $displayStyle, $donateButtonText, $formId));
     }
 
     public function getCampaignsWithForms()
