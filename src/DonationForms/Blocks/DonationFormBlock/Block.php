@@ -17,7 +17,15 @@ class Block
         register_block_type(
             __DIR__,
             [
-                'render_callback' => [(new BlockRenderController()), 'render']
+                'render_callback' => function ($attributes) {
+
+                    $controller = new BlockRenderController();
+                    if (!$controller->isGutenbergEditor()) {
+                        return $controller->render($attributes);
+                    }
+
+                    return null;
+                }
             ]
         );
     }

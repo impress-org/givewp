@@ -2,6 +2,8 @@
 
 namespace Give\ThirdPartySupport;
 
+use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
+use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgets;
@@ -77,12 +79,62 @@ class ServiceProvider implements ServiceProviderInterface
             wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);
         });
 
+        add_action('wp_enqueue_scripts', function () {
+            $campaignFormWidgetScriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorCampaignFormWidget.asset.php');
+            $campaignFormWidgetScriptName = 'givewp-elementor-campaign-form-widget';
+
+            wp_register_style(
+                $campaignFormWidgetScriptName,
+                GIVE_PLUGIN_URL . 'build/elementorCampaignFormWidget.css',
+            );
+
+            wp_register_script(
+                $campaignFormWidgetScriptName,
+                GIVE_PLUGIN_URL . 'build/elementorCampaignFormWidget.js',
+                array_merge($campaignFormWidgetScriptAsset['dependencies'], ['elementor-frontend']),
+                $campaignFormWidgetScriptAsset['version'],
+                true
+            );
+
+            $donationFormWidgetScriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorDonationFormWidget.asset.php');
+            $donationFormWidgetScriptName = 'givewp-elementor-donation-form-widget';
+
+            wp_register_style(
+                $donationFormWidgetScriptName,
+                GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.css',
+            );
+
+            wp_register_script(
+                $donationFormWidgetScriptName,
+                GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.js',
+                array_merge($donationFormWidgetScriptAsset['dependencies'], ['elementor-frontend']),
+                $donationFormWidgetScriptAsset['version'],
+                true
+            );
+
+            wp_register_style(
+                $donationFormWidgetScriptName,
+                GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.css',
+            );
+
+            // this necessary for the form grid widget to display the goal progress bar
+            give(LoadAsyncDataAssets::class)->registerAssets();
+        });
+
         add_action('elementor/elements/categories_registered', function($elements_manager) {
             /** @var \Elementor\Elements_Manager $elements_manager */
             $elements_manager->add_category(
                 'givewp-category-legacy',
                 [
                     'title' => __('GiveWP (Legacy)', 'give'),
+                    'icon' => 'dashicons dashicons-give',
+                ]
+            );
+
+            $elements_manager->add_category(
+                'givewp-category',
+                [
+                    'title' => __('GiveWP', 'give'),
                     'icon' => 'dashicons dashicons-give',
                 ]
             );

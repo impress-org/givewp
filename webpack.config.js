@@ -208,6 +208,8 @@ const entry = {
     donorDetails: srcPath('Donors/resources/admin/donor-details.tsx'),
     donationEntity: srcPath('Donations/resources/entity.ts'),
     donationDetails: srcPath('Donations/resources/admin/donation-details.tsx'),
+    elementorCampaignFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignFormWidget/resources/widget.jsx'),
+    elementorDonationFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorDonationFormWidget/resources/widget.jsx'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };
