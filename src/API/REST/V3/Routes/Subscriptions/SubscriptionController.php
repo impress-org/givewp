@@ -105,7 +105,7 @@ class SubscriptionController extends WP_REST_Controller
                     ],
                     '_embed' => [
                         'description' => __(
-                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:donation" when we wish to embed only a specific one.',
+                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:donor" when we wish to embed only a specific one.',
                             'give'
                         ),
                         'type' => [
@@ -146,7 +146,15 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * Get subscriptions.
+     * 
      * @unreleased
+     * 
+     * @param WP_REST_Request $request Full data about the request.
+     *
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @throws Exception          
      */
     public function get_items($request)
     {
@@ -203,7 +211,15 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * Get a subscription.
+     *
      * @unreleased
+     *
+     * @param WP_REST_Request $request Full data about the request.
+     *
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @throws Exception
      */
     public function get_item($request)
     {
@@ -224,9 +240,17 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * Create a subscription.
+     *
      * @unreleased
+     *
+     * @param WP_REST_Request $request Full data about the request.
+     *
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @throws Exception
      */
-    public function create_item($request): WP_REST_Response
+    public function create_item($request)
     {
         $attributes = [];
         $requiredFields = [
@@ -265,6 +289,11 @@ class SubscriptionController extends WP_REST_Controller
 
         try {
             $subscription = Subscription::create($attributes);
+            $fieldsUpdate = $this->update_additional_fields_for_object($subscription, $request);
+
+            if (is_wp_error($fieldsUpdate)) {
+                return $fieldsUpdate;
+            }
         } catch (Exception $e) {
             return new WP_REST_Response([
                 'message' => sprintf(__('Failed to create subscription: %s', 'give'), $e->getMessage())
@@ -280,9 +309,17 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**     
+     * Update a subscription.
+     *
      * @unreleased
+     *
+     * @param WP_REST_Request $request Full data about the request.
+     *
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @throws Exception
      */
-    public function update_item($request): WP_REST_Response
+    public function update_item($request)
     {
         $subscription = Subscription::find($request->get_param('id'));
 
@@ -317,6 +354,12 @@ class SubscriptionController extends WP_REST_Controller
             $subscription->save();
         }
 
+        $fieldsUpdate = $this->update_additional_fields_for_object($subscription, $request);
+
+        if (is_wp_error($fieldsUpdate)) {
+            return $fieldsUpdate;
+        }
+
         $item = (new SubscriptionViewModel($subscription))->includeSensitiveData(true)->exports();
 
         $response = $this->prepare_item_for_response($item, $request);
@@ -325,7 +368,15 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * Delete a subscription.
+     *
      * @unreleased
+     * 
+     * @param WP_REST_Request $request Full data about the request.
+     *
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @throws Exception
      */
     public function delete_item($request): WP_REST_Response
     {
@@ -356,7 +407,15 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**     
+     * Delete multiple subscriptions.
+     *
      * @unreleased
+     * 
+     * @param WP_REST_Request $request Full data about the request.
+     *
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+     *
+     * @throws Exception
      */
     public function deleteItems($request): WP_REST_Response
     {
@@ -402,8 +461,6 @@ class SubscriptionController extends WP_REST_Controller
         ], 200);
     }
 
-
-
     /**
      * @unreleased
      */
@@ -446,9 +503,14 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * @unreleased
      *
+     * @param mixed           $item    WordPress representation of the item.
+	 * @param WP_REST_Request $request Request object.
+	 * 
+	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
+	 * 
      * @throws Exception
      */
-    public function prepare_item_for_response($item, $request): WP_REST_Response
+    public function prepare_item_for_response($item, $request)
     {
         $subscriptionId = $request->get_param('id') ?? $item['id'] ?? null;
 
@@ -473,6 +535,8 @@ class SubscriptionController extends WP_REST_Controller
         if (! empty($links)) {
             $response->add_links($links);
         }
+
+        $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
         return $response;
     }
@@ -554,6 +618,7 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function get_item_schema(): array
     {
-        return give(GetSubscriptionItemSchema::class)();
+        $schema =  give(GetSubscriptionItemSchema::class)();
+        return $this->add_additional_fields_schema($schema);
     }
 }

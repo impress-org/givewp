@@ -16,7 +16,7 @@ class GetSubscriptionItemSchema
     public function __invoke(): array
     {
         return [
-            'title' => 'subscription',
+            'title' => 'givewp/subscription',
             'type' => 'object',
             'properties' => [
                 'id' => [
