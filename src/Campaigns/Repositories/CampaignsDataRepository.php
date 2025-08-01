@@ -47,20 +47,70 @@ class CampaignsDataRepository
     public static function campaigns(array $ids): CampaignsDataRepository
     {
         $self = new self();
+       // give_delete_option('give_campaigns_data');
+       // give_delete_option('give_campaigns_subscriptions_data');
 
-        $donations = CampaignsDataQuery::donations($ids);
+        $campaignsData = give_get_option('give_campaigns_data', []);
+        $campaignsSubscriptionData = give_get_option('give_campaigns_subscription_data', []);
+
+       // print_r($campaignsData); exit;
+
+        // remove cached campaign ids
+        $campaignIds = array_filter($ids, function ($id) use ($campaignsData) {
+            foreach ($campaignsData as $row) {
+                foreach($row as $campaign) {
+                    if ($campaign['campaign_id'] == $id) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        });
+
+        // If we have all required data, and all campaigns are cached
+        if ( ! empty($campaignsData) && array_count_values($campaignsData) > 0) {
+            $self->amounts = $campaignsData['amounts'];
+            $self->donationsCount = $campaignsData['donationsCount'];
+            $self->donorsCount = $campaignsData['donorsCount'];
+
+            if (defined('GIVE_RECURRING_VERSION')) {
+                $self->subscriptionAmounts = $campaignsSubscriptionData['amounts'];
+                $self->subscriptionDonationsCount = $campaignsSubscriptionData['donationsCount'];
+                $self->subscriptionDonorsCount = $campaignsSubscriptionData['donorsCount'];
+            }
+
+            return $self;
+        }
+
+        // Fetch data from db
+        $donations = CampaignsDataQuery::donations($campaignIds);
 
         $self->amounts = $donations->collectIntendedAmounts();
         $self->donationsCount = $donations->collectDonations();
         $self->donorsCount = $donations->collectDonors();
 
+        // cache campaigns data
+        give_update_option('give_campaigns_data', [
+            'amounts' => array_merge($campaignsData['amounts'] ?? [], $self->amounts),
+            'donationsCount' => array_merge($campaignsData['donationsCount'] ?? [], $self->donationsCount),
+            'donorsCount' => array_merge($campaignsData['donorsCount'] ?? [], $self->donorsCount),
+        ]);
+
         // Set subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
-            $subscriptions = CampaignsDataQuery::subscriptions($ids);
+            $subscriptions = CampaignsDataQuery::subscriptions($campaignIds);
 
             $self->subscriptionAmounts = $subscriptions->collectInitialAmounts();
             $self->subscriptionDonationsCount = $subscriptions->collectDonations();
             $self->subscriptionDonorsCount = $subscriptions->collectDonors();
+
+            // cache campaigns subscriptions data
+            give_update_option('give_campaigns_subscriptions_data', [
+                'amounts' => array_merge($campaignsSubscriptionData['amounts'] ?? [], $self->subscriptionAmounts),
+                'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'] ?? [], $self->subscriptionDonationsCount),
+                'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'] ?? [], $self->subscriptionDonorsCount),
+            ]);
         }
 
         return $self;
