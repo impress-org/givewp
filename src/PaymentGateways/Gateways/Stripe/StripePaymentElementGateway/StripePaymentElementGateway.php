@@ -2,9 +2,14 @@
 
 namespace Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway;
 
+use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Commands\RespondToBrowser;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Language;
@@ -14,7 +19,7 @@ use Stripe\Exception\ApiErrorException;
 /**
  * @since 3.0.0
  */
-class StripePaymentElementGateway extends PaymentGateway
+class StripePaymentElementGateway extends PaymentGateway implements PaymentGatewayRefundable
 {
     use StripePaymentElementRepository;
     use HasScriptAssetFile;
@@ -158,4 +163,44 @@ class StripePaymentElementGateway extends PaymentGateway
             ],
         ]);
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation): PaymentRefunded
+    {
+        try {
+            $refund = $this->refundStripePayment($donation);
+
+            if ($refund->status !== 'succeeded') {
+                throw new Exception(__('Refund failed. Please check the Stripe dashboard for more details.', 'give'));
+            }
+
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => sprintf(
+                    __('Donation refunded in Stripe for transaction ID: %s', 'give'),
+                    $donation->gatewayTransactionId
+                ),
+            ]);
+
+            return new PaymentRefunded();
+        } catch (ApiErrorException $e) {
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => sprintf(
+                    __(
+                        'Error! Donation %s was NOT refunded. Find more details on the error in the logs at Donations > Tools > Logs. To refund the donation, use the Stripe dashboard tools.',
+                        'give'
+                    ),
+                    $donation->id
+                ),
+            ]);
+
+            throw new PaymentGatewayException(sprintf(__('Stripe API error: %s', 'give'), $e->getMessage()));
+        }
+    }
 }
+
