@@ -6,7 +6,7 @@ import { Donation } from '../admin/components/types';
 import { getDonationOptionsWindowData } from '../utils';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 const canRefundDonation = (donation: Donation) => {
     const { gateways } = getDonationOptionsWindowData();
@@ -18,7 +18,7 @@ const canRefundDonation = (donation: Donation) => {
 };
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 const isResponseDonation = (response: unknown): response is Donation => {
     return typeof response === 'object' && response !== null && 'id' in response;
@@ -27,7 +27,7 @@ const isResponseDonation = (response: unknown): response is Donation => {
 
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function useDonationRefund(donation: Donation) {
     const [isRefunding, setIsRefunding] = useState(false);

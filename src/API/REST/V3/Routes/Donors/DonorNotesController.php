@@ -423,7 +423,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Add sanitize_callback to content argument
+     * @since 4.6.0 Add format to content argument
      * @since 4.4.0
      */
     public function get_endpoint_args_for_item_schema($method = WP_REST_Server::CREATABLE): array
@@ -455,7 +455,7 @@ class DonorNotesController extends WP_REST_Controller
                 'type' => 'string',
                 'required' => $method === WP_REST_Server::CREATABLE,
                 'minLength' => 1,
-                'sanitize_callback' => 'sanitize_textarea_field',
+                'format' => 'text-field',
             ];
 
             $args['type'] = [

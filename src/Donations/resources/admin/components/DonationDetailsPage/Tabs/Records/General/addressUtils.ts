@@ -1,14 +1,13 @@
 /**
  * External Dependencies
  */
-import { getDonorOptionsWindowData } from '@givewp/donors/utils';
+import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 import { __ } from '@wordpress/i18n';
 
-const donorOptionsData = getDonorOptionsWindowData();
-const { states } = donorOptionsData;
+const { states } = getDonationOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export interface StateOption {
     value: string;
@@ -18,7 +17,7 @@ export interface StateOption {
 /**
  * Get states configuration for a given country
  *
- * @unreleased
+ * @since 4.6.0
  */
 export interface StatesConfig {
     hasStates: boolean;
@@ -29,7 +28,7 @@ export interface StatesConfig {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export const getStatesForCountry = (countryCode: string): StatesConfig => {
     if (!countryCode) {

@@ -6,7 +6,7 @@
  * Description: The most robust, flexible, and intuitive way to accept donations on WordPress.
  * Author: GiveWP
  * Author URI: https://givewp.com/
- * Version: 4.5.0
+ * Version: 4.6.1
  * Requires at least: 6.6
  * Requires PHP: 7.4
  * Text Domain: give
@@ -423,7 +423,7 @@ final class Give
     {
         // Plugin version.
         if (!defined('GIVE_VERSION')) {
-            define('GIVE_VERSION', '4.5.0');
+            define('GIVE_VERSION', '4.6.1');
         }
 
         // Plugin Root File.
@@ -593,6 +593,7 @@ final class Give
  *
  * Example: <?php $give = Give(); ?>
  *
+ * @since 4.6.0 add explicit nullable type to give function
  * @since    2.8.0 add parameter for quick retrieval from container
  * @since    1.0
  *
@@ -602,7 +603,7 @@ final class Give
  *
  * @return Give|T
  */
-function give(string $abstract = null)
+function give(?string $abstract = null)
 {
     static $instance = null;
 

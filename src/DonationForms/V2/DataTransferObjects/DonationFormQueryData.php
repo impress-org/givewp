@@ -155,7 +155,7 @@ final class DonationFormQueryData
 
 
     /**
-     * @unreleased Cast $queryObject->goalFormat to string
+     * @since 4.6.0 Cast $queryObject->goalFormat to string
      * @since 4.3.0
      */
     private function getGoalSettings(object $queryObject): GoalSettings

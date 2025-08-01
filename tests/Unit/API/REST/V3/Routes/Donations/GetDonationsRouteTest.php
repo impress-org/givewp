@@ -680,7 +680,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     /**
      * Get expected value for comparison with API response
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function getExpectedValue(Donation $donation, string $column)
     {

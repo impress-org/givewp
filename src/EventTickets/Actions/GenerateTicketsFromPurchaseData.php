@@ -27,7 +27,7 @@ class GenerateTicketsFromPurchaseData
     }
 
     /**
-     * @unreleased Add support for currency conversion
+     * @since 4.6.0 Add support for currency conversion
      * @since 3.20.0 Add "amount" to the array of props
      * @since 3.6.0
      */

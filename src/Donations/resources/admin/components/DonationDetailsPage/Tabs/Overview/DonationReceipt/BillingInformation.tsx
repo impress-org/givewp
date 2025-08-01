@@ -2,7 +2,7 @@ import React from 'react';
 import { __ } from '@wordpress/i18n';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 type BillingInformationProps = {
   name: string;
@@ -19,7 +19,7 @@ type BillingInformationProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function BillingInformation({ name, email, address }: BillingInformationProps) {
   const { address1, address2, city, state, zip, country } = address;

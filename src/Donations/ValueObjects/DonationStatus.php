@@ -5,7 +5,7 @@ namespace Give\Donations\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased add trash status
+ * @since 4.6.0 add trash status
  * @since 2.19.6
  *
  * @method static DonationStatus PENDING()

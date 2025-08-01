@@ -7,7 +7,7 @@ type PaymentGateway = {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export type Donation = {
   id: number;
@@ -83,7 +83,7 @@ export type EventTicketType = {
     capacity: number;
 };
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export type EventTicket = {
     id: number;
@@ -98,19 +98,19 @@ export type EventTicket = {
 };
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export type DonationMode = 'test' | 'live';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export type DonationType = 'single' | 'renewal';
 
 
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export type DonationAddress = {
     address1: string;

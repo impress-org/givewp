@@ -35,14 +35,14 @@ type NoteState = {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export function DonorNotes({donorId}: {donorId: number}) {
     return <PrivateNotes endpoint={`/givewp/v3/donors/${donorId}/notes`} />
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export function DonationNotes({donationId}: {donationId: number}) {
     return <PrivateNotes endpoint={`/givewp/v3/donations/${donationId}/notes`} />

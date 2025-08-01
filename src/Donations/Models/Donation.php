@@ -29,7 +29,7 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donation
  *
- * @unreleased Add event tickets property
+ * @since 4.6.0 Add event tickets property
  * @since 3.9.0 Add phone property
  * @since 2.23.0 add type property; remove parentId property
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
@@ -173,7 +173,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -260,7 +260,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function eventTicketsAmount(): Money
     {
@@ -268,7 +268,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function eventTickets(): ModelQueryBuilder
     {

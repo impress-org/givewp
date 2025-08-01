@@ -262,7 +262,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased Turn createdAt property updatable
+     * @since 4.6.0 Turn createdAt property updatable
      * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
@@ -353,7 +353,7 @@ class DonationRepository
     }
 
      /**
-     * @unreleased
+     * @since 4.6.0
      *
      * @throws Exception
      */

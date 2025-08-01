@@ -4,7 +4,7 @@ import {amountFormatter} from '@givewp/admin/utils';
 
 /**
  * This hook is used to get the donation amounts and the formatter for the donation amounts.
- * @unreleased
+ * @since 4.6.0
  */
 export default function useDonationAmounts(donation: Donation) {
     const {currency: baseCurrency, eventTicketsEnabled} = getDonationOptionsWindowData();

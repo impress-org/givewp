@@ -34,7 +34,7 @@ class ListDonations extends Endpoint
     protected $listTable;
 
     /**
-     * @unreleased add status parameter to filter donations by status
+     * @since 4.6.0 add status parameter to filter donations by status
      * @since 3.4.0
      * @access public
      */
@@ -232,8 +232,8 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * 
-     * @unreleased add status status condition to filter donations
+     *
+     * @since 4.6.0 add status status condition to filter donations
      * @since 3.4.0 Make this method protected so it can be extended
      * @since 3.2.0 Updated query to account for possible null and empty values for _give_payment_mode meta
      * @since 2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta

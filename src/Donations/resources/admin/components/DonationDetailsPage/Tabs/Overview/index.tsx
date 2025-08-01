@@ -7,7 +7,7 @@ import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
 import Spinner from '@givewp/src/Admin/components/Spinner';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);

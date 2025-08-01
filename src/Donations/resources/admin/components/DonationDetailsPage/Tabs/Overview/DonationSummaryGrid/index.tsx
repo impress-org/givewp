@@ -11,14 +11,14 @@ import { useCampaignEntityRecord } from '@givewp/campaigns/utils';
 import Spinner from '@givewp/src/Admin/components/Spinner';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export type DonationSummaryGridProps = {
     donation: Donation;
 };
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function CampaignCard({donation}: {donation: Donation}) {
     const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(donation?.campaignId);
@@ -44,7 +44,7 @@ function CampaignCard({donation}: {donation: Donation}) {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function DonorCard({donation}: {donation: Donation}) {
     const {record: donor, hasResolved: hasResolvedDonor} = useDonorEntityRecord(donation?.donorId);
@@ -66,7 +66,7 @@ function DonorCard({donation}: {donation: Donation}) {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationSummaryGrid({
     donation,

@@ -14,7 +14,7 @@ import Upload from '../../../Inputs/Upload';
 import PhoneInput from '../../../Inputs/Phone';
 import styles from '../../DonorDetailsPage.module.scss';
 
-const {nameTitlePrefixes} = getDonorOptionsWindowData();
+const {nameTitlePrefixes, intlTelInputSettings} = getDonorOptionsWindowData();
 
 /**
  * @since 4.4.0
@@ -92,6 +92,7 @@ export default function DonorPersonalDetails() {
                     value={watch('phone')}
                     onChange={handlePhoneChange}
                     onError={handlePhoneError}
+                    intlTelInputSettings={intlTelInputSettings}
                 />
             </AdminSectionField>
 

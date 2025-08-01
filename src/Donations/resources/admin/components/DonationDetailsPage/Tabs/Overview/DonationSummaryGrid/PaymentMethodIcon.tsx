@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function PaymentMethodIcon({ paymentMethod }: { paymentMethod: string }) {
     if (!paymentMethod) {
@@ -43,7 +43,7 @@ export default function PaymentMethodIcon({ paymentMethod }: { paymentMethod: st
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function StripeIcon() {
     return (
@@ -54,7 +54,7 @@ function StripeIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function ApplePayIcon() {
     return (
@@ -72,7 +72,7 @@ function ApplePayIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function GooglePayIcon() {
     return (
@@ -94,7 +94,7 @@ function GooglePayIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function PaypalIcon() {
     return (
@@ -105,7 +105,7 @@ function PaypalIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function MollieIcon() {
     return (
@@ -116,7 +116,7 @@ function MollieIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function BraintreeIcon() {
     return (
@@ -127,7 +127,7 @@ function BraintreeIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function PayfastIcon() {
     return (
@@ -138,7 +138,7 @@ function PayfastIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function GoCardlessIcon() {
     return (
@@ -149,14 +149,14 @@ function GoCardlessIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function RazorPayIcon() {
     return null;
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 function PayUIcon() {
     return null;

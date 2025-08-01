@@ -41,3 +41,18 @@ export type DonorAddress = {
     country: string;
     zip: string;
 };
+
+/**
+ * @since 4.6.1
+ */
+export type IntlTelInputSettings = {
+    initialCountry: string;
+    showSelectedDialCode: boolean;
+    strictMode: boolean;
+    i18n: object;
+    cssUrl: string;
+    scriptUrl: string;
+    utilsScriptUrl: string;
+    errorMap: Array<string>;
+    useFullscreenPopup: boolean;
+};

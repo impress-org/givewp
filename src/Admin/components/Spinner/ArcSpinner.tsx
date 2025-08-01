@@ -1,7 +1,7 @@
 import styles from './style.module.scss';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function ArcSpinner() {
     return (

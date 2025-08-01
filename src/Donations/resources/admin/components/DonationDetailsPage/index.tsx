@@ -27,7 +27,7 @@ import { store as coreDataStore } from '@wordpress/core-data';
 const { donationStatuses } = getDonationOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 const StatusBadge = ({ status, isTest }: { status: string, isTest: boolean }) => {
     const statusMap = donationStatuses;
@@ -51,7 +51,7 @@ const StatusBadge = ({ status, isTest }: { status: string, isTest: boolean }) =>
 };
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationDetailsPage() {
     const { adminUrl, donationsAdminUrl} = getDonationOptionsWindowData();
@@ -60,7 +60,7 @@ export default function DonationDetailsPage() {
     const {formatter} = useDonationAmounts(donation);
     const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
     const { deleteEntityRecord } = useDispatch( coreDataStore );
-    
+
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
@@ -85,7 +85,7 @@ export default function DonationDetailsPage() {
     };
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     const handleRefund = async () => {
         try {
@@ -96,7 +96,7 @@ export default function DonationDetailsPage() {
     };
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     const handleDelete = async () => {
         try {
@@ -106,7 +106,7 @@ export default function DonationDetailsPage() {
             setShowConfirmationDialog(null);
         }
     };
-    
+
 
     return (
         <AdminDetailsPage

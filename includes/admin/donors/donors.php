@@ -1033,7 +1033,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
- * @unreleased Escape donor note
+ * @since 4.6.0 Escape donor note
  * @since  1.0
  *
  * @param  Give_Donor $donor The donor object being displayed.
