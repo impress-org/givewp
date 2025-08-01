@@ -7,6 +7,7 @@ use Give\Campaigns\Actions\AddNewBadgeToAdminMenuItem;
 use Give\Campaigns\Actions\ArchiveCampaignFormsAsDraftStatus;
 use Give\Campaigns\Actions\ArchiveCampaignPagesAsDraftStatus;
 use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
+use Give\Campaigns\Actions\CacheCampaignData;
 use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
@@ -18,6 +19,7 @@ use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Actions\UnarchiveCampaignFormAsPublishStatus;
 use Give\Campaigns\ListTable\Routes\DeleteCampaignListTable;
 use Give\Campaigns\ListTable\Routes\GetCampaignsListTable;
+use Give\Campaigns\Migrations\CacheCampaignsData;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -84,6 +86,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased add CacheCampaignData
      * @since 4.0.0
      */
     private function registerMigrations(): void
@@ -98,6 +101,7 @@ class ServiceProvider implements ServiceProviderInterface
                 AssociateDonationsToCampaign::class,
                 AddIndexes::class,
                 DonationsAddCampaignId::class,
+                CacheCampaignsData::class
             ]
         );
     }
@@ -127,6 +131,12 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('before_delete_post', PreventDeleteDefaultForm::class);
         Hooks::addAction('transition_post_status', PreventDeleteDefaultForm::class, 'preventTrashStatusChange', 10, 3);
+
+        /**
+         * @unreleased cache campaign stats data
+         */
+        Hooks::addAction('givewp_donation_created', CacheCampaignData::class, '__invoke', 999);
+        Hooks::addAction('givewp_donation_updated', CacheCampaignData::class, '__invoke', 999);
 
         $noticeActions = [
             'givewp_campaign_interaction_notice',
