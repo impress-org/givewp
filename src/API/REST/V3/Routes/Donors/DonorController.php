@@ -55,27 +55,35 @@ class DonorController extends WP_REST_Controller
                 'permission_callback' => [$this, 'get_item_permissions_check'],
                 'args' => array_merge([
                     'id' => [
-                        'description' => __('The donor ID.',
-                            'give'),
+                        'description' => __(
+                            'The donor ID.',
+                            'give'
+                        ),
                         'type' => 'integer',
                         'required' => true,
                     ],
                     '_embed' => [
-                        'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:statistics" when we wish to embed only a specific one.',
-                            'give'),
+                        'description' => __(
+                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:statistics" when we wish to embed only a specific one.',
+                            'give'
+                        ),
                         'type' => ['string', 'boolean'],
                         'default' => false,
                     ],
                     'mode' => [
-                        'description' => __('The mode of donations to filter by "live" or "test" (it only gets applied when "_embed" is set).',
-                            'give'),
+                        'description' => __(
+                            'The mode of donations to filter by "live" or "test" (it only gets applied when "_embed" is set).',
+                            'give'
+                        ),
                         'type' => 'string',
                         'default' => 'live',
                         'enum' => ['live', 'test'],
                     ],
                     'campaignId' => [
-                        'description' => __('The ID of the campaign to filter donors by - zero or empty mean "all campaigns" (it only gets applied when "_embed" is set).',
-                            'give'),
+                        'description' => __(
+                            'The ID of the campaign to filter donors by - zero or empty mean "all campaigns" (it only gets applied when "_embed" is set).',
+                            'give'
+                        ),
                         'type' => 'integer',
                         'default' => 0,
                     ],
@@ -183,7 +191,7 @@ class DonorController extends WP_REST_Controller
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
-        if ( ! $donor || ($donor->isAnonymous() && $donorAnonymousMode->isExcluded())) {
+        if (! $donor || ($donor->isAnonymous() && $donorAnonymousMode->isExcluded())) {
             return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
         }
 
@@ -216,7 +224,7 @@ class DonorController extends WP_REST_Controller
             if (!in_array($key, $nonEditableFields)) {
                 if ($donor->hasProperty($key)) {
                     if ($key === 'addresses') {
-                        $donor->addresses = array_map(function($address) {
+                        $donor->addresses = array_map(function ($address) {
                             return DonorAddress::fromArray($address);
                         }, $value);
                         continue;
@@ -326,6 +334,7 @@ class DonorController extends WP_REST_Controller
                 'prefix' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor prefix', 'give'),
+                    'format' => 'text-field',
                 ],
                 'firstName' => [
                     'type' => 'string',
@@ -333,6 +342,7 @@ class DonorController extends WP_REST_Controller
                     'minLength' => 1,
                     'maxLength' => 128,
                     'errorMessage' => esc_html__('First name is required', 'give'),
+                    'format' => 'text-field',
                 ],
                 'lastName' => [
                     'type' => 'string',
@@ -340,6 +350,7 @@ class DonorController extends WP_REST_Controller
                     'minLength' => 1,
                     'maxLength' => 128,
                     'errorMessage' => esc_html__('Last name is required', 'give'),
+                    'format' => 'text-field',
                 ],
                 'email' => [
                     'type' => 'string',
@@ -362,6 +373,7 @@ class DonorController extends WP_REST_Controller
                 'company' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor company', 'give'),
+                    'format' => 'text-field',
                 ],
                 'avatarId' => [
                     'type' => ['integer', 'string', 'null'],
@@ -379,26 +391,32 @@ class DonorController extends WP_REST_Controller
                             'address1' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Donor address line 1', 'give'),
+                                'format' => 'text-field',
                             ],
                             'address2' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Donor address line 2', 'give'),
+                                'format' => 'text-field',
                             ],
                             'city' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Donor address city', 'give'),
+                                'format' => 'text-field',
                             ],
                             'state' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Donor address state', 'give'),
+                                'format' => 'text-field',
                             ],
                             'country' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Donor address country', 'give'),
+                                'format' => 'text-field',
                             ],
                             'zip' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Donor address zip', 'give'),
+                                'format' => 'text-field',
                             ],
                         ],
                     ],
@@ -449,15 +467,19 @@ class DonorController extends WP_REST_Controller
                 'default' => true,
             ],
             'mode' => [
-                'description' => __('The mode of donations to filter by "live" or "test" (it only gets applied when "onlyWithDonations" is set to true).',
-                    'give'),
+                'description' => __(
+                    'The mode of donations to filter by "live" or "test" (it only gets applied when "onlyWithDonations" is set to true).',
+                    'give'
+                ),
                 'type' => 'string',
                 'default' => 'live',
                 'enum' => ['live', 'test'],
             ],
             'campaignId' => [
-                'description' => __('The ID of the campaign to filter donors by - zero or empty mean "all campaigns" (it only gets applied when "onlyWithDonations" is set to true).',
-                    'give'),
+                'description' => __(
+                    'The ID of the campaign to filter donors by - zero or empty mean "all campaigns" (it only gets applied when "onlyWithDonations" is set to true).',
+                    'give'
+                ),
                 'type' => 'integer',
                 'default' => 0,
             ],
@@ -473,14 +495,18 @@ class DonorController extends WP_REST_Controller
     {
         return [
             'includeSensitiveData' => [
-                'description' => __('Include or not include data that can be used to contact or locate the donors, such as phone number, email, billing address, etc. (require proper permissions)',
-                    'give'),
+                'description' => __(
+                    'Include or not include data that can be used to contact or locate the donors, such as phone number, email, billing address, etc. (require proper permissions)',
+                    'give'
+                ),
                 'type' => 'boolean',
                 'default' => false,
             ],
             'anonymousDonors' => [
-                'description' => __('Exclude, include, or redact data that can be used to identify the donors, such as ID, first name, last name, etc (require proper permissions).',
-                    'give'),
+                'description' => __(
+                    'Exclude, include, or redact data that can be used to identify the donors, such as ID, first name, last name, etc (require proper permissions).',
+                    'give'
+                ),
                 'type' => 'string',
                 'default' => 'exclude',
                 'enum' => ['exclude', 'include', 'redact'],
@@ -500,7 +526,7 @@ class DonorController extends WP_REST_Controller
         $isAdmin = current_user_can('manage_options');
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if ( ! $isAdmin && $includeSensitiveData) {
+        if (! $isAdmin && $includeSensitiveData) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to include sensitive data.', 'give'),
@@ -510,7 +536,7 @@ class DonorController extends WP_REST_Controller
 
         if ($request->get_param('anonymousDonors') !== null) {
             $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-            if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
+            if (! $isAdmin && $donorAnonymousMode->isIncluded()) {
                 return new WP_Error(
                     'rest_forbidden',
                     esc_html__('You do not have permission to include anonymous donors.', 'give'),

@@ -22,10 +22,10 @@ import styles from '../styles.module.scss';
 // TODO: Move to shared components
 import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 
-const { donationStatuses, campaignsWithForms } = getDonationOptionsWindowData();
+const { donationStatuses, campaignsWithForms, intlTelInputSettings } = getDonationOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationDetails() {
     const { getValues, setValue, register, watch, setError } = useFormContext();
@@ -144,6 +144,7 @@ export default function DonationDetails() {
                         value={watch('phone')}
                         onChange={(value) => setValue('phone', value, { shouldDirty: true })}
                         onError={(errorMessage) => setError('phone', { message: errorMessage })}
+                        intlTelInputSettings={intlTelInputSettings}
                     />
                 </AdminSectionField>
 

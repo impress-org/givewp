@@ -8,7 +8,7 @@ import styles from '../styles.module.scss';
 const { donors } = getDonationOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function AssociatedDonor() {
     const { register } = useFormContext();

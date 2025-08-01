@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function ReceiptActions() {
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);

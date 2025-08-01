@@ -10,7 +10,7 @@ export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], 
 }
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export function formatDateTimeLocal(dateString: string) {
     if (!dateString) return '';

@@ -6,7 +6,7 @@ import { store as coreDataStore } from '@wordpress/core-data';
 import { useDispatch } from '@wordpress/data';
 
 /**
- * @unreleased Soft delete donations with Donation v3 API.
+ * @since 4.6.0 Soft delete donations with Donation v3 API.
  */
 export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
     const showConfirmModal = useContext(ShowConfirmModalContext);

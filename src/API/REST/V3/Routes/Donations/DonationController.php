@@ -23,7 +23,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 class DonationController extends WP_REST_Controller
 {
@@ -38,7 +38,7 @@ class DonationController extends WP_REST_Controller
     protected $rest_base;
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function __construct()
     {
@@ -47,7 +47,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function register_routes()
     {
@@ -160,7 +160,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function get_items($request)
     {
@@ -251,7 +251,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function get_item($request)
     {
@@ -276,7 +276,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Update a single donation.
      *
-     * @unreleased
+     * @since 4.6.0
      */
     public function update_item($request): WP_REST_Response
     {
@@ -328,7 +328,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Refund a single donation.
      *
-     * @unreleased
+     * @since 4.6.0
      */
     public function refund_item($request)
     {
@@ -364,7 +364,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Process field values for special data types before setting them on the donation model.
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function processFieldValue(string $key, $value)
     {
@@ -411,7 +411,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Delete a single donation.
      *
-     * @unreleased
+     * @since 4.6.0
      */
     public function delete_item($request): WP_REST_Response
     {
@@ -450,7 +450,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Delete multiple donations.
      *
-     * @unreleased
+     * @since 4.6.0
      */
     public function delete_items($request): WP_REST_Response
     {
@@ -480,7 +480,7 @@ class DonationController extends WP_REST_Controller
                     }
                 } else {
                     $trashed = $donation->trash();
-        
+
                     if ($trashed) {
                         $deleted[] = ['id' => $id, 'previous' => $item];
                     } else {
@@ -499,7 +499,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function getSortColumn(string $sortColumn): string
     {
@@ -519,7 +519,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function get_collection_params(): array
     {
@@ -610,7 +610,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      * @throws Exception
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
@@ -645,7 +645,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function permissionsCheck(WP_REST_Request $request)
     {
@@ -677,7 +677,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function update_item_permissions_check($request)
     {
@@ -693,7 +693,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function delete_item_permissions_check($request)
     {
@@ -709,7 +709,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function delete_items_permissions_check($request)
     {
@@ -725,7 +725,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function refund_item_permissions_check($request)
     {
@@ -743,7 +743,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Check if current user can edit donations.
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function canEditDonations(): bool
     {
@@ -757,7 +757,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Check if current user can delete donations.
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function canDeleteDonations(): bool
     {
@@ -767,7 +767,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Check if current user can refund donations.
      *
-     * @unreleased
+     * @since 4.6.0
      */
     private function canRefundDonations(): bool
     {
@@ -775,7 +775,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function authorizationStatusCode(): int
     {
@@ -783,7 +783,8 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.6.1 Change type of billing address properties to accept null values
+     * @since 4.6.0
      */
     public function get_item_schema(): array
     {
@@ -901,12 +902,12 @@ class DonationController extends WP_REST_Controller
                     'type' => ['object', 'null'],
                     'description' => esc_html__('Billing address', 'give'),
                     'properties' => [
-                        'address1' => ['type' => 'string', 'format' => 'text-field'],
-                        'address2' => ['type' => 'string', 'format' => 'text-field'],
-                        'city' => ['type' => 'string', 'format' => 'text-field'],
-                        'state' => ['type' => 'string', 'format' => 'text-field'],
-                        'country' => ['type' => 'string', 'format' => 'text-field'],
-                        'zip' => ['type' => 'string', 'format' => 'text-field'],
+                        'address1' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'address2' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'city' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'state' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'country' => ['type' => ['string', 'null'], 'format' => 'text-field'],
+                        'zip' => ['type' => ['string', 'null'], 'format' => 'text-field'],
                     ],
                 ],
                 'donorIp' => [

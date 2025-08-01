@@ -9,7 +9,7 @@ import { getStatesForCountry, StatesConfig } from './addressUtils';
 const { countries } = getDonationOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function BillingDetails() {
     const [stateConfig, setStateConfig] = useState<StatesConfig>({

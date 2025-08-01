@@ -3,7 +3,7 @@ import { AdditionalInfoSlot } from "../../../slots";
 import CustomFields from "./CustomFields";
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export default function DonationDetailsPageRecordsAdditionalInfoTab() {
     return (

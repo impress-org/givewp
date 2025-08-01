@@ -53,7 +53,7 @@ class AddCampaignId extends BatchMigration implements ReversibleMigration
      * @inheritDoc
      *
      * @since 4.0.0
-     * 
+     *
      * @throws DatabaseMigrationException
      */
     public function runBatch($firstId, $lastId)
@@ -165,7 +165,7 @@ class AddCampaignId extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 4.6.0
      */
     public function reverse(): void
     {

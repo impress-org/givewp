@@ -9,7 +9,7 @@ type Gateway = {
 };
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 export type GiveDonationOptions = {
     isAdmin: boolean;
@@ -28,14 +28,6 @@ export type GiveDonationOptions = {
         labels: {[countryCode: string]: string};
         noStatesCountries: string[];
         statesNotRequiredCountries: string[];
-    };
-    admin: {
-        showCampaignInteractionNotice: boolean
-        showFormGoalNotice: boolean
-        showExistingUserIntroNotice: boolean
-        showCampaignListTableNotice: boolean
-        showCampaignFormNotice: boolean
-        showCampaignSettingsNotice: boolean
     };
     isFeeRecoveryEnabled: boolean;
     eventTicketsEnabled: boolean;

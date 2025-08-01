@@ -177,7 +177,7 @@ class TestDonation extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDonationShouldGetEventTicketsAmount()
     {
@@ -200,7 +200,7 @@ class TestDonation extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDonationShouldGetEventTicketsAmountWhenFeatureFlagIsDisabled()
     {
@@ -218,7 +218,7 @@ class TestDonation extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDonationShouldGetEventTickets()
     {
@@ -249,7 +249,7 @@ class TestDonation extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.6.0
      */
     public function testDonationShouldGetEventTicketsWhenFeatureFlagIsDisabled()
     {

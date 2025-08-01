@@ -1,7 +1,7 @@
 import {createSlotFill} from '@wordpress/components';
 
 /**
- * @unreleased
+ * @since 4.6.0
  */
 const {Slot: AdditionalInfoSlot, Fill: AdditionalInfoFill} = createSlotFill('GiveWP/DonationDetails/Records/AdditionalInfo');
 
