@@ -64,7 +64,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * Deactivate the GiveWP Elementor Widgets plugin if it is installed and activated
+     * If the old version of the GiveWP Elementor Widgets plugin is installed, unregister the legacy widgets to prevent conflicts with the new widgets that are registered in the RegisterWidgets class
      *
      * @since @unreleased
      */
@@ -82,7 +82,8 @@ class ServiceProvider implements ServiceProviderInterface
 
         // If the option is not set, set it to disabled
         if (give_get_option('givewp_elementor_legacy_widgets_enabled') === false) {
-            // update the option to enable the legacy widgets
+            // update the option initially to enable the legacy widgets
+            // users can disable the legacy widgets in the GiveWP Elementor Widgets settings from here on out
             give_update_option('givewp_elementor_legacy_widgets_enabled', 'enabled');
         }
 
@@ -92,7 +93,7 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('admin_notices', function () {
             // Define notice configuration
             $notice_config = [
-                'id' => 'givewp-elementor-widgets-plugin-deactivated',
+                'id' => 'givewp-elementor-widgets-plugin-legacy-plugin-notice',
                 'description' => __(
                     'GiveWP now includes Elementor widgets! You can safely deactivate and remove the GiveWP Elementor Widgets plugin as it is no longer needed. Rest assured, all of your widgets currently being used will remain working properly.',
                     'give'
