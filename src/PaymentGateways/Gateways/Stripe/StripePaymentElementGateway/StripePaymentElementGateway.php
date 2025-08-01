@@ -187,7 +187,7 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
             ]);
 
             return new PaymentRefunded();
-        } catch (ApiErrorException $e) {
+        } catch (Exception $e) {
             DonationNote::create([
                 'donationId' => $donation->id,
                 'content' => sprintf(
