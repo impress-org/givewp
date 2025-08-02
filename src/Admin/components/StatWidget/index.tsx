@@ -45,7 +45,7 @@ export default function StatWidget({
                     {!loading ? (
                         formatter?.format(parseFloat(value as string)) ?? value
                     ) : (
-                        <span>
+                        <span className={styles.spinnerContainer}>
                             <Spinner size="small" />
                         </span>
                     )}
