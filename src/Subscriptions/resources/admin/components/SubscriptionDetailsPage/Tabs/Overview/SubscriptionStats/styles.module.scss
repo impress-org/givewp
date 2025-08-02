@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    gap: var(--givewp-spacing-4);
+    grid-column: span 3;
+}
+
+.paymentProgress {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
