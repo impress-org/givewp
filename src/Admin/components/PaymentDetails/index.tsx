@@ -9,13 +9,14 @@ import { useCampaignEntityRecord } from '@givewp/campaigns/utils';
 import Spinner from '@givewp/src/Admin/components/Spinner';
 
 import styles from './styles.module.scss';
+import { Subscription } from '@givewp/subscriptions/admin/components/types';
 
 
 /**
  * @unreleased
  */
-function CampaignCard({record}: {record: Donation}) {
-    const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(record?.campaignId);
+function CampaignCard({donation}: {donation: Donation}) {
+    const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(donation?.campaignId);
 
     return (
         <div
@@ -40,8 +41,8 @@ function CampaignCard({record}: {record: Donation}) {
 /**
  * @unreleased
  */
-function DonorCard({record}: {record: Donation}) {
-    const {record: donor, hasResolved: hasResolvedDonor} = useDonorEntityRecord(record?.donorId);
+function DonorCard({donation}: {donation: Donation}) {
+    const {record: donor, hasResolved: hasResolvedDonor} = useDonorEntityRecord(donation?.donorId);
 
     return (
         <div className={classnames(styles.card, styles.donorCard)} role="region" aria-labelledby="donor-label">
@@ -63,7 +64,8 @@ function DonorCard({record}: {record: Donation}) {
  * @unreleased
  */
 type DetailsGridProps = {
-  record: any;
+  donation: Donation;
+  subscription?: Subscription;
   isSubscriptionPage?: boolean;
   gatewayLinkLabel?: string;
   subscriptionPageUrl?: string;
@@ -77,7 +79,7 @@ type DetailsGridProps = {
  * Generic donation | subscription details.
  */
 export default function PaymentDetails({
-  record,
+  donation,
   isSubscriptionPage = false,
   gatewayLinkLabel = __('View donation on gateway', 'give'),
   subscriptionPageUrl,
@@ -85,54 +87,66 @@ export default function PaymentDetails({
   infoCardBadgeLabel,
   infoCardClassName,
 }: DetailsGridProps) {
+    const gatewayTransactionUrl = donation?.gateway?.transactionUrl;
+
     return (
         <div className={styles.container} role="group" aria-label={__('Donation summary', 'give')}>
             {/* Campaign Name */}
-            <CampaignCard record={record} />
+            <CampaignCard donation={donation} />
 
             {/* Donation Info or Next Payment */}
             <div className={styles.card} role="region" aria-labelledby="donation-info-label">
                 <h3 id="donation-info-title">
                     {infoCardTitle}
                 </h3>
+                {!donation && <Spinner />}
 
-                <time className={styles.date} dateTime={record.createdAt?.date}>
-                    {formatTimestamp(record.createdAt?.date, true)}
-                </time>
+                {donation && (
+                    <time className={styles.date} dateTime={donation?.createdAt?.date}>
+                        {formatTimestamp(donation?.createdAt?.date, true)}
+                    </time>
+                )}
 
-                <div className={styles.donationType}>
-                    <span className={classnames(styles.badge, infoCardClassName)}>
-                        {infoCardBadgeLabel}
-                    </span>
-                    {subscriptionPageUrl && !isSubscriptionPage && (
-                        <a
-                            className={styles.gatewayLink}
-                            href={subscriptionPageUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {__('View details', 'give')}
-                            <ExternalLinkIcon />
-                        </a>
-                    )}
-                </div>
+                {donation && 
+                    <div className={styles.donationType}>
+                        <span className={classnames(styles.badge, infoCardClassName)}>
+                            {infoCardBadgeLabel}
+                        </span>
+                        {subscriptionPageUrl && !isSubscriptionPage && (
+                            <a
+                                className={styles.gatewayLink}
+                                href={subscriptionPageUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {__('View details', 'give')}
+                                <ExternalLinkIcon />
+                            </a>
+                        )}
+                    </div>
+                }
             </div>
 
             {/* Associated Donor */}
-            <DonorCard record={record} />
+            <DonorCard donation={donation} />
 
             {/* Gateway Info */}
             <div className={styles.card} role="region" aria-labelledby="gateway-label">
-                <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
-                <strong className={styles.paymentMethod}>
-                    <PaymentMethodIcon paymentMethod={record.gateway?.id} />
-                    {record.gateway?.label}
-                </strong>
+                {!donation && <Spinner />}
+                {donation && (
+                    <>
+                        <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
+                        <strong className={styles.paymentMethod}>
+                            <PaymentMethodIcon paymentMethod={donation?.gateway?.id} />
+                            {donation?.gateway?.label}
+                        </strong>
+                    </>
+                )}
 
-                {record.gateway?.transactionUrl && (
+                {gatewayTransactionUrl && (
                     <a
                         className={styles.gatewayLink}
-                        href={record.gateway?.transactionUrl}
+                        href={gatewayTransactionUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
