@@ -15,7 +15,7 @@ type SubscriptionDetailsProps = {
 /**
  * @unreleased
  */
-export default function SubscriptionPaymentDetails({subscription}: SubscriptionDetailsProps) {    
+export default function SubscriptionPaymentDetails({subscription, donation}: SubscriptionDetailsProps) {    
     const isOngoing = subscription?.installments === 0;
     const infoCardBadgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
   
@@ -26,7 +26,7 @@ export default function SubscriptionPaymentDetails({subscription}: SubscriptionD
                 {__('Subscription Details', 'give')}
             </h2>
             <PaymentDetails
-                record={subscription}
+                donation={donation}
                 gatewayLinkLabel={__('View subscription on gateway', 'give')}
                 infoCardTitle={__('Next payment`', 'give')}
                 infoCardBadgeLabel={infoCardBadgeLabel}

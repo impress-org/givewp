@@ -24,7 +24,7 @@ export default function DonationPaymentDetails({donation,}: DonationSummaryGridP
                 {__('Donation Details', 'give')}
             </h2>
             <PaymentDetails
-                record={donation}
+                donation={donation}
                 gatewayLinkLabel={__('View donation on gateway', 'give')}
                 subscriptionPageUrl={subscriptionPageUrl}
                 infoCardTitle={__('Donation info', 'give')}
