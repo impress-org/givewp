@@ -1,6 +1,9 @@
 import { createRoot } from 'react-dom/client';
 import DonationFormBlockApp from '.';
 
+/**
+ * @unreleased
+ */
 export default function renderDonationForm(root) {
     let dataSrcUrl = root.getAttribute('data-src');
     const locale = root.getAttribute('data-form-locale');
