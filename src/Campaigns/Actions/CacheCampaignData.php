@@ -35,7 +35,6 @@ class CacheCampaignData
         $campaignsData = give_get_option('give_campaigns_data', []);
         $campaignsSubscriptionData = give_get_option('give_campaigns_subscription_data', []);
 
-
         $donations = CampaignsDataQuery::donations([$campaign->id]);
         $subscriptions = CampaignsDataQuery::subscriptions([$campaign->id]);
 
@@ -43,7 +42,7 @@ class CacheCampaignData
 
         // Update cache only if it exists for this campaign
         foreach ($campaignsData['amounts'] as $i => $data) {
-            if ($data['campaign_id'] == $donation->campaignId) {
+            if ($data['campaign_id'] == $campaign->id) {
                 $isCached = true;
 
                 $campaignsData['amounts'][$i] = $donations->collectIntendedAmounts()[0];
@@ -52,14 +51,14 @@ class CacheCampaignData
         }
 
         foreach ($campaignsData['donationsCount'] as $i => $data) {
-            if ($data['campaign_id'] == $donation->campaignId) {
+            if ($data['campaign_id'] == $campaign->id) {
                 $campaignsData['donationsCount'][$i] = $donations->collectDonations()[0];
                 break;
             }
         }
 
         foreach ($campaignsData['donorsCount'] as $i => $data) {
-            if ($data['campaign_id'] == $donation->campaignId) {
+            if ($data['campaign_id'] == $campaign->id) {
                 $campaignsData['donorsCount'][$i] = $donations->collectDonors()[0];
                 break;
             }
@@ -69,7 +68,7 @@ class CacheCampaignData
         // Update campaign subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
             foreach ($campaignsSubscriptionData['amounts'] as $i => $data) {
-                if ($data['campaign_id'] == $donation->campaignId) {
+                if ($data['campaign_id'] == $campaign->id) {
                     $isSubscriptionCached = true;
 
                     $campaignsSubscriptionData['amounts'][$i] = $subscriptions->collectInitialAmounts()[0];
@@ -78,14 +77,14 @@ class CacheCampaignData
             }
 
             foreach ($campaignsSubscriptionData['donationsCount'] as $i => $data) {
-                if ($data['campaign_id'] == $donation->campaignId) {
+                if ($data['campaign_id'] == $campaign->id) {
                     $campaignsSubscriptionData['donationsCount'][$i] = $subscriptions->collectDonations()[0];
                     break;
                 }
             }
 
             foreach ($campaignsSubscriptionData['donorsCount'] as $i => $data) {
-                if ($data['campaign_id'] == $donation->campaignId) {
+                if ($data['campaign_id'] == $campaign->id) {
                     $campaignsSubscriptionData['donorsCount'][$i] = $subscriptions->collectDonors()[0];
                     break;
                 }
@@ -114,9 +113,9 @@ class CacheCampaignData
 
         if (defined('GIVE_RECURRING_VERSION')) {
             give_update_option('give_campaigns_subscriptions_data', [
-                'amounts' => array_merge($campaignsSubscriptionData['amounts'] ?? [], ...$subscriptions->collectIntendedAmounts()),
-                'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'] ?? [], ...$subscriptions->collectDonations()),
-                'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'] ?? [], ...$subscriptions->collectDonors()),
+                'amounts' => array_merge($campaignsSubscriptionData['amounts'] ?? [], $subscriptions->collectIntendedAmounts()),
+                'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'] ?? [], $subscriptions->collectDonations()),
+                'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'] ?? [], $subscriptions->collectDonors()),
             ]);
         }
     }

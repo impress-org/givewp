@@ -47,13 +47,8 @@ class CampaignsDataRepository
     public static function campaigns(array $ids): CampaignsDataRepository
     {
         $self = new self();
-       // give_delete_option('give_campaigns_data');
-       // give_delete_option('give_campaigns_subscriptions_data');
-
         $campaignsData = give_get_option('give_campaigns_data', []);
         $campaignsSubscriptionData = give_get_option('give_campaigns_subscription_data', []);
-
-       // print_r($campaignsData); exit;
 
         // remove cached campaign ids
         $campaignIds = array_filter($ids, function ($id) use ($campaignsData) {
