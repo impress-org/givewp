@@ -26,7 +26,28 @@ class CacheCampaignData
             return;
         }
 
-        $campaign = Campaign::findByFormId($donation->formId);
+        as_enqueue_async_action('givewp_cache_campaign_data', [$donation->formId]);
+    }
+
+    /**
+     * Register AS action
+     *
+     * @unreleased
+     */
+    public function registerAction()
+    {
+        add_action('givewp_cache_campaign_data', function ($formId) {
+            $this->handleCache($formId);
+        });
+    }
+
+    /**
+     * Handle campaign cache
+     * @unreleased
+     */
+    public function handleCache($formId): void
+    {
+        $campaign = Campaign::findByFormId($formId);
 
         if ( ! $campaign) {
             return;
@@ -106,16 +127,34 @@ class CacheCampaignData
         }
 
         give_update_option('give_campaigns_data', [
-            'amounts' => array_merge($campaignsData['amounts'] ?? [], $donations->collectInitialAmounts()),
-            'donationsCount' => array_merge($campaignsData['donationsCount'] ?? [], $donations->collectDonations()),
-            'donorsCount' => array_merge($campaignsData['donorsCount'] ?? [], $donations->collectDonors()),
+            'amounts' => array_merge(
+                $campaignsData['amounts'] ?? [],
+                $donations->collectInitialAmounts()
+            ),
+            'donationsCount' => array_merge(
+                $campaignsData['donationsCount'] ?? [],
+                $donations->collectDonations()
+            ),
+            'donorsCount' => array_merge(
+                $campaignsData['donorsCount'] ?? [],
+                $donations->collectDonors()
+            ),
         ]);
 
         if (defined('GIVE_RECURRING_VERSION')) {
             give_update_option('give_campaigns_subscriptions_data', [
-                'amounts' => array_merge($campaignsSubscriptionData['amounts'] ?? [], $subscriptions->collectIntendedAmounts()),
-                'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'] ?? [], $subscriptions->collectDonations()),
-                'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'] ?? [], $subscriptions->collectDonors()),
+                'amounts' => array_merge(
+                    $campaignsSubscriptionData['amounts'] ?? [],
+                    $subscriptions->collectIntendedAmounts()
+                ),
+                'donationsCount' => array_merge(
+                    $campaignsSubscriptionData['donationsCount'] ?? [],
+                    $subscriptions->collectDonations()
+                ),
+                'donorsCount' => array_merge(
+                    $campaignsSubscriptionData['donorsCount'] ?? [],
+                    $subscriptions->collectDonors()
+                ),
             ]);
         }
     }

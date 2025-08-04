@@ -32,6 +32,7 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use Give\DonationForms\V2\DonationFormsAdminPage;
+use Give\Donations\Models\Donation;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -135,8 +136,10 @@ class ServiceProvider implements ServiceProviderInterface
         /**
          * @unreleased cache campaign stats data
          */
-        Hooks::addAction('givewp_donation_created', CacheCampaignData::class, '__invoke', 999);
-        Hooks::addAction('givewp_donation_updated', CacheCampaignData::class, '__invoke', 999);
+        give(CacheCampaignData::class)->registerAction();
+
+        Hooks::addAction('givewp_donation_created', CacheCampaignData::class);
+        Hooks::addAction('givewp_donation_updated', CacheCampaignData::class);
 
         $noticeActions = [
             'givewp_campaign_interaction_notice',
