@@ -5,66 +5,104 @@ namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidge
 use Elementor\Widget_Base;
 use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
 
+/**
+ * @unreleased
+ */
 class ElementorDonationFormWidget extends Widget_Base
 {
     use HasFormOptions;
 
+    /**
+     * @unreleased
+     */
     public function get_name(): string
     {
         return 'givewp_donation_form';
     }
 
+    /**
+     * @unreleased
+     */
     public function get_title(): string
     {
         return __('GiveWP Donation Form', 'give');
     }
 
+    /**
+     * @unreleased
+     */
     public function get_icon(): string
     {
         return 'give-icon';
     }
 
+    /**
+     * @unreleased
+     */
     public function get_categories(): array
     {
         return ['givewp-category'];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_keywords(): array
     {
         return ['give', 'givewp', 'donation', 'form'];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_custom_help_url(): string
     {
         return 'https://givewp.com/documentation/';
     }
 
+    /**
+     * @unreleased
+     */
     protected function get_upsale_data(): array
     {
         return [];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_script_depends(): array
     {
         return ['givewp-elementor-donation-form-widget'];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_style_depends(): array
     {
         return ['givewp-design-system-foundation', 'givewp-elementor-donation-form-widget'];
     }
 
+    /**
+     * @unreleased
+     */
     public function has_widget_inner_wrapper(): bool
     {
         return false;
     }
 
+    /**
+     * @unreleased
+     */
     protected function is_dynamic_content(): bool
     {
         return true;
     }
 
-
+    /**
+     * @unreleased
+     */
     protected function register_controls(): void
     {
         $formOptionsGroup = $this->getFormOptionsWithCampaigns();
@@ -111,6 +149,9 @@ class ElementorDonationFormWidget extends Widget_Base
         $this->end_controls_section();
     }
 
+    /**
+     * @unreleased
+     */
     protected function getFormOptionsWithCampaigns(): array
     {
         $campaignsWithForms = $this->getCampaignsWithForms();
@@ -151,6 +192,9 @@ class ElementorDonationFormWidget extends Widget_Base
         return $formOptionsGroup;
     }
 
+    /**
+     * @unreleased
+     */
     protected function render(): void
     {
         $settings = $this->get_settings_for_display();

@@ -6,64 +6,103 @@ use Elementor\Widget_Base;
 use Exception;
 use Give\Framework\Database\DB;
 
+/**
+ *
+ * @unreleased
+ */
 class ElementorCampaignFormWidget extends Widget_Base
 {
+    /**
+     * @unreleased
+     */
     public function get_name(): string
     {
         return 'givewp_campaign_form';
     }
 
+    /**
+     * @unreleased
+     */
     public function get_title(): string
     {
         return __('GiveWP Campaign Form', 'give');
     }
 
+    /**
+     * @unreleased
+     */
     public function get_icon(): string
     {
         return 'give-icon';
     }
 
+    /**
+     * @unreleased
+     */
     public function get_categories(): array
     {
         return ['givewp-category'];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_keywords(): array
     {
         return ['give', 'givewp', 'campaign', 'form'];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_custom_help_url(): string
     {
         return 'https://givewp.com/documentation/';
     }
 
+    /**
+     * @unreleased
+     */
     protected function get_upsale_data(): array
     {
         return [];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_script_depends(): array
     {
         return ['givewp-elementor-campaign-form-widget'];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_style_depends(): array
     {
         return ['givewp-design-system-foundation', 'givewp-elementor-campaign-form-widget'];
     }
 
+    /**
+     * @unreleased
+     */
     public function has_widget_inner_wrapper(): bool
     {
         return false;
     }
 
+    /**
+     * @unreleased
+     */
     protected function is_dynamic_content(): bool
     {
         return true;
     }
 
-
+    /**
+     * @unreleased
+     */
     protected function register_controls(): void
     {
         [$campaignOptions, $formOptionsGroup] = $this->getCampaignAndFormOptions();
@@ -134,7 +173,10 @@ class ElementorCampaignFormWidget extends Widget_Base
         $this->end_controls_section();
     }
 
-        protected function getCampaignAndFormOptions(): array
+    /**
+     * @unreleased
+     */
+    protected function getCampaignAndFormOptions(): array
     {
         $campaignsWithForms = $this->getCampaignsWithForms();
 
@@ -174,6 +216,9 @@ class ElementorCampaignFormWidget extends Widget_Base
         return [$campaignOptions, $formOptionsGroup];
     }
 
+    /**
+     * @unreleased
+     */
     protected function render(): void
     {
         $settings = $this->get_settings_for_display();
@@ -190,7 +235,10 @@ class ElementorCampaignFormWidget extends Widget_Base
         echo do_shortcode(sprintf('[givewp_campaign_form campaign_id="%s" display_style="%s" use_default_form="%s" continue_button_title="%s" id="%s"]', $campaignId, $displayStyle, $useDefaultForm, $donateButtonText, $formId));
     }
 
-    public function getCampaignsWithForms()
+    /**
+     * @unreleased
+     */
+    public function getCampaignsWithForms(): array
     {
         try {
             $query = DB::table('posts', 'forms')

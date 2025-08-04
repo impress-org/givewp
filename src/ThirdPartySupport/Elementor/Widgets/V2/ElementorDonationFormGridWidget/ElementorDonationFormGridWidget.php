@@ -6,65 +6,116 @@ use Elementor\Widget_Base;
 use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
 use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
 
+/**
+ * @unreleased
+ */
 class ElementorDonationFormGridWidget extends Widget_Base
 {
     use HasFormOptions;
 
+    /**
+     * @inheritDoc
+     * @unreleased
+     */
     public function get_name(): string
     {
         return 'givewp_donation_form_grid';
     }
 
+    /**
+     * @inheritDoc
+     * @unreleased
+     */
     public function get_title(): string
     {
         return __('GiveWP Donation Form Grid', 'give');
     }
 
+    /**
+     * @inheritDoc
+     * @unreleased
+     */
     public function get_icon(): string
     {
         return 'give-icon';
     }
 
+    /**
+     * @inheritDoc
+     * @unreleased
+     */
     public function get_categories(): array
     {
         return ['givewp-category'];
     }
 
+    /**
+     * @inheritDoc
+     * @unreleased
+     */
     public function get_keywords(): array
     {
         return ['give', 'givewp', 'donation', 'form', 'grid', 'forms'];
     }
 
+    /**
+     * @inheritDoc
+     * @unreleased
+     */
     public function get_custom_help_url(): string
     {
         return 'http://docs.givewp.com/shortcode-form-grid';
     }
 
+    /**
+     * @unreleased
+     */
     protected function get_upsale_data(): array
     {
         return [];
     }
 
+    /**
+     * @inheritDoc
+     * @unreleased
+     */
     public function get_script_depends(): array
     {
         return ['givewp-elementor-donation-form-grid-widget', LoadAsyncDataAssets::handleName()];
     }
 
+    /**
+     * @inheritDoc
+     * @unreleased
+     */
     public function get_style_depends(): array
     {
         return ['givewp-design-system-foundation', 'givewp-elementor-donation-form-grid-widget', LoadAsyncDataAssets::handleName()];
     }
 
+    /**
+     * @inheritDoc
+     * @unreleased
+     */
     public function has_widget_inner_wrapper(): bool
     {
         return false;
     }
 
+    /**
+     * @unreleased
+     */
     protected function is_dynamic_content(): bool
     {
         return true;
     }
 
+    /**
+     * Register Elementor controls for the widget.
+     *
+     * @return void
+     * @unreleased
+     */
     protected function register_controls(): void
     {
         $this->start_controls_section(
@@ -442,6 +493,12 @@ class ElementorDonationFormGridWidget extends Widget_Base
         $this->end_controls_section();
     }
 
+    /**
+     * Get available GiveWP form categories.
+     *
+     * @return array
+     * @unreleased
+     */
     protected function getCategoryOptions(): array
     {
         $categories = get_terms([
@@ -459,6 +516,11 @@ class ElementorDonationFormGridWidget extends Widget_Base
         return $options;
     }
 
+    /**
+     * Get available GiveWP form tags.
+     *
+     * @unreleased
+     */
     protected function getTagOptions(): array
     {
         $tags = get_terms([
@@ -476,6 +538,11 @@ class ElementorDonationFormGridWidget extends Widget_Base
         return $options;
     }
 
+    /**
+     * Render the widget output on the frontend.
+     *
+     * @unreleased
+     */
     protected function render(): void
     {
         $settings = $this->get_settings_for_display();

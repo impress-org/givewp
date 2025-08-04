@@ -6,65 +6,107 @@ use Elementor\Widget_Base;
 use Exception;
 use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
 
+/**
+ *
+ * @unreleased
+ */
 class ElementorDonorWallWidget extends Widget_Base
 {
     use HasFormOptions;
 
+    /**
+     * @unreleased
+     */
     public function get_name(): string
     {
         return 'givewp_donor_wall';
     }
 
+    /**
+     * @unreleased
+     */
     public function get_title(): string
     {
         return __('GiveWP Donor Wall', 'give');
     }
 
+    /**
+     * @unreleased
+     */
     public function get_icon(): string
     {
         return 'give-icon';
     }
 
+    /**
+     * @unreleased
+     */
     public function get_categories(): array
     {
         return ['givewp-category'];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_keywords(): array
     {
         return ['give', 'givewp', 'donor', 'wall', 'donors'];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_custom_help_url(): string
     {
         return 'https://givewp.com/documentation/core/shortcodes/give_donor_wall/';
     }
 
+    /**
+     * @unreleased
+     */
     protected function get_upsale_data(): array
     {
         return [];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_script_depends(): array
     {
         return ['givewp-elementor-donor-wall-widget'];
     }
 
+    /**
+     * @unreleased
+     */
     public function get_style_depends(): array
     {
         return ['givewp-design-system-foundation', 'givewp-elementor-donor-wall-widget'];
     }
 
+    /**
+     * @unreleased
+     */
     public function has_widget_inner_wrapper(): bool
     {
         return false;
     }
 
+    /**
+     * @unreleased
+     */
     protected function is_dynamic_content(): bool
     {
         return true;
     }
 
+    /**
+     * Register Elementor controls for the Donor Wall widget.
+     *
+     * @unreleased
+     */
     protected function register_controls(): void
     {
         $this->start_controls_section(
@@ -319,6 +361,11 @@ class ElementorDonorWallWidget extends Widget_Base
         $this->end_controls_section();
     }
 
+    /**
+     * Render the Donor Wall widget output.
+     *
+     * @unreleased
+     */
     protected function render(): void
     {
         $settings = $this->get_settings_for_display();
