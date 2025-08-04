@@ -14,6 +14,7 @@ import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 export default function AssociatedDonor() {
     const { register, watch } = useFormContext();
     const {mode} = getDonationOptionsWindowData();
+    const donationDonorId = watch('donorId');
 
     const {
         records: donorRecords,
@@ -45,16 +46,19 @@ export default function AssociatedDonor() {
         >
             <AdminSectionField>
                 <label htmlFor="donorId">{__('Donor', 'give')}</label>
-                <p className={styles.fieldDescription}>
-                    {__('Link the donation to the selected donor', 'give')}
-                </p>
-                <select id="donorId" {...register('donorId', {valueAsNumber: true})} disabled={isResolving} value={watch('donorId')}>
-                    {shouldShowEmptyOption && (
-                        <option value="">{emptyOptionLabel}</option>
-                    )}
+                <p className={styles.fieldDescription}>{__('Link the donation to the selected donor', 'give')}</p>
+                <select
+                    id="donorId"
+                    {...register('donorId', {valueAsNumber: true})}
+                    disabled={isResolving}
+                    value={donationDonorId}
+                >
+                    {shouldShowEmptyOption && <option value="">{emptyOptionLabel}</option>}
                     {hasResolved && Object.keys(donors).length > 0 && (
                         <>
-                            <option value="">{__('No donor attached', 'give')}</option>
+                            {donationDonorId.length > 0 &&
+                                <option value="">{__('No donor attached', 'give')}</option>
+                            }
                             {Object.entries(donors).map(([donorId, donorName]) => (
                                 <option key={donorId} value={donorId}>
                                     {donorName}
