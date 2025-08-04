@@ -3,7 +3,6 @@
 namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget;
 
 use Elementor\Widget_Base;
-use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
 use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
 
 class ElementorDonationFormWidget extends Widget_Base
@@ -47,12 +46,12 @@ class ElementorDonationFormWidget extends Widget_Base
 
     public function get_script_depends(): array
     {
-        return ['givewp-elementor-donation-form-widget', LoadAsyncDataAssets::handleName()];
+        return ['givewp-elementor-donation-form-widget'];
     }
 
     public function get_style_depends(): array
     {
-        return ['givewp-design-system-foundation', 'givewp-elementor-donation-form-widget', LoadAsyncDataAssets::handleName()];
+        return ['givewp-design-system-foundation', 'givewp-elementor-donation-form-widget'];
     }
 
     public function has_widget_inner_wrapper(): bool
