@@ -3,6 +3,7 @@ import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetails
 import { useEntityRecords } from '@wordpress/core-data';
 import { useFormContext } from 'react-hook-form';
 import { Donor } from '@givewp/donors/admin/components/types';
+import { useMemo } from 'react';
 import styles from '../styles.module.scss';
 import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 
@@ -20,17 +21,22 @@ export default function AssociatedDonor() {
         isResolving
     } = useEntityRecords<Donor>('givewp', 'donor', {
         mode,
+        //TODO: remove this once we have a better way to get all donors
+        per_page: 30,
     });
 
     // Transform donors to the expected format: { [donorId]: "Name (email)" }
-    const donors = donorRecords?.reduce<Record<number, string>>((acc, donor) => {
-        acc[donor.id] = `${donor.name} (${donor.email})`;
-        return acc;
-    }, {}) || {};
+    const donors = useMemo(() => {
+        return donorRecords?.reduce<Record<number, string>>((acc, donor) => {
+            acc[donor.id] = `${donor.name} (${donor.email})`;
+            return acc;
+        }, {}) || {};
+    }, [donorRecords]);
 
-    const emptyOptionLabel = hasResolved && Object.keys(donors).length > 0 ?
-        __('No donor attached', 'give') :
-        hasResolved ? __('No donors found.', 'give') : __('Loading donors...', 'give');
+    const shouldShowEmptyOption = isResolving || (hasResolved && Object.keys(donors).length === 0);
+    const emptyOptionLabel = isResolving ?
+        __('Loading donors...', 'give') :
+        __('No donors found.', 'give');
 
     return (
         <AdminSection
@@ -43,9 +49,12 @@ export default function AssociatedDonor() {
                     {__('Link the donation to the selected donor', 'give')}
                 </p>
                 <select id="donorId" {...register('donorId', {valueAsNumber: true})} disabled={isResolving} value={watch('donorId')}>
-                    <option value="">{emptyOptionLabel}</option>
+                    {shouldShowEmptyOption && (
+                        <option value="">{emptyOptionLabel}</option>
+                    )}
                     {hasResolved && Object.keys(donors).length > 0 && (
                         <>
+                            <option value="">{__('No donor attached', 'give')}</option>
                             {Object.entries(donors).map(([donorId, donorName]) => (
                                 <option key={donorId} value={donorId}>
                                     {donorName}
