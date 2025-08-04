@@ -19,7 +19,6 @@ export default function SubscriptionPaymentDetails({subscription, donation}: Sub
     const isOngoing = subscription?.installments === 0;
     const infoCardBadgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
   
-
     return (
         <OverviewPanel>
             <h2 id="subscription-details-grid-title" className={'sr-only'}>
@@ -28,6 +27,8 @@ export default function SubscriptionPaymentDetails({subscription, donation}: Sub
             <PaymentDetails
                 donation={donation}
                 gatewayLinkLabel={__('View subscription on gateway', 'give')}
+                isSubscriptionPage={true}
+                subscriptionRenewalDate={subscription?.renewsAt?.date}
                 infoCardTitle={__('Next payment`', 'give')}
                 infoCardBadgeLabel={infoCardBadgeLabel}
                 infoCardClassName={isOngoing ? styles.unlimited : styles.limited}

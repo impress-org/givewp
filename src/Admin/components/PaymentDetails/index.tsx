@@ -69,6 +69,7 @@ type DetailsGridProps = {
   isSubscriptionPage?: boolean;
   gatewayLinkLabel?: string;
   subscriptionPageUrl?: string;
+  subscriptionRenewalDate?: string;
   infoCardTitle?: string;
   infoCardBadgeLabel?: string | React.ReactNode;
   infoCardClassName?: string;
@@ -83,11 +84,13 @@ export default function PaymentDetails({
   isSubscriptionPage = false,
   gatewayLinkLabel = __('View donation on gateway', 'give'),
   subscriptionPageUrl,
+  subscriptionRenewalDate,
   infoCardTitle,
   infoCardBadgeLabel,
   infoCardClassName,
 }: DetailsGridProps) {
     const gatewayTransactionUrl = donation?.gateway?.transactionUrl;
+    const timestamp = isSubscriptionPage ? subscriptionRenewalDate : donation?.createdAt?.date;
 
     return (
         <div className={styles.container} role="group" aria-label={__('Donation summary', 'give')}>
@@ -103,7 +106,7 @@ export default function PaymentDetails({
 
                 {donation && (
                     <time className={styles.date} dateTime={donation?.createdAt?.date}>
-                        {formatTimestamp(donation?.createdAt?.date, true)}
+                        {formatTimestamp(timestamp, true)}
                     </time>
                 )}
 
