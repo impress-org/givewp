@@ -28,7 +28,7 @@ class LoadDonationAdminOptions
     /**
      * Get all donation options for localization
      *
-     * @return array
+     * @unreleased removed donors from the options
      * @since 4.6.0
      */
     private function getDonationOptions(): array
@@ -48,7 +48,6 @@ class LoadDonationAdminOptions
             'states' => $this->getStatesData(),
             'donationStatuses' => DonationStatus::labels(),
             'campaignsWithForms' => $this->getCampaignsWithForms(),
-            'donors' => $this->getDonors(),
             'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
             'admin' => $isAdmin ? [] : null,
             'eventTicketsEnabled' => FeatureFlag::eventTickets(),

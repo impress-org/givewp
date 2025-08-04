@@ -1,21 +1,36 @@
 import { __ } from '@wordpress/i18n';
 import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
-import { getDonationOptionsWindowData } from '@givewp/donations/utils';
+import { useEntityRecords } from '@wordpress/core-data';
 import { useFormContext } from 'react-hook-form';
+import { Donor } from '@givewp/donors/admin/components/types';
 import styles from '../styles.module.scss';
-
-//TODO replace with donors API
-const { donors } = getDonationOptionsWindowData();
+import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 
 /**
+ * @unreleased updated to use the donors entity
  * @since 4.6.0
  */
 export default function AssociatedDonor() {
-    const { register } = useFormContext();
+    const { register, watch } = useFormContext();
+    const {mode} = getDonationOptionsWindowData();
 
-    const emptyOptionLabel = donors && Object.keys(donors).length > 0 ?
+    const {
+        records: donorRecords,
+        hasResolved,
+        isResolving
+    } = useEntityRecords<Donor>('givewp', 'donor', {
+        mode,
+    });
+
+    // Transform donors to the expected format: { [donorId]: "Name (email)" }
+    const donors = donorRecords?.reduce<Record<number, string>>((acc, donor) => {
+        acc[donor.id] = `${donor.name} (${donor.email})`;
+        return acc;
+    }, {}) || {};
+
+    const emptyOptionLabel = hasResolved && Object.keys(donors).length > 0 ?
         __('No donor attached', 'give') :
-        __('No donors found.', 'give');
+        hasResolved ? __('No donors found.', 'give') : __('Loading donors...', 'give');
 
     return (
         <AdminSection
@@ -27,9 +42,9 @@ export default function AssociatedDonor() {
                 <p className={styles.fieldDescription}>
                     {__('Link the donation to the selected donor', 'give')}
                 </p>
-                <select id="donorId" {...register('donorId', {valueAsNumber: true})}>
+                <select id="donorId" {...register('donorId', {valueAsNumber: true})} disabled={isResolving} value={watch('donorId')}>
                     <option value="">{emptyOptionLabel}</option>
-                    {Object.keys(donors).length > 0 && (
+                    {hasResolved && Object.keys(donors).length > 0 && (
                         <>
                             {Object.entries(donors).map(([donorId, donorName]) => (
                                 <option key={donorId} value={donorId}>
