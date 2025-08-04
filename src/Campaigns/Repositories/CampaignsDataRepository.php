@@ -63,8 +63,10 @@ class CampaignsDataRepository
             return true;
         });
 
-        // If we have all required data, and all campaigns are cached
-        if ( ! empty($campaignsData) && array_count_values($campaignsData) > 0) {
+        if (
+            ! empty($campaignsData['donationsCount'])
+            || ! empty($campaignsSubscriptionData['donationsCount'])
+        ) {
             $self->amounts = $campaignsData['amounts'];
             $self->donationsCount = $campaignsData['donationsCount'];
             $self->donorsCount = $campaignsData['donorsCount'];
