@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import Header from '@givewp/src/Admin/components/Header';
 import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
+import Spinner from '@givewp/src/Admin/components/Spinner';
 import styles from './styles.module.scss';
 
 /**
@@ -27,18 +28,19 @@ interface SummaryTableProps {
   title?: string;
   subtitle?: string;
   data: SummaryItem[];
+  isLoading?: boolean;
 }
 
 /**
  * @unreleased
  */
-export default function SummaryTable({data,}: SummaryTableProps) {
+export default function SummaryTable({data, isLoading}: SummaryTableProps) {
   return (
     <div className={styles.summaryTableContainer}>
         {data.map((item, index) => (
             <div className={styles.summaryTable} key={index}>
                 <p className={styles.summaryTableLabel}>{item.label}</p>
-                {renderValue(item.value, item.isPill)}
+                {renderValue(isLoading? <Spinner /> : item.value, item.isPill)}
             </div>
         ))}
     </div>

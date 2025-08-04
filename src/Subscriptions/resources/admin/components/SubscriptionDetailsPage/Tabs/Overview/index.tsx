@@ -12,7 +12,6 @@ export default function SubscriptionDetailsPageOverviewTab() {
     const {record: donation, hasResolved: donationResolved, isResolving: donationLoading} = useDonationsBySubscription(subscription?.id, mode);
     const {intendedAmount} = useSubscriptionAmounts(subscription);
 
-
     return (
         <div className={styles.overview}>
 
@@ -21,7 +20,7 @@ export default function SubscriptionDetailsPageOverviewTab() {
             </div>
 
             <div className={styles.right}>
-                <SubscriptionSummary subscription={subscription} donation={donation} adminUrl={adminUrl} intendedAmount={intendedAmount} />
+                <SubscriptionSummary subscription={subscription} donation={donation} adminUrl={adminUrl} intendedAmount={intendedAmount} isLoading={isResolving || !hasResolved || donationLoading || !donationResolved} />
             </div>
         </div>
     )

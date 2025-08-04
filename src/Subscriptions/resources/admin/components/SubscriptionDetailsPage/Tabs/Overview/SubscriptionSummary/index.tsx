@@ -59,12 +59,13 @@ interface SummaryProps {
     intendedAmount: number;
     donation: Donation;
     adminUrl: string;
+    isLoading: boolean;
 }
 
 /**
  * @unreleased
  */
-export default function Summary({subscription, donation, adminUrl, intendedAmount}: SummaryProps) {
+export default function Summary({subscription, donation, adminUrl, intendedAmount, isLoading}: SummaryProps) {
     const endDate = calculateEndDate(subscription);
     
     const summaryItems: SummaryItem[] = [
@@ -97,7 +98,7 @@ export default function Summary({subscription, donation, adminUrl, intendedAmoun
                 title={__('Summary', 'give')}
                 subtitle={__('Additional information about the recurring donation', 'give')}
             />
-            <SummaryTable data={summaryItems} />
+            <SummaryTable data={summaryItems} isLoading={isLoading} />
         </OverviewPanel>
     );
 }
