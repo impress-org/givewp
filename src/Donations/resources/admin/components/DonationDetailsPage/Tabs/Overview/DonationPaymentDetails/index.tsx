@@ -7,14 +7,14 @@ import styles from './styles.module.scss';
 /**
  * @unreleased
  */
-export type DonationSummaryGridProps = {
+export type DonationPaymentDetailsProps = {
     donation: Donation;
 };
 
 /**
  * @unreleased
  */
-export default function DonationPaymentDetails({donation,}: DonationSummaryGridProps) {
+export default function DonationPaymentDetails({donation,}: DonationPaymentDetailsProps) {
      const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${donation?.subscriptionId}` : null;
      const isRecurringDonation = !!donation?.subscriptionId;
 
@@ -29,7 +29,7 @@ export default function DonationPaymentDetails({donation,}: DonationSummaryGridP
                 subscriptionPageUrl={subscriptionPageUrl}
                 infoCardTitle={__('Donation info', 'give')}
                 infoCardBadgeLabel={isRecurringDonation ? __('Recurring', 'give') : __('One-time', 'give')}
-            />        
+            />
         </OverviewPanel>
     );
 }

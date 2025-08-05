@@ -63,7 +63,7 @@ function DonorCard({donation}: {donation: Donation}) {
 /**
  * @unreleased
  */
-type DetailsGridProps = {
+type PaymentDetailsProps = {
   donation: Donation;
   subscription?: Subscription;
   isSubscriptionPage?: boolean;
@@ -88,7 +88,7 @@ export default function PaymentDetails({
   infoCardTitle,
   infoCardBadgeLabel,
   infoCardClassName,
-}: DetailsGridProps) {
+}: PaymentDetailsProps) {
     const gatewayTransactionUrl = donation?.gateway?.transactionUrl;
     const timestamp = isSubscriptionPage ? subscriptionRenewalDate : donation?.createdAt?.date;
 
@@ -110,7 +110,7 @@ export default function PaymentDetails({
                     </time>
                 )}
 
-                {donation && 
+                {donation &&
                     <div className={styles.donationType}>
                         <span className={classnames(styles.badge, infoCardClassName)}>
                             {infoCardBadgeLabel}
@@ -159,5 +159,5 @@ export default function PaymentDetails({
                 )}
             </div>
         </div>
-    ); 
+    );
 }
