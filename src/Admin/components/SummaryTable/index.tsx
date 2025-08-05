@@ -11,13 +11,7 @@ import styles from './styles.module.scss';
  */
 export type SummaryItem = {
   label: string;
-  value:
-    | string
-    | {
-        value1: string;
-        value2: string;
-      }
-    | React.ReactNode;
+  value: string | React.ReactNode;
   isPill?: boolean;
 };
 
@@ -40,34 +34,18 @@ export default function SummaryTable({data, isLoading}: SummaryTableProps) {
         {data.map((item, index) => (
             <div className={styles.summaryTable} key={index}>
                 <p className={styles.summaryTableLabel}>{item.label}</p>
-                {renderValue(isLoading? <Spinner /> : item.value, item.isPill)}
+                {isLoading ? (
+                  <Spinner />
+                ) : (
+                  <strong className={classnames(styles.summaryTableValue, {
+                    [styles.pill]: item.isPill,
+                  })}>
+                    {item.value}
+                  </strong>
+                )}
             </div>
         ))}
     </div>
   );
 }
 
-/**
- * @unreleased
- */
-  const renderValue = (value: SummaryItem['value'], isPill?: boolean) => {
-    const isObjectWithValues = typeof value === 'object' && value !== null && 'value1' in value && 'value2' in value;
-    const isSingleValue = React.isValidElement(value) || typeof value === 'string';
-
-    if (isObjectWithValues) {
-      return (
-        <div className={styles.summaryTableValues}>
-          <p>{value.value1}</p>
-          <p>{value.value2}</p>
-        </div>
-      );
-    }
-    
-    return (
-      <strong className={classnames(styles.summaryTableValue, {
-        [styles.pill]: isPill,
-      })}>
-        {isSingleValue && value}
-      </strong>
-    );
-  };
