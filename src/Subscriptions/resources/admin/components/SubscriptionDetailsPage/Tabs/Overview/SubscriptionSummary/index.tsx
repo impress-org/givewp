@@ -8,6 +8,18 @@ import { Donation } from '@givewp/donations/admin/components/types';
 import styles from './styles.module.scss';
 
 /**
+ * Calculates the end date of a subscription based on its billing parameters.
+ * 
+ * The calculation uses the formula: End Date = Start Date + (Installments - 1) × Frequency × Period
+ * 
+ * For example:
+ * - A monthly subscription with 12 installments: Start Date + 11 months
+ * - A weekly subscription with 4 installments: Start Date + 3 weeks
+ * - A yearly subscription with 5 installments: Start Date + 4 years
+ * 
+ * @param subscription - The subscription object containing billing parameters
+ * @returns ISO string of the calculated end date, or null if calculation is not possible
+ * 
  * @unreleased
  */
 const calculateEndDate = (subscription: any): string | null => {
@@ -15,19 +27,23 @@ const calculateEndDate = (subscription: any): string | null => {
         return null;
     }
 
+    // If installments is 0, the subscription is ongoing (no end date)
     if (subscription.installments === 0) {
         return null;
     }
 
     const startDate = new Date(subscription.createdAt.date);
-    const period = subscription.period;
-    const frequency = subscription.frequency;
-    const installments = subscription.installments;
+    const period = subscription.period; // day, week, month, quarter, year
+    const frequency = subscription.frequency; // how many periods between each payment
+    const installments = subscription.installments; // total number of payments
 
+    // Calculate total periods to add: (installments - 1) × frequency
+    // We subtract 1 from installments because the first payment is on the start date
     const totalPeriods = (installments - 1) * frequency;
 
     const endDate = new Date(startDate);
     
+    // Add the calculated periods based on the billing period type
     switch (period) {
         case 'day':
             endDate.setDate(endDate.getDate() + totalPeriods);
