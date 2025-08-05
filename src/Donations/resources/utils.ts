@@ -1,6 +1,7 @@
 import {useEntityRecord} from '@wordpress/core-data';
 import {Donation} from '@givewp/donations/admin/components/types';
 import type {GiveDonationOptions} from '@givewp/donations/types';
+import type { EntityRecordResolution } from '@wordpress/core-data/build-types/hooks/use-entity-record';
 
 declare const window: {
     GiveDonationOptions: GiveDonationOptions;
