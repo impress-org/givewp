@@ -5,7 +5,7 @@ namespace Give\Subscriptions;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
-use Give\Subscriptions\Actions\LoadSubscriptionOptions;
+use Give\Subscriptions\Actions\LoadSubscriptionAdminOptions;
 use Give\Subscriptions\Actions\RegisterSubscriptionEntity;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
@@ -43,7 +43,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootLegacyListeners();
         $this->registerMigrations();
         $this->registerSubscriptionEntity();
-        $this->registerSubscriptionOptions();
+        $this->registerSubscriptionAdminOptions();
 
         $userId = get_current_user_id();
         $showLegacy = get_user_meta($userId, '_give_subscriptions_archive_show_legacy', true);
@@ -93,8 +93,12 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @unreleased
      */
-    private function registerSubscriptionOptions()
+    private function registerSubscriptionAdminOptions()
     {
-        Hooks::addAction('init', LoadSubscriptionOptions::class);
+        Hooks::addAction('admin_enqueue_scripts', function() {
+            if (SubscriptionsAdminPage::isShowing()) {
+                give(LoadSubscriptionAdminOptions::class)();
+            }
+        });
     }
 }
