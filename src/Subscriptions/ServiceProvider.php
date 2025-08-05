@@ -95,7 +95,7 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerSubscriptionAdminOptions()
     {
-        Hooks::addAction('admin_enqueue_scripts', function() {
+        add_action('admin_enqueue_scripts', function() {
             if (SubscriptionsAdminPage::isShowing()) {
                 give(LoadSubscriptionAdminOptions::class)();
             }
