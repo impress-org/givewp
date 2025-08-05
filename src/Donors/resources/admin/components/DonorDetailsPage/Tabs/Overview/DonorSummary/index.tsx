@@ -1,11 +1,9 @@
 import {__} from '@wordpress/i18n';
 import {dateI18n} from '@wordpress/date';
-import Header from '@givewp/src/Admin/components/Header';
-import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import {amountFormatter, getRelativeTimeString} from '@givewp/src/Admin/utils';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/utils';
-import SummaryTable, {SummaryItem} from '@givewp/src/Admin/components/SummaryTable';
+import {Header, OverviewPanel, SummaryTable, type SummaryItem} from '@givewp/admin/components';
 import styles from '@givewp/src/Admin/components/SummaryTable/styles.module.scss';
 
 /**
