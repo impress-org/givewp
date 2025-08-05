@@ -1,4 +1,4 @@
-import {useEntityRecord} from '@wordpress/core-data';
+import {useEntityRecord, type EntityRecordResolution} from '@wordpress/core-data';
 import {Donation} from '@givewp/donations/admin/components/types';
 import type {GiveDonationOptions} from '@givewp/donations/types';
 
