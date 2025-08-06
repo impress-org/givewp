@@ -13,6 +13,7 @@ use Give\API\REST\V3\Routes\Donors\DonorNotesController;
 use Give\API\REST\V3\Routes\Donors\DonorStatisticsController;
 use Give\API\REST\V3\Routes\Subscriptions\SubscriptionController;
 use Give\API\REST\V3\Routes\Subscriptions\SubscriptionNotesController;
+use Give\API\REST\V3\Support\CURIE;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
