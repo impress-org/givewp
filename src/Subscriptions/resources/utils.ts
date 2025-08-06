@@ -15,16 +15,18 @@ export function useSubscriptionEntityRecord(subscriptionId?: number) {
     const {
         record: subscription,
         hasResolved,
+        isResolving,
         save,
         edit,
     }: {
         record: Subscription;
         hasResolved: boolean;
+        isResolving: boolean;
         save: () => any;
         edit: (data: Subscription | Partial<Subscription>) => void;
     } = useEntityRecord('givewp', 'subscription', subscriptionId ?? urlParams.get('id'));
 
-    return {record: subscription, hasResolved, save, edit};
+    return {record: subscription, hasResolved, isResolving, save, edit};
 }
 
 /**
