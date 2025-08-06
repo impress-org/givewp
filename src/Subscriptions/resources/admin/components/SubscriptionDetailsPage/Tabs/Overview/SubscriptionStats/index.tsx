@@ -32,14 +32,12 @@ export default function SubscriptionStats({donations, currency, totalInstallment
         <div className={styles.container}>
             <StatWidget
                 label={__('Total contribution so far', 'give')}
-                value={totalContributions}
-                formatter={amountFormatter(currency)}
+                value={amountFormatter(currency).format(totalContributions)}
                 loading={loading}
             />
             <StatWidget
                 label={__('Payments completed', 'give')}
                 value={paymentProgress}
-                formatter={null}
                 loading={loading}
             />
         </div>

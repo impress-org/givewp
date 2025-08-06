@@ -12,9 +12,8 @@ import { __ } from '@wordpress/i18n';
  */
 export type StatWidgetProps = {
     label: string;
-    value: number | string | React.ReactNode;
+    value: string | React.ReactNode;
     description?: string;
-    formatter: Intl.NumberFormat;
     loading?: boolean;
     previousValue?: number;
     inActive?: boolean;
@@ -30,7 +29,6 @@ export default function StatWidget({
     value,
     description,
     href,
-    formatter = null,
     loading = false,
     previousValue = null,
     inActive = false,
@@ -43,7 +41,7 @@ export default function StatWidget({
             <div className={styles.statWidgetAmount}>
                 <div className={classnames(styles.statWidgetDisplay, {[styles.inActive]: inActive})}>
                     {!loading ? (
-                        formatter?.format(parseFloat(value as string)) ?? value
+                        value
                     ) : (
                         <span className={styles.spinnerContainer}>
                             <Spinner size="small" />
