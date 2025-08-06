@@ -268,7 +268,21 @@ class DonationController extends WP_REST_Controller
      */
     public function get_item($request)
     {
-        $donation = Donation::find($request->get_param('id'));
+        $id = $request->get_param('id');
+        $subscriptionId = $request->get_param('subscriptionId');
+        $donation = null;
+        
+        if($id) {
+            $donation = Donation::find($id);
+        } 
+
+        if($subscriptionId) {
+            $donation = Donation::query()
+                ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', $subscriptionId)
+                ->limit(1)
+                ->get();
+        }
+
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
 
