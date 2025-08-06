@@ -5,6 +5,16 @@ import { CheckCircleIcon, HandHeartIcon, XCircleIcon } from "./icons";
 import styles from "./styles.module.scss";
 
 /**
+ * Utility function to capitalize the first letter of a string
+ * @param str - The string to capitalize
+ * @returns The string with first letter capitalized
+ */
+const capitalizeFirstLetter = (str: string): string => {
+  if (!str) return str;
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
+/**
  * @unreleased
  */
 type SyncDetailsProps = {
@@ -29,12 +39,12 @@ export default function SyncDetails({ isAccurate, platform, gateway }: SyncDetai
             <div className={styles.detailWrapper}>
               <div className={styles.detailItem}>
                   <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
-                  <p className={styles.detailValue}>{platform}</p>
+                  <p className={styles.detailValue}>{capitalizeFirstLetter(platform)}</p>
                 </div>
                 <XCircleIcon />
                 <div className={styles.detailItem}>
                   <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
-                  <p className={styles.detailValue}>{gateway}</p>
+                  <p className={styles.detailValue}>{capitalizeFirstLetter(gateway)}</p>
               </div>
             </div>
           </div>
@@ -43,12 +53,12 @@ export default function SyncDetails({ isAccurate, platform, gateway }: SyncDetai
             <div className={styles.detailWrapper}>
                 <div className={styles.detailItem}>
                   <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
-                  <p className={styles.detailValue}>{gateway}</p>
+                  <p className={styles.detailValue}>{capitalizeFirstLetter(gateway)}</p>
                 </div>
                 <CheckCircleIcon />
                 <div className={styles.detailItem}>
                   <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
-                  <p className={styles.detailValue}>{gateway}</p>
+                  <p className={styles.detailValue}>{capitalizeFirstLetter(gateway)}</p>
                 </div>
               </div>
             </div>
@@ -121,12 +131,12 @@ function SyncAccurateDetails({key, platform, gateway}: SyncAccurateDetailsProps)
       <div key={key} className={styles.accurateDetailWrapper}>
         <div className={styles.detailItem}>
           <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
-          <p className={styles.detailValue}>{platform || __('Completed', 'give')}</p>
+          <p className={styles.detailValue}>{platform ? capitalizeFirstLetter(platform) : __('Completed', 'give')}</p>
         </div>
         <CheckCircleIcon />
         <div className={styles.detailItem}>
           <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
-          <p className={styles.detailValue}>{gateway || __('Completed', 'give')}</p>
+          <p className={styles.detailValue}>{gateway ? capitalizeFirstLetter(gateway) : __('Completed', 'give')}</p>
         </div>
     </div>
   );
