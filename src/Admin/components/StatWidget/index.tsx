@@ -41,7 +41,7 @@ export default function StatWidget({
                     {!loading ? (
                         value
                     ) : (
-                        <span className={styles.spinnerContainer}>
+                        <span>
                             <Spinner size="small" />
                         </span>
                     )}
