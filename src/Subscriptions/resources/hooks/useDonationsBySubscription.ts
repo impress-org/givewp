@@ -19,7 +19,6 @@ export function useDonationsBySubscription(
 
     return {
         records: entityResult.records as Donation[] | null,
-        record: entityResult.records?.[0] as Donation | null,
         hasResolved: entityResult.hasResolved,
         isResolving: entityResult.isResolving,
     };
