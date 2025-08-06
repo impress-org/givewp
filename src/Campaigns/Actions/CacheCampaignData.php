@@ -22,7 +22,9 @@ class CacheCampaignData
      */
     public function __invoke(int $donationId): void
     {
-        $donation = Donation::find($donationId);
+        if ( ! $donation = Donation::find($donationId)) {
+            return;
+        }
 
         if ($donation->status->isComplete() || $donation->status->isRenewal()) {
             as_enqueue_async_action('givewp_cache_campaign_data', [$donation->campaignId], 'givewp_campaigns_cache');;
