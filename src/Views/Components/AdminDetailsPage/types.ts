@@ -1,4 +1,3 @@
-import { EntityRecordResolution } from '@wordpress/core-data/build-types/hooks/use-entity-record';
 import React, { FC } from 'react';
 
 /**
@@ -35,7 +34,12 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
     /**
      * Hook that provides entity data and methods
      */
-    useObjectEntityRecord: (id: string | number) => EntityRecordResolution<T>;
+    useObjectEntityRecord: (id: string | number) => {
+        record: T;
+        hasResolved: boolean;
+        save: () => any;
+        edit: (data: T | Partial<T>) => void;
+    };
 
     /**
      * Function to reset the form

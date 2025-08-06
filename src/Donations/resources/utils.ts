@@ -1,7 +1,6 @@
 import {useEntityRecord} from '@wordpress/core-data';
 import {Donation} from '@givewp/donations/admin/components/types';
 import type {GiveDonationOptions} from '@givewp/donations/types';
-import type { EntityRecordResolution } from '@wordpress/core-data/build-types/hooks/use-entity-record';
 
 declare const window: {
     GiveDonationOptions: GiveDonationOptions;
@@ -10,10 +9,22 @@ declare const window: {
 /**
  * @since 4.6.0
  */
-export function useDonationEntityRecord(donationId?: number): EntityRecordResolution<Donation> {
+export function useDonationEntityRecord(donationId?: number) {
     const urlParams = new URLSearchParams(window.location.search);
 
-    return useEntityRecord('givewp', 'donation', donationId ?? urlParams.get('id'));
+    const {
+        record: donation,
+        hasResolved,
+        save,
+        edit,
+    }: {
+        record: Donation;
+        hasResolved: boolean;
+        save: () => any;
+        edit: (data: Donation | Partial<Donation>) => void;
+    } = useEntityRecord('givewp', 'donation', donationId ?? urlParams.get('id'));
+
+    return {record: donation, hasResolved, save, edit};
 }
 
 /**
