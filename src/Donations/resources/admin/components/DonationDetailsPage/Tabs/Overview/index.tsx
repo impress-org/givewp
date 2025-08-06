@@ -12,16 +12,16 @@ import Spinner from '@givewp/src/Admin/components/Spinner';
 export default function DonationDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donationId = parseInt(urlParams.get('id') ?? '0');
-    const {record: donation, hasResolved: hasResolvedDonation, isResolving: isResolvingDonation } = useDonationEntityRecord(donationId);
+    const {record: donation, hasResolved: hasResolvedDonation } = useDonationEntityRecord(donationId);
 
-    if (!hasResolvedDonation || isResolvingDonation || !donation) {
+    if (!hasResolvedDonation || !donation) {
         // TODO: Add loading state
         return <Spinner />;
     }
 
     return (
         <div className={styles.overview}>
-            <DonationStats donation={donation} isResolving={isResolvingDonation} />
+            <DonationStats donation={donation} isResolving={false} />
 
             <div className={styles.left}>
                 <DonationSummaryGrid
