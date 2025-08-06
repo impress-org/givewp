@@ -6,6 +6,8 @@ use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionCollectionParams;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionItemSchema;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionSharedParamsForGetMethods;
+use Give\API\REST\V3\Routes\Subscriptions\DataTransferObjects\SubscriptionCreateData;
+use Give\API\REST\V3\Routes\Subscriptions\Exceptions\SubscriptionValidationException;
 use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionFields;
 use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionPermissions;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
@@ -251,51 +253,24 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function create_item($request)
     {
-        $attributes = [];
-        $requiredFields = [
-            'donorId',
-            'donationFormId',
-            'amount',
-            'status',
-            'period',
-            'frequency',
-            'gatewayId',
-        ];
-
-        // Validate required fields
-        foreach ($requiredFields as $field) {
-            $value = $request->get_param($field);
-            if (empty($value)) {
-                return new WP_REST_Response([
-                    'message' => sprintf(__('Field "%s" is required', 'give'), $field)
-                ], 400);
-            }
-        }
-
-        // Process all request parameters
-        foreach ($request->get_params() as $key => $value) {
-            if (in_array($key, Subscription::propertyKeys(), true)) {
-                try {
-                    $processedValue = SubscriptionFields::processValue($key, $value);
-                    $attributes[$key] = $processedValue;
-                } catch (Exception $e) {
-                    return new WP_REST_Response([
-                        'message' => sprintf(__('Invalid value for field "%s": %s', 'give'), $key, $e->getMessage())
-                    ], 400);
-                }
-            }
-        }
-
         try {
-            $subscription = Subscription::create($attributes);
+            $data = SubscriptionCreateData::fromRequest($request);
+            $subscription = $data->toSubscription();
+            
             $fieldsUpdate = $this->update_additional_fields_for_object($subscription, $request);
 
             if (is_wp_error($fieldsUpdate)) {
                 return $fieldsUpdate;
             }
+        } catch (SubscriptionValidationException $e) {
+            return new WP_REST_Response([
+                'message' => $e->getMessage(),
+                'error' => $e->getErrorCode()
+            ], $e->getStatusCode());
         } catch (Exception $e) {
             return new WP_REST_Response([
-                'message' => sprintf(__('Failed to create subscription: %s', 'give'), $e->getMessage())
+                'message' => sprintf(__('Failed to create subscription: %s', 'give'), $e->getMessage()),
+                'error' => 'internal_server_error'
             ], 500);
         }
 
