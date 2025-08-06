@@ -140,31 +140,6 @@ class LoadDonationAdminOptions
     }
 
     /**
-     * Get donor ids with their names
-     *
-     * @since 4.6.0
-     */
-    private function getDonors(): array
-    {
-        $results = DB::table('give_donors', 'donors')
-            ->select(
-                ['donors.id', 'donorId'],
-                ['donors.name', 'donorName'],
-                ['donors.email', 'donorEmail'],
-            )
-            ->orderBy('donors.id', 'DESC')
-            ->getAll(ARRAY_A);
-
-        $donors = [];
-
-        foreach ($results as $row) {
-            $donors[$row['donorId']] = $row['donorName'] . ' (' . $row['donorEmail'] . ')';
-        }
-
-        return $donors;
-    }
-
-    /**
      * Get gateways
      *
      * @since 4.6.0
