@@ -6,6 +6,7 @@ import styles from "./styles.module.scss";
 
 /**
  * Utility function to capitalize the first letter of a string
+ * @unreleased
  * @param str - The string to capitalize
  * @returns The string with first letter capitalized
  */
@@ -117,6 +118,9 @@ export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: S
     );
 }
 
+/**
+ * @unreleased
+ */
 type SyncAccurateDetailsProps = {
   key?: string;
   platform?: string;
