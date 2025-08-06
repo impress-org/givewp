@@ -71,7 +71,7 @@
 .itemButton {
     border: none;
     background: none;
-    text-decoration: underline;
+    text-decoration: none;
     font-size: 14px;
     font-weight: 500;
     line-height: 1.43;
@@ -79,7 +79,7 @@
     cursor: pointer;
 
     &:hover {
-        text-decoration: none;
+        text-decoration: underline;
     }
 }
 
