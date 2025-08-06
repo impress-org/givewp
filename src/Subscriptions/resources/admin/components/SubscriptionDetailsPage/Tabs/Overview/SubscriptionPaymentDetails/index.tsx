@@ -1,11 +1,17 @@
 import { __ } from '@wordpress/i18n';
 import OverviewPanel from "@givewp/src/Admin/components/OverviewPanel";
-import PaymentDetails from '@givewp/admin/components/PaymentDetails';
 import { HourGlassIcon, ClockIcon } from './Icons';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
 import { Donation } from '@givewp/donations/admin/components/types';
-import styles from './styles.module.scss';
+import { 
+    DetailsGrid as PaymentDetailsGrid,
+    CampaignCard,
+    PaymentCard,
+    DonorCard,
+    GatewayCard
+} from '@givewp/src/Admin/components/PaymentDetails';
 
+import styles from './styles.module.scss';
 
 type SubscriptionDetailsProps = {
     subscription: Subscription;
@@ -17,22 +23,32 @@ type SubscriptionDetailsProps = {
  */
 export default function SubscriptionPaymentDetails({subscription, donation}: SubscriptionDetailsProps) {    
     const isOngoing = subscription?.installments === 0;
-    const infoCardBadgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
+    const badgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
   
     return (
-        <OverviewPanel>
+        <OverviewPanel className={styles.overviewPanel}>
             <h2 id="subscription-details-grid-title" className={'sr-only'}>
                 {__('Subscription Details', 'give')}
             </h2>
-            <PaymentDetails
-                donation={donation}
-                gatewayLinkLabel={__('View subscription on gateway', 'give')}
-                isSubscriptionPage={true}
-                subscriptionRenewalDate={subscription?.renewsAt?.date}
-                infoCardTitle={__('Next payment`', 'give')}
-                infoCardBadgeLabel={infoCardBadgeLabel}
-                infoCardClassName={isOngoing ? styles.unlimited : styles.limited}
-            />   
+            <PaymentDetailsGrid>
+                <CampaignCard donation={donation} />
+                <PaymentCard 
+                    isLoading={false} 
+                    dateTime={subscription?.createdAt?.date} 
+                    title={__('Next payment', 'give')} 
+                    badgeLabel={badgeLabel} 
+                    className={isOngoing ? styles.unlimited : styles.limited}
+               />
+               
+                <DonorCard donation={donation} />
+                <GatewayCard 
+                    isLoading={!donation} 
+                    href={donation?.gateway?.transactionUrl} 
+                    gatewayLabel={subscription?.gateway?.label} 
+                    linkLabel={__('View subscription on gateway', 'give')} 
+                    gatewayId={subscription?.gateway?.id} 
+                />
+            </PaymentDetailsGrid>
         </OverviewPanel>
     );
 }

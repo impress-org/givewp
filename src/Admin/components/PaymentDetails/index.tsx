@@ -7,15 +7,38 @@ import type {Donation} from '@givewp/donations/admin/components/types';
 import { useDonorEntityRecord } from '@givewp/donors/utils';
 import { useCampaignEntityRecord } from '@givewp/campaigns/utils';
 import Spinner from '@givewp/src/Admin/components/Spinner';
-
-import styles from './styles.module.scss';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
-
+import styles from './styles.module.scss';
 
 /**
  * @unreleased
  */
-function CampaignCard({donation}: {donation: Donation}) {
+type DetailsGridProps = {
+    children: React.ReactNode;
+};
+
+/**
+ * @unreleased
+ */
+export function DetailsGrid({children}: DetailsGridProps) {
+    return (
+        <div className={styles.container} role="group" aria-label={__('Payment details', 'give')}>
+            {children}
+        </div>
+    );
+}
+
+/**
+ * @unreleased
+ */
+type CampaignCardProps = {
+    donation: Donation;
+};
+
+/**
+ * @unreleased
+ */
+export function CampaignCard({donation}: CampaignCardProps) {
     const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(donation?.campaignId);
 
     return (
@@ -41,7 +64,14 @@ function CampaignCard({donation}: {donation: Donation}) {
 /**
  * @unreleased
  */
-function DonorCard({donation}: {donation: Donation}) {
+type DonorCardProps = {
+    donation: Donation;
+};
+
+/**
+ * @unreleased
+ */
+export function DonorCard({donation}: DonorCardProps) {
     const {record: donor, hasResolved: hasResolvedDonor} = useDonorEntityRecord(donation?.donorId);
 
     return (
@@ -63,101 +93,79 @@ function DonorCard({donation}: {donation: Donation}) {
 /**
  * @unreleased
  */
-type PaymentDetailsProps = {
-  donation: Donation;
-  subscription?: Subscription;
-  isSubscriptionPage?: boolean;
-  gatewayLinkLabel?: string;
-  subscriptionPageUrl?: string;
-  subscriptionRenewalDate?: string;
-  infoCardTitle?: string;
-  infoCardBadgeLabel?: string | React.ReactNode;
-  infoCardClassName?: string;
-}
+type GatewayCardProps = {
+    isLoading: boolean;
+    href?: string;
+    gatewayLabel: string;
+    linkLabel?: string;
+    gatewayId: string;
+};
 
 /**
  * @unreleased
- * Generic donation | subscription details.
  */
-export default function PaymentDetails({
-  donation,
-  isSubscriptionPage = false,
-  gatewayLinkLabel = __('View donation on gateway', 'give'),
-  subscriptionPageUrl,
-  subscriptionRenewalDate,
-  infoCardTitle,
-  infoCardBadgeLabel,
-  infoCardClassName,
-}: PaymentDetailsProps) {
-    const gatewayTransactionUrl = donation?.gateway?.transactionUrl;
-    const timestamp = isSubscriptionPage ? subscriptionRenewalDate : donation?.createdAt?.date;
-
+export function GatewayCard({isLoading, href, gatewayLabel, linkLabel, gatewayId}: GatewayCardProps) {
     return (
-        <div className={styles.container} role="group" aria-label={__('Donation summary', 'give')}>
-            {/* Campaign Name */}
-            <CampaignCard donation={donation} />
+        <div className={styles.card} role="region" aria-labelledby="gateway-label">
+            {isLoading && <Spinner />}
+            {!isLoading && (
+                <>
+                    <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
+                    <strong className={styles.paymentMethod}>
+                        <PaymentMethodIcon paymentMethod={gatewayId} />
+                        {gatewayLabel}
+                    </strong>
+                </>
+            )}
 
-            {/* Donation Info or Next Payment */}
-            <div className={styles.card} role="region" aria-labelledby="donation-info-label">
-                <h3 id="donation-info-title">
-                    {infoCardTitle}
-                </h3>
-                {!donation && <Spinner />}
-
-                {donation && (
-                    <time className={styles.date} dateTime={donation?.createdAt?.date}>
-                        {formatTimestamp(timestamp, true)}
-                    </time>
-                )}
-
-                {donation &&
-                    <div className={styles.donationType}>
-                        <span className={classnames(styles.badge, infoCardClassName)}>
-                            {infoCardBadgeLabel}
-                        </span>
-                        {subscriptionPageUrl && !isSubscriptionPage && (
-                            <a
-                                className={styles.gatewayLink}
-                                href={subscriptionPageUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {__('View details', 'give')}
-                                <ExternalLinkIcon />
-                            </a>
-                        )}
-                    </div>
-                }
-            </div>
-
-            {/* Associated Donor */}
-            <DonorCard donation={donation} />
-
-            {/* Gateway Info */}
-            <div className={styles.card} role="region" aria-labelledby="gateway-label">
-                {!donation && <Spinner />}
-                {donation && (
-                    <>
-                        <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
-                        <strong className={styles.paymentMethod}>
-                            <PaymentMethodIcon paymentMethod={donation?.gateway?.id} />
-                            {donation?.gateway?.label}
-                        </strong>
-                    </>
-                )}
-
-                {gatewayTransactionUrl && (
-                    <a
-                        className={styles.gatewayLink}
-                        href={gatewayTransactionUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {gatewayLinkLabel}
-                        <ExternalLinkIcon />
-                    </a>
-                )}
-            </div>
+            {href && linkLabel && (
+                <a
+                    className={styles.gatewayLink}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {linkLabel}
+                    <ExternalLinkIcon />
+                </a>
+            )}
         </div>
+    );
+}
+
+type PaymentCardProps = {
+    children?: React.ReactNode;
+    isLoading: boolean;
+    dateTime: string;
+    title: string;
+    badgeLabel: string | React.ReactNode;
+    className: string;
+};
+
+/**
+ * @unreleased
+ */
+export function PaymentCard({children, isLoading, dateTime, title, badgeLabel, className}: PaymentCardProps) {
+    return (
+        <div className={styles.card} role="region" aria-labelledby="donation-info-label">
+        <h3 id="donation-info-title">
+            {title}
+        </h3>
+        {isLoading && <Spinner />}
+
+        {!isLoading && (
+            <>
+                <time className={styles.date} dateTime={dateTime}>
+                    {formatTimestamp(dateTime, true)}
+                </time>
+                <div className={styles.donationType}>
+                    <span className={classnames(styles.badge, className)}>
+                        {badgeLabel}
+                    </span>
+                    {children && children}
+                </div>
+            </>
+        )}
+    </div>
     );
 }
