@@ -5,6 +5,7 @@ namespace Give\ThirdPartySupport\Elementor;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgets;
+use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetScripts;
 use Give\ThirdPartySupport\Elementor\Actions\UnregisterV1Widgets;
 use Give\ThirdPartySupport\Elementor\Settings\RegisterSection;
 use Give\ThirdPartySupport\Elementor\Settings\RegisterSettings;
@@ -36,10 +37,15 @@ class ServiceProvider implements ServiceProviderInterface
         // Register core widgets with priority 11 to override any widgets from previously migrated plugin givewp-elementor-widgets
         Hooks::addFilter('elementor/widgets/register', RegisterWidgets::class, '__invoke', 11, 1);
 
+        // Register widget scripts
+        Hooks::addAction('wp_enqueue_scripts', RegisterWidgetScripts::class);
+
+        // Register admin styles
         add_action('elementor/editor/before_enqueue_scripts', function () {
             wp_enqueue_style('give-elementor-admin-styles', GIVE_PLUGIN_URL . 'src/ThirdPartySupport/Elementor/Widgets/resources/styles/give-elementor-admin.css', array(), GIVE_VERSION);
         });
 
+        // Register elementor categories
         add_action('elementor/elements/categories_registered', function ($elements_manager) {
             /** @var \Elementor\Elements_Manager $elements_manager */
             $elements_manager->add_category(
