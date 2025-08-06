@@ -56,6 +56,7 @@ const StatusBadge = ({ status, isTest }: { status: string, isTest: boolean }) =>
 export default function SubscriptionDetailsPage() {
     const { adminUrl, subscriptionsAdminUrl } = getSubscriptionOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
+    const [hasSyncBeenPerformed, setHasSyncBeenPerformed] = useState(false);
     const { record: subscription } = useSubscriptionEntityRecord();
     const { formatter } = useSubscriptionAmounts(subscription);
     const { deleteEntityRecord } = useDispatch(coreDataStore);
@@ -90,7 +91,10 @@ export default function SubscriptionDetailsPage() {
             <button
                 type="button"
                 className={className}
-                onClick={() => setShowConfirmationDialog('sync')}
+                onClick={() => {
+                    setShowConfirmationDialog('sync');
+                    setHasSyncBeenPerformed(false);
+                }}
             >
                 {__('Sync subscription', 'give')}
             </button>
@@ -129,6 +133,7 @@ export default function SubscriptionDetailsPage() {
     const handleSyncSubscription = async () => {
         try {
             await syncSubscription(subscription);
+            setHasSyncBeenPerformed(true);
             console.log('Sync result:', syncResult);
         } catch (error) {
             console.error('Sync failed:', error);
@@ -165,14 +170,14 @@ export default function SubscriptionDetailsPage() {
                 spinner={'arc'}
                 isConfirming={isLoading}
                 title={__('Sync subscription details', 'give')}
-                actionLabel={isLoading ? __('Syncing', 'give') : !hasResolved ? __('Proceed to sync', 'give') : __('Resync', 'give')}
+                actionLabel={isLoading ? __('Syncing', 'give') : !hasSyncBeenPerformed ? __('Proceed to sync', 'give') : __('Resync', 'give')}
                 isOpen={showConfirmationDialog === 'sync'}
                 handleClose={() => {
                     setShowConfirmationDialog(null);
                 }}
                 handleConfirm={handleSyncSubscription}
                 footer={
-                    hasResolved && (
+                    hasSyncBeenPerformed && hasResolved && (
                     <div className={styles.syncModalFooter}>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M10 .832a9.167 9.167 0 1 0 0 18.333A9.167 9.167 0 0 0 10 .832zm0 5a.833.833 0 1 0 0 1.667h.008a.833.833 0 0 0 0-1.667H10zm.833 4.167a.833.833 0 0 0-1.666 0v3.333a.833.833 0 1 0 1.666 0V9.999z" fill="#0C7FF2"/>
@@ -182,7 +187,7 @@ export default function SubscriptionDetailsPage() {
                     )
                 }
             >
-                {hasResolved ? <SubscriptionSyncList syncResult={syncResult} /> : __('This will update the subscription details using the most recent data from the gateway. However, no changes will be made to existing payments.', 'give')}
+                {hasSyncBeenPerformed && hasResolved ? <SubscriptionSyncList syncResult={syncResult} /> : __('This will update the subscription details using the most recent data from the gateway. However, no changes will be made to existing payments.', 'give')}
             </ConfirmationDialog>
         </AdminDetailsPage>
     );
