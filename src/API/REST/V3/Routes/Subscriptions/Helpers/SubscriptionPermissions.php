@@ -106,7 +106,7 @@ class SubscriptionPermissions
      */
     public static function validationForDeleteMethods(WP_REST_Request $request)
     {
-        if (! self::canEdit()) {
+        if ( ! self::canDelete()) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to delete subscriptions.', 'give'),
@@ -116,4 +116,4 @@ class SubscriptionPermissions
 
         return true;
     }
-} 
+}
