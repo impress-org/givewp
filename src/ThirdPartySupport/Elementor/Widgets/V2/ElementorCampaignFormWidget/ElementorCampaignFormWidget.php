@@ -232,7 +232,7 @@ class ElementorCampaignFormWidget extends Widget_Base
             return;
         }
 
-        echo do_shortcode(sprintf('[givewp_campaign_form campaign_id="%s" display_style="%s" use_default_form="%s" continue_button_title="%s" id="%s"]', $campaignId, $displayStyle, $useDefaultForm, $donateButtonText, $formId));
+        echo do_shortcode(sprintf('[givewp_campaign_form campaign_id="%s" display_style="%s" use_default_form="%s" continue_button_title="%s" id="%s"]', esc_attr($campaignId), esc_attr($displayStyle), esc_attr($useDefaultForm), esc_attr($donateButtonText), esc_attr($formId)));
     }
 
     /**

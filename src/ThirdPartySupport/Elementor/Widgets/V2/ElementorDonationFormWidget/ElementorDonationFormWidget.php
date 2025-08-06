@@ -206,6 +206,6 @@ class ElementorDonationFormWidget extends Widget_Base
             return;
         }
 
-        echo do_shortcode(sprintf('[give_form display_style="%s" continue_button_title="%s" id="%s"]', $displayStyle, $donateButtonText, $formId));
+        echo do_shortcode(sprintf('[give_form display_style="%s" continue_button_title="%s" id="%s"]', esc_attr($displayStyle), esc_attr($donateButtonText), esc_attr($formId)));
     }
 }
