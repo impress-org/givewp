@@ -26,7 +26,7 @@ class CacheCampaignData
             return;
         }
 
-        as_enqueue_async_action('givewp_cache_campaign_data', [$donation->formId]);
+        as_enqueue_async_action('givewp_cache_campaign_data', [$donation->formId], 'givewp_campaigns_cache');
     }
 
     /**
