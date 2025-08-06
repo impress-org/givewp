@@ -13,6 +13,9 @@ export function useDonationsBySubscription(
     const queryArgs = {
         subscriptionId,
         mode,
+        status: 'publish',
+        sort: 'createdAt',
+        direction: 'DESC'
     };
 
     const entityResult = useEntityRecords('givewp', 'donation', queryArgs);
