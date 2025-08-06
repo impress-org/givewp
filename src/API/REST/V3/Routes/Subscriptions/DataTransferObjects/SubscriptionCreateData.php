@@ -49,7 +49,7 @@ class SubscriptionCreateData
      * @return Subscription
      * @throws Exception
      */
-    public function toSubscription(): Subscription
+    public function createSubscription(): Subscription
     {
         // Filter out auto-generated fields
         $subscriptionAttributes = array_filter($this->attributes, function ($key) {

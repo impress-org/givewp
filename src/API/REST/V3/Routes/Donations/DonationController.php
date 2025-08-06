@@ -295,7 +295,7 @@ class DonationController extends WP_REST_Controller
     {
         try {
             $data = DonationCreateData::fromRequest($request);        
-            $donation = $data->isRenewal() ? $data->toRenewal() : $data->toDonation();
+            $donation = $data->isRenewal() ? $data->createRenewal() : $data->createDonation();
 
             $item = (new DonationViewModel($donation))
                 ->includeSensitiveData(true)

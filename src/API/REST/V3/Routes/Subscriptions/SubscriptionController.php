@@ -255,7 +255,7 @@ class SubscriptionController extends WP_REST_Controller
     {
         try {
             $data = SubscriptionCreateData::fromRequest($request);
-            $subscription = $data->toSubscription();
+            $subscription = $data->createSubscription();
             
             $fieldsUpdate = $this->update_additional_fields_for_object($subscription, $request);
 

@@ -214,7 +214,7 @@ class DonationCreateData
      * @return Donation
      * @throws Exception
      */
-    public function toDonation(): Donation
+    public function createDonation(): Donation
     {
         // Validate subscription rules first
         $this->validateSubscriptionRules();
@@ -237,7 +237,7 @@ class DonationCreateData
      *
      * @return Donation
      */
-    public function toRenewal(): Donation
+    public function createRenewal(): Donation
     {
         // Validate subscription rules first
         $this->validateSubscriptionRules();
