@@ -57,6 +57,19 @@ class CacheCampaignData
         $campaignsData = get_option('give_campaigns_data', []);
         $campaignsSubscriptionData = get_option('give_campaigns_subscription_data', []);
 
+        // Prefill cache structure to ensure keys exist
+        $campaignsData = array_merge([
+            'amounts' => [],
+            'donationsCount' => [],
+            'donorsCount' => []
+        ], $campaignsData);
+
+        $campaignsSubscriptionData = array_merge([
+            'amounts' => [],
+            'donationsCount' => [],
+            'donorsCount' => []
+        ], $campaignsSubscriptionData);
+
         $donations = CampaignsDataQuery::donations([$campaign->id]);
         $subscriptions = CampaignsDataQuery::subscriptions([$campaign->id]);
 
@@ -130,7 +143,7 @@ class CacheCampaignData
         update_option('give_campaigns_data', [
             'amounts' => array_merge(
                 $campaignsData['amounts'] ?? [],
-                $donations->collectInitialAmounts()
+                $donations->collectIntendedAmounts()
             ),
             'donationsCount' => array_merge(
                 $campaignsData['donationsCount'] ?? [],

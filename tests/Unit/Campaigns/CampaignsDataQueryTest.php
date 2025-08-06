@@ -142,9 +142,6 @@ final class CampaignsDataQueryTest extends TestCase
 
         $campaignsDataQuery = CampaignsDataQuery::donations([$campaign->id]);
 
-        /**
-         * @var $action ActionScheduler_Action[]
-         */
         $action = AsBackgroundJobs::getActionsByGroup('givewp_campaigns_cache');
 
         current($action)->execute();
