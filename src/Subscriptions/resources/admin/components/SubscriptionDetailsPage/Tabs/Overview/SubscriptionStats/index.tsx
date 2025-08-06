@@ -20,7 +20,7 @@ type SubscriptionStatsProps = {
 export default function SubscriptionStats({donations, currency, totalInstallments, loading}: SubscriptionStatsProps) {
     const ongoingInstallments = totalInstallments === 0;
     const paymentsCompleted = donations?.length;
-    const totalContributions = donations?.reduce((acc, donation) => acc + donation.amount.value, 0);
+    const totalContributions = donations?.reduce((acc, donation) => acc + Number(donation.amount.value), 0);
 
     const paymentProgress = (
         <div className={styles.paymentProgress}>
