@@ -98,6 +98,7 @@ class FormBuilderViewModelTest extends TestCase
                     'primaryColor' => '',
                     'secondaryColor' => '',
                 ],
+                'showFormGoalNotice' => true,
             ],
             $viewModel->storageData($formId)
         );

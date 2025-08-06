@@ -4,7 +4,7 @@ namespace Give\Donors;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Actions\CreateUserFromDonor;
-use Give\Donors\Actions\LoadDonorOptions;
+use Give\Donors\Actions\LoadDonorAdminOptions;
 use Give\Donors\Actions\SendDonorUserRegistrationNotification;
 use Give\Donors\Actions\UpdateAdminDonorDetails;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
@@ -67,7 +67,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
 
         $this->registerDonorEntity();
-        $this->loadDonorOptions();
+        $this->loadDonorAdminOptions();
     }
 
     /**
@@ -116,10 +116,15 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since 4.6.1 Move to admin_enqueue_scripts hook
      * @since 4.4.0
      */
-    private function loadDonorOptions()
+    private function loadDonorAdminOptions()
     {
-        Hooks::addAction('init', LoadDonorOptions::class);
+        add_action('admin_enqueue_scripts', function () {
+            if (DonorsAdminPage::isShowingDetailsPage()) {
+                give(LoadDonorAdminOptions::class)();
+            }
+        });
     }
 }
