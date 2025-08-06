@@ -32,7 +32,7 @@ class SubscriptionViewModel
         $this->includeSensitiveData = $includeSensitiveData;
 
         return $this;
-    }    
+    }
 
     /**
     * @unreleased
@@ -49,8 +49,8 @@ class SubscriptionViewModel
      */
     public function exports(): array
     {
-        $donor = $this->subscription->donor()->get();
-        
+        $donor = $this->subscription->donor;
+
         $data = array_merge(
             $this->subscription->toArray(),
             [
@@ -67,14 +67,14 @@ class SubscriptionViewModel
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
-                switch ($propertyName) {                    
+                switch ($propertyName) {
                     default:
                         $data[$propertyName] = '';
                         break;
                 }
             }
-        }        
-        
+        }
+
         if (isset($this->anonymousMode ) && $this->anonymousMode->isRedacted() && $this->subscription->donor->isAnonymous()) {
             $anonymousDataRedacted = [
                 'donorId',
@@ -86,7 +86,7 @@ class SubscriptionViewModel
                 switch ($propertyName) {
                     case 'donorId':
                         $data[$propertyName] = 0;
-                        break;                    
+                        break;
                     default:
                         $data[$propertyName] = __('anonymous', 'give');
                         break;
