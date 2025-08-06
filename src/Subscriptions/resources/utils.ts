@@ -1,7 +1,6 @@
 import { useEntityRecord } from '@wordpress/core-data';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
 import type { GiveSubscriptionOptions } from '@givewp/subscriptions/types';
-import { EntityRecordResolution } from '@wordpress/core-data/build-types/hooks/use-entity-record';
 
 declare const window: {
     GiveSubscriptionOptions: GiveSubscriptionOptions;
@@ -10,10 +9,22 @@ declare const window: {
 /**
  * @unreleased
  */
-export function useSubscriptionEntityRecord(subscriptionId?: number): EntityRecordResolution<Subscription> {
+export function useSubscriptionEntityRecord(subscriptionId?: number) {
     const urlParams = new URLSearchParams(window.location.search);
 
-    return useEntityRecord('givewp', 'subscription', subscriptionId ?? urlParams.get('id'));
+    const {
+        record: subscription,
+        hasResolved,
+        save,
+        edit,
+    }: {
+        record: Subscription;
+        hasResolved: boolean;
+        save: () => any;
+        edit: (data: Subscription | Partial<Subscription>) => void;
+    } = useEntityRecord('givewp', 'subscription', subscriptionId ?? urlParams.get('id'));
+
+    return {record: subscription, hasResolved, save, edit};
 }
 
 /**
