@@ -1060,7 +1060,6 @@ class DonationController extends WP_REST_Controller
                     ],
                 ],
             ],
-            'required' => ['donorId', 'amount', 'gatewayId', 'mode', 'formId', 'firstName', 'email'],
         ];
     }
 }

@@ -343,6 +343,7 @@ class DonorController extends WP_REST_Controller
                     'maxLength' => 128,
                     'errorMessage' => esc_html__('First name is required', 'give'),
                     'format' => 'text-field',
+                    'required' => true,
                 ],
                 'lastName' => [
                     'type' => 'string',
@@ -351,11 +352,13 @@ class DonorController extends WP_REST_Controller
                     'maxLength' => 128,
                     'errorMessage' => esc_html__('Last name is required', 'give'),
                     'format' => 'text-field',
+                    'required' => true,
                 ],
                 'email' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor email', 'give'),
                     'format' => 'email',
+                    'required' => true,
                 ],
                 'additionalEmails' => [
                     'type' => 'array',
@@ -422,7 +425,6 @@ class DonorController extends WP_REST_Controller
                     ],
                 ],
             ],
-            'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
         ];
     }
 
