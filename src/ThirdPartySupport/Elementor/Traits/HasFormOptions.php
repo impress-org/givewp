@@ -16,8 +16,6 @@ trait HasFormOptions
      * Get form options with campaigns
      *
      * @unreleased
-     *
-     * @return array
      */
     public function getFormOptionsWithCampaigns(): array
     {
@@ -63,8 +61,6 @@ trait HasFormOptions
      * Get flattened form options from campaigns
      *
      * @unreleased
-     *
-     * @return array
      */
     public function getFormOptions(): array
     {
@@ -81,10 +77,8 @@ trait HasFormOptions
      * Query campaigns with forms
      *
      * @unreleased
-     *
-     * @return array
      */
-    public function getCampaignsWithForms()
+    public function getCampaignsWithForms(): array
     {
         try {
             $query = DB::table('posts', 'forms')
@@ -109,8 +103,6 @@ trait HasFormOptions
      * Get forms
      *
      * @unreleased
-     *
-     * @return array
      */
     public function getForms(): array
     {
