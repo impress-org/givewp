@@ -39,35 +39,7 @@ class SubscriptionCreateData
         return new self($request->get_params());
     }
 
-    /**
-     * Validate data for creating a subscription
-     *
-     * @unreleased
-     *
-     * @throws SubscriptionValidationException
-     */
-    public function validateCreateSubscription(): void
-    {
-        $requiredFields = [
-            'donorId',
-            'donationFormId',
-            'amount',
-            'status',
-            'period',
-            'frequency',
-            'gatewayId',
-        ];
 
-        foreach ($requiredFields as $field) {
-            if (!isset($this->attributes[$field]) || empty($this->attributes[$field])) {
-                throw new SubscriptionValidationException(
-                    sprintf(__('Field "%s" is required', 'give'), $field),
-                    'missing_required_field',
-                    400
-                );
-            }
-        }
-    }
 
     /**
      * Convert to Subscription model
@@ -79,9 +51,6 @@ class SubscriptionCreateData
      */
     public function toSubscription(): Subscription
     {
-        // Validate subscription creation
-        $this->validateCreateSubscription();
-
         // Filter out auto-generated fields
         $subscriptionAttributes = array_filter($this->attributes, function ($key) {
             return !in_array($key, ['id', 'createdAt', 'updatedAt'], true);

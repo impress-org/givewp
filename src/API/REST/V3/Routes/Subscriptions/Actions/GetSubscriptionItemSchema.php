@@ -26,10 +26,12 @@ class GetSubscriptionItemSchema
                 'donorId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donor ID', 'give'),
+                    'required' => true,
                 ],
                 'donationFormId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donation form ID', 'give'),
+                    'required' => true,
                 ],
                 'amount' => [
                     'type' => ['object', 'null'],
@@ -46,6 +48,7 @@ class GetSubscriptionItemSchema
                         ],
                     ],
                     'description' => esc_html__('Subscription amount', 'give'),
+                    'required' => true,
                 ],
                 'feeAmountRecovered' => [
                     'type' => ['object', 'null'],
@@ -67,15 +70,18 @@ class GetSubscriptionItemSchema
                     'type' => 'string',
                     'description' => esc_html__('Subscription status', 'give'),
                     'enum' => ['any', ...array_values(SubscriptionStatus::toArray())],
+                    'required' => true,
                 ],
                 'period' => [
                     'type' => 'string',
                     'description' => esc_html__('Subscription billing period', 'give'),
                     'enum' => array_values(SubscriptionPeriod::toArray()),
+                    'required' => true,
                 ],
                 'frequency' => [
                     'type' => 'integer',
                     'description' => esc_html__('Billing frequency', 'give'),
+                    'required' => true,
                 ],
                 'installments' => [
                     'type' => 'integer',
@@ -91,6 +97,7 @@ class GetSubscriptionItemSchema
                     'type' => 'string',
                     'description' => esc_html__('Payment gateway ID', 'give'),
                     'format' => 'text-field',
+                    'required' => true,
                 ],
                 'gatewaySubscriptionId' => [
                     'type' => ['string', 'null'],
@@ -145,18 +152,6 @@ class GetSubscriptionItemSchema
                     'description' => esc_html__('Next renewal date', 'give'),
                     'format' => 'date-time',
                 ],
-            ],
-            'required' => [
-                'id',
-                'donorId',
-                'donationFormId',
-                'amount',
-                'status',
-                'period',
-                'frequency',
-                'gatewayId',
-                'mode',
-                'createdAt',
             ],
         ];
     }
