@@ -6,20 +6,17 @@ use DateTime;
 use Exception;
 use Give\API\REST\V3\Routes\Donations\DataTransferObjects\DonationCreateData;
 use Give\API\REST\V3\Routes\Donations\Exceptions\DonationValidationException;
+use Give\API\REST\V3\Routes\Donations\Helpers\DonationFields;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Support\CURIE;
 use Give\Donations\Models\Donation;
-use Give\Donations\Properties\BillingAddress;
-use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donations\ViewModels\DonationViewModel;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use WP_Error;
 use WP_REST_Controller;
@@ -349,7 +346,7 @@ class DonationController extends WP_REST_Controller
             if (!in_array($key, $nonEditableFields, true)) {
                 if (in_array($key, $donation::propertyKeys(), true)) {
                     try {
-                        $processedValue = $this->processFieldValue($key, $value);
+                        $processedValue = DonationFields::processValue($key, $value);
                         if ($donation->isPropertyTypeValid($key, $processedValue)) {
                             $donation->$key = $processedValue;
                         }
@@ -409,69 +406,6 @@ class DonationController extends WP_REST_Controller
             return new WP_REST_Response(__('Failed to refund donation', 'give'), 500);
         }
     }
-
-    /**
-     * Process field values for special data types before setting them on the donation model.
-     *
-     * @since 4.6.0
-     */
-    private function processFieldValue(string $key, $value)
-    {
-        switch ($key) {
-            case 'amount':
-            case 'feeAmountRecovered':
-                if (is_array($value)) {
-                    // Handle Money object array format: ['amount' => 100.00, 'currency' => 'USD']
-                    if (isset($value['amount']) && isset($value['currency'])) {
-                        return Money::fromDecimal($value['amount'], $value['currency']);
-                    }
-                }
-                return $value;
-
-            case 'status':
-                if (is_string($value) && DonationStatus::isValid($value)) {
-                    return new DonationStatus($value);
-                }
-                return $value;
-
-            case 'type':
-                if (is_string($value) && DonationType::isValid($value)) {
-                    return new DonationType($value);
-                }
-                return $value;
-
-            case 'mode':
-                if (is_string($value) && DonationMode::isValid($value)) {
-                    return new DonationMode($value);
-                }
-                return $value;
-
-            case 'billingAddress':
-                if (is_array($value)) {
-                    return BillingAddress::fromArray($value);
-                }
-                return $value;
-
-            case 'createdAt':
-                try {
-                    if (is_string($value)) {
-                        return new DateTime( $value, wp_timezone());
-                    } elseif (is_array($value)) {
-                        return new DateTime($value['date'], new \DateTimeZone($value['timezone']));
-                    }
-                } catch (\Exception $e) {
-                    throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
-                }
-                return $value;
-
-            default:
-                return $value;
-        }
-    }
-
-
-
-
 
     /**
      * Delete a single donation.

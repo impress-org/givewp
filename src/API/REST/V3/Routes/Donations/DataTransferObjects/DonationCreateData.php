@@ -5,15 +5,10 @@ namespace Give\API\REST\V3\Routes\Donations\DataTransferObjects;
 use DateTime;
 use Exception;
 use Give\API\REST\V3\Routes\Donations\Exceptions\DonationValidationException;
+use Give\API\REST\V3\Routes\Donations\Helpers\DonationFields;
 use Give\Donations\Models\Donation;
-use Give\Donations\Properties\BillingAddress;
-use Give\Donations\ValueObjects\DonationMode;
-use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
-use WP_Error;
 use WP_REST_Request;
 
 /**
@@ -351,73 +346,10 @@ class DonationCreateData
                 continue;
             }
 
-            $processedAttributes[$key] = $this->processFieldValue($key, $value);
+            $processedAttributes[$key] = DonationFields::processValue($key, $value);
         }
 
         return $processedAttributes;
-    }
-
-    /**
-     * Process field values for special data types
-     *
-     * @unreleased
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return mixed
-     */
-    private function processFieldValue(string $key, $value)
-    {
-        switch ($key) {
-            case 'amount':
-            case 'feeAmountRecovered':
-                if (is_array($value)) {
-                    // Handle Money object array format: ['amount' => 100.00, 'currency' => 'USD']
-                    if (isset($value['amount']) && isset($value['currency'])) {
-                        return Money::fromDecimal($value['amount'], $value['currency']);
-                    }
-                }
-                return $value;
-
-            case 'status':
-                if (is_string($value) && DonationStatus::isValid($value)) {
-                    return new DonationStatus($value);
-                }
-                return $value;
-
-            case 'type':
-                if (is_string($value) && DonationType::isValid($value)) {
-                    return new DonationType($value);
-                }
-                return $value;
-
-            case 'mode':
-                if (is_string($value) && DonationMode::isValid($value)) {
-                    return new DonationMode($value);
-                }
-                return $value;
-
-            case 'billingAddress':
-                if (is_array($value)) {
-                    return BillingAddress::fromArray($value);
-                }
-                return $value;
-
-            case 'createdAt':
-                try {
-                    if (is_string($value)) {
-                        return new DateTime($value, wp_timezone());
-                    } elseif (is_array($value)) {
-                        return new DateTime($value['date'], new \DateTimeZone($value['timezone']));
-                    }
-                } catch (\Exception $e) {
-                    throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
-                }
-                return $value;
-
-            default:
-                return $value;
-        }
     }
 
     /**
