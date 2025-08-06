@@ -36,6 +36,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use Give_Payment;
 
 /**
  * @since 4.0.0
@@ -140,7 +141,10 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('give_insert_payment', CacheCampaignData::class);
         Hooks::addAction('give_update_payment_status', CacheCampaignData::class);
-        Hooks::addAction('give_recurring_add_subscription_payment', CacheCampaignData::class);
+
+        add_action('give_recurring_add_subscription_payment', function (Give_Payment $legacyPayment) {
+            give(CacheCampaignData::class)((int)$legacyPayment->ID);
+        });
 
         $noticeActions = [
             'givewp_campaign_interaction_notice',
