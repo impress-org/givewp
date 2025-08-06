@@ -59,6 +59,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased add registerCampaignCache
      * @since 4.0.0
      * @inheritDoc
      */
