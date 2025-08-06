@@ -15,7 +15,6 @@ export type StatWidgetProps = {
     value: string | React.ReactNode;
     description?: string;
     loading?: boolean;
-    previousValue?: number;
     inActive?: boolean;
     href?: string;
 };
@@ -30,7 +29,6 @@ export default function StatWidget({
     description,
     href,
     loading = false,
-    previousValue = null,
     inActive = false,
 }: StatWidgetProps) {
     return (
