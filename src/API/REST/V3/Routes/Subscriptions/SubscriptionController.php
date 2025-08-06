@@ -505,39 +505,68 @@ class SubscriptionController extends WP_REST_Controller
      * @param mixed           $item    WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
      *
-	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
-     *
-     * @throws Exception
+     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
     public function prepare_item_for_response($item, $request)
     {
-        $subscriptionId = $request->get_param('id') ?? $item['id'] ?? null;
+        try {
+            $subscriptionId = $request->get_param('id') ?? $item['id'] ?? null;
 
-        if ($subscriptionId) {
-            $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $subscriptionId));
-            $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
-            $donor_url = add_query_arg([
-                'mode' => $request->get_param('mode'),
-            ], $donor_url);
-            $links = [
-                'self' => ['href' => $self_url],
-                CURIE::relationUrl('donor') => [
-                    'href' => $donor_url,
-                    'embeddable' => true,
-                ],
-            ];
-        } else {
-            $links = [];
+            if ($subscriptionId && $subscription = Subscription::find($subscriptionId)) {
+                $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $subscription->id));
+                $campaign_url = rest_url(
+                    sprintf('%s/%s/%d', $this->namespace, 'campaigns', $subscription->initialDonation()->id)
+                );
+
+                $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
+                $donor_url = add_query_arg([
+                    'mode' => $request->get_param('mode'),
+                ], $donor_url);
+
+                $donations_url = rest_url(sprintf('%s/%s', $this->namespace, 'donations'));
+                $donations_url = add_query_arg([
+                    'mode' => $subscription->mode->getValue(),
+                    'subscriptionId' => $subscription->id,
+                ], $donations_url);
+
+
+                $links = [
+                    'self' => ['href' => $self_url],
+                    CURIE::relationUrl('campaign') => [
+                        'href' => $campaign_url,
+                        'embeddable' => true,
+                    ],
+                    CURIE::relationUrl('donor') => [
+                        'href' => $donor_url,
+                        'embeddable' => true,
+                    ],
+                    CURIE::relationUrl('donations') => [
+                        'href' => $donations_url,
+                        'embeddable' => true,
+                    ],
+                ];
+            } else {
+                $links = [];
+            }
+
+            $response = new WP_REST_Response($item);
+            if ( ! empty($links)) {
+                $response->add_links($links);
+            }
+
+            $response->data = $this->add_additional_fields_to_object($response->data, $request);
+
+            return $response;
+        } catch (Exception $e) {
+            return new WP_Error(
+                'prepare_item_for_response_error',
+                sprintf(
+                    __('Error while preparing subscription for response: %s', 'give'),
+                    $e->getMessage()
+                ),
+                ['status' => 400]
+            );
         }
-
-        $response = new WP_REST_Response($item);
-        if (! empty($links)) {
-            $response->add_links($links);
-        }
-
-        $response->data = $this->add_additional_fields_to_object($response->data, $request);
-
-        return $response;
     }
 
     /**
