@@ -98,7 +98,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(400, $status);
-        $this->assertStringContainsString('Field "donationFormId" is required', $data['message']);
+        $this->assertStringContainsString('Missing parameter(s): donationFormId, amount, status, period, frequency, gatewayId', $data['message']);
     }
 
     /**
