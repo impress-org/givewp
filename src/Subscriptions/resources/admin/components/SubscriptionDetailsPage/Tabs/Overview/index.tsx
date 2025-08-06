@@ -10,7 +10,7 @@ import styles from "./styles.module.scss";
  * @unreleased
  */
 export default function SubscriptionDetailsPageOverviewTab() {
-    const {record: subscription, hasResolved, isResolving } = useSubscriptionEntityRecord();
+    const {record: subscription, hasResolved } = useSubscriptionEntityRecord();
 
     return (
         <div className={styles.overview}>
