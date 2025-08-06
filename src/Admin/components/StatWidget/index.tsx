@@ -49,7 +49,6 @@ export default function StatWidget({
                     )}
                 {inActive && (<a className={styles.upgradeLink} href={href} data-feerecovery-tooltip={__('Keep 100% of your fundraising revenue by providing donors with the option to cover the credit card processing fees', 'give')}>{__('Upgrade', 'give')}</a>)}
                 </div>
-                {previousValue !== null && <PercentChangePill value={parseFloat(value as string)} comparison={previousValue} />}
             </div>
             {description && (
                 <footer>
