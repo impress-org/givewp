@@ -1,6 +1,6 @@
 import styles from './styles.module.scss';
 import DonationStats from './DonationStats';
-import DonationPaymentDetails from './DonationPaymentDetails';
+import DonationSummaryGrid from './DonationSummaryGrid';
 import DonationReceipt from './DonationReceipt';
 import Spinner from '@givewp/src/Admin/components/Spinner';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
@@ -24,7 +24,7 @@ export default function DonationDetailsPageOverviewTab() {
             <DonationStats donation={donation} isResolving={!hasResolvedDonation} />
 
             <div className={styles.left}>
-                <DonationPaymentDetails donation={donation}/>
+                <DonationSummaryGrid donation={donation}/>
 
                 <div className={styles.card}>
                     <DonationNotes donationId={donationId} />

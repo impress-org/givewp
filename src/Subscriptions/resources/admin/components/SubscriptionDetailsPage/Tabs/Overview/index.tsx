@@ -1,5 +1,5 @@
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
-import SubscriptionPaymentDetails from "./SubscriptionPaymentDetails";
+import SubscriptionPaymentDetails from "./SubscriptionSummaryGrid";
 import styles from "./styles.module.scss";
 import { useDonationsBySubscription } from "@givewp/subscriptions/hooks/useDonationsBySubscription";
 
@@ -15,7 +15,7 @@ export default function SubscriptionDetailsPageOverviewTab() {
         <div className={styles.overview}>
 
             <div className={styles.left}>
-                <SubscriptionPaymentDetails subscription={subscription} donation={donation} />
+                <SubscriptionPaymentDetails subscription={subscription} donation={donation} isResolving={isResolving} />
             </div>
 
             <div className={styles.right}>

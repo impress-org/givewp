@@ -1,0 +1,91 @@
+import { __ } from '@wordpress/i18n';
+import OverviewPanel from "@givewp/src/Admin/components/OverviewPanel";
+import Grid, { GridCard } from '@givewp/src/Admin/components/Grid';
+import { CampaignCard, DonorCard } from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
+import Spinner from '@givewp/src/Admin/components/Spinner';
+import PaymentMethodIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/PaymentMethodIcon';
+import ExternalLinkIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/icon';
+import { HourGlassIcon, ClockIcon } from './Icons';
+import { Subscription } from '@givewp/subscriptions/admin/components/types';
+import { Donation } from '@givewp/donations/admin/components/types';
+import { formatTimestamp } from '@givewp/src/Admin/utils';
+import classnames from 'classnames';
+
+import styles from './styles.module.scss';
+
+type SubscriptionDetailsProps = {
+    subscription: Subscription;
+    donation?: Donation;
+    isResolving: boolean;
+}
+
+/**
+ * @unreleased
+ */
+export default function SubscriptionSummaryGrid({subscription, donation, isResolving}: SubscriptionDetailsProps) {    
+    const isOngoing = subscription?.installments === 0;
+    const badgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
+  
+    return (
+        <OverviewPanel className={styles.overviewPanel}>
+            <h2 id="subscription-details-grid-title" className={'sr-only'}>
+                {__('Subscription Details', 'give')}
+            </h2>
+            <Grid ariaLabel={__('Subscription details', 'give')}>
+                {/* Campaign Name */}
+                <CampaignCard donation={donation} />
+
+                {/* Next Payment */}
+                <GridCard className={styles.card} heading={__('Next payment', 'give')} headingId="next-payment">
+                    {isResolving && (<Spinner />)}
+                    {!isResolving && donation && (
+                        <>
+                            <time className={styles.date} dateTime={donation?.createdAt?.date}>
+                                {formatTimestamp(donation?.createdAt?.date, true)}
+                            </time>
+                            <div className={styles.donationType}>
+                                <span className={classnames(styles.badge, {
+                                    [styles.unlimited]: isOngoing,
+                                    [styles.limited]: !isOngoing,
+                                })} aria-label={isOngoing ? __('Unlimited', 'give') : __('Limited', 'give')}>
+                                    {badgeLabel}
+                                </span>
+                            </div>                  
+                        </>
+                    )}
+             
+
+                </GridCard>
+
+                {/* Associated Donor */}
+                <DonorCard donation={donation} />
+
+
+                {/* Gateway Info */}
+                <GridCard className={styles.card} heading={__('Gateway', 'give')} headingId="gateway">
+                    {isResolving && (<Spinner />)}
+                    {!isResolving && (
+                        <>
+                            <strong className={styles.paymentMethod}>
+                                <PaymentMethodIcon paymentMethod={donation?.gateway?.id} />
+                                {donation?.gateway?.label}
+                            </strong>
+                            {donation?.gateway?.transactionUrl && (
+                                <a
+                                    className={styles.gatewayLink}
+                                    href={donation?.gateway?.transactionUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {__('View subscription on gateway', 'give')}
+                                    <ExternalLinkIcon />
+                                </a>
+                            )}
+                        </>
+                    )}
+                </GridCard>
+            </Grid>  
+ 
+        </OverviewPanel>
+    );
+}
