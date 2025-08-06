@@ -166,7 +166,7 @@ export default function SubscriptionDetailsPage() {
                 {__('Are you sure you want to move this subscription to the trash? You can restore it later if needed.', 'give')}
             </ConfirmationDialog>
             <ConfirmationDialog
-                variant={'regular'}
+                variant={isLoading ? 'syncing' : null}
                 spinner={'arc'}
                 isConfirming={isLoading}
                 title={__('Sync subscription details', 'give')}

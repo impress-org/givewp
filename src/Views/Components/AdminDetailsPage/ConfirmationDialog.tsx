@@ -12,7 +12,7 @@ export type ConfirmationDialogProps = {
     handleConfirm: () => void;
     title: string;
     icon?: React.ReactElement;
-    variant?: 'error' | 'regular';
+    variant?: 'error' | 'regular' | 'syncing';
     className?: string;
     actionLabel: string;
     children: React.ReactNode;
