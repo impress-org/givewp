@@ -10,10 +10,22 @@ declare const window: {
 /**
  * @since 4.6.0
  */
-export function useDonationEntityRecord(donationId?: number): EntityRecordResolution<Donation> {
+export function useDonationEntityRecord(donationId?: number) {
     const urlParams = new URLSearchParams(window.location.search);
 
-    return useEntityRecord('givewp', 'donation', donationId ?? urlParams.get('id'));
+    const {
+        record: donation,
+        hasResolved,
+        save,
+        edit,
+    }: {
+        record: Donation;
+        hasResolved: boolean;
+        save: () => any;
+        edit: (data: Donation | Partial<Donation>) => void;
+    } = useEntityRecord('givewp', 'donation', donationId ?? urlParams.get('id'));
+
+    return {record: donation, hasResolved, save, edit};
 }
 
 /**
