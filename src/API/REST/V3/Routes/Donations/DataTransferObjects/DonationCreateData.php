@@ -252,9 +252,11 @@ class DonationCreateData
         
         $subscription = Subscription::find($this->subscriptionId);
         
-        // For renewal donations, we only need minimal attributes
-        // The subscription's createRenewal method will handle the rest
-        $renewalAttributes = [];
+        // Pass the processed attributes to allow overriding values from the request
+        // Filter out auto-generated fields and subscription-specific fields
+        $renewalAttributes = array_filter($this->attributes, function ($key) {
+            return !in_array($key, ['id', 'createdAt', 'updatedAt', 'subscriptionId', 'type'], true);
+        }, ARRAY_FILTER_USE_KEY);
 
         return $subscription->createRenewal($renewalAttributes);
     }
