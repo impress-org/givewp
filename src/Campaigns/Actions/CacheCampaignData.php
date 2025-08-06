@@ -39,8 +39,8 @@ class CacheCampaignData
      */
     public function registerAction()
     {
-        add_action('givewp_cache_campaign_data', function ($formId) {
-            $this->handleCache($formId);
+        add_action('givewp_cache_campaign_data', function ($campaignId) {
+            $this->handleCache($campaignId);
         });
     }
 
