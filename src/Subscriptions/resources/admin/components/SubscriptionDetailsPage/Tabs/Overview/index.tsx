@@ -9,12 +9,12 @@ import styles from "./styles.module.scss";
  */
 export default function SubscriptionDetailsPageOverviewTab() {
     const {mode, adminUrl} = getSubscriptionOptionsWindowData();
-    const {record: subscription, hasResolved, isResolving } = useSubscriptionEntityRecord();
+    const {record: subscription, hasResolved } = useSubscriptionEntityRecord();
     const {records: donations, hasResolved: donationsResolved, isResolving: donationsLoading} = useDonationsBySubscription(subscription?.id, mode);
     
     return (
         <div className={styles.overview}>
-            <SubscriptionStats donations={donations} currency={subscription?.amount?.currency} totalInstallments={subscription?.installments} loading={isResolving || !hasResolved || donationsLoading || !donationsResolved} />
+            <SubscriptionStats donations={donations} currency={subscription?.amount?.currency} totalInstallments={subscription?.installments} loading={!hasResolved || donationsLoading || !donationsResolved} />
             <div className={styles.left}>
 
             </div>
