@@ -14,8 +14,7 @@ export default function SubscriptionDetailsPageOverviewTab() {
     
     return (
         <div className={styles.overview}>
-            <SubscriptionStats donations={donations} currency={subscription.amount.currency} totalInstallments={subscription.installments} loading={isResolving || !hasResolved || donationsLoading || !donationsResolved} />
-
+            <SubscriptionStats donations={donations} currency={subscription?.amount?.currency} totalInstallments={subscription?.installments} loading={isResolving || !hasResolved || donationsLoading || !donationsResolved} />
             <div className={styles.left}>
 
             </div>
