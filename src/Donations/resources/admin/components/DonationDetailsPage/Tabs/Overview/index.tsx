@@ -21,7 +21,7 @@ export default function DonationDetailsPageOverviewTab() {
 
     return (
         <div className={styles.overview}>
-            <DonationStats donation={donation} isResolving={false} />
+            <DonationStats donation={donation} isResolving={!hasResolvedDonation} />
 
             <div className={styles.left}>
                 <DonationSummaryGrid
