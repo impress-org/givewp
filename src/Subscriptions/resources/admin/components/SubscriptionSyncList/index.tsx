@@ -17,6 +17,7 @@ type SubscriptionSyncListProps = {
  */
 export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncListProps) {
     const { details, missingTransactions, presentTransactions } = syncResult;
+    const [openItem, setOpenItem] = useState<string | null>(null);
 
     const statusUpdated = details?.currentStatus !== details?.gatewayStatus;
     const periodUpdated = details?.currentPeriod !== details?.gatewayPeriod;
@@ -24,18 +25,46 @@ export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncLis
     const paymentsUpdated = missingTransactions?.length > 0;
     const transactions = paymentsUpdated ? missingTransactions : [null];
 
+    const handleItemToggle = (itemId: string) => {
+        setOpenItem(openItem === itemId ? null : itemId);
+    };
+
     return (
         <div className={styles.list}>
-            <SyncItem title="Subscription status" isAccurate={!statusUpdated}>
+            <SyncItem 
+                id="status" 
+                title="Subscription status" 
+                isAccurate={!statusUpdated}
+                isOpen={openItem === "status"}
+                onToggle={() => handleItemToggle("status")}
+            >
                 <SyncDetails isAccurate={!statusUpdated} platform={details?.currentStatus} gateway={details?.gatewayStatus} />
             </SyncItem>
-            <SyncItem title="Billing period" isAccurate={!periodUpdated}>
+            <SyncItem 
+                id="period" 
+                title="Billing period" 
+                isAccurate={!periodUpdated}
+                isOpen={openItem === "period"}
+                onToggle={() => handleItemToggle("period")}
+            >
                 <SyncDetails isAccurate={!periodUpdated} platform={details?.currentPeriod} gateway={details?.gatewayPeriod} />
             </SyncItem>
-            <SyncItem title="Date created" isAccurate={!createdAtUpdated}>
+            <SyncItem 
+                id="created" 
+                title="Date created" 
+                isAccurate={!createdAtUpdated}
+                isOpen={openItem === "created"}
+                onToggle={() => handleItemToggle("created")}
+            >
                 <SyncDetails isAccurate={!createdAtUpdated} platform={details?.currentCreatedAt} gateway={details?.gatewayCreatedAt} />
             </SyncItem>
-            <SyncItem title="Subscription payments" isAccurate={!paymentsUpdated}>
+            <SyncItem 
+                id="payments" 
+                title="Subscription payments" 
+                isAccurate={!paymentsUpdated}
+                isOpen={openItem === "payments"}
+                onToggle={() => handleItemToggle("payments")}
+            >
                 {transactions?.map((transaction) => (<SyncPaymentDetails key={transaction?.id} isAccurate={!paymentsUpdated} payment={transaction} />))}
             </SyncItem>
         </div>
@@ -46,19 +75,20 @@ export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncLis
  * @unreleased
  */
 type SyncItemProps = {
+    id: string;
     title: string;
     isAccurate: boolean | null;
+    isOpen: boolean;
+    onToggle: () => void;
     children: React.ReactNode;
 }
 
 /**
  * @unreleased
  */
-function SyncItem({ title, isAccurate, children }: SyncItemProps) {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-
+function SyncItem({ id, title, isAccurate, isOpen, onToggle, children }: SyncItemProps) {
     return (
-        <div className={styles.item}>
+        <div id={id} className={styles.item}>
             <div className={styles.itemContent}>
                 <div className={styles.itemHeader}>
                     <div>
@@ -73,7 +103,7 @@ function SyncItem({ title, isAccurate, children }: SyncItemProps) {
                     </div>
                     <button
                         className={styles.itemButton}
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={onToggle}
                     >
                         {isOpen ? __('Close', 'give') : __('View details', 'give')}
                     </button>
