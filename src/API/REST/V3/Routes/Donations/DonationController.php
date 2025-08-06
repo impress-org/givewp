@@ -4,6 +4,8 @@ namespace Give\API\REST\V3\Routes\Donations;
 
 use DateTime;
 use Exception;
+use Give\API\REST\V3\Routes\Donations\DataTransferObjects\DonationCreateData;
+use Give\API\REST\V3\Routes\Donations\Exceptions\DonationValidationException;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Support\CURIE;
@@ -295,39 +297,8 @@ class DonationController extends WP_REST_Controller
     public function create_item($request): WP_REST_Response
     {
         try {
-            $donationAttributes = $this->processCreateAttributes($request->get_params());
-
-            if (is_wp_error($donationAttributes)) {
-                $status = $donationAttributes->get_error_data()['status'] ?? 400;
-                return new WP_REST_Response([
-                    'message' => $donationAttributes->get_error_message(),
-                    'error' => $donationAttributes->get_error_code()
-                ], $status);
-            }
-
-            // Determine how to create the donation based on type
-            $type = $donationAttributes['type'] ?? null;
-            $subscriptionId = $donationAttributes['subscriptionId'] ?? 0;
-
-            if ($type && $type->getValue() === 'renewal' && $subscriptionId > 0) {
-                // For renewal donations, use the subscription's createRenewal method
-                $subscription = \Give\Subscriptions\Models\Subscription::find($subscriptionId);
-                if (!$subscription) {
-                    return new WP_REST_Response([
-                        'message' => __('Subscription not found', 'give'),
-                        'error' => 'subscription_not_found'
-                    ], 404);
-                }
-
-                // For renewal donations, we only need minimal attributes
-                // The subscription's createRenewal method will handle the rest
-                $renewalAttributes = [];
-
-                $donation = $subscription->createRenewal($renewalAttributes);
-            } else {
-                // For single and subscription donations, use Donation::create
-                $donation = Donation::create($donationAttributes);
-            }
+            $data = DonationCreateData::fromRequest($request);        
+            $donation = $data->isRenewal() ? $data->toRenewal() : $data->toDonation();
 
             $item = (new DonationViewModel($donation))
                 ->includeSensitiveData(true)
@@ -338,6 +309,11 @@ class DonationController extends WP_REST_Controller
             $response->set_status(201);
 
             return rest_ensure_response($response);
+        } catch (DonationValidationException $e) {
+            return new WP_REST_Response([
+                'message' => $e->getMessage(),
+                'error' => $e->getErrorCode()
+            ], $e->getStatusCode());
         } catch (\Exception $e) {
             return new WP_REST_Response([
                 'message' => __('Failed to create donation', 'give'),
@@ -493,137 +469,9 @@ class DonationController extends WP_REST_Controller
         }
     }
 
-    /**
-     * Process attributes for creating a new donation.
-     *
-     * @unreleased
-     */
-    private function processCreateAttributes(array $params)
-    {
-        $attributes = [];
 
-        // Check if this is a renewal donation (only needs subscriptionId and type)
-        $isRenewal = isset($params['subscriptionId']) &&
-                     $params['subscriptionId'] > 0 &&
-                     isset($params['type']) &&
-                     $params['type'] === 'renewal';
 
-        // Required fields (different for renewals vs regular donations)
-        if ($isRenewal) {
-            $requiredFields = ['subscriptionId', 'type'];
-        } else {
-            $requiredFields = ['donorId', 'amount', 'gatewayId', 'mode', 'formId', 'firstName', 'email'];
-        }
 
-        foreach ($requiredFields as $field) {
-            if (!isset($params[$field])) {
-                return new WP_Error(
-                    'missing_required_field',
-                    sprintf(__('Missing required field: %s', 'give'), $field),
-                    ['status' => 400]
-                );
-            }
-        }
-
-        // Process each field
-        foreach ($params as $key => $value) {
-            if ($key === 'id' || $key === 'createdAt' || $key === 'updatedAt') {
-                // Skip these fields as they are auto-generated
-                continue;
-            }
-
-            $processedValue = $this->processFieldValue($key, $value);
-            $attributes[$key] = $processedValue;
-        }
-
-        // Validate subscription-related rules
-        $subscriptionValidation = $this->validateSubscriptionRules($attributes);
-        if (is_wp_error($subscriptionValidation)) {
-            return $subscriptionValidation;
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * Validate subscription-related rules for donation creation
-     *
-     * @param array $attributes
-     * @return true|WP_Error
-     */
-    private function validateSubscriptionRules(array &$attributes)
-    {
-        $subscriptionId = $attributes['subscriptionId'] ?? 0;
-        $type = $attributes['type'] ?? null;
-
-        // When subscriptionId is greater than zero, type must be "subscription" or "renewal"
-        if ($subscriptionId > 0) {
-            if (!$type || !in_array($type->getValue(), ['subscription', 'renewal'], true)) {
-                return new WP_Error(
-                    'invalid_donation_type_for_subscription',
-                    __('When subscriptionId is provided, type must be "subscription" or "renewal"', 'give'),
-                    ['status' => 400]
-                );
-            }
-
-            // Validate subscription exists
-            $subscription = Subscription::find($subscriptionId);
-            if (!$subscription) {
-                return new WP_Error(
-                    'subscription_not_found',
-                    __('Subscription not found', 'give'),
-                    ['status' => 404]
-                );
-            }
-
-            // When creating a donation associated with subscriptionId, ensure type is not "subscription"
-            // if a donation of that type already exists for this subscription
-            if ($type->getValue() === 'subscription' && $subscription->totalDonations() > 0) {
-                return new WP_Error(
-                    'subscription_donation_already_exists',
-                    __('A subscription donation already exists for this subscription', 'give'),
-                    ['status' => 400]
-                );
-            }
-
-            // When creating a subscription or renewal donation, ensure gatewayId matches the subscription's gateway
-            if (in_array($type->getValue(), ['subscription', 'renewal'], true)) {
-                $donationGatewayId = $attributes['gatewayId'] ?? null;
-                if ($donationGatewayId && $subscription->gatewayId && $donationGatewayId !== $subscription->gatewayId) {
-                    return new WP_Error(
-                        'gateway_mismatch_for_subscription_donation',
-                        __('Gateway ID must match the subscription gateway for subscription and renewal donations', 'give'),
-                        ['status' => 400]
-                    );
-                }
-            }
-
-            // Ensure total donations don't exceed subscription installments
-            if ($subscription->installments > 0 && $subscription->totalDonations() >= $subscription->installments) {
-                return new WP_Error(
-                    'subscription_installments_exceeded',
-                    __('Cannot create donation: subscription installments limit reached', 'give'),
-                    ['status' => 400]
-                );
-            }
-        } else {
-            // When subscriptionId is zero, type can only be "single" (if provided)
-            if ($type && $type->getValue() !== 'single') {
-                return new WP_Error(
-                    'invalid_donation_type_for_single',
-                    __('When subscriptionId is zero, type can only be "single"', 'give'),
-                    ['status' => 400]
-                );
-            }
-
-            // Set type to single if not provided
-            if (!$type) {
-                $attributes['type'] = \Give\Donations\ValueObjects\DonationType::SINGLE();
-            }
-        }
-
-        return true;
-    }
 
     /**
      * Delete a single donation.
