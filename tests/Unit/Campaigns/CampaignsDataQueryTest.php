@@ -149,7 +149,7 @@ final class CampaignsDataQueryTest extends TestCase
 
         current($action)->execute();
 
-        $campaignsDataCache = give_get_option('give_campaigns_data', []);
+        $campaignsDataCache = get_option('give_campaigns_data', []);
 
         $this->assertEquals($campaignsDataCache['amounts'], $campaignsDataQuery->collectIntendedAmounts());
         $this->assertEquals($campaignsDataCache['donationsCount'], $campaignsDataQuery->collectDonations());

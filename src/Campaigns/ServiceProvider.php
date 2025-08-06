@@ -138,8 +138,9 @@ class ServiceProvider implements ServiceProviderInterface
          */
         give(CacheCampaignData::class)->registerAction();
 
-        Hooks::addAction('givewp_donation_created', CacheCampaignData::class);
-        Hooks::addAction('givewp_donation_updated', CacheCampaignData::class);
+        Hooks::addAction('give_insert_payment', CacheCampaignData::class);
+        Hooks::addAction('give_update_payment_status', CacheCampaignData::class);
+        Hooks::addAction('give_recurring_update_subscription_status', CacheCampaignData::class);
 
         $noticeActions = [
             'givewp_campaign_interaction_notice',

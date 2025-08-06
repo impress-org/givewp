@@ -76,20 +76,41 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
 
             $donations = CampaignsDataQuery::donations($campaignIds);
 
-            give_update_option('give_campaigns_data', [
-                'amounts' => $donations->collectIntendedAmounts(),
-                'donationsCount' => $donations->collectDonations(),
-                'donorsCount' => $donations->collectDonors(),
+            $campaignsData = get_option('give_campaigns_data', []);
+
+            update_option('give_campaigns_data', [
+                'amounts' => array_merge(
+                    $campaignsData['amounts'] ?? [],
+                    $donations->collectIntendedAmounts()
+                ),
+                'donationsCount' => array_merge(
+                    $campaignsData['donationsCount'] ?? [],
+                    $donations->collectDonations()
+                ),
+                'donorsCount' => array_merge(
+                    $campaignsData['donationsCount'] ?? [],
+                    $donations->collectDonors()
+                ),
             ]);
 
             // Set subscriptions data
             if (defined('GIVE_RECURRING_VERSION')) {
+                $subscriptionsData = get_option('give_campaigns_data', []);
                 $subscriptions = CampaignsDataQuery::subscriptions($campaignIds);
 
-                give_update_option('give_campaigns_subscriptions_data', [
-                    'amounts' => $subscriptions->collectInitialAmounts(),
-                    'donationsCount' => $subscriptions->collectDonations(),
-                    'donorsCount' => $subscriptions->collectDonors(),
+                update_option('give_campaigns_subscriptions_data', [
+                    'amounts' => array_merge(
+                        $campaignsData['amounts'] ?? [],
+                        $subscriptions->collectInitialAmounts()
+                    ),
+                    'donationsCount' => array_merge(
+                        $campaignsData['donationsCount'] ?? [],
+                        $subscriptions->collectDonations()
+                    ),
+                    'donorsCount' => array_merge(
+                        $campaignsData['donorsCount'] ?? [],
+                        $subscriptions->collectDonors()
+                    ),
                 ]);
             }
 
@@ -154,7 +175,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
      */
     public function reverse(): void
     {
-        give_delete_option('give_campaigns_data');
-        give_delete_option('give_campaigns_subscriptions_data');
+        delete_option('give_campaigns_data');
+        delete_option('give_campaigns_subscriptions_data');
     }
 }

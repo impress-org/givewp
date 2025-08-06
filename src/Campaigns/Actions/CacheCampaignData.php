@@ -20,13 +20,14 @@ class CacheCampaignData
     /**
      * @unreleased
      */
-    public function __invoke(Donation $donation): void
+    public function __invoke(int $donationId): void
     {
-        if ( ! $donation->status->isComplete()) {
-            return;
+        $donation = Donation::find($donationId);
+
+        if ($donation->status->isComplete() || $donation->status->isRenewal()) {
+            as_enqueue_async_action('givewp_cache_campaign_data', [$donation->campaignId], 'givewp_campaigns_cache');;
         }
 
-        as_enqueue_async_action('givewp_cache_campaign_data', [$donation->formId], 'givewp_campaigns_cache');
     }
 
     /**
@@ -45,16 +46,16 @@ class CacheCampaignData
      * Handle campaign cache
      * @unreleased
      */
-    public function handleCache($formId): void
+    public function handleCache($campaignId): void
     {
-        $campaign = Campaign::findByFormId($formId);
+        $campaign = Campaign::find($campaignId);
 
         if ( ! $campaign) {
             return;
         }
 
-        $campaignsData = give_get_option('give_campaigns_data', []);
-        $campaignsSubscriptionData = give_get_option('give_campaigns_subscription_data', []);
+        $campaignsData = get_option('give_campaigns_data', []);
+        $campaignsSubscriptionData = get_option('give_campaigns_subscription_data', []);
 
         $donations = CampaignsDataQuery::donations([$campaign->id]);
         $subscriptions = CampaignsDataQuery::subscriptions([$campaign->id]);
@@ -115,18 +116,18 @@ class CacheCampaignData
 
         // Save updated cache
         if ($isCached) {
-            give_update_option('give_campaigns_data', $campaignsData);
+            update_option('give_campaigns_data', $campaignsData);
         }
 
         if ($isSubscriptionCached) {
-            give_update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
+            update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
         }
 
         if ($isCached || $isSubscriptionCached) {
             return;
         }
 
-        give_update_option('give_campaigns_data', [
+        update_option('give_campaigns_data', [
             'amounts' => array_merge(
                 $campaignsData['amounts'] ?? [],
                 $donations->collectInitialAmounts()
@@ -142,7 +143,7 @@ class CacheCampaignData
         ]);
 
         if (defined('GIVE_RECURRING_VERSION')) {
-            give_update_option('give_campaigns_subscriptions_data', [
+            update_option('give_campaigns_subscriptions_data', [
                 'amounts' => array_merge(
                     $campaignsSubscriptionData['amounts'] ?? [],
                     $subscriptions->collectIntendedAmounts()

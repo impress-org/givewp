@@ -47,8 +47,8 @@ class CampaignsDataRepository
     public static function campaigns(array $ids): CampaignsDataRepository
     {
         $self = new self();
-        $campaignsData = give_get_option('give_campaigns_data', []);
-        $campaignsSubscriptionData = give_get_option('give_campaigns_subscription_data', []);
+        $campaignsData = get_option('give_campaigns_data', []);
+        $campaignsSubscriptionData = get_option('give_campaigns_subscription_data', []);
 
         // remove cached campaign ids
         $campaignIds = array_filter($ids, function ($id) use ($campaignsData) {
@@ -88,7 +88,7 @@ class CampaignsDataRepository
         $self->donorsCount = $donations->collectDonors();
 
         // cache campaigns data
-        give_update_option('give_campaigns_data', [
+        update_option('give_campaigns_data', [
             'amounts' => array_merge($campaignsData['amounts'] ?? [], $self->amounts),
             'donationsCount' => array_merge($campaignsData['donationsCount'] ?? [], $self->donationsCount),
             'donorsCount' => array_merge($campaignsData['donorsCount'] ?? [], $self->donorsCount),
@@ -103,7 +103,7 @@ class CampaignsDataRepository
             $self->subscriptionDonorsCount = $subscriptions->collectDonors();
 
             // cache campaigns subscriptions data
-            give_update_option('give_campaigns_subscriptions_data', [
+            update_option('give_campaigns_subscriptions_data', [
                 'amounts' => array_merge($campaignsSubscriptionData['amounts'] ?? [], $self->subscriptionAmounts),
                 'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'] ?? [], $self->subscriptionDonationsCount),
                 'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'] ?? [], $self->subscriptionDonorsCount),
