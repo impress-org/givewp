@@ -1,6 +1,12 @@
+
+import { __ } from "@wordpress/i18n";
+import SubscriptionStats from "./SubscriptionStats";
+import OverviewPanel from "@givewp/admin/components/OverviewPanel";
+import Header from "@givewp/admin/components/Header";
+import { SubscriptionNotes } from "@givewp/admin/components/PrivateNotes";
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
 import { useDonationsBySubscription } from "@givewp/subscriptions/hooks";
-import SubscriptionStats from "./SubscriptionStats";
+import { useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
 import styles from "./styles.module.scss";
 
 /**
@@ -14,7 +20,11 @@ export default function SubscriptionDetailsPageOverviewTab() {
     return (
         <div className={styles.overview}>
             <SubscriptionStats donations={donations} currency={subscription?.amount?.currency} totalInstallments={subscription?.installments} loading={!hasResolved || donationsLoading || !donationsResolved} />
+
             <div className={styles.left}>
+                <OverviewPanel>
+                    <SubscriptionNotes subscriptionId={subscription?.id} />
+                </OverviewPanel>
 
             </div>
 
