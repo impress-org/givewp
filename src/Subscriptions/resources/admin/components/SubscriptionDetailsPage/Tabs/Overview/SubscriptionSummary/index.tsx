@@ -96,7 +96,7 @@ export default function Summary({subscription, donation, adminUrl, intendedAmoun
         {
           label: __('Donation form', 'give'),
           value: (
-            <a className={styles.link} href={`${adminUrl}/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${donation?.formId}&locale=en_US`} target="_blank" rel="noopener noreferrer">
+            <a className={styles.link} href={`${adminUrl}/edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${donation?.formId}`} target="_blank" rel="noopener noreferrer">
               {donation?.formTitle}
             </a>
           ),
