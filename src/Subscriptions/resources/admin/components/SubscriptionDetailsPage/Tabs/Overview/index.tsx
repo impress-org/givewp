@@ -1,6 +1,5 @@
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
 import { useDonationsBySubscription } from "@givewp/subscriptions/hooks";
-
 import SubscriptionStats from "./SubscriptionStats";
 import styles from "./styles.module.scss";
 
