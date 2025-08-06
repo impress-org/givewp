@@ -75,6 +75,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->setupCampaignForms();
         $this->loadCampaignOptions();
         $this->addNewBadgeToMenu();
+        $this->registerCampaignCache();
     }
 
     /**
@@ -133,18 +134,6 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('before_delete_post', PreventDeleteDefaultForm::class);
         Hooks::addAction('transition_post_status', PreventDeleteDefaultForm::class, 'preventTrashStatusChange', 10, 3);
-
-        /**
-         * @unreleased cache campaign stats data
-         */
-        give(CacheCampaignData::class)->registerAction();
-
-        Hooks::addAction('give_insert_payment', CacheCampaignData::class);
-        Hooks::addAction('give_update_payment_status', CacheCampaignData::class);
-
-        add_action('give_recurring_add_subscription_payment', function (Give_Payment $legacyPayment) {
-            give(CacheCampaignData::class)((int)$legacyPayment->ID);
-        });
 
         $noticeActions = [
             'givewp_campaign_interaction_notice',
@@ -262,5 +251,20 @@ class ServiceProvider implements ServiceProviderInterface
     private function addNewBadgeToMenu(): void
     {
         (new AddNewBadgeToAdminMenuItem())();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerCampaignCache(): void
+    {
+        give(CacheCampaignData::class)->registerAction();
+
+        Hooks::addAction('give_insert_payment', CacheCampaignData::class, '__invoke', 11, 1);
+        Hooks::addAction('give_update_payment_status', CacheCampaignData::class, '__invoke', 11, 1);
+
+        add_action('give_recurring_add_subscription_payment', function (Give_Payment $legacyPayment) {
+            give(CacheCampaignData::class)((int)$legacyPayment->ID);
+        }, 11, 1);
     }
 }

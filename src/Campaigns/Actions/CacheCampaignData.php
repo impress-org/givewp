@@ -22,7 +22,9 @@ class CacheCampaignData
      */
     public function __invoke(int $donationId): void
     {
-        if ( ! $donation = Donation::find($donationId)) {
+        $donation = Donation::find($donationId);
+
+        if (!$donation) {
             return;
         }
 
@@ -39,7 +41,7 @@ class CacheCampaignData
      */
     public function registerAction()
     {
-        add_action('givewp_cache_campaign_data', function ($campaignId) {
+        add_action('givewp_cache_campaign_data', function (int $campaignId) {
             $this->handleCache($campaignId);
         });
     }
@@ -48,11 +50,11 @@ class CacheCampaignData
      * Handle campaign cache
      * @unreleased
      */
-    public function handleCache($campaignId): void
+    public function handleCache(int $campaignId): void
     {
         $campaign = Campaign::find($campaignId);
 
-        if ( ! $campaign) {
+        if (!$campaign) {
             return;
         }
 
