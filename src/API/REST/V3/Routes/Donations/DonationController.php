@@ -453,19 +453,19 @@ class DonationController extends WP_REST_Controller
                 return $value;
 
             case 'status':
-                if (is_string($value)) {
+                if (is_string($value) && DonationStatus::isValidValue($value)) {
                     return new DonationStatus($value);
                 }
                 return $value;
 
             case 'type':
-                if (is_string($value)) {
+                if (is_string($value) && DonationType::isValidValue($value)) {
                     return new DonationType($value);
                 }
                 return $value;
 
             case 'mode':
-                if (is_string($value)) {
+                if (is_string($value) && DonationMode::isValidValue($value)) {
                     return new DonationMode($value);
                 }
                 return $value;

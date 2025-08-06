@@ -34,7 +34,7 @@ class SubscriptionFields
                 return $value;
 
             case 'status':
-                if (is_string($value)) {
+                if (is_string($value) && SubscriptionStatus::isValid($value)) {
                     return new SubscriptionStatus($value);
                 }
 
@@ -48,7 +48,7 @@ class SubscriptionFields
                 return $value;
 
             case 'mode':
-                if (is_string($value)) {
+                if (is_string($value) && SubscriptionMode::isValid($value)) {
                     return new SubscriptionMode($value);
                 }
 
@@ -76,4 +76,4 @@ class SubscriptionFields
                 return $value;
         }
     }
-} 
+}
