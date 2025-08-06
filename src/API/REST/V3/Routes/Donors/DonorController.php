@@ -2,9 +2,9 @@
 
 namespace Give\API\REST\V3\Routes\Donors;
 
-use Give\API\REST\V3\Helpers\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
+use Give\API\REST\V3\Support\CURIE;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorAddress;

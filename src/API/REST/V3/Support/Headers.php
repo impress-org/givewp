@@ -1,13 +1,13 @@
 <?php
 
-namespace Give\API\REST\V3\Helpers;
+namespace Give\API\REST\V3\Support;
 
 use WP_REST_Request;
 use WP_REST_Response;
 
 /**
  * Helper class to manage pagination headers for REST API responses.
- * 
+ *
  * @unreleased
  */
 class Headers
@@ -22,7 +22,7 @@ class Headers
      * @param int $totalItems Total number of items
      * @param int $perPage Number of items per page
      * @param string $routeBase The route base for building pagination URLs
-     * 
+     *
      * @return WP_REST_Response The response with headers added
      */
     public static function addPagination(
@@ -70,4 +70,4 @@ class Headers
 
         return $response;
     }
-} 
+}

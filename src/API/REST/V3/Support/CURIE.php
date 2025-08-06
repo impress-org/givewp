@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\API\REST\V3\Helpers;
+namespace Give\API\REST\V3\Support;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 
@@ -54,4 +54,4 @@ class CURIE
 
         return trailingslashit(self::$baseUrl) . $rel;
     }
-} 
+}

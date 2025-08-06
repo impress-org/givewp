@@ -2,16 +2,15 @@
 
 namespace Give\API\REST\V3\Routes\Subscriptions;
 
-use DateTime;
-use Give\API\REST\V3\Helpers\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
-use Give\API\REST\V3\Helpers\Headers;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionCollectionParams;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionItemSchema;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionSharedParamsForGetMethods;
 use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionFields;
 use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionPermissions;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\API\REST\V3\Support\CURIE;
+use Give\API\REST\V3\Support\Headers;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\SubscriptionQuery;
@@ -25,7 +24,7 @@ use WP_REST_Server;
 /**
  * The methods using snake case like register_routes() are present in the base class,
  * and the methods using camel case like deleteItems() are available only on this class.
- * 
+ *
  * @unreleased
  */
 class SubscriptionController extends WP_REST_Controller
@@ -147,14 +146,14 @@ class SubscriptionController extends WP_REST_Controller
 
     /**
      * Get subscriptions.
-     * 
+     *
      * @unreleased
-     * 
+     *
      * @param WP_REST_Request $request Full data about the request.
      *
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      *
-     * @throws Exception          
+     * @throws Exception
      */
     public function get_items($request)
     {
@@ -185,7 +184,7 @@ class SubscriptionController extends WP_REST_Controller
         if (! in_array('any', (array) $status, true)) {
             $query->whereStatus((array)$status);
         }
-        
+
         if (in_array($sortColumn, ['firstName', 'lastName'], true)) {
             $query->selectDonorNames();
         }
@@ -204,7 +203,7 @@ class SubscriptionController extends WP_REST_Controller
         }, $subscriptions);
 
         $totalSubscriptions = empty($subscriptions) ? 0 : $totalQuery->count();
-        $response = rest_ensure_response($subscriptions);        
+        $response = rest_ensure_response($subscriptions);
         $response = Headers::addPagination($response, $request, $totalSubscriptions, $perPage, $this->rest_base);
 
         return $response;
@@ -308,7 +307,7 @@ class SubscriptionController extends WP_REST_Controller
         return rest_ensure_response($response);
     }
 
-    /**     
+    /**
      * Update a subscription.
      *
      * @unreleased
@@ -371,7 +370,7 @@ class SubscriptionController extends WP_REST_Controller
      * Delete a subscription.
      *
      * @unreleased
-     * 
+     *
      * @param WP_REST_Request $request Full data about the request.
      *
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
@@ -389,13 +388,13 @@ class SubscriptionController extends WP_REST_Controller
 
         $item = (new SubscriptionViewModel($subscription))->exports();
 
-        if ($force) { // Permanently delete the subscription            
+        if ($force) { // Permanently delete the subscription
             $deleted = $subscription->delete();
 
             if (! $deleted) {
                 return new WP_REST_Response(['message' => __('Failed to delete subscription', 'give')], 500);
             }
-        } else { // Move the subscription to trash (soft delete)            
+        } else { // Move the subscription to trash (soft delete)
             $trashed = $subscription->trash();
 
             if (! $trashed) {
@@ -406,11 +405,11 @@ class SubscriptionController extends WP_REST_Controller
         return new WP_REST_Response(['deleted' => true, 'previous' => $item], 200);
     }
 
-    /**     
+    /**
      * Delete multiple subscriptions.
      *
      * @unreleased
-     * 
+     *
      * @param WP_REST_Request $request Full data about the request.
      *
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
@@ -505,9 +504,9 @@ class SubscriptionController extends WP_REST_Controller
      *
      * @param mixed           $item    WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
-	 * 
+     *
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
-	 * 
+     *
      * @throws Exception
      */
     public function prepare_item_for_response($item, $request)
@@ -518,14 +517,14 @@ class SubscriptionController extends WP_REST_Controller
             $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $subscriptionId));
             $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
             $donor_url = add_query_arg([
-                'mode' => $request->get_param('mode'),      
+                'mode' => $request->get_param('mode'),
             ], $donor_url);
             $links = [
                 'self' => ['href' => $self_url],
                 CURIE::relationUrl('donor') => [
                     'href' => $donor_url,
                     'embeddable' => true,
-                ],                
+                ],
             ];
         } else {
             $links = [];
