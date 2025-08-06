@@ -140,7 +140,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('give_insert_payment', CacheCampaignData::class);
         Hooks::addAction('give_update_payment_status', CacheCampaignData::class);
-        Hooks::addAction('give_recurring_update_subscription_status', CacheCampaignData::class);
+        Hooks::addAction('give_recurring_add_subscription_payment', CacheCampaignData::class);
 
         $noticeActions = [
             'givewp_campaign_interaction_notice',
