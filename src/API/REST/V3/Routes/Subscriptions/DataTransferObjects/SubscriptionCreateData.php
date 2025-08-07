@@ -3,8 +3,7 @@
 namespace Give\API\REST\V3\Routes\Subscriptions\DataTransferObjects;
 
 use Exception;
-use Give\API\REST\V3\Routes\Subscriptions\Exceptions\SubscriptionValidationException;
-use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionFields;
+use Give\API\REST\V3\Routes\Subscriptions\Fields\SubscriptionFields;
 use Give\Subscriptions\Models\Subscription;
 use WP_REST_Request;
 
@@ -94,4 +93,4 @@ class SubscriptionCreateData
 
         return $processedAttributes;
     }
-} 
+}

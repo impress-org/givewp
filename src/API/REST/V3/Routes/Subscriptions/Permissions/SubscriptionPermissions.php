@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\API\REST\V3\Routes\Subscriptions\Helpers;
+namespace Give\API\REST\V3\Routes\Subscriptions\Permissions;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use WP_Error;

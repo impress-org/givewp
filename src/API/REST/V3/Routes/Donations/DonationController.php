@@ -2,11 +2,10 @@
 
 namespace Give\API\REST\V3\Routes\Donations;
 
-use DateTime;
 use Exception;
 use Give\API\REST\V3\Routes\Donations\DataTransferObjects\DonationCreateData;
 use Give\API\REST\V3\Routes\Donations\Exceptions\DonationValidationException;
-use Give\API\REST\V3\Routes\Donations\Helpers\DonationFields;
+use Give\API\REST\V3\Routes\Donations\Fields\DonationFields;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Support\CURIE;
@@ -17,7 +16,6 @@ use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
-use Give\Subscriptions\Models\Subscription;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -294,7 +292,7 @@ class DonationController extends WP_REST_Controller
     public function create_item($request): WP_REST_Response
     {
         try {
-            $data = DonationCreateData::fromRequest($request);        
+            $data = DonationCreateData::fromRequest($request);
             $donation = $data->isRenewal() ? $data->createRenewal() : $data->createDonation();
 
             $item = (new DonationViewModel($donation))

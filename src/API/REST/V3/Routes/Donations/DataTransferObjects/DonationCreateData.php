@@ -2,10 +2,9 @@
 
 namespace Give\API\REST\V3\Routes\Donations\DataTransferObjects;
 
-use DateTime;
 use Exception;
 use Give\API\REST\V3\Routes\Donations\Exceptions\DonationValidationException;
-use Give\API\REST\V3\Routes\Donations\Helpers\DonationFields;
+use Give\API\REST\V3\Routes\Donations\Fields\DonationFields;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Subscriptions\Models\Subscription;
@@ -218,10 +217,10 @@ class DonationCreateData
     {
         // Validate subscription rules first
         $this->validateSubscriptionRules();
-        
+
         // Validate donation creation
         $this->validateCreateDonation();
-        
+
         // Filter out auto-generated fields
         $donationAttributes = array_filter($this->attributes, function ($key) {
             return !in_array($key, ['id', 'createdAt', 'updatedAt'], true);
@@ -241,12 +240,12 @@ class DonationCreateData
     {
         // Validate subscription rules first
         $this->validateSubscriptionRules();
-        
+
         // Validate renewal creation
         $this->validateCreateRenewal();
-        
+
         $subscription = Subscription::find($this->subscriptionId);
-        
+
         // Pass the processed attributes to allow overriding values from the request
         // Filter out auto-generated fields and subscription-specific fields
         $renewalAttributes = array_filter($this->attributes, function ($key) {
@@ -366,4 +365,4 @@ class DonationCreateData
                isset($this->attributes['type']) &&
                $this->attributes['type']->getValue() === 'renewal';
     }
-} 
+}
