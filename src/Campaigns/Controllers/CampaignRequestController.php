@@ -78,17 +78,11 @@ class CampaignRequestController
             return $campaign->id;
         }, $campaigns);
 
-        // We don't have to optimize if the number of campaigns is less than 3
-        $campaignsData = count($ids) >= 3
-            ? CampaignsDataRepository::campaigns($ids)
-            : null;
+        $campaignsData = CampaignsDataRepository::campaigns($ids);
 
         $campaigns = array_map(function ($campaign) use ($campaignsData) {
             $view = new CampaignViewModel($campaign);
-
-            if ($campaignsData) {
-                $view->setData($campaignsData);
-            }
+            $view->setData($campaignsData);
 
             return $view->exports();
         }, $campaigns);
