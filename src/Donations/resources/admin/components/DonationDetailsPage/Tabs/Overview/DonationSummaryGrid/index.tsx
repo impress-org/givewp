@@ -3,13 +3,14 @@ import classnames from 'classnames';
 import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import PaymentMethodIcon from './PaymentMethodIcon';
 import { formatTimestamp } from '@givewp/src/Admin/utils';
-import styles from './styles.module.scss';
 import ExternalLinkIcon from './icon';
 import type {Donation} from '@givewp/donations/admin/components/types';
 import { useDonorEntityRecord } from '@givewp/donors/utils';
 import { useCampaignEntityRecord } from '@givewp/campaigns/utils';
 import Spinner from '@givewp/src/Admin/components/Spinner';
 import Grid, { GridCard } from '@givewp/src/Admin/components/Grid';
+
+import styles from './styles.module.scss';
 
 /**
  * @since 4.6.0
@@ -25,7 +26,7 @@ export function CampaignCard({donation}: {donation: Donation}) {
     const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(donation?.campaignId);
 
     return (
-        <GridCard className={classnames(styles.card, styles.campaignCard)} heading={__('Campaign name', 'give')} headingId="campaign-name">
+        <GridCard heading={__('Campaign name', 'give')} headingId="campaign-name">
             {!hasResolvedCampaign && <Spinner />}
             {hasResolvedCampaign && campaign && (
                 <a
@@ -46,14 +47,14 @@ export function DonorCard({donation}: {donation: Donation}) {
     const {record: donor, hasResolved: hasResolvedDonor} = useDonorEntityRecord(donation?.donorId);
 
     return (
-        <GridCard className={classnames(styles.card, styles.donorCard)} heading={__('Associated donor', 'give')} headingId="donor">
+        <GridCard heading={__('Associated donor', 'give')} headingId="donor">
          {!hasResolvedDonor && <Spinner />}
          {hasResolvedDonor && (
             <>
                 <a className={styles.donorLink} href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`}>
                     {donor.name}
                 </a>
-                <p>{donor.email}</p>
+                <p className={styles.donorEmail}>{donor.email}</p>
             </>
          )}
         </GridCard>
@@ -61,6 +62,7 @@ export function DonorCard({donation}: {donation: Donation}) {
 }
 
 /**
+ * @unrleased add GridCard components
  * @since 4.6.0
  */
 export default function DonationPaymentGrid({
@@ -81,7 +83,7 @@ export default function DonationPaymentGrid({
                 <CampaignCard donation={donation} />
 
                 {/* Donation Info */}
-                <GridCard className={styles.card} heading={__('Donation info', 'give')} headingId="donation-info">
+                <GridCard heading={__('Donation info', 'give')} headingId="donation-info">
                     <time className={styles.date} dateTime={donation.createdAt?.date}>
                         {formatTimestamp(donation.createdAt?.date, true)}
                     </time>
@@ -107,7 +109,7 @@ export default function DonationPaymentGrid({
                 <DonorCard donation={donation} />
 
                 {/* Gateway Info */}
-                <GridCard className={styles.card} heading={__('Gateway', 'give')} headingId="gateway">
+                <GridCard heading={__('Gateway', 'give')} headingId="gateway">
                     <strong className={styles.paymentMethod}>
                         <PaymentMethodIcon paymentMethod={donation.gateway.id} />
                         {donation.gateway.label}

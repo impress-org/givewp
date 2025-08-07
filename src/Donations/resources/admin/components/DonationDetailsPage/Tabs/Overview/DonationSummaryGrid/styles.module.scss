@@ -1,17 +1,17 @@
 
 .campaignLink, .donorLink {
-  height: 1.75rem;
   align-self: stretch;
-  flex-grow: 0;
-  font-family: Inter;
   font-size: 1.125rem;
   font-weight: 600;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.56;
-  letter-spacing: normal;
-  text-align: left;
   text-decoration: none;
+}
+
+.campaignLink:hover {
+  text-decoration: underline;
+}
+
+.donorLink {
+  margin-top: var(--givewp-spacing-1);
 }
 
 .paymentMethod {
@@ -27,11 +27,11 @@
   width: 100%;
 }
 
-
 .gatewayLink {
   display: flex;
   align-items: center;
   gap: var(--givewp-spacing-2);
+  margin-top: var(--givewp-spacing-1);
   font-family: Inter;
   font-size: 0.875rem;
   font-weight: 500;
@@ -40,10 +40,6 @@
   line-height: 1.43;
   letter-spacing: normal;
   text-align: center;
-}
-
-.campaignLink:hover {
-  text-decoration: underline;
 }
 
 .date {
