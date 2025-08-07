@@ -1,5 +1,4 @@
 
-import { __ } from "@wordpress/i18n";
 import SubscriptionStats from "./SubscriptionStats";
 import OverviewPanel from "@givewp/admin/components/OverviewPanel";
 import { SubscriptionNotes } from "@givewp/admin/components/PrivateNotes";
