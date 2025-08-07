@@ -3,11 +3,10 @@ import { __ } from "@wordpress/i18n";
 import SubscriptionStats from "./SubscriptionStats";
 import OverviewPanel from "@givewp/admin/components/OverviewPanel";
 import { SubscriptionNotes } from "@givewp/admin/components/PrivateNotes";
-import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
 import {useDonationsBySubscription, useDonationBySubscription, useSubscriptionAmounts} from '@givewp/subscriptions/hooks';
+import SubscriptionSummary from '@givewp/subscriptions/admin/components/SubscriptionDetailsPage/Tabs/Overview/SubscriptionSummary';
+import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
 import styles from "./styles.module.scss";
-import SubscriptionSummary
-    from '@givewp/subscriptions/admin/components/SubscriptionDetailsPage/Tabs/Overview/SubscriptionSummary';
 
 /**
  * @unreleased

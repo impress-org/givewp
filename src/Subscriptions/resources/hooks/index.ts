@@ -1,3 +1,2 @@
 export {default as useSubscriptionAmounts} from './useSubscriptionAmounts';
-export {useDonationsBySubscription} from './useDonationsBySubscription';
-export {useDonationBySubscription} from './useDonationsBySubscription';
+export {useDonationsBySubscription, useDonationBySubscription} from './useDonationsBySubscription';
