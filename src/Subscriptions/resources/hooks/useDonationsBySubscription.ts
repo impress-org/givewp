@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
 import { useEntityRecords } from '@wordpress/core-data';
-import apiFetch from '@wordpress/api-fetch';
 import { Donation } from '@givewp/donations/admin/components/types';
 
 /**
@@ -13,14 +11,24 @@ export function useDonationsBySubscription(
     const queryArgs = {
         subscriptionId,
         mode,
+        status: 'publish',
+        sort: 'createdAt',
+        direction: 'DESC'
     };
 
-    const entityResult = useEntityRecords('givewp', 'donation', queryArgs);
+    const {
+        records,
+        hasResolved,
+        isResolving,
+    }: {
+        records: Donation[] | null;
+        hasResolved: boolean;
+        isResolving: boolean;
+    } = useEntityRecords('givewp', 'donation', queryArgs);
 
     return {
-        records: entityResult.records as Donation[] | null,
-        record: entityResult.records?.[0] as Donation | null,
-        hasResolved: entityResult.hasResolved,
-        isResolving: entityResult.isResolving,
+        records,
+        hasResolved,
+        isResolving,
     };
 }
