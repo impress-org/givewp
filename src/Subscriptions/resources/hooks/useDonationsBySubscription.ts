@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useEntityRecords } from '@wordpress/core-data';
 import { Donation } from '@givewp/donations/admin/components/types';
 import apiFetch from '@wordpress/api-fetch';
+
 /**
  * @unreleased
  */
@@ -34,6 +35,9 @@ export function useDonationsBySubscription(
     };
 }
 
+/**
+ * @unreleased
+ */
 export function useDonationBySubscription(subscriptionId: number, mode: 'test' | 'live') {
     const [record, setRecord] = useState(null);
     const [isResolving, setIsResolving] = useState(true);
@@ -41,7 +45,7 @@ export function useDonationBySubscription(subscriptionId: number, mode: 'test' |
 
     useEffect(() => {
         setIsResolving(true);
-        apiFetch({ path: `/givewp/v3/donations?subscriptionId=${subscriptionId}&mode=${mode}` })
+        apiFetch({ path: `/givewp/v3/donation?subscriptionId=${subscriptionId}&mode=${mode}` })
             .then((res) => setRecord(res[0] ?? null))
             .finally(() => {
                 setIsResolving(false);
