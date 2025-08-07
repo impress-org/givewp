@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useEntityRecord, useEntityRecords } from '@wordpress/core-data';
+import { useEntityRecords } from '@wordpress/core-data';
 import { Donation } from '@givewp/donations/admin/components/types';
-import apiFetch from '@wordpress/api-fetch';
 
 /**
  * @unreleased
