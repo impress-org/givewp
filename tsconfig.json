@@ -65,6 +65,9 @@
             "@givewp/admin/*": [
                 "./src/Admin/*"
             ],
+            "@givewp/admin/components": [
+                "./src/Admin/components"
+            ],
             "@givewp/src/*": [
                 "./src/*"
             ]
