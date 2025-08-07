@@ -2,9 +2,9 @@
 
 namespace Give\API\REST\V3\Routes\Donors;
 
-use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
+use Give\API\REST\V3\Support\CURIE;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorAddress;
@@ -343,6 +343,7 @@ class DonorController extends WP_REST_Controller
                     'maxLength' => 128,
                     'errorMessage' => esc_html__('First name is required', 'give'),
                     'format' => 'text-field',
+                    'required' => true,
                 ],
                 'lastName' => [
                     'type' => 'string',
@@ -351,11 +352,13 @@ class DonorController extends WP_REST_Controller
                     'maxLength' => 128,
                     'errorMessage' => esc_html__('Last name is required', 'give'),
                     'format' => 'text-field',
+                    'required' => true,
                 ],
                 'email' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor email', 'give'),
                     'format' => 'email',
+                    'required' => true,
                 ],
                 'additionalEmails' => [
                     'type' => 'array',
@@ -422,7 +425,6 @@ class DonorController extends WP_REST_Controller
                     ],
                 ],
             ],
-            'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
         ];
     }
 

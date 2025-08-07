@@ -84,16 +84,14 @@ class SubscriptionRepository
     }
 
     /**
-     * @since 2.21.0
-     *
-     * @param string $gatewayTransactionId
+     * @since 2.21.0          
      *
      * @return ModelQueryBuilder<Subscription>
      */
-    public function queryByGatewaySubscriptionId(string $gatewayTransactionId): ModelQueryBuilder
+    public function queryByGatewaySubscriptionId(string $gatewaySubscriptionId): ModelQueryBuilder
     {
         return $this->prepareQuery()
-            ->where('profile_id', $gatewayTransactionId);
+            ->where('profile_id', $gatewaySubscriptionId);
     }
 
     /**

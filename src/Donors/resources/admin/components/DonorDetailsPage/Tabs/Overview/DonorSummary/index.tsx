@@ -1,26 +1,10 @@
-import React from 'react';
 import {__} from '@wordpress/i18n';
 import {dateI18n} from '@wordpress/date';
-import classnames from 'classnames';
-import Header from '@givewp/src/Admin/components/Header';
-import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import {amountFormatter, getRelativeTimeString} from '@givewp/src/Admin/utils';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/utils';
-
-import styles from './styles.module.scss';
-
-/**
- * @since 4.5.0
- */
-export type SummaryItem = {
-    label: string;
-    value: string | {
-        value1: string;
-        value2: string;
-    };
-    isPill?: boolean;
-};
+import {Header, OverviewPanel, SummaryTable, type SummaryItem} from '@givewp/admin/components';
+import styles from "./styles.module.scss";
 
 /**
  * @since 4.5.0
@@ -53,10 +37,12 @@ export default function Summary({donorId}: SummaryProps) {
               {
                   label: __('First Contribution', 'give'),
                   value: stats.donations.first
-                      ? {
-                            value1: amountFormatter(currency).format(parseFloat(stats.donations.first.amount)),
-                            value2: dateI18n('M j, Y', stats.donations.first.date, undefined),
-                        }
+                      ? (
+                          <div className={styles.summaryTableValues}>
+                            <p>{amountFormatter(currency).format(parseFloat(stats.donations.first.amount))}</p>
+                            <p>{dateI18n('M j, Y', stats.donations.first.date, undefined)}</p>
+                          </div>
+                        )
                       : __('None', 'give'),
               },
               {
@@ -75,26 +61,12 @@ export default function Summary({donorId}: SummaryProps) {
           ];
 
     return (
-        <OverviewPanel className={styles.summaryCard}>
+        <OverviewPanel className={styles.summaryPanel}>
             <Header
                 title={__('Summary', 'give')}
                 subtitle={__('Additional information about the donor', 'give')}
             />
-            {summaryItems.map((item, index) => (
-                <div className={styles.summaryCard} key={index}>
-                    <p className={styles.summaryCardLabel}>{item.label}</p>
-                    {typeof item.value === 'object' ? (
-                        <div className={styles.summaryCardValues}>
-                            <p>{item.value.value1}</p>
-                            <p>{item.value.value2}</p>
-                        </div>
-                    ) : (
-                        <strong className={classnames(styles.summaryCardValue, {[styles.pill]: item.isPill})}>
-                            {item.value}
-                        </strong>
-                    )}
-                </div>
-            ))}
+            <SummaryTable data={summaryItems} />
         </OverviewPanel>
     );
 }

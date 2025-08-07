@@ -1,10 +1,35 @@
+
+import SubscriptionStats from "./SubscriptionStats";
+import OverviewPanel from "@givewp/admin/components/OverviewPanel";
+import { SubscriptionNotes } from "@givewp/admin/components/PrivateNotes";
+import {useDonationsBySubscription, useSubscriptionAmounts} from '@givewp/subscriptions/hooks';
+import SubscriptionSummary from '@givewp/subscriptions/admin/components/SubscriptionDetailsPage/Tabs/Overview/SubscriptionSummary';
+import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
+import styles from "./styles.module.scss";
+
 /**
  * @unreleased
  */
 export default function SubscriptionDetailsPageOverviewTab() {
+    const {mode, adminUrl} = getSubscriptionOptionsWindowData();
+    const {record: subscription, hasResolved, isResolving } = useSubscriptionEntityRecord();
+    const {intendedAmount} = useSubscriptionAmounts(subscription);
+    const {records: donations, hasResolved: donationsResolved, isResolving: donationsLoading} = useDonationsBySubscription(subscription?.id, mode);
+
     return (
-        <div>
-            <h2>Overview</h2>
+        <div className={styles.overview}>
+            <SubscriptionStats donations={donations} currency={subscription?.amount?.currency} totalInstallments={subscription?.installments} loading={!hasResolved || donationsLoading || !donationsResolved} />
+
+            <div className={styles.left}>
+                <OverviewPanel>
+                    <SubscriptionNotes subscriptionId={subscription?.id} />
+                </OverviewPanel>
+
+            </div>
+
+            <div className={styles.right}>
+                <SubscriptionSummary subscription={subscription} donation={donations?.[0]} adminUrl={adminUrl} intendedAmount={intendedAmount} isLoading={isResolving || !hasResolved || donationsLoading || !donationsResolved} />
+            </div>
         </div>
     );
 }

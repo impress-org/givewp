@@ -165,10 +165,17 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * Returns the donation that began the subscription.
      *
+     * @unreleased Returns null if no initial donation found.
      * @since 2.23.0
      */
-    public function initialDonation(): Donation
+    public function initialDonation(): ?Donation
     {
+        $initialDonationId = give()->subscriptions->getInitialDonationId($this->id);
+
+        if ( ! $initialDonationId) {
+            return null;
+        }
+
         return Donation::find(give()->subscriptions->getInitialDonationId($this->id));
     }
 

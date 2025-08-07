@@ -13,7 +13,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  *
  * @unreleased
  */
-class LoadSubscriptionOptions
+class LoadSubscriptionAdminOptions
 {
     public function __invoke()
     {
