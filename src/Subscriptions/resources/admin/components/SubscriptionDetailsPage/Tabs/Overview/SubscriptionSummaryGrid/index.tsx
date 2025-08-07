@@ -13,6 +13,9 @@ import classnames from 'classnames';
 
 import styles from './styles.module.scss';
 
+/**
+ * @unreleased
+ */
 type SubscriptionDetailsProps = {
     subscription: Subscription;
     donation?: Donation;

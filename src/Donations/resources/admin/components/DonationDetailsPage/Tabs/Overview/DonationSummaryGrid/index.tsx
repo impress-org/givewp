@@ -20,6 +20,7 @@ export type DonationSummaryGridProps = {
 };
 
 /**
+ * @unreleased export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
 export function CampaignCard({donation}: {donation: Donation}) {
@@ -41,6 +42,7 @@ export function CampaignCard({donation}: {donation: Donation}) {
 }
 
 /**
+ * @unreleased export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
 export function DonorCard({donation}: {donation: Donation}) {
@@ -62,7 +64,7 @@ export function DonorCard({donation}: {donation: Donation}) {
 }
 
 /**
- * @unrleased add GridCard components
+ * @unrleased add Grid components & variables
  * @since 4.6.0
  */
 export default function DonationSummaryGrid({
