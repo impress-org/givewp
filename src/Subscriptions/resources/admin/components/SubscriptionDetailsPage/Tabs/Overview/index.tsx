@@ -2,11 +2,10 @@
 import { __ } from "@wordpress/i18n";
 import SubscriptionStats from "./SubscriptionStats";
 import OverviewPanel from "@givewp/admin/components/OverviewPanel";
-import Header from "@givewp/admin/components/Header";
+import SubscriptionSummaryGrid from "./SubscriptionSummaryGrid";
 import { SubscriptionNotes } from "@givewp/admin/components/PrivateNotes";
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
-import { useDonationsBySubscription } from "@givewp/subscriptions/hooks";
-import { useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
+import { useDonationsBySubscription, useDonationBySubscription, useSubscriptionAmounts } from "@givewp/subscriptions/hooks";
 import styles from "./styles.module.scss";
 
 /**
@@ -14,14 +13,17 @@ import styles from "./styles.module.scss";
  */
 export default function SubscriptionDetailsPageOverviewTab() {
     const {mode, adminUrl} = getSubscriptionOptionsWindowData();
-    const {record: subscription, hasResolved } = useSubscriptionEntityRecord();
+    const {record: subscription, hasResolved, isResolving: subscriptionLoading } = useSubscriptionEntityRecord();
+    const {intendedAmount} = useSubscriptionAmounts(subscription);
     const {records: donations, hasResolved: donationsResolved, isResolving: donationsLoading} = useDonationsBySubscription(subscription?.id, mode);
-    
+    const {record: donation, hasResolved: donationResolved, isResolving: donationLoading} = useDonationBySubscription(subscription?.id, mode);
+
     return (
         <div className={styles.overview}>
             <SubscriptionStats donations={donations} currency={subscription?.amount?.currency} totalInstallments={subscription?.installments} loading={!hasResolved || donationsLoading || !donationsResolved} />
 
             <div className={styles.left}>
+                <SubscriptionSummaryGrid subscription={subscription} donation={donation} isLoading={subscriptionLoading || donationLoading } />
                 <OverviewPanel>
                     <SubscriptionNotes subscriptionId={subscription?.id} />
                 </OverviewPanel>
