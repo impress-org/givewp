@@ -45,7 +45,7 @@ export function useDonationBySubscription(subscriptionId: number, mode: 'test' |
 
     useEffect(() => {
         setIsResolving(true);
-        apiFetch({ path: `/givewp/v3/donation?subscriptionId=${subscriptionId}&mode=${mode}` })
+        apiFetch({ path: `/givewp/v3/donations?subscriptionId=${subscriptionId}&mode=${mode}` })
             .then((res) => setRecord(res[0] ?? null))
             .finally(() => {
                 setIsResolving(false);
