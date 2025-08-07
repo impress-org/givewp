@@ -59,7 +59,7 @@ class DonorStatisticsController extends WP_REST_Controller
                     ],
                 ],
             ],
-            'schema' => [$this, 'getSchema'],
+            'schema' => [$this, 'get_public_item_schema' ],
         ]);
     }
 
@@ -143,7 +143,7 @@ class DonorStatisticsController extends WP_REST_Controller
     /**
      * @since unreleased
      */
-    public function getSchema(): array
+    public function get_item_schema(): array
     {
         return [
             '$schema' => 'http://json-schema.org/draft-07/schema#',
