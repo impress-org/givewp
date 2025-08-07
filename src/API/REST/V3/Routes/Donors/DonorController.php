@@ -486,9 +486,21 @@ class DonorController extends WP_REST_Controller
                 ],
                 'customFields' => [
                     'type'        => 'array',
-                    'description' => esc_html__('Custom donor fields', 'give'),
+                    'description' => esc_html__('Custom fields (sensitive data)', 'give'),
                     'items'       => [
-                        'type' => 'object', // Optionally expand with known structure
+                        'type' => 'object',
+                        'properties' => [
+                            'label' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Field label', 'give'),
+                                'format' => 'text-field',
+                            ],
+                            'value' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Field value', 'give'),
+                                'format' => 'text-field',
+                            ],
+                        ],
                     ],
                 ],
                 '_links' => [
