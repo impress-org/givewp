@@ -42,6 +42,7 @@ class GetCampaignRevenue implements RestRoute
                         'sanitize_callback' => 'absint',
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -186,7 +187,7 @@ class GetCampaignRevenue implements RestRoute
         foreach ($dates as $date) {
             $data[] = [
                 'date' => $date,
-                'amount' => $resultMap[$date] ?? 0
+                'amount' => $resultMap[$date] ?? 0,
             ];
         }
 
@@ -207,4 +208,32 @@ class GetCampaignRevenue implements RestRoute
 
         return $resultMap;
     }
+
+    /**
+     * @since unreleased
+     */
+    public function getSchema(): array
+    {
+        return [
+            '$schema' => 'http://json-schema.org/draft-07/schema#',
+            'title'   => 'campaign-revenue',
+            'type'    => 'object',
+            'properties' => [
+                'date' => [
+                    'type'        => 'string',
+                    'format'      => 'date',
+                    'description' => esc_html__('The date for the revenue entry (YYYY-MM-DD).', 'give'),
+                ],
+                'amount' => [
+                    'oneOf' => [
+                        [ 'type' => 'number' ],
+                        [ 'type' => 'string' ],
+                    ],
+                    'description' => esc_html__('The amount of revenue received on the given date.', 'give'),
+                ],
+            ],
+            'required' => ['date', 'amount'],
+        ];
+    }
+
 }
