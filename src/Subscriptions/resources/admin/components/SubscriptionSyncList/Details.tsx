@@ -6,6 +6,7 @@ import styles from "./styles.module.scss";
 
 /**
  * Utility function to capitalize the first letter of a string
+ * 
  * @unreleased
  * @param str - The string to capitalize
  * @returns The string with first letter capitalized
@@ -30,12 +31,16 @@ type SyncDetailsProps = {
 export default function SyncDetails({ isAccurate, platform, gateway }: SyncDetailsProps) {
   if(isAccurate) {
     return (
-      <div className={styles.accurateDetailWrapper}>
+      <div 
+        className={styles.accurateDetailWrapper}
+        role="region"
+        aria-label={__('Accurate synchronization details', 'give')}
+      >
         <div className={styles.detailItem}>
           <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
           <p className={styles.detailValue}>{platform ? capitalizeFirstLetter(platform) : __('Completed', 'give')}</p>
         </div>
-        <CheckCircleIcon />
+        <CheckCircleIcon aria-label={__('Payment synchronization successful', 'give')}/>
         <div className={styles.detailItem}>
           <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
           <p className={styles.detailValue}>{gateway ? capitalizeFirstLetter(gateway) : __('Completed', 'give')}</p>
@@ -104,12 +109,16 @@ type SyncPaymentDetailsProps = {
 export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: SyncPaymentDetailsProps) {   
     if(isAccurate) {
       return (
-        <div className={styles.accurateDetailWrapper}>
+        <div 
+          className={styles.accurateDetailWrapper}
+          role="region"
+          aria-label={__('Accurate payment synchronization details', 'give')}
+        >
           <div className={styles.detailItem}>
             <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
             <p className={styles.detailValue}>{platform ? capitalizeFirstLetter(platform) : __('Completed', 'give')}</p>
           </div>
-          <CheckCircleIcon />
+          <CheckCircleIcon aria-label={__('Payment synchronization successful', 'give')}/>
           <div className={styles.detailItem}>
             <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
             <p className={styles.detailValue}>{gateway ? capitalizeFirstLetter(gateway) : __('Completed', 'give')}</p>
@@ -128,10 +137,14 @@ export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: S
     );
 
     return (
-      <div className={styles.paymentDetails}>
+      <div 
+        className={styles.paymentDetails}
+        role="region"
+        aria-label={__('Payment details', 'give')}
+      >
         <div className={classnames(styles.paymentItem)}>
             <div className={styles.paymentIcon}>
-                <HandHeartIcon />
+                <HandHeartIcon aria-label={__('Donation icon', 'give')}/>
             </div>
             <div className={styles.paymentsContent}>
                 <p className={styles.paymentDescription}>{description}</p>

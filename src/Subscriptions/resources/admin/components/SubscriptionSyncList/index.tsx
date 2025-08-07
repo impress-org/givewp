@@ -96,6 +96,8 @@ function SyncItem({ id, title, isAccurate, isOpen, onToggle, children }: SyncIte
                             className={classnames(styles.itemPill, {
                                 [styles.itemAccurate]: isAccurate,
                             })}
+                            role="status"
+                            aria-label={isAccurate ? __('ACCURATE', 'give') : __('UPDATED', 'give')}
                         >
                             {isAccurate ? __('ACCURATE', 'give') : __('UPDATED', 'give')}
                         </span>
