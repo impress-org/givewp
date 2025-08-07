@@ -1,5 +1,4 @@
 import { __ } from '@wordpress/i18n';
-import classnames from 'classnames';
 import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import PaymentMethodIcon from './PaymentMethodIcon';
 import { formatTimestamp } from '@givewp/src/Admin/utils';
