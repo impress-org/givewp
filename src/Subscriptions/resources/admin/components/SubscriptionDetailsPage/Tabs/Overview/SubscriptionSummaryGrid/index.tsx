@@ -25,6 +25,11 @@ type SubscriptionDetailsProps = {
 export default function SubscriptionSummaryGrid({subscription, donation, isLoading}: SubscriptionDetailsProps) {    
     const isOngoing = subscription?.installments === 0;
     const badgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
+    const createdAt = donation?.createdAt?.date;
+    const paymentMethod = donation?.gateway?.id;
+    const gatewayLabel = donation?.gateway?.label;
+    const gatewayLink = donation?.gateway?.transactionUrl;
+
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -40,8 +45,8 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                     {isLoading && <Spinner />}
                     {!isLoading && (
                         <>
-                            <time className={styles.date} dateTime={donation?.createdAt?.date}>
-                                {formatTimestamp(donation?.createdAt?.date, true)}
+                            <time className={styles.date} dateTime={createdAt}>
+                                {formatTimestamp(createdAt, true)}
                             </time>
                             <div className={styles.donationType}>
                                 <span className={classnames(styles.badge, {
@@ -59,18 +64,18 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                 <DonorCard donation={donation} />
 
                 {/* Gateway Info */}
-                <GridCard className={classnames(styles.card)} heading={__('Gateway', 'give')} headingId="gateway">
+                <GridCard heading={__('Gateway', 'give')} headingId="gateway">
                     {isLoading && <Spinner />}
                     {!isLoading && (
                         <>
                             <strong className={styles.paymentMethod}>
-                                <PaymentMethodIcon paymentMethod={donation?.gateway?.id} />
-                                {donation?.gateway?.label}
+                                <PaymentMethodIcon paymentMethod={paymentMethod} />
+                                {gatewayLabel}
                             </strong>
-                            {donation?.gateway?.transactionUrl && (
+                            {gatewayLink && (
                                 <a
                                     className={styles.gatewayLink}
-                                    href={donation?.gateway?.transactionUrl}
+                                    href={gatewayLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >

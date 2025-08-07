@@ -68,9 +68,13 @@ export function DonorCard({donation}: {donation: Donation}) {
 export default function DonationSummaryGrid({
     donation,
 }: DonationSummaryGridProps) {
-     const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${donation?.subscriptionId}` : null;
      const isRecurringDonation = !!donation?.subscriptionId;
      const badgeLabel = isRecurringDonation ? __('Recurring', 'give') : __('One-time', 'give');
+     const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${donation?.subscriptionId}` : null;
+     const createdAt = donation?.createdAt?.date;
+     const paymentMethod = donation?.gateway?.id;
+     const gatewayLabel = donation?.gateway?.label;
+     const gatewayLink = donation?.gateway?.transactionUrl;
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -84,8 +88,8 @@ export default function DonationSummaryGrid({
 
                 {/* Donation Info */}
                 <GridCard heading={__('Donation info', 'give')} headingId="donation-info">
-                    <time className={styles.date} dateTime={donation.createdAt?.date}>
-                        {formatTimestamp(donation.createdAt?.date, true)}
+                    <time className={styles.date} dateTime={createdAt}>
+                        {formatTimestamp(createdAt, true)}
                     </time>
                     <div className={styles.donationType}>
                         <span className={styles.badge} aria-label={badgeLabel}>
@@ -111,13 +115,13 @@ export default function DonationSummaryGrid({
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">
                     <strong className={styles.paymentMethod}>
-                        <PaymentMethodIcon paymentMethod={donation.gateway.id} />
-                        {donation.gateway.label}
+                        <PaymentMethodIcon paymentMethod={paymentMethod} />
+                        {gatewayLabel}
                     </strong>
-                    {donation.gateway.transactionUrl && (
+                    {gatewayLink && (
                         <a
                             className={styles.gatewayLink}
-                            href={donation.gateway.transactionUrl}
+                            href={gatewayLink}
                             target="_blank"
                             rel="noopener noreferrer"
                         >
