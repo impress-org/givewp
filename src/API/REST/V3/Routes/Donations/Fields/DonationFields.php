@@ -1,23 +1,28 @@
 <?php
 
-namespace Give\API\REST\V3\Routes\Subscriptions\Helpers;
+namespace Give\API\REST\V3\Routes\Donations\Fields;
 
 use DateTime;
+use Give\Donations\Properties\BillingAddress;
+use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Subscriptions\ValueObjects\SubscriptionMode;
-use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
-use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * @unreleased
  */
-class SubscriptionFields
+class DonationFields
 {
     /**
-     * Process field values for special data types before setting them on the subscription model.
+     * Process field values for special data types before setting them on the donation model.
      *
      * @unreleased
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return mixed
      */
     public static function processValue(string $key, $value)
     {
@@ -30,36 +35,33 @@ class SubscriptionFields
                         return Money::fromDecimal($value['amount'], $value['currency']);
                     }
                 }
-
                 return $value;
 
             case 'status':
-                if (is_string($value) && SubscriptionStatus::isValid($value)) {
-                    return new SubscriptionStatus($value);
+                if (is_string($value) && DonationStatus::isValid($value)) {
+                    return new DonationStatus($value);
                 }
-
                 return $value;
 
-            case 'period':
-                if (is_string($value)) {
-                    return new SubscriptionPeriod($value);
+            case 'type':
+                if (is_string($value) && DonationType::isValid($value)) {
+                    return new DonationType($value);
                 }
-
                 return $value;
 
             case 'mode':
-                if (is_string($value) && SubscriptionMode::isValid($value)) {
-                    return new SubscriptionMode($value);
+                if (is_string($value) && DonationMode::isValid($value)) {
+                    return new DonationMode($value);
                 }
-
                 return $value;
 
-            case 'gatewayId':
-                // Gateway ID is a simple string, no special processing needed
+            case 'billingAddress':
+                if (is_array($value)) {
+                    return BillingAddress::fromArray($value);
+                }
                 return $value;
 
             case 'createdAt':
-            case 'renewsAt':
                 try {
                     if (is_string($value)) {
                         return new DateTime($value, wp_timezone());
@@ -69,7 +71,6 @@ class SubscriptionFields
                 } catch (\Exception $e) {
                     throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
                 }
-
                 return $value;
 
             default:
