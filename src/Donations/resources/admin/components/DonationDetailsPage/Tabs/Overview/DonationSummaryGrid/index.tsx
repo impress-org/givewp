@@ -65,7 +65,7 @@ export function DonorCard({donation}: {donation: Donation}) {
  * @unrleased add GridCard components
  * @since 4.6.0
  */
-export default function DonationPaymentGrid({
+export default function DonationSummaryGrid({
     donation,
 }: DonationSummaryGridProps) {
      const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${donation?.subscriptionId}` : null;
