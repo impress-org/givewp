@@ -1,4 +1,3 @@
-import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import styles from './styles.module.scss';
 
