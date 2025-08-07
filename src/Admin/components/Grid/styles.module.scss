@@ -15,6 +15,14 @@
     margin: 0 !important;
     padding: 0;
   }
+
+  .heading {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.43;
+    color: #1f2937;
+  }
   
   .card {
     display: flex;
@@ -28,37 +36,7 @@
     border-radius: 0.5rem;
     padding: var(--givewp-spacing-4);
   }
-  
-  .donorCard {
-    gap: var(--givewp-spacing-1);
-  
-    .donorLink {
-      margin-top: var(--givewp-spacing-1);
-    }
-  }
-  
-  .campaignCard {
-    justify-content: flex-start;
-  }
 
-  .campaignCard div, .donorCard div, .card div {
-    margin: 0 auto;
-  }
-  
-  .card h3 {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: var(--givewp-neutral-700);
+  .card p:last-child {
     margin: 0;
   }
-  
-  .card p {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.875rem;
-    color: #4b5563;
-  }
-  
-  .card p:last-child {
-    margin-bottom: 0;
-  }
-  
