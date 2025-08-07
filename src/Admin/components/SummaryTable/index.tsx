@@ -1,7 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import Header from '@givewp/src/Admin/components/Header';
-import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import Spinner from '@givewp/src/Admin/components/Spinner';
 import styles from './styles.module.scss';
 
