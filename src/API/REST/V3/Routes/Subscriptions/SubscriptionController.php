@@ -2,18 +2,18 @@
 
 namespace Give\API\REST\V3\Routes\Subscriptions;
 
+use Exception;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionCollectionParams;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionItemSchema;
 use Give\API\REST\V3\Routes\Subscriptions\Actions\GetSubscriptionSharedParamsForGetMethods;
 use Give\API\REST\V3\Routes\Subscriptions\DataTransferObjects\SubscriptionCreateData;
 use Give\API\REST\V3\Routes\Subscriptions\Exceptions\SubscriptionValidationException;
-use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionFields;
-use Give\API\REST\V3\Routes\Subscriptions\Helpers\SubscriptionPermissions;
+use Give\API\REST\V3\Routes\Subscriptions\Fields\SubscriptionFields;
+use Give\API\REST\V3\Routes\Subscriptions\Permissions\SubscriptionPermissions;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\API\REST\V3\Support\CURIE;
 use Give\API\REST\V3\Support\Headers;
-use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\SubscriptionQuery;
 use Give\Subscriptions\ViewModels\SubscriptionViewModel;
@@ -256,7 +256,7 @@ class SubscriptionController extends WP_REST_Controller
         try {
             $data = SubscriptionCreateData::fromRequest($request);
             $subscription = $data->createSubscription();
-            
+
             $fieldsUpdate = $this->update_additional_fields_for_object($subscription, $request);
 
             if (is_wp_error($fieldsUpdate)) {
