@@ -46,17 +46,17 @@ export function CampaignCard({donation}: {donation: Donation}) {
  * @since 4.6.0
  */
 export function DonorCard({donation}: {donation: Donation}) {
-    const {record: donor, hasResolved: hasResolvedDonor} = useDonorEntityRecord(donation?.donorId);
+    const {record: donor, hasResolved: hasResolvedDonor, isResolving: isResolvingDonor} = useDonorEntityRecord(donation?.donorId);
 
     return (
         <GridCard heading={__('Associated donor', 'give')} headingId="donor">
          {!hasResolvedDonor && <Spinner />}
          {hasResolvedDonor && (
             <>
-                <a className={styles.donorLink} href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`}>
-                    {donor.name}
+                <a className={styles.donorLink} href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor?.id}`}>
+                    {donor?.name}
                 </a>
-                <p className={styles.donorEmail}>{donor.email}</p>
+                <p className={styles.donorEmail}>{donor?.email}</p>
             </>
          )}
         </GridCard>
