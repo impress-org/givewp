@@ -29,7 +29,19 @@ type SyncDetailsProps = {
  */
 export default function SyncDetails({ isAccurate, platform, gateway }: SyncDetailsProps) {
   if(isAccurate) {
-    return <SyncAccurateDetails platform={platform} gateway={gateway} />;
+    return (
+      <div className={styles.accurateDetailWrapper}>
+        <div className={styles.detailItem}>
+          <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
+          <p className={styles.detailValue}>{platform ? capitalizeFirstLetter(platform) : __('Completed', 'give')}</p>
+        </div>
+        <CheckCircleIcon />
+        <div className={styles.detailItem}>
+          <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
+          <p className={styles.detailValue}>{gateway ? capitalizeFirstLetter(gateway) : __('Completed', 'give')}</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -91,7 +103,19 @@ type SyncPaymentDetailsProps = {
  */
 export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: SyncPaymentDetailsProps) {   
     if(isAccurate) {
-        return <SyncAccurateDetails platform={platform} gateway={gateway} />;
+      return (
+        <div className={styles.accurateDetailWrapper}>
+          <div className={styles.detailItem}>
+            <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
+            <p className={styles.detailValue}>{platform ? capitalizeFirstLetter(platform) : __('Completed', 'give')}</p>
+          </div>
+          <CheckCircleIcon />
+          <div className={styles.detailItem}>
+            <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
+            <p className={styles.detailValue}>{gateway ? capitalizeFirstLetter(gateway) : __('Completed', 'give')}</p>
+          </div>
+        </div>
+      )
     }
 
     const PaymentAmount = () => (
@@ -116,32 +140,4 @@ export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: S
         </div>
       </div>
     );
-}
-
-/**
- * @unreleased
- */
-type SyncAccurateDetailsProps = {
-  key?: string;
-  platform?: string;
-  gateway?: string;
-}
-
-/**
- * @unreleased
- */
-function SyncAccurateDetails({key, platform, gateway}: SyncAccurateDetailsProps) {
-  return (
-      <div key={key} className={styles.accurateDetailWrapper}>
-        <div className={styles.detailItem}>
-          <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
-          <p className={styles.detailValue}>{platform ? capitalizeFirstLetter(platform) : __('Completed', 'give')}</p>
-        </div>
-        <CheckCircleIcon />
-        <div className={styles.detailItem}>
-          <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
-          <p className={styles.detailValue}>{gateway ? capitalizeFirstLetter(gateway) : __('Completed', 'give')}</p>
-        </div>
-    </div>
-  );
 }
