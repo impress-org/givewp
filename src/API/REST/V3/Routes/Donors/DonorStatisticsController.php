@@ -59,6 +59,7 @@ class DonorStatisticsController extends WP_REST_Controller
                     ],
                 ],
             ],
+            'schema' => [$this, 'getSchema'],
         ]);
     }
 
@@ -137,5 +138,118 @@ class DonorStatisticsController extends WP_REST_Controller
         $response->add_links($links);
 
         return $response;
+    }
+
+    /**
+     * @since unreleased
+     */
+    public function getSchema(): array
+    {
+        return [
+            '$schema' => 'http://json-schema.org/draft-07/schema#',
+            'title'   => 'donor-statistics',
+            'type'    => 'object',
+            'properties' => [
+                'donations' => [
+                    'type'       => 'object',
+                    'description'=> esc_html__('Donation statistics for the donor.', 'give'),
+                    'properties' => [
+                        'lifetimeAmount' => [
+                            'type'        => 'number',
+                            'description' => esc_html__('Total amount donated over the donor\'s lifetime.', 'give'),
+                        ],
+                        'highestAmount' => [
+                            'type'        => 'number',
+                            'description' => esc_html__('Highest single donation amount.', 'give'),
+                        ],
+                        'averageAmount' => [
+                            'type'        => 'number',
+                            'description' => esc_html__('Average donation amount.', 'give'),
+                        ],
+                        'count' => [
+                            'type'        => 'integer',
+                            'description' => esc_html__('Total number of donations made.', 'give'),
+                        ],
+                        'first' => [
+                            'type'        => 'object',
+                            'description' => esc_html__('Details of the donor\'s first donation.', 'give'),
+                            'properties'  => [
+                                'amount' => [
+                                    'type'        => 'number',
+                                    'description' => esc_html__('Amount of the first donation.', 'give'),
+                                ],
+                                'date' => [
+                                    'type'        => 'string',
+                                    'format'      => 'date-time',
+                                    'description' => esc_html__('Date of the first donation.', 'give'),
+                                ],
+                            ],
+                            'required' => ['amount', 'date'],
+                        ],
+                        'last' => [
+                            'type'        => 'object',
+                            'description' => esc_html__('Details of the donor\'s most recent donation.', 'give'),
+                            'properties'  => [
+                                'amount' => [
+                                    'type'        => 'number',
+                                    'description' => esc_html__('Amount of the most recent donation.', 'give'),
+                                ],
+                                'date' => [
+                                    'type'        => 'string',
+                                    'format'      => 'date-time',
+                                    'description' => esc_html__('Date of the most recent donation.', 'give'),
+                                ],
+                            ],
+                            'required' => ['amount', 'date'],
+                        ],
+                    ],
+                    'required' => ['lifetimeAmount', 'highestAmount', 'averageAmount', 'count', 'first', 'last'],
+                ],
+                'donorType' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('The classification of the donor (e.g., One-time, Recurring).', 'give'),
+                ],
+                'preferredPaymentMethod' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('Most commonly used payment method by the donor.', 'give'),
+                ],
+                '_links' => [
+                    'type'        => 'object',
+                    'description' => esc_html__('Hypermedia links related to the donor statistics resource.', 'give'),
+                    'properties'  => [
+                        'self' => [
+                            'type'  => 'array',
+                            'items' => [
+                                'type'       => 'object',
+                                'properties' => [
+                                    'href' => [
+                                        'type'        => 'string',
+                                        'format'      => 'uri',
+                                        'description' => esc_html__('URL to the resource.', 'give'),
+                                    ],
+                                    'targetHints' => [
+                                        'type'        => 'object',
+                                        'description' => esc_html__('Hints for allowed operations on the target.', 'give'),
+                                        'properties'  => [
+                                            'allow' => [
+                                                'type'  => 'array',
+                                                'items' => [
+                                                    'type' => 'string',
+                                                ],
+                                                'description' => esc_html__('Allowed HTTP methods for the target.', 'give'),
+                                            ],
+                                        ],
+                                        'required' => ['allow'],
+                                    ],
+                                ],
+                                'required' => ['href'],
+                            ],
+                        ],
+                    ],
+                    'required' => ['self'],
+                ],
+            ],
+            'required' => ['donations', 'donorType', 'preferredPaymentMethod', '_links'],
+        ];
     }
 }
