@@ -6,6 +6,8 @@ import cn from 'classnames';
 import { DonationRowActions } from "@givewp/donations/components/DonationRowActions";
 import BlankSlate from "@givewp/components/ListTable/BlankSlate";
 import apiSettings from './apiSettings';
+import AddRenewalDialog from "./AddRenewalModal";
+import { useState } from "react";
 
 const { mode, adminUrl, pluginUrl } = getSubscriptionOptionsWindowData();
 
@@ -35,10 +37,32 @@ const ListTableBlankSlate = (
  * @unreleased
  */
 export default function SubscriptionDetailsPageDonationsTab() {
+    const [isAddRenewalDialogOpen, setIsAddRenewalDialogOpen] = useState(false);
+    const urlParams = new URLSearchParams(window.location.search);
+    const subscriptionId = urlParams.get('id');
+
+    const handleAddRenewal = (data: any) => {
+        // TODO: Implement the renewal creation logic
+        alert(
+            `
+            Creating renewal with the following data:
+            ----------------------------
+            Subscription ID: ${subscriptionId}
+            Amount: ${data.amount}
+            Date: ${data.date}
+            Update renewal date: ${data.updateRenewalDate ? 'Yes' : 'No'}
+            Transaction ID: ${data.transactionId || 'N/A'}
+            `
+        )
+    };
+
     return (
         <div className={styles.container}>
-            <h2 className={styles.title}>{__('Donations', 'give')}</h2>
-            <p className={styles.description}>{__('Show all recurring donations under this subscription.', 'give')}</p>
+            <div className={styles.header}>
+                <h2 className={styles.title}>{__('Donations', 'give')}</h2>
+                <p className={styles.description}>{__('Show all recurring donations under this subscription.', 'give')}</p>
+            </div>
+            <button className={styles.button} onClick={() => setIsAddRenewalDialogOpen(true)}>{__('Add renewal', 'give')}</button>
 
             {/* TODO: Remove the inline classname once the new design is implemented in all list tables */}
             <div className={cn(styles.tableWrapper, 'list-table-page-container--new-design')}>
@@ -54,6 +78,12 @@ export default function SubscriptionDetailsPageDonationsTab() {
                     rowActions={DonationRowActions}
                 />
             </div>
+
+            <AddRenewalDialog
+                isOpen={isAddRenewalDialogOpen}
+                handleClose={() => setIsAddRenewalDialogOpen(false)}
+                handleConfirm={handleAddRenewal}
+            />
         </div>
     );
 }
