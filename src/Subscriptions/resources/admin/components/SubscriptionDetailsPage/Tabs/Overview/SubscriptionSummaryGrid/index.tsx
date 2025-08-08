@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import OverviewPanel from "@givewp/admin/components/OverviewPanel";
 import Grid, { GridCard } from '@givewp/admin/components/Grid';
-import { CampaignCard, DonorCard } from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
+import { CampaignCard, DonorCard, GatewayNotice } from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
 import Spinner from '@givewp/admin/components/Spinner';
 import PaymentMethodIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/PaymentMethodIcon';
 import ExternalLinkIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/icon';
@@ -69,7 +69,7 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">
                     {isLoading && <Spinner />}
-                    {!isLoading && (
+                    {!isLoading && !paymentMethod ? <GatewayNotice /> : (
                         <>
                             <strong className={styles.paymentMethod}>
                                 <PaymentMethodIcon paymentMethod={paymentMethod} />
@@ -90,7 +90,6 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                     )}
                 </GridCard>
             </Grid>  
- 
         </OverviewPanel>
     );
 }
