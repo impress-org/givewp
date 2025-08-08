@@ -13,6 +13,7 @@ export type GiveSubscriptionOptions = {
     isAdmin: boolean;
     adminUrl: string;
     apiRoot: string;
+    legacyApiRoot: string;
     apiNonce: string;
     subscriptionsAdminUrl: string;
     currency: string;
