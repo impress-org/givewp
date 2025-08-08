@@ -131,7 +131,8 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
             edit(data);
 
             try {
-                const response = await save();
+                // @ts-ignore
+                const response: T = await save();
 
                 setIsSaving(false);
                 reset(response);

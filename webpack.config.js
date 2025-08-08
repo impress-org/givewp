@@ -141,6 +141,7 @@ const alias = {
     '@givewp/campaigns': srcPath('Campaigns/resources'),
     '@givewp/donors': srcPath('Donors/resources'),
     '@givewp/donations': srcPath('Donations/resources'),
+    '@givewp/subscriptions': srcPath('Subscriptions/resources'),
     '@givewp/admin': srcPath('Admin'),
     ...defaultConfig.resolve.alias,
 };
@@ -208,6 +209,8 @@ const entry = {
     donorDetails: srcPath('Donors/resources/admin/donor-details.tsx'),
     donationEntity: srcPath('Donations/resources/entity.ts'),
     donationDetails: srcPath('Donations/resources/admin/donation-details.tsx'),
+    subscriptionEntity: srcPath('Subscriptions/resources/entity.ts'),
+    subscriptionDetails: srcPath('Subscriptions/resources/admin/subscription-details.tsx'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };

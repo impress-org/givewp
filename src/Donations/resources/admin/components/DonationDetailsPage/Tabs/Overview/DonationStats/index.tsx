@@ -26,22 +26,19 @@ export default function DonationStats({ donation, isResolving }: DonationStatsPr
         <div className={styles.container}>
             <StatWidget
                 label={__('Donation amount', 'give')}
-                value={intendedAmount}
-                formatter={formatter}
+                value={formatter.format(intendedAmount)}
                 loading={isResolving}
             />
             {shouldShowEventTicketStat && (
                 <StatWidget
                     label={__('Event ticket', 'give')}
-                    value={Number(eventTicketsAmount)}
-                    formatter={formatter}
+                    value={formatter.format(Number(eventTicketsAmount))}
                     loading={isResolving}
                 />
             )}
             <StatWidget
                 label={__('Fees recovered', 'give')}
-                value={feeAmountRecovered}
-                formatter={formatter}
+                value={formatter.format(feeAmountRecovered)}
                 loading={isResolving}
                 href={'https://givewp.com/addons/fee-recovery/'}
                 inActive={!isFeeRecoveryEnabled}
