@@ -290,7 +290,7 @@ select[name="campaignId"] {
         padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
     }
 
-    section {
+    section:not([role="search"]) {
         margin-bottom: var(--givewp-spacing-14);
         position: relative;
 

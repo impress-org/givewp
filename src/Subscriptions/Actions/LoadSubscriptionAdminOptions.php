@@ -34,7 +34,9 @@ class LoadSubscriptionAdminOptions
         return [
             'isAdmin' => $isAdmin,
             'adminUrl' => admin_url(),
+            'pluginUrl' => GIVE_PLUGIN_URL,
             'apiRoot' => rest_url(DonationRoute::NAMESPACE),
+            'legacyApiRoot' => esc_url_raw(rest_url('give-api/v2/admin')),
             'apiNonce' => wp_create_nonce('wp_rest'),
             'subscriptionsAdminUrl' => admin_url('edit.php?post_type=give_forms&page=give-subscriptions'),
             'currency' => give_get_currency(),

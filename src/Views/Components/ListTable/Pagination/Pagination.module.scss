@@ -74,7 +74,6 @@ button[aria-disabled="true"].navDirection {
     text-align: center;
 }
 
-
 .visuallyHidden {
     position: absolute;
     width: 1px;
@@ -85,4 +84,29 @@ button[aria-disabled="true"].navDirection {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+}
+
+:global(.list-table-page-container--new-design) {
+    .container {
+        color: var(--givewp-neutral-900);
+        flex: 1;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        margin: 0;
+        text-transform: uppercase;
+
+        >span:first-child {
+            margin-right: auto;
+        }
+    }
+
+    .navDirection {
+        background: none;
+        block-size: 1.5rem;
+        border: none;
+        color: var(--givewp-neutral-900);
+        inline-size: 1.5rem;
+        justify-content: center;
+        padding: 0;
+    }
 }

@@ -28,6 +28,7 @@ export interface ListTableProps {
     listTableBlankSlate: JSX.Element;
     productRecommendation?: JSX.Element;
     columnFilters?: Array<ColumnFilterConfig>;
+    includeBulkActionsCheckbox?: boolean;
 }
 
 export interface ListTableColumn {
@@ -59,6 +60,7 @@ export const ListTable = ({
     listTableBlankSlate,
     productRecommendation,
     columnFilters = [],
+    includeBulkActionsCheckbox = false,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -150,16 +152,18 @@ export const ListTable = ({
                         </caption>
                         <thead className={styles[apiSettings.table.id]}>
                             <tr>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={cx(styles.tableColumnHeader, styles.selectAll, {
-                                        [styles['testMode']]: testMode,
-                                    })}
-                                    data-column="select"
-                                >
-                                    <BulkActionCheckboxAll pluralName={pluralName} data={data} />
-                                </th>
+                                {includeBulkActionsCheckbox && (
+                                    <th
+                                        scope="col"
+                                        aria-sort="none"
+                                        className={cx(styles.tableColumnHeader, styles.selectAll, {
+                                            [styles['testMode']]: testMode,
+                                        })}
+                                        data-column="select"
+                                    >
+                                        <BulkActionCheckboxAll pluralName={pluralName} data={data} />
+                                    </th>
+                                )}
                                 <>
                                     {visibleColumns?.map((column) => (
                                         <th
@@ -199,6 +203,7 @@ export const ListTable = ({
                                 parameters={parameters}
                                 setUpdateErrors={setUpdateErrors}
                                 columnFilters={columnFilters}
+                                includeBulkActionsCheckbox={includeBulkActionsCheckbox}
                             />
                         </tbody>
                     </table>
