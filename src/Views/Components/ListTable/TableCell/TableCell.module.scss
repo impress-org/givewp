@@ -72,3 +72,22 @@
     font-size: 0.615em;
     padding-inline-end: 0.25em;
 }
+
+:global(.list-table-page-container--new-design) {
+    .tableCell {
+        padding-block: var(--givewp-spacing-6);
+        padding-inline: var(--givewp-spacing-2);
+        color: var(--givewp-neutral-700);
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+
+        &:first-child {
+            padding-inline-start: var(--givewp-spacing-4);
+        }
+
+        &:last-child {
+            padding-inline-end: var(--givewp-spacing-4);
+        }
+    }
+}

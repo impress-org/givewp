@@ -262,7 +262,7 @@ export default function ListTablePage({
             <article className={styles.page}>
                 {contentMode ? (
                     <>
-                        <section role="search" id={styles.searchContainer}>
+                        <section role="search" className={styles.searchContainer}>
                             <div className={styles.flexRow}>
                                 <PageActions PageActionsTop />
                             </div>
@@ -290,7 +290,7 @@ export default function ListTablePage({
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
                         {banner && <section role="banner">{banner()}</section>}
-                        <section role="search" id={styles.searchContainer}>
+                        <section role="search" className={styles.searchContainer}>
                             <div className={styles.flexRow}>
                                 <PageActions PageActionsTop />
                             </div>
@@ -311,7 +311,7 @@ export default function ListTablePage({
 
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    {contentMode && children ? <>{children}</> : <br />}
+                    {contentMode && children ? <>{children}</> : <></>}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
@@ -374,10 +374,10 @@ export default function ListTablePage({
                                 await mutate();
                             } catch (error) {
                                 console.error('Bulk action error:', error);
-                                
+
                                 // Create a user-friendly error message
                                 let errorMessage = __('An error occurred while performing this action.', 'give');
-                                
+
                                 if (error.message && error.message.includes('permission')) {
                                     errorMessage = __('You don\'t have permission to perform this action.', 'give');
                                 } else if (error.message && error.message.includes('403')) {
@@ -389,7 +389,7 @@ export default function ListTablePage({
                                         errorMessage = match[0].replace(/&#039;/g, "'");
                                     }
                                 }
-                                
+
                                 // Show error as a notice/alert
                                 alert(errorMessage);
                             }

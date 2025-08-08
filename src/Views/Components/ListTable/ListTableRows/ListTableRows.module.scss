@@ -141,4 +141,8 @@ div.abandoned {
     }
 }
 
-
+:global(.list-table-page-container--new-design) {
+    .tableRow {
+        background-color: var(--givewp-shades-white);
+    }
+}
