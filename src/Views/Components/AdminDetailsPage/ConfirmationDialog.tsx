@@ -12,12 +12,13 @@ export type ConfirmationDialogProps = {
     handleConfirm: () => void;
     title: string;
     icon?: React.ReactElement;
-    variant?: 'error' | 'regular';
+    variant?: 'error' | 'regular' | 'syncing';
     className?: string;
     actionLabel: string;
     children: React.ReactNode;
     isConfirming?: boolean;
     spinner?: 'regular' | 'arc' | 'none';
+    footer?: React.ReactNode;
 }
 
 /**
@@ -35,6 +36,7 @@ export default function ConfirmationDialog({
     children,
     isConfirming = false,
     spinner ='none',
+    footer
 }: ConfirmationDialogProps) {
     return (
         <ModalDialog
@@ -65,6 +67,9 @@ export default function ConfirmationDialog({
                         {actionLabel}
                         {isConfirming ? (spinner === 'arc' ? <ArcSpinner /> : <Spinner />) : null}
                     </button>
+                </div>
+                <div className={styles.confirmationDialogFooter}>
+                    {footer}
                 </div>
             </>
         </ModalDialog>

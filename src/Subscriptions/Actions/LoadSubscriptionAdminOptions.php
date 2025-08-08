@@ -36,6 +36,7 @@ class LoadSubscriptionAdminOptions
             'adminUrl' => admin_url(),
             'apiRoot' => rest_url(DonationRoute::NAMESPACE),
             'apiNonce' => wp_create_nonce('wp_rest'),
+            'syncSubscriptionNonce' => wp_create_nonce( 'sync-subscription-details' ),
             'subscriptionsAdminUrl' => admin_url('edit.php?post_type=give_forms&page=give-subscriptions'),
             'currency' => give_get_currency(),
             'subscriptionStatuses' => SubscriptionStatus::labels(),
