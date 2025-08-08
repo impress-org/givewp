@@ -71,12 +71,12 @@ export function GatewayNotice() {
             <div className={styles.noticeIcon}>
                 <InfoIcon />
             </div>
-                <div className={styles.noticeContent}>
-                    <strong className={styles.noticeTitle}>{__('Gateway Details Unavailable', 'give')}</strong>
-                    <p className={styles.noticeDescription}>
-                        {__('This donation\'s gateway is not active on your site. Install the matching payment gateway to see full details.', 'give')}
-                    </p>
-                </div>
+            <div className={styles.noticeContent}>
+                <strong className={styles.noticeTitle}>{__('Gateway Details Unavailable', 'give')}</strong>
+                <p className={styles.noticeDescription}>
+                    {__('This donation\'s gateway is not active on your site. Install the matching payment gateway to see full details.', 'give')}
+                </p>
+            </div>
         </div>
     );
 }
