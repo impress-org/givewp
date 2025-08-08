@@ -12,6 +12,7 @@ type Gateway = {
 export type GiveSubscriptionOptions = {
     isAdmin: boolean;
     adminUrl: string;
+    pluginUrl: string;
     apiRoot: string;
     legacyApiRoot: string;
     apiNonce: string;
