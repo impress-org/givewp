@@ -48,6 +48,7 @@ class GetCampaignStatistics implements RestRoute
                         'default' => 0, // Zero to mean "all time".
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -89,5 +90,32 @@ class GetCampaignStatistics implements RestRoute
                 'donorCount' => $query->countDonors(),
             ];
         }, iterator_to_array($period) ));
+    }
+
+    /**
+     * @since unreleased
+     */
+    public function getSchema(): array
+    {
+        return [
+            '$schema' => 'http://json-schema.org/draft-07/schema#',
+            'title'   => 'campaign-statistics',
+            'type'    => 'object',
+            'properties' => [
+                'amountRaised' => [
+                    'type'        => 'number',
+                    'description' => esc_html__('The total amount raised for the campaign.', 'give'),
+                ],
+                'donationCount' => [
+                    'type'        => 'integer',
+                    'description' => esc_html__('The total number of donations made to the campaign.', 'give'),
+                ],
+                'donorCount' => [
+                    'type'        => 'integer',
+                    'description' => esc_html__('The total number of unique donors who contributed to the campaign.', 'give'),
+                ],
+            ],
+            'required' => ['amountRaised', 'donationCount', 'donorCount'],
+        ];
     }
 }

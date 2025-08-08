@@ -5,6 +5,7 @@ namespace Give\API\REST\V3\Routes\Campaigns;
 use DateTime;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Controllers\CampaignRequestController;
+use Give\Campaigns\ValueObjects\CampaignType;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -67,7 +68,8 @@ class RegisterCampaignRoutes
                         'required' => true,
                     ],
                 ],
-            ]
+                'schema' => [$this, 'getSchema'],
+            ],
         );
     }
 
@@ -132,6 +134,7 @@ class RegisterCampaignRoutes
                         'default' => 'desc',
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -251,6 +254,7 @@ class RegisterCampaignRoutes
                         },
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -291,45 +295,72 @@ class RegisterCampaignRoutes
     public function getSchema(): array
     {
         return [
-            'title' => 'campaign',
-            'type' => 'object',
+            '$schema' => 'http://json-schema.org/draft-07/schema#',
+            'title'   => 'campaign',
+            'type'    => 'object',
             'properties' => [
                 'id' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Campaign ID', 'give'),
+                    'type'        => 'integer',
+                    'description' => esc_html__('Campaign ID.', 'give'),
+                ],
+                'pageId' => [
+                    'type'        => 'integer',
+                    'description' => esc_html__('ID of the WordPress page assigned to the campaign.', 'give'),
+                ],
+                'pagePermalink' => [
+                    'type'        => 'string',
+                    'format'      => 'uri',
+                    'description' => esc_html__('Permalink for the campaign page.', 'give'),
+                ],
+                'defaultFormId' => [
+                    'type'        => 'integer',
+                    'description' => esc_html__('ID of the default donation form for this campaign.', 'give'),
+                ],
+                'defaultFormTitle' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('Title of the default donation form.', 'give'),
+                ],
+                'type' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('Campaign type, e.g. "core".', 'give'),
+                    'enum'        => array_values(CampaignType::toArray()),
                 ],
                 'title' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Campaign title', 'give'),
-                    'minLength' => 3,
-                    'maxLength' => 128,
-                    'errorMessage' => esc_html__('Campaign title is required', 'give'),
-                ],
-                'status' => [
-                    'enum' => ['active', 'inactive', 'draft', 'pending', 'processing', 'failed', 'archived'],
-                    'description' => esc_html__('Campaign status', 'give'),
+                    'type'        => 'string',
+                    'description' => esc_html__('Campaign title.', 'give'),
+                    'minLength'   => 3,
+                    'maxLength'   => 128,
+                    'errorMessage'=> esc_html__('Campaign title is required.', 'give'),
                 ],
                 'shortDescription' => [
                     'type' => 'string',
                     'description' => esc_html__('Campaign short description', 'give'),
                     'maxLength' => 120,
                 ],
+                'longDescription' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('Long description of the campaign.', 'give'),
+                ],
+                'logo' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('URL to the campaign logo image.', 'give'),
+                ],
+                'image' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('URL to the campaign featured image.', 'give'),
+                ],
                 'primaryColor' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Primary color for the campaign', 'give'),
+                    'type'        => 'string',
+                    'description' => esc_html__('Primary color used in campaign design.', 'give'),
                 ],
                 'secondaryColor' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Secondary color for the campaign', 'give'),
+                    'type'        => 'string',
+                    'description' => esc_html__('Secondary color used in campaign design.', 'give'),
                 ],
                 'goal' => [
-                    'type' => 'number',
-                    'description' => esc_html__('Campaign goal', 'give'),
-                    'errorMessage' => esc_html__('Must be a number', 'give'),
-                ],
-                'goalProgress' => [
-                    'type' => 'number',
-                    'description' => esc_html__('Campaign goal progress', 'give'),
+                    'type'        => 'number',
+                    'description' => esc_html__('Goal amount/metric for the campaign.', 'give'),
+                    'errorMessage'=> esc_html__('Must be a number.', 'give'),
                 ],
                 'goalType' => [
                     'enum' => [
@@ -342,13 +373,50 @@ class RegisterCampaignRoutes
                     ],
                     'description' => esc_html__('Campaign goal type', 'give'),
                 ],
-                'defaultFormId' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Default campaign form ID', 'give'),
+                'goalStats' => [
+                    'type'       => 'object',
+                    'description'=> esc_html__('Statistics about goal progress.', 'give'),
+                    'properties' => [
+                        'actual' => [
+                            'type'        => 'number',
+                            'description' => esc_html__('Actual value raised so far.', 'give'),
+                        ],
+                        'actualFormatted' => [
+                            'type'        => 'string',
+                            'description' => esc_html__('Formatted actual amount.', 'give'),
+                        ],
+                        'percentage' => [
+                            'type'        => 'number',
+                            'description' => esc_html__('Percentage of the goal completed.', 'give'),
+                        ],
+                        'goal' => [
+                            'type'        => 'number',
+                            'description' => esc_html__('Goal amount.', 'give'),
+                        ],
+                        'goalFormatted' => [
+                            'type'        => 'string',
+                            'description' => esc_html__('Formatted goal amount.', 'give'),
+                        ],
+                    ],
                 ],
-                'pageId' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Campaign page ID', 'give'),
+                'status' => [
+                    'enum'        => ['active', 'inactive', 'draft', 'pending', 'processing', 'failed', 'archived'],
+                    'description' => esc_html__('Current status of the campaign.', 'give'),
+                ],
+                'startDate' => [
+                    'type'        => ['string', 'null'],
+                    'format'      => 'date-time',
+                    'description' => esc_html__('Start date of the campaign.', 'give'),
+                ],
+                'endDate' => [
+                    'type'        => ['string', 'null'],
+                    'format'      => 'date-time',
+                    'description' => esc_html__('End date of the campaign (if set).', 'give'),
+                ],
+                'createdAt' => [
+                    'type'        => 'string',
+                    'format'      => 'date-time',
+                    'description' => esc_html__('Timestamp when the campaign was created.', 'give'),
                 ],
             ],
             'required' => ['id', 'title', 'goal', 'goalType'],

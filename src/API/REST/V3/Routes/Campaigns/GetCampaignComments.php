@@ -44,6 +44,7 @@ class GetCampaignComments implements RestRoute
                         'default'  => true,
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -103,4 +104,41 @@ class GetCampaignComments implements RestRoute
 
         return new WP_REST_Response($formattedComments);
     }
+
+    /**
+     * @since unreleased
+     */
+    public function getSchema(): array
+    {
+        return [
+            '$schema' => 'http://json-schema.org/draft-07/schema#',
+            'title'   => 'campaign-comment',
+            'type'    => 'object',
+            'properties' => [
+                'donorName' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('Display name of the donor who left the comment.', 'give'),
+                ],
+                'comment' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('The comment text left by the donor.', 'give'),
+                ],
+                'anonymous' => [
+                    'type'        => 'boolean',
+                    'description' => esc_html__('Whether the donor chose to remain anonymous.', 'give'),
+                ],
+                'date' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('Human-readable time since the comment was posted (e.g., "2 hours ago").', 'give'),
+                ],
+                'avatar' => [
+                    'type'        => 'string',
+                    'format'      => 'uri',
+                    'description' => esc_html__('URL to the donor’s avatar image.', 'give'),
+                ],
+            ],
+            'required' => ['donorName', 'comment', 'anonymous', 'date', 'avatar'],
+        ];
+    }
+
 }

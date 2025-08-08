@@ -9,6 +9,7 @@ use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donations\ViewModels\DonationViewModel;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -84,14 +85,12 @@ class DonationController extends WP_REST_Controller
                         ],
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
@@ -108,8 +107,8 @@ class DonationController extends WP_REST_Controller
                         'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base, [
@@ -118,7 +117,6 @@ class DonationController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => $this->get_collection_params(),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
@@ -139,8 +137,8 @@ class DonationController extends WP_REST_Controller
                         'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/refund', [
@@ -154,8 +152,8 @@ class DonationController extends WP_REST_Controller
                         'required' => true,
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
     }
 
@@ -789,12 +787,25 @@ class DonationController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         return [
+            '$schema' => 'http://json-schema.org/draft-07/schema#',
             'title' => 'donation',
             'type' => 'object',
             'properties' => [
                 'id' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donation ID', 'give'),
+                ],
+                'campaignId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Campaign ID associated with the donation', 'give'),
+                ],
+                'formId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Form ID used for the donation', 'give'),
+                ],
+                'formTitle' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Title of the donation form', 'give'),
                 ],
                 'donorId' => [
                     'type' => 'integer',
@@ -832,62 +843,89 @@ class DonationController extends WP_REST_Controller
                 ],
                 'amount' => [
                     'type' => ['object', 'null'],
+                    'description' => esc_html__('Donation amount', 'give'),
                     'properties' => [
-                        'amount' => [
-                            'type' => 'number',
+                        'value' => [
+                            'type' => 'string',
                         ],
-                        'amountInMinorUnits' => [
-                            'type' => 'integer',
+                        'valueInMinorUnits' => [
+                            'type' => 'string',
                         ],
                         'currency' => [
                             'type' => 'string',
                             'format' => 'text-field',
                         ],
                     ],
-                    'description' => esc_html__('Donation amount', 'give'),
                 ],
                 'feeAmountRecovered' => [
                     'type' => ['object', 'null'],
+                    'description' => esc_html__('Fee amount recovered', 'give'),
                     'properties' => [
-                        'amount' => [
-                            'type' => 'number',
+                        'value' => [
+                            'type' => 'string',
                         ],
-                        'amountInMinorUnits' => [
-                            'type' => 'integer',
+                        'valueInMinorUnits' => [
+                            'type' => 'string',
                         ],
                         'currency' => [
                             'type' => 'string',
                             'format' => 'text-field',
                         ],
                     ],
-                    'description' => esc_html__('Fee amount recovered', 'give'),
                 ],
                 'eventTicketsAmount' => [
                     'type' => ['object', 'null'],
                     'readonly' => true,
+                    'description' => esc_html__('Event tickets amount', 'give'),
                     'properties' => [
-                        'amount' => [
-                            'type' => 'number',
+                        'value'             => [
+                            'type' => 'string',
                         ],
-                        'amountInMinorUnits' => [
-                            'type' => 'integer',
+                        'valueInMinorUnits' => [
+                            'type' => 'string',
                         ],
-                        'currency' => [
+                        'currency'          => [
                             'type' => 'string',
                             'format' => 'text-field',
                         ],
                     ],
-                    'description' => esc_html__('Event tickets amount', 'give'),
+                ],
+                'eventTickets' => [
+                    'type' => 'array',
+                    'description' => esc_html__('Event tickets associated with the donation', 'give'),
+                    'items' => [
+                        'type' => 'object',
+                        // TODO: Add properties.
+                    ],
                 ],
                 'status' => [
                     'type' => 'string',
                     'description' => esc_html__('Donation status', 'give'),
                     'enum' => array_values(DonationStatus::toArray()),
                 ],
+                'type' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donation type', 'give'),
+                    'enum' => array_values(DonationType::toArray()),
+                ],
                 'gatewayId' => [
                     'type' => 'string',
                     'description' => esc_html__('Payment gateway ID', 'give'),
                     'format' => 'text-field',
+                ],
+                'gatewayTransactionId' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Gateway transaction ID', 'give'),
+                ],
+                'gateway' => [
+                    'type' => 'object',
+                    'description' => esc_html__('Gateway details', 'give'),
+                    'properties' => [
+                        'id' => ['type' => 'string'],
+                        'name' => ['type' => 'string'],
+                        'label' => ['type' => 'string'],
+                        'transactionUrl' => ['type' => ['string', 'null'], 'format' => 'uri'],
+                    ],
                 ],
                 'mode' => [
                     'type' => 'string',
@@ -920,8 +958,26 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Purchase key (sensitive data)', 'give'),
                     'format' => 'text-field',
                 ],
+                'exchangeRate' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Currency exchange rate at time of donation', 'give'),
+                ],
+                'subscriptionId' => [
+                    'type' => ['integer', 'null'],
+                    'description' => esc_html__('Subscription ID if recurring', 'give'),
+                ],
+                'levelId' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Level ID for multi-level donation forms', 'give'),
+                ],
+                'comment' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor comment', 'give'),
+                ],
                 'createdAt' => [
                     'type' => ['object', 'null'],
+                    'description' => esc_html__('Donation creation date', 'give'),
+                    'format' => 'date-time',
                     'properties' => [
                         'date' => [
                             'type' => 'string',
@@ -938,11 +994,11 @@ class DonationController extends WP_REST_Controller
                             'description' => esc_html__('Timezone type', 'give'),
                         ],
                     ],
-                    'description' => esc_html__('Donation creation date', 'give'),
-                    'format' => 'date-time',
                 ],
                 'updatedAt' => [
                     'type' => ['object', 'null'],
+                    'description' => esc_html__('Donation last update date', 'give'),
+                    'format' => 'date-time',
                     'properties' => [
                         'date' => [
                             'type' => 'string',
@@ -959,8 +1015,6 @@ class DonationController extends WP_REST_Controller
                             'description' => esc_html__('Timezone type', 'give'),
                         ],
                     ],
-                    'description' => esc_html__('Donation last update date', 'give'),
-                    'format' => 'date-time',
                 ],
                 'customFields' => [
                     'type' => 'array',
@@ -982,8 +1036,71 @@ class DonationController extends WP_REST_Controller
                         ],
                     ],
                 ],
+                '_links' => [
+                    'type' => 'object',
+                    'description' => esc_html__('Hypermedia links for the resource', 'give'),
+                    'properties' => [
+                        'self' => [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'href' => ['type' => 'string', 'format' => 'uri'],
+                                    'targetHints' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'allow' => [
+                                                'type' => 'array',
+                                                'items' => ['type' => 'string'],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'givewp:donor' => [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'embeddable' => ['type' => 'boolean'],
+                                    'href' => ['type' => 'string', 'format' => 'uri'],
+                                ],
+                            ],
+                        ],
+                        'givewp:campaign' => [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'embeddable' => ['type' => 'boolean'],
+                                    'href' => ['type' => 'string', 'format' => 'uri'],
+                                ],
+                            ],
+                        ],
+                        'curies' => [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'name' => ['type' => 'string'],
+                                    'href' => ['type' => 'string', 'format' => 'uri-template'],
+                                    'templated' => ['type' => 'boolean'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ],
-            'required' => ['id', 'donorId', 'amount', 'currency', 'status', 'gatewayId', 'mode', 'createdAt'],
+            'required' => [
+                'id',
+                'donorId',
+                'amount',
+                'status',
+                'gatewayId',
+                'mode',
+                'createdAt',
+            ],
         ];
     }
 }
