@@ -546,6 +546,10 @@ ul[role='document'] + .flexRow {
 }
 
 :global(.list-table-page-container--new-design) {
+    .page {
+        font-family: 'Inter', system-ui, sans-serif;
+    }
+
     .pageActions {
         justify-content: space-between;
         margin-block-start: var(--givewp-spacing-6);
