@@ -34,6 +34,7 @@ export interface ListTablePageProps {
     columnFilters?: Array<ColumnFilterConfig>;
     banner?: () => JSX.Element;
     contentMode?: boolean;
+    perPage?: number;
 }
 
 export interface FilterConfig {
@@ -113,9 +114,9 @@ export default function ListTablePage({
     columnFilters = [],
     banner,
     contentMode,
+    perPage = 30,
 }: ListTablePageProps) {
     const [page, setPage] = useState<number>(1);
-    const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
     const [isOpen, setOpen] = useState(false);
     const [modalContent, setModalContent] = useState<{
