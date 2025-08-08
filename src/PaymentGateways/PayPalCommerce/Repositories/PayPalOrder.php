@@ -212,7 +212,11 @@ class PayPalOrder
         if ($this->settings->isTransactionTypeDonation()) {
             $amountParameters['items'] = [
                 [
-                    'name' => get_post_field('post_name', $formId),
+                    'name' => give_payment_gateway_item_title(
+                        ['post_data' => [
+                            'give-form-id' => $formId,
+                            'give-form-title' => get_post_field('post_name', $formId),
+                            ]], 127),
                     'unit_amount' => [
                         'value' => $donationAmount,
                         'currency_code' => $donationCurrency,
