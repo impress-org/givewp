@@ -24,7 +24,7 @@ export function useDonationsBySubscription(
         records: Donation[] | null;
         hasResolved: boolean;
         isResolving: boolean;
-        
+
     } = useEntityRecords('givewp', 'donation', queryArgs);
 
     return {
@@ -33,4 +33,3 @@ export function useDonationsBySubscription(
         isResolving,
     };
 }
-
