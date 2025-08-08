@@ -1,0 +1,42 @@
+.container {
+    background-color: var(--givewp-shades-white);
+    border-radius: 0.5rem;
+    border: 1px solid var(--givewp-neutral-50);
+    padding: 1rem 1.5rem;
+}
+
+.title {
+    color: var(--givewp-neutral-900);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.56;
+    margin: 0 0 var(--givewp-spacing-1);
+    padding: 0;
+}
+
+.description {
+    color: var(--givewp-neutral-500);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 var(--givewp-spacing-6);
+}
+
+.tableWrapper {
+    > article {
+        > section[role="search"] {
+            display: none;
+        }
+
+        > div:last-child {
+            padding: 0;
+        }
+
+        table {
+            th, td {
+                &[data-column="select"] {
+                    display: none;
+                }
+            }
+        }
+    }
+}
