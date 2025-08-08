@@ -204,9 +204,12 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
+     * @unreleased Add support for updating custom fields
      * @since 4.4.0
+     *
+     * @return WP_REST_Response|WP_Error
      */
-    public function update_item($request): WP_REST_Response
+    public function update_item($request)
     {
         $donor = Donor::find($request->get_param('id'));
 
@@ -244,6 +247,12 @@ class DonorController extends WP_REST_Controller
         }
 
         $item = (new DonorViewModel($donor))->includeSensitiveData(true)->anonymousMode(DonorAnonymousMode::INCLUDED())->exports();
+        $fieldsUpdate = $this->update_additional_fields_for_object($item, $request);
+
+        if (is_wp_error($fieldsUpdate)) {
+            return $fieldsUpdate;
+        }
+
         $response = $this->prepare_item_for_response($item, $request);
 
         return rest_ensure_response($response);
@@ -294,6 +303,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Add support for adding custom fields to the response
      * @since 4.4.0
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
@@ -313,17 +323,19 @@ class DonorController extends WP_REST_Controller
 
         $response = new WP_REST_Response($item);
         $response->add_links($links);
+        $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
         return $response;
     }
 
     /**
+     * @unreleased Change title to givewp/donor and add custom fields schema
      * @since 4.4.0
      */
     public function get_item_schema(): array
     {
-        return [
-            'title' => 'donor',
+        $schema = [
+            'title' => 'givewp/donor',
             'type' => 'object',
             'properties' => [
                 'id' => [
@@ -424,6 +436,8 @@ class DonorController extends WP_REST_Controller
             ],
             'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
         ];
+
+        return $this->add_additional_fields_schema($schema);
     }
 
     /**
