@@ -7,6 +7,7 @@ use Give\Campaigns\Actions\AddNewBadgeToAdminMenuItem;
 use Give\Campaigns\Actions\ArchiveCampaignFormsAsDraftStatus;
 use Give\Campaigns\Actions\ArchiveCampaignPagesAsDraftStatus;
 use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
+use Give\Campaigns\Actions\CacheCampaignData;
 use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
@@ -18,6 +19,7 @@ use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Actions\UnarchiveCampaignFormAsPublishStatus;
 use Give\Campaigns\ListTable\Routes\DeleteCampaignListTable;
 use Give\Campaigns\ListTable\Routes\GetCampaignsListTable;
+use Give\Campaigns\Migrations\CacheCampaignsData;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -30,9 +32,11 @@ use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use Give\DonationForms\V2\DonationFormsAdminPage;
+use Give\Donations\Models\Donation;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use Give_Payment;
 
 /**
  * @since 4.0.0
@@ -55,6 +59,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased add registerCampaignCache
      * @since 4.0.0
      * @inheritDoc
      */
@@ -71,6 +76,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->setupCampaignForms();
         $this->loadCampaignAdminOptions();
         $this->addNewBadgeToMenu();
+        $this->registerCampaignCache();
     }
 
     /**
@@ -84,6 +90,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased add CacheCampaignData
      * @since 4.0.0
      */
     private function registerMigrations(): void
@@ -98,6 +105,7 @@ class ServiceProvider implements ServiceProviderInterface
                 AssociateDonationsToCampaign::class,
                 AddIndexes::class,
                 DonationsAddCampaignId::class,
+                CacheCampaignsData::class
             ]
         );
     }
@@ -249,5 +257,20 @@ class ServiceProvider implements ServiceProviderInterface
     private function addNewBadgeToMenu(): void
     {
         (new AddNewBadgeToAdminMenuItem())();
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerCampaignCache(): void
+    {
+        give(CacheCampaignData::class)->registerAction();
+
+        Hooks::addAction('give_insert_payment', CacheCampaignData::class, '__invoke', 11, 1);
+        Hooks::addAction('give_update_payment_status', CacheCampaignData::class, '__invoke', 11, 1);
+
+        add_action('give_recurring_add_subscription_payment', function (Give_Payment $legacyPayment) {
+            give(CacheCampaignData::class)((int)$legacyPayment->ID);
+        }, 11, 1);
     }
 }
