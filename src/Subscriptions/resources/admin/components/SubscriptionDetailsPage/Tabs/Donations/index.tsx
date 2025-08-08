@@ -41,8 +41,9 @@ export default function SubscriptionDetailsPageDonationsTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const subscriptionId = urlParams.get('id');
 
-    const handleAddRenewal = (data: any) => {
+    const handleAddRenewal = async (data: any) => {
         // TODO: Implement the renewal creation logic
+        await new Promise(resolve => setTimeout(resolve, 2000));
         alert(
             `
             Creating renewal with the following data:

@@ -7,6 +7,7 @@ import { useState } from 'react';
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Spinner } from '@wordpress/components';
 
 /**
  * Internal Dependencies
@@ -53,6 +54,7 @@ export default function AddRenewalDialog({
         transactionId: '',
     });
     const [errors, setErrors] = useState<Partial<any>>({});
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const handleFieldChange = (field: keyof RenewalData, value: typeof data[keyof RenewalData]) => {
@@ -94,18 +96,26 @@ export default function AddRenewalDialog({
         });
     };
 
-    const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.stopPropagation();
         e.preventDefault();
 
-        if (!validateForm()) {
+        if (!validateForm() || isLoading) {
             return;
         }
 
-        handleConfirm(data);
-        resetData();
-        setErrors({});
-        handleClose();
+        setIsLoading(true);
+
+        try {
+            await handleConfirm(data);
+            resetData();
+            setErrors({});
+            setIsLoading(false);
+            handleClose();
+        } catch (error) {
+            console.error('Error adding renewal:', error);
+            setIsLoading(false);
+        }
     };
 
     const handleCancel = () => {
@@ -115,6 +125,7 @@ export default function AddRenewalDialog({
     };
 
     const isFormValid = data.amount && data.date;
+    const isSubmitDisabled = !isFormValid || isLoading;
 
     return (
         <ModalDialog
@@ -221,11 +232,16 @@ export default function AddRenewalDialog({
                     <div className={styles.buttons}>
                         <button
                             type="submit"
-                            className={`button button-primary ${styles.addButton}`}
-                            disabled={!isFormValid}
+                            className={`button button-primary ${styles.addButton} ${isLoading ? styles.loading : ''}`}
+                            disabled={isSubmitDisabled && !isLoading}
                             aria-describedby={!isFormValid ? 'submit-button-description' : undefined}
                         >
-                            {__('Add renewal', 'give')}
+                            {isLoading ? (
+                                <>
+                                    {__('Adding renewal', 'give')}
+                                    <Spinner />
+                                </>
+                            ) : __('Add renewal', 'give')}
                         </button>
 
                         {!isFormValid && (

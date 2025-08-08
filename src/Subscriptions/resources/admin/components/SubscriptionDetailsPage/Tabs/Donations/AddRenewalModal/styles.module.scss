@@ -165,6 +165,10 @@
         .addButton {
             padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
         }
+
+        &.loading {
+            pointer-events: none;
+        }
     }
 
     .note {
