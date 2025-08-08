@@ -330,6 +330,7 @@ export default function ListTablePage({
                                 listTableBlankSlate={listTableBlankSlate}
                                 productRecommendation={productRecommendation}
                                 columnFilters={columnFilters}
+                                includeBulkActionsCheckbox={bulkActions?.length > 0}
                             />
                         </ShowConfirmModalContext.Provider>
                     </CheckboxContext.Provider>
