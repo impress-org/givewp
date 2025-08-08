@@ -3,57 +3,33 @@ import { ListTablePage } from "@givewp/components";
 import { getSubscriptionOptionsWindowData } from "@givewp/subscriptions/utils";
 import styles from './styles.module.scss';
 import cn from 'classnames';
+import { DonationRowActions } from "@givewp/donations/components/DonationRowActions";
+import BlankSlate from "@givewp/components/ListTable/BlankSlate";
+import apiSettings from './apiSettings';
 
-const { legacyApiRoot, apiNonce, mode } = getSubscriptionOptionsWindowData();
+const { mode, adminUrl, pluginUrl } = getSubscriptionOptionsWindowData();
 
-const urlParams = new URLSearchParams(window.location.search);
-const subscriptionId = urlParams.get('id');
+// This is necessary to reuse the DonationRowActions component
+// that expects the window.GiveDonations object to be present
+// while avoiding to expose the entire window.GiveDonations object.
+if (!window?.GiveDonations) {
+    // @ts-ignore
+    window.GiveDonations = {
+        adminUrl,
+    };
+}
 
-const apiSettings = {
-    apiRoot: `${legacyApiRoot}/donations?subscriptionId=${subscriptionId}`,
-    apiNonce,
-    table: {
-        columns: [
-            {
-                id: 'id',
-                label: 'ID',
-                sortable: true,
-                visible: true,
-            },
-            {
-                id: 'subscriptionDonationType',
-                label: 'Type',
-                sortable: false,
-                visible: true,
-            },
-            {
-                id: 'campaign',
-                label: 'Campaign',
-                sortable: false,
-                visible: true,
-            },
-            {
-                id: 'createdAt',
-                label: 'Date',
-                sortable: true,
-                visible: true,
-            },
-            {
-                id: 'status',
-                label: 'Status',
-                sortable: false,
-                visible: true,
-            },
-            {
-                id: 'amount',
-                label: 'Amount',
-                sortable: true,
-                visible: true,
-            },
-        ],
-        id: 'donations',
-    },
-};
+/**
+ * @unreleased
+ */
+const ListTableBlankSlate = (
+    <BlankSlate
+        imagePath={`${pluginUrl}build/assets/dist/images/list-table/blank-slate-donations-icon.svg`}
+        description={__('No donations found', 'give')}
+        href={'https://docs.givewp.com/donations'}
+        linkText={__('GiveWP Donations.', 'give')}
+    />
+);
 
 /**
  * @unreleased
@@ -69,12 +45,13 @@ export default function SubscriptionDetailsPageDonationsTab() {
                 <ListTablePage
                     title={__('Donations', 'give')}
                     apiSettings={apiSettings}
-                    listTableBlankSlate={<div>No donations found</div>}
+                    listTableBlankSlate={ListTableBlankSlate}
                     singleName={__('result', 'give')}
                     pluralName={__('results', 'give')}
                     paymentMode={mode === 'test'}
                     contentMode={true}
                     perPage={10}
+                    rowActions={DonationRowActions}
                 />
             </div>
         </div>
