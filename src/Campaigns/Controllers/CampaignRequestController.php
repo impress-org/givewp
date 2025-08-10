@@ -78,11 +78,16 @@ class CampaignRequestController
             return $campaign->id;
         }, $campaigns);
 
-        $campaignsData = CampaignsDataRepository::campaigns($ids);
+        $campaignsData = ! empty($ids)
+            ? CampaignsDataRepository::campaigns($ids)
+            : null;
 
         $campaigns = array_map(function ($campaign) use ($campaignsData) {
             $view = new CampaignViewModel($campaign);
-            $view->setData($campaignsData);
+
+            if ($campaignsData) {
+                $view->setData($campaignsData);
+            }
 
             return $view->exports();
         }, $campaigns);
