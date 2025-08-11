@@ -19,6 +19,7 @@ export type ConfirmationDialogProps = {
     isConfirming?: boolean;
     spinner?: 'regular' | 'arc' | 'none';
     footer?: React.ReactNode;
+    allowCancel?: boolean;
 }
 
 /**
@@ -36,7 +37,8 @@ export default function ConfirmationDialog({
     children,
     isConfirming = false,
     spinner ='none',
-    footer
+    footer,
+    allowCancel = true
 }: ConfirmationDialogProps) {
     return (
         <ModalDialog
@@ -52,13 +54,14 @@ export default function ConfirmationDialog({
                     {children}
                 </div>
                 <div className={styles.confirmationDialogButtons}>
-                    <button
-                        className={styles.cancelButton}
-                        onClick={handleClose}
-                        disabled={isConfirming}
-                    >
-                        {__('Cancel', 'give')}
-                    </button>
+                    {allowCancel && (
+                        <button
+                            className={styles.cancelButton}
+                            onClick={handleClose}
+                        >
+                            {__('Cancel', 'give')}
+                        </button>
+                    )}
                     <button
                         className={cx(styles.confirmButton, styles[`confirmButton--${variant}`])}
                         onClick={handleConfirm}
