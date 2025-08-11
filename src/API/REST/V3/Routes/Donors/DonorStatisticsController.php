@@ -213,43 +213,8 @@ class DonorStatisticsController extends WP_REST_Controller
                     'type'        => 'string',
                     'description' => esc_html__('Most commonly used payment method by the donor.', 'give'),
                 ],
-                '_links' => [
-                    'type'        => 'object',
-                    'description' => esc_html__('Hypermedia links related to the donor statistics resource.', 'give'),
-                    'properties'  => [
-                        'self' => [
-                            'type'  => 'array',
-                            'items' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'href' => [
-                                        'type'        => 'string',
-                                        'format'      => 'uri',
-                                        'description' => esc_html__('URL to the resource.', 'give'),
-                                    ],
-                                    'targetHints' => [
-                                        'type'        => 'object',
-                                        'description' => esc_html__('Hints for allowed operations on the target.', 'give'),
-                                        'properties'  => [
-                                            'allow' => [
-                                                'type'  => 'array',
-                                                'items' => [
-                                                    'type' => 'string',
-                                                ],
-                                                'description' => esc_html__('Allowed HTTP methods for the target.', 'give'),
-                                            ],
-                                        ],
-                                        'required' => ['allow'],
-                                    ],
-                                ],
-                                'required' => ['href'],
-                            ],
-                        ],
-                    ],
-                    'required' => ['self'],
-                ],
             ],
-            'required' => ['donations', 'donorType', 'preferredPaymentMethod', '_links'],
+            'required' => ['donations', 'donorType', 'preferredPaymentMethod'],
         ];
     }
 }

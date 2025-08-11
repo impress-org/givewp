@@ -1036,61 +1036,6 @@ class DonationController extends WP_REST_Controller
                         ],
                     ],
                 ],
-                '_links' => [
-                    'type' => 'object',
-                    'description' => esc_html__('Hypermedia links for the resource', 'give'),
-                    'properties' => [
-                        'self' => [
-                            'type' => 'array',
-                            'items' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'href' => ['type' => 'string', 'format' => 'uri'],
-                                    'targetHints' => [
-                                        'type' => 'object',
-                                        'properties' => [
-                                            'allow' => [
-                                                'type' => 'array',
-                                                'items' => ['type' => 'string'],
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                        'givewp:donor' => [
-                            'type' => 'array',
-                            'items' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'embeddable' => ['type' => 'boolean'],
-                                    'href' => ['type' => 'string', 'format' => 'uri'],
-                                ],
-                            ],
-                        ],
-                        'givewp:campaign' => [
-                            'type' => 'array',
-                            'items' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'embeddable' => ['type' => 'boolean'],
-                                    'href' => ['type' => 'string', 'format' => 'uri'],
-                                ],
-                            ],
-                        ],
-                        'curies' => [
-                            'type' => 'array',
-                            'items' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'name' => ['type' => 'string'],
-                                    'href' => ['type' => 'string', 'format' => 'uri-template'],
-                                    'templated' => ['type' => 'boolean'],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
             ],
             'required' => [
                 'id',
