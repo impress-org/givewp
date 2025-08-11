@@ -111,6 +111,7 @@ class SubscriptionViewModel
             $this->subscription->gateway()->toArray(),
             [
                 'subscriptionUrl' => $this->subscription->gateway()->gatewayDashboardSubscriptionUrl($this->subscription),
+                'canSync' => $this->subscription->gateway()->canSyncSubscriptionWithPaymentGateway(),
             ]
         );
     }

@@ -81,7 +81,8 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
             'gateway' => array_merge(
                 $subscription->gateway()->toArray(),
                 [
-                    'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),
+                    'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),      
+                    'canSync' => $subscription->gateway()->canSyncSubscriptionWithPaymentGateway(),
                 ]
             )
         ], $data);
