@@ -337,18 +337,22 @@ class DonorController extends WP_REST_Controller
                     'readonly'    => true,
                 ],
                 'createdAt' => [
-                    'type'        => 'object',
+                    'type' => ['object', 'null'],
                     'description' => esc_html__('Date the donor was created', 'give'),
-                    'properties'  => [
+                    'properties' => [
                         'date' => [
-                            'type'   => 'string',
-                            'format' => 'date-time',
-                        ],
-                        'timezone_type' => [
-                            'type' => 'integer',
+                            'type' => 'string',
+                            'description' => esc_html__('Date', 'give'),
+                            'pattern' => '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}$',
                         ],
                         'timezone' => [
                             'type' => 'string',
+                            'description' => esc_html__('Timezone of the date', 'give'),
+                            'format' => 'text-field',
+                        ],
+                        'timezone_type' => [
+                            'type' => 'integer',
+                            'description' => esc_html__('Timezone type', 'give'),
                         ],
                     ],
                 ],
@@ -475,7 +479,7 @@ class DonorController extends WP_REST_Controller
                     'description' => esc_html__('Total number of donations by the donor', 'give'),
                 ],
                 'avatarUrl' => [
-                    'type'        => 'string',
+                    'type'        => ['string', 'null'],
                     'description' => esc_html__('URL to donor avatar', 'give'),
                     'format'      => 'uri',
                 ],
