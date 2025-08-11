@@ -180,7 +180,7 @@ class DonorStatisticsController extends WP_REST_Controller
                                 ],
                                 'date' => [
                                     'type'        => 'string',
-                                    'format'      => 'date-time',
+                                    'pattern'     => '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$',
                                     'description' => esc_html__('Date of the first donation.', 'give'),
                                 ],
                             ],
@@ -196,7 +196,7 @@ class DonorStatisticsController extends WP_REST_Controller
                                 ],
                                 'date' => [
                                     'type'        => 'string',
-                                    'format'      => 'date-time',
+                                    'pattern'     => '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$',
                                     'description' => esc_html__('Date of the most recent donation.', 'give'),
                                 ],
                             ],
