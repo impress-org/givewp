@@ -824,7 +824,7 @@ class DonationController extends WP_REST_Controller
                 'honorific' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor honorific/prefix', 'give'),
-                    'enum' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
+                    'enum' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes() + [ null ])),
                 ],
                 'email' => [
                     'type' => 'string',
@@ -977,12 +977,11 @@ class DonationController extends WP_REST_Controller
                 'createdAt' => [
                     'type' => ['object', 'null'],
                     'description' => esc_html__('Donation creation date', 'give'),
-                    'format' => 'date-time',
                     'properties' => [
                         'date' => [
                             'type' => 'string',
                             'description' => esc_html__('Date', 'give'),
-                            'format' => 'date-time',
+                            'pattern' => '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}$',
                         ],
                         'timezone' => [
                             'type' => 'string',
@@ -998,12 +997,11 @@ class DonationController extends WP_REST_Controller
                 'updatedAt' => [
                     'type' => ['object', 'null'],
                     'description' => esc_html__('Donation last update date', 'give'),
-                    'format' => 'date-time',
                     'properties' => [
                         'date' => [
                             'type' => 'string',
                             'description' => esc_html__('Date', 'give'),
-                            'format' => 'date-time',
+                            'pattern' => '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}$',
                         ],
                         'timezone' => [
                             'type' => 'string',
