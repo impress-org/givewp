@@ -1,9 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {dateI18n} from '@wordpress/date';
 import {amountFormatter} from '@givewp/src/Admin/utils';
-import Header from '@givewp/src/Admin/components/Header';
-import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
-import SummaryTable, {SummaryItem} from '@givewp/src/Admin/components/SummaryTable';
+import {Header, OverviewPanel, SummaryTable, SummaryItem} from '@givewp/admin/components';
 import { Donation } from '@givewp/donations/admin/components/types';
 import styles from './styles.module.scss';
 
