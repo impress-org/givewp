@@ -322,19 +322,16 @@ class DonorController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         return [
-            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title'   => 'donor',
             'type'    => 'object',
             'properties' => [
                 'id' => [
                     'type'        => 'integer',
                     'description' => esc_html__('Donor ID', 'give'),
-                    'readonly'    => true,
                 ],
                 'userId' => [
                     'type'        => ['integer', 'string', 'null'],
                     'description' => esc_html__('The WordPress user ID', 'give'),
-                    'readonly'    => true,
                 ],
                 'createdAt' => [
                     'type' => ['object', 'null'],
@@ -348,7 +345,6 @@ class DonorController extends WP_REST_Controller
                         'timezone' => [
                             'type' => 'string',
                             'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
                         ],
                         'timezone_type' => [
                             'type' => 'integer',
@@ -359,7 +355,6 @@ class DonorController extends WP_REST_Controller
                 'name' => [
                     'type'        => 'string',
                     'description' => esc_html__('Full donor name', 'give'),
-                    'format'      => 'text-field',
                 ],
                 'firstName' => [
                     'type'        => 'string',
@@ -367,7 +362,6 @@ class DonorController extends WP_REST_Controller
                     'minLength'   => 1,
                     'maxLength'   => 128,
                     'errorMessage'=> esc_html__('First name is required', 'give'),
-                    'format'      => 'text-field',
                 ],
                 'lastName' => [
                     'type'        => 'string',
@@ -375,7 +369,6 @@ class DonorController extends WP_REST_Controller
                     'minLength'   => 1,
                     'maxLength'   => 128,
                     'errorMessage'=> esc_html__('Last name is required', 'give'),
-                    'format'      => 'text-field',
                 ],
                 'email' => [
                     'type'        => 'string',
@@ -398,12 +391,10 @@ class DonorController extends WP_REST_Controller
                 'prefix' => [
                     'type'        => ['string', 'null'],
                     'description' => esc_html__('Donor prefix', 'give'),
-                    'format'      => 'text-field',
                 ],
                 'company' => [
                     'type'        => ['string', 'null'],
                     'description' => esc_html__('Donor company', 'give'),
-                    'format'      => 'text-field',
                 ],
                 'avatarId' => [
                     'type'        => ['integer', 'string', 'null'],
@@ -427,32 +418,26 @@ class DonorController extends WP_REST_Controller
                                     'address1' => [
                                         'type'        => 'string',
                                         'description' => esc_html__('Address line 1', 'give'),
-                                        'format'      => 'text-field',
                                     ],
                                     'address2' => [
                                         'type'        => 'string',
                                         'description' => esc_html__('Address line 2', 'give'),
-                                        'format'      => 'text-field',
                                     ],
                                     'city' => [
                                         'type'        => 'string',
                                         'description' => esc_html__('City', 'give'),
-                                        'format'      => 'text-field',
                                     ],
                                     'state' => [
                                         'type'        => 'string',
                                         'description' => esc_html__('State', 'give'),
-                                        'format'      => 'text-field',
                                     ],
                                     'country' => [
                                         'type'        => 'string',
                                         'description' => esc_html__('Country', 'give'),
-                                        'format'      => 'text-field',
                                     ],
                                     'zip' => [
                                         'type'        => 'string',
                                         'description' => esc_html__('ZIP code', 'give'),
-                                        'format'      => 'text-field',
                                     ],
                                 ],
                             ],
@@ -497,12 +482,11 @@ class DonorController extends WP_REST_Controller
                             'label' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Field label', 'give'),
-                                'format' => 'text-field',
                             ],
                             'value' => [
                                 'type' => 'string',
                                 'description' => esc_html__('Field value', 'give'),
-                                'format' => 'text-field',
+
                             ],
                         ],
                     ],

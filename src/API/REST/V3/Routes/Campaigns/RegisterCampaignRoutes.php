@@ -295,7 +295,6 @@ class RegisterCampaignRoutes
     public function getSchema(): array
     {
         return [
-            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title'   => 'campaign',
             'type'    => 'object',
             'properties' => [

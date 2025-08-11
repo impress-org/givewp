@@ -354,14 +354,12 @@ class DonationNotesController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         return [
-            'schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'donation-note',
             'type' => 'object',
             'properties' => [
                 'id' => [
                     'description' => __('Unique identifier for the note.', 'give'),
                     'type' => 'integer',
-                    'readonly' => true,
                 ],
                 'donationId' => [
                     'description' => __('The ID of the donation this note belongs to.', 'give'),
@@ -373,7 +371,6 @@ class DonationNotesController extends WP_REST_Controller
                     'type' => 'string',
                     'required' => true,
                     'minLength' => 1,
-                    'format' => 'text-field',
                 ],
                 'type' => [
                     'description' => __('The type of the note.', 'give'),
@@ -384,7 +381,6 @@ class DonationNotesController extends WP_REST_Controller
                 'createdAt' => [
                     'type' => ['object', 'null'],
                     'description' => esc_html__('The date the note was created', 'give'),
-                    'readonly' => true,
                     'properties' => [
                         'date' => [
                             'type' => 'string',
@@ -394,7 +390,6 @@ class DonationNotesController extends WP_REST_Controller
                         'timezone' => [
                             'type' => 'string',
                             'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
                         ],
                         'timezone_type' => [
                             'type' => 'integer',
@@ -421,7 +416,7 @@ class DonationNotesController extends WP_REST_Controller
         $schema['properties']['_links'] = [
             'description' => __('HATEOAS links for the note.', 'give'),
             'type' => 'object',
-            'readonly' => true,
+
         ];
 
         return $schema;
@@ -459,7 +454,7 @@ class DonationNotesController extends WP_REST_Controller
                 'type' => 'string',
                 'required' => $method === WP_REST_Server::CREATABLE,
                 'minLength' => 1,
-                'format' => 'text-field',
+
             ];
 
             $args['type'] = [
