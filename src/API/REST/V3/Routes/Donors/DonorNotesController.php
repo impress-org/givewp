@@ -381,16 +381,25 @@ class DonorNotesController extends WP_REST_Controller
                     'default' => 'admin',
                 ],
                 'createdAt' => [
-                    'description' => __('The date the note was created.', 'give'),
-                    'type' => 'string',
-                    'format' => 'date-time',
+                    'type' => ['object', 'null'],
+                    'description' => esc_html__('The date the note was created', 'give'),
                     'readonly' => true,
-                ],
-                'updatedAt' => [
-                    'description' => __('The date the note was last updated.', 'give'),
-                    'type' => 'string',
-                    'format' => 'date-time',
-                    'readonly' => true,
+                    'properties' => [
+                        'date' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Date', 'give'),
+                            'pattern' => '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}$',
+                        ],
+                        'timezone' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Timezone of the date', 'give'),
+                            'format' => 'text-field',
+                        ],
+                        'timezone_type' => [
+                            'type' => 'integer',
+                            'description' => esc_html__('Timezone type', 'give'),
+                        ],
+                    ],
                 ],
             ],
         ];
