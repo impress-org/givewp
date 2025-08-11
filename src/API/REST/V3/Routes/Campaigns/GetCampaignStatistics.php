@@ -98,7 +98,7 @@ class GetCampaignStatistics implements RestRoute
     public function getSchema(): array
     {
         return [
-            '$schema' => 'http://json-schema.org/draft-07/schema#',
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title'   => 'campaign-statistics',
             'type'    => 'object',
             'properties' => [

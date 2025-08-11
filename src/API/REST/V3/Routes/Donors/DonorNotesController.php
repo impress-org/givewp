@@ -354,7 +354,7 @@ class DonorNotesController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         return [
-            'schema' => 'http://json-schema.org/draft-07/schema#',
+            'schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'donor-note',
             'type' => 'object',
             'properties' => [
