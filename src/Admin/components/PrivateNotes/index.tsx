@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {addQueryArgs} from '@wordpress/url';
 import useSWR from 'swr';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import {useDispatch} from '@wordpress/data';
 import {ConfirmationDialogIcon, DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon} from './Icons';
@@ -28,8 +28,12 @@ type DonorNote = {
  * @since 4.5.0
  */
 type NoteState = {
+    notes: DonorNote[];
+    loadingId: number | null;
+    totalItems: number;
     isAddingNote: boolean;
     isSavingNote: boolean;
+    isEditingNote: boolean;
     note: string;
     perPage: number;
 }
@@ -60,8 +64,12 @@ export function SubscriptionNotes({subscriptionId}: {subscriptionId: number}) {
  */
 function PrivateNotes({endpoint}: {endpoint: string}) {
     const [state, setNoteState] = useState<NoteState>({
+        notes: [],
+        loadingId: undefined,
+        totalItems: 0,
         isAddingNote: false,
         isSavingNote: false,
+        isEditingNote: false,
         note: '',
         perPage: 5,
     });
@@ -79,6 +87,12 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
             parse: false,
         }) as Response;
         const data = await response.json();
+
+        setState({
+            notes: data,
+            totalItems: Number(response.headers.get('X-WP-Total')),
+        });
+
         return {
             data,
             totalPages: Number(response.headers.get('X-WP-TotalPages')),
@@ -86,21 +100,40 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
         };
     }, {revalidateOnFocus: false});
 
+    const initialLoad = (isLoading || isValidating) && state.loadingId === undefined;
+
     const saveNote = () => {
-        setState({isSavingNote: true});
+        const tempId = Date.now();
+        const tempNote = {
+            id: tempId,
+            content: state.note,
+            createdAt: {date: new Date().toISOString()}
+        };
+
+        // Add temporary note to the UI state.
+        setState({
+            loadingId: tempId,
+            notes: [tempNote, ...state.notes],
+            isAddingNote: false,
+            isSavingNote: true
+        });
+
         apiFetch({path: endpoint, method: 'POST', data: {content: state.note}})
-            .then((response) => {
-                mutate(response).then(() => {
-                    setState({isAddingNote: false})
-                    dispatch.addSnackbarNotice({
-                        id: 'add-note',
-                        content: __('You added a private note', 'give'),
-                    });
+            .then(async (response) => {
+                await mutate(response);
+                setState({
+                    isAddingNote: false,
+                    isSavingNote: false,
+                });
+                dispatch.addSnackbarNotice({
+                    id: 'add-note',
+                    content: __('You added a private note', 'give'),
                 });
             });
     };
 
     const deleteNote = (id: number) => {
+        setState({loadingId: id});
         apiFetch({path: `${endpoint}/${id}`, method: 'DELETE', data: {id}})
             .then(async (response) => {
                 await mutate(response);
@@ -112,9 +145,15 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
     };
 
     const editNote = (id: number, content: string) => {
+        setState({loadingId: id, isEditingNote: true});
         apiFetch({path: `${endpoint}/${id}`, method: 'PATCH', data: {content}})
             .then(async (response) => {
                 await mutate(response);
+                setState({
+                    isEditingNote: false, 
+                    loadingId: null,
+                    notes: state.notes.map((note) => note.id === id ? response : note)
+                });
                 dispatch.addSnackbarNotice({
                     id: 'edit-note',
                     content: __('Private note edited', 'give'),
@@ -131,14 +170,6 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
         });
     };
 
-    if (isLoading || isValidating) {
-        return (
-            <div style={{margin: '0 auto'}}>
-                <Spinner />
-            </div>
-        );
-    }
-
     return (
         <>
             <Header
@@ -147,7 +178,12 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
                 actionOnClick={() => setState({isAddingNote: true})}
                 actionText={__('Add note', 'give')}
             />
-            <div className={style.notesContainer}>
+            {initialLoad && (
+                <div style={{margin: '0 auto'}}>
+                    <Spinner />
+                </div>
+            )}
+            {!initialLoad && <div className={style.notesContainer}>
                 {state.isAddingNote && (
                     <div className={style.addNoteContainer}>
                     <textarea
@@ -174,15 +210,17 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
                         </div>
                     </div>
                 )}
-                {data?.data?.length ? (
+
+                {state?.notes?.length > 0 ? (
                     <>
-                        {data.data.map((note) => {
+                        {state?.notes?.map((note) => {
                             return (
                                 <Note
                                     key={note.id}
                                     note={note}
                                     onDelete={(id: number) => deleteNote(id)}
                                     onEdit={(id: number, content: string) => editNote(id, content)}
+                                    isLoading={note.id === state.loadingId}
                                 />
                             );
                         })}
@@ -199,7 +237,7 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
                 )}
 
                 <div className={style.showMoreContainer}>
-                    {data?.data?.length > 0 && data.totalItems > state.perPage && (
+                    {state?.notes?.length > 0 && state.totalItems > state.perPage && (
                         <button
                             className={style.showMoreButton}
                             onClick={async (e) => {
@@ -217,18 +255,17 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
                         </button>
                     )}
                 </div>
-            </div>
+            </div>}
         </>
     );
 }
 
-
 /**
  * @since 4.4.0
  */
-const Note = ({note, onDelete, onEdit}) => {
+const Note = ({note, onDelete, onEdit, isLoading}) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
-    const [currentlyEditing, setCurrentlyEditing] = useState(null);
+    const [currentlyEditing, setCurrentlyEditing] = useState();
     const [content, setContent] = useState(note.content);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
@@ -263,6 +300,7 @@ const Note = ({note, onDelete, onEdit}) => {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setShowContextMenu(false);
+                                        setCurrentlyEditing(null);
                                         onEdit(note.id, content);
                                     }}
                                 >
@@ -274,48 +312,56 @@ const Note = ({note, onDelete, onEdit}) => {
                 ) : (
                     <>
                         <div className={style.noteContainer}>
-                            <div className={style.note}>
-                                <div className={style.title}>
-                                    {note.content}
-                                </div>
+                            {isLoading ? (
+                                    <div className={style.noteLoading}>
+                                        <Spinner />
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className={style.note}>
+                                            <div className={style.title}>
+                                                {note.content}
+                                            </div>
 
-                                <div
-                                    className={style.dotsMenu}
-                                    onClick={() => setShowContextMenu(true)}
-                                >
-                                    <DotsMenuIcon />
-                                    {showContextMenu && (
-                                        <div className={style.menu}>
-                                            <a
-                                                href="#"
-                                                className={style.menuItem}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    setShowContextMenu(false);
-                                                    setCurrentlyEditing(note.id);
-                                                }}
+                                            <div
+                                                className={style.dotsMenu}
+                                                onClick={() => setShowContextMenu(true)}
                                             >
-                                                <EditIcon /> {__('Edit', 'give')}
-                                            </a>
-                                            <a
-                                                href="#"
-                                                className={cx(style.menuItem, style.delete)}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    setShowContextMenu(false);
-                                                    setShowDeleteDialog(true);
-                                                }}
-                                            >
-                                                <DeleteIcon /> {__('Delete', 'give')}
-                                            </a>
+                                                <DotsMenuIcon />
+                                                {showContextMenu && (
+                                                    <div className={style.menu}>
+                                                        <a
+                                                            href="#"
+                                                            className={style.menuItem}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                setShowContextMenu(false);
+                                                                setCurrentlyEditing(note.id);
+                                                            }}
+                                                        >
+                                                            <EditIcon /> {__('Edit', 'give')}
+                                                        </a>
+                                                        <a
+                                                            href="#"
+                                                            className={cx(style.menuItem, style.delete)}
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                setShowContextMenu(false);
+                                                                setShowDeleteDialog(true);
+                                                            }}
+                                                        >
+                                                            <DeleteIcon /> {__('Delete', 'give')}
+                                                        </a>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
-                                    )}
-                                </div>
+                                        <div className={style.date}>
+                                            {formatTimestamp(note.createdAt.date)}
+                                        </div>
+                                    </>
+                                )}
                             </div>
-                            <div className={style.date}>
-                                {formatTimestamp(note.createdAt.date)}
-                            </div>
-                        </div>
                     </>
                 )}
                 <ConfirmationDialog
@@ -323,6 +369,7 @@ const Note = ({note, onDelete, onEdit}) => {
                     isOpen={showDeleteDialog}
                     handleClose={() => setShowDeleteDialog(false)}
                     handleConfirm={() => {
+                        setShowDeleteDialog(false)
                         onDelete(note.id);
                     }}
                 />
