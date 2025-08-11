@@ -66,6 +66,10 @@ trait HasFormOptions
     {
         $forms = $this->getForms();
 
+        if (empty($forms)) {
+            return [];
+        }
+
         foreach ($forms as $form) {
             $options[$form->id] = $form->title;
         }
