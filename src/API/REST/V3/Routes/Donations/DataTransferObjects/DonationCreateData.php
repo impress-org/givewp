@@ -234,6 +234,17 @@ class DonationCreateData
             return $key !== 'id';
         }, ARRAY_FILTER_USE_KEY);
 
+        // If campaignId is not provided, try to get it from the form
+        if (!isset($donationAttributes['campaignId']) || empty($donationAttributes['campaignId'])) {
+            $formId = $donationAttributes['formId'] ?? null;
+            if ($formId) {
+                $campaign = give()->campaigns->getByFormId($formId);
+                if ($campaign) {
+                    $donationAttributes['campaignId'] = $campaign->id;
+                }
+            }
+        }
+
         $donation = Donation::create($donationAttributes);
 
         // Update subscription renewal date if requested and this is a subscription donation

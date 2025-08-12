@@ -438,7 +438,20 @@ class SubscriptionRepository
      */
    public function createRenewal(Subscription $subscription, array $attributes = []): Donation
    {
-       $initialDonation = $subscription->initialDonation();
+       $initialDonation = $subscription->initialDonation();       
+
+        $campaignId = $attributes['campaignId'] ?? null;
+       
+        if (is_null($campaignId)) {
+           $campaignId = $initialDonation->campaignId;
+                      
+           if (empty($campaignId) && $subscription->donationFormId) {
+               $campaign = give()->campaigns->getByFormId($subscription->donationFormId);
+               if ($campaign) {
+                   $campaignId = $campaign->id;
+               }
+           }
+        }
 
         $donation = Donation::create(
             array_merge([
@@ -464,6 +477,7 @@ class SubscriptionRepository
                 'formTitle' => $initialDonation->formTitle,
                 'mode' => $subscription->mode->isLive() ? DonationMode::LIVE() : DonationMode::TEST(),
                 'donorIp' => $initialDonation->donorIp,
+                'campaignId' => $campaignId,
             ], $attributes)
         );
 

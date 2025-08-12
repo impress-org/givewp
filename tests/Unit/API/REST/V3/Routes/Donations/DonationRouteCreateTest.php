@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\Campaigns\Models\Campaign;
 use Give\Donors\Models\Donor;
 use Give\DonationForms\Models\DonationForm;
 use Give\PaymentGateways\Gateways\Offline\OfflineGateway;
@@ -11,6 +12,7 @@ use Give\Subscriptions\Models\Subscription;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Donations\Models\Donation;
 
 /**
  * @unreleased
@@ -1109,5 +1111,190 @@ class DonationRouteCreateTest extends RestApiTestCase
         // Verify that the donation was created successfully as a single donation
         $this->assertEquals('single', $data['type']);
         $this->assertEquals(0, $data['subscriptionId']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldRecoverCampaignIdFromFormWhenNotProvided()
+    {
+        // Create a campaign and associate it with the form
+        $campaign = Campaign::factory()->create();
+        give()->campaigns->addCampaignForm($campaign, $this->form->id);
+
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => [
+                'amount' => 100.00,
+                'currency' => 'USD',
+            ],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+
+        // Verify that the campaignId was automatically recovered from the form
+        $this->assertEquals($campaign->id, $data['campaignId']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationShouldUseProvidedCampaignIdWhenAvailable()
+    {
+        // Create a campaign and associate it with the form
+        $campaign = Campaign::factory()->create();
+        give()->campaigns->addCampaignForm($campaign, $this->form->id);
+
+        $customCampaignId = 999;
+
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => [
+                'amount' => 100.00,
+                'currency' => 'USD',
+            ],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'campaignId' => $customCampaignId,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+
+        // Verify that the provided campaignId was used instead of the one from the form
+        $this->assertEquals($customCampaignId, $data['campaignId']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateRenewalShouldUseCampaignIdFromInitialDonation()
+    {
+        // Create a campaign and associate it with the form
+        $campaign = Campaign::factory()->create();
+        give()->campaigns->addCampaignForm($campaign, $this->form->id);
+
+        // Create a subscription with an initial donation that has a campaignId
+        $initialCampaignId = 123;
+        $subscription = Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'installments' => 12, // Set higher installments to avoid limit
+        ]);
+
+        // Update the initial donation to have a specific campaignId
+        $initialDonation = $subscription->initialDonation();
+        $initialDonation->campaignId = $initialCampaignId;
+        $initialDonation->save();
+
+        // Create renewal request
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+
+        // Verify that the renewal has the same campaignId as the initial donation
+        $this->assertEquals($initialCampaignId, $data['campaignId']);
+        $this->assertEquals('renewal', $data['type']);
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateRenewalShouldOverrideCampaignIdWhenProvidedInRequest()
+    {
+        // Create a campaign and associate it with the form
+        $campaign = \Give\Campaigns\Models\Campaign::factory()->create();
+        give()->campaigns->addCampaignForm($campaign, $this->form->id);
+
+        // Create a subscription with an initial donation that has a campaignId
+        $initialCampaignId = 123;
+        $subscription = Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'installments' => 12, // Set higher installments to avoid limit
+        ]);
+
+        // Update the initial donation to have a specific campaignId
+        $initialDonation = $subscription->initialDonation();
+        $initialDonation->campaignId = $initialCampaignId;
+        $initialDonation->save();
+
+        // Create renewal request with a different campaignId
+        $overrideCampaignId = 456;
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+            'campaignId' => $overrideCampaignId,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+
+        // Verify that the provided campaignId overrides the initial donation's campaignId
+        $this->assertEquals($overrideCampaignId, $data['campaignId']);
+        $this->assertEquals('renewal', $data['type']);
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateRenewalShouldUseFormCampaignIdWhenInitialDonationHasNoCampaignId()
+    {
+        // Create a subscription first to get its form ID
+        $subscription = Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'installments' => 12, // Set higher installments to avoid limit
+        ]);
+
+        // Create a campaign and associate it with the subscription's form
+        $campaign = Campaign::factory()->create();
+        give()->campaigns->addCampaignForm($campaign, $subscription->donationFormId);
+
+        // Update the initial donation to have no campaignId
+        $initialDonation = $subscription->initialDonation();
+        $initialDonation->campaignId = 0; // No campaignId
+        $initialDonation->save();
+
+        // Create renewal request
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+
+        // Verify that the renewal gets the campaignId from the form
+        $this->assertEquals($campaign->id, $data['campaignId']);
+        $this->assertEquals('renewal', $data['type']);
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
     }
 }
