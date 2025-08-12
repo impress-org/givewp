@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Shortcodes;
 
+use Give\Campaigns\Actions\LoadCampaignPublicOptions;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
@@ -36,6 +37,8 @@ class CampaignGoalShortcode
      */
     public function loadAssets(): void
     {
+        give(LoadCampaignPublicOptions::class)();
+
         $handleName = 'givewp-campaign-goal-block-app';
         $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignGoalBlockApp.asset.php');
 

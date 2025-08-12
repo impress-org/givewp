@@ -4,6 +4,9 @@ namespace Give\ThirdPartySupport\Elementor\Actions;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignDonationsWidget\ElementorCampaignDonationsWidget;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignDonorsWidget\ElementorCampaignDonorsWidget;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGoalWidget\ElementorCampaignGoalWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget\ElementorDonationFormWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignStatsWidget\ElementorCampaignStatsWidget;
 
@@ -200,9 +203,9 @@ class SetupElementorCampaignTemplate
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
-                                'widgetType' => 'shortcode',
+                                'widgetType' => give(ElementorCampaignGoalWidget::class)->get_name(),
                                 'settings' => [
-                                    'shortcode' => "[givewp_campaign campaign_id=\"{$campaignId}\" show_image=\"false\" show_description=\"false\" show_goal=\"true\"]"
+                                    'campaign_id' => $campaignId
                                 ]
                             ],
                             // Campaign Stats
@@ -292,9 +295,16 @@ class SetupElementorCampaignTemplate
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
-                                'widgetType' => 'shortcode',
+                                'widgetType' => give(ElementorCampaignDonationsWidget::class)->get_name(),
                                 'settings' => [
-                                    'shortcode' => "[givewp_campaign_donations campaign_id=\"{$campaignId}\" show_anonymous=\"true\" show_icon=\"true\" show_button=\"true\" donations_per_page=\"5\"]"
+                                    'campaign_id' => $campaignId,
+                                    'show_anonymous' => 'yes',
+                                    'show_icon' => 'yes',
+                                    'show_button' => 'yes',
+                                    'donate_button_text' => 'Donate',
+                                    'sort_by' => 'recent-donations',
+                                    'donations_per_page' => 5,
+                                    'load_more_button_text' => 'Load more'
                                 ]
                             ]
                         ]
@@ -319,9 +329,17 @@ class SetupElementorCampaignTemplate
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
-                                'widgetType' => 'shortcode',
+                                'widgetType' => give(ElementorCampaignDonorsWidget::class)->get_name(),
                                 'settings' => [
-                                    'shortcode' => "[givewp_campaign_donors campaign_id=\"{$campaignId}\" show_anonymous=\"true\" show_avatar=\"true\" show_button=\"true\" donors_per_page=\"5\"]"
+                                    'campaign_id' => $campaignId,
+                                    'show_anonymous' => 'yes',
+                                    'show_company_name' => 'yes',
+                                    'show_avatar' => 'yes',
+                                    'show_button' => 'yes',
+                                    'donate_button_text' => 'Join the list',
+                                    'sort_by' => 'top-donors',
+                                    'donors_per_page' => 5,
+                                    'load_more_button_text' => 'Load more'
                                 ]
                             ]
                         ]

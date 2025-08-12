@@ -1,15 +1,15 @@
 <?php
 
-namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignStatsWidget;
+namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGoalWidget;
 
 use Elementor\Widget_Base;
-use Give\Campaigns\Shortcodes\CampaignStatsShortcode;
+use Give\Campaigns\Shortcodes\CampaignGoalShortcode;
 use Give\ThirdPartySupport\Elementor\Traits\HasCampaignOptions;
 
 /**
  * @unreleased
  */
-class ElementorCampaignStatsWidget extends Widget_Base
+class ElementorCampaignGoalWidget extends Widget_Base
 {
     use HasCampaignOptions;
 
@@ -18,7 +18,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
      */
     public function get_name(): string
     {
-        return 'givewp_campaign_stats';
+        return 'givewp_campaign_goal';
     }
 
     /**
@@ -26,7 +26,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
      */
     public function get_title(): string
     {
-        return __('GiveWP Campaign Stats', 'give');
+        return __('GiveWP Campaign Goal', 'give');
     }
 
     /**
@@ -50,7 +50,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
      */
     public function get_keywords(): array
     {
-        return ['give', 'givewp', 'campaign', 'stats', 'statistics'];
+        return ['give', 'givewp', 'campaign', 'goal', 'progress', 'target'];
     }
 
     /**
@@ -74,7 +74,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
      */
     public function get_script_depends(): array
     {
-        return ['givewp-elementor-campaign-stats-widget'];
+        return ['givewp-elementor-campaign-goal-widget'];
     }
 
     /**
@@ -82,7 +82,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
      */
     public function get_style_depends(): array
     {
-        return ['givewp-design-system-foundation', 'givewp-elementor-campaign-stats-widget'];
+        return ['givewp-design-system-foundation', 'givewp-elementor-campaign-goal-widget'];
     }
 
     /**
@@ -109,9 +109,9 @@ class ElementorCampaignStatsWidget extends Widget_Base
         $campaignOptions = $this->getCampaignOptions();
 
         $this->start_controls_section(
-            'campaign_stats_section',
+            'campaign_goal_section',
             [
-                'label' => __('Campaign Statistics', 'give'),
+                'label' => __('Campaign Goal', 'give'),
             ]
         );
 
@@ -121,19 +121,6 @@ class ElementorCampaignStatsWidget extends Widget_Base
             'options' => $campaignOptions,
             'default' => !empty($campaignOptions) ? array_key_first($campaignOptions) : '',
         ]);
-
-        $this->add_control(
-            'statistic',
-            [
-                'label' => __('Statistic Type', 'give'),
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'options' => [
-                    'top-donation' => __('Top Donation', 'give'),
-                    'average-donation' => __('Average Donation', 'give'),
-                ],
-                'default' => 'top-donation',
-            ]
-        );
 
         $this->end_controls_section();
     }
@@ -145,16 +132,16 @@ class ElementorCampaignStatsWidget extends Widget_Base
     {
         $settings = $this->get_settings_for_display();
         $campaignId = $settings['campaign_id'];
-        $statistic = $settings['statistic'];
 
         if (empty($campaignId)) {
             return;
         }
 
-        $shortcode = give(CampaignStatsShortcode::class);
-        echo $shortcode->renderShortcode([
+        $attributes = [
             'campaign_id' => $campaignId,
-            'statistic' => $statistic,
-        ]);
+        ];
+
+        $shortcode = give(CampaignGoalShortcode::class);
+        echo $shortcode->renderShortcode($attributes);
     }
 }
