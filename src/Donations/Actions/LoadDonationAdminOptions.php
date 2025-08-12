@@ -13,9 +13,10 @@ use Give\Framework\PaymentGateways\PaymentGateway;
  * The purpose of this action is to have a centralized place for localizing options used on many different places
  * by donation scripts (list tables, blocks, etc.)
  *
+ * @since 4.6.1 Rename to LoadDonationAdminOptions
  * @since 4.6.0
  */
-class LoadDonationOptions
+class LoadDonationAdminOptions
 {
     public function __invoke()
     {
@@ -27,7 +28,7 @@ class LoadDonationOptions
     /**
      * Get all donation options for localization
      *
-     * @return array
+     * @unreleased removed donors from the options
      * @since 4.6.0
      */
     private function getDonationOptions(): array
@@ -47,7 +48,6 @@ class LoadDonationOptions
             'states' => $this->getStatesData(),
             'donationStatuses' => DonationStatus::labels(),
             'campaignsWithForms' => $this->getCampaignsWithForms(),
-            'donors' => $this->getDonors(),
             'isRecurringEnabled' => defined('GIVE_RECURRING_VERSION') ? GIVE_RECURRING_VERSION : null,
             'admin' => $isAdmin ? [] : null,
             'eventTicketsEnabled' => FeatureFlag::eventTickets(),
@@ -137,31 +137,6 @@ class LoadDonationOptions
         return array_map(function($item) {
             return html_entity_decode($item, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401, 'UTF-8');
         }, $data);
-    }
-
-    /**
-     * Get donor ids with their names
-     *
-     * @since 4.6.0
-     */
-    private function getDonors(): array
-    {
-        $results = DB::table('give_donors', 'donors')
-            ->select(
-                ['donors.id', 'donorId'],
-                ['donors.name', 'donorName'],
-                ['donors.email', 'donorEmail'],
-            )
-            ->orderBy('donors.id', 'DESC')
-            ->getAll(ARRAY_A);
-
-        $donors = [];
-
-        foreach ($results as $row) {
-            $donors[$row['donorId']] = $row['donorName'] . ' (' . $row['donorEmail'] . ')';
-        }
-
-        return $donors;
     }
 
     /**

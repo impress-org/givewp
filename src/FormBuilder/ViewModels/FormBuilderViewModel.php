@@ -90,6 +90,7 @@ class FormBuilderViewModel
             'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
             'intlTelInputSettings' => IntlTelInput::getSettings(),
             'campaignColors' => $this->getCampaignColors($donationFormId),
+            'showFormGoalNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_form_goal_notice', true),
         ];
     }
 

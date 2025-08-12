@@ -2,7 +2,7 @@
 
 namespace Give\Donations;
 
-use Give\Donations\Actions\LoadDonationOptions;
+use Give\Donations\Actions\LoadDonationAdminOptions;
 use Give\Donations\Actions\RegisterDonationEntity;
 use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
@@ -57,7 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
         $this->registerDonationEntity();
-        $this->loadDonationOptions();
+        $this->loadDonationAdminOptions();
 
         give(MigrationsRegister::class)->addMigrations([
             AddMissingDonorIdToDonationComments::class,
@@ -158,10 +158,15 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since 4.6.1 Move to admin_enqueue_scripts hook
      * @since 4.6.0
      */
-    private function loadDonationOptions()
+    private function loadDonationAdminOptions()
     {
-        Hooks::addAction('init', LoadDonationOptions::class);
+        add_action('admin_enqueue_scripts', function () {
+            if (DonationsAdminPage::isShowingDetailsPage()) {
+                give(LoadDonationAdminOptions::class)();
+            }
+        });
     }
 }

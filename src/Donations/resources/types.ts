@@ -29,14 +29,6 @@ export type GiveDonationOptions = {
         noStatesCountries: string[];
         statesNotRequiredCountries: string[];
     };
-    admin: {
-        showCampaignInteractionNotice: boolean
-        showFormGoalNotice: boolean
-        showExistingUserIntroNotice: boolean
-        showCampaignListTableNotice: boolean
-        showCampaignFormNotice: boolean
-        showCampaignSettingsNotice: boolean
-    };
     isFeeRecoveryEnabled: boolean;
     eventTicketsEnabled: boolean;
     donationStatuses: {[statusCode: string]: string};

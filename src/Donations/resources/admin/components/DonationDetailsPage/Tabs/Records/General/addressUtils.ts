@@ -1,11 +1,10 @@
 /**
  * External Dependencies
  */
-import { getDonorOptionsWindowData } from '@givewp/donors/utils';
+import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 import { __ } from '@wordpress/i18n';
 
-const donorOptionsData = getDonorOptionsWindowData();
-const { states } = donorOptionsData;
+const { states } = getDonationOptionsWindowData();
 
 /**
  * @since 4.6.0

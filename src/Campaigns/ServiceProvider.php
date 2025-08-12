@@ -10,7 +10,7 @@ use Give\Campaigns\Actions\AssociateCampaignPageWithCampaign;
 use Give\Campaigns\Actions\CreateCampaignPage;
 use Give\Campaigns\Actions\CreateDefaultCampaignForm;
 use Give\Campaigns\Actions\FormInheritsCampaignGoal;
-use Give\Campaigns\Actions\LoadCampaignOptions;
+use Give\Campaigns\Actions\LoadCampaignAdminOptions;
 use Give\Campaigns\Actions\PreventDeleteDefaultForm;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
 use Give\Campaigns\Actions\RenderDonateButton;
@@ -69,7 +69,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerCampaignEntity();
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
-        $this->loadCampaignOptions();
+        $this->loadCampaignAdminOptions();
         $this->addNewBadgeToMenu();
     }
 
@@ -229,11 +229,16 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since 4.6.1 Move to admin_enqueue_scripts hook
      * @since 4.0.0
      */
-    private function loadCampaignOptions()
+    private function loadCampaignAdminOptions()
     {
-        Hooks::addAction('init', LoadCampaignOptions::class);
+        add_action('admin_enqueue_scripts', function () {
+            if (CampaignsAdminPage::isShowingDetailsPage()) {
+                give(LoadCampaignAdminOptions::class)();
+            }
+        });
     }
 
     /**

@@ -2,10 +2,13 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Exception;
 use Give\Donations\Models\Donation;
-use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Donations\Models\DonationNote;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\ValueObjects\Money;
@@ -19,7 +22,7 @@ use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
  *
  * @since 2.9.0
  */
-class PayPalCommerce extends PaymentGateway
+class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
 {
     /**
      * @deprecated
@@ -251,7 +254,7 @@ class PayPalCommerce extends PaymentGateway
                             'standard' => esc_html__('Standard Transaction', 'give'),
                         ],
                         'default' => 'donation',
-                    ]
+                    ],
                 ]
             );
         }
@@ -355,6 +358,42 @@ class PayPalCommerce extends PaymentGateway
         // Check if the order is not ready for 3D Secure authentication
         if (isset($payPalOrder->payment_source->card->authentication_result->liability_shift) && !in_array($payPalOrder->payment_source->card->authentication_result->liability_shift, ['POSSIBLE', 'YES'])) {
             throw new PaymentGatewayException('Card type and issuing bank are not ready to complete a 3D Secure authentication.');
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function refundDonation(Donation $donation): PaymentRefunded
+    {
+        try {
+            $payPalOrderRepository = give(Repositories\PayPalOrder::class);
+            $payPalOrderRepository->refundPayment($donation->gatewayTransactionId);
+
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => sprintf(
+                    __('Donation refunded in PayPal for transaction ID: %s', 'give'),
+                    $donation->gatewayTransactionId
+                ),
+            ]);
+
+            return new PaymentRefunded();
+        } catch (Exception $e) {
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => sprintf(
+                    __(
+                        'Error! Donation %s was NOT refunded. Find more details on the error in the logs at Donations > Tools > Logs. To refund the donation, use the PayPal dashboard tools.',
+                        'give'
+                    ),
+                    $donation->id
+                ),
+            ]);
+
+            throw new PaymentGatewayException(sprintf(__('PayPal API error: %s', 'give'), $e->getMessage()));
         }
     }
 }

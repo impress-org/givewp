@@ -13,11 +13,15 @@ use Give\Helpers\Language;
 class LoadCampaignsListTableAssets
 {
     /**
+     * @since 4.6.1 Load campaign admin options on list table
+     *
      * @since 4.3.0 set script translations
      * @since 4.0.0
      */
     public function __invoke()
     {
+        give(LoadCampaignAdminOptions::class)();
+
         $handleName = 'givewp-admin-campaigns-list-table';
         $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignListTable.asset.php');
 
@@ -29,7 +33,9 @@ class LoadCampaignsListTableAssets
             true
         );
 
-        wp_localize_script($handleName, 'GiveCampaignsListTable',
+        wp_localize_script(
+            $handleName,
+            'GiveCampaignsListTable',
             [
                 'apiRoot' => esc_url_raw(rest_url(CampaignRoute::NAMESPACE . '/campaigns/list-table')),
                 'apiNonce' => wp_create_nonce('wp_rest'),
@@ -53,5 +59,6 @@ class LoadCampaignsListTableAssets
             [],
             $asset['version']
         );
+
     }
 }
