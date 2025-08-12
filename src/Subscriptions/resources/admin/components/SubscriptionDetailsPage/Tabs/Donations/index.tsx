@@ -1,5 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import { ListTablePage } from "@givewp/components";
+import type { ListTablePageRef } from "@givewp/components";
 import { getSubscriptionOptionsWindowData } from "@givewp/subscriptions/utils";
 import styles from './styles.module.scss';
 import cn from 'classnames';
@@ -7,7 +8,7 @@ import { DonationRowActions } from "@givewp/donations/components/DonationRowActi
 import BlankSlate from "@givewp/components/ListTable/BlankSlate";
 import apiSettings from './apiSettings';
 import AddRenewalDialog from "./AddRenewalModal";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useDispatch } from "@wordpress/data";
 import { store as coreStore } from "@wordpress/core-data";
 
@@ -40,6 +41,7 @@ const ListTableBlankSlate = (
  */
 export default function SubscriptionDetailsPageDonationsTab() {
     const [isAddRenewalDialogOpen, setIsAddRenewalDialogOpen] = useState(false);
+    const listTableRef = useRef<ListTablePageRef>(null);
     const dispatch = useDispatch(`givewp/admin-details-page-notifications`);
     const { saveEntityRecord } = useDispatch(coreStore);
     const urlParams = new URLSearchParams(window.location.search);
@@ -56,13 +58,16 @@ export default function SubscriptionDetailsPageDonationsTab() {
                 gatewayTransactionId: data.transactionId,
             });
 
-            if (response.success) {
+            if (response?.id) {
+                // Refresh the donations table
+                await listTableRef.current?.refresh();
+
                 dispatch.addSnackbarNotice({
                     id: `add-renewal-success`,
                     content: __(`Renewal added successfully`, 'give'),
                 });
             } else {
-                throw new Error(response.data.message);
+                throw new Error(response);
             }
         } catch (error) {
             console.error(error);
@@ -85,6 +90,7 @@ export default function SubscriptionDetailsPageDonationsTab() {
             {/* TODO: Remove the inline classname once the new design is implemented in all list tables */}
             <div className={cn(styles.tableWrapper, 'list-table-page-container--new-design')}>
                 <ListTablePage
+                    ref={listTableRef}
                     title={__('Donations', 'give')}
                     apiSettings={apiSettings}
                     listTableBlankSlate={ListTableBlankSlate}

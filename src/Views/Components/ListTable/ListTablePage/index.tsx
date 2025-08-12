@@ -1,4 +1,4 @@
-import {createContext, useRef, useState} from 'react';
+import {createContext, useRef, useState, forwardRef, useImperativeHandle} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';
@@ -98,7 +98,11 @@ export const ShowConfirmModalContext = createContext(
 );
 export const CheckboxContext = createContext(null);
 
-export default function ListTablePage({
+export interface ListTablePageRef {
+    refresh: () => Promise<any>;
+}
+
+const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     title,
     apiSettings,
     bulkActions = null,
@@ -115,7 +119,7 @@ export default function ListTablePage({
     banner,
     contentMode,
     perPage = 30,
-}: ListTablePageProps) {
+}: ListTablePageProps, ref) => {
     const [page, setPage] = useState<number>(1);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
     const [isOpen, setOpen] = useState(false);
@@ -161,6 +165,10 @@ export default function ListTablePage({
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
 
     useResetPage(data, page, setPage, filters);
+
+    useImperativeHandle(ref, () => ({
+        refresh: () => mutate()
+    }), [mutate]);
 
     const handleFilterChange = (name, value) => {
         setFilters((prevState) => ({...prevState, [name]: value}));
@@ -401,4 +409,8 @@ export default function ListTablePage({
             </A11yDialog>
         </>
     );
-}
+});
+
+ListTablePage.displayName = 'ListTablePage';
+
+export default ListTablePage;

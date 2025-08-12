@@ -12,6 +12,7 @@ export {default as Input} from './Input';
 export {default as PeriodSelector} from './PeriodSelector';
 export {default as Modal} from './Modal';
 export {default as ListTablePage} from './ListTable/ListTablePage';
+export type {ListTablePageRef} from './ListTable/ListTablePage';
 export * from './ListTable/ListTable';
 export {default as ListTableApi} from './ListTable/api';
 export {default as GiveIcon} from './GiveIcon';
