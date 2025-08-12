@@ -320,15 +320,23 @@ const Note = ({note, onDelete, onEdit, isLoading}) => {
                                                 {note.content}
                                             </div>
 
-                                            <div
+                                            <button
                                                 className={style.dotsMenu}
                                                 onClick={() => setShowContextMenu(true)}
+                                                aria-haspopup="true"
+                                                aria-expanded={showContextMenu}
+                                                aria-controls="contextMenu"
+                                                aria-label={__('Opens context menu', 'give')}
                                             >
                                                 <DotsMenuIcon />
                                                 {showContextMenu && (
-                                                    <div className={style.menu}>
-                                                        <a
-                                                            href="#"
+                                                    <div 
+                                                        className={style.menu} 
+                                                        role="menu" 
+                                                        id="contextMenu" 
+                                                        aria-label={__('Note context menu', 'give')}
+                                                    >
+                                                        <button
                                                             className={style.menuItem}
                                                             onClick={(e) => {
                                                                 e.preventDefault();
@@ -337,9 +345,8 @@ const Note = ({note, onDelete, onEdit, isLoading}) => {
                                                             }}
                                                         >
                                                             <EditIcon /> {__('Edit', 'give')}
-                                                        </a>
-                                                        <a
-                                                            href="#"
+                                                        </button>
+                                                        <button
                                                             className={cx(style.menuItem, style.delete)}
                                                             onClick={(e) => {
                                                                 e.preventDefault();
@@ -348,10 +355,10 @@ const Note = ({note, onDelete, onEdit, isLoading}) => {
                                                             }}
                                                         >
                                                             <DeleteIcon /> {__('Delete', 'give')}
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 )}
-                                            </div>
+                                            </button>
                                         </div>
                                         <div className={style.date}>
                                             {formatTimestamp(note.createdAt.date)}
