@@ -1297,4 +1297,55 @@ class DonationRouteCreateTest extends RestApiTestCase
         $this->assertEquals('renewal', $data['type']);
         $this->assertEquals($subscription->id, $data['subscriptionId']);
     }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateRenewalShouldAllowNewAmountValue()
+    {
+        // Create a subscription with an initial donation
+        $subscription = Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'installments' => 12, // Set higher installments to avoid limit
+        ]);
+
+        // Get the initial donation amount for comparison
+        $initialDonation = $subscription->initialDonation();
+        $initialAmount = $initialDonation->amount->getAmount();
+
+        // Create renewal request with a different amount
+        $newAmount = 150.00; // Different from initial amount
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+            'amount' => [
+                'amount' => $newAmount,
+                'currency' => 'USD',
+            ],
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+        $dataJson = json_encode($data);
+        $data = json_decode($dataJson, true);
+
+        // Verify that the renewal was created successfully
+        $this->assertEquals('renewal', $data['type']);
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+        
+        // Verify that the renewal has the new amount
+        $this->assertEquals($newAmount, $data['amount']['value']);
+        $this->assertEquals('USD', $data['amount']['currency']);
+        
+        // Verify that the amount is different from the initial donation
+        $this->assertNotEquals($initialAmount, $data['amount']['value']);
+        
+        // Verify that the renewal amount is correctly formatted
+        $this->assertIsArray($data['amount']);
+        $this->assertArrayHasKey('value', $data['amount']);
+        $this->assertArrayHasKey('currency', $data['amount']);
+    }
 }
