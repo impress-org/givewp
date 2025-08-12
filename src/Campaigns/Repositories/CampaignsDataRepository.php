@@ -40,6 +40,9 @@ class CampaignsDataRepository
     private $subscriptionDonorsCount = [];
 
     /**
+     *
+     * @unreleased added data caching layer
+     *
      * @param int[] $ids
      *
      * @return CampaignsDataRepository
