@@ -44,8 +44,8 @@ class DonorController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
@@ -88,15 +88,14 @@ class DonorController extends WP_REST_Controller
                         'default' => 0,
                     ],
                 ], $this->getSharedParams()),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => rest_get_endpoint_args_for_schema($this->get_public_item_schema(), WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
     }
 
@@ -323,100 +322,171 @@ class DonorController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         return [
-            'title' => 'donor',
-            'type' => 'object',
+            'title'   => 'donor',
+            'type'    => 'object',
             'properties' => [
                 'id' => [
-                    'type' => 'integer',
+                    'type'        => 'integer',
                     'description' => esc_html__('Donor ID', 'give'),
-                    'readonly' => true,
                 ],
-                'prefix' => [
-                    'type' => ['string', 'null'],
-                    'description' => esc_html__('Donor prefix', 'give'),
-                    'format' => 'text-field',
+                'userId' => [
+                    'type'        => ['integer', 'string', 'null'],
+                    'description' => esc_html__('The WordPress user ID', 'give'),
+                ],
+                'createdAt' => [
+                    'type' => ['object', 'null'],
+                    'description' => esc_html__('Date the donor was created', 'give'),
+                    'properties' => [
+                        'date' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Date', 'give'),
+                            'pattern' => '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}$',
+                        ],
+                        'timezone' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Timezone of the date', 'give'),
+                        ],
+                        'timezone_type' => [
+                            'type' => 'integer',
+                            'description' => esc_html__('Timezone type', 'give'),
+                        ],
+                    ],
+                ],
+                'name' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('Full donor name', 'give'),
                 ],
                 'firstName' => [
-                    'type' => 'string',
+                    'type'        => 'string',
                     'description' => esc_html__('Donor first name', 'give'),
-                    'minLength' => 1,
-                    'maxLength' => 128,
-                    'errorMessage' => esc_html__('First name is required', 'give'),
-                    'format' => 'text-field',
+                    'minLength'   => 1,
+                    'maxLength'   => 128,
+                    'errorMessage'=> esc_html__('First name is required', 'give'),
                 ],
                 'lastName' => [
-                    'type' => 'string',
+                    'type'        => 'string',
                     'description' => esc_html__('Donor last name', 'give'),
-                    'minLength' => 1,
-                    'maxLength' => 128,
-                    'errorMessage' => esc_html__('Last name is required', 'give'),
-                    'format' => 'text-field',
+                    'minLength'   => 1,
+                    'maxLength'   => 128,
+                    'errorMessage'=> esc_html__('Last name is required', 'give'),
                 ],
                 'email' => [
-                    'type' => 'string',
+                    'type'        => 'string',
                     'description' => esc_html__('Donor email', 'give'),
-                    'format' => 'email',
+                    'format'      => 'email',
                 ],
                 'additionalEmails' => [
-                    'type' => 'array',
+                    'type'        => 'array',
                     'description' => esc_html__('Donor additional emails', 'give'),
-                    'items' => [
-                        'type' => 'string',
+                    'items'       => [
+                        'type'   => 'string',
                         'format' => 'email',
                     ],
                 ],
                 'phone' => [
-                    'type' => ['string', 'null'],
+                    'type'        => ['string', 'null'],
                     'description' => esc_html__('Donor phone', 'give'),
-                    'pattern' => '^$|^[\+]?[1-9][\d\s\-\(\)]{7,20}$',
+                    'pattern'     => '^$|^[\+]?[1-9][\d\s\-\(\)]{7,20}$',
+                ],
+                'prefix' => [
+                    'type'        => ['string', 'null'],
+                    'description' => esc_html__('Donor prefix', 'give'),
                 ],
                 'company' => [
-                    'type' => ['string', 'null'],
+                    'type'        => ['string', 'null'],
                     'description' => esc_html__('Donor company', 'give'),
-                    'format' => 'text-field',
                 ],
                 'avatarId' => [
-                    'type' => ['integer', 'string', 'null'],
+                    'type'        => ['integer', 'string', 'null'],
                     'description' => esc_html__('Donor avatar ID', 'give'),
-                    'pattern' => '^$|^[0-9]+$',
-                    'errorMessage' => esc_html__('Invalid avatar ID', 'give'),
+                    'pattern'     => '^$|^[0-9]+$',
+                    'errorMessage'=> esc_html__('Invalid avatar ID', 'give'),
                 ],
                 'addresses' => [
-                    'type' => 'array',
                     'description' => esc_html__('Donor addresses', 'give'),
-                    'items' => [
+                    'oneOf' => [
+                        [
+                            'type'  => 'string',
+                            'description' => esc_html__('Address as string (legacy format)', 'give'),
+                        ],
+                        [
+                            'type'  => 'array',
+                            'items' => [
+                                'type'       => 'object',
+                                'description'=> esc_html__('Donor address', 'give'),
+                                'properties' => [
+                                    'address1' => [
+                                        'type'        => 'string',
+                                        'description' => esc_html__('Address line 1', 'give'),
+                                    ],
+                                    'address2' => [
+                                        'type'        => 'string',
+                                        'description' => esc_html__('Address line 2', 'give'),
+                                    ],
+                                    'city' => [
+                                        'type'        => 'string',
+                                        'description' => esc_html__('City', 'give'),
+                                    ],
+                                    'state' => [
+                                        'type'        => 'string',
+                                        'description' => esc_html__('State', 'give'),
+                                    ],
+                                    'country' => [
+                                        'type'        => 'string',
+                                        'description' => esc_html__('Country', 'give'),
+                                    ],
+                                    'zip' => [
+                                        'type'        => 'string',
+                                        'description' => esc_html__('ZIP code', 'give'),
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'totalAmountDonated' => [
+                    'type'        => 'object',
+                    'description' => esc_html__('Total amount donated by the donor', 'give'),
+                    'properties'  => [
+                        'value' => [
+                            'type' => 'string',
+                        ],
+                        'valueInMinorUnits' => [
+                            'type' => 'string',
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                        ],
+                    ],
+                ],
+                'totalNumberOfDonations' => [
+                    'type'        => 'integer',
+                    'description' => esc_html__('Total number of donations by the donor', 'give'),
+                ],
+                'avatarUrl' => [
+                    'type'        => ['string', 'null'],
+                    'description' => esc_html__('URL to donor avatar', 'give'),
+                    'format'      => 'uri',
+                ],
+                'wpUserPermalink' => [
+                    'type'        => 'string',
+                    'description' => esc_html__('Permalink to WordPress user', 'give'),
+                    'format'      => 'uri',
+                ],
+                'customFields' => [
+                    'type'        => 'array',
+                    'description' => esc_html__('Custom fields (sensitive data)', 'give'),
+                    'items'       => [
                         'type' => 'object',
-                        'description' => esc_html__('Donor address', 'give'),
                         'properties' => [
-                            'address1' => [
+                            'label' => [
                                 'type' => 'string',
-                                'description' => esc_html__('Donor address line 1', 'give'),
-                                'format' => 'text-field',
+                                'description' => esc_html__('Field label', 'give'),
                             ],
-                            'address2' => [
+                            'value' => [
                                 'type' => 'string',
-                                'description' => esc_html__('Donor address line 2', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'city' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address city', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'state' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address state', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'country' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address country', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'zip' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address zip', 'give'),
-                                'format' => 'text-field',
+                                'description' => esc_html__('Field value', 'give'),
+
                             ],
                         ],
                     ],

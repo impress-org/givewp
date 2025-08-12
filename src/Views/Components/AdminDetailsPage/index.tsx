@@ -4,6 +4,7 @@
 import {useEffect, useState, useRef} from 'react';
 import {JSONSchemaType} from 'ajv';
 import {ajvResolver} from '@hookform/resolvers/ajv';
+import {fullFormats} from 'ajv-formats/dist/formats';
 import {FormProvider, SubmitHandler, useForm, useFormContext, useFormState} from 'react-hook-form';
 
 /**
@@ -28,7 +29,7 @@ import styles from './AdminDetailsPage.module.scss';
 import ErrorBoundary from './ErrorBoundary';
 import TabPanels from './Tabs/TabPanels';
 import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
-import AdminSection, { AdminSectionField, AdminSectionsWrapper } from './AdminSection';
+import AdminSection, {AdminSectionField} from './AdminSection';
 
 import './store';
 
@@ -72,7 +73,10 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
             method: 'OPTIONS',
         }).then(({schema}: {schema: JSONSchemaType<any>}) => {
             setResolver({
-                resolver: ajvResolver(schema),
+                resolver: ajvResolver(schema, {
+                    formats: fullFormats,
+                    allowUnionTypes: true,
+                }),
             });
         });
     }, [objectId]);

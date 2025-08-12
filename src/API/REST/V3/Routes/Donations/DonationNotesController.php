@@ -43,16 +43,15 @@ class DonationNotesController extends WP_REST_Controller
                         'type' => 'integer',
                         'required' => true,
                     ]
-                ], $this->get_collection_params()) ,
-                'schema' => [$this, 'get_public_item_schema'],
+                ], $this->get_collection_params()),
             ],
             [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [$this, 'create_item'],
                 'permission_callback' => [$this, 'create_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::CREATABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<donationId>[\d]+)/notes/(?P<id>[\d]+)', [
@@ -61,22 +60,20 @@ class DonationNotesController extends WP_REST_Controller
                 'callback' => [$this, 'get_item'],
                 'permission_callback' => [$this, 'get_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::READABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
                 'callback' => [$this, 'delete_item'],
                 'permission_callback' => [$this, 'delete_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::DELETABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
     }
 
@@ -357,14 +354,12 @@ class DonationNotesController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         return [
-            'schema' => 'http://json-schema.org/draft-07/schema#',
             'title' => 'donation-note',
             'type' => 'object',
             'properties' => [
                 'id' => [
                     'description' => __('Unique identifier for the note.', 'give'),
                     'type' => 'integer',
-                    'readonly' => true,
                 ],
                 'donationId' => [
                     'description' => __('The ID of the donation this note belongs to.', 'give'),
@@ -376,7 +371,6 @@ class DonationNotesController extends WP_REST_Controller
                     'type' => 'string',
                     'required' => true,
                     'minLength' => 1,
-                    'format' => 'text-field',
                 ],
                 'type' => [
                     'description' => __('The type of the note.', 'give'),
@@ -385,16 +379,23 @@ class DonationNotesController extends WP_REST_Controller
                     'default' => 'admin',
                 ],
                 'createdAt' => [
-                    'description' => __('The date the note was created.', 'give'),
-                    'type' => 'string',
-                    'format' => 'date-time',
-                    'readonly' => true,
-                ],
-                'updatedAt' => [
-                    'description' => __('The date the note was last updated.', 'give'),
-                    'type' => 'string',
-                    'format' => 'date-time',
-                    'readonly' => true,
+                    'type' => ['object', 'null'],
+                    'description' => esc_html__('The date the note was created', 'give'),
+                    'properties' => [
+                        'date' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Date', 'give'),
+                            'pattern' => '^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}$',
+                        ],
+                        'timezone' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Timezone of the date', 'give'),
+                        ],
+                        'timezone_type' => [
+                            'type' => 'integer',
+                            'description' => esc_html__('Timezone type', 'give'),
+                        ],
+                    ],
                 ],
             ],
         ];
@@ -415,7 +416,7 @@ class DonationNotesController extends WP_REST_Controller
         $schema['properties']['_links'] = [
             'description' => __('HATEOAS links for the note.', 'give'),
             'type' => 'object',
-            'readonly' => true,
+
         ];
 
         return $schema;
@@ -453,7 +454,7 @@ class DonationNotesController extends WP_REST_Controller
                 'type' => 'string',
                 'required' => $method === WP_REST_Server::CREATABLE,
                 'minLength' => 1,
-                'format' => 'text-field',
+
             ];
 
             $args['type'] = [
