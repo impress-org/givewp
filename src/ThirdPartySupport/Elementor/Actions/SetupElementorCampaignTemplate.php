@@ -2,7 +2,9 @@
 
 namespace Give\ThirdPartySupport\Elementor\Actions;
 
+use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget\ElementorDonationFormWidget;
 
 /**
  * Automatically setup Elementor template data for campaign pages
@@ -106,6 +108,18 @@ class SetupElementorCampaignTemplate
      */
     private function getElementorTemplateData(int $campaignId, string $shortDescription): array
     {
+        $campaign = Campaign::find($campaignId);
+        if (!$campaign) {
+            return [];
+        }
+
+        $campaignDefaultFormId = $campaign->defaultFormId;
+        $campaignImageUrl = $campaign->image;
+        $campaignImageId = null;
+        if ($campaign->image && $imageId = attachment_url_to_postid($campaign->image)) {
+            $campaignImageId = $imageId;
+        }
+
         return [
             [
                 'id' => $this->generateElementorId(),
@@ -138,29 +152,36 @@ class SetupElementorCampaignTemplate
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
-                                'widgetType' => 'theme-post-featured-image',
+                                'widgetType' => 'image',
                                 'settings' => [
+                                    'image' => [
+                                        'id' => $campaignImageId,
+                                        'url' => $campaignImageUrl
+                                    ],
+                                    'image_size' => 'full',
                                     'width' => [
                                         'unit' => '%',
                                         'size' => 100
                                     ],
-                                    'max_width' => [
+                                    'height' => [
                                         'unit' => '%',
                                         'size' => 100
                                     ],
-                                    'height' => [
-                                        'unit' => 'vh',
-                                        'size' => 40
-                                    ],
                                     'object-fit' => 'cover',
-                                    'border_radius' => [
+                                    'image_border_border' => 'default',
+                                    'image_border_radius' => [
                                         'unit' => 'px',
                                         'top' => 8,
                                         'right' => 8,
                                         'bottom' => 8,
                                         'left' => 8,
                                         'isLinked' => true
-                                    ]
+                                    ],
+                                    'height_inner' => [
+                                        'unit' => 'px',
+                                        'size' => 0
+                                    ],
+                                    'aspect_ratio' => '16:9'
                                 ]
                             ]
                         ]
@@ -204,9 +225,10 @@ class SetupElementorCampaignTemplate
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
-                                'widgetType' => 'shortcode',
+                                'widgetType' => give(ElementorDonationFormWidget::class)->get_name(),
                                 'settings' => [
-                                    'shortcode' => "[givewp_campaign_form campaign_id=\"{$campaignId}\" display_style=\"button\" continue_button_title=\"Donate Now\" show_title=\"false\" show_goal=\"false\" show_content=\"false\"]"
+                                    'form_id' => $campaignDefaultFormId,
+                                    'display_style' => 'modal'
                                 ]
                             ]
                         ]
