@@ -5,6 +5,7 @@ namespace Give\ThirdPartySupport\Elementor\Actions;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget\ElementorDonationFormWidget;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignStatsWidget\ElementorCampaignStatsWidget;
 
 /**
  * Automatically setup Elementor template data for campaign pages
@@ -208,17 +209,19 @@ class SetupElementorCampaignTemplate
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
-                                'widgetType' => 'shortcode',
+                                'widgetType' => give(ElementorCampaignStatsWidget::class)->get_name(),
                                 'settings' => [
-                                    'shortcode' => "[givewp_campaign_stats campaign_id=\"{$campaignId}\" statistic=\"top-donation\"]"
+                                    'campaign_id' => $campaignId,
+                                    'statistic' => 'top-donation'
                                 ]
                             ],
                             [
                                 'id' => $this->generateElementorId(),
                                 'elType' => 'widget',
-                                'widgetType' => 'shortcode',
+                                'widgetType' => give(ElementorCampaignStatsWidget::class)->get_name(),
                                 'settings' => [
-                                    'shortcode' => "[givewp_campaign_stats campaign_id=\"{$campaignId}\" statistic=\"average-donation\"]"
+                                    'campaign_id' => $campaignId,
+                                    'statistic' => 'average-donation'
                                 ]
                             ],
                             // Donate Button

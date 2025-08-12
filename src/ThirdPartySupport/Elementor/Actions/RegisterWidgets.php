@@ -15,6 +15,7 @@ use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveRegisterWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveSubscriptionsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveTotalsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignFormWidget\ElementorCampaignFormWidget;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignStatsWidget\ElementorCampaignStatsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget\ElementorDonationFormWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonorWallWidget\ElementorDonorWallWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormGridWidget\ElementorDonationFormGridWidget;
@@ -71,6 +72,7 @@ class RegisterWidgets
     {
         //TODO: re-enable this once we have a way to get the campaign forms
         //$widgets_manager->register(new ElementorCampaignFormWidget());
+        $widgets_manager->register(new ElementorCampaignStatsWidget());
         $widgets_manager->register(new ElementorDonationFormWidget());
         $widgets_manager->register(new ElementorDonorWallWidget());
         $widgets_manager->register(new ElementorDonationFormGridWidget());
