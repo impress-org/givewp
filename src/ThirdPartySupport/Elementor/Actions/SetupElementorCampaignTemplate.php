@@ -11,15 +11,14 @@ use Give\Campaigns\Models\CampaignPage;
  * template layout when Elementor is active, providing a seamless experience
  * for users creating campaign pages.
  *
- * @since 4.0.0
+ * @unreleased
  */
 class SetupElementorCampaignTemplate
 {
     /**
      * Setup Elementor template data for campaign page
      *
-     * @since 4.0.0
-     * @param CampaignPage $campaignPage
+     * @unreleased
      */
     public function __invoke(CampaignPage $campaignPage): void
     {
@@ -49,8 +48,7 @@ class SetupElementorCampaignTemplate
     /**
      * Check if Elementor is active and available
      *
-     * @since 4.0.0
-     * @return bool
+     * @unreleased
      */
     private function isElementorActive(): bool
     {
@@ -60,9 +58,7 @@ class SetupElementorCampaignTemplate
     /**
      * Check if campaign page already has Elementor data
      *
-     * @since 4.0.0
-     * @param int $pageId
-     * @return bool
+     * @unreleased
      */
     private function campaignPageHasElementorData(int $pageId): bool
     {
@@ -73,10 +69,7 @@ class SetupElementorCampaignTemplate
     /**
      * Setup Elementor data and meta keys for the campaign page
      *
-     * @since 4.0.0
-     * @param int $pageId
-     * @param int $campaignId
-     * @param string $shortDescription
+     * @unreleased
      */
     private function setupElementorData(int $pageId, int $campaignId, string $shortDescription): void
     {
@@ -108,9 +101,7 @@ class SetupElementorCampaignTemplate
     /**
      * Get Elementor template data structure
      *
-     * @since 4.0.0
-     * @param int $campaignId
-     * @param string $shortDescription
+     * @unreleased
      * @return array
      */
     private function getElementorTemplateData(int $campaignId, string $shortDescription): array
@@ -318,8 +309,7 @@ class SetupElementorCampaignTemplate
     /**
      * Generate a random Elementor-style ID
      *
-     * @since 4.0.0
-     * @return string
+     * @unreleased
      */
     private function generateElementorId(): string
     {

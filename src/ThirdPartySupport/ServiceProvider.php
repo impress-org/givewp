@@ -2,11 +2,9 @@
 
 namespace Give\ThirdPartySupport;
 
-use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\ThirdPartySupport\Polylang\Helpers\Polylang;
 use Give\ThirdPartySupport\WPML\Helpers\WPML;
-use Give\ThirdPartySupport\Elementor\Actions\SetupElementorCampaignTemplate;
 
 /**
  * @since 3.22.0
@@ -46,8 +44,5 @@ class ServiceProvider implements ServiceProviderInterface
 
             return $locale;
         });
-
-        Hooks::addAction('givewp_campaign_page_created', SetupElementorCampaignTemplate::class);
-        //Hooks::addAction('save_post', RestoreGutenbergContentOnElementorExit::class);
     }
 }

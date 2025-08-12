@@ -6,6 +6,7 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgets;
 use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetScripts;
+use Give\ThirdPartySupport\Elementor\Actions\SetupElementorCampaignTemplate;
 use Give\ThirdPartySupport\Elementor\Actions\UnregisterV1Widgets;
 use Give\ThirdPartySupport\Elementor\Settings\RegisterSection;
 use Give\ThirdPartySupport\Elementor\Settings\RegisterSettings;
@@ -56,6 +57,8 @@ class ServiceProvider implements ServiceProviderInterface
                 ]
             );
         });
+
+        Hooks::addAction('givewp_campaign_page_created', SetupElementorCampaignTemplate::class);
     }
 
     /**
