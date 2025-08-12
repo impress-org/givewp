@@ -29,7 +29,7 @@ class CacheCampaignData
         }
 
         if ($donation->status->isComplete() || $donation->status->isRenewal()) {
-            as_enqueue_async_action('givewp_cache_campaign_data', [$donation->campaignId], 'givewp_campaigns_cache');;
+            as_enqueue_async_action('givewp_cache_campaign_data', [$donation->campaignId], 'givewp_campaigns_cache');
         }
 
     }
