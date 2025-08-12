@@ -1,7 +1,7 @@
 import {__} from '@wordpress/i18n';
 import {addQueryArgs} from '@wordpress/url';
 import useSWR from 'swr';
-import React, {useState, useEffect} from 'react';
+import {useState} from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import {useDispatch} from '@wordpress/data';
 import {ConfirmationDialogIcon, DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon} from './Icons';
