@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import cx from 'classnames';
 
 /**
@@ -22,7 +22,6 @@ import { useDispatch } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
 import useSubscriptionSync from '@givewp/subscriptions/hooks/useSubscriptionSync';
 import SubscriptionSyncList from '../SubscriptionSyncList';
-import { SubscriptionStatus as SubscriptionStatusType } from "../types";
 import styles from './SubscriptionDetailsPage.module.scss';
 
 const { subscriptionStatuses } = getSubscriptionOptionsWindowData();
@@ -63,16 +62,11 @@ export default function SubscriptionDetailsPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const subscriptionId = urlParams.get('id');
     
-    const { record: subscription, edit, save } = useSubscriptionEntityRecord(subscriptionId ? parseInt(subscriptionId) : undefined);
-    const [selectedStatus, setSelectedStatus] = useState<SubscriptionStatusType | null>(null);
+    const { record: subscription} = useSubscriptionEntityRecord(subscriptionId ? parseInt(subscriptionId) : undefined);
     const { formatter } = useSubscriptionAmounts(subscription);
     const { deleteEntityRecord } = useDispatch(coreDataStore);
     const { syncSubscription, isLoading, hasResolved, syncResult } = useSubscriptionSync();
-    const subscriptionCanSync = subscription?.gateway?.canSync;
-
-    useEffect(() => {
-        setSelectedStatus(subscription?.status);
-    }, [subscription]);
+    const subscriptionCanSync = subscription?.gateway?.canSync || !subscription?.gateway?.id;
 
     const PageTitle = () => {
         if (subscription?.amount?.value == null) {

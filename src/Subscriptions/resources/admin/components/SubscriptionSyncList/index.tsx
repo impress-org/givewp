@@ -16,7 +16,7 @@ type SubscriptionSyncListProps = {
  * @unreleased
  */
 export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncListProps) {
-    const { details, missingTransactions, presentTransactions } = syncResult;
+    const { details, missingTransactions } = syncResult;
     const [openItem, setOpenItem] = useState<string | null>(null);
 
     const statusUpdated = details?.currentStatus !== details?.gatewayStatus;
@@ -65,7 +65,7 @@ export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncLis
                 isOpen={openItem === "payments"}
                 onToggle={() => handleItemToggle("payments")}
             >
-                {transactions?.map((transaction) => (<SyncPaymentDetails key={transaction?.id} isAccurate={!paymentsUpdated} payment={transaction} />))}
+                {transactions?.map((transaction, index) => (<SyncPaymentDetails key={transaction?.id ?? `sync-payment-${index}`} isAccurate={!paymentsUpdated} payment={transaction} />))}
             </SyncItem>
         </div>
     );
