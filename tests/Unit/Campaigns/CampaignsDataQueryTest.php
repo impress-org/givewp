@@ -2,8 +2,6 @@
 
 namespace Give\Tests\Unit\Campaigns;
 
-use ActionScheduler;
-use ActionScheduler_Action;
 use Give\Campaigns\CampaignsDataQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
