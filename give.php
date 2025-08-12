@@ -253,6 +253,7 @@ final class Give
         Give\ThirdPartyCompatibility\ServiceProvider::class,
         Give\API\REST\V3\Routes\ServiceProvider::class,
         Give\Framework\PaymentGateways\ServiceProvider::class,
+        Give\ThirdPartySupport\Elementor\ServiceProvider::class,
     ];
 
     /**
