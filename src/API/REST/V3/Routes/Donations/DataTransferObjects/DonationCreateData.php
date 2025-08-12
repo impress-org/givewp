@@ -47,7 +47,7 @@ class DonationCreateData
     {
         // Extract updateRenewalDate before processing attributes
         $this->updateRenewalDate = $attributes['updateRenewalDate'] ?? false;
-        
+
         $this->attributes = $this->processAttributes($attributes);
         $this->subscriptionId = $this->attributes['subscriptionId'] ?? 0;
         $this->type = $this->attributes['type'] ?? null;
@@ -229,25 +229,14 @@ class DonationCreateData
         // Validate donation creation
         $this->validateCreateDonation();
 
-        // Filter out only the auto-generated id field, allowing createdAt and updatedAt to be set
+        // Filter out only the auto-generated id and campaignId fields
         $donationAttributes = array_filter($this->attributes, function ($key) {
-            return $key !== 'id';
+            return !in_array($key, ['id', 'campaignId'], true);
         }, ARRAY_FILTER_USE_KEY);
-
-        // If campaignId is not provided, try to get it from the form
-        if (!isset($donationAttributes['campaignId']) || empty($donationAttributes['campaignId'])) {
-            $formId = $donationAttributes['formId'] ?? null;
-            if ($formId) {
-                $campaign = give()->campaigns->getByFormId($formId);
-                if ($campaign) {
-                    $donationAttributes['campaignId'] = $campaign->id;
-                }
-            }
-        }
 
         $donation = Donation::create($donationAttributes);
 
-        // Update subscription renewal date if requested and this is a subscription donation
+        // Update subscription renewal date if requested and this is a subscription donation, allowing createdAt and updatedAt to be set
         if ($this->shouldUpdateRenewalDate() && $this->isSubscription()) {
             $subscription = Subscription::find($this->subscriptionId);
             if ($subscription) {
@@ -276,9 +265,9 @@ class DonationCreateData
         $subscription = Subscription::find($this->subscriptionId);
 
         // Pass the processed attributes to allow overriding values from the request
-        // Filter out only the auto-generated id field and subscription-specific fields, allowing createdAt and updatedAt
+        // Filter out only the auto-generated id and campaignId fields and subscription-specific fields, allowing createdAt and updatedAt to be set
         $renewalAttributes = array_filter($this->attributes, function ($key) {
-            return !in_array($key, ['id', 'subscriptionId', 'type'], true);
+            return !in_array($key, ['id', 'campaignId','subscriptionId', 'type'], true);
         }, ARRAY_FILTER_USE_KEY);
 
         $donation = $subscription->createRenewal($renewalAttributes);
@@ -422,7 +411,7 @@ class DonationCreateData
             }
 
             $processedValue = DonationFields::processValue($key, $value);
-            
+
             // Only include properties that are valid for the Donation model
             if ($processedValue !== null) {
                 $processedAttributes[$key] = $processedValue;

@@ -440,18 +440,10 @@ class SubscriptionRepository
    public function createRenewal(Subscription $subscription, array $attributes = []): Donation
    {
        $initialDonation = $subscription->initialDonation();
+       $campaignId = $initialDonation->campaignId;
 
-        $campaignId = $attributes['campaignId'] ?? null;
-
-       if (is_null($campaignId)) {
-           $campaignId = $initialDonation->campaignId;
-
-           if (empty($campaignId) && $subscription->donationFormId) {
-               $campaign = give()->campaigns->getByFormId($subscription->donationFormId);
-               if ($campaign) {
-                   $campaignId = $campaign->id;
-               }
-           }
+        if (is_null($campaignId) && $campaign = give()->campaigns->getByFormId($subscription->donationFormId)) {                        
+            $campaignId = $campaign->id;            
         }
 
         $donation = Donation::create(

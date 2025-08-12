@@ -338,6 +338,7 @@ class DonationController extends WP_REST_Controller
             'type',
             'mode',
             'gatewayTransactionId',
+            'campaignId'
         ];
 
         foreach ($request->get_params() as $key => $value) {
