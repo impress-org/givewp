@@ -22,7 +22,6 @@ import { useDispatch } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
 import useSubscriptionSync from '@givewp/subscriptions/hooks/useSubscriptionSync';
 import SubscriptionSyncList from '../SubscriptionSyncList';
-import SubscriptionStatusList from '../SubscriptionStatus';
 import { SubscriptionStatus as SubscriptionStatusType } from "../types";
 import styles from './SubscriptionDetailsPage.module.scss';
 
@@ -114,20 +113,6 @@ export default function SubscriptionDetailsPage() {
         );
     }
 
-    function VariantActionButton({ className }: { className: string }) {
-        return (
-            <button
-                type="button"
-                className={className}
-                onClick={() => {
-                    setShowConfirmationDialog('status');
-                }}
-            >
-                {__('Change status', 'give')}
-            </button>
-        );
-    }
-
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
@@ -168,21 +153,6 @@ export default function SubscriptionDetailsPage() {
         }
     };
 
-    /**
-     * @unreleased
-     */
-    const handleChangeStatus = async () => {
-        try {
-            edit({ status: selectedStatus });
-            await save();
-            console.log('Save completed successfully');
-        } catch (error) {
-            console.error('Change status failed:', error);
-            setShowConfirmationDialog(null);
-        }
-        setShowConfirmationDialog(null);
-    };
-
     return (
         <AdminDetailsPage
             objectId={subscription?.id}
@@ -193,7 +163,7 @@ export default function SubscriptionDetailsPage() {
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-subscriptions`}
             breadcrumbTitle={subscription?.id && sprintf('#%s', subscription?.id)}
             pageTitle={<PageTitle />}
-            SecondaryActionButton={subscriptionCanSync? SecondaryActionButton : VariantActionButton}
+            SecondaryActionButton={subscriptionCanSync && SecondaryActionButton}
             StatusBadge={() => <StatusBadge status={subscription?.status} isTest={subscription?.mode === 'test'} />}
             ContextMenuItems={ContextMenuItems}
         >
@@ -205,25 +175,6 @@ export default function SubscriptionDetailsPage() {
                 handleConfirm={handleDelete}
             >
                 {__('Are you sure you want to move this subscription to the trash? You can restore it later if needed.', 'give')}
-            </ConfirmationDialog>
-            <ConfirmationDialog
-                variant={null}
-                allowCancel={false}
-                title={__('Change subscription status', 'give')}
-                actionLabel={__('Save changes', 'give')}
-                isOpen={showConfirmationDialog === 'status'}
-                handleClose={() => setShowConfirmationDialog(null)}
-                handleConfirm={handleChangeStatus}
-                footer={
-                    <div className={styles.syncModalFooter}>
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M10 .832a9.167 9.167 0 1 0 0 18.333A9.167 9.167 0 0 0 10 .832zm0 5a.833.833 0 1 0 0 1.667h.008a.833.833 0 0 0 0-1.667H10zm.833 4.167a.833.833 0 0 0-1.666 0v3.333a.833.833 0 1 0 1.666 0V9.999z" fill="#0C7FF2"/>
-                        </svg>
-                        {__('Please note that this will not change the status at the gateway.', 'give')}
-                    </div>
-                }
-            >
-               <SubscriptionStatusList status={selectedStatus} onChange={setSelectedStatus} />
             </ConfirmationDialog>
             <ConfirmationDialog
                 variant={isLoading ? 'syncing' : null}
