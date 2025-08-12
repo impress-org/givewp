@@ -996,46 +996,68 @@ class DonationController extends WP_REST_Controller
                     'format' => 'text-field',
                 ],
                 'createdAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
+                    'oneOf' => [
+                        [
                             'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
+                            'description' => esc_html__('Donation creation date as ISO string', 'give'),
                             'format' => 'date-time',
                         ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
+                        [
+                            'type' => 'object',
+                            'properties' => [
+                                'date' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Date', 'give'),
+                                    'format' => 'date-time',
+                                ],
+                                'timezone' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Timezone of the date', 'give'),
+                                    'format' => 'text-field',
+                                ],
+                                'timezone_type' => [
+                                    'type' => 'integer',
+                                    'description' => esc_html__('Timezone type', 'give'),
+                                ],
+                            ],
+                            'description' => esc_html__('Donation creation date', 'give'),
                         ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
+                        [
+                            'type' => 'null',
                         ],
                     ],
-                    'description' => esc_html__('Donation creation date', 'give'),
-                    'format' => 'date-time',
                 ],
                 'updatedAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
+                    'oneOf' => [
+                        [
                             'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
+                            'description' => esc_html__('Donation last update date as ISO string', 'give'),
                             'format' => 'date-time',
                         ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
+                        [
+                            'type' => 'object',
+                            'properties' => [
+                                'date' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Date', 'give'),
+                                    'format' => 'date-time',
+                                ],
+                                'timezone' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Timezone of the date', 'give'),
+                                    'format' => 'text-field',
+                                ],
+                                'timezone_type' => [
+                                    'type' => 'integer',
+                                    'description' => esc_html__('Timezone type', 'give'),
+                                ],
+                            ],
+                            'description' => esc_html__('Donation last update date', 'give'),
                         ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
+                        [
+                            'type' => 'null',
                         ],
                     ],
-                    'description' => esc_html__('Donation last update date', 'give'),
-                    'format' => 'date-time',
                 ],
                 'updateRenewalDate' => [
                     'type' => 'boolean',
