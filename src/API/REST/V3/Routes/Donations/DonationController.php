@@ -343,8 +343,8 @@ class DonationController extends WP_REST_Controller
         foreach ($request->get_params() as $key => $value) {
             if (!in_array($key, $nonEditableFields, true)) {
                 if (in_array($key, $donation::propertyKeys(), true)) {
-                    try {
-                        $processedValue = DonationFields::processValue($key, $value);
+                    try {                        
+                        $processedValue = DonationFields::processValue($key, $value);                        
                         if ($donation->isPropertyTypeValid($key, $processedValue)) {
                             $donation->$key = $processedValue;
                         }
@@ -1036,6 +1036,11 @@ class DonationController extends WP_REST_Controller
                     ],
                     'description' => esc_html__('Donation last update date', 'give'),
                     'format' => 'date-time',
+                ],
+                'updateRenewalDate' => [
+                    'type' => 'boolean',
+                    'description' => esc_html__('Whether to update the subscription renewal date with the createdAt date when creating subscription or renewal donations', 'give'),
+                    'default' => false,
                 ],
                 'customFields' => [
                     'type' => 'array',

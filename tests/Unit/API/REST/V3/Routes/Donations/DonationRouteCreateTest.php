@@ -66,7 +66,7 @@ class DonationRouteCreateTest extends RestApiTestCase
      * @unreleased
      */
     public function testCreateDonationShouldCreateModelWithRequiredFields()
-    {        
+    {
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
@@ -107,7 +107,7 @@ class DonationRouteCreateTest extends RestApiTestCase
      * @unreleased
      */
     public function testCreateDonationShouldUseDefaultValuesWhenNotProvided()
-    {        
+    {
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
@@ -321,7 +321,7 @@ class DonationRouteCreateTest extends RestApiTestCase
      * @unreleased
      */
     public function testCreateDonationShouldHandleInvalidTypeValue()
-    {   
+    {
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
@@ -541,19 +541,19 @@ class DonationRouteCreateTest extends RestApiTestCase
     public function testCreateDonationShouldReturn400ErrorWhenSubscriptionIdProvidedButTypeIsSingle()
     {
         $subscription = Subscription::factory()->create();
-        
+
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
-                 $request->set_body_params([
-             'donorId' => $this->donor->id,
-             'amount' => ['amount' => 100.00, 'currency' => 'USD'],
-             'gatewayId' => TestGateway::id(),
-             'mode' => 'test',
-             'formId' => $this->form->id,
-             'firstName' => 'John',
-             'email' => 'john@example.com',
-             'subscriptionId' => $subscription->id,
-             'type' => 'single',
-         ]);
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => $subscription->id,
+            'type' => 'single',
+        ]);
 
         $response = $this->dispatchRequest($request);
 
@@ -568,17 +568,17 @@ class DonationRouteCreateTest extends RestApiTestCase
     public function testCreateDonationShouldReturn400ErrorWhenSubscriptionIdZeroButTypeIsSubscription()
     {
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
-                 $request->set_body_params([
-             'donorId' => $this->donor->id,
-             'amount' => ['amount' => 100.00, 'currency' => 'USD'],
-             'gatewayId' => TestGateway::id(),
-             'mode' => 'test',
-             'formId' => $this->form->id,
-             'firstName' => 'John',
-             'email' => 'john@example.com',
-             'subscriptionId' => 0,
-             'type' => 'subscription',
-         ]);
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => 0,
+            'type' => 'subscription',
+        ]);
 
         $response = $this->dispatchRequest($request);
 
@@ -593,17 +593,17 @@ class DonationRouteCreateTest extends RestApiTestCase
     public function testCreateDonationShouldReturn404ErrorWhenSubscriptionNotFound()
     {
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
-                 $request->set_body_params([
-             'donorId' => $this->donor->id,
-             'amount' => ['amount' => 100.00, 'currency' => 'USD'],
-             'gatewayId' => TestGateway::id(),
-             'mode' => 'test',
-             'formId' => $this->form->id,
-             'firstName' => 'John',
-             'email' => 'john@example.com',
-             'subscriptionId' => 99999,
-             'type' => 'renewal',
-         ]);
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => 99999,
+            'type' => 'renewal',
+        ]);
 
         $response = $this->dispatchRequest($request);
 
@@ -618,7 +618,7 @@ class DonationRouteCreateTest extends RestApiTestCase
     public function testCreateDonationShouldReturn400ErrorWhenSubscriptionDonationAlreadyExists()
     {
         $subscription = Subscription::factory()->createWithDonation();
-        
+
         // Try to create another subscription donation for the same subscription
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
@@ -648,7 +648,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $subscription = Subscription::factory()->createWithDonation([
             'installments' => 1, // Only 1 installment allowed
         ]);
-        
+
         // Try to create another donation (should fail)
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
@@ -678,7 +678,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $subscription = Subscription::factory()->createWithDonation([
             'installments' => 5, // Allow multiple installments
         ]);
-        
+
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
@@ -708,7 +708,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $subscription = Subscription::factory()->createWithDonation([
             'installments' => 5, // Allow multiple installments
         ]);
-        
+
         // Create renewal donation
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
@@ -764,7 +764,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $subscription = Subscription::factory()->createWithDonation([
             'installments' => 5, // Allow multiple installments
         ]);
-        
+
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'subscriptionId' => $subscription->id,
@@ -863,4 +863,251 @@ class DonationRouteCreateTest extends RestApiTestCase
         $this->assertEquals('renewal', $data['type']);
         $this->assertEquals(TestGateway::id(), $data['gatewayId']);
     }
-} 
+
+    /**
+     * @unreleased
+     */
+    public function testCreateDonationWithCustomDatesShouldSucceed()
+    {
+        $customCreatedAt = [
+            'date' => '2023-01-15T10:30:00',
+            'timezone' => 'America/New_York',
+            'timezone_type' => 2,
+        ];
+        $customUpdatedAt = [
+            'date' => '2023-01-15T11:45:00',
+            'timezone' => 'America/New_York',
+            'timezone_type' => 2,
+        ];
+
+        // Convert arrays to DateTime objects for comparison
+        $expectedCreatedAt = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
+        $expectedUpdatedAt = new \DateTime($customUpdatedAt['date'], new \DateTimeZone($customUpdatedAt['timezone']));
+
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => [
+                'amount' => 100.00,
+                'currency' => 'USD',
+            ],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'lastName' => 'Doe',
+            'email' => 'john.doe@test.com',
+            'createdAt' => $customCreatedAt,
+            'updatedAt' => $customUpdatedAt,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        if ($response->get_status() !== 201) {
+            $data = $response->get_data();
+            $this->fail('Expected status 201, got ' . $response->get_status() . '. Error: ' . json_encode($data));
+        }
+
+        $data = $response->get_data();
+
+        // Verify that the custom dates were set correctly
+        $this->assertInstanceOf(\DateTime::class, $data['createdAt']);
+        $this->assertInstanceOf(\DateTime::class, $data['updatedAt']);
+
+        // Compare the returned dates with the expected DateTime objects
+        $this->assertEquals($expectedCreatedAt->format('Y-m-d H:i:s'), $data['createdAt']->format('Y-m-d H:i:s'));
+        $this->assertEquals($expectedUpdatedAt->format('Y-m-d H:i:s'), $data['updatedAt']->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateRenewalWithCustomDatesShouldSucceed()
+    {
+        $subscription = Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'installments' => 12, // Set higher installments to avoid limit
+        ]);
+
+        $customCreatedAt = [
+            'date' => '2023-02-20T14:20:00',
+            'timezone' => 'America/New_York',
+            'timezone_type' => 2,
+        ];
+        $customUpdatedAt = [
+            'date' => '2023-02-20T15:30:00',
+            'timezone' => 'America/New_York',
+            'timezone_type' => 2,
+        ];
+
+        // Convert arrays to DateTime objects for comparison
+        $expectedCreatedAt = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
+        $expectedUpdatedAt = new \DateTime($customUpdatedAt['date'], new \DateTimeZone($customUpdatedAt['timezone']));
+
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+            'gatewayId' => TestGateway::id(),
+            'createdAt' => $customCreatedAt,
+            'updatedAt' => $customUpdatedAt,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        if ($response->get_status() !== 201) {
+            $data = $response->get_data();
+            $this->fail('Expected status 201, got ' . $response->get_status() . '. Error: ' . json_encode($data));
+        }
+
+        $data = $response->get_data();
+
+        // Verify that the custom dates were set correctly
+        $this->assertInstanceOf(\DateTime::class, $data['createdAt']);
+        $this->assertInstanceOf(\DateTime::class, $data['updatedAt']);
+
+        // Compare the returned dates with the expected DateTime objects
+        $this->assertEquals($expectedCreatedAt->format('Y-m-d H:i:s'), $data['createdAt']->format('Y-m-d H:i:s'));
+        $this->assertEquals($expectedUpdatedAt->format('Y-m-d H:i:s'), $data['updatedAt']->format('Y-m-d H:i:s'));
+
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+        $this->assertEquals('renewal', $data['type']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateRenewalWithUpdateRenewalDateShouldUpdateSubscriptionRenewalDate()
+    {
+        $subscription = Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'installments' => 12, // Set higher installments to avoid limit
+        ]);
+
+        $customCreatedAt = [
+            'date' => '2023-03-25T16:30:00',
+            'timezone' => 'America/New_York',
+            'timezone_type' => 2,
+        ];
+
+        // Convert array to DateTime object for comparison
+        $expectedRenewalDate = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
+
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'subscriptionId' => $subscription->id,
+            'type' => 'renewal',
+            'gatewayId' => TestGateway::id(),
+            'createdAt' => $customCreatedAt,
+            'updateRenewalDate' => true,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        if ($response->get_status() !== 201) {
+            $data = $response->get_data();
+            $this->fail('Expected status 201, got ' . $response->get_status() . '. Error: ' . json_encode($data));
+        }
+
+        $data = $response->get_data();
+
+        // Verify that the donation was created successfully
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+        $this->assertEquals('renewal', $data['type']);
+
+        // Verify that the subscription renewal date was updated
+        $updatedSubscription = Subscription::find($subscription->id);
+        $this->assertNotNull($updatedSubscription->renewsAt);
+        $this->assertEquals($expectedRenewalDate->format('Y-m-d H:i:s'), $updatedSubscription->renewsAt->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateSubscriptionWithUpdateRenewalDateShouldUpdateSubscriptionRenewalDate()
+    {
+        $subscription = Subscription::factory()->create([
+            'gatewayId' => TestGateway::id(),
+        ]);
+
+        $customCreatedAt = [
+            'date' => '2023-04-10T09:15:00',
+            'timezone' => 'America/New_York',
+            'timezone_type' => 2,
+        ];
+
+        // Convert array to DateTime object for comparison
+        $expectedRenewalDate = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
+
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => [
+                'amount' => 100.00,
+                'currency' => 'USD',
+            ],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'subscriptionId' => $subscription->id,
+            'type' => 'subscription',
+            'createdAt' => $customCreatedAt,
+            'updateRenewalDate' => true,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        if ($response->get_status() !== 201) {
+            $data = $response->get_data();
+            $this->fail('Expected status 201, got ' . $response->get_status() . '. Error: ' . json_encode($data));
+        }
+
+        $data = $response->get_data();
+
+        // Verify that the donation was created successfully
+        $this->assertEquals($subscription->id, $data['subscriptionId']);
+        $this->assertEquals('subscription', $data['type']);
+
+        // Verify that the subscription renewal date was updated
+        $updatedSubscription = Subscription::find($subscription->id);
+        $this->assertNotNull($updatedSubscription->renewsAt);
+        $this->assertEquals($expectedRenewalDate->format('Y-m-d H:i:s'), $updatedSubscription->renewsAt->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCreateSingleDonationWithUpdateRenewalDateShouldNotUpdateSubscriptionRenewalDate()
+    {
+        $request = $this->createRequest('POST', $this->route, [], 'administrator');
+        $request->set_body_params([
+            'donorId' => $this->donor->id,
+            'amount' => [
+                'amount' => 100.00,
+                'currency' => 'USD',
+            ],
+            'gatewayId' => TestGateway::id(),
+            'mode' => 'test',
+            'formId' => $this->form->id,
+            'firstName' => 'John',
+            'email' => 'john@example.com',
+            'createdAt' => [
+                'date' => '2023-05-20T12:00:00',
+                'timezone' => 'America/New_York',
+                'timezone_type' => 2,
+            ],
+            'updateRenewalDate' => true,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(201, $response->get_status());
+        $data = $response->get_data();
+
+        // Verify that the donation was created successfully as a single donation
+        $this->assertEquals('single', $data['type']);
+        $this->assertEquals(0, $data['subscriptionId']);
+    }
+}
