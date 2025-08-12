@@ -43,7 +43,16 @@ class DonorController extends WP_REST_Controller
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
-                'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
+                'args' => array_merge($this->get_collection_params(), $this->getSharedParams(), [
+                    'search' => [
+                        'description' => __(
+                            'The search term to filter donors by.',
+                            'give'
+                        ),
+                        'type' => 'string',
+                        'required' => false,
+                    ],
+                ]),
                 'schema' => [$this, 'get_public_item_schema'],
             ],
         ]);
@@ -119,6 +128,11 @@ class DonorController extends WP_REST_Controller
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
         $query = new DonorsQuery();
+
+        if ($request->get_param('search')) {
+            $query->whereLike('name', '%%' . $request->get_param('search') . '%%');
+            $query->orWhereLike('email', '%%' . $request->get_param('search') . '%%');
+        }
 
         // Donors only can be donors if they have donations associated with them
         if ($request->get_param('onlyWithDonations')) {
