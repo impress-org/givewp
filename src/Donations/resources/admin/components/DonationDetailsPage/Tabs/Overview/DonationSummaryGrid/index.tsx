@@ -55,10 +55,16 @@ function DonorCard({donation}: {donation: Donation}) {
          {!hasResolvedDonor && <Spinner />}
          {hasResolvedDonor && (
             <>
-                <a className={styles.donorLink} href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`}>
-                    {donor.name}
-                </a>
-                <p>{donor.email}</p>
+                {donor ? (
+                    <>
+                        <a className={styles.donorLink} href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`}>
+                            {donor.name}
+                        </a>
+                        <p>{donor.email}</p>
+                    </>
+                ) : (
+                    <p>{__('No donor associated with this donation', 'give')}</p>
+                )}
             </>
          )}
      </div>
