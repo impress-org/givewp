@@ -42,7 +42,7 @@ class CacheCampaignData
     public function registerAction()
     {
         add_action('givewp_cache_campaign_data', function (int $campaignId) {
-            $this->handleCache($campaignId);
+            give(CacheCampaignData::class)->handleCache($campaignId);
         });
     }
 
@@ -75,7 +75,6 @@ class CacheCampaignData
         ], $campaignsSubscriptionData);
 
         $donations = CampaignsDataQuery::donations([$campaign->id]);
-        $subscriptions = CampaignsDataQuery::subscriptions([$campaign->id]);
 
         $isCached = $isSubscriptionCached = false;
 
@@ -106,6 +105,9 @@ class CacheCampaignData
 
         // Update campaign subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
+
+            $subscriptions = CampaignsDataQuery::subscriptions([$campaign->id]);
+
             foreach ($campaignsSubscriptionData['amounts'] as $i => $data) {
                 if ($data['campaign_id'] == $campaign->id) {
                     $isSubscriptionCached = true;
