@@ -11,6 +11,7 @@ use Give\Helpers\Language;
 class CampaignGridShortcode
 {
     /**
+     * @unreleased updated to use ShortcodeRenderController
      * @since 4.2.0
      *
      * @param array $atts
@@ -24,9 +25,11 @@ class CampaignGridShortcode
 
         $renderFile = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignGrid/render.php';
 
-        ob_start();
-        include $renderFile;
-        return ob_get_clean();
+        return ShortcodeRenderController::renderWithBlockContext(
+            $renderFile,
+            'givewp/campaign-grid-block',
+            $attributes
+        );
     }
 
     /**

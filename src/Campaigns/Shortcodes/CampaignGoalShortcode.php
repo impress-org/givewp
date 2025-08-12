@@ -24,9 +24,11 @@ class CampaignGoalShortcode
 
         $renderFile = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignGoal/render.php';
 
-        ob_start();
-        include $renderFile;
-        return ob_get_clean();
+        return ShortcodeRenderController::renderWithBlockContext(
+            $renderFile,
+            'givewp/campaign-goal-block',
+            $attributes
+        );
     }
 
     /**

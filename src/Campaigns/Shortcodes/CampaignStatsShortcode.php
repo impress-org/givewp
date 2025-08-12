@@ -11,6 +11,7 @@ use Give\Helpers\Language;
 class CampaignStatsShortcode
 {
     /**
+     * @unreleased updated to use ShortcodeRenderController
      * @unreleased
      *
      * @param array<string, mixed> $atts
@@ -24,9 +25,11 @@ class CampaignStatsShortcode
 
         $renderFile = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignStats/render.php';
 
-        ob_start();
-        include $renderFile;
-        return ob_get_clean();
+        return ShortcodeRenderController::renderWithBlockContext(
+            $renderFile,
+            'givewp/campaign-stats-block',
+            $attributes
+        );
     }
 
     /**
