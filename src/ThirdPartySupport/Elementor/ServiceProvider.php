@@ -75,11 +75,6 @@ class ServiceProvider implements ServiceProviderInterface
             return;
         }
 
-        // This would determine if the old version of the GiveWP Elementor Widgets plugin is activated
-        if (!is_plugin_active('givewp-elementor-widgets/givewp-elementor-widgets.php')) {
-            return;
-        }
-
         // If the option is not set, set it to disabled
         if (give_get_option('givewp_elementor_legacy_widgets_enabled') === false) {
             // update the option initially to enable the legacy widgets
