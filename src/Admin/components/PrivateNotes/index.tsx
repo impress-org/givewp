@@ -33,7 +33,6 @@ type NoteState = {
     totalItems: number;
     isAddingNote: boolean;
     isSavingNote: boolean;
-    isEditingNote: boolean;
     note: string;
     perPage: number;
 }
@@ -69,7 +68,6 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
         totalItems: 0,
         isAddingNote: false,
         isSavingNote: false,
-        isEditingNote: false,
         note: '',
         perPage: 5,
     });
@@ -145,12 +143,11 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
     };
 
     const editNote = (id: number, content: string) => {
-        setState({loadingId: id, isEditingNote: true});
+        setState({loadingId: id});
         apiFetch({path: `${endpoint}/${id}`, method: 'PATCH', data: {content}})
             .then(async (response) => {
                 await mutate(response);
                 setState({
-                    isEditingNote: false, 
                     loadingId: null,
                     notes: state.notes.map((note) => note.id === id ? response : note)
                 });
