@@ -8,6 +8,8 @@ import BlankSlate from "@givewp/components/ListTable/BlankSlate";
 import apiSettings from './apiSettings';
 import AddRenewalDialog from "./AddRenewalModal";
 import { useState } from "react";
+import { useDispatch } from "@wordpress/data";
+import { store as coreStore } from "@wordpress/core-data";
 
 const { mode, adminUrl, pluginUrl } = getSubscriptionOptionsWindowData();
 
@@ -38,23 +40,38 @@ const ListTableBlankSlate = (
  */
 export default function SubscriptionDetailsPageDonationsTab() {
     const [isAddRenewalDialogOpen, setIsAddRenewalDialogOpen] = useState(false);
+    const dispatch = useDispatch(`givewp/admin-details-page-notifications`);
+    const { saveEntityRecord } = useDispatch(coreStore);
     const urlParams = new URLSearchParams(window.location.search);
     const subscriptionId = urlParams.get('id');
 
     const handleAddRenewal = async (data: any) => {
-        // TODO: Implement the renewal creation logic
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        alert(
-            `
-            Creating renewal with the following data:
-            ----------------------------
-            Subscription ID: ${subscriptionId}
-            Amount: ${data.amount}
-            Date: ${data.date}
-            Update renewal date: ${data.updateRenewalDate ? 'Yes' : 'No'}
-            Transaction ID: ${data.transactionId || 'N/A'}
-            `
-        )
+        try {
+            const response = await saveEntityRecord('givewp', 'donation', {
+                subscriptionId,
+                type: 'renewal',
+                amount: data.amount,
+                createdAt: (new Date(data.date)).toISOString(),
+                updateRenewalDate: !!data.updateRenewalDate,
+                gatewayTransactionId: data.transactionId,
+            });
+
+            if (response.success) {
+                dispatch.addSnackbarNotice({
+                    id: `add-renewal-success`,
+                    content: __(`Renewal added successfully`, 'give'),
+                });
+            } else {
+                throw new Error(response.data.message);
+            }
+        } catch (error) {
+            console.error(error);
+            dispatch.addSnackbarNotice({
+                id: `add-renewal-error`,
+                type: 'error',
+                content: __(`Failed to add renewal`, 'give'),
+            });
+        }
     };
 
     return (

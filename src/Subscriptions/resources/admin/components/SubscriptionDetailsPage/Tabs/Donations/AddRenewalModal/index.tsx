@@ -48,7 +48,7 @@ export default function AddRenewalDialog({
     const { amount } = getValues();
 
     const [data, setData] = useState<any>({
-        amount: Number(amount.value),
+        amount: amount.value,
         date: formatDateLocal(new Date().toISOString()),
         updateRenewalDate: false,
         transactionId: '',
@@ -89,7 +89,7 @@ export default function AddRenewalDialog({
 
     const resetData = () => {
         setData({
-            amount: Number(amount.value),
+            amount: amount.value,
             date: formatDateLocal(new Date().toISOString()),
             updateRenewalDate: false,
             transactionId: '',
@@ -107,7 +107,13 @@ export default function AddRenewalDialog({
         setIsLoading(true);
 
         try {
-            await handleConfirm(data);
+            await handleConfirm({
+                ...data,
+                amount: {
+                    amount: data.amount,
+                    currency: amount.currency,
+                },
+            });
             resetData();
             setErrors({});
             setIsLoading(false);
