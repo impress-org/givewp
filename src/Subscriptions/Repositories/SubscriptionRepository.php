@@ -84,7 +84,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @since 2.21.0          
+     * @since 2.21.0
      *
      * @return ModelQueryBuilder<Subscription>
      */
@@ -433,18 +433,19 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased Add campaignId support.
      * @since 3.20.0
      * @throws Exception
      */
    public function createRenewal(Subscription $subscription, array $attributes = []): Donation
    {
-       $initialDonation = $subscription->initialDonation();       
+       $initialDonation = $subscription->initialDonation();
 
         $campaignId = $attributes['campaignId'] ?? null;
-       
-        if (is_null($campaignId)) {
+
+       if (is_null($campaignId)) {
            $campaignId = $initialDonation->campaignId;
-                      
+
            if (empty($campaignId) && $subscription->donationFormId) {
                $campaign = give()->campaigns->getByFormId($subscription->donationFormId);
                if ($campaign) {
