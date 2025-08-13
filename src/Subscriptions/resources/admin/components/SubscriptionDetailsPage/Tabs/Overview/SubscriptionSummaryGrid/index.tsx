@@ -18,12 +18,12 @@ type SubscriptionDetailsProps = {
     subscription: Subscription;
     donation?: Donation;
     isLoading: boolean;
-};
+}
 
 /**
  * @unreleased
  */
-export default function SubscriptionSummaryGrid({subscription, donation, isLoading}: SubscriptionDetailsProps) {    
+export default function SubscriptionSummaryGrid({ subscription, donation, isLoading }: SubscriptionDetailsProps) {
     const isOngoing = subscription?.installments === 0;
     const badgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
     const renewsAt = subscription?.renewsAt?.date;
@@ -52,8 +52,7 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                                 <span className={classnames(styles.badge, {
                                     [styles.unlimited]: isOngoing,
                                     [styles.limited]: !isOngoing,
-                                })} aria-label={isOngoing ? __('Unlimited', 'give') : __('Limited', 'give')}
-                                >
+                                })} aria-label={isOngoing ? __('Unlimited', 'give') : __('Limited', 'give')}>
                                     {badgeLabel}
                                 </span>
                             </div>
@@ -67,7 +66,7 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">
                     {isLoading && <Spinner />}
-                    {!isLoading && (
+                    {!isLoading && !paymentMethod ? <GatewayNotice /> : (
                         <>
                             <strong className={styles.paymentMethod}>
                                 <PaymentMethodIcon paymentMethod={paymentMethod} />
@@ -87,7 +86,7 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                         </>
                     )}
                 </GridCard>
-            </Grid>  
+            </Grid>
         </OverviewPanel>
     );
 }
