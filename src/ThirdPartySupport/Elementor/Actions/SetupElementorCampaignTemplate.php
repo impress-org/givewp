@@ -266,7 +266,7 @@ class SetupElementorCampaignTemplate
                                 'elType' => 'widget',
                                 'widgetType' => 'text-editor',
                                 'settings' => [
-                                    'editor' => $shortDescription ?: 'Edit this text to add your campaign description...'
+                                    'editor' => $shortDescription ?: ''
                                 ]
                             ]
                         ]
