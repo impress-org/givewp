@@ -20,6 +20,7 @@ class RegisterWidgetEditorScripts
     const FORM_GRID_WIDGET_SCRIPT_NAME = 'givewp-elementor-donation-form-grid-widget';
     const CAMPAIGN_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-widget';
     const CAMPAIGN_GRID_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-grid-widget';
+        const CAMPAIGN_COMMENTS_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-comments-widget';
 
     /**
      * @unreleased
@@ -31,6 +32,7 @@ class RegisterWidgetEditorScripts
         $this->registerFormGridWidgetScripts();
         $this->registerCampaignWidgetScripts();
         $this->registerCampaignGridWidgetScripts();
+            $this->registerCampaignCommentsWidgetScripts();
     }
 
 
@@ -139,6 +141,29 @@ class RegisterWidgetEditorScripts
         wp_register_style(
             self::CAMPAIGN_GRID_WIDGET_SCRIPT_NAME,
             GIVE_PLUGIN_URL . 'build/elementorCampaignGridWidget.css',
+            [],
+            $asset['version']
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerCampaignCommentsWidgetScripts()
+    {
+        $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorCampaignCommentsWidget.asset.php');
+
+        wp_register_script(
+            self::CAMPAIGN_COMMENTS_WIDGET_SCRIPT_NAME,
+            GIVE_PLUGIN_URL . 'build/elementorCampaignCommentsWidget.js',
+            $asset['dependencies'],
+            $asset['version'],
+            true
+        );
+
+        wp_register_style(
+            self::CAMPAIGN_COMMENTS_WIDGET_SCRIPT_NAME,
+            GIVE_PLUGIN_URL . 'build/elementorCampaignCommentsWidget.css',
             [],
             $asset['version']
         );

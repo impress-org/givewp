@@ -23,6 +23,7 @@ use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonorWallWidget\Element
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormGridWidget\ElementorDonationFormGridWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGridWidget\ElementorCampaignGridWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignWidget\ElementorCampaignWidget;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignCommentsWidget\ElementorCampaignCommentsWidget;
 
 /**
  * @unreleased
@@ -85,5 +86,6 @@ class RegisterWidgets
         $widgets_manager->register(new ElementorDonationFormGridWidget());
         $widgets_manager->register(new ElementorCampaignGridWidget());
         $widgets_manager->register(new ElementorCampaignWidget());
+        $widgets_manager->register(new ElementorCampaignCommentsWidget());
     }
 }

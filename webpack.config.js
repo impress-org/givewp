@@ -213,6 +213,7 @@ const entry = {
     elementorCampaignGoalWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignGoalWidget/resources/widget.jsx'),
     elementorCampaignGridWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignGridWidget/resources/widget.jsx'),
     elementorCampaignWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignWidget/resources/widget.jsx'),
+    elementorCampaignCommentsWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignCommentsWidget/resources/widget.jsx'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };
