@@ -25,6 +25,7 @@ type DonorNote = {
 }
 
 /**
+ * @unreleased Include loadingId in the state to manage loading states per note.
  * @since 4.5.0
  */
 type NoteState = {
@@ -59,6 +60,7 @@ export function SubscriptionNotes({subscriptionId}: {subscriptionId: number}) {
 }
 
 /**
+ * @unreleased Manage local state to handle loading indicators per note.
  * @since 4.4.0
  */
 function PrivateNotes({endpoint}: {endpoint: string}) {
@@ -258,6 +260,7 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
 }
 
 /**
+ * @unreleased Improved accessibility with semantic buttons. Added per-note loading state handling.
  * @since 4.4.0
  */
 const Note = ({note, onDelete, onEdit, isLoading}) => {
@@ -326,16 +329,11 @@ const Note = ({note, onDelete, onEdit, isLoading}) => {
                                                 aria-haspopup="true"
                                                 aria-expanded={showContextMenu}
                                                 aria-controls="contextMenu"
-                                                aria-label={__('Opens context menu', 'give')}
                                             >
                                                 <DotsMenuIcon />
                                                 {showContextMenu && (
-                                                    <div 
-                                                        className={style.menu} 
-                                                        role="menu" 
-                                                        id="contextMenu" 
-                                                        aria-label={__('Note context menu', 'give')}
-                                                    >
+                                                    <div className={style.menu} role="menu"
+                                                    id="contextMenu" >
                                                         <button
                                                             className={style.menuItem}
                                                             onClick={(e) => {
