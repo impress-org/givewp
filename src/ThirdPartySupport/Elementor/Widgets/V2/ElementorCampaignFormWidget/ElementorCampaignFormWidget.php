@@ -184,9 +184,9 @@ class ElementorCampaignFormWidget extends Widget_Base
             return [[], []];
         }
 
-        $campaignOptions = [];
-        $formOptionsGroup = [];
-        $campaignGroups = [];
+		$campaignOptions = [];
+		$formOptionsGroup = [];
+		$campaignGroups = [];
 
         // Group forms by campaign
         foreach ($campaignsWithForms as $item) {
@@ -195,23 +195,43 @@ class ElementorCampaignFormWidget extends Widget_Base
                 continue;
             }
 
-            $campaignId = $item->campaign_id;
-            $campaignTitle = $item->campaign_title;
+			$campaignId = $item->campaign_id;
+			$campaignTitle = $item->campaign_title;
 
-            // Add to campaign options if not already added
-            if (!isset($campaignOptions[$campaignId])) {
-                $campaignOptions[$campaignId] = $campaignTitle;
-                $campaignGroups[$campaignId] = [
-                    'label' => $campaignTitle,
-                    'options' => []
-                ];
-            }
+			// Add to campaign options if not already added
+			if (!isset($campaignOptions[$campaignId])) {
+				$campaignOptions[$campaignId] = $campaignTitle;
+				$campaignGroups[$campaignId] = [
+					'label' => $campaignTitle,
+					'options' => [],
+					'campaign_id' => $campaignId,
+					'defaultFormId' => $item->default_form_id ?? null,
+				];
+			}
 
-            // Add form to the campaign group
-            $campaignGroups[$campaignId]['options'][$item->id] = $item->title;
+			// Add form to the campaign group
+			$campaignGroups[$campaignId]['options'][$item->id] = $item->title;
         }
 
-        $formOptionsGroup = array_values($campaignGroups);
+		// Ensure default form shows first in each campaign group
+		foreach ($campaignGroups as $id => $group) {
+			$defaultFormId = isset($group['defaultFormId']) ? (int)$group['defaultFormId'] : null;
+			$defaultKey = $defaultFormId ?: null;
+			if ($defaultKey !== null && isset($group['options'][$defaultKey])) {
+				$orderedOptions = [];
+				$orderedOptions[$defaultKey] = $group['options'][$defaultKey];
+				foreach ($group['options'] as $formKey => $label) {
+					if ((string)$formKey === (string)$defaultKey) {
+						continue;
+					}
+					$orderedOptions[$formKey] = $label;
+				}
+				$campaignGroups[$id]['options'] = $orderedOptions;
+			}
+			unset($campaignGroups[$id]['defaultFormId']);
+		}
+
+		$formOptionsGroup = array_values($campaignGroups);
 
         return [$campaignOptions, $formOptionsGroup];
     }
@@ -245,8 +265,9 @@ class ElementorCampaignFormWidget extends Widget_Base
                 ->select(
                     ['forms.ID', 'id'],
                     ['forms.post_title', 'title'],
-                    ['campaigns.campaign_title', 'campaign_title'],
-                    ['campaigns.id', 'campaign_id']
+					['campaigns.campaign_title', 'campaign_title'],
+					['campaigns.id', 'campaign_id'],
+					['campaigns.form_id', 'default_form_id']
                 )
                 ->innerJoin('give_campaign_forms', 'forms.ID', 'campaign_forms.form_id', 'campaign_forms')
                 ->innerJoin('give_campaigns', 'campaign_forms.campaign_id', 'campaigns.id', 'campaigns')

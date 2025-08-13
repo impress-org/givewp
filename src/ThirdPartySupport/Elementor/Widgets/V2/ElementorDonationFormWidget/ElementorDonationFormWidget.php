@@ -5,6 +5,7 @@ namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidge
 use Elementor\Widget_Base;
 use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetEditorScripts;
 use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 
 /**
  * @unreleased
@@ -119,7 +120,7 @@ class ElementorDonationFormWidget extends Widget_Base
             'label' => __('Form', 'give'),
             'type' => \Elementor\Controls_Manager::SELECT,
             'options' => [],
-            'default' => !empty($formOptionsGroup) ? array_key_first($formOptionsGroup[0]['options']) : '',
+            'default' => $this->getDefaultFormOption($formOptionsGroup),
             'groups' => $formOptionsGroup,
         ]);
 
@@ -161,9 +162,9 @@ class ElementorDonationFormWidget extends Widget_Base
             return [];
         }
 
-        $campaignOptions = [];
-        $formOptionsGroup = [];
-        $campaignGroups = [];
+		$campaignOptions = [];
+		$formOptionsGroup = [];
+		$campaignGroups = [];
 
         // Group forms by campaign
         foreach ($campaignsWithForms as $item) {
@@ -172,26 +173,68 @@ class ElementorDonationFormWidget extends Widget_Base
                 continue;
             }
 
-            $campaignId = $item->campaign_id;
-            $campaignTitle = $item->campaign_title;
+			$campaignId = $item->campaign_id;
+			$campaignTitle = $item->campaign_title;
 
-            // Add to campaign options if not already added
-            if (!isset($campaignOptions[$campaignId])) {
-                $campaignOptions[$campaignId] = $campaignTitle;
-                $campaignGroups[$campaignId] = [
-                    'label' => $campaignTitle,
-                    'options' => []
-                ];
-            }
+			// Add to campaign options if not already added
+			if (!isset($campaignOptions[$campaignId])) {
+				$campaignOptions[$campaignId] = $campaignTitle;
+				$campaignGroups[$campaignId] = [
+					'label' => $campaignTitle,
+					'options' => [],
+					'campaign_id' => $campaignId,
+					'defaultFormId' => $item->default_form_id ?? null,
+				];
+			}
 
-            // Add form to the campaign group
-            $campaignGroups[$campaignId]['options'][$item->id] = $item->title;
+			// Add form to the campaign group
+			$campaignGroups[$campaignId]['options'][$item->id] = $item->title;
         }
 
-        $formOptionsGroup = array_values($campaignGroups);
+		// Ensure default form shows first in each campaign group
+		foreach ($campaignGroups as $id => $group) {
+			$defaultFormId = isset($group['defaultFormId']) ? (int)$group['defaultFormId'] : null;
+			$defaultKey = $defaultFormId ?: null;
+			if ($defaultKey !== null && isset($group['options'][$defaultKey])) {
+				$orderedOptions = [];
+				$orderedOptions[$defaultKey] = $group['options'][$defaultKey];
+				foreach ($group['options'] as $formKey => $label) {
+					if ((string)$formKey === (string)$defaultKey) {
+						continue;
+					}
+					$orderedOptions[$formKey] = $label;
+				}
+				$campaignGroups[$id]['options'] = $orderedOptions;
+			}
+			unset($campaignGroups[$id]['defaultFormId']);
+		}
+
+		$formOptionsGroup = array_values($campaignGroups);
 
         return $formOptionsGroup;
     }
+
+    /**
+     * @unreleased
+     */
+	public function getDefaultFormOption(array $formOptionsGroup): string
+	{
+		$default = !empty($formOptionsGroup) ? array_key_first($formOptionsGroup[0]['options']) : '';
+
+		$campaignId = get_post_meta(get_the_ID(), CampaignPageMetaKeys::CAMPAIGN_ID, true);
+
+		if (!$campaignId) {
+			return $default;
+		}
+
+		foreach ($formOptionsGroup as $group) {
+			if (!empty($group['campaign_id']) && (string)$group['campaign_id'] === (string)$campaignId) {
+				return !empty($group['options']) ? array_key_first($group['options']) : $default;
+			}
+		}
+
+		return $default;
+	}
 
     /**
      * @unreleased
