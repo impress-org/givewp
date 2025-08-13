@@ -81,7 +81,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
      */
     public function get_script_depends(): array
     {
-        return ['givewp-elementor-donation-form-grid-widget', LoadAsyncDataAssets::handleName()];
+        return [LoadAsyncDataAssets::handleName()];
     }
 
     /**
@@ -90,7 +90,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
      */
     public function get_style_depends(): array
     {
-        return ['givewp-design-system-foundation', 'givewp-elementor-donation-form-grid-widget', LoadAsyncDataAssets::handleName()];
+        return [LoadAsyncDataAssets::handleName()];
     }
 
     /**

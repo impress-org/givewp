@@ -5,6 +5,7 @@ namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGoalWidge
 use Elementor\Widget_Base;
 use Give\Campaigns\Shortcodes\CampaignGoalShortcode;
 use Give\ThirdPartySupport\Elementor\Traits\HasCampaignOptions;
+use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetEditorScripts;
 
 /**
  * @unreleased
@@ -74,7 +75,7 @@ class ElementorCampaignGoalWidget extends Widget_Base
      */
     public function get_script_depends(): array
     {
-        return ['givewp-elementor-campaign-goal-widget'];
+        return [RegisterWidgetEditorScripts::CAMPAIGN_GOAL_WIDGET_SCRIPT_NAME];
     }
 
     /**
@@ -82,7 +83,7 @@ class ElementorCampaignGoalWidget extends Widget_Base
      */
     public function get_style_depends(): array
     {
-        return ['givewp-design-system-foundation', 'givewp-elementor-campaign-goal-widget'];
+        return [RegisterWidgetEditorScripts::CAMPAIGN_GOAL_WIDGET_SCRIPT_NAME];
     }
 
     /**

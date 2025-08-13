@@ -9,8 +9,12 @@ use Give\Helpers\Language;
 /**
  * @unreleased
  */
-class RegisterWidgetScripts
+class RegisterWidgetEditorScripts
 {
+    const CAMPAIGN_GOAL_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-goal-widget';
+    const DONATION_FORM_WIDGET_SCRIPT_NAME = 'givewp-elementor-donation-form-widget';
+    const FORM_GRID_WIDGET_SCRIPT_NAME = 'givewp-elementor-donation-form-grid-widget';
+
     /**
      * @unreleased
      */
@@ -18,19 +22,27 @@ class RegisterWidgetScripts
     {
         $this->registerDonationFormWidgetScripts();
         $this->registerCampaignGoalWidgetScripts();
-          // this necessary for the form grid widget to display the goal progress bar
-        give(LoadAsyncDataAssets::class)->registerAssets();
+        $this->registerFormGridWidgetScripts();
     }
 
+
+    /**
+     * @unreleased
+     */
     private function registerCampaignGoalWidgetScripts()
     {
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorCampaignGoalWidget.asset.php');
-        $scriptName = 'givewp-elementor-campaign-goal-widget';
 
-        wp_register_script('give-campaign-options', false);
+        wp_register_script(
+            self::CAMPAIGN_GOAL_WIDGET_SCRIPT_NAME,
+            GIVE_PLUGIN_URL . 'build/elementorCampaignGoalWidget.js',
+            $scriptAsset['dependencies'],
+            $scriptAsset['version'],
+            true
+        );
 
         wp_localize_script(
-            'give-campaign-options',
+            self::CAMPAIGN_GOAL_WIDGET_SCRIPT_NAME,
             'GiveCampaignOptions',
             [
                 'isAdmin' => false,
@@ -38,39 +50,43 @@ class RegisterWidgetScripts
             ]
         );
 
-        wp_register_script(
-            $scriptName,
-            GIVE_PLUGIN_URL . 'build/elementorCampaignGoalWidget.js',
-            $scriptAsset['dependencies'],
-            $scriptAsset['version'],
-            true
-        );
+        Language::setScriptTranslations(self::CAMPAIGN_GOAL_WIDGET_SCRIPT_NAME);
 
-        Language::setScriptTranslations($scriptName);
-
-        wp_enqueue_style(
-            $scriptName,
+        wp_register_style(
+            self::CAMPAIGN_GOAL_WIDGET_SCRIPT_NAME,
             GIVE_PLUGIN_URL . 'build/campaignGoalBlockApp.css',
             [],
             $scriptAsset['version']
         );
     }
+
+    /**
+     * @unreleased
+     */
     private function registerDonationFormWidgetScripts()
     {
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorDonationFormWidget.asset.php');
-        $scriptName = 'givewp-elementor-donation-form-widget';
 
         wp_register_script(
-            $scriptName,
+            self::DONATION_FORM_WIDGET_SCRIPT_NAME,
             GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.js',
             $scriptAsset['dependencies'],
             $scriptAsset['version'],
             true
         );
 
-        wp_enqueue_style(
-            $scriptName,
+        wp_register_style(
+            self::DONATION_FORM_WIDGET_SCRIPT_NAME,
             GIVE_PLUGIN_URL . 'build/elementorDonationFormWidget.css',
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerFormGridWidgetScripts()
+    {
+        // this necessary for the form grid widget to display the goal progress bar correctly
+        give(LoadAsyncDataAssets::class)->registerAssets();
     }
 }

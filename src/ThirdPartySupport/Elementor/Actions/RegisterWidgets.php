@@ -77,7 +77,7 @@ class RegisterWidgets
         //$widgets_manager->register(new ElementorCampaignFormWidget());
         $widgets_manager->register(new ElementorCampaignDonationsWidget());
         $widgets_manager->register(new ElementorCampaignDonorsWidget());
-        //$widgets_manager->register(new ElementorCampaignGoalWidget());
+        $widgets_manager->register(new ElementorCampaignGoalWidget());
         $widgets_manager->register(new ElementorCampaignStatsWidget());
         $widgets_manager->register(new ElementorDonationFormWidget());
         $widgets_manager->register(new ElementorDonorWallWidget());

@@ -3,6 +3,7 @@
 namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget;
 
 use Elementor\Widget_Base;
+use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetEditorScripts;
 use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
 
 /**
@@ -73,7 +74,7 @@ class ElementorDonationFormWidget extends Widget_Base
      */
     public function get_script_depends(): array
     {
-        return ['givewp-elementor-donation-form-widget'];
+        return [RegisterWidgetEditorScripts::DONATION_FORM_WIDGET_SCRIPT_NAME];
     }
 
     /**
@@ -81,7 +82,7 @@ class ElementorDonationFormWidget extends Widget_Base
      */
     public function get_style_depends(): array
     {
-        return ['givewp-design-system-foundation', 'givewp-elementor-donation-form-widget'];
+        return [RegisterWidgetEditorScripts::DONATION_FORM_WIDGET_SCRIPT_NAME];
     }
 
     /**
