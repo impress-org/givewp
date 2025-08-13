@@ -222,11 +222,8 @@ class DonationCreateData
      * @throws Exception
      */
     public function createDonation(): Donation
-    {
-        // Validate subscription rules first
-        $this->validateSubscriptionRules();
-
-        // Validate donation creation
+    {        
+        $this->validateSubscriptionRules();        
         $this->validateCreateDonation();
 
         // Filter out only the auto-generated id and campaignId fields
@@ -235,14 +232,6 @@ class DonationCreateData
         }, ARRAY_FILTER_USE_KEY);
 
         $donation = Donation::create($donationAttributes);
-
-        // Update subscription renewal date if requested and this is a subscription donation, allowing createdAt and updatedAt to be set
-        if ($this->shouldUpdateRenewalDate() && $this->isSubscription()) {
-            $subscription = Subscription::find($this->subscriptionId);
-            if ($subscription) {
-                $this->updateSubscriptionRenewalDate($subscription);
-            }
-        }
 
         return $donation;
     }
@@ -255,14 +244,17 @@ class DonationCreateData
      * @return Donation
      */
     public function createRenewal(): Donation
-    {
-        // Validate subscription rules first
-        $this->validateSubscriptionRules();
-
-        // Validate renewal creation
+    {        
+        $this->validateSubscriptionRules();        
         $this->validateCreateRenewal();
 
         $subscription = Subscription::find($this->subscriptionId);
+
+        // Update subscription renewal date if requested BEFORE creating renewal
+        // This ensures the bumpRenewalDate() calculation uses the correct base date
+        if ($this->shouldUpdateRenewalDate()) {
+            $this->updateSubscriptionRenewalDate($subscription);
+        }
 
         // Pass the processed attributes to allow overriding values from the request
         // Filter out only the auto-generated id and campaignId fields and subscription-specific fields, allowing createdAt and updatedAt to be set
@@ -271,11 +263,6 @@ class DonationCreateData
         }, ARRAY_FILTER_USE_KEY);
 
         $donation = $subscription->createRenewal($renewalAttributes);
-
-        // Update subscription renewal date if requested
-        if ($this->shouldUpdateRenewalDate()) {
-            $this->updateSubscriptionRenewalDate($subscription);
-        }
 
         return $donation;
     }
@@ -341,7 +328,7 @@ class DonationCreateData
      */
     public function shouldUpdateRenewalDate(): bool
     {
-        return $this->updateRenewalDate && $this->isSubscriptionOrRenewal() && isset($this->attributes['createdAt']);
+        return $this->updateRenewalDate && $this->isRenewal() && isset($this->attributes['createdAt']);
     }
 
     /**

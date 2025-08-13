@@ -998,7 +998,18 @@ class DonationRouteCreateTest extends RestApiTestCase
         ];
 
         // Convert array to DateTime object for comparison
-        $expectedRenewalDate = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
+        $baseRenewalDate = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
+        
+        // Calculate expected renewal date based on subscription period and frequency
+        // The bumpRenewalDate() will calculate the next renewal date from the base date
+        $expectedRenewalDate = clone $baseRenewalDate;
+        
+        // Get the actual subscription period from the subscription
+        $period = $subscription->period ?? 'month';
+        $frequency = $subscription->frequency ?? 1;
+        
+        // Calculate the next renewal date based on the actual subscription settings
+        $expectedRenewalDate->modify("+{$frequency} {$period}");
 
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
@@ -1031,20 +1042,20 @@ class DonationRouteCreateTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testCreateSubscriptionWithUpdateRenewalDateShouldUpdateSubscriptionRenewalDate()
+    public function testCreateSubscriptionWithUpdateRenewalDateShouldNotUpdateSubscriptionRenewalDate()
     {
         $subscription = Subscription::factory()->create([
             'gatewayId' => TestGateway::id(),
         ]);
+
+        // Store the original renewal date
+        $originalRenewalDate = $subscription->renewsAt;
 
         $customCreatedAt = [
             'date' => '2023-04-10T09:15:00',
             'timezone' => 'America/New_York',
             'timezone_type' => 2,
         ];
-
-        // Convert array to DateTime object for comparison
-        $expectedRenewalDate = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
 
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
@@ -1077,10 +1088,10 @@ class DonationRouteCreateTest extends RestApiTestCase
         $this->assertEquals($subscription->id, $data['subscriptionId']);
         $this->assertEquals('subscription', $data['type']);
 
-        // Verify that the subscription renewal date was updated
+        // Verify that the subscription renewal date was NOT updated (should remain the same)
         $updatedSubscription = Subscription::find($subscription->id);
         $this->assertNotNull($updatedSubscription->renewsAt);
-        $this->assertEquals($expectedRenewalDate->format('Y-m-d H:i:s'), $updatedSubscription->renewsAt->format('Y-m-d H:i:s'));
+        $this->assertEquals($originalRenewalDate->format('Y-m-d H:i:s'), $updatedSubscription->renewsAt->format('Y-m-d H:i:s'));
     }
 
     /**
