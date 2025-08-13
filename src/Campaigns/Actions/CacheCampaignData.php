@@ -9,8 +9,9 @@ use Give\Donations\Models\Donation;
 /**
  * @unreleased
  *
- * @uses givewp_donation_created hook
- * @uses givewp_donation_updated hook
+ * @uses give_insert_payment hook
+ * @uses give_update_payment_status hook
+ * @uses give_recurring_add_subscription_payment hook
  *
  * Action used to update campaign's stats data
  *
