@@ -83,10 +83,7 @@ class ElementorCampaignWidget extends Widget_Base
      */
     public function get_style_depends(): array
     {
-        return [
-            'givewp-design-system-foundation',
-            RegisterWidgetEditorScripts::CAMPAIGN_WIDGET_SCRIPT_NAME,
-        ];
+        return [RegisterWidgetEditorScripts::CAMPAIGN_WIDGET_SCRIPT_NAME];
     }
 
     /**

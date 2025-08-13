@@ -33,5 +33,5 @@ window.addEventListener('elementor/frontend/init', () => {
         elementorFrontend.elementsHandler.addHandler(CampaignWidget, {$element});
     };
 
-    elementorFrontend.hooks.addAction('frontend/element_ready/givewp_campaign_grid.default', addHandler);
+    elementorFrontend.hooks.addAction('frontend/element_ready/givewp_campaign.default', addHandler);
 });
