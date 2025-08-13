@@ -1,15 +1,13 @@
 import { __ } from '@wordpress/i18n';
-import OverviewPanel from "@givewp/admin/components/OverviewPanel";
-import Grid, { GridCard } from '@givewp/admin/components/Grid';
-import { CampaignCard, DonorCard } from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
-import Spinner from '@givewp/admin/components/Spinner';
+import classnames from 'classnames';
+import { OverviewPanel, Grid, GridCard, Spinner } from '@givewp/admin/components';
+import { CampaignCard, DonorCard, GatewayNotice } from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
 import PaymentMethodIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/PaymentMethodIcon';
 import ExternalLinkIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/icon';
 import { HourGlassIcon, ClockIcon } from './Icons';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
 import { Donation } from '@givewp/donations/admin/components/types';
 import { formatTimestamp } from '@givewp/admin/utils';
-import classnames from 'classnames';
 
 import styles from './styles.module.scss';
 

@@ -6,6 +6,7 @@ type PaymentGateway = {
     name: string;
     label: string;
     subscriptionUrl: string;
+    canSync: boolean;
 }
 
 /**
