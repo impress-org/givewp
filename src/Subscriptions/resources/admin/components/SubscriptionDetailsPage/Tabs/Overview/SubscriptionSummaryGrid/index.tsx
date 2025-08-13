@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import OverviewPanel from "@givewp/admin/components/OverviewPanel";
 import Grid, { GridCard } from '@givewp/admin/components/Grid';
-import { CampaignCard, DonorCard, GatewayNotice } from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
+import { CampaignCard, DonorCard } from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
 import Spinner from '@givewp/admin/components/Spinner';
 import PaymentMethodIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/PaymentMethodIcon';
 import ExternalLinkIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/icon';
@@ -20,7 +20,7 @@ type SubscriptionDetailsProps = {
     subscription: Subscription;
     donation?: Donation;
     isLoading: boolean;
-}
+};
 
 /**
  * @unreleased
@@ -54,10 +54,11 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                                 <span className={classnames(styles.badge, {
                                     [styles.unlimited]: isOngoing,
                                     [styles.limited]: !isOngoing,
-                                })} aria-label={isOngoing ? __('Unlimited', 'give') : __('Limited', 'give')}>
+                                })} aria-label={isOngoing ? __('Unlimited', 'give') : __('Limited', 'give')}
+                                >
                                     {badgeLabel}
                                 </span>
-                            </div>                  
+                            </div>
                         </>
                     )}
                 </GridCard>
@@ -68,7 +69,7 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">
                     {isLoading && <Spinner />}
-                    {!isLoading && !paymentMethod ? <GatewayNotice /> : (
+                    {!isLoading && (
                         <>
                             <strong className={styles.paymentMethod}>
                                 <PaymentMethodIcon paymentMethod={paymentMethod} />

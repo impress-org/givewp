@@ -63,25 +63,6 @@ export function DonorCard({donation}: {donation: Donation}) {
 }
 
 /**
- * @unreleased
- */
-export function GatewayNotice() {
-    return (
-        <div className={styles.notice}>
-            <div className={styles.noticeIcon}>
-                <InfoIcon />
-            </div>
-            <div className={styles.noticeContent}>
-                <strong className={styles.noticeTitle}>{__('Gateway Details Unavailable', 'give')}</strong>
-                <p className={styles.noticeDescription}>
-                    {__('This donation\'s gateway is not active on your site. Install the matching payment gateway to see full details.', 'give')}
-                </p>
-            </div>
-        </div>
-    );
-}
-
-/**
  * @unrleased add Grid components & variables
  * @since 4.6.0
  */
@@ -134,15 +115,13 @@ export default function DonationSummaryGrid({
 
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">
-                    {!paymentMethod ? <GatewayNotice /> : ( 
-                        <>
                             <strong className={styles.paymentMethod}>
                                 <PaymentMethodIcon paymentMethod={paymentMethod} />
                                 {gatewayLabel}
                             </strong>
                             {gatewayLink && (
                                 <a
-                                    className={styles.gatewayLink}
+                                    className={styles.gatewayLink}                                    
                                     href={gatewayLink}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -151,8 +130,6 @@ export default function DonationSummaryGrid({
                                     <ExternalLinkIcon />
                                 </a>
                             )}
-                        </>
-                    )}
                 </GridCard>
             </Grid>  
         </OverviewPanel>
