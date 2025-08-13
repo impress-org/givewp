@@ -14,13 +14,22 @@ type SubscriptionStatsProps = {
     loading: boolean;
 }
 
+
+/**
+ * @unreleased
+ */
+const getCompletedDonations = (donations: Donation[]) => {
+    return donations?.filter(donation => ['publish', 'give_subscription'].includes(donation.status));
+};
+
 /**
  * @unreleased
  */
 export default function SubscriptionStats({donations, currency, totalInstallments, loading}: SubscriptionStatsProps) {
     const ongoingInstallments = totalInstallments === 0;
-    const paymentsCompleted = donations?.length;
-    const totalContributions = donations?.reduce((acc, donation) => acc + Number(donation.amount.value), 0);
+    const completedDonations = getCompletedDonations(donations);
+    const paymentsCompleted = completedDonations?.length;
+    const totalContributions = completedDonations?.reduce((acc, donation) => acc + Number(donation.amount.value), 0);
 
     const paymentProgress = (
         <div className={styles.paymentProgress}>
