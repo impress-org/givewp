@@ -1,5 +1,16 @@
 <?php
 
+namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormGridWidget;
+
+/**
+ * Intercept do_shortcode calls from the widget's namespace to capture the built shortcode.
+ */
+function do_shortcode($shortcode)
+{
+    \Give\Tests\Unit\ThirdPartySupport\Elementor\Widgets\V2\TestElementorDonationFormGridWidget::$capturedShortcode = $shortcode;
+    return '';
+}
+
 namespace Give\Tests\Unit\ThirdPartySupport\Elementor\Widgets\V2;
 
 use Give\Tests\TestCase;
@@ -15,6 +26,9 @@ class TestElementorDonationFormGridWidget extends TestCase
     use RefreshDatabase;
     use MockElementorTrait;
 
+    /** @var string|null */
+    public static $capturedShortcode;
+
     /**
      * @unreleased
      */
@@ -22,6 +36,7 @@ class TestElementorDonationFormGridWidget extends TestCase
     {
         parent::setUp();
         $this->setUpMockElementorClasses();
+        self::$capturedShortcode = null;
     }
 
     /**
@@ -53,8 +68,11 @@ class TestElementorDonationFormGridWidget extends TestCase
         $method->invoke($widget);
         $output = ob_get_clean();
 
-        // In test environment, shortcode may not output anything
         $this->assertIsString($output);
+        $this->assertSame(
+            '[give_form_grid forms_per_page="12" orderby="post_date" order="desc"]',
+            self::$capturedShortcode
+        );
     }
 
     /**
@@ -85,8 +103,11 @@ class TestElementorDonationFormGridWidget extends TestCase
         $method->invoke($widget);
         $output = ob_get_clean();
 
-        // Test that method executed without errors
         $this->assertIsString($output);
+        $this->assertSame(
+            '[give_form_grid forms_per_page="8" columns="3" orderby="title" order="asc"]',
+            self::$capturedShortcode
+        );
     }
 
     /**
@@ -117,8 +138,11 @@ class TestElementorDonationFormGridWidget extends TestCase
         $method->invoke($widget);
         $output = ob_get_clean();
 
-        // Test that method executed without errors
         $this->assertIsString($output);
+        $this->assertSame(
+            '[give_form_grid forms_per_page="6" orderby="post_date" order="desc" ids="123,456,789"]',
+            self::$capturedShortcode
+        );
     }
 
     /**
@@ -149,8 +173,11 @@ class TestElementorDonationFormGridWidget extends TestCase
         $method->invoke($widget);
         $output = ob_get_clean();
 
-        // Test that method executed without errors
         $this->assertIsString($output);
+        $this->assertSame(
+            '[give_form_grid forms_per_page="10" orderby="title" order="asc" exclude="111,222"]',
+            self::$capturedShortcode
+        );
     }
 
     /**
@@ -181,8 +208,11 @@ class TestElementorDonationFormGridWidget extends TestCase
         $method->invoke($widget);
         $output = ob_get_clean();
 
-        // Test that method executed without errors
         $this->assertIsString($output);
+        $this->assertSame(
+            '[give_form_grid forms_per_page="12" orderby="post_date" order="desc" display_style="modal"]',
+            self::$capturedShortcode
+        );
     }
 
     /**
@@ -213,7 +243,10 @@ class TestElementorDonationFormGridWidget extends TestCase
         $method->invoke($widget);
         $output = ob_get_clean();
 
-        // Test that method executed without errors
         $this->assertIsString($output);
+        $this->assertSame(
+            '[give_form_grid forms_per_page="6" orderby="post_date" order="desc" ids="123,456,789"]',
+            self::$capturedShortcode
+        );
     }
 }
