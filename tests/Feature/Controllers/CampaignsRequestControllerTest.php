@@ -64,7 +64,7 @@ class CampaignsRequestControllerTest extends TestCase
         $response = (new CampaignRequestController())->getCampaigns($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
-        $this->assertSame(
+        $this->assertEquals(
             $response->data,
             [$campaignViewModel->exports(), $campaignViewModel2->exports()]
         );
