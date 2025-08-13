@@ -11,7 +11,7 @@ export function useDonationsBySubscription(
     const queryArgs = {
         subscriptionId,
         mode,
-        status: 'publish',
+        status: ['publish', 'give_subscription'],
         sort: 'createdAt',
         direction: 'DESC'
     };
