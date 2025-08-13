@@ -119,7 +119,7 @@ class ElementorCampaignDonationsWidget extends Widget_Base
             'label' => __('Campaign', 'give'),
             'type' => \Elementor\Controls_Manager::SELECT,
             'options' => $campaignOptions,
-            'default' => !empty($campaignOptions) ? array_key_first($campaignOptions) : '',
+            'default' => $this->getDefaultCampaignOption($campaignOptions),
         ]);
 
         $this->add_control(

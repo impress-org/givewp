@@ -5,6 +5,7 @@ namespace Give\ThirdPartySupport\Elementor\Traits;
 use Exception;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Log\Log;
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 
 /**
  * Trait to get campaign options for Elementor widgets
@@ -13,6 +14,24 @@ use Give\Log\Log;
  */
 trait HasCampaignOptions
 {
+    /**
+     * Get the default campaign option
+     *
+     * @unreleased
+     */
+    public function getDefaultCampaignOption(array $options): string
+    {
+        $default = !empty($options) ? array_key_first($options) : '';
+
+
+        $campaignId = get_post_meta(get_the_ID(), CampaignPageMetaKeys::CAMPAIGN_ID, true);
+
+        if (!$campaignId) {
+            return $default;
+        }
+
+        return array_key_exists($campaignId, $options) ? $campaignId : $default;
+    }
     /**
      * Get campaign options for select dropdown
      *
