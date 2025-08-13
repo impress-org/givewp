@@ -111,46 +111,68 @@ class GetSubscriptionItemSchema
                     'enum' => ['live', 'test'],
                 ],
                 'createdAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
+                    'oneOf' => [
+                        [
                             'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
+                            'description' => esc_html__('Subscription creation date as ISO string', 'give'),
                             'format' => 'date-time',
                         ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
+                        [
+                            'type' => 'object',
+                            'properties' => [
+                                'date' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Date', 'give'),
+                                    'format' => 'date-time',
+                                ],
+                                'timezone' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Timezone of the date', 'give'),
+                                    'format' => 'text-field',
+                                ],
+                                'timezone_type' => [
+                                    'type' => 'integer',
+                                    'description' => esc_html__('Timezone type', 'give'),
+                                ],
+                            ],
+                            'description' => esc_html__('Subscription creation date', 'give'),
                         ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
+                        [
+                            'type' => 'null',
                         ],
                     ],
-                    'description' => esc_html__('Subscription creation date', 'give'),
-                    'format' => 'date-time',
                 ],
                 'renewsAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
+                    'oneOf' => [
+                        [
                             'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
+                            'description' => esc_html__('Next renewal date as ISO string', 'give'),
                             'format' => 'date-time',
                         ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
+                        [
+                            'type' => 'object',
+                            'properties' => [
+                                'date' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Date', 'give'),
+                                    'format' => 'date-time',
+                                ],
+                                'timezone' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Timezone of the date', 'give'),
+                                    'format' => 'text-field',
+                                ],
+                                'timezone_type' => [
+                                    'type' => 'integer',
+                                    'description' => esc_html__('Timezone type', 'give'),
+                                ],
+                            ],
+                            'description' => esc_html__('Next renewal date', 'give'),
                         ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
+                        [
+                            'type' => 'null',
                         ],
                     ],
-                    'description' => esc_html__('Next renewal date', 'give'),
-                    'format' => 'date-time',
                 ],
             ],
         ];

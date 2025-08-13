@@ -16,11 +16,13 @@ import { TrashIcon } from '@givewp/components/AdminDetailsPage/Icons';
 import AdminDetailsPage from '@givewp/components/AdminDetailsPage';
 import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from '@givewp/subscriptions/utils';
-import styles from './SubscriptionDetailsPage.module.scss';
 import tabDefinitions from './Tabs/definitions';
 import { useSubscriptionAmounts } from '@givewp/subscriptions/hooks';
 import { useDispatch } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
+import useSubscriptionSync from '@givewp/subscriptions/hooks/useSubscriptionSync';
+import SubscriptionSyncList from '../SubscriptionSyncList';
+import styles from './SubscriptionDetailsPage.module.scss';
 
 const { subscriptionStatuses } = getSubscriptionOptionsWindowData();
 
@@ -54,9 +56,17 @@ const StatusBadge = ({ status, isTest }: { status: string, isTest: boolean }) =>
 export default function SubscriptionDetailsPage() {
     const { adminUrl, subscriptionsAdminUrl } = getSubscriptionOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
-    const { record: subscription } = useSubscriptionEntityRecord();
+    const [hasSyncBeenPerformed, setHasSyncBeenPerformed] = useState(false);
+    
+    // Get subscription ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const subscriptionId = urlParams.get('id');
+    
+    const { record: subscription} = useSubscriptionEntityRecord(subscriptionId ? parseInt(subscriptionId) : undefined);
     const { formatter } = useSubscriptionAmounts(subscription);
     const { deleteEntityRecord } = useDispatch(coreDataStore);
+    const { syncSubscription, isLoading, hasResolved, syncResult } = useSubscriptionSync();
+    const subscriptionCanSync = subscription?.gateway?.canSync || !subscription?.gateway?.id;
 
     const PageTitle = () => {
         if (subscription?.amount?.value == null) {
@@ -87,6 +97,10 @@ export default function SubscriptionDetailsPage() {
             <button
                 type="button"
                 className={className}
+                onClick={() => {
+                    setShowConfirmationDialog('sync');
+                    setHasSyncBeenPerformed(false);
+                }}
             >
                 {__('Sync subscription', 'give')}
             </button>
@@ -119,6 +133,19 @@ export default function SubscriptionDetailsPage() {
         }
     };
 
+    /**
+     * @unreleased
+     */
+    const handleSyncSubscription = async () => {
+        try {
+            await syncSubscription(subscription);
+            setHasSyncBeenPerformed(true);
+            console.log('Sync result:', syncResult);
+        } catch (error) {
+            console.error('Sync failed:', error);
+            setShowConfirmationDialog(null);
+        }
+    };
 
     return (
         <AdminDetailsPage
@@ -130,7 +157,7 @@ export default function SubscriptionDetailsPage() {
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-subscriptions`}
             breadcrumbTitle={subscription?.id && sprintf('#%s', subscription?.id)}
             pageTitle={<PageTitle />}
-            SecondaryActionButton={SecondaryActionButton}
+            SecondaryActionButton={subscriptionCanSync && SecondaryActionButton}
             StatusBadge={() => <StatusBadge status={subscription?.status} isTest={subscription?.mode === 'test'} />}
             ContextMenuItems={ContextMenuItems}
         >
@@ -142,6 +169,30 @@ export default function SubscriptionDetailsPage() {
                 handleConfirm={handleDelete}
             >
                 {__('Are you sure you want to move this subscription to the trash? You can restore it later if needed.', 'give')}
+            </ConfirmationDialog>
+            <ConfirmationDialog
+                variant={isLoading ? 'syncing' : null}
+                spinner={'arc'}
+                isConfirming={isLoading}
+                title={__('Sync subscription details', 'give')}
+                actionLabel={isLoading ? __('Syncing', 'give') : !hasSyncBeenPerformed ? __('Proceed to sync', 'give') : __('Resync', 'give')}
+                isOpen={showConfirmationDialog === 'sync'}
+                handleClose={() => {
+                    setShowConfirmationDialog(null);
+                }}
+                handleConfirm={handleSyncSubscription}
+                footer={
+                    hasSyncBeenPerformed && hasResolved && (
+                    <div className={styles.syncModalFooter}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" clipRule="evenodd" d="M10 .832a9.167 9.167 0 1 0 0 18.333A9.167 9.167 0 0 0 10 .832zm0 5a.833.833 0 1 0 0 1.667h.008a.833.833 0 0 0 0-1.667H10zm.833 4.167a.833.833 0 0 0-1.666 0v3.333a.833.833 0 1 0 1.666 0V9.999z" fill="#0C7FF2"/>
+                        </svg>
+                        {syncResult?.notice}
+                    </div>
+                    )
+                }
+            >
+                {hasSyncBeenPerformed && hasResolved ? <SubscriptionSyncList syncResult={syncResult} /> : __('This will update the subscription details using the most recent data from the gateway. However, no changes will be made to existing payments.', 'give')}
             </ConfirmationDialog>
         </AdminDetailsPage>
     );

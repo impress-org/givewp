@@ -246,6 +246,25 @@
         }
     }
 
+    .confirmButton {
+        border: 1px solid #2271b1;
+        background-color: #2271b1;
+        color: var(--givewp-shades-white);
+
+        &:hover {
+            border: 1px solid #135e96;
+            background-color: #135e96;
+        }
+    }
+
+    .confirmButton--syncing {
+        border: 1px solid #135e96;
+        background-color: #135e96;
+    }
+
+
+
+
     .confirmButton--error {
         border: 1px solid var(--givewp-red-500);
         background-color: var(--givewp-red-500);

@@ -1,15 +1,13 @@
 import { __ } from '@wordpress/i18n';
-import OverviewPanel from "@givewp/admin/components/OverviewPanel";
-import Grid, { GridCard } from '@givewp/admin/components/Grid';
+import classnames from 'classnames';
+import { OverviewPanel, Grid, GridCard, Spinner } from '@givewp/admin/components';
 import { CampaignCard, DonorCard, GatewayNotice } from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
-import Spinner from '@givewp/admin/components/Spinner';
 import PaymentMethodIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/PaymentMethodIcon';
 import ExternalLinkIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/icon';
 import { HourGlassIcon, ClockIcon } from './Icons';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
 import { Donation } from '@givewp/donations/admin/components/types';
 import { formatTimestamp } from '@givewp/admin/utils';
-import classnames from 'classnames';
 
 import styles from './styles.module.scss';
 
@@ -28,11 +26,10 @@ type SubscriptionDetailsProps = {
 export default function SubscriptionSummaryGrid({subscription, donation, isLoading}: SubscriptionDetailsProps) {    
     const isOngoing = subscription?.installments === 0;
     const badgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
-    const createdAt = donation?.createdAt?.date;
+    const renewsAt = subscription?.renewsAt?.date;
     const paymentMethod = donation?.gateway?.id;
     const gatewayLabel = donation?.gateway?.label;
     const gatewayLink = donation?.gateway?.transactionUrl;
-
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -48,8 +45,8 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                     {isLoading && <Spinner />}
                     {!isLoading && (
                         <>
-                            <time className={styles.date} dateTime={createdAt}>
-                                {formatTimestamp(createdAt, true)}
+                            <time className={styles.date} dateTime={renewsAt}>
+                                {formatTimestamp(renewsAt, true)}
                             </time>
                             <div className={styles.donationType}>
                                 <span className={classnames(styles.badge, {

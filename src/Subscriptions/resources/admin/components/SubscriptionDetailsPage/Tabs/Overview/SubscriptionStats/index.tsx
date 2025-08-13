@@ -1,4 +1,4 @@
-import StatWidget from '@givewp/admin/components/StatWidget';
+import {StatWidget} from '@givewp/admin/components';
 import {__} from '@wordpress/i18n';
 import {amountFormatter} from '@givewp/admin/utils';
 import { Donation } from '@givewp/donations/admin/components/types';

@@ -338,13 +338,14 @@ class DonationController extends WP_REST_Controller
             'type',
             'mode',
             'gatewayTransactionId',
+            'campaignId'
         ];
 
         foreach ($request->get_params() as $key => $value) {
             if (!in_array($key, $nonEditableFields, true)) {
                 if (in_array($key, $donation::propertyKeys(), true)) {
-                    try {
-                        $processedValue = DonationFields::processValue($key, $value);
+                    try {                        
+                        $processedValue = DonationFields::processValue($key, $value);                        
                         if ($donation->isPropertyTypeValid($key, $processedValue)) {
                             $donation->$key = $processedValue;
                         }
@@ -996,46 +997,73 @@ class DonationController extends WP_REST_Controller
                     'format' => 'text-field',
                 ],
                 'createdAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
+                    'oneOf' => [
+                        [
                             'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
+                            'description' => esc_html__('Donation creation date as ISO string', 'give'),
                             'format' => 'date-time',
                         ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
+                        [
+                            'type' => 'object',
+                            'properties' => [
+                                'date' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Date', 'give'),
+                                    'format' => 'date-time',
+                                ],
+                                'timezone' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Timezone of the date', 'give'),
+                                    'format' => 'text-field',
+                                ],
+                                'timezone_type' => [
+                                    'type' => 'integer',
+                                    'description' => esc_html__('Timezone type', 'give'),
+                                ],
+                            ],
+                            'description' => esc_html__('Donation creation date', 'give'),
                         ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
+                        [
+                            'type' => 'null',
                         ],
                     ],
-                    'description' => esc_html__('Donation creation date', 'give'),
-                    'format' => 'date-time',
                 ],
                 'updatedAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
+                    'oneOf' => [
+                        [
                             'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
+                            'description' => esc_html__('Donation last update date as ISO string', 'give'),
                             'format' => 'date-time',
                         ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
+                        [
+                            'type' => 'object',
+                            'properties' => [
+                                'date' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Date', 'give'),
+                                    'format' => 'date-time',
+                                ],
+                                'timezone' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Timezone of the date', 'give'),
+                                    'format' => 'text-field',
+                                ],
+                                'timezone_type' => [
+                                    'type' => 'integer',
+                                    'description' => esc_html__('Timezone type', 'give'),
+                                ],
+                            ],
+                            'description' => esc_html__('Donation last update date', 'give'),
                         ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
+                        [
+                            'type' => 'null',
                         ],
                     ],
-                    'description' => esc_html__('Donation last update date', 'give'),
-                    'format' => 'date-time',
+                ],
+                'updateRenewalDate' => [
+                    'type' => 'boolean',
+                    'description' => esc_html__('Whether to update the subscription renewal date with the createdAt date when creating subscription or renewal donations', 'give'),
+                    'default' => false,
                 ],
                 'customFields' => [
                     'type' => 'array',
