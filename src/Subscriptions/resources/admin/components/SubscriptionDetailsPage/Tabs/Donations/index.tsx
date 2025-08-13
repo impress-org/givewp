@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { ListTablePage } from "@givewp/components";
 import type { ListTablePageRef } from "@givewp/components";
-import { getSubscriptionOptionsWindowData } from "@givewp/subscriptions/utils";
+import { getSubscriptionOptionsWindowData, useRefreshSubscriptionInBackground } from "@givewp/subscriptions/utils";
 import styles from './styles.module.scss';
 import cn from 'classnames';
 import { DonationRowActions } from "@givewp/donations/components/DonationRowActions";
@@ -44,8 +44,9 @@ export default function SubscriptionDetailsPageDonationsTab() {
     const listTableRef = useRef<ListTablePageRef>(null);
     const dispatch = useDispatch(`givewp/admin-details-page-notifications`);
     const { saveEntityRecord } = useDispatch(coreStore);
+    const refreshSubscriptionInBackground = useRefreshSubscriptionInBackground();
     const urlParams = new URLSearchParams(window.location.search);
-    const subscriptionId = urlParams.get('id');
+    const subscriptionId = Number(urlParams.get('id'));
 
     const handleAddRenewal = async (data: any) => {
         try {
@@ -59,8 +60,11 @@ export default function SubscriptionDetailsPageDonationsTab() {
             });
 
             if (response?.id) {
-                // Refresh the donations table
                 await listTableRef.current?.refresh();
+
+                if (!!data.updateRenewalDate) {
+                    await refreshSubscriptionInBackground(subscriptionId);
+                }
 
                 dispatch.addSnackbarNotice({
                     id: `add-renewal-success`,
