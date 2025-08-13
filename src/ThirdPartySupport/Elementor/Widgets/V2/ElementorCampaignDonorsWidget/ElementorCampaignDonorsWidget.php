@@ -74,7 +74,7 @@ class ElementorCampaignDonorsWidget extends Widget_Base
      */
     public function get_script_depends(): array
     {
-        return ['givewp-campaign-donors-block-app'];
+        return [];
     }
 
     /**
@@ -82,7 +82,7 @@ class ElementorCampaignDonorsWidget extends Widget_Base
      */
     public function get_style_depends(): array
     {
-        return ['givewp-design-system-foundation', 'givewp-campaign-donors-block-app'];
+        return [];
     }
 
     /**
