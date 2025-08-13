@@ -7,6 +7,10 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
 /**
+ * This class is used to register the scripts for the Elementor widgets in the editor.
+ *
+ * Some widgets render themselves using javascript which works fine on the frontend but since the editor is in an iframe it doesn't work properly.  So these scripts are mainly used to render the widgets in the editor.
+ *
  * @unreleased
  */
 class RegisterWidgetEditorScripts
