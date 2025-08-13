@@ -211,6 +211,8 @@ const entry = {
     elementorCampaignFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignFormWidget/resources/widget.jsx'),
     elementorDonationFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorDonationFormWidget/resources/widget.jsx'),
     elementorCampaignGoalWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignGoalWidget/resources/widget.jsx'),
+    elementorCampaignGridWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignGridWidget/resources/widget.jsx'),
+    elementorCampaignWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignWidget/resources/widget.jsx'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };

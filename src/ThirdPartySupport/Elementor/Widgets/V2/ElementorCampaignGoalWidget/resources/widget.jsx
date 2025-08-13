@@ -1,8 +1,9 @@
 import {createRoot} from '@wordpress/element';
 import {CampaignGoalBlockApp} from '@givewp/src/Campaigns/Blocks/CampaignGoal/app';
 
-import './widget.scss';
-
+/**
+ * @unreleased
+ */
 export default class CampaignGoalWidget extends elementorModules.frontend.handlers.Base {
     render() {
         const containers = document.querySelectorAll(`[data-id="${this.getID()}"] [data-givewp-campaign-goal]`);

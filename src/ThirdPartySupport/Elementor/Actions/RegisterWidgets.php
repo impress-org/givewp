@@ -16,12 +16,13 @@ use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveSubscriptionsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveTotalsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignDonationsWidget\ElementorCampaignDonationsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignDonorsWidget\ElementorCampaignDonorsWidget;
-use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignFormWidget\ElementorCampaignFormWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGoalWidget\ElementorCampaignGoalWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignStatsWidget\ElementorCampaignStatsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget\ElementorDonationFormWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonorWallWidget\ElementorDonorWallWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormGridWidget\ElementorDonationFormGridWidget;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGridWidget\ElementorCampaignGridWidget;
+use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignWidget\ElementorCampaignWidget;
 
 /**
  * @unreleased
@@ -82,5 +83,7 @@ class RegisterWidgets
         $widgets_manager->register(new ElementorDonationFormWidget());
         $widgets_manager->register(new ElementorDonorWallWidget());
         $widgets_manager->register(new ElementorDonationFormGridWidget());
+        $widgets_manager->register(new ElementorCampaignGridWidget());
+        $widgets_manager->register(new ElementorCampaignWidget());
     }
 }
