@@ -27,7 +27,7 @@ export default function SubscriptionSummaryGrid({ subscription, donation, isLoad
     const isOngoing = subscription?.installments === 0;
     const badgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
     const renewsAt = subscription?.renewsAt?.date;
-    const paymentMethod = subscription?.gateway?.id || donation?.gateway?.id;
+    const paymentMethod = subscription?.gatewayId || donation?.gateway?.id;
     const gatewayLabel = subscription?.gateway?.label || donation?.gateway?.label;
     const gatewayLink = subscription?.gateway?.subscriptionUrl || donation?.gateway?.transactionUrl;
 
