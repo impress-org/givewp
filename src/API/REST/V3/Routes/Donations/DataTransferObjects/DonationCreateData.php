@@ -36,10 +36,18 @@ class DonationCreateData
     private $subscriptionId;
 
     /**
+     * @var bool
+     */
+    private $updateRenewalDate;
+
+    /**
      * @since 3.0.0
      */
     public function __construct(array $attributes)
     {
+        // Extract updateRenewalDate before processing attributes
+        $this->updateRenewalDate = $attributes['updateRenewalDate'] ?? false;
+
         $this->attributes = $this->processAttributes($attributes);
         $this->subscriptionId = $this->attributes['subscriptionId'] ?? 0;
         $this->type = $this->attributes['type'] ?? null;
@@ -214,19 +222,18 @@ class DonationCreateData
      * @throws Exception
      */
     public function createDonation(): Donation
-    {
-        // Validate subscription rules first
-        $this->validateSubscriptionRules();
-
-        // Validate donation creation
+    {        
+        $this->validateSubscriptionRules();        
         $this->validateCreateDonation();
 
-        // Filter out auto-generated fields
+        // Filter out only the auto-generated id and campaignId fields
         $donationAttributes = array_filter($this->attributes, function ($key) {
-            return !in_array($key, ['id', 'createdAt', 'updatedAt'], true);
+            return !in_array($key, ['id', 'campaignId'], true);
         }, ARRAY_FILTER_USE_KEY);
 
-        return Donation::create($donationAttributes);
+        $donation = Donation::create($donationAttributes);
+
+        return $donation;
     }
 
     /**
@@ -237,22 +244,43 @@ class DonationCreateData
      * @return Donation
      */
     public function createRenewal(): Donation
-    {
-        // Validate subscription rules first
-        $this->validateSubscriptionRules();
-
-        // Validate renewal creation
+    {        
+        $this->validateSubscriptionRules();        
         $this->validateCreateRenewal();
 
         $subscription = Subscription::find($this->subscriptionId);
 
+        // Update subscription renewal date if requested BEFORE creating renewal
+        // This ensures the bumpRenewalDate() calculation uses the correct base date
+        if ($this->shouldUpdateRenewalDate()) {
+            $this->updateSubscriptionRenewalDate($subscription);
+        }
+
         // Pass the processed attributes to allow overriding values from the request
-        // Filter out auto-generated fields and subscription-specific fields
+        // Filter out only the auto-generated id and campaignId fields and subscription-specific fields, allowing createdAt and updatedAt to be set
         $renewalAttributes = array_filter($this->attributes, function ($key) {
-            return !in_array($key, ['id', 'createdAt', 'updatedAt', 'subscriptionId', 'type'], true);
+            return !in_array($key, ['id', 'campaignId','subscriptionId', 'type'], true);
         }, ARRAY_FILTER_USE_KEY);
 
-        return $subscription->createRenewal($renewalAttributes);
+        $donation = $subscription->createRenewal($renewalAttributes);
+
+        return $donation;
+    }
+
+    /**
+     * Update subscription renewal date with the createdAt date
+     *
+     * @unreleased
+     *
+     * @param Subscription $subscription
+     * @return void
+     */
+    private function updateSubscriptionRenewalDate(Subscription $subscription): void
+    {
+        if (isset($this->attributes['createdAt']) && $this->attributes['createdAt'] instanceof \DateTime) {
+            $subscription->renewsAt = $this->attributes['createdAt'];
+            $subscription->save();
+        }
     }
 
     /**
@@ -277,6 +305,30 @@ class DonationCreateData
     public function isRenewal(): bool
     {
         return $this->isRenewal;
+    }
+
+    /**
+     * Check if this is a subscription or renewal donation
+     *
+     * @unreleased
+     *
+     * @return bool
+     */
+    public function isSubscriptionOrRenewal(): bool
+    {
+        return $this->type && in_array($this->type->getValue(), ['subscription', 'renewal'], true);
+    }
+
+    /**
+     * Check if should update renewal date
+     *
+     * @unreleased
+     *
+     * @return bool
+     */
+    public function shouldUpdateRenewalDate(): bool
+    {
+        return $this->updateRenewalDate && $this->isRenewal() && isset($this->attributes['createdAt']);
     }
 
     /**
@@ -340,12 +392,17 @@ class DonationCreateData
         $processedAttributes = [];
 
         foreach ($attributes as $key => $value) {
-            if ($key === 'id' || $key === 'createdAt' || $key === 'updatedAt') {
-                // Skip these fields as they are auto-generated
+            if ($key === 'id' || ! in_array($key, Donation::propertyKeys(), true)) {
+                // Skip id field as it is always auto-generated or not valid for the Donation model
                 continue;
             }
 
-            $processedAttributes[$key] = DonationFields::processValue($key, $value);
+            $processedValue = DonationFields::processValue($key, $value);
+
+            // Only include properties that are valid for the Donation model
+            if ($processedValue !== null) {
+                $processedAttributes[$key] = $processedValue;
+            }
         }
 
         return $processedAttributes;
