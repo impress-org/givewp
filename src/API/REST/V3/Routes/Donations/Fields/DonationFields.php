@@ -62,6 +62,7 @@ class DonationFields
                 return $value;
 
             case 'createdAt':
+            case 'updatedAt':
                 try {
                     if (is_string($value)) {
                         return new DateTime($value, wp_timezone());

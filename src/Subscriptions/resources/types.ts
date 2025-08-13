@@ -16,6 +16,7 @@ export type GiveSubscriptionOptions = {
     apiRoot: string;
     legacyApiRoot: string;
     apiNonce: string;
+    syncSubscriptionNonce: string;
     subscriptionsAdminUrl: string;
     currency: string;
     isRecurringEnabled: boolean;

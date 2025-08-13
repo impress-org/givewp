@@ -1,0 +1,107 @@
+
+.paymentMethod {
+  display: flex;
+  align-items: center;
+  gap: var(--givewp-spacing-2);
+}
+
+.donationType {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.gatewayLink {
+  display: flex;
+  align-items: center;
+  gap: var(--givewp-spacing-2);
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: center;
+}
+
+.date {
+  font-weight: 500;
+  font-size: 1.125rem;
+  color: var(--givewp-neutral-900);
+}
+
+.badge {
+  display: block;
+  margin-top: var(--givewp-spacing-2);
+  color: var(--givewp-neutral-900);
+  border: 1px solid var(--givewp-neutral-900);
+  padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.05em;
+}
+
+.gatewayCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: var(--givewp-spacing-2);
+}
+
+.gatewayLink {
+  display: flex;
+  align-items: center;
+  gap: var(--givewp-spacing-2);
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.43;
+  letter-spacing: normal;
+  text-align: center;
+}
+
+.date {
+  font-weight: 500;
+  font-size: 1.125rem;
+  color: var(--givewp-neutral-900);
+}
+
+.badge {
+  display: block;
+  margin-top: var(--givewp-spacing-2);
+  color: var(--givewp-neutral-900);
+  border: 1px solid var(--givewp-neutral-900);
+  padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.05em;
+
+  &.limited, &.unlimited {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 24px;
+  }
+
+  &.limited {
+    color: #d98715;
+    background-color: #fffaf2;
+    border-color: #d98715;
+  }
+
+  &.unlimited {
+    color: #459948;
+    background-color: #f2fff3;
+    border-color: #459948;
+  }
+}
