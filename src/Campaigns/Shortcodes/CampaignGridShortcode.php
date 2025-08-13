@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Shortcodes;
 
+use Give\Campaigns\Actions\LoadCampaignPublicOptions;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
@@ -38,6 +39,8 @@ class CampaignGridShortcode
      */
     public function loadAssets()
     {
+        give(LoadCampaignPublicOptions::class)();
+
         $handleName = 'givewp-campaign-grid-app';
         $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignGridApp.asset.php');
 
