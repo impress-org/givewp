@@ -33,7 +33,7 @@ class CampaignStatsShortcode
     }
 
     /**
-     * @since 4.3.0
+     * @unreleased
      */
     public function loadAssets(): void
     {

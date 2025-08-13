@@ -33,7 +33,7 @@ class CampaignGoalShortcode
     }
 
     /**
-     * @since 4.3.0
+     * @unreleased
      */
     public function loadAssets(): void
     {
