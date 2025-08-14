@@ -23,13 +23,13 @@ type SubscriptionDetailsProps = {
 /**
  * @unreleased
  */
-export default function SubscriptionSummaryGrid({subscription, donation, isLoading}: SubscriptionDetailsProps) {    
+export default function SubscriptionSummaryGrid({ subscription, donation, isLoading }: SubscriptionDetailsProps) {
     const isOngoing = subscription?.installments === 0;
     const badgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
     const renewsAt = subscription?.renewsAt?.date;
-    const paymentMethod = donation?.gateway?.id;
-    const gatewayLabel = donation?.gateway?.label;
-    const gatewayLink = donation?.gateway?.transactionUrl;
+    const paymentMethod = subscription?.gatewayId || donation?.gateway?.id;
+    const gatewayLabel = subscription?.gateway?.label || donation?.gateway?.label;
+    const gatewayLink = subscription?.gateway?.subscriptionUrl || donation?.gateway?.transactionUrl;
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -55,7 +55,7 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                                 })} aria-label={isOngoing ? __('Unlimited', 'give') : __('Limited', 'give')}>
                                     {badgeLabel}
                                 </span>
-                            </div>                  
+                            </div>
                         </>
                     )}
                 </GridCard>
@@ -86,7 +86,7 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                         </>
                     )}
                 </GridCard>
-            </Grid>  
+            </Grid>
         </OverviewPanel>
     );
 }
