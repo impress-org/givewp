@@ -810,6 +810,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Change default status to complete
      * @since 4.6.1 Change type of billing address properties to accept null values
      * @since 4.6.0
      */
