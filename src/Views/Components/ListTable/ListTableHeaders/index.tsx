@@ -19,7 +19,7 @@ const ListTableHeaders = ({column, sortField, setSortDirectionForColumn}) => {
                 >
                     <div className={styles.text}>{column.label}</div>
                     <div key={column.id} id={column.id}>
-                        <svg width="16" height="7" viewBox="0 0 16 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="16" height="7" viewBox="0 0 16 7" fill="none" xmlns="http://www.w3.org/2000/svg" data-sorting={sortField.sortColumn === column.id && sortField.sortDirection === 'asc'}>
                             <path
                                 d="M11.1699 6.5L5.66986 0.5L0.169861 6.5L11.1699 6.5Z"
                                 fill={
@@ -29,7 +29,7 @@ const ListTableHeaders = ({column, sortField, setSortDirectionForColumn}) => {
                                 }
                             />
                         </svg>
-                        <svg width="16" height="7" viewBox="0 0 16 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="16" height="7" viewBox="0 0 16 7" fill="none" xmlns="http://www.w3.org/2000/svg" data-sorting={sortField.sortColumn === column.id && sortField.sortDirection === 'desc'}>
                             <path
                                 d="M0.169861 0.5L5.66986 6.5L11.1699 0.5H0.169861Z"
                                 fill={

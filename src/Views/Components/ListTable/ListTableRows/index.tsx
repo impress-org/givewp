@@ -6,7 +6,7 @@ import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
 
-export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, columnFilters}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, columnFilters, includeBulkActionsCheckbox = false}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -61,13 +61,15 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                 [styles.duplicated]: added.indexOf(parseInt(item.id)) > -1,
             })}
         >
-            <TableCell>
-                <BulkActionCheckbox
-                    id={item.id}
-                    name={item?.donor ?? item?.title ?? item?.donorInformation}
-                    singleName={singleName}
-                />
-            </TableCell>
+            {includeBulkActionsCheckbox && (
+                <TableCell>
+                    <BulkActionCheckbox
+                        id={item.id}
+                        name={item?.donor ?? item?.title ?? item?.donorInformation}
+                        singleName={singleName}
+                    />
+                </TableCell>
+            )}
             <>
                 {columns?.map((column) => {
                     const columnFilter = columnGetFilter(column.id);

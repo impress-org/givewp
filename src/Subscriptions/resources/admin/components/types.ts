@@ -5,7 +5,7 @@ type PaymentGateway = {
     id: string;
     name: string;
     label: string;
-    transactionUrl: string;
+    subscriptionUrl: string;
     canSync: boolean;
 }
 
