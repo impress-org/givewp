@@ -21,7 +21,7 @@
         "baseUrl": ".",
         "paths": {
             "@givewp/components": [
-                "./src/Views/Components/index.js"
+                "src/Views/Components/index.ts"
             ],
             "@givewp/components/*": [
                 "./src/Views/Components/*"

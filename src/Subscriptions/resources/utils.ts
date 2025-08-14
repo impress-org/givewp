@@ -1,4 +1,7 @@
 import { useEntityRecord } from '@wordpress/core-data';
+import { useDispatch } from '@wordpress/data';
+import { store as coreStore } from '@wordpress/core-data';
+import apiFetch from '@wordpress/api-fetch';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
 import type { GiveSubscriptionOptions } from '@givewp/subscriptions/types';
 
@@ -27,6 +30,30 @@ export function useSubscriptionEntityRecord(subscriptionId?: number) {
     } = useEntityRecord('givewp', 'subscription', subscriptionId ?? urlParams.get('id'));
 
     return {record: subscription, hasResolved, isResolving, save, edit};
+}
+
+/**
+ * @unreleased
+ */
+export function useRefreshSubscriptionInBackground() {
+    const { receiveEntityRecords, invalidateResolution } = useDispatch(coreStore);
+
+    const refreshSubscriptionInBackground = async (subscriptionId: number) => {
+        if (!subscriptionId) return;
+
+        try {
+            const latestSubscriptionData = await apiFetch({
+                path: `/givewp/v3/subscriptions/${subscriptionId}`,
+            });
+
+            receiveEntityRecords('givewp', 'subscription', latestSubscriptionData, undefined, false);
+        } catch (error) {
+            console.error('Error refreshing subscription in background:', error);
+            invalidateResolution('getEntityRecord', ['givewp', 'subscription', subscriptionId]);
+        }
+    };
+
+    return refreshSubscriptionInBackground;
 }
 
 /**

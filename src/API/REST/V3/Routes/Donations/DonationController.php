@@ -344,8 +344,8 @@ class DonationController extends WP_REST_Controller
         foreach ($request->get_params() as $key => $value) {
             if (!in_array($key, $nonEditableFields, true)) {
                 if (in_array($key, $donation::propertyKeys(), true)) {
-                    try {                        
-                        $processedValue = DonationFields::processValue($key, $value);                        
+                    try {
+                        $processedValue = DonationFields::processValue($key, $value);
                         if ($donation->isPropertyTypeValid($key, $processedValue)) {
                             $donation->$key = $processedValue;
                         }
@@ -810,6 +810,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Change default status to complete
      * @since 4.6.1 Change type of billing address properties to accept null values
      * @since 4.6.0
      */
@@ -913,7 +914,7 @@ class DonationController extends WP_REST_Controller
                     'type' => 'string',
                     'description' => esc_html__('Donation status', 'give'),
                     'enum' => array_values(DonationStatus::toArray()),
-                    'default' => DonationStatus::PENDING,
+                    'default' => DonationStatus::COMPLETE,
                 ],
                 'type' => [
                     'type' => 'string',
