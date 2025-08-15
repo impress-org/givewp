@@ -154,69 +154,6 @@ class ElementorDonationFormWidget extends Widget_Base
     /**
      * @unreleased
      */
-    protected function getFormOptionsWithCampaigns(): array
-    {
-        $campaignsWithForms = $this->getCampaignsWithForms();
-
-        if (empty($campaignsWithForms)) {
-            return [];
-        }
-
-		$campaignOptions = [];
-		$formOptionsGroup = [];
-		$campaignGroups = [];
-
-        // Group forms by campaign
-        foreach ($campaignsWithForms as $item) {
-            // Skip items without campaign association
-            if (empty($item->campaign_id) || empty($item->campaign_title)) {
-                continue;
-            }
-
-			$campaignId = $item->campaign_id;
-			$campaignTitle = $item->campaign_title;
-
-			// Add to campaign options if not already added
-			if (!isset($campaignOptions[$campaignId])) {
-				$campaignOptions[$campaignId] = $campaignTitle;
-				$campaignGroups[$campaignId] = [
-					'label' => $campaignTitle,
-					'options' => [],
-					'campaign_id' => $campaignId,
-					'defaultFormId' => $item->default_form_id ?? null,
-				];
-			}
-
-			// Add form to the campaign group
-			$campaignGroups[$campaignId]['options'][$item->id] = $item->title;
-        }
-
-		// Ensure default form shows first in each campaign group
-		foreach ($campaignGroups as $id => $group) {
-			$defaultFormId = isset($group['defaultFormId']) ? (int)$group['defaultFormId'] : null;
-			$defaultKey = $defaultFormId ?: null;
-			if ($defaultKey !== null && isset($group['options'][$defaultKey])) {
-				$orderedOptions = [];
-				$orderedOptions[$defaultKey] = $group['options'][$defaultKey];
-				foreach ($group['options'] as $formKey => $label) {
-					if ((string)$formKey === (string)$defaultKey) {
-						continue;
-					}
-					$orderedOptions[$formKey] = $label;
-				}
-				$campaignGroups[$id]['options'] = $orderedOptions;
-			}
-			unset($campaignGroups[$id]['defaultFormId']);
-		}
-
-		$formOptionsGroup = array_values($campaignGroups);
-
-        return $formOptionsGroup;
-    }
-
-    /**
-     * @unreleased
-     */
 	public function getDefaultFormOption(array $formOptionsGroup): string
 	{
 		$default = !empty($formOptionsGroup) ? array_key_first($formOptionsGroup[0]['options']) : '';
