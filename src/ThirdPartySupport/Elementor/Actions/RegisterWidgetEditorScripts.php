@@ -20,7 +20,7 @@ class RegisterWidgetEditorScripts
     const FORM_GRID_WIDGET_SCRIPT_NAME = 'givewp-elementor-donation-form-grid-widget';
     const CAMPAIGN_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-widget';
     const CAMPAIGN_GRID_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-grid-widget';
-        const CAMPAIGN_COMMENTS_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-comments-widget';
+    const CAMPAIGN_COMMENTS_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-comments-widget';
 
     /**
      * @unreleased

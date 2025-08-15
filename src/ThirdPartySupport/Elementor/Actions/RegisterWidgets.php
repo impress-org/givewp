@@ -75,8 +75,6 @@ class RegisterWidgets
      */
     private function registerV2Widgets($widgets_manager)
     {
-        //TODO: re-enable this once we have a way to get the campaign forms
-        //$widgets_manager->register(new ElementorCampaignFormWidget());
         $widgets_manager->register(new ElementorCampaignDonationsWidget());
         $widgets_manager->register(new ElementorCampaignDonorsWidget());
         $widgets_manager->register(new ElementorCampaignGoalWidget());
