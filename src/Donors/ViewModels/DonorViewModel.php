@@ -78,7 +78,7 @@ class DonorViewModel
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
-    switch ($propertyName) {
+                switch ($propertyName) {
                     case 'additionalEmails':
                     case 'customFields':
                         $data[$propertyName] = [];

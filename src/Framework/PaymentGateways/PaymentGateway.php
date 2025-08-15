@@ -474,5 +474,4 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     {
         return $this->toArray();
     }
-
 }

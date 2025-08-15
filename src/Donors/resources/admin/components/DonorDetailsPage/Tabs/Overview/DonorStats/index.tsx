@@ -23,20 +23,17 @@ export default function DonorStats({donorId}: DonorStatsProps) {
         <>
             <StatWidget
                 label={__('Lifetime donations', 'give')}
-                value={stats?.donations?.lifetimeAmount ?? 0}
-                formatter={amountFormatter(currency)}
+                value={amountFormatter(currency).format(stats?.donations?.lifetimeAmount ?? 0)}
                 loading={statsLoading || !statsResolved}
             />
             <StatWidget
                 label={__('Highest donation', 'give')}
-                value={stats?.donations?.highestAmount ?? 0}
-                formatter={amountFormatter(currency)}
+                value={amountFormatter(currency).format(stats?.donations?.highestAmount ?? 0)}
                 loading={statsLoading || !statsResolved}
             />
             <StatWidget
                 label={__('Average donation', 'give')}
-                value={stats?.donations?.averageAmount ?? 0}
-                formatter={amountFormatter(currency)}
+                value={amountFormatter(currency).format(stats?.donations?.averageAmount ?? 0)}
                 loading={statsLoading || !statsResolved}
             />
         </>

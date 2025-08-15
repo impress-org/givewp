@@ -9,5 +9,6 @@ export default function useCampaign(campaignId: number) {
             ...campaignData?.record as Campaign
         },
         hasResolved: campaignData?.hasResolved,
+        isResolving: campaignData?.isResolving,
     };
 }

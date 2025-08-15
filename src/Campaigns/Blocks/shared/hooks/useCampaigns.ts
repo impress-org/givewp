@@ -36,5 +36,6 @@ export default function useCampaigns({
         //@ts-ignore
         totalPages: data.totalPages,
         hasResolved: data?.hasResolved,
+        isResolving: data?.isResolving,
     };
 }

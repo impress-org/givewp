@@ -64,6 +64,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $originalDonorIp = $donation->donorIp;
         $originalMode = $donation->mode->getValue();
         $originalType = $donation->type->getValue();
+        $originalCampaignId = $donation->campaignId;
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id;
         $request = $this->createRequest('PUT', $route, [], 'administrator');
@@ -72,6 +73,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
             'donorIp' => '192.168.1.1',
             'mode' => 'live',
             'type' => 'renewal',
+            'campaignId' => 123,
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -85,6 +87,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $this->assertEquals($originalDonorIp, $data['donorIp']);
         $this->assertEquals($originalMode, $data['mode']);
         $this->assertEquals($originalType, $data['type']);
+        $this->assertEquals($originalCampaignId, $data['campaignId']);
     }
 
     /**
