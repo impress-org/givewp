@@ -320,9 +320,12 @@ class DonationController extends WP_REST_Controller
     /**
      * Update a single donation.
      *
+     * @unreleased Add support for updating custom fields
      * @since 4.6.0
+     *
+     * @return WP_REST_Response|WP_Error
      */
-    public function update_item($request): WP_REST_Response
+    public function update_item($request)
     {
         $donation = Donation::find($request->get_param('id'));
 
@@ -364,6 +367,11 @@ class DonationController extends WP_REST_Controller
             ->includeSensitiveData(true)
             ->anonymousMode(new DonationAnonymousMode('include'))
             ->exports();
+
+        $fieldsUpdate = $this->update_additional_fields_for_object($item, $request);
+        if (is_wp_error($fieldsUpdate)) {
+            return $fieldsUpdate;
+        }
 
         $response = $this->prepare_item_for_response($item, $request);
 
@@ -612,6 +620,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Add support for adding custom fields to the response
      * @since 4.6.0
      * @throws Exception
      */
@@ -651,6 +660,8 @@ class DonationController extends WP_REST_Controller
         if (!empty($links)) {
             $response->add_links($links);
         }
+
+        $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
         return $response;
     }
@@ -810,14 +821,14 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Change default status to complete
+     * @unreleased Change title to givewp/donation, add custom fields schema, change default status to complete
      * @since 4.6.1 Change type of billing address properties to accept null values
      * @since 4.6.0
      */
     public function get_item_schema(): array
     {
-        return [
-            'title' => 'donation',
+        $schema = [
+            'title' => 'givewp/donation',
             'type' => 'object',
             'properties' => [
                 'id' => [
@@ -1088,5 +1099,7 @@ class DonationController extends WP_REST_Controller
                 ],
             ],
         ];
+
+        return $this->add_additional_fields_schema($schema);
     }
 }
