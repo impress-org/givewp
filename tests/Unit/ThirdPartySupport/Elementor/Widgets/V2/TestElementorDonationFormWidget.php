@@ -1,5 +1,16 @@
 <?php
 
+namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget;
+
+/**
+ * Intercept do_shortcode calls from the widget's namespace to capture the built shortcode.
+ */
+function do_shortcode($shortcode)
+{
+    \Give\Tests\Unit\ThirdPartySupport\Elementor\Widgets\V2\TestElementorDonationFormWidget::$capturedShortcode = $shortcode;
+    return '';
+}
+
 namespace Give\Tests\Unit\ThirdPartySupport\Elementor\Widgets\V2;
 
 use Give\Tests\TestCase;
@@ -16,6 +27,9 @@ class TestElementorDonationFormWidget extends TestCase
     use RefreshDatabase;
     use MockElementorTrait;
 
+    /** @var string|null */
+    public static $capturedShortcode;
+
     /**
      * @unreleased
      */
@@ -23,6 +37,7 @@ class TestElementorDonationFormWidget extends TestCase
     {
         parent::setUp();
         $this->setUpMockElementorClasses();
+        self::$capturedShortcode = null;
     }
 
     /**
@@ -52,6 +67,7 @@ class TestElementorDonationFormWidget extends TestCase
         $output = ob_get_clean();
 
         $this->assertEmpty($output);
+        $this->assertNull(self::$capturedShortcode);
     }
 
     /**
@@ -81,9 +97,11 @@ class TestElementorDonationFormWidget extends TestCase
         $method->invoke($widget);
         $output = ob_get_clean();
 
-        // In test environment, non-existent form ID should produce error notice
-        $this->assertStringContainsString('give_notice', $output);
-        $this->assertStringContainsString('valid Donation Form ID', $output);
+        $this->assertIsString($output);
+        $this->assertSame(
+            '[give_form display_style="modal" continue_button_title="Custom Donate Text" id="123"]',
+            self::$capturedShortcode
+        );
     }
 
     /**
@@ -112,9 +130,11 @@ class TestElementorDonationFormWidget extends TestCase
         $method->invoke($widget);
         $output = ob_get_clean();
 
-        // Should process shortcode and show error for non-existent form
-        $this->assertStringContainsString('give_notice', $output);
-        $this->assertStringContainsString('valid Donation Form ID', $output);
+        $this->assertIsString($output);
+        $this->assertSame(
+            '[give_form display_style="onpage" continue_button_title="Continue to Donate" id="456"]',
+            self::$capturedShortcode
+        );
     }
 
     /**
@@ -143,8 +163,10 @@ class TestElementorDonationFormWidget extends TestCase
         $method->invoke($widget);
         $output = ob_get_clean();
 
-        // Should process shortcode and show error for non-existent form
-        $this->assertStringContainsString('give_notice', $output);
-        $this->assertStringContainsString('valid Donation Form ID', $output);
+        $this->assertIsString($output);
+        $this->assertSame(
+            '[give_form display_style="newTab" continue_button_title="Donate in New Tab" id="789"]',
+            self::$capturedShortcode
+        );
     }
 }
