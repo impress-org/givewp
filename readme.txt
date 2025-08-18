@@ -281,7 +281,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Dev: Added support for custom REST API fields for donation and donor endpoints
 
 = 4.6.1: July 29th, 2025 =
-* Security: Addressed an issue with donor information visibility
+* Security: Addressed an issue with donor information visibility (CVE-2025-47444)
 
 = 4.6.0: July 23rd, 2025 =
 * New: The donation admin details screen has been upgraded to a new design and experience!
