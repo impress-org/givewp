@@ -36,18 +36,6 @@ class CacheCampaignData
     }
 
     /**
-     * Register AS action
-     *
-     * @unreleased
-     */
-    public function registerAction()
-    {
-        add_action('givewp_cache_campaign_data', function (int $campaignId) {
-            give(CacheCampaignData::class)->handleCache($campaignId);
-        });
-    }
-
-    /**
      * Handle campaign cache
      * @unreleased
      */

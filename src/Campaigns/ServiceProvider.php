@@ -264,7 +264,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     private function registerCampaignCache(): void
     {
-        Hooks::addAction('init', CacheCampaignData::class, 'registerAction');
+        add_action('givewp_cache_campaign_data', function (int $campaignId) {
+            give(CacheCampaignData::class)->handleCache($campaignId);
+        });
+
         Hooks::addAction('give_insert_payment', CacheCampaignData::class, '__invoke', 11, 1);
         Hooks::addAction('give_update_payment_status', CacheCampaignData::class, '__invoke', 11, 1);
 
