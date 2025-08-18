@@ -278,6 +278,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Enhancement: Stripe Payment Element and PayPal Donations have been updated to support refunding
 * Fix: Resolved an issue with donation form goal progress when using custom date ranges
 * Fix: Resolved an issue with some campaign shortcodes not loading properly
+* Dev: Added support for custom REST api fields for donation and donor endpoints
 
 = 4.6.1: July 29th, 2025 =
 * Security: Addressed an issue with donor information visibility
