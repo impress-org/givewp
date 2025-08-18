@@ -95,7 +95,6 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
 
             // Set subscriptions data
             if (defined('GIVE_RECURRING_VERSION')) {
-                $subscriptionsData = get_option('give_campaigns_data', []);
                 $subscriptions = CampaignsDataQuery::subscriptions($campaignIds);
 
                 update_option('give_campaigns_subscriptions_data', [
