@@ -2,7 +2,7 @@ import {createRoot} from '@wordpress/element';
 import {CampaignGoalBlockApp} from '@givewp/src/Campaigns/Blocks/CampaignGoal/app';
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 export default class CampaignGoalWidget extends elementorModules.frontend.handlers.Base {
     render() {

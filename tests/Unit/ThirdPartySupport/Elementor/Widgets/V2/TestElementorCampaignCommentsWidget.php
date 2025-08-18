@@ -23,7 +23,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignCommentsWidget\ElementorCampaignCommentsWidget;
 
 /**
- * @unreleased
+ * @since 4.7.0
  * @covers \Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignCommentsWidget\ElementorCampaignCommentsWidget
  */
 class TestElementorCampaignCommentsWidget extends TestCase
@@ -35,7 +35,7 @@ class TestElementorCampaignCommentsWidget extends TestCase
     public static $capturedAttributes;
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function setUp(): void
     {
@@ -45,7 +45,7 @@ class TestElementorCampaignCommentsWidget extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderOutputsNothingWhenCampaignIdEmpty(): void
     {
@@ -78,7 +78,7 @@ class TestElementorCampaignCommentsWidget extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesCampaignCommentsShortcodeWithDefaults(): void
     {

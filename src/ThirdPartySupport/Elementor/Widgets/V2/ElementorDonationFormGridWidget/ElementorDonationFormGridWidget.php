@@ -7,7 +7,7 @@ use Give\DonationForms\AsyncData\Actions\LoadAsyncDataAssets;
 use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class ElementorDonationFormGridWidget extends Widget_Base
 {
@@ -15,7 +15,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_name(): string
     {
@@ -24,7 +24,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_title(): string
     {
@@ -33,7 +33,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_icon(): string
     {
@@ -42,7 +42,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_categories(): array
     {
@@ -51,7 +51,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_keywords(): array
     {
@@ -60,7 +60,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_custom_help_url(): string
     {
@@ -68,7 +68,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function get_upsale_data(): array
     {
@@ -77,7 +77,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_script_depends(): array
     {
@@ -86,7 +86,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_style_depends(): array
     {
@@ -95,7 +95,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
 
     /**
      * @inheritDoc
-     * @unreleased
+     * @since 4.7.0
      */
     public function has_widget_inner_wrapper(): bool
     {
@@ -103,7 +103,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function is_dynamic_content(): bool
     {
@@ -114,7 +114,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
      * Register Elementor controls for the widget.
      *
      * @return void
-     * @unreleased
+     * @since 4.7.0
      */
     protected function register_controls(): void
     {
@@ -497,7 +497,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
      * Get available GiveWP form categories.
      *
      * @return array
-     * @unreleased
+     * @since 4.7.0
      */
     protected function getCategoryOptions(): array
     {
@@ -519,7 +519,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
     /**
      * Get available GiveWP form tags.
      *
-     * @unreleased
+     * @since 4.7.0
      */
     protected function getTagOptions(): array
     {
@@ -541,7 +541,7 @@ class ElementorDonationFormGridWidget extends Widget_Base
     /**
      * Render the widget output on the frontend.
      *
-     * @unreleased
+     * @since 4.7.0
      */
     protected function render(): void
     {

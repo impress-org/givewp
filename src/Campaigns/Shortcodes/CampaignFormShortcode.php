@@ -11,7 +11,7 @@ use Give\Helpers\Language;
 class CampaignFormShortcode
 {
     /**
-     * @unreleased updated to use ShortcodeRenderController
+     * @since 4.7.0 updated to use ShortcodeRenderController
      * @since 4.3.0
      *
      * @param array $atts

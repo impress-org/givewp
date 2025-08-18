@@ -142,7 +142,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Create a donor note.
      *
-     * @unreleased Add support updating custom fields
+     * @since 4.7.0 Add support updating custom fields
      * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -198,7 +198,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Update a donor note.
      *
-     * @unreleased Add support for updating custom fields
+     * @since 4.7.0 Add support for updating custom fields
      * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -315,7 +315,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Add support for adding custom fields to the response
+     * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.4.0
      */
     public function prepare_item_for_response($note, $request): WP_REST_Response
@@ -359,7 +359,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get the donor note schema, conforming to JSON Schema.
      *
-     * @unreleased Change title to givewp/donor-note and add custom fields schema
+     * @since 4.7.0 Change title to givewp/donor-note and add custom fields schema
      * @since 4.4.0
      *
      * @return array

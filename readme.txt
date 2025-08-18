@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.6.1
+Stable tag: 4.7.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.7.0: August 20th, 2025 =
+* New: Elementor support for widgets and campaign landing pages have been added to GiveWP without the need for a separate add-on
+* Enhancement: Stripe Payment Element and PayPal Donations have been updated to support refunding
+* Fix: Resolved an issue with donation form goal progress when using custom date ranges
+* Fix: Resolved an issue with some campaign shortcodes not loading properly
 
 = 4.6.1: July 29th, 2025 =
 * Security: Addressed an issue with donor information visibility

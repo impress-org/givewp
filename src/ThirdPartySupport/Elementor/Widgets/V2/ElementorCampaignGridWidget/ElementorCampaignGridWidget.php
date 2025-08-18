@@ -7,12 +7,12 @@ use Give\Campaigns\Shortcodes\CampaignGridShortcode;
 use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetEditorScripts;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class ElementorCampaignGridWidget extends Widget_Base
 {
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_name(): string
     {
@@ -20,7 +20,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_title(): string
     {
@@ -28,7 +28,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_icon(): string
     {
@@ -36,7 +36,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_categories(): array
     {
@@ -44,7 +44,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_keywords(): array
     {
@@ -52,7 +52,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_custom_help_url(): string
     {
@@ -60,7 +60,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function get_upsale_data(): array
     {
@@ -68,7 +68,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_script_depends(): array
     {
@@ -76,7 +76,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_style_depends(): array
     {
@@ -87,7 +87,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function has_widget_inner_wrapper(): bool
     {
@@ -95,7 +95,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function is_dynamic_content(): bool
     {
@@ -103,7 +103,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function register_controls(): void
     {
@@ -217,7 +217,7 @@ class ElementorCampaignGridWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function render(): void
     {
