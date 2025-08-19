@@ -76,7 +76,7 @@ import Notice from '@givewp/admin/components/Notices';
 ### Info Notice
 - **Background**: Light blue (`#f0f9ff`)
 - **Border**: Blue (`var(--givewp-blue-400)`)
-- **Icon**: Triangle icon
+- **Icon**: Info icon
 
 ### Warning Notice
 - **Background**: Light orange (`#fffaf2`)
@@ -108,14 +108,3 @@ The Notice component doesn't include external spacing by default. This allows fo
 </div>
 ```
 
-## Examples
-
-See `example.tsx` for complete usage examples.
-
-## Design Reference
-
-This component is designed to match the notice shown in the attached image, featuring:
-- Horizontal layout with icon, message, and optional action
-- Proper spacing and typography
-- Color-coded borders and backgrounds
-- Hover effects on action links
