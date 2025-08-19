@@ -117,7 +117,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 
 			$message .= sprintf(
 				'<a href="%1$s">%2$s</a>',
-				admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $this->payment->ID ),
+				admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $this->payment->ID ),
 				__( 'Click Here to View and/or Update Donation Details', 'give' )
 			) . "\n\n";
 
