@@ -6,7 +6,7 @@ import { SubscriptionNotes } from "@givewp/admin/components/PrivateNotes";
 import { useDonationsBySubscription, useSubscriptionAmounts } from '@givewp/subscriptions/hooks';
 import SubscriptionSummary from '@givewp/subscriptions/admin/components/SubscriptionDetailsPage/Tabs/Overview/SubscriptionSummary';
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
-import GoalProgressChart from "./GoalProgressChart";
+import GoalProgressChart from "./SubscriptionAnnualProjection";
 import styles from "./styles.module.scss";
 
 /**

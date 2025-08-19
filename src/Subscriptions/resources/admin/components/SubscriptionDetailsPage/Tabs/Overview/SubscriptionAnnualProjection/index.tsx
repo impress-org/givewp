@@ -15,7 +15,7 @@ const currencyFormatter = amountFormatter(currency);
  * @param frequency
  * @returns
  */
-type GoalProgressChartProps = {
+type SubscriptionProjectionChartProps = {
     value: number;
     subscription: Subscription;
 };
@@ -48,7 +48,7 @@ const calculateAnnualDonations = (period: string, frequency: number) => {
 /**
  * @unreleased
  */
-export default function GoalProgressChart({ value, subscription }: GoalProgressChartProps) {
+export default function SubscriptionAnnualProjection({ value, subscription }: SubscriptionProjectionChartProps) {
     const period = String(subscription?.period);
     const frequency = Number(subscription?.frequency) || 1;
     const installments = Number(subscription?.installments) || 0;
