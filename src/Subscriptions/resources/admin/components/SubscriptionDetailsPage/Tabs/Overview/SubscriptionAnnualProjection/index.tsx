@@ -23,7 +23,7 @@ type SubscriptionProjectionChartProps = {
 /**
  * @unreleased
  */
-const getNumericPeriod = (period: string) => {
+const getNumericPeriodValue = (period: string) => {
     switch (period) {
         case 'day':
             return 365;
@@ -41,7 +41,7 @@ const getNumericPeriod = (period: string) => {
  * @unreleased
  */
 const calculateAnnualDonations = (period: string, frequency: number) => {
-    const periodsInYear = getNumericPeriod(period);
+    const periodsInYear = getNumericPeriodValue(period);
     return Math.floor(periodsInYear / frequency);
 };
 
@@ -59,13 +59,10 @@ export default function SubscriptionAnnualProjection({ value, subscription }: Su
     // For limited subscriptions, use the minimum between installments and donationsPerYear
     const actualDonations = installments === 0 ? donationsPerYear : Math.min(installments, donationsPerYear);
 
-    // Calculate projected annual value
+    // Calculate projected annual value/goal
     const projectedAnnualValue = value * actualDonations;
 
-    // Calculate projected annual goal
-    const projectedAnnualGoal = value * actualDonations;
-
-    const progress = Math.ceil((value / projectedAnnualGoal) * 100);
+    const progress = Math.ceil((value / projectedAnnualValue) * 100);
     const percentage = Math.min(progress, 100);
     const formattedValue = currencyFormatter.format(value);
 
