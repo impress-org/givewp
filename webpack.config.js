@@ -210,6 +210,7 @@ const entry = {
     donationDetails: srcPath('Donations/resources/admin/donation-details.tsx'),
     elementorCampaignFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignFormWidget/resources/widget.jsx'),
     elementorDonationFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorDonationFormWidget/resources/widget.jsx'),
+    angieMcp: srcPath('MCP/assets/angie.ts'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };
