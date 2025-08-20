@@ -88,7 +88,7 @@ class DonationFormsEntityRoute
                             'type' => 'string',
                             'enum' => ['publish', 'future', 'draft', 'pending', 'trash', 'upgraded', 'private', 'orphaned'],
                         ],
-                        'default' => 'publish',
+                        'default' => ['publish'],
                     ],
                     'ids' => [
                         'type' => 'array',
