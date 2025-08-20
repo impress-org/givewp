@@ -17,7 +17,7 @@ export default function SubscriptionDetailsPageRecordsTab() {
                     <Notice
                         type="info"                        
                     >
-                        {__('Changes made to this subscription will only affect future renewals.', 'give')}                        
+                        {__('Some changes made to this subscription will only affect future renewals.', 'give')}                        
                     </Notice>
                 </div>
             )}
