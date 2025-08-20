@@ -12,17 +12,17 @@ use Give\ThirdPartySupport\Elementor\Settings\RegisterSection;
 use Give\ThirdPartySupport\Elementor\Settings\RegisterSettings;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function register() {}
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function boot()
     {
@@ -64,7 +64,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Register the GiveWP Elementor Widgets settings
      *
-     * @since @unreleased
+     * @since @since 4.7.0
      */
     public function registerElementorSettings()
     {
@@ -75,7 +75,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * If the old version of the GiveWP Elementor Widgets plugin is installed, unregister the legacy widgets to prevent conflicts with the new widgets that are registered in the RegisterWidgets class
      *
-     * @since @unreleased
+     * @since @since 4.7.0
      */
     private function maybeUnregisterExistingLegacyWidgets()
     {

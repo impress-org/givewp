@@ -10,14 +10,14 @@ use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 /**
  * Trait to get campaign options for Elementor widgets
  *
- * @unreleased
+ * @since 4.7.0
  */
 trait HasCampaignOptions
 {
     /**
      * Get the default campaign option
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function getDefaultCampaignOption(array $options): string
     {
@@ -35,7 +35,7 @@ trait HasCampaignOptions
     /**
      * Get campaign options for select dropdown
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function getCampaignOptions(): array
     {

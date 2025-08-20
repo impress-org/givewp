@@ -2,7 +2,7 @@ import {createRoot} from '@wordpress/element';
 import CampaignComments from '@givewp/src/Campaigns/Blocks/CampaignComments/resources/shared/components/CampaignComments';
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 export default class CampaignCommentsWidget extends elementorModules.frontend.handlers.Base {
     render() {

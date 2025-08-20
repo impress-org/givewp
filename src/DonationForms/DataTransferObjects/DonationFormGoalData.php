@@ -156,7 +156,7 @@ class DonationFormGoalData implements Arrayable
     /**
      * Get Form query
      *
-     * @unreleased add support for date range
+     * @since 4.7.0 add support for date range
      * @since 4.1.0
      *
      * @return DonationQuery|SubscriptionQuery

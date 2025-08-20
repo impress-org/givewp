@@ -19,7 +19,7 @@ class BlockRenderController
     protected static int $embedInstance = 0;
 
     /**
-     * @unreleased detach check for gutenberg editor to make this more reusable
+     * @since 4.7.0 detach check for gutenberg editor to make this more reusable
      * @since 4.1.0 updated with embed ID instance fallback when block ID is not set.
      * @since 3.22.0 Add locale support
      * @since 3.2.0 include form url for new tab format.
@@ -60,7 +60,7 @@ class BlockRenderController
     /**
      * Return early if we're still inside the editor to avoid server side effects
      *
-     * @unreleased
+     * @since 4.7.0
      *
      * @return boolean
      */

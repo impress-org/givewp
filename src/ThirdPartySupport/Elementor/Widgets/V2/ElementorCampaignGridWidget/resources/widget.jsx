@@ -2,7 +2,7 @@ import {createRoot} from '@wordpress/element';
 import CampaignGridBlockApp from '@givewp/src/Campaigns/Blocks/CampaignGrid/app/index';
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 export default class CampaignGridWidget extends elementorModules.frontend.handlers.Base {
     render() {
