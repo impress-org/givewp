@@ -3,7 +3,7 @@ import renderDonationForm from '@givewp/src/DonationForms/Blocks/DonationFormBlo
 import './widget.scss';
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 export default class DonationFormWidget extends elementorModules.frontend.handlers.Base {
     render() {

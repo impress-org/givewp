@@ -20,7 +20,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGoalWidget\ElementorCampaignGoalWidget;
 
 /**
- * @unreleased
+ * @since 4.7.0
  * @covers \Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGoalWidget\ElementorCampaignGoalWidget
  */
 class TestElementorCampaignGoalWidget extends TestCase
@@ -39,7 +39,7 @@ class TestElementorCampaignGoalWidget extends TestCase
     }
 
 	/**
-	 * @unreleased
+	 * @since 4.7.0
 	 */
     public function testRenderOutputsNothingWhenCampaignIdEmpty(): void
     {
@@ -64,7 +64,7 @@ class TestElementorCampaignGoalWidget extends TestCase
     }
 
 	/**
-	 * @unreleased
+	 * @since 4.7.0
 	 */
 	public function testRenderProcessesCampaignGoalShortcode(): void
     {

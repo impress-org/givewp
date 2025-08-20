@@ -3,12 +3,12 @@
 namespace Give\ThirdPartySupport\Elementor\Settings;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class RegisterSection
 {
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function __invoke(array $sections): array
     {

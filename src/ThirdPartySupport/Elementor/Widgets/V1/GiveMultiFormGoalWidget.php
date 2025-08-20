@@ -10,7 +10,7 @@ use Elementor\Widget_Base;
  *
  * Elementor widget that inserts the GiveWP [give_multi_form_goal] shortcode to output a Give Multi Form Goal.
  *
- * @unreleased migrated from givewp-elementor-widgets
+ * @since 4.7.0 migrated from givewp-elementor-widgets
  */
 
 class GiveMultiFormGoalWidget extends Widget_Base
@@ -82,7 +82,7 @@ class GiveMultiFormGoalWidget extends Widget_Base
      *
      * Use optimized DOM structure, without the inner wrapper.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      */
     public function has_widget_inner_wrapper(): bool

@@ -2,7 +2,7 @@ import {createRoot} from '@wordpress/element';
 import {CampaignBlockApp} from '@givewp/src/Campaigns/Blocks/Campaign/app';
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 export default class CampaignWidget extends elementorModules.frontend.handlers.Base {
     render() {

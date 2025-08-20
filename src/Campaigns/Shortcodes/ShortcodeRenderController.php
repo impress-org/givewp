@@ -9,7 +9,7 @@ namespace Give\Campaigns\Shortcodes;
  * work properly when rendering blocks through shortcodes by setting up the proper
  * block context that WordPress expects.
  *
- * @unreleased
+ * @since 4.7.0
  */
 class ShortcodeRenderController
 {
@@ -19,7 +19,7 @@ class ShortcodeRenderController
      * This method temporarily sets up the block context that WordPress block functions
      * expect, renders the block file, then restores the previous context.
      *
-     * @unreleased
+     * @since 4.7.0
      *
      * @param string $renderFilePath The absolute path to the block render file
      * @param string $blockName      The registered block name (e.g., 'givewp/campaign-stats-block')

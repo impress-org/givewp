@@ -26,12 +26,12 @@ use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignWidget\Elemento
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignCommentsWidget\ElementorCampaignCommentsWidget;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class RegisterWidgets
 {
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function __invoke($widgets_manager)
     {
@@ -43,7 +43,7 @@ class RegisterWidgets
      * Register the v1 widgets that were previously available in the GiveWP Elementor Widgets plugin.
      *
      * @param \Elementor\Widgets_Manager $widgets_manager
-     * @unreleased
+     * @since 4.7.0
      */
     private function registerV1Widgets($widgets_manager)
     {
@@ -71,7 +71,7 @@ class RegisterWidgets
      * Register the v2 widgets that are available in GiveWP.
      *
      * @param \Elementor\Widgets_Manager $widgets_manager
-     * @unreleased
+     * @since 4.7.0
      */
     private function registerV2Widgets($widgets_manager)
     {
