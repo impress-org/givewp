@@ -141,7 +141,7 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function getColorSettings(): array
     {

@@ -12,7 +12,7 @@ use Give\Helpers\Language;
 class CampaignShortcode
 {
     /**
-     * @unreleased updated to use ShortcodeRenderController
+     * @since 4.7.0 updated to use ShortcodeRenderController
      * @since 4.2.0
      *
      * @param array $atts

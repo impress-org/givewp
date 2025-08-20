@@ -18,7 +18,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormGridWidget\ElementorDonationFormGridWidget;
 
 /**
- * @unreleased
+ * @since 4.7.0
  * @covers \Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormGridWidget\ElementorDonationFormGridWidget
  */
 class TestElementorDonationFormGridWidget extends TestCase
@@ -30,7 +30,7 @@ class TestElementorDonationFormGridWidget extends TestCase
     public static $capturedShortcode;
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function setUp(): void
     {
@@ -43,7 +43,7 @@ class TestElementorDonationFormGridWidget extends TestCase
      * Test that render method processes grid shortcode with default settings
      * In test environment, shortcode may not output anything
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesGridShortcodeWithDefaultSettings(): void
     {
@@ -78,7 +78,7 @@ class TestElementorDonationFormGridWidget extends TestCase
     /**
      * Test that render method processes grid shortcode with columns specified
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesGridShortcodeWithColumns(): void
     {
@@ -113,7 +113,7 @@ class TestElementorDonationFormGridWidget extends TestCase
     /**
      * Test that render method processes grid shortcode with include specific forms
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesGridShortcodeWithIncludeForms(): void
     {
@@ -148,7 +148,7 @@ class TestElementorDonationFormGridWidget extends TestCase
     /**
      * Test that render method processes grid shortcode with exclude specific forms
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesGridShortcodeWithExcludeForms(): void
     {
@@ -183,7 +183,7 @@ class TestElementorDonationFormGridWidget extends TestCase
     /**
      * Test that render method processes grid shortcode with display style
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesGridShortcodeWithDisplayStyle(): void
     {
@@ -218,7 +218,7 @@ class TestElementorDonationFormGridWidget extends TestCase
     /**
      * Test that render method processes grid shortcode with string ids value
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesGridShortcodeWithStringIds(): void
     {

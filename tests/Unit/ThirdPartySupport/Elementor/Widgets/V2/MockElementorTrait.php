@@ -5,7 +5,7 @@ namespace Give\Tests\Unit\ThirdPartySupport\Elementor\Widgets\V2;
 /**
  * Mock Elementor Widget_Base class for testing
  *
- * @unreleased
+ * @since 4.7.0
  */
 class MockWidgetBase
 {
@@ -23,7 +23,7 @@ class MockWidgetBase
 /**
  * Mock Elementor Controls_Manager class for testing
  *
- * @unreleased
+ * @since 4.7.0
  */
 class MockControlsManager
 {
@@ -37,7 +37,7 @@ class MockControlsManager
 /**
  * Trait to provide mock Elementor classes for testing
  *
- * @unreleased
+ * @since 4.7.0
  */
 trait MockElementorTrait
 {
@@ -45,7 +45,7 @@ trait MockElementorTrait
      * Set up mock Elementor classes for testing
      * Call this in setUp() or at the beginning of test methods
      *
-     * @unreleased
+     * @since 4.7.0
      */
     protected function setUpMockElementorClasses(): void
     {

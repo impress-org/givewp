@@ -165,7 +165,7 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      *
      * @throws Exception
      */

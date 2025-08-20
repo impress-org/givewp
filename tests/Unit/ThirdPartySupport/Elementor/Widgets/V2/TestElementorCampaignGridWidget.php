@@ -20,7 +20,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGridWidget\ElementorCampaignGridWidget;
 
 /**
- * @unreleased
+ * @since 4.7.0
  * @covers \Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignGridWidget\ElementorCampaignGridWidget
  */
 class TestElementorCampaignGridWidget extends TestCase
@@ -39,7 +39,7 @@ class TestElementorCampaignGridWidget extends TestCase
     }
 
 	/**
-	 * @unreleased
+	 * @since 4.7.0
 	 */
     public function testRenderProcessesGridWithDefaults(): void
     {
