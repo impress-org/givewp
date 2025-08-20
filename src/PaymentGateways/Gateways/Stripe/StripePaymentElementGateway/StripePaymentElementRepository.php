@@ -34,7 +34,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      * @throws ApiErrorException
      */
     protected function refundStripePayment(Donation $donation): Refund

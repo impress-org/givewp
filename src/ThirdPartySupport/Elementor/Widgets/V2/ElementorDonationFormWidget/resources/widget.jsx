@@ -2,6 +2,9 @@ import renderDonationForm from '@givewp/src/DonationForms/Blocks/DonationFormBlo
 
 import './widget.scss';
 
+/**
+ * @since 4.7.0
+ */
 export default class DonationFormWidget extends elementorModules.frontend.handlers.Base {
     render() {
         const roots = document.querySelectorAll(`[data-id="${this.getID()}"] .root-data-givewp-embed`);

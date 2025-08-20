@@ -362,7 +362,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      *
      * @throws Exception
      */

@@ -5,23 +5,24 @@ namespace Give\ThirdPartySupport\Elementor;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgets;
-use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetScripts;
+use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetEditorScripts;
+use Give\ThirdPartySupport\Elementor\Actions\SetupElementorCampaignTemplate;
 use Give\ThirdPartySupport\Elementor\Actions\UnregisterV1Widgets;
 use Give\ThirdPartySupport\Elementor\Settings\RegisterSection;
 use Give\ThirdPartySupport\Elementor\Settings\RegisterSettings;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function register() {}
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function boot()
     {
@@ -37,8 +38,8 @@ class ServiceProvider implements ServiceProviderInterface
         // Register core widgets with priority 11 to override any widgets from previously migrated plugin givewp-elementor-widgets
         Hooks::addFilter('elementor/widgets/register', RegisterWidgets::class, '__invoke', 11, 1);
 
-        // Register widget scripts
-        Hooks::addAction('wp_enqueue_scripts', RegisterWidgetScripts::class);
+        // Register widget scripts for the editor preview
+        Hooks::addAction('elementor/preview/enqueue_scripts', RegisterWidgetEditorScripts::class);
 
         // Register admin styles
         add_action('elementor/editor/before_enqueue_scripts', function () {
@@ -56,12 +57,14 @@ class ServiceProvider implements ServiceProviderInterface
                 ]
             );
         });
+
+        Hooks::addAction('givewp_campaign_page_created', SetupElementorCampaignTemplate::class);
     }
 
     /**
      * Register the GiveWP Elementor Widgets settings
      *
-     * @since @unreleased
+     * @since @since 4.7.0
      */
     public function registerElementorSettings()
     {
@@ -72,7 +75,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * If the old version of the GiveWP Elementor Widgets plugin is installed, unregister the legacy widgets to prevent conflicts with the new widgets that are registered in the RegisterWidgets class
      *
-     * @since @unreleased
+     * @since @since 4.7.0
      */
     private function maybeUnregisterExistingLegacyWidgets()
     {

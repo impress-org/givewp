@@ -13,6 +13,8 @@ Welcome to the **GiveWP Campaign Shortcodes** directory! Here you'll find a coll
     - [Campaign Donors](#4-givewp_campaign_donors)
     - [Campaign Donations](#5-givewp_campaign_donations)
     - [Campaign Comments](#6-givewp_campaign_comments)
+     - [Campaign Goal](#7-givewp_campaign_goal)
+     - [Campaign Stats](#8-givewp_campaign_stats)
 3. [How Shortcodes are Registered](#how-shortcodes-are-registered)
 4. [Extending Shortcodes](#extending-shortcodes)
 5. [Support & Contribution](#support--contribution)
@@ -156,6 +158,35 @@ Displays campaign comments.
 
 ---
 
+### 7. `[givewp_campaign_goal]` — Campaign Goal
+Displays the campaign goal progress for a specific campaign.
+
+| Attribute   | Type | Default | Description                |
+|-------------|------|---------|----------------------------|
+| campaign_id | int  | —       | The campaign ID to render. |
+
+**Example:**
+```[givewp_campaign_goal campaign_id="123"]```
+
+[Source: CampaignGoalShortcode.php](./CampaignGoalShortcode.php)
+
+---
+
+### 8. `[givewp_campaign_stats]` — Campaign Stats
+Displays a statistic for a specific campaign.
+
+| Attribute   | Type   | Default       | Description                                                                 |
+|-------------|--------|---------------|-----------------------------------------------------------------------------|
+| campaign_id | int    | —             | The campaign ID.                                                            |
+| statistic   | string | top-donation  | Which statistic to display. Allowed: `top-donation`, `average-donation`.    |
+
+**Example:**
+```[givewp_campaign_stats campaign_id="123" statistic="average-donation"]```
+
+[Source: CampaignStatsShortcode.php](./CampaignStatsShortcode.php)
+
+---
+
 ## How Shortcodes are Registered
 Shortcodes are registered in the GiveWP plugin, typically during the plugin's initialization. To add or modify a shortcode, see the registration logic in the main plugin or service provider files.
 
@@ -176,4 +207,4 @@ All shortcodes are implemented as PHP classes. You can extend or override their 
 ## Notes
 - All boolean attributes accept `true` or `false` (case-insensitive).
 - All shortcodes automatically enqueue the necessary scripts and styles for proper display.
-- For more advanced usage, refer to the source code in this directory. 
+- For more advanced usage, refer to the source code in this directory.

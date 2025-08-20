@@ -3,17 +3,19 @@
 namespace Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget;
 
 use Elementor\Widget_Base;
+use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetEditorScripts;
 use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
+use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class ElementorDonationFormWidget extends Widget_Base
 {
     use HasFormOptions;
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_name(): string
     {
@@ -21,7 +23,7 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_title(): string
     {
@@ -29,7 +31,7 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_icon(): string
     {
@@ -37,7 +39,7 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_categories(): array
     {
@@ -45,7 +47,7 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_keywords(): array
     {
@@ -53,7 +55,7 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_custom_help_url(): string
     {
@@ -61,7 +63,7 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function get_upsale_data(): array
     {
@@ -69,23 +71,23 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_script_depends(): array
     {
-        return ['givewp-elementor-donation-form-widget'];
+        return [RegisterWidgetEditorScripts::DONATION_FORM_WIDGET_SCRIPT_NAME];
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_style_depends(): array
     {
-        return ['givewp-design-system-foundation', 'givewp-elementor-donation-form-widget'];
+        return [RegisterWidgetEditorScripts::DONATION_FORM_WIDGET_SCRIPT_NAME];
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function has_widget_inner_wrapper(): bool
     {
@@ -93,7 +95,7 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function is_dynamic_content(): bool
     {
@@ -101,7 +103,7 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function register_controls(): void
     {
@@ -118,7 +120,7 @@ class ElementorDonationFormWidget extends Widget_Base
             'label' => __('Form', 'give'),
             'type' => \Elementor\Controls_Manager::SELECT,
             'options' => [],
-            'default' => !empty($formOptionsGroup) ? array_key_first($formOptionsGroup[0]['options']) : '',
+            'default' => $this->getDefaultFormOption($formOptionsGroup),
             'groups' => $formOptionsGroup,
         ]);
 
@@ -150,50 +152,29 @@ class ElementorDonationFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
-    protected function getFormOptionsWithCampaigns(): array
-    {
-        $campaignsWithForms = $this->getCampaignsWithForms();
+	public function getDefaultFormOption(array $formOptionsGroup): string
+	{
+		$default = !empty($formOptionsGroup) ? array_key_first($formOptionsGroup[0]['options']) : '';
 
-        if (empty($campaignsWithForms)) {
-            return [];
-        }
+		$campaignId = get_post_meta(get_the_ID(), CampaignPageMetaKeys::CAMPAIGN_ID, true);
 
-        $campaignOptions = [];
-        $formOptionsGroup = [];
-        $campaignGroups = [];
+		if (!$campaignId) {
+			return $default;
+		}
 
-        // Group forms by campaign
-        foreach ($campaignsWithForms as $item) {
-            // Skip items without campaign association
-            if (empty($item->campaign_id) || empty($item->campaign_title)) {
-                continue;
-            }
+		foreach ($formOptionsGroup as $group) {
+			if (!empty($group['campaign_id']) && (string)$group['campaign_id'] === (string)$campaignId) {
+				return !empty($group['options']) ? array_key_first($group['options']) : $default;
+			}
+		}
 
-            $campaignId = $item->campaign_id;
-            $campaignTitle = $item->campaign_title;
-
-            // Add to campaign options if not already added
-            if (!isset($campaignOptions[$campaignId])) {
-                $campaignOptions[$campaignId] = $campaignTitle;
-                $campaignGroups[$campaignId] = [
-                    'label' => $campaignTitle,
-                    'options' => []
-                ];
-            }
-
-            // Add form to the campaign group
-            $campaignGroups[$campaignId]['options'][$item->id] = $item->title;
-        }
-
-        $formOptionsGroup = array_values($campaignGroups);
-
-        return $formOptionsGroup;
-    }
+		return $default;
+	}
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function render(): void
     {

@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import DonationFormBlockApp from '.';
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 export default function renderDonationForm(root) {
     let dataSrcUrl = root.getAttribute('data-src');

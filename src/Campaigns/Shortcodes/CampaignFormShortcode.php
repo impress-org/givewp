@@ -11,6 +11,7 @@ use Give\Helpers\Language;
 class CampaignFormShortcode
 {
     /**
+     * @since 4.7.0 updated to use ShortcodeRenderController
      * @since 4.3.0
      *
      * @param array $atts
@@ -24,9 +25,11 @@ class CampaignFormShortcode
 
         $renderFile = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignForm/render.php';
 
-        ob_start();
-        include $renderFile;
-        return ob_get_clean();
+        return ShortcodeRenderController::renderWithBlockContext(
+            $renderFile,
+            'givewp/campaign-form-block',
+            $attributes
+        );
     }
 
     /**

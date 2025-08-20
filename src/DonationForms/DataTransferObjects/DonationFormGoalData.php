@@ -156,6 +156,7 @@ class DonationFormGoalData implements Arrayable
     /**
      * Get Form query
      *
+     * @since 4.7.0 add support for date range
      * @since 4.1.0
      *
      * @return DonationQuery|SubscriptionQuery
@@ -165,6 +166,14 @@ class DonationFormGoalData implements Arrayable
         $query = $this->isSubscription()
             ? new SubscriptionQuery()
             : new DonationQuery();
+
+        if ($this->goalStartDate && $this->goalEndDate) {
+            $query->between($this->goalStartDate, $this->goalEndDate);
+        }
+
+        if ($this->goalStartDate && !$this->goalEndDate) {
+            $query->between($this->goalStartDate, current_datetime()->format('Y-m-d'));
+        }
 
         $query->form($this->formId);
 
