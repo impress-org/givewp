@@ -5,10 +5,6 @@ import styles from './styles.module.scss';
 import { amountFormatter } from '@givewp/campaigns/utils';
 import { Header, OverviewPanel } from '@givewp/admin/components';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
-import { getSubscriptionOptionsWindowData } from '@givewp/subscriptions/utils';
-
-const { currency } = getSubscriptionOptionsWindowData();
-const currencyFormatter = amountFormatter(currency);
 
 /**
  * @unreleased
@@ -18,6 +14,7 @@ const currencyFormatter = amountFormatter(currency);
 type SubscriptionProjectionChartProps = {
     value: number;
     subscription: Subscription;
+    currency: string;
 };
 
 /**
@@ -33,6 +30,9 @@ const getNumericPeriodValue = (period: string) => {
             return 12;
         case 'year':
             return 1;
+        default:
+            console.warn(`Invalid period value: ${period}. Defaulting to month.`);
+            return 12;
     }
 };
 
@@ -48,7 +48,9 @@ const calculateAnnualDonations = (period: string, frequency: number) => {
 /**
  * @unreleased
  */
-export default function SubscriptionAnnualProjection({ value, subscription }: SubscriptionProjectionChartProps) {
+export default function SubscriptionAnnualProjection({ value, subscription, currency }: SubscriptionProjectionChartProps) {
+    const currencyFormatter = amountFormatter(currency);
+
     const period = String(subscription?.period);
     const frequency = Number(subscription?.frequency) || 1;
     const installments = Number(subscription?.installments) || 0;
