@@ -76,6 +76,8 @@ class DonationViewModel
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
                     case 'billingAddress':
+                        $data[$propertyName] = null;
+                        break;
                     case 'customFields':
                         $data[$propertyName] = [];
                         break;
