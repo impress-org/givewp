@@ -40,15 +40,6 @@ export default function SubscriptionAnnualProjection({ intendedAmount, subscript
     const progress = remainingDonations > 0 ? Math.ceil((currentYearCompletedDonations?.length / remainingDonations) * 100) : 0;
     const percentage = Math.min(progress, 100);
 
-    console.log({
-        currentYearCompletedDonations,
-        projectedAnnualValue,
-        progress,
-        percentage,
-        remainingDonations,
-        subscriptionAmount,
-    });
-
     return (
         <OverviewPanel>
             <div className={styles.goalProgressChart}>
