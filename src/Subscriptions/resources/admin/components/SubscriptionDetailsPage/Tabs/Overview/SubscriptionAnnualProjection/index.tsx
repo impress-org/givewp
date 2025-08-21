@@ -7,8 +7,6 @@ import styles from './styles.module.scss';
 
 /**
  * @unreleased
- * @param frequency
- * @returns
  */
 type SubscriptionAnnualProjectionProps = {
     value: number;
