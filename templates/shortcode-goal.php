@@ -39,7 +39,7 @@ $show_text           = isset( $args['show_text'] ) ? filter_var( $args['show_tex
 $show_bar            = isset( $args['show_bar'] ) ? filter_var( $args['show_bar'], FILTER_VALIDATE_BOOLEAN ) : true;
 
 /**
- * @unreleased only use dates when they are set
+ * @since 4.7.0 only use dates when they are set
  * @since 3.12.0 use DonationQuery to get donation amounts
  */
 $form_income = 0;

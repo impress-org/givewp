@@ -7,12 +7,12 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class CampaignGoalShortcode
 {
     /**
-     * @unreleased
+     * @since 4.7.0
      *
      * @param array<string, mixed> $atts
      *
@@ -33,7 +33,7 @@ class CampaignGoalShortcode
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function loadAssets(): void
     {
@@ -63,7 +63,7 @@ class CampaignGoalShortcode
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     private function parseAttributes($atts): array
     {

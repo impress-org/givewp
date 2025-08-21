@@ -18,7 +18,7 @@ use Give\Campaigns\Shortcodes\CampaignGoalShortcode;
 class RegisterCampaignShortcodes
 {
     /**
-     * @unreleased add givewp_campaign_stats and givewp_campaign_goal shortcodes
+     * @since 4.7.0 add givewp_campaign_stats and givewp_campaign_goal shortcodes
      * @since 4.5.0 new shortcodes for CampaignDonors, CampaignComments, CampaignDonations.
      * @since 4.2.0
      */

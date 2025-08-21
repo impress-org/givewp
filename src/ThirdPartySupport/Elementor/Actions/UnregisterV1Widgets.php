@@ -16,12 +16,12 @@ use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveSubscriptionsWidget;
 use Give\ThirdPartySupport\Elementor\Widgets\V1\GiveTotalsWidget;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class UnregisterV1Widgets
 {
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function __invoke($widgets_manager)
     {

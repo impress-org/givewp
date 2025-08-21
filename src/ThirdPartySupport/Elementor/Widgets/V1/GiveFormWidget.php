@@ -12,7 +12,7 @@ use Elementor\Widget_Base;
  *
  * Elementor widget that inserts the GiveWP [give_form] shortcode to output a form total with options.
  *
- * @unreleased migrated from givewp-elementor-widgets
+ * @since 4.7.0 migrated from givewp-elementor-widgets
  */
 class GiveFormWidget extends Widget_Base
 {
@@ -21,7 +21,7 @@ class GiveFormWidget extends Widget_Base
      *
      * Retrieve Give Form widget name.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      *
      * @return string Widget name.
@@ -36,7 +36,7 @@ class GiveFormWidget extends Widget_Base
      *
      * Retrieve Give Form widget title.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      *
      * @return string Widget title.
@@ -51,7 +51,7 @@ class GiveFormWidget extends Widget_Base
      *
      * Retrieve Give Form widget icon.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      *
      * @return string Widget icon.
@@ -66,7 +66,7 @@ class GiveFormWidget extends Widget_Base
      *
      * Retrieve the list of categories the Give Form widget belongs to.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      *
      * @return array Widget categories.
@@ -81,7 +81,7 @@ class GiveFormWidget extends Widget_Base
      *
      * Use optimized DOM structure, without the inner wrapper.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      */
     public function has_widget_inner_wrapper(): bool
@@ -94,7 +94,7 @@ class GiveFormWidget extends Widget_Base
      *
      * Adds different input fields to allow the user to change and customize the widget settings.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
     protected function register_controls()
@@ -262,7 +262,7 @@ class GiveFormWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
     protected function render()
@@ -330,7 +330,7 @@ class GiveFormWidget extends Widget_Base
     /**
      * Get forms using legacy template from list of forms returned by GiveFormWidget::getDonationFormsOptions
      *
-     * @unreleased
+     * @since 4.7.0
      *
      * @param array $forms
      *
@@ -352,7 +352,7 @@ class GiveFormWidget extends Widget_Base
     /**
      * Get forms using classic template from list of forms returned by GiveFormWidget::getDonationFormsOptions
      *
-     * @unreleased
+     * @since 4.7.0
      *
      * @param array $forms
      *
@@ -374,7 +374,7 @@ class GiveFormWidget extends Widget_Base
     /**
      * Get v3 forms from list of forms returned by GiveFormWidget::getDonationFormsOptions
      *
-     * @unreleased
+     * @since 4.7.0
      *
      * @param array $forms
      *
@@ -396,7 +396,7 @@ class GiveFormWidget extends Widget_Base
     /**
      * Get form template
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      *
      * @param $formId
      *

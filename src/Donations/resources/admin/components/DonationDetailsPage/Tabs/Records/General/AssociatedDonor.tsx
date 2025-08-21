@@ -8,7 +8,7 @@ import styles from '../styles.module.scss';
 import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 
 /**
- * @unreleased updated to use the donors entity
+ * @since 4.7.0 updated to use the donors entity
  * @since 4.6.0
  */
 export default function AssociatedDonor() {

@@ -11,7 +11,7 @@ use Give\Helpers\Language;
  *
  * Some widgets render themselves using javascript which works fine on the frontend but since the editor is in an iframe it doesn't work properly.  So these scripts are mainly used to render the widgets in the editor.
  *
- * @unreleased
+ * @since 4.7.0
  */
 class RegisterWidgetEditorScripts
 {
@@ -23,7 +23,7 @@ class RegisterWidgetEditorScripts
     const CAMPAIGN_COMMENTS_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-comments-widget';
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function __invoke()
     {
@@ -37,7 +37,7 @@ class RegisterWidgetEditorScripts
 
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     private function registerCampaignGoalWidgetScripts()
     {
@@ -71,7 +71,7 @@ class RegisterWidgetEditorScripts
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     private function registerDonationFormWidgetScripts()
     {
@@ -92,7 +92,7 @@ class RegisterWidgetEditorScripts
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     private function registerFormGridWidgetScripts()
     {
@@ -101,7 +101,7 @@ class RegisterWidgetEditorScripts
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     private function registerCampaignWidgetScripts()
     {
@@ -124,7 +124,7 @@ class RegisterWidgetEditorScripts
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     private function registerCampaignGridWidgetScripts()
     {
@@ -147,7 +147,7 @@ class RegisterWidgetEditorScripts
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     private function registerCampaignCommentsWidgetScripts()
     {
