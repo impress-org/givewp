@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import Chart from 'react-apexcharts';
 import { amountFormatter } from '@givewp/campaigns/utils';
+import { calculateAnnualDonations, Period, chartOptions } from './utils';
 import { Header, OverviewPanel } from '@givewp/admin/components';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
 import styles from './styles.module.scss';
@@ -17,34 +18,6 @@ type SubscriptionAnnualProjectionProps = {
 /**
  * @unreleased
  */
-const getNumericPeriodValue = (period: string) => {
-    switch (period) {
-        case 'day':
-            return 365;
-        case 'week':
-            return 52;
-        case 'month':
-            return 12;
-        case 'year':
-            return 1;
-        default:
-            console.warn(`Invalid period value: ${period}. Defaulting to month.`);
-            return 12;
-    }
-};
-
-/**
- * Calculate the number of donations in a year based on period and frequency
- * @unreleased
- */
-const calculateAnnualDonations = (period: string, frequency: number) => {
-    const periodsInYear = getNumericPeriodValue(period);
-    return Math.floor(periodsInYear / frequency);
-};
-
-/**
- * @unreleased
- */
 export default function SubscriptionAnnualProjection({ value, subscription, currency }: SubscriptionAnnualProjectionProps) {
     const currencyFormatter = amountFormatter(currency);
 
@@ -53,7 +26,7 @@ export default function SubscriptionAnnualProjection({ value, subscription, curr
     const installments = Number(subscription?.installments) || 0;
 
     // Calculate how many donations occur in a year
-    const donationsPerYear = calculateAnnualDonations(period, frequency);
+    const donationsPerYear = calculateAnnualDonations(period as Period, frequency);
 
     // For limited subscriptions, use the minimum between installments and donationsPerYear
     const actualDonations = installments === 0 ? donationsPerYear : Math.min(installments, donationsPerYear);
@@ -63,7 +36,6 @@ export default function SubscriptionAnnualProjection({ value, subscription, curr
 
     const progress = Math.ceil((value / projectedAnnualValue) * 100);
     const percentage = Math.min(progress, 100);
-    const formattedValue = currencyFormatter.format(value);
 
     return (
         <OverviewPanel>
@@ -73,42 +45,7 @@ export default function SubscriptionAnnualProjection({ value, subscription, curr
                     subtitle={__('Estimated yearly contribution based on billing amount.', 'give')} />
                 <div className={styles.chartContainer}>
                     <Chart
-                        options={{
-                            chart: {
-                                height: 1024,
-                                type: 'radialBar',
-                            },
-                            plotOptions: {
-                                radialBar: {
-                                    hollow: {
-                                        margin: 15,
-                                        size: '60%',
-                                    },
-                                    dataLabels: {
-                                        /**
-                                         * The "name" is the top label, here it is the value/amount
-                                         * The "value" is the percent progress
-                                         *
-                                         * Note: These are visually inverted (using offsetY) to match the design
-                                         */
-                                        name: {
-                                            offsetY: 20,
-                                            show: true,
-                                            color: '#4B5563',
-                                            fontSize: '12px',
-                                        },
-                                        value: {
-                                            offsetY: -20,
-                                            color: '#060C1A',
-                                            fontSize: '24px',
-                                            show: true,
-                                        },
-                                    },
-                                },
-                            },
-                            colors: ['#459948'],
-                            labels: [formattedValue],
-                        }}
+                        options={chartOptions(currencyFormatter.format(value))}
                         series={[percentage]}
                         type="radialBar"
                     />

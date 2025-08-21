@@ -17,7 +17,8 @@
 .chartContainer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 24px;
+    
     transform: translateX(-50px);
     width: calc(100% + 50px);
 }
