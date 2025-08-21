@@ -31,7 +31,7 @@ export default function SubscriptionDetailsPageOverviewTab() {
             </div>
 
             <div className={styles.right}>
-                <GoalProgressChart value={intendedAmount} currency={subscription?.amount?.currency} subscription={subscription} />
+                <GoalProgressChart donations={donations} currency={subscription?.amount?.currency} subscription={subscription} intendedAmount={intendedAmount} />
                 <SubscriptionSummary subscription={subscription} donation={donations?.[0]} adminUrl={adminUrl} intendedAmount={intendedAmount} isLoading={subscriptionLoading || !subscriptionsResolved || donationsLoading || !donationsResolved} />
             </div>
         </div>
