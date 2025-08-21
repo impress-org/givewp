@@ -1,17 +1,16 @@
 import { __ } from '@wordpress/i18n';
 import Chart from 'react-apexcharts';
-
-import styles from './styles.module.scss';
 import { amountFormatter } from '@givewp/campaigns/utils';
 import { Header, OverviewPanel } from '@givewp/admin/components';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
+import styles from './styles.module.scss';
 
 /**
  * @unreleased
  * @param frequency
  * @returns
  */
-type SubscriptionProjectionChartProps = {
+type SubscriptionAnnualProjectionProps = {
     value: number;
     subscription: Subscription;
     currency: string;
@@ -48,7 +47,7 @@ const calculateAnnualDonations = (period: string, frequency: number) => {
 /**
  * @unreleased
  */
-export default function SubscriptionAnnualProjection({ value, subscription, currency }: SubscriptionProjectionChartProps) {
+export default function SubscriptionAnnualProjection({ value, subscription, currency }: SubscriptionAnnualProjectionProps) {
     const currencyFormatter = amountFormatter(currency);
 
     const period = String(subscription?.period);
