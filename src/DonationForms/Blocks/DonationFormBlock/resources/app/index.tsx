@@ -94,7 +94,7 @@ export default function DonationFormBlockApp({
 const roots = document.querySelectorAll('.root-data-givewp-embed');
 
 /**
- * @unreleased update to use renderDonationForm
+ * @since 4.7.0 update to use renderDonationForm
  * @since 3.22.0 Add locale support
  */
 roots?.forEach((root) => {

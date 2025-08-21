@@ -17,14 +17,14 @@ use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignStatsWidget\Ele
  * template layout when Elementor is active, providing a seamless experience
  * for users creating campaign pages.
  *
- * @unreleased
+ * @since 4.7.0
  */
 class SetupElementorCampaignTemplate
 {
     /**
      * Setup Elementor template data for campaign page
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function __invoke(CampaignPage $campaignPage): void
     {
@@ -54,7 +54,7 @@ class SetupElementorCampaignTemplate
     /**
      * Check if Elementor is active and available
      *
-     * @unreleased
+     * @since 4.7.0
      */
     private function isElementorActive(): bool
     {
@@ -64,7 +64,7 @@ class SetupElementorCampaignTemplate
     /**
      * Check if campaign page already has Elementor data
      *
-     * @unreleased
+     * @since 4.7.0
      */
     private function campaignPageHasElementorData(int $pageId): bool
     {
@@ -75,7 +75,7 @@ class SetupElementorCampaignTemplate
     /**
      * Setup Elementor data and meta keys for the campaign page
      *
-     * @unreleased
+     * @since 4.7.0
      */
     private function setupElementorData(int $pageId, int $campaignId, string $shortDescription): void
     {
@@ -107,7 +107,7 @@ class SetupElementorCampaignTemplate
     /**
      * Get Elementor template data structure
      *
-     * @unreleased
+     * @since 4.7.0
      * @return array
      */
     private function getElementorTemplateData(int $campaignId, string $shortDescription): array
@@ -352,7 +352,7 @@ class SetupElementorCampaignTemplate
     /**
      * Generate a random Elementor-style ID
      *
-     * @unreleased
+     * @since 4.7.0
      */
     private function generateElementorId(): string
     {

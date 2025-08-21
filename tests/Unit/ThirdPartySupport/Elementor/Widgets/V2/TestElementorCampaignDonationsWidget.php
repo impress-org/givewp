@@ -20,7 +20,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignDonationsWidget\ElementorCampaignDonationsWidget;
 
 /**
- * @unreleased
+ * @since 4.7.0
  * @covers \Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignDonationsWidget\ElementorCampaignDonationsWidget
  */
 class TestElementorCampaignDonationsWidget extends TestCase
@@ -39,7 +39,7 @@ class TestElementorCampaignDonationsWidget extends TestCase
     }
 
 	/**
-	 * @unreleased
+	 * @since 4.7.0
 	 */
     public function testRenderOutputsNothingWhenCampaignIdEmpty(): void
     {
@@ -71,7 +71,7 @@ class TestElementorCampaignDonationsWidget extends TestCase
     }
 
 	/**
-	 * @unreleased
+	 * @since 4.7.0
 	 */
 	public function testRenderProcessesDonationsShortcode(): void
     {

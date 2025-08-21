@@ -8,14 +8,14 @@ use Give\Framework\Database\DB;
 /**
  * Trait to get form options with campaigns
  *
- * @unreleased
+ * @since 4.7.0
  */
 trait HasFormOptions
 {
     /**
      * Get form options with campaigns
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function getFormOptionsWithCampaigns(): array
     {
@@ -81,7 +81,7 @@ trait HasFormOptions
     /**
      * Get flattened form options from campaigns
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function getFormOptions(): array
     {
@@ -101,7 +101,7 @@ trait HasFormOptions
     /**
      * Query campaigns with forms
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function getCampaignsWithForms(): array
     {
@@ -131,7 +131,7 @@ trait HasFormOptions
     /**
      * Get forms
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function getForms(): array
     {

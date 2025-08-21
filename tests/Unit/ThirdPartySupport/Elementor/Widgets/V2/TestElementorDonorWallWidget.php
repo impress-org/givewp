@@ -19,7 +19,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonorWallWidget\ElementorDonorWallWidget;
 
 /**
- * @unreleased
+ * @since 4.7.0
  * @covers \Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonorWallWidget\ElementorDonorWallWidget
  */
 class TestElementorDonorWallWidget extends TestCase
@@ -34,7 +34,7 @@ class TestElementorDonorWallWidget extends TestCase
     public static $capturedShortcode;
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function setUp(): void
     {
@@ -47,7 +47,7 @@ class TestElementorDonorWallWidget extends TestCase
      * Test that render method processes donor wall shortcode with default settings
      * In test environment, shortcode may not output anything
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesDonorWallShortcodeWithDefaultSettings(): void
     {
@@ -82,7 +82,7 @@ class TestElementorDonorWallWidget extends TestCase
     /**
      * Test that render method processes donor wall shortcode when all_forms is not yes
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesDonorWallShortcodeWhenNotAllForms(): void
     {
@@ -118,7 +118,7 @@ class TestElementorDonorWallWidget extends TestCase
     /**
      * Test that render method processes donor wall shortcode when all_forms is yes
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesDonorWallShortcodeWhenAllForms(): void
     {
@@ -153,7 +153,7 @@ class TestElementorDonorWallWidget extends TestCase
     /**
      * Test that render method processes donor wall shortcode with display options
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesDonorWallShortcodeWithDisplayOptions(): void
     {
@@ -191,7 +191,7 @@ class TestElementorDonorWallWidget extends TestCase
     /**
      * Test that render method processes donor wall shortcode with comment options
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesDonorWallShortcodeWithCommentOptions(): void
     {

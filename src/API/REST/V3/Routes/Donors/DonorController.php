@@ -204,7 +204,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
-     * @unreleased Add support for updating custom fields
+     * @since 4.7.0 Add support for updating custom fields
      * @since 4.4.0
      *
      * @return WP_REST_Response|WP_Error
@@ -303,7 +303,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Add support for adding custom fields to the response
+     * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.4.0
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
@@ -329,7 +329,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Change title to givewp/donor and add custom fields schema
+     * @since 4.7.0 Change title to givewp/donor and add custom fields schema
      * @since 4.4.0
      */
     public function get_item_schema(): array

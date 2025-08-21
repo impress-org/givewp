@@ -11,7 +11,7 @@ use Give\Helpers\Language;
 class CampaignDonorsShortcode
 {
     /**
-     * @unreleased updated to use ShortcodeRenderController
+     * @since 4.7.0 updated to use ShortcodeRenderController
      * @since 4.5.0
      */
     public function renderShortcode($atts): string

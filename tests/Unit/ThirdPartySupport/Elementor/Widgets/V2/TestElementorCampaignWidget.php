@@ -23,7 +23,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignWidget\ElementorCampaignWidget;
 
 /**
- * @unreleased
+ * @since 4.7.0
  * @covers \Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorCampaignWidget\ElementorCampaignWidget
  */
 class TestElementorCampaignWidget extends TestCase
@@ -35,7 +35,7 @@ class TestElementorCampaignWidget extends TestCase
     public static $capturedAttributes;
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function setUp(): void
     {
@@ -45,10 +45,10 @@ class TestElementorCampaignWidget extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderOutputsNothingWhenCampaignIdEmpty(): void
     {
@@ -76,10 +76,10 @@ class TestElementorCampaignWidget extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesCampaignShortcodeWithDefaults(): void
     {

@@ -8,14 +8,14 @@ use Give\ThirdPartySupport\Elementor\Traits\HasFormOptions;
 
 /**
  *
- * @unreleased
+ * @since 4.7.0
  */
 class ElementorDonorWallWidget extends Widget_Base
 {
     use HasFormOptions;
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_name(): string
     {
@@ -23,7 +23,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_title(): string
     {
@@ -31,7 +31,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_icon(): string
     {
@@ -39,7 +39,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_categories(): array
     {
@@ -47,7 +47,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_keywords(): array
     {
@@ -55,7 +55,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_custom_help_url(): string
     {
@@ -63,7 +63,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function get_upsale_data(): array
     {
@@ -71,7 +71,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_script_depends(): array
     {
@@ -79,7 +79,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_style_depends(): array
     {
@@ -87,7 +87,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function has_widget_inner_wrapper(): bool
     {
@@ -95,7 +95,7 @@ class ElementorDonorWallWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function is_dynamic_content(): bool
     {
@@ -105,7 +105,7 @@ class ElementorDonorWallWidget extends Widget_Base
     /**
      * Register Elementor controls for the Donor Wall widget.
      *
-     * @unreleased
+     * @since 4.7.0
      */
     protected function register_controls(): void
     {
@@ -364,7 +364,7 @@ class ElementorDonorWallWidget extends Widget_Base
     /**
      * Render the Donor Wall widget output.
      *
-     * @unreleased
+     * @since 4.7.0
      */
     protected function render(): void
     {

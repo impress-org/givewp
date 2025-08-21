@@ -19,7 +19,7 @@ use Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget\Elem
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * @unreleased
+ * @since 4.7.0
  * @covers \Give\ThirdPartySupport\Elementor\Widgets\V2\ElementorDonationFormWidget\ElementorDonationFormWidget
  */
 class TestElementorDonationFormWidget extends TestCase
@@ -31,7 +31,7 @@ class TestElementorDonationFormWidget extends TestCase
     public static $capturedShortcode;
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function setUp(): void
     {
@@ -43,7 +43,7 @@ class TestElementorDonationFormWidget extends TestCase
     /**
      * Test that render method outputs nothing when form_id is empty
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderOutputsNothingWhenFormIdIsEmpty(): void
     {
@@ -74,7 +74,7 @@ class TestElementorDonationFormWidget extends TestCase
      * Test that render method processes shortcode when form_id is provided
      * Since form doesn't exist in test DB, should show error message
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesShortcodeWhenFormIdProvided(): void
     {
@@ -107,7 +107,7 @@ class TestElementorDonationFormWidget extends TestCase
     /**
      * Test that render method processes shortcode with onpage display style
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesShortcodeWithOnpageDisplayStyle(): void
     {
@@ -140,7 +140,7 @@ class TestElementorDonationFormWidget extends TestCase
     /**
      * Test that render method processes shortcode with newTab display style
      *
-     * @unreleased
+     * @since 4.7.0
      */
     public function testRenderProcessesShortcodeWithNewTabDisplayStyle(): void
     {

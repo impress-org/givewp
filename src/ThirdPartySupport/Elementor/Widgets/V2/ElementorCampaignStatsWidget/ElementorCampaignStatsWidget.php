@@ -7,14 +7,14 @@ use Give\Campaigns\Shortcodes\CampaignStatsShortcode;
 use Give\ThirdPartySupport\Elementor\Traits\HasCampaignOptions;
 
 /**
- * @unreleased
+ * @since 4.7.0
  */
 class ElementorCampaignStatsWidget extends Widget_Base
 {
     use HasCampaignOptions;
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_name(): string
     {
@@ -22,7 +22,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_title(): string
     {
@@ -30,7 +30,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_icon(): string
     {
@@ -38,7 +38,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_categories(): array
     {
@@ -46,7 +46,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_keywords(): array
     {
@@ -54,7 +54,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_custom_help_url(): string
     {
@@ -62,7 +62,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function get_upsale_data(): array
     {
@@ -70,7 +70,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_script_depends(): array
     {
@@ -78,7 +78,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function get_style_depends(): array
     {
@@ -86,7 +86,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     public function has_widget_inner_wrapper(): bool
     {
@@ -94,7 +94,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function is_dynamic_content(): bool
     {
@@ -102,7 +102,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function register_controls(): void
     {
@@ -139,7 +139,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.0
      */
     protected function render(): void
     {
