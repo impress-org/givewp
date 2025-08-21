@@ -16,16 +16,18 @@ export function useCampaignEntityRecord(campaignId?: number) {
     const {
         record: campaign,
         hasResolved,
+        isResolving,
         save,
         edit,
     }: {
         record: Campaign;
         hasResolved: boolean;
+        isResolving: boolean;
         save: () => any;
         edit: (data: Campaign | Partial<Campaign>) => void;
     } = useEntityRecord('givewp', 'campaign', campaignId ?? urlParams.get('id'));
 
-    return {campaign, hasResolved, save, edit};
+    return {campaign, hasResolved, isResolving, save, edit};
 }
 
 /**

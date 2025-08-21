@@ -73,6 +73,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     protected $relationships = [
         'donor' => Relationship::BELONGS_TO,
         'donations' => Relationship::HAS_MANY,
+        'notes' => Relationship::HAS_MANY,
     ];
 
     /**
@@ -110,14 +111,27 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder<SubscriptionNote>
+     */
+    public function notes(): ModelQueryBuilder
+    {
+        return give()->subscriptions->notes->queryBySubscriptionId($this->id);
+    }
+
+    /**
      * Get Subscription notes
      *
+     * @deprecated Access notes via $subscription->notes()->getAll() instead.
      * @since 2.19.6
      *
      * @return object[]
      */
     public function getNotes(): array
     {
+        _give_deprecated_function(__METHOD__, '4.6.0', '$subscription->notes()->getAll()');
+
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
@@ -151,10 +165,17 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * Returns the donation that began the subscription.
      *
+     * @unreleased Returns null if no initial donation found.
      * @since 2.23.0
      */
-    public function initialDonation(): Donation
+    public function initialDonation(): ?Donation
     {
+        $initialDonationId = give()->subscriptions->getInitialDonationId($this->id);
+
+        if ( ! $initialDonationId) {
+            return null;
+        }
+
         return Donation::find(give()->subscriptions->getInitialDonationId($this->id));
     }
 
@@ -237,6 +258,14 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public function delete(): bool
     {
         return give()->subscriptions->delete($this);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function trash(): bool
+    {
+        return give()->subscriptions->trash($this);
     }
 
     /**
