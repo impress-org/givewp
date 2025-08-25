@@ -21,7 +21,7 @@ export default function AssociatedDonor() {
     } = useDonorAsyncSelect(donationDonorId || null);
 
     const handleDonorChange = (selectedOption: any) => {
-        setValue('donorId', selectedOption?.value || null);
+        setValue('donorId', selectedOption?.value || null, { shouldDirty: true });
     };
 
     return (
@@ -40,6 +40,9 @@ export default function AssociatedDonor() {
                     </div>
                 ) : (
                     <AsyncPaginate
+                        inputId="donorId"
+                        className={styles.searchableSelect}
+                        classNamePrefix="searchableSelect"
                         value={selectedOption}
                         loadOptions={loadOptions}
                         mapOptionsForMenu={mapOptionsForMenu}
