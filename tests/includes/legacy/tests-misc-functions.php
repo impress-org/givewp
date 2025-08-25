@@ -373,7 +373,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 
 		$receipt_link_url = give_get_receipt_url( $payment );
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/donation_id=/',
 			$receipt_link_url
 		);
@@ -392,12 +392,12 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 
 		$receipt_link_url = give_get_receipt_link( $payment );
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/donation_id=/',
 			$receipt_link_url
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/<a href=".+?\?donation_id=/',
 			$receipt_link_url
 		);

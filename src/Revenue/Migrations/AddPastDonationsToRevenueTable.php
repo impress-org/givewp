@@ -85,7 +85,7 @@ class AddPastDonationsToRevenueTable extends Migration
                 try {
                     $revenueRepository->insert($revenueData);
                 } catch (Exception $e) {
-                    $give_updates->__pause_db_update(true);
+                    $give_updates->pause_db_update(true);
                     update_option('give_upgrade_error', 1, false);
 
                     Log::error(

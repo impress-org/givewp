@@ -14,6 +14,6 @@ class RemoveSequentialId
      */
     public function __invoke(Donation $donation)
     {
-        give()->seq_donation_number->__remove_serial_number($donation->id);
+        give()->seq_donation_number->remove_serial_number($donation->id);
     }
 }

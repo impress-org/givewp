@@ -14,6 +14,6 @@ class InsertSequentialId
      */
     public function __invoke(Donation $donation)
     {
-        give()->seq_donation_number->__save_donation_title($donation->id, get_post($donation->id), false);
+        give()->seq_donation_number->save_donation_title($donation->id, get_post($donation->id), false);
     }
 }

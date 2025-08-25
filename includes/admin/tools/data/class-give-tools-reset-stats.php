@@ -101,7 +101,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			}
 
 			$sql        = [];
-			$meta_table = __give_v20_bc_table_details( 'form' );
+			$meta_table = give_v20_bc_table_details( 'form' );
 
 			foreach ( $step_ids as $type => $ids ) {
 

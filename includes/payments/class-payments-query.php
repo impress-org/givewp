@@ -909,7 +909,7 @@ class Give_Payments_Query extends Give_Stats {
 		if ( ! empty( $this->args['meta_query'] ) ) {
 			$meta_query_obj = new WP_Meta_Query( $this->args['meta_query'] );
 			$where          = implode( ' ', $meta_query_obj->get_sql( 'post', $wpdb->posts, 'ID' ) ) . " {$where}";
-			$where          = Give()->payment_meta->__rename_meta_table_name( $where, 'posts_where' );
+			$where          = Give()->payment_meta->rename_meta_table_name( $where, 'posts_where' );
 		}
 
 		// Set sql query.
