@@ -677,6 +677,14 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 
 	$data = (array) apply_filters( 'give_save_import_donation_to_db', $data );
 
+  //  print_r($row_data);
+
+   // var_dump($isSubscription); exit;
+
+    // check duplicate donation
+    // - get subscription id
+    // -- duplicate subscription check?
+
 	$data['amount'] = give_maybe_sanitize_amount( $data['amount'] );
 	$diff           = [];
 
@@ -911,6 +919,42 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 				if ( 'pending' !== $status ) {
 					$payment->update_status( $status );
 				}
+
+                $isSubscription = ! empty(array_filter($row_data, function($value) {
+                    return $value === 'subscription';
+                }));
+
+                if ($isSubscription && defined('GIVE_RECURRING_VERSION')) {
+                    // Column names are translatable in CSV file and user can decide what columns to import/export
+                    // There is no other way to identify the columns we need except using the translatable strings,
+                    // and even this is not 100% reliable because it can be in different language for which we don't have translations
+
+                    $billingPeriod = array_filter($main_key, function($value) {
+                        return $value === __( 'Subscription Billing Period', 'give-recurring' );
+                    });
+
+                    $billingTimes = array_filter($main_key, function($value) {
+                        return $value === __( 'Subscription Billing Times', 'give-recurring' );
+                    });
+
+                    $billingFrequency = array_filter($main_key, function($value) {
+                        return $value === __( 'Subscription Billing Frequency', 'give-recurring' );
+                    });
+
+                    var_dump($row_data[key($billingPeriod)]);
+                    var_dump($row_data[key($billingTimes)]);
+                    var_dump($row_data[key($billingFrequency)]);
+
+                    exit;
+
+                    if ( ! empty($billingPeriod) && ! empty($billingTimes) && ! empty($billingFrequency) ) {
+
+                    }
+
+                    $payment->update_meta( '_give_subscription_payment',  1);
+                    $payment->update_meta( '_give_is_donation_recurring',  1);
+                    $payment->update_meta( 'subscription_id',  1);
+                }
 			} else {
 				$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
 				$payment_id                = false;

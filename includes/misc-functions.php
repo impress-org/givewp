@@ -1166,10 +1166,12 @@ function give_get_completed_upgrades() {
  * @param string $type Context for table
  *
  * @return null|array
+ *
+ * @unreleased rename function - PHP 8 compatibility
  * @since 2.0
  * @global wpdb  $wpdb
  */
-function __give_v20_bc_table_details( $type ) {
+function give_v20_bc_table_details( $type ) {
 	global $wpdb;
 	$table = [];
 
@@ -1635,7 +1637,7 @@ function give_doing_it_wrong( $function, $message, $version = null ) {
 function give_ignore_user_abort() {
 	ignore_user_abort( true );
 
-	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+	if ( ! give_is_func_disabled( 'set_time_limit' )) {
 		set_time_limit( 0 );
 	}
 }
@@ -1855,9 +1857,11 @@ function give_is_donor_comment_field_enabled( $form_id ) {
  * @param string $banner_addon_name Give add-on name.
  *
  * @return array
+ *              
+ * @unreleased rename function - PHP 8 compatibility
  * @since 2.1.0
  */
-function __give_get_active_by_user_meta( $banner_addon_name ) {
+function give_get_active_by_user_meta( $banner_addon_name ) {
 	global $wpdb;
 
 	// Get the option key.
