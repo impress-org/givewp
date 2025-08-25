@@ -2,6 +2,7 @@
 
 namespace Give\Campaigns\Shortcodes;
 
+use Give\Campaigns\Actions\LoadCampaignPublicOptions;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
@@ -11,6 +12,7 @@ use Give\Helpers\Language;
 class CampaignGridShortcode
 {
     /**
+     * @since 4.7.0 updated to use ShortcodeRenderController
      * @since 4.2.0
      *
      * @param array $atts
@@ -24,9 +26,11 @@ class CampaignGridShortcode
 
         $renderFile = GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignGrid/render.php';
 
-        ob_start();
-        include $renderFile;
-        return ob_get_clean();
+        return ShortcodeRenderController::renderWithBlockContext(
+            $renderFile,
+            'givewp/campaign-grid-block',
+            $attributes
+        );
     }
 
     /**
@@ -35,6 +39,8 @@ class CampaignGridShortcode
      */
     public function loadAssets()
     {
+        give(LoadCampaignPublicOptions::class)();
+
         $handleName = 'givewp-campaign-grid-app';
         $asset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/campaignGridApp.asset.php');
 

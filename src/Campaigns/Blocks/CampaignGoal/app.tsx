@@ -2,7 +2,7 @@ import {createRoot} from '@wordpress/element';
 import useCampaign from '../shared/hooks/useCampaign';
 import App from './app/index';
 
-const BlockApp = ({campaignId}: { campaignId: number }) => {
+export const CampaignGoalBlockApp = ({campaignId}: { campaignId: number }) => {
     const {campaign, hasResolved} = useCampaign(campaignId);
 
     if (!hasResolved || !campaignId) {
@@ -22,6 +22,6 @@ if (nodeList) {
 
     containers.map((container: any) => {
         const root = createRoot(container);
-        return root.render(<BlockApp campaignId={container.dataset?.id} />);
+        return root.render(<CampaignGoalBlockApp campaignId={container.dataset?.id} />);
     });
 }

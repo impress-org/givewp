@@ -9,7 +9,7 @@ use Elementor\Widget_Base;
  *
  * Elementor widget that inserts the GiveWP [give_register] shortcode to output a form total with options.
  *
- * @unreleased migrated from givewp-elementor-widgets
+ * @since 4.7.0 migrated from givewp-elementor-widgets
  */
 
 class GiveRegisterWidget extends Widget_Base
@@ -19,7 +19,7 @@ class GiveRegisterWidget extends Widget_Base
      *
      * Retrieve Give Register widget name.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      *
      * @return string Widget name.
@@ -34,7 +34,7 @@ class GiveRegisterWidget extends Widget_Base
      *
      * Retrieve Give Register widget title.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      *
      * @return string Widget title.
@@ -49,7 +49,7 @@ class GiveRegisterWidget extends Widget_Base
      *
      * Retrieve Give Register widget icon.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      *
      * @return string Widget icon.
@@ -64,7 +64,7 @@ class GiveRegisterWidget extends Widget_Base
      *
      * Retrieve the list of categories the Give Register widget belongs to.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      *
      * @return array Widget categories.
@@ -79,7 +79,7 @@ class GiveRegisterWidget extends Widget_Base
      *
      * Use optimized DOM structure, without the inner wrapper.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access public
      */
     public function has_widget_inner_wrapper(): bool
@@ -92,7 +92,7 @@ class GiveRegisterWidget extends Widget_Base
      *
      * Adds different input fields to allow the user to change and customize the widget settings.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
     protected function register_controls()
@@ -147,7 +147,7 @@ class GiveRegisterWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
-     * @unreleased migrated from givewp-elementor-widgets
+     * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
     protected function render()

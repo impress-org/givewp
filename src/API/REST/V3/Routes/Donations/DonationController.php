@@ -276,7 +276,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Update a single donation.
      *
-     * @unreleased Add support for updating custom fields
+     * @since 4.7.0 Add support for updating custom fields
      * @since 4.6.0
      *
      * @return WP_REST_Response|WP_Error
@@ -618,7 +618,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Add support for adding custom fields to the response
+     * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.6.0
      * @throws Exception
      */
@@ -794,7 +794,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Change title to givewp/donation and add custom fields schema
+     * @since 4.7.0 Change title to givewp/donation and add custom fields schema
      * @since 4.6.1 Change type of billing address properties to accept null values
      * @since 4.6.0
      */

@@ -28,7 +28,7 @@ class LoadDonationAdminOptions
     /**
      * Get all donation options for localization
      *
-     * @unreleased removed donors from the options
+     * @since 4.7.0 removed donors from the options
      * @since 4.6.0
      */
     private function getDonationOptions(): array
