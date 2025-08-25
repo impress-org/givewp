@@ -12,7 +12,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
  * @param  int  $donation_id
  * @param  array  $donation_data
  */
-function give_insert_donor_donation_comment( $donation_id, $donation_data ) {
+function _give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 	if ( ! empty( $_POST['give_comment'] ) ) {
         $donation = give()->donations->getById($donation_id);
         $donation->comment = sanitize_textarea_field(trim($_POST['give_comment']));
@@ -20,7 +20,7 @@ function give_insert_donor_donation_comment( $donation_id, $donation_data ) {
     }
 }
 
-add_action( 'give_insert_payment', 'give_insert_donor_donation_comment', 10, 2 );
+add_action( 'give_insert_payment', '_give_insert_donor_donation_comment', 10, 2 );
 
 
 
