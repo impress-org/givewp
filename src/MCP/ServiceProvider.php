@@ -19,13 +19,16 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritdoc
      */
-    public function register(): void {}
+    public function register(): void {
+        give()->singleton(RegisterMCPServer::class);
+    }
 
     /**
      * @inheritdoc
      */
     public function boot(): void
     {
+        Hooks::addAction('wp_enqueue_scripts', RegisterMCPServer::class);
         Hooks::addAction('admin_enqueue_scripts', RegisterMCPServer::class);
     }
 }

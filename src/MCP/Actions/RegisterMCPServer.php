@@ -18,6 +18,7 @@ class RegisterMCPServer
      * Register the GiveWP MCP server into Elementor's Angie SDK if the Angie plugin
      * is activated and the user has access.
      *
+     * @action wp_enqueue_scripts
      * @action admin_enqueue_scripts
      *
      * @unreleased
@@ -33,6 +34,11 @@ class RegisterMCPServer
 
         // The current user doesn't have permission to use angie.
         if ( ! current_user_can( 'use_angie' ) ) {
+            return;
+        }
+
+        // If we're not logged in, no reason to include this large script.
+        if ( ! is_user_logged_in() ) {
             return;
         }
 
