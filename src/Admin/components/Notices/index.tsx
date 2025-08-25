@@ -1,6 +1,6 @@
+import {CloseIcon, ErrorIcon, InfoIcon, WarningIcon} from '@givewp/admin/components/Notices/Icons';
 import {useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
-import {WarningIcon, ErrorIcon, InfoIcon, CloseIcon} from '@givewp/admin/components/Notices/Icons';
 import styles from './styles.module.scss';
 
 /**
@@ -17,30 +17,36 @@ interface Props {
  */
 export default ({type, children, dismissHandleClick}: Props) => {
     const [isVisible, setIsVisible] = useState(true);
-    
+
     const handleDismiss = () => {
         setIsVisible(false);
         if (dismissHandleClick) {
             dismissHandleClick();
         }
     };
-    
+
     if (!isVisible) {
         return null;
     }
-    
+
     const noticeClasses = `${styles.notice} ${
         type === 'warning' ? styles.warning : type === 'error' ? styles.error : styles.info
     }`;
-    
+
+    const NoticeIcon = ({type}: {type: Props['type']}) => {
+        const icons = {
+            warning: WarningIcon,
+            error: ErrorIcon,
+            info: InfoIcon,
+        };
+        const IconComponent = icons[type] ?? icons.info;
+        return <IconComponent />;
+    };
+
     return (
         <div className={noticeClasses}>
-            {type === 'warning' && <WarningIcon />}
-            {type === 'error' && <ErrorIcon />}
-            {type === 'info' && <InfoIcon />}
-            <div className={styles.content}>
-                {children}
-            </div>
+            <NoticeIcon type={type} />
+            <div className={styles.content}>{children}</div>
             {dismissHandleClick && (
                 <button
                     type="button"
