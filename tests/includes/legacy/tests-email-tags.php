@@ -658,12 +658,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			)
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/action=view_in_browser/',
 			$receipt_link_url
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/_give_hash=/',
 			$receipt_link_url
 		);
@@ -684,17 +684,17 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			)
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/>View the receipt in your browser &raquo;<\/a>/',
 			$receipt_link
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/<a href=".+?\?action=view_in_browser/',
 			$receipt_link
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/_give_hash=/',
 			$receipt_link
 		);
@@ -719,12 +719,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		$link = give_email_tag_donation_history_link( array( 'user_id' => 1 ) );
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/target="_blank">View your donation history &raquo;<\/a>/',
 			$link
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/<a href=".+?\?give_nl=/',
 			$link
 		);
@@ -736,7 +736,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			)
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/View your donation history: .+?\?give_nl=/',
 			$link
 		);
