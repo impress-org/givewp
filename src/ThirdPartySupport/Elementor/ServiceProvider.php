@@ -56,6 +56,14 @@ class ServiceProvider implements ServiceProviderInterface
                     'icon' => 'dashicons dashicons-give',
                 ]
             );
+
+            $elements_manager->add_category(
+                'givewp-category',
+                [
+                    'title' => __('GiveWP', 'give'),
+                    'icon' => 'dashicons dashicons-give',
+                ]
+            );
         });
 
         Hooks::addAction('givewp_campaign_page_created', SetupElementorCampaignTemplate::class);
