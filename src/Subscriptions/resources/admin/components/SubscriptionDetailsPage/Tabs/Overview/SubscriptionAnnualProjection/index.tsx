@@ -36,6 +36,11 @@ export default function SubscriptionAnnualProjection({ subscription, donations, 
     const projectedAmount = projectedAnnualRevenue ? Number(projectedAnnualRevenue.value) : 0;
     const percentage = projectedAmount > 0 ? calculateProgressPercentage(totalContributions, projectedAmount) : 0;
 
+    // Set chart options and series
+    const options = chartOptions(currencyFormatter.format(totalContributions));
+    const series = [percentage];
+
+
     return (
         <OverviewPanel>
             <div className={styles.goalProgressChart}>
@@ -44,8 +49,8 @@ export default function SubscriptionAnnualProjection({ subscription, donations, 
                     subtitle={__('Estimated yearly contribution based on billing amount.', 'give')} />
                 <div className={styles.chartContainer}>
                     <Chart
-                        options={chartOptions(currencyFormatter.format(totalContributions))}
-                        series={[percentage]}
+                        options={options}
+                        series={series}
                         type="radialBar"
                     />
                     <div className={styles.goalDetails}>
