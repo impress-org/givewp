@@ -3,6 +3,7 @@
  */
 import { useState } from 'react';
 import cx from 'classnames';
+import { useFormContext } from 'react-hook-form';
 
 /**
  * WordPress Dependencies
@@ -12,10 +13,10 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 /**
  * Internal Dependencies
 */
-import { TrashIcon } from '@givewp/components/AdminDetailsPage/Icons';
+import { CancelIcon, TrashIcon } from '@givewp/components/AdminDetailsPage/Icons';
 import AdminDetailsPage from '@givewp/components/AdminDetailsPage';
 import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
-import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from '@givewp/subscriptions/utils';
+import { getSubscriptionOptionsWindowData, useRefreshSubscriptionInBackground, useSubscriptionEntityRecord } from '@givewp/subscriptions/utils';
 import tabDefinitions from './Tabs/definitions';
 import { useSubscriptionAmounts } from '@givewp/subscriptions/hooks';
 import { useDispatch } from '@wordpress/data';
@@ -57,16 +58,19 @@ export default function SubscriptionDetailsPage() {
     const { adminUrl, subscriptionsAdminUrl } = getSubscriptionOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
     const [hasSyncBeenPerformed, setHasSyncBeenPerformed] = useState(false);
+    const [trashSubscription, setTrashSubscription] = useState(false);
 
     // Get subscription ID from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const subscriptionId = urlParams.get('id');
 
-    const { record: subscription} = useSubscriptionEntityRecord(subscriptionId ? parseInt(subscriptionId) : undefined);
+    const { record: subscription, edit, save} = useSubscriptionEntityRecord(subscriptionId ? parseInt(subscriptionId) : undefined);
+    const refreshSubscriptionInBackground = useRefreshSubscriptionInBackground();
     const { formatter } = useSubscriptionAmounts(subscription);
     const { deleteEntityRecord } = useDispatch(coreDataStore);
     const { syncSubscription, isLoading, hasResolved, syncResult } = useSubscriptionSync();
     const subscriptionCanSync = subscription?.gateway?.canSync || !subscription?.gateway?.id;
+    const dispatch = useDispatch(`givewp/admin-details-page-notifications`);
 
     const PageTitle = () => {
         if (subscription?.amount?.value == null) {
@@ -110,15 +114,62 @@ export default function SubscriptionDetailsPage() {
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
-                <a
-                    href="#"
-                    className={cx(className, styles.archive)}
-                    onClick={() => setShowConfirmationDialog('delete')}
-                >
-                    <TrashIcon /> {__('Trash subscription', 'give')}
-                </a>
+                {subscription?.status !== 'cancelled' ? (
+                    <a
+                        href="#"
+                        className={cx(className, styles.archive)}
+                        onClick={() => setShowConfirmationDialog('cancel')}
+                    >
+                        <CancelIcon /> {__('Cancel subscription', 'give')}
+                    </a>
+                ) : (
+                    <a
+                        href="#"
+                        className={cx(className, styles.archive)}
+                        onClick={() => setShowConfirmationDialog('delete')}
+                    >
+                        <TrashIcon /> {__('Trash subscription', 'give')}
+                    </a>
+                )}
             </>
         );
+    };
+
+    /**
+     * @unreleased
+     */
+    const handleCancel = async () => {
+        try {
+            // TODO: Cancel subscription istead of just updating the status
+            edit({
+                status: 'cancelled',
+            });
+
+            // @ts-ignore
+            const response = await save();
+
+            if (response?.id) {
+                refreshSubscriptionInBackground(response?.id);
+            }
+
+            dispatch.addSnackbarNotice({
+                id: `save-success`,
+                content: __(`Subscription cancelled successfully.`, 'give'),
+            });
+
+            if (trashSubscription) {
+                handleDelete();
+            }
+        } catch (error) {
+            console.error('Cancel failed:', error);
+            dispatch.addSnackbarNotice({
+                id: `save-error`,
+                type: 'error',
+                content: __(`Subscription cancellation failed.`, 'give'),
+            });
+        } finally {
+            setShowConfirmationDialog(null);
+        }
     };
 
     /**
@@ -161,6 +212,30 @@ export default function SubscriptionDetailsPage() {
             StatusBadge={() => <StatusBadge status={subscription?.status} isTest={subscription?.mode === 'test'} />}
             ContextMenuItems={ContextMenuItems}
         >
+            <ConfirmationDialog
+                title={__('Cancel subscription', 'give')}
+                actionLabel={__('Proceed', 'give')}
+                isOpen={showConfirmationDialog === 'cancel'}
+                handleClose={() => setShowConfirmationDialog(null)}
+                handleConfirm={handleCancel}
+            >
+                {__("If you cancel this subscription, you won't receive any more payments from this subscription. Do you want to proceed?", 'give')}
+                <div className={styles.checkboxField}>
+                    <label className={styles.checkboxLabel}>
+                        <input
+                            id="cancel-subscription-checkbox"
+                            type="checkbox"
+                            className={styles.checkbox}
+                            checked={trashSubscription}
+                            onChange={(e) => setTrashSubscription(e.target.checked)}
+                            aria-describedby="trash-subscription-description"
+                        />
+                        <span id="trash-subscription-description">
+                            {__('Trash subscription details after cancelling', 'give')}
+                        </span>
+                    </label>
+                </div>
+            </ConfirmationDialog>
             <ConfirmationDialog
                 title={__('Move subscription to trash', 'give')}
                 actionLabel={__('Trash Subscription', 'give')}
