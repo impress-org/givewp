@@ -66,7 +66,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'status' => SubscriptionStatus::class,
         'gatewaySubscriptionId' => ['string', ''],
         'gatewayId' => 'string',
-        'projectedAnnualRevenue' => 'array',
+        'projectedAnnualRevenue' => Money::class,
     ];
 
     /**
@@ -387,7 +387,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
             
             $totalProjected = $completedAmount + $projectedAmount;
             
-            // Return as Money object to match frontend type structure
             return new \Give\Framework\Support\ValueObjects\Money(
                 (int) ($totalProjected * 100), // Convert to minor units
                 $this->amount->getCurrency()
