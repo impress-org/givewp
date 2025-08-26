@@ -74,10 +74,3 @@ export const calculateProgressPercentage = (completedAmount: number, projectedAm
     const progress = Math.ceil((completedAmount / projectedAmount) * 100);
     return Math.min(progress, 100);
 };
-
-/**
- * Convert Money value from minor units (cents) to major units (dollars)
- */
-export const convertFromMinorUnits = (value: number): number => {
-    return value / 100;
-};
