@@ -367,13 +367,11 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
                 ->getAll();
             
             $completedAmount = 0;
-            $completedDonationsCount = 0;
             
             foreach ($completedDonations as $donation) {
                 if ($donation && $donation->amount) {
                     $amount = $donation->amount->formatToDecimal();
                     $completedAmount += (float) $amount;
-                    $completedDonationsCount++;
                 }
             }
             
@@ -381,8 +379,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
             $projectedAmount = 0;
             if ($this->intendedAmount()) {
                 $remainingDonations = $this->getRemainingDonationCountUntilEndOfYear();
-                $decimalAmount = (float) $this->intendedAmount()->formatToDecimal();
-                $projectedAmount = $decimalAmount * $remainingDonations;
+                $intendedAmount = (float) $this->intendedAmount()->formatToDecimal();
+                $projectedAmount = $intendedAmount * $remainingDonations;
             }
             
             $totalProjected = $completedAmount + $projectedAmount;
