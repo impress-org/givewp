@@ -72,4 +72,5 @@ export type Subscription = {
     donor?: Donor;
     donations?: Donation[];
     gateway?: PaymentGateway;
+    projectedAnnualRevenue?: Money;
 };

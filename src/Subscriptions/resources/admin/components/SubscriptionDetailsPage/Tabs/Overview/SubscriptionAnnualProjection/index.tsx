@@ -30,6 +30,7 @@ export default function SubscriptionAnnualProjection({ intendedAmount, subscript
     const currentYearCompletedDonations = getCurrentYearCompletedDonations(donations);
     const totalContributions = currentYearCompletedDonations?.reduce((acc, donation) => acc + Number(donation.amount.value), 0);
 
+    console.log(subscription);
     // Calculate how many donations will occur until the end of the current year with respect to installments
     const remainingDonations = calculateDonationsUntilYearEnd({ period: period as Period, frequency, startDate, installments });
 
