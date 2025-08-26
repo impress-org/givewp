@@ -32,19 +32,6 @@
   color: var(--givewp-neutral-900);
 }
 
-.badge {
-  display: block;
-  margin-top: var(--givewp-spacing-2);
-  color: var(--givewp-neutral-900);
-  border: 1px solid var(--givewp-neutral-900);
-  padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: 0.05em;
-}
-
 .gatewayCard {
   display: flex;
   flex-direction: column;
@@ -72,26 +59,17 @@
 }
 
 .badge {
-  display: block;
-  margin-top: var(--givewp-spacing-2);
-  color: var(--givewp-neutral-900);
+  align-items: center;
+  border-radius: var(--givewp-rounded-full);
   border: 1px solid var(--givewp-neutral-900);
-  padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
-  border-radius: 9999px;
+  color: var(--givewp-neutral-900);
+  display: flex;
   font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: 0.05em;
-
-  &.limited, &.unlimited {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 12px;
-    border-radius: 24px;
-  }
+  font-weight: 600;
+  gap: var(--givewp-spacing-1);
+  justify-content: center;
+  line-height: 1.5;
+  padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
 
   &.limited {
     color: #d98715;
