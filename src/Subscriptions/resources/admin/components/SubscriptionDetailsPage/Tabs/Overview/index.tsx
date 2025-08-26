@@ -6,7 +6,7 @@ import { SubscriptionNotes } from "@givewp/admin/components/PrivateNotes";
 import { useDonationsBySubscription, useSubscriptionAmounts } from '@givewp/subscriptions/hooks';
 import SubscriptionSummary from '@givewp/subscriptions/admin/components/SubscriptionDetailsPage/Tabs/Overview/SubscriptionSummary';
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
-import GoalProgressChart from "./SubscriptionAnnualProjection";
+import SubscriptionAnnualProjection from "./SubscriptionAnnualProjection";
 import styles from "./styles.module.scss";
 
 /**
@@ -31,7 +31,7 @@ export default function SubscriptionDetailsPageOverviewTab() {
             </div>
 
             <div className={styles.right}>
-                <GoalProgressChart donations={donations} currency={subscription?.amount?.currency} subscription={subscription} intendedAmount={intendedAmount} />
+                <SubscriptionAnnualProjection donations={donations} currency={subscription?.amount?.currency} subscription={subscription} />
                 <SubscriptionSummary subscription={subscription} donation={donations?.[0]} adminUrl={adminUrl} intendedAmount={intendedAmount} isLoading={subscriptionLoading || !subscriptionsResolved || donationsLoading || !donationsResolved} />
             </div>
         </div>
