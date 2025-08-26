@@ -7,17 +7,17 @@ import styles from './styles.module.scss';
 
 /**
  * Calculates the end date of a subscription based on its billing parameters.
- * 
+ *
  * The calculation uses the formula: End Date = Start Date + (Installments - 1) × Frequency × Period
- * 
+ *
  * For example:
  * - A monthly subscription with 12 installments: Start Date + 11 months
  * - A weekly subscription with 4 installments: Start Date + 3 weeks
  * - A yearly subscription with 5 installments: Start Date + 4 years
- * 
+ *
  * @param subscription - The subscription object containing billing parameters
  * @returns ISO string of the calculated end date, or null if calculation is not possible
- * 
+ *
  * @unreleased
  */
 const calculateEndDate = (subscription: any): string | null => {
@@ -40,7 +40,7 @@ const calculateEndDate = (subscription: any): string | null => {
     const totalPeriods = (installments - 1) * frequency;
 
     const endDate = new Date(startDate);
-    
+
     // Add the calculated periods based on the billing period type
     switch (period) {
         case 'day':
@@ -81,7 +81,7 @@ interface SummaryProps {
  */
 export default function Summary({subscription, donation, adminUrl, intendedAmount, isLoading}: SummaryProps) {
     const endDate = calculateEndDate(subscription);
-    
+
     const summaryItems: SummaryItem[] = [
         {
           label: __('Start date', 'give'),
@@ -104,13 +104,13 @@ export default function Summary({subscription, donation, adminUrl, intendedAmoun
           value: amountFormatter(subscription?.amount?.currency).format(intendedAmount),
         },
       ];
-      
+
 
     return (
         <OverviewPanel className={styles.summaryPanel}>
             <Header
                 title={__('Summary', 'give')}
-                subtitle={__('Additional information about the recurring donation', 'give')}
+                subtitle={__('Information about the initial recurring donation', 'give')}
             />
             <SummaryTable data={summaryItems} isLoading={isLoading} />
         </OverviewPanel>
