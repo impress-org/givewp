@@ -57,11 +57,11 @@ export default function SubscriptionDetailsPage() {
     const { adminUrl, subscriptionsAdminUrl } = getSubscriptionOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
     const [hasSyncBeenPerformed, setHasSyncBeenPerformed] = useState(false);
-    
+
     // Get subscription ID from URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const subscriptionId = urlParams.get('id');
-    
+
     const { record: subscription} = useSubscriptionEntityRecord(subscriptionId ? parseInt(subscriptionId) : undefined);
     const { formatter } = useSubscriptionAmounts(subscription);
     const { deleteEntityRecord } = useDispatch(coreDataStore);
@@ -182,7 +182,7 @@ export default function SubscriptionDetailsPage() {
                 }}
                 handleConfirm={handleSyncSubscription}
                 footer={
-                    hasSyncBeenPerformed && hasResolved && (
+                    hasSyncBeenPerformed && hasResolved && syncResult?.notice && (
                     <div className={styles.syncModalFooter}>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fillRule="evenodd" clipRule="evenodd" d="M10 .832a9.167 9.167 0 1 0 0 18.333A9.167 9.167 0 0 0 10 .832zm0 5a.833.833 0 1 0 0 1.667h.008a.833.833 0 0 0 0-1.667H10zm.833 4.167a.833.833 0 0 0-1.666 0v3.333a.833.833 0 1 0 1.666 0V9.999z" fill="#0C7FF2"/>
