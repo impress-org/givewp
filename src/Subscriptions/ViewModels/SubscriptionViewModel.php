@@ -59,7 +59,6 @@ class SubscriptionViewModel
                 'lastName' => $donor ? $donor->lastName : '',
                 'gateway' => $this->getGatewayDetails(),
                 'projectedAnnualRevenue' => $this->subscription->projectedAnnualRevenue(),
-                'remainingDonationsCountUntilEndOfYear' => $this->subscription->getRemainingDonationCountUntilEndOfYear(),
             ]
         );
 

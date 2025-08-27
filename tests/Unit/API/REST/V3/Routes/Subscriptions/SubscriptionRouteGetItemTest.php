@@ -86,7 +86,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
                 ]
             ),
             'projectedAnnualRevenue' => $subscription->projectedAnnualRevenue()->toArray(),
-            'remainingDonationsCountUntilEndOfYear' => $subscription->getRemainingDonationCountUntilEndOfYear(),
+
         ], $data);
     }
 
