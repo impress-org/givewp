@@ -89,11 +89,17 @@ class LicenseRepository
     /**
      * The platform fee percentage is used by gateways to calculate a platform fee.
      *
+     * @unreleased add grace period
      * @since 4.3.0
      */
     public function getPlatformFeePercentage(): float
     {
         if (!$this->hasActiveLicenses()) {
+            
+            if ($this->isLicenseInGracePeriod()) {
+                return 0.0;
+            }
+
             return 2.0;
         }
 
@@ -102,6 +108,27 @@ class LicenseRepository
         }
 
         return $this->getStoredPlatformFeePercentage();
+    }
+
+     /**
+     * @unreleased
+     */
+    private function isLicenseInGracePeriod(): bool
+    {
+        $licenses = $this->getLicenses();
+        
+        foreach ($licenses as $license) {
+            if (isset($license->gracePeriod) && !empty($license->gracePeriod)) {
+                $grace_period_end = strtotime($license->gracePeriod);
+                $current_time = current_time('timestamp');
+                
+                if ($current_time <= $grace_period_end) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     /**
