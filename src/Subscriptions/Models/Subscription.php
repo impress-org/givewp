@@ -358,11 +358,12 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         try {
             $currentYear = (int) date('Y');
             $yearStart = new DateTime("January 1st, {$currentYear}");
+            $yearEnd = new DateTime("December 31st, {$currentYear} 23:59:59");
             
-            // Get completed donations from January 1st of current year to now
+            // Get ALL donations for the current year (including future ones)
             $completedDonations = $this->donations()
                 ->where('post_date', $yearStart->format('Y-m-d H:i:s'), '>=')
-                ->where('post_date', (new DateTime())->format('Y-m-d H:i:s'), '<=')
+                ->where('post_date', $yearEnd->format('Y-m-d H:i:s'), '<=')
                 ->where('post_status', 'publish')
                 ->getAll();
             
