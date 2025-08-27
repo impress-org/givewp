@@ -2424,6 +2424,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
+ * @unreleased add grace period`
  * @since 4.3.0 updated to store platform fee percentage
  * @since 2.27.0 delete update_plugins transient instead of invalidate it
  * @since  2.5.0
@@ -2501,6 +2502,38 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 			unset( $give_licenses[ $key ] );
 			continue;
 		}
+
+		// GRACE PERIOD
+		$previous_license = $give_licenses[$key] ?? null;
+		$should_apply_grace_period = false;
+		$grace_period_end = null;
+
+		// Status transition from active to inactive
+		if ($previous_license && $previous_license['license'] === 'valid' && $data['license'] !== 'valid') {
+			$should_apply_grace_period = true;
+		}
+
+		// Calculate grace period from expiration date
+		if (isset($data['expires']) && !empty($data['expires'])) {
+			$expires_timestamp = strtotime($data['expires']);
+			$grace_period_end = $expires_timestamp + (30 * DAY_IN_SECONDS);
+		}
+
+		// Calculate grace period from status change
+		if ($should_apply_grace_period) {
+			$status_change_grace_period = current_time('timestamp') + (30 * DAY_IN_SECONDS);
+
+			// Use the grace period from status change if it allows more time than the expiration date
+			if ($grace_period_end === null || $status_change_grace_period > $grace_period_end) {
+				$grace_period_end = $status_change_grace_period;
+			}
+		}
+
+		// Apply the grace period
+		if ($grace_period_end !== null) {
+			$data['grace_period'] = date('Y-m-d H:i:s', $grace_period_end);
+		}
+
 
 		$give_licenses[ $key ] = $data;
 	}
