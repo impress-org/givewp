@@ -50,8 +50,8 @@ trait StripeWebhookListenerRepository
      * Get the gateway subscription ID from an invoice, supporting both old and new Stripe API versions.
      *
      * This method handles the transition from the legacy API where subscription ID was directly
-     * accessible via `$invoice->subscription` to the new Basil API (2025-03-31.basil+) where
-     * subscription data is nested under `$invoice->parent->subscription_details->subscription`.
+     * accessible via `$invoice->subscription` to the new Basil API (2025-03-31.basil and later versions)
+     * where subscription data is nested under `$invoice->parent->subscription_details->subscription`.
      *
      * The Basil API introduced breaking changes that moved subscription-related fields from
      * the top level of invoice objects to a new `parent` field structure. This change affects

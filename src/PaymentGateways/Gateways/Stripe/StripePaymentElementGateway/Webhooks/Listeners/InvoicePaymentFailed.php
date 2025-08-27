@@ -39,7 +39,7 @@ class InvoicePaymentFailed
     }
 
     /**
-     * @unreleased Add support for new Stripe API version 2025-07-30.basil
+     * @unreleased Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      *

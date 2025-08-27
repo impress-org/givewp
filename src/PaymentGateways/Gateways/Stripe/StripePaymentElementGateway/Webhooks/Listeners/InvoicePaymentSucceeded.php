@@ -43,7 +43,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
-     * @unreleased Add support for new Stripe API version 2025-07-30.basil
+     * @unreleased Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
@@ -64,11 +64,11 @@ class InvoicePaymentSucceeded
         }
 
         /**
-         * This method is necessary because the invoice data returned in webhook events
-         * is incomplete and may not include the payment_intent property, especially
-         * with newer Stripe API versions like 2025-07-30.basil. By making a direct
+         * This checking is necessary because the invoice data returned in webhook events
+         * can be incomplete and may not include the payment_intent property, especially
+         * with newer Stripe API versions like 2025-03-31.basil. By making a direct
          * API call to retrieve the invoice, we ensure we get all properties including
-         * the payment_intent which is required for processing the webhook.
+         * the payment_intent which is required for processing this webhook.
          */
         if (is_null($invoice->payment_intent)) {
             $invoice = $this->getCompleteInvoiceFromStripe($event->data->object->id);
