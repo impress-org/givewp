@@ -52,7 +52,7 @@ class InvoicePaymentSucceeded
     public function processEvent(Event $event): bool
     {
         /* @var Invoice $invoice */
-        $invoice = $event->data->object->id;
+        $invoice = $event->data->object;
 
         $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
 
