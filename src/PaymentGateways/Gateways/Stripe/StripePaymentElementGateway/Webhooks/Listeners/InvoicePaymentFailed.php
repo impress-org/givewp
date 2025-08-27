@@ -73,6 +73,7 @@ class InvoicePaymentFailed
     }
 
     /**
+     * @unreleased Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 3.0.0
      */
     protected function triggerLegacyFailedEmailNotificationEvent(Invoice $invoice)
