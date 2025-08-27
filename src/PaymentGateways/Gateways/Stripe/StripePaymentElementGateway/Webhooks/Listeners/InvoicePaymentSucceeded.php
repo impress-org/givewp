@@ -51,10 +51,9 @@ class InvoicePaymentSucceeded
     public function processEvent(Event $event): bool
     {
         /* @var Invoice $invoice */
-        $invoice = $event->data->object;
+        $invoice = $this->getInvoiceFromEvent($event);
 
-        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
-
+        $gatewaySubscriptionId = $invoice->subscription;
         $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
 
         // only use this for next gen for now
@@ -62,7 +61,6 @@ class InvoicePaymentSucceeded
             return false;
         }
 
-        $payments = $invoice->payments;
         $gatewayTransactionId = $invoice->payment_intent;
         if ($initialDonation = give()->donations->getByGatewayTransactionId($gatewayTransactionId)) {
             $this->handleInitialDonation($initialDonation);
