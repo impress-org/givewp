@@ -53,14 +53,18 @@ class InvoicePaymentSucceeded
         /* @var Invoice $invoice */
         $invoice = $event->data->object;
 
-        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($invoice->subscription)->get();
+        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+
+        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
 
         // only use this for next gen for now
         if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
             return false;
         }
 
-        if ($initialDonation = give()->donations->getByGatewayTransactionId($invoice->payment_intent)) {
+        $payments = $invoice->payments;
+        $gatewayTransactionId = $invoice->payment_intent;
+        if ($initialDonation = give()->donations->getByGatewayTransactionId($gatewayTransactionId)) {
             $this->handleInitialDonation($initialDonation);
             $this->updateStripeInvoiceMetaData($invoice, $initialDonation);
         } else {
@@ -88,7 +92,6 @@ class InvoicePaymentSucceeded
     {
         return new SubscriptionModelDecorator($subscription);
     }
-
 
     /**
      * @since 3.0.0

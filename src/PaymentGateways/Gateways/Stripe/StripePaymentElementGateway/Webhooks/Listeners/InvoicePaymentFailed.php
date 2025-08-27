@@ -49,7 +49,8 @@ class InvoicePaymentFailed
         /* @var Invoice $invoice */
         $invoice = $event->data->object;
 
-        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($invoice->subscription)->get();
+        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
 
         // only use this for next gen for now
         if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
@@ -75,8 +76,10 @@ class InvoicePaymentFailed
      */
     protected function triggerLegacyFailedEmailNotificationEvent(Invoice $invoice)
     {
+        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+
         // @phpstan-ignore-next-line
-        $subscription = give_recurring_get_subscription_by('profile', $invoice->subscription);
+        $subscription = give_recurring_get_subscription_by('profile', $gatewaySubscriptionId);
 
         do_action('give_donor-subscription-payment-failed_email_notification', $subscription, $invoice);
 
