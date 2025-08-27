@@ -47,17 +47,44 @@ trait StripeWebhookListenerRepository
     }
 
     /**
-     * Retrieve a complete invoice from the Stripe API.
+     * Get the gateway subscription ID from an invoice, supporting both old and new Stripe API versions.
      *
-     * This method is necessary because the invoice data returned in webhook events
-     * may be incomplete and missing required properties like payment_intent or subscription,
-     * especially with newer Stripe API versions like 2025-03-31.basil. By making a direct
-     * API call to retrieve the invoice, we ensure we get all properties including
-     * the payment_intent and subscription which are required for processing the webhook.
+     * This method handles the transition from the legacy API where subscription ID was directly
+     * accessible via `$invoice->subscription` to the new Basil API (2025-03-31.basil+) where
+     * subscription data is nested under `$invoice->parent->subscription_details->subscription`.
+     *
+     * The Basil API introduced breaking changes that moved subscription-related fields from
+     * the top level of invoice objects to a new `parent` field structure. This change affects
+     * how we access subscription IDs, subscription details, and other related properties.
      *
      * @see https://docs.stripe.com/changelog/basil/2025-03-31/adds-new-parent-field-to-invoicing-objects
      *
-     * @since @unreleased
+     * @unreleased
+     *
+     * @param Invoice $invoice The Stripe invoice object
+     * @return string|null The gateway subscription ID or null if not found
+     */
+    protected function getGatewaySubscriptionId(Invoice $invoice): ?string
+    {
+        // Try new Basil API structure first (parent field)
+        if (isset($invoice->parent) &&
+            isset($invoice->parent->subscription_details) &&
+            isset($invoice->parent->subscription_details->subscription)) {
+            return $invoice->parent->subscription_details->subscription;
+        }
+
+        // Fallback to old API structure (direct subscription field)
+        if (isset($invoice->subscription)) {
+            return $invoice->subscription;
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve a complete invoice from the Stripe API.
+     *
+     * @unreleased
      *
      * @param string $invoiceId The Stripe invoice ID
      * @return Invoice The complete Stripe invoice object with all properties
@@ -76,35 +103,5 @@ trait StripeWebhookListenerRepository
                 )
             );
         }
-    }
-
-    /**
-     * Get invoice from webhook event with fallback to API call if needed.
-     *
-     * This method intelligently checks if the webhook event contains all required
-     * invoice properties (subscription and payment_intent). If they are present,
-     * it uses the webhook data directly. Otherwise, it makes an API call to
-     * retrieve the complete invoice data.
-     *
-     * @since @unreleased
-     *
-     * @param Event $event The Stripe webhook event
-     * @return Invoice The complete Stripe invoice object with all required properties
-     * @throws Exception If the API call fails
-     */
-    protected function getInvoiceFromEvent(Event $event): Invoice
-    {
-        $webhookInvoice = $event->data->object;
-
-        // Check if required fields are available in the webhook data
-        $hasRequiredFields = isset($webhookInvoice->subscription) && isset($webhookInvoice->payment_intent);
-
-        if ($hasRequiredFields) {
-            // Use webhook data directly if all required fields are present
-            return $webhookInvoice;
-        }
-
-        // Get complete invoice from Stripe API to ensure all properties are available
-        return $this->getCompleteInvoiceFromStripe($webhookInvoice->id);
     }
 }

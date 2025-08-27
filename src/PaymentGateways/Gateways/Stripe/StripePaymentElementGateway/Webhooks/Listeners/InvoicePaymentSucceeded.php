@@ -43,6 +43,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
+     * @unreleased Add support for new Stripe API version 2025-07-30.basil
      * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
@@ -51,14 +52,26 @@ class InvoicePaymentSucceeded
     public function processEvent(Event $event): bool
     {
         /* @var Invoice $invoice */
-        $invoice = $this->getInvoiceFromEvent($event);
+        $invoice = $event->data->object->id;
 
-        $gatewaySubscriptionId = $invoice->subscription;
+        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+
         $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
 
         // only use this for next gen for now
         if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
             return false;
+        }
+
+        /**
+         * This method is necessary because the invoice data returned in webhook events
+         * is incomplete and may not include the payment_intent property, especially
+         * with newer Stripe API versions like 2025-07-30.basil. By making a direct
+         * API call to retrieve the invoice, we ensure we get all properties including
+         * the payment_intent which is required for processing the webhook.
+         */
+        if (is_null($invoice->payment_intent)) {
+            $invoice = $this->getCompleteInvoiceFromStripe($event->data->object->id);
         }
 
         $gatewayTransactionId = $invoice->payment_intent;
