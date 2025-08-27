@@ -3,6 +3,7 @@
 namespace Give\License\DataTransferObjects;
 
 /**
+ * @unreleased add grace period
  * @since 4.3.0
  */
 class License
@@ -15,6 +16,7 @@ class License
     public string $itemName;
     public string $checksum;
     public string $expires;
+    public string $gracePeriod;
     public int $paymentId;
     public string $customerName;
     public string $customerEmail;
@@ -35,6 +37,7 @@ class License
     {
         $self = new self();
         $self->isActive = $data['license'] === 'valid';
+        $self->gracePeriod = ($data['grace_period'] ?? '');
         $self->success = (bool)($data['success'] ?? false);
         $self->license = (string)($data['license'] ?? '');
         $self->itemId = $data['item_id'] ?? null;
