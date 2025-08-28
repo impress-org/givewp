@@ -71,6 +71,7 @@ export function createDonorQueryParams(config: {
         direction: 'ASC',
         includeSensitiveData: 'true',
         anonymousDonors: 'include',
+        onlyWithDonations: 'false',
         ...(searchInput && { search: searchInput }),
     });
 }
