@@ -43,16 +43,7 @@ class DonorController extends WP_REST_Controller
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
-                'args' => array_merge($this->get_collection_params(), $this->getSharedParams(), [
-                    'search' => [
-                        'description' => __(
-                            'The search term to filter donors by.',
-                            'give'
-                        ),
-                        'type' => 'string',
-                        'required' => false,
-                    ],
-                ]),
+                'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
                 'schema' => [$this, 'get_public_item_schema'],
             ],
         ]);
@@ -455,6 +446,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Re-add search parameter
      * @since 4.4.0
      */
     public function get_collection_params(): array
@@ -466,7 +458,6 @@ class DonorController extends WP_REST_Controller
 
         // Remove default parameters not being used
         unset($params['context']);
-        unset($params['search']);
 
         $params += [
             'sort' => [
