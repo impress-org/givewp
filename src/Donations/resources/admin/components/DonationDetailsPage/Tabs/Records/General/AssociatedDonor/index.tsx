@@ -4,6 +4,7 @@ import { useFormContext } from 'react-hook-form';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import styles from '../../styles.module.scss';
 import { useDonorAsyncSelect } from './useDonorAsyncSelect';
+import { DonorOption } from './types';
 
 /**
  * @unreleased updated to async donor dropdown
@@ -20,8 +21,8 @@ export default function AssociatedDonor() {
         error,
     } = useDonorAsyncSelect(donationDonorId || null);
 
-    const handleDonorChange = (selectedOption: any) => {
-        setValue('donorId', selectedOption?.value || null, { shouldDirty: true });
+    const handleDonorChange = (selectedOption: DonorOption | null) => {
+        setValue('donorId', selectedOption?.value ?? null, { shouldDirty: true });
     };
 
     return (
