@@ -392,7 +392,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         return $completedAmount->add($projectedAmount);
         } catch (Exception $e) {
             // Return zero Money object on error
-            return new \Give\Framework\Support\ValueObjects\Money(0, $this->amount->getCurrency());
+            return new Money(0, $this->amount->getCurrency());
         }
     }
 
