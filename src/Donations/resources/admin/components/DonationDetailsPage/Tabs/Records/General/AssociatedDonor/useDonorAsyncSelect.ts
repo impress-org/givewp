@@ -44,7 +44,7 @@ export function useDonorAsyncSelect(selectedDonorId: number | null): UseDonorAsy
 
     // Load options function for AsyncPaginate
     const loadOptions = useCallback(async (searchInput: string) => {
-        const currentPage = searchInput !== '' ? 1 : page + 1;
+        const currentPage = searchInput ? 1 : page + 1;
 
         setError(null);
 
