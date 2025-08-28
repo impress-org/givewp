@@ -19,6 +19,10 @@ use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
+use Give\DonationForms\DonationQuery;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * Class Subscription
@@ -360,36 +364,32 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
             $yearStart = new DateTime("January 1st, {$currentYear}");
             $yearEnd = new DateTime("December 31st, {$currentYear} 23:59:59");
             
-            // Get ALL donations for the current year (including future ones)
-            $completedDonations = $this->donations()
-                ->where('post_date', $yearStart->format('Y-m-d H:i:s'), '>=')
-                ->where('post_date', $yearEnd->format('Y-m-d H:i:s'), '<=')
-                ->where('post_status', 'publish')
-                ->getAll();
-            
-            $completedAmount = 0;
-            
-            foreach ($completedDonations as $donation) {
-                if ($donation && $donation->amount) {
-                    $amount = $donation->amount->formatToDecimal();
-                    $completedAmount += (float) $amount;
-                }
-            }
-            
-            // Calculate projected amount based on remaining donations this year
-            $projectedAmount = 0;
-            if ($this->intendedAmount()) {
-                $remainingDonations = $this->getRemainingDonationCountUntilEndOfYear();
-                $intendedAmount = (float) $this->intendedAmount()->formatToDecimal();
-                $projectedAmount = $intendedAmount * $remainingDonations;
-            }
-            
-            $totalProjected = $completedAmount + $projectedAmount;
-            
-            return new \Give\Framework\Support\ValueObjects\Money(
-                (int) ($totalProjected * 100), // Convert to minor units
-                $this->amount->getCurrency()
-            );
+            // Get completed donations from January 1st of current year to now
+            $completedAmount = (new DonationQuery())
+            ->whereIn("post_status", [
+                DonationStatus::COMPLETE,
+                DonationStatus::RENEWAL
+            ])
+            ->whereIn("ID", function (QueryBuilder $builder) {
+                $builder
+                    ->select("donation_id")
+                    ->from("give_donationmeta")
+                    ->where("meta_key", DonationMetaKeys::SUBSCRIPTION_ID)
+                    ->where("meta_value", $this->id);
+            })
+            ->between(
+                $yearStart->format("Y-m-d H:i:s"),
+                $yearEnd->format("Y-m-d H:i:s")
+            )
+            ->sumAmount();
+
+        $completedAmount = Money::fromDecimal($completedAmount, $this->amount->getCurrency());
+
+        // Calculate projected amount based on remaining donations this year
+        $remainingDonations = $this->getRemainingDonationCountUntilEndOfYear();
+        $projectedAmount = $this->intendedAmount()->multiply($remainingDonations);
+
+        return $completedAmount->add($projectedAmount);
         } catch (Exception $e) {
             // Return zero Money object on error
             return new \Give\Framework\Support\ValueObjects\Money(0, $this->amount->getCurrency());

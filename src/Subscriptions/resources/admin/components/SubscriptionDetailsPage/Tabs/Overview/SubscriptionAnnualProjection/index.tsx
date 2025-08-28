@@ -33,7 +33,7 @@ export default function SubscriptionAnnualProjection({ subscription, donations, 
     const totalContributions = calculateTotalContributions(currentYearCompletedDonations);
 
     // Calculate progress - ensure both values are in the same units
-    const projectedAmount = projectedAnnualRevenue ? Number(projectedAnnualRevenue.value) : 0;
+    const projectedAmount = projectedAnnualRevenue ? Number(projectedAnnualRevenue?.value) : 0;
     const percentage = projectedAmount > 0 ? calculateProgressPercentage(totalContributions, projectedAmount) : 0;
 
     // Set chart options and series
