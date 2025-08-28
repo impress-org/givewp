@@ -381,7 +381,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
                 $yearStart->format("Y-m-d H:i:s"),
                 $yearEnd->format("Y-m-d H:i:s")
             )
-            ->sumAmount();
+            ->sumIntendedAmount();
 
         $completedAmount = Money::fromDecimal($completedAmount, $this->amount->getCurrency());
 
