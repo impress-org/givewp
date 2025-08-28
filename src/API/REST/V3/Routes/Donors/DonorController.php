@@ -209,6 +209,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
+     * @unreleased Update donor name when firstName or lastName is updated
      * @since 4.7.0 Add support for updating custom fields
      * @since 4.4.0
      *
@@ -245,6 +246,10 @@ class DonorController extends WP_REST_Controller
                     $donor->$key = $value;
                 }
             }
+        }
+
+        if ($request->get_param('firstName') || $request->get_param('lastName')) {
+            $donor->name = trim($donor->firstName . ' ' . $donor->lastName);
         }
 
         if ($donor->isDirty()) {
