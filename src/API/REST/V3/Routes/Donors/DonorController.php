@@ -103,6 +103,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
+     * @unreleased Add support for search parameter
      * @since 4.0.0
      *
      * @param WP_REST_Request $request Full details about the request.
