@@ -4,6 +4,7 @@ namespace Give\Donors;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
+use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -43,6 +44,7 @@ class DonorsQuery
     }
 
     /**
+     * @unreleased Fix subqueries to not return duplicate donors
      * @since 4.4.0
      */
     public function whereDonorsHaveDonations(
@@ -55,8 +57,6 @@ class DonorsQuery
         }
 
         $this->query->whereExists(function (QueryBuilder $builder) use ($mode, $campaignId, $excludeAnonymousDonors) {
-            global $wpdb;
-
             $builder
                 ->select('1')
                 ->from('give_donationmeta', 'dm1')
@@ -75,7 +75,7 @@ class DonorsQuery
                 })
                 ->whereIn('p.post_status', ['publish', 'give_subscription'])
                 ->where('dm1.meta_key', DonationMetaKeys::DONOR_ID)
-                ->whereRaw(sprintf('AND dm1.meta_value = %s', $wpdb->prefix . 'give_donors.id'));
+                ->whereRaw(sprintf('AND dm1.meta_value = %s', $this->query->prefixTable('give_donors.id')));
 
             if ($campaignId) {
                 $builder->join(function (JoinQueryBuilder $joinBuilder) use ($campaignId) {
