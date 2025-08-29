@@ -54,15 +54,6 @@ class InvoicePaymentSucceeded
         /* @var Invoice $invoice */
         $invoice = $event->data->object;
 
-        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
-
-        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
-
-        // only use this for next gen for now
-        if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
-            return false;
-        }
-
         /**
          * This checking is necessary because the invoice data returned in webhook events
          * can be incomplete and may not include the payment_intent property, especially
@@ -72,6 +63,15 @@ class InvoicePaymentSucceeded
          */
         if (is_null($invoice->payment_intent)) {
             $invoice = $this->getCompleteInvoiceFromStripe($event->data->object->id);
+        }
+
+        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+
+        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
+
+        // only use this for next gen for now
+        if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
+            return false;
         }
 
         $gatewayTransactionId = $invoice->payment_intent;
