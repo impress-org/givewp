@@ -128,3 +128,23 @@
         }
     }
 }
+
+.cancelDialogNotice {
+    align-items: center;
+    background-color: var(--givewp-orange-25, #FFFAF2);
+    border-radius: var(--givewp-rounded-4);
+    border: 1px solid var(--givewp-orange-400);
+    border-left-width: 4px;
+    display: flex;
+    gap: var(--givewp-spacing-2);
+    margin-bottom: var(--givewp-spacing-6);
+    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+
+    p {
+        color: var(--givewp-orange-900);
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 20 / 14;
+        margin: 0;
+    }
+}

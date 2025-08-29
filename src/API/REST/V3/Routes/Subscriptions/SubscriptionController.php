@@ -16,6 +16,7 @@ use Give\API\REST\V3\Support\CURIE;
 use Give\API\REST\V3\Support\Headers;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\SubscriptionQuery;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Subscriptions\ViewModels\SubscriptionViewModel;
 use WP_Error;
 use WP_REST_Controller;
@@ -139,6 +140,26 @@ class SubscriptionController extends WP_REST_Controller
                         'description' => __('Whether to permanently delete (force=true) or move to trash (force=false, default).', 'give'),
                         'type' => 'boolean',
                         'default' => false,
+                    ],
+                ],
+                'schema' => [$this, 'get_public_item_schema'],
+            ],
+        ]);
+
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/cancel', [
+            [
+                'methods' => WP_REST_Server::EDITABLE,
+                'callback' => [$this, 'cancel_item'],
+                'permission_callback' => [$this, 'cancel_item_permissions_check'],
+                'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                    'trash' => [
+                        'type' => 'boolean',
+                        'default' => false,
+                        'description' => __('Whether to also move the subscription to trash (trash=true) instead of just canceling it.', 'give'),
                     ],
                 ],
                 'schema' => [$this, 'get_public_item_schema'],
@@ -436,6 +457,40 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * Cancel a subscription.
+     *
+     * @unreleased
+     */
+    public function cancel_item($request)
+    {
+        $subscription = Subscription::find($request->get_param('id'));
+
+        if (! $subscription) {
+            return new WP_REST_Response(__('Subscription not found', 'give'), 404);
+        }
+
+        try {
+            if (give()->gateways->hasPaymentGateway($subscription->gatewayId)) {
+                $subscription->cancel(true);
+            } else {
+                $subscription->status = SubscriptionStatus::CANCELLED;
+            }
+
+            $trash = $request->get_param('trash');
+
+            if ($trash) {
+                $subscription->trash();
+            }
+
+            $response = $this->prepare_item_for_response($subscription->toArray(), $request);
+
+            return rest_ensure_response($response);
+        } catch (Exception $e) {
+            return new WP_REST_Response(__('Failed to cancel subscription', 'give'), 500);
+        }
+    }
+
+    /**
      * @unreleased
      */
     public function getSortColumn(string $sortColumn): string
@@ -616,6 +671,14 @@ class SubscriptionController extends WP_REST_Controller
      * @return true|WP_Error
      */
     public function delete_items_permissions_check($request)
+    {
+        return SubscriptionPermissions::validationForDeleteMethods($request);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function cancel_item_permissions_check($request)
     {
         return SubscriptionPermissions::validationForDeleteMethods($request);
     }
