@@ -75,7 +75,8 @@ class InvoicePaymentSucceeded
         }
 
         $gatewayTransactionId = $invoice->payment_intent;
-        if ($initialDonation = give()->donations->getByGatewayTransactionId($gatewayTransactionId)) {
+        $initialDonation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+        if ($initialDonation) {
             $this->handleInitialDonation($initialDonation);
             $this->updateStripeInvoiceMetaData($invoice, $initialDonation);
         } else {
