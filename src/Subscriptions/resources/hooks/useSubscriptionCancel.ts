@@ -11,8 +11,6 @@ const isResponseSubscription = (response: unknown): response is Subscription => 
     return typeof response === 'object' && response !== null && 'id' in response;
 };
 
-
-
 /**
  * @unreleased
  */
