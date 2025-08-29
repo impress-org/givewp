@@ -3,8 +3,6 @@
 namespace Give\Subscriptions\ViewModels;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
-use Give\API\REST\V3\Support\DateFormatter;
-use Give\API\REST\V3\Support\ValueObjectFormatter;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Subscriptions\Models\Subscription;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
@@ -19,8 +17,6 @@ class SubscriptionViewModel
     private DonorAnonymousMode $anonymousMode;
 
     private bool $includeSensitiveData = false;
-
-    private bool $formatDatesForResponse = false;
 
     /**
      * @unreleased
@@ -67,10 +63,7 @@ class SubscriptionViewModel
             ]
         );
 
-        $data = DateFormatter::formatDatesForResponse($data);
-
-        // Format value objects to their string representations
-        $data = ValueObjectFormatter::formatValueObjects($data);
+        // Data formatting should be handled by the controller based on context
 
         if (!$this->includeSensitiveData) {
             $sensitiveDataExcluded = [

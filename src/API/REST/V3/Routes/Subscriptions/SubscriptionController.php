@@ -13,6 +13,7 @@ use Give\API\REST\V3\Routes\Subscriptions\Fields\SubscriptionFields;
 use Give\API\REST\V3\Routes\Subscriptions\Permissions\SubscriptionPermissions;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\API\REST\V3\Support\CURIE;
+use Give\API\REST\V3\Support\Formatter;
 use Give\API\REST\V3\Support\Headers;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\SubscriptionQuery;
@@ -547,6 +548,9 @@ class SubscriptionController extends WP_REST_Controller
     public function prepare_item_for_response($item, $request)
     {
         try {
+            // Format data for REST API response
+            $item = Formatter::formatAll($item);
+
             $subscriptionId = $request->get_param('id') ?? $item['id'] ?? null;
 
             if ($subscriptionId && $subscription = Subscription::find($subscriptionId)) {

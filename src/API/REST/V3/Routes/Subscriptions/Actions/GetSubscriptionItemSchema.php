@@ -20,15 +20,15 @@ class GetSubscriptionItemSchema
             'title' => 'givewp/subscription',
             'type' => 'object',
             'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Subscription ID', 'give'),
+                ],
                 'mode' => [
                     'type' => 'string',
                     'description' => esc_html__('Subscription mode (live or test)', 'give'),
                     'default' => 'live',
                     'enum' => ['live', 'test'],
-                ],
-                'id' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Subscription ID', 'give'),
                 ],
                 'donationFormId' => [
                     'type' => 'integer',
@@ -110,16 +110,16 @@ class GetSubscriptionItemSchema
                     'description' => esc_html__('Transaction ID', 'give'),
                     'format' => 'text-field',
                 ],
+                'gatewaySubscriptionId' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Gateway subscription ID', 'give'),
+                    'format' => 'text-field',
+                ],
                 'gatewayId' => [
                     'type' => 'string',
                     'description' => esc_html__('Payment gateway ID', 'give'),
                     'format' => 'text-field',
                     'required' => true,
-                ],
-                'gatewaySubscriptionId' => [
-                    'type' => ['string', 'null'],
-                    'description' => esc_html__('Gateway subscription ID', 'give'),
-                    'format' => 'text-field',
                 ],
                 'gateway' => [
                     'type' => 'array',
