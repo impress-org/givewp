@@ -94,9 +94,10 @@ class GetSubscriptionItemSchema
                     'format' => 'text-field',
                 ],
                 'gatewayId' => [
-                    'type' => ['string', 'null'],
+                    'type' => 'string',
                     'description' => esc_html__('Payment gateway ID', 'give'),
                     'format' => 'text-field',
+                    'required' => true,
                 ],
                 'gatewaySubscriptionId' => [
                     'type' => ['string', 'null'],

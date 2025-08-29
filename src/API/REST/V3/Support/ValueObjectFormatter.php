@@ -10,21 +10,12 @@ class ValueObjectFormatter
     /**
      * @unreleased
      */
-    public static function formatValueObjects(array $data): array
+    public static function formatValueObjects(array $data, array $valueObjectFields = ['period', 'status', 'mode']): array
     {
-        // Format SubscriptionPeriod to string
-        if (isset($data['period']) && method_exists($data['period'], 'getValue')) {
-            $data['period'] = $data['period']->getValue();
-        }
-
-        // Format SubscriptionStatus to string
-        if (isset($data['status']) && method_exists($data['status'], 'getValue')) {
-            $data['status'] = $data['status']->getValue();
-        }
-
-        // Format SubscriptionMode to string
-        if (isset($data['mode']) && method_exists($data['mode'], 'getValue')) {
-            $data['mode'] = $data['mode']->getValue();
+        foreach ($valueObjectFields as $field) {
+            if (isset($data[$field]) && is_object($data[$field]) && method_exists($data[$field], 'getValue')) {
+                $data[$field] = $data[$field]->getValue();
+            }
         }
 
         return $data;

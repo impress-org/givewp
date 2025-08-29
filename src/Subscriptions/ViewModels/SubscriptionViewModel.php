@@ -67,7 +67,7 @@ class SubscriptionViewModel
             ]
         );
 
-        //$data = DateFormatter::formatDatesForResponse($data);
+        $data = DateFormatter::formatDatesForResponse($data);
 
         // Format value objects to their string representations
         $data = ValueObjectFormatter::formatValueObjects($data);

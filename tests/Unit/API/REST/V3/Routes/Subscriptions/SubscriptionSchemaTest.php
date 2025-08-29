@@ -2,8 +2,15 @@
 
 namespace Give\Tests\Unit\API\REST\V3\Routes\Subscriptions;
 
+use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\Donors\Models\Donor;
+use Give\Framework\Database\DB;
+use Give\Framework\Support\ValueObjects\Money;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
@@ -23,8 +30,10 @@ class SubscriptionSchemaTest extends RestApiTestCase
      */
     public function testSubscriptionSchemaShouldMatchActualResponse()
     {
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
         /** @var Subscription $subscription */
-        $subscription = Subscription::factory()->create(['status' => SubscriptionStatus::ACTIVE()]);
+        $subscription = $this->createSubscription();
 
         // Get the schema via OPTIONS request
         $schemaRoute = '/' . SubscriptionRoute::NAMESPACE . '/subscriptions';
@@ -54,8 +63,10 @@ class SubscriptionSchemaTest extends RestApiTestCase
      */
     public function testSubscriptionCollectionSchemaShouldMatchActualResponse()
     {
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
         /** @var Subscription $subscription */
-        $subscription = Subscription::factory()->create(['status' => SubscriptionStatus::ACTIVE()]);
+        $subscription = $this->createSubscription();
 
         // Get the schema via OPTIONS request
         $schemaRoute = '/' . SubscriptionRoute::NAMESPACE . '/subscriptions';
@@ -69,6 +80,10 @@ class SubscriptionSchemaTest extends RestApiTestCase
         $dataRequest->set_query_params(['includeSensitiveData' => true]);
         $dataResponse = $this->dispatchRequest($dataRequest);
         $actualData = $dataResponse->get_data();
+
+        // Assert that we have data in the collection
+        $this->assertNotEmpty($actualData, 'Collection should contain at least one subscription');
+        $this->assertIsArray($actualData, 'Collection should be an array');
 
         // Validate first item in collection
         if (!empty($actualData)) {
@@ -84,8 +99,10 @@ class SubscriptionSchemaTest extends RestApiTestCase
      */
     public function testDateFormatsShouldBeConsistentWithWordPressStandards()
     {
+        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
+
         /** @var Subscription $subscription */
-        $subscription = Subscription::factory()->create(['status' => SubscriptionStatus::ACTIVE()]);
+        $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/subscriptions/' . $subscription->id;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
@@ -278,5 +295,29 @@ class SubscriptionSchemaTest extends RestApiTestCase
         }
 
         return gettype($value);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    private function createSubscription(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
+    {
+        $donor = Donor::factory()->create();
+
+        return Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'amount' => new Money($amount, 'USD'),
+            'status' => new SubscriptionStatus($status),
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
+            'installments' => 0,
+            'mode' => new SubscriptionMode($mode),
+            'donorId' => $donor->id,
+        ], [
+            'anonymous' => false,
+            'donorId' => $donor->id,
+        ]);
     }
 }
