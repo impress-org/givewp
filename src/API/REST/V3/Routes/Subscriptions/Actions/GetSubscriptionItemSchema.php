@@ -19,15 +19,15 @@ class GetSubscriptionItemSchema
             'title' => 'givewp/subscription',
             'type' => 'object',
             'properties' => [
-                'id' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Subscription ID', 'give'),
-                ],
                 'mode' => [
                     'type' => 'string',
                     'description' => esc_html__('Subscription mode (live or test)', 'give'),
                     'default' => 'live',
                     'enum' => ['live', 'test'],
+                ],
+                'id' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Subscription ID', 'give'),
                 ],
                 'donationFormId' => [
                     'type' => 'integer',
