@@ -16,6 +16,7 @@ class GetSubscriptionItemSchema
     public function __invoke(): array
     {
         return [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/subscription',
             'type' => 'object',
             'properties' => [
