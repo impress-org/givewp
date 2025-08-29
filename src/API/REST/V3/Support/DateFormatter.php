@@ -40,10 +40,10 @@ class DateFormatter
         }
 
         if (is_string($date)) {
-            // phpcs:disable Generic.PHP.DeprecatedFunctions.Deprecated, PHPCompatibility.FunctionUse.RemovedFunctions.mysql_to_rfc3339
+            // phpcs:disable Generic.PHP.DeprecatedFunctions.Deprecated, PHPCompatibility.FunctionUse.RemovedFunctions.mysql_to_rfc3339, PHPCompatibility.Extensions.RemovedExtensions.mysql
             // @phpstan-ignore-next-line Extension 'mysql_' is deprecated but mysql_to_rfc3339 is WordPress core function
             return mysql_to_rfc3339($date);
-            // phpcs:enable Generic.PHP.DeprecatedFunctions.Deprecated, PHPCompatibility.FunctionUse.RemovedFunctions.mysql_to_rfc3339
+            // phpcs:enable Generic.PHP.DeprecatedFunctions.Deprecated, PHPCompatibility.FunctionUse.RemovedFunctions.mysql_to_rfc3339, PHPCompatibility.Extensions.RemovedExtensions.mysql
         }
 
         return null;
