@@ -15,6 +15,7 @@ use Give\Framework\Database\DB;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donations\ValueObjects\DonationType;
 
 /**
  * @since 2.19.6
@@ -522,6 +523,34 @@ class TestSubscription extends TestCase
         $this->assertGreaterThan(0, $projectedRevenue->getAmount());
     }
 
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testProjectedAnnualRevenueBasicFunctionality()
+    {
+        // Create a simple subscription without additional donations
+        $subscription = Subscription::factory()->createWithDonation([
+            'amount' => new Money(10000, 'USD'), // $100.00
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
+            'installments' => 0,
+        ]);
+
+        // Get projected annual revenue
+        $projectedRevenue = $subscription->projectedAnnualRevenue();
+
+        // Should be a Money object with USD currency
+        $this->assertInstanceOf(Money::class, $projectedRevenue);
+        $this->assertEquals('USD', $projectedRevenue->getCurrency());
+
+        // The projected revenue should be greater than 0 (even without additional donations)
+        $this->assertGreaterThan(0, $projectedRevenue->getAmount());
+    }
+
 
     /**
      * @unreleased
@@ -702,6 +731,7 @@ class TestSubscription extends TestCase
             $donation = Donation::factory()->create([
                 'amount' => $subscription->amount,
                 'status' => DonationStatus::COMPLETE(),
+                'type' => DonationType::RENEWAL(),
                 'subscriptionId' => $subscription->id,
                 'gatewayId' => $subscription->gatewayId,
             ]);

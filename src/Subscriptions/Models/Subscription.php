@@ -383,7 +383,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
             )
             ->sumIntendedAmount();
 
-        $completedAmount = Money::fromDecimal($completedAmount, $this->amount->getCurrency());
+            $completedAmount = Money::fromDecimal($completedAmount, $this->amount->getCurrency());
 
         // Calculate projected amount based on remaining donations this year
         $remainingDonations = $this->getRemainingDonationCountUntilEndOfYear();
