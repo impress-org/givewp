@@ -78,6 +78,7 @@ export default function SubscriptionDetailsPage() {
             day: _n('day', 'days', subscription?.frequency, 'give'),
             week: _n('week', 'weeks', subscription?.frequency, 'give'),
             month: _n('month', 'months', subscription?.frequency, 'give'),
+            quarter: _n('quarter', 'quarters', subscription?.frequency, 'give'),
             year: _n('year', 'years', subscription?.frequency, 'give'),
         };
 
