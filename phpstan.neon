@@ -17,6 +17,8 @@ parameters:
         - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
         - vendor/php-stubs/wp-cli-stubs/wp-cli-commands-stubs.php
         - vendor/php-stubs/wp-cli-stubs/wp-cli-i18n-stubs.php
+    ignoreErrors:
+        - '#Extension \'mysql_\' is deprecated since PHP 5\.5 and removed since PHP 7\.0; Use mysqli instead#'
     excludePaths:
         analyse:
             - src/LegacySubscriptions/includes/ # Scan but do not analyse
