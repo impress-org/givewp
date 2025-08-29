@@ -130,7 +130,7 @@ class GetSubscriptionItemSchema
                         /* translators: %1$s: Example date string, %2$s: WordPress documentation URL */
                         esc_html__('Subscription creation date in ISO 8601 format (e.g., "%1$s"). Follows WordPress REST API date format standards. See %2$s for more information.', 'give'),
                         '2025-01-01T12:00:00+00:00',
-                        '<a href="https://developer.wordpress.org/rest-api/using-the-rest-api/date-and-time/" target="_blank">WordPress REST API Date and Time</a>'
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
                     ),
                     'format' => 'date-time',
                     'example' => '2025-01-01T12:00:00+00:00',
@@ -141,7 +141,7 @@ class GetSubscriptionItemSchema
                         /* translators: %1$s: Example date string, %2$s: WordPress documentation URL */
                         esc_html__('Next renewal date in ISO 8601 format (e.g., "%1$s"). Follows WordPress REST API date format standards. See %2$s for more information.', 'give'),
                         '2025-01-01T12:00:00+00:00',
-                        '<a href="https://developer.wordpress.org/rest-api/using-the-rest-api/date-and-time/" target="_blank">WordPress REST API Date and Time</a>'
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
                     ),
                     'format' => 'date-time',
                     'example' => '2025-01-01T12:00:00+00:00',
