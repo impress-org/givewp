@@ -1,5 +1,5 @@
-import {Donor} from '@givewp/donors/admin/components/types';
 import {Donation} from '@givewp/donations/admin/components/types';
+import {Donor} from '@givewp/donors/admin/components/types';
 
 type PaymentGateway = {
     id: string;
@@ -7,7 +7,7 @@ type PaymentGateway = {
     label: string;
     subscriptionUrl: string;
     canSync: boolean;
-}
+};
 
 /**
  * @unreleased
@@ -44,20 +44,11 @@ type Money = {
 /**
  * @unreleased
  */
-type DateTime = {
-    date: string;
-    timezone: string;
-    timezone_type: number;
-};
-
-/**
- * @unreleased
- */
 export type Subscription = {
     id: number;
     donationFormId: number;
-    createdAt: DateTime;
-    renewsAt: DateTime;
+    createdAt: string; // ISO 8601 string
+    renewsAt: string; // ISO 8601 string
     donorId: number;
     period: SubscriptionPeriod;
     frequency: number;
