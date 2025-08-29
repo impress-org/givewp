@@ -41,7 +41,6 @@ class DateFormatter
 
         if (is_string($date)) {
             // phpcs:disable -- WordPress core function mysql_to_rfc3339 is intentionally used for compatibility
-            // @phpstan-ignore-next-line Extension 'mysql_' is deprecated but mysql_to_rfc3339 is WordPress core function
             return mysql_to_rfc3339($date);
             // phpcs:enable
         }
