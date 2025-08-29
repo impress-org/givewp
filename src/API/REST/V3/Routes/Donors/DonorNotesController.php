@@ -28,6 +28,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.4.0
      */
     public function register_routes()

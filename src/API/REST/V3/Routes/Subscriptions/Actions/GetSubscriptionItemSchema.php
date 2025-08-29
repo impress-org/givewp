@@ -94,10 +94,9 @@ class GetSubscriptionItemSchema
                     'format' => 'text-field',
                 ],
                 'gatewayId' => [
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                     'description' => esc_html__('Payment gateway ID', 'give'),
                     'format' => 'text-field',
-                    'required' => true,
                 ],
                 'gatewaySubscriptionId' => [
                     'type' => ['string', 'null'],
@@ -173,6 +172,20 @@ class GetSubscriptionItemSchema
                             'type' => 'null',
                         ],
                     ],
+                ],
+                'firstName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor first name', 'give'),
+                    'format' => 'text-field',
+                ],
+                'lastName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor last name', 'give'),
+                    'format' => 'text-field',
+                ],
+                'gateway' => [
+                    'type' => 'array',
+                    'description' => esc_html__('Payment gateway details', 'give'),
                 ],
                 'projectedAnnualRevenue' => [
                     'type' => ['object', 'null'],
