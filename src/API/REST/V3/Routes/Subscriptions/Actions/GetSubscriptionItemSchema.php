@@ -23,15 +23,31 @@ class GetSubscriptionItemSchema
                     'type' => 'integer',
                     'description' => esc_html__('Subscription ID', 'give'),
                 ],
-                'donorId' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Donor ID', 'give'),
-                    'required' => true,
+                'mode' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Subscription mode (live or test)', 'give'),
+                    'default' => 'live',
+                    'enum' => ['live', 'test'],
                 ],
                 'donationFormId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donation form ID', 'give'),
                     'required' => true,
+                ],
+                'donorId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Donor ID', 'give'),
+                    'required' => true,
+                ],
+                'firstName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor first name', 'give'),
+                    'format' => 'text-field',
+                ],
+                'lastName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor last name', 'give'),
+                    'format' => 'text-field',
                 ],
                 'amount' => [
                     'type' => ['object', 'null'],
@@ -104,89 +120,31 @@ class GetSubscriptionItemSchema
                     'description' => esc_html__('Gateway subscription ID', 'give'),
                     'format' => 'text-field',
                 ],
-                'mode' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Subscription mode (live or test)', 'give'),
-                    'default' => 'live',
-                    'enum' => ['live', 'test'],
-                ],
-                'createdAt' => [
-                    'oneOf' => [
-                        [
-                            'type' => 'string',
-                            'description' => esc_html__('Subscription creation date as ISO string', 'give'),
-                            'format' => 'date-time',
-                        ],
-                        [
-                            'type' => 'object',
-                            'properties' => [
-                                'date' => [
-                                    'type' => 'string',
-                                    'description' => esc_html__('Date', 'give'),
-                                    'format' => 'date-time',
-                                ],
-                                'timezone' => [
-                                    'type' => 'string',
-                                    'description' => esc_html__('Timezone of the date', 'give'),
-                                    'format' => 'text-field',
-                                ],
-                                'timezone_type' => [
-                                    'type' => 'integer',
-                                    'description' => esc_html__('Timezone type', 'give'),
-                                ],
-                            ],
-                            'description' => esc_html__('Subscription creation date', 'give'),
-                        ],
-                        [
-                            'type' => 'null',
-                        ],
-                    ],
-                ],
-                'renewsAt' => [
-                    'oneOf' => [
-                        [
-                            'type' => 'string',
-                            'description' => esc_html__('Next renewal date as ISO string', 'give'),
-                            'format' => 'date-time',
-                        ],
-                        [
-                            'type' => 'object',
-                            'properties' => [
-                                'date' => [
-                                    'type' => 'string',
-                                    'description' => esc_html__('Date', 'give'),
-                                    'format' => 'date-time',
-                                ],
-                                'timezone' => [
-                                    'type' => 'string',
-                                    'description' => esc_html__('Timezone of the date', 'give'),
-                                    'format' => 'text-field',
-                                ],
-                                'timezone_type' => [
-                                    'type' => 'integer',
-                                    'description' => esc_html__('Timezone type', 'give'),
-                                ],
-                            ],
-                            'description' => esc_html__('Next renewal date', 'give'),
-                        ],
-                        [
-                            'type' => 'null',
-                        ],
-                    ],
-                ],
-                'firstName' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Donor first name', 'give'),
-                    'format' => 'text-field',
-                ],
-                'lastName' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Donor last name', 'give'),
-                    'format' => 'text-field',
-                ],
                 'gateway' => [
                     'type' => 'array',
                     'description' => esc_html__('Payment gateway details', 'give'),
+                ],
+                'createdAt' => [
+                    'type' => ['string', 'null'],
+                    'description' => sprintf(
+                        /* translators: %1$s: Example date string, %2$s: WordPress documentation URL */
+                        esc_html__('Subscription creation date in ISO 8601 format (e.g., "%1$s"). Follows WordPress REST API date format standards. See %2$s for more information.', 'give'),
+                        '2025-01-01T12:00:00+00:00',
+                        '<a href="https://developer.wordpress.org/rest-api/using-the-rest-api/date-and-time/" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'format' => 'date-time',
+                    'example' => '2025-01-01T12:00:00+00:00',
+                ],
+                'renewsAt' => [
+                    'type' => ['string', 'null'],
+                    'description' => sprintf(
+                        /* translators: %1$s: Example date string, %2$s: WordPress documentation URL */
+                        esc_html__('Next renewal date in ISO 8601 format (e.g., "%1$s"). Follows WordPress REST API date format standards. See %2$s for more information.', 'give'),
+                        '2025-01-01T12:00:00+00:00',
+                        '<a href="https://developer.wordpress.org/rest-api/using-the-rest-api/date-and-time/" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'format' => 'date-time',
+                    'example' => '2025-01-01T12:00:00+00:00',
                 ],
                 'projectedAnnualRevenue' => [
                     'type' => ['object', 'null'],
