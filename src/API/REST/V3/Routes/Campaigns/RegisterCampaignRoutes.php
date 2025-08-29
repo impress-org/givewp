@@ -18,7 +18,6 @@ class RegisterCampaignRoutes
      */
     protected $campaignRequestController;
 
-
     /**
      * @since 4.0.0
      */
@@ -44,6 +43,7 @@ class RegisterCampaignRoutes
     /**
      * Get Campaign route
      *
+     * @unreleased Add missing schema key to the route level
      * @since 4.0.0
      */
     public function registerGetCampaign()
@@ -67,6 +67,7 @@ class RegisterCampaignRoutes
                         'required' => true,
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -162,10 +163,10 @@ class RegisterCampaignRoutes
         );
     }
 
-
     /**
      * Update Campaign route
      *
+     * @unreleased Add missing schema key to the route level
      * @since 4.0.0
      */
     public function registerMergeCampaigns()
@@ -196,14 +197,15 @@ class RegisterCampaignRoutes
                         ],
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
 
-
     /**
      * Create Campaign route
      *
+     * @unreleased Add missing schema key to the route level
      * @since 4.0.0
      */
     public function registerCreateCampaign()
@@ -251,12 +253,13 @@ class RegisterCampaignRoutes
                         },
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
 
-
     /**
+     * @unreleased Add missing schema key to the route level
      * @since 4.2.0
      */
     public function registerDuplicateCampaign()
@@ -280,10 +283,10 @@ class RegisterCampaignRoutes
                         'required' => true,
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
-
 
     /**
      * @since 4.0.0
