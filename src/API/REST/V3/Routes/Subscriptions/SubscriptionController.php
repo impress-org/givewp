@@ -590,7 +590,7 @@ class SubscriptionController extends WP_REST_Controller
                 $links = [];
             }
 
-            $response = new WP_REST_Response(Item::formatAllForResponse($item));
+            $response = new WP_REST_Response(Item::formatForResponse($item));
             if (!empty($links)) {
                 $response->add_links($links);
             }

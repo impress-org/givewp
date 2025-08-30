@@ -27,14 +27,14 @@ use DateTime;
 class Item
 {
     /**
-     * Format all data for API response with automatic detection
+     * Format item data for API response with automatic detection
      *
      * @param array $item WordPress representation of the item.
      * @param array $dateFields
      * @param array $valueObjectFields
      * @return array
      */
-    public static function formatAllForResponse(array $item, array $dateFields = [], array $valueObjectFields = []): array
+    public static function formatForResponse(array $item, array $dateFields = [], array $valueObjectFields = []): array
     {
         // If no specific fields provided, auto-detect in a single loop
         if (empty($dateFields) && empty($valueObjectFields)) {

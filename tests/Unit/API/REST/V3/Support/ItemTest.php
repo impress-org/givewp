@@ -15,7 +15,7 @@ class ItemTest extends TestCase
     /**
      * @unreleased
      */
-    public function testFormatAllForResponseShouldAutoDetectDateFields()
+    public function testFormatForResponseShouldAutoDetectDateFields()
     {
         $data = [
             'id' => 123,
@@ -26,7 +26,7 @@ class ItemTest extends TestCase
             'amount' => 100.00,
         ];
 
-        $formatted = \Give\API\REST\V3\Support\Item::formatAllForResponse($data);
+        $formatted = \Give\API\REST\V3\Support\Item::formatForResponse($data);
 
         // Date fields should be formatted to ISO 8601 strings
         $this->assertIsString($formatted['createdAt']);
@@ -45,7 +45,7 @@ class ItemTest extends TestCase
     /**
      * @unreleased
      */
-    public function testFormatAllForResponseShouldAutoDetectValueObjects()
+    public function testFormatForResponseShouldAutoDetectValueObjects()
     {
         $data = [
             'id' => 123,
@@ -55,7 +55,7 @@ class ItemTest extends TestCase
             'amount' => 100.00,
         ];
 
-        $formatted = \Give\API\REST\V3\Support\Item::formatAllForResponse($data);
+        $formatted = \Give\API\REST\V3\Support\Item::formatForResponse($data);
 
         // Value objects should be converted to their string values
         $this->assertEquals('active', $formatted['status']);
@@ -70,7 +70,7 @@ class ItemTest extends TestCase
     /**
      * @unreleased
      */
-    public function testFormatAllForResponseShouldHandleMixedDataTypes()
+    public function testFormatForResponseShouldHandleMixedDataTypes()
     {
         $data = [
             'id' => 123,
@@ -81,7 +81,7 @@ class ItemTest extends TestCase
             'name' => 'Test Subscription',
         ];
 
-        $formatted = \Give\API\REST\V3\Support\Item::formatAllForResponse($data);
+        $formatted = \Give\API\REST\V3\Support\Item::formatForResponse($data);
 
         // Date fields should be formatted
         $this->assertIsString($formatted['createdAt']);
