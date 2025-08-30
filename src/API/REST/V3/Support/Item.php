@@ -5,12 +5,13 @@ namespace Give\API\REST\V3\Support;
 use DateTime;
 
 /**
- * Formatter for WordPress REST API V3
+ * Item utilities for WordPress REST API V3
  *
- * This class handles formatting of various data types for API responses,
+ * This class handles all item formatting functionality including data formatting,
  * ensuring consistency across all endpoints and compatibility with WordPress standards.
  *
  * Features:
+ * - Data formatting for API responses
  * - Automatic detection and formatting of date fields
  * - Automatic detection and conversion of Value Objects
  * - Batch formatting for arrays of data
@@ -23,23 +24,55 @@ use DateTime;
  *
  * @unreleased
  */
-class Formatter
+class Item
 {
+    /**
+     * Format all data for API response with automatic detection
+     *
+     * @param array $item WordPress representation of the item.
+     * @param array $dateFields
+     * @param array $valueObjectFields
+     * @return array
+     */
+    public static function formatAllForResponse(array $item, array $dateFields = [], array $valueObjectFields = []): array
+    {
+        // If no specific fields provided, auto-detect in a single loop
+        if (empty($dateFields) && empty($valueObjectFields)) {
+            foreach ($item as $field => $value) {
+                if (self::isDateValue($value)) {
+                    $item[$field] = self::formatDateForResponse($value);
+                } elseif (self::isValueObject($value)) {
+                    $item[$field] = $value->getValue();
+                }
+            }
+            return $item;
+        }
+
+        // Use specific field lists if provided
+        $item = self::formatDatesForResponse($item, $dateFields);
+        $item = self::formatValueObjectsForResponse($item, $valueObjectFields);
+
+        return $item;
+    }
+
     /**
      * Format a single date for API response
      *
      * @param mixed $date DateTime object, string, or null
+     * @return string|null ISO 8601 formatted date string or null
      */
-    public static function formatDate($date): ?string
+    public static function formatDateForResponse($date): ?string
     {
         if ($date === null) {
             return null;
         }
 
+        // Format DateTime to ISO 8601 string (e.g., "2023-12-25T14:30:00+00:00")
         if ($date instanceof DateTime) {
             return $date->format('c');
         }
 
+        // Format String to ISO 8601 string (e.g., "2023-12-25T14:30:00+00:00")
         if (is_string($date)) {
             // phpcs:disable -- WordPress core function mysql_to_rfc3339 is intentionally used for compatibility
             return mysql_to_rfc3339($date);
@@ -51,65 +84,49 @@ class Formatter
 
     /**
      * Format multiple dates in an array
+     *
+     * @param array $item WordPress representation of the item.
+     * @param array $dateFields
+     * @return array
      */
-    public static function formatDates(array $data, array $dateFields = []): array
+    public static function formatDatesForResponse(array $item, array $dateFields = []): array
     {
-        foreach ($data as $field => $value) {
+        foreach ($item as $field => $value) {
             if (empty($dateFields) || in_array($field, $dateFields, true)) {
                 if (self::isDateValue($value)) {
-                    $data[$field] = self::formatDate($value);
+                    $item[$field] = self::formatDateForResponse($value);
                 }
             }
         }
 
-        return $data;
+        return $item;
     }
 
     /**
      * Format value objects in an array
+     *
+     * @param array $item WordPress representation of the item.
+     * @param array $valueObjectFields
+     * @return array
      */
-    public static function formatValueObjects(array $data, array $valueObjectFields = []): array
+    public static function formatValueObjectsForResponse(array $item, array $valueObjectFields = []): array
     {
-        foreach ($data as $field => $value) {
+        foreach ($item as $field => $value) {
             if (empty($valueObjectFields) || in_array($field, $valueObjectFields, true)) {
                 if (self::isValueObject($value)) {
-                    $data[$field] = $value->getValue();
+                    $item[$field] = $value->getValue();
                 }
             }
         }
 
-        return $data;
-    }
-
-    /**
-     * Format all data types for API response automatically
-     *
-     * This method automatically detects and formats date fields and value objects
-     * without requiring manual specification of field names.
-     */
-    public static function formatAll(array $data, array $dateFields = [], array $valueObjectFields = []): array
-    {
-        // If no specific fields provided, auto-detect in a single loop
-        if (empty($dateFields) && empty($valueObjectFields)) {
-            foreach ($data as $field => $value) {
-                if (self::isDateValue($value)) {
-                    $data[$field] = self::formatDate($value);
-                } elseif (self::isValueObject($value)) {
-                    $data[$field] = $value->getValue();
-                }
-            }
-            return $data;
-        }
-
-        // Use specific field lists if provided
-        $data = self::formatDates($data, $dateFields);
-        $data = self::formatValueObjects($data, $valueObjectFields);
-
-        return $data;
+        return $item;
     }
 
     /**
      * Check if a value looks like a date
+     *
+     * @param mixed $value
+     * @return bool
      */
     private static function isDateValue($value): bool
     {
@@ -141,6 +158,9 @@ class Formatter
 
     /**
      * Check if a value is a value object
+     *
+     * @param mixed $value
+     * @return bool
      */
     private static function isValueObject($value): bool
     {
