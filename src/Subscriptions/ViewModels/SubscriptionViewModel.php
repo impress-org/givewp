@@ -63,8 +63,6 @@ class SubscriptionViewModel
             ]
         );
 
-        // Data formatting should be handled by the controller based on context
-
         if (!$this->includeSensitiveData) {
             $sensitiveDataExcluded = [
                 'transactionId',
