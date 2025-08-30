@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\API\REST\V3\Support;
 
 use DateTime;
+use Give\API\REST\V3\Support\Item;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
@@ -17,7 +18,7 @@ class ItemTest extends TestCase
      */
     public function testFormatForResponseShouldAutoDetectDateFields()
     {
-        $data = [
+        $item = [
             'id' => 123,
             'createdAt' => new DateTime('2023-12-25 14:30:00'),
             'updatedAt' => '2023-12-26 15:45:00',
@@ -26,7 +27,7 @@ class ItemTest extends TestCase
             'amount' => 100.00,
         ];
 
-        $formatted = \Give\API\REST\V3\Support\Item::formatForResponse($data);
+        $formatted = Item::formatForResponse($item);
 
         // Date fields should be formatted to ISO 8601 strings
         $this->assertIsString($formatted['createdAt']);
@@ -47,7 +48,7 @@ class ItemTest extends TestCase
      */
     public function testFormatForResponseShouldAutoDetectValueObjects()
     {
-        $data = [
+        $item = [
             'id' => 123,
             'status' => new SubscriptionStatus('active'),
             'period' => new SubscriptionPeriod('month'),
@@ -55,7 +56,7 @@ class ItemTest extends TestCase
             'amount' => 100.00,
         ];
 
-        $formatted = \Give\API\REST\V3\Support\Item::formatForResponse($data);
+        $formatted = Item::formatForResponse($item);
 
         // Value objects should be converted to their string values
         $this->assertEquals('active', $formatted['status']);
@@ -72,7 +73,7 @@ class ItemTest extends TestCase
      */
     public function testFormatForResponseShouldHandleMixedDataTypes()
     {
-        $data = [
+        $item = [
             'id' => 123,
             'createdAt' => new DateTime('2023-12-25 14:30:00'),
             'status' => new SubscriptionStatus('active'),
@@ -81,7 +82,7 @@ class ItemTest extends TestCase
             'name' => 'Test Subscription',
         ];
 
-        $formatted = \Give\API\REST\V3\Support\Item::formatForResponse($data);
+        $formatted = Item::formatForResponse($item);
 
         // Date fields should be formatted
         $this->assertIsString($formatted['createdAt']);
@@ -104,7 +105,7 @@ class ItemTest extends TestCase
     public function testFormatDateForResponseShouldHandleDateTimeObjects()
     {
         $dateTime = new DateTime('2023-12-25 14:30:00');
-        $formatted = \Give\API\REST\V3\Support\Item::formatDateForResponse($dateTime);
+        $formatted = Item::formatDateForResponse($dateTime);
 
         $this->assertIsString($formatted);
         $this->assertStringContainsString('2023-12-25T14:30:00', $formatted);
@@ -116,7 +117,7 @@ class ItemTest extends TestCase
     public function testFormatDateForResponseShouldHandleStringDates()
     {
         $dateString = '2023-12-25 14:30:00';
-        $formatted = \Give\API\REST\V3\Support\Item::formatDateForResponse($dateString);
+        $formatted = Item::formatDateForResponse($dateString);
 
         $this->assertIsString($formatted);
         $this->assertStringContainsString('2023-12-25T14:30:00', $formatted);
@@ -127,7 +128,7 @@ class ItemTest extends TestCase
      */
     public function testFormatDateForResponseShouldHandleNullValues()
     {
-        $formatted = \Give\API\REST\V3\Support\Item::formatDateForResponse(null);
+        $formatted = Item::formatDateForResponse(null);
         $this->assertNull($formatted);
     }
 }
