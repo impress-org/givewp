@@ -39,11 +39,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
             'amount' => ['amount' => 150.00, 'currency' => 'USD'],
             'feeAmountRecovered' => ['amount' => 5.00, 'currency' => 'USD'],
             'period' => SubscriptionPeriod::QUARTER,
-            'renewAt' => [
-                'date' => '2025-01-15T12:00:00.000000',
-                'timezone' => 'America/New_York',
-                'timezone_type' => 3,
-            ],
+            'renewAt' => '2025-01-15T12:00:00+00:00',
             'transactionId' => 'txn_test_123',
             'donorId' => $newDonor->id,
             'donationFormId' => 2,
@@ -99,11 +95,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
             'id' => $subscription->id,
-            'createdAt' => [
-                'date' => '2024-01-01T00:00:00.000000',
-                'timezone' => 'America/New_York',
-                'timezone_type' => 3,
-            ],
+            'createdAt' => '2024-01-01T00:00:00+00:00',
             'mode' => 'test',
             'gatewayId' => 'test_gateway',
             'gatewaySubscriptionId' => 'test_subscription_id',

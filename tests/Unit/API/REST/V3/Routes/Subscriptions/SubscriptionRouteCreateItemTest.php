@@ -344,7 +344,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testCreateSubscriptionShouldHandleDateTimeObjects()
+    public function testCreateSubscriptionShouldHandleDateTimeStrings()
     {
         $donor = Donor::factory()->create();
 
@@ -358,11 +358,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
             'gatewayId' => TestGateway::id(),
-            'renewsAt' => [
-                'date' => '2025-01-15T12:00:00.000000',
-                'timezone' => 'America/New_York',
-                'timezone_type' => 3,
-            ],
+            'renewsAt' => '2025-01-15T12:00:00+00:00',
         ]);
 
         $response = $this->dispatchRequest($request);
