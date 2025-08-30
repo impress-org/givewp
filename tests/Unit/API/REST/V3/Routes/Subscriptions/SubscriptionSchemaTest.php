@@ -176,7 +176,7 @@ class SubscriptionSchemaTest extends RestApiTestCase
             $expectedType = $schemaProperties[$property]['type'];
             $actualType = $this->getActualType($value);
 
-            // Handle oneOf schemas (like dates that can be string or object)
+            // Handle oneOf schemas
             if (isset($schemaProperties[$property]['oneOf'])) {
                 $this->validateOneOfSchema($schemaProperties[$property]['oneOf'], $value, $property);
                 continue;
@@ -248,22 +248,13 @@ class SubscriptionSchemaTest extends RestApiTestCase
             $this->assertMatchesRegularExpression(
                 '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/',
                 $dateValue,
-                "Property '{$propertyName}' should be in RFC3339 format when returned as string"
+                "Property '{$propertyName}' should be in RFC3339 format"
             );
-        } elseif (is_array($dateValue)) {
-            // Should have date, timezone, and timezone_type keys
-            $this->assertArrayHasKey('date', $dateValue, "Property '{$propertyName}' array should have 'date' key");
-            $this->assertArrayHasKey('timezone', $dateValue, "Property '{$propertyName}' array should have 'timezone' key");
-            $this->assertArrayHasKey('timezone_type', $dateValue, "Property '{$propertyName}' array should have 'timezone_type' key");
-
-            // The date should be in RFC3339 format
-            $this->assertMatchesRegularExpression(
-                '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/',
-                $dateValue['date'],
-                "Property '{$propertyName}' date should be in RFC3339 format"
-            );
+        } elseif (is_null($dateValue)) {
+            // Null values are allowed for optional date fields
+            return;
         } else {
-            $this->fail("Property '{$propertyName}' should be either string or array, got " . gettype($dateValue));
+            $this->fail("Property '{$propertyName}' should be a string in RFC3339 format or null, got " . gettype($dateValue));
         }
     }
 
