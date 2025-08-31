@@ -3,11 +3,12 @@
   align-self: stretch;
   font-size: 1.125rem;
   font-weight: 600;
+  line-height: calc(28 / 18);
   text-decoration: none;
-}
 
-.campaignLink:hover {
-  text-decoration: underline;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .donorLink {
@@ -39,7 +40,7 @@
   font-style: normal;
   line-height: 1.43;
   letter-spacing: normal;
-  text-align: center;
+  text-align: left;
 }
 
 .date {
