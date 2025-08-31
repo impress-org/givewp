@@ -473,7 +473,8 @@ class SubscriptionController extends WP_REST_Controller
             if (give()->gateways->hasPaymentGateway($subscription->gatewayId)) {
                 $subscription->cancel(true);
             } else {
-                $subscription->status = SubscriptionStatus::CANCELLED;
+                $subscription->status = SubscriptionStatus::CANCELLED();
+                $subscription->save();
             }
 
             $trash = $request->get_param('trash');
