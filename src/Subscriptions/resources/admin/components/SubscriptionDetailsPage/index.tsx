@@ -194,6 +194,7 @@ export default function SubscriptionDetailsPage() {
                 isConfirming={isLoading}
                 title={__('Sync subscription details', 'give')}
                 actionLabel={isLoading ? __('Syncing', 'give') : !hasSyncBeenPerformed ? __('Proceed to sync', 'give') : __('Resync', 'give')}
+                showCancelButton={false}
                 isOpen={showConfirmationDialog === 'sync'}
                 handleClose={() => {
                     setShowConfirmationDialog(null);
