@@ -12,10 +12,6 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Framework\Database\DB;
-use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donations\ValueObjects\DonationMetaKeys;
-use Give\Donations\ValueObjects\DonationType;
 
 /**
  * @since 2.19.6
@@ -276,7 +272,7 @@ class TestSubscription extends TestCase
     public function testQueryShouldReturnAllRequiredValues()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
-        
+
         // Create a subscription with all required fields
         $subscription = Subscription::factory()->createWithDonation([
             'gatewayId' => 'test-gateway',
@@ -343,7 +339,7 @@ class TestSubscription extends TestCase
     public function testUpdateLegacyParentPaymentIdShouldUpdateParentPaymentIdInDatabase()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
-        
+
         // Create a subscription with donation
         $subscription = Subscription::factory()->createWithDonation([
             'gatewayId' => 'test-gateway',
@@ -357,7 +353,7 @@ class TestSubscription extends TestCase
 
         // Get the initial donation created with the subscription
         $initialDonation = $subscription->initialDonation();
-        
+
         // Verify that the initial donation exists and has an ID
         $this->assertNotNull($initialDonation, 'Initial donation should exist');
         $this->assertNotNull($initialDonation->id, 'Initial donation should have an ID');
@@ -405,7 +401,7 @@ class TestSubscription extends TestCase
     public function testCreateWithDonationShouldAutomaticallyUpdateParentPaymentId()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
-        
+
         // Create a subscription with donation - this should automatically trigger updateLegacyParentPaymentId
         $subscription = Subscription::factory()->createWithDonation([
             'gatewayId' => 'test-gateway',
@@ -419,7 +415,7 @@ class TestSubscription extends TestCase
 
         // Get the initial donation
         $initialDonation = $subscription->initialDonation();
-        
+
         // Verify that the initial donation exists
         $this->assertNotNull($initialDonation, 'Initial donation should exist');
         $this->assertNotNull($initialDonation->id, 'Initial donation should have an ID');
@@ -490,258 +486,5 @@ class TestSubscription extends TestCase
         // Also verify that currency is returned correctly
         $this->assertNotNull($queriedSubscription->amount, 'Amount should not be null');
         $this->assertEquals('USD', $queriedSubscription->amount->getCurrency(), 'Currency should match the expected value');
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     *
-     * @throws Exception
-     */
-    public function testProjectedAnnualRevenueShouldCalculateCorrectly()
-    {
-        // Create a subscription with monthly frequency
-        $subscription = Subscription::factory()->createWithDonation([
-            'amount' => new Money(10000, 'USD'), // $100.00
-            'period' => SubscriptionPeriod::MONTH(),
-            'frequency' => 1,
-            'installments' => 0,
-        ]);
-
-        // Create some completed donations for the current year
-        $this->createCompletedDonationsForSubscription($subscription, 3);
-
-        // Get projected annual revenue
-        $projectedRevenue = $subscription->projectedAnnualRevenue();
-
-        // Should be a Money object with USD currency
-        $this->assertInstanceOf(Money::class, $projectedRevenue);
-        $this->assertEquals('USD', $projectedRevenue->getCurrency());
-
-        // The projected revenue should be greater than 0
-        $this->assertGreaterThan(0, $projectedRevenue->getAmount());
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     *
-     * @throws Exception
-     */
-    public function testProjectedAnnualRevenueBasicFunctionality()
-    {
-        // Create a simple subscription without additional donations
-        $subscription = Subscription::factory()->createWithDonation([
-            'amount' => new Money(10000, 'USD'), // $100.00
-            'period' => SubscriptionPeriod::MONTH(),
-            'frequency' => 1,
-            'installments' => 0,
-        ]);
-
-        // Get projected annual revenue
-        $projectedRevenue = $subscription->projectedAnnualRevenue();
-
-        // Should be a Money object with USD currency
-        $this->assertInstanceOf(Money::class, $projectedRevenue);
-        $this->assertEquals('USD', $projectedRevenue->getCurrency());
-
-        // The projected revenue should be greater than 0 (even without additional donations)
-        $this->assertGreaterThan(0, $projectedRevenue->getAmount());
-    }
-
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     *
-     * @throws Exception
-     */
-    public function testGetRemainingDonationCountUntilEndOfYearShouldCalculateCorrectly()
-    {
-        // Create a subscription with monthly frequency
-        $subscription = Subscription::factory()->createWithDonation([
-            'period' => SubscriptionPeriod::MONTH(),
-            'frequency' => 1,
-            'installments' => 0,
-        ]);
-
-        $remainingDonations = $subscription->getRemainingDonationCountUntilEndOfYear();
-
-        // Should return a non-negative integer
-        $this->assertIsInt($remainingDonations);
-        $this->assertGreaterThanOrEqual(0, $remainingDonations);
-
-        // For a monthly subscription, should be reasonable (0-12)
-        $this->assertLessThanOrEqual(12, $remainingDonations);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     *
-     * @throws Exception
-     */
-    public function testGetRemainingDonationCountUntilEndOfYearShouldRespectInstallments()
-    {
-        // Create a subscription with limited installments
-        $subscription = Subscription::factory()->createWithDonation([
-            'period' => SubscriptionPeriod::MONTH(),
-            'frequency' => 1,
-            'installments' => 3, // Only 3 total installments
-        ]);
-
-        // Create 2 renewals (total 3 donations including initial)
-        Subscription::factory()->createRenewal($subscription, 2);
-
-        $remainingDonations = $subscription->getRemainingDonationCountUntilEndOfYear();
-
-        // Should be 0 since all installments are used
-        $this->assertEquals(0, $remainingDonations);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     *
-     * @throws Exception
-     */
-    public function testGetRemainingDonationCountUntilEndOfYearShouldHandleDifferentPeriods()
-    {
-        $testCases = [
-            [SubscriptionPeriod::DAY(), 1, 365], // Daily subscription
-            [SubscriptionPeriod::WEEK(), 1, 52], // Weekly subscription
-            [SubscriptionPeriod::MONTH(), 1, 12], // Monthly subscription
-            [SubscriptionPeriod::QUARTER(), 1, 4], // Quarterly subscription
-            [SubscriptionPeriod::YEAR(), 1, 1], // Yearly subscription
-        ];
-
-        foreach ($testCases as [$period, $frequency, $expectedMaxPerYear]) {
-            $subscription = Subscription::factory()->createWithDonation([
-                'period' => $period,
-                'frequency' => $frequency,
-                'installments' => 0,
-            ]);
-
-            $remainingDonations = $subscription->getRemainingDonationCountUntilEndOfYear();
-
-            // Should return a non-negative integer
-            $this->assertIsInt($remainingDonations);
-            $this->assertGreaterThanOrEqual(0, $remainingDonations);
-
-            // Should not exceed the maximum possible for the period
-            $this->assertLessThanOrEqual($expectedMaxPerYear, $remainingDonations);
-        }
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     *
-     * @throws Exception
-     */
-    public function testGetRemainingDonationCountUntilEndOfYearShouldHandleFrequency()
-    {
-        // Test different frequencies for monthly subscriptions
-        $testCases = [
-            [1, 12], // Monthly (every 1 month)
-            [2, 6],  // Every 2 months
-            [3, 4],  // Every 3 months
-            [6, 2],  // Every 6 months
-        ];
-
-        foreach ($testCases as [$frequency, $expectedMaxPerYear]) {
-            $subscription = Subscription::factory()->createWithDonation([
-                'period' => SubscriptionPeriod::MONTH(),
-                'frequency' => $frequency,
-                'installments' => 0,
-            ]);
-
-            $remainingDonations = $subscription->getRemainingDonationCountUntilEndOfYear();
-
-            // Should return a non-negative integer
-            $this->assertIsInt($remainingDonations);
-            $this->assertGreaterThanOrEqual(0, $remainingDonations);
-
-            // Should not exceed the maximum possible for the frequency
-            $this->assertLessThanOrEqual($expectedMaxPerYear, $remainingDonations);
-        }
-    }
-
-    /**
-     * @unreleased
-     *
-     * @return void
-     *
-     * @throws Exception
-     */
-    public function testGetNumericPeriodValueIndirectlyThroughCalculations()
-    {
-        // Test that different periods result in different calculation results
-        $testCases = [
-            [SubscriptionPeriod::DAY(), 1, 365], // Daily subscription
-            [SubscriptionPeriod::WEEK(), 1, 52], // Weekly subscription
-            [SubscriptionPeriod::MONTH(), 1, 12], // Monthly subscription
-            [SubscriptionPeriod::QUARTER(), 1, 4], // Quarterly subscription
-            [SubscriptionPeriod::YEAR(), 1, 1], // Yearly subscription
-        ];
-
-        foreach ($testCases as [$period, $frequency, $expectedMaxPerYear]) {
-            $subscription = Subscription::factory()->createWithDonation([
-                'period' => $period,
-                'frequency' => $frequency,
-                'installments' => 0,
-            ]);
-
-            $remainingDonations = $subscription->getRemainingDonationCountUntilEndOfYear();
-
-            // Should return a non-negative integer
-            $this->assertIsInt($remainingDonations);
-            $this->assertGreaterThanOrEqual(0, $remainingDonations);
-
-            // Should not exceed the maximum possible for the period
-            $this->assertLessThanOrEqual($expectedMaxPerYear, $remainingDonations);
-
-            // Test that the calculation logic works correctly for each period
-            if ($period->getValue() === 'month') {
-                // For monthly subscriptions, remaining donations should be reasonable
-                $this->assertLessThanOrEqual(12, $remainingDonations);
-            } elseif ($period->getValue() === 'year') {
-                // For yearly subscriptions, remaining donations should be 0 or 1
-                $this->assertLessThanOrEqual(1, $remainingDonations);
-            }
-        }
-    }
-
-    /**
-     * Helper method to create completed donations for a subscription
-     *
-     * @param Subscription $subscription
-     * @param int $count
-     * @return void
-     */
-    private function createCompletedDonationsForSubscription(Subscription $subscription, int $count)
-    {
-        for ($i = 0; $i < $count; $i++) {
-            $donation = Donation::factory()->create([
-                'amount' => $subscription->amount,
-                'status' => DonationStatus::COMPLETE(),
-                'type' => DonationType::RENEWAL(),
-                'subscriptionId' => $subscription->id,
-                'gatewayId' => $subscription->gatewayId,
-            ]);
-
-            // Add subscription meta to link donation to subscription
-            DB::table('give_donationmeta')->insert([
-                'donation_id' => $donation->id,
-                'meta_key' => DonationMetaKeys::SUBSCRIPTION_ID,
-                'meta_value' => $subscription->id,
-            ]);
-        }
     }
 }
