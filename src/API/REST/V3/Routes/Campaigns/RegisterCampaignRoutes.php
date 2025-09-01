@@ -294,7 +294,7 @@ class RegisterCampaignRoutes
     public function getSchema(): array
     {
         return [
-            'title' => 'campaign',
+            'title' => 'givewp/campaign',
             'type' => 'object',
             'properties' => [
                 'id' => [
