@@ -1,13 +1,16 @@
 import { Donation } from '@givewp/donations/admin/components/types';
 import { ApexOptions } from 'apexcharts';
+import { getCompletedDonations } from '../SubscriptionStats';
 
 /**
  * @unreleased
  * Get completed donations for the current year
  */
 export const getCurrentYearCompletedDonations = (donations: Donation[]): Donation[] => {
+    const completedDonations = getCompletedDonations(donations);
     const currentYear = new Date().getFullYear();
-    return donations?.filter(donation => {
+
+    return completedDonations?.filter(donation => {
         const donationDate = new Date(donation.createdAt.date);
         return donationDate.getFullYear() === currentYear;
     });
@@ -17,8 +20,8 @@ export const getCurrentYearCompletedDonations = (donations: Donation[]): Donatio
  * @unreleased
  * Calculate total contributions from completed donations
  */
-export const calculateTotalContributions = (donations: Donation[]): number => {
-    const total = donations?.reduce((acc, donation) => acc + Number(donation.amount.value), 0);
+export const calculateTotalContributions = (completedDonations: Donation[]): number => {
+    const total = completedDonations?.reduce((acc, donation) => acc + Number(donation.amount.value), 0);
 
     if (isNaN(total)) {
         return 0;
