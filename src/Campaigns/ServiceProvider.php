@@ -13,7 +13,6 @@ use Give\Campaigns\Actions\FormInheritsCampaignGoal;
 use Give\Campaigns\Actions\LoadCampaignAdminOptions;
 use Give\Campaigns\Actions\PreventDeleteDefaultForm;
 use Give\Campaigns\Actions\RedirectLegacyCreateFormToCreateCampaign;
-use Give\Campaigns\Actions\RenderDonateButton;
 use Give\Campaigns\Actions\ReplaceGiveFormsCptLabels;
 use Give\Campaigns\Actions\UnarchiveCampaignFormAsPublishStatus;
 use Give\Campaigns\ListTable\Routes\DeleteCampaignListTable;
@@ -46,11 +45,6 @@ class ServiceProvider implements ServiceProviderInterface
     public function register(): void
     {
         give()->singleton('campaigns', CampaignRepository::class);
-        give()->bind(RenderDonateButton::class, function () {
-            return new RenderDonateButton(
-                new BlockRenderController()
-            );
-        });
         $this->registerTableNames();
     }
 

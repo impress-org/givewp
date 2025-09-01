@@ -30,7 +30,7 @@ $blockInlineStyles = sprintf(
         if ($attributes['showButton'] && ! empty($donations)) : ?>
             <div class="givewp-campaign-donations-block__donate-button">
                 <?php
-                echo give(RenderDonateButton::class)($campaign->defaultFormId, $donateButtonText);
+                echo give(RenderDonateButton::class)($campaign, $attributes, $donateButtonText);
                 ?>
             </div>
         <?php
@@ -60,7 +60,7 @@ $blockInlineStyles = sprintf(
                     <?php
                     $firstDonationButtonText = __('Be the first', 'give');
 
-                    echo give(RenderDonateButton::class)($campaign->defaultFormId, $firstDonationButtonText);
+                    echo give(RenderDonateButton::class)($campaign, $attributes, $firstDonationButtonText);
                     ?>
                 </div>
             <?php
