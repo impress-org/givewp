@@ -3,8 +3,9 @@ import { ApexOptions } from 'apexcharts';
 import { getCompletedDonations } from '../SubscriptionStats';
 
 /**
- * @unreleased
  * Get completed donations for the current year
+ *
+ * @unreleased
  */
 export const getCurrentYearCompletedDonations = (donations: Donation[]): Donation[] => {
     const completedDonations = getCompletedDonations(donations);
@@ -17,29 +18,25 @@ export const getCurrentYearCompletedDonations = (donations: Donation[]): Donatio
 };
 
 /**
- * @unreleased
  * Calculate total contributions from completed donations
+ *
+ * @unreleased
  */
 export const calculateTotalContributions = (completedDonations: Donation[]): number => {
-    const total = completedDonations?.reduce((acc, donation) => acc + Number(donation.amount.value), 0);
-
-    if (isNaN(total)) {
+    if (!completedDonations) {
         return 0;
     }
 
-    return total;
+    return completedDonations?.reduce((acc, donation) => acc + Number(donation.amount.value), 0);
 };
 
 /**
- * @unreleased
  * Calculate progress percentage based on completed vs projected amounts
+ *
+ * @unreleased
  */
 export const calculateProgressPercentage = (completedAmount: number, projectedAmount: number): number => {
     const progress = Math.ceil((completedAmount / projectedAmount) * 100);
-
-    if (isNaN(progress)) {
-        return 0;
-    }
 
     return Math.min(progress, 100);
 };
