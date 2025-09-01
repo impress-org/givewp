@@ -483,7 +483,8 @@ class SubscriptionController extends WP_REST_Controller
                 $subscription->trash();
             }
 
-            $response = $this->prepare_item_for_response($subscription->toArray(), $request);
+            $item = (new SubscriptionViewModel($subscription))->includeSensitiveData(true)->exports();
+            $response = $this->prepare_item_for_response($item, $request);
 
             return rest_ensure_response($response);
         } catch (Exception $e) {
