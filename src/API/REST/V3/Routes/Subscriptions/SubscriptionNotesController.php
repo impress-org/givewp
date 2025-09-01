@@ -378,7 +378,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         $schema = [
-            'schema' => 'http://json-schema.org/draft-07/schema#',
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/subscription-note',
             'type' => 'object',
             'properties' => [

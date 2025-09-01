@@ -819,7 +819,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Change default status to complete
+     * @unreleased Change default status to complete and set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donation and add custom fields schema
      * @since 4.6.1 Change type of billing address properties to accept null values
      * @since 4.6.0
@@ -827,6 +827,7 @@ class DonationController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         $schema = [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donation',
             'type' => 'object',
             'properties' => [

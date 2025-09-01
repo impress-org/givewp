@@ -340,12 +340,14 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor and add custom fields schema
      * @since 4.4.0
      */
     public function get_item_schema(): array
     {
         $schema = [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donor',
             'type' => 'object',
             'properties' => [

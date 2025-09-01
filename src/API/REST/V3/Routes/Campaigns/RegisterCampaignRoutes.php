@@ -289,11 +289,13 @@ class RegisterCampaignRoutes
     }
 
     /**
+     * @unreleased Set proper JSON Schema version
      * @since 4.0.0
      */
     public function getSchema(): array
     {
         return [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/campaign',
             'type' => 'object',
             'properties' => [
