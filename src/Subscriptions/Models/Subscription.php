@@ -14,15 +14,13 @@ use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Actions\GenerateNextRenewalForSubscription;
+use Give\Subscriptions\Actions\CalculateProjectedAnnualRevenue;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
-use Give\DonationForms\DonationQuery;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donations\ValueObjects\DonationMetaKeys;
-use Give\Framework\QueryBuilder\QueryBuilder;
+
 
 /**
  * Class Subscription
@@ -357,107 +355,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @unreleased
      */
-    public function projectedAnnualRevenue()
+    public function projectedAnnualRevenue(): Money
     {
-        try {
-            $currentYear = (int) date('Y');
-            $yearStart = new DateTime("January 1st, {$currentYear}");
-            $yearEnd = new DateTime("December 31st, {$currentYear} 23:59:59");
-            
-            // Get completed donations from January 1st of current year to now
-            $completedAmount = (new DonationQuery())
-            ->whereIn("post_status", [
-                DonationStatus::COMPLETE,
-                DonationStatus::RENEWAL
-            ])
-            ->whereIn("ID", function (QueryBuilder $builder) {
-                $builder
-                    ->select("donation_id")
-                    ->from("give_donationmeta")
-                    ->where("meta_key", DonationMetaKeys::SUBSCRIPTION_ID)
-                    ->where("meta_value", $this->id);
-            })
-            ->between(
-                $yearStart->format("Y-m-d H:i:s"),
-                $yearEnd->format("Y-m-d H:i:s")
-            )
-            ->sumIntendedAmount();
-
-            $completedAmount = Money::fromDecimal($completedAmount, $this->amount->getCurrency());
-
-        // Calculate projected amount based on remaining donations this year
-        $remainingDonations = $this->getRemainingDonationCountUntilEndOfYear();
-        $projectedAmount = $this->intendedAmount()->multiply($remainingDonations);
-
-        return $completedAmount->add($projectedAmount);
-        } catch (Exception $e) {
-            // Return zero Money object on error
-            return new Money(0, $this->amount->getCurrency());
-        }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function getRemainingDonationCountUntilEndOfYear(): int
-    {
-        try {
-            if (!$this->amount || !$this->frequency || !$this->period) {
-                return 0;
-            }
-            
-            $now = new DateTime();
-            $currentYear = (int) $now->format('Y');
-            $yearEnd = new DateTime("December 31st, {$currentYear} 23:59:59");
-            
-            // Calculate remaining days until end of year
-            $remainingDays = max(0, $yearEnd->getTimestamp() - $now->getTimestamp());
-            $remainingDays = ceil($remainingDays / (24 * 3600));
-            
-            // Get periods per year based on subscription period
-            $periodsPerYear = $this->getNumericPeriodValue();
-            $daysPerPeriod = 365 / $periodsPerYear;
-            
-            // Calculate remaining periods and apply frequency
-            $remainingPeriods = floor($remainingDays / $daysPerPeriod);
-            $remainingDonations = floor($remainingPeriods / $this->frequency);
-            
-            // Respect installments limit if set
-            if ($this->installments > 0) {
-                $totalDonationsSoFar = $this->donations()->count();
-                $maxRemainingDonations = max(0, $this->installments - $totalDonationsSoFar);
-                $remainingDonations = min($remainingDonations, $maxRemainingDonations);
-            }
-            
-            return max(0, (int) $remainingDonations);
-            
-        } catch (Exception $e) {
-            return 0;
-        }
-    }
-
-    /**
-     * Converts a subscription period to its numeric value in terms of occurrences per year
-     *
-     * @unreleased
-     * @return float The number of periods in a year
-     */
-    private function getNumericPeriodValue(): float
-    {
-        $periodMap = [
-            'day' => 365,
-            'week' => 52,
-            'month' => 12,
-            'quarter' => 4,
-            'year' => 1,
-        ];
-
-        $period = $this->period->getValue();
-        
-        if (!array_key_exists($period, $periodMap)) {
-            throw new Exception("Invalid period value: {$period}");
-        }
-
-        return $periodMap[$period];
+        return give(CalculateProjectedAnnualRevenue::class)($this);
     }
 }

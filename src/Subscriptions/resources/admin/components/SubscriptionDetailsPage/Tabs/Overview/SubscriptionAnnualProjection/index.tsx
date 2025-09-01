@@ -45,7 +45,7 @@ export default function SubscriptionAnnualProjection({ subscription, donations, 
         <OverviewPanel>
             <div className={styles.goalProgressChart}>
                 <Header
-                    title={__('Projected Annual Value', 'give')}
+                    title={__('Projected Annual Revenue', 'give')}
                     subtitle={__('Estimated yearly contribution based on billing amount.', 'give')} />
                 <div className={styles.chartContainer}>
                     <Chart
