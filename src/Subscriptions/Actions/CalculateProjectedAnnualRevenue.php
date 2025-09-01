@@ -78,6 +78,9 @@ class CalculateProjectedAnnualRevenue
         $nextRenewal = clone $subscription->renewsAt;
         $currentYear = (new DateTime())->format('Y');
         $yearEnd = new DateTime('last day of December ' . $currentYear . ' 23:59:59');
+        $modifier = $subscription->period->isQuarter()
+            ? ($subscription->frequency * 3) . ' ' . SubscriptionPeriod::MONTH
+            : $subscription->frequency . ' ' . $subscription->period->getValue();
 
         $installments = 0;
 
@@ -86,7 +89,7 @@ class CalculateProjectedAnnualRevenue
                 $installments++;
             }
 
-            $nextRenewal->modify('+' . $subscription->frequency . ' ' . $subscription->period->getValue());
+            $nextRenewal->modify($modifier);
         }
 
         if ($subscription->installments > 0) {
