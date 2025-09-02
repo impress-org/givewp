@@ -409,7 +409,7 @@ class GiveFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.1
      */
     public function get_script_depends(): array
     {
@@ -417,7 +417,7 @@ class GiveFormWidget extends Widget_Base
     }
 
     /**
-     * @unreleased
+     * @since 4.7.1
      */
     public function get_style_depends(): array
     {

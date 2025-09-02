@@ -1,7 +1,7 @@
 import renderDonationForm from '@givewp/src/DonationForms/Blocks/DonationFormBlock/resources/app/renderDonationForm';
 
 /**
- * @unreleased
+ * @since 4.7.1
  */
 export default class GiveFormWidget extends elementorModules.frontend.handlers.Base {
     render() {

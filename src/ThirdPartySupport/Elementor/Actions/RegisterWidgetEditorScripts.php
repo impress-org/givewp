@@ -73,7 +73,7 @@ class RegisterWidgetEditorScripts
     }
 
     /**
-     * @unreleased
+     * @since 4.7.1
      */
     private function registerLegacyGiveFormWidgetScripts()
     {
