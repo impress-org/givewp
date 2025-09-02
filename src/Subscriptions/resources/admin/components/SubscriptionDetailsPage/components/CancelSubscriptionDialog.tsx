@@ -62,7 +62,7 @@ export default function CancelSubscriptionDialog({
                             aria-describedby="trash-subscription-description"
                         />
                         <span id="trash-subscription-description">
-                            {__('Trash subscription details after cancelling', 'give')}
+                            {__('Move subscription to trash after cancelling', 'give')}
                         </span>
                     </label>
                 </div>
