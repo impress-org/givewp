@@ -61,7 +61,7 @@
         "@fortawesome/react-fontawesome": "^0.1.12",
         "@givewp/design-system-foundation": "^1.2.0",
         "@givewp/form-builder-library": "^1.7.1",
-        "@givewp/mcp-server": "^0.2.0",
+        "@givewp/mcp-server": "^0.2.2",
         "@hookform/error-message": "^2.0.1",
         "@hookform/resolvers": "^2.9.10",
         "@paypal/paypal-js": "^8.2.0",
