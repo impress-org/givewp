@@ -14,11 +14,13 @@ use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Actions\GenerateNextRenewalForSubscription;
+use Give\Subscriptions\Actions\CalculateProjectedAnnualRevenue;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
+
 
 /**
  * Class Subscription
@@ -43,6 +45,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property string $gatewaySubscriptionId
  * @property Donor $donor
  * @property Donation[] $donations
+ * @property float $projectedAnnualRevenue
  */
 class Subscription extends Model implements ModelCrud, ModelHasFactory
 {
@@ -65,6 +68,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'status' => SubscriptionStatus::class,
         'gatewaySubscriptionId' => ['string', ''],
         'gatewayId' => 'string',
+        'projectedAnnualRevenue' => Money::class,
     ];
 
     /**
@@ -346,5 +350,13 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public static function factory(): SubscriptionFactory
     {
         return new SubscriptionFactory(static::class);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function projectedAnnualRevenue(): Money
+    {
+        return give(CalculateProjectedAnnualRevenue::class)($this);
     }
 }

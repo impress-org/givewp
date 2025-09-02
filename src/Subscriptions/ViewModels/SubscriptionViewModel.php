@@ -58,6 +58,7 @@ class SubscriptionViewModel
                 'firstName' => $donor ? $donor->firstName : '',
                 'lastName' => $donor ? $donor->lastName : '',
                 'gateway' => $this->getGatewayDetails(),
+                'projectedAnnualRevenue' => $this->subscription->projectedAnnualRevenue(),
             ]
         );
 

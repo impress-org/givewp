@@ -272,7 +272,7 @@ class TestSubscription extends TestCase
     public function testQueryShouldReturnAllRequiredValues()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
-        
+
         // Create a subscription with all required fields
         $subscription = Subscription::factory()->createWithDonation([
             'gatewayId' => 'test-gateway',
@@ -339,7 +339,7 @@ class TestSubscription extends TestCase
     public function testUpdateLegacyParentPaymentIdShouldUpdateParentPaymentIdInDatabase()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
-        
+
         // Create a subscription with donation
         $subscription = Subscription::factory()->createWithDonation([
             'gatewayId' => 'test-gateway',
@@ -353,7 +353,7 @@ class TestSubscription extends TestCase
 
         // Get the initial donation created with the subscription
         $initialDonation = $subscription->initialDonation();
-        
+
         // Verify that the initial donation exists and has an ID
         $this->assertNotNull($initialDonation, 'Initial donation should exist');
         $this->assertNotNull($initialDonation->id, 'Initial donation should have an ID');
@@ -401,7 +401,7 @@ class TestSubscription extends TestCase
     public function testCreateWithDonationShouldAutomaticallyUpdateParentPaymentId()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
-        
+
         // Create a subscription with donation - this should automatically trigger updateLegacyParentPaymentId
         $subscription = Subscription::factory()->createWithDonation([
             'gatewayId' => 'test-gateway',
@@ -415,7 +415,7 @@ class TestSubscription extends TestCase
 
         // Get the initial donation
         $initialDonation = $subscription->initialDonation();
-        
+
         // Verify that the initial donation exists
         $this->assertNotNull($initialDonation, 'Initial donation should exist');
         $this->assertNotNull($initialDonation->id, 'Initial donation should have an ID');

@@ -1,6 +1,6 @@
-import {StatWidget} from '@givewp/admin/components';
-import {__} from '@wordpress/i18n';
-import {amountFormatter} from '@givewp/admin/utils';
+import { StatWidget } from '@givewp/admin/components';
+import { __ } from '@wordpress/i18n';
+import { amountFormatter } from '@givewp/admin/utils';
 import { Donation } from '@givewp/donations/admin/components/types';
 import styles from './styles.module.scss';
 
@@ -18,14 +18,14 @@ type SubscriptionStatsProps = {
 /**
  * @unreleased
  */
-const getCompletedDonations = (donations: Donation[]) => {
+export const getCompletedDonations = (donations: Donation[]) => {
     return donations?.filter(donation => ['publish', 'give_subscription'].includes(donation.status));
 };
 
 /**
  * @unreleased
  */
-export default function SubscriptionStats({donations, currency, totalInstallments, loading}: SubscriptionStatsProps) {
+export default function SubscriptionStats({ donations, currency, totalInstallments, loading }: SubscriptionStatsProps) {
     const ongoingInstallments = totalInstallments === 0;
     const completedDonations = getCompletedDonations(donations);
     const paymentsCompleted = completedDonations?.length;
@@ -33,9 +33,9 @@ export default function SubscriptionStats({donations, currency, totalInstallment
 
     const paymentProgress = (
         <div className={styles.paymentProgress}>
-          {paymentsCompleted} / <span>{ongoingInstallments ? '\u221E'	 : totalInstallments}</span>
+            {paymentsCompleted} / <span>{ongoingInstallments ? '\u221E' : totalInstallments}</span>
         </div>
-      );
+    );
 
     return (
         <div className={styles.container}>

@@ -92,7 +92,9 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
                     'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),
                     'canSync' => $subscription->gateway()->canSyncSubscriptionWithPaymentGateway(),
                 ]
-            )
+            ),
+            'projectedAnnualRevenue' => $subscription->projectedAnnualRevenue()->toArray(),
+
         ], $data[0]);
     }
 

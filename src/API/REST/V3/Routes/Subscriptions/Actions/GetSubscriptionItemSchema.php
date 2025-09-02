@@ -174,6 +174,23 @@ class GetSubscriptionItemSchema
                         ],
                     ],
                 ],
+                'projectedAnnualRevenue' => [
+                    'type' => ['object', 'null'],
+                    'properties' => [
+                        'amount' => [
+                            'type' => 'number',
+                        ],
+                        'amountInMinorUnits' => [
+                            'type' => 'integer',
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                            'format' => 'text-field',
+                        ],
+                    ],
+                    'description' => esc_html__('Projected annual revenue for this subscription', 'give'),
+                    'readOnly' => true,
+                ],
             ],
         ];
     }
