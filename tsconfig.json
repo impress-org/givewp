@@ -7,7 +7,7 @@
             "dom"
         ],
         "jsx": "react-jsx",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "allowJs": true,
         "strict": false,
         "sourceMap": true,
