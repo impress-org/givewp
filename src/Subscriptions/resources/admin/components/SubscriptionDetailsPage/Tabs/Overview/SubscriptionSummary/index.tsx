@@ -31,7 +31,7 @@ const calculateEndDate = (subscription: Subscription): string | null => {
         return null;
     }
 
-    const startDate = new Date(subscription.createdAt); // Now a string ISO 8601
+    const startDate = new Date(subscription.createdAt);
     const period = subscription.period; // day, week, month, quarter, year
     const frequency = subscription.frequency; // how many periods between each payment
     const installments = subscription.installments; // total number of payments
@@ -85,8 +85,8 @@ export default function Summary({subscription, donation, adminUrl, intendedAmoun
 
     const summaryItems: SummaryItem[] = [
         {
-            label: __('Start date', 'give'),
-            value: dateI18n('jS M, Y', subscription?.createdAt, undefined), // Now a string ISO 8601
+          label: __('Start date', 'give'),
+          value: dateI18n('jS M, Y', subscription?.createdAt, undefined),
         },
         {
             label: __('End date', 'give'),

@@ -29,18 +29,8 @@ type SubscriptionDetailsProps = {
  */
 export default function SubscriptionSummaryGrid({subscription, donation, isLoading}: SubscriptionDetailsProps) {
     const isOngoing = subscription?.installments === 0;
-    const badgeLabel = isOngoing ? (
-        <>
-            <ClockIcon />
-            {__('Unlimited', 'give')}
-        </>
-    ) : (
-        <>
-            <HourGlassIcon />
-            {__('Limited', 'give')}
-        </>
-    );
-    const renewsAt = subscription?.renewsAt; // Now a string ISO 8601
+    const badgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
+    const renewsAt = subscription?.renewsAt;
     const paymentMethodId = subscription?.gatewayId || donation?.gateway?.id;
     const hasPaymentMethodDetails = subscription?.gateway?.id || donation?.gateway?.id;
     const gatewayLabel = subscription?.gateway?.label || donation?.gateway?.label;
