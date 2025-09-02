@@ -3,6 +3,7 @@
  */
 import { useState } from 'react';
 import cx from 'classnames';
+import { useFormContext } from 'react-hook-form';
 
 /**
  * WordPress Dependencies
@@ -12,7 +13,7 @@ import { __, _n, sprintf } from '@wordpress/i18n';
 /**
  * Internal Dependencies
 */
-import { TrashIcon } from '@givewp/components/AdminDetailsPage/Icons';
+import { CancelIcon, TrashIcon } from '@givewp/components/AdminDetailsPage/Icons';
 import AdminDetailsPage from '@givewp/components/AdminDetailsPage';
 import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from '@givewp/subscriptions/utils';
@@ -23,6 +24,7 @@ import { store as coreDataStore } from '@wordpress/core-data';
 import useSubscriptionSync from '@givewp/subscriptions/hooks/useSubscriptionSync';
 import SubscriptionSyncList from '../SubscriptionSyncList';
 import styles from './SubscriptionDetailsPage.module.scss';
+import CancelSubscriptionDialog from './components/CancelSubscriptionDialog';
 
 const { subscriptionStatuses } = getSubscriptionOptionsWindowData();
 
@@ -111,13 +113,23 @@ export default function SubscriptionDetailsPage() {
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (
             <>
-                <a
-                    href="#"
-                    className={cx(className, styles.archive)}
-                    onClick={() => setShowConfirmationDialog('delete')}
-                >
-                    <TrashIcon /> {__('Trash subscription', 'give')}
-                </a>
+                {subscription?.status !== 'cancelled' ? (
+                    <a
+                        href="#"
+                        className={cx(className, styles.archive)}
+                        onClick={() => setShowConfirmationDialog('cancel')}
+                    >
+                        <CancelIcon /> {__('Cancel subscription', 'give')}
+                    </a>
+                ) : (
+                    <a
+                        href="#"
+                        className={cx(className, styles.archive)}
+                        onClick={() => setShowConfirmationDialog('delete')}
+                    >
+                        <TrashIcon /> {__('Trash subscription', 'give')}
+                    </a>
+                )}
             </>
         );
     };
@@ -162,6 +174,11 @@ export default function SubscriptionDetailsPage() {
             StatusBadge={() => <StatusBadge status={subscription?.status} isTest={subscription?.mode === 'test'} />}
             ContextMenuItems={ContextMenuItems}
         >
+            <CancelSubscriptionDialog
+                subscription={subscription}
+                showConfirmationDialog={showConfirmationDialog}
+                setShowConfirmationDialog={setShowConfirmationDialog}
+            />
             <ConfirmationDialog
                 title={__('Move subscription to trash', 'give')}
                 actionLabel={__('Trash Subscription', 'give')}
@@ -177,19 +194,20 @@ export default function SubscriptionDetailsPage() {
                 isConfirming={isLoading}
                 title={__('Sync subscription details', 'give')}
                 actionLabel={isLoading ? __('Syncing', 'give') : !hasSyncBeenPerformed ? __('Proceed to sync', 'give') : __('Resync', 'give')}
+                showCancelButton={false}
                 isOpen={showConfirmationDialog === 'sync'}
                 handleClose={() => {
                     setShowConfirmationDialog(null);
                 }}
                 handleConfirm={handleSyncSubscription}
                 footer={
-                    hasSyncBeenPerformed && hasResolved && (
-                        <div className={styles.syncModalFooter}>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd" clipRule="evenodd" d="M10 .832a9.167 9.167 0 1 0 0 18.333A9.167 9.167 0 0 0 10 .832zm0 5a.833.833 0 1 0 0 1.667h.008a.833.833 0 0 0 0-1.667H10zm.833 4.167a.833.833 0 0 0-1.666 0v3.333a.833.833 0 1 0 1.666 0V9.999z" fill="#0C7FF2" />
-                            </svg>
-                            {syncResult?.notice}
-                        </div>
+                    hasSyncBeenPerformed && hasResolved && syncResult?.notice && (
+                    <div className={styles.syncModalFooter}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd" clipRule="evenodd" d="M10 .832a9.167 9.167 0 1 0 0 18.333A9.167 9.167 0 0 0 10 .832zm0 5a.833.833 0 1 0 0 1.667h.008a.833.833 0 0 0 0-1.667H10zm.833 4.167a.833.833 0 0 0-1.666 0v3.333a.833.833 0 1 0 1.666 0V9.999z" fill="#0C7FF2"/>
+                        </svg>
+                        {syncResult?.notice}
+                    </div>
                     )
                 }
             >

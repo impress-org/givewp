@@ -15,6 +15,7 @@ export type ConfirmationDialogProps = {
     variant?: 'error' | 'regular' | 'syncing';
     className?: string;
     actionLabel: string;
+    showCancelButton?: boolean;
     children: React.ReactNode;
     isConfirming?: boolean;
     spinner?: 'regular' | 'arc' | 'none';
@@ -22,6 +23,7 @@ export type ConfirmationDialogProps = {
 }
 
 /**
+ * @unreleased Add showCancelButton prop
  * @since 4.4.0
  */
 export default function ConfirmationDialog({
@@ -33,6 +35,7 @@ export default function ConfirmationDialog({
     handleConfirm,
     className,
     actionLabel,
+    showCancelButton = true,
     children,
     isConfirming = false,
     spinner ='none',
@@ -52,12 +55,14 @@ export default function ConfirmationDialog({
                     {children}
                 </div>
                 <div className={styles.confirmationDialogButtons}>
-                    <button
-                        className={styles.cancelButton}
-                        onClick={handleClose}
-                    >
-                        {__('Cancel', 'give')}
-                    </button>
+                    {showCancelButton && (
+                        <button
+                            className={styles.cancelButton}
+                            onClick={handleClose}
+                        >
+                            {__('Cancel', 'give')}
+                        </button>
+                    )}
                     <button
                         className={cx(styles.confirmButton, styles[`confirmButton--${variant}`])}
                         onClick={handleConfirm}
