@@ -124,7 +124,7 @@
         &__load-more-button,
         &__donate-button button.givewp-donation-form-modal__open,
         &__empty-button button.givewp-donation-form-modal__open {
-            background: none;
+            background: none !important;
             border-radius: 0.5rem;
             border: 1px solid var(--givewp-primary-color);
             color: var(--givewp-primary-color) !important;
@@ -134,7 +134,7 @@
             padding: 0.25rem 1rem !important;
 
             &:hover {
-                background: var(--givewp-primary-color);
+                background: var(--givewp-primary-color) !important;
                 color: var(--givewp-shades-white) !important;
             }
         }

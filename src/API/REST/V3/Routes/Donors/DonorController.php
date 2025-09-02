@@ -103,6 +103,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
+     * @unreleased Add support for search parameter
      * @since 4.0.0
      *
      * @param WP_REST_Request $request Full details about the request.
@@ -119,6 +120,11 @@ class DonorController extends WP_REST_Controller
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
         $query = new DonorsQuery();
+
+        if ($request->get_param('search')) {
+            $query->whereLike('name', '%%' . $request->get_param('search') . '%%');
+            $query->orWhereLike('email', '%%' . $request->get_param('search') . '%%');
+        }
 
         // Donors only can be donors if they have donations associated with them
         if ($request->get_param('onlyWithDonations')) {
@@ -204,6 +210,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
+     * @unreleased Update donor name when firstName or lastName is updated
      * @since 4.7.0 Add support for updating custom fields
      * @since 4.4.0
      *
@@ -240,6 +247,10 @@ class DonorController extends WP_REST_Controller
                     $donor->$key = $value;
                 }
             }
+        }
+
+        if ($request->get_param('firstName') || $request->get_param('lastName')) {
+            $donor->name = trim($donor->firstName . ' ' . $donor->lastName);
         }
 
         if ($donor->isDirty()) {
@@ -443,6 +454,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Re-add search parameter
      * @since 4.4.0
      */
     public function get_collection_params(): array
@@ -454,7 +466,6 @@ class DonorController extends WP_REST_Controller
 
         // Remove default parameters not being used
         unset($params['context']);
-        unset($params['search']);
 
         $params += [
             'sort' => [

@@ -78,8 +78,7 @@ class CampaignRequestController
             return $campaign->id;
         }, $campaigns);
 
-        // We don't have to optimize if the number of campaigns is less than 3
-        $campaignsData = count($ids) >= 3
+        $campaignsData = ! empty($ids)
             ? CampaignsDataRepository::campaigns($ids)
             : null;
 
