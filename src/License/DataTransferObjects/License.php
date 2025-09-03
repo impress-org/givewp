@@ -3,13 +3,11 @@
 namespace Give\License\DataTransferObjects;
 
 /**
- * @unreleased add inactiveDate
  * @since 4.3.0
  */
 class License
 {
     public bool $isActive;
-    public ?int $inactiveDate;
     public float $gatewayFee;
     public bool $success;
     public string $license;
@@ -37,7 +35,6 @@ class License
     {
         $self = new self();
         $self->isActive = $data['license'] === 'valid';
-        $self->inactiveDate = $data['inactive_date'] ?? 0;
         $self->success = (bool)($data['success'] ?? false);
         $self->license = (string)($data['license'] ?? '');
         $self->itemId = $data['item_id'] ?? null;

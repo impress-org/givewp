@@ -2424,7 +2424,6 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
- * @unreleased updated to store license inactive_date
  * @since 4.3.0 updated to store platform fee percentage
  * @since 2.27.0 delete update_plugins transient instead of invalidate it
  * @since  2.5.0
@@ -2502,29 +2501,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 			unset( $give_licenses[ $key ] );
 			continue;
 		}
-
-		// Handle license inactive date
-		$previous = $give_licenses[$key] ?? null;
-		$was_valid = ($previous['license'] ?? null) === 'valid';
-		$is_valid  = ($data['license'] ?? null) === 'valid';
 	
-		// Existing inactive date
-		$existing_inactive_date = isset($previous['inactive_date']) && !empty($previous['inactive_date'])
-			? $previous['inactive_date']
-			: null;
-	
-		if ($was_valid && !$is_valid) {
-			// valid -> invalid: set current date
-			$data['inactive_date'] = current_time('timestamp', true);
-		} elseif (!$is_valid) {
-			// Still invalid: set existing inactive date
-			$data['inactive_date'] = $existing_inactive_date;
-		} else {
-			// Becomes valid: clear inactive date
-			$data['inactive_date'] = null;
-		}
-	
-
 		$give_licenses[ $key ] = $data;
 	}
 
@@ -2571,6 +2548,15 @@ function get_platform_fee_from_licenses(): ?float
     $repository = give(LicenseRepository::class);
 
     return $repository->findLowestPlatformFeePercentageFromActiveLicenses();
+}
+
+// method get inactive date - unit test
+function set_license_active_date(): ?int
+{
+    /** @var LicenseRepository $repository */
+    $repository = give(LicenseRepository::class);
+
+    return $();
 }
 
 /**
