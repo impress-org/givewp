@@ -377,7 +377,7 @@ ul[role='document'] + .flexRow {
 }
 
 .container {
-    z-index: 11;
+    z-index: 9999;
     display: flex;
     opacity: 1;
     animation: appear 180ms ease-in 0s 1;
