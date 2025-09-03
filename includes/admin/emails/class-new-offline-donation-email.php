@@ -50,7 +50,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 						'payment_method' => esc_html__( 'Offline', 'give' ),
 					),
 					'default_email_subject'        => $this->get_default_email_subject(),
-					'default_email_message'        => ( false !== give_get_option( 'new-offline-donation_email_message' ) ) ? give_get_option( 'new-offline-donation_email_message' ) : give_get_default_donation_notification_email(),
+					'default_email_message'        => ( false !== give_get_option( 'new-offline-donation_email_message' ) ) ? give_get_option( 'new-offline-donation_email_message' ) : $this->get_default_email_message(),
 					'default_email_header'         => __( 'New Offline Donation!', 'give' ),
 					'notices'                      => array(
 						'non-notification-status-editable' => sprintf(
@@ -117,7 +117,7 @@ if ( ! class_exists( 'Give_New_Offline_Donation_Email' ) ) :
 
 			$message .= sprintf(
 				'<a href="%1$s">%2$s</a>',
-				admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-order-details&id=' . $this->payment->ID ),
+				admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&id=' . $this->payment->ID ),
 				__( 'Click Here to View and/or Update Donation Details', 'give' )
 			) . "\n\n";
 
