@@ -39,8 +39,7 @@
         }
 
         &--archived,
-        &--inactive,
-        {
+        &--inactive {
             background: var(--givewp-grey-100);
             color: var(--givewp-grey-900);
         }
@@ -80,6 +79,7 @@
             color: var(--givewp-blue-25);
         }
     }
+
     .subscriptionStatus {
         display: flex;
         gap: 10px;
@@ -147,6 +147,29 @@
 
     .subscriptionStatus:hover .subscriptionStatus__message {
         visibility: visible;
+    }
+
+    .subscriptionDonationTypeBadge {
+        --border-width: 1px;
+        --padding-x: calc(var(--givewp-spacing-3) - var(--border-width));
+        --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
+        align-items: center;
+        background-color: var(--givewp-neutral-25);
+        border-radius: 1.5rem;
+        border: var(--border-width) solid var(--givewp-neutral-600);
+        color: var(--givewp-neutral-900);
+        display: inline-flex;
+        justify-content: center;
+        padding: var(--padding-y) var(--padding-x);
+
+        p {
+            font-size: 0.75rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
     }
 
     .badge {
@@ -385,4 +408,48 @@
     content: '#';
     font-size: 0.615em;
     padding-inline-end: 0.25em;
+}
+
+.list-table-page-container--new-design {
+    .interweave {
+        .campaignLink {
+            font-weight: 600;
+        }
+
+        .statusBadge {
+            border-radius: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            height: auto;
+            letter-spacing: 0;
+            line-height: 1.5;
+            padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+
+            p {
+                margin: 0;
+            }
+        }
+
+        .amount {
+            color: var(--givewp-neutral-700);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+    }
+
+    .idBadge {
+        background-color: var(--givewp-neutral-50);
+        border-radius: 0.5rem;
+        border: 1px solid var(--givewp-neutral-200);
+        color: var(--givewp-neutral-700);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        line-height: normal;
+        padding: 0.1875rem 0.5rem;
+
+        &::before {
+            font-size: 0.5rem;
+            padding: 0;
+        }
+    }
 }

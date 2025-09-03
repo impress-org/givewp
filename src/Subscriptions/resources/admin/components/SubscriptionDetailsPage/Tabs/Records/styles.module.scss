@@ -1,0 +1,16 @@
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--givewp-spacing-4);
+    align-items: center;
+    text-align: center;
+    background: var(--givewp-shades-white);
+    padding: 40px 0;
+    height: 236px;
+}
+.description {
+    font-size: 0.875rem;
+    line-height: 1.43;
+    color: var(--givewp-neutral-500);
+}

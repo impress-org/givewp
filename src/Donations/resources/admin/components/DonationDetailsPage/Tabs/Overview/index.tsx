@@ -2,9 +2,9 @@ import styles from './styles.module.scss';
 import DonationStats from './DonationStats';
 import DonationSummaryGrid from './DonationSummaryGrid';
 import DonationReceipt from './DonationReceipt';
+import Spinner from '@givewp/src/Admin/components/Spinner';
 import { useDonationEntityRecord } from '@givewp/donations/utils';
 import {DonationNotes} from '@givewp/src/Admin/components/PrivateNotes';
-import Spinner from '@givewp/src/Admin/components/Spinner';
 
 /**
  * @since 4.6.0
@@ -12,21 +12,20 @@ import Spinner from '@givewp/src/Admin/components/Spinner';
 export default function DonationDetailsPageOverviewTab() {
     const urlParams = new URLSearchParams(window.location.search);
     const donationId = parseInt(urlParams.get('id') ?? '0');
-    const {record: donation, hasResolved: hasResolvedDonation, isResolving: isResolvingDonation } = useDonationEntityRecord(donationId);
+    const {record: donation, hasResolved: hasResolvedDonation } = useDonationEntityRecord(donationId);
 
-    if (!hasResolvedDonation || isResolvingDonation || !donation) {
+    if (!hasResolvedDonation || !donation) {
         // TODO: Add loading state
         return <Spinner />;
     }
 
     return (
         <div className={styles.overview}>
-            <DonationStats donation={donation} isResolving={isResolvingDonation} />
+            <DonationStats donation={donation} isResolving={!hasResolvedDonation} />
 
             <div className={styles.left}>
-                <DonationSummaryGrid
-                    donation={donation}
-                />
+                <DonationSummaryGrid donation={donation}/>
+
                 <div className={styles.card}>
                     <DonationNotes donationId={donationId} />
                 </div>
