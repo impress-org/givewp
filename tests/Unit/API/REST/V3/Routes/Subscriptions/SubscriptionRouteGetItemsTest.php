@@ -7,6 +7,7 @@ use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Framework\Database\DB;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -90,7 +91,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
                 $subscription->gateway()->toArray(),
                 [
                     'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),
-                    'canSync' => $subscription->gateway()->canSyncSubscriptionWithPaymentGateway(),
+                    'canSync' => $subscription->gateway()->subscriptionModule instanceof SubscriptionTransactionsSynchronizable,
                 ]
             ),
             'projectedAnnualRevenue' => $subscription->projectedAnnualRevenue()->toArray(),
