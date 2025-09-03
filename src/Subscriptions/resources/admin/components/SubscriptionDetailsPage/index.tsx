@@ -68,7 +68,7 @@ export default function SubscriptionDetailsPage() {
     const { formatter } = useSubscriptionAmounts(subscription);
     const { deleteEntityRecord } = useDispatch(coreDataStore);
     const { syncSubscription, isLoading, hasResolved, syncResult } = useSubscriptionSync();
-    const subscriptionCanSync = subscription?.gateway?.canSync || !subscription?.gateway?.id;
+    const subscriptionCanSync = subscription?.gateway?.canSync;
 
     const PageTitle = () => {
         if (subscription?.amount?.value == null) {
