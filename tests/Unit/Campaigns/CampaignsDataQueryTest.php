@@ -8,6 +8,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Support\Facades\ActionScheduler\AsBackgroundJobs;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -116,5 +117,37 @@ final class CampaignsDataQueryTest extends TestCase
                 'campaign_id' => $campaign->id,
             ]
         ], $campaignsDataQuery->collectIntendedAmounts());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCampaignCache()
+    {
+        /** @var Campaign $campaign */
+        $campaign = Campaign::factory()->create([
+            'goalType' => CampaignGoalType::AMOUNT(),
+        ]);
+
+        $form = DonationForm::find($campaign->defaultFormId);
+
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'formId' => $form->id,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(12000, 'EUR'),
+        ]);
+
+        $campaignsDataQuery = CampaignsDataQuery::donations([$campaign->id]);
+
+        $action = AsBackgroundJobs::getActionsByGroup('givewp_campaigns_cache');
+
+        current($action)->execute();
+
+        $campaignsDataCache = get_option('give_campaigns_data', []);
+
+        $this->assertEquals($campaignsDataCache['amounts'], $campaignsDataQuery->collectIntendedAmounts());
+        $this->assertEquals($campaignsDataCache['donationsCount'], $campaignsDataQuery->collectDonations());
+        $this->assertEquals($campaignsDataCache['donorsCount'], $campaignsDataQuery->collectDonors());
     }
 }

@@ -12,6 +12,7 @@ export default function DonationDetailsPageRecordsGeneralTab() {
         <>
             <AdminSectionsWrapper>
                 <DonationDetails />
+                <AssociatedDonor />
                 <BillingDetails />
             </AdminSectionsWrapper>
         </>
