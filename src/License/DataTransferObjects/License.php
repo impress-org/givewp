@@ -17,7 +17,6 @@ class License
     public string $itemName;
     public string $checksum;
     public string $expires;
-    public string $gracePeriod;
     public int $paymentId;
     public string $customerName;
     public string $customerEmail;
