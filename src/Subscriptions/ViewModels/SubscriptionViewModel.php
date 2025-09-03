@@ -5,6 +5,7 @@ namespace Give\Subscriptions\ViewModels;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Subscriptions\Models\Subscription;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 
 /**
  * @unreleased
@@ -112,7 +113,7 @@ class SubscriptionViewModel
             $this->subscription->gateway()->toArray(),
             [
                 'subscriptionUrl' => $this->subscription->gateway()->gatewayDashboardSubscriptionUrl($this->subscription),
-                'canSync' => $this->subscription->gateway()->canSyncSubscriptionWithPaymentGateway(),
+                'canSync' => $this->subscription->gateway()->subscriptionModule instanceof SubscriptionTransactionsSynchronizable
             ]
         );
     }
