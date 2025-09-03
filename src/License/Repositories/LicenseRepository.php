@@ -110,26 +110,31 @@ class LicenseRepository
         return $this->getStoredPlatformFeePercentage();
     }
 
-     /**
+    /**
+     * Check if licenses are in the grace period.
+     *
      * @unreleased
      */
     private function isLicenseInGracePeriod(): bool
     {
-        $licenses = $this->getLicenses();
-        
+        $licenses     = $this->getLicenses();
+        $currentTime = current_time('timestamp', true);
+
         foreach ($licenses as $license) {
-            if (isset($license->gracePeriod) && !empty($license->gracePeriod)) {
-                $grace_period_end = strtotime($license->gracePeriod);
-                $current_time = current_time('timestamp');
-                
-                if ($current_time <= $grace_period_end) {
-                    return true;
-                }
+            $inactiveDate = $license->inactiveDate ?? 0;
+            if ($inactiveDate && $currentTime <= $inactiveDate + (30 * DAY_IN_SECONDS)) {
+                return true;
+            }
+
+            $expiresDate = $license->expires ?? 0;
+            if ($expiresDate && $currentTime <= $expiresDate) {
+                return true;
             }
         }
-        
+
         return false;
     }
+
 
     /**
      * Check if we have an available platform fee percentage set.
