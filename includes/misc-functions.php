@@ -2501,9 +2501,6 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 			unset( $give_licenses[ $key ] );
 			continue;
 		}
-	
-		$give_licenses[ $key ] = $data;
-	}
 
 	$tmp_update_plugins = array_merge(
 		array_filter( wp_list_pluck( $tmp, 'get_version' ) ),
@@ -2513,6 +2510,8 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 	if ( $tmp_unlicensed ) {
 		$tmp_update_plugins = array_merge( $tmp_update_plugins, $tmp_unlicensed );
 	}
+
+
 
 	update_option( 'give_licenses', $give_licenses, 'no' );
 	update_option( 'give_get_versions', $tmp_update_plugins, 'no' );
@@ -2526,6 +2525,13 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
     if (!is_null($platform_fee_percentage)) {
         update_option( LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, $platform_fee_percentage, 'no' );
+    }
+
+    // Update active license date after license refresh when active license is found
+    $active_license_date = get_active_license_date();
+
+	if(!is_null($active_license_date)) {
+        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, $active_license_date, 'no');
     }
 
 	// Tell WordPress to look for updates.
@@ -2550,13 +2556,17 @@ function get_platform_fee_from_licenses(): ?float
     return $repository->findLowestPlatformFeePercentageFromActiveLicenses();
 }
 
-// method get inactive date - unit test
-function set_license_active_date(): ?int
+/**
+ * Set Active License Date
+ * 
+ * @unreleased
+ */
+function get_active_license_date(): ?int
 {
     /** @var LicenseRepository $repository */
     $repository = give(LicenseRepository::class);
 
-    return $();
+    return $repository->getActiveLicensesDate();
 }
 
 /**
