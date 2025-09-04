@@ -112,22 +112,24 @@ class LicenseRepository
 
     /**
      * Check if licenses are in the grace period.
+     * Grace period is 30 days after the last active license date with a 3 day buffer for the refresh system.
      *
      * @unreleased
      */
     private function isLicenseInGracePeriod(): bool
     {
-        $licenses     = $this->getLicenses();
         $currentTime = current_time('timestamp', true);
-
+        
+        $lastActiveDate = get_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE);
+        if ($lastActiveDate && $currentTime <= $lastActiveDate + (33 * DAY_IN_SECONDS)) {
+            return true;
+        }
+        
+        // Fallback: Check individual license expiration dates
+        $licenses = $this->getActiveLicenses();
         foreach ($licenses as $license) {
-            $inactiveDate = $license->inactiveDate ?? 0;
-            if ($inactiveDate && $currentTime <= $inactiveDate + (30 * DAY_IN_SECONDS)) {
-                return true;
-            }
-
             $expiresDate = $license->expires ?? 0;
-            if ($expiresDate && $currentTime <= $expiresDate) {
+            if ($expiresDate && $currentTime <= $expiresDate + (33 * DAY_IN_SECONDS)) {
                 return true;
             }
         }
@@ -135,6 +137,22 @@ class LicenseRepository
         return false;
     }
 
+    /**
+     * Get the date when licenses were last active.
+     * This is used to track when licenses were last valid.
+     *
+     * @unreleased
+     */
+    public function getActiveLicenseDate(): ?int
+    {
+        if (!$this->hasActiveLicenses()) {
+            return null;
+        }
+
+        $currentTime = current_time('timestamp', true);
+
+        return $currentTime;
+    }
 
     /**
      * Check if we have an available platform fee percentage set.
