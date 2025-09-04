@@ -21,6 +21,7 @@ class RegisterWidgetEditorScripts
     const CAMPAIGN_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-widget';
     const CAMPAIGN_GRID_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-grid-widget';
     const CAMPAIGN_COMMENTS_WIDGET_SCRIPT_NAME = 'givewp-elementor-campaign-comments-widget';
+    const LEGACY_GIVE_FORM_WIDGET_SCRIPT_NAME = 'givewp-elementor-legacy-give-form-widget';
 
     /**
      * @since 4.7.0
@@ -32,7 +33,8 @@ class RegisterWidgetEditorScripts
         $this->registerFormGridWidgetScripts();
         $this->registerCampaignWidgetScripts();
         $this->registerCampaignGridWidgetScripts();
-            $this->registerCampaignCommentsWidgetScripts();
+        $this->registerCampaignCommentsWidgetScripts();
+        $this->registerLegacyGiveFormWidgetScripts();
     }
 
 
@@ -65,6 +67,29 @@ class RegisterWidgetEditorScripts
         wp_register_style(
             self::CAMPAIGN_GOAL_WIDGET_SCRIPT_NAME,
             GIVE_PLUGIN_URL . 'build/campaignGoalBlockApp.css',
+            [],
+            $scriptAsset['version']
+        );
+    }
+
+    /**
+     * @since 4.7.1
+     */
+    private function registerLegacyGiveFormWidgetScripts()
+    {
+        $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/elementorLegacyGiveFormWidget.asset.php');
+
+        wp_register_script(
+            self::LEGACY_GIVE_FORM_WIDGET_SCRIPT_NAME,
+            GIVE_PLUGIN_URL . 'build/elementorLegacyGiveFormWidget.js',
+            $scriptAsset['dependencies'],
+            $scriptAsset['version'],
+            true
+        );
+
+        wp_register_style(
+            self::LEGACY_GIVE_FORM_WIDGET_SCRIPT_NAME,
+            GIVE_PLUGIN_URL . 'build/elementorLegacyGiveFormWidget.css',
             [],
             $scriptAsset['version']
         );
