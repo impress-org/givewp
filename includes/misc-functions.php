@@ -2567,7 +2567,7 @@ function get_active_license_date(): ?int
     /** @var LicenseRepository $repository */
     $repository = give(LicenseRepository::class);
 
-    return $repository->getLastActiveLicenseDate();
+    return $repository->getCurrentActiveLicenseDate();
 }
 
 /**
