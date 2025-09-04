@@ -508,6 +508,69 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
+     * @unreleased
+     */
+    public function testGetGracePeriodInSecondsReturnsCorrectValue(): void
+    {
+        $expectedSeconds = 33 * DAY_IN_SECONDS;
+        $this->assertSame($expectedSeconds, $this->repository->getGracePeriodInSeconds());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetLastActiveLicenseDateReturnsStoredValue(): void
+    {
+        $testTimestamp = current_time('timestamp', true) - (10 * DAY_IN_SECONDS);
+        
+        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, $testTimestamp);
+        
+        $this->assertSame($testTimestamp, $this->repository->getLastActiveLicenseDate());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetCurrentActiveLicenseDateReturnsNullWhenNoActiveLicenses(): void
+    {
+        // Ensure no active licenses
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+            ]
+        );
+        
+        $this->assertNull($this->repository->getCurrentActiveLicenseDate());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetCurrentActiveLicenseDateReturnsCurrentTimestampWhenActiveLicenses(): void
+    {
+        // Set up active license
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'valid'
+                ]),
+            ]
+        );
+        
+        $beforeCall = current_time('timestamp', true);
+        $result = $this->repository->getCurrentActiveLicenseDate();
+        $afterCall = current_time('timestamp', true);
+        
+        $this->assertNotNull($result);
+        $this->assertGreaterThanOrEqual($beforeCall, $result);
+        $this->assertLessThanOrEqual($afterCall, $result);
+    }
+
+    /**
      * @since 4.3.0
      */
     public function gatewayFeeDataProvider(): array
