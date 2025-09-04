@@ -29,7 +29,17 @@ type SubscriptionDetailsProps = {
  */
 export default function SubscriptionSummaryGrid({subscription, donation, isLoading}: SubscriptionDetailsProps) {
     const isOngoing = subscription?.installments === 0;
-    const badgeLabel = isOngoing ? <><ClockIcon />{__('Unlimited', 'give')}</> : <><HourGlassIcon />{__('Limited', 'give')}</>;
+    const badgeLabel = isOngoing ? (
+        <>
+            <ClockIcon />
+            {__('Unlimited', 'give')}
+        </>
+    ) : (
+        <>
+            <HourGlassIcon />
+            {__('Limited', 'give')}
+        </>
+    );
     const renewsAt = subscription?.renewsAt;
     const paymentMethodId = subscription?.gatewayId || donation?.gateway?.id;
     const hasPaymentMethodDetails = subscription?.gateway?.id || donation?.gateway?.id;
@@ -74,7 +84,7 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">
                     {isLoading && <Spinner />}
-                    {!isLoading && !paymentMethod ? (
+                    {!isLoading && !paymentMethodId ? (
                         <GatewayNotice />
                     ) : (
                         <>

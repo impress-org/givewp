@@ -85,8 +85,8 @@ export default function Summary({subscription, donation, adminUrl, intendedAmoun
 
     const summaryItems: SummaryItem[] = [
         {
-          label: __('Start date', 'give'),
-          value: dateI18n('jS M, Y', subscription?.createdAt, undefined),
+            label: __('Start date', 'give'),
+            value: dateI18n('jS M, Y', subscription?.createdAt, undefined),
         },
         {
             label: __('End date', 'give'),
@@ -110,7 +110,6 @@ export default function Summary({subscription, donation, adminUrl, intendedAmoun
             value: amountFormatter(subscription?.amount?.currency).format(intendedAmount),
         },
     ];
-
 
     return (
         <OverviewPanel className={styles.summaryPanel}>
