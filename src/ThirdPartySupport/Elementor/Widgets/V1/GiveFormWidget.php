@@ -6,6 +6,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
 use Give\Helpers\Form\Utils;
 use Elementor\Widget_Base;
+use Give\ThirdPartySupport\Elementor\Actions\RegisterWidgetEditorScripts;
 
 /**
  * Elementor Give Form Widget.
@@ -405,5 +406,21 @@ class GiveFormWidget extends Widget_Base
     private function getFormTemplate($formId)
     {
         return Give()->form_meta->get_meta($formId, '_give_form_template', true);
+    }
+
+    /**
+     * @since 4.7.1
+     */
+    public function get_script_depends(): array
+    {
+        return [RegisterWidgetEditorScripts::LEGACY_GIVE_FORM_WIDGET_SCRIPT_NAME];
+    }
+
+    /**
+     * @since 4.7.1
+     */
+    public function get_style_depends(): array
+    {
+        return [RegisterWidgetEditorScripts::LEGACY_GIVE_FORM_WIDGET_SCRIPT_NAME];
     }
 }

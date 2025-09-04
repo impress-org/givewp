@@ -21,7 +21,7 @@
         "baseUrl": ".",
         "paths": {
             "@givewp/components": [
-                "./src/Views/Components/index.js"
+                "src/Views/Components/index.ts"
             ],
             "@givewp/components/*": [
                 "./src/Views/Components/*"
@@ -59,8 +59,14 @@
             "@givewp/donations/*": [
                 "./src/Donations/resources/*"
             ],
+            "@givewp/subscriptions/*": [
+                "./src/Subscriptions/resources/*"
+            ],
             "@givewp/admin/*": [
                 "./src/Admin/*"
+            ],
+            "@givewp/admin/components": [
+                "./src/Admin/components"
             ],
             "@givewp/src/*": [
                 "./src/*"

@@ -16,12 +16,34 @@
         transform: scale(112%);
         margin: 3px 0 3px 8px;
 
-        > path {
+        >path {
             &:hover {
                 fill: #0878b0 !important;
+            }
+        }
+    }
+}
+
+:global(.list-table-page-container--new-design) {
+    .sortButton {
+        color: var(--givewp-neutral-900);
+        padding: 0;
+        transform: none;
+
+        svg {
+            &[data-sorting="true"] {
+                >path {
+                    fill: var(--givewp-neutral-900) !important;
+                }
+            }
+
+            >path {
+                fill: var(--givewp-neutral-200);
+
+                &:hover {
+                    fill: var(--givewp-neutral-900) !important;
                 }
             }
         }
     }
-
-
+}

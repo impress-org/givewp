@@ -17,7 +17,7 @@ export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters
         window.location.reload();
     };
 
-    const confirmDelete = (selected) => <p>{sprintf(__('Are you sure you want to move donation #%d to the trash? You can restore it later if needed.', 'give'), item.id)}</p>;
+    const confirmDelete = (selected) => <p>{sprintf(__('Are you sure you want to move donation #%d to the trash?', 'give'), item.id)}</p>;
 
     const confirmModal = (event) => {
         showConfirmModal(__('Move donation to trash', 'give'), confirmDelete, deleteItem, 'danger', __('Trash Donation', 'give'));

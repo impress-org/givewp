@@ -353,7 +353,7 @@ ul[role='document'] + .flexRow {
     }
 }
 
-#searchContainer {
+.searchContainer {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem 1.5rem;
@@ -377,7 +377,7 @@ ul[role='document'] + .flexRow {
 }
 
 .container {
-    z-index: 11;
+    z-index: 9999;
     display: flex;
     opacity: 1;
     animation: appear 180ms ease-in 0s 1;
@@ -542,5 +542,17 @@ ul[role='document'] + .flexRow {
 @media (prefers-reduced-motion: reduce) {
     .container {
         animation: none;
+    }
+}
+
+:global(.list-table-page-container--new-design) {
+    .page {
+        font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    .pageActions {
+        justify-content: space-between;
+        margin-block-start: var(--givewp-spacing-6);
+        margin-block-end: var(--givewp-spacing-4);
     }
 }
