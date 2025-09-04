@@ -2514,8 +2514,6 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 		$tmp_update_plugins = array_merge( $tmp_update_plugins, $tmp_unlicensed );
 	}
 
-
-
 	update_option( 'give_licenses', $give_licenses, 'no' );
 	update_option( 'give_get_versions', $tmp_update_plugins, 'no' );
 
