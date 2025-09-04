@@ -63,7 +63,7 @@ class SubscriptionViewModel
             ]
         );
 
-        if ( ! $this->includeSensitiveData) {
+        if (!$this->includeSensitiveData) {
             $sensitiveDataExcluded = [
                 'transactionId',
                 'gatewaySubscriptionId',
@@ -78,7 +78,7 @@ class SubscriptionViewModel
             }
         }
 
-        if (isset($this->anonymousMode ) && $this->anonymousMode->isRedacted() && $this->subscription->donor->isAnonymous()) {
+        if (isset($this->anonymousMode) && $this->anonymousMode->isRedacted() && $this->subscription->donor->isAnonymous()) {
             $anonymousDataRedacted = [
                 'donorId',
                 'firstName',
@@ -105,7 +105,7 @@ class SubscriptionViewModel
      */
     private function getGatewayDetails(): array
     {
-        if ( ! give(PaymentGatewayRegister::class)->hasPaymentGateway($this->subscription->gatewayId)) {
+        if (empty($this->subscription->gatewayId) || !give(PaymentGatewayRegister::class)->hasPaymentGateway($this->subscription->gatewayId)) {
             return [];
         }
 

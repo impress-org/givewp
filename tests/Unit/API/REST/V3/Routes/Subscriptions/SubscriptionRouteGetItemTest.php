@@ -4,6 +4,7 @@ namespace Unit\API\REST\V3\Routes\Subscriptions;
 
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
@@ -12,10 +13,9 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
-use Give\Donors\Models\Donor;
 
 /**
  * @unreleased
@@ -48,16 +48,9 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
 
-        // Verify DateTime object structure for createdAt and renewsAt
-        $this->assertIsArray($data['createdAt']);
-        $this->assertArrayHasKey('date', $data['createdAt']);
-        $this->assertArrayHasKey('timezone', $data['createdAt']);
-        $this->assertArrayHasKey('timezone_type', $data['createdAt']);
-
-        $this->assertIsArray($data['renewsAt']);
-        $this->assertArrayHasKey('date', $data['renewsAt']);
-        $this->assertArrayHasKey('timezone', $data['renewsAt']);
-        $this->assertArrayHasKey('timezone_type', $data['renewsAt']);
+        // Verify DateTime fields are now formatted as ISO strings
+        $this->assertIsString($data['createdAt']);
+        $this->assertIsString($data['renewsAt']);
 
         $donor = $subscription->donor()->get();
 
@@ -82,7 +75,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
             'gateway' => array_merge(
                 $subscription->gateway()->toArray(),
                 [
-                    'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),      
+                    'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),
                     'canSync' => $subscription->gateway()->subscriptionModule instanceof SubscriptionTransactionsSynchronizable,
                 ]
             ),

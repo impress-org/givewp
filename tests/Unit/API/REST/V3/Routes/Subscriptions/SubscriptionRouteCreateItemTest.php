@@ -4,15 +4,13 @@ namespace Unit\API\REST\V3\Routes\Subscriptions;
 
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\Donors\Models\Donor;
-use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
-use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
@@ -55,8 +53,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $this->assertEquals(1, $data['donationFormId']);
         $this->assertEquals(100.00, $data['amount']->formatToDecimal());
         $this->assertEquals('USD', $data['amount']->getCurrency()->getCode());
-        $this->assertEquals('active', $data['status']->getValue());
-        $this->assertEquals('month', $data['period']->getValue());
+        $this->assertEquals('active', $data['status']);
+        $this->assertEquals('month', $data['period']);
         $this->assertEquals(1, $data['frequency']);
         $this->assertEquals(TestGateway::id(), $data['gatewayId']);
         $this->assertEquals(12, $data['installments']);
@@ -151,7 +149,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(201, $response->get_status());
-        $this->assertEquals($status, $data['status']->getValue());
+        $this->assertEquals($status, $data['status']);
 
         // Verify persistence in database
         $createdSubscription = Subscription::find($data['id']);
@@ -182,7 +180,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(201, $response->get_status());
-        $this->assertEquals($period, $data['period']->getValue());
+        $this->assertEquals($period, $data['period']);
 
         // Verify persistence in database
         $createdSubscription = Subscription::find($data['id']);
@@ -346,7 +344,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     /**
      * @unreleased
      */
-    public function testCreateSubscriptionShouldHandleDateTimeObjects()
+    public function testCreateSubscriptionShouldHandleDateTimeStrings()
     {
         $donor = Donor::factory()->create();
 
@@ -360,11 +358,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
             'gatewayId' => TestGateway::id(),
-            'renewsAt' => [
-                'date' => '2025-01-15T12:00:00.000000',
-                'timezone' => 'America/New_York',
-                'timezone_type' => 3,
-            ],
+            'renewsAt' => '2025-01-15T12:00:00+00:00',
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -409,7 +403,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased     
+     * @unreleased
      */
     public function subscriptionStatusProvider(): array
     {
@@ -422,7 +416,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased     
+     * @unreleased
      */
     public function subscriptionPeriodProvider(): array
     {
@@ -433,4 +427,4 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
             array_values(SubscriptionPeriod::toArray())
         );
     }
-} 
+}

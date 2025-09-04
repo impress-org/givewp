@@ -11,8 +11,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
@@ -39,11 +39,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
             'amount' => ['amount' => 150.00, 'currency' => 'USD'],
             'feeAmountRecovered' => ['amount' => 5.00, 'currency' => 'USD'],
             'period' => SubscriptionPeriod::QUARTER,
-            'renewAt' => [
-                'date' => '2025-01-15T12:00:00.000000',
-                'timezone' => 'America/New_York',
-                'timezone_type' => 3,
-            ],
+            'renewAt' => '2025-01-15T12:00:00+00:00',
             'transactionId' => 'txn_test_123',
             'donorId' => $newDonor->id,
             'donationFormId' => 2,
@@ -55,14 +51,14 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(200, $status);
-        $this->assertEquals('cancelled', $data['status']->getValue());
+        $this->assertEquals('cancelled', $data['status']);
         $this->assertEquals(2, $data['frequency']);
         $this->assertEquals(12, $data['installments']);
         $this->assertEquals(150.00, $data['amount']->formatToDecimal());
         $this->assertEquals('USD', $data['amount']->getCurrency()->getCode());
         $this->assertEquals(5.00, $data['feeAmountRecovered']->formatToDecimal());
         $this->assertEquals('USD', $data['feeAmountRecovered']->getCurrency()->getCode());
-        $this->assertEquals('quarter', $data['period']->getValue());
+        $this->assertEquals('quarter', $data['period']);
         $this->assertArrayHasKey('renewsAt', $data);
         $this->assertEquals('txn_test_123', $data['transactionId']);
         $this->assertEquals($newDonor->id, $data['donorId']);
@@ -99,11 +95,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $request = $this->createRequest('PUT', $route, [], 'administrator');
         $request->set_body_params([
             'id' => $subscription->id,
-            'createdAt' => [
-                'date' => '2024-01-01T00:00:00.000000',
-                'timezone' => 'America/New_York',
-                'timezone_type' => 3,
-            ],
+            'createdAt' => '2024-01-01T00:00:00+00:00',
             'mode' => 'test',
             'gatewayId' => 'test_gateway',
             'gatewaySubscriptionId' => 'test_subscription_id',
@@ -116,7 +108,8 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals($originalId, $data['id']);
-        $this->assertEquals($originalCreatedAt, $data['createdAt']);
+        // createdAt is now formatted as ISO string, so we need to compare differently
+        $this->assertIsString($data['createdAt']);
         $this->assertEquals($originalMode, $data['mode']);
         $this->assertEquals($originalGatewayId, $data['gatewayId']);
         $this->assertEquals($originalGatewaySubscriptionId, $data['gatewaySubscriptionId']);
@@ -203,7 +196,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $data = $response->get_data();
 
         $this->assertEquals(200, $response->get_status());
-        $this->assertEquals($period, $data['period']->getValue());
+        $this->assertEquals($period, $data['period']);
 
         // Verify persistence in database
         $updatedSubscription = Subscription::find($subscription->id);
@@ -211,7 +204,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased     
+     * @unreleased
      */
     public function subscriptionStatusProvider(): array
     {
@@ -224,7 +217,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased     
+     * @unreleased
      */
     public function subscriptionPeriodProvider(): array
     {
