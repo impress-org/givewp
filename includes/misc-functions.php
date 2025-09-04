@@ -2501,6 +2501,7 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 			unset( $give_licenses[ $key ] );
 			continue;
 		}
+	}
 
 	$tmp_update_plugins = array_merge(
 		array_filter( wp_list_pluck( $tmp, 'get_version' ) ),
@@ -2566,7 +2567,7 @@ function get_active_license_date(): ?int
     /** @var LicenseRepository $repository */
     $repository = give(LicenseRepository::class);
 
-    return $repository->getActiveLicensesDate();
+    return $repository->getActiveLicenseDate();
 }
 
 /**
