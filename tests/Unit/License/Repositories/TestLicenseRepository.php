@@ -285,7 +285,10 @@ class TestLicenseRepository extends TestCase
         );
         
         // Set last active date to 30 days ago (within 33-day grace period)
-        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, current_time('timestamp', true) - (30 * DAY_IN_SECONDS));
+        update_option(
+            LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE,
+            current_time('timestamp', true) - $this->repository->getGracePeriodInSeconds()
+        );
         
         $this->assertSame(0.0, $this->repository->getPlatformFeePercentage());
     }
@@ -327,7 +330,10 @@ class TestLicenseRepository extends TestCase
         );
         
         // Set last active date to exactly 33 days ago (at boundary)
-        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, current_time('timestamp', true) - (33 * DAY_IN_SECONDS));
+        update_option(
+            LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE,
+            current_time('timestamp', true) - $this->repository->getGracePeriodInSeconds()
+        );
         
         $this->assertSame(0.0, $this->repository->getPlatformFeePercentage());
     }
@@ -347,7 +353,10 @@ class TestLicenseRepository extends TestCase
         );
         
         // Set last active date to just beyond 33 days ago (34 days)
-        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, current_time('timestamp', true) - (34 * DAY_IN_SECONDS));
+        update_option(
+            LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE,
+            current_time('timestamp', true) - (34 * DAY_IN_SECONDS)
+            );
         
         $this->assertSame(2.0, $this->repository->getPlatformFeePercentage());
     }
