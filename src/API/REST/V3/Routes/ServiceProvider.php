@@ -11,6 +11,7 @@ use Give\API\REST\V3\Routes\Donations\DonationNotesController;
 use Give\API\REST\V3\Routes\Donors\DonorController;
 use Give\API\REST\V3\Routes\Donors\DonorNotesController;
 use Give\API\REST\V3\Routes\Donors\DonorStatisticsController;
+use Give\API\REST\V3\Routes\Status\StatusController;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
@@ -35,9 +36,18 @@ class ServiceProvider implements ServiceProviderInterface
     {
         Hooks::addFilter('rest_response_link_curies', CURIE::class, 'registerCURIE');
 
+        $this->loadStatusRoutes();
         $this->loadCampaignsRoutes();
         $this->loadDonorsRoutes();
         $this->loadDonationsRoutes();
+    }
+
+    /**
+     * @tbd
+     */
+    private function loadStatusRoutes()
+    {
+        Hooks::addAction('rest_api_init', StatusController::class, 'register_routes');
     }
 
     /**
