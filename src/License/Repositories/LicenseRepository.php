@@ -124,18 +124,6 @@ class LicenseRepository
         if ($lastActiveDate && $currentTime <= $lastActiveDate + (33 * DAY_IN_SECONDS)) {
             return true;
         }
-        
-        // Fallback: Check individual license expiration dates
-        $licenses = $this->getLicenses();
-        foreach ($licenses as $license) {
-            $expiresDate = $license->expires ?? '';
-            if ($expiresDate) {
-                $expiresTimestamp = strtotime($expiresDate);
-                if ($expiresTimestamp && $currentTime <= $expiresTimestamp + (33 * DAY_IN_SECONDS)) {
-                    return true;
-                }
-            }
-        }
 
         return false;
     }
