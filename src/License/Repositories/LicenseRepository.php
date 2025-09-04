@@ -146,7 +146,7 @@ class LicenseRepository
      *
      * @unreleased
      */
-    public function getActiveLicenseDate(): ?int
+    public function getLastActiveLicenseDate(): ?int
     {
         if (!$this->hasActiveLicenses()) {
             return null;
