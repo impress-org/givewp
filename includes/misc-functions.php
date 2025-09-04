@@ -2501,6 +2501,8 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 			unset( $give_licenses[ $key ] );
 			continue;
 		}
+
+		$give_licenses[ $key ] = $data;
 	}
 
 	$tmp_update_plugins = array_merge(
