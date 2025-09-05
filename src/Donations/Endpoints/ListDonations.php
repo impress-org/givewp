@@ -156,8 +156,6 @@ class ListDonations extends Endpoint
 
         $donations = $this->getDonations();
         $donationsCount = $this->getTotalDonationsCount();
-        $oneTimeDonationsCount = $this->getOneTimeDonationsCount();
-        $recurringDonationsCount = $this->getRecurringDonationsCount();
         $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
 
         if ('model' === $this->request->get_param('return')) {
@@ -167,18 +165,23 @@ class ListDonations extends Endpoint
             $items = $this->listTable->getItems();
         }
 
-        return new WP_REST_Response(
-            [
-                'items' => $items,
-                'totalItems' => $donationsCount,
-                'totalPages' => $totalPages,
-                'stats' => [
-                    'donationsCount' => $donationsCount,
-                    'oneTimeDonationsCount' => $oneTimeDonationsCount,
-                    'recurringDonationsCount' => $recurringDonationsCount,
-                ],
-            ]
-        );
+        $data = [
+            'items' => $items,
+            'totalItems' => $donationsCount,
+            'totalPages' => $totalPages,
+        ];
+
+        if ($this->shouldIncludeStats()) {
+            $oneTimeDonationsCount = $this->getOneTimeDonationsCount();
+            $recurringDonationsCount = $this->getRecurringDonationsCount();
+            $data['stats'] = [
+                'donationsCount' => $donationsCount,
+                'oneTimeDonationsCount' => $oneTimeDonationsCount,
+                'recurringDonationsCount' => $recurringDonationsCount,
+            ];
+        }
+
+        return new WP_REST_Response($data);
     }
 
     /**
@@ -392,5 +395,14 @@ class ListDonations extends Endpoint
             $query,
             $dependencies,
         ];
+    }
+
+    /**
+     * @unreleased
+     */
+    private function shouldIncludeStats()
+    {
+        $subscriptionId = $this->request->get_param('subscriptionId');
+        return !$subscriptionId;
     }
 }
