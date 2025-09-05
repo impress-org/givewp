@@ -149,7 +149,7 @@ class MigrateExistingLogs extends Migration
                         $context
                     )->save();
                 } catch (\Exception $exception) {
-                    $give_updates->__pause_db_update(true);
+                    $give_updates->pause_db_update(true);
                     update_option('give_upgrade_error', 1, false);
                 }
             }

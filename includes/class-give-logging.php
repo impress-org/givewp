@@ -191,6 +191,7 @@ class Give_Logging {
 	 *
 	 * @return int             The ID of the newly created log item.
 	 */
+    //phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
 	public function insert_log( $log_data = [], $log_meta = [] ) {
 		// Extract data from parameters
 		$data = $this->getLogData( $log_data, $log_meta );
