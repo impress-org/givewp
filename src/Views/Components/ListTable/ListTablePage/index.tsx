@@ -14,6 +14,7 @@ import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
+import ListTableStats, { StatConfig } from '../ListTableStats/ListTableStats';
 
 export interface ListTablePageProps {
     //required
@@ -35,7 +36,7 @@ export interface ListTablePageProps {
     banner?: () => JSX.Element;
     contentMode?: boolean;
     perPage?: number;
-    tableStats?: JSX.Element;
+    statsConfig?: Record<string, StatConfig>;
 }
 
 export interface FilterConfig {
@@ -120,7 +121,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     banner,
     contentMode,
     perPage = 30,
-    tableStats,
+    statsConfig,
 }: ListTablePageProps, ref) => {
     const [page, setPage] = useState<number>(1);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
@@ -299,7 +300,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                             </div>
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
-                        {tableStats}
+                        {statsConfig && !isValidating && <ListTableStats config={statsConfig} values={data?.stats} />}
                         {banner && <section role="banner">{banner()}</section>}
                         <section role="search" className={styles.searchContainer}>
                             <div className={styles.flexRow}>

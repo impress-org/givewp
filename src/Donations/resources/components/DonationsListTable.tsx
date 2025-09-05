@@ -10,7 +10,7 @@ import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
-import DonationTableStats from './DonationTableStats';
+import DonationTableStats, { StatConfig } from '../../../Views/Components/ListTable/ListTableStats/ListTableStats';
 
 declare global {
     interface Window {
@@ -206,6 +206,17 @@ const rotatingRecommendation = (
     />
 );
 
+const statsConfig: Record<string, StatConfig> = {
+    donationsCount:{ label: __('Total Donations', 'give')},
+    oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
+    recurringDonationsCount: { 
+        label: __('Recurring Donations', 'give'),
+        inActive: !window.GiveDonations.recurringDonations,
+        href: 'https://givewp.com/addons/recurring-donations/',
+        toolTipDescription: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
+    },
+};
+
 export default function DonationsListTable() {
     return (
         <ListTablePage
@@ -219,7 +230,7 @@ export default function DonationsListTable() {
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
-            tableStats={<DonationTableStats />}
+            statsConfig={statsConfig}
         >
             {window.GiveDonations.manualDonations ? (
                 <a
