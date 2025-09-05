@@ -145,8 +145,7 @@ class LicenseRepository
     }
 
     /**
-     * Retrieves the timestamp when a license was last active.
-     * This is used to track when licenses were last valid.
+     * Retrieves the timestamp of when a license was last active.
      * 
      * @unreleased
      */
