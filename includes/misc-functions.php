@@ -2424,6 +2424,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
+ * @unreleased Update active license date after license refresh when active license is found
  * @since 4.3.0 updated to store platform fee percentage
  * @since 2.27.0 delete update_plugins transient instead of invalidate it
  * @since  2.5.0
@@ -2528,6 +2529,13 @@ function give_refresh_licenses( $wp_check_updates = true ) {
         update_option( LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, $platform_fee_percentage, 'no' );
     }
 
+    // Update active license date after license refresh when active license is found
+    $active_license_date = get_active_license_date();
+
+	if(!is_null($active_license_date)) {
+        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, $active_license_date, 'no');
+    }
+
 	// Tell WordPress to look for updates.
 	if ( $wp_check_updates ) {
 		delete_site_transient('update_plugins');
@@ -2548,6 +2556,19 @@ function get_platform_fee_from_licenses(): ?float
     $repository = give(LicenseRepository::class);
 
     return $repository->findLowestPlatformFeePercentageFromActiveLicenses();
+}
+
+/**
+ * Set Active License Date
+ * 
+ * @unreleased
+ */
+function get_active_license_date(): ?int
+{
+    /** @var LicenseRepository $repository */
+    $repository = give(LicenseRepository::class);
+
+    return $repository->getCurrentActiveLicenseDate();
 }
 
 /**
