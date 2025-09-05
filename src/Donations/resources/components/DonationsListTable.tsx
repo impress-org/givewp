@@ -219,7 +219,7 @@ export default function DonationsListTable() {
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
-            tableStats={DonationTableStats()}
+            tableStats={<DonationTableStats />}
         >
             {window.GiveDonations.manualDonations ? (
                 <a
