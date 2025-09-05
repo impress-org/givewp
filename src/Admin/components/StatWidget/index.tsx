@@ -7,6 +7,7 @@ import styles from './styles.module.scss';
 import { __ } from '@wordpress/i18n';
 
 /**
+ * @unreleased add className & toolTipDescription prop for dynamic tooltips.
  * @since 4.6.0 add href & inActive props to handle Fee Recovery widget.
  * @since 4.4.0
  */
@@ -17,6 +18,8 @@ export type StatWidgetProps = {
     loading?: boolean;
     inActive?: boolean;
     href?: string;
+    className?: string;
+    toolTipDescription?: string;
 };
 
 /**
@@ -30,9 +33,11 @@ export default function StatWidget({
     href,
     loading = false,
     inActive = false,
+    className,
+    toolTipDescription,
 }: StatWidgetProps) {
     return (
-        <div className={classnames(styles.statWidget)}>
+        <div className={classnames(styles.statWidget, className)}>
             <header>
                 <HeaderText>{label}</HeaderText>
             </header>
@@ -45,7 +50,7 @@ export default function StatWidget({
                             <Spinner size="small" />
                         </span>
                     )}
-                {inActive && (<a className={styles.upgradeLink} href={href} data-feerecovery-tooltip={__('Keep 100% of your fundraising revenue by providing donors with the option to cover the credit card processing fees', 'give')}>{__('Upgrade', 'give')}</a>)}
+                {inActive && (<a className={styles.upgradeLink} href={href} data-addon-tooltip={toolTipDescription}>{__('Upgrade', 'give')}</a>)}
                 </div>
             </div>
             {description && (
