@@ -10,6 +10,7 @@ import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
+import DonationTableStats from './DonationTableStats';
 
 declare global {
     interface Window {
@@ -21,6 +22,7 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
+            recurringDonations: boolean;
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
             addonsBulkActions: Array<BulkActionsConfig>;
@@ -217,6 +219,7 @@ export default function DonationsListTable() {
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
+            tableStats={DonationTableStats()}
         >
             {window.GiveDonations.manualDonations ? (
                 <a
