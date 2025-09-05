@@ -119,7 +119,7 @@ class LicenseRepository
     {
         $currentTime = current_time('timestamp', true);
         $lastActiveDate = $this->getLastActiveLicenseDate();
-        
+
         if ($lastActiveDate && $currentTime <= $lastActiveDate + $this->getGracePeriodInSeconds()) {
             return true;
         }
@@ -128,9 +128,9 @@ class LicenseRepository
     }
 
     /**
-     * Get the date when licenses were last active.
-     * This is used to track when licenses were last valid.
-     *
+     * Returns the current timestamp if at least one active license is present.
+     * This is used to track the moment a license was last confirmed active,
+     * 
      * @unreleased
      */
     public function getCurrentActiveLicenseDate(): ?int
@@ -145,6 +145,9 @@ class LicenseRepository
     }
 
     /**
+     * Retrieves the timestamp when a license was last active.
+     * This is used to track when licenses were last valid.
+     * 
      * @unreleased
      */
     public function getLastActiveLicenseDate(): ?int
