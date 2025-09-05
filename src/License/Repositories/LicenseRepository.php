@@ -118,8 +118,8 @@ class LicenseRepository
     private function isLicenseInGracePeriod(): bool
     {
         $currentTime = current_time('timestamp', true);
+        $lastActiveDate = $this->getLastActiveLicenseDate();
         
-        $lastActiveDate = get_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE);
         if ($lastActiveDate && $currentTime <= $lastActiveDate + $this->getGracePeriodInSeconds()) {
             return true;
         }
