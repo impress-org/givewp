@@ -30,7 +30,7 @@ class RefreshLicensesForLastActiveDate extends Migration
      */
     public static function timestamp(): int
     {
-        return strtotime('2025-01-15 00:00:00');
+        return strtotime('2025-09-05 00:00:00');
     }
 
     /**
