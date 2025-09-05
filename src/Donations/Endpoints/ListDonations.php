@@ -8,7 +8,6 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Framework\QueryBuilder\Types\Operator;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -157,6 +156,8 @@ class ListDonations extends Endpoint
 
         $donations = $this->getDonations();
         $donationsCount = $this->getTotalDonationsCount();
+        $oneTimeDonationsCount = $this->getOneTimeDonationsCount();
+        $recurringDonationsCount = $this->getRecurringDonationsCount();
         $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
 
         if ('model' === $this->request->get_param('return')) {
@@ -171,6 +172,11 @@ class ListDonations extends Endpoint
                 'items' => $items,
                 'totalItems' => $donationsCount,
                 'totalPages' => $totalPages,
+                'stats' => [
+                    'donationsCount' => $donationsCount,
+                    'oneTimeDonationsCount' => $oneTimeDonationsCount,
+                    'recurringDonationsCount' => $recurringDonationsCount,
+                ],
             ]
         );
     }
@@ -208,6 +214,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Return 0 when no donations are found
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
@@ -228,7 +235,66 @@ class ListDonations extends Endpoint
             ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
         );
 
-        return $query->count();
+        $result = $query->count();
+        return $result ?? 0;
+    }
+
+    /**
+     * Get count of one-time donations
+     *
+     * @unreleased
+     */
+    public function getOneTimeDonationsCount(): int
+    {
+        $query = DB::table('posts')
+            ->where('post_type', 'give_payment');
+
+        list($query, $dependencies) = $this->getWhereConditions($query);
+
+        // Add subscription_id meta to dependencies to check for 0 values
+        $dependencies[] = DonationMetaKeys::SUBSCRIPTION_ID();
+
+        $query->attachMeta(
+            'give_donationmeta',
+            'ID',
+            'donation_id',
+            ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
+        );
+
+        // One-time donations are those without a subscription_id (0)
+        $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', 0);
+
+        $result = $query->count();
+        return $result ?? 0;
+    }
+
+    /**
+     * Get count of recurring donations
+     *
+     * @unreleased
+     */
+    public function getRecurringDonationsCount(): int
+    {
+        $query = DB::table('posts')
+            ->where('post_type', 'give_payment');
+
+        list($query, $dependencies) = $this->getWhereConditions($query);
+
+        // Add subscription_id meta to dependencies to check for not 0 values
+        $dependencies[] = DonationMetaKeys::SUBSCRIPTION_ID();
+
+        $query->attachMeta(
+            'give_donationmeta',
+            'ID',
+            'donation_id',
+            ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
+        );
+
+        // Recurring donations are those with a subscription_id (not 0)
+        $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', 0, '!=');
+
+        $result = $query->count();
+        return $result ?? 0;
     }
 
     /**
@@ -319,12 +385,12 @@ class ListDonations extends Endpoint
         }
 
         if ($hasWhereConditions) {
-           $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
+            $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
         } elseif ($testMode) {
             $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
             $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-            ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+                ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
         }
 
         return [
