@@ -214,7 +214,6 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @unreleased Return 0 when no donations are found
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
@@ -235,8 +234,7 @@ class ListDonations extends Endpoint
             ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
         );
 
-        $result = $query->count();
-        return $result ?? 0;
+        return $query->count();
     }
 
     /**
@@ -264,8 +262,7 @@ class ListDonations extends Endpoint
         // One-time donations are those without a subscription_id (0)
         $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', 0);
 
-        $result = $query->count();
-        return $result ?? 0;
+        return $query->count();
     }
 
     /**
@@ -293,8 +290,7 @@ class ListDonations extends Endpoint
         // Recurring donations are those with a subscription_id (not 0)
         $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', 0, '!=');
 
-        $result = $query->count();
-        return $result ?? 0;
+        return $query->count();
     }
 
     /**
@@ -319,7 +315,6 @@ class ListDonations extends Endpoint
         $campaignId = $this->request->get_param('campaignId');
         $subscriptionId = $this->request->get_param('subscriptionId');
         $status = $this->request->get_param('status');
-
         $dependencies = [
             DonationMetaKeys::MODE(),
         ];

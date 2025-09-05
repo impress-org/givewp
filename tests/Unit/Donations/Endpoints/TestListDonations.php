@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\Donations\Endpoints;
 
+use DateTime;
 use Exception;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\ListDonations;
@@ -48,7 +49,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
-        $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('testMode', true);
         $mockRequest->set_param('status', 'active');
 
         $listDonations = give(ListDonations::class);
@@ -78,7 +79,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
-        $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('testMode', true);
 
         $expectedItems = $this->getMockColumns($donations, $sortDirection);
 
@@ -143,7 +144,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
-        $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('testMode', true);
         $mockRequest->set_param('status', 'active');
 
         $listDonations = give(ListDonations::class);
@@ -170,7 +171,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
-        $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('testMode', true);
         $mockRequest->set_param('status', 'active');
 
         $listDonations = give(ListDonations::class);
@@ -203,7 +204,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
-        $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('testMode', true);
         $mockRequest->set_param('status', 'active');
 
         $listDonations = give(ListDonations::class);
@@ -240,7 +241,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
-        $mockRequest->set_param('testMode', give_is_test_mode());
+        $mockRequest->set_param('testMode', true);
         $mockRequest->set_param('status', 'active');
         $mockRequest->set_param('campaignId', $campaign1->id); // Filter by campaign1
 
@@ -257,11 +258,251 @@ class TestListDonations extends TestCase
     /**
      * @unreleased
      */
-    private function createSubscription(int $campaignId): Subscription
+    public function testShouldFilterDonationsByDateRange()
     {
-        return Subscription::factory()->createWithDonation([], [
-            'campaignId' => $campaignId
+        $campaign = Campaign::factory()->create();
+
+        // Create donations with specific dates
+        $donation1 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-01-15 10:00:00')
         ]);
+        $donation2 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-02-15 10:00:00')
+        ]);
+        $donation3 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-03-15 10:00:00')
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('start', '2023-02-01');
+        $mockRequest->set_param('end', '2023-02-28');
+
+        $listDonations = give(ListDonations::class);
+        $response = $listDonations->handleRequest($mockRequest);
+
+        // Should only return donation2 (created in February 2023)
+        $this->assertEquals(1, $response->data['stats']['donationsCount']);
+        $this->assertEquals(1, $response->data['totalItems']);
+        $this->assertCount(1, $response->data['items']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldFilterDonationsByStartDateOnly()
+    {
+        $campaign = Campaign::factory()->create();
+
+        // Create donations with specific dates
+        $donation1 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-01-15 10:00:00')
+        ]);
+        $donation2 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-02-15 10:00:00')
+        ]);
+        $donation3 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-03-15 10:00:00')
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('start', '2023-02-01');
+
+        $listDonations = give(ListDonations::class);
+        $response = $listDonations->handleRequest($mockRequest);
+
+        // Should return donation2 and donation3 (created on or after February 1, 2023)
+        $this->assertEquals(2, $response->data['stats']['donationsCount']);
+        $this->assertEquals(2, $response->data['totalItems']);
+        $this->assertCount(2, $response->data['items']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldFilterDonationsByEndDateOnly()
+    {
+        $campaign = Campaign::factory()->create();
+
+        // Create donations with specific dates
+        $donation1 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-01-15 10:00:00')
+        ]);
+        $donation2 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-02-15 10:00:00')
+        ]);
+        $donation3 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-03-15 10:00:00')
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('end', '2023-02-28');
+
+        $listDonations = give(ListDonations::class);
+        $response = $listDonations->handleRequest($mockRequest);
+
+        // Should return donation1 and donation2 (created on or before February 28, 2023)
+        $this->assertEquals(2, $response->data['stats']['donationsCount']);
+        $this->assertEquals(2, $response->data['totalItems']);
+        $this->assertCount(2, $response->data['items']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldFilterDonationsByExactDateRange()
+    {
+        $campaign = Campaign::factory()->create();
+
+        // Create donations with specific dates
+        $donation1 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-02-01 09:00:00')
+        ]);
+        $donation2 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-02-15 10:00:00')
+        ]);
+        $donation3 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-02-28 00:00:00')
+        ]);
+        $donation4 = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-03-01 00:00:00')
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('start', '2023-02-01');
+        $mockRequest->set_param('end', '2023-02-28');
+
+        $listDonations = give(ListDonations::class);
+        $response = $listDonations->handleRequest($mockRequest);
+
+        // Debug: Let's see what we're actually getting
+        $this->assertEquals(3, $response->data['stats']['donationsCount'], 'Expected 3 donations but got: ' . $response->data['stats']['donationsCount']);
+        $this->assertEquals(3, $response->data['totalItems'], 'Expected 3 totalItems but got: ' . $response->data['totalItems']);
+        $this->assertCount(3, $response->data['items'], 'Expected 3 items but got: ' . count($response->data['items']));
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldReturnEmptyResultsForDateRangeWithNoDonations()
+    {
+        $campaign = Campaign::factory()->create();
+
+        // Create donations outside the date range
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-01-15 10:00:00')
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-03-15 10:00:00')
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('start', '2023-02-01');
+        $mockRequest->set_param('end', '2023-02-28');
+
+        $listDonations = give(ListDonations::class);
+        $response = $listDonations->handleRequest($mockRequest);
+
+        // Should return no donations
+        $this->assertEquals(0, $response->data['stats']['donationsCount']);
+        $this->assertEquals(0, $response->data['totalItems']);
+        $this->assertCount(0, $response->data['items']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldFilterDonationsByDateWithMixedDonationTypes()
+    {
+        $campaign = Campaign::factory()->create();
+
+        // Create one-time donations
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-02-15 10:00:00')
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'createdAt' => new DateTime('2023-03-15 10:00:00')
+        ]);
+
+        // Create subscription donations
+        $this->createSubscription($campaign->id, new DateTime('2023-02-20 10:00:00'));
+        $this->createSubscription($campaign->id, new DateTime('2023-03-20 10:00:00'));
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('start', '2023-02-01');
+        $mockRequest->set_param('end', '2023-02-28');
+
+        $listDonations = give(ListDonations::class);
+        $response = $listDonations->handleRequest($mockRequest);
+
+        // Should return 2 donations (1 one-time + 1 subscription) created in February
+        $this->assertEquals(2, $response->data['stats']['donationsCount']);
+        $this->assertEquals(1, $response->data['stats']['oneTimeDonationsCount']);
+        $this->assertEquals(1, $response->data['stats']['recurringDonationsCount']);
+        $this->assertEquals(2, $response->data['totalItems']);
+        $this->assertCount(2, $response->data['items']);
+    }
+
+    /**
+     * @unreleased
+     */
+    private function createSubscription(int $campaignId, DateTime $donationDate = null): Subscription
+    {
+        $donationData = [
+            'campaignId' => $campaignId
+        ];
+
+        if ($donationDate !== null) {
+            $donationData['createdAt'] = $donationDate;
+        }
+
+        return Subscription::factory()->createWithDonation([], $donationData);
     }
 
     /**
