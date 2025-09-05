@@ -13,7 +13,7 @@ use WP_REST_Server;
 /**
  * @unreleased
  */
-class DeleteActionTest extends TestCase
+class TestListDonationsDeleteAction extends TestCase
 {
     use RefreshDatabase;
 
