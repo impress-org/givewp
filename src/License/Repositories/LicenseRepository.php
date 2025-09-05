@@ -152,7 +152,8 @@ class LicenseRepository
      */
     public function getLastActiveLicenseDate(): ?int
     {
-        return get_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE);
+        $value = get_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE);
+        return $value ?: null;
     }
 
     /**
