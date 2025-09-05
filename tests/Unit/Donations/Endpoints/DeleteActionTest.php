@@ -5,7 +5,6 @@ namespace Give\Tests\Unit\Donations\Endpoints;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\DonationActions;
 use Give\Donations\Models\Donation;
-use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -29,7 +28,6 @@ class DeleteActionTest extends TestCase
         $this->setUpAdminUser();
 
         Donation::query()->delete();
-        DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
     }
 
     /**
