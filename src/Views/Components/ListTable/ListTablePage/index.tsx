@@ -35,6 +35,7 @@ export interface ListTablePageProps {
     banner?: () => JSX.Element;
     contentMode?: boolean;
     perPage?: number;
+    tableStats?: JSX.Element;
 }
 
 export interface FilterConfig {
@@ -119,6 +120,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     banner,
     contentMode,
     perPage = 30,
+    tableStats,
 }: ListTablePageProps, ref) => {
     const [page, setPage] = useState<number>(1);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
@@ -297,6 +299,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                             </div>
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
+                        {tableStats}
                         {banner && <section role="banner">{banner()}</section>}
                         <section role="search" className={styles.searchContainer}>
                             <div className={styles.flexRow}>
