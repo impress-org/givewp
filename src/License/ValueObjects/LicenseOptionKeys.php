@@ -3,7 +3,7 @@
 namespace Give\License\ValueObjects;
 
 /**
- * @unreleased add last active license date
+ * @since 4.8.0 add last active license date
  * @since 4.3.0
  */
 class LicenseOptionKeys {

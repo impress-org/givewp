@@ -2424,7 +2424,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
- * @unreleased Update active license date after license refresh when active license is found
+ * @since 4.8.0 Update active license date after license refresh when active license is found
  * @since 4.3.0 updated to store platform fee percentage
  * @since 2.27.0 delete update_plugins transient instead of invalidate it
  * @since  2.5.0
@@ -2560,8 +2560,8 @@ function get_platform_fee_from_licenses(): ?float
 
 /**
  * Set Active License Date
- * 
- * @unreleased
+ *
+ * @since 4.8.0
  */
 function get_active_license_date(): ?int
 {

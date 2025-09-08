@@ -25,7 +25,7 @@ type DonorNote = {
 }
 
 /**
- * @unreleased Include loadingId in the state to manage loading states per note.
+ * @since 4.8.0 Include loadingId in the state to manage loading states per note.
  * @since 4.5.0
  */
 type NoteState = {
@@ -53,14 +53,14 @@ export function DonationNotes({donationId}: {donationId: number}) {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function SubscriptionNotes({subscriptionId}: {subscriptionId: number}) {
     return <PrivateNotes endpoint={`/givewp/v3/subscriptions/${subscriptionId}/notes`} />
 }
 
 /**
- * @unreleased Manage local state to handle loading indicators per note.
+ * @since 4.8.0 Manage local state to handle loading indicators per note.
  * @since 4.4.0
  */
 function PrivateNotes({endpoint}: {endpoint: string}) {
@@ -260,7 +260,7 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
 }
 
 /**
- * @unreleased Improved accessibility with semantic buttons. Added per-note loading state handling.
+ * @since 4.8.0 Improved accessibility with semantic buttons. Added per-note loading state handling.
  * @since 4.4.0
  */
 const Note = ({note, onDelete, onEdit, isLoading}) => {

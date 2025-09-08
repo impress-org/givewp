@@ -8,14 +8,14 @@ use WP_REST_Response;
 /**
  * Helper class to manage pagination headers for REST API responses.
  *
- * @unreleased
+ * @since 4.8.0
  */
 class Headers
 {
     /**
      * Add pagination headers to a REST response.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Response $response The response object to add headers to
      * @param WP_REST_Request $request The request object

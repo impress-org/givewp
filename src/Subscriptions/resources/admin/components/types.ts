@@ -10,12 +10,12 @@ type PaymentGateway = {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export type SubscriptionPeriod = 'day' | 'week' | 'month' | 'quarter' | 'year';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export type SubscriptionStatus =
     | 'pending'
@@ -29,12 +29,12 @@ export type SubscriptionStatus =
     | 'trashed';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export type SubscriptionMode = 'test' | 'live';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type Money = {
     value: number;
@@ -42,7 +42,7 @@ type Money = {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type DateTime = {
     date: string;
@@ -51,7 +51,7 @@ type DateTime = {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export type Subscription = {
     id: number;

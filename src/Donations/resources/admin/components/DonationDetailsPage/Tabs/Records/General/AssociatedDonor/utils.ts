@@ -4,7 +4,7 @@ import { DonorOption } from './types';
 /**
  * Formats a donor object into a select option
  *
- * @unreleased
+ * @since 4.8.0
  */
 export function formatDonorOption(donor: Donor): DonorOption {
     return {
@@ -16,7 +16,7 @@ export function formatDonorOption(donor: Donor): DonorOption {
 /**
  * Formats multiple donors into select options
  *
- * @unreleased
+ * @since 4.8.0
  */
 export function formatDonorOptions(donors: Donor[]): DonorOption[] {
     return (donors || []).map(formatDonorOption);
@@ -25,7 +25,7 @@ export function formatDonorOptions(donors: Donor[]): DonorOption[] {
 /**
  * Deduplicates and sorts donor options
  *
- * @unreleased
+ * @since 4.8.0
  */
 export function processOptionsForMenu(
     options: DonorOption[],
@@ -53,7 +53,7 @@ export function processOptionsForMenu(
 /**
  * Creates query parameters for donor API requests
  *
- * @unreleased
+ * @since 4.8.0
  */
 export function createDonorQueryParams(config: {
     mode: 'live' | 'test';

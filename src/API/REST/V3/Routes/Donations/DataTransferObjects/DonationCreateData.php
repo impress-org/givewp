@@ -11,7 +11,7 @@ use Give\Subscriptions\Models\Subscription;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class DonationCreateData
 {
@@ -57,7 +57,7 @@ class DonationCreateData
     /**
      * Create DonationCreateData from REST request
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      * @return DonationCreateData
@@ -70,7 +70,7 @@ class DonationCreateData
     /**
      * Validate data for creating a single donation
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws DonationValidationException
      */
@@ -100,7 +100,7 @@ class DonationCreateData
     /**
      * Validate data for creating a renewal donation
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws DonationValidationException
      */
@@ -149,7 +149,7 @@ class DonationCreateData
     /**
      * Validate subscription-related rules
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws DonationValidationException
      */
@@ -216,14 +216,14 @@ class DonationCreateData
     /**
      * Convert to Donation model
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return Donation
      * @throws Exception
      */
     public function createDonation(): Donation
-    {        
-        $this->validateSubscriptionRules();        
+    {
+        $this->validateSubscriptionRules();
         $this->validateCreateDonation();
 
         // Filter out only the auto-generated id and campaignId fields
@@ -239,13 +239,13 @@ class DonationCreateData
     /**
      * Convert to renewal donation using subscription
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return Donation
      */
     public function createRenewal(): Donation
-    {        
-        $this->validateSubscriptionRules();        
+    {
+        $this->validateSubscriptionRules();
         $this->validateCreateRenewal();
 
         $subscription = Subscription::find($this->subscriptionId);
@@ -270,7 +270,7 @@ class DonationCreateData
     /**
      * Update subscription renewal date with the createdAt date
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param Subscription $subscription
      * @return void
@@ -286,7 +286,7 @@ class DonationCreateData
     /**
      * Get the donation type
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return DonationType|null
      */
@@ -298,7 +298,7 @@ class DonationCreateData
     /**
      * Check if this is a renewal donation
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return bool
      */
@@ -310,7 +310,7 @@ class DonationCreateData
     /**
      * Check if this is a subscription or renewal donation
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return bool
      */
@@ -322,7 +322,7 @@ class DonationCreateData
     /**
      * Check if should update renewal date
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return bool
      */
@@ -334,7 +334,7 @@ class DonationCreateData
     /**
      * Check if this is a single donation
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return bool
      */
@@ -346,7 +346,7 @@ class DonationCreateData
     /**
      * Check if this is a subscription donation
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return bool
      */
@@ -358,7 +358,7 @@ class DonationCreateData
     /**
      * Get the subscription ID
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return int
      */
@@ -370,7 +370,7 @@ class DonationCreateData
     /**
      * Get the processed attributes
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return array
      */
@@ -382,7 +382,7 @@ class DonationCreateData
     /**
      * Process attributes for special data types
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param array $attributes
      * @return array
@@ -411,7 +411,7 @@ class DonationCreateData
     /**
      * Determine if this is a renewal donation
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return bool
      */

@@ -4,7 +4,7 @@ import styles from './styles.module.scss';
 
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type GridProps = {
     children: React.ReactNode;
@@ -12,7 +12,7 @@ type GridProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function Grid({children, ariaLabel}: GridProps) {
     return (
@@ -23,7 +23,7 @@ export default function Grid({children, ariaLabel}: GridProps) {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type GridCardProps = {
     children: React.ReactNode;
@@ -33,7 +33,7 @@ type GridCardProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function GridCard({children, heading, headingId, className}: GridCardProps) {
     return (

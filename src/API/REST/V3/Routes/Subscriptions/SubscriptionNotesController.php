@@ -14,12 +14,12 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionNotesController extends WP_REST_Controller
 {
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function __construct()
     {
@@ -28,7 +28,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function register_routes()
     {
@@ -87,7 +87,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     /**
      * Get a collection of subscription notes.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -147,7 +147,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     /**
      * Create a subscription note.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -183,7 +183,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     /**
      * Get a single subscription note.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -209,7 +209,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     /**
      * Update a subscription note.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -255,7 +255,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     /**
      * Delete a subscription note.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -288,7 +288,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function get_items_permissions_check($request): bool
     {
@@ -296,7 +296,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function create_item_permissions_check($request): bool
     {
@@ -304,7 +304,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function get_item_permissions_check($request): bool
     {
@@ -312,7 +312,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function update_item_permissions_check($request): bool
     {
@@ -320,7 +320,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function delete_item_permissions_check($request): bool
     {
@@ -328,7 +328,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function prepare_item_for_response($note, $request): WP_REST_Response
     {
@@ -354,7 +354,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function get_collection_params(): array
     {
@@ -373,7 +373,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     /**
      * Get the subscription note schema, conforming to JSON Schema.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return array
      */
@@ -421,7 +421,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     /**
      * Get the subscription note schema for public display.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return array
      */
@@ -440,7 +440,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function get_endpoint_args_for_item_schema($method = WP_REST_Server::CREATABLE): array
     {

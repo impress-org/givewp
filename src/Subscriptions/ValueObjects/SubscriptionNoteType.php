@@ -7,7 +7,7 @@ namespace Give\Subscriptions\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased
+ * @since 4.8.0
  *
  * @method static SubscriptionNoteType ADMIN()
  * @method static SubscriptionNoteType DONOR()

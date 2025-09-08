@@ -7,7 +7,7 @@ import { useDonorAsyncSelect } from './useDonorAsyncSelect';
 import { DonorOption } from './types';
 
 /**
- * @unreleased updated to async donor dropdown
+ * @since 4.8.0 updated to async donor dropdown
  * @since 4.6.0
  */
 export default function AssociatedDonor() {

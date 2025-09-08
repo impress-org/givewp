@@ -87,7 +87,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function loadSubscriptionsRoutes()
     {

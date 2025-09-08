@@ -89,13 +89,13 @@ class LicenseRepository
     /**
      * The platform fee percentage is used by gateways to calculate a platform fee.
      *
-     * @unreleased add grace period
+     * @since 4.8.0 add grace period
      * @since 4.3.0
      */
     public function getPlatformFeePercentage(): float
     {
         if (!$this->hasActiveLicenses()) {
-            
+
             if ($this->isLicenseInGracePeriod()) {
                 return 0.0;
             }
@@ -113,7 +113,7 @@ class LicenseRepository
     /**
      * Check if licenses are in the grace period.
      *
-     * @unreleased
+     * @since 4.8.0
      */
     private function isLicenseInGracePeriod(): bool
     {
@@ -130,8 +130,8 @@ class LicenseRepository
     /**
      * Returns the current timestamp if at least one active license is present.
      * This is used to track the moment a license was last confirmed active,
-     * 
-     * @unreleased
+     *
+     * @since 4.8.0
      */
     public function getCurrentActiveLicenseDate(): ?int
     {
@@ -146,8 +146,8 @@ class LicenseRepository
 
     /**
      * Retrieves the timestamp of when a license was last active.
-     * 
-     * @unreleased
+     *
+     * @since 4.8.0
      */
     public function getLastActiveLicenseDate(): ?int
     {
@@ -157,8 +157,8 @@ class LicenseRepository
 
     /**
      * Grace period is 30 days after the last active license date with a 3 day buffer for the refresh system.
-     * 
-     * @unreleased
+     *
+     * @since 4.8.0
      */
     public function getGracePeriodInSeconds(): ?int
     {

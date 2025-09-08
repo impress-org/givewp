@@ -19,7 +19,7 @@ const DONORS_PER_PAGE = 30;
 /**
  * Custom hook for handling async donor selection with pagination and search
  *
- * @unreleased
+ * @since 4.8.0
  */
 export function useDonorAsyncSelect(selectedDonorId: number | null): UseDonorAsyncSelectReturn {
     const { mode } = getDonationOptionsWindowData();

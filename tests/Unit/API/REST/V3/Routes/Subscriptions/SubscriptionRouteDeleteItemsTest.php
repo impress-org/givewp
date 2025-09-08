@@ -15,7 +15,7 @@ use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Donors\Models\Donor;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
 {
@@ -23,7 +23,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldSoftDeleteMultipleSubscriptions()
     {
@@ -61,7 +61,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldPermanentlyDeleteMultipleSubscriptions()
     {
@@ -93,7 +93,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldHandleMixedValidAndInvalidIds()
     {
@@ -131,7 +131,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -152,7 +152,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldReturnPreviousDataForDeletedItems()
     {
@@ -180,14 +180,14 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
             $this->assertArrayHasKey('id', $deletedItem['previous']);
             $this->assertArrayHasKey('status', $deletedItem['previous']);
             $this->assertArrayHasKey('amount', $deletedItem['previous']);
-            
+
             // Verify amount structure is correct (Money object)
             $this->assertIsObject($deletedItem['previous']['amount']);
         }
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldHandleEmptyIdsArray()
     {
@@ -210,7 +210,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldHandleAllInvalidIds()
     {
@@ -234,7 +234,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldWorkWithDifferentSubscriptionStatuses()
     {
@@ -266,7 +266,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldHandleLargeNumberOfSubscriptions()
     {
@@ -303,7 +303,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemsShouldDefaultToSoftDelete()
     {
@@ -331,7 +331,7 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function createSubscription(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
     {

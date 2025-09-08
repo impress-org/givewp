@@ -29,7 +29,7 @@ export function formatDateTimeLocal(dateString: string) {
 
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function formatDateLocal(dateString: string) {
     if (!dateString) return '';

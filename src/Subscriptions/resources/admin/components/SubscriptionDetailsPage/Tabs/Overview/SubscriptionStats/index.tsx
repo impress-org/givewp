@@ -5,7 +5,7 @@ import { Donation } from '@givewp/donations/admin/components/types';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type SubscriptionStatsProps = {
     donations: Donation[];
@@ -16,14 +16,14 @@ type SubscriptionStatsProps = {
 
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export const getCompletedDonations = (donations: Donation[]) => {
     return donations?.filter(donation => ['publish', 'give_subscription'].includes(donation.status));
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SubscriptionStats({ donations, currency, totalInstallments, loading }: SubscriptionStatsProps) {
     const ongoingInstallments = totalInstallments === 0;
