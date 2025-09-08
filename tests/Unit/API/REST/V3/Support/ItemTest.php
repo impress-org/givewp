@@ -16,18 +16,21 @@ class ItemTest extends TestCase
     /**
      * @unreleased
      */
-    public function testFormatForResponseShouldAutoDetectDateFields()
+    public function testFormatForResponseShouldFormatSpecifiedDateFields()
     {
         $item = [
             'id' => 123,
             'createdAt' => new DateTime('2023-12-25 14:30:00'),
-            'updatedAt' => '2023-12-26 15:45:00',
+            'updatedAt' => new DateTime('2023-12-26 15:45:00'),
             'renewsAt' => new DateTime('2024-01-01 00:00:00'),
             'name' => 'Test Subscription',
             'amount' => 100.00,
         ];
 
-        $formatted = Item::formatForResponse($item);
+        $dateFields = ['createdAt', 'updatedAt', 'renewsAt'];
+        $valueObjectFields = [];
+
+        $formatted = Item::formatForResponse($item, $dateFields, $valueObjectFields);
 
         // Date fields should be formatted to ISO 8601 strings
         $this->assertIsString($formatted['createdAt']);
@@ -46,7 +49,7 @@ class ItemTest extends TestCase
     /**
      * @unreleased
      */
-    public function testFormatForResponseShouldAutoDetectValueObjects()
+    public function testFormatForResponseShouldFormatSpecifiedValueObjects()
     {
         $item = [
             'id' => 123,
@@ -56,7 +59,10 @@ class ItemTest extends TestCase
             'amount' => 100.00,
         ];
 
-        $formatted = Item::formatForResponse($item);
+        $dateFields = [];
+        $valueObjectFields = ['status', 'period'];
+
+        $formatted = Item::formatForResponse($item, $dateFields, $valueObjectFields);
 
         // Value objects should be converted to their string values
         $this->assertEquals('active', $formatted['status']);
@@ -77,12 +83,15 @@ class ItemTest extends TestCase
             'id' => 123,
             'createdAt' => new DateTime('2023-12-25 14:30:00'),
             'status' => new SubscriptionStatus('active'),
-            'updatedAt' => '2023-12-26 15:45:00',
+            'updatedAt' => new DateTime('2023-12-26 15:45:00'),
             'period' => new SubscriptionPeriod('month'),
             'name' => 'Test Subscription',
         ];
 
-        $formatted = Item::formatForResponse($item);
+        $dateFields = ['createdAt', 'updatedAt'];
+        $valueObjectFields = ['status', 'period'];
+
+        $formatted = Item::formatForResponse($item, $dateFields, $valueObjectFields);
 
         // Date fields should be formatted
         $this->assertIsString($formatted['createdAt']);
@@ -102,33 +111,60 @@ class ItemTest extends TestCase
     /**
      * @unreleased
      */
-    public function testFormatDateForResponseShouldHandleDateTimeObjects()
+    public function testFormatDatesForResponseShouldFormatDateTimeObjects()
     {
-        $dateTime = new DateTime('2023-12-25 14:30:00');
-        $formatted = Item::formatDateForResponse($dateTime);
+        $item = [
+            'createdAt' => new DateTime('2023-12-25 14:30:00'),
+            'updatedAt' => new DateTime('2023-12-26 15:45:00'),
+            'name' => 'Test Item',
+        ];
 
-        $this->assertIsString($formatted);
-        $this->assertStringContainsString('2023-12-25T14:30:00', $formatted);
+        $dateFields = ['createdAt', 'updatedAt'];
+        $formatted = Item::formatDatesForResponse($item, $dateFields);
+
+        $this->assertIsString($formatted['createdAt']);
+        $this->assertStringContainsString('2023-12-25T14:30:00', $formatted['createdAt']);
+        $this->assertIsString($formatted['updatedAt']);
+        $this->assertStringContainsString('2023-12-26T15:45:00', $formatted['updatedAt']);
+        $this->assertEquals('Test Item', $formatted['name']);
     }
 
     /**
      * @unreleased
      */
-    public function testFormatDateForResponseShouldHandleStringDates()
+    public function testFormatDatesForResponseShouldHandleNullValues()
     {
-        $dateString = '2023-12-25 14:30:00';
-        $formatted = Item::formatDateForResponse($dateString);
+        $item = [
+            'createdAt' => null,
+            'updatedAt' => new DateTime('2023-12-26 15:45:00'),
+            'name' => 'Test Item',
+        ];
 
-        $this->assertIsString($formatted);
-        $this->assertStringContainsString('2023-12-25T14:30:00', $formatted);
+        $dateFields = ['createdAt', 'updatedAt'];
+        $formatted = Item::formatDatesForResponse($item, $dateFields);
+
+        $this->assertNull($formatted['createdAt']);
+        $this->assertIsString($formatted['updatedAt']);
+        $this->assertStringContainsString('2023-12-26T15:45:00', $formatted['updatedAt']);
+        $this->assertEquals('Test Item', $formatted['name']);
     }
 
     /**
      * @unreleased
      */
-    public function testFormatDateForResponseShouldHandleNullValues()
+    public function testFormatValueObjectsForResponseShouldConvertValueObjects()
     {
-        $formatted = Item::formatDateForResponse(null);
-        $this->assertNull($formatted);
+        $item = [
+            'status' => new SubscriptionStatus('active'),
+            'period' => new SubscriptionPeriod('month'),
+            'name' => 'Test Item',
+        ];
+
+        $valueObjectFields = ['status', 'period'];
+        $formatted = Item::formatValueObjectsForResponse($item, $valueObjectFields);
+
+        $this->assertEquals('active', $formatted['status']);
+        $this->assertEquals('month', $formatted['period']);
+        $this->assertEquals('Test Item', $formatted['name']);
     }
 }

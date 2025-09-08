@@ -471,7 +471,7 @@ class SubscriptionController extends WP_REST_Controller
     {
         $subscription = Subscription::find($request->get_param('id'));
 
-        if (! $subscription) {
+        if (!$subscription) {
             return new WP_REST_Response(__('Subscription not found', 'give'), 404);
         }
 
@@ -590,7 +590,7 @@ class SubscriptionController extends WP_REST_Controller
                 $links = [];
             }
 
-            $response = new WP_REST_Response(Item::formatForResponse($item));
+            $response = new WP_REST_Response(Item::formatForResponse($item, ['createdAt', 'renewsAt'], ['status', 'period', 'frequency', 'mode']));
             if (!empty($links)) {
                 $response->add_links($links);
             }
