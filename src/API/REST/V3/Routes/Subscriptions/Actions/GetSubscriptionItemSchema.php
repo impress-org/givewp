@@ -36,7 +36,7 @@ class GetSubscriptionItemSchema
                     'required' => true,
                 ],
                 'donorId' => [
-                    'type' => ['integer', 'null'],
+                    'type' => 'integer',
                     'description' => esc_html__('Donor ID. Returns 0 for anonymous donors when data is redacted.', 'give'),
                     'required' => true,
                 ],
@@ -51,7 +51,7 @@ class GetSubscriptionItemSchema
                     'format' => 'text-field',
                 ],
                 'amount' => [
-                    'type' => ['object', 'null'],
+                    'type' => 'object',
                     'properties' => [
                         'value' => [
                             'type' => 'number',
