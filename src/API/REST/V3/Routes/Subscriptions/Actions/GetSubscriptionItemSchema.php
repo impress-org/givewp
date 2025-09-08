@@ -193,7 +193,6 @@ class GetSubscriptionItemSchema
                         ],
                     ],
                     'description' => esc_html__('Projected annual revenue for this subscription', 'give'),
-                    'required' => true,
                     'readOnly' => true,
                 ],
             ],
