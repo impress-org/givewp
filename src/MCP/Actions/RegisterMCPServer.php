@@ -52,6 +52,12 @@ class RegisterMCPServer
             true
         );
 
+        wp_localize_script( self::HANDLE, 'GiveMcpServerOptions',
+            [
+                'adminUrl' => admin_url(),
+            ]
+        );
+
         wp_enqueue_script(self::HANDLE);
     }
 }
