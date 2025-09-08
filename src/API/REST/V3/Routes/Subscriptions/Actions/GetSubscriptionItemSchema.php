@@ -36,18 +36,18 @@ class GetSubscriptionItemSchema
                     'required' => true,
                 ],
                 'donorId' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Donor ID', 'give'),
+                    'type' => ['integer', 'null'],
+                    'description' => esc_html__('Donor ID. Returns 0 for anonymous donors when data is redacted.', 'give'),
                     'required' => true,
                 ],
                 'firstName' => [
                     'type' => 'string',
-                    'description' => esc_html__('Donor first name', 'give'),
+                    'description' => esc_html__('Donor first name. Returns "anonymous" for anonymous donors when data is redacted.', 'give'),
                     'format' => 'text-field',
                 ],
                 'lastName' => [
                     'type' => 'string',
-                    'description' => esc_html__('Donor last name', 'give'),
+                    'description' => esc_html__('Donor last name. Returns "anonymous" for anonymous donors when data is redacted.', 'give'),
                     'format' => 'text-field',
                 ],
                 'amount' => [
@@ -115,12 +115,12 @@ class GetSubscriptionItemSchema
                 ],
                 'transactionId' => [
                     'type' => ['string', 'null'],
-                    'description' => esc_html__('Transaction ID', 'give'),
+                    'description' => esc_html__('Transaction ID. Returns empty string when sensitive data is excluded.', 'give'),
                     'format' => 'text-field',
                 ],
                 'gatewaySubscriptionId' => [
                     'type' => ['string', 'null'],
-                    'description' => esc_html__('Gateway subscription ID', 'give'),
+                    'description' => esc_html__('Gateway subscription ID. Returns empty string when sensitive data is excluded.', 'give'),
                     'format' => 'text-field',
                 ],
                 'gatewayId' => [
