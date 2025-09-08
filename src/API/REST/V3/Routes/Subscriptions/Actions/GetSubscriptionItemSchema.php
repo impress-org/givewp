@@ -53,34 +53,42 @@ class GetSubscriptionItemSchema
                 'amount' => [
                     'type' => ['object', 'null'],
                     'properties' => [
-                        'amount' => [
+                        'value' => [
                             'type' => 'number',
+                            'description' => esc_html__('Amount in decimal format', 'give'),
                         ],
-                        'amountInMinorUnits' => [
+                        'valueInMinorUnits' => [
                             'type' => 'integer',
+                            'description' => esc_html__('Amount in minor units (cents)', 'give'),
                         ],
                         'currency' => [
                             'type' => 'string',
                             'format' => 'text-field',
+                            'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
                         ],
                     ],
+                    'required' => ['value', 'valueInMinorUnits', 'currency'],
                     'description' => esc_html__('Subscription amount', 'give'),
                     'required' => true,
                 ],
                 'feeAmountRecovered' => [
                     'type' => ['object', 'null'],
                     'properties' => [
-                        'amount' => [
+                        'value' => [
                             'type' => 'number',
+                            'description' => esc_html__('Fee amount in decimal format', 'give'),
                         ],
-                        'amountInMinorUnits' => [
+                        'valueInMinorUnits' => [
                             'type' => 'integer',
+                            'description' => esc_html__('Fee amount in minor units (cents)', 'give'),
                         ],
                         'currency' => [
                             'type' => 'string',
                             'format' => 'text-field',
+                            'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
                         ],
                     ],
+                    'required' => ['value', 'valueInMinorUnits', 'currency'],
                     'description' => esc_html__('Fee amount recovered', 'give'),
                 ],
                 'status' => [
@@ -122,8 +130,32 @@ class GetSubscriptionItemSchema
                     'required' => true,
                 ],
                 'gateway' => [
-                    'type' => 'array',
-                    'description' => esc_html__('Payment gateway details', 'give'),
+                    'type' => 'object',
+                    'properties' => [
+                        'id' => [
+                            'type' => ['string', 'null'],
+                            'description' => esc_html__('Gateway ID', 'give'),
+                        ],
+                        'name' => [
+                            'type' => ['string', 'null'],
+                            'description' => esc_html__('Gateway name', 'give'),
+                        ],
+                        'label' => [
+                            'type' => ['string', 'null'],
+                            'description' => esc_html__('Payment method label', 'give'),
+                        ],
+                        'subscriptionUrl' => [
+                            'type' => ['string', 'null'],
+                            'format' => 'uri',
+                            'description' => esc_html__('Gateway dashboard subscription URL', 'give'),
+                        ],
+                        'canSync' => [
+                            'type' => ['boolean', 'null'],
+                            'description' => esc_html__('Whether the gateway supports transaction synchronization', 'give'),
+                        ],
+                    ],
+                    'description' => esc_html__('Payment gateway details. Properties will be null if gateway is not available or not registered.', 'give'),
+                    'readOnly' => true,
                 ],
                 'createdAt' => [
                     'type' => ['string', 'null'],
@@ -148,17 +180,21 @@ class GetSubscriptionItemSchema
                 'projectedAnnualRevenue' => [
                     'type' => ['object', 'null'],
                     'properties' => [
-                        'amount' => [
+                        'value' => [
                             'type' => 'number',
+                            'description' => esc_html__('Projected annual revenue in decimal format', 'give'),
                         ],
-                        'amountInMinorUnits' => [
+                        'valueInMinorUnits' => [
                             'type' => 'integer',
+                            'description' => esc_html__('Projected annual revenue in minor units (cents)', 'give'),
                         ],
                         'currency' => [
                             'type' => 'string',
                             'format' => 'text-field',
+                            'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
                         ],
                     ],
+                    'required' => ['value', 'valueInMinorUnits', 'currency'],
                     'description' => esc_html__('Projected annual revenue for this subscription', 'give'),
                     'readOnly' => true,
                 ],
