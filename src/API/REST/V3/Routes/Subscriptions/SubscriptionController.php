@@ -590,7 +590,7 @@ class SubscriptionController extends WP_REST_Controller
                 $links = [];
             }
 
-            $response = new WP_REST_Response(Item::formatForResponse($item, ['createdAt', 'renewsAt'], ['status', 'period', 'mode']));
+            $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt', 'renewsAt']));
             if (!empty($links)) {
                 $response->add_links($links);
             }

@@ -7,7 +7,7 @@ use DateTime;
 /**
  * Item utilities for WordPress REST API V3
  *
- * Formats DateTime objects and Value Objects for API responses.
+ * Formats DateTime objects for API responses using WordPress-compatible format.
  * Date formatting uses WordPress mysql_to_rfc3339() function for full compatibility.
  * Only DateTime objects are supported for date formatting.
  *
@@ -15,17 +15,6 @@ use DateTime;
  */
 class Item
 {
-    /**
-     * @unreleased
-     */
-    public static function formatForResponse(array $item, array $dateFields, array $valueObjectFields): array
-    {
-        $item = self::formatDatesForResponse($item, $dateFields);
-        $item = self::formatValueObjectsForResponse($item, $valueObjectFields);
-
-        return $item;
-    }
-
     /**
      * @unreleased
      */
@@ -51,30 +40,8 @@ class Item
     /**
      * @unreleased
      */
-    public static function formatValueObjectsForResponse(array $item, array $valueObjectFields): array
-    {
-        foreach ($valueObjectFields as $field) {
-            if (isset($item[$field]) && self::isValueObject($item[$field])) {
-                $item[$field] = $item[$field]->getValue();
-            }
-        }
-
-        return $item;
-    }
-
-    /**
-     * @unreleased
-     */
     private static function isDateTimeObject($value): bool
     {
         return $value instanceof DateTime;
-    }
-
-    /**
-     * @unreleased
-     */
-    private static function isValueObject($value): bool
-    {
-        return is_object($value) && method_exists($value, 'getValue');
     }
 }

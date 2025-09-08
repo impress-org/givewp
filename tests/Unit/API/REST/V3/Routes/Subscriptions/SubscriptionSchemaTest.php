@@ -41,14 +41,17 @@ class SubscriptionSchemaTest extends RestApiTestCase
         $schemaRoute = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $schemaRequest = $this->createRequest('OPTIONS', $schemaRoute, [], 'administrator');
         $schemaResponse = $this->dispatchRequest($schemaRequest);
-        $schema = $schemaResponse->get_data();
+        $schemaJson = json_encode($schemaResponse->get_data());
+        $schema = json_decode($schemaJson, true);
+        $test = $this->responseToData($schemaResponse, true);
 
         // Get actual subscription data
         $dataRoute = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
         $dataRequest = $this->createRequest(WP_REST_Server::READABLE, $dataRoute, [], 'administrator');
         $dataRequest->set_query_params(['includeSensitiveData' => true]);
         $dataResponse = $this->dispatchRequest($dataRequest);
-        $actualData = $dataResponse->get_data();
+        $actualDataJson = json_encode($dataResponse->get_data());
+        $actualData = json_decode($actualDataJson, true);
 
         // Validate that all required schema properties exist in actual response
         $this->validateSchemaProperties($schema, $actualData);
@@ -74,14 +77,16 @@ class SubscriptionSchemaTest extends RestApiTestCase
         $schemaRoute = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $schemaRequest = $this->createRequest('OPTIONS', $schemaRoute, [], 'administrator');
         $schemaResponse = $this->dispatchRequest($schemaRequest);
-        $schema = $schemaResponse->get_data();
+        $schemaJson = json_encode($schemaResponse->get_data());
+        $schema = json_decode($schemaJson, true);
 
         // Get actual collection data
         $dataRoute = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $dataRequest = $this->createRequest(WP_REST_Server::READABLE, $dataRoute, [], 'administrator');
         $dataRequest->set_query_params(['includeSensitiveData' => true]);
         $dataResponse = $this->dispatchRequest($dataRequest);
-        $actualData = $dataResponse->get_data();
+        $actualDataJson = json_encode($dataResponse->get_data());
+        $actualData = json_decode($actualDataJson, true);
 
         // Assert that we have data in the collection
         $this->assertNotEmpty($actualData, 'Collection should contain at least one subscription');
@@ -110,7 +115,8 @@ class SubscriptionSchemaTest extends RestApiTestCase
         $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(['includeSensitiveData' => true]);
         $response = $this->dispatchRequest($request);
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         // Check if dates are in WordPress standard format (ISO 8601 without timezone)
         if (isset($data['createdAt'])) {

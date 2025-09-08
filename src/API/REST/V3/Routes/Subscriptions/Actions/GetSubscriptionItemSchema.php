@@ -51,7 +51,7 @@ class GetSubscriptionItemSchema
                     'format' => 'text-field',
                 ],
                 'amount' => [
-                    'type' => ['object', 'null'],
+                    'type' => ['array', 'null'],
                     'properties' => [
                         'amount' => [
                             'type' => 'number',
@@ -68,7 +68,7 @@ class GetSubscriptionItemSchema
                     'required' => true,
                 ],
                 'feeAmountRecovered' => [
-                    'type' => ['object', 'null'],
+                    'type' => ['array', 'null'],
                     'properties' => [
                         'amount' => [
                             'type' => 'number',
@@ -146,7 +146,7 @@ class GetSubscriptionItemSchema
                     'example' => '2025-09-02T20:27:02',
                 ],
                 'projectedAnnualRevenue' => [
-                    'type' => ['object', 'null'],
+                    'type' => ['array', 'null'],
                     'properties' => [
                         'amount' => [
                             'type' => 'number',
