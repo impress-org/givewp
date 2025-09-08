@@ -276,7 +276,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 4.8.0: September 10th, 2025 =
 * New: The subscription admin details screen has been upgraded to a new design and experience!
 * Enhancement: Improved the loading performance of the campaign list table and grid
-* Enhancement: Added Stripe webhook compatibiltiy with their latest version 2025-03-31.basil
+* Enhancement: Added Stripe webhook compatibility with their latest version 2025-03-31.basil
 * Enhancement: Improved the performance and experience of the associated donor field in the donation details screen
 * Fix: Resolved an issue with some campaign blocks not rendering option-based forms
 
