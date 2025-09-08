@@ -80,7 +80,6 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
                 ]
             ),
             'projectedAnnualRevenue' => $subscription->projectedAnnualRevenue()->toArray(),
-
         ], $data);
     }
 
@@ -143,7 +142,8 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $sensitiveProperties = [
             'transactionId',
@@ -177,7 +177,8 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $sensitiveProperties = [
             'transactionId',
@@ -249,7 +250,8 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(0, $data['donorId']);

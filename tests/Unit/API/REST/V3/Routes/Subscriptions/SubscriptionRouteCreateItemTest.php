@@ -32,35 +32,38 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'status' => SubscriptionStatus::ACTIVE,
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
             'gatewayId' => TestGateway::id(),
             'installments' => 12,
             'transactionId' => 'txn_test_123',
-            'feeAmountRecovered' => ['amount' => 5.00, 'currency' => 'USD'],
+            'feeAmountRecovered' => ['value' => 5.00, 'currency' => 'USD'],
         ]);
 
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(201, $status);
         $this->assertArrayHasKey('id', $data);
         $this->assertEquals($donor->id, $data['donorId']);
         $this->assertEquals(1, $data['donationFormId']);
-        $this->assertEquals(100.00, $data['amount']->formatToDecimal());
-        $this->assertEquals('USD', $data['amount']->getCurrency()->getCode());
+
+        $this->assertEquals(100.00, $data['amount']['value']);
+        $this->assertEquals('USD', $data['amount']['currency']);
         $this->assertEquals('active', $data['status']);
         $this->assertEquals('month', $data['period']);
         $this->assertEquals(1, $data['frequency']);
         $this->assertEquals(TestGateway::id(), $data['gatewayId']);
         $this->assertEquals(12, $data['installments']);
         $this->assertEquals('txn_test_123', $data['transactionId']);
-        $this->assertEquals(5.00, $data['feeAmountRecovered']->formatToDecimal());
-        $this->assertEquals('USD', $data['feeAmountRecovered']->getCurrency()->getCode());
+        $this->assertEquals(5.00, $data['feeAmountRecovered']['value']);
+        $this->assertEquals('USD', $data['feeAmountRecovered']['currency']);
 
         // Verify persistence in database
         $createdSubscription = Subscription::find($data['id']);
@@ -93,7 +96,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(400, $status);
         $this->assertStringContainsString('Missing parameter(s): donationFormId, amount, status, period, frequency, gatewayId', $data['message']);
@@ -111,7 +115,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'status' => SubscriptionStatus::ACTIVE,
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
@@ -138,7 +142,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'status' => $status,
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
@@ -146,7 +150,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         ]);
 
         $response = $this->dispatchRequest($request);
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(201, $response->get_status());
         $this->assertEquals($status, $data['status']);
@@ -169,7 +174,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'status' => SubscriptionStatus::ACTIVE,
             'period' => $period,
             'frequency' => 1,
@@ -177,7 +182,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         ]);
 
         $response = $this->dispatchRequest($request);
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(201, $response->get_status());
         $this->assertEquals($period, $data['period']);
@@ -199,7 +205,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'status' => 'invalid_status',
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
@@ -209,7 +215,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(400, $status);
         $this->assertStringContainsString('Invalid parameter(s): status', $data['message']);
@@ -237,7 +244,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(400, $status);
         $this->assertStringContainsString('Invalid parameter(s): amount', $data['message']);
@@ -255,7 +263,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'status' => SubscriptionStatus::ACTIVE,
             'period' => 'invalid_period',
             'frequency' => 1,
@@ -265,7 +273,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(400, $status);
         $this->assertStringContainsString('Invalid parameter(s): period', $data['message']);
@@ -283,7 +292,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'status' => SubscriptionStatus::ACTIVE,
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
@@ -292,7 +301,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         ]);
 
         $response = $this->dispatchRequest($request);
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(201, $response->get_status());
         $this->assertArrayHasKey('id', $data);
@@ -316,22 +326,23 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 150.50, 'currency' => 'USD'],
+            'amount' => ['value' => 150.50, 'currency' => 'USD'],
             'status' => SubscriptionStatus::ACTIVE,
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
             'gatewayId' => TestGateway::id(),
-            'feeAmountRecovered' => ['amount' => 7.25, 'currency' => 'USD'],
+            'feeAmountRecovered' => ['value' => 7.25, 'currency' => 'USD'],
         ]);
 
         $response = $this->dispatchRequest($request);
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(201, $response->get_status());
-        $this->assertEquals(150.50, $data['amount']->formatToDecimal());
-        $this->assertEquals('USD', $data['amount']->getCurrency()->getCode());
-        $this->assertEquals(7.25, $data['feeAmountRecovered']->formatToDecimal());
-        $this->assertEquals('USD', $data['feeAmountRecovered']->getCurrency()->getCode());
+        $this->assertEquals(150.50, $data['amount']['value']);
+        $this->assertEquals('USD', $data['amount']['currency']);
+        $this->assertEquals(7.25, $data['feeAmountRecovered']['value']);
+        $this->assertEquals('USD', $data['feeAmountRecovered']['currency']);
 
         // Verify persistence in database
         $createdSubscription = Subscription::find($data['id']);
@@ -353,7 +364,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'status' => SubscriptionStatus::ACTIVE,
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
@@ -362,7 +373,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         ]);
 
         $response = $this->dispatchRequest($request);
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(201, $response->get_status());
         $this->assertArrayHasKey('renewsAt', $data);
@@ -384,7 +396,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $donor->id,
             'donationFormId' => 1,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'status' => SubscriptionStatus::ACTIVE,
             'period' => SubscriptionPeriod::MONTH,
             'frequency' => 1,
@@ -396,7 +408,8 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(400, $status);
         $this->assertStringContainsString('Invalid parameter(s): renewsAt', $data['message']);

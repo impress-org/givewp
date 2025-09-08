@@ -25,7 +25,11 @@ class SubscriptionFields
             case 'amount':
             case 'feeAmountRecovered':
                 if (is_array($value)) {
-                    // Handle Money object array format: ['amount' => 100.00, 'currency' => 'USD']
+                    // Handle Money object array format: ['value' => 100.00, 'currency' => 'USD']
+                    if (isset($value['value']) && isset($value['currency'])) {
+                        return Money::fromDecimal($value['value'], $value['currency']);
+                    }
+                    // Backward compatibility: Handle old format ['amount' => 100.00, 'currency' => 'USD']
                     if (isset($value['amount']) && isset($value['currency'])) {
                         return Money::fromDecimal($value['amount'], $value['currency']);
                     }

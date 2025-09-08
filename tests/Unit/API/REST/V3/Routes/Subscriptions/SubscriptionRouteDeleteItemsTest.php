@@ -3,6 +3,7 @@
 namespace Unit\API\REST\V3\Routes\Subscriptions;
 
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -10,9 +11,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
-use Give\Donors\Models\Donor;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
@@ -41,7 +41,8 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertArrayHasKey('deleted', $data);
@@ -79,7 +80,8 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, $data['total_requested']);
@@ -110,7 +112,8 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(4, $data['total_requested']);
@@ -169,7 +172,8 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertCount(2, $data['deleted']);
@@ -180,9 +184,11 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
             $this->assertArrayHasKey('id', $deletedItem['previous']);
             $this->assertArrayHasKey('status', $deletedItem['previous']);
             $this->assertArrayHasKey('amount', $deletedItem['previous']);
-            
-            // Verify amount structure is correct (Money object)
-            $this->assertIsObject($deletedItem['previous']['amount']);
+
+            // Verify amount structure is correct (array format)
+            $this->assertIsArray($deletedItem['previous']['amount']);
+            $this->assertArrayHasKey('value', $deletedItem['previous']['amount']);
+            $this->assertArrayHasKey('currency', $deletedItem['previous']['amount']);
         }
     }
 
@@ -201,7 +207,8 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(0, $data['total_requested']);
@@ -224,7 +231,8 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, $data['total_requested']);
@@ -252,7 +260,8 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, $data['total_requested']);
@@ -289,7 +298,8 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(10, $data['total_requested']);
@@ -320,7 +330,8 @@ class SubscriptionRouteDeleteItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, $data['total_deleted']);
