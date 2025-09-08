@@ -32,13 +32,13 @@ class ItemTest extends TestCase
 
         $formatted = Item::formatForResponse($item, $dateFields, $valueObjectFields);
 
-        // Date fields should be formatted to ISO 8601 strings
+        // Date fields should be formatted to WordPress-compatible ISO 8601 strings (without timezone)
         $this->assertIsString($formatted['createdAt']);
-        $this->assertStringContainsString('2023-12-25T14:30:00', $formatted['createdAt']);
+        $this->assertEquals('2023-12-25T14:30:00', $formatted['createdAt']);
         $this->assertIsString($formatted['updatedAt']);
-        $this->assertStringContainsString('2023-12-26T15:45:00', $formatted['updatedAt']);
+        $this->assertEquals('2023-12-26T15:45:00', $formatted['updatedAt']);
         $this->assertIsString($formatted['renewsAt']);
-        $this->assertStringContainsString('2024-01-01T00:00:00', $formatted['renewsAt']);
+        $this->assertEquals('2024-01-01T00:00:00', $formatted['renewsAt']);
 
         // Non-date fields should remain unchanged
         $this->assertEquals(123, $formatted['id']);
@@ -95,9 +95,9 @@ class ItemTest extends TestCase
 
         // Date fields should be formatted
         $this->assertIsString($formatted['createdAt']);
-        $this->assertStringContainsString('2023-12-25T14:30:00', $formatted['createdAt']);
+        $this->assertEquals('2023-12-25T14:30:00', $formatted['createdAt']);
         $this->assertIsString($formatted['updatedAt']);
-        $this->assertStringContainsString('2023-12-26T15:45:00', $formatted['updatedAt']);
+        $this->assertEquals('2023-12-26T15:45:00', $formatted['updatedAt']);
 
         // Value objects should be converted
         $this->assertEquals('active', $formatted['status']);
@@ -123,9 +123,9 @@ class ItemTest extends TestCase
         $formatted = Item::formatDatesForResponse($item, $dateFields);
 
         $this->assertIsString($formatted['createdAt']);
-        $this->assertStringContainsString('2023-12-25T14:30:00', $formatted['createdAt']);
+        $this->assertEquals('2023-12-25T14:30:00', $formatted['createdAt']);
         $this->assertIsString($formatted['updatedAt']);
-        $this->assertStringContainsString('2023-12-26T15:45:00', $formatted['updatedAt']);
+        $this->assertEquals('2023-12-26T15:45:00', $formatted['updatedAt']);
         $this->assertEquals('Test Item', $formatted['name']);
     }
 
@@ -145,7 +145,7 @@ class ItemTest extends TestCase
 
         $this->assertNull($formatted['createdAt']);
         $this->assertIsString($formatted['updatedAt']);
-        $this->assertStringContainsString('2023-12-26T15:45:00', $formatted['updatedAt']);
+        $this->assertEquals('2023-12-26T15:45:00', $formatted['updatedAt']);
         $this->assertEquals('Test Item', $formatted['name']);
     }
 

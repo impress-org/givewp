@@ -133,7 +133,7 @@ class GetSubscriptionItemSchema
                         '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
                     ),
                     'format' => 'date-time',
-                    'example' => '2025-01-01T12:00:00+00:00',
+                    'example' => '2025-09-02T20:27:02',
                 ],
                 'renewsAt' => [
                     'type' => ['string', 'null'],
@@ -143,7 +143,7 @@ class GetSubscriptionItemSchema
                         '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
                     ),
                     'format' => 'date-time',
-                    'example' => '2025-01-01T12:00:00+00:00',
+                    'example' => '2025-09-02T20:27:02',
                 ],
                 'projectedAnnualRevenue' => [
                     'type' => ['object', 'null'],

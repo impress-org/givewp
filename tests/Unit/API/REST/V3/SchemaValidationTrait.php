@@ -131,17 +131,17 @@ trait SchemaValidationTrait
     private function validateDateFormat($dateValue, $propertyName)
     {
         if (is_string($dateValue)) {
-            // Should be RFC3339/ISO8601 format
+            // Should be WordPress-compatible ISO 8601 format (without timezone)
             $this->assertMatchesRegularExpression(
-                '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/',
+                '/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/',
                 $dateValue,
-                "Property '{$propertyName}' should be in RFC3339 format"
+                "Property '{$propertyName}' should be in WordPress-compatible ISO 8601 format (without timezone)"
             );
         } elseif (is_null($dateValue)) {
             // Null values are allowed for optional date fields
             return;
         } else {
-            $this->fail("Property '{$propertyName}' should be a string in RFC3339 format or null, got " . gettype($dateValue));
+            $this->fail("Property '{$propertyName}' should be a string in WordPress-compatible ISO 8601 format or null, got " . gettype($dateValue));
         }
     }
 

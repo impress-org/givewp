@@ -112,7 +112,7 @@ class SubscriptionSchemaTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
         $data = $response->get_data();
 
-        // Check if dates are in WordPress standard format (RFC3339/ISO8601)
+        // Check if dates are in WordPress standard format (ISO 8601 without timezone)
         if (isset($data['createdAt'])) {
             $this->validateDateFormat($data['createdAt'], 'createdAt');
         }
