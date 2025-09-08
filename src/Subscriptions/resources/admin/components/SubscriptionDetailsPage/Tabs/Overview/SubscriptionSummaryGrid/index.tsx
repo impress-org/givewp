@@ -83,8 +83,9 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
 
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">
-                    {isLoading && <Spinner />}
-                    {!isLoading && !paymentMethodId ? (
+                    {isLoading ? (
+                        <Spinner />
+                    ) : !hasPaymentMethodDetails ? (
                         <GatewayNotice />
                     ) : (
                         <>

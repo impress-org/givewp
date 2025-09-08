@@ -67,7 +67,6 @@ class GetSubscriptionItemSchema
                             'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
                         ],
                     ],
-                    'required' => ['value', 'valueInMinorUnits', 'currency'],
                     'description' => esc_html__('Subscription amount', 'give'),
                     'required' => true,
                 ],
@@ -88,7 +87,6 @@ class GetSubscriptionItemSchema
                             'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
                         ],
                     ],
-                    'required' => ['value', 'valueInMinorUnits', 'currency'],
                     'description' => esc_html__('Fee amount recovered', 'give'),
                 ],
                 'status' => [
@@ -130,31 +128,31 @@ class GetSubscriptionItemSchema
                     'required' => true,
                 ],
                 'gateway' => [
-                    'type' => 'object',
+                    'type' => ['object', 'null'],
                     'properties' => [
                         'id' => [
-                            'type' => ['string', 'null'],
+                            'type' => 'string',
                             'description' => esc_html__('Gateway ID', 'give'),
                         ],
                         'name' => [
-                            'type' => ['string', 'null'],
+                            'type' => 'string',
                             'description' => esc_html__('Gateway name', 'give'),
                         ],
                         'label' => [
-                            'type' => ['string', 'null'],
+                            'type' => 'string',
                             'description' => esc_html__('Payment method label', 'give'),
                         ],
                         'subscriptionUrl' => [
-                            'type' => ['string', 'null'],
+                            'type' => 'string',
                             'format' => 'uri',
                             'description' => esc_html__('Gateway dashboard subscription URL', 'give'),
                         ],
                         'canSync' => [
-                            'type' => ['boolean', 'null'],
+                            'type' => 'boolean',
                             'description' => esc_html__('Whether the gateway supports transaction synchronization', 'give'),
                         ],
                     ],
-                    'description' => esc_html__('Payment gateway details. Properties will be null if gateway is not available or not registered.', 'give'),
+                    'description' => esc_html__('Payment gateway details. Returns null when gateway is not available or not registered.', 'give'),
                     'readOnly' => true,
                 ],
                 'createdAt' => [
@@ -178,7 +176,7 @@ class GetSubscriptionItemSchema
                     'example' => '2025-09-02T20:27:02',
                 ],
                 'projectedAnnualRevenue' => [
-                    'type' => ['object', 'null'],
+                    'type' => 'object',
                     'properties' => [
                         'value' => [
                             'type' => 'number',
@@ -194,8 +192,8 @@ class GetSubscriptionItemSchema
                             'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
                         ],
                     ],
-                    'required' => ['value', 'valueInMinorUnits', 'currency'],
                     'description' => esc_html__('Projected annual revenue for this subscription', 'give'),
+                    'required' => true,
                     'readOnly' => true,
                 ],
             ],
