@@ -271,6 +271,118 @@ class TestLicenseRepository extends TestCase
     }
 
     /**
+     * @unreleased
+     */
+    public function testGetPlatformFeePercentageReturnsZeroWhenInGracePeriodViaLastActiveDate(): void
+    {
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+            ]
+        );
+        
+        // Set last active date to 30 days ago (within 33-day grace period)
+        update_option(
+            LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE,
+            current_time('timestamp', true) - $this->repository->getGracePeriodInSeconds()
+        );
+        
+        $this->assertSame(0.0, $this->repository->getPlatformFeePercentage());
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function testGetPlatformFeePercentageReturnsDefaultWhenGracePeriodExpiredViaLastActiveDate(): void
+    {
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+            ]
+        );
+        
+        // Set last active date to 35 days ago (beyond 33-day grace period)
+        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, current_time('timestamp', true) - (35 * DAY_IN_SECONDS));
+        
+        $this->assertSame(2.0, $this->repository->getPlatformFeePercentage());
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function testGetPlatformFeePercentageReturnsZeroWhenAtGracePeriodBoundary(): void
+    {
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+            ]
+        );
+        
+        // Set last active date to exactly 33 days ago (at boundary)
+        update_option(
+            LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE,
+            current_time('timestamp', true) - $this->repository->getGracePeriodInSeconds()
+        );
+        
+        $this->assertSame(0.0, $this->repository->getPlatformFeePercentage());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetPlatformFeePercentageReturnsDefaultWhenJustBeyondGracePeriodBoundary(): void
+    {
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+            ]
+        );
+        
+        // Set last active date to just beyond 33 days ago (34 days)
+        update_option(
+            LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE,
+            current_time('timestamp', true) - (34 * DAY_IN_SECONDS)
+            );
+        
+        $this->assertSame(2.0, $this->repository->getPlatformFeePercentage());
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function testGetPlatformFeePercentageReturnsDefaultWhenLastActiveDateIsZero(): void
+    {
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+            ]
+        );
+        
+        // Set last active date to 0 (invalid/empty)
+        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, 0);
+        
+        $this->assertSame(2.0, $this->repository->getPlatformFeePercentage());
+    }
+
+    /**
      * @since 4.3.0
      * @dataProvider gatewayFeeDataProvider
      */
@@ -393,6 +505,69 @@ class TestLicenseRepository extends TestCase
         );
 
         $this->assertSame(0.0, $this->repository->findLowestPlatformFeePercentageFromActiveLicenses());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetGracePeriodInSecondsReturnsCorrectValue(): void
+    {
+        $expectedSeconds = 33 * DAY_IN_SECONDS;
+        $this->assertSame($expectedSeconds, $this->repository->getGracePeriodInSeconds());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetLastActiveLicenseDateReturnsStoredValue(): void
+    {
+        $testTimestamp = current_time('timestamp', true) - (10 * DAY_IN_SECONDS);
+        
+        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, $testTimestamp);
+        
+        $this->assertSame($testTimestamp, $this->repository->getLastActiveLicenseDate());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetCurrentActiveLicenseDateReturnsNullWhenNoActiveLicenses(): void
+    {
+        // Ensure no active licenses
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'expired'
+                ]),
+            ]
+        );
+        
+        $this->assertNull($this->repository->getCurrentActiveLicenseDate());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetCurrentActiveLicenseDateReturnsCurrentTimestampWhenActiveLicenses(): void
+    {
+        // Set up active license
+        update_option(
+            LicenseOptionKeys::LICENSES,
+            [
+                'licence-key-1' => $this->getRawLicenseData([
+                    'license' => 'valid'
+                ]),
+            ]
+        );
+        
+        $beforeCall = current_time('timestamp', true);
+        $result = $this->repository->getCurrentActiveLicenseDate();
+        $afterCall = current_time('timestamp', true);
+        
+        $this->assertNotNull($result);
+        $this->assertGreaterThanOrEqual($beforeCall, $result);
+        $this->assertLessThanOrEqual($afterCall, $result);
     }
 
     /**
