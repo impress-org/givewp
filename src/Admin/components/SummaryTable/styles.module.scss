@@ -1,0 +1,40 @@
+$breakpoint-desktop: 900px;
+
+.summaryTableContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--givewp-spacing-2);
+  width: 100%;
+}
+
+.summaryPanel, .summaryTable {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid #f3f4f6;
+  background-color: var(--givewp-shades-white);
+
+  @media (max-width: $breakpoint-desktop) {
+    flex-wrap: wrap;
+  }
+}
+
+.summaryTableLabel {
+  flex-grow: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #4b5563;
+  padding: var(--givewp-spacing-3) 0;
+  margin: 0;
+}
+
+.summaryTableValue {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #1f2937;
+  padding: var(--givewp-spacing-3) 0;
+  text-align: right;
+}

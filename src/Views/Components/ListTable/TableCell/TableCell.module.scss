@@ -72,3 +72,34 @@
     font-size: 0.615em;
     padding-inline-end: 0.25em;
 }
+
+:global(.list-table-page-container--new-design) {
+    .tableCell {
+        padding-block: var(--givewp-spacing-2) var(--givewp-spacing-10);
+        padding-inline: var(--givewp-spacing-2);
+        color: var(--givewp-neutral-700);
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+
+        &:first-child {
+            padding-inline-start: var(--givewp-spacing-6);
+        }
+
+        &:last-child {
+            padding-inline-end: var(--givewp-spacing-6);
+        }
+    }
+
+    tr:first-child {
+        .tableCell {
+            padding-block-start: var(--givewp-spacing-6);
+        }
+    }
+
+    tr:last-child {
+        .tableCell {
+            padding-block-end: var(--givewp-spacing-12);
+        }
+    }
+}

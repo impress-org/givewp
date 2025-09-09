@@ -141,4 +141,28 @@ div.abandoned {
     }
 }
 
+:global(.list-table-page-container--new-design) {
+    .tableRow {
+        background-color: var(--givewp-shades-white);
+    }
 
+    .tableRowActions {
+        font-size: 0.875rem;
+        font-weight: 600;
+        inset-block-end: initial;
+        line-height: 1.29;
+        margin-top: 0.875rem;
+
+        > * + ::before {
+            color: var(--givewp-neutral-200);
+            background: none;
+            content: "|";
+            block-size: 100%;
+            inline-size: 1.25rem;
+            inset-inline-start: -1.25rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            pointer-events: none;
+        }
+    }
+}

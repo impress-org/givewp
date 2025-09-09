@@ -37,8 +37,8 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
     useObjectEntityRecord: (id: string | number) => {
         record: T;
         hasResolved: boolean;
-        save: () => Promise<T>;
-        edit: (data: Partial<T>) => void;
+        save: () => any;
+        edit: (data: T | Partial<T>) => void;
     };
 
     /**
@@ -64,7 +64,7 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
     /**
      * Custom title for the page header (defaults to entity.name)
      */
-    pageTitle?: string;
+    pageTitle?: string | React.ReactNode;
 
     /**
      * Component to display the status badge
@@ -103,9 +103,10 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
 export type Tab = {
     id: string;
     title: string;
-    content: FC;
-    fullwidth?: boolean;
-};
+} & (
+        | { link: string; content?: never; fullwidth?: boolean }
+        | { link?: never; content: FC; fullwidth?: boolean }
+    );
 
 /**
  * @since 4.4.0
