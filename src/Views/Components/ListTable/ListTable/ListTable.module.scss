@@ -21,14 +21,15 @@
     overflow: auto;
     position: relative;
     max-inline-size: 100%;
-    box-shadow: 0 0 0.5625em rgb(68 68 68 / 0.05);
 }
 
 .table {
-    border-radius: inherit;
+    border-radius: 4px;
     border-spacing: 0;
-    inline-size: 100%;
+    border: 1px solid var(--givewp-neutral-50);
     font-size: 1em;
+    inline-size: 100%;
+    overflow: hidden;
 }
 
 /* Visually hidden class omitting position: absolute since that breaks the table
@@ -45,13 +46,17 @@
 }
 
 .tableColumnHeader {
-    vertical-align: middle;
-    border-bottom: 0.0625em solid #ddd;
-    color: #0878b0;
-    font-weight: 700;
-    padding: 1em;
+    background-color: var(--givewp-neutral-25);
+    border-bottom: 1px solid var(--givewp-neutral-50);
+    color: var(--givewp-neutral-900);
+    font-size: 1rem;
+    font-weight: 600;
     inline-size: 8rem;
+    line-height: 1.5;
+    padding-block: var(--givewp-spacing-4);
+    padding-inline: var(--givewp-spacing-2);
     text-align: start;
+    vertical-align: middle;
 
     &.start {
         text-align: start;
@@ -64,10 +69,14 @@
     &.end {
         text-align: end;
     }
-}
 
-.testMode {
-    border-bottom: 2px solid #f49420;
+    &:first-child {
+        padding-inline-start: var(--givewp-spacing-6);
+    }
+
+    &:last-child {
+        padding-inline-end: var(--givewp-spacing-6);
+    }
 }
 
 .tableContent {
@@ -247,37 +256,5 @@
     }
     100% {
         opacity: 1;
-    }
-}
-
-// TODO: Replace these styles in the current list table implementation
-:global(.list-table-page-container--new-design) {
-    .table {
-        border-radius: 4px;
-        border: 1px solid var(--givewp-neutral-50);
-        overflow: hidden;
-    }
-
-    .tableGroup {
-        box-shadow: none;
-    }
-
-    .tableColumnHeader {
-        background-color: var(--givewp-neutral-25);
-        border-bottom: 1px solid var(--givewp-neutral-50);
-        color: var(--givewp-neutral-900);
-        font-weight: 600;
-        font-size: 1rem;
-        line-height: 1.5;
-        padding-block: var(--givewp-spacing-4);
-        padding-inline: var(--givewp-spacing-2);
-
-        &:first-child {
-            padding-inline-start: var(--givewp-spacing-6);
-        }
-
-        &:last-child {
-            padding-inline-end: var(--givewp-spacing-6);
-        }
     }
 }

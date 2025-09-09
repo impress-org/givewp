@@ -218,7 +218,7 @@ export default function DonationsListTable() {
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
         >
-            {window.GiveDonations.manualDonations && 1 === 0 ? (
+            {window.GiveDonations.manualDonations ? (
                 <a
                     className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
                     href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
