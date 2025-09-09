@@ -218,21 +218,21 @@ export default function DonationsListTable() {
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
         >
-            {window.GiveDonations.manualDonations ? (
+            {window.GiveDonations.manualDonations && 1 === 0 ? (
                 <a
-                    className={tableStyles.addFormButton}
+                    className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
                     href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
                 >
-                    {__('New Donation', 'give')}
+                    {__('New donation', 'give')}
                 </a>
             ) : (
                 <a
-                    className={styles.manualDonationsNotice}
+                    className={`button button-tertiary ${tableStyles.secondaryActionButton} ${styles.manualDonationsNotice}`}
                     href={'https://docs.givewp.com/enterdonation'}
                     target={'_blank'}
                 >
                     <span className={styles.manualDonationsAddOn}>{__('ADD-ON', 'give')}</span>
-                    {__('Enter Donations', 'give')}
+                    {__('Enter donations', 'give')}
                     <span className={styles.manualDonationsMessage}>
                         <img
                             src={`${window.GiveDonations.pluginUrl}build/assets/dist/images/admin/triangle-tip.svg`}
@@ -246,12 +246,12 @@ export default function DonationsListTable() {
                 </a>
             )}
             <a
-                className={tableStyles.addFormButton}
+                className={`button button-primary ${tableStyles.primaryActionButton}`}
                 href={` ${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations`}
             >
-                {__('Import Donations', 'give')}
+                {__('Import donations', 'give')}
             </a>
-            <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
+            <button className={`button button-tertiary ${tableStyles.secondaryActionButton}`} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>

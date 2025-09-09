@@ -140,7 +140,7 @@ export default function SubscriptionsListTable() {
             paymentMode={!!window.GiveSubscriptions.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
         >
-            <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
+            <button className={`button button-tertiary ${tableStyles.secondaryActionButton}`} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>

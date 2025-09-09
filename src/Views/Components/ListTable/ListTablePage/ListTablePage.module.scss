@@ -78,6 +78,34 @@
         padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
         text-transform: uppercase;
     }
+
+    .primaryActionButton,
+    .secondaryActionButton {
+        display: flex;
+        align-items: center;
+        border-radius: var(--givewp-rounded-4);
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.43;
+        text-align: center;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+
+        svg {
+            margin: 3px 0 0 8px !important;
+        }
+    }
+
+    .secondaryActionButton {
+        color: var(--givewp-neutral-900);
+        background-color: var(--givewp-neutral-100);
+        border-color: var(--givewp-neutral-100);
+
+        &:hover {
+            background-color: var(--givewp-neutral-200);
+            border-color: var(--givewp-neutral-200);
+            color: var(--givewp-neutral-900);
+        }
+    }
 }
 
 .flexRow {
