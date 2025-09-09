@@ -263,7 +263,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
         <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
     );
 
-    const TestModeBadge = () => <span>{testModeFilter?.text}</span>;
+    const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;
 
     return (
         <>
@@ -291,7 +291,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                     <>
                         <header className={styles.pageHeader}>
                             <div className={styles.flexRow}>
-                                <GiveIcon size={'1.875rem'} />
+                                <GiveIcon size={'2.25rem'} />
                                 <h1 className={styles.pageTitle}>{title}</h1>
                                 {testModeFilter && testMode && <TestModeBadge />}
                             </div>
