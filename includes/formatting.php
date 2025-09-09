@@ -597,7 +597,7 @@ function give_format_decimal($args)
     $args = wp_parse_args(
         $args,
         [
-            'amount' => '',
+            'amount' => 0,
             'donation_id' => 0,
             'currency' => '',
             'dp' => false,
