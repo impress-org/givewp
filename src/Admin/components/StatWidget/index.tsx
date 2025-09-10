@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 import { __ } from '@wordpress/i18n';
 
 /**
- * @unreleased add className & toolTipDescription prop for dynamic tooltips.
+ * @unreleased add className & toolTipDescription prop for dynamic tooltips. replace inActive with upgrade object.
  * @since 4.6.0 add href & inActive props to handle Fee Recovery widget.
  * @since 4.4.0
  */
@@ -16,10 +16,11 @@ export type StatWidgetProps = {
     value: string | React.ReactNode;
     description?: string;
     loading?: boolean;
-    inActive?: boolean;
-    href?: string;
     className?: string;
-    toolTipDescription?: string;
+    upgrade?: {
+        href?: string;
+        toolTipDescription?: string;
+    };
 };
 
 /**
@@ -30,11 +31,9 @@ export default function StatWidget({
     label,
     value,
     description,
-    href,
+    upgrade = null,
     loading = false,
-    inActive = false,
     className,
-    toolTipDescription,
 }: StatWidgetProps) {
     return (
         <div className={classnames(styles.statWidget, className)}>
@@ -42,7 +41,7 @@ export default function StatWidget({
                 <HeaderText>{label}</HeaderText>
             </header>
             <div className={styles.statWidgetAmount}>
-                <div className={classnames(styles.statWidgetDisplay, {[styles.inActive]: inActive})}>
+                <div className={classnames(styles.statWidgetDisplay, {[styles.requiresUpgrade]: upgrade})}>
                     {!loading ? (
                         value
                     ) : (
@@ -50,7 +49,7 @@ export default function StatWidget({
                             <Spinner size="small" />
                         </span>
                     )}
-                {inActive && (<a className={styles.upgradeLink} href={href} data-addon-tooltip={toolTipDescription}>{__('Upgrade', 'give')}</a>)}
+                {upgrade && (<a className={styles.upgradeLink} href={upgrade?.href} data-addon-tooltip={upgrade?.toolTipDescription}>{__('Upgrade', 'give')}</a>)}
                 </div>
             </div>
             {description && (

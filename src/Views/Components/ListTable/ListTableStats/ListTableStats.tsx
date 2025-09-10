@@ -7,9 +7,10 @@ import styles from "./styles.module.scss";
  */
 export type StatConfig = {
     label: string;
-    inActive?: boolean;
-    href?: string;
-    toolTipDescription?: string;
+    upgrade?: {
+        href?: string;
+        toolTipDescription?: string;
+    };
 };
 
 /**

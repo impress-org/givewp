@@ -228,9 +228,10 @@ const statsConfig: Record<string, StatConfig> = {
     oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
     recurringDonationsCount: { 
         label: __('Recurring Donations', 'give'),
-        inActive: !window.GiveDonations.recurringDonations,
-        href: 'https://givewp.com/addons/recurring-donations/',
-        toolTipDescription: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
+        upgrade: {
+            href: 'https://givewp.com/addons/recurring-donations/',
+            toolTipDescription: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
+        },
     },
 };
 

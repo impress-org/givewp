@@ -40,9 +40,10 @@ export default function DonationStats({ donation, isResolving }: DonationStatsPr
                 label={__('Fees recovered', 'give')}
                 value={formatter.format(feeAmountRecovered)}
                 loading={isResolving}
-                href={'https://givewp.com/addons/fee-recovery/'}
-                inActive={!isFeeRecoveryEnabled}
-                toolTipDescription={__('Keep 100% of your fundraising revenue by providing donors with the option to cover the credit card processing fees.', 'give')}
+                upgrade={{
+                    href: 'https://givewp.com/addons/fee-recovery/',
+                    toolTipDescription: __('Keep 100% of your fundraising revenue by providing donors with the option to cover the credit card processing fees.', 'give')
+                }}
             />
         </div>
     );
