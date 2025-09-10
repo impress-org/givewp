@@ -97,7 +97,7 @@ class GetCampaignComments implements RestRoute
                 'comment'   => $donation->comment,
                 'anonymous' => $donation->anonymous === '1',
                 'date'      => human_time_diff(strtotime($donation->date)),
-                'avatar'    => get_avatar_url($donation->email),
+                'avatar'    => (string) get_avatar_url($donation->email),
             ];
         }, $donations);
 

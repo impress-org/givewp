@@ -254,6 +254,7 @@ final class Give
         Give\API\REST\V3\Routes\ServiceProvider::class,
         Give\Framework\PaymentGateways\ServiceProvider::class,
         Give\ThirdPartySupport\Elementor\ServiceProvider::class,
+        Give\MCP\ServiceProvider::class,
     ];
 
     /**
