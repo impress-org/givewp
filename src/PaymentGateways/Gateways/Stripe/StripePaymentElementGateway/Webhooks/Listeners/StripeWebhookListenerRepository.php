@@ -59,7 +59,7 @@ trait StripeWebhookListenerRepository
      *
      * @see https://docs.stripe.com/changelog/basil/2025-03-31/adds-new-parent-field-to-invoicing-objects
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param Invoice $invoice The Stripe invoice object
      * @return string|null The gateway subscription ID or null if not found
@@ -84,7 +84,7 @@ trait StripeWebhookListenerRepository
     /**
      * Retrieve a complete invoice from the Stripe API.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param string $invoiceId The Stripe invoice ID
      * @return Invoice The complete Stripe invoice object with all properties

@@ -28,7 +28,7 @@ use WP_REST_Server;
  * The methods using snake case like register_routes() are present in the base class,
  * and the methods using camel case like deleteItems() are available only on this class.
  *
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionController extends WP_REST_Controller
 {
@@ -43,7 +43,7 @@ class SubscriptionController extends WP_REST_Controller
     protected $rest_base;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function __construct()
     {
@@ -52,7 +52,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function register_routes()
     {
@@ -170,7 +170,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Get subscriptions.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -235,7 +235,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Get a subscription.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -264,7 +264,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Create a subscription.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -306,7 +306,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Update a subscription.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -365,7 +365,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Delete a subscription.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -404,7 +404,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Delete multiple subscriptions.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
      *
@@ -459,7 +459,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Cancel a subscription.
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public function cancel_item($request)
     {
@@ -493,7 +493,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function getSortColumn(string $sortColumn): string
     {
@@ -513,7 +513,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function get_collection_params(): array
     {
@@ -532,7 +532,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param mixed           $item    WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
@@ -606,7 +606,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      *
@@ -618,7 +618,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      *
@@ -630,7 +630,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      *
@@ -642,7 +642,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      *
@@ -654,7 +654,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      *
@@ -666,7 +666,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      *
@@ -678,7 +678,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function cancel_item_permissions_check($request)
     {
@@ -686,7 +686,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function get_item_schema(): array
     {

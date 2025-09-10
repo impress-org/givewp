@@ -47,7 +47,7 @@ class SubscriptionFactory extends ModelFactory
     }
 
     /**
-     * @unreleased Respect subscription mode property
+     * @since 4.8.0 Respect subscription mode property
      * @since 4.0.0 Add $donationAttributes parameter and merge it with the default attributes when creating a donation
      * @since 2.23.0
      *

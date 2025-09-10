@@ -5,12 +5,12 @@ namespace Give\License\Migrations;
 use Give\Framework\Migrations\Contracts\Migration;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class RefreshLicensesForLastActiveDate extends Migration
 {
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public static function id(): string
     {
@@ -18,7 +18,7 @@ class RefreshLicensesForLastActiveDate extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public static function title(): string
     {
@@ -26,7 +26,7 @@ class RefreshLicensesForLastActiveDate extends Migration
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public static function timestamp(): int
     {
@@ -37,7 +37,7 @@ class RefreshLicensesForLastActiveDate extends Migration
      * This migration refreshes the stored licenses to ensure the grace period logic works
      * correctly for existing installations that had active licenses before this feature was added.
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public function run(): void
     {

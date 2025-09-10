@@ -4,7 +4,7 @@ import {__} from '@wordpress/i18n';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 interface Props {
     type: 'info' | 'warning' | 'error';
@@ -13,7 +13,7 @@ interface Props {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default ({type, children, dismissHandleClick}: Props) => {
     const [isVisible, setIsVisible] = useState(true);

@@ -5,7 +5,7 @@ import { getCompletedDonations } from '../SubscriptionStats';
 /**
  * Get completed donations for the current year
  *
- * @unreleased
+ * @since 4.8.0
  */
 export const getCurrentYearCompletedDonations = (donations: Donation[]): Donation[] => {
     const completedDonations = getCompletedDonations(donations);
@@ -20,7 +20,7 @@ export const getCurrentYearCompletedDonations = (donations: Donation[]): Donatio
 /**
  * Calculate total contributions from completed donations
  *
- * @unreleased
+ * @since 4.8.0
  */
 export const calculateTotalContributions = (completedDonations: Donation[]): number => {
     if (!completedDonations) {
@@ -33,7 +33,7 @@ export const calculateTotalContributions = (completedDonations: Donation[]): num
 /**
  * Calculate progress percentage based on completed vs projected amounts
  *
- * @unreleased
+ * @since 4.8.0
  */
 export const calculateProgressPercentage = (completedAmount: number, projectedAmount: number): number => {
     const progress = Math.ceil((completedAmount / projectedAmount) * 100);
@@ -42,7 +42,7 @@ export const calculateProgressPercentage = (completedAmount: number, projectedAm
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export const chartOptions = (label: string): ApexOptions => {
     return {

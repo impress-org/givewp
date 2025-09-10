@@ -263,7 +263,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -330,7 +330,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -392,7 +392,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -443,7 +443,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *

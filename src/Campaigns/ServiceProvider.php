@@ -53,7 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased add registerCampaignCache
+     * @since 4.8.0 add registerCampaignCache
      * @since 4.0.0
      * @inheritDoc
      */
@@ -84,7 +84,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased add CacheCampaignData
+     * @since 4.8.0 add CacheCampaignData
      * @since 4.0.0
      */
     private function registerMigrations(): void
@@ -254,7 +254,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function registerCampaignCache(): void
     {

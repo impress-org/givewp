@@ -19,7 +19,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased Add notes repository
+ * @since 4.8.0 Add notes repository
  * @since 2.19.6
  */
 class SubscriptionRepository
@@ -42,7 +42,7 @@ class SubscriptionRepository
     ];
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function __construct()
     {
@@ -295,7 +295,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -433,7 +433,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased Add campaignId support.
+     * @since 4.8.0 Add campaignId support.
      * @since 3.20.0
      * @throws Exception
      */
@@ -442,8 +442,8 @@ class SubscriptionRepository
        $initialDonation = $subscription->initialDonation();
        $campaignId = $initialDonation->campaignId;
 
-        if (is_null($campaignId) && $campaign = give()->campaigns->getByFormId($subscription->donationFormId)) {                        
-            $campaignId = $campaign->id;            
+        if (is_null($campaignId) && $campaign = give()->campaigns->getByFormId($subscription->donationFormId)) {
+            $campaignId = $campaign->id;
         }
 
         $donation = Donation::create(

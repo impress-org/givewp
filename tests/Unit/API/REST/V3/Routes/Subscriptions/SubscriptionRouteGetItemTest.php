@@ -18,7 +18,7 @@ use WP_REST_Server;
 use Give\Donors\Models\Donor;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionRouteGetItemTest extends RestApiTestCase
 {
@@ -26,7 +26,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnAllViewModelProperties()
     {
@@ -82,7 +82,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
             'gateway' => array_merge(
                 $subscription->gateway()->toArray(),
                 [
-                    'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),      
+                    'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),
                     'canSync' => $subscription->gateway()->subscriptionModule instanceof SubscriptionTransactionsSynchronizable,
                 ]
             ),
@@ -92,7 +92,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnSelfLink()
     {
@@ -114,7 +114,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnDonorLink()
     {
@@ -136,7 +136,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -165,7 +165,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -196,7 +196,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -220,7 +220,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -237,7 +237,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -272,7 +272,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -296,7 +296,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */

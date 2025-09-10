@@ -14,14 +14,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class CalculateProjectedAnnualRevenueTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @dataProvider subscriptionStartDateVariationsProvider
      */
@@ -59,7 +59,7 @@ class CalculateProjectedAnnualRevenueTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function subscriptionStartDateVariationsProvider(): array
     {

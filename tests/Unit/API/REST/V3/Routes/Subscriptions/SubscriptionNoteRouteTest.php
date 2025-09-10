@@ -14,7 +14,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.8.0
  *
  * @coversDefaultClass SubscriptionNotesController
  */
@@ -24,21 +24,21 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @var SubscriptionNotesController
      */
     private $controller;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @var Subscription
      */
     private $subscription;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function setUp(): void
     {
@@ -52,7 +52,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
         public function testControllerInstantiation()
     {
@@ -72,7 +72,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetItemsPermissionCheck()
     {
@@ -82,7 +82,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetItemsWithNonexistentSubscription()
     {
@@ -92,7 +92,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateItemPermissionCheck()
     {
@@ -107,7 +107,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateItemWithNonexistentSubscription()
     {
@@ -122,7 +122,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetItemPermissionCheck()
     {
@@ -132,7 +132,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testUpdateItemPermissionCheck()
     {
@@ -146,7 +146,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemPermissionCheck()
     {
@@ -156,7 +156,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testControllerHasCorrectPermissionMethods()
     {
@@ -170,7 +170,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetItemsPermissionsCheckRequiresViewReportsCapability()
     {
@@ -188,7 +188,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateItemPermissionsCheckRequiresEditPaymentsCapability()
     {
@@ -206,7 +206,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetItemPermissionsCheckRequiresViewReportsCapability()
     {
@@ -224,7 +224,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testUpdateItemPermissionsCheckRequiresEditPaymentsCapability()
     {
@@ -242,7 +242,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteItemPermissionsCheckRequiresEditPaymentsCapability()
     {
@@ -260,7 +260,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetCollectionParams()
     {
@@ -279,7 +279,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetItemSchema()
     {
@@ -308,7 +308,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetPublicItemSchema()
     {
@@ -323,7 +323,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetEndpointArgsForItemSchemaCreatable()
     {
@@ -342,7 +342,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetEndpointArgsForItemSchemaEditable()
     {
@@ -361,7 +361,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetEndpointArgsForItemSchemaDeletable()
     {
@@ -378,7 +378,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     /**
      * Helper method to handle GET items requests
      *
-     * @unreleased
+     * @since 4.8.0
      */
     private function handleGetItemsRequest(
         int $subscriptionId,
@@ -402,7 +402,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     /**
      * Helper method to handle POST requests
      *
-     * @unreleased
+     * @since 4.8.0
      */
     private function handleCreateItemRequest(
         int $subscriptionId,
@@ -424,7 +424,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     /**
      * Helper method to handle GET single item requests
      *
-     * @unreleased
+     * @since 4.8.0
      */
     private function handleGetItemRequest(
         int $subscriptionId,
@@ -444,7 +444,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     /**
      * Helper method to handle PUT/PATCH requests
      *
-     * @unreleased
+     * @since 4.8.0
      */
     private function handleUpdateItemRequest(
         int $subscriptionId,
@@ -467,7 +467,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     /**
      * Helper method to handle DELETE requests
      *
-     * @unreleased
+     * @since 4.8.0
      */
     private function handleDeleteItemRequest(
         int $subscriptionId,

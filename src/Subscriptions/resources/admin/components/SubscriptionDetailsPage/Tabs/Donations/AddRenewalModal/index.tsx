@@ -21,7 +21,7 @@ import { formatDateLocal } from '@givewp/components/AdminDetailsPage/utils';
 import { InfoIcon } from '@givewp/components/AdminDetailsPage/Icons';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 interface AddRenewalDialogProps {
     isOpen: boolean;
@@ -37,7 +37,7 @@ interface RenewalData {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function AddRenewalDialog({
     isOpen,

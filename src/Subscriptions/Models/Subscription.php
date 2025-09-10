@@ -115,7 +115,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return ModelQueryBuilder<SubscriptionNote>
      */
@@ -169,7 +169,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * Returns the donation that began the subscription.
      *
-     * @unreleased Returns null if no initial donation found.
+     * @since 4.8.0 Returns null if no initial donation found.
      * @since 2.23.0
      */
     public function initialDonation(): ?Donation
@@ -265,7 +265,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function trash(): bool
     {
@@ -353,7 +353,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function projectedAnnualRevenue(): Money
     {

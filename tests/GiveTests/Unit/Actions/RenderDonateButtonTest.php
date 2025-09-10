@@ -18,7 +18,7 @@ class RenderDonateButtonTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased Update test with new action signature
+     * @since 4.8.0 Update test with new action signature
      * @since 4.0.0
      */
     public function testItReturnsEmptyIfFormIsNotFound(): void
@@ -34,7 +34,7 @@ class RenderDonateButtonTest extends TestCase
     }
 
     /**
-     * @unreleased Update test with new action signature
+     * @since 4.8.0 Update test with new action signature
      * @since 4.0.0
      */
     public function testItReturnsEmptyIfFormIsNotPublished(): void
@@ -51,7 +51,7 @@ class RenderDonateButtonTest extends TestCase
     }
 
     /**
-     * @unreleased Update test with new action signature
+     * @since 4.8.0 Update test with new action signature
      * @since 4.0.0
      */
     public function testItRendersV3ButtonWhenFormIsPublished(): void
@@ -79,7 +79,7 @@ class RenderDonateButtonTest extends TestCase
     }
 
     /**
-     * @unreleased Update test with new action signature
+     * @since 4.8.0 Update test with new action signature
      * @since 4.0.0
      */
     public function testItRendersDefaultButtonIfInEditor(): void

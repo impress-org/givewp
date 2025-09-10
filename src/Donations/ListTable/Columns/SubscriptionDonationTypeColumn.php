@@ -9,14 +9,14 @@ use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
- * @unreleased
+ * @since 4.8.0
  *
  * @extends ModelColumn<Donation>
  */
 class SubscriptionDonationTypeColumn extends ModelColumn
 {
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @inheritDoc
      */
@@ -26,7 +26,7 @@ class SubscriptionDonationTypeColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @inheritDoc
      */
@@ -36,7 +36,7 @@ class SubscriptionDonationTypeColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @inheritDoc
      *
