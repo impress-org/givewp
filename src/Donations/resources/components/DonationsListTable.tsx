@@ -224,7 +224,7 @@ const rotatingRecommendation = (
  * @unreleased
  */
 const statsConfig: Record<string, StatConfig> = {
-    donationsCount:{ label: __('Total Donations', 'give')},
+    donationsCount: { label: __('Total Donations', 'give')},
     oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
     recurringDonationsCount: { 
         label: __('Recurring Donations', 'give'),
