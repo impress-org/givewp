@@ -1035,7 +1035,7 @@ function give_get_donor_latest_comment( $donor_id, $form_id = 0 ) {
 function give_email_tag_receipt_id( $tag_args ) {
 	$receipt_id = '';
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
 			$receipt_id = give_get_payment_key( $tag_args['payment_id'] );
