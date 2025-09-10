@@ -10,7 +10,7 @@ import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
-import DonationTableStats, { StatConfig } from '../../../Views/Components/ListTable/ListTableStats/ListTableStats';
+import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 
 declare global {
     interface Window {
