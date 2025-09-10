@@ -31,7 +31,7 @@ export default function ListTableStats({config, values}: ListTableStatsProps) {
                     key={key}
                     className={styles.tableStatWidget}
                     {...statConfig}
-                    value={values?.[key]}
+                    value={values?.[key] ?? 0}
                 />
             ))}
         </section>
