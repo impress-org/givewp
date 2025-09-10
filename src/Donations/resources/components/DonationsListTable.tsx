@@ -206,6 +206,23 @@ const rotatingRecommendation = (
     />
 );
 
+/**
+ * Configuration for the statistic tiles rendered above the ListTable.
+ *
+ * IMPORTANT: Object keys MUST MATCH the keys returned by the API's `stats` payload.
+ * For example, if the API returns:
+ *
+ *   data.stats = {
+ *     donationsCount: number;
+ *     oneTimeDonationsCount: number;
+ *     recurringDonationsCount: number;
+ *   }
+ *
+ * then this config must use those same keys: "donationsCount", "oneTimeDonationsCount", "recurringDonationsCount".
+ * Missing or mismatched keys will result in empty/undefined values in the UI.
+ * 
+ * @unreleased
+ */
 const statsConfig: Record<string, StatConfig> = {
     donationsCount:{ label: __('Total Donations', 'give')},
     oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
