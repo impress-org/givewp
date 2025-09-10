@@ -15,7 +15,7 @@ use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionRouteDeleteItemTest extends RestApiTestCase
 {
@@ -23,7 +23,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteSubscriptionShouldSoftDeleteWhenForceIsFalse()
     {
@@ -52,7 +52,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteSubscriptionShouldPermanentlyDeleteWhenForceIsTrue()
     {
@@ -80,7 +80,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteSubscriptionShouldReturn404ErrorWhenSubscriptionNotFound()
     {
@@ -101,7 +101,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteSubscriptionShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -121,7 +121,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteSubscriptionShouldReturnPreviousDataInResponse()
     {
@@ -150,7 +150,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteSubscriptionShouldHandleSoftDeleteFailure()
     {
@@ -174,7 +174,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteSubscriptionShouldHandlePermanentDeleteFailure()
     {
@@ -198,7 +198,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteSubscriptionShouldDefaultToSoftDelete()
     {
@@ -224,7 +224,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testDeleteSubscriptionShouldWorkWithDifferentSubscriptionStatuses()
     {
@@ -261,7 +261,7 @@ class SubscriptionRouteDeleteItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function createSubscription(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
     {

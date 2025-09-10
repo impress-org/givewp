@@ -2,7 +2,7 @@ import { useEntityRecords } from '@wordpress/core-data';
 import { Donation } from '@givewp/donations/admin/components/types';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function useDonationsBySubscription(
     subscriptionId: number,

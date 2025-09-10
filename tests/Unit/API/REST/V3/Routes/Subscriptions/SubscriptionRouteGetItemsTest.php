@@ -21,7 +21,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionRouteGetItemsTest extends RestApiTestCase
 {
@@ -29,7 +29,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionsShouldReturnAllViewModelProperties()
     {
@@ -92,7 +92,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionsShouldReturnSelfLink()
     {
@@ -114,7 +114,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -146,7 +146,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -180,7 +180,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -206,7 +206,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -231,7 +231,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -264,7 +264,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -292,7 +292,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -334,7 +334,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -392,7 +392,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -425,7 +425,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -456,7 +456,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -487,7 +487,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -524,7 +524,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @dataProvider sortableColumnsDataProvider
      *
@@ -637,7 +637,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function sortableColumnsDataProvider(): array
     {
@@ -655,7 +655,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -679,7 +679,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -702,7 +702,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -725,7 +725,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -748,7 +748,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -772,7 +772,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */

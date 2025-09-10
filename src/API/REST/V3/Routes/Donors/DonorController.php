@@ -103,7 +103,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
-     * @unreleased Add support for search parameter
+     * @since 4.8.0 Add support for search parameter
      * @since 4.0.0
      *
      * @param WP_REST_Request $request Full details about the request.
@@ -210,7 +210,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
-     * @unreleased Update donor name when firstName or lastName is updated
+     * @since 4.8.0 Update donor name when firstName or lastName is updated
      * @since 4.7.0 Add support for updating custom fields
      * @since 4.4.0
      *
@@ -456,7 +456,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Re-add search parameter
+     * @since 4.8.0 Re-add search parameter
      * @since 4.4.0
      */
     public function get_collection_params(): array

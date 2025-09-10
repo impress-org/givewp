@@ -286,7 +286,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Create a single donation.
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public function create_item($request): WP_REST_Response
     {
@@ -729,7 +729,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function delete_item_permissions_check($request)
     {
@@ -819,7 +819,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Change default status to complete and set proper JSON Schema version
+     * @since 4.8.0 Change default status to complete
      * @since 4.7.0 Change title to givewp/donation and add custom fields schema
      * @since 4.6.1 Change type of billing address properties to accept null values
      * @since 4.6.0

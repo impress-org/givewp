@@ -18,7 +18,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
  * Calculates the projected annual revenue for a subscription based on completed donations
  * from the current year and estimated remaining donations until the end of the year.
  *
- * @unreleased
+ * @since 4.8.0
  */
 class CalculateProjectedAnnualRevenue
 {
@@ -71,7 +71,7 @@ class CalculateProjectedAnnualRevenue
     /**
      * Calculate the remaining installments until the end of the current year.
      *
-     * @unreleased
+     * @since 4.8.0
      */
     private function calculateRemainingInstallmentsUntilEndOfYear(Subscription $subscription): int
     {

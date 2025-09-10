@@ -19,7 +19,7 @@ import styles from './styles.module.scss';
  * @param subscription - The subscription object containing billing parameters
  * @returns ISO string of the calculated end date, or null if calculation is not possible
  *
- * @unreleased
+ * @since 4.8.0
  */
 const calculateEndDate = (subscription: Subscription): string | null => {
     if (!subscription) {
@@ -67,7 +67,7 @@ const calculateEndDate = (subscription: Subscription): string | null => {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 interface SummaryProps {
     subscription: Subscription;
@@ -78,7 +78,7 @@ interface SummaryProps {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function Summary({subscription, donation, adminUrl, intendedAmount, isLoading}: SummaryProps) {
     const endDate = calculateEndDate(subscription);

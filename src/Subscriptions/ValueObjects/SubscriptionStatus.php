@@ -5,7 +5,7 @@ namespace Give\Subscriptions\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased Added a new "trashed" status
+ * @since 4.8.0 Added a new "trashed" status
  * @since 3.17.0 Added a new "paused" status
  * @since 2.19.6
  *

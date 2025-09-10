@@ -15,7 +15,7 @@ use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionRouteUpdateItemTest extends RestApiTestCase
 {
@@ -23,7 +23,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testUpdateSubscriptionShouldUpdateModelProperties()
     {
@@ -81,7 +81,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testUpdateSubscriptionShouldNotUpdateNonEditableFields()
     {
@@ -118,7 +118,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testUpdateSubscriptionShouldReturn404ErrorWhenSubscriptionNotFound()
     {
@@ -136,7 +136,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testUpdateSubscriptionShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -156,7 +156,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      * @dataProvider subscriptionStatusProvider
      */
     public function testUpdateSubscriptionShouldPersistStatusChanges(string $status)
@@ -181,7 +181,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      * @dataProvider subscriptionPeriodProvider
      */
     public function testUpdateSubscriptionShouldPersistPeriodChanges(string $period)
@@ -206,7 +206,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function subscriptionStatusProvider(): array
     {
@@ -219,7 +219,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function subscriptionPeriodProvider(): array
     {
@@ -232,7 +232,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testUpdateSubscriptionShouldReturn400ErrorForInvalidStatus()
     {
@@ -262,7 +262,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testUpdateSubscriptionShouldReturn400ErrorForInvalidAmount()
     {
@@ -288,7 +288,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testUpdateSubscriptionShouldReturn400ErrorForInvalidPeriod()
     {
@@ -314,7 +314,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function createSubscription(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
     {

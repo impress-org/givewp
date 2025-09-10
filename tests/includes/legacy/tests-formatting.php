@@ -459,7 +459,11 @@ class Tests_Formatting extends Give_Unit_Test_Case {
 	 * @dataProvider give_format_decimal_provider
 	 */
 	public function test_give_format_decimal( $number, $expected, $decimal_place = false ) {
-		$output = give_format_decimal( $number, $decimal_place );
+		$output = give_format_decimal( [
+            'amount' => $number,
+            'currency' => give_get_currency(),
+            'dp' => $decimal_place
+        ]);
 
 		$this->assertSame(
 			$expected,

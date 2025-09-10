@@ -6,12 +6,12 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class GetSubscriptionItemSchema
 {
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function __invoke(): array
     {

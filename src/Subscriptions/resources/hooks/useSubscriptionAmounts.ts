@@ -5,7 +5,7 @@ import { getSubscriptionOptionsWindowData } from '../utils';
 /**
  * This hook is used to get the subscription amounts and the formatter for the subscription amounts.
  *
- * @unreleased
+ * @since 4.8.0
  */
 export default function useSubscriptionAmounts(subscription: Subscription) {
     const {currency: baseCurrency} = getSubscriptionOptionsWindowData();

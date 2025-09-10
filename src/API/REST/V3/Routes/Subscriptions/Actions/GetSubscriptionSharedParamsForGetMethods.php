@@ -3,12 +3,12 @@
 namespace Give\API\REST\V3\Routes\Subscriptions\Actions;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class GetSubscriptionSharedParamsForGetMethods
 {
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function __invoke(): array
     {

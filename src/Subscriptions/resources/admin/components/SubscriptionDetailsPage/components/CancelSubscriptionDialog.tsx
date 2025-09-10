@@ -8,7 +8,7 @@ import { getSubscriptionOptionsWindowData } from "@givewp/subscriptions/utils";
 import { TriangleIcon } from "@givewp/components/AdminDetailsPage/Icons";
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function CancelSubscriptionDialog({
     subscription,
@@ -71,7 +71,7 @@ export default function CancelSubscriptionDialog({
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 function GatewayNotice() {
     return (

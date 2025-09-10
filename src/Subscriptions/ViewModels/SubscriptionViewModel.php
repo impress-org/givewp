@@ -8,7 +8,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionViewModel
 {
@@ -19,7 +19,7 @@ class SubscriptionViewModel
     private bool $includeSensitiveData = false;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function __construct(Subscription $subscription)
     {
@@ -27,7 +27,7 @@ class SubscriptionViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function includeSensitiveData(bool $includeSensitiveData = true): SubscriptionViewModel
     {
@@ -37,7 +37,7 @@ class SubscriptionViewModel
     }
 
     /**
-    * @unreleased
+    * @since 4.8.0
     */
     public function anonymousMode(DonorAnonymousMode $mode): SubscriptionViewModel
     {
@@ -47,7 +47,7 @@ class SubscriptionViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function exports(): array
     {
@@ -101,7 +101,7 @@ class SubscriptionViewModel
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function getGatewayDetails(): ?array
     {

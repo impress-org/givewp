@@ -16,7 +16,7 @@ import {ClockIcon, HourGlassIcon} from './Icons';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type SubscriptionDetailsProps = {
     subscription: Subscription;
@@ -25,7 +25,7 @@ type SubscriptionDetailsProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SubscriptionSummaryGrid({subscription, donation, isLoading}: SubscriptionDetailsProps) {
     const isOngoing = subscription?.installments === 0;
