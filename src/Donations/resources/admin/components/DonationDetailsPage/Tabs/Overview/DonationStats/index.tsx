@@ -15,6 +15,7 @@ interface DonationStatsProps {
 }
 
 /**
+ * @unreleased use upgrade object instead of inActive.
  * @since 4.6.0
  */
 export default function DonationStats({ donation, isResolving }: DonationStatsProps) {
@@ -42,7 +43,7 @@ export default function DonationStats({ donation, isResolving }: DonationStatsPr
                 loading={isResolving}
                 upgrade={{
                     href: 'https://givewp.com/addons/fee-recovery/',
-                    toolTipDescription: __('Keep 100% of your fundraising revenue by providing donors with the option to cover the credit card processing fees.', 'give')
+                    tooltip: __('Keep 100% of your fundraising revenue by providing donors with the option to cover the credit card processing fees.', 'give')
                 }}
             />
         </div>

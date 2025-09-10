@@ -8,8 +8,8 @@ import styles from "./styles.module.scss";
 export type StatConfig = {
     label: string;
     upgrade?: {
-        href?: string;
-        toolTipDescription?: string;
+        href: string;
+        tooltip?: string;
     };
 };
 

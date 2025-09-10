@@ -230,7 +230,7 @@ const statsConfig: Record<string, StatConfig> = {
         label: __('Recurring Donations', 'give'),
         upgrade: {
             href: 'https://givewp.com/addons/recurring-donations/',
-            toolTipDescription: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
+            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
         },
     },
 };
