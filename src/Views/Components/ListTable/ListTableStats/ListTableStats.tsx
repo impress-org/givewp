@@ -26,7 +26,7 @@ type ListTableStatsProps = {
 export default function ListTableStats({config, values}: ListTableStatsProps) {
     return (
         <section className={styles.tableStatsContainer} role="region" aria-label={__('Donation statistics', 'give')}>
-            {Object.entries(config)?.map(([key, statConfig]) =>  { 
+            {Object.entries(config).map(([key, statConfig]) =>  { 
                 return(<StatWidget
                     key={key}
                     className={styles.tableStatWidget}
