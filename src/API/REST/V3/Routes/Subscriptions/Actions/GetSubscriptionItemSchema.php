@@ -153,7 +153,7 @@ class GetSubscriptionItemSchema
                         ],
                     ],
                     'description' => esc_html__('Payment gateway details. Returns null when gateway is not available or not registered.', 'give'),
-                    'readOnly' => true,
+                    'readonly' => true,
                 ],
                 'createdAt' => [
                     'type' => ['string', 'null'],
@@ -193,7 +193,7 @@ class GetSubscriptionItemSchema
                         ],
                     ],
                     'description' => esc_html__('Projected annual revenue for this subscription', 'give'),
-                    'readOnly' => true,
+                    'readonly' => true,
                 ],
             ],
         ];
