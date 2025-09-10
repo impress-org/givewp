@@ -220,7 +220,7 @@ const rotatingRecommendation = (
  *
  * then this config must use those same keys: "donationsCount", "oneTimeDonationsCount", "recurringDonationsCount".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
- * 
+ *
  * @unreleased
  */
 const statsConfig: Record<string, StatConfig> = {
