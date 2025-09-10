@@ -49,7 +49,7 @@
     }
 }
 
-.inActive {
+.requiresUpgrade {
     color: var(--givewp-neutral-300);
 }
 
@@ -78,7 +78,7 @@
     }
 
     &::after {
-        content: attr(data-feerecovery-tooltip);
+        content: attr(data-addon-tooltip);
         position: absolute;
         right: -2.5rem;
         bottom: calc(100% + 0.625rem);
