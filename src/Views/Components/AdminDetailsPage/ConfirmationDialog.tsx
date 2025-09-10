@@ -23,7 +23,7 @@ export type ConfirmationDialogProps = {
 }
 
 /**
- * @unreleased Add showCancelButton prop
+ * @since 4.8.0 Add showCancelButton prop
  * @since 4.4.0
  */
 export default function ConfirmationDialog({

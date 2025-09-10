@@ -8,7 +8,7 @@ use Give\Helpers\Language;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class LoadSubscriptionsListTableAssets
 {

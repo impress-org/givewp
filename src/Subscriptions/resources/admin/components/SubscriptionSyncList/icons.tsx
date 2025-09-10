@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function HandHeartIcon() {
     return (
@@ -14,7 +14,7 @@ export function HandHeartIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function CheckCircleIcon() {
     return (
@@ -25,7 +25,7 @@ export function CheckCircleIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function XCircleIcon() {
     return (

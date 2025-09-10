@@ -5,13 +5,13 @@ namespace Give\Campaigns\Actions;
 use Give\Campaigns\Models\Campaign;
 
 /**
- * @unreleased Remove BlockRenderController dependency
+ * @since 4.8.0 Remove BlockRenderController dependency
  * @since 4.0.0
  */
 class RenderDonateButton
 {
     /**
-     * @unreleased Replace BlockRenderController::render with give_form_shortcode
+     * @since 4.8.0 Replace BlockRenderController::render with give_form_shortcode
      * @since 4.0.0
      */
     public function __invoke(Campaign $campaign, array $attributes, string $buttonText): string

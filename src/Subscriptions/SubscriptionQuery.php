@@ -9,7 +9,7 @@ use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionQuery
 {
@@ -19,7 +19,7 @@ class SubscriptionQuery
     protected $query;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function __construct()
     {
@@ -29,22 +29,22 @@ class SubscriptionQuery
     /**
      * Clone the query with all current conditions applied
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public function clone(): self
     {
         $cloned = new self();
-        
+
         // Copy the internal query state by cloning the ModelQueryBuilder
         $cloned->query = clone $this->query;
-        
+
         return $cloned;
     }
 
     /**
      * Delegates methods not defined locally to the underlying query.
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return mixed
      */
@@ -58,10 +58,10 @@ class SubscriptionQuery
     }
 
      /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function selectDonorNames(): self
-    {        
+    {
         $this->query->attachMeta(
             'give_donormeta',
             'customer_id',
@@ -74,7 +74,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function whereCampaignId(int $campaignId): self
     {
@@ -89,7 +89,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function excludeAnonymousDonors(): self
     {
@@ -104,7 +104,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function whereDonorId(int $donorId): self
     {
@@ -114,7 +114,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function whereMode(string $mode): self
     {
@@ -124,7 +124,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param $status string|array
      */
@@ -140,7 +140,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function limit(int $limit): self
     {
@@ -150,7 +150,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function offset(int $offset): self
     {
@@ -160,7 +160,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function orderBy(string $column, string $direction = 'ASC'): self
     {
@@ -170,7 +170,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function getAll(): array
     {
@@ -178,7 +178,7 @@ class SubscriptionQuery
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function count(): int
     {

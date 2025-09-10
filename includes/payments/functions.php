@@ -420,7 +420,7 @@ function give_delete_donation( $payment_id = 0, $update_donor = true ) {
 		// Remove the payment ID from the donor.
 		$donor->remove_payment( $payment_id );
 	}
-	
+
     // Remove the payment.
     wp_delete_post( $payment_id, true );
 
@@ -825,7 +825,7 @@ function give_get_total_donations() {
 function give_get_total_earnings( $recalculate = false ) {
 
 	$total      = get_option( 'give_earnings_total', 0 );
-	$meta_table = __give_v20_bc_table_details( 'payment' );
+	$meta_table = give_v20_bc_table_details( 'payment' );
 
 	// Calculate total earnings.
 	if ( ! $total || $recalculate ) {
@@ -1376,7 +1376,7 @@ function give_set_payment_transaction_id( $payment_id = 0, $transaction_id = '' 
 function give_get_donation_id_by_key( $key ) {
 	global $wpdb;
 
-	$meta_table = __give_v20_bc_table_details( 'payment' );
+	$meta_table = give_v20_bc_table_details( 'payment' );
 
 	$purchase = $wpdb->get_var(
 		$wpdb->prepare(
@@ -1412,7 +1412,7 @@ function give_get_donation_id_by_key( $key ) {
  */
 function give_get_purchase_id_by_transaction_id( $key ) {
 	global $wpdb;
-	$meta_table = __give_v20_bc_table_details( 'payment' );
+	$meta_table = give_v20_bc_table_details( 'payment' );
 
 	$purchase = $wpdb->get_var( $wpdb->prepare( "SELECT {$meta_table['column']['id']} FROM {$meta_table['name']} WHERE meta_key = '_give_payment_transaction_id' AND meta_value = %s LIMIT 1", $key ) );
 

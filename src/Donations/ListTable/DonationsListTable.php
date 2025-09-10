@@ -30,7 +30,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
-     * @unreleased Added Subscription Donation Type column
+     * @since 4.8.0 Added Subscription Donation Type column
      * @since 2.24.0
      *
      * @inheritDoc

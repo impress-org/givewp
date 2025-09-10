@@ -6,14 +6,14 @@ import { SubscriptionSyncResponse } from "../../../hooks/useSubscriptionSync";
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type SubscriptionSyncListProps = {
     syncResult: SubscriptionSyncResponse;
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncListProps) {
     const { details, missingTransactions } = syncResult;
@@ -31,36 +31,36 @@ export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncLis
 
     return (
         <div className={styles.list}>
-            <SyncItem 
-                id="status" 
-                title="Subscription status" 
+            <SyncItem
+                id="status"
+                title="Subscription status"
                 isAccurate={!statusUpdated}
                 isOpen={openItem === "status"}
                 onToggle={() => handleItemToggle("status")}
             >
                 <SyncDetails isAccurate={!statusUpdated} platform={details?.currentStatus} gateway={details?.gatewayStatus} />
             </SyncItem>
-            <SyncItem 
-                id="period" 
-                title="Billing period" 
+            <SyncItem
+                id="period"
+                title="Billing period"
                 isAccurate={!periodUpdated}
                 isOpen={openItem === "period"}
                 onToggle={() => handleItemToggle("period")}
             >
                 <SyncDetails isAccurate={!periodUpdated} platform={details?.currentPeriod} gateway={details?.gatewayPeriod} />
             </SyncItem>
-            <SyncItem 
-                id="created" 
-                title="Date created" 
+            <SyncItem
+                id="created"
+                title="Date created"
                 isAccurate={!createdAtUpdated}
                 isOpen={openItem === "created"}
                 onToggle={() => handleItemToggle("created")}
             >
                 <SyncDetails isAccurate={!createdAtUpdated} platform={details?.currentCreatedAt} gateway={details?.gatewayCreatedAt} />
             </SyncItem>
-            <SyncItem 
-                id="payments" 
-                title="Subscription payments" 
+            <SyncItem
+                id="payments"
+                title="Subscription payments"
                 isAccurate={!paymentsUpdated}
                 isOpen={openItem === "payments"}
                 onToggle={() => handleItemToggle("payments")}
@@ -72,7 +72,7 @@ export default function SubscriptionSyncList({ syncResult }: SubscriptionSyncLis
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type SyncItemProps = {
     id: string;
@@ -84,7 +84,7 @@ type SyncItemProps = {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 function SyncItem({ id, title, isAccurate, isOpen, onToggle, children }: SyncItemProps) {
     return (

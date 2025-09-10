@@ -5,14 +5,14 @@ import { useState } from 'react';
 import { Subscription } from '../admin/components/types';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 const isResponseSubscription = (response: unknown): response is Subscription => {
     return typeof response === 'object' && response !== null && 'id' in response;
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function useSubscriptionCancel(subscription: Subscription) {
     const [isCancelling, setIsCancelling] = useState(false);

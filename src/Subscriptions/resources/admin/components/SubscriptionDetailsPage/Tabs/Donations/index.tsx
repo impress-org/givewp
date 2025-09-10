@@ -25,7 +25,7 @@ if (!window?.GiveDonations) {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 const ListTableBlankSlate = (
     <BlankSlate
@@ -37,7 +37,7 @@ const ListTableBlankSlate = (
 );
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SubscriptionDetailsPageDonationsTab() {
     const [isAddRenewalDialogOpen, setIsAddRenewalDialogOpen] = useState(false);

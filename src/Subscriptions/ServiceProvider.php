@@ -21,7 +21,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
-     * @unreleased Register Subscription Repository to container
+     * @since 4.8.0 Register Subscription Repository to container
      */
     public function register()
     {
@@ -83,7 +83,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function registerSubscriptionEntity()
     {
@@ -91,7 +91,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function registerSubscriptionAdminOptions()
     {

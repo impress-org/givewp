@@ -28,7 +28,7 @@ trait InsertNode
     }
 
     /**
-     * @unreleased Updated to only fall through if no node was found
+     * @since 4.8.0 Updated to only fall through if no node was found
      * @since 2.10.2
      *
      * @throws ReferenceNodeNotFoundException|NameCollisionException
@@ -79,7 +79,7 @@ trait InsertNode
     }
 
     /**
-     * @unreleased Updated to only fall through if no node was found
+     * @since 4.8.0 Updated to only fall through if no node was found
      * @since 2.10.2
      *
      * @throws ReferenceNodeNotFoundException|NameCollisionException

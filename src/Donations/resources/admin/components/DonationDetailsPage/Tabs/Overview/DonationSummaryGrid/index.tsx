@@ -19,7 +19,7 @@ export type DonationSummaryGridProps = {
 };
 
 /**
- * @unreleased export function for SubscriptionSummaryGrid & add GridCard component
+ * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
 export function CampaignCard({donation}: {donation: Donation}) {
@@ -41,7 +41,7 @@ export function CampaignCard({donation}: {donation: Donation}) {
 }
 
 /**
- * @unreleased export function for SubscriptionSummaryGrid & add GridCard component
+ * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
 export function DonorCard({donation}: {donation: Donation}) {
@@ -69,7 +69,7 @@ export function DonorCard({donation}: {donation: Donation}) {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function GatewayNotice() {
     return (
@@ -140,7 +140,7 @@ export default function DonationSummaryGrid({
 
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">
-                    {!paymentMethod ? <GatewayNotice /> : ( 
+                    {!paymentMethod ? <GatewayNotice /> : (
                         <>
                             <strong className={styles.paymentMethod}>
                                 <PaymentMethodIcon paymentMethod={paymentMethod} />
@@ -160,7 +160,7 @@ export default function DonationSummaryGrid({
                         </>
                     )}
                 </GridCard>
-            </Grid>  
+            </Grid>
         </OverviewPanel>
     );
 }
