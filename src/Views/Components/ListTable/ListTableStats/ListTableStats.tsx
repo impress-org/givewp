@@ -9,7 +9,7 @@ export type StatConfig = {
     label: string;
     upgrade?: {
         href: string;
-        tooltip?: string;
+        tooltip: string;
     };
 };
 
