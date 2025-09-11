@@ -1,4 +1,5 @@
 import apiFetch from '@wordpress/api-fetch';
+import {__, sprintf} from '@wordpress/i18n';
 import {JSONSchemaType} from 'ajv';
 
 /**
@@ -29,7 +30,13 @@ export async function fetchSchemaAndConfigureResolver(
 
         const customResolver = (data: any) => {
             try {
+                // Ensure we have valid data to validate
+                if (!data || typeof data !== 'object') {
+                    return {values: data || {}, errors: {}};
+                }
+
                 const transformedData = transformFormDataForValidation(data, schema);
+
                 const ajv = configureAjvWithDraft04Support();
                 const validate = ajv.compile(schema);
                 const valid = validate(transformedData);
@@ -43,9 +50,11 @@ export async function fetchSchemaAndConfigureResolver(
                         validate.errors.forEach((error) => {
                             const path = error.instancePath || error.schemaPath;
                             if (path) {
-                                errors[path.replace('/', '')] = {
+                                const fieldName = path.replace('/', '');
+                                const errorMessage = getTranslatedErrorMessage(error, fieldName);
+                                errors[fieldName] = {
                                     type: 'validation',
-                                    message: error.message || 'Validation error',
+                                    message: errorMessage,
                                 };
                             }
                         });
@@ -53,7 +62,7 @@ export async function fetchSchemaAndConfigureResolver(
                     return {values: {}, errors};
                 }
             } catch (error) {
-                console.error('🔴 AJV validation error:', error);
+                console.error('AJV validation error:', error);
                 return {values: data, errors: {}};
             }
         };
@@ -226,9 +235,8 @@ function transformWordPressSchemaToDraft04(schema: JSONSchemaType<any>): JSONSch
  */
 function transformFormDataForValidation(data: any, schema: JSONSchemaType<any>): any {
     if (!data || !schema || typeof data !== 'object') {
-        return data;
+        return data || {};
     }
-
     const transformed = JSON.parse(JSON.stringify(data)); // Deep clone
 
     // Recursively transform nested objects
@@ -344,6 +352,7 @@ function transformFormDataForValidation(data: any, schema: JSONSchemaType<any>):
         return result;
     }
 
+    // Call transformObject to process the data
     return transformObject(transformed, schema);
 }
 
@@ -426,4 +435,48 @@ function transformOneOfValue(value: any, oneOfSchemas: any[]): any {
 
     // Fallback: return null
     return null;
+}
+
+/**
+ * Generate translated error messages for validation errors
+ *
+ * @param error - AJV validation error object
+ * @param fieldName - Name of the field that failed validation
+ * @returns Translated error message
+ */
+function getTranslatedErrorMessage(error: any, fieldName: string): string {
+    const {keyword, params} = error;
+
+    // Generic error messages based on keyword
+    const genericMessages: Record<string, string> = {
+        required: __('This field is required.', 'give'),
+        type: __('Please enter a valid value.', 'give'),
+        format: __('Please enter a valid format.', 'give'),
+        enum: __('Please select a valid option.', 'give'),
+        minimum: __('Value must be at least %s.', 'give'),
+        maximum: __('Value must be at most %s.', 'give'),
+        minLength: __('Must be at least %s characters.', 'give'),
+        maxLength: __('Must be at most %s characters.', 'give'),
+        pattern: __('Please enter a valid format.', 'give'),
+    };
+
+    let genericMessage = genericMessages[keyword] || __('Please enter a valid value.', 'give');
+
+    // Replace placeholders with actual values using sprintf
+    if (params) {
+        // Map AJV params to sprintf format
+        const paramMap: Record<string, string> = {
+            minimum: 'minimum',
+            maximum: 'maximum',
+            minLength: 'minLength',
+            maxLength: 'maxLength',
+        };
+
+        const paramKey = paramMap[keyword];
+        if (paramKey && params[paramKey] !== undefined) {
+            genericMessage = sprintf(genericMessage, params[paramKey]);
+        }
+    }
+
+    return genericMessage;
 }

@@ -1,0 +1,14 @@
+.givewp-error-field {
+    &__error-message {
+        color: #d63638;
+        font-size: 12px;
+        margin-top: 4px;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+
+    &__input--error {
+        border-color: #d63638 !important;
+        border-width: 2px !important;
+    }
+}
