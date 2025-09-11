@@ -1,5 +1,4 @@
 import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
-import ErrorField from '@givewp/components/AdminUI/ErrorField';
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import {__, sprintf} from '@wordpress/i18n';
 import {useEffect, useState} from 'react';
@@ -10,7 +9,7 @@ import {StatesConfig, getStatesForCountry} from './addressUtils';
 const {countries} = getDonationOptionsWindowData();
 
 /**
- * @unreleased Add error field components to all input fields
+ * @unreleased Add error prop to all AdminSectionField components
  * @since 4.6.0
  */
 export default function BillingDetails() {
@@ -39,96 +38,78 @@ export default function BillingDetails() {
         >
             <div>
                 <div className={styles.formRow}>
-                    <AdminSectionField>
+                    <AdminSectionField error={errors.firstName?.message as string}>
                         <label htmlFor="firstName">{__('First name', 'give')}</label>
-                        <ErrorField error={errors.firstName}>
-                            <input id="firstName" {...register('firstName')} />
-                        </ErrorField>
+                        <input id="firstName" {...register('firstName')} />
                     </AdminSectionField>
-                    <AdminSectionField>
+                    <AdminSectionField error={errors.lastName?.message as string}>
                         <label htmlFor="lastName">{__('Last name', 'give')}</label>
-                        <ErrorField error={errors.lastName}>
-                            <input id="lastName" {...register('lastName')} />
-                        </ErrorField>
+                        <input id="lastName" {...register('lastName')} />
                     </AdminSectionField>
                 </div>
 
-                <AdminSectionField>
+                <AdminSectionField error={errors.email?.message as string}>
                     <label htmlFor="email">{__('Email', 'give')}</label>
-                    <ErrorField error={errors.email}>
-                        <input id="email" {...register('email')} />
-                    </ErrorField>
+                    <input id="email" {...register('email')} />
                 </AdminSectionField>
 
-                <AdminSectionField>
+                <AdminSectionField error={(errors.billingAddress as any)?.country?.message as string}>
                     <label htmlFor="country" className={styles.label}>
                         {__('Country', 'give')}
                     </label>
-                    <ErrorField error={(errors.billingAddress as any)?.country}>
-                        <select id="country" {...register('billingAddress.country')}>
-                            <option value="">{__('Select a country', 'give')}</option>
-                            {Object.entries(countries)
-                                .filter(([code]) => code !== '')
-                                .map(([code, name]) => (
-                                    <option key={code} value={code}>
-                                        {name}
-                                    </option>
-                                ))}
-                        </select>
-                    </ErrorField>
+                    <select id="country" {...register('billingAddress.country')}>
+                        <option value="">{__('Select a country', 'give')}</option>
+                        {Object.entries(countries)
+                            .filter(([code]) => code !== '')
+                            .map(([code, name]) => (
+                                <option key={code} value={code}>
+                                    {name}
+                                </option>
+                            ))}
+                    </select>
                 </AdminSectionField>
 
-                <AdminSectionField>
+                <AdminSectionField error={(errors.billingAddress as any)?.address1?.message as string}>
                     <label htmlFor="address1">{__('Address 1', 'give')}</label>
-                    <ErrorField error={(errors.billingAddress as any)?.address1}>
-                        <input id="address1" {...register('billingAddress.address1')} />
-                    </ErrorField>
+                    <input id="address1" {...register('billingAddress.address1')} />
                 </AdminSectionField>
 
-                <AdminSectionField>
+                <AdminSectionField error={(errors.billingAddress as any)?.address2?.message as string}>
                     <label htmlFor="address2">{__('Address 2', 'give')}</label>
-                    <ErrorField error={(errors.billingAddress as any)?.address2}>
-                        <input id="address2" {...register('billingAddress.address2')} />
-                    </ErrorField>
+                    <input id="address2" {...register('billingAddress.address2')} />
                 </AdminSectionField>
 
-                <AdminSectionField>
+                <AdminSectionField error={(errors.billingAddress as any)?.city?.message as string}>
                     <label htmlFor="city">{__('City', 'give')}</label>
-                    <ErrorField error={(errors.billingAddress as any)?.city}>
-                        <input id="city" {...register('billingAddress.city')} />
-                    </ErrorField>
+                    <input id="city" {...register('billingAddress.city')} />
                 </AdminSectionField>
 
                 <div className={styles.formRow}>
                     {stateConfig.showField && (
-                        <AdminSectionField>
+                        <AdminSectionField error={(errors.billingAddress as any)?.state?.message as string}>
                             <label htmlFor="state" className={styles.label}>
                                 {stateConfig.stateLabel}
                             </label>
-                            <ErrorField error={(errors.billingAddress as any)?.state}>
-                                {stateConfig.hasStates ? (
-                                    <select id="state" {...register('billingAddress.state')}>
-                                        <option value="">
-                                            {sprintf(__('Select a %s', 'give'), stateConfig.stateLabel.toLowerCase())}
+                            {stateConfig.hasStates ? (
+                                <select id="state" {...register('billingAddress.state')}>
+                                    <option value="">
+                                        {sprintf(__('Select a %s', 'give'), stateConfig.stateLabel.toLowerCase())}
+                                    </option>
+                                    {stateConfig.states.map((state) => (
+                                        <option key={state.value} value={state.value}>
+                                            {state.label}
                                         </option>
-                                        {stateConfig.states.map((state) => (
-                                            <option key={state.value} value={state.value}>
-                                                {state.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                ) : (
-                                    <input type="text" id="state" {...register('billingAddress.state')} />
-                                )}
-                            </ErrorField>
+                                    ))}
+                                </select>
+                            ) : (
+                                <input type="text" id="state" {...register('billingAddress.state')} />
+                            )}
                         </AdminSectionField>
                     )}
 
-                    <AdminSectionField>
+                    <AdminSectionField error={(errors.billingAddress as any)?.zip?.message as string}>
                         <label htmlFor="zip">{__('Zip/Postal code', 'give')}</label>
-                        <ErrorField error={(errors.billingAddress as any)?.zip}>
-                            <input id="zip" {...register('billingAddress.zip')} />
-                        </ErrorField>
+                        <input id="zip" {...register('billingAddress.zip')} />
                     </AdminSectionField>
                 </div>
             </div>
