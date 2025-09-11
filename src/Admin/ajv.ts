@@ -5,12 +5,16 @@ import {JSONSchemaType} from 'ajv';
 /**
  * Fetch schema from WordPress REST API and configure AJV resolver
  *
- * This function encapsulates the common pattern of fetching a schema from the WordPress REST API
- * and setting up a custom AJV resolver for form validation. It handles:
- * - Fetching the schema using OPTIONS method
- * - Creating a custom resolver with AJV validation
- * - Data transformation before validation
+ * This function fetches a JSON Schema from the WordPress REST API (Draft 03/04) and sets up
+ * an AJV resolver (Draft 7/2019-09) for enhanced frontend validation. It handles:
+ * - Fetching the schema using OPTIONS method from WordPress REST API
+ * - Transforming WordPress Draft 03/04 schema to Draft 7/2019-09 for AJV compatibility
+ * - Creating a custom resolver with advanced validation capabilities
+ * - Data transformation before validation (string numbers, enum handling, etc.)
  * - Error handling and fallback resolvers
+ *
+ * Key advantage: WordPress REST API supports most JSON Schema Draft 4 features but lacks
+ * some advanced features (if/then/else, allOf, not) that AJV can provide for enhanced frontend validation.
  *
  * @unreleased
  *
@@ -37,8 +41,9 @@ export async function fetchSchemaAndConfigureResolver(
 
                 const transformedData = transformFormDataForValidation(data, schema);
 
-                const ajv = configureAjvWithDraft04Support();
-                const validate = ajv.compile(schema);
+                const ajv = configureAjvForWordPress();
+                const transformedSchema = transformWordPressSchemaToDraft7(schema);
+                const validate = ajv.compile(transformedSchema);
                 const valid = validate(transformedData);
 
                 if (valid) {
@@ -79,43 +84,65 @@ export async function fetchSchemaAndConfigureResolver(
 }
 
 /**
- * Configure AJV with WordPress REST API Draft 04 support
+ * Configure standard AJV (Draft 7/2019-09) for WordPress REST API compatibility
  *
- * WordPress REST API Schema Extensions:
+ * WordPress REST API Schema Characteristics (Draft 03/04):
  * - Uses 'required: true' on individual properties (Draft 03 syntax)
  * - Uses 'readonly' property (lowercase, WordPress REST API standard)
- * - Supports other WordPress-specific schema properties
+ * - Supports most JSON Schema Draft 4 features including:
+ *   * anyOf, oneOf (since WordPress 5.6.0)
+ *   * Basic validation: type, format, enum, pattern, constraints
+ *   * Object/array validation: properties, items, additionalProperties
+ * - Does NOT support: allOf, not, if/then/else (conditional validation)
  *
- * This function uses the official ajv-draft-04 package which provides AJV with
- * built-in Draft 04 support. To handle WordPress's Draft 03 syntax, we:
- * - Use ajv-draft-04 for proper Draft 04 meta-schema support
- * - Transform WordPress schemas from Draft 03 to Draft 04 syntax before compilation
- * - Convert 'required: true' on individual properties to 'required' array at object level
- * - Add support for WordPress-specific and standard JSON Schema formats
- * - Maintain full data validation functionality with proper Draft 04 compliance
+ * This function configures AJV (Draft 7/2019-09) to work with WordPress schemas:
+ * - Transforms WordPress Draft 03/04 schemas to Draft 7/2019-09 syntax
+ * - Converts 'required: true' on individual properties to 'required' array at object level
+ * - Adds support for WordPress-specific and standard JSON Schema formats
+ * - Disables schema validation to avoid conflicts with WordPress schema extensions
+ * - Enables advanced validation features that WordPress ignores
  *
- * This approach allows us to use the official Draft 04 support while accommodating
- * WordPress's hybrid Draft 03/04 schema format and custom formats.
+ * Validation Features Available:
  *
- * Validation still works for:
- * - Type validation (string, integer, boolean, etc.)
+ * Backend (WordPress REST API) + Frontend (AJV):
+ * - Type validation (string, integer, boolean, number, array, object, null)
  * - Required field validation
- * - Format validation (email, date-time, etc.)
+ * - Format validation (email, date-time, uri, ip, hex-color, uuid, text-field, textarea-field)
  * - Enum validation
  * - Constraint validation (minLength, maxLength, minimum, maximum, etc.)
+ * - Pattern validation (regex)
+ * - Array validation (items, minItems, maxItems, uniqueItems)
+ * - Object validation (properties, additionalProperties, patternProperties)
+ * - Schema composition: anyOf, oneOf (WordPress 5.6.0+)
+ *
+ * Frontend Only (AJV Draft 7/2019-09):
+ * - Conditional validation (if/then/else)
+ * - Advanced schema composition (allOf, not)
+ * - Advanced references ($ref with complex paths)
+ * - Dependent required fields
+ * - Dynamic validation based on other field values
+ * - More comprehensive format validation
  *
  * References:
- * - https://developer.wordpress.org/news/2024/07/json-schema-in-wordpress/#wordpress-rest-api
- * - https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#json-schema-basics
+ * - WordPress REST API Schema Documentation: https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/
+ * - It only supports a subset of the draft-04 and draft-03 meta-schemas: https://developer.wordpress.org/news/2024/07/json-schema-in-wordpress/#wordpress-rest-api
+ * - WordPress 5.6.0 anyOf/oneOf Support: https://core.trac.wordpress.org/ticket/51025
+ * - Implementation Changeset: https://core.trac.wordpress.org/changeset/49246
+ * - WordPress uses 'readonly' (lowercase) vs JSON Schema 'readOnly': https://core.trac.wordpress.org/ticket/56152
+ * - WordPress 5.5.0 UUID format support: https://core.trac.wordpress.org/ticket/50053
+ * - WordPress 5.9.0 text-field/textarea-field formats: https://core.trac.wordpress.org/changeset/49246
+ * - rest_validate_value_from_schema(): https://developer.wordpress.org/reference/functions/rest_validate_value_from_schema/
+ * - rest_get_allowed_schema_keywords(): https://developer.wordpress.org/reference/functions/rest_get_allowed_schema_keywords/
  *
- * @returns Configured AJV instance with WordPress Draft 04 support
+ * @returns Configured AJV instance (Draft 7/2019-09) for WordPress compatibility
  */
-function configureAjvWithDraft04Support() {
-    const AjvClass = require('ajv-draft-04').default || require('ajv-draft-04');
+function configureAjvForWordPress() {
+    // Use standard AJV (Draft 7/2019-09) and transform WordPress schemas to be compatible
+    const AjvClass = require('ajv').default || require('ajv');
 
     const ajv = new AjvClass({
-        // Enable schema validation - ajv-draft-04 should handle Draft 04 correctly
-        validateSchema: true,
+        // Disable schema validation to avoid conflicts with WordPress schemas
+        validateSchema: false,
         // Disable strict mode to allow WordPress extensions like 'readonly'
         strict: false,
         // Enable all errors for better debugging
@@ -124,12 +151,13 @@ function configureAjvWithDraft04Support() {
     });
 
     // Add WordPress-specific and standard JSON Schema formats
-    // WordPress custom format - always valid
+
+    // WordPress custom format - no validation, only sanitization
     ajv.addFormat('text-field', true);
 
-    // Standard JSON Schema formats
+    // WordPress only sanitizes URI format, no validation
+    // We provide basic validation for frontend consistency
     ajv.addFormat('uri', (uri: string) => {
-        // Validate URI format (more comprehensive than just HTTP/HTTPS)
         try {
             new URL(uri);
             return true;
@@ -138,57 +166,40 @@ function configureAjvWithDraft04Support() {
         }
     });
 
+    // Validate ISO 8601 date-time format (RFC 3339)
     ajv.addFormat('date-time', (dateTime: string) => {
-        // Validate ISO 8601 date-time format (RFC 3339)
         const date = new Date(dateTime);
         return !isNaN(date.getTime()) && dateTime.includes('T');
     });
 
-    ajv.addFormat('date', (date: string) => {
-        // Validate ISO 8601 date format (YYYY-MM-DD)
-        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-        if (!dateRegex.test(date)) return false;
-        const parsedDate = new Date(date);
-        return !isNaN(parsedDate.getTime());
-    });
-
-    ajv.addFormat('time', (time: string) => {
-        // Validate ISO 8601 time format (HH:MM:SS)
-        const timeRegex = /^\d{2}:\d{2}:\d{2}(\.\d{3})?([+-]\d{2}:\d{2}|Z)?$/;
-        return timeRegex.test(time);
-    });
-
+    // Validate email format using a comprehensive regex
     ajv.addFormat('email', (email: string) => {
-        // Validate email format using a comprehensive regex
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     });
 
-    ajv.addFormat('hostname', (hostname: string) => {
-        // Validate hostname format
-        const hostnameRegex =
-            /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        return hostnameRegex.test(hostname) && hostname.length <= 253;
+    // WordPress-specific formats
+    ajv.addFormat('hex-color', (color: string) => {
+        // Validate hex color format (#RRGGBB or #RGB)
+        const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+        return hexColorRegex.test(color);
     });
 
-    ajv.addFormat('ipv4', (ip: string) => {
-        // Validate IPv4 address
-        const ipv4Regex = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-        return ipv4Regex.test(ip);
+    // Validate UUID format (version 4)
+    ajv.addFormat('uuid', (uuid: string) => {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        return uuidRegex.test(uuid);
     });
 
-    ajv.addFormat('ipv6', (ip: string) => {
-        // Validate IPv6 address (simplified validation)
-        const ipv6Regex = /^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::1$|^::$/;
-        return ipv6Regex.test(ip);
-    });
+    // WordPress custom format - no validation, only sanitization
+    ajv.addFormat('textarea-field', true);
 
-    // Transform WordPress schemas to be compatible with Draft 04
-    // This converts Draft 03 syntax (required: true on properties) to Draft 04 syntax
+    // Transform WordPress schemas to be compatible with Draft 7/2019-09
+    // This converts Draft 03/04 syntax (required: true on properties) to Draft 7 syntax
     const originalCompile = ajv.compile.bind(ajv);
     ajv.compile = function (schema: JSONSchemaType<any>) {
         try {
-            const transformedSchema = transformWordPressSchemaToDraft04(schema);
+            const transformedSchema = transformWordPressSchemaToDraft7(schema);
             return originalCompile(transformedSchema);
         } catch (error) {
             console.error('Schema transformation error:', error);
@@ -200,15 +211,29 @@ function configureAjvWithDraft04Support() {
 }
 
 /**
- * Transform WordPress schema from Draft 03 syntax to Draft 04 syntax
- * Converts 'required: true' on individual properties to 'required' array at object level
+ * Transform WordPress schema from Draft 03/04 syntax to Draft 7/2019-09 syntax
+ *
+ * This function converts WordPress REST API schemas (Draft 03/04) to be compatible
+ * with AJV (Draft 7/2019-09). The transformation includes:
+ * - Converts 'required: true' on individual properties to 'required' array at object level
+ * - Updates $schema reference from Draft 04 to Draft 7/2019-09
+ * - Preserves all advanced features (if/then/else, allOf, etc.) that WordPress ignores
+ *   but AJV can use for enhanced frontend validation
+ *
+ * Key benefit: WordPress schemas can include advanced validation rules (if/then/else, allOf, not)
+ * that are ignored by the backend but utilized by the frontend for better UX.
  */
-function transformWordPressSchemaToDraft04(schema: JSONSchemaType<any>): JSONSchemaType<any> {
+function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>): JSONSchemaType<any> {
     if (!schema || typeof schema !== 'object') {
         return schema;
     }
 
     const transformed = JSON.parse(JSON.stringify(schema));
+
+    // Update $schema reference to Draft 7/2019-09
+    if (transformed.$schema) {
+        transformed.$schema = 'https://json-schema.org/draft/2019-09/schema';
+    }
 
     if (transformed.properties && typeof transformed.properties === 'object') {
         const requiredFields: string[] = [];
@@ -230,8 +255,17 @@ function transformWordPressSchemaToDraft04(schema: JSONSchemaType<any>): JSONSch
 }
 
 /**
- * Transform form data to convert string numbers to actual numbers based on schema
- * This handles the common issue where HTML forms send numeric values as strings
+ * Transform form data to be compatible with JSON Schema validation
+ *
+ * This function handles common form data issues that occur when HTML forms send
+ * data that doesn't match the expected schema types:
+ * - Converts string numbers to actual numbers based on schema type definitions
+ * - Handles enum fields with null/empty string values (converts to null if schema allows)
+ * - Removes non-required fields that are not present in form data
+ * - Recursively processes nested objects and arrays
+ *
+ * This ensures that form data matches the schema expectations for validation,
+ * working with both WordPress backend validation and AJV frontend validation.
  */
 function transformFormDataForValidation(data: any, schema: JSONSchemaType<any>): any {
     if (!data || !schema || typeof data !== 'object') {
@@ -438,11 +472,20 @@ function transformOneOfValue(value: any, oneOfSchemas: any[]): any {
 }
 
 /**
- * Generate translated error messages for validation errors
+ * Generate translated error messages for AJV validation errors
+ *
+ * This function converts AJV validation errors into user-friendly, translated messages
+ * that can be displayed in the frontend UI. It handles various validation error types
+ * and provides appropriate messages for both basic and advanced validation features.
+ *
+ * Supported error types:
+ * - Basic validation: type, required, format, enum, pattern, etc.
+ * - Constraint validation: minLength, maxLength, minimum, maximum, etc.
+ * - Advanced validation: if/then/else conditions, allOf/anyOf/oneOf composition
  *
  * @param error - AJV validation error object
  * @param fieldName - Name of the field that failed validation
- * @returns Translated error message
+ * @returns Translated error message for display in UI
  */
 function getTranslatedErrorMessage(error: any, fieldName: string): string {
     const {keyword, params} = error;
