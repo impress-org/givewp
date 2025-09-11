@@ -150,7 +150,7 @@ function configureAjvForWordPress() {
         verbose: true,
     });
 
-    // Add WordPress-specific and standard JSON Schema formats
+    // Add WordPress-specific JSON Schema formats
 
     // WordPress custom format - no validation, only sanitization
     ajv.addFormat('text-field', true);
