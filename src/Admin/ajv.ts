@@ -244,7 +244,18 @@ function transformFormDataForValidation(data: any, schema: JSONSchemaType<any>):
                 const propSchema = schemaObj.properties[key];
                 const value = result[key];
 
-                if (propSchema && value !== undefined && value !== null) {
+                // Skip validation for fields that are not present in form data and not required
+                const isRequired = Array.isArray(schemaObj.required) && schemaObj.required.includes(key);
+                const isFieldPresent = value !== undefined && value !== null && value !== '';
+
+                // Remove fields that are not present and not required from the result
+                if (!isFieldPresent && !isRequired) {
+                    delete result[key];
+                    return; // Skip processing this field
+                }
+
+                // Only process fields that are present in the form OR are required
+                if (propSchema && (isFieldPresent || isRequired)) {
                     // Handle number types
                     if (propSchema.type === 'number' && typeof value === 'string') {
                         // Convert string to number
@@ -269,7 +280,15 @@ function transformFormDataForValidation(data: any, schema: JSONSchemaType<any>):
                     }
                     // Handle enum types - ensure value is valid
                     else if (propSchema.enum && Array.isArray(propSchema.enum)) {
-                        if (!propSchema.enum.includes(value)) {
+                        // Check if null is allowed (when type includes 'null')
+                        const allowsNull = Array.isArray(propSchema.type) && propSchema.type.includes('null');
+
+                        // If value is null, undefined, or empty string and null is allowed, set to null
+                        if ((value === null || value === undefined || value === '') && allowsNull) {
+                            result[key] = null;
+                        }
+                        // If value is not in enum and not null/empty, try to find a close match
+                        else if (!propSchema.enum.includes(value)) {
                             // If value is not in enum, try to find a close match or use first valid value
                             const stringValue = String(value).toLowerCase();
                             const validValue = propSchema.enum.find(
