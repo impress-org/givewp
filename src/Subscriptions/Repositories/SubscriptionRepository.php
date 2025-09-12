@@ -440,7 +440,7 @@ class SubscriptionRepository
      */
    public function createRenewal(Subscription $subscription, array $attributes = []): Donation
    {
-       $initialDonation = $subscription->initialDonation();
+        $initialDonation = $subscription->initialDonation();
 
         $donation = Donation::create(
             array_merge([
