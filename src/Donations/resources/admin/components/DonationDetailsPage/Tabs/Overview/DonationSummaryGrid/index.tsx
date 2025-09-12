@@ -24,38 +24,68 @@ export type DonationSummaryGridProps = {
  * @since 4.6.0
  */
 export function CampaignCard({donation}: {donation: Donation}) {
-    const {campaign, hasResolved: hasResolvedCampaign} = donation?.campaignId
-        ? useCampaignEntityRecord(donation?.campaignId)
-        : {campaign: null, hasResolved: false};
-
     return (
         <GridCard heading={__('Campaign name', 'give')} headingId="campaign-name">
-            {!hasResolvedCampaign && <Spinner />}
-            {hasResolvedCampaign && campaign && (
-                <a
-                    href={`edit.php?post_type=give_forms&page=give-campaigns&id=${campaign?.id}&tab=overview`}
-                    className={styles.campaignLink}
-                >
-                    {campaign?.title}
-                </a>
-            )}
+            {!donation?.campaignId
+                ? <Spinner />
+                : <CampaignCardContent campaignId={donation.campaignId} />
+            }
         </GridCard>
     );
 }
 
 /**
+ * @unreleased
+ */
+function CampaignCardContent({campaignId}: {campaignId: number}) {
+    const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(campaignId);
+
+    return (
+        <>
+            {!hasResolvedCampaign
+                ? <Spinner />
+                : campaign ? (
+                    <a
+                        href={`edit.php?post_type=give_forms&page=give-campaigns&id=${campaign?.id}&tab=overview`}
+                        className={styles.campaignLink}
+                    >
+                        {campaign?.title}
+                    </a>
+                ) : (
+                    <p>{__('Campaign not found', 'give')}</p>
+                )
+            }
+        </>
+    );
+}
+
+/**
+ * @unreleased Refactored to only try to load donor when we have a valid donorId from the donation
  * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
 export function DonorCard({donation}: {donation: Donation}) {
-    const {record: donor, hasResolved: hasResolvedDonor, isResolving: isResolvingDonor} = useDonorEntityRecord(donation?.donorId);
-
     return (
         <GridCard heading={__('Associated donor', 'give')} headingId="donor">
-         {!hasResolvedDonor && <Spinner />}
-         {hasResolvedDonor && (
-            <>
-                {donor ? (
+            {!donation?.donorId
+                ? <Spinner />
+                : <DonorCardContent donorId={donation.donorId} />
+            }
+        </GridCard>
+    );
+}
+
+/**
+ * @unreleased
+ */
+function DonorCardContent({donorId}: {donorId: number}) {
+    const {record: donor, hasResolved: hasResolvedDonor} = useDonorEntityRecord(donorId);
+
+    return (
+        <>
+            {!hasResolvedDonor
+                ? <Spinner />
+                : donor ? (
                     <>
                         <a className={styles.donorLink} href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`}>
                             {donor.name}
@@ -64,10 +94,9 @@ export function DonorCard({donation}: {donation: Donation}) {
                     </>
                 ) : (
                     <p>{__('No donor associated with this donation', 'give')}</p>
-                )}
-            </>
-         )}
-        </GridCard>
+                )
+            }
+        </>
     );
 }
 
