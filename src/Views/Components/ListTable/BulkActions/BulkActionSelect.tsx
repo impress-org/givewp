@@ -1,7 +1,7 @@
-import pageStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import styles from './BulkActionSelect.module.scss';
-import {__} from '@wordpress/i18n';
 import Select from '@givewp/components/ListTable/Select';
+import { FilterContainer } from '@givewp/components/ListTable/Filters';
+import {__} from '@wordpress/i18n';
+import styles from './BulkActionSelect.module.scss';
 
 export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, data, parameters}) => {
     const [selectedAction, setSelectedAction] = selectedState;
@@ -20,20 +20,22 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
 
     return (
         <div id={styles.bulkActionsForm}>
-            <Select value={selectedAction} onChange={changeSelected}>
-                <option value="">{__('Bulk Actions', 'give')}</option>
-                {bulkActions.map((action) => {
-                    if (typeof action?.isVisible == 'function' && !action.isVisible(data, parameters)) {
-                        return null;
-                    }
-                    return (
-                        <option key={action.value} value={action.value}>
-                            {action.label}
-                        </option>
-                    );
-                })}
-            </Select>
-            <button onClick={showModal} className={pageStyles.addFormButton}>
+            <FilterContainer id={'bulk-actions'} useArrow={true}>
+                <Select className={styles.bulkSelect} value={selectedAction} onChange={changeSelected}>
+                    <option value="">{__('Bulk Actions', 'give')}</option>
+                    {bulkActions.map((action) => {
+                        if (typeof action?.isVisible == 'function' && !action.isVisible(data, parameters)) {
+                            return null;
+                        }
+                        return (
+                            <option key={action.value} value={action.value}>
+                                {action.label}
+                            </option>
+                        );
+                    })}
+                </Select>
+            </FilterContainer>
+            <button onClick={showModal} className={styles.apply}>
                 {__('Apply', 'give')}
             </button>
         </div>

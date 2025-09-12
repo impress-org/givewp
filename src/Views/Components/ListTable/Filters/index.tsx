@@ -1,15 +1,17 @@
 import {FormSelect} from '@givewp/components/ListTable/FormSelect';
 import Select from '@givewp/components/ListTable/Select';
 import Input from '@givewp/components/ListTable/Input';
-import pageStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {__} from '@wordpress/i18n';
 import styles from './Filters.module.scss';
 
+/**
+ * @unrelesased updated to use FilterContainer for consistent styling
+ */
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
     switch (filter.type) {
         case 'select':
             return (
-                <div id={styles.select} className={styles.filterContainer}>
+                <FilterContainer id={'select'}>
                     <Select
                         name={filter.name}
                         aria-label={filter?.ariaLabel}
@@ -23,11 +25,11 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
                             </option>
                         ))}
                     </Select>
-                </div>
+                </FilterContainer>
             );
         case 'formselect':
             return (
-                <div id={styles.formselect} className={styles.filterContainer}>
+                <FilterContainer id={'form'} useArrow={true}>
                     <FormSelect
                         name={filter.name}
                         options={filter.options}
@@ -37,11 +39,11 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
                         style={{inlineSize: filter?.inlineSize}}
                         defaultValue={value}
                     />
-                </div>
+                </FilterContainer>
             );
         case 'search':
             return (
-                <div id={styles.search} className={styles.filterContainer}>
+                <FilterContainer id={'search'}>
                     <Input
                         type="search"
                         name={filter.name}
@@ -51,8 +53,7 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
                         style={{inlineSize: filter?.inlineSize}}
                         defaultValue={value}
                     />
-                    <button className={pageStyles.addFormButton}>{__('Search', 'give')}</button>
-                </div>
+                </FilterContainer>
             );
         default:
             return null;
@@ -87,3 +88,30 @@ export const getInitialFilterState = (filters) => {
     });
     return state;
 };
+
+/**
+ * @unrelesased
+ */
+type FilterContainerProps = {
+    children: React.ReactNode;
+    id: string;
+    useArrow?: boolean;
+}
+
+/**
+ * @unrelesased
+ */
+export function FilterContainer({children, id, useArrow}: FilterContainerProps) {
+    return (
+    <div id={id} className={styles.filterContainer}>
+         <div className={styles.filter}>
+            {children}
+            {useArrow && (
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.41 6.912a.833.833 0 0 1 1.179 0l4.41 4.41 4.411-4.41a.833.833 0 1 1 1.179 1.179l-5 5a.833.833 0 0 1-1.179 0l-5-5a.833.833 0 0 1 0-1.179z" fill="#060C1A"/>
+                </svg>
+            )}
+        </div>
+    </div>
+    );
+}
