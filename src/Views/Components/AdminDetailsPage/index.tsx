@@ -3,7 +3,7 @@
  */
 import {useEffect, useRef, useState} from 'react';
 import {FormProvider, SubmitHandler, useForm, useFormContext, useFormState} from 'react-hook-form';
-import {ajvResolver} from '../../../Admin/ajv';
+import {ajvResolver} from '@givewp/admin/ajv';
 
 import {SlotFillProvider} from '@wordpress/components';
 import {useDispatch} from '@wordpress/data';

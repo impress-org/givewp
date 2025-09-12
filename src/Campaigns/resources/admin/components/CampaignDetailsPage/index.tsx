@@ -9,7 +9,7 @@ import cx from 'classnames';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
 import apiFetch from '@wordpress/api-fetch';
 import {JSONSchemaType} from 'ajv';
-import {ajvResolver} from '../../../../../Admin/ajv';
+import {ajvResolver} from '@givewp/admin/ajv';
 import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
 import {Campaign} from '../types';
