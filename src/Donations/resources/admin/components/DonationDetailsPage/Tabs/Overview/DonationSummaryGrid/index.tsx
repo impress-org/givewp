@@ -19,11 +19,14 @@ export type DonationSummaryGridProps = {
 };
 
 /**
+ * @unreleased Refactored to only try to load campaign when we have a valid campaignId from the donation
  * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
 export function CampaignCard({donation}: {donation: Donation}) {
-    const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(donation?.campaignId);
+    const {campaign, hasResolved: hasResolvedCampaign} = donation?.campaignId
+        ? useCampaignEntityRecord(donation?.campaignId)
+        : {campaign: null, hasResolved: false};
 
     return (
         <GridCard heading={__('Campaign name', 'give')} headingId="campaign-name">
