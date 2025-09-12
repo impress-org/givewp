@@ -128,132 +128,6 @@ class TestListDonations extends TestCase
         $this->assertFalse($response);
     }
 
-    /**
-     * @unreleased
-     */
-    public function testShouldReturnCorrectOneTimeDonationsStats()
-    {
-        $campaign = Campaign::factory()->create();
-
-        // Create 3 one-time donations
-        Donation::factory()->count(3)->create([
-            'campaignId' => $campaign->id
-        ]);
-
-        $mockRequest = $this->getMockRequest();
-        $mockRequest->set_param('page', 1);
-        $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'en-US');
-        $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
-
-        $listDonations = give(ListDonations::class);
-        $response = $listDonations->handleRequest($mockRequest);
-
-        $this->assertEquals(3, $response->data['stats']['oneTimeDonationsCount']);
-        $this->assertEquals(0, $response->data['stats']['recurringDonationsCount']);
-        $this->assertEquals(3, $response->data['stats']['donationsCount']);
-        $this->assertEquals(3, $response->data['totalItems']);
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testShouldReturnCorrectRecurringDonationsStats()
-    {
-        $campaign = Campaign::factory()->create();
-
-        // Create 2 subscriptions with donations
-        $this->createSubscription($campaign->id);
-        $this->createSubscription($campaign->id);
-
-        $mockRequest = $this->getMockRequest();
-        $mockRequest->set_param('page', 1);
-        $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'en-US');
-        $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
-
-        $listDonations = give(ListDonations::class);
-        $response = $listDonations->handleRequest($mockRequest);
-
-        $this->assertEquals(0, $response->data['stats']['oneTimeDonationsCount']);
-        $this->assertEquals(2, $response->data['stats']['recurringDonationsCount']);
-        $this->assertEquals(2, $response->data['stats']['donationsCount']);
-        $this->assertEquals(2, $response->data['totalItems']);
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testShouldReturnCorrectMixedDonationsStats()
-    {
-        $campaign = Campaign::factory()->create();
-
-        // Create 4 one-time donations
-        Donation::factory()->count(4)->create([
-            'campaignId' => $campaign->id
-        ]);
-
-        // Create 3 subscriptions with donations
-        $this->createSubscription($campaign->id);
-        $this->createSubscription($campaign->id);
-        $this->createSubscription($campaign->id);
-
-        $mockRequest = $this->getMockRequest();
-        $mockRequest->set_param('page', 1);
-        $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'en-US');
-        $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
-
-        $listDonations = give(ListDonations::class);
-        $response = $listDonations->handleRequest($mockRequest);
-
-        $this->assertEquals(4, $response->data['stats']['oneTimeDonationsCount']);
-        $this->assertEquals(3, $response->data['stats']['recurringDonationsCount']);
-        $this->assertEquals(7, $response->data['stats']['donationsCount']);
-        $this->assertEquals(7, $response->data['totalItems']);
-    }
-
-    /**
-     * @unreleased
-     */
-    public function testShouldReturnCorrectStatsWithFilters()
-    {
-        $campaign1 = Campaign::factory()->create();
-        $campaign2 = Campaign::factory()->create();
-
-        // Create 2 one-time donations for campaign1
-        Donation::factory()->count(2)->create([
-            'campaignId' => $campaign1->id
-        ]);
-
-        // Create 1 one-time donation for campaign2
-        Donation::factory()->create([
-            'campaignId' => $campaign2->id
-        ]);
-
-        // Create 1 subscription with donation for campaign1
-        $this->createSubscription($campaign1->id);
-
-        $mockRequest = $this->getMockRequest();
-        $mockRequest->set_param('page', 1);
-        $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'en-US');
-        $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
-        $mockRequest->set_param('campaignId', $campaign1->id); // Filter by campaign1
-
-        $listDonations = give(ListDonations::class);
-        $response = $listDonations->handleRequest($mockRequest);
-
-        // Should only return donations for campaign1
-        $this->assertEquals(2, $response->data['stats']['oneTimeDonationsCount']);
-        $this->assertEquals(1, $response->data['stats']['recurringDonationsCount']);
-        $this->assertEquals(3, $response->data['stats']['donationsCount']);
-        $this->assertEquals(3, $response->data['totalItems']);
-    }
 
     /**
      * @unreleased
@@ -289,7 +163,6 @@ class TestListDonations extends TestCase
         $response = $listDonations->handleRequest($mockRequest);
 
         // Should only return donation2 (created in February 2023)
-        $this->assertEquals(1, $response->data['stats']['donationsCount']);
         $this->assertEquals(1, $response->data['totalItems']);
         $this->assertCount(1, $response->data['items']);
     }
@@ -327,7 +200,6 @@ class TestListDonations extends TestCase
         $response = $listDonations->handleRequest($mockRequest);
 
         // Should return donation2 and donation3 (created on or after February 1, 2023)
-        $this->assertEquals(2, $response->data['stats']['donationsCount']);
         $this->assertEquals(2, $response->data['totalItems']);
         $this->assertCount(2, $response->data['items']);
     }
@@ -365,7 +237,6 @@ class TestListDonations extends TestCase
         $response = $listDonations->handleRequest($mockRequest);
 
         // Should return donation1 and donation2 (created on or before February 28, 2023)
-        $this->assertEquals(2, $response->data['stats']['donationsCount']);
         $this->assertEquals(2, $response->data['totalItems']);
         $this->assertCount(2, $response->data['items']);
     }
@@ -407,10 +278,9 @@ class TestListDonations extends TestCase
         $listDonations = give(ListDonations::class);
         $response = $listDonations->handleRequest($mockRequest);
 
-        // Debug: Let's see what we're actually getting
-        $this->assertEquals(3, $response->data['stats']['donationsCount'], 'Expected 3 donations but got: ' . $response->data['stats']['donationsCount']);
-        $this->assertEquals(3, $response->data['totalItems'], 'Expected 3 totalItems but got: ' . $response->data['totalItems']);
-        $this->assertCount(3, $response->data['items'], 'Expected 3 items but got: ' . count($response->data['items']));
+        // Should return all 3 donations
+        $this->assertEquals(3, $response->data['totalItems']);
+        $this->assertCount(3, $response->data['items']);
     }
 
     /**
@@ -443,7 +313,6 @@ class TestListDonations extends TestCase
         $response = $listDonations->handleRequest($mockRequest);
 
         // Should return no donations
-        $this->assertEquals(0, $response->data['stats']['donationsCount']);
         $this->assertEquals(0, $response->data['totalItems']);
         $this->assertCount(0, $response->data['items']);
     }
@@ -482,85 +351,10 @@ class TestListDonations extends TestCase
         $response = $listDonations->handleRequest($mockRequest);
 
         // Should return 2 donations (1 one-time + 1 subscription) created in February
-        $this->assertEquals(2, $response->data['stats']['donationsCount']);
-        $this->assertEquals(1, $response->data['stats']['oneTimeDonationsCount']);
-        $this->assertEquals(1, $response->data['stats']['recurringDonationsCount']);
         $this->assertEquals(2, $response->data['totalItems']);
         $this->assertCount(2, $response->data['items']);
     }
 
-    /**
-     * @unreleased Test that the new optimized statistics method works correctly
-     */
-    public function testOptimizedStatisticsMethod()
-    {
-        $campaign = Campaign::factory()->create();
-
-        // Create 2 one-time donations
-        Donation::factory()->count(2)->create([
-            'campaignId' => $campaign->id
-        ]);
-
-        // Create 1 subscription with donation
-        $this->createSubscription($campaign->id);
-
-        $listDonations = give(ListDonations::class);
-        
-        // Set up request for the test
-        $mockRequest = $this->getMockRequest();
-        $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
-        
-        // Set the request manually for the test
-        $reflection = new \ReflectionClass($listDonations);
-        $requestProperty = $reflection->getProperty('request');
-        $requestProperty->setAccessible(true);
-        $requestProperty->setValue($listDonations, $mockRequest);
-        
-        // Test the new optimized method directly
-        $statistics = $listDonations->getDonationStatistics();
-        
-        $this->assertEquals(3, $statistics['donationsCount']);
-        $this->assertEquals(2, $statistics['oneTimeDonationsCount']);
-        $this->assertEquals(1, $statistics['recurringDonationsCount']);
-    }
-
-    /**
-     * @unreleased Test that the optimized method respects the same filters as individual methods
-     */
-    public function testOptimizedStatisticsWithFilters()
-    {
-        $campaign1 = Campaign::factory()->create();
-        $campaign2 = Campaign::factory()->create();
-
-        // Create donations for both campaigns
-        Donation::factory()->count(2)->create(['campaignId' => $campaign1->id]);
-        Donation::factory()->count(1)->create(['campaignId' => $campaign2->id]);
-        
-        $this->createSubscription($campaign1->id);
-
-        // Set up request with campaign filter
-        $mockRequest = $this->getMockRequest();
-        $mockRequest->set_param('campaignId', $campaign1->id);
-        $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
-
-        $listDonations = give(ListDonations::class);
-        
-        // Set the request manually for the test
-        $reflection = new \ReflectionClass($listDonations);
-        $requestProperty = $reflection->getProperty('request');
-        $requestProperty->setAccessible(true);
-        $requestProperty->setValue($listDonations, $mockRequest);
-        
-        // Test the optimized method with filters
-        $statistics = $listDonations->getDonationStatistics();
-        
-        // Should only count donations for campaign1
-        $this->assertEquals(3, $statistics['donationsCount']);
-        $this->assertEquals(2, $statistics['oneTimeDonationsCount']);
-        $this->assertEquals(1, $statistics['recurringDonationsCount']);
-    }
 
     /**
      * @unreleased

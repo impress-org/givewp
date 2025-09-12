@@ -156,28 +156,21 @@ class ListDonations extends Endpoint
         $this->request = $request;
 
         $donations = $this->getDonations();
-        
-        if ($this->shouldIncludeStats()) {
-            $statistics = $this->getDonationStatistics();
-            $donationsCount = $statistics['donationsCount'];
-            $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
-            
-            $data = [
-                'items' => $this->prepareItems($donations),
-                'totalItems' => $donationsCount,
-                'totalPages' => $totalPages,
-                'stats' => $statistics,
-            ];
+        $donationsCount = $this->getTotalDonationsCount();
+        $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
+
+        if ('model' === $this->request->get_param('return')) {
+            $items = $donations;
         } else {
-            $donationsCount = $this->getTotalDonationsCount();
-            $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
-            
-            $data = [
-                'items' => $this->prepareItems($donations),
-                'totalItems' => $donationsCount,
-                'totalPages' => $totalPages,
-            ];
+            $this->listTable->items($donations, $this->request->get_param('locale') ?? '');
+            $items = $this->listTable->getItems();
         }
+
+        $data = [
+            'items' => $items,
+            'totalItems' => $donationsCount,
+            'totalPages' => $totalPages,
+        ];
 
         return new WP_REST_Response($data);
     }
@@ -223,7 +216,6 @@ class ListDonations extends Endpoint
     public function getTotalDonationsCount(): int
     {
         $query = DB::table('posts')
-            ->where('post_type', 'give_payment')
             ->groupBy('mode');
 
         list($query, $dependencies) = $this->getWhereConditions($query);
@@ -239,73 +231,11 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * Get all donation statistics in a single optimized query
-     *
-     * @unreleased
-     */
-    public function getDonationStatistics(): array
-    {
-        $query = DB::table('posts')
-            ->where('post_type', 'give_payment');
-
-        list($query, $dependencies) = $this->getWhereConditions($query);
-
-        // Add subscription_id meta to dependencies
-        $dependencies[] = DonationMetaKeys::SUBSCRIPTION_ID();
-
-        $query->attachMeta(
-            'give_donationmeta',
-            'ID',
-            'donation_id',
-            ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
-        );
-
-        // Use CASE WHEN to count different types in a single query
-        $query->selectRaw('
-            COUNT(*) as total_donations,
-            SUM(CASE WHEN give_donationmeta_attach_meta_subscriptionId.meta_value = 0 THEN 1 ELSE 0 END) as one_time_donations,
-            SUM(CASE WHEN give_donationmeta_attach_meta_subscriptionId.meta_value != 0 THEN 1 ELSE 0 END) as recurring_donations
-        ');
-
-        $result = $query->get();
-
-        // Handle case when no results are found
-        if (!$result) {
-            return [
-                'donationsCount' => 0,
-                'oneTimeDonationsCount' => 0,
-                'recurringDonationsCount' => 0,
-            ];
-        }
-
-        return [
-            'donationsCount' => (int) $result->total_donations,
-            'oneTimeDonationsCount' => (int) $result->one_time_donations,
-            'recurringDonationsCount' => (int) $result->recurring_donations,
-        ];
-    }
-
-    /**
-     * Prepare items for response
-     *
-     * @unreleased
-     */
-    private function prepareItems(array $donations): array
-    {
-        if ('model' === $this->request->get_param('return')) {
-            return $donations;
-        }
-
-        $this->listTable->items($donations, $this->request->get_param('locale') ?? '');
-        return $this->listTable->getItems();
-    }
-
-    /**
      * @unreleased Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
      * @since 3.4.0 Make this method protected so it can be extended
      * @since 3.2.0 Updated query to account for possible null and empty values for _give_payment_mode meta
-     * @since 2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
+     * @since      2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
      * @since      2.21.0
      *
      * @param QueryBuilder $query
@@ -334,6 +264,9 @@ class ListDonations extends Endpoint
             $query->where('post_status', 'trash');
         } elseif ($status === 'active') {
             $query->where('post_status', 'trash', '<>');
+        } elseif ($status) {
+            // Filter by donation status (complete, pending, etc.)
+            $query->where('post_status', $status);
         }
 
         if ($search) {
@@ -399,14 +332,5 @@ class ListDonations extends Endpoint
             $query,
             $dependencies,
         ];
-    }
-
-    /**
-     * @unreleased
-     */
-    private function shouldIncludeStats()
-    {
-        $subscriptionId = $this->request->get_param('subscriptionId');
-        return !$subscriptionId;
     }
 }
