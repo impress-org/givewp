@@ -253,7 +253,6 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                     bulkActions={bulkActions}
                     showModal={openBulkActionModal}
                 />
-                {PageActionsTop && testModeFilter && <TestModeFilter />}
                 {!PageActionsTop && page && setPage && showPagination()}
             </div>
         );
