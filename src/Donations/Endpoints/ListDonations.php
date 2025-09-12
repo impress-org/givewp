@@ -216,6 +216,7 @@ class ListDonations extends Endpoint
     public function getTotalDonationsCount(): int
     {
         $query = DB::table('posts')
+            ->where('post_type', 'give_payment')
             ->groupBy('mode');
 
         list($query, $dependencies) = $this->getWhereConditions($query);
@@ -264,9 +265,6 @@ class ListDonations extends Endpoint
             $query->where('post_status', 'trash');
         } elseif ($status === 'active') {
             $query->where('post_status', 'trash', '<>');
-        } elseif ($status) {
-            // Filter by donation status (complete, pending, etc.)
-            $query->where('post_status', $status);
         }
 
         if ($search) {
