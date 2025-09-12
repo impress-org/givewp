@@ -1,13 +1,11 @@
-import styles from './FormSelect.module.scss';
 import cx from 'classnames';
 import Input from '@givewp/components/ListTable/Input';
 
 export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onChange, ...rest}) => {
     return (
-        <>
+        <div>
             <Input
                 type="search"
-                className={cx(styles.formSelect)}
                 list={`giveSearchSelect-${name}`}
                 onChange={updateSearchableSelect(options, name, onChange)}
                 autoComplete={'off'}
@@ -20,7 +18,7 @@ export const FormSelect = ({options, name, placeholder = '', ariaLabel = '', onC
                     <option key={`${value}${text}`} value={value === '0' ? text : `${text} (#${value})`} />
                 ))}
             </datalist>
-        </>
+        </div>
     );
 };
 
