@@ -142,7 +142,6 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @unreleased Added support for stats
      * @since 2.24.0 Change this to use the new ListTable class
      * @since      2.20.0
      *
@@ -166,13 +165,13 @@ class ListDonations extends Endpoint
             $items = $this->listTable->getItems();
         }
 
-        $data = [
-            'items' => $items,
-            'totalItems' => $donationsCount,
-            'totalPages' => $totalPages,
-        ];
-
-        return new WP_REST_Response($data);
+        return new WP_REST_Response(
+            [
+                'items' => $items,
+                'totalItems' => $donationsCount,
+                'totalPages' => $totalPages,
+            ]
+        );
     }
 
     /**
