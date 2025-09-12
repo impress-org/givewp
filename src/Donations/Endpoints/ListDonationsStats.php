@@ -73,14 +73,13 @@ class ListDonationsStats extends Endpoint
             ->where('post_type', 'give_payment')
             ->where('post_status', 'trash', '<>'); // Exclude trash items
 
-        // Filter by test mode
-        $dependencies = [DonationMetaKeys::MODE(), DonationMetaKeys::SUBSCRIPTION_ID()];
-        
+        // Filter by test mode and subscription type
         $query->attachMeta(
             'give_donationmeta',
             'ID',
             'donation_id',
-            ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
+            [DonationMetaKeys::MODE()->getValue(), DonationMetaKeys::MODE()->getKeyAsCamelCase()],
+            [DonationMetaKeys::SUBSCRIPTION_ID()->getValue(), DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()]
         );
 
         if ($testMode) {
