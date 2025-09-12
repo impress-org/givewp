@@ -1,6 +1,7 @@
 import apiFetch from '@wordpress/api-fetch';
 import {__, sprintf} from '@wordpress/i18n';
 import {JSONSchemaType} from 'ajv';
+import addFormats from 'ajv-formats';
 
 /**
  * Create an AJV resolver for react-hook-form with WordPress REST API schema
@@ -77,7 +78,8 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
  * This function configures AJV (Draft 7/2019-09) to work with WordPress schemas:
  * - Transforms WordPress Draft 03/04 schemas to Draft 7/2019-09 syntax
  * - Converts 'required: true' on individual properties to 'required' array at object level
- * - Adds support for WordPress-specific and standard JSON Schema formats
+ * - Adds all standard JSON Schema formats using ajv-formats package
+ * - Adds WordPress-specific custom formats (text-field, textarea-field)
  * - Disables schema validation to avoid conflicts with WordPress schema extensions
  * - Enables advanced validation features that WordPress ignores
  *
@@ -86,7 +88,7 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
  * Backend (WordPress REST API) + Frontend (AJV):
  * - Type validation (string, integer, boolean, number, array, object, null)
  * - Required field validation
- * - Format validation (email, date-time, uri, ip, hex-color, uuid, text-field, textarea-field)
+ * - Format validation (email, date-time, uri, ip, hex-color, uuid, text-field, textarea-field, and all standard formats via ajv-formats)
  * - Enum validation
  * - Constraint validation (minLength, maxLength, minimum, maximum, etc.)
  * - Pattern validation (regex)
@@ -129,49 +131,12 @@ function configureAjvForWordPress() {
         verbose: true,
     });
 
-    // Add WordPress-specific JSON Schema formats
+    // Add all standard JSON Schema formats using ajv-formats
+    addFormats(ajv);
 
-    // WordPress custom format - no validation, only sanitization
-    ajv.addFormat('text-field', true);
-
-    // WordPress only sanitizes URI format, no validation
-    // We provide basic validation for frontend consistency
-    ajv.addFormat('uri', (uri: string) => {
-        try {
-            new URL(uri);
-            return true;
-        } catch {
-            return false;
-        }
-    });
-
-    // Validate ISO 8601 date-time format (RFC 3339)
-    ajv.addFormat('date-time', (dateTime: string) => {
-        const date = new Date(dateTime);
-        return !isNaN(date.getTime()) && dateTime.includes('T');
-    });
-
-    // Validate email format using a comprehensive regex
-    ajv.addFormat('email', (email: string) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    });
-
-    // WordPress-specific formats
-    ajv.addFormat('hex-color', (color: string) => {
-        // Validate hex color format (#RRGGBB or #RGB)
-        const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-        return hexColorRegex.test(color);
-    });
-
-    // Validate UUID format (version 4)
-    ajv.addFormat('uuid', (uuid: string) => {
-        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-        return uuidRegex.test(uuid);
-    });
-
-    // WordPress custom format - no validation, only sanitization
-    ajv.addFormat('textarea-field', true);
+    // Add WordPress-specific custom formats that are not in the standard
+    ajv.addFormat('text-field', true); // WordPress custom format - no validation, only sanitization
+    ajv.addFormat('textarea-field', true); // WordPress custom format - no validation, only sanitization
 
     // Transform WordPress schemas to be compatible with Draft 7/2019-09
     // This converts Draft 03/04 syntax (required: true on properties) to Draft 7 syntax
@@ -267,9 +232,10 @@ function transformFormDataForValidation(data: any, schema: JSONSchemaType<any>):
 
                 // Skip validation for fields that are not present in form data and not required
                 const isRequired = Array.isArray(schemaObj.required) && schemaObj.required.includes(key);
-                const isFieldPresent = value !== undefined && value !== null && value !== '';
+                const isFieldPresent = value !== undefined && value !== null;
 
                 // Remove fields that are not present and not required from the result
+                // Note: We allow empty strings ('') to be present so they can be saved to clear fields
                 if (!isFieldPresent && !isRequired) {
                     delete result[key];
                     return; // Skip processing this field
