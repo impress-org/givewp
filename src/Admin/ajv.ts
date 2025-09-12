@@ -3,85 +3,64 @@ import {__, sprintf} from '@wordpress/i18n';
 import {JSONSchemaType} from 'ajv';
 
 /**
- * Fetch schema from WordPress REST API and configure AJV resolver
+ * Create an AJV resolver for react-hook-form with WordPress REST API schema
  *
- * This function fetches a JSON Schema from the WordPress REST API (Draft 03/04) and sets up
- * an AJV resolver (Draft 7/2019-09) for enhanced frontend validation. It handles:
- * - Fetching the schema using OPTIONS method from WordPress REST API
+ * This function creates a custom resolver that works with WordPress REST API schemas (Draft 03/04)
+ * and provides enhanced frontend validation using AJV (Draft 7/2019-09). It handles:
  * - Transforming WordPress Draft 03/04 schema to Draft 7/2019-09 for AJV compatibility
- * - Creating a custom resolver with advanced validation capabilities
  * - Data transformation before validation (string numbers, enum handling, etc.)
- * - Error handling and fallback resolvers
+ * - Error handling and fallback behavior
  *
  * Key advantage: WordPress REST API supports most JSON Schema Draft 4 features but lacks
  * some advanced features (if/then/else, allOf, not) that AJV can provide for enhanced frontend validation.
  *
  * @unreleased
  *
- * @param path - The REST API path to fetch the schema from (e.g., '/givewp/v3/campaigns/123')
- * @param setResolver - Function to set the resolver (from useForm)
- * @returns Promise that resolves when schema is loaded and resolver is configured
+ * @param schema - The JSON Schema from WordPress REST API
+ * @returns A resolver function compatible with react-hook-form
  */
-export async function fetchSchemaAndConfigureResolver(
-    path: string,
-    setResolver: (resolver: any) => void
-): Promise<void> {
-    try {
-        const {schema}: {schema: JSONSchemaType<any>} = await apiFetch({
-            path,
-            method: 'OPTIONS',
-        });
-
-        const customResolver = (data: any) => {
-            try {
-                // Ensure we have valid data to validate
-                if (!data || typeof data !== 'object') {
-                    return {values: data || {}, errors: {}};
-                }
-
-                const transformedData = transformFormDataForValidation(data, schema);
-
-                const ajv = configureAjvForWordPress();
-                const transformedSchema = transformWordPressSchemaToDraft7(schema);
-                const validate = ajv.compile(transformedSchema);
-                const valid = validate(transformedData);
-
-                if (valid) {
-                    return {values: transformedData, errors: {}};
-                } else {
-                    console.error('🔴 Validation failed, errors:', validate.errors);
-                    const errors: any = {};
-                    if (validate.errors) {
-                        validate.errors.forEach((error) => {
-                            const path = error.instancePath || error.schemaPath;
-                            if (path) {
-                                const fieldName = path.replace('/', '');
-                                const errorMessage = getTranslatedErrorMessage(error, fieldName);
-                                errors[fieldName] = {
-                                    type: 'validation',
-                                    message: errorMessage,
-                                };
-                            }
-                        });
-                    }
-                    return {values: {}, errors};
-                }
-            } catch (error) {
-                console.error('AJV validation error:', error);
-                return {values: data, errors: {}};
+export function ajvResolver(schema: JSONSchemaType<any>) {
+    return (data: any) => {
+        try {
+            // Ensure we have valid data to validate
+            if (!data || typeof data !== 'object') {
+                return {values: data || {}, errors: {}};
             }
-        };
 
-        setResolver({
-            resolver: customResolver,
-        });
-    } catch (error) {
-        console.error('Failed to load schema:', error);
-        setResolver({
-            resolver: (data: any) => ({values: data, errors: {}}),
-        });
-    }
+            const transformedData = transformFormDataForValidation(data, schema);
+
+            const ajv = configureAjvForWordPress();
+            const transformedSchema = transformWordPressSchemaToDraft7(schema);
+            const validate = ajv.compile(transformedSchema);
+            const valid = validate(transformedData);
+
+            if (valid) {
+                return {values: transformedData, errors: {}};
+            } else {
+                console.error('🔴 Validation failed, errors:', validate.errors);
+                const errors: any = {};
+                if (validate.errors) {
+                    validate.errors.forEach((error) => {
+                        const path = error.instancePath || error.schemaPath;
+                        if (path) {
+                            const fieldName = path.replace('/', '');
+                            const errorMessage = getTranslatedErrorMessage(error, fieldName);
+                            errors[fieldName] = {
+                                type: 'validation',
+                                message: errorMessage,
+                            };
+                        }
+                    });
+                }
+                return {values: {}, errors};
+            }
+        } catch (error) {
+            console.error('AJV validation error:', error);
+            return {values: data, errors: {}};
+        }
+    };
 }
+
 
 /**
  * Configure standard AJV (Draft 7/2019-09) for WordPress REST API compatibility

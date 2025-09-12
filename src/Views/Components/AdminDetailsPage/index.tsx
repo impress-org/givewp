@@ -3,12 +3,14 @@
  */
 import {useEffect, useRef, useState} from 'react';
 import {FormProvider, SubmitHandler, useForm, useFormContext, useFormState} from 'react-hook-form';
-import {fetchSchemaAndConfigureResolver} from '../../../Admin/ajv';
+import {ajvResolver} from '../../../Admin/ajv';
 
 import {SlotFillProvider} from '@wordpress/components';
 import {useDispatch} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
 import {PluginArea} from '@wordpress/plugins';
+import apiFetch from '@wordpress/api-fetch';
+import {JSONSchemaType} from 'ajv';
 
 /**
  * Internal Dependencies
@@ -62,7 +64,14 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
             return;
         }
 
-        fetchSchemaAndConfigureResolver(`/givewp/v3/${objectTypePlural}/${objectId}`, setResolver);
+        apiFetch({
+            path: `/givewp/v3/${objectTypePlural}/${objectId}`,
+            method: 'OPTIONS',
+        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
+            setResolver({
+                resolver: ajvResolver(schema),
+            });
+        });
     }, [objectId, objectTypePlural]);
 
     const {record, hasResolved, save, edit} = useObjectEntityRecord(objectId);

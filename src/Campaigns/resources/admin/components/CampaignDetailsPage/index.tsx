@@ -7,7 +7,9 @@ import {useEffect, useRef, useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
 import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
-import {fetchSchemaAndConfigureResolver} from '../../../../../Admin/ajv';
+import apiFetch from '@wordpress/api-fetch';
+import {JSONSchemaType} from 'ajv';
+import {ajvResolver} from '../../../../../Admin/ajv';
 import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} from '../Icons';
 import NotificationPlaceholder from '../Notifications';
 import {Campaign} from '../types';
@@ -95,7 +97,14 @@ export default function CampaignsDetailsPage({campaignId}) {
     }, []);
 
     useEffect(() => {
-        fetchSchemaAndConfigureResolver(`/givewp/v3/campaigns/${campaignId}`, setResolver);
+        apiFetch({
+            path: `/givewp/v3/campaigns/${campaignId}`,
+            method: 'OPTIONS',
+        }).then(({schema}: {schema: JSONSchemaType<any>}) => {
+            setResolver({
+                resolver: ajvResolver(schema),
+            });
+        });
     }, [campaignId]);
 
     const {campaign, hasResolved, save, edit} = useCampaignEntityRecord(campaignId);
