@@ -490,6 +490,79 @@ class TestListDonations extends TestCase
     }
 
     /**
+     * @unreleased Test that the new optimized statistics method works correctly
+     */
+    public function testOptimizedStatisticsMethod()
+    {
+        $campaign = Campaign::factory()->create();
+
+        // Create 2 one-time donations
+        Donation::factory()->count(2)->create([
+            'campaignId' => $campaign->id
+        ]);
+
+        // Create 1 subscription with donation
+        $this->createSubscription($campaign->id);
+
+        $listDonations = give(ListDonations::class);
+        
+        // Set up request for the test
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('status', 'active');
+        
+        // Set the request manually for the test
+        $reflection = new \ReflectionClass($listDonations);
+        $requestProperty = $reflection->getProperty('request');
+        $requestProperty->setAccessible(true);
+        $requestProperty->setValue($listDonations, $mockRequest);
+        
+        // Test the new optimized method directly
+        $statistics = $listDonations->getDonationStatistics();
+        
+        $this->assertEquals(3, $statistics['donationsCount']);
+        $this->assertEquals(2, $statistics['oneTimeDonationsCount']);
+        $this->assertEquals(1, $statistics['recurringDonationsCount']);
+    }
+
+    /**
+     * @unreleased Test that the optimized method respects the same filters as individual methods
+     */
+    public function testOptimizedStatisticsWithFilters()
+    {
+        $campaign1 = Campaign::factory()->create();
+        $campaign2 = Campaign::factory()->create();
+
+        // Create donations for both campaigns
+        Donation::factory()->count(2)->create(['campaignId' => $campaign1->id]);
+        Donation::factory()->count(1)->create(['campaignId' => $campaign2->id]);
+        
+        $this->createSubscription($campaign1->id);
+
+        // Set up request with campaign filter
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('campaignId', $campaign1->id);
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('status', 'active');
+
+        $listDonations = give(ListDonations::class);
+        
+        // Set the request manually for the test
+        $reflection = new \ReflectionClass($listDonations);
+        $requestProperty = $reflection->getProperty('request');
+        $requestProperty->setAccessible(true);
+        $requestProperty->setValue($listDonations, $mockRequest);
+        
+        // Test the optimized method with filters
+        $statistics = $listDonations->getDonationStatistics();
+        
+        // Should only count donations for campaign1
+        $this->assertEquals(3, $statistics['donationsCount']);
+        $this->assertEquals(2, $statistics['oneTimeDonationsCount']);
+        $this->assertEquals(1, $statistics['recurringDonationsCount']);
+    }
+
+    /**
      * @unreleased
      */
     private function createSubscription(int $campaignId, DateTime $donationDate = null): Subscription

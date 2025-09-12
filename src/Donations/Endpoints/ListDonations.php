@@ -142,6 +142,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Added support for stats
      * @since 2.24.0 Change this to use the new ListTable class
      * @since      2.20.0
      *
@@ -155,29 +156,26 @@ class ListDonations extends Endpoint
         $this->request = $request;
 
         $donations = $this->getDonations();
-        $donationsCount = $this->getTotalDonationsCount();
-        $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
-
-        if ('model' === $this->request->get_param('return')) {
-            $items = $donations;
-        } else {
-            $this->listTable->items($donations, $this->request->get_param('locale') ?? '');
-            $items = $this->listTable->getItems();
-        }
-
-        $data = [
-            'items' => $items,
-            'totalItems' => $donationsCount,
-            'totalPages' => $totalPages,
-        ];
-
+        
         if ($this->shouldIncludeStats()) {
-            $oneTimeDonationsCount = $this->getOneTimeDonationsCount();
-            $recurringDonationsCount = $this->getRecurringDonationsCount();
-            $data['stats'] = [
-                'donationsCount' => $donationsCount,
-                'oneTimeDonationsCount' => $oneTimeDonationsCount,
-                'recurringDonationsCount' => $recurringDonationsCount,
+            $statistics = $this->getDonationStatistics();
+            $donationsCount = $statistics['donationsCount'];
+            $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
+            
+            $data = [
+                'items' => $this->prepareItems($donations),
+                'totalItems' => $donationsCount,
+                'totalPages' => $totalPages,
+                'stats' => $statistics,
+            ];
+        } else {
+            $donationsCount = $this->getTotalDonationsCount();
+            $totalPages = (int)ceil($donationsCount / $this->request->get_param('perPage'));
+            
+            $data = [
+                'items' => $this->prepareItems($donations),
+                'totalItems' => $donationsCount,
+                'totalPages' => $totalPages,
             ];
         }
 
@@ -241,18 +239,18 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * Get count of one-time donations
+     * Get all donation statistics in a single optimized query
      *
      * @unreleased
      */
-    public function getOneTimeDonationsCount(): int
+    public function getDonationStatistics(): array
     {
         $query = DB::table('posts')
             ->where('post_type', 'give_payment');
 
         list($query, $dependencies) = $this->getWhereConditions($query);
 
-        // Add subscription_id meta to dependencies to check for 0 values
+        // Add subscription_id meta to dependencies
         $dependencies[] = DonationMetaKeys::SUBSCRIPTION_ID();
 
         $query->attachMeta(
@@ -262,38 +260,44 @@ class ListDonations extends Endpoint
             ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
         );
 
-        // One-time donations are those without a subscription_id (0)
-        $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', 0);
+        // Use CASE WHEN to count different types in a single query
+        $query->selectRaw('
+            COUNT(*) as total_donations,
+            SUM(CASE WHEN give_donationmeta_attach_meta_subscriptionId.meta_value = 0 THEN 1 ELSE 0 END) as one_time_donations,
+            SUM(CASE WHEN give_donationmeta_attach_meta_subscriptionId.meta_value != 0 THEN 1 ELSE 0 END) as recurring_donations
+        ');
 
-        return $query->count();
+        $result = $query->get();
+
+        // Handle case when no results are found
+        if (!$result) {
+            return [
+                'donationsCount' => 0,
+                'oneTimeDonationsCount' => 0,
+                'recurringDonationsCount' => 0,
+            ];
+        }
+
+        return [
+            'donationsCount' => (int) $result->total_donations,
+            'oneTimeDonationsCount' => (int) $result->one_time_donations,
+            'recurringDonationsCount' => (int) $result->recurring_donations,
+        ];
     }
 
     /**
-     * Get count of recurring donations
+     * Prepare items for response
      *
      * @unreleased
      */
-    public function getRecurringDonationsCount(): int
+    private function prepareItems(array $donations): array
     {
-        $query = DB::table('posts')
-            ->where('post_type', 'give_payment');
+        if ('model' === $this->request->get_param('return')) {
+            return $donations;
+        }
 
-        list($query, $dependencies) = $this->getWhereConditions($query);
-
-        // Add subscription_id meta to dependencies to check for not 0 values
-        $dependencies[] = DonationMetaKeys::SUBSCRIPTION_ID();
-
-        $query->attachMeta(
-            'give_donationmeta',
-            'ID',
-            'donation_id',
-            ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
-        );
-
-        // Recurring donations are those with a subscription_id (not 0)
-        $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', 0, '!=');
-
-        return $query->count();
+        $this->listTable->items($donations, $this->request->get_param('locale') ?? '');
+        return $this->listTable->getItems();
     }
 
     /**
