@@ -71,7 +71,7 @@ class ListDonationsStats extends Endpoint
 
         $query = DB::table('posts')
             ->where('post_type', 'give_payment')
-            ->where('post_status', 'trash', '<>'); // Exclude trash items
+            ->whereIn('post_status', ['publish', 'give_subscription']);
 
         // Filter by test mode and subscription type
         $query->attachMeta(
