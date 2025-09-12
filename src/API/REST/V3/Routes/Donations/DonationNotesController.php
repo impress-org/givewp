@@ -51,7 +51,6 @@ class DonationNotesController extends WP_REST_Controller
                 'callback' => [$this, 'create_item'],
                 'permission_callback' => [$this, 'create_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::CREATABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             'schema' => [$this, 'get_public_item_schema'],
         ]);
