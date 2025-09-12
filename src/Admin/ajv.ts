@@ -1,7 +1,7 @@
-import apiFetch from '@wordpress/api-fetch';
 import {__, sprintf} from '@wordpress/i18n';
 import {JSONSchemaType} from 'ajv';
 import addFormats from 'ajv-formats';
+import addErrors from 'ajv-errors';
 
 /**
  * Create an AJV resolver for react-hook-form with WordPress REST API schema
@@ -29,9 +29,8 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
             }
 
             const transformedData = transformFormDataForValidation(data, schema);
-
             const ajv = configureAjvForWordPress();
-            const transformedSchema = transformWordPressSchemaToDraft7(schema);
+            const transformedSchema = transformWordPressSchemaToDraft7(schema);    
             const validate = ajv.compile(transformedSchema);
             const valid = validate(transformedData);
 
@@ -45,7 +44,10 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
                         const path = error.instancePath || error.schemaPath;
                         if (path) {
                             const fieldName = path.replace('/', '');
-                            const errorMessage = getTranslatedErrorMessage(error, fieldName);
+                            // Use the error message from ajv-errors
+                            // ajv-errors should provide the custom message in error.message
+                            const errorMessage = error.message || sprintf(__('%s is invalid.', 'give'), fieldName);
+                            
                             errors[fieldName] = {
                                 type: 'validation',
                                 message: errorMessage,
@@ -79,6 +81,7 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
  * - Transforms WordPress Draft 03/04 schemas to Draft 7/2019-09 syntax
  * - Converts 'required: true' on individual properties to 'required' array at object level
  * - Adds all standard JSON Schema formats using ajv-formats package
+ * - Adds custom error messages using ajv-errors package
  * - Adds WordPress-specific custom formats (text-field, textarea-field)
  * - Disables schema validation to avoid conflicts with WordPress schema extensions
  * - Enables advanced validation features that WordPress ignores
@@ -134,6 +137,9 @@ function configureAjvForWordPress() {
     // Add all standard JSON Schema formats using ajv-formats
     addFormats(ajv);
 
+    // Add custom error messages support using ajv-errors
+    addErrors(ajv);
+
     // Add WordPress-specific custom formats that are not in the standard
     ajv.addFormat('text-field', true); // WordPress custom format - no validation, only sanitization
     ajv.addFormat('textarea-field', true); // WordPress custom format - no validation, only sanitization
@@ -181,6 +187,7 @@ function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>): JSONSche
 
     if (transformed.properties && typeof transformed.properties === 'object') {
         const requiredFields: string[] = [];
+        const errorMessages: any = {};
 
         Object.keys(transformed.properties).forEach((key) => {
             const prop = transformed.properties[key];
@@ -188,15 +195,104 @@ function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>): JSONSche
                 requiredFields.push(key);
                 delete prop.required;
             }
+
+            // Add custom error messages for each property
+            if (prop && typeof prop === 'object') {
+                errorMessages[key] = getCustomErrorMessage(prop, key);
+            }
         });
 
         if (requiredFields.length > 0) {
             transformed.required = requiredFields;
         }
+
+        // Add error messages to the schema
+        if (Object.keys(errorMessages).length > 0) {
+            transformed.errorMessage = {
+                properties: errorMessages,
+                required: __('Required fields are missing.', 'give'),
+                _: __('Please check the form for errors.', 'give'),
+            };
+        }
     }
 
     return transformed;
 }
+
+/**
+ * Generate custom error messages for schema properties using ajv-errors
+ *
+ * This function creates specific error messages for different validation types
+ * based on the property schema, providing better user experience.
+ *
+ * @param prop - The property schema object
+ * @param fieldName - The name of the field
+ * @returns Custom error message string for the field
+ */
+function getCustomErrorMessage(prop: any, fieldName: string): string {
+    // Priority order: format > type > constraints > generic
+    
+    // Format validation messages (highest priority)
+    if (prop.format) {
+        switch (prop.format) {
+            case 'email':
+                return sprintf(__('%s must be a valid email address.', 'give'), fieldName);
+            case 'uri':
+                return sprintf(__('%s must be a valid URL.', 'give'), fieldName);
+            case 'date-time':
+                return sprintf(__('%s must be a valid date and time.', 'give'), fieldName);
+            case 'uuid':
+                return sprintf(__('%s must be a valid UUID.', 'give'), fieldName);
+            case 'hex-color':
+                return sprintf(__('%s must be a valid color code.', 'give'), fieldName);
+            default:
+                return sprintf(__('%s format is invalid.', 'give'), fieldName);
+        }
+    }
+
+    // Type validation messages
+    if (prop.type) {
+        if (prop.type === 'string') {
+            return sprintf(__('%s must be text.', 'give'), fieldName);
+        } else if (prop.type === 'number') {
+            return sprintf(__('%s must be a number.', 'give'), fieldName);
+        } else if (prop.type === 'integer') {
+            return sprintf(__('%s must be a whole number.', 'give'), fieldName);
+        } else if (prop.type === 'boolean') {
+            return sprintf(__('%s must be true or false.', 'give'), fieldName);
+        } else if (prop.type === 'array') {
+            return sprintf(__('%s must be a list.', 'give'), fieldName);
+        } else if (prop.type === 'object') {
+            return sprintf(__('%s must be an object.', 'give'), fieldName);
+        }
+    }
+
+    // Enum validation messages
+    if (prop.enum && Array.isArray(prop.enum)) {
+        return sprintf(__('%s must be one of: %s', 'give'), fieldName, prop.enum.join(', '));
+    }
+
+    // Constraint validation messages
+    if (prop.minLength !== undefined) {
+        return sprintf(__('%s must be at least %d characters long.', 'give'), fieldName, prop.minLength);
+    }
+    if (prop.maxLength !== undefined) {
+        return sprintf(__('%s must be no more than %d characters long.', 'give'), fieldName, prop.maxLength);
+    }
+    if (prop.minimum !== undefined) {
+        return sprintf(__('%s must be at least %s.', 'give'), fieldName, prop.minimum);
+    }
+    if (prop.maximum !== undefined) {
+        return sprintf(__('%s must be no more than %s.', 'give'), fieldName, prop.maximum);
+    }
+    if (prop.pattern) {
+        return sprintf(__('%s format is invalid.', 'give'), fieldName);
+    }
+
+    // Generic fallback
+    return sprintf(__('%s is invalid.', 'give'), fieldName);
+}
+
 
 /**
  * Transform form data to be compatible with JSON Schema validation
@@ -416,55 +512,3 @@ function transformOneOfValue(value: any, oneOfSchemas: any[]): any {
     return null;
 }
 
-/**
- * Generate translated error messages for AJV validation errors
- *
- * This function converts AJV validation errors into user-friendly, translated messages
- * that can be displayed in the frontend UI. It handles various validation error types
- * and provides appropriate messages for both basic and advanced validation features.
- *
- * Supported error types:
- * - Basic validation: type, required, format, enum, pattern, etc.
- * - Constraint validation: minLength, maxLength, minimum, maximum, etc.
- * - Advanced validation: if/then/else conditions, allOf/anyOf/oneOf composition
- *
- * @param error - AJV validation error object
- * @param fieldName - Name of the field that failed validation
- * @returns Translated error message for display in UI
- */
-function getTranslatedErrorMessage(error: any, fieldName: string): string {
-    const {keyword, params} = error;
-
-    // Generic error messages based on keyword
-    const genericMessages: Record<string, string> = {
-        required: __('This field is required.', 'give'),
-        type: __('Please enter a valid value.', 'give'),
-        format: __('Please enter a valid format.', 'give'),
-        enum: __('Please select a valid option.', 'give'),
-        minimum: __('Value must be at least %s.', 'give'),
-        maximum: __('Value must be at most %s.', 'give'),
-        minLength: __('Must be at least %s characters.', 'give'),
-        maxLength: __('Must be at most %s characters.', 'give'),
-        pattern: __('Please enter a valid format.', 'give'),
-    };
-
-    let genericMessage = genericMessages[keyword] || __('Please enter a valid value.', 'give');
-
-    // Replace placeholders with actual values using sprintf
-    if (params) {
-        // Map AJV params to sprintf format
-        const paramMap: Record<string, string> = {
-            minimum: 'minimum',
-            maximum: 'maximum',
-            minLength: 'minLength',
-            maxLength: 'maxLength',
-        };
-
-        const paramKey = paramMap[keyword];
-        if (paramKey && params[paramKey] !== undefined) {
-            genericMessage = sprintf(genericMessage, params[paramKey]);
-        }
-    }
-
-    return genericMessage;
-}

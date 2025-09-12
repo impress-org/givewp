@@ -83,6 +83,7 @@
         "@wordpress/server-side-render": "^4.2.0",
         "accounting": "^0.4.1",
         "ajv": "^8.17.1",
+        "ajv-errors": "3.0.0",
         "ajv-formats": "3.0.1",
         "axios": "^1.7.9",
         "chart.js": "^2.9.3",
