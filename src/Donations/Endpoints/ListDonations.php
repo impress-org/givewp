@@ -8,7 +8,6 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Framework\QueryBuilder\Types\Operator;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -236,7 +235,7 @@ class ListDonations extends Endpoint
      * @since 4.6.0 add status status condition to filter donations
      * @since 3.4.0 Make this method protected so it can be extended
      * @since 3.2.0 Updated query to account for possible null and empty values for _give_payment_mode meta
-     * @since 2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
+     * @since      2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
      * @since      2.21.0
      *
      * @param QueryBuilder $query
@@ -253,7 +252,6 @@ class ListDonations extends Endpoint
         $campaignId = $this->request->get_param('campaignId');
         $subscriptionId = $this->request->get_param('subscriptionId');
         $status = $this->request->get_param('status');
-
         $dependencies = [
             DonationMetaKeys::MODE(),
         ];
@@ -319,12 +317,12 @@ class ListDonations extends Endpoint
         }
 
         if ($hasWhereConditions) {
-           $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
+            $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
         } elseif ($testMode) {
             $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
             $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-            ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+                ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
         }
 
         return [
