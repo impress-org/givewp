@@ -3,7 +3,7 @@
 namespace Give\Tests\Unit\Donations\Endpoints;
 
 use DateTime;
-use Give\Donations\Endpoints\DonationStats;
+use Give\Donations\Endpoints\ListDonationsStats;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
@@ -20,7 +20,7 @@ use WP_REST_Response;
 /**
  * @unreleased
  */
-class TestDonationStats extends TestCase
+class TestListDonationsStats extends TestCase
 {
     use RefreshDatabase;
 
@@ -40,7 +40,7 @@ class TestDonationStats extends TestCase
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donations/stats');
 
-        $endpoint = new DonationStats();
+        $endpoint = new ListDonationsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
@@ -64,7 +64,7 @@ class TestDonationStats extends TestCase
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donations/stats');
 
-        $endpoint = new DonationStats();
+        $endpoint = new ListDonationsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
@@ -86,7 +86,7 @@ class TestDonationStats extends TestCase
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donations/stats');
 
-        $endpoint = new DonationStats();
+        $endpoint = new ListDonationsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
@@ -104,7 +104,7 @@ class TestDonationStats extends TestCase
     {
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donations/stats');
 
-        $endpoint = new DonationStats();
+        $endpoint = new ListDonationsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
@@ -135,7 +135,7 @@ class TestDonationStats extends TestCase
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donations/stats');
         $request->set_param('testMode', true);
 
-        $endpoint = new DonationStats();
+        $endpoint = new ListDonationsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
@@ -166,7 +166,7 @@ class TestDonationStats extends TestCase
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donations/stats');
 
-        $endpoint = new DonationStats();
+        $endpoint = new ListDonationsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);

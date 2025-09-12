@@ -10,7 +10,7 @@ use WP_REST_Response;
 /**
  * @unreleased
  */
-class DonationStats extends Endpoint
+class ListDonationsStats extends Endpoint
 {
     /**
      * @var string
