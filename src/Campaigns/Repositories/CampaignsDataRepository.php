@@ -41,7 +41,7 @@ class CampaignsDataRepository
 
     /**
      *
-     * @unreleased added data caching layer
+     * @since 4.8.0 added data caching layer
      *
      * @param int[] $ids
      *

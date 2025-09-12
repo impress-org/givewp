@@ -19,7 +19,7 @@ class SubscriptionsAdminPage
     /**
      * Render the Subscription Details page.
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public function render()
     {
@@ -82,7 +82,7 @@ class SubscriptionsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public static function isShowingDetailsPage(): bool
     {

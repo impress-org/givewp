@@ -10,7 +10,7 @@ import SubscriptionAnnualProjection from "./SubscriptionAnnualProjection";
 import styles from "./styles.module.scss";
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SubscriptionDetailsPageOverviewTab() {
     const { mode, adminUrl } = getSubscriptionOptionsWindowData();

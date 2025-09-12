@@ -12,7 +12,7 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class CacheCampaignsData extends BatchMigration implements ReversibleMigration
 {
@@ -43,7 +43,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * Base query
      *
-     * @unreleased
+     * @since 4.8.0
      */
     protected function query(): QueryBuilder
     {
@@ -53,7 +53,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws DatabaseMigrationException
      */
@@ -171,7 +171,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public function reverse(): void
     {

@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function HourGlassIcon() {
     return (
@@ -17,9 +17,9 @@ export function HourGlassIcon() {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
-export function ClockIcon() {   
+export function ClockIcon() {
     return (
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M13.636 8.595a5.667 5.667 0 0 1-10.543 2.238l-.167-.289m-.562-3.14a5.667 5.667 0 0 1 10.543-2.238l.167.289M2.329 12.044l.488-1.822 1.821.488m6.723-5.421 1.822.488.488-1.821M8 5v3l1.666 1" stroke="#459948" strokeWidth="1.333" strokeLinecap="round" strokeLinejoin="round"/>

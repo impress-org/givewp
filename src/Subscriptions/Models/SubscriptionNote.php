@@ -15,7 +15,7 @@ use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Subscriptions\DataTransferObjects\SubscriptionNoteQueryData;
 
 /**
- * @unreleased
+ * @since 4.8.0
  *
  * @property int $id
  * @property string $content
@@ -45,7 +45,7 @@ class SubscriptionNote extends Model implements ModelCrud, ModelHasFactory
     ];
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return SubscriptionNote|null
      */
@@ -55,7 +55,7 @@ class SubscriptionNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return $this
      *
@@ -71,7 +71,7 @@ class SubscriptionNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -87,7 +87,7 @@ class SubscriptionNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -97,7 +97,7 @@ class SubscriptionNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return ModelQueryBuilder<SubscriptionNote>
      */
@@ -107,7 +107,7 @@ class SubscriptionNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return ModelQueryBuilder<Subscription>
      */
@@ -117,7 +117,7 @@ class SubscriptionNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param  object  $object
      */
@@ -127,7 +127,7 @@ class SubscriptionNote extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public static function factory(): SubscriptionNoteFactory
     {

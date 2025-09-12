@@ -13,7 +13,7 @@ import {
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type SubscriptionAnnualProjectionProps = {
     donations: Donation[];
@@ -22,7 +22,7 @@ type SubscriptionAnnualProjectionProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SubscriptionAnnualProjection({ subscription, donations, currency }: SubscriptionAnnualProjectionProps) {
     const currencyFormatter = amountFormatter(currency);

@@ -10,7 +10,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const subscriptionId = urlParams.get('id');
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 const subscriptionDetailsTabs: Tab[] = [
     {

@@ -231,7 +231,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @unreleased Added support for subscriptionId parameter to filter donations
+     * @since 4.8.0 Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
      * @since 3.4.0 Make this method protected so it can be extended
      * @since 3.2.0 Updated query to account for possible null and empty values for _give_payment_mode meta

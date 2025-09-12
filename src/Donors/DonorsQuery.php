@@ -44,7 +44,7 @@ class DonorsQuery
     }
 
     /**
-     * @unreleased Fix subqueries to not return duplicate donors
+     * @since 4.8.0 Fix subqueries to not return duplicate donors
      * @since 4.4.0
      */
     public function whereDonorsHaveDonations(

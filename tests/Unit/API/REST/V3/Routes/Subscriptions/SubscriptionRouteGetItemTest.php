@@ -18,7 +18,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionRouteGetItemTest extends RestApiTestCase
 {
@@ -26,7 +26,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnAllViewModelProperties()
     {
@@ -91,7 +91,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnSelfLink()
     {
@@ -113,7 +113,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnDonorLink()
     {
@@ -135,7 +135,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -164,7 +164,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -195,7 +195,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -219,7 +219,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -236,7 +236,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -271,7 +271,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -295,7 +295,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */

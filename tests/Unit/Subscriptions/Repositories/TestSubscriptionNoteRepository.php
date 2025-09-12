@@ -15,7 +15,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.8.0
  *
  * @coversDefaultClass SubscriptionNotesRepository
  */
@@ -24,7 +24,7 @@ class TestSubscriptionNoteRepository extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -58,7 +58,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -80,7 +80,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -110,7 +110,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -131,7 +131,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -153,7 +153,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -175,7 +175,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -207,7 +207,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -228,7 +228,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -270,7 +270,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -287,7 +287,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -329,7 +329,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      */
@@ -343,7 +343,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -375,7 +375,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *
@@ -403,7 +403,7 @@ class TestSubscriptionNoteRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return void
      *

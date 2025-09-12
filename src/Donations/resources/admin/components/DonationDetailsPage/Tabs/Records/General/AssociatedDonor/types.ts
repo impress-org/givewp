@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export interface DonorOption {
     value: number;
@@ -7,7 +7,7 @@ export interface DonorOption {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export interface UseDonorAsyncSelectReturn {
     selectedOption: DonorOption | null;

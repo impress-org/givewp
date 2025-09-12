@@ -6,7 +6,7 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
- * @unreleased
+ * @since 4.8.0
  *
  * @method static SubscriptionNoteMetaKeys TYPE()
  * @method bool isType()

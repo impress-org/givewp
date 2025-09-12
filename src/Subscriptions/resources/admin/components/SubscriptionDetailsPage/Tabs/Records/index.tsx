@@ -8,7 +8,7 @@ import { NotesIcon } from '@givewp/admin/components/PrivateNotes/Icons';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SubscriptionDetailsPageRecordsTab() {
     const { isDirty } = useFormState();

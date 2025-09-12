@@ -29,7 +29,7 @@ import CancelSubscriptionDialog from './components/CancelSubscriptionDialog';
 const { subscriptionStatuses } = getSubscriptionOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 const StatusBadge = ({ status, isTest }: { status: string, isTest: boolean }) => {
     const statusMap = subscriptionStatuses;
@@ -53,7 +53,7 @@ const StatusBadge = ({ status, isTest }: { status: string, isTest: boolean }) =>
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SubscriptionDetailsPage() {
     const { adminUrl, subscriptionsAdminUrl } = getSubscriptionOptionsWindowData();
@@ -135,7 +135,7 @@ export default function SubscriptionDetailsPage() {
     };
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     const handleDelete = async () => {
         try {
@@ -147,7 +147,7 @@ export default function SubscriptionDetailsPage() {
     };
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     const handleSyncSubscription = async () => {
         try {

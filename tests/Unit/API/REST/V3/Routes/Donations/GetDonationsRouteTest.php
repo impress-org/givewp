@@ -541,7 +541,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetDonationsBySubscriptionId()
     {
@@ -580,7 +580,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetDonationsBySubscriptionIdShouldReturnEmptyWhenSubscriptionDoesNotExist()
     {
@@ -601,7 +601,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetDonationsBySubscriptionIdShouldReturnOnlyDonationsFromSpecifiedSubscription()
     {
@@ -733,7 +733,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -747,9 +747,9 @@ class GetDonationsRouteTest extends RestApiTestCase
             'status' => new SubscriptionStatus($status),
             'period' => SubscriptionPeriod::MONTH(),
             'frequency' => 1,
-            'installments' => 0,            
+            'installments' => 0,
             'mode' => new SubscriptionMode($mode),
-            'donorId' => $donor->id,            
+            'donorId' => $donor->id,
         ], [
             'anonymous' => false,
             'donorId' => $donor->id,
