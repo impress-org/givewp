@@ -3,9 +3,9 @@
 namespace Give\Subscriptions\ViewModels;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
+use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Subscriptions\Models\Subscription;
-use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 
 /**
  * @since 4.8.0
@@ -63,7 +63,7 @@ class SubscriptionViewModel
             ]
         );
 
-        if ( ! $this->includeSensitiveData) {
+        if (!$this->includeSensitiveData) {
             $sensitiveDataExcluded = [
                 'transactionId',
                 'gatewaySubscriptionId',
@@ -78,7 +78,7 @@ class SubscriptionViewModel
             }
         }
 
-        if (isset($this->anonymousMode ) && $this->anonymousMode->isRedacted() && $this->subscription->donor->isAnonymous()) {
+        if (isset($this->anonymousMode) && $this->anonymousMode->isRedacted() && $this->subscription->donor->isAnonymous()) {
             $anonymousDataRedacted = [
                 'donorId',
                 'firstName',
@@ -103,10 +103,10 @@ class SubscriptionViewModel
     /**
      * @since 4.8.0
      */
-    private function getGatewayDetails(): array
+    private function getGatewayDetails(): ?array
     {
-        if ( ! give(PaymentGatewayRegister::class)->hasPaymentGateway($this->subscription->gatewayId)) {
-            return [];
+        if (empty($this->subscription->gatewayId) || !give(PaymentGatewayRegister::class)->hasPaymentGateway($this->subscription->gatewayId)) {
+            return null;
         }
 
         return array_merge(

@@ -2,7 +2,6 @@
 
 namespace Give\Tests\Unit\API\REST\V3\Routes\Subscriptions;
 
-use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\SubscriptionNotesController;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\Subscriptions\Models\Subscription;
@@ -54,7 +53,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     /**
      * @since 4.8.0
      */
-        public function testControllerInstantiation()
+    public function testControllerInstantiation()
     {
         $controller = new SubscriptionNotesController();
 
@@ -287,7 +286,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
         $schema = $controller->get_item_schema();
 
         $this->assertIsArray($schema);
-        $this->assertArrayHasKey('schema', $schema);
+        $this->assertArrayHasKey('$schema', $schema);
         $this->assertArrayHasKey('title', $schema);
         $this->assertArrayHasKey('type', $schema);
         $this->assertArrayHasKey('properties', $schema);
