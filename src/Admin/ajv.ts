@@ -394,14 +394,18 @@ function transformFormDataForValidation(data: any, schema: JSONSchemaType<any>):
                         Array.isArray(propSchema.type) &&
                         propSchema.type.includes('string') &&
                         propSchema.format === 'date-time'
-                    ) {
+                    ) { 
                         // For subscription date fields that expect string or null
                         if (value === null || value === undefined) {
                             result[key] = null;
                         } else if (typeof value === 'string') {
+                            // Handle ISO 8601 date strings (with or without timezone)
+                            // Examples: '2025-07-15T16:34:57', '2025-07-15T16:34:57Z', '2025-07-15T16:34:57.000Z'
                             const date = new Date(value);
                             if (!isNaN(date.getTime())) {
-                                result[key] = value; // Keep as string
+                                // Ensure the string is in proper ISO format
+                                const isoString = date.toISOString();
+                                result[key] = isoString;
                             } else {
                                 result[key] = null;
                             }
