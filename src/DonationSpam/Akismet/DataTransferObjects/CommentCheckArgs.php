@@ -3,8 +3,10 @@
 namespace Give\DonationSpam\Akismet\DataTransferObjects;
 
 /**
+ * @unreleased add #[AllowDynamicProperties]
  * @since 3.15.0
  */
+#[\AllowDynamicProperties]
 class CommentCheckArgs
 {
     public $blog;
