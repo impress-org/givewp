@@ -108,13 +108,13 @@ class GiveFormGridWidget extends Widget_Base
         $this->add_control(
             'forms_cats_tags',
             [
-                'label' => __('Collection Method', 'plugin-domain'),
+                'label' => __('Collection Method', 'give'),
                 'type' => \Elementor\Controls_Manager::SELECT,
                 'description' => __('Would you like to show forms by ID, by their Categories, or by their Tags?', 'give'),
                 'options' => [
-                    'forms' => __('Forms', 'plugin-domain'),
-                    'cats' => __('Categories', 'plugin-domain'),
-                    'tags' => __('Tags', 'plugin-domain'),
+                    'forms' => __('Forms', 'give'),
+                    'cats' => __('Categories', 'give'),
+                    'tags' => __('Tags', 'give'),
                 ],
                 'default' => 'forms',
             ]
