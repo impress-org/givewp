@@ -192,13 +192,14 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Return the calculated completion percentage.
 	 *
+	 * @unreleased Check if items are set before counting to prevent fatal errors on PHP 8
 	 * @since 1.5
 	 * @return int
 	 */
 	public function get_percentage_complete() {
 
 		$items = $this->get_stored_data( 'give_temp_reset_ids' );
-		$total = count( $items );
+		$total = $items ? count( $items ) : 0;
 
 		$percentage = 100;
 
