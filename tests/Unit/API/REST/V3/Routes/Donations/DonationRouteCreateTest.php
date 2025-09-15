@@ -1161,25 +1161,20 @@ class DonationRouteCreateTest extends RestApiTestCase
     }
 
     /**
-     * @since 4.8.0
+     * @unreleased
      */
-    public function testCreateRenewalShouldUseCampaignIdFromInitialDonation()
+    public function testCreateRenewalShouldUseCampaignIdFromSubscriptionDonationForm()
     {
         // Create a campaign and associate it with the form
         $campaign = Campaign::factory()->create();
-        give()->campaigns->addCampaignForm($campaign, $this->form->id);
 
         // Create a subscription with an initial donation that has a campaignId
-        $initialCampaignId = 123;
-        $subscription = Subscription::factory()->createWithDonation([
+        $subscription = Subscription::factory()->createWithDonation(
+            [
             'gatewayId' => TestGateway::id(),
             'installments' => 12, // Set higher installments to avoid limit
+            'donationFormId' => $campaign->defaultFormId,
         ]);
-
-        // Update the initial donation to have a specific campaignId
-        $initialDonation = $subscription->initialDonation();
-        $initialDonation->campaignId = $initialCampaignId;
-        $initialDonation->save();
 
         // Create renewal request
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
@@ -1194,7 +1189,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $data = $response->get_data();
 
         // Verify that the renewal has the same campaignId as the initial donation
-        $this->assertEquals($initialCampaignId, $data['campaignId']);
+        $this->assertEquals($campaign->id, $data['campaignId']);
         $this->assertEquals('renewal', $data['type']);
         $this->assertEquals($subscription->id, $data['subscriptionId']);
     }
