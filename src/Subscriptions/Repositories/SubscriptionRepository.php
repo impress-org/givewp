@@ -433,7 +433,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased Remove campaignId from the attributes array since it is auto-generated based on the subscription's form.
+     * @since 4.8.1 Remove campaignId from the attributes array since it is auto-generated based on the subscription's form.
      * @since 4.8.0 Add campaignId support.
      * @since 3.20.0
      * @throws Exception

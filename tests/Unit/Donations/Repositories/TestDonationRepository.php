@@ -299,7 +299,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.1
      */
     public function testInsertShouldSetCampaignIdIfNull()
     {
