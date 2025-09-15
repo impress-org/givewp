@@ -114,12 +114,13 @@ class ConnectClient
     {
         if (is_wp_error($response)) {
             throw new RequestException(
-                esc_html__(
-                    sprintf(
+                sprintf(
+                    esc_html__(
                         'The request to the %1$s failed. Error:  %2$s',
-                        $this->apiUrl,
-                        $response->get_error_message()
-                    )
+                        'give'
+                    ),
+                    $this->apiUrl,
+                    $response->get_error_message()
                 )
             );
         }
