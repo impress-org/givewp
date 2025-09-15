@@ -26,11 +26,9 @@ export type DonationSummaryGridProps = {
 export function CampaignCard({donation}: {donation: Donation}) {
     return (
         <GridCard heading={__('Campaign name', 'give')} headingId="campaign-name">
-            {!donation
+            {!donation?.campaignId
                 ? <Spinner />
-                : donation?.campaignId
-                    ? <CampaignCardContent campaignId={donation.campaignId} />
-                    : <p>{__('No campaign associated with this donation', 'give')}</p>
+                : <CampaignCardContent campaignId={donation.campaignId} />
             }
         </GridCard>
     );
@@ -69,11 +67,9 @@ function CampaignCardContent({campaignId}: {campaignId: number}) {
 export function DonorCard({donation}: {donation: Donation}) {
     return (
         <GridCard heading={__('Associated donor', 'give')} headingId="donor">
-            {!donation
+            {!donation?.donorId
                 ? <Spinner />
-                : donation?.donorId
-                    ? <DonorCardContent donorId={donation.donorId} />
-                    : <p>{__('No donor associated with this donation', 'give')}</p>
+                : <DonorCardContent donorId={donation.donorId} />
             }
         </GridCard>
     );
