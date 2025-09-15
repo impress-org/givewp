@@ -192,7 +192,6 @@ abstract class ListTable implements Arrayable
                     'give'
                 ),
                 admin_url('edit.php?post_type=give_forms&page=give-tools&tab=logs')
-                )
             );
         }
 
