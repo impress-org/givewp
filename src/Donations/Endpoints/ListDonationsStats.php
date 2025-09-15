@@ -47,7 +47,6 @@ class ListDonationsStats extends Endpoint
         );
     }
 
-
     /**
      * @unreleased
      */
@@ -71,7 +70,7 @@ class ListDonationsStats extends Endpoint
 
         $query = DB::table('posts')
             ->where('post_type', 'give_payment')
-            ->whereIn('post_status', ['publish', 'give_subscription']);
+            ->where('post_status', 'trash', '<>'); // Exclude trash items
 
         // Filter by test mode and subscription type
         $query->attachMeta(
@@ -85,7 +84,7 @@ class ListDonationsStats extends Endpoint
         if ($testMode) {
             $query->where('give_donationmeta_attach_meta_mode.meta_value', 'test');
         } else {
-            $query->where(function($query) {
+            $query->where(function ($query) {
                 $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
                     ->orWhere('give_donationmeta_attach_meta_mode.meta_value', 'test', '<>');
             });
