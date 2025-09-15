@@ -166,12 +166,16 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
+    const {data: statsData, error: statsError, isValidating: statsIsValidating, mutate: mutateStats} = archiveApi.useStats(testMode);
 
     useResetPage(data, page, setPage, filters);
 
     useImperativeHandle(ref, () => ({
-        refresh: () => mutate()
-    }), [mutate]);
+        refresh: async () => {
+            await mutate();
+            await mutateStats();
+        }
+    }), [mutate, mutateStats]);
 
     const handleFilterChange = (name, value) => {
         setFilters((prevState) => ({...prevState, [name]: value}));
@@ -300,7 +304,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                             </div>
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
-                        {statsConfig && !isValidating && <ListTableStats config={statsConfig} values={data?.stats} />}
+                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
                         {banner && <section role="banner">{banner()}</section>}
                         <section role="search" className={styles.searchContainer}>
                             <div className={styles.flexRow}>
