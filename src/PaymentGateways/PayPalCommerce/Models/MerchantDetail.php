@@ -182,9 +182,9 @@ final class MerchantDetail
         if (array_diff($required, array_keys($merchantDetails))) {
             throw new InvalidArgumentException(
                 esc_html__(
-                    'To create a MerchantDetail object, please provide the following: ' . implode(', ', $required),
+                    'To create a MerchantDetail object, please provide the following: ',
                     'give'
-                )
+                ) . implode(', ', $required)
             );
         }
     }

@@ -76,7 +76,7 @@ class RegisterFormBuilderPageRoute
         // validate form exists before proceeding
         // TODO: improve on this validation
         if (!get_post($donationFormId)) {
-            wp_die(__('Donation form does not exist.'));
+            wp_die(__('Donation form does not exist.', 'give'));
         }
 
         $locale = give_clean($_GET['locale']) ?? '';

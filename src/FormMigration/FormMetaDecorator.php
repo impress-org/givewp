@@ -532,7 +532,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConstantContactLabel(): string
     {
-        $defaultMeta = give_get_option('givewp_constant_contact_label', __('Subscribe to our newsletter?'));
+        $defaultMeta = give_get_option('givewp_constant_contact_label', __('Subscribe to our newsletter?', 'give'));
 
         return $this->getMeta('_give_constant_contact_custom_label', $defaultMeta);
     }
@@ -584,7 +584,7 @@ class FormMetaDecorator extends FormModelDecorator
     {
         return $this->getMeta(
             '_give_mailchimp_custom_label',
-            give_get_option('give_mailchimp_label', __('Subscribe to newsletter?'))
+            give_get_option('give_mailchimp_label', __('Subscribe to newsletter?', 'give'))
         );
     }
 
@@ -889,7 +889,7 @@ class FormMetaDecorator extends FormModelDecorator
      */
     public function getConvertKitLabel(): string
     {
-        $defaultMeta = give_get_option('give_convertkit_label', __('Subscribe to newsletter?'));
+        $defaultMeta = give_get_option('give_convertkit_label', __('Subscribe to newsletter?', 'give'));
 
         return $this->getMeta('_give_convertkit_custom_label', $defaultMeta);
     }
