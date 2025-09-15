@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 4.8.1: September 15th, 2025 =
-* Fix: Resolved an issue with the campaign field not saving properly in the new donation detail screen
+* Fix: Resolved an issue with the campaign field in the new donation detail screen not saving properly
 
 = 4.8.0: September 10th, 2025 =
 * New: The subscription admin details screen has been upgraded to a new design and experience!
