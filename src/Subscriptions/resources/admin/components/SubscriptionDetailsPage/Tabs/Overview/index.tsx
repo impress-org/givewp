@@ -8,6 +8,7 @@ import SubscriptionSummary from '@givewp/subscriptions/admin/components/Subscrip
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
 import SubscriptionAnnualProjection from "./SubscriptionAnnualProjection";
 import styles from "./styles.module.scss";
+import { Spinner } from "@givewp/admin/components";
 
 /**
  * @since 4.8.0
@@ -17,6 +18,11 @@ export default function SubscriptionDetailsPageOverviewTab() {
     const { record: subscription, hasResolved: subscriptionsResolved, isResolving: subscriptionLoading } = useSubscriptionEntityRecord();
     const { intendedAmount } = useSubscriptionAmounts(subscription);
     const { records: donations, hasResolved: donationsResolved, isResolving: donationsLoading } = useDonationsBySubscription(subscription?.id, mode);
+
+    if (!subscriptionsResolved || !donationsResolved || !subscription || !donations) {
+        // TODO: Add loading state
+        return <Spinner />;
+    }
 
     return (
         <div className={styles.overview}>

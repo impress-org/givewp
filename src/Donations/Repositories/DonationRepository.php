@@ -194,7 +194,7 @@ class DonationRepository
     }
 
     /**
-     * @since 4.8.0 Set campaignId if its null.
+     * @since 4.8.1 Moved campaignId assignment logic to getCoreDonationMetaForDatabase method to eliminate code duplication.
      * @since 3.20.0 store meta using native WP functions
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
@@ -214,10 +214,6 @@ class DonationRepository
         $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
         $dateUpdated = $donation->updatedAt ?? $dateCreated;
         $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
-
-        if (is_null($donation->campaignId) && $campaign = give()->campaigns->getByFormId($donation->formId)) {
-            $donation->campaignId = $campaign->id;
-        }
 
         DB::query('START TRANSACTION');
 
@@ -395,6 +391,7 @@ class DonationRepository
     }
 
     /**
+     * @since 4.8.1 Consolidated campaignId assignment logic from insert method to eliminate duplication and ensure donation model is updated.
      * @since 4.0.0 added campaignId
      * @since 3.9.0 Added meta for phone property
      * @since 3.2.0 added meta for honorific property
@@ -433,8 +430,13 @@ class DonationRepository
         ];
 
         // If the donation is not associated with a campaign, try to find the campaign ID by the form ID
-        if (!$donation->campaignId && $campaign = give()->campaigns->getByFormId($donation->formId)) {
-            $meta[DonationMetaKeys::CAMPAIGN_ID] = $campaign->id;
+        if (!$donation->campaignId) {
+            $campaign = give()->campaigns->getByFormId($donation->formId);
+            $donation->campaignId = $campaign ? $campaign->id : null;
+        }
+
+        if ($donation->campaignId !== null) {
+            $meta[DonationMetaKeys::CAMPAIGN_ID] = $donation->campaignId;
         }
 
         if ($donation->feeAmountRecovered !== null) {

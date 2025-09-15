@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\Donations\Repositories;
 
 use DateTime;
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -295,5 +296,24 @@ final class TestDonationRepository extends TestCase
 
         $this->assertSame($serializedFirstName, $metaValue);
         $this->assertSame(serialize($serializedFirstName), $metaQuery->meta_value);
+    }
+
+    /**
+     * @since 4.8.1
+     */
+    public function testInsertShouldSetCampaignIdIfNull()
+    {
+        $campaign = Campaign::factory()->create();
+        $donation = Donation::factory()->create([
+            'campaignId' => null,
+            'formId' => $campaign->defaultFormId,
+        ]);
+
+        $repository = new DonationRepository();
+        $repository->insert($donation);
+        $campaign = give()->campaigns->getByFormId($donation->formId);
+
+        $this->assertNotNull($donation->campaignId);
+        $this->assertSame($campaign->id, $donation->campaignId);
     }
 }
