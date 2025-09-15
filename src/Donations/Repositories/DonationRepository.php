@@ -194,7 +194,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased Set campaignId if its null.
+     * @since 4.8.0 Set campaignId if its null.
      * @since 3.20.0 store meta using native WP functions
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
@@ -215,8 +215,8 @@ class DonationRepository
         $dateUpdated = $donation->updatedAt ?? $dateCreated;
         $dateUpdatedFormatted = Temporal::getFormattedDateTime($dateUpdated);
 
-        if (is_null($donation->campaignId) && $campaign = give()->campaigns->getByFormId($donation->formId)) {            
-            $donation->campaignId = $campaign->id;            
+        if (is_null($donation->campaignId) && $campaign = give()->campaigns->getByFormId($donation->formId)) {
+            $donation->campaignId = $campaign->id;
         }
 
         DB::query('START TRANSACTION');

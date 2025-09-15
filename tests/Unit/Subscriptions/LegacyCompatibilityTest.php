@@ -14,14 +14,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * Temporary test class to verify compatibility between new SubscriptionNote
  * model/repository and legacy CRUD functions from give-recurring-functions.php
  *
- * @unreleased
+ * @since 4.8.0
  */
 class LegacyCompatibilityTest extends TestCase
 {
     use RefreshDatabase;
 
         /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function setUp(): void
     {
@@ -46,7 +46,7 @@ class LegacyCompatibilityTest extends TestCase
     /**
      * Test that notes created with legacy functions can be read by new model
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -72,7 +72,7 @@ class LegacyCompatibilityTest extends TestCase
     /**
      * Test that notes created with new model can be read by legacy functions
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -105,7 +105,7 @@ class LegacyCompatibilityTest extends TestCase
     /**
      * Test that both systems can coexist and work with each other's data
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -151,7 +151,7 @@ class LegacyCompatibilityTest extends TestCase
     /**
      * Test that deletion works across both systems
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -193,7 +193,7 @@ class LegacyCompatibilityTest extends TestCase
     /**
      * Test that donor notes work correctly with both systems
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -230,7 +230,7 @@ class LegacyCompatibilityTest extends TestCase
     /**
      * Test that admin notes (no meta) work correctly with both systems
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -257,7 +257,7 @@ class LegacyCompatibilityTest extends TestCase
     /**
      * Test that search functionality works across both systems
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -282,7 +282,7 @@ class LegacyCompatibilityTest extends TestCase
     /**
      * Test that date handling is consistent between both systems
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */

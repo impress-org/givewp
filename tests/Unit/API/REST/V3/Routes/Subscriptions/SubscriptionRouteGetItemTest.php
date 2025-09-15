@@ -4,6 +4,7 @@ namespace Unit\API\REST\V3\Routes\Subscriptions;
 
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
@@ -12,13 +13,12 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
-use Give\Donors\Models\Donor;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionRouteGetItemTest extends RestApiTestCase
 {
@@ -26,7 +26,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnAllViewModelProperties()
     {
@@ -82,17 +82,16 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
             'gateway' => array_merge(
                 $subscription->gateway()->toArray(),
                 [
-                    'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),      
+                    'subscriptionUrl' => $subscription->gateway()->gatewayDashboardSubscriptionUrl($subscription),
                     'canSync' => $subscription->gateway()->subscriptionModule instanceof SubscriptionTransactionsSynchronizable,
                 ]
             ),
             'projectedAnnualRevenue' => $subscription->projectedAnnualRevenue()->toArray(),
-
         ], $data);
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnSelfLink()
     {
@@ -114,7 +113,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnDonorLink()
     {
@@ -136,7 +135,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -165,7 +164,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -196,7 +195,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -220,7 +219,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -237,7 +236,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -272,7 +271,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -296,7 +295,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */

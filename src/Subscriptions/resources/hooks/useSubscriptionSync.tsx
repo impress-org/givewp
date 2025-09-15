@@ -7,7 +7,7 @@ export interface SubscriptionSyncResponse {
 	presentTransactions: SyncTransaction[];
 	notice: string;
   }
-  
+
   export interface SyncDetails {
 	currentStatus: string;
 	gatewayStatus: string;
@@ -16,7 +16,7 @@ export interface SubscriptionSyncResponse {
 	currentCreatedAt: string;
 	gatewayCreatedAt: string;
   }
-  
+
   export interface SyncTransaction {
 	id: number;
 	gatewayTransactionId: string;
@@ -25,9 +25,9 @@ export interface SubscriptionSyncResponse {
 	status: string;
 	type: 'renewal' | 'subscription';
   }
-  
+
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function useSubscriptionSync() {
 	const { syncSubscriptionNonce } = getSubscriptionOptionsWindowData();
@@ -55,7 +55,7 @@ export default function useSubscriptionSync() {
 			});
 
 			const json = await response.json();
-			
+
 			setSyncResult(json?.data);
 			setHasResolved(true);
 			return json?.data;

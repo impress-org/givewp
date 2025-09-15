@@ -11,7 +11,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * The purpose of this action is to have a centralized place for localizing options used on many different places
  * by donation scripts (list tables, blocks, etc.)
  *
- * @unreleased
+ * @since 4.8.0
  */
 class LoadSubscriptionAdminOptions
 {
@@ -25,7 +25,7 @@ class LoadSubscriptionAdminOptions
     /**
      * Get all donation options for localization
      *
-     * @unreleased
+     * @since 4.8.0
      */
     private function getSubscriptionOptions(): array
     {
@@ -53,7 +53,7 @@ class LoadSubscriptionAdminOptions
     /**
      * Get gateways
      *
-     * @unreleased
+     * @since 4.8.0
      */
     private function getGateways(): array
     {

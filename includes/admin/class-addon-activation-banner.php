@@ -172,7 +172,7 @@ class Give_Addon_Activation_Banner {
 			foreach ( $give_addons as $banner_addon_name => $addon ) {
 
 				// User meta key.
-				$user_id = __give_get_active_by_user_meta( $banner_addon_name );
+				$user_id = give_get_active_by_user_meta( $banner_addon_name );
 
 				if ( ! $user_id ) {
 					$option_key = self::get_banner_user_meta_key( $banner_addon_name );
@@ -251,7 +251,7 @@ class Give_Addon_Activation_Banner {
 			$add_on_state = get_user_meta( $this->user_id, "give_addon_activation_ignore_{$addon_sanitized_name}", true );
 
 			// Get the option key.
-			$activate_by_user = (int) __give_get_active_by_user_meta( $addon_sanitized_name );
+			$activate_by_user = (int) give_get_active_by_user_meta( $addon_sanitized_name );
 
 			// Remove plugin file and get the Add-on's folder name only.
 			$file_path = $this->get_plugin_folder_name( $addon['file'] );
@@ -486,7 +486,7 @@ class Give_Addon_Activation_Banner {
 				if ( $plugin_file === $addon['plugin_main_file'] ) {
 
 					// Get the user meta key.
-					$user_id = (int) __give_get_active_by_user_meta( $banner_addon_name );
+					$user_id = (int) give_get_active_by_user_meta( $banner_addon_name );
 
 					if ( $user_id ) {
 						// Get user meta for this add-on.

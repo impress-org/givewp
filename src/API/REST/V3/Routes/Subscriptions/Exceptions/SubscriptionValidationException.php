@@ -5,7 +5,7 @@ namespace Give\API\REST\V3\Routes\Subscriptions\Exceptions;
 use Exception;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionValidationException extends Exception
 {
@@ -20,7 +20,7 @@ class SubscriptionValidationException extends Exception
     private $statusCode;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param string $message
      * @param string $errorCode
@@ -37,7 +37,7 @@ class SubscriptionValidationException extends Exception
     /**
      * Get the error code
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return string
      */
@@ -49,7 +49,7 @@ class SubscriptionValidationException extends Exception
     /**
      * Get the HTTP status code
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return int
      */
@@ -57,4 +57,4 @@ class SubscriptionValidationException extends Exception
     {
         return $this->statusCode;
     }
-} 
+}

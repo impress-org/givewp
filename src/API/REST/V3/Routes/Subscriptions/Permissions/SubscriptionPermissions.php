@@ -7,14 +7,14 @@ use WP_Error;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionPermissions
 {
     /**
      * Check if current user can edit subscriptions.
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public static function canEdit(): bool
     {
@@ -28,7 +28,7 @@ class SubscriptionPermissions
     /**
      * Check if current user can delete subscriptions.
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public static function canDelete(): bool
     {
@@ -36,7 +36,7 @@ class SubscriptionPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public static function authorizationStatusCode(): int
     {
@@ -44,7 +44,7 @@ class SubscriptionPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      *
@@ -78,7 +78,7 @@ class SubscriptionPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      *
@@ -98,7 +98,7 @@ class SubscriptionPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      *

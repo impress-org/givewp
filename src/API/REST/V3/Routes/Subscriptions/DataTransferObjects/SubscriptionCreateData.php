@@ -8,7 +8,7 @@ use Give\Subscriptions\Models\Subscription;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionCreateData
 {
@@ -28,7 +28,7 @@ class SubscriptionCreateData
     /**
      * Create SubscriptionCreateData from REST request
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param WP_REST_Request $request
      * @return SubscriptionCreateData
@@ -43,7 +43,7 @@ class SubscriptionCreateData
     /**
      * Convert to Subscription model
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return Subscription
      * @throws Exception
@@ -61,7 +61,7 @@ class SubscriptionCreateData
     /**
      * Get the processed attributes
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @return array
      */
@@ -73,7 +73,7 @@ class SubscriptionCreateData
     /**
      * Process attributes for special data types
      *
-     * @unreleased
+     * @since 4.8.0
      *
      * @param array $attributes
      * @return array

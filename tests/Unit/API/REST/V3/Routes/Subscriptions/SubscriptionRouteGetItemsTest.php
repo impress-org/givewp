@@ -21,26 +21,26 @@ use WP_REST_Server;
 use Give\Donors\Models\Donor;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionRouteGetItemsTest extends RestApiTestCase
 {
     use RefreshDatabase;
     use HasDefaultWordPressUsers;
-    
+
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionsShouldReturnAllViewModelProperties()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
-        $subscription = $this->createSubscription();        
+        $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(
-            [                
+            [
                 'includeSensitiveData' => true,
             ]
         );
@@ -68,7 +68,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $this->assertArrayHasKey('timezone_type', $data[0]['renewsAt']);
 
         $donor = $subscription->donor()->get();
-        
+
         $this->assertEquals([
             'id' => $subscription->id,
             'donorId' => $subscription->donorId,
@@ -79,10 +79,10 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
             'period' => $subscription->period->getValue(),
             'frequency' => $subscription->frequency,
             'installments' => $subscription->installments,
-            'transactionId' => '', 
-            'gatewayId' => TestGateway::id(), 
+            'transactionId' => '',
+            'gatewayId' => TestGateway::id(),
             'gatewaySubscriptionId' => $subscription->gatewaySubscriptionId,
-            'mode' => 'live', 
+            'mode' => 'live',
             'createdAt' => $data[0]['createdAt'],
             'renewsAt' => $data[0]['renewsAt'],
             'firstName' => $donor ? $donor->firstName : '',
@@ -100,14 +100,14 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testGetSubscriptionsShouldReturnSelfLink()
-    {        
+    {
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);        
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -122,7 +122,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -133,7 +133,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);        
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -153,7 +153,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -166,7 +166,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(
-            [                                
+            [
                 'includeSensitiveData' => true,
             ]
         );
@@ -186,7 +186,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -199,7 +199,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'subscriber');
         $request->set_query_params(
-            [                                
+            [
                 'includeSensitiveData' => true,
             ]
         );
@@ -212,7 +212,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
         /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -236,7 +236,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -268,7 +268,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -296,7 +296,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -305,7 +305,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
         $subscription1 = $this->createSubscription('live', 'active', 100);
-        $subscription2 = $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);        
+        $subscription2 = $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -326,7 +326,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $this->assertEquals($subscription1->id, $data[0]['id']);
         $this->assertEquals(0, $data[1]['donorId']);
 
-        $anonymousDataRedacted = [            
+        $anonymousDataRedacted = [
             'firstName',
             'lastName',
         ];
@@ -337,23 +337,23 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
     public function testGetSubscriptionsWithPagination()
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
-        
+
         $subscription1 = $this->createSubscription();
-        
+
         $subscription2 = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $request->set_query_params(
-            [                                
+            [
                 'page' => 1,
                 'per_page' => 1,
                 'direction' => 'ASC',
@@ -373,7 +373,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
 
         $request->set_query_params(
-            [                                
+            [
                 'page' => 2,
                 'per_page' => 1,
                 'direction' => 'ASC',
@@ -393,7 +393,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -425,7 +425,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -455,7 +455,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -485,7 +485,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -521,7 +521,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @dataProvider sortableColumnsDataProvider
      *
@@ -558,7 +558,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        
+
         // For firstName and lastName, get the value from the donor
         if (in_array($sortableColumn, ['firstName', 'lastName'], true)) {
             $expected1 = $subscription1->donor()->get()->{$sortableColumn};
@@ -569,7 +569,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
             $expected2 = $subscription2->{$sortableColumn};
             $expected3 = $subscription3->{$sortableColumn};
         }
-        
+
         $this->assertEquals($expected1, $data[0][$sortableColumn]);
         $this->assertEquals($expected2, $data[1][$sortableColumn]);
         $this->assertEquals($expected3, $data[2][$sortableColumn]);
@@ -594,7 +594,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        
+
         // For firstName and lastName, get the value from the donor
         if (in_array($sortableColumn, ['firstName', 'lastName'], true)) {
             $expected3 = $subscription3->donor()->get()->{$sortableColumn};
@@ -605,14 +605,14 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
             $expected2 = $subscription2->{$sortableColumn};
             $expected1 = $subscription1->{$sortableColumn};
         }
-        
+
         $this->assertEquals($expected3, $data[0][$sortableColumn]);
         $this->assertEquals($expected2, $data[1][$sortableColumn]);
         $this->assertEquals($expected1, $data[2][$sortableColumn]);
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function sortableColumnsDataProvider(): array
     {
@@ -627,10 +627,10 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
             ['firstName'],
             ['lastName'],
         ];
-    }    
+    }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -644,9 +644,9 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
             'status' => new SubscriptionStatus($status),
             'period' => SubscriptionPeriod::MONTH(),
             'frequency' => 1,
-            'installments' => 0,            
+            'installments' => 0,
             'mode' => new SubscriptionMode($mode),
-            'donorId' => $donor->id,            
+            'donorId' => $donor->id,
         ], [
             'anonymous' => false,
             'donorId' => $donor->id,
@@ -654,9 +654,9 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased     
-     * 
-     * @throws Exception 
+     * @since 4.8.0
+     *
+     * @throws Exception
      */
     private function createSubscriptionSort1()
     {
@@ -664,71 +664,71 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $subscription1->amount = new Money(100, 'USD');
         $subscription1->feeAmountRecovered = new Money(10, 'USD');
         $subscription1->renewsAt = new DateTime('2025-01-01');
-        
+
         // Set donor names directly
         $donor = $subscription1->donor()->get();
         $donor->firstName = 'A';
         $donor->lastName = 'A';
         $donor->save();
-        
-        $subscription1->save();                
+
+        $subscription1->save();
 
         return $subscription1;
     }
 
     /**
-     * @unreleased
-     * 
-     * @throws Exception 
+     * @since 4.8.0
+     *
+     * @throws Exception
      */
     private function createSubscriptionSort2()
-    {        
+    {
         $subscription2 = $this->createSubscription('live', 'active');
         $subscription2->amount = new Money(200, 'USD');
         $subscription2->feeAmountRecovered = new Money(20, 'USD');
         $subscription2->renewsAt = new DateTime('2025-01-02');
-        
+
         // Set donor names directly
         $donor = $subscription2->donor()->get();
         $donor->firstName = 'B';
         $donor->lastName = 'B';
         $donor->save();
-        
-        $subscription2->save();                
+
+        $subscription2->save();
 
         return $subscription2;
     }
 
     /**
-     * @unreleased     
-     * 
-     * @throws Exception 
+     * @since 4.8.0
+     *
+     * @throws Exception
      */
     private function createSubscriptionSort3()
-    {        
+    {
         $subscription3 = $this->createSubscription('live', 'active');
         $subscription3->amount = new Money(300, 'USD');
         $subscription3->feeAmountRecovered = new Money(30, 'USD');
         $subscription3->renewsAt = new DateTime('2025-01-03');
-        
+
         // Set donor names directly
         $donor = $subscription3->donor()->get();
         $donor->firstName = 'C';
         $donor->lastName = 'C';
         $donor->save();
-        
-        $subscription3->save();                
+
+        $subscription3->save();
 
         return $subscription3;
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
     private function createSubscriptionWithAnonymousDonor(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
-    {        
+    {
         $donor = Donor::factory()->create();
 
         return Subscription::factory()->createWithDonation([
@@ -737,7 +737,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
             'status' => new SubscriptionStatus($status),
             'period' => SubscriptionPeriod::MONTH(),
             'frequency' => 1,
-            'installments' => 0,            
+            'installments' => 0,
             'mode' => new SubscriptionMode($mode),
             'donorId' => $donor->id,
         ], [
@@ -747,7 +747,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */

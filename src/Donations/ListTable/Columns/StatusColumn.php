@@ -38,7 +38,7 @@ class StatusColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Updated status to complete if subscription renewal
+     * @since 4.8.0 Updated status to complete if subscription renewal
      * @since 2.24.0
      *
      * @inheritDoc

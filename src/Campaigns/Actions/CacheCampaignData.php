@@ -7,7 +7,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 
 /**
- * @unreleased
+ * @since 4.8.0
  *
  * @uses give_insert_payment hook
  * @uses give_update_payment_status hook
@@ -19,7 +19,7 @@ use Give\Donations\Models\Donation;
 class CacheCampaignData
 {
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function __invoke(int $donationId): void
     {
@@ -37,7 +37,7 @@ class CacheCampaignData
 
     /**
      * Handle campaign cache
-     * @unreleased
+     * @since 4.8.0
      */
     public function handleCache(int $campaignId): void
     {

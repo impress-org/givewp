@@ -17,12 +17,12 @@ use Give\Subscriptions\ValueObjects\SubscriptionNoteType;
  * NOTE: This repository is still using the old comments table.
  * In the future, we will migrate to the new comments table.
  *
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionNotesRepository
 {
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @var string[]
      */
@@ -32,12 +32,12 @@ class SubscriptionNotesRepository
     ];
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private const COMMENT_TYPE = 'give_sub_note';
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function getById(int $noteId): ?SubscriptionNote
     {
@@ -47,7 +47,7 @@ class SubscriptionNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -104,7 +104,7 @@ class SubscriptionNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception|InvalidArgumentException
      */
@@ -143,7 +143,7 @@ class SubscriptionNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @throws Exception
      */
@@ -177,7 +177,7 @@ class SubscriptionNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function queryBySubscriptionId(int $subscriptionId): ModelQueryBuilder
     {
@@ -187,7 +187,7 @@ class SubscriptionNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function validateSubscriptionNote(SubscriptionNote $subscriptionNote): void
     {
@@ -203,7 +203,7 @@ class SubscriptionNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      *
      * @return ModelQueryBuilder<SubscriptionNote>
      */
@@ -228,7 +228,7 @@ class SubscriptionNotesRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     private function upsertSubscriptionNoteType(SubscriptionNote $subscriptionNote): void
     {

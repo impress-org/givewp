@@ -15,7 +15,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class SubscriptionRouteCreateItemTest extends RestApiTestCase
 {
@@ -23,7 +23,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldCreateModelWithValidData()
     {
@@ -81,7 +81,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldReturn400ErrorWhenRequiredFieldsMissing()
     {
@@ -102,7 +102,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -128,7 +128,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      * @dataProvider subscriptionStatusProvider
      */
     public function testCreateSubscriptionShouldCreateWithValidStatus(string $status)
@@ -159,7 +159,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      * @dataProvider subscriptionPeriodProvider
      */
     public function testCreateSubscriptionShouldCreateWithValidPeriod(string $period)
@@ -190,7 +190,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldReturn400ErrorForInvalidStatus()
     {
@@ -218,7 +218,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldReturn400ErrorForInvalidAmount()
     {
@@ -246,7 +246,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldReturn400ErrorForInvalidPeriod()
     {
@@ -274,7 +274,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldSetDefaultValues()
     {
@@ -307,7 +307,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldHandleMoneyObjects()
     {
@@ -344,7 +344,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldHandleDateTimeObjects()
     {
@@ -379,7 +379,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function testCreateSubscriptionShouldReturn500ErrorForDatabaseFailure()
     {
@@ -409,7 +409,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased     
+     * @since 4.8.0
      */
     public function subscriptionStatusProvider(): array
     {
@@ -422,7 +422,7 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased     
+     * @since 4.8.0
      */
     public function subscriptionPeriodProvider(): array
     {
@@ -433,4 +433,4 @@ class SubscriptionRouteCreateItemTest extends RestApiTestCase
             array_values(SubscriptionPeriod::toArray())
         );
     }
-} 
+}

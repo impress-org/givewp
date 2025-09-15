@@ -7,7 +7,7 @@ type Gateway = {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export type GiveSubscriptionOptions = {
     isAdmin: boolean;

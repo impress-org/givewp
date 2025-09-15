@@ -4,7 +4,7 @@ import Spinner from '@givewp/src/Admin/components/Spinner';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased abstracted from DonorSummary to be used with other components. Add ReactNode support.
+ * @since 4.8.0 abstracted from DonorSummary to be used with other components. Add ReactNode support.
  * @since 4.5.0
  */
 export type SummaryItem = {
@@ -14,7 +14,7 @@ export type SummaryItem = {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 interface SummaryTableProps {
   title?: string;
@@ -24,7 +24,7 @@ interface SummaryTableProps {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SummaryTable({data, isLoading}: SummaryTableProps) {
   return (

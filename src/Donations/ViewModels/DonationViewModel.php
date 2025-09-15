@@ -205,7 +205,7 @@ class DonationViewModel
     }
 
     /**
-     * @unreleased Return empty array if gateway is not registered
+     * @since 4.8.0 Return empty array if gateway is not registered
      * @since 4.6.0
      */
     private function getGatewayDetails(): array

@@ -10,7 +10,7 @@ declare const window: {
 } & Window;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function useSubscriptionEntityRecord(subscriptionId?: number) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -33,7 +33,7 @@ export function useSubscriptionEntityRecord(subscriptionId?: number) {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function useRefreshSubscriptionInBackground() {
     const { receiveEntityRecords, invalidateResolution } = useDispatch(coreStore);
@@ -57,7 +57,7 @@ export function useRefreshSubscriptionInBackground() {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export function getSubscriptionOptionsWindowData(): GiveSubscriptionOptions {
     return window.GiveSubscriptionOptions;

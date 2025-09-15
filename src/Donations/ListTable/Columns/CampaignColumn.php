@@ -35,7 +35,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Added class to link
+     * @since 4.8.0 Added class to link
      * @since 4.3.0
      *
      * @inheritDoc

@@ -6,8 +6,8 @@ import styles from "./styles.module.scss";
 
 /**
  * Utility function to capitalize the first letter of a string
- * 
- * @unreleased
+ *
+ * @since 4.8.0
  * @param str - The string to capitalize
  * @returns The string with first letter capitalized
  */
@@ -17,21 +17,21 @@ const capitalizeFirstLetter = (str: string): string => {
 };
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type SyncDetailsProps = {
     isAccurate: boolean;
     platform: string;
     gateway: string;
   }
-  
+
 /**
- * @unreleased
+ * @since 4.8.0
  */
 export default function SyncDetails({ isAccurate, platform, gateway }: SyncDetailsProps) {
   if(isAccurate) {
     return (
-      <div 
+      <div
         className={styles.accurateDetailWrapper}
         role="region"
         aria-label={__('Accurate synchronization details', 'give')}
@@ -83,10 +83,10 @@ export default function SyncDetails({ isAccurate, platform, gateway }: SyncDetai
         </div>
     </div>
   );
-} 
+}
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 type SyncPaymentDetailsProps = {
 
@@ -104,12 +104,12 @@ type SyncPaymentDetailsProps = {
 }
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
-export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: SyncPaymentDetailsProps) {   
+export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: SyncPaymentDetailsProps) {
     if(isAccurate) {
       return (
-        <div 
+        <div
           className={styles.accurateDetailWrapper}
           role="region"
           aria-label={__('Accurate payment synchronization details', 'give')}
@@ -137,7 +137,7 @@ export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: S
     );
 
     return (
-      <div 
+      <div
         className={styles.paymentDetails}
         role="region"
         aria-label={__('Payment details', 'give')}

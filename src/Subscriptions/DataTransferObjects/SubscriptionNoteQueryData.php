@@ -10,7 +10,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionNoteType;
 /**
  * Class SubscriptionNoteQueryData
  *
- * @unreleased
+ * @since 4.8.0
  */
 final class SubscriptionNoteQueryData
 {
@@ -38,7 +38,7 @@ final class SubscriptionNoteQueryData
     /**
      * Convert data from Subscription Note Object to Subscription Note Model
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public static function fromObject($subscriptionNoteQueryObject): self
     {
@@ -56,7 +56,7 @@ final class SubscriptionNoteQueryData
     /**
      * Convert DTO to Subscription Note
      *
-     * @unreleased
+     * @since 4.8.0
      */
     public function toSubscriptionNote(): SubscriptionNote
     {

@@ -5,12 +5,12 @@ namespace Give\API\REST\V3\Routes\Subscriptions\Actions;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 4.8.0
  */
 class GetSubscriptionCollectionParams
 {
     /**
-     * @unreleased
+     * @since 4.8.0
      */
     public function __invoke(): array
     {
@@ -22,7 +22,7 @@ class GetSubscriptionCollectionParams
                 'enum' => [
                     'id',
                     'createdAt',
-                    'renewsAt', 
+                    'renewsAt',
                     'status',
                     'amount',
                     'feeAmountRecovered',
@@ -36,7 +36,7 @@ class GetSubscriptionCollectionParams
                 'type' => 'string',
                 'default' => 'DESC',
                 'enum' => ['ASC', 'DESC'],
-            ],            
+            ],
             'mode' => [
                 'description' => esc_html__('Subscription mode (live or test)', 'give'),
                 'type' => 'string',
