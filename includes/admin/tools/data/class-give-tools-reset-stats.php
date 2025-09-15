@@ -47,6 +47,14 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	public $per_step = 30;
 
 	/**
+	 * Success message to display when reset is complete
+	 *
+	 * @since @unreleased
+	 * @var string
+	 */
+	public $message = '';
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct( $_step = 1 ) {
@@ -59,6 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
+	 * @unreleased Added deletion logic for campaigns, subscriptions, events, logs, revenue, and all cached options
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
@@ -121,6 +130,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$sql[] = "UPDATE {$meta_table['name']} SET meta_value = 0 WHERE meta_key = '_give_form_sales' AND {$meta_table['column']['id']} IN ($ids)";
 						$sql[] = "UPDATE {$meta_table['name']} SET meta_value = 0.00 WHERE meta_key = '_give_form_earnings' AND {$meta_table['column']['id']} IN ($ids)";
 						break;
+
 					case 'other':
 						// Delete main entries of forms and donations exists in posts table.
 						$sql[] = "DELETE FROM {$wpdb->posts} WHERE id IN ($ids)";
@@ -140,6 +150,28 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 						// Delete all the Give sessions data.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_sessions";
+
+						// Delete all Give logs data.
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_log";
+
+						// Delete all Give revenue data.
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_revenue";
+
+						// Delete campaigns and related data
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_campaign_forms";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_campaigns";
+
+						// Delete subscriptions and related data
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_subscriptionmeta";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_subscriptions";
+
+						// Delete events and related data
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_event_tickets";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_event_ticket_types";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_events";
+
+						// Clear all Give cache options to ensure fresh data is displayed
+						$sql[] = "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%give_cache%'";
 
 						// Delete Give related categories and tags data from taxonomy tables.
 						$sql[] = $wpdb->prepare(
@@ -227,6 +259,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Process a step
 	 *
+	 * @unreleased Updated success message
 	 * @since 1.5
 	 * @return bool
 	 */
@@ -254,8 +287,8 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			$this->delete_data( 'give_temp_reset_ids' );
 
-			$this->done    = true;
-			$this->message = esc_html__( 'Donation forms, revenue, donations counts, and logs successfully reset.', 'give' );
+			$this->done = true;
+			$this->message = esc_html__( 'Successfully reset data for campaigns, donation forms, subscriptions, events, revenue, donation counts, logs, options, etc.', 'give' );
 
 			return false;
 		}
