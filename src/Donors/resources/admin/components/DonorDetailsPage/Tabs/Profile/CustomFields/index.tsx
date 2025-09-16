@@ -11,7 +11,7 @@ interface CustomField {
 }
 
 /**
- * @unreleased Add error prop to all AdminSectionField components
+ * @since 4.9.0 Add error prop to all AdminSectionField components
  */
 export default function CustomFields() {
     const {getValues} = useFormContext();

@@ -510,7 +510,7 @@ add_action('update_option_give_version', 'give_install_tables_on_plugin_update',
  *
  * Note: only for internal purpose use
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @sice 2.3.1
  */
 function give_get_tables()
@@ -533,7 +533,7 @@ function give_get_tables()
  * Register classes
  * Note: only for internal purpose use
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.21.0 Install migration table on fresh install because this table is required to run migrations.
  * @since 2.3.1
  * @throws DatabaseMigrationException

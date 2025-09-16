@@ -15,7 +15,7 @@ import addErrors from 'ajv-errors';
  * Key advantage: WordPress REST API supports most JSON Schema Draft 4 features but lacks
  * some advanced features (if/then/else, allOf, not) that AJV can provide for enhanced frontend validation.
  *
- * @unreleased
+ * @since 4.9.0
  *
  * @param schema - The JSON Schema from WordPress REST API
  * @returns A resolver function compatible with react-hook-form
@@ -30,7 +30,7 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
 
             const transformedData = transformFormDataForValidation(data, schema);
             const ajv = configureAjvForWordPress();
-            const transformedSchema = transformWordPressSchemaToDraft7(schema);    
+            const transformedSchema = transformWordPressSchemaToDraft7(schema);
             const validate = ajv.compile(transformedSchema);
             const valid = validate(transformedData);
 
@@ -47,7 +47,7 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
                             // Use the error message from ajv-errors
                             // ajv-errors should provide the custom message in error.message
                             const errorMessage = error.message || sprintf(__('%s is invalid.', 'give'), fieldName);
-                            
+
                             errors[fieldName] = {
                                 type: 'validation',
                                 message: errorMessage,
@@ -231,7 +231,7 @@ function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>): JSONSche
  */
 function getCustomErrorMessage(prop: any, fieldName: string): string {
     // Priority order: format > type > constraints > generic
-    
+
     // Format validation messages (highest priority)
     if (prop.format) {
         switch (prop.format) {
@@ -394,7 +394,7 @@ function transformFormDataForValidation(data: any, schema: JSONSchemaType<any>):
                         Array.isArray(propSchema.type) &&
                         propSchema.type.includes('string') &&
                         propSchema.format === 'date-time'
-                    ) { 
+                    ) {
                         // For subscription date fields that expect string or null
                         if (value === null || value === undefined) {
                             result[key] = null;

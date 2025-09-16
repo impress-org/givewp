@@ -7,7 +7,7 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 /**
  * Loads the GiveWP MCP server frontend assets into the dashboard.
  *
- * @unreleased
+ * @since 4.9.0
  */
 class RegisterMCPServer
 {
@@ -21,7 +21,7 @@ class RegisterMCPServer
      * @action wp_enqueue_scripts
      * @action admin_enqueue_scripts
      *
-     * @unreleased
+     * @since 4.9.0
      *
      * @return void
      */

@@ -1029,7 +1029,7 @@ function give_get_user_roles() {
  *
  * @since 2.0
  * @since 2.11.0 decode url before parsing and sanitizing url when set $post.
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @return void
  */
 function give_ajax_donor_manage_addresses() {
@@ -1199,7 +1199,7 @@ add_action( 'wp_ajax_donor_manage_addresses', 'give_ajax_donor_manage_addresses'
 /**
  * Admin donor billing address label
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param string $address_label
@@ -1217,7 +1217,7 @@ add_action( 'give_donor_billing_address_label', 'give_donor_billing_address_labe
 /**
  * Admin donor personal address label
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param string $address_label

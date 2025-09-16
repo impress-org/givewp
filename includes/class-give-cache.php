@@ -149,7 +149,7 @@ class Give_Cache {
 	/**
 	 * Notices function.
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.5
 	 * @access public
 	 * @credit WooCommerce

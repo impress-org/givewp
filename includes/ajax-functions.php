@@ -761,7 +761,7 @@ add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_conf
  * Render receipt by ajax
  * Note: only for internal use
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  */
 function give_get_receipt() {

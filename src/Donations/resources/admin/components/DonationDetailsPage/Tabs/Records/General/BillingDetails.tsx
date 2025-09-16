@@ -9,7 +9,7 @@ import {StatesConfig, getStatesForCountry} from './addressUtils';
 const {countries} = getDonationOptionsWindowData();
 
 /**
- * @unreleased Add error prop to all AdminSectionField components
+ * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.6.0
  */
 export default function BillingDetails() {

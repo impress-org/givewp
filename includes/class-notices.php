@@ -415,7 +415,7 @@ class Give_Notices {
 	 * Show notices
 	 * Note: only for internal use
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since 2.3.0
 	 */
 	public function reveal_notices() {

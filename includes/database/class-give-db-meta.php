@@ -284,7 +284,7 @@ class Give_DB_Meta extends Give_DB {
 	/**
 	 * Rename query clauses of every query for new meta table
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 *
@@ -306,7 +306,7 @@ class Give_DB_Meta extends Give_DB {
 	/**
 	 * Rename query clauses for new meta table
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @param $clause
 	 * @param $filter
 	 *

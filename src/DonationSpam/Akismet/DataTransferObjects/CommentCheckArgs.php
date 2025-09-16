@@ -3,7 +3,7 @@
 namespace Give\DonationSpam\Akismet\DataTransferObjects;
 
 /**
- * @unreleased add #[AllowDynamicProperties]
+ * @since 4.9.0 add #[AllowDynamicProperties]
  * @since 3.15.0
  */
 #[\AllowDynamicProperties]

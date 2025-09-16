@@ -98,7 +98,7 @@ add_action( 'wp_ajax_nopriv_give_donation_form_nonce', 'give_donation_form_nonce
  * Create all nonce of donation form using Ajax call.
  * Note: only for internal use
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  *
  * @return void

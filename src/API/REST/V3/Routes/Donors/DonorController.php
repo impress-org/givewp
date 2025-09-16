@@ -34,7 +34,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
+     * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.0.0
      */
     public function register_routes()
@@ -340,7 +340,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Set proper JSON Schema version
+     * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor and add custom fields schema
      * @since 4.4.0
      */

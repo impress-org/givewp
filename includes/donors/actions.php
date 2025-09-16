@@ -5,7 +5,7 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 /**
  * Insert donor comment to donation.
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.21.0 remove anonymous
  * @since 2.2.0
  *
@@ -27,7 +27,7 @@ add_action( 'give_insert_payment', '_give_insert_donor_donation_comment', 10, 2 
 /**
  * Validate donor comment
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  */
 function give_validate_donor_comment() {
@@ -47,7 +47,7 @@ add_action( 'give_checkout_error_checks', 'give_validate_donor_comment', 10, 1 )
 /**
  * Update donor comment status when donation status update
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  *
  * @param $donation_id
@@ -69,7 +69,7 @@ add_action( 'give_update_payment_status', 'give_update_donor_donation_comment_st
 /**
  * Remove donor comment when donation delete
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  *
  * @param $donation_id

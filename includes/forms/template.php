@@ -2349,7 +2349,7 @@ add_filter( 'give_donate_form', 'give_members_only_form', 10, 2 );
  * @param array            $args
  * @param Give_Donate_Form $form
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 1.8.17
  */
 function give_form_add_donation_hidden_field( $form_id, $args, $form ) {
@@ -2411,7 +2411,7 @@ add_action( 'give_donation_form_top', 'give_form_add_donation_hidden_field', 0, 
  *
  * @return array
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 1.8.17
  */
 function give_form_add_currency_settings( $form_html_tags, $form ) {

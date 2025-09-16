@@ -11,12 +11,12 @@ use DateTime;
  * Date formatting uses WordPress mysql_to_rfc3339() function for full compatibility.
  * Only DateTime objects are supported for date formatting.
  *
- * @unreleased
+ * @since 4.9.0
  */
 class Item
 {
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     public static function formatDatesForResponse(array $item, array $dateFields): array
     {
@@ -38,7 +38,7 @@ class Item
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     private static function isDateTimeObject($value): bool
     {

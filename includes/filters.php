@@ -333,7 +333,7 @@ add_filter( 'give_currency_filter', 'give_format_price_for_right_to_left_support
 /**
  * Validate active gateway value before returning result.
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.0
  *
  * @param $value

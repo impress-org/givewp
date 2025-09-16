@@ -218,7 +218,7 @@ function give_sanitize_amount_for_db($number, $args = [])
 /**
  * Sanitize Amount before saving to database
  *
- * @unreleased PHP 8 compatibility
+ * @since 4.9.0 PHP 8 compatibility
  * @since      1.8.12
  *
  * @param int|float|string $number Expects either a float or a string with a decimal separator only (no thousands)
@@ -296,7 +296,7 @@ function give_maybe_sanitize_amount($number, $args = [])
  *
  * Returns a sanitized amount by stripping out thousands separators.
  *
- * @unreleased PHP 8 compatibility
+ * @since 4.9.0 PHP 8 compatibility
  * @since      1.0
  *
  * @param int|float|string $number Expects either a float or a string with a decimal separator only (no thousands)
@@ -578,7 +578,7 @@ function give_human_format_large_amount($amount, $args = [])
 /**
  * Returns a nicely formatted amount with custom decimal separator.
  *
- * @unreleased PHP 8 compatibility
+ * @since 4.9.0 PHP 8 compatibility
  * @since 1.0
  *
  * @param array           $args        {
