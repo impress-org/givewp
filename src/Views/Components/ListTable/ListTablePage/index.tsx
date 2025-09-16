@@ -246,15 +246,22 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => {
         return (
             <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
-                <BulkActionSelect
-                    selectedState={[selectedAction, setSelectedAction]}
-                    parameters={parameters}
-                    data={data}
-                    bulkActions={bulkActions}
-                    showModal={openBulkActionModal}
-                />
-                {PageActionsTop && testModeFilter && <TestModeFilter />}
-                {!PageActionsTop && page && setPage && showPagination()}
+                {PageActionsTop ? (
+                    <>
+                        <BulkActionSelect
+                            selectedState={[selectedAction, setSelectedAction]}
+                            parameters={parameters}
+                            data={data}
+                            bulkActions={bulkActions}
+                            showModal={openBulkActionModal}
+                        />
+                        {testModeFilter && <TestModeFilter />}
+                    </>
+                ) : (
+                    <>
+                        {page && setPage && showPagination()}
+                    </>
+                )}
             </div>
         );
     };
