@@ -74,4 +74,13 @@ export default class ListTableApi {
         );
         return {data, error, mutate, isValidating};
     };
+
+    useStats = (testMode) => {
+        const {data, error, mutate, isValidating} = useSWR(
+            {testMode},
+            (params) => this.fetchWithArgs('/stats', params, 'GET'),
+            this.swrOptions
+        );
+        return {data, error, mutate, isValidating};
+    };
 }
