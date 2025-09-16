@@ -176,7 +176,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     {
         $initialDonationId = give()->subscriptions->getInitialDonationId($this->id);
 
-        if ( ! $initialDonationId) {
+        if (!$initialDonationId) {
             return null;
         }
 

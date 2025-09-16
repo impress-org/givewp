@@ -1,8 +1,9 @@
-import {__} from '@wordpress/i18n';
-import {dateI18n} from '@wordpress/date';
+import {Header, OverviewPanel, SummaryItem, SummaryTable} from '@givewp/admin/components';
+import {Donation} from '@givewp/donations/admin/components/types';
 import {amountFormatter} from '@givewp/src/Admin/utils';
-import {Header, OverviewPanel, SummaryTable, SummaryItem} from '@givewp/admin/components';
-import { Donation } from '@givewp/donations/admin/components/types';
+import {Subscription} from '@givewp/subscriptions/admin/components/types';
+import {dateI18n} from '@wordpress/date';
+import {__} from '@wordpress/i18n';
 import styles from './styles.module.scss';
 
 /**
@@ -20,7 +21,7 @@ import styles from './styles.module.scss';
  *
  * @since 4.8.0
  */
-const calculateEndDate = (subscription: any): string | null => {
+const calculateEndDate = (subscription: Subscription): string | null => {
     if (!subscription) {
         return null;
     }
@@ -30,7 +31,7 @@ const calculateEndDate = (subscription: any): string | null => {
         return null;
     }
 
-    const startDate = new Date(subscription.createdAt.date);
+    const startDate = new Date(subscription.createdAt);
     const period = subscription.period; // day, week, month, quarter, year
     const frequency = subscription.frequency; // how many periods between each payment
     const installments = subscription.installments; // total number of payments
@@ -47,13 +48,13 @@ const calculateEndDate = (subscription: any): string | null => {
             endDate.setDate(endDate.getDate() + totalPeriods);
             break;
         case 'week':
-            endDate.setDate(endDate.getDate() + (totalPeriods * 7));
+            endDate.setDate(endDate.getDate() + totalPeriods * 7);
             break;
         case 'month':
             endDate.setMonth(endDate.getMonth() + totalPeriods);
             break;
         case 'quarter':
-            endDate.setMonth(endDate.getMonth() + (totalPeriods * 3));
+            endDate.setMonth(endDate.getMonth() + totalPeriods * 3);
             break;
         case 'year':
             endDate.setFullYear(endDate.getFullYear() + totalPeriods);
@@ -69,7 +70,7 @@ const calculateEndDate = (subscription: any): string | null => {
  * @since 4.8.0
  */
 interface SummaryProps {
-    subscription: any;
+    subscription: Subscription;
     intendedAmount: number;
     donation: Donation;
     adminUrl: string;
@@ -84,27 +85,31 @@ export default function Summary({subscription, donation, adminUrl, intendedAmoun
 
     const summaryItems: SummaryItem[] = [
         {
-          label: __('Start date', 'give'),
-          value: dateI18n('jS M, Y', subscription?.createdAt?.date, undefined),
+            label: __('Start date', 'give'),
+            value: dateI18n('jS M, Y', subscription?.createdAt, undefined),
         },
         {
-          label: __('End date', 'give'),
-          value: endDate ? dateI18n('jS M, Y', endDate, undefined) : __('Ongoing', 'give'),
+            label: __('End date', 'give'),
+            value: endDate ? dateI18n('jS M, Y', endDate, undefined) : __('Ongoing', 'give'),
         },
         {
-          label: __('Donation form', 'give'),
-          value: (
-            <a className={styles.link} href={`${adminUrl}edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${donation?.formId}`} target="_blank" rel="noopener noreferrer">
-              {donation?.formTitle}
-            </a>
-          ),
+            label: __('Donation form', 'give'),
+            value: (
+                <a
+                    className={styles.link}
+                    href={`${adminUrl}edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${donation?.formId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {donation?.formTitle}
+                </a>
+            ),
         },
         {
-          label: __('Renewal', 'give'),
-          value: amountFormatter(subscription?.amount?.currency).format(intendedAmount),
+            label: __('Renewal', 'give'),
+            value: amountFormatter(subscription?.amount?.currency).format(intendedAmount),
         },
-      ];
-
+    ];
 
     return (
         <OverviewPanel className={styles.summaryPanel}>
