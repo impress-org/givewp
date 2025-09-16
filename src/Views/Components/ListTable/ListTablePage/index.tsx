@@ -272,29 +272,29 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
 
     const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;
 
+    const SearchSection = () => (
+        <section role="search" className={styles.searchContainer}>
+            <div className={styles.flexRow}>
+                <PageActions PageActionsTop />
+            </div>
+            <div className={styles.flexRow}>
+                {filterSettings.map((filter) => (
+                    <Filter
+                        key={filter.name}
+                        value={filters[filter.name]}
+                        filter={filter}
+                        onChange={handleFilterChange}
+                        debouncedOnChange={handleDebouncedFilterChange}
+                    />
+                ))}
+            </div>
+        </section>
+    );
+
     return (
         <>
             <article className={styles.page}>
-                {contentMode ? (
-                    <>
-                        <section role="search" className={styles.searchContainer}>
-                            <div className={styles.flexRow}>
-                                <PageActions PageActionsTop />
-                            </div>
-                            <div className={styles.flexRow}>
-                                {filterSettings.map((filter) => (
-                                    <Filter
-                                        key={filter.name}
-                                        value={filters[filter.name]}
-                                        filter={filter}
-                                        onChange={handleFilterChange}
-                                        debouncedOnChange={handleDebouncedFilterChange}
-                                    />
-                                ))}
-                            </div>
-                        </section>
-                    </>
-                ) : (
+                {!contentMode && (
                     <>
                         <header className={styles.pageHeader}>
                             <div className={styles.flexRow}>
@@ -305,27 +305,12 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
                         {banner && <section role="banner">{banner()}</section>}
-                        <section role="search" className={styles.searchContainer}>
-                            <div className={styles.flexRow}>
-                                <PageActions PageActionsTop />
-                            </div>
-                            <div className={styles.flexRow}>
-                                {filterSettings.map((filter) => (
-                                    <Filter
-                                        key={filter.name}
-                                        value={filters[filter.name]}
-                                        filter={filter}
-                                        onChange={handleFilterChange}
-                                        debouncedOnChange={handleDebouncedFilterChange}
-                                    />
-                                ))}
-                            </div>
-                        </section>
                     </>
                 )}
 
                 <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
+                    <SearchSection />
                     {contentMode && children ? <>{children}</> : <></>}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
