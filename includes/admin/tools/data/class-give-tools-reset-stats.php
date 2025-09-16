@@ -67,7 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @unreleased Added deletion logic for campaigns, subscriptions, events, logs, revenue, and all cached options
+	 * @unreleased Added deletion logic for campaigns, subscriptions, events, logs, revenue, usermeta, and all cached options
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
@@ -169,6 +169,9 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_event_tickets";
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_event_ticket_types";
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_events";
+
+						// Clear all Give user meta data (notices, preferences, etc.)
+						$sql[] = "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE '%give%'";
 
 						// Clear all Give cache options to ensure fresh data is displayed
 						$sql[] = "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%give_cache%'";
