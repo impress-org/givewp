@@ -101,7 +101,6 @@ export default function SubscriptionDetailsPageDonationsTab() {
                     pluralName={__('results', 'give')}
                     paymentMode={mode === 'test'}
                     contentMode={true}
-                    perPage={1}
                     rowActions={DonationRowActions}
                 />
             </div>
