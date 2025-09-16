@@ -26,7 +26,6 @@ use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
  * @method static DonationMetaKeys MODE()
  * @method static DonationMetaKeys FORM_ID()
  * @method static DonationMetaKeys FORM_TITLE()
- * @method static DonationMetaKeys CAMPAIGN_TITLE()
  * @method static DonationMetaKeys BILLING_COUNTRY()
  * @method static DonationMetaKeys BILLING_ADDRESS1()
  * @method static DonationMetaKeys BILLING_ADDRESS2()
@@ -66,7 +65,6 @@ class DonationMetaKeys extends Enum
     const MODE = '_give_payment_mode';
     const FORM_ID = '_give_payment_form_id';
     const FORM_TITLE = '_give_payment_form_title';
-    const CAMPAIGN_TITLE = '_give_payment_campaign_title';
     const BILLING_COUNTRY = '_give_donor_billing_country';
     const BILLING_ADDRESS2 = '_give_donor_billing_address2';
     const BILLING_CITY = '_give_donor_billing_city';

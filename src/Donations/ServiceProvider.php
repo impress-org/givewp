@@ -18,7 +18,6 @@ use Give\Donations\LegacyListeners\UpdateDonationMetaWithLegacyFormCurrencySetti
 use Give\Donations\Listeners\DonationCreated\UpdateDonationMetaWithCurrencySettings;
 use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurrency;
 use Give\Donations\ListTable\DonationsListTable;
-use Give\Donations\Migrations\AddCampaignTitleToDonations;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
 use Give\Donations\Migrations\RecalculateExchangeRate;
@@ -66,7 +65,6 @@ class ServiceProvider implements ServiceProviderInterface
             MoveDonationCommentToDonationMetaTable::class,
             UnserializeTitlePrefix::class,
             RecalculateExchangeRate::class,
-            AddCampaignTitleToDonations::class,
         ]);
     }
 

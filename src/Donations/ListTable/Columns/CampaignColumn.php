@@ -14,7 +14,7 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class CampaignColumn extends ModelColumn
 {
-    protected $sortColumn = 'campaignTitle';
+    protected $sortColumn = 'campaign.title';
 
     /**
      * @since 4.3.0
@@ -47,7 +47,7 @@ class CampaignColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $campaignTitle = $model->campaignTitle ?: $model->campaign->title;
+        $campaignTitle = $model->campaign->title;
         
         return sprintf(
             '<a href="%s" aria-label="%s" class="campaignLink">%s</a>',
