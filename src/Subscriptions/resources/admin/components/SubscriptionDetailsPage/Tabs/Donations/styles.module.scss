@@ -54,11 +54,12 @@
     flex: 1 1 100%;
 
     > article {
-        > section[role="search"] {
+        section[role="search"] {
             display: none;
         }
 
         > div:last-child {
+            margin: 0;
             padding: 0;
         }
 
