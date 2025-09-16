@@ -85,6 +85,12 @@ tr.duplicated {
     & .end {
         text-align: end;
     }
+
+    &:first-child {
+        > * {
+            padding-top: var(--givewp-spacing-6);
+        }
+    }
 }
 
 .donationStatus {

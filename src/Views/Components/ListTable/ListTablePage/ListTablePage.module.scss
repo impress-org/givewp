@@ -39,6 +39,7 @@
 }
 
 .page {
+    background-color: var(--givewp-neutral-25);
     box-sizing: border-box;
     color: var(--givewp-neutral-900);
     font-family: Inter, system-ui, sans-serif;
@@ -68,6 +69,10 @@
         flex-shrink: 0;
     }
 
+    + :global(.wp-header-end) + :global(.give-notice) {
+        margin: var(--givewp-spacing-4) var(--givewp-spacing-6);
+    }
+
     .testModeBadge {
         background: var(--givewp-orange-400);
         border-radius: var(--givewp-rounded-8);
@@ -79,7 +84,10 @@
         padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
         text-transform: uppercase;
     }
+}
 
+.pageHeader,
+.pageContent {
     .primaryActionButton,
     .secondaryActionButton {
         display: flex;
@@ -156,7 +164,12 @@ ul[role='document'] + .flexRow {
 }
 
 .pageContent {
-    padding: 0 1.5em 1.5em 1.5em;
+    background-color: var(--givewp-shades-white);
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-2);
+    margin-inline: var(--givewp-spacing-6);
+    padding: var(--givewp-spacing-6);
 }
 
 .pageActions {
@@ -165,7 +178,6 @@ ul[role='document'] + .flexRow {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: var(--givewp-spacing-2);
     width: 100%;
 
     & > * {
@@ -389,17 +401,7 @@ ul[role='document'] + .flexRow {
     gap: 1rem 1.5rem;
     align-items: center;
     justify-content: flex-start;
-    background-color: rgba(248, 248, 248);
-    padding-inline: 1.5em;
-    padding-block: 1em;
-    border-bottom: 0.0625rem solid #dbdbdb;
-    margin-bottom: 1rem;
-
-    .pageActions {
-        margin-top: 0;
-    }
 }
-
 
 .container,
 .overlay {

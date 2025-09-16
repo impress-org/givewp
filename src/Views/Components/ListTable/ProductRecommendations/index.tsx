@@ -55,7 +55,7 @@ function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: Rot
     const visibleColumns = columns?.filter((column) => column.visible || column.visible === undefined);
 
     return (
-        <tr>
+        <tr className={styles.productRecommendationRow}>
             <td colSpan={visibleColumns.length + 1}>
                 <div className={styles.productRecommendation}>
                     <div className={styles.container}>
