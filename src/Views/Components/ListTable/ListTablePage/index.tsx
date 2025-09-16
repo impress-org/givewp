@@ -245,8 +245,8 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
             disabled={!data}
             totalItems={data ? parseInt(data.totalItems) : -1}
             setPage={setPage}
-            singleName={singleName}
-            pluralName={pluralName}
+            singleName={__('result', 'give')}
+            pluralName={__('results', 'give')}
         />
     );
 

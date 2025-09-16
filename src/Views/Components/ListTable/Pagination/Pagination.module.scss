@@ -20,7 +20,6 @@
 }
 
 #currentPage {
-    font-size: 0.8125rem;
     border-radius: 0;
     border-color: rgba(221, 221, 221);
 
@@ -71,8 +70,14 @@ button[aria-disabled="true"].navDirection {
 }
 
 .navElement {
-    vertical-align: baseline;
     text-align: center;
+    vertical-align: baseline;
+
+    &:is(select) {
+        border: 0;
+        font-size: 0.875rem;
+        line-height: 1.43;
+    }
 }
 
 .visuallyHidden {
