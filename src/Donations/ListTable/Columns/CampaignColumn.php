@@ -14,7 +14,7 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class CampaignColumn extends ModelColumn
 {
-    protected $sortColumn = 'campaign.title';
+    protected $sortColumn = null;
 
     /**
      * @since 4.3.0

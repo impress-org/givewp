@@ -84,7 +84,7 @@ class LoadDonationAdminOptions
         $results = DB::table('give_campaigns', 'campaigns')
             ->select(
                 ['campaigns.id', 'campaignId'],
-                ['campaigns.campaign_title', 'title'],
+                ['campaigns.campaign_title', 'campaignTitle'],
                 ['campaigns.form_id', 'defaultFormId'],
                 ['posts.ID', 'formId'],
                 ['posts.post_title', 'formTitle']
@@ -99,7 +99,7 @@ class LoadDonationAdminOptions
         foreach ($results as $row) {
             [
                 'campaignId' => $campaignId,
-                'title' => $campaignTitle,
+                'campaignTitle' => $campaignTitle,
                 'defaultFormId' => $defaultFormId,
                 'formId' => $formId,
                 'formTitle' => $formTitle
