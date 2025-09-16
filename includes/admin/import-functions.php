@@ -10,6 +10,13 @@
  */
 
 // Exit if accessed directly.
+use Give\Framework\Database\DB;
+use Give\Framework\Support\ValueObjects\Money;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -911,6 +918,66 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 				if ( 'pending' !== $status ) {
 					$payment->update_status( $status );
 				}
+
+                // Handle subscription import
+                if (
+                    defined('GIVE_RECURRING_VERSION')
+                    && ! empty( $data['payment_type'] ) && strtolower( $data['payment_type'] ) === 'subscription'
+                ) {
+                    global $wpdb;
+
+                    // Check if subscription already exists
+                    $subscriptionExists = DB::get_var(
+                        DB::prepare( "SELECT COUNT(id) FROM {$wpdb->prefix}give_subscriptions WHERE parent_payment_id = %d", $payment->ID )
+                    );
+
+                    if ( ! $subscriptionExists) {
+                        $subscription_data = give_get_subscription_import_data($data);
+
+                        try {
+                            $subscription = Subscription::create(  [
+                                'donationFormId' => absint( $payment_data['give_form_id'] ),
+                                'donorId' => absint( $payment_data['donor_id'] ),
+                                'amount' => Money::fromDecimal(
+                                    $payment_data['price'],
+                                    $payment_data['currency']
+                                ),
+                                'period' => new SubscriptionPeriod(
+                                    $subscription_data['subscription_period']
+                                ),
+                                'frequency' => $subscription_data['subscription_frequency'],
+                                'installments' => $subscription_data['subscription_installments'],
+                                'status' => new SubscriptionStatus( 'active' ),
+                                'mode' => new SubscriptionMode( $payment_data['mode'] ),
+                                'gatewayId' => $payment_data['gateway'],
+                                'transactionId' => (string)$payment_id, // Use payment ID as transaction ID for imported subscriptions
+                                'createdAt' => new \DateTime( $payment_data['post_date'] ),
+                            ] );
+
+                            $subscription->save();
+
+                            $payment->update_meta( 'subscription_id',  $subscription->id);
+                            $payment->update_meta( '_give_subscription_payment',  1);
+                            $payment->update_meta( '_give_is_donation_recurring',  1);
+
+                            // Add note to payment
+                            $payment->add_note(
+                                sprintf(
+                                    __( 'Subscription created during import. Subscription ID: %d', 'give' ),
+                                    $subscription->id
+                                )
+                            );
+
+                        } catch (Exception $e) {
+                            $payment->add_note(
+                                sprintf(
+                                    __( 'Subscription creation failed during import. Error: %s', 'give' ),
+                                    $e->getMessage()
+                                )
+                            );
+                        }
+                    }
+                }
 			} else {
 				$report['failed_donation'] = ( ! empty( $report['failed_donation'] ) ? ( absint( $report['failed_donation'] ) + 1 ) : 1 );
 				$payment_id                = false;
