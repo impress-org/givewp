@@ -16,6 +16,7 @@ class GetSubscriptionItemSchema
     public function __invoke(): array
     {
         return [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/subscription',
             'type' => 'object',
             'properties' => [
@@ -23,28 +24,47 @@ class GetSubscriptionItemSchema
                     'type' => 'integer',
                     'description' => esc_html__('Subscription ID', 'give'),
                 ],
-                'donorId' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Donor ID', 'give'),
-                    'required' => true,
+                'mode' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Subscription mode (live or test)', 'give'),
+                    'default' => 'live',
+                    'enum' => ['live', 'test'],
                 ],
                 'donationFormId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donation form ID', 'give'),
                     'required' => true,
                 ],
+                'donorId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Donor ID. Returns 0 for anonymous donors when data is redacted.', 'give'),
+                    'required' => true,
+                ],
+                'firstName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor first name. Returns "anonymous" for anonymous donors when data is redacted.', 'give'),
+                    'format' => 'text-field',
+                ],
+                'lastName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor last name. Returns "anonymous" for anonymous donors when data is redacted.', 'give'),
+                    'format' => 'text-field',
+                ],
                 'amount' => [
-                    'type' => ['object', 'null'],
+                    'type' => 'object',
                     'properties' => [
-                        'amount' => [
+                        'value' => [
                             'type' => 'number',
+                            'description' => esc_html__('Amount in decimal format', 'give'),
                         ],
-                        'amountInMinorUnits' => [
+                        'valueInMinorUnits' => [
                             'type' => 'integer',
+                            'description' => esc_html__('Amount in minor units (cents)', 'give'),
                         ],
                         'currency' => [
                             'type' => 'string',
                             'format' => 'text-field',
+                            'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
                         ],
                     ],
                     'description' => esc_html__('Subscription amount', 'give'),
@@ -53,15 +73,18 @@ class GetSubscriptionItemSchema
                 'feeAmountRecovered' => [
                     'type' => ['object', 'null'],
                     'properties' => [
-                        'amount' => [
+                        'value' => [
                             'type' => 'number',
+                            'description' => esc_html__('Fee amount in decimal format', 'give'),
                         ],
-                        'amountInMinorUnits' => [
+                        'valueInMinorUnits' => [
                             'type' => 'integer',
+                            'description' => esc_html__('Fee amount in minor units (cents)', 'give'),
                         ],
                         'currency' => [
                             'type' => 'string',
                             'format' => 'text-field',
+                            'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
                         ],
                     ],
                     'description' => esc_html__('Fee amount recovered', 'give'),
@@ -90,7 +113,12 @@ class GetSubscriptionItemSchema
                 ],
                 'transactionId' => [
                     'type' => ['string', 'null'],
-                    'description' => esc_html__('Transaction ID', 'give'),
+                    'description' => esc_html__('Transaction ID. Returns empty string when sensitive data is excluded.', 'give'),
+                    'format' => 'text-field',
+                ],
+                'gatewaySubscriptionId' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Gateway subscription ID. Returns empty string when sensitive data is excluded.', 'give'),
                     'format' => 'text-field',
                 ],
                 'gatewayId' => [
@@ -99,97 +127,73 @@ class GetSubscriptionItemSchema
                     'format' => 'text-field',
                     'required' => true,
                 ],
-                'gatewaySubscriptionId' => [
-                    'type' => ['string', 'null'],
-                    'description' => esc_html__('Gateway subscription ID', 'give'),
-                    'format' => 'text-field',
-                ],
-                'mode' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Subscription mode (live or test)', 'give'),
-                    'default' => 'live',
-                    'enum' => ['live', 'test'],
-                ],
-                'createdAt' => [
-                    'oneOf' => [
-                        [
-                            'type' => 'string',
-                            'description' => esc_html__('Subscription creation date as ISO string', 'give'),
-                            'format' => 'date-time',
-                        ],
-                        [
-                            'type' => 'object',
-                            'properties' => [
-                                'date' => [
-                                    'type' => 'string',
-                                    'description' => esc_html__('Date', 'give'),
-                                    'format' => 'date-time',
-                                ],
-                                'timezone' => [
-                                    'type' => 'string',
-                                    'description' => esc_html__('Timezone of the date', 'give'),
-                                    'format' => 'text-field',
-                                ],
-                                'timezone_type' => [
-                                    'type' => 'integer',
-                                    'description' => esc_html__('Timezone type', 'give'),
-                                ],
-                            ],
-                            'description' => esc_html__('Subscription creation date', 'give'),
-                        ],
-                        [
-                            'type' => 'null',
-                        ],
-                    ],
-                ],
-                'renewsAt' => [
-                    'oneOf' => [
-                        [
-                            'type' => 'string',
-                            'description' => esc_html__('Next renewal date as ISO string', 'give'),
-                            'format' => 'date-time',
-                        ],
-                        [
-                            'type' => 'object',
-                            'properties' => [
-                                'date' => [
-                                    'type' => 'string',
-                                    'description' => esc_html__('Date', 'give'),
-                                    'format' => 'date-time',
-                                ],
-                                'timezone' => [
-                                    'type' => 'string',
-                                    'description' => esc_html__('Timezone of the date', 'give'),
-                                    'format' => 'text-field',
-                                ],
-                                'timezone_type' => [
-                                    'type' => 'integer',
-                                    'description' => esc_html__('Timezone type', 'give'),
-                                ],
-                            ],
-                            'description' => esc_html__('Next renewal date', 'give'),
-                        ],
-                        [
-                            'type' => 'null',
-                        ],
-                    ],
-                ],
-                'projectedAnnualRevenue' => [
+                'gateway' => [
                     'type' => ['object', 'null'],
                     'properties' => [
-                        'amount' => [
-                            'type' => 'number',
+                        'id' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Gateway ID', 'give'),
                         ],
-                        'amountInMinorUnits' => [
+                        'name' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Gateway name', 'give'),
+                        ],
+                        'label' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Payment method label', 'give'),
+                        ],
+                        'subscriptionUrl' => [
+                            'type' => 'string',
+                            'format' => 'uri',
+                            'description' => esc_html__('Gateway dashboard subscription URL', 'give'),
+                        ],
+                        'canSync' => [
+                            'type' => 'boolean',
+                            'description' => esc_html__('Whether the gateway supports transaction synchronization', 'give'),
+                        ],
+                    ],
+                    'description' => esc_html__('Payment gateway details. Returns null when gateway is not available or not registered.', 'give'),
+                    'readonly' => true,
+                ],
+                'createdAt' => [
+                    'type' => ['string', 'null'],
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('Subscription creation date in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
+                ],
+                'renewsAt' => [
+                    'type' => ['string', 'null'],
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('Next renewal date in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
+                ],
+                'projectedAnnualRevenue' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'value' => [
+                            'type' => 'number',
+                            'description' => esc_html__('Projected annual revenue in decimal format', 'give'),
+                        ],
+                        'valueInMinorUnits' => [
                             'type' => 'integer',
+                            'description' => esc_html__('Projected annual revenue in minor units (cents)', 'give'),
                         ],
                         'currency' => [
                             'type' => 'string',
                             'format' => 'text-field',
+                            'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
                         ],
                     ],
                     'description' => esc_html__('Projected annual revenue for this subscription', 'give'),
-                    'readOnly' => true,
+                    'readonly' => true,
                 ],
             ],
         ];

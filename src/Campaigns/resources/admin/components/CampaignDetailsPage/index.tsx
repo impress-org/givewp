@@ -1,25 +1,25 @@
-import {__} from '@wordpress/i18n';
-import {useEffect, useState, useRef} from '@wordpress/element';
-import {useDispatch} from '@wordpress/data';
-import apiFetch from '@wordpress/api-fetch';
-import {JSONSchemaType} from 'ajv';
-import {ajvResolver} from '@hookform/resolvers/ajv';
-import {Campaign} from '../types';
-import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
+import DraftCampaignPageNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DraftCampaignPageNotice';
+import {createCampaignPage, getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
 import {Spinner as GiveSpinner} from '@givewp/components';
 import {Spinner} from '@wordpress/components';
-import Tabs from './Tabs';
-import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
-import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} from '../Icons';
-import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
-import DraftCampaignPageNotice from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/Notices/DraftCampaignPageNotice';
-import NotificationPlaceholder from '../Notifications';
+import {useDispatch} from '@wordpress/data';
+import {useEffect, useRef, useState} from '@wordpress/element';
+import {__} from '@wordpress/i18n';
 import cx from 'classnames';
-import {createCampaignPage, getCampaignOptionsWindowData, useCampaignEntityRecord} from '@givewp/campaigns/utils';
+import {FormProvider, SubmitHandler, useForm} from 'react-hook-form';
+import apiFetch from '@wordpress/api-fetch';
+import {JSONSchemaType} from 'ajv';
+import {ajvResolver} from '@givewp/admin/ajv';
+import {ArrowReverse, BreadcrumbSeparatorIcon, DotsIcons, TrashIcon, ViewIcon} from '../Icons';
+import NotificationPlaceholder from '../Notifications';
+import {Campaign} from '../types';
+import ArchiveCampaignDialog from './Components/ArchiveCampaignDialog';
+import ArchivedCampaignNotice from './Components/Notices/ArchivedCampaignNotice';
+import Tabs from './Tabs';
 
-import styles from './CampaignDetailsPage.module.scss';
-import {useEntityRecord} from '@wordpress/core-data';
 import CampaignDetailsErrorBoundary from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/CampaignDetailsErrorBoundary';
+import {useEntityRecord} from '@wordpress/core-data';
+import styles from './CampaignDetailsPage.module.scss';
 
 interface Show {
     contextMenu?: boolean;
@@ -68,13 +68,13 @@ export default function CampaignsDetailsPage({campaignId}) {
     useEffect(() => {
         // Function to update header height
         const updateHeaderHeight = () => {
-          if (headerRef.current) {
-            const height = headerRef.current.offsetHeight;
-            setHeaderHeight(height);
+            if (headerRef.current) {
+                const height = headerRef.current.offsetHeight;
+                setHeaderHeight(height);
 
-            // Update CSS variable directly
-            document.documentElement.style.setProperty('--header-height', `${height}px`);
-          }
+                // Update CSS variable directly
+                document.documentElement.style.setProperty('--header-height', `${height}px`);
+            }
         };
 
         // Initial measurement
@@ -86,15 +86,15 @@ export default function CampaignsDetailsPage({campaignId}) {
         // Use ResizeObserver to detect content changes
         const resizeObserver = new ResizeObserver(updateHeaderHeight);
         if (headerRef.current) {
-          resizeObserver.observe(headerRef.current);
+            resizeObserver.observe(headerRef.current);
         }
 
         // Clean up
         return () => {
-          window.removeEventListener('resize', updateHeaderHeight);
-          resizeObserver.disconnect();
+            window.removeEventListener('resize', updateHeaderHeight);
+            resizeObserver.disconnect();
         };
-      }, []);
+    }, []);
 
     useEffect(() => {
         apiFetch({
@@ -105,7 +105,7 @@ export default function CampaignsDetailsPage({campaignId}) {
                 resolver: ajvResolver(schema),
             });
         });
-    }, []);
+    }, [campaignId]);
 
     const {campaign, hasResolved, save, edit} = useCampaignEntityRecord(campaignId);
 
