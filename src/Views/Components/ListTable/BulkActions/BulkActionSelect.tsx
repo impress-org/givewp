@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import CustomSelect from '../CustomSelect';
+import CustomFilter from '../CustomFilter';
 import styles from './BulkActionSelect.module.scss';
 
 export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, data, parameters}) => {
@@ -35,7 +35,7 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
 
     return (
         <div id={styles.bulkActionsForm}>
-                <CustomSelect
+                <CustomFilter
                     name="bulkActions"
                     options={options}
                     ariaLabel={__('Bulk Actions', 'give')}

@@ -13,7 +13,7 @@ type FilterOption = {
 /**
  * @unreleased
  */
-type ListTableFilterProps = {
+type CustomFilterProps = {
 	name: string;
 	options?: FilterOption[];
 	ariaLabel?: string;
@@ -28,7 +28,7 @@ type ListTableFilterProps = {
 /**
  * @unreleased
  */
-export default function CustomSelect({
+export default function CustomFilter({
 	name,
 	options,
 	ariaLabel,
@@ -38,7 +38,7 @@ export default function CustomSelect({
 	isSearchable = true,
 	isSelectable = true,
 	width,
-}: ListTableFilterProps) {
+}: CustomFilterProps) {
 	const formattedOptions = options?.map(({ value, text }) => ({
 		value,
 		label: text,

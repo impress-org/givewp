@@ -1,11 +1,11 @@
 import {__} from '@wordpress/i18n';
-import CustomSelect from '../CustomSelect';
+import CustomFilter from '../CustomFilter';
 
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
     switch (filter.type) {
         case 'select':
             return (
-                    <CustomSelect
+                    <CustomFilter
                         name={filter.name}
                         options={filter.options}
                         aria-label={filter?.ariaLabel}
@@ -17,7 +17,7 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
             );
         case 'formselect':
             return (
-                    <CustomSelect
+                    <CustomFilter
                         name={filter.name}
                         options={filter.options}
                         aria-label={filter?.ariaLabel}
@@ -29,7 +29,7 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
             );
         case 'search':
             return (
-                 <CustomSelect
+                 <CustomFilter
                     name={filter.name}
                     options={filter.options}
                     aria-label={filter?.ariaLabel}
