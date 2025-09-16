@@ -223,16 +223,16 @@ class RegisterCampaignRoutes
                         return current_user_can('manage_options');
                     },
                 ],
-                'args' => [
-                    'title' => [
+                'args' => array_merge(rest_get_endpoint_args_for_schema($this->getSchema(), WP_REST_Server::CREATABLE), [
+                    'logo' => [
                         'type' => 'string',
-                        'required' => true,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'shortDescription' => [
-                        'type' => 'string',
+                        'format' => 'uri',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'image' => [
+                        'type' => 'string',
+                        'format' => 'uri',
+                        'required' => false,
                     ],
                     'startDateTime' => [
                         'type' => 'string',
@@ -252,7 +252,7 @@ class RegisterCampaignRoutes
                             return new DateTime($value);
                         },
                     ],
-                ],
+                ] ),
                 'schema' => [$this, 'getSchema'],
             ]
         );

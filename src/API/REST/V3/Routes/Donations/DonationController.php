@@ -65,7 +65,7 @@ class DonationController extends WP_REST_Controller
                         ),
                         'type' => [
                             'string',
-                            'boolean'
+                            'boolean',
                         ],
                         'default' => false,
                     ],
@@ -853,7 +853,7 @@ class DonationController extends WP_REST_Controller
                 'honorific' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor honorific/prefix', 'give'),
-                    'enum' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
+                    'enum' => $this->get_honorific_prefixes(),
                 ],
                 'email' => [
                     'type' => 'string',
@@ -1099,5 +1099,22 @@ class DonationController extends WP_REST_Controller
         ];
 
         return $this->add_additional_fields_schema($schema);
+    }
+
+    /**
+     * Gets all available honorific prefixes.
+     *
+     * Fetches the user-configured honorific prefixes from settings and merges them
+     * with a hardcoded 'anonymous' prefix. The 'anonymous' prefix is required
+     * when requests with anonymousDonations=redact are present.
+     *
+     * @return array<string, string> An associative array of honorific prefixes.
+     */
+    private function get_honorific_prefixes(): array {
+        $prefixes = (array) give_get_option( 'title_prefixes', array_values( give_get_default_title_prefixes() ) );
+
+        return array_merge( $prefixes, [
+            'anonymous' => __( 'anonymous', 'give' ),
+        ] );
     }
 }

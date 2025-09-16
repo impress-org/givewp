@@ -217,6 +217,7 @@ const entry = {
     elementorCampaignWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignWidget/resources/widget.jsx'),
     elementorCampaignCommentsWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignCommentsWidget/resources/widget.jsx'),
     elementorLegacyGiveFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V1/resources/formWidget.jsx'),
+    angieMcp: srcPath('MCP/assets/angie.ts'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };

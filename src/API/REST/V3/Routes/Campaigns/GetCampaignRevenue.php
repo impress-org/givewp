@@ -42,6 +42,7 @@ class GetCampaignRevenue implements RestRoute
                         'sanitize_callback' => 'absint',
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -206,5 +207,32 @@ class GetCampaignRevenue implements RestRoute
         }
 
         return $resultMap;
+    }
+
+    /**
+     * @since unreleased
+     */
+    public function getSchema(): array
+    {
+        return [
+            'title'   => 'campaign-revenue',
+            'description' => 'Provides daily revenue data for a specific campaign.',
+            'type'    => 'object',
+            'properties' => [
+                'date' => [
+                    'type'        => 'string',
+                    'format'      => 'date',
+                    'description' => esc_html__('The date for the revenue entry (YYYY-MM-DD).', 'give'),
+                ],
+                'amount' => [
+                    'oneOf' => [
+                        [ 'type' => 'number' ],
+                        [ 'type' => 'string' ],
+                    ],
+                    'description' => esc_html__('The amount of revenue received on the given date.', 'give'),
+                ],
+            ],
+            'required' => ['date', 'amount'],
+        ];
     }
 }
