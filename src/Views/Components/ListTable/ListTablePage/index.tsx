@@ -14,6 +14,7 @@ import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
+import ListTableStats, { StatConfig } from '../ListTableStats/ListTableStats';
 
 export interface ListTablePageProps {
     //required
@@ -35,6 +36,7 @@ export interface ListTablePageProps {
     banner?: () => JSX.Element;
     contentMode?: boolean;
     perPage?: number;
+    statsConfig?: Record<string, StatConfig>;
 }
 
 export interface FilterConfig {
@@ -119,6 +121,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     banner,
     contentMode,
     perPage = 30,
+    statsConfig,
 }: ListTablePageProps, ref) => {
     const [page, setPage] = useState<number>(1);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
@@ -163,12 +166,16 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
+    const {data: statsData, error: statsError, isValidating: statsIsValidating, mutate: mutateStats} = statsConfig ? archiveApi.useStats(testMode) : {data: null, error: null, isValidating: false, mutate: async () => {}};
 
     useResetPage(data, page, setPage, filters);
 
     useImperativeHandle(ref, () => ({
-        refresh: () => mutate()
-    }), [mutate]);
+        refresh: async () => {
+            await mutate();
+           statsConfig && await mutateStats();
+        }
+    }), [mutate, mutateStats, statsConfig]);
 
     const handleFilterChange = (name, value) => {
         setFilters((prevState) => ({...prevState, [name]: value}));
@@ -310,6 +317,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                                 <TestModeFilter />
                             </div>
                         )}
+                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
                     </>
                 )}
 
