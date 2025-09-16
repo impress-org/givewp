@@ -1,50 +1,55 @@
 import {__} from '@wordpress/i18n';
 import CustomFilter from '../CustomFilter';
 
+/**
+ * Filter type configurations
+ * 
+ * @unreleased
+ */
+const filterConfigs = {
+    select: {
+        isSearchable: false,
+        isSelectable: true,
+        width: undefined,
+        useDebouncedOnChange: false,
+    },
+    formselect: {
+        isSearchable: true,
+        isSelectable: true,
+        width: '10.375rem',
+        useDebouncedOnChange: false,
+    },
+    search: {
+        isSearchable: true,
+        isSelectable: false,
+        width: '14.48rem',
+        useDebouncedOnChange: true,
+    },
+};
+
+/**
+ * @unreleased
+ */
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
-    switch (filter.type) {
-        case 'select':
-            return (
-                    <CustomFilter
-                        name={filter.name}
-                        options={filter.options}
-                        aria-label={filter?.ariaLabel}
-                        placeholder={filter?.text}
-                        onChange={onChange}
-                        defaultValue={value}
-                        isSearchable={false}
-                    />
-            );
-        case 'formselect':
-            return (
-                    <CustomFilter
-                        name={filter.name}
-                        options={filter.options}
-                        aria-label={filter?.ariaLabel}
-                        placeholder={filter?.text}
-                        onChange={onChange}
-                        defaultValue={value}
-                        width={'10.375rem'}
-                     />
-            );
-        case 'search':
-            return (
-                 <CustomFilter
-                    name={filter.name}
-                    options={filter.options}
-                    aria-label={filter?.ariaLabel}
-                    placeholder={filter?.text}
-                    onChange={debouncedOnChange}
-                    defaultValue={value}
-                    isSelectable={false}
-                    width={'14.48rem'}
-                    
-                 />
-            );
-        default:
-            return null;
-            break;
+    const config = filterConfigs[filter.type];
+    
+    if (!config) {
+        return null;
     }
+
+    return (
+        <CustomFilter
+            name={filter.name}
+            options={filter.options}
+            aria-label={filter?.ariaLabel}
+            placeholder={filter?.text}
+            onChange={config.useDebouncedOnChange ? debouncedOnChange : onChange}
+            defaultValue={value}
+            isSearchable={config.isSearchable}
+            isSelectable={config.isSelectable}
+            width={config.width}
+        />
+    );
 };
 
 // figure out what the initial filter state should be based on the filter configuration
