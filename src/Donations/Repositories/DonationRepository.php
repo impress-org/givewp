@@ -437,6 +437,14 @@ class DonationRepository
             $meta[DonationMetaKeys::CAMPAIGN_ID] = $campaign->id;
         }
 
+        // Add campaign title if we have a campaign ID
+        if ($donation->campaignId) {
+            $campaign = give()->campaigns->getById($donation->campaignId);
+            if ($campaign) {
+                $meta[DonationMetaKeys::CAMPAIGN_TITLE] = $campaign->title;
+            }
+        }
+
         if ($donation->feeAmountRecovered !== null) {
             $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
         }

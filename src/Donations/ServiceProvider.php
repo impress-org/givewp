@@ -15,7 +15,6 @@ use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\LegacyListeners\UpdateDonationMetaWithLegacyFormCurrencySettings;
-use Give\Donations\Listeners\DonationCreated\SaveCampaignTitle;
 use Give\Donations\Listeners\DonationCreated\UpdateDonationMetaWithCurrencySettings;
 use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurrency;
 use Give\Donations\ListTable\DonationsListTable;
@@ -86,7 +85,6 @@ class ServiceProvider implements ServiceProviderInterface
             (new InsertSequentialId())($donation);
             (new DispatchGiveInsertPayment())($donation);
             (new UpdateDonorPaymentIds())($donation);
-            (new SaveCampaignTitle())($donation);
 
             if ($donation->subscriptionId && $donation->type->isRenewal()) {
                 (new DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment())($donation);
