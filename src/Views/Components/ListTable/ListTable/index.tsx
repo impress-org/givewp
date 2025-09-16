@@ -123,10 +123,10 @@ export const ListTable = ({
     return (
         <>
             {initialLoad && !error ? (
-                <div className={styles.initialLoad}>
-                    <div role="dialog" aria-labelledby="giveListTableLoadingMessage" className={cx(styles.tableGroup)}>
-                        <Spinner size={'large'} />
-                        <h2 id="giveListTableLoadingMessage">{sprintf(__('Loading %s', 'give'), pluralName)}</h2>
+                <div className={styles.loadingContainer}>
+                    <div role="dialog" aria-labelledby="giveListTableLoadingMessage" className={styles.loadingContainerContent}>
+                        <Spinner />
+                        <h2 id="giveListTableLoadingMessage" className={styles.loadingContainerContentText}>{sprintf(__('Loading %s', 'give'), pluralName)}</h2>
                     </div>
                 </div>
             ) : (

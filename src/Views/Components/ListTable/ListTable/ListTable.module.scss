@@ -1,16 +1,22 @@
-.initialLoad {
-    inline-size: 100%;
+.loadingContainer {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    height: 20rem;
 
-    & > * {
+    .loadingContainerContent {
         display: flex;
-        flex-direction: column;
+        background-color: #fff;
+        padding: var(--givewp-spacing-6);
+        border-radius: var(--givewp-spacing-2);
+        margin-bottom: var(--givewp-spacing-4);
         align-items: center;
-        justify-content: space-evenly;
-        inline-size: 26em;
-        block-size: 20em;
+        flex-direction: column;
+    }
+
+    .loadingContainerContentText {
+        padding: var(--givewp-spacing-4);
+        font-size: 1rem;
     }
 }
 
