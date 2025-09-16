@@ -166,16 +166,16 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
-    const {data: statsData, error: statsError, isValidating: statsIsValidating, mutate: mutateStats} = archiveApi.useStats(testMode);
+    const {data: statsData, error: statsError, isValidating: statsIsValidating, mutate: mutateStats} = statsConfig ? archiveApi.useStats(testMode) : {data: null, error: null, isValidating: false, mutate: async () => {}};
 
     useResetPage(data, page, setPage, filters);
 
     useImperativeHandle(ref, () => ({
         refresh: async () => {
             await mutate();
-            await mutateStats();
+           statsConfig && await mutateStats();
         }
-    }), [mutate, mutateStats]);
+    }), [mutate, mutateStats, statsConfig]);
 
     const handleFilterChange = (name, value) => {
         setFilters((prevState) => ({...prevState, [name]: value}));
