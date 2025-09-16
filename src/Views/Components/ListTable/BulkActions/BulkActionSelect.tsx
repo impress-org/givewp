@@ -1,6 +1,5 @@
-import Select from '@givewp/components/ListTable/Select';
-import { FilterContainer } from '@givewp/components/ListTable/Filters';
 import {__} from '@wordpress/i18n';
+import CustomSelect from '../CustomSelect';
 import styles from './BulkActionSelect.module.scss';
 
 export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, data, parameters}) => {
@@ -14,27 +13,37 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
         return null;
     }
 
-    const changeSelected = (event) => {
-        setSelectedAction(event.target.value);
+    // Format bulkActions for Custom Select
+    const filteredOptions = bulkActions
+        .filter(action => {
+            if (typeof action?.isVisible == 'function' && !action.isVisible(data, parameters)) {
+                return false;
+            }
+            return true;
+        })
+        .map(action => ({
+            value: action.value,
+            text: action.label
+        }));
+
+    const defaultOption = { value: '', text: __('Bulk Actions', 'give') };
+    const options = [defaultOption, ...filteredOptions];
+
+    const changeSelected = (name, value) => {
+        setSelectedAction(value);
     };
 
     return (
         <div id={styles.bulkActionsForm}>
-            <FilterContainer id={'bulk-actions'} useArrow={true}>
-                <Select className={styles.bulkSelect} value={selectedAction} onChange={changeSelected}>
-                    <option value="">{__('Bulk Actions', 'give')}</option>
-                    {bulkActions.map((action) => {
-                        if (typeof action?.isVisible == 'function' && !action.isVisible(data, parameters)) {
-                            return null;
-                        }
-                        return (
-                            <option key={action.value} value={action.value}>
-                                {action.label}
-                            </option>
-                        );
-                    })}
-                </Select>
-            </FilterContainer>
+                <CustomSelect
+                    name="bulkActions"
+                    options={options}
+                    ariaLabel={__('Bulk Actions', 'give')}
+                    placeholder={__('Bulk Actions', 'give')}
+                    onChange={changeSelected}
+                    defaultValue={selectedAction}
+                    isSearchable={false}
+                />
             <button onClick={showModal} className={styles.apply}>
                 {__('Apply', 'give')}
             </button>

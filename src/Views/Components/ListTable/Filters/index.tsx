@@ -1,59 +1,45 @@
-import {FormSelect} from '@givewp/components/ListTable/FormSelect';
-import Select from '@givewp/components/ListTable/Select';
-import Input from '@givewp/components/ListTable/Input';
 import {__} from '@wordpress/i18n';
-import styles from './Filters.module.scss';
+import CustomSelect from '../CustomSelect';
 
-/**
- * @unrelesased updated to use FilterContainer for consistent styling
- */
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
     switch (filter.type) {
         case 'select':
             return (
-                <FilterContainer id={'select'}>
-                    <Select
-                        name={filter.name}
-                        aria-label={filter?.ariaLabel}
-                        onChange={(event) => onChange(event.target.name, event.target.value)}
-                        style={{inlineSize: filter?.inlineSize}}
-                        defaultValue={value}
-                    >
-                        {filter.options.map(({value, text}) => (
-                            <option key={value} value={value}>
-                                {text}
-                            </option>
-                        ))}
-                    </Select>
-                </FilterContainer>
-            );
-        case 'formselect':
-            return (
-                <FilterContainer id={'form'} useArrow={true}>
-                    <FormSelect
+                    <CustomSelect
                         name={filter.name}
                         options={filter.options}
                         aria-label={filter?.ariaLabel}
                         placeholder={filter?.text}
                         onChange={onChange}
-                        style={{inlineSize: filter?.inlineSize}}
                         defaultValue={value}
+                        isSearchable={false}
                     />
-                </FilterContainer>
+            );
+        case 'formselect':
+            return (
+                    <CustomSelect
+                        name={filter.name}
+                        options={filter.options}
+                        aria-label={filter?.ariaLabel}
+                        placeholder={filter?.text}
+                        onChange={onChange}
+                        defaultValue={value}
+                        width={'10.375rem'}
+                     />
             );
         case 'search':
             return (
-                <FilterContainer id={'search'}>
-                    <Input
-                        type="search"
-                        name={filter.name}
-                        aria-label={filter?.ariaLabel}
-                        placeholder={filter?.text}
-                        onChange={(event) => debouncedOnChange(event.target.name, event.target.value)}
-                        style={{inlineSize: filter?.inlineSize}}
-                        defaultValue={value}
-                    />
-                </FilterContainer>
+                 <CustomSelect
+                    name={filter.name}
+                    options={filter.options}
+                    aria-label={filter?.ariaLabel}
+                    placeholder={filter?.text}
+                    onChange={debouncedOnChange}
+                    defaultValue={value}
+                    isSelectable={false}
+                    width={'14.48rem'}
+                    
+                 />
             );
         default:
             return null;
@@ -88,30 +74,3 @@ export const getInitialFilterState = (filters) => {
     });
     return state;
 };
-
-/**
- * @unrelesased
- */
-type FilterContainerProps = {
-    children: React.ReactNode;
-    id: string;
-    useArrow?: boolean;
-}
-
-/**
- * @unrelesased
- */
-export function FilterContainer({children, id, useArrow}: FilterContainerProps) {
-    return (
-    <div id={id} className={styles.filterContainer}>
-         <div className={styles.filter}>
-            {children}
-            {useArrow && (
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4.41 6.912a.833.833 0 0 1 1.179 0l4.41 4.41 4.411-4.41a.833.833 0 1 1 1.179 1.179l-5 5a.833.833 0 0 1-1.179 0l-5-5a.833.833 0 0 1 0-1.179z" fill="#060C1A"/>
-                </svg>
-            )}
-        </div>
-    </div>
-    );
-}
