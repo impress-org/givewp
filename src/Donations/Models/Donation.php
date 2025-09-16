@@ -39,6 +39,7 @@ use Give\Subscriptions\Models\Subscription;
  * @property int $campaignId
  * @property int $formId
  * @property string $formTitle
+ * @property string $campaignTitle
  * @property DateTime $createdAt
  * @property DateTime $updatedAt
  * @property DonationStatus $status
@@ -79,6 +80,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         'campaignId' => 'int',
         'formId' => 'int',
         'formTitle' => 'string',
+        'campaignTitle' => 'string',
         'purchaseKey' => 'string',
         'donorIp' => 'string',
         'createdAt' => DateTime::class,

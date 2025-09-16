@@ -15,9 +15,11 @@ use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
 use Give\Donations\LegacyListeners\UpdateDonationMetaWithLegacyFormCurrencySettings;
+use Give\Donations\Listeners\DonationCreated\SaveCampaignTitle;
 use Give\Donations\Listeners\DonationCreated\UpdateDonationMetaWithCurrencySettings;
 use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurrency;
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\Migrations\AddCampaignTitleToDonations;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
 use Give\Donations\Migrations\RecalculateExchangeRate;
@@ -65,6 +67,7 @@ class ServiceProvider implements ServiceProviderInterface
             MoveDonationCommentToDonationMetaTable::class,
             UnserializeTitlePrefix::class,
             RecalculateExchangeRate::class,
+            AddCampaignTitleToDonations::class,
         ]);
     }
 
@@ -83,6 +86,7 @@ class ServiceProvider implements ServiceProviderInterface
             (new InsertSequentialId())($donation);
             (new DispatchGiveInsertPayment())($donation);
             (new UpdateDonorPaymentIds())($donation);
+            (new SaveCampaignTitle())($donation);
 
             if ($donation->subscriptionId && $donation->type->isRenewal()) {
                 (new DispatchGiveRecurringAddSubscriptionPaymentAndRecordPayment())($donation);
