@@ -954,8 +954,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
                                 'createdAt' => new \DateTime( $payment_data['post_date'] ),
                             ] );
 
-                            $subscription->save();
-
                             $payment->update_meta( 'subscription_id',  $subscription->id);
                             $payment->update_meta( '_give_subscription_payment',  1);
                             $payment->update_meta( '_give_is_donation_recurring',  1);
