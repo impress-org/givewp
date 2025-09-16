@@ -1,4 +1,8 @@
 .productRecommendationRow {
+    > td {
+        padding: 0;
+    }
+
     + tr > * {
         padding-top: var(--givewp-spacing-6);
     }
