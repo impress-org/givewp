@@ -253,6 +253,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                     bulkActions={bulkActions}
                     showModal={openBulkActionModal}
                 />
+                {PageActionsTop && testModeFilter && <TestModeFilter />}
                 {!PageActionsTop && page && setPage && showPagination()}
             </div>
         );
@@ -297,7 +298,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
                         {banner && <section role="banner">{banner()}</section>}
-                        <section role="search" className={styles.searchContainer}>
+                        <section role="search" className={styles.filtersContainer}>
                             <div className={styles.flexRow}>
                                 <PageActions PageActionsTop />
                             </div>
