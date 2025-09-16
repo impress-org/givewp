@@ -10,6 +10,7 @@ import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
+import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 
 declare global {
     interface Window {
@@ -21,6 +22,7 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
+            recurringDonations: boolean;
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
             addonsBulkActions: Array<BulkActionsConfig>;
@@ -204,6 +206,35 @@ const rotatingRecommendation = (
     />
 );
 
+/**
+ * Configuration for the statistic tiles rendered above the ListTable.
+ *
+ * IMPORTANT: Object keys MUST MATCH the keys returned by the API's `stats` payload.
+ * For example, if the API returns:
+ *
+ *   data.stats = {
+ *     donationsCount: number;
+ *     oneTimeDonationsCount: number;
+ *     recurringDonationsCount: number;
+ *   }
+ *
+ * then this config must use those same keys: "donationsCount", "oneTimeDonationsCount", "recurringDonationsCount".
+ * Missing or mismatched keys will result in empty/undefined values in the UI.
+ *
+ * @unreleased
+ */
+const statsConfig: Record<string, StatConfig> = {
+    donationsCount: { label: __('Total Donations', 'give')},
+    oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
+    recurringDonationsCount: { 
+        label: __('Recurring Donations', 'give'),
+        upgrade: !window.GiveDonations.recurringDonations && {
+            href: ' https://docs.givewp.com/recurring-stat',
+            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
+        }
+    },
+};
+
 export default function DonationsListTable() {
     return (
         <ListTablePage
@@ -217,6 +248,7 @@ export default function DonationsListTable() {
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
+            statsConfig={statsConfig}
         >
             {window.GiveDonations.manualDonations ? (
                 <a
