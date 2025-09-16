@@ -247,17 +247,14 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
         return (
             <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
                 {PageActionsTop ? (
-                    <>
-                        <BulkActionSelect
-                            selectedState={[selectedAction, setSelectedAction]}
-                            parameters={parameters}
-                            data={data}
-                            bulkActions={bulkActions}
-                            showModal={openBulkActionModal}
-                        />
-                        {testModeFilter && <TestModeFilter />}
-                    </>
-                ) : (
+                    <BulkActionSelect
+                        selectedState={[selectedAction, setSelectedAction]}
+                        parameters={parameters}
+                        data={data}
+                        bulkActions={bulkActions}
+                        showModal={openBulkActionModal}
+                    />
+            ) : (
                     <>
                         {page && setPage && showPagination()}
                     </>
@@ -267,7 +264,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     };
 
     const TestModeFilter = () => (
-        <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
+        <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} initialChecked={testMode} />
     );
 
     const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;
@@ -304,11 +301,18 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                             </div>
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
+
+                        <div className={cx('wp-header-end', 'hidden')} />
+
                         {banner && <section role="banner">{banner()}</section>}
+                        {testModeFilter && (
+                            <div className={styles.filtersRow}>
+                                <TestModeFilter />
+                            </div>
+                        )}
                     </>
                 )}
 
-                <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
                     <SearchSection />
                     {contentMode && children ? <>{children}</> : <></>}

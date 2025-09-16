@@ -1,18 +1,28 @@
+import {useState} from 'react';
 import styles from './style.module.scss';
+import cx from 'classnames';
 
 interface ToggleSwitchProps {
     onChange: React.Dispatch<React.SetStateAction<boolean>>;
-    checked: boolean;
+    initialChecked: boolean;
     ariaLabel?: string;
 }
 
-const ToggleSwitch = ({ariaLabel, checked, onChange}: ToggleSwitchProps) => {
+const ToggleSwitch = ({ariaLabel, initialChecked, onChange}: ToggleSwitchProps) => {
+    const [checked, setChecked] = useState(initialChecked);
+
+    const handleChange = () => {
+        setChecked(state => {
+            onChange(!state);
+            return !state;
+        })
+    };
+
     return (
-        <label className={styles.container}>
-            <input type="checkbox" aria-label={ariaLabel} checked={checked} onChange={() => onChange(!checked)} />
-            <span className={styles.switch} />
-            <span>{ariaLabel && ariaLabel}</span>
-        </label>
+        <button className={styles.container} onClick={handleChange}>
+            <span className={cx(styles.switch, { [styles.checked]: checked })} />
+            {ariaLabel && <span>{ariaLabel}</span>}
+        </button>
     );
 };
 

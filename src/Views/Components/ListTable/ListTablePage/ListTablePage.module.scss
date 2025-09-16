@@ -42,8 +42,11 @@
     background-color: var(--givewp-neutral-25);
     box-sizing: border-box;
     color: var(--givewp-neutral-900);
+    display: flex;
+    flex-direction: column;
     font-family: Inter, system-ui, sans-serif;
     font-size: 1rem;
+    gap: var(--givewp-spacing-4);
 
     *,
     ::before,
@@ -70,7 +73,7 @@
     }
 
     + :global(.wp-header-end) + :global(.give-notice) {
-        margin: var(--givewp-spacing-4) var(--givewp-spacing-6);
+        margin: 0 var(--givewp-spacing-6);
     }
 
     .testModeBadge {
@@ -114,6 +117,18 @@
             border-color: var(--givewp-neutral-200);
             color: var(--givewp-neutral-900);
         }
+    }
+}
+
+.filtersRow {
+    align-items: center;
+    background-color: var(--givewp-neutral-50);
+    display: flex;
+    height: 3.25rem;
+    justify-content: space-between;
+    margin-inline: var(--givewp-spacing-6);
+    padding: var(--givewp-spacing-2) {
+        left: var(--givewp-spacing-6);
     }
 }
 
