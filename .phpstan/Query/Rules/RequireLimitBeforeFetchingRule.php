@@ -9,6 +9,7 @@ use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Type\Type;
 use PHPStan\Rules\RuleErrorBuilder;
+use PHPStan\Type\ObjectType;
 
 /**
  * Flags QueryBuilder/ModelQueryBuilder fetch calls without an explicit limit or pagination.
@@ -112,7 +113,7 @@ final class RequireLimitBeforeFetchingRule implements Rule
         ];
 
         foreach ($candidates as $class) {
-            if ($type->isInstanceOf($class)->yes()) {
+            if ($type->isSuperTypeOf(new ObjectType($class))->yes()) {
                 return true;
             }
         }

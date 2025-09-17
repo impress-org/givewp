@@ -457,7 +457,12 @@ final class Give
     protected function disableVisualDonationFormBuilderFeaturePlugin()
     {
         // Include plugin.php to use is_plugin_active() below.
-        include_once ABSPATH . 'wp-admin/includes/plugin.php';
+        if (defined('ABSPATH')) {
+            $pluginInclude = rtrim(ABSPATH, "/\\") . '/wp-admin/includes/plugin.php';
+            if (file_exists($pluginInclude)) {
+                include_once $pluginInclude;
+            }
+        }
 
         // Prevent fatal error due to a renamed class.
         class_alias(TestOffsiteGateway::class, 'Give\PaymentGateways\Gateways\TestGateway\TestGatewayOffsite', true);
