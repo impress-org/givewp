@@ -7,6 +7,7 @@ const CAMPAIGNS_PER_PAGE = 30;
 
 type UseCampaignAsyncSelectReturn = {
     selectedOption: CampaignOption | null;
+    setSelectedOption: (option: CampaignOption | null) => void;
     loadOptions: (searchInput: string) => Promise<{
         options: CampaignOption[];
         hasMore: boolean;
@@ -77,6 +78,7 @@ export function useCampaignAsyncSelect(): UseCampaignAsyncSelectReturn {
 
     return {
         selectedOption,
+        setSelectedOption,
         loadOptions,
         mapOptionsForMenu,
         error,

@@ -1,8 +1,8 @@
 import ReactSelect, { components } from 'react-select';
 import { useCampaignAsyncSelect } from './useAsyncCampaigns';
 import { AsyncPaginate } from 'react-select-async-paginate';
-import type { CampaignOption} from './utils';
 import styles from './styles.module.scss';
+import { CampaignOption } from './utils';
 
 /**
  * @unreleased
@@ -35,7 +35,7 @@ export default function CustomFilter(props: CustomFilterProps) {
 	return props.isAsync ? <AsyncFilter {...props} /> : <DefaultFilter {...props} />
 }
 
-/**	
+/**
  * @unreleased
  */
 function DefaultFilter({name, options, ariaLabel, placeholder, onChange, defaultValue, isSearchable, isSelectable}: CustomFilterProps) {
@@ -43,7 +43,7 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, default
 		value,
 		label: text,
 	}));
-	
+
 	const defaultOption = formattedOptions?.find((o) => o.value === defaultValue) || null;
 
 	const handleChange = (selected: any) =>
@@ -79,11 +79,12 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, default
 	);
 }
 
-function AsyncFilter({name, placeholder, onChange, defaultValue, isSearchable, isClearable}: CustomFilterProps) {
-	const { loadOptions, mapOptionsForMenu } = useCampaignAsyncSelect();
+function AsyncFilter({name, placeholder, onChange, isSearchable, isClearable}: CustomFilterProps) {
+	const { loadOptions, mapOptionsForMenu, selectedOption, setSelectedOption } = useCampaignAsyncSelect();
 
-	const handleChange = (selectedOption: string) => {
-		onChange(name, selectedOption);
+	const handleChange = (selectedOption: CampaignOption | null) => {
+		onChange(name, selectedOption?.value.toString() ?? '');
+		setSelectedOption(selectedOption);
 	}
 
 	return (
@@ -91,7 +92,7 @@ function AsyncFilter({name, placeholder, onChange, defaultValue, isSearchable, i
 			placeholder={placeholder}
 			loadOptions={loadOptions}
 			onChange={handleChange}
-			value={defaultValue}
+			value={selectedOption}
 			isSearchable={isSearchable}
 			isClearable={isClearable}
 			mapOptionsForMenu={mapOptionsForMenu}
