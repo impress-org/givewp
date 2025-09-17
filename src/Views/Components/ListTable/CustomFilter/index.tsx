@@ -1,8 +1,8 @@
 import ReactSelect, { components } from 'react-select';
 import { useCampaignAsyncSelect } from './useAsyncCampaigns';
 import { AsyncPaginate } from 'react-select-async-paginate';
-import styles from './styles.module.scss';
 import { CampaignOption } from './utils';
+import styles from './styles.module.scss';
 
 /**
  * @unreleased
@@ -54,8 +54,8 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, default
 	};
 
 	return (
-		<div id={`givewp-filter-${name}`}>
 			<ReactSelect
+				inputId={`givewp-filter-${name}`}
 				name={name}
 				options={formattedOptions}
 				value={defaultOption}
@@ -75,7 +75,6 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, default
 					ClearIndicator: () => null,
 				}}
 			/>
-		</div>
 	);
 }
 
@@ -89,6 +88,7 @@ function AsyncFilter({name, placeholder, onChange, isSearchable, isClearable}: C
 
 	return (
 		<AsyncPaginate
+			inputId={`givewp-async-filter-${name}`}
 			placeholder={placeholder}
 			loadOptions={loadOptions}
 			onChange={handleChange}
@@ -96,6 +96,8 @@ function AsyncFilter({name, placeholder, onChange, isSearchable, isClearable}: C
 			isSearchable={isSearchable}
 			isClearable={isClearable}
 			mapOptionsForMenu={mapOptionsForMenu}
+			className={styles.searchableSelect}
+			classNamePrefix="searchableSelect"
 		/>
 	);
 }

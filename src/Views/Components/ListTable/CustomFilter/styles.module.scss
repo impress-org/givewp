@@ -1,5 +1,25 @@
 .searchableSelect {
-    color: red;
+    z-index: 999;
+    
+    &:has(:global(.searchableSelect__control--menu-is-open)) {
+        &::before {
+            background-color: var(--givewp-shades-white);
+            bottom: 0;
+            content: '';
+            height: 4px;
+            left: 1px;
+            position: absolute;
+            transform: translateY(2px);
+            width: calc(100% - 2px);
+            z-index: 2;
+        }
+
+        &:not(:has(:global(.searchableSelect__menu))) {
+            &::before {
+                display: none;
+            }
+        }
+    }
 
     :global {
         .searchableSelect {
@@ -14,7 +34,9 @@
                 }
 
                 &--menu-is-open {
-                    border-radius: var(--givewp-rounded-4) var(--givewp-rounded-4) 0 0;
+                    &:has(.searchableSelect__menu) {
+                        border-radius: var(--givewp-rounded-4) var(--givewp-rounded-4) 0 0;
+                    }
                 }
 
                 &:hover {
@@ -23,13 +45,14 @@
             }
 
             &__menu {
-                border-radius: 0 0 var(--givewp-rounded-4) var(--givewp-rounded-4);
+                border-radius: 0 var(--givewp-rounded-4) var(--givewp-rounded-4) var(--givewp-rounded-4);
                 border: 2px solid var(--givewp-blue-500);
-                border-top: 0;
                 box-shadow: none;
                 margin: 0;
-                transform: translate(-1px, -1px);
-                width: calc(100% + 2px);
+                left: 0;
+                min-width: calc(100% + 2px);
+                transform: translate(-1px, 0);
+                width: fit-content;
             }
 
             &__menu-list {
@@ -40,6 +63,7 @@
                 color: var(--givewp-neutral-900);
                 line-height: 1.5;
                 padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+                white-space: nowrap;
 
                 &--is-selected {
                     color: var(--givewp-shades-white);
@@ -56,7 +80,7 @@
             }
 
             &__value-container {
-                padding: var(--givewp-spacing-4);
+                padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
             }
 
             &__input-container {

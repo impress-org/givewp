@@ -38,7 +38,6 @@ const filters: Array<FilterConfig> = [
         type: 'campaignselect',
         text: __('Select Campaign', 'give'),
         ariaLabel: __('filter donations by campaign', 'give'),
-        options: window.GiveDonations.campaigns,
     },
     {
         name: 'search',

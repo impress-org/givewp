@@ -26,9 +26,6 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
             text: action.label
         }));
 
-    const defaultOption = { value: '', text: __('Bulk Actions', 'give') };
-    const options = [defaultOption, ...filteredOptions];
-
     const changeSelected = (name, value) => {
         setSelectedAction(value);
     };
@@ -37,12 +34,13 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
         <div id={styles.bulkActionsForm}>
                 <CustomFilter
                     name="bulkActions"
-                    options={options}
+                    options={filteredOptions}
                     ariaLabel={__('Bulk Actions', 'give')}
                     placeholder={__('Bulk Actions', 'give')}
                     onChange={changeSelected}
                     defaultValue={selectedAction}
                     isSearchable={false}
+                    isSelectable={true}
                 />
             <button onClick={showModal} className={styles.apply}>
                 {__('Apply', 'give')}
