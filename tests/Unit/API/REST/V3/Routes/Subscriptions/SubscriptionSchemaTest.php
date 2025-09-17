@@ -19,7 +19,7 @@ use Give\Tests\Unit\API\REST\V3\SchemaValidationTrait;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.9.0
  */
 class SubscriptionSchemaTest extends RestApiTestCase
 {
@@ -28,7 +28,7 @@ class SubscriptionSchemaTest extends RestApiTestCase
     use SchemaValidationTrait;
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     public function testSubscriptionSchemaShouldMatchActualResponse()
     {
@@ -64,7 +64,7 @@ class SubscriptionSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     public function testSubscriptionCollectionSchemaShouldMatchActualResponse()
     {
@@ -102,7 +102,7 @@ class SubscriptionSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     public function testDateFormatsShouldBeConsistentWithWordPressStandards()
     {
@@ -129,7 +129,7 @@ class SubscriptionSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      *
      * @throws Exception
      */

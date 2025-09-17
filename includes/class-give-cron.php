@@ -63,7 +63,7 @@ class Give_Cron {
 	/**
 	 * Setup
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since 1.8.13
 	 */
 	private function setup() {
@@ -78,7 +78,7 @@ class Give_Cron {
 	 *
 	 * @return array            An array of non-default cron schedules.
      *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.3.2
 	 * @access public
 	 */
@@ -109,7 +109,7 @@ class Give_Cron {
 	 *
 	 * @return void
      *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.3.2
 	 * @access public
 	 */

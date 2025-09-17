@@ -1314,7 +1314,7 @@ function give_email_tag_donation_history_link( $tag_args ) {
  *
  * Note: from 2.0 email tag render function will start accepting array values.
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param $tag_args
@@ -1353,7 +1353,7 @@ function give_20_bc_str_type_email_tag_param( $tag_args ) {
  * @param string|array $args      Function arguments.
  * @param array        $func_args Deprecated argument list.
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.1
  */
 function give_211_bc_email_template_tag_param( &$args, $func_args = [] ) {
@@ -1647,7 +1647,7 @@ function give_email_donor_comment( $tag_args ) {
  * This function helps to render meta data with from dynamic meta data email tag.
  * Note: meta data email tag must be in given format {meta_*}
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0.3
  * @see   https://github.com/impress-org/give/issues/2801#issuecomment-365136602
  *

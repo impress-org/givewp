@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *  1. User can only set absolute integer value as number of decimals.
  *  2. number_decimals setting will be zero if no decimal separator defined
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since   1.8
  * @used-by Give_Plugin_Settings::give_settings()
  *
@@ -75,7 +75,7 @@ add_filter( 'give_admin_settings_sanitize_option_number_decimals', 'give_sanitiz
  *  1. User can only set absolute integer value as number of decimals.
  *  2. number_decimals setting will be zero if no decimal separator defined
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since   1.8
  * @used-by Give_Plugin_Settings::give_settings()
  *
@@ -101,7 +101,7 @@ add_filter( 'give_admin_settings_sanitize_option_decimal_separator', 'give_valid
 /**
  * Change $delimiter text to symbol.
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 1.8.14
  *
  * @param string $delimiter

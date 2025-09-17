@@ -7,12 +7,12 @@ use Give\API\REST\V3\Support\Item;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 4.9.0
  */
 class ItemTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     public function testFormatDatesForResponseShouldFormatSpecifiedDateFields()
     {
@@ -44,7 +44,7 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     public function testFormatDatesForResponseShouldHandleMultipleDateFields()
     {
@@ -71,7 +71,7 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     public function testFormatDatesForResponseShouldFormatDateTimeObjects()
     {
@@ -92,7 +92,7 @@ class ItemTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     public function testFormatDatesForResponseShouldHandleNullValues()
     {

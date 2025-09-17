@@ -11,7 +11,7 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
  *
  * @link https://modelcontextprotocol.io/docs/getting-started/intro
  *
- * @unreleased
+ * @since 4.9.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {

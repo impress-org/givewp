@@ -1167,7 +1167,7 @@ function give_get_completed_upgrades() {
  *
  * @return null|array
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  * @global wpdb  $wpdb
  */
@@ -1857,8 +1857,8 @@ function give_is_donor_comment_field_enabled( $form_id ) {
  * @param string $banner_addon_name Give add-on name.
  *
  * @return array
- *              
- * @unreleased rename function - PHP 8 compatibility
+ *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.0
  */
 function give_get_active_by_user_meta( $banner_addon_name ) {

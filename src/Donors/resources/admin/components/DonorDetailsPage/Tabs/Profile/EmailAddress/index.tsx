@@ -19,7 +19,7 @@ import DeleteEmailDialog from './DeleteEmailDialog';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased Add error prop to all AdminSectionField components
+ * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.4.0
  */
 export default function DonorEmailAddress() {

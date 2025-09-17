@@ -217,7 +217,7 @@ class Browser {
 	public $OPERATING_SYSTEM_UNKNOWN = 'unknown';
 
     /**
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
      */
 	public function __construct( $useragent = "" ) {
 		$this->reset();

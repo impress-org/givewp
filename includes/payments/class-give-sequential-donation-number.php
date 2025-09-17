@@ -66,7 +66,7 @@ class Give_Sequential_Donation_Number {
 	 * Set serialize donation number as donation title.
 	 * Note: only for internal use
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
      * @since 3.0.0 replace wp_update_post with DB::update to avoid affecting the post update date and invalidating the donation model's updatedAt date
 	 * @since  2.1.0
 	 * @access public
@@ -137,7 +137,7 @@ class Give_Sequential_Donation_Number {
 	 * Set donation number
 	 * Note: only for internal use
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.1.0
 	 * @access public
 	 *
@@ -179,7 +179,7 @@ class Give_Sequential_Donation_Number {
 	 * Remove sequential donation data
 	 * Note: only internal use.
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.1.0
 	 * @access public
 	 *

@@ -17,7 +17,7 @@ import styles from '../../DonorDetailsPage.module.scss';
 const {nameTitlePrefixes, intlTelInputSettings} = getDonorOptionsWindowData();
 
 /**
- * @unreleased Add error prop to all AdminSectionField components
+ * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.4.0
  */
 export default function DonorPersonalDetails() {

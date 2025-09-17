@@ -7,7 +7,7 @@ import {DonorOption} from './types';
 import {useDonorAsyncSelect} from './useDonorAsyncSelect';
 
 /**
- * @unreleased Add error prop to all AdminSectionField components
+ * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.8.0 updated to async donor dropdown
  * @since 4.6.0
  */

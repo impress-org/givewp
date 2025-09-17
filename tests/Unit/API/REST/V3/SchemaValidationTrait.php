@@ -3,12 +3,12 @@
 namespace Give\Tests\Unit\API\REST\V3;
 
 /**
- * @unreleased
+ * @since 4.9.0
  */
 trait SchemaValidationTrait
 {
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     private function validateSchemaProperties($schema, $actualData)
     {
@@ -44,7 +44,7 @@ trait SchemaValidationTrait
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     private function validateDataTypes($schema, $actualData)
     {
@@ -87,7 +87,7 @@ trait SchemaValidationTrait
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     private function validateEnumValues($schema, $actualData)
     {
@@ -108,7 +108,7 @@ trait SchemaValidationTrait
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     private function validateOneOfSchema($oneOfSchemas, $value, $propertyName)
     {
@@ -126,7 +126,7 @@ trait SchemaValidationTrait
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     private function validateDateFormat($dateValue, $propertyName)
     {
@@ -146,7 +146,7 @@ trait SchemaValidationTrait
     }
 
     /**
-     * @unreleased
+     * @since 4.9.0
      */
     private function getActualType($value)
     {

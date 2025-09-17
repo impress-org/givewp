@@ -43,7 +43,7 @@ class RegisterCampaignRoutes
     /**
      * Get Campaign route
      *
-     * @unreleased Add missing schema key to the route level
+     * @since 4.9.0 Add missing schema key to the route level
      * @since 4.0.0
      */
     public function registerGetCampaign()
@@ -166,7 +166,7 @@ class RegisterCampaignRoutes
     /**
      * Update Campaign route
      *
-     * @unreleased Add missing schema key to the route level
+     * @since 4.9.0 Add missing schema key to the route level
      * @since 4.0.0
      */
     public function registerMergeCampaigns()
@@ -205,7 +205,7 @@ class RegisterCampaignRoutes
     /**
      * Create Campaign route
      *
-     * @unreleased Add missing schema key to the route level
+     * @since 4.9.0 Add missing schema key to the route level
      * @since 4.0.0
      */
     public function registerCreateCampaign()
@@ -259,7 +259,7 @@ class RegisterCampaignRoutes
     }
 
     /**
-     * @unreleased Add missing schema key to the route level
+     * @since 4.9.0 Add missing schema key to the route level
      * @since 4.2.0
      */
     public function registerDuplicateCampaign()
@@ -289,7 +289,7 @@ class RegisterCampaignRoutes
     }
 
     /**
-     * @unreleased Set proper JSON Schema version
+     * @since 4.9.0 Set proper JSON Schema version
      * @since 4.0.0
      */
     public function getSchema(): array

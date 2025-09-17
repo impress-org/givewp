@@ -28,7 +28,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
+     * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.6.0
      */
     public function register_routes()
@@ -361,7 +361,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Get the donation note schema, conforming to JSON Schema.
      *
-     * @unreleased Set proper JSON Schema version
+     * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donation-note and add custom fields schema
      * @since 4.6.0
      *
