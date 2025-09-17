@@ -1,3 +1,7 @@
+includes:
+    - vendor/timeweb/phpstan-enum/extension.neon
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
 parameters:
     level: 0
     paths:
