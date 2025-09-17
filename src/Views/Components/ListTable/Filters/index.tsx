@@ -8,21 +8,21 @@ import CustomFilter from '../CustomFilter';
  */
 const filterConfigs = {
     select: {
+        id: 'select',
         isSearchable: false,
         isSelectable: true,
-        width: undefined,
         useDebouncedOnChange: false,
     },
-    formselect: {
+    campaignselect: {
+        id: 'campaignselect',
         isSearchable: true,
         isSelectable: true,
-        width: '10.375rem',
         useDebouncedOnChange: false,
     },
     search: {
+        id: 'search',
         isSearchable: true,
         isSelectable: false,
-        width: '14.48rem',
         useDebouncedOnChange: true,
     },
 };
@@ -47,7 +47,7 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
             defaultValue={value}
             isSearchable={config.isSearchable}
             isSelectable={config.isSelectable}
-            width={config.width}
+            isAsync={config.id === 'campaignselect'}
         />
     );
 };
@@ -70,7 +70,7 @@ export const getInitialFilterState = (filters) => {
                     state[filter.name] = filter.options?.[0].value;
                     break;
                 case 'search':
-                case 'formselect':
+                case 'campaignselect':
                 default:
                     state[filter.name] = '';
                     break;

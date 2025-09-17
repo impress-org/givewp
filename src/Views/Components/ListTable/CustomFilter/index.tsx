@@ -1,6 +1,8 @@
 import ReactSelect, { components } from 'react-select';
-import { buildStyleConfig } from './utils';
-import './styles.scss';
+import { useCampaignAsyncSelect } from './useAsyncCampaigns';
+import { AsyncPaginate } from 'react-select-async-paginate';
+import type { CampaignOption} from './utils';
+import styles from './styles.module.scss';
 
 /**
  * @unreleased
@@ -22,28 +24,26 @@ type CustomFilterProps = {
 	defaultValue?: string;
 	isSearchable?: boolean;
 	isSelectable?: boolean;
-	width?: string | number;
+	isClearable?: boolean;
+	isAsync?: boolean;
 }
 
 /**
  * @unreleased
  */
-export default function CustomFilter({
-	name,
-	options,
-	ariaLabel,
-	placeholder,
-	onChange,
-	defaultValue,
-	isSearchable = true,
-	isSelectable = true,
-	width,
-}: CustomFilterProps) {
+export default function CustomFilter(props: CustomFilterProps) {
+	return props.isAsync ? <AsyncFilter {...props} /> : <DefaultFilter {...props} />
+}
+
+/**	
+ * @unreleased
+ */
+function DefaultFilter({name, options, ariaLabel, placeholder, onChange, defaultValue, isSearchable, isSelectable}: CustomFilterProps) {
 	const formattedOptions = options?.map(({ value, text }) => ({
 		value,
 		label: text,
 	}));
-    
+	
 	const defaultOption = formattedOptions?.find((o) => o.value === defaultValue) || null;
 
 	const handleChange = (selected: any) =>
@@ -53,31 +53,48 @@ export default function CustomFilter({
 		onChange(name, inputValue);
 	};
 
-	const styleConfig = buildStyleConfig(width);
-
 	return (
-        <div id={`givewp-filter-${name}`}>
-            <ReactSelect
-                name={name}
-                options={formattedOptions}
-                value={defaultOption}
-                onChange={handleChange}
-                onInputChange={handleInputChange}
-                placeholder={placeholder}
-                aria-label={ariaLabel}
-                isSearchable={isSearchable}
-                isClearable={false}
-                classNamePrefix="givewp-filter-select"
-                styles={styleConfig}
-                components={{
-                    DropdownIndicator: isSelectable ? components.DropdownIndicator : () => null,
-                    Menu: isSelectable ? components.Menu : () => null,
-                    MenuList: isSelectable ? components.MenuList : () => null,
-                    IndicatorSeparator: () => null,
-                    ClearIndicator: () => null,
-                }}
-            />
-        </div>
+		<div id={`givewp-filter-${name}`}>
+			<ReactSelect
+				name={name}
+				options={formattedOptions}
+				value={defaultOption}
+				onChange={handleChange}
+				onInputChange={handleInputChange}
+				placeholder={placeholder}
+				aria-label={ariaLabel}
+				isSearchable={isSearchable}
+				isClearable={false}
+				classNamePrefix="searchableSelect"
+				className={styles.searchableSelect}
+				components={{
+					DropdownIndicator: isSelectable ? components.DropdownIndicator : () => null,
+					Menu: isSelectable ? components.Menu : () => null,
+					MenuList: isSelectable ? components.MenuList : () => null,
+					IndicatorSeparator: () => null,
+					ClearIndicator: () => null,
+				}}
+			/>
+		</div>
 	);
 }
 
+function AsyncFilter({name, placeholder, onChange, defaultValue, isSearchable, isClearable}: CustomFilterProps) {
+	const { loadOptions, mapOptionsForMenu } = useCampaignAsyncSelect();
+
+	const handleChange = (selectedOption: string) => {
+		onChange(name, selectedOption);
+	}
+
+	return (
+		<AsyncPaginate
+			placeholder={placeholder}
+			loadOptions={loadOptions}
+			onChange={handleChange}
+			value={defaultValue}
+			isSearchable={isSearchable}
+			isClearable={isClearable}
+			mapOptionsForMenu={mapOptionsForMenu}
+		/>
+	);
+}
