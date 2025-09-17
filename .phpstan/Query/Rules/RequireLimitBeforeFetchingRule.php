@@ -30,11 +30,16 @@ final class RequireLimitBeforeFetchingRule implements Rule
      * @var int
      */
     private $lookBackStatements;
+    /**
+     * @var string[] directories whose files should be ignored by this rule
+     */
+    private $excludedDirectories;
 
-    public function __construct(bool $enforceLimitForGet = false, int $lookBackStatements = 3)
+    public function __construct(bool $enforceLimitForGet = false, int $lookBackStatements = 3, array $excludedDirectories = [])
     {
         $this->enforceLimitForGet = $enforceLimitForGet;
         $this->lookBackStatements = max(0, $lookBackStatements);
+        $this->excludedDirectories = $excludedDirectories;
     }
 
     public function getNodeType(): string
@@ -48,6 +53,12 @@ final class RequireLimitBeforeFetchingRule implements Rule
     public function processNode(Node $node, Scope $scope): array
     {
         if (!$node instanceof MethodCall) {
+            return [];
+        }
+
+        // Respect excluded directories
+        $analysedFile = $scope->getFile();
+        if ($this->isInExcludedDirectory($analysedFile)) {
             return [];
         }
 
@@ -93,7 +104,7 @@ final class RequireLimitBeforeFetchingRule implements Rule
         // If we can't see the chain (e.g., variable usage), we still flag conservatively.
         if ($isGetAll) {
             return [
-                RuleErrorBuilder::message('QueryBuilder::getAll() called without limit()/paginate() in the chain. Add ->limit($n)/->paginate(...), or ->limit(0) if intentionally unbounded.')
+                RuleErrorBuilder::message('QueryBuilder::getAll() called without limit()/paginate() in the chain. Add ->limit($n)/->paginate(...), or ->limit(0) if intentionally unbounded.')->identifier('give.requireLimitBeforeFetching')
                     ->line($node->getLine())
                     ->build(),
             ];
@@ -179,6 +190,35 @@ final class RequireLimitBeforeFetchingRule implements Rule
             return $name;
         }
         return null;
+    }
+
+    /**
+     * Returns true if the analysed file resides under any excluded directory.
+     */
+    private function isInExcludedDirectory(string $filePath): bool
+    {
+        if (empty($this->excludedDirectories)) {
+            return false;
+        }
+
+        $normalizedFile = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $filePath);
+
+        foreach ($this->excludedDirectories as $dir) {
+            if (!is_string($dir) || $dir === '') {
+                continue;
+            }
+            $normalizedDir = rtrim(str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $dir), DIRECTORY_SEPARATOR);
+            if ($normalizedDir === '') {
+                continue;
+            }
+
+            // Substring match is sufficient given project-root absolute paths in PHPStan
+            if (strpos($normalizedFile, $normalizedDir) !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
