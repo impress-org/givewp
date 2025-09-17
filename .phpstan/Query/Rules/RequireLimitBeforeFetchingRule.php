@@ -26,10 +26,15 @@ final class RequireLimitBeforeFetchingRule implements Rule
      * @var bool
      */
     private $enforceLimitForGet;
+    /**
+     * @var int
+     */
+    private $lookBackStatements;
 
-    public function __construct(bool $enforceLimitForGet = false)
+    public function __construct(bool $enforceLimitForGet = false, int $lookBackStatements = 3)
     {
         $this->enforceLimitForGet = $enforceLimitForGet;
+        $this->lookBackStatements = max(0, $lookBackStatements);
     }
 
     public function getNodeType(): string
@@ -77,6 +82,11 @@ final class RequireLimitBeforeFetchingRule implements Rule
 
         // Consider explicit unlimited reads acceptable via ->limit(0)
         if ($hasLimit || $hasPaginate) {
+            return [];
+        }
+
+        // Look back at nearby statements for the same receiver with limit()/paginate()
+        if ($this->hasLimitInLookBack($node)) {
             return [];
         }
 
@@ -167,6 +177,139 @@ final class RequireLimitBeforeFetchingRule implements Rule
         }
         if (is_string($name)) {
             return $name;
+        }
+        return null;
+    }
+
+    /**
+     * Heuristic: if the limit()/paginate() is set in a separate prior statement
+     * on the same variable (e.g., $query), accept it.
+     */
+    private function hasLimitInLookBack(MethodCall $fetchCall): bool
+    {
+        // Only support simple variable receivers for now (e.g., $query)
+        $receiverVarName = $this->extractRootVariableName($fetchCall->var);
+        if ($receiverVarName === null) {
+            return false;
+        }
+
+        $stmt = $this->findEnclosingStatement($fetchCall);
+        if ($stmt === null) {
+            return false;
+        }
+
+        [$siblings, $index] = $this->findSiblingStatementsAndIndex($stmt);
+        if ($siblings === null || $index === null) {
+            return false;
+        }
+
+        // Scan up to N previous statements (configurable)
+        $start = max(0, $index - $this->lookBackStatements);
+        for ($i = $index - 1; $i >= $start; $i--) {
+            $prevStmt = $siblings[$i];
+            if (!$prevStmt instanceof Node\Stmt\Expression) {
+                continue;
+            }
+
+            $expr = $prevStmt->expr;
+
+            // Case 1: direct method call like $query->limit(...);
+            if ($expr instanceof MethodCall) {
+                $rootName = $this->extractRootVariableName($expr->var);
+                if ($rootName !== $receiverVarName) {
+                    continue;
+                }
+                $names = $this->collectMethodChain($expr);
+                if (in_array('limit', $names, true) || in_array('paginate', $names, true)) {
+                    return true;
+                }
+                continue;
+            }
+
+            // Case 2: assignment like $query = $query->limit(...);
+            if ($expr instanceof Node\Expr\Assign) {
+                $leftName = $this->extractRootVariableName($expr->var);
+                if ($leftName !== $receiverVarName) {
+                    continue;
+                }
+
+                if ($expr->expr instanceof MethodCall) {
+                    $rightRoot = $this->extractRootVariableName($expr->expr->var);
+                    if ($rightRoot !== $receiverVarName) {
+                        continue;
+                    }
+                    $names = $this->collectMethodChain($expr->expr);
+                    if (in_array('limit', $names, true) || in_array('paginate', $names, true)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Find the statement that directly contains the given node.
+     */
+    private function findEnclosingStatement(Node $node): ?Node\Stmt
+    {
+        $current = $node;
+        // PHPStan provides parent attributes; walk up until we hit a Stmt
+        for ($depth = 0; $depth < 10; $depth++) {
+            $parent = $current->getAttribute('parent');
+            if (!$parent instanceof Node) {
+                return null;
+            }
+            if ($parent instanceof Node\Stmt) {
+                return $parent;
+            }
+            $current = $parent;
+        }
+        return null;
+    }
+
+    /**
+     * Return the sibling statements list and the index of the provided statement within it.
+     * Searches up a few ancestor levels to find a container with a `stmts` array containing the statement.
+     *
+     * @return array{0: ?array, 1: ?int}
+     */
+    private function findSiblingStatementsAndIndex(Node\Stmt $stmt): array
+    {
+        $container = $stmt->getAttribute('parent');
+        for ($depth = 0; $depth < 10 && $container instanceof Node; $depth++) {
+            // Many containers (ClassMethod, Function_, If_, Else_, Case_, etc.) expose a public `stmts` array
+            if (property_exists($container, 'stmts') && is_array($container->stmts)) {
+                $stmts = $container->stmts;
+                foreach ($stmts as $idx => $candidate) {
+                    if ($candidate === $stmt) {
+                        return [$stmts, $idx];
+                    }
+                }
+            }
+            $container = $container->getAttribute('parent');
+        }
+
+        return [null, null];
+    }
+
+    /**
+     * Extract the base variable name from an expression chain (e.g., `$query`, `$this->query` -> `query`).
+     * Only returns simple variable names; returns null for complex receivers.
+     */
+    private function extractRootVariableName($expr): ?string
+    {
+        $current = $expr;
+        for ($i = 0; $i < 10 && $current instanceof Node\Expr; $i++) {
+            if ($current instanceof Node\Expr\Variable) {
+                return is_string($current->name) ? $current->name : null;
+            }
+            if ($current instanceof MethodCall || $current instanceof Node\Expr\PropertyFetch) {
+                $current = $current->var;
+                continue;
+            }
+            break;
         }
         return null;
     }
