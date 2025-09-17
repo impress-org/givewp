@@ -46,7 +46,6 @@ tr.duplicated {
     > * + ::before {
         position: absolute;
         inset-block: auto;
-        inset-inline-start: calc(-.6725rem);
         color: var(--givewp-neutral-200);
         background: none;
         content: "|";
