@@ -122,6 +122,11 @@
                 "symfony/polyfill-mbstring": {}
             }
         },
+        "phpstan/extension-installer": {
+            "ignore": [
+                "composer/composer"
+            ]
+        },
         "installer-paths": {
             "vendor/{$vendor}/{$name}/": [
                 "woocommerce/action-scheduler"

@@ -21,4 +21,10 @@ if (!defined('ABSPATH')) {
 // Avoid any accidental execution of plugin bootstrap.
 define('GIVE_PHPSTAN_BOOTSTRAP', true);
 
+// Load PHPStan-only stubs.
+$giveStub = __DIR__ . '/stubs/give-function-stub.php';
+if (file_exists($giveStub)) {
+    require_once $giveStub;
+}
+
 

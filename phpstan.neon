@@ -10,6 +10,7 @@ parameters:
         - vendor/woocommerce/action-scheduler
     scanFiles:
         - vendor/wordpress/wordpress/src/wp-includes/compat.php
+        - .phpstan/stubs/give-function-stub.php
         - vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
         - vendor/php-stubs/wp-cli-stubs/wp-cli-commands-stubs.php
         - vendor/php-stubs/wp-cli-stubs/wp-cli-i18n-stubs.php
