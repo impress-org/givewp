@@ -35,3 +35,9 @@ services:
     class: Give\PHPStan\Log\StaticFacadeMethodsReflectionExtension
     tags:
       - phpstan.broker.methodsClassReflectionExtension
+  -
+    class: Give\PHPStan\Query\Rules\RequireLimitBeforeFetchingRule
+    arguments:
+      enforceLimitForGet: false
+    tags:
+      - phpstan.rules.rule
