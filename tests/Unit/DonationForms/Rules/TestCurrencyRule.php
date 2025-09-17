@@ -70,6 +70,12 @@ class TestCurrencyRule extends TestCase
             ['USD ', false], // with space should fail
             [' USD', false], // with leading space should fail
 
+            // Invalid length currency codes
+            ['US', false], // too short
+            ['USDD', false], // too long
+            ['A', false], // single character
+            ['ABCDE', false], // too long
+
             // Invalid data types (but note: false is considered empty and passes)
             [123, false],
             [['USD'], false],
@@ -90,12 +96,13 @@ class TestCurrencyRule extends TestCase
         $supportedCurrencies = array_keys(give_get_currencies_list());
 
         // Test that the error message includes the list of valid currencies
+        // Use 'XYZ' which is 3 characters and uppercase, so it won't trigger format validation
         $error = null;
         $fail = function ($message) use (&$error) {
             $error = $message;
         };
 
-        $rule('INVALID', $fail, 'test_field', []);
+        $rule('XYZ', $fail, 'test_field', []);
 
         $this->assertNotNull($error, 'Validation rule should fail for invalid currency');
         $this->assertIsString($error);
@@ -105,6 +112,92 @@ class TestCurrencyRule extends TestCase
         $this->assertStringContainsString('must be a valid currency', $error);
         $this->assertStringContainsString('Valid currencies are:', $error);
         $this->assertStringContainsString(implode(', ', $supportedCurrencies), $error);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCurrencyRuleFormatValidation(): void
+    {
+        $rule = new CurrencyRule();
+        $supportedCurrencies = array_keys(give_get_currencies_list());
+
+        if (empty($supportedCurrencies)) {
+            $this->markTestSkipped('No supported currencies available for testing');
+        }
+
+        $testCurrency = $supportedCurrencies[0];
+        $lowercaseCurrency = strtolower($testCurrency);
+
+        // Test that lowercase currency provides helpful error message
+        $error = null;
+        $fail = function ($message) use (&$error) {
+            $error = $message;
+        };
+
+        $rule($lowercaseCurrency, $fail, 'test_field', []);
+
+        $this->assertNotNull($error, 'Validation rule should fail for lowercase currency');
+        $this->assertIsString($error);
+
+        // Now we know $error is a string, so we can safely use it
+        /** @var string $error */
+        $this->assertStringContainsString('must be a valid 3-letter currency code in uppercase format', $error);
+        $this->assertStringContainsString('(e.g., USD)', $error);
+        // Should not contain the full list of currencies in this specific error message
+        $this->assertStringNotContainsString('Valid currencies are:', $error);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCurrencyRuleInvalidCodeWithCorrectCase(): void
+    {
+        $rule = new CurrencyRule();
+
+        // Test that invalid currency code (but with correct case format) shows general error
+        $error = null;
+        $fail = function ($message) use (&$error) {
+            $error = $message;
+        };
+
+        $rule('XYZ', $fail, 'test_field', []);
+
+        $this->assertNotNull($error, 'Validation rule should fail for invalid currency');
+        $this->assertIsString($error);
+
+        // Now we know $error is a string, so we can safely use it
+        /** @var string $error */
+        $this->assertStringContainsString('must be a valid currency', $error);
+        $this->assertStringContainsString('Valid currencies are:', $error);
+        // Should not contain the format-specific error message
+        $this->assertStringNotContainsString('must be a valid 3-letter currency code in uppercase format', $error);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testCurrencyRuleInvalidLength(): void
+    {
+        $rule = new CurrencyRule();
+
+        // Test that currency codes with wrong length show specific error
+        $error = null;
+        $fail = function ($message) use (&$error) {
+            $error = $message;
+        };
+
+        $rule('US', $fail, 'test_field', []);
+
+        $this->assertNotNull($error, 'Validation rule should fail for wrong length currency');
+        $this->assertIsString($error);
+
+        // Now we know $error is a string, so we can safely use it
+        /** @var string $error */
+        $this->assertStringContainsString('must be a valid 3-letter currency code in uppercase format', $error);
+        $this->assertStringContainsString('(e.g., USD)', $error);
+        // Should not contain the full list of currencies in this specific error message
+        $this->assertStringNotContainsString('Valid currencies are:', $error);
     }
 
     /**
@@ -125,5 +218,47 @@ class TestCurrencyRule extends TestCase
 
         $ruleWithOptions = CurrencyRule::fromString('some-options');
         $this->assertInstanceOf(CurrencyRule::class, $ruleWithOptions);
+    }
+
+    /**
+     * @unreleased
+     * @dataProvider validFormatProvider
+     */
+    public function testIsValidFormat($value, bool $expected): void
+    {
+        $rule = new CurrencyRule();
+
+        // Use reflection to access the private method
+        $reflection = new \ReflectionClass($rule);
+        $method = $reflection->getMethod('isValidFormat');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($rule, $value);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return array<int, array<mixed, bool>>
+     */
+    public function validFormatProvider(): array
+    {
+        return [
+            // Valid formats
+            ['USD', true],
+            ['EUR', true],
+            ['GBP', true],
+            ['CAD', true],
+
+            // Invalid formats
+            ['usd', false], // lowercase
+            ['Usd', false], // mixed case
+            ['US', false], // too short
+            ['USDD', false], // too long
+            ['123', false], // numbers
+            ['US1', false], // mixed alphanumeric
+            ['', false], // empty
+        ];
     }
 }

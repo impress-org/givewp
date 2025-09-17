@@ -9,7 +9,7 @@ use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
  * Custom currency validation rule that uses GiveWP's currency list and filter.
  * Replaces the generic stellar validation library currency rule to ensure consistency
  * with GiveWP's configured currencies and filters.
- * 
+ *
  * @unreleased
  */
 class CurrencyRule implements ValidationRule
@@ -34,7 +34,7 @@ class CurrencyRule implements ValidationRule
      * Validates that the currency code is in GiveWP's supported currency list.
      * Uses give_get_currencies_list() to get the current supported currencies
      * and provides clear error messages with valid currency options.
-     * 
+     *
      * @unreleased
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
@@ -46,7 +46,15 @@ class CurrencyRule implements ValidationRule
         // Get GiveWP's supported currencies
         $supportedCurrencies = array_keys(give_get_currencies_list());
 
-        if (!in_array($value, $supportedCurrencies, true)) {
+        // Check format first for better error messaging
+        if (is_string($value) && !$this->isValidFormat($value)) {
+            $fail(
+                sprintf(
+                    __('%s must be a valid 3-letter currency code in uppercase format (e.g., USD)', 'give'),
+                    '{field}'
+                )
+            );
+        } elseif (!in_array($value, $supportedCurrencies, true)) {
             $fail(
                 sprintf(
                     __('%s must be a valid currency. Valid currencies are: %s', 'give'),
@@ -55,5 +63,19 @@ class CurrencyRule implements ValidationRule
                 )
             );
         }
+    }
+
+    /**
+     * Checks if a currency code is in the correct ISO 4217 format.
+     * Valid format: exactly 3 uppercase alphabetic characters.
+     *
+     * @unreleased
+     *
+     * @param string $value The currency code to validate
+     * @return bool True if the format is valid, false otherwise
+     */
+    private function isValidFormat(string $value): bool
+    {
+        return strlen($value) === 3 && ctype_alpha($value) && $value === strtoupper($value);
     }
 }
