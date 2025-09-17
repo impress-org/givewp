@@ -3,8 +3,7 @@
     font-size: 1rem;
     font-weight: 500;
     line-height: 1.5;
-    padding-block: var(--givewp-spacing-2) var(--givewp-spacing-10);
-    padding-inline: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-6) var(--givewp-spacing-2) calc(var(--givewp-spacing-6) + var(--givewp-spacing-5));
     position: relative;
     vertical-align: middle;
 
@@ -28,23 +27,22 @@
     input[type="checkbox"] {
         --transition: 0.2s ease;
 
-        border: solid 1px var(--givewp-neutral-200);
-        border-radius: 0.225rem;
-        height: 1.333rem;
-        margin: 0;
-        padding: 0;
-        transform: translateY(-1px);
-        width: 1.333rem;
-
         appearance: none;
         background-color: transparent;
+        border-radius: 0.225rem;
+        border: solid 1px var(--givewp-neutral-200);
         color: #2271b1;
         cursor: pointer;
         flex-shrink: 0;
         font-size: inherit;
+        height: 1.333rem;
         margin: 0;
+        margin: 0;
+        padding: 0;
+        transform: translateY(-1px);
         transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
         vertical-align: middle;
+        width: 1.333rem;
 
         &::before {
             content: none;

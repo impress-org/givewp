@@ -1,13 +1,3 @@
-.productRecommendationRow {
-    > td {
-        padding: 0;
-    }
-
-    + tr > * {
-        padding-top: var(--givewp-spacing-6);
-    }
-}
-
 .productRecommendation {
     align-items: center;
     background: var(--givewp-neutral-50);

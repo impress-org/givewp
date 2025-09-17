@@ -28,12 +28,11 @@ tr.duplicated {
     align-items: center;
     column-gap: 1.25rem;
     word-break: keep-all;
-    transition: opacity 150ms ease-in-out;
     font-size: 0.875rem;
     font-weight: 600;
     inset-block-end: initial;
     line-height: 1.29;
-    margin-top: 0.875rem;
+    margin-top: var(--givewp-spacing-3);
 
     > * {
         position: relative;
@@ -69,8 +68,14 @@ tr.duplicated {
 .tableRow {
     background-color: var(--givewp-shades-white);
 
-    &:hover .tableRowActions {
-        opacity: 1;
+    &:hover {
+        > * {
+            background-color: var(--givewp-grey-5);
+        }
+
+        .tableRowActions {
+            opacity: 1;
+        }
     }
 
     & .start {
@@ -83,12 +88,6 @@ tr.duplicated {
 
     & .end {
         text-align: end;
-    }
-
-    &:first-child {
-        > * {
-            padding-top: var(--givewp-spacing-6);
-        }
     }
 }
 
