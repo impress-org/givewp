@@ -271,7 +271,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     };
 
     const TestModeFilter = () => (
-        <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} initialChecked={testMode} />
+        <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
     );
 
     const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;

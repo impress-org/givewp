@@ -1,25 +1,29 @@
-import {useState} from 'react';
 import styles from './style.module.scss';
 import cx from 'classnames';
 
 interface ToggleSwitchProps {
-    onChange: React.Dispatch<React.SetStateAction<boolean>>;
-    initialChecked: boolean;
+    onChange: (checked: boolean) => void;
+    checked: boolean;
     ariaLabel?: string;
 }
 
-const ToggleSwitch = ({ariaLabel, initialChecked, onChange}: ToggleSwitchProps) => {
-    const [checked, setChecked] = useState(initialChecked);
-
+/**
+ * @unreleased Remove checkbox to control state visibility.
+ * @since 2.24.0
+ */
+const ToggleSwitch = ({ariaLabel, checked, onChange}: ToggleSwitchProps) => {
     const handleChange = () => {
-        setChecked(state => {
-            onChange(!state);
-            return !state;
-        })
+        onChange(!checked);
     };
 
     return (
-        <button className={styles.container} onClick={handleChange}>
+        <button
+            className={styles.container}
+            onClick={handleChange}
+            role="switch"
+            aria-checked={checked}
+            aria-label={ariaLabel}
+        >
             <span className={cx(styles.switch, { [styles.checked]: checked })} />
             {ariaLabel && <span>{ariaLabel}</span>}
         </button>
