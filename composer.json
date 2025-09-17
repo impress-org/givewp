@@ -34,7 +34,8 @@
         "php-stubs/wp-cli-stubs": "^2.8",
         "yoast/phpunit-polyfills": "^4.0",
         "fakerphp/faker": "^1.24",
-        "phpstan/phpstan": "^2.1"
+        "phpstan/phpstan": "^2.1",
+        "szepeviktor/phpstan-wordpress": "^2.0"
     },
     "keywords": [
         "wordpress",
