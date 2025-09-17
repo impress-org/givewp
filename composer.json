@@ -36,8 +36,6 @@
         "fakerphp/faker": "^1.24",
         "phpstan/phpstan": "^1.11",
         "szepeviktor/phpstan-wordpress": "^1.3",
-        "php-stubs/wordpress-stubs": "^6.6",
-        "php-stubs/woocommerce-stubs": "^9.5",
         "phpstan/extension-installer": "^1.4"
     },
     "keywords": [
