@@ -36,7 +36,7 @@ services:
     class: Give\PHPStan\Query\Rules\RequireLimitBeforeFetchingRule
     arguments:
       enforceLimitForGet: false
-    excludedDirectories:
+      excludedDirectories:
         - %currentWorkingDirectory%/wp-content/plugins/give/src/Framework/Models/Model.php
     tags:
       - phpstan.rules.rule
