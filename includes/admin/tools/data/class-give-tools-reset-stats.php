@@ -177,8 +177,45 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						// Clear all Give user meta data (notices, preferences, etc.)
 						$sql[] = "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE '%give%'";
 
-						// Clear all Give cache options to ensure fresh data is displayed
-						$sql[] = "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%give_cache%'";
+						// Reset GiveWP options to default values (preserve essential ones)
+						// Essential options that must be preserved to prevent plugin deactivation issues
+						$essential_options = [
+							'give_version',                    // Plugin version - needed for upgrade detection
+							'give_completed_upgrades',         // Completed upgrade routines - prevents re-running
+							'give_default_api_version',        // API version - needed for API functionality
+							'_give_table_check',              // Database table check - prevents table recreation
+							'give_temp_reset_ids',            // Temporary reset data used by this class
+						];
+
+						// Create SQL placeholder string for the essential options list
+						$essential_options_placeholder = implode( "','", $essential_options );
+						// Delete all GiveWP options except the essential ones to prevent deactivation issues
+						$sql[] = "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%give%' AND option_name NOT IN ('{$essential_options_placeholder}')";
+
+						// Delete GiveWP created pages (success, failure, history pages)
+						// Get page IDs from give_settings before deleting the option
+						$give_settings = get_option('give_settings', []);
+						$page_ids = [];
+						if (isset($give_settings['success_page'])) {
+							$page_ids[] = (int)$give_settings['success_page'];
+						}
+						if (isset($give_settings['failure_page'])) {
+							$page_ids[] = (int)$give_settings['failure_page'];
+						}
+						if (isset($give_settings['history_page'])) {
+							$page_ids[] = (int)$give_settings['history_page'];
+						}
+
+						if (!empty($page_ids)) {
+							$page_ids_str = implode(',', $page_ids);
+							$sql[] = "DELETE FROM {$wpdb->posts} WHERE post_type = 'page' AND id IN ($page_ids_str)";
+							$sql[] = "DELETE FROM {$wpdb->postmeta} WHERE post_id IN ($page_ids_str)";
+						}
+
+						// Reset give_settings to default values (force all default settings)
+						$default_settings = give_get_default_settings();
+						$default_settings_serialized = maybe_serialize( $default_settings );
+						$sql[] = $wpdb->prepare( "INSERT INTO {$wpdb->options} (option_name, option_value, autoload) VALUES ('give_settings', %s, 'off') ON DUPLICATE KEY UPDATE option_value = VALUES(option_value)", $default_settings_serialized );
 
 						// Clear Action Scheduler data related to GiveWP
 						$sql[] = "DELETE FROM {$wpdb->prefix}actionscheduler_actions WHERE hook LIKE '%give%'";
