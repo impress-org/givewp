@@ -226,7 +226,7 @@ const rotatingRecommendation = (
 const statsConfig: Record<string, StatConfig> = {
     donationsCount: { label: __('Total Donations', 'give')},
     oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
-    recurringDonationsCount: { 
+    recurringDonationsCount: {
         label: __('Recurring Donations', 'give'),
         upgrade: !window.GiveDonations.recurringDonations && {
             href: ' https://docs.givewp.com/recurring-stat',
@@ -235,6 +235,10 @@ const statsConfig: Record<string, StatConfig> = {
     },
 };
 
+/**
+ * @unreleased Update button class names and add aria attributes.
+ * @since 2.24.0
+ */
 export default function DonationsListTable() {
     return (
         <ListTablePage
@@ -254,6 +258,7 @@ export default function DonationsListTable() {
                 <a
                     className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
                     href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
+                    aria-label={__('Create a new donation record', 'give')}
                 >
                     {__('New donation', 'give')}
                 </a>
@@ -262,13 +267,15 @@ export default function DonationsListTable() {
                     className={`button button-tertiary ${tableStyles.secondaryActionButton} ${styles.manualDonationsNotice}`}
                     href={'https://docs.givewp.com/enterdonation'}
                     target={'_blank'}
+                    aria-label={__('Learn about Manual Donations add-on (opens in new tab)', 'give')}
+                    aria-describedby="manual-donations-tooltip"
                 >
                     <span className={styles.manualDonationsAddOn}>{__('ADD-ON', 'give')}</span>
                     {__('Enter donations', 'give')}
-                    <span className={styles.manualDonationsMessage}>
+                    <span id="manual-donations-tooltip" className={styles.manualDonationsMessage}>
                         <img
                             src={`${window.GiveDonations.pluginUrl}build/assets/dist/images/admin/triangle-tip.svg`}
-                            alt={'manual donations'}
+                            alt={__('Information', 'give')}
                         />{' '}
                         {__(
                             'Need to add in a record for a donation received elsewhere, or reconcile with the payment gateway? Add donation records with the Manual Donations add-on!',
@@ -280,10 +287,15 @@ export default function DonationsListTable() {
             <a
                 className={`button button-primary ${tableStyles.primaryActionButton}`}
                 href={` ${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations`}
+                aria-label={__('Import donations from external source', 'give')}
             >
                 {__('Import donations', 'give')}
             </a>
-            <button className={`button button-tertiary ${tableStyles.secondaryActionButton}`} onClick={showLegacyDonations}>
+            <button
+                className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
+                onClick={showLegacyDonations}
+                aria-label={__('Switch to the legacy donations table view', 'give')}
+            >
                 {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>
