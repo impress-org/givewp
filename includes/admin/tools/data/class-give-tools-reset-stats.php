@@ -67,7 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @unreleased Added deletion logic for campaigns, subscriptions, events, logs, revenue, usermeta, cached options, etc.
+	 * @unreleased Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
@@ -160,6 +160,10 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						// Delete campaigns and related data
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_campaign_forms";
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_campaigns";
+
+						// Delete GiveWP Campaign Pages and their meta data
+						$sql[] = "DELETE FROM {$wpdb->posts} WHERE post_type = 'page' AND id IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'give_campaign_id')";
+						$sql[] = "DELETE FROM {$wpdb->postmeta} WHERE meta_key = 'give_campaign_id'";
 
 						// Delete subscriptions and related data
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_subscriptionmeta";
@@ -295,7 +299,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			$this->delete_data( 'give_temp_reset_ids' );
 
 			$this->done = true;
-			$this->message = esc_html__( 'Successfully reset data for campaigns, donation forms, subscriptions, events, revenue, donation counts, logs, options, etc.', 'give' );
+			$this->message = esc_html__( 'Successfully reset data for campaigns, campaign pages, donation forms, subscriptions, events, revenue, donation counts, logs, etc.', 'give' );
 
 			return false;
 		}
@@ -367,6 +371,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 					'type' => 'customer',
 				];
 			}
+
 
 			// Allow filtering of items to remove with an unassociative array for each item
 			// The array contains the unique ID of the item, and a 'type' for you to use in the execution of the get_data method
