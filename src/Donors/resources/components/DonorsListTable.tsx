@@ -117,7 +117,7 @@ export default function DonorsListTable() {
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={recommendation}
         >
-            <button className={styles.addFormButton} onClick={showLegacyDonors}>
+            <button className={`button button-tertiary ${styles.secondaryActionButton}`} onClick={showLegacyDonors}>
                 {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>

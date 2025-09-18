@@ -245,23 +245,27 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
             disabled={!data}
             totalItems={data ? parseInt(data.totalItems) : -1}
             setPage={setPage}
-            singleName={singleName}
-            pluralName={pluralName}
+            singleName={__('result', 'give')}
+            pluralName={__('results', 'give')}
         />
     );
 
     const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => {
         return (
             <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
-                <BulkActionSelect
-                    selectedState={[selectedAction, setSelectedAction]}
-                    parameters={parameters}
-                    data={data}
-                    bulkActions={bulkActions}
-                    showModal={openBulkActionModal}
-                />
-                {PageActionsTop && testModeFilter && <TestModeFilter />}
-                {!PageActionsTop && page && setPage && showPagination()}
+                {PageActionsTop ? (
+                    <BulkActionSelect
+                        selectedState={[selectedAction, setSelectedAction]}
+                        parameters={parameters}
+                        data={data}
+                        bulkActions={bulkActions}
+                        showModal={openBulkActionModal}
+                    />
+            ) : (
+                    <>
+                        {page && setPage && showPagination()}
+                    </>
+                )}
             </div>
         );
     };
@@ -270,63 +274,55 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
         <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
     );
 
-    const TestModeBadge = () => <span>{testModeFilter?.text}</span>;
+    const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;
+
+    const SearchSection = () => (
+        <section role="search" className={styles.searchContainer}>
+            <div className={styles.flexRow}>
+                <PageActions PageActionsTop />
+            </div>
+            <div className={styles.flexRow}>
+                {filterSettings.map((filter) => (
+                    <Filter
+                        key={filter.name}
+                        value={filters[filter.name]}
+                        filter={filter}
+                        onChange={handleFilterChange}
+                        debouncedOnChange={handleDebouncedFilterChange}
+                    />
+                ))}
+            </div>
+        </section>
+    );
 
     return (
         <>
             <article className={styles.page}>
-                {contentMode ? (
-                    <>
-                        <section role="search" className={styles.searchContainer}>
-                            <div className={styles.flexRow}>
-                                <PageActions PageActionsTop />
-                            </div>
-                            <div className={styles.flexRow}>
-                                {filterSettings.map((filter) => (
-                                    <Filter
-                                        key={filter.name}
-                                        value={filters[filter.name]}
-                                        filter={filter}
-                                        onChange={handleFilterChange}
-                                        debouncedOnChange={handleDebouncedFilterChange}
-                                    />
-                                ))}
-                            </div>
-                        </section>
-                    </>
-                ) : (
+                {!contentMode && (
                     <>
                         <header className={styles.pageHeader}>
                             <div className={styles.flexRow}>
-                                <GiveIcon size={'1.875rem'} />
+                                <GiveIcon size={'2.25rem'} />
                                 <h1 className={styles.pageTitle}>{title}</h1>
                                 {testModeFilter && testMode && <TestModeBadge />}
                             </div>
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
-                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
+
+                        <div className={cx('wp-header-end', 'hidden')} />
+
                         {banner && <section role="banner">{banner()}</section>}
-                        <section role="search" className={styles.filtersContainer}>
-                            <div className={styles.flexRow}>
-                                <PageActions PageActionsTop />
+                        {testModeFilter && (
+                            <div className={styles.filtersRow}>
+                                <TestModeFilter />
                             </div>
-                            <div className={styles.flexRow}>
-                                {filterSettings.map((filter) => (
-                                    <Filter
-                                        key={filter.name}
-                                        value={filters[filter.name]}
-                                        filter={filter}
-                                        onChange={handleFilterChange}
-                                        debouncedOnChange={handleDebouncedFilterChange}
-                                    />
-                                ))}
-                            </div>
-                        </section>
+                        )}
+                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
                     </>
                 )}
 
-                <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
+                    <SearchSection />
                     {contentMode && children ? <>{children}</> : <></>}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
