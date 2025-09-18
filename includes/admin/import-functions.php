@@ -43,6 +43,33 @@ function give_import_donation_report_reset() {
 }
 
 /**
+ * Get the Import report of subscriptions
+ *
+ * @since @unreleased
+ */
+function give_import_subscription_report() {
+    return get_option( 'give_import_subscription_report', [] );
+}
+
+/**
+ * Update the Import report of subscriptions
+ *
+ * @since @unreleased
+ */
+function give_import_subscription_report_update( $value = [] ) {
+    update_option( 'give_import_subscription_report', $value, false );
+}
+
+/**
+ * Delete the Import report of subscriptions
+ *
+ * @since @unreleased
+ */
+function give_import_subscription_report_reset() {
+    update_option( 'give_import_subscription_report', [], false );
+}
+
+/**
  * Give get form data from csv if not then create and form and return the form value.
  *
  * @since      1.8.13.
@@ -567,6 +594,36 @@ function give_import_donation_form_options() {
 }
 
 /**
+ * Return the options related to subscription import mapping (model properties)
+ *
+ * Keys intentionally match Subscription model properties and related fields
+ *
+ * @since @unreleased
+ */
+function give_import_subscription_options() {
+    return (array) apply_filters(
+        'give_import_subscription_options',
+        [
+            'donationFormId'        => [ __( 'Donation Form ID', 'give' ), __( 'Form ID', 'give' ) ],
+            'donorId'               => [ __( 'Donor ID', 'give' ) ],
+            'period'                => [ __( 'Period', 'give' ), __( 'Subscription Period', 'give' ) ],
+            'frequency'             => [ __( 'Frequency', 'give' ) ],
+            'installments'          => [ __( 'Installments', 'give' ) ],
+            'amount'                => [ __( 'Amount', 'give' ), __( 'Recurring Amount', 'give' ) ],
+            'feeAmountRecovered'    => [ __( 'Recovered Fee Amount', 'give' ) ],
+            'status'                => [ __( 'Status', 'give' ) ],
+            'mode'                  => [ __( 'Mode', 'give' ), __( 'Payment Mode', 'give' ) ],
+            'transactionId'         => [ __( 'Transaction ID', 'give' ) ],
+            'gatewayId'             => [ __( 'Gateway ID', 'give' ), __( 'Gateway', 'give' ) ],
+            'gatewaySubscriptionId' => [ __( 'Gateway Subscription ID', 'give' ) ],
+            'createdAt'             => [ __( 'Created At', 'give' ), __( 'Start Date', 'give' ) ],
+            'renewsAt'              => [ __( 'Renews At', 'give' ), __( 'Next Renewal Date', 'give' ) ],
+            'currency'              => [ __( 'Currency', 'give' ) ],
+        ]
+    );
+}
+
+/**
  * Import CSV in DB
  *
  * @param int    $file_id   CSV id.
@@ -633,6 +690,23 @@ function give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter ) {
  */
 function give_get_file_data_by_file_id( $file_id ) {
 	return get_attached_file( $file_id );
+}
+
+/**
+ * Import CSV (subscriptions) in memory
+ *
+ * @param int    $file_id
+ * @param int    $start
+ * @param int    $end
+ * @param string $delimiter
+ *
+ * @return array
+ * @since @unreleased
+ */
+function give_get_subscription_data_from_csv( $file_id, $start, $end, $delimiter = 'csv' ) {
+    $delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
+    $file_dir = give_get_file_data_by_file_id( $file_id );
+    return give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter );
 }
 
 
@@ -938,6 +1012,105 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 	give_import_donation_report_update( $report );
 
 	return $payment_id;
+}
+
+/**
+ * Add import Subscriptions from CSV to database using Subscription model
+ *
+ * @param array $raw_key Setup by user at step 2 (mapped property keys)
+ * @param array $row_data Row values
+ * @param array $main_key First row from the CSV
+ * @param array $import_setting Global settings
+ *
+ * @return bool|int Subscription id or true on dry-run; false on failure
+ * @since @unreleased
+ */
+function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [], $import_setting = [] ) {
+    $data = array_combine( $raw_key, $row_data );
+
+    $report = give_import_subscription_report();
+    $dry_run = isset( $import_setting['dry_run'] ) ? (bool) $import_setting['dry_run'] : false;
+
+    // Required fields
+    $required = [ 'donationFormId', 'donorId', 'period', 'frequency', 'amount', 'status' ];
+    foreach ( $required as $key ) {
+        if ( empty( $data[ $key ] ) && '0' !== (string) ( $data[ $key ] ?? '' ) ) {
+            $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
+            give_import_subscription_report_update( $report );
+            return false;
+        }
+    }
+
+    // Build attributes for Subscription model
+    try {
+        $currency = ! empty( $data['currency'] ) && array_key_exists( $data['currency'], give_get_currencies_list() ) ? $data['currency'] : give_get_currency();
+
+        $attributes = [];
+        $attributes['donationFormId'] = (int) $data['donationFormId'];
+        $attributes['donorId'] = (int) $data['donorId'];
+        $attributes['period'] = new \Give\Subscriptions\ValueObjects\SubscriptionPeriod( strtolower( trim( (string) $data['period'] ) ) );
+        $attributes['frequency'] = (int) $data['frequency'];
+        $attributes['installments'] = isset( $data['installments'] ) ? (int) $data['installments'] : 0;
+        $attributes['transactionId'] = isset( $data['transactionId'] ) ? (string) $data['transactionId'] : '';
+
+        // Mode
+        if ( ! empty( $data['mode'] ) ) {
+            $mode = strtolower( (string) $data['mode'] );
+        } else {
+            $mode = ( isset( $import_setting['mode'] ) && $import_setting['mode'] ) ? 'test' : ( give_is_test_mode() ? 'test' : 'live' );
+        }
+        $attributes['mode'] = new \Give\Subscriptions\ValueObjects\SubscriptionMode( $mode );
+
+        // Amounts
+        $amountDecimal = is_string( $data['amount'] ) ? preg_replace( '/[\$,]/', '', $data['amount'] ) : $data['amount'];
+        $attributes['amount'] = \Give\Framework\Support\ValueObjects\Money::fromDecimal( $amountDecimal, $currency );
+
+        if ( isset( $data['feeAmountRecovered'] ) && $data['feeAmountRecovered'] !== '' ) {
+            $feeDecimal = is_string( $data['feeAmountRecovered'] ) ? preg_replace( '/[\$,]/', '', $data['feeAmountRecovered'] ) : $data['feeAmountRecovered'];
+            $attributes['feeAmountRecovered'] = \Give\Framework\Support\ValueObjects\Money::fromDecimal( $feeDecimal, $currency );
+        }
+
+        // Status
+        $attributes['status'] = new \Give\Subscriptions\ValueObjects\SubscriptionStatus( strtolower( trim( (string) $data['status'] ) ) );
+
+        if ( ! empty( $data['gatewayId'] ) ) {
+            $attributes['gatewayId'] = (string) $data['gatewayId'];
+        }
+        if ( ! empty( $data['gatewaySubscriptionId'] ) ) {
+            $attributes['gatewaySubscriptionId'] = (string) $data['gatewaySubscriptionId'];
+        }
+
+        // Dates
+        if ( ! empty( $data['createdAt'] ) ) {
+            $attributes['createdAt'] = new \DateTime( (string) $data['createdAt'] );
+        }
+        if ( ! empty( $data['renewsAt'] ) ) {
+            $attributes['renewsAt'] = new \DateTime( (string) $data['renewsAt'] );
+        }
+
+        if ( $dry_run ) {
+            $report['create_subscription'] = ( ! empty( $report['create_subscription'] ) ? ( absint( $report['create_subscription'] ) + 1 ) : 1 );
+            give_import_subscription_report_update( $report );
+            return true;
+        }
+
+        $subscription = \Give\Subscriptions\Models\Subscription::create( $attributes );
+
+        if ( $subscription && $subscription->id ) {
+            $report['create_subscription'] = ( ! empty( $report['create_subscription'] ) ? ( absint( $report['create_subscription'] ) + 1 ) : 1 );
+            give_import_subscription_report_update( $report );
+            return (int) $subscription->id;
+        }
+
+        $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
+        give_import_subscription_report_update( $report );
+        return false;
+
+    } catch ( \Throwable $e ) {
+        $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
+        give_import_subscription_report_update( $report );
+        return false;
+    }
 }
 
 /**

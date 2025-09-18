@@ -391,6 +391,8 @@ class Give_Scripts {
 			'error_message'                     => __( 'Something went wrong kindly try again!', 'give' ),
 			'give_donation_import'              => 'give_donation_import',
 			'give_donation_import_nonce'        => wp_create_nonce('give_donation_import'),
+			'give_subscription_import'          => 'give_subscription_import',
+			'give_subscription_import_nonce'    => wp_create_nonce('give_subscription_import'),
 			'core_settings_import'              => 'give_core_settings_import',
             'give_insert_payment_note_nonce'    => wp_create_nonce('give_insert_payment_note'),
             'give_delete_payment_note_nonce'    => wp_create_nonce('give_delete_payment_note'),

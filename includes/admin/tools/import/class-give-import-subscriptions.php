@@ -1,0 +1,843 @@
+<?php
+/**
+ * Subscriptions Import Class
+ *
+ * @package     Give
+ * @subpackage  Classes/Give_Import_Subscriptions
+ * @copyright   Copyright (c) GiveWP
+ * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since       @unreleased
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly
+}
+
+if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
+
+    /**
+     * Give_Import_Subscriptions.
+     *
+     * @since @unreleased
+     */
+    final class Give_Import_Subscriptions {
+
+        /**
+         * Importer type
+         *
+         * @var string
+         */
+        private $importer_type = 'import_subscriptions';
+
+        /**
+         * Instance.
+         *
+         * @var static
+         */
+        private static $instance;
+
+        /**
+         * Importing rows per page.
+         *
+         * @var int
+         */
+        public static $per_page = 25;
+
+        /**
+         * CSV valid redirect URL
+         *
+         * @var string|bool
+         */
+        public $is_csv_valid = false;
+
+        /**
+         * Singleton
+         */
+        private function __construct() {
+            self::$per_page = ! empty( $_GET['per_page'] ) ? absint( $_GET['per_page'] ) : self::$per_page;
+        }
+
+        /**
+         * Get instance
+         *
+         * @return static
+         */
+        public static function get_instance() {
+            if ( null === static::$instance ) {
+                self::$instance = new static();
+            }
+
+            return self::$instance;
+        }
+
+        /**
+         * Setup
+         */
+        public function setup() {
+            $this->setup_hooks();
+        }
+
+        /**
+         * Setup Hooks.
+         */
+        private function setup_hooks() {
+            if ( ! $this->is_subscriptions_import_page() ) {
+                return;
+            }
+
+            // Do not render main import tools page.
+            remove_action( 'give_admin_field_tools_import', array( 'Give_Settings_Import', 'render_import_field' ) );
+
+            // Render subscriptions import page
+            add_action( 'give_admin_field_tools_import', array( $this, 'render_page' ) );
+
+            // Print the HTML.
+            add_action( 'give_tools_import_subscriptions_form_start', array( $this, 'html' ), 10 );
+
+            // Handle submit
+            add_action( 'give-tools_save_import', array( $this, 'save' ) );
+
+            add_action( 'give-tools_update_notices', array( $this, 'update_notices' ), 11, 1 );
+
+            // Used to add submit button.
+            add_action( 'give_tools_import_subscriptions_form_end', array( $this, 'submit' ), 10 );
+        }
+
+        /**
+         * Update notice
+         *
+         * @param $messages
+         *
+         * @return mixed
+         */
+        public function update_notices( $messages ) {
+            if ( ! empty( $_GET['tab'] ) && 'import' === give_clean( $_GET['tab'] ) ) {
+                unset( $messages['give-setting-updated'] );
+            }
+
+            return $messages;
+        }
+
+        /**
+         * Print submit and nonce button.
+         */
+        public function submit() {
+            wp_nonce_field( 'give-save-settings', '_give-save-settings' );
+            ?>
+            <input type="hidden" class="import-step" id="import-step" name="step"
+                   value="<?php echo esc_attr($this->get_step()); ?>"/>
+            <input type="hidden" class="importer-type" value="<?php echo esc_attr($this->importer_type); ?>"/>
+            <?php
+        }
+
+        /**
+         * Print the HTML for importer.
+         */
+        public function html() {
+            $step = $this->get_step();
+
+            // Show progress.
+            $this->render_progress();
+            ?>
+            <section>
+                <table
+                        class="widefat export-options-table give-table <?php echo esc_attr("step-{$step}"); ?> <?php echo esc_attr(( 1 === $step && ! empty( $this->is_csv_valid ) ? 'give-hidden' : '' )); ?>  "
+                        id="<?php echo esc_attr("step-{$step}"); ?>">
+                    <tbody>
+                    <?php
+                    switch ( $step ) {
+                        case 1:
+                            $this->render_media_csv();
+                            break;
+
+                        case 2:
+                            $this->render_dropdown();
+                            break;
+
+                        case 3:
+                            $this->start_import();
+                            break;
+
+                        case 4:
+                            $this->import_success();
+                    }
+                    if ( false === $this->check_for_dropdown_or_import() ) {
+                        ?>
+                        <tr valign="top">
+                            <th>
+                                <input type="submit"
+                                       class="button button-primary button-large button-secondary <?php echo esc_attr("step-{$step}"); ?>"
+                                       id="recount-stats-submit"
+                                       value="
+                                           <?php
+                                            echo esc_attr(apply_filters( 'give_import_subscription_submit_button_text', __( 'Submit', 'give' ) ));
+                                            ?>
+                                            "/>
+                            </th>
+                            <th>
+                                <?php
+                                do_action( 'give_import_subscription_submit_button' );
+                                ?>
+                            </th>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                    </tbody>
+                </table>
+            </section>
+            <?php
+        }
+
+        /**
+         * Show success notice
+         */
+        public function import_success() {
+            check_admin_referer('give_subscription_import_success');
+
+            $delete_csv = ( ! empty( $_GET['delete_csv'] ) ? absint( $_GET['delete_csv'] ) : false );
+            $csv        = ( ! empty( $_GET['csv'] ) ? absint( $_GET['csv'] ) : false );
+            if ( ! empty( $delete_csv ) && ! empty( $csv ) ) {
+                wp_delete_attachment( $csv, true );
+            }
+
+            $report = give_import_subscription_report();
+
+            $total  = (int) $_GET['total'];
+            -- $total;
+            $success = (bool) $_GET['success'];
+            $dry_run = empty( $_GET['dry_run'] ) ? 0 : absint( $_GET['dry_run'] );
+            ?>
+            <tr valign="top" class="give-import-dropdown">
+                <th colspan="2">
+                    <h2>
+                        <?php
+                        if ( $success ) {
+                            if ( $dry_run ) {
+                                printf(
+                                    _n( 'Dry run import complete! %s row processed', 'Dry run import complete! %s rows processed', $total, 'give' ),
+                                    "<strong>{$total}</strong>"
+                                );
+                            } else {
+                                printf(
+                                    _n( 'Import complete! %s row processed', 'Import complete! %s rows processed', $total, 'give' ),
+                                    "<strong>{$total}</strong>"
+                                );
+                            }
+                        } else {
+                            printf(
+                                _n( 'Failed to import %s row', 'Failed to import %s rows', $total, 'give' ),
+                                "<strong>{$total}</strong>"
+                            );
+                        }
+                        ?>
+                    </h2>
+
+                    <?php
+                    $text      = __( 'Import Subscriptions', 'give' );
+                    $query_arg = array(
+                        'post_type' => 'give_forms',
+                        'page'      => 'give-tools',
+                        'tab'       => 'import',
+                    );
+                    if ( $success ) {
+                        if ( $dry_run ) {
+                            $query_arg = array(
+                                'post_type'     => 'give_forms',
+                                'page'          => 'give-tools',
+                                'tab'           => 'import',
+                                'importer-type' => 'import_subscriptions',
+                            );
+                            $text = __( 'Start Import', 'give' );
+                        } else {
+                            $query_arg = array(
+                                'post_type' => 'give_forms',
+                                'page'      => 'give-subscriptions',
+                            );
+                            $text      = __( 'View Subscriptions', 'give' );
+                        }
+                    }
+
+                    if ( ! empty( $report ) ) {
+                        if ( isset( $report['create_subscription'] ) ) {
+                            echo '<p>' . sprintf( _n( '%s subscription created', '%s subscriptions created', (int) $report['create_subscription'], 'give' ), (int) $report['create_subscription'] ) . '</p>';
+                        }
+                        if ( isset( $report['failed_subscription'] ) ) {
+                            echo '<p>' . sprintf( _n( '%s subscription failed', '%s subscriptions failed', (int) $report['failed_subscription'], 'give' ), (int) $report['failed_subscription'] ) . '</p>';
+                        }
+                    }
+                    ?>
+
+                    <p>
+                        <a class="button button-large button-secondary"
+                           href="<?php echo esc_url( add_query_arg( $query_arg, admin_url( 'edit.php' ) ) ); ?>"><?php echo $text; ?></a>
+                    </p>
+                </th>
+            </tr>
+            <?php
+        }
+
+        /**
+         * Start Import
+         */
+        public function start_import() {
+            give_import_subscription_report_reset();
+
+            $csv         = absint( $_REQUEST['csv'] );
+            $delimiter   = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' );
+            $index_start = 1;
+            $next        = true;
+            $total       = self::get_csv_total( $csv );
+            if ( self::$per_page < $total ) {
+                $total_ajax = ceil( $total / self::$per_page );
+                $index_end  = self::$per_page;
+            } else {
+                $total_ajax = 1;
+                $index_end  = $total;
+                $next       = false;
+            }
+            $current_percentage = 100 / ( $total_ajax + 1 );
+
+            ?>
+            <tr valign="top" class="give-import-dropdown">
+                <th colspan="2">
+                    <h2 id="give-import-title"><?php _e( 'Importing', 'give' ); ?></h2>
+                    <p class="give-field-description"><?php _e( 'Your subscriptions are now being imported...', 'give' ); ?></p>
+                </th>
+            </tr>
+
+            <tr valign="top" class="give-import-dropdown">
+                <th colspan="2">
+                    <span class="spinner is-active"></span>
+                    <div class="give-progress"
+                         data-current="1"
+                         data-total_ajax="<?php echo esc_attr(absint( $total_ajax )); ?>"
+                         data-start="<?php echo esc_attr(absint( $index_start )); ?>"
+                         data-end="<?php echo esc_attr(absint( $index_end )); ?>"
+                         data-next="<?php echo esc_attr(absint( $next )); ?>"
+                         data-total="<?php echo esc_attr(absint( $total )); ?>"
+                         data-per_page="<?php echo esc_attr(absint( self::$per_page )); ?>">
+
+                        <div style="width: <?php echo esc_attr((float) $current_percentage); ?>%"></div>
+                    </div>
+                    <input type="hidden" value="3" name="step">
+                    <input type="hidden" value='<?php echo esc_attr( maybe_serialize( $_REQUEST['mapto'] ) ); ?>' name="mapto" class="mapto">
+                    <input type="hidden" value="<?php echo esc_attr($csv); ?>" name="csv" class="csv">
+                    <input type="hidden" value="<?php echo esc_attr( $_REQUEST['mode'] ); ?>" name="mode" class="mode">
+                    <input type="hidden" value="<?php echo esc_attr( $_REQUEST['delete_csv'] ); ?>" name="delete_csv" class="delete_csv">
+                    <input type="hidden" value="<?php echo esc_attr( $delimiter ); ?>" name="delimiter">
+                    <input type="hidden" value="<?php echo esc_attr(absint( $_REQUEST['dry_run']) ); ?>" name="dry_run">
+                    <input type="hidden" value='<?php echo esc_attr( maybe_serialize( self::get_importer( $csv, 0, $delimiter ) ) ); ?>' name="main_key" class="main_key">
+                </th>
+            </tr>
+            <?php
+        }
+
+        /**
+         * Validate required mapped fields
+         */
+        public function check_for_dropdown_or_import() {
+            $return = true;
+            if ( isset( $_REQUEST['mapto'] ) ) {
+                $mapto = (array) $_REQUEST['mapto'];
+                $required = array( 'donationFormId', 'donorId', 'period', 'frequency', 'amount', 'status' );
+                foreach ( $required as $key ) {
+                    if ( false === in_array( $key, $mapto ) ) {
+                        Give_Admin_Settings::add_error( 'give-import-csv-subscriptions', sprintf( __( 'A column must be mapped to "%s".', 'give' ), $key ) );
+                        $return = false;
+                    }
+                }
+            } else {
+                $return = false;
+            }
+
+            return $return;
+        }
+
+        /**
+         * Print the Dropdown option for CSV.
+         */
+        public function render_dropdown() {
+            if (!$this->is_nonce_valid()) {
+                Give_Admin_Settings::add_error( 'give-import-csv', __( 'Something went wrong.', 'give' ) );
+                ?>
+                <input type="hidden" name="csv_not_valid" class="csv_not_valid" value="<?php echo esc_attr(give_import_page_url()); ?>"/>
+                <?php
+                wp_die();
+            }
+
+            $csv       = (int) $_GET['csv'];
+            $delimiter = ( ! empty( $_GET['delimiter'] ) ? give_clean( $_GET['delimiter'] ) : 'csv' );
+
+            if ( ! $this->is_valid_csv( $csv ) ) {
+                $url = give_import_page_url();
+                ?>
+                <input type="hidden" name="csv_not_valid" class="csv_not_valid" value="<?php echo esc_attr($url); ?>"/>
+                <?php
+            } else {
+                ?>
+                <tr valign="top" class="give-import-dropdown">
+                    <th colspan="2">
+                        <h2 id="give-import-title"><?php _e( 'Map CSV fields to subscriptions', 'give' ); ?></h2>
+
+                        <p class="give-import-donation-required-fields-title"><?php _e( 'Required Fields', 'give' ); ?></p>
+
+                        <p class="give-field-description"><?php _e( 'These fields are required for the import to be submitted', 'give' ); ?></p>
+
+                        <ul class="give-import-subscription-required-fields">
+                            <li class="give-import-subscription-required-donorId" title="Please configure all required fields to start the import process.">
+                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+                                <span class="give-import-donation-required-text"><?php _e( 'Donor ID', 'give' ); ?></span>
+                            </li>
+                            <li class="give-import-subscription-required-donationFormId" title="Please configure all required fields to start the import process.">
+                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+                                <span class="give-import-donation-required-text"><?php _e( 'Form ID', 'give' ); ?></span>
+                            </li>
+                            <li class="give-import-subscription-required-period" title="Please configure all required fields to start the import process.">
+                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+                                <span class="give-import-donation-required-text"><?php _e( 'Period', 'give' ); ?></span>
+                            </li>
+                            <li class="give-import-subscription-required-frequency" title="Please configure all required fields to start the import process.">
+                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+                                <span class="give-import-donation-required-text"><?php _e( 'Frequency', 'give' ); ?></span>
+                            </li>
+                            <li class="give-import-subscription-required-amount" title="Please configure all required fields to start the import process.">
+                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+                                <span class="give-import-donation-required-text"><?php _e( 'Amount', 'give' ); ?></span>
+                            </li>
+                            <li class="give-import-subscription-required-status" title="Please configure all required fields to start the import process.">
+                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
+                                <span class="give-import-donation-required-text"><?php _e( 'Status', 'give' ); ?></span>
+                            </li>
+                        </ul>
+
+                        <p class="give-field-description"><?php _e( 'Select fields from your CSV file to map against subscription fields or to ignore during import.', 'give' ); ?></p>
+                    </th>
+                </tr>
+
+                <tr valign="top" class="give-import-dropdown">
+                    <th><b><?php _e( 'Column name', 'give' ); ?></b></th>
+                    <th><b><?php _e( 'Map to field', 'give' ); ?></b></th>
+                </tr>
+
+                <?php
+                $selectedOptions = [];
+                $raw_key = $this->get_importer( $csv, 0, $delimiter );
+                $mapto   = (array) ( isset( $_REQUEST['mapto'] ) ? $_REQUEST['mapto'] : array() );
+
+                foreach ( $raw_key as $index => $value ) {
+                    ?>
+                    <tr valign="middle" class="give-import-option">
+                        <th><?php echo esc_html($value); ?></th>
+                        <th>
+                            <?php $this->get_columns( $index, $value, $mapto, $selectedOptions ); ?>
+                        </th>
+                    </tr>
+                    <?php
+                }
+            }
+        }
+
+        /**
+         * Determine selected option by heuristics
+         */
+        public function selected( $option_value, $value ) {
+            $option_value = strtolower( $option_value );
+            $value        = strtolower( $value );
+
+            $selected = '';
+            if ( stristr( $value, $option_value ) ) {
+                $selected = 'selected';
+            }
+
+            return $selected;
+        }
+
+        /**
+         * Print the columns from the CSV.
+         */
+        private function get_columns( $index, $value = false, $mapto = array(), &$selectedOptions = array() ) {
+            $default       = give_import_default_options();
+            $current_mapto = (string) ( ! empty( $mapto[ $index ] ) ? $mapto[ $index ] : '' );
+            ?>
+            <select name="mapto[<?php echo esc_attr($index); ?>]">
+                <?php $this->get_dropdown_option_html( $default, $current_mapto, $value, $selectedOptions ); ?>
+
+                <optgroup label="<?php _e( 'Subscriptions', 'give' ); ?>">
+                    <?php $this->get_dropdown_option_html( give_import_subscription_options(), $current_mapto, $value, $selectedOptions ); ?>
+                </optgroup>
+            </select>
+            <?php
+        }
+
+        /**
+         * Print the option html for select in importer
+         */
+        public function get_dropdown_option_html( $options, $current_mapto, $value = false, &$selectedOptions = array() ) {
+            foreach ( $options as $option => $option_value ) {
+                $ignore = array();
+                if ( isset( $option_value['ignore'] ) && is_array( $option_value['ignore'] ) ) {
+                    $ignore = $option_value['ignore'];
+                    unset( $option_value['ignore'] );
+                }
+
+                $option_value_texts = (array) $option_value;
+                $option_text = $option_value_texts[0];
+
+                $selected = false;
+
+                if ( $current_mapto === $option && !in_array($option, $selectedOptions) ) {
+                    $selected = 'selected';
+                    $selectedOptions[] = $option;
+                } else {
+                    if ( ! in_array( $value, $ignore ) && !in_array($option, $selectedOptions) ) {
+                        foreach ( $option_value_texts as $option_value_text ) {
+                            $selected = $this->selected( $option_value_text, $value );
+                            if ( $selected ) {
+                                $selectedOptions[] = $option;
+                                break;
+                            }
+                        }
+                    }
+                }
+                ?>
+                <option value="<?php echo esc_attr($option); ?>" <?php echo esc_html($selected); ?> ><?php echo esc_html($option_text); ?></option>
+                <?php
+            }
+        }
+
+        /**
+         * Get column count of csv file.
+         */
+        public function get_csv_total( $file_id ) {
+            $total = false;
+            if ( $file_id ) {
+                $file_dir = get_attached_file( $file_id );
+                if ( $file_dir ) {
+                    $total = $this->get_csv_data_from_file_dir( $file_dir );
+                }
+            }
+
+            return $total;
+        }
+
+        /**
+         * Get data from File
+         */
+        public function get_csv_data_from_file_dir( $file_dir ) {
+            $total = false;
+            if ( $file_dir ) {
+                $file = new SplFileObject( $file_dir, 'r' );
+                $file->seek( PHP_INT_MAX );
+                $total = $file->key() + 1;
+            }
+
+            return $total;
+        }
+
+        /**
+         * Get the CSV fields title from the CSV.
+         */
+        public function get_importer( $file_id, $index = 0, $delimiter = 'csv' ) {
+            $delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
+
+            $raw_data = false;
+            $file_dir = get_attached_file( $file_id );
+            if ( $file_dir ) {
+                if ( false !== ( $handle = fopen( $file_dir, 'r' ) ) ) {
+                    $raw_data = fgetcsv( $handle, $index, $delimiter );
+                    if ( isset( $raw_data[0] ) ) {
+                        $raw_data[0] = $this->remove_utf8_bom( $raw_data[0] );
+                    }
+                }
+            }
+
+            return $raw_data;
+        }
+
+        /**
+         * Remove UTF-8 BOM signature.
+         */
+        public function remove_utf8_bom( $string ) {
+            if ( 'efbbbf' === substr( bin2hex( $string ), 0, 6 ) ) {
+                $string = substr( $string, 3 );
+            }
+
+            return $string;
+        }
+
+        /**
+         * Render progress steps
+         */
+        public function render_progress() {
+            $step = $this->get_step();
+            ?>
+            <ol class="give-progress-steps">
+                <li class="<?php echo esc_attr( 1 === $step ? 'active' : '' ); ?>">
+                    <?php _e( 'Upload CSV file', 'give' ); ?>
+                </li>
+                <li class="<?php echo esc_attr( 2 === $step ? 'active' : '' ); ?>">
+                    <?php _e( 'Column mapping', 'give' ); ?>
+                </li>
+                <li class="<?php echo esc_attr( 3 === $step ? 'active' : '' ); ?>">
+                    <?php _e( 'Import', 'give' ); ?>
+                </li>
+                <li class="<?php echo esc_attr( 4 === $step ? 'active' : '' ); ?>">
+                    <?php _e( 'Done!', 'give' ); ?>
+                </li>
+            </ol>
+            <?php
+        }
+
+        /**
+         * Will return the import step.
+         */
+        public function get_step() {
+            $step    = (int) ( isset( $_REQUEST['step'] ) ? give_clean( $_REQUEST['step'] ) : 0 );
+            $on_step = 1;
+
+            if ( empty( $step ) || 1 === $step ) {
+                $on_step = 1;
+            } elseif ( $this->check_for_dropdown_or_import() ) {
+                $on_step = 3;
+            } elseif ( 2 === $step ) {
+                $on_step = 2;
+            } elseif ( 4 === $step ) {
+                $on_step = 4;
+            }
+
+            return $on_step;
+        }
+
+        /**
+         * Render subscriptions import page
+         */
+        public function render_page() {
+            include_once GIVE_PLUGIN_DIR . 'includes/admin/tools/views/html-admin-page-import-subscriptions.php';
+        }
+
+        /**
+         * Dry Run checkbox and helper
+         */
+        public function give_import_subscription_submit_button_render_media_csv() {
+            $dry_run = isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 1;
+            ?>
+            <div>
+                <label for="dry_run">
+                    <input type="hidden" name="dry_run" value="0"/>
+                    <input type="checkbox" name="dry_run" id="dry_run" class="dry_run"
+                           value="1" <?php checked( 1, $dry_run ); ?> >
+                    <strong><?php _e( 'Dry Run', 'give' ); ?></strong>
+                </label>
+                <p class="give-field-description">
+                    <?php _e( 'Preview what the import would look like without making any changes.', 'give' ); ?>
+                </p>
+            </div>
+            <?php
+        }
+
+        /**
+         * Change submit button text on first step
+         */
+        function give_import_subscription_submit_text_render_media_csv( $text ) {
+            return __( 'Begin Import', 'give' );
+        }
+
+        /**
+         * Add CSV upload HTMl
+         */
+        public function render_media_csv() {
+            add_filter(
+                'give_import_subscription_submit_button_text',
+                array( $this, 'give_import_subscription_submit_text_render_media_csv' )
+            );
+            add_action(
+                'give_import_subscription_submit_button',
+                array( $this, 'give_import_subscription_submit_button_render_media_csv' )
+            );
+            ?>
+            <tr valign="top">
+                <th colspan="2">
+                    <h2 id="give-import-title"><?php _e( 'Import subscriptions from a CSV file', 'give' ); ?></h2>
+                    <p class="give-field-description"><?php _e( 'This tool allows you to import subscription data via a CSV file.', 'give' ); ?></p>
+                </th>
+            </tr>
+            <?php
+            $csv         = ( isset( $_POST['csv'] ) ? give_clean( $_POST['csv'] ) : '' );
+            $csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
+            $delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : 'csv' );
+            $mode        = empty( $_POST['mode'] ) ? 'disabled' : ( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? 'enabled' : 'disabled' );
+            $delete_csv  = empty( $_POST['delete_csv'] ) ? 'enabled' : ( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? 'enabled' : 'disabled' );
+
+            if ( empty( $csv_id ) || ! $this->is_valid_csv( $csv_id, $csv ) ) {
+                $csv_id = $csv = '';
+            }
+            $per_page = isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page;
+
+            $sample_file_text = sprintf(
+                '%s <a href="%s">%s</a>.',
+                __( 'Download the sample file', 'give' ),
+                esc_url( GIVE_PLUGIN_URL . 'sample-data/sample-subscriptions.csv' ),
+                __( 'here', 'give' )
+            );
+
+            $csv_description = sprintf(
+                '%1$s %2$s',
+                __( 'The file must be a Comma Separated Values (CSV) file type only.', 'give' ),
+                $sample_file_text
+            );
+
+            $settings = array(
+                array(
+                    'id'          => 'csv',
+                    'name'        => __( 'Choose a CSV file:', 'give' ),
+                    'type'        => 'file',
+                    'attributes'  => array(
+                        'editing' => 'false',
+                        'library' => 'text',
+                    ),
+                    'description' => $csv_description,
+                    'fvalue'      => 'url',
+                    'default'     => $csv,
+                ),
+                array(
+                    'id'    => 'csv_id',
+                    'type'  => 'hidden',
+                    'value' => $csv_id,
+                ),
+                array(
+                    'id'          => 'delimiter',
+                    'name'        => __( 'CSV Delimiter:', 'give' ),
+                    'description' => __( 'If your CSV uses a different delimiter (like a tab), set that here.', 'give' ),
+                    'default'     => $delimiter,
+                    'type'        => 'select',
+                    'options'     => array(
+                        'csv'                  => __( 'Comma', 'give' ),
+                        'tab-separated-values' => __( 'Tab', 'give' ),
+                    ),
+                ),
+                array(
+                    'id'          => 'mode',
+                    'name'        => __( 'Test Mode:', 'give' ),
+                    'description' => __( 'Select whether these subscriptions should be marked as "test".', 'give' ),
+                    'default'     => $mode,
+                    'type'        => 'radio_inline',
+                    'options'     => array(
+                        'enabled'  => __( 'Enabled', 'give' ),
+                        'disabled' => __( 'Disabled', 'give' ),
+                    ),
+                ),
+                array(
+                    'id'          => 'delete_csv',
+                    'name'        => __( 'Delete CSV after import:', 'give' ),
+                    'description' => __( 'Delete the uploaded CSV from the Media Library after import.', 'give' ),
+                    'default'     => $delete_csv,
+                    'type'        => 'radio_inline',
+                    'options'     => array(
+                        'enabled'  => __( 'Enabled', 'give' ),
+                        'disabled' => __( 'Disabled', 'give' ),
+                    ),
+                ),
+                array(
+                    'id'          => 'per_page',
+                    'name'        => __( 'Process Rows Per Batch:', 'give' ),
+                    'type'        => 'number',
+                    'description' => __( 'Determine how many rows you would like to import per cycle.', 'give' ),
+                    'default'     => $per_page,
+                    'class'       => 'give-text-small',
+                ),
+            );
+
+            $settings = apply_filters( 'give_import_file_upload_html', $settings );
+
+            if ( empty( $this->is_csv_valid ) ) {
+                Give_Admin_Settings::output_fields( $settings, 'give_settings' );
+            } else {
+                ?>
+                <input type="hidden" name="is_csv_valid" class="is_csv_valid"
+                       value="<?php echo esc_attr($this->is_csv_valid); ?>">
+                <?php
+            }
+        }
+
+        /**
+         * Run when user click on the submit button.
+         */
+        public function save() {
+            if (!$this->is_nonce_valid()){
+                wp_die();
+            }
+
+            $step = $this->get_step();
+
+            if ( 1 === $step ) {
+                $csv_id = absint( $_POST['csv_id'] );
+
+                if ( $this->is_valid_csv( $csv_id, esc_url( $_POST['csv'] ) ) ) {
+
+                    $url = give_import_page_url(
+                        array(
+                            'step'          => '2',
+                            'importer-type' => $this->importer_type,
+                            'csv'           => $csv_id,
+                            'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv',
+                            'mode'          => empty( $_POST['mode'] ) ? '0' : ( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? '1' : '0' ),
+                            'delete_csv'    => empty( $_POST['delete_csv'] ) ? '1' : ( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
+                            'per_page'      => isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page,
+                            'dry_run'       => isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 0,
+                        )
+                    );
+
+                    $this->is_csv_valid = wp_nonce_url($url, 'give-save-settings', '_give-save-settings');
+                }
+            }
+        }
+
+        /**
+         * Check if user uploaded csv is valid or not.
+         */
+        private function is_valid_csv( $csv = false, $match_url = '' ) {
+            $is_valid_csv = true;
+
+            if ( $csv ) {
+                $csv_url = wp_get_attachment_url( $csv );
+
+                $delimiter = ( ! empty( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv' );
+
+                if (
+                    ! $csv_url ||
+                    ( ! empty( $match_url ) && ( $csv_url !== $match_url ) ) ||
+                    ( ( $mime_type = get_post_mime_type( $csv ) ) && ! strpos( $mime_type, $delimiter ) )
+                ) {
+                    $is_valid_csv = false;
+                    Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid CSV file.', 'give' ) );
+                }
+            } else {
+                $is_valid_csv = false;
+                Give_Admin_Settings::add_error( 'give-import-csv', __( 'Please upload or provide a valid CSV file.', 'give' ) );
+            }
+
+            return $is_valid_csv;
+        }
+
+        /**
+         * Get if current page import donations page or not
+         */
+        private function is_subscriptions_import_page() {
+            return 'import' === give_get_current_setting_tab() &&
+                   isset( $_GET['importer-type'] ) &&
+                   $this->importer_type === give_clean( $_GET['importer-type'] );
+        }
+
+        /**
+         * Nonce validation
+         */
+        private function is_nonce_valid() {
+            return !empty($_REQUEST['_give-save-settings']) && wp_verify_nonce($_REQUEST['_give-save-settings'], 'give-save-settings');
+        }
+    }
+
+    Give_Import_Subscriptions::get_instance()->setup();
+}
+
+

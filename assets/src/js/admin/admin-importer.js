@@ -100,6 +100,16 @@ function give_start_importing_donations() {
 }
 
 /**
+ * Check if admin is on step 3 for Subscriptions import
+ */
+function give_start_importing_subscriptions() {
+    const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-subscriptions-form table.step-3';
+    if ( jQuery( import_step ).length > 0 ) {
+        give_on_subscription_import_ajax();
+    }
+}
+
+/**
  * Check if admin is on step 2 and CSV is invalid
  *
  * @since 2.1
@@ -215,6 +225,78 @@ function give_on_donation_import_ajax() {
 }
 
 /**
+ * Upload Subscriptions CSV via AJAX
+ */
+function give_on_subscription_import_ajax() {
+    const $form = jQuery( 'form.tools-setting-page-import' );
+
+    give_setting_edit = true;
+
+    const progress = $form.find( '.give-progress' );
+
+    const total_ajax = jQuery( progress ).data( 'total_ajax' ),
+        current = jQuery( progress ).data( 'current' ),
+        start = jQuery( progress ).data( 'start' ),
+        end = jQuery( progress ).data( 'end' ),
+        next = jQuery( progress ).data( 'next' ),
+        total = jQuery( progress ).data( 'total' ),
+        per_page = jQuery( progress ).data( 'per_page' );
+
+    jQuery.ajax( {
+        type: 'POST',
+        url: ajaxurl,
+        data: {
+            action: Give.fn.getGlobalVar( 'give_subscription_import' ),
+            _wpnonce: Give.fn.getGlobalVar( 'give_subscription_import_nonce' ),
+            total_ajax: total_ajax,
+            current: current,
+            start: start,
+            end: end,
+            next: next,
+            total: total,
+            per_page: per_page,
+            fields: $form.serialize(),
+        },
+        dataType: 'json',
+        success: function( response ) {
+            jQuery( progress ).data( 'current', response.current );
+            jQuery( progress ).find( 'div' ).width( response.percentage + '%' );
+
+            if ( response.next == true ) {
+                jQuery( progress ).data( 'start', response.start );
+                jQuery( progress ).data( 'end', response.end );
+
+                if ( response.last == true ) {
+                    jQuery( progress ).data( 'next', false );
+                }
+                give_on_subscription_import_ajax();
+            } else {
+                give_setting_edit = false;
+                window.location = response.url;
+            }
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            give_setting_edit = false;
+
+            let errorMessage = Give.fn.getGlobalVar('error_message');
+            if (xhr && xhr.responseText) {
+                errorMessage += "\n\n" + xhr.responseText;
+            } else {
+                errorMessage += "\n\n" + textStatus + ": " + errorThrown;
+            }
+
+            new GiveErrorAlert({
+                modalContent: {
+                    title: Give.fn.getGlobalVar('import_failed'),
+                    desc: errorMessage,
+                    cancelBtnTitle: Give.fn.getGlobalVar('ok'),
+                },
+            }).render();
+        },
+    } );
+}
+
+/**
  * Give Import donation run on load once page is load completed.
  */
 function give_import_donation_onload() {
@@ -222,6 +304,7 @@ function give_import_donation_onload() {
 		give_import_donation_required_fields_check();
 		give_import_donation_on_drop_down_change();
 		give_start_importing_donations();
+        give_start_importing_subscriptions();
 		give_import_donation_valid_csv();
 		give_import_donation_csv_not_valid();
 		give_on_core_settings_import_start();

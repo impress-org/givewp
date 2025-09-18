@@ -1,0 +1,5 @@
+donationFormId,donorId,period,frequency,installments,amount,feeAmountRecovered,status,mode,transactionId,gatewayId,gatewaySubscriptionId,createdAt,renewsAt,currency
+123,45,month,1,0,25.00,0.00,active,live,TXN-1001,manual,SUB-001,2025-01-10 12:30:00,2025-02-10 12:30:00,USD
+234,67,week,2,10,15.50,1.25,pending,test,TXN-2002,stripe,SUB-002,2025-03-01 08:00:00,2025-03-15 08:00:00,USD
+345,89,quarter,1,4,100.00,0.00,active,live,TXN-3003,paypal,SUB-003,2025-02-20 09:15:00,2025-05-20 09:15:00,EUR
+
