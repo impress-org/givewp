@@ -3,7 +3,9 @@
 namespace Give\DonationForms\Rules;
 
 use Closure;
+use Give\Framework\Support\Currencies\GiveCurrencies;
 use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
+use Money\Currency;
 
 /**
  * Custom currency validation rule that uses GiveWP's currency list and filter.
@@ -39,26 +41,20 @@ class CurrencyRule implements ValidationRule
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        // Get GiveWP's supported currencies
-        $supportedCurrencies = array_keys(give_get_currencies_list());
-
         // Check format first for better error messaging
         if (!$this->isValidFormat($value)) {
-            $providedValue = is_array($value) ? 'array' : (is_object($value) ? 'object' : (string) $value);
             $fail(
                 sprintf(
-                    __('%s must be a valid 3-letter currency code in uppercase format (example: USD). Provided: %s', 'give'),
-                    '{field}',
-                    $providedValue
+                    __('%s must be a valid 3-letter currency code in uppercase format (example: USD)', 'give'),
+                    '{field}'
                 )
             );
-        } elseif (!in_array($value, $supportedCurrencies, true)) {
+        } elseif (!give(GiveCurrencies::class)->contains(new Currency($value))) {
             $fail(
                 sprintf(
-                    __('%s must be a valid currency. Provided: %s. Valid currencies are: %s', 'give'),
+                    __('%s must be a valid currency. Provided: %s', 'give'),
                     '{field}',
-                    $value,
-                    implode(', ', $supportedCurrencies)
+                    $value
                 )
             );
         }

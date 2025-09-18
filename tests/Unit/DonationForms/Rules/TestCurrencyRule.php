@@ -111,8 +111,7 @@ class TestCurrencyRule extends TestCase
         /** @var string $error */
         $this->assertStringContainsString('must be a valid currency', $error);
         $this->assertStringContainsString('Provided: XYZ', $error);
-        $this->assertStringContainsString('Valid currencies are:', $error);
-        $this->assertStringContainsString(implode(', ', $supportedCurrencies), $error);
+        $this->assertStringNotContainsString('Valid currencies are:', $error);
     }
 
     /**
@@ -145,7 +144,7 @@ class TestCurrencyRule extends TestCase
         /** @var string $error */
         $this->assertStringContainsString('must be a valid 3-letter currency code in uppercase format', $error);
         $this->assertStringContainsString('(example: USD)', $error);
-        $this->assertStringContainsString('Provided: ' . $lowercaseCurrency, $error);
+        $this->assertStringNotContainsString('Provided:', $error);
         // Should not contain the full list of currencies in this specific error message
         $this->assertStringNotContainsString('Valid currencies are:', $error);
     }
@@ -172,7 +171,7 @@ class TestCurrencyRule extends TestCase
         /** @var string $error */
         $this->assertStringContainsString('must be a valid currency', $error);
         $this->assertStringContainsString('Provided: XYZ', $error);
-        $this->assertStringContainsString('Valid currencies are:', $error);
+        $this->assertStringNotContainsString('Valid currencies are:', $error);
         // Should not contain the format-specific error message
         $this->assertStringNotContainsString('must be a valid 3-letter currency code in uppercase format', $error);
     }
@@ -199,7 +198,7 @@ class TestCurrencyRule extends TestCase
         /** @var string $error */
         $this->assertStringContainsString('must be a valid 3-letter currency code in uppercase format', $error);
         $this->assertStringContainsString('(example: USD)', $error);
-        $this->assertStringContainsString('Provided: US', $error);
+        $this->assertStringNotContainsString('Provided:', $error);
         // Should not contain the full list of currencies in this specific error message
         $this->assertStringNotContainsString('Valid currencies are:', $error);
     }
