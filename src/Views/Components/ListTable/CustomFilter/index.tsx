@@ -21,7 +21,7 @@ type CustomFilterProps = {
 	ariaLabel?: string;
 	placeholder?: string;
 	onChange: (name: string, value: string) => void;
-	defaultValue?: string;
+	value?: string;
 	isSearchable?: boolean;
 	isSelectable?: boolean;
 	isClearable?: boolean;
@@ -38,13 +38,13 @@ export default function CustomFilter(props: CustomFilterProps) {
 /**
  * @unreleased
  */
-function DefaultFilter({name, options, ariaLabel, placeholder, onChange, defaultValue, isSearchable, isSelectable}: CustomFilterProps) {
+function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, isSearchable, isSelectable}: CustomFilterProps) {
 	const formattedOptions = options?.map(({ value, text }) => ({
 		value,
 		label: text,
 	}));
 
-	const defaultOption = formattedOptions?.find((o) => o.value === defaultValue) || null;
+	const valueOption = formattedOptions?.find((o) => o.value === value) || null;
 
 	const handleChange = (selected: any) =>
 		onChange(name, selected ? selected.value : '');
@@ -58,7 +58,7 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, default
 				inputId={`givewp-filter-${name}`}
 				name={name}
 				options={formattedOptions}
-				value={defaultOption}
+				value={valueOption}
 				onChange={handleChange}
 				onInputChange={handleInputChange}
 				placeholder={placeholder}
@@ -81,12 +81,11 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, default
 /**
  * @unreleased
  */
-function AsyncFilter({name, placeholder, onChange, isSearchable, isClearable}: CustomFilterProps) {
-	const { loadOptions, mapOptionsForMenu, selectedOption, setSelectedOption } = useCampaignAsyncSelect();
+function AsyncFilter({name, placeholder, onChange, value, isSearchable, isClearable}: CustomFilterProps) {
+	const { loadOptions, mapOptionsForMenu, selectedOption } = useCampaignAsyncSelect(parseInt(value) || null);
 
 	const handleChange = (selectedOption: CampaignOption | null) => {
 		onChange(name, selectedOption?.value.toString() ?? '');
-		setSelectedOption(selectedOption);
 	}
 
 	return (

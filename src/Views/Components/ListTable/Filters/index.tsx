@@ -3,7 +3,7 @@ import CustomFilter from '../CustomFilter';
 
 /**
  * Filter type configurations
- * 
+ *
  * @unreleased
  */
 const filterConfigs = {
@@ -32,7 +32,7 @@ const filterConfigs = {
  */
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
     const config = filterConfigs[filter.type];
-    
+
     if (!config) {
         return null;
     }
@@ -44,7 +44,7 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
             aria-label={filter?.ariaLabel}
             placeholder={filter?.text}
             onChange={config.useDebouncedOnChange ? debouncedOnChange : onChange}
-            defaultValue={value}
+            value={value}
             isSearchable={config.isSearchable}
             isSelectable={config.isSelectable}
             isAsync={config.id === 'campaignselect'}

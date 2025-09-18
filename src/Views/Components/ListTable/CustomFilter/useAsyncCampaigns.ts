@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import apiFetch from '@wordpress/api-fetch';
-import { createCampaignQueryParams, processOptionsForMenu, formatCampaignOptions } from './utils';
+import { createCampaignQueryParams, processOptionsForMenu, formatCampaignOptions, formatCampaignOption } from './utils';
 import { Campaign, CampaignOption } from './utils';
+import { useEntityRecord } from '@wordpress/core-data';
 
 const CAMPAIGNS_PER_PAGE = 30;
 
@@ -10,7 +11,6 @@ const CAMPAIGNS_PER_PAGE = 30;
  */
 type UseCampaignAsyncSelectReturn = {
     selectedOption: CampaignOption | null;
-    setSelectedOption: (option: CampaignOption | null) => void;
     loadOptions: (searchInput: string) => Promise<{
         options: CampaignOption[];
         hasMore: boolean;
@@ -24,10 +24,25 @@ type UseCampaignAsyncSelectReturn = {
  *
  * @unreleased
  */
-export function useCampaignAsyncSelect(): UseCampaignAsyncSelectReturn {
+export function useCampaignAsyncSelect(selectedCampaignId: number | null): UseCampaignAsyncSelectReturn {
     const [page, setPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState<CampaignOption | null>(null);
     const [error, setError] = useState<Error | null>(null);
+
+    // Load current campaign details if we have a selected campaign ID
+    const {
+        record: currentCampaign,
+        hasResolved: hasResolvedCampaign,
+    } = useEntityRecord<Campaign>('givewp', 'campaign', selectedCampaignId);
+
+    // Update selected option when current campaign changes
+    useEffect(() => {
+        if (hasResolvedCampaign && currentCampaign && selectedCampaignId) {
+            setSelectedOption(formatCampaignOption(currentCampaign));
+        } else if (!selectedCampaignId) {
+            setSelectedOption(null);
+        }
+    }, [currentCampaign, hasResolvedCampaign, selectedCampaignId]);
 
     // Load options function for AsyncPaginate
     const loadOptions = useCallback(async (search: string) => {
@@ -82,7 +97,6 @@ export function useCampaignAsyncSelect(): UseCampaignAsyncSelectReturn {
 
     return {
         selectedOption,
-        setSelectedOption,
         loadOptions,
         mapOptionsForMenu,
         error,

@@ -39,7 +39,7 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
                     ariaLabel={__('Bulk Actions', 'give')}
                     placeholder={__('Bulk Actions', 'give')}
                     onChange={changeSelected}
-                    defaultValue={selectedAction}
+                    value={selectedAction}
                     isSearchable={false}
                     isSelectable={true}
                 />
