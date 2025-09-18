@@ -33,16 +33,16 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
 
     return (
         <div id={styles.bulkActionsForm}>
-                <CustomFilter
-                    name="bulkActions"
-                    options={filteredOptions}
-                    ariaLabel={__('Bulk Actions', 'give')}
-                    placeholder={__('Bulk Actions', 'give')}
-                    onChange={changeSelected}
-                    value={selectedAction}
-                    isSearchable={false}
-                    isSelectable={true}
-                />
+            <CustomFilter
+                name="bulkActions"
+                options={filteredOptions}
+                ariaLabel={__('Bulk Actions', 'give')}
+                placeholder={__('Bulk Actions', 'give')}
+                onChange={changeSelected}
+                value={selectedAction}
+                isSearchable={false}
+                isSelectable={true}
+            />
             <button onClick={showModal} className={`button button-tertiary ${pageStyles.secondaryActionButton}`}>
                 {__('Apply', 'give')}
             </button>

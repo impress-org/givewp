@@ -6,30 +6,3 @@
     justify-content: space-between;
     column-gap: 0.4rem;
 }
-
-.bulkSelect {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.875rem;
-    font-weight: 500;
-    min-width: 150px;
-    cursor: pointer;
-}
-
-.apply {
-    width: 4.438rem;
-    height: 2.25rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: var(--givewp-spacing-2);
-    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
-    border-radius: var(--givewp-rounded-4);
-    background-color: var(--givewp-neutral-100);
-    border: none;
-    cursor: pointer;
-    z-index: 999;
-}
