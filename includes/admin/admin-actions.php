@@ -855,6 +855,7 @@ function give_subscription_import_callback() {
     parse_str( $fields, $output );
 
     $import_setting['mode']        = $output['mode'];
+    $import_setting['create_user'] = isset($output['create_user']) ? $output['create_user'] : '0';
     $import_setting['delimiter']   = $output['delimiter'];
     $import_setting['csv']         = $output['csv'];
     $import_setting['delete_csv']  = $output['delete_csv'];

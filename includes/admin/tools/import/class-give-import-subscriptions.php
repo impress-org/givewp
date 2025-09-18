@@ -324,6 +324,7 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
                     <input type="hidden" value='<?php echo esc_attr( maybe_serialize( $_REQUEST['mapto'] ) ); ?>' name="mapto" class="mapto">
                     <input type="hidden" value="<?php echo esc_attr($csv); ?>" name="csv" class="csv">
                     <input type="hidden" value="<?php echo esc_attr( $_REQUEST['mode'] ); ?>" name="mode" class="mode">
+                    <input type="hidden" value="<?php echo esc_attr( $_REQUEST['create_user'] ); ?>" name="create_user" class="create_user">
                     <input type="hidden" value="<?php echo esc_attr( $_REQUEST['delete_csv'] ); ?>" name="delete_csv" class="delete_csv">
                     <input type="hidden" value="<?php echo esc_attr( $delimiter ); ?>" name="delimiter">
                     <input type="hidden" value="<?php echo esc_attr(absint( $_REQUEST['dry_run']) ); ?>" name="dry_run">
@@ -683,6 +684,7 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
             $csv_id      = ( isset( $_POST['csv_id'] ) ? give_clean( $_POST['csv_id'] ) : '' );
             $delimiter   = ( isset( $_POST['delimiter'] ) ? give_clean( $_POST['delimiter'] ) : 'csv' );
             $mode        = empty( $_POST['mode'] ) ? 'disabled' : ( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? 'enabled' : 'disabled' );
+            $create_user = empty( $_POST['create_user'] ) ? 'disabled' : ( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? 'enabled' : 'disabled' );
             $delete_csv  = empty( $_POST['delete_csv'] ) ? 'enabled' : ( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? 'enabled' : 'disabled' );
 
             if ( empty( $csv_id ) || ! $this->is_valid_csv( $csv_id, $csv ) ) {
@@ -744,6 +746,17 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
                     ),
                 ),
                 array(
+                    'id'          => 'create_user',
+                    'name'        => __( 'Create WP users for new donors:', 'give' ),
+                    'description' => __( 'Automatically create a WordPress user account for newly created donors.  This is required for donors to access their Donor Dashboard and manage their subscriptions.', 'give' ),
+                    'default'     => $create_user,
+                    'type'        => 'radio_inline',
+                    'options'     => array(
+                        'enabled'  => __( 'Enabled', 'give' ),
+                        'disabled' => __( 'Disabled', 'give' ),
+                    ),
+                ),
+                array(
                     'id'          => 'delete_csv',
                     'name'        => __( 'Delete CSV after import:', 'give' ),
                     'description' => __( 'Delete the uploaded CSV from the Media Library after import.', 'give' ),
@@ -798,6 +811,7 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
                             'csv'           => $csv_id,
                             'delimiter'     => isset( $_REQUEST['delimiter'] ) ? give_clean( $_REQUEST['delimiter'] ) : 'csv',
                             'mode'          => empty( $_POST['mode'] ) ? '0' : ( give_is_setting_enabled( give_clean( $_POST['mode'] ) ) ? '1' : '0' ),
+                            'create_user'   => empty( $_POST['create_user'] ) ? '0' : ( give_is_setting_enabled( give_clean( $_POST['create_user'] ) ) ? '1' : '0' ),
                             'delete_csv'    => empty( $_POST['delete_csv'] ) ? '1' : ( give_is_setting_enabled( give_clean( $_POST['delete_csv'] ) ) ? '1' : '0' ),
                             'per_page'      => isset( $_POST['per_page'] ) ? absint( $_POST['per_page'] ) : self::$per_page,
                             'dry_run'       => isset( $_POST['dry_run'] ) ? absint( $_POST['dry_run'] ) : 0,
