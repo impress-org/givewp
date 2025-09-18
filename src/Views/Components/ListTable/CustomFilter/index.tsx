@@ -101,6 +101,7 @@ function AsyncFilter({name, placeholder, onChange, isSearchable, isClearable}: C
 			mapOptionsForMenu={mapOptionsForMenu}
 			className={styles.searchableSelect}
 			classNamePrefix="searchableSelect"
+			debounceTimeout={600}
 		/>
 	);
 }
