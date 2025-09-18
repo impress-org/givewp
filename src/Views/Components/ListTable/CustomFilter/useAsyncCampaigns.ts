@@ -40,6 +40,7 @@ export function useCampaignAsyncSelect(): UseCampaignAsyncSelectReturn {
                 perPage: CAMPAIGNS_PER_PAGE,
                 page: currentPage,
                 search: search || undefined,
+                status: ['active', 'draft', 'archived'],
             });
 
             const campaigns = await apiFetch<Campaign[]>({

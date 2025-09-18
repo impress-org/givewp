@@ -23,13 +23,15 @@ export function createCampaignQueryParams(config: {
     perPage: number;
     page: number;
     search?: string;
+    status?: string[];
 }): URLSearchParams {
-    const { perPage, page, search } = config;
+    const { perPage, page, search, status } = config;
 
     return new URLSearchParams({
         per_page: perPage.toString(),
         page: page.toString(),
         ...(search && { search: search }),
+        ...(status && { status: status.join(',') }),
     });
 }
 
@@ -65,7 +67,7 @@ export function processOptionsForMenu(
  * Formats a campaign object into a select option
  *
  * @unreleased
- */ 
+ */
 export function formatCampaignOption(campaign: Campaign): CampaignOption {
     return {
         value: campaign.id,
