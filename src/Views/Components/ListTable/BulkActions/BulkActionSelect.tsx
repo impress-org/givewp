@@ -1,6 +1,7 @@
 import {__} from '@wordpress/i18n';
 import CustomFilter from '../CustomFilter';
 import styles from './BulkActionSelect.module.scss';
+import pageStyles from '../ListTablePage/ListTablePage.module.scss';
 
 export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, data, parameters}) => {
     const [selectedAction, setSelectedAction] = selectedState;
@@ -42,7 +43,7 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
                     isSearchable={false}
                     isSelectable={true}
                 />
-            <button onClick={showModal} className={styles.apply}>
+            <button onClick={showModal} className={`button button-tertiary ${pageStyles.secondaryActionButton}`}>
                 {__('Apply', 'give')}
             </button>
         </div>
