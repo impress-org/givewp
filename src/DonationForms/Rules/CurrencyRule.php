@@ -50,15 +50,18 @@ class CurrencyRule implements ValidationRule
         if (is_string($value) && !$this->isValidFormat($value)) {
             $fail(
                 sprintf(
-                    __('%s must be a valid 3-letter currency code in uppercase format (e.g., USD)', 'give'),
-                    '{field}'
+                    __('%s must be a valid 3-letter currency code in uppercase format (e.g., USD). Provided: %s', 'give'),
+                    '{field}',
+                    $value
                 )
             );
         } elseif (!in_array($value, $supportedCurrencies, true)) {
+            $providedValue = is_array($value) ? 'array' : (is_object($value) ? 'object' : (string) $value);
             $fail(
                 sprintf(
-                    __('%s must be a valid currency. Valid currencies are: %s', 'give'),
+                    __('%s must be a valid currency. Provided: %s. Valid currencies are: %s', 'give'),
                     '{field}',
+                    $providedValue,
                     implode(', ', $supportedCurrencies)
                 )
             );
