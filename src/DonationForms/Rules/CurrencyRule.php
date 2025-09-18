@@ -39,29 +39,24 @@ class CurrencyRule implements ValidationRule
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
-        if (empty($value)) {
-            return;
-        }
-
         // Get GiveWP's supported currencies
         $supportedCurrencies = array_keys(give_get_currencies_list());
 
         // Check format first for better error messaging
-        if (is_string($value) && !$this->isValidFormat($value)) {
+        if (!$this->isValidFormat($value)) {
             $fail(
                 sprintf(
-                    __('%s must be a valid 3-letter currency code in uppercase format (e.g., USD). Provided: %s', 'give'),
+                    __('%s must be a valid 3-letter currency code in uppercase format (example: USD). Provided: %s', 'give'),
                     '{field}',
                     $value
                 )
             );
         } elseif (!in_array($value, $supportedCurrencies, true)) {
-            $providedValue = is_array($value) ? 'array' : (is_object($value) ? 'object' : (string) $value);
             $fail(
                 sprintf(
                     __('%s must be a valid currency. Provided: %s. Valid currencies are: %s', 'give'),
                     '{field}',
-                    $providedValue,
+                    $value,
                     implode(', ', $supportedCurrencies)
                 )
             );
@@ -70,15 +65,15 @@ class CurrencyRule implements ValidationRule
 
     /**
      * Checks if a currency code is in the correct ISO 4217 format.
-     * Valid format: exactly 3 uppercase alphabetic characters.
+     * Valid format: exactly 3 uppercase alphabetic characters (not empty).
      *
      * @unreleased
      *
-     * @param string $value The currency code to validate
+     * @param mixed $value The currency code to validate
      * @return bool True if the format is valid, false otherwise
      */
-    private function isValidFormat(string $value): bool
+    private function isValidFormat($value): bool
     {
-        return strlen($value) === 3 && ctype_alpha($value) && $value === strtoupper($value);
+        return is_string($value) && !empty($value) && strlen($value) === 3 && ctype_alpha($value) && $value === strtoupper($value);
     }
 }

@@ -50,9 +50,9 @@ class TestCurrencyRule extends TestCase
         }
 
         $testCases = [
-            // Valid cases - empty values should pass
-            ['', true],
-            [null, true],
+            // Empty values should now fail
+            ['', false],
+            [null, false],
         ];
 
         // Add valid currency codes
@@ -144,7 +144,7 @@ class TestCurrencyRule extends TestCase
         // Now we know $error is a string, so we can safely use it
         /** @var string $error */
         $this->assertStringContainsString('must be a valid 3-letter currency code in uppercase format', $error);
-        $this->assertStringContainsString('(e.g., USD)', $error);
+        $this->assertStringContainsString('(example: USD)', $error);
         $this->assertStringContainsString('Provided: ' . $lowercaseCurrency, $error);
         // Should not contain the full list of currencies in this specific error message
         $this->assertStringNotContainsString('Valid currencies are:', $error);
@@ -198,7 +198,7 @@ class TestCurrencyRule extends TestCase
         // Now we know $error is a string, so we can safely use it
         /** @var string $error */
         $this->assertStringContainsString('must be a valid 3-letter currency code in uppercase format', $error);
-        $this->assertStringContainsString('(e.g., USD)', $error);
+        $this->assertStringContainsString('(example: USD)', $error);
         $this->assertStringContainsString('Provided: US', $error);
         // Should not contain the full list of currencies in this specific error message
         $this->assertStringNotContainsString('Valid currencies are:', $error);
@@ -256,13 +256,17 @@ class TestCurrencyRule extends TestCase
             ['CAD', true],
 
             // Invalid formats
+            ['', false], // empty
             ['usd', false], // lowercase
             ['Usd', false], // mixed case
             ['US', false], // too short
             ['USDD', false], // too long
             ['123', false], // numbers
             ['US1', false], // mixed alphanumeric
-            ['', false], // empty
+            [[], false], // array
+            [new \stdClass(), false], // object
+            [null, false], // null
+            [123, false], // integer
         ];
     }
 }
