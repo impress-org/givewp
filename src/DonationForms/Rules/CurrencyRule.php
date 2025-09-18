@@ -44,11 +44,12 @@ class CurrencyRule implements ValidationRule
 
         // Check format first for better error messaging
         if (!$this->isValidFormat($value)) {
+            $providedValue = is_array($value) ? 'array' : (is_object($value) ? 'object' : (string) $value);
             $fail(
                 sprintf(
                     __('%s must be a valid 3-letter currency code in uppercase format (example: USD). Provided: %s', 'give'),
                     '{field}',
-                    $value
+                    $providedValue
                 )
             );
         } elseif (!in_array($value, $supportedCurrencies, true)) {
