@@ -35,10 +35,9 @@ const API = new ListTableApi(window.GiveDonations);
 const filters: Array<FilterConfig> = [
     {
         name: 'campaignId',
-        type: 'formselect',
+        type: 'campaignselect',
         text: __('Select Campaign', 'give'),
         ariaLabel: __('filter donations by campaign', 'give'),
-        options: window.GiveDonations.campaigns,
     },
     {
         name: 'search',

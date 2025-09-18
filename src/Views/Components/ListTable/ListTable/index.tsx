@@ -29,6 +29,7 @@ export interface ListTableProps {
     productRecommendation?: JSX.Element;
     columnFilters?: Array<ColumnFilterConfig>;
     includeBulkActionsCheckbox?: boolean;
+    children?: JSX.Element | JSX.Element[] | null;
 }
 
 export interface ListTableColumn {
@@ -61,6 +62,7 @@ export const ListTable = ({
     productRecommendation,
     columnFilters = [],
     includeBulkActionsCheckbox = false,
+    children = null,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -151,6 +153,7 @@ export const ListTable = ({
                             {title}
                         </caption>
                         <thead className={styles[apiSettings.table.id]}>
+                            <tr className={styles.searchContainerRow}>{children}</tr>
                             <tr>
                                 {includeBulkActionsCheckbox && (
                                     <th
