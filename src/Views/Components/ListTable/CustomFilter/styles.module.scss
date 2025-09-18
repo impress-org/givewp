@@ -59,9 +59,16 @@
                 padding: 0;
             }
 
+            &__menu-notice {
+                color: var(--givewp-neutral-500);
+                font-size: 0.875rem;
+                line-height: 1.43;
+            }
+
             &__option {
                 color: var(--givewp-neutral-900);
-                line-height: 1.5;
+                font-size: 0.875rem;
+                line-height: 1.43;
                 padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
                 white-space: nowrap;
 
@@ -73,9 +80,9 @@
 
             &__single-value {
                 color: var(--givewp-neutral-900);
-                font-size: 1rem;
+                font-size: 0.875rem;
                 font-weight: 500;
-                line-height: 1.5;
+                line-height: 1.43;
                 margin: 0;
             }
 
@@ -85,10 +92,17 @@
 
             &__input-container {
                 color: var(--givewp-neutral-900);
-                font-size: 1rem;
-                line-height: 1.5;
+                font-size: 0.875rem;
+                line-height: 1.43;
                 margin: 0;
                 min-width: 8rem;
+                padding: 0;
+            }
+
+            &__placeholder {
+                color: var(--givewp-neutral-500);
+                font-size: 0.875rem;
+                line-height: 1.43;
             }
 
             &__input {
