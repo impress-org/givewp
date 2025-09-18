@@ -33,7 +33,7 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
                     );
                 })}
             </Select>
-            <button onClick={showModal} className={pageStyles.addFormButton}>
+            <button onClick={showModal} className={`button button-tertiary ${pageStyles.secondaryActionButton}`}>
                 {__('Apply', 'give')}
             </button>
         </div>
