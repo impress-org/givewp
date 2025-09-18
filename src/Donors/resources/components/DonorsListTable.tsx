@@ -26,7 +26,7 @@ const API = new ListTableApi(window.GiveDonors);
 
 const donorsFilters: Array<FilterConfig> = [
     {
-        name: 'form',
+        name: 'campaignId',
         type: 'campaignselect',
         text: __('All Campaigns', 'give'),
         ariaLabel: __('Filter donors by campaign', 'give'),

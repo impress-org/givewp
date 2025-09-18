@@ -25,7 +25,7 @@ const API = new ListTableApi(window.GiveSubscriptions);
 
 const filters: Array<FilterConfig> = [
     {
-        name: 'form',
+        name: 'campaignId',
         type: 'campaignselect',
         text: __('Select Campaign', 'give'),
         ariaLabel: __('filter subscriptions by campaign', 'give'),
