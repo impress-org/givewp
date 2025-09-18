@@ -145,28 +145,29 @@ class Give_Updates {
 		 * Setup hooks.
 		 */
 		add_action( 'init', [ $this, '__register_upgrade' ], 9999 );
-		add_action( 'give_set_upgrade_completed', [ $this, '__flush_resume_updates' ], 9999 );
-		add_action( 'wp_ajax_give_db_updates_info', [ $this, '__give_db_updates_info' ] );
-		add_action( 'wp_ajax_give_run_db_updates', [ $this, '__give_start_updating' ] );
-		add_action( 'admin_init', [ $this, '__redirect_admin' ] );
-		add_action( 'admin_init', [ $this, '__pause_db_update' ], - 1 );
-		add_action( 'admin_init', [ $this, '__restart_db_update' ], - 1 );
-		add_action( 'admin_notices', [ $this, '__show_notice' ] );
-		add_action( 'give_restart_db_upgrade', [ $this, '__health_background_update' ] );
+		add_action( 'give_set_upgrade_completed', [$this, 'flush_resume_updates'], 9999 );
+		add_action( 'wp_ajax_give_db_updates_info', [$this, 'give_db_updates_info'] );
+		add_action( 'wp_ajax_give_run_db_updates', [$this, 'give_start_updating'] );
+		add_action( 'admin_init', [$this, 'redirect_admin'] );
+		add_action( 'admin_init', [$this, 'pause_db_update'], - 1 );
+		add_action( 'admin_init', [$this, 'restart_db_update'], - 1 );
+		add_action( 'admin_notices', [$this, 'show_notice'] );
+		add_action( 'give_restart_db_upgrade', [$this, 'health_background_update'] );
 
 		if ( is_admin() ) {
-			add_action( 'admin_init', [ $this, '__change_donations_label' ], 9999 );
-			add_action( 'admin_menu', [ $this, '__register_menu' ], 55 );
+			add_action( 'admin_init', [$this, 'change_donations_label'], 9999 );
+			add_action( 'admin_menu', [$this, 'register_menu'], 55 );
 		}
 	}
 
 	/**
 	 * Register plugin add-on updates.
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public
 	 */
-	public function __register_plugin_addon_updates() {
+	public function register_plugin_addon_updates() {
 		$addons         = give_get_plugins( [ 'only_premium_add_ons' => true ] );
 		$plugin_updates = get_plugin_updates();
 
@@ -202,10 +203,11 @@ class Give_Updates {
 	/**
 	 * Rename `Donations` menu title if updates exists
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public
 	 */
-	function __change_donations_label() {
+	function change_donations_label() {
 		global $menu;
 
 		// Bailout.
@@ -236,12 +238,13 @@ class Give_Updates {
 	/**
 	 * Register updates menu
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public
 	 */
-	public function __register_menu() {
+	public function register_menu() {
 		// Load plugin updates.
-		$this->__register_plugin_addon_updates();
+		$this->register_plugin_addon_updates();
 
 		// Bailout.
 		if ( ! $this->get_total_update_count() ) {
@@ -286,10 +289,11 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 */
-	public function __redirect_admin() {
+	public function redirect_admin() {
 		// Show db upgrade completed notice.
 		if (
 			! wp_doing_ajax() &&
@@ -308,6 +312,7 @@ class Give_Updates {
 	/**
 	 * Pause db upgrade
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
 	 *
@@ -315,7 +320,7 @@ class Give_Updates {
 	 *
 	 * @return bool
 	 */
-	public function __pause_db_update( $force = false ) {
+	public function pause_db_update( $force = false ) {
 		// Bailout.
 		if (
 			! $force &&
@@ -333,7 +338,7 @@ class Give_Updates {
 
 		delete_option( 'give_upgrade_error' );
 
-		$this->__health_background_update( $this );
+		$this->health_background_update( $this );
 		$batch = self::$background_updater->get_all_batch();
 
 		// Bailout: if batch is empty
@@ -372,12 +377,13 @@ class Give_Updates {
 	/**
 	 * Restart db upgrade
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
 	 *
 	 * @return bool
 	 */
-	public function __restart_db_update() {
+	public function restart_db_update() {
 		// Bailout.
 		if (
 			wp_doing_ajax() ||
@@ -415,12 +421,13 @@ class Give_Updates {
 	/**
 	 * Health check for updates.
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 *
 	 * @param Give_Updates $give_updates
 	 */
-	public function __health_background_update( $give_updates ) {
+	public function health_background_update( $give_updates ) {
 		if ( ! $this->is_doing_updates() ) {
 			return;
 		}
@@ -503,7 +510,7 @@ class Give_Updates {
 			self::$background_updater->delete( $batch->key );
 
 			if ( self::$background_updater->has_queue() ) {
-				$this->__health_background_update( $this );
+				$this->health_background_update( $this );
 			} else {
 				delete_site_transient( self::$background_updater->get_identifier() . '_process_lock' );
 				wp_clear_scheduled_hook( self::$background_updater->get_cron_identifier() );
@@ -578,10 +585,11 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 */
-	public function __show_notice() {
+	public function show_notice() {
 		$current_screen = get_current_screen();
 		$hide_on_pages  = [
 			'give_forms_page_give-updates',
@@ -743,10 +751,11 @@ class Give_Updates {
 	/**
 	 * Delete resume updates
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public
 	 */
-	public function __flush_resume_updates() {
+	public function flush_resume_updates() {
 		$this->step = $this->percentage = 0;
 
 		$this->update = ( $this->get_total_db_update_count() > $this->update ) ?
@@ -758,12 +767,13 @@ class Give_Updates {
 	/**
 	 * Initialize updates
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 *
 	 * @return void
 	 */
-	public function __give_start_updating() {
+	public function give_start_updating() {
 		// Check permission.
 		if (
 			! current_user_can( 'manage_give_settings' ) ||
@@ -790,12 +800,13 @@ class Give_Updates {
 	/**
 	 * This function handle ajax query for dn update status.
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 *
 	 * @return string
 	 */
-	public function __give_db_updates_info() {
+	public function give_db_updates_info() {
 		// Check permission.
 		if ( ! current_user_can( 'manage_give_settings' ) ) {
 			give_die();

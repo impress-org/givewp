@@ -9,6 +9,7 @@ use Give\Donations\Models\Donation;
 use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Types;
+use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
@@ -76,6 +77,8 @@ class DonationViewModel
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
                     case 'billingAddress':
+                        $data[$propertyName] = null;
+                        break;
                     case 'customFields':
                         $data[$propertyName] = [];
                         break;
@@ -204,10 +207,15 @@ class DonationViewModel
     }
 
     /**
+     * @since 4.8.0 Return empty array if gateway is not registered
      * @since 4.6.0
      */
     private function getGatewayDetails(): array
     {
+        if ( ! give(PaymentGatewayRegister::class)->hasPaymentGateway($this->donation->gatewayId)) {
+            return [];
+        }
+
         return array_merge(
             $this->donation->gateway()->toArray(),
             [

@@ -1029,9 +1029,10 @@ function give_get_user_roles() {
  *
  * @since 2.0
  * @since 2.11.0 decode url before parsing and sanitizing url when set $post.
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @return void
  */
-function __give_ajax_donor_manage_addresses() {
+function give_ajax_donor_manage_addresses() {
 	// Bailout.
 	if (
 		empty( $_POST['form'] ) ||
@@ -1119,7 +1120,7 @@ function __give_ajax_donor_manage_addresses() {
 				end( $array_keys ) :
 				$address_type;
 
-			$response_data['address_html'] = __give_get_format_address(
+			$response_data['address_html'] = give_get_format_address(
 				end( $donor->address['billing'] ),
 				[
 					// We can add only billing address from donor screen.
@@ -1172,7 +1173,7 @@ function __give_ajax_donor_manage_addresses() {
 				);
 			}
 
-			$response_data['address_html'] = __give_get_format_address(
+			$response_data['address_html'] = give_get_format_address(
 				$is_multi_address_type ?
 					$donor->address[ $address_type ][ $address_id ] :
 					$donor->address[ $address_type ],
@@ -1193,41 +1194,43 @@ function __give_ajax_donor_manage_addresses() {
 	wp_send_json_success( $response_data );
 }
 
-add_action( 'wp_ajax_donor_manage_addresses', '__give_ajax_donor_manage_addresses' );
+add_action( 'wp_ajax_donor_manage_addresses', 'give_ajax_donor_manage_addresses');
 
 /**
  * Admin donor billing address label
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param string $address_label
  *
  * @return string
  */
-function __give_donor_billing_address_label( $address_label ) {
+function give_donor_billing_address_label( $address_label ) {
 	$address_label = __( 'Billing Address', 'give' );
 
 	return $address_label;
 }
 
-add_action( 'give_donor_billing_address_label', '__give_donor_billing_address_label' );
+add_action( 'give_donor_billing_address_label', 'give_donor_billing_address_label');
 
 /**
  * Admin donor personal address label
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param string $address_label
  *
  * @return string
  */
-function __give_donor_personal_address_label( $address_label ) {
+function give_donor_personal_address_label( $address_label ) {
 	$address_label = __( 'Personal Address', 'give' );
 
 	return $address_label;
 }
 
-add_action( 'give_donor_personal_address_label', '__give_donor_personal_address_label' );
+add_action( 'give_donor_personal_address_label', 'give_donor_personal_address_label');
 
 /**
  * Update Donor Information when User Profile is updated from admin.

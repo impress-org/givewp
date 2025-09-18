@@ -6,6 +6,7 @@ use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\License\Actions\AddPlatformFeeAmountToSystemInfo;
 use Give\License\Migrations\RefreshLicensesForPlatformFee;
+use Give\License\Migrations\RefreshLicensesForLastActiveDate;
 use Give\License\Repositories\LicenseRepository;
 use Give\ServiceProviders\ServiceProvider;
 
@@ -31,6 +32,7 @@ class LicenseServiceProvider implements ServiceProvider
         $migrationRegistrar = give(MigrationsRegister::class);
 
         $migrationRegistrar->addMigration(RefreshLicensesForPlatformFee::class);
+        $migrationRegistrar->addMigration(RefreshLicensesForLastActiveDate::class);
 
         Hooks::addAction('give_add_system_info_configuration', AddPlatformFeeAmountToSystemInfo::class);
     }

@@ -18,7 +18,6 @@ class RegisterCampaignRoutes
      */
     protected $campaignRequestController;
 
-
     /**
      * @since 4.0.0
      */
@@ -44,6 +43,7 @@ class RegisterCampaignRoutes
     /**
      * Get Campaign route
      *
+     * @since 4.9.0 Add missing schema key to the route level
      * @since 4.0.0
      */
     public function registerGetCampaign()
@@ -67,6 +67,7 @@ class RegisterCampaignRoutes
                         'required' => true,
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -162,10 +163,10 @@ class RegisterCampaignRoutes
         );
     }
 
-
     /**
      * Update Campaign route
      *
+     * @since 4.9.0 Add missing schema key to the route level
      * @since 4.0.0
      */
     public function registerMergeCampaigns()
@@ -196,14 +197,15 @@ class RegisterCampaignRoutes
                         ],
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
 
-
     /**
      * Create Campaign route
      *
+     * @since 4.9.0 Add missing schema key to the route level
      * @since 4.0.0
      */
     public function registerCreateCampaign()
@@ -221,16 +223,16 @@ class RegisterCampaignRoutes
                         return current_user_can('manage_options');
                     },
                 ],
-                'args' => [
-                    'title' => [
+                'args' => array_merge(rest_get_endpoint_args_for_schema($this->getSchema(), WP_REST_Server::CREATABLE), [
+                    'logo' => [
                         'type' => 'string',
-                        'required' => true,
-                        'sanitize_callback' => 'sanitize_text_field',
-                    ],
-                    'shortDescription' => [
-                        'type' => 'string',
+                        'format' => 'uri',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'image' => [
+                        'type' => 'string',
+                        'format' => 'uri',
+                        'required' => false,
                     ],
                     'startDateTime' => [
                         'type' => 'string',
@@ -250,13 +252,14 @@ class RegisterCampaignRoutes
                             return new DateTime($value);
                         },
                     ],
-                ],
+                ] ),
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
 
-
     /**
+     * @since 4.9.0 Add missing schema key to the route level
      * @since 4.2.0
      */
     public function registerDuplicateCampaign()
@@ -280,18 +283,20 @@ class RegisterCampaignRoutes
                         'required' => true,
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
 
-
     /**
+     * @since 4.9.0 Set proper JSON Schema version
      * @since 4.0.0
      */
     public function getSchema(): array
     {
         return [
-            'title' => 'campaign',
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
+            'title' => 'givewp/campaign',
             'type' => 'object',
             'properties' => [
                 'id' => [

@@ -213,6 +213,7 @@ add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 )
 /**
  * Verify addon dependency before addon update
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 4.1.0 add bailout for GiveWP to protect it from licensing issues
  * @since 2.1.4
  *
@@ -221,7 +222,7 @@ add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 )
  *
  * @return WP_Error
  */
-function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
+function give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 	// Bailout.
 	if (
 		is_wp_error( $error )
@@ -270,18 +271,19 @@ function __give_verify_addon_dependency_before_update( $error, $hook_extra ) {
 	return $error;
 }
 
-add_filter( 'upgrader_pre_install', '__give_verify_addon_dependency_before_update', 10, 2 );
+add_filter( 'upgrader_pre_install', 'give_verify_addon_dependency_before_update', 10, 2 );
 
 /**
  * Function to add suppress_filters param if WPML add-on is activated.
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.4
  *
  * @param array WP query argument for Total Goal.
  *
  * @return array WP query argument for Total Goal.
  */
-function __give_wpml_total_goal_shortcode_agrs( $args ) {
+function give_wpml_total_goal_shortcode_agrs( $args ) {
 	$args['suppress_filters'] = true;
 
 	return $args;
@@ -290,10 +292,11 @@ function __give_wpml_total_goal_shortcode_agrs( $args ) {
 /**
  * Function to remove WPML post where filter in goal total amount shortcode.
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.4
  * @global SitePress $sitepress
  */
-function __give_remove_wpml_parse_query_filter() {
+function give_remove_wpml_parse_query_filter() {
 	global $sitepress;
 	remove_action( 'parse_query', [ $sitepress, 'parse_query' ] );
 }
@@ -302,10 +305,11 @@ function __give_remove_wpml_parse_query_filter() {
 /**
  * Function to add WPML post where filter in goal total amount shortcode.
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.4
  * @global SitePress $sitepress
  */
-function __give_add_wpml_parse_query_filter() {
+function give_add_wpml_parse_query_filter() {
 	global $sitepress;
 	add_action( 'parse_query', [ $sitepress, 'parse_query' ] );
 }
@@ -322,11 +326,11 @@ function give_add_support_for_wpml() {
 
 	if ( is_plugin_active( 'sitepress-multilingual-cms/sitepress.php' ) ) {
 
-		add_filter( 'give_totals_goal_shortcode_query_args', '__give_wpml_total_goal_shortcode_agrs' );
+		add_filter( 'give_totals_goal_shortcode_query_args', 'give_wpml_total_goal_shortcode_agrs');
 
 		// @see https://wpml.org/forums/topic/problem-with-query-filter-in-get_posts-function/#post-271309
-		add_action( 'give_totals_goal_shortcode_before_render', '__give_remove_wpml_parse_query_filter', 99 );
-		add_action( 'give_totals_goal_shortcode_after_render', '__give_add_wpml_parse_query_filter', 99 );
+		add_action( 'give_totals_goal_shortcode_before_render', 'give_remove_wpml_parse_query_filter', 99 );
+		add_action( 'give_totals_goal_shortcode_after_render', 'give_add_wpml_parse_query_filter', 99 );
 	}
 }
 

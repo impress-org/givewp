@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -37,6 +38,7 @@ class StatusColumn extends ModelColumn
     }
 
     /**
+     * @since 4.8.0 Updated status to complete if subscription renewal
      * @since 2.24.0
      *
      * @inheritDoc
@@ -45,10 +47,16 @@ class StatusColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
+        $status = $model->status;
+
+        if (isset($_REQUEST['subscriptionId']) && $model->type->isRenewal() && $model->status->isRenewal()) {
+            $status = DonationStatus::COMPLETE();
+        }
+
         return sprintf(
-        '<div class="statusBadge statusBadge--%1$s"><p>%2$s</p></div>',
-            $model->status->getValue(),
-            $model->status->label()
+            '<div class="statusBadge statusBadge--%1$s"><p>%2$s</p></div>',
+            $status->getValue(),
+            $status->label()
         );
     }
 }

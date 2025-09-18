@@ -2,9 +2,9 @@
 
 namespace Give\API\REST\V3\Routes\Donors;
 
-use Give\API\REST\V3\Routes\CURIE;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
+use Give\API\REST\V3\Support\CURIE;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorAddress;
@@ -34,6 +34,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.0.0
      */
     public function register_routes()
@@ -44,8 +45,8 @@ class DonorController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
@@ -88,21 +89,21 @@ class DonorController extends WP_REST_Controller
                         'default' => 0,
                     ],
                 ], $this->getSharedParams()),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => rest_get_endpoint_args_for_schema($this->get_public_item_schema(), WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
     }
 
     /**
      * Get list of donors.
      *
+     * @since 4.8.0 Add support for search parameter
      * @since 4.0.0
      *
      * @param WP_REST_Request $request Full details about the request.
@@ -119,6 +120,11 @@ class DonorController extends WP_REST_Controller
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
         $query = new DonorsQuery();
+
+        if ($request->get_param('search')) {
+            $query->whereLike('name', '%%' . $request->get_param('search') . '%%');
+            $query->orWhereLike('email', '%%' . $request->get_param('search') . '%%');
+        }
 
         // Donors only can be donors if they have donations associated with them
         if ($request->get_param('onlyWithDonations')) {
@@ -191,7 +197,7 @@ class DonorController extends WP_REST_Controller
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
-        if (! $donor || ($donor->isAnonymous() && $donorAnonymousMode->isExcluded())) {
+        if (!$donor || ($donor->isAnonymous() && $donorAnonymousMode->isExcluded())) {
             return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
         }
 
@@ -204,6 +210,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
+     * @since 4.8.0 Update donor name when firstName or lastName is updated
      * @since 4.7.0 Add support for updating custom fields
      * @since 4.4.0
      *
@@ -240,6 +247,10 @@ class DonorController extends WP_REST_Controller
                     $donor->$key = $value;
                 }
             }
+        }
+
+        if ($request->get_param('firstName') || $request->get_param('lastName')) {
+            $donor->name = trim($donor->firstName . ' ' . $donor->lastName);
         }
 
         if ($donor->isDirty()) {
@@ -329,12 +340,14 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor and add custom fields schema
      * @since 4.4.0
      */
     public function get_item_schema(): array
     {
         $schema = [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donor',
             'type' => 'object',
             'properties' => [
@@ -355,6 +368,7 @@ class DonorController extends WP_REST_Controller
                     'maxLength' => 128,
                     'errorMessage' => esc_html__('First name is required', 'give'),
                     'format' => 'text-field',
+                    'required' => true,
                 ],
                 'lastName' => [
                     'type' => 'string',
@@ -363,11 +377,13 @@ class DonorController extends WP_REST_Controller
                     'maxLength' => 128,
                     'errorMessage' => esc_html__('Last name is required', 'give'),
                     'format' => 'text-field',
+                    'required' => true,
                 ],
                 'email' => [
                     'type' => 'string',
                     'description' => esc_html__('Donor email', 'give'),
                     'format' => 'email',
+                    'required' => true,
                 ],
                 'additionalEmails' => [
                     'type' => 'array',
@@ -434,13 +450,13 @@ class DonorController extends WP_REST_Controller
                     ],
                 ],
             ],
-            'required' => ['id', 'name', 'firstName', 'lastName', 'email'],
         ];
 
         return $this->add_additional_fields_schema($schema);
     }
 
     /**
+     * @since 4.8.0 Re-add search parameter
      * @since 4.4.0
      */
     public function get_collection_params(): array
@@ -452,7 +468,6 @@ class DonorController extends WP_REST_Controller
 
         // Remove default parameters not being used
         unset($params['context']);
-        unset($params['search']);
 
         $params += [
             'sort' => [
@@ -540,7 +555,7 @@ class DonorController extends WP_REST_Controller
         $isAdmin = current_user_can('manage_options');
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if (! $isAdmin && $includeSensitiveData) {
+        if (!$isAdmin && $includeSensitiveData) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to include sensitive data.', 'give'),
@@ -550,7 +565,7 @@ class DonorController extends WP_REST_Controller
 
         if ($request->get_param('anonymousDonors') !== null) {
             $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-            if (! $isAdmin && $donorAnonymousMode->isIncluded()) {
+            if (!$isAdmin && $donorAnonymousMode->isIncluded()) {
                 return new WP_Error(
                     'rest_forbidden',
                     esc_html__('You do not have permission to include anonymous donors.', 'give'),

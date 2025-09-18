@@ -232,7 +232,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     *
+     * @since 4.8.0 Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
      * @since 3.4.0 Make this method protected so it can be extended
      * @since 3.2.0 Updated query to account for possible null and empty values for _give_payment_mode meta
@@ -251,13 +251,14 @@ class ListDonations extends Endpoint
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
         $campaignId = $this->request->get_param('campaignId');
+        $subscriptionId = $this->request->get_param('subscriptionId');
         $status = $this->request->get_param('status');
 
         $dependencies = [
             DonationMetaKeys::MODE(),
         ];
 
-        $hasWhereConditions = $search || $start || $end || $campaignId || $donor;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $subscriptionId || $donor;
 
         $query->where('post_type', 'give_payment');
 
@@ -301,6 +302,12 @@ class ListDonations extends Endpoint
             $query
                 ->where('give_donationmeta_attach_meta_campaignId.meta_value', $campaignId);
             $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
+        }
+
+        if ($subscriptionId) {
+            $query
+                ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', $subscriptionId);
+            $dependencies[] = DonationMetaKeys::SUBSCRIPTION_ID();
         }
 
         if ($start && $end) {

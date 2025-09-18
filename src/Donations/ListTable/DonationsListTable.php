@@ -10,6 +10,7 @@ use Give\Donations\ListTable\Columns\GatewayColumn;
 use Give\Donations\ListTable\Columns\IdColumn;
 use Give\Donations\ListTable\Columns\PaymentTypeColumn;
 use Give\Donations\ListTable\Columns\StatusColumn;
+use Give\Donations\ListTable\Columns\SubscriptionDonationTypeColumn;
 use Give\Framework\ListTable\ListTable;
 
 /**
@@ -29,6 +30,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
+     * @since 4.8.0 Added Subscription Donation Type column
      * @since 2.24.0
      *
      * @inheritDoc
@@ -44,6 +46,7 @@ class DonationsListTable extends ListTable
             new CampaignColumn(),
             new GatewayColumn(),
             new StatusColumn(),
+            new SubscriptionDonationTypeColumn(),
         ];
     }
 

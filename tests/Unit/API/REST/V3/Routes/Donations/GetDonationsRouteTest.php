@@ -3,7 +3,6 @@
 namespace Give\Tests\Unit\API\REST\V3\Routes\Donations;
 
 use Exception;
-use Give\API\REST\V3\Routes\Donations\DonationController;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Campaigns\Models\Campaign;
@@ -11,10 +10,16 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use Give\Framework\Support\Facades\DateTime\Temporal;
+use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -24,6 +29,7 @@ use WP_REST_Server;
 class GetDonationsRouteTest extends RestApiTestCase
 {
     use RefreshDatabase;
+    use HasDefaultWordPressUsers;
 
     /**
      * @since 4.0.0
@@ -32,19 +38,8 @@ class GetDonationsRouteTest extends RestApiTestCase
     {
         $donation = $this->createDonation1();
 
-        $newAdminUser = self::factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testGetDonationShouldReturnAllModelProperties',
-                'user_pass' => 'testGetDonationShouldReturnAllModelProperties',
-                'user_email' => 'testGetDonationShouldReturnAllModelProperties@test.com',
-            ]
-        );
-
-        wp_set_current_user($newAdminUser);
-
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $request->set_query_params(
             [
@@ -125,7 +120,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $this->createDonation1();
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -152,20 +147,10 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     public function testGetDonationsShouldIncludeSensitiveData()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testGetDonationsShouldReturnSensitiveData',
-                'user_pass' => 'testGetDonationsShouldReturnSensitiveData',
-                'user_email' => 'testGetDonationsShouldReturnSensitiveData@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         $this->createDonation1();
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $request->set_query_params(
             [
@@ -198,20 +183,10 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     public function testGetDonationsShouldReturn403ErrorWhenNotAdminUserIncludeSensitiveData()
     {
-        $newSubscriberUser = $this->factory()->user->create(
-            [
-                'role' => 'subscriber',
-                'user_login' => 'testGetDonationShouldReturn403ErrorSensitiveData',
-                'user_pass' => 'testGetDonationShouldReturn403ErrorSensitiveData',
-                'user_email' => 'testGetDonationShouldReturn403ErrorSensitiveData@test.com',
-            ]
-        );
-        wp_set_current_user($newSubscriberUser);
-
         $this->createDonation1();
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'subscriber');
 
         $request->set_query_params(
             [
@@ -239,7 +214,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = $this->createDonation2();
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $request->set_query_params(
             [
@@ -260,6 +235,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $this->assertEquals(2, $headers['X-WP-Total']);
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
 
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
                 'page' => 2,
@@ -294,7 +270,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = $this->createDonation2($campaign->id);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
                 'campaignId' => $campaign->id,
@@ -327,7 +303,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = $this->createDonation2(0, true);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -346,16 +322,6 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     public function testGetDonationsShouldIncludeAnonymousDonations()
     {
-        $newAdminUser = $this->factory()->user->create(
-            [
-                'role' => 'administrator',
-                'user_login' => 'testGetDonationsShouldIncludeAnonymousDonations',
-                'user_pass' => 'testGetDonationsShouldIncludeAnonymousDonations',
-                'user_email' => 'testGetDonationsShouldIncludeAnonymousDonations@test.com',
-            ]
-        );
-        wp_set_current_user($newAdminUser);
-
         Donation::query()->delete();
 
         $donation1 = $this->createDonation1();
@@ -364,7 +330,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = $this->createDonation2(0, true);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(
             [
                 'anonymousDonations' => 'include',
@@ -390,22 +356,12 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     public function testGetDonationsShouldReturn403ErrorWhenNotAdminUserIncludeAnonymousDonations()
     {
-        $newSubscriberUser = $this->factory()->user->create(
-            [
-                'role' => 'subscriber',
-                'user_login' => 'testGetDonationShouldReturn403ErrorAnonymousDonation',
-                'user_pass' => 'testGetDonationShouldReturn403ErrorAnonymousDonation',
-                'user_email' => 'testGetDonationShouldReturn403ErrorAnonymousDonation@test.com',
-            ]
-        );
-        wp_set_current_user($newSubscriberUser);
-
         Donation::query()->delete();
 
         $this->createDonation2(0, true);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'subscriber');
         $request->set_query_params(
             [
                 'anonymousDonations' => 'include',
@@ -434,7 +390,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = $this->createDonation2(0, true);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
                 'anonymousDonations' => 'redact',
@@ -495,7 +451,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation3 = $this->createDonation3($campaign2->id);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donations';
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         /**
          * Ascendant Direction
@@ -582,6 +538,105 @@ class GetDonationsRouteTest extends RestApiTestCase
         $this->assertEquals(2, count($data));
         $this->assertEquals($this->getExpectedValue($donation2, $sortableColumn), $data[0][$sortableColumn]);
         $this->assertEquals($this->getExpectedValue($donation1, $sortableColumn), $data[1][$sortableColumn]);
+    }
+
+    /**
+     * @since 4.8.0
+     */
+    public function testGetDonationsBySubscriptionId()
+    {
+        // Create a subscription with initial donation
+        $subscription = $this->createSubscription();
+
+        // Create renewal donations for the subscription
+        $renewal1 = $subscription->createRenewal();
+        $renewal2 = $subscription->createRenewal();
+
+        // Create another subscription with different donations
+        $subscription2 = $this->createSubscription();
+        $renewal3 = $subscription2->createRenewal();
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+
+        $request->set_query_params(
+            [
+                'subscriptionId' => $subscription->id,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+        $data = json_decode(json_encode($response->get_data()), true);
+
+        $this->assertEquals(200, $response->get_status());
+
+        // Should return 3 donations: initial donation + 2 renewals
+        $this->assertCount(3, $data);
+
+        // All donations should belong to the specified subscription
+        foreach ($data as $donation) {
+            $this->assertEquals($subscription->id, $donation['subscriptionId']);
+        }
+    }
+
+    /**
+     * @since 4.8.0
+     */
+    public function testGetDonationsBySubscriptionIdShouldReturnEmptyWhenSubscriptionDoesNotExist()
+    {
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+
+        $request->set_query_params(
+            [
+                'subscriptionId' => 99999, // Non-existent subscription ID
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+        $data = json_decode(json_encode($response->get_data()), true);
+
+        $this->assertEquals(200, $response->get_status());
+        $this->assertCount(0, $data);
+    }
+
+    /**
+     * @since 4.8.0
+     */
+    public function testGetDonationsBySubscriptionIdShouldReturnOnlyDonationsFromSpecifiedSubscription()
+    {
+        // Create first subscription with donations
+        $subscription1 = $this->createSubscription();
+        $renewal1 = $subscription1->createRenewal();
+
+        // Create second subscription with donations
+        $subscription2 = $this->createSubscription();
+        $renewal2 = $subscription2->createRenewal();
+        $renewal3 = $subscription2->createRenewal();
+
+        $route = '/' . DonationRoute::NAMESPACE . '/donations';
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+
+        // Filter by first subscription
+        $request->set_query_params(
+            [
+                'subscriptionId' => $subscription1->id,
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+        $data = json_decode(json_encode($response->get_data()), true);
+
+        $this->assertEquals(200, $response->get_status());
+
+        // Should return only donations from subscription1 (2 donations: initial + 1 renewal)
+        $this->assertCount(2, $data);
+
+        // All donations should belong to subscription1
+        foreach ($data as $donation) {
+            $this->assertEquals($subscription1->id, $donation['subscriptionId']);
+            $this->assertNotEquals($subscription2->id, $donation['subscriptionId']);
+        }
     }
 
     /**
@@ -675,6 +730,30 @@ class GetDonationsRouteTest extends RestApiTestCase
         }
 
         return $donation3;
+    }
+
+    /**
+     * @since 4.8.0
+     *
+     * @throws Exception
+     */
+    private function createSubscription(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
+    {
+        $donor = Donor::factory()->create();
+
+        return Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'amount' => new Money($amount, 'USD'),
+            'status' => new SubscriptionStatus($status),
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
+            'installments' => 0,
+            'mode' => new SubscriptionMode($mode),
+            'donorId' => $donor->id,
+        ], [
+            'anonymous' => false,
+            'donorId' => $donor->id,
+        ]);
     }
 
     /**

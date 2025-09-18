@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *  1. User can only set absolute integer value as number of decimals.
  *  2. number_decimals setting will be zero if no decimal separator defined
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since   1.8
  * @used-by Give_Plugin_Settings::give_settings()
  *
@@ -27,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return  mixed
  */
-function __give_sanitize_number_decimals_setting_field( $value ) {
+function give_sanitize_number_decimals_setting_field( $value ) {
 	$value_changed = false;
 	$show_notice   = false;
 	$old_value     = $value;
@@ -65,7 +66,7 @@ function __give_sanitize_number_decimals_setting_field( $value ) {
 	return absint( $value );
 }
 
-add_filter( 'give_admin_settings_sanitize_option_number_decimals', '__give_sanitize_number_decimals_setting_field', 10 );
+add_filter( 'give_admin_settings_sanitize_option_number_decimals', 'give_sanitize_number_decimals_setting_field', 10 );
 
 
 /**
@@ -74,6 +75,7 @@ add_filter( 'give_admin_settings_sanitize_option_number_decimals', '__give_sanit
  *  1. User can only set absolute integer value as number of decimals.
  *  2. number_decimals setting will be zero if no decimal separator defined
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since   1.8
  * @used-by Give_Plugin_Settings::give_settings()
  *
@@ -81,7 +83,7 @@ add_filter( 'give_admin_settings_sanitize_option_number_decimals', '__give_sanit
  *
  * @return  mixed
  */
-function __give_validate_decimal_separator_setting_field( $value ) {
+function give_validate_decimal_separator_setting_field( $value ) {
 	$thousand_separator = isset( $_POST['thousands_separator'] ) ? give_clean( $_POST['thousands_separator'] ) : '';
 	$decimal_separator  = isset( $_POST['decimal_separator'] ) ? give_clean( $_POST['decimal_separator'] ) : '';
 
@@ -94,18 +96,19 @@ function __give_validate_decimal_separator_setting_field( $value ) {
 	return $value;
 }
 
-add_filter( 'give_admin_settings_sanitize_option_decimal_separator', '__give_validate_decimal_separator_setting_field', 10 );
+add_filter( 'give_admin_settings_sanitize_option_decimal_separator', 'give_validate_decimal_separator_setting_field', 10 );
 
 /**
  * Change $delimiter text to symbol.
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 1.8.14
  *
  * @param string $delimiter
  *
  * @return string $delimiter.
  */
-function __give_import_delimiter_set_callback( $delimiter ) {
+function give_import_delimiter_set_callback( $delimiter ) {
 	$delimite_type = array(
 		'csv'                  => ',',
 		'tab-separated-values' => "\t",
@@ -114,7 +117,7 @@ function __give_import_delimiter_set_callback( $delimiter ) {
 	return ( array_key_exists( $delimiter, $delimite_type ) ? $delimite_type[ $delimiter ] : ',' );
 }
 
-add_filter( 'give_import_delimiter_set', '__give_import_delimiter_set_callback', 10 );
+add_filter( 'give_import_delimiter_set', 'give_import_delimiter_set_callback', 10 );
 
 /**
  * Give unset the page id from the core setting data from the json files.

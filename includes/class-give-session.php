@@ -184,11 +184,11 @@ class Give_Session {
 		add_action( 'wp_logout', [ $this, 'destroy_session' ] );
 
 		if ( ! is_user_logged_in() ) {
-			add_filter( 'nonce_user_logged_out', [ $this, '__nonce_user_logged_out' ] );
+			add_filter( 'nonce_user_logged_out', [$this, 'nonce_user_logged_out'] );
 		}
 
 		// Remove old sessions.
-		Give_Cron::add_daily_event( [ $this, '__cleanup_sessions' ] );
+		Give_Cron::add_daily_event( [$this, 'cleanup_sessions'] );
 	}
 
 	/**
@@ -214,13 +214,13 @@ class Give_Session {
 	 */
 	public function get_session_cookie() {
 		$session      = [];
-		$cookie_value = isset( $_COOKIE[ $this->cookie_name ] ) ? give_clean( $_COOKIE[ $this->cookie_name ] ) : $this->__handle_ajax_cookie(); // @codingStandardsIgnoreLine.
+		$cookie_value = isset( $_COOKIE[ $this->cookie_name ] ) ? give_clean( $_COOKIE[ $this->cookie_name ] ) : $this->handle_ajax_cookie(); // @codingStandardsIgnoreLine.
 
 		if ( empty( $cookie_value ) || ! is_string( $cookie_value ) ) {
 			return $session;
 		}
 
-		list( $donor_id, $session_expiration, $session_expiring, $cookie_hash ) = explode( '||', $cookie_value );
+		[ $donor_id, $session_expiration, $session_expiring, $cookie_hash ] = explode( '||', $cookie_value );
 
 		if ( empty( $donor_id ) ) {
 			return $session;
@@ -253,12 +253,14 @@ class Give_Session {
 	/**
 	 * Load session cookie by ajax
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since 2.2.6
 	 * @access private
 	 *
 	 * @return array|bool|string
 	 */
-	private function __handle_ajax_cookie() {
+	private function handle_ajax_cookie()
+    {
 		$cookie = false;
 
 		// @see https://github.com/impress-org/give/issues/3705
@@ -489,7 +491,7 @@ class Give_Session {
 		if ( $this->session_data_changed && $this->has_session() ) {
 			global $wpdb;
 
-			Give()->session_db->__replace(
+			Give()->session_db->replace(
 				Give()->session_db->table_name,
 				[
 					'session_key'    => $this->donor_id,
@@ -575,6 +577,7 @@ class Give_Session {
 	 * When a user is logged out, ensure they have a unique nonce by using the donor/session ID.
 	 * Note: for internal logic only.
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.2.0
 	 * @access public
 	 *
@@ -582,7 +585,7 @@ class Give_Session {
 	 *
 	 * @return string
 	 */
-	public function __nonce_user_logged_out( $uid ) {
+	public function nonce_user_logged_out( $uid ) {
 		return $this->has_session() && $this->donor_id ? $this->donor_id : $uid;
 	}
 
@@ -591,10 +594,11 @@ class Give_Session {
 	 * Cleanup session data from the database and clear caches.
 	 * Note: for internal logic only.
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.2.0
 	 * @access public
 	 */
-	public function __cleanup_sessions() { // @codingStandardsIgnoreLine
+	public function cleanup_sessions() { // @codingStandardsIgnoreLine
 		Give()->session_db->delete_expired_sessions();
 	}
 

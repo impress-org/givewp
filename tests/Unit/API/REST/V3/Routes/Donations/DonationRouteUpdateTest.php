@@ -53,6 +53,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.8.1 Remove campaignId from the test since it has been removed from the nonEditableFields property.
      * @since 4.6.0
      */
     public function testUpdateDonationShouldNotUpdateNonEditableFields()

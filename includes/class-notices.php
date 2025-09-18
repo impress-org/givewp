@@ -55,7 +55,7 @@ class Give_Notices {
 	 */
 	public function __construct() {
 		add_action( 'admin_notices', [ $this, 'render_admin_notices' ], 999 );
-		add_action( 'admin_footer', [ $this, '__reveal_notices' ] );
+		add_action( 'admin_footer', [$this, 'reveal_notices'] );
 		add_action( 'give_dismiss_notices', [ $this, 'dismiss_notices' ] );
 
 		add_action( 'give_frontend_notices', [ $this, 'render_frontend_notices' ], 999 );
@@ -415,9 +415,10 @@ class Give_Notices {
 	 * Show notices
 	 * Note: only for internal use
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since 2.3.0
 	 */
-	public function __reveal_notices() {
+	public function reveal_notices() {
 		?>
 		<script>
 			jQuery(document).ready(function($){

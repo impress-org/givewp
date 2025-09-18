@@ -2,20 +2,20 @@
 
 namespace Give\API\REST\V3\Routes\Donations;
 
-use DateTime;
-use Give\API\REST\V3\Routes\CURIE;
+use Exception;
+use Give\API\REST\V3\Routes\Donations\DataTransferObjects\DonationCreateData;
+use Give\API\REST\V3\Routes\Donations\Exceptions\DonationValidationException;
+use Give\API\REST\V3\Routes\Donations\Fields\DonationFields;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\API\REST\V3\Support\CURIE;
 use Give\Donations\Models\Donation;
-use Give\Donations\Properties\BillingAddress;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Donations\ViewModels\DonationViewModel;
-use Give\Framework\Exceptions\Primitives\Exception;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
-use Give\Framework\Support\ValueObjects\Money;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -47,6 +47,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.6.0
      */
     public function register_routes()
@@ -58,11 +59,13 @@ class DonationController extends WP_REST_Controller
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => [
                     '_embed' => [
-                        'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:donor" when we wish to embed only a specific one.',
-                            'give'),
+                        'description' => __(
+                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:donor" when we wish to embed only a specific one.',
+                            'give'
+                        ),
                         'type' => [
                             'string',
-                            'boolean'
+                            'boolean',
                         ],
                         'default' => false,
                     ],
@@ -84,14 +87,12 @@ class DonationController extends WP_REST_Controller
                         ],
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
@@ -108,8 +109,8 @@ class DonationController extends WP_REST_Controller
                         'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base, [
@@ -118,7 +119,12 @@ class DonationController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => $this->get_collection_params(),
-                'schema' => [$this, 'get_public_item_schema'],
+            ],
+            [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [$this, 'create_item'],
+                'permission_callback' => [$this, 'create_item_permissions_check'],
+                'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::CREATABLE),
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
@@ -139,8 +145,8 @@ class DonationController extends WP_REST_Controller
                         'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/refund', [
@@ -154,8 +160,8 @@ class DonationController extends WP_REST_Controller
                         'required' => true,
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
     }
 
@@ -184,6 +190,10 @@ class DonationController extends WP_REST_Controller
             $query->where('give_donationmeta_attach_meta_donorId.meta_value', $donorId);
         }
 
+        if ($subscriptionId = $request->get_param('subscriptionId')) {
+            $query->where('give_donationmeta_attach_meta_subscriptionId.meta_value', $subscriptionId);
+        }
+
         if ($donationAnonymousMode->isExcluded()) {
             // Exclude anonymous donations from results
             $query->where('give_donationmeta_attach_meta_anonymous.meta_value', 0);
@@ -193,7 +203,7 @@ class DonationController extends WP_REST_Controller
         $query->where('give_donationmeta_attach_meta_mode.meta_value', $mode);
 
         // Filter by status if not 'any'
-        if ( ! in_array('any', (array)$status, true)) {
+        if (!in_array('any', (array)$status, true)) {
             $query->whereIn('post_status', (array)$status);
         }
 
@@ -259,7 +269,7 @@ class DonationController extends WP_REST_Controller
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
 
-        if ( ! $donation || ($donation->anonymous && $donationAnonymousMode->isExcluded())) {
+        if (!$donation || ($donation->anonymous && $donationAnonymousMode->isExcluded())) {
             return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
         }
 
@@ -271,6 +281,39 @@ class DonationController extends WP_REST_Controller
         $response = $this->prepare_item_for_response($item, $request);
 
         return rest_ensure_response($response);
+    }
+
+    /**
+     * Create a single donation.
+     *
+     * @since 4.8.0
+     */
+    public function create_item($request): WP_REST_Response
+    {
+        try {
+            $data = DonationCreateData::fromRequest($request);
+            $donation = $data->isRenewal() ? $data->createRenewal() : $data->createDonation();
+
+            $item = (new DonationViewModel($donation))
+                ->includeSensitiveData(true)
+                ->anonymousMode(new DonationAnonymousMode('include'))
+                ->exports();
+
+            $response = $this->prepare_item_for_response($item, $request);
+            $response->set_status(201);
+
+            return rest_ensure_response($response);
+        } catch (DonationValidationException $e) {
+            return new WP_REST_Response([
+                'message' => $e->getMessage(),
+                'error' => $e->getErrorCode()
+            ], $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new WP_REST_Response([
+                'message' => __('Failed to create donation', 'give'),
+                'error' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
@@ -303,7 +346,7 @@ class DonationController extends WP_REST_Controller
             if (!in_array($key, $nonEditableFields, true)) {
                 if (in_array($key, $donation::propertyKeys(), true)) {
                     try {
-                        $processedValue = $this->processFieldValue($key, $value);
+                        $processedValue = DonationFields::processValue($key, $value);
                         if ($donation->isPropertyTypeValid($key, $processedValue)) {
                             $donation->$key = $processedValue;
                         }
@@ -354,7 +397,7 @@ class DonationController extends WP_REST_Controller
 
         try {
             /** @var PaymentGatewayRefundable $gateway */
-            $command =  $gateway->refundDonation($donation);
+            $command = $gateway->refundDonation($donation);
 
             if ($command instanceof PaymentRefunded) {
                 $handler = new PaymentRefundedHandler($command);
@@ -366,53 +409,6 @@ class DonationController extends WP_REST_Controller
             return rest_ensure_response($response);
         } catch (\Exception $exception) {
             return new WP_REST_Response(__('Failed to refund donation', 'give'), 500);
-        }
-    }
-
-    /**
-     * Process field values for special data types before setting them on the donation model.
-     *
-     * @since 4.6.0
-     */
-    private function processFieldValue(string $key, $value)
-    {
-        switch ($key) {
-            case 'amount':
-            case 'feeAmountRecovered':
-                if (is_array($value)) {
-                    // Handle Money object array format: ['amount' => 100.00, 'currency' => 'USD']
-                    if (isset($value['amount']) && isset($value['currency'])) {
-                        return Money::fromDecimal($value['amount'], $value['currency']);
-                    }
-                }
-                return $value;
-
-            case 'status':
-                if (is_string($value)) {
-                    return new DonationStatus($value);
-                }
-                return $value;
-
-            case 'billingAddress':
-                if (is_array($value)) {
-                    return BillingAddress::fromArray($value);
-                }
-                return $value;
-
-            case 'createdAt':
-                try {
-                    if (is_string($value)) {
-                        return new DateTime( $value, wp_timezone());
-                    } elseif (is_array($value)) {
-                        return new DateTime($value['date'], new \DateTimeZone($value['timezone']));
-                    }
-                } catch (\Exception $e) {
-                    throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
-                }
-                return $value;
-
-            default:
-                return $value;
         }
     }
 
@@ -442,7 +438,6 @@ class DonationController extends WP_REST_Controller
             if (!$deleted) {
                 return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
             }
-
         } else {
             // Move the donation to trash (soft delete)
             $trashed = $donation->trash();
@@ -480,21 +475,21 @@ class DonationController extends WP_REST_Controller
                 ->anonymousMode(new DonationAnonymousMode('include'))
                 ->exports();
 
-                if ($force) {
-                    if ($donation->delete()) {
-                        $deleted[] = ['id' => $id, 'previous' => $item];
-                    } else {
-                        $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
-                    }
+            if ($force) {
+                if ($donation->delete()) {
+                    $deleted[] = ['id' => $id, 'previous' => $item];
                 } else {
-                    $trashed = $donation->trash();
-
-                    if ($trashed) {
-                        $deleted[] = ['id' => $id, 'previous' => $item];
-                    } else {
-                        $errors[] = ['id' => $id, 'message' => __('Failed to trash donation', 'give')];
-                    }
+                    $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
                 }
+            } else {
+                $trashed = $donation->trash();
+
+                if ($trashed) {
+                    $deleted[] = ['id' => $id, 'previous' => $item];
+                } else {
+                    $errors[] = ['id' => $id, 'message' => __('Failed to trash donation', 'give')];
+                }
+            }
         }
 
         return new WP_REST_Response([
@@ -594,6 +589,10 @@ class DonationController extends WP_REST_Controller
                 'type' => 'integer',
                 'default' => 0,
             ],
+            'subscriptionId' => [
+                'type' => 'integer',
+                'default' => 0,
+            ],
             'includeSensitiveData' => [
                 'type' => 'boolean',
                 'default' => false,
@@ -641,6 +640,15 @@ class DonationController extends WP_REST_Controller
                     'embeddable' => true,
                 ],
             ];
+
+            // Add subscription link when subscriptionId is greater than 0
+            if (isset($item['subscriptionId']) && $item['subscriptionId'] > 0) {
+                $subscription_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'subscriptions', $item['subscriptionId']));
+                $links[CURIE::relationUrl('subscription')] = [
+                    'href' => $subscription_url,
+                    'embeddable' => true,
+                ];
+            }
         } else {
             $links = [];
         }
@@ -705,6 +713,22 @@ class DonationController extends WP_REST_Controller
 
     /**
      * @since 4.6.0
+     */
+    public function create_item_permissions_check($request)
+    {
+        if ($this->canEditDonations()) {
+            return true;
+        }
+
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__('You do not have permission to create donations.', 'give'),
+            ['status' => $this->authorizationStatusCode()]
+        );
+    }
+
+    /**
+     * @since 4.8.0
      */
     public function delete_item_permissions_check($request)
     {
@@ -794,6 +818,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.8.0 Change default status to complete
      * @since 4.7.0 Change title to givewp/donation and add custom fields schema
      * @since 4.6.1 Change type of billing address properties to accept null values
      * @since 4.6.0
@@ -801,13 +826,16 @@ class DonationController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         $schema = [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donation',
             'type' => 'object',
             'properties' => [
                 'id' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donation ID', 'give'),
+                    'readonly' => true,
                 ],
+
                 'donorId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donor ID', 'give'),
@@ -825,7 +853,7 @@ class DonationController extends WP_REST_Controller
                 'honorific' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor honorific/prefix', 'give'),
-                    'enum' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
+                    'enum' => $this->get_honorific_prefixes(),
                 ],
                 'email' => [
                     'type' => 'string',
@@ -895,6 +923,13 @@ class DonationController extends WP_REST_Controller
                     'type' => 'string',
                     'description' => esc_html__('Donation status', 'give'),
                     'enum' => array_values(DonationStatus::toArray()),
+                    'default' => DonationStatus::COMPLETE,
+                ],
+                'type' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donation type', 'give'),
+                    'enum' => array_values(DonationType::toArray()),
+                    'default' => DonationType::SINGLE,
                 ],
                 'gatewayId' => [
                     'type' => 'string',
@@ -909,6 +944,45 @@ class DonationController extends WP_REST_Controller
                 'anonymous' => [
                     'type' => 'boolean',
                     'description' => esc_html__('Whether the donation is anonymous', 'give'),
+                    'default' => false,
+                ],
+                'campaignId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Campaign ID', 'give'),
+                ],
+                'formId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Form ID', 'give'),
+                ],
+                'formTitle' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Form title', 'give'),
+                    'format' => 'text-field',
+                ],
+                'subscriptionId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Subscription ID', 'give'),
+                    'default' => 0,
+                ],
+                'levelId' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Level ID', 'give'),
+                    'format' => 'text-field',
+                ],
+                'gatewayTransactionId' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Gateway transaction ID', 'give'),
+                    'format' => 'text-field',
+                ],
+                'exchangeRate' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Exchange rate', 'give'),
+                    'format' => 'text-field',
+                ],
+                'comment' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donation comment', 'give'),
+                    'format' => 'text-field',
                 ],
                 'billingAddress' => [
                     'type' => ['object', 'null'],
@@ -933,46 +1007,73 @@ class DonationController extends WP_REST_Controller
                     'format' => 'text-field',
                 ],
                 'createdAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
+                    'oneOf' => [
+                        [
                             'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
+                            'description' => esc_html__('Donation creation date as ISO string', 'give'),
                             'format' => 'date-time',
                         ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
+                        [
+                            'type' => 'object',
+                            'properties' => [
+                                'date' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Date', 'give'),
+                                    'format' => 'date-time',
+                                ],
+                                'timezone' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Timezone of the date', 'give'),
+                                    'format' => 'text-field',
+                                ],
+                                'timezone_type' => [
+                                    'type' => 'integer',
+                                    'description' => esc_html__('Timezone type', 'give'),
+                                ],
+                            ],
+                            'description' => esc_html__('Donation creation date', 'give'),
                         ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
+                        [
+                            'type' => 'null',
                         ],
                     ],
-                    'description' => esc_html__('Donation creation date', 'give'),
-                    'format' => 'date-time',
                 ],
                 'updatedAt' => [
-                    'type' => ['object', 'null'],
-                    'properties' => [
-                        'date' => [
+                    'oneOf' => [
+                        [
                             'type' => 'string',
-                            'description' => esc_html__('Date', 'give'),
+                            'description' => esc_html__('Donation last update date as ISO string', 'give'),
                             'format' => 'date-time',
                         ],
-                        'timezone' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Timezone of the date', 'give'),
-                            'format' => 'text-field',
+                        [
+                            'type' => 'object',
+                            'properties' => [
+                                'date' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Date', 'give'),
+                                    'format' => 'date-time',
+                                ],
+                                'timezone' => [
+                                    'type' => 'string',
+                                    'description' => esc_html__('Timezone of the date', 'give'),
+                                    'format' => 'text-field',
+                                ],
+                                'timezone_type' => [
+                                    'type' => 'integer',
+                                    'description' => esc_html__('Timezone type', 'give'),
+                                ],
+                            ],
+                            'description' => esc_html__('Donation last update date', 'give'),
                         ],
-                        'timezone_type' => [
-                            'type' => 'integer',
-                            'description' => esc_html__('Timezone type', 'give'),
+                        [
+                            'type' => 'null',
                         ],
                     ],
-                    'description' => esc_html__('Donation last update date', 'give'),
-                    'format' => 'date-time',
+                ],
+                'updateRenewalDate' => [
+                    'type' => 'boolean',
+                    'description' => esc_html__('Whether to update the subscription renewal date with the createdAt date when creating subscription or renewal donations', 'give'),
+                    'default' => false,
                 ],
                 'customFields' => [
                     'type' => 'array',
@@ -995,9 +1096,25 @@ class DonationController extends WP_REST_Controller
                     ],
                 ],
             ],
-            'required' => ['id', 'donorId', 'amount', 'currency', 'status', 'gatewayId', 'mode', 'createdAt'],
         ];
 
         return $this->add_additional_fields_schema($schema);
+    }
+
+    /**
+     * Gets all available honorific prefixes.
+     *
+     * Fetches the user-configured honorific prefixes from settings and merges them
+     * with a hardcoded 'anonymous' prefix. The 'anonymous' prefix is required
+     * when requests with anonymousDonations=redact are present.
+     *
+     * @return array<string, string> An associative array of honorific prefixes.
+     */
+    private function get_honorific_prefixes(): array {
+        $prefixes = (array) give_get_option( 'title_prefixes', array_values( give_get_default_title_prefixes() ) );
+
+        return array_merge( $prefixes, [
+            'anonymous' => __( 'anonymous', 'give' ),
+        ] );
     }
 }

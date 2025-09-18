@@ -536,7 +536,7 @@ $give_updates = Give_Updates::get_instance();
 			$db_table_list = '';
 
 			/* @var  Give_DB $table */
-			foreach ( __give_get_tables() as $table ) {
+			foreach ( give_get_tables() as $table ) {
 				$db_table_list .= sprintf(
 					'<li><mark class="%1$s"><span class="dashicons dashicons-%2$s"></mark> %3$s</li>',
 					$table->installed()

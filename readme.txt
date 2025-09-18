@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.7.0
+Stable tag: 4.9.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,27 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.9.0: September 17th, 2025 =
+* New: Added MCP server integration with compatibility for Angie by Elementor
+* Enhancement: Updated GiveWP for PHP 8.3 compatibility
+* Fix: Updated various strings that were missing translations (open-source contribution by @DAnn2012)
+* Fix: Resolved schema registration issues in V3 REST endpoints
+
+
+= 4.8.1: September 15th, 2025 =
+* Fix: Resolved an issue with the campaign field in the new donation detail screen not saving properly
+
+= 4.8.0: September 10th, 2025 =
+* New: The subscription admin details screen has been upgraded to a new design and experience!
+* Enhancement: Improved the loading performance of the campaign list table and grid
+* Enhancement: Added Stripe webhook compatibility with their latest version 2025-03-31.basil
+* Enhancement: Improved the performance and experience of the associated donor field in the donation details screen
+* Fix: Resolved an issue with some campaign blocks not rendering option-based forms
+
+= 4.7.1: September 4th, 2025 =
+* Fix: Resolved an issue with the legacy form widget for Elementor not displaying a preview in the builder
+* Fix: Resolved an issue with the Elementor GiveWP category not showing up as intended
 
 = 4.7.0: August 20th, 2025 =
 * New: Elementor support for widgets and campaign landing pages have been added to GiveWP without the need for a separate add-on

@@ -5,13 +5,14 @@ use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 /**
  * Insert donor comment to donation.
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.21.0 remove anonymous
  * @since 2.2.0
  *
  * @param  int  $donation_id
  * @param  array  $donation_data
  */
-function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
+function _give_insert_donor_donation_comment( $donation_id, $donation_data ) {
 	if ( ! empty( $_POST['give_comment'] ) ) {
         $donation = give()->donations->getById($donation_id);
         $donation->comment = sanitize_textarea_field(trim($_POST['give_comment']));
@@ -19,16 +20,17 @@ function __give_insert_donor_donation_comment( $donation_id, $donation_data ) {
     }
 }
 
-add_action( 'give_insert_payment', '__give_insert_donor_donation_comment', 10, 2 );
+add_action( 'give_insert_payment', '_give_insert_donor_donation_comment', 10, 2 );
 
 
 
 /**
  * Validate donor comment
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  */
-function __give_validate_donor_comment() {
+function give_validate_donor_comment() {
 	// Check wp_check_comment_data_max_lengths for comment length validation.
 	if ( ! empty( $_POST['give_comment'] ) ) {
 		$max_lengths = wp_get_comment_fields_max_lengths();
@@ -39,18 +41,19 @@ function __give_validate_donor_comment() {
 		}
 	}
 }
-add_action( 'give_checkout_error_checks', '__give_validate_donor_comment', 10, 1 );
+add_action( 'give_checkout_error_checks', 'give_validate_donor_comment', 10, 1 );
 
 
 /**
  * Update donor comment status when donation status update
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  *
  * @param $donation_id
  * @param $status
  */
-function __give_update_donor_donation_comment_status( $donation_id, $status ) {
+function give_update_donor_donation_comment_status( $donation_id, $status ) {
 	$approve = absint( 'publish' === $status );
 
 	/* @var WP_Comment $note */
@@ -61,16 +64,17 @@ function __give_update_donor_donation_comment_status( $donation_id, $status ) {
 	}
 }
 
-add_action( 'give_update_payment_status', '__give_update_donor_donation_comment_status', 10, 2 );
+add_action( 'give_update_payment_status', 'give_update_donor_donation_comment_status', 10, 2 );
 
 /**
  * Remove donor comment when donation delete
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  *
  * @param $donation_id
  */
-function __give_remove_donor_donation_comment( $donation_id ) {
+function give_remove_donor_donation_comment( $donation_id ) {
 	/* @var WP_Comment $note */
 	$donor_comment = give_get_donor_donation_comment( $donation_id, give_get_payment_donor_id( $donation_id ) );
 
@@ -79,7 +83,7 @@ function __give_remove_donor_donation_comment( $donation_id ) {
 	}
 }
 
-add_action( 'give_payment_deleted', '__give_remove_donor_donation_comment', 10 );
+add_action( 'give_payment_deleted', 'give_remove_donor_donation_comment', 10 );
 
 
 /**

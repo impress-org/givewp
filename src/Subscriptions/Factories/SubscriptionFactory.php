@@ -4,6 +4,7 @@ namespace Give\Subscriptions\Factories;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
@@ -46,6 +47,7 @@ class SubscriptionFactory extends ModelFactory
     }
 
     /**
+     * @since 4.8.0 Respect subscription mode property
      * @since 4.0.0 Add $donationAttributes parameter and merge it with the default attributes when creating a donation
      * @since 2.23.0
      *
@@ -67,6 +69,7 @@ class SubscriptionFactory extends ModelFactory
                 'status' => DonationStatus::COMPLETE(),
                 'gatewayId' => $subscription->gatewayId,
                 'subscriptionId' => $subscription->id,
+                'mode' => $subscription->mode->isTest() ? DonationMode::TEST() : DonationMode::LIVE(),
             ];
 
             $donation = Donation::factory()->create(

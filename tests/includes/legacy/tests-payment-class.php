@@ -480,6 +480,12 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$form    = Give_Helper_Form::create_multilevel_form();
 		$payment = new Give_Payment();
 
+		// Set essential payment properties before adding donation
+		$payment->currency = give_get_currency();
+		$payment->email = 'test@example.com';
+		$payment->first_name = 'Test';
+		$payment->last_name = 'User';
+
 		// Add a multi-level donation amount
 		$payment->add_donation( $form->ID, array( 'price_id' => 2 ) );
 		$this->assertEquals( give_sanitize_amount( '25', array( 'number_decimals' => true ) ), give_sanitize_amount( $payment->total, array( 'number_decimals' => true ) ) );

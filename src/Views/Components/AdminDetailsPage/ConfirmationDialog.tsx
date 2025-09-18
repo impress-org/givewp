@@ -12,15 +12,18 @@ export type ConfirmationDialogProps = {
     handleConfirm: () => void;
     title: string;
     icon?: React.ReactElement;
-    variant?: 'error' | 'regular';
+    variant?: 'error' | 'regular' | 'syncing';
     className?: string;
     actionLabel: string;
+    showCancelButton?: boolean;
     children: React.ReactNode;
     isConfirming?: boolean;
     spinner?: 'regular' | 'arc' | 'none';
+    footer?: React.ReactNode;
 }
 
 /**
+ * @since 4.8.0 Add showCancelButton prop
  * @since 4.4.0
  */
 export default function ConfirmationDialog({
@@ -32,9 +35,11 @@ export default function ConfirmationDialog({
     handleConfirm,
     className,
     actionLabel,
+    showCancelButton = true,
     children,
     isConfirming = false,
     spinner ='none',
+    footer,
 }: ConfirmationDialogProps) {
     return (
         <ModalDialog
@@ -50,13 +55,14 @@ export default function ConfirmationDialog({
                     {children}
                 </div>
                 <div className={styles.confirmationDialogButtons}>
-                    <button
-                        className={styles.cancelButton}
-                        onClick={handleClose}
-                        disabled={isConfirming}
-                    >
-                        {__('Cancel', 'give')}
-                    </button>
+                    {showCancelButton && (
+                        <button
+                            className={styles.cancelButton}
+                            onClick={handleClose}
+                        >
+                            {__('Cancel', 'give')}
+                        </button>
+                    )}
                     <button
                         className={cx(styles.confirmButton, styles[`confirmButton--${variant}`])}
                         onClick={handleConfirm}
@@ -65,6 +71,9 @@ export default function ConfirmationDialog({
                         {actionLabel}
                         {isConfirming ? (spinner === 'arc' ? <ArcSpinner /> : <Spinner />) : null}
                     </button>
+                </div>
+                <div className={styles.confirmationDialogFooter}>
+                    {footer}
                 </div>
             </>
         </ModalDialog>

@@ -1,14 +1,15 @@
 import { __ } from '@wordpress/i18n';
-import classnames from 'classnames';
 import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import PaymentMethodIcon from './PaymentMethodIcon';
 import { formatTimestamp } from '@givewp/src/Admin/utils';
-import styles from './styles.module.scss';
-import ExternalLinkIcon from './icon';
+import ExternalLinkIcon, { InfoIcon } from './icon';
 import type {Donation} from '@givewp/donations/admin/components/types';
 import { useDonorEntityRecord } from '@givewp/donors/utils';
 import { useCampaignEntityRecord } from '@givewp/campaigns/utils';
 import Spinner from '@givewp/src/Admin/components/Spinner';
+import Grid, { GridCard } from '@givewp/src/Admin/components/Grid';
+
+import styles from './styles.module.scss';
 
 /**
  * @since 4.6.0
@@ -18,18 +19,14 @@ export type DonationSummaryGridProps = {
 };
 
 /**
+ * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
-function CampaignCard({donation}: {donation: Donation}) {
+export function CampaignCard({donation}: {donation: Donation}) {
     const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(donation?.campaignId);
 
     return (
-        <div
-            className={classnames(styles.card, styles.campaignCard)}
-            role="region"
-            aria-labelledby="campaign-name-label"
-        >
-            <h3 id="campaign-name-label">{__('Campaign name', 'give')}</h3>
+        <GridCard heading={__('Campaign name', 'give')} headingId="campaign-name">
             {!hasResolvedCampaign && <Spinner />}
             {hasResolvedCampaign && campaign && (
                 <a
@@ -39,19 +36,19 @@ function CampaignCard({donation}: {donation: Donation}) {
                     {campaign?.title}
                 </a>
             )}
-        </div>
+        </GridCard>
     );
 }
 
 /**
+ * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
-function DonorCard({donation}: {donation: Donation}) {
-    const {record: donor, hasResolved: hasResolvedDonor} = useDonorEntityRecord(donation?.donorId);
+export function DonorCard({donation}: {donation: Donation}) {
+    const {record: donor, hasResolved: hasResolvedDonor, isResolving: isResolvingDonor} = useDonorEntityRecord(donation?.donorId);
 
     return (
-        <div className={classnames(styles.card, styles.donorCard)} role="region" aria-labelledby="donor-label">
-         <h3 id="donor-label">{__('Associated donor', 'give')}</h3>
+        <GridCard heading={__('Associated donor', 'give')} headingId="donor">
          {!hasResolvedDonor && <Spinner />}
          {hasResolvedDonor && (
             <>
@@ -67,19 +64,43 @@ function DonorCard({donation}: {donation: Donation}) {
                 )}
             </>
          )}
-     </div>
+        </GridCard>
     );
 }
 
 /**
+ * @since 4.8.0
+ */
+export function GatewayNotice() {
+    return (
+        <div className={styles.notice}>
+            <div className={styles.noticeIcon}>
+                <InfoIcon />
+            </div>
+            <div className={styles.noticeContent}>
+                <strong className={styles.noticeTitle}>{__('Gateway Details Unavailable', 'give')}</strong>
+                <p className={styles.noticeDescription}>
+                    {__('This donation\'s gateway is not active on your site. Install the matching payment gateway to see full details.', 'give')}
+                </p>
+            </div>
+        </div>
+    );
+}
+
+/**
+ * @unrleased add Grid components & variables
  * @since 4.6.0
  */
 export default function DonationSummaryGrid({
     donation,
 }: DonationSummaryGridProps) {
-     const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${donation?.subscriptionId}` : null;
      const isRecurringDonation = !!donation?.subscriptionId;
-     const donationTypeDisplay = isRecurringDonation ? __('Recurring', 'give') : __('One-time', 'give');
+     const badgeLabel = isRecurringDonation ? __('Recurring', 'give') : __('One-time', 'give');
+     const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${donation?.subscriptionId}` : null;
+     const createdAt = donation?.createdAt?.date;
+     const paymentMethod = donation?.gateway?.id;
+     const gatewayLabel = donation?.gateway?.label;
+     const gatewayLink = donation?.gateway?.transactionUrl;
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -87,19 +108,18 @@ export default function DonationSummaryGrid({
                 {__('Donation Details', 'give')}
             </h2>
 
-            <div className={styles.container} role="group" aria-label={__('Donation summary', 'give')}>
+          <Grid ariaLabel={__('Donation summary', 'give')}>
                 {/* Campaign Name */}
                 <CampaignCard donation={donation} />
 
                 {/* Donation Info */}
-                <div className={styles.card} role="region" aria-labelledby="donation-info-label">
-                    <h3 id="donation-info-label">{__('Donation info', 'give')}</h3>
-                    <time className={styles.date} dateTime={donation.createdAt?.date}>
-                        {formatTimestamp(donation.createdAt?.date, true)}
+                <GridCard heading={__('Donation info', 'give')} headingId="donation-info">
+                    <time className={styles.date} dateTime={createdAt}>
+                        {formatTimestamp(createdAt, true)}
                     </time>
                     <div className={styles.donationType}>
-                        <span className={styles.badge} aria-label={donationTypeDisplay}>
-                            {donation.type && donationTypeDisplay}
+                        <span className={styles.badge} aria-label={badgeLabel}>
+                            {badgeLabel}
                         </span>
                         {isRecurringDonation && (
                             <a
@@ -113,32 +133,34 @@ export default function DonationSummaryGrid({
                             </a>
                         )}
                     </div>
-
-                </div>
+                </GridCard>
 
                 {/* Associated Donor */}
                 <DonorCard donation={donation} />
 
                 {/* Gateway Info */}
-                <div className={styles.card} role="region" aria-labelledby="gateway-label">
-                    <h3 id="gateway-label">{__('Gateway', 'give')}</h3>
-                    <strong className={styles.paymentMethod}>
-                        <PaymentMethodIcon paymentMethod={donation.gateway.id} />
-                        {donation.gateway.label}
-                    </strong>
-                    {donation.gateway.transactionUrl && (
-                        <a
-                            className={styles.gatewayLink}
-                            href={donation.gateway.transactionUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {__('View donation on gateway', 'give')}
-                            <ExternalLinkIcon />
-                        </a>
+                <GridCard heading={__('Gateway', 'give')} headingId="gateway">
+                    {!paymentMethod ? <GatewayNotice /> : (
+                        <>
+                            <strong className={styles.paymentMethod}>
+                                <PaymentMethodIcon paymentMethod={paymentMethod} />
+                                {gatewayLabel}
+                            </strong>
+                            {gatewayLink && (
+                                <a
+                                    className={styles.gatewayLink}
+                                    href={gatewayLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {__('View donation on gateway', 'give')}
+                                    <ExternalLinkIcon />
+                                </a>
+                            )}
+                        </>
                     )}
-                </div>
-            </div>
+                </GridCard>
+            </Grid>
         </OverviewPanel>
     );
 }

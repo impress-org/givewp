@@ -2,6 +2,7 @@
 /**
  * Get donor address from donor meta instead of user meta
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param $meta_value
@@ -11,7 +12,7 @@
  *
  * @return string|array
  */
-function __give_v20_bc_user_address( $meta_value, $user_id, $meta_key, $single ) {
+function give_v20_bc_user_address( $meta_value, $user_id, $meta_key, $single ) {
 	if (
 		give_has_upgrade_completed( 'v20_upgrades_user_address' ) &&
 		'_give_user_address' === $meta_key
@@ -26,4 +27,4 @@ function __give_v20_bc_user_address( $meta_value, $user_id, $meta_key, $single )
 	return $meta_value;
 }
 
-add_filter( 'get_user_metadata', '__give_v20_bc_user_address', 10, 4 );
+add_filter( 'get_user_metadata', 'give_v20_bc_user_address', 10, 4 );

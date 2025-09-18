@@ -141,6 +141,7 @@ const alias = {
     '@givewp/campaigns': srcPath('Campaigns/resources'),
     '@givewp/donors': srcPath('Donors/resources'),
     '@givewp/donations': srcPath('Donations/resources'),
+    '@givewp/subscriptions': srcPath('Subscriptions/resources'),
     '@givewp/admin': srcPath('Admin'),
     ...defaultConfig.resolve.alias,
 };
@@ -208,11 +209,15 @@ const entry = {
     donorDetails: srcPath('Donors/resources/admin/donor-details.tsx'),
     donationEntity: srcPath('Donations/resources/entity.ts'),
     donationDetails: srcPath('Donations/resources/admin/donation-details.tsx'),
+    subscriptionEntity: srcPath('Subscriptions/resources/entity.ts'),
+    subscriptionDetails: srcPath('Subscriptions/resources/admin/subscription-details.tsx'),
     elementorDonationFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorDonationFormWidget/resources/widget.jsx'),
     elementorCampaignGoalWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignGoalWidget/resources/widget.jsx'),
     elementorCampaignGridWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignGridWidget/resources/widget.jsx'),
     elementorCampaignWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignWidget/resources/widget.jsx'),
     elementorCampaignCommentsWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignCommentsWidget/resources/widget.jsx'),
+    elementorLegacyGiveFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V1/resources/formWidget.jsx'),
+    angieMcp: srcPath('MCP/assets/angie.ts'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };

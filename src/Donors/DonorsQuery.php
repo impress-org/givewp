@@ -4,6 +4,7 @@ namespace Give\Donors;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
+use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -43,6 +44,7 @@ class DonorsQuery
     }
 
     /**
+     * @since 4.8.0 Fix subqueries to not return duplicate donors
      * @since 4.4.0
      */
     public function whereDonorsHaveDonations(
@@ -54,47 +56,46 @@ class DonorsQuery
             $mode = give_is_test_mode() ? 'test' : 'live';
         }
 
-        $this->query->join(function (JoinQueryBuilder $builder) use ($mode) {
-            // The donationmeta1.donation_id should be used in other "donationmeta" joins to make sure we are retrieving data from the proper donation
-            $builder->innerJoin('give_donationmeta', 'donationmeta1')
-                ->on('donationmeta1.meta_key', DonationMetaKeys::DONOR_ID, true)
-                ->andOn('donationmeta1.meta_value', 'ID');
-
-            // Include only current payment "mode"
-            $builder->innerJoin('give_donationmeta', 'donationmeta2')
-                ->on('donationmeta2.meta_key', DonationMetaKeys::MODE, true)
-                ->andOn('donationmeta2.meta_value', $mode, true)
-                ->andOn('donationmeta2.donation_id', 'donationmeta1.donation_id');
-        });
-
-        if ($campaignId) {
-            // Filter by CampaignId - Donors only can be filtered by campaignId if they donated to a campaign
-            $this->query->join(function (JoinQueryBuilder $builder) use ($campaignId) {
-                $builder->innerJoin('give_donationmeta', 'donationmeta3')
-                    ->on('donationmeta3.meta_key', DonationMetaKeys::CAMPAIGN_ID, true)
-                    ->andOn('donationmeta3.meta_value', $campaignId, true)
-                    ->andOn('donationmeta3.donation_id', 'donationmeta1.donation_id');
-            });
-        }
-
-        if ($excludeAnonymousDonors) {
-            // Exclude anonymous donors from results - Donors only can be excluded if they made an anonymous donation
-            $this->query->join(function (JoinQueryBuilder $builder) {
-                $builder->innerJoin('give_donationmeta', 'donationmeta4')
-                    ->on('donationmeta4.meta_key', DonationMetaKeys::ANONYMOUS, true)
-                    ->andOn('donationmeta4.meta_value', '0')
-                    ->andOn('donationmeta4.donation_id', 'donationmeta1.donation_id');
-            });
-        }
-
-        // Make sure the donation is valid
-        $this->query->whereIn('donationmeta1.donation_id', function (QueryBuilder $builder) {
+        $this->query->whereExists(function (QueryBuilder $builder) use ($mode, $campaignId, $excludeAnonymousDonors) {
             $builder
-                ->select('ID')
-                ->from('posts')
-                ->where('post_type', 'give_payment')
-                ->whereIn('post_status', ['publish', 'give_subscription'])
-                ->whereRaw("AND ID = donationmeta1.donation_id");
+                ->select('1')
+                ->from('give_donationmeta', 'dm1')
+                ->join(function (JoinQueryBuilder $joinBuilder) use ($mode) {
+                    $joinBuilder
+                        ->innerJoin('give_donationmeta', 'dm2')
+                        ->on('dm2.donation_id', 'dm1.donation_id')
+                        ->andOn('dm2.meta_key', DonationMetaKeys::MODE, true)
+                        ->andOn('dm2.meta_value', $mode, true);
+                })
+                ->join(function (JoinQueryBuilder $joinBuilder) {
+                    $joinBuilder
+                        ->innerJoin('posts', 'p')
+                        ->on('p.ID', 'dm1.donation_id')
+                        ->andOn('p.post_type', 'give_payment', true);
+                })
+                ->whereIn('p.post_status', ['publish', 'give_subscription'])
+                ->where('dm1.meta_key', DonationMetaKeys::DONOR_ID)
+                ->whereRaw(sprintf('AND dm1.meta_value = %s', $this->query->prefixTable('give_donors.id')));
+
+            if ($campaignId) {
+                $builder->join(function (JoinQueryBuilder $joinBuilder) use ($campaignId) {
+                    $joinBuilder
+                        ->innerJoin('give_donationmeta', 'dm3')
+                        ->on('dm3.donation_id', 'dm1.donation_id')
+                        ->andOn('dm3.meta_key', DonationMetaKeys::CAMPAIGN_ID, true)
+                        ->andOn('dm3.meta_value', $campaignId, true);
+                });
+            }
+
+            if ($excludeAnonymousDonors) {
+                $builder->join(function (JoinQueryBuilder $joinBuilder) {
+                    $joinBuilder
+                        ->innerJoin('give_donationmeta', 'dm4')
+                        ->on('dm4.donation_id', 'dm1.donation_id')
+                        ->andOn('dm4.meta_key', DonationMetaKeys::ANONYMOUS, true)
+                        ->andOn('dm4.meta_value', '0', true);
+                });
+            }
         });
 
         return $this;

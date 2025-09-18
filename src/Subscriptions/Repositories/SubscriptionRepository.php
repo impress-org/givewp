@@ -16,12 +16,19 @@ use Give\Helpers\Hooks;
 use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
+ * @since 4.8.0 Add notes repository
  * @since 2.19.6
  */
 class SubscriptionRepository
 {
+    /**
+     * @var SubscriptionNotesRepository
+     */
+    public $notes;
+
     /**
      * @var string[]
      */
@@ -33,6 +40,14 @@ class SubscriptionRepository
         'status',
         'donationFormId',
     ];
+
+    /**
+     * @since 4.8.0
+     */
+    public function __construct()
+    {
+        $this->notes = give(SubscriptionNotesRepository::class);
+    }
 
     /**
      * @since 2.19.6
@@ -71,14 +86,12 @@ class SubscriptionRepository
     /**
      * @since 2.21.0
      *
-     * @param string $gatewayTransactionId
-     *
      * @return ModelQueryBuilder<Subscription>
      */
-    public function queryByGatewaySubscriptionId(string $gatewayTransactionId): ModelQueryBuilder
+    public function queryByGatewaySubscriptionId(string $gatewaySubscriptionId): ModelQueryBuilder
     {
         return $this->prepareQuery()
-            ->where('profile_id', $gatewayTransactionId);
+            ->where('profile_id', $gatewaySubscriptionId);
     }
 
     /**
@@ -108,21 +121,24 @@ class SubscriptionRepository
     }
 
     /**
+     * @deprecated Use give()->subscriptions->notes()->queryBySubscriptionId()->getAll() instead.
      * @since 2.19.6
      *
      * @return object[]
      */
     public function getNotesBySubscriptionId(int $id): array
     {
-        $notes = DB::table('comments')
-            ->select(
-                ['comment_content', 'note'],
-                ['comment_date', 'date']
-            )
-            ->where('comment_post_ID', $id)
-            ->where('comment_type', 'give_sub_note')
-            ->orderBy('comment_date', 'DESC')
-            ->getAll();
+        _give_deprecated_function(__METHOD__, '4.6.0', 'give()->subscriptions->notes()->queryBySubscriptionId()->getAll()');
+
+        $notes = array_map(
+            static function ($note) {
+                return array_merge($note->toArray(), [
+                    'note' => $note->comment_content,
+                    'date' => $note->comment_date,
+                ]);
+            },
+            $this->notes->queryBySubscriptionId($id)->getAll()
+        );
 
         if (!$notes) {
             return [];
@@ -279,6 +295,43 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.8.0
+     *
+     * @throws Exception
+     */
+    public function trash(Subscription $subscription): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_subscription_trashing', $subscription);
+
+        try {
+            $previousStatus = DB::table('give_subscriptions')
+                ->where('id', $subscription->id)
+                ->value('status');
+
+            give()->subscription_meta->update_meta($subscription->id, '_wp_trash_meta_status', $previousStatus);
+            give()->subscription_meta->update_meta($subscription->id, '_wp_trash_meta_time', time());
+
+            DB::table('give_subscriptions')
+                ->where('id', $subscription->id)
+                ->update(['status' => SubscriptionStatus::TRASHED()->getValue()]);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed trashing a subscription', compact('subscription'));
+
+            throw new $exception('Failed trashing a subscription');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_subscription_trashed', $subscription);
+
+        return true;
+    }
+
+    /**
      * Up to this point the donation is created first and then the subscription, and the donation is stored as the
      * parent_payment_id of the subscription. This is backwards and should not be the case. But legacy code depends on
      * this value, so we still need to store it for now.
@@ -380,6 +433,8 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.8.1 Remove campaignId from the attributes array since it is auto-generated based on the subscription's form.
+     * @since 4.8.0 Add campaignId support.
      * @since 3.20.0
      * @throws Exception
      */

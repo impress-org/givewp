@@ -2349,9 +2349,10 @@ add_filter( 'give_donate_form', 'give_members_only_form', 10, 2 );
  * @param array            $args
  * @param Give_Donate_Form $form
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 1.8.17
  */
-function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
+function give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	$id_prefix = ! empty( $args['id_prefix'] ) ? $args['id_prefix'] : '';
 	?>
 	<input type="hidden" name="give-form-id-prefix" value="<?php echo $id_prefix; ?>"/>
@@ -2400,7 +2401,7 @@ function __give_form_add_donation_hidden_field( $form_id, $args, $form ) {
 	}
 }
 
-add_action( 'give_donation_form_top', '__give_form_add_donation_hidden_field', 0, 3 );
+add_action( 'give_donation_form_top', 'give_form_add_donation_hidden_field', 0, 3 );
 
 /**
  * Add currency settings on donation form.
@@ -2409,9 +2410,11 @@ add_action( 'give_donation_form_top', '__give_form_add_donation_hidden_field', 0
  * @param Give_Donate_Form $form
  *
  * @return array
+ *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 1.8.17
  */
-function __give_form_add_currency_settings( $form_html_tags, $form ) {
+function give_form_add_currency_settings( $form_html_tags, $form ) {
 	$form_currency     = give_get_currency( $form->ID );
 	$currency_settings = give_get_currency_formatting_settings( $form_currency );
 
@@ -2432,7 +2435,7 @@ function __give_form_add_currency_settings( $form_html_tags, $form ) {
 	return $form_html_tags;
 }
 
-add_filter( 'give_form_html_tags', '__give_form_add_currency_settings', 0, 2 );
+add_filter( 'give_form_html_tags', 'give_form_add_currency_settings', 0, 2 );
 
 /**
  * Adds classes to progress bar container.

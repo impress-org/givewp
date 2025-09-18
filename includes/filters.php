@@ -333,13 +333,14 @@ add_filter( 'give_currency_filter', 'give_format_price_for_right_to_left_support
 /**
  * Validate active gateway value before returning result.
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.0
  *
  * @param $value
  *
  * @return array
  */
-function __give_validate_active_gateways( $value ) {
+function give_validate_active_gateways( $value ) {
 	$gateways        = array_keys( give_get_payment_gateways() );
 	$active_gateways = is_array( $value ) ? array_keys( $value ) : [];
 
@@ -369,4 +370,4 @@ function __give_validate_active_gateways( $value ) {
 	return $value;
 }
 
-add_filter( 'give_get_option_gateways', '__give_validate_active_gateways', 10, 1 );
+add_filter( 'give_get_option_gateways', 'give_validate_active_gateways', 10, 1 );

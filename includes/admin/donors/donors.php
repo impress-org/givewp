@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get formatted address
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param array $address
@@ -28,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string
  */
-function __give_get_format_address( $address, $address_args = array() ) {
+function give_get_format_address( $address, $address_args = array() ) {
 	$address_html = '';
 	$address_args = wp_parse_args(
 		$address_args,
@@ -613,7 +614,7 @@ function give_donor_view( $donor ) {
 									case is_array( end( $addresses ) ):
 										$index = 1;
 										foreach ( $addresses as $id => $address ) {
-											echo __give_get_format_address(
+											echo give_get_format_address(
 												$address,
 												array(
 													'type' => $address_type,
@@ -627,7 +628,7 @@ function give_donor_view( $donor ) {
 										break;
 
 									case is_string( end( $addresses ) ):
-										echo __give_get_format_address(
+										echo give_get_format_address(
 											$addresses,
 											array(
 												'type' => $address_type,
