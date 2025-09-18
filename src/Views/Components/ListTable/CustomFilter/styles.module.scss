@@ -99,7 +99,7 @@
             }
 
             &__indicators {
-                padding-left: 2.5rem;
+                padding-left: var(--givewp-spacing-10);
 
                 &:has(.searchableSelect__loading-indicator) {
                     padding-left: 0;
