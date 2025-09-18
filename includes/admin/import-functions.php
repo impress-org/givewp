@@ -604,20 +604,20 @@ function give_import_subscription_options() {
     return (array) apply_filters(
         'give_import_subscription_options',
         [
-            'donationFormId'        => [ __( 'Donation Form ID', 'give' ), __( 'Form ID', 'give' ) ],
-            'donorId'               => [ __( 'Donor ID', 'give' ) ],
+            'donation_form_id'      => [ __( 'Donation Form ID', 'give' ), __( 'Form ID', 'give' ) ],
+            'donor_id'              => [ __( 'Donor ID', 'give' ) ],
             'period'                => [ __( 'Period', 'give' ), __( 'Subscription Period', 'give' ) ],
             'frequency'             => [ __( 'Frequency', 'give' ) ],
             'installments'          => [ __( 'Installments', 'give' ) ],
             'amount'                => [ __( 'Amount', 'give' ), __( 'Recurring Amount', 'give' ) ],
-            'feeAmountRecovered'    => [ __( 'Recovered Fee Amount', 'give' ) ],
+            'fee_amount_recovered'  => [ __( 'Recovered Fee Amount', 'give' ) ],
             'status'                => [ __( 'Status', 'give' ) ],
             'mode'                  => [ __( 'Mode', 'give' ), __( 'Payment Mode', 'give' ) ],
-            'transactionId'         => [ __( 'Transaction ID', 'give' ) ],
-            'gatewayId'             => [ __( 'Gateway ID', 'give' ), __( 'Gateway', 'give' ) ],
-            'gatewaySubscriptionId' => [ __( 'Gateway Subscription ID', 'give' ) ],
-            'createdAt'             => [ __( 'Created At', 'give' ), __( 'Start Date', 'give' ) ],
-            'renewsAt'              => [ __( 'Renews At', 'give' ), __( 'Next Renewal Date', 'give' ) ],
+            'transaction_id'        => [ __( 'Transaction ID', 'give' ) ],
+            'gateway_id'            => [ __( 'Gateway ID', 'give' ), __( 'Gateway', 'give' ) ],
+            'gateway_subscription_id' => [ __( 'Gateway Subscription ID', 'give' ) ],
+            'created_at'            => [ __( 'Created At', 'give' ), __( 'Start Date', 'give' ) ],
+            'renews_at'             => [ __( 'Renews At', 'give' ), __( 'Next Renewal Date', 'give' ) ],
             'currency'              => [ __( 'Currency', 'give' ) ],
         ]
     );
@@ -1026,13 +1026,26 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
  * @since @unreleased
  */
 function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [], $import_setting = [] ) {
-    $data = array_combine( $raw_key, $row_data );
-
     $report = give_import_subscription_report();
     $dry_run = isset( $import_setting['dry_run'] ) ? (bool) $import_setting['dry_run'] : false;
 
+    // Guard: skip empty rows
+    if ( empty( $row_data ) || ( is_array( $row_data ) && 0 === count( array_filter( $row_data, function( $v ) { return $v !== null && $v !== '';} ) ) ) ) {
+        return true;
+    }
+
+    // Guard: ensure column count matches header mapping
+    if ( ! is_array( $row_data ) || count( $row_data ) !== count( $raw_key ) ) {
+        $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
+        give_import_subscription_report_update( $report );
+        return false;
+    }
+
+    // Combine keys → values
+    $data = array_combine( $raw_key, $row_data );
+
     // Required fields
-    $required = [ 'donationFormId', 'donorId', 'period', 'frequency', 'amount', 'status' ];
+    $required = [ 'donation_form_id', 'donor_id', 'period', 'frequency', 'amount', 'status' ];
     foreach ( $required as $key ) {
         if ( empty( $data[ $key ] ) && '0' !== (string) ( $data[ $key ] ?? '' ) ) {
             $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
@@ -1046,12 +1059,12 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
         $currency = ! empty( $data['currency'] ) && array_key_exists( $data['currency'], give_get_currencies_list() ) ? $data['currency'] : give_get_currency();
 
         $attributes = [];
-        $attributes['donationFormId'] = (int) $data['donationFormId'];
-        $attributes['donorId'] = (int) $data['donorId'];
+        $attributes['donationFormId'] = (int) $data['donation_form_id'];
+        $attributes['donorId'] = (int) $data['donor_id'];
         $attributes['period'] = new \Give\Subscriptions\ValueObjects\SubscriptionPeriod( strtolower( trim( (string) $data['period'] ) ) );
         $attributes['frequency'] = (int) $data['frequency'];
         $attributes['installments'] = isset( $data['installments'] ) ? (int) $data['installments'] : 0;
-        $attributes['transactionId'] = isset( $data['transactionId'] ) ? (string) $data['transactionId'] : '';
+        $attributes['transactionId'] = isset( $data['transaction_id'] ) ? (string) $data['transaction_id'] : '';
 
         // Mode
         if ( ! empty( $data['mode'] ) ) {
@@ -1065,27 +1078,27 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
         $amountDecimal = is_string( $data['amount'] ) ? preg_replace( '/[\$,]/', '', $data['amount'] ) : $data['amount'];
         $attributes['amount'] = \Give\Framework\Support\ValueObjects\Money::fromDecimal( $amountDecimal, $currency );
 
-        if ( isset( $data['feeAmountRecovered'] ) && $data['feeAmountRecovered'] !== '' ) {
-            $feeDecimal = is_string( $data['feeAmountRecovered'] ) ? preg_replace( '/[\$,]/', '', $data['feeAmountRecovered'] ) : $data['feeAmountRecovered'];
+        if ( isset( $data['fee_amount_recovered'] ) && $data['fee_amount_recovered'] !== '' ) {
+            $feeDecimal = is_string( $data['fee_amount_recovered'] ) ? preg_replace( '/[\$,]/', '', $data['fee_amount_recovered'] ) : $data['fee_amount_recovered'];
             $attributes['feeAmountRecovered'] = \Give\Framework\Support\ValueObjects\Money::fromDecimal( $feeDecimal, $currency );
         }
 
         // Status
         $attributes['status'] = new \Give\Subscriptions\ValueObjects\SubscriptionStatus( strtolower( trim( (string) $data['status'] ) ) );
 
-        if ( ! empty( $data['gatewayId'] ) ) {
-            $attributes['gatewayId'] = (string) $data['gatewayId'];
+        if ( ! empty( $data['gateway_id'] ) ) {
+            $attributes['gatewayId'] = (string) $data['gateway_id'];
         }
-        if ( ! empty( $data['gatewaySubscriptionId'] ) ) {
-            $attributes['gatewaySubscriptionId'] = (string) $data['gatewaySubscriptionId'];
+        if ( ! empty( $data['gateway_subscription_id'] ) ) {
+            $attributes['gatewaySubscriptionId'] = (string) $data['gateway_subscription_id'];
         }
 
         // Dates
-        if ( ! empty( $data['createdAt'] ) ) {
-            $attributes['createdAt'] = new \DateTime( (string) $data['createdAt'] );
+        if ( ! empty( $data['created_at'] ) ) {
+            $attributes['createdAt'] = new \DateTime( (string) $data['created_at'] );
         }
-        if ( ! empty( $data['renewsAt'] ) ) {
-            $attributes['renewsAt'] = new \DateTime( (string) $data['renewsAt'] );
+        if ( ! empty( $data['renews_at'] ) ) {
+            $attributes['renewsAt'] = new \DateTime( (string) $data['renews_at'] );
         }
 
         if ( $dry_run ) {
@@ -1097,6 +1110,60 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
         $subscription = \Give\Subscriptions\Models\Subscription::create( $attributes );
 
         if ( $subscription && $subscription->id ) {
+            // Create initial donation for the subscription
+            try {
+                // Infer donor identity for required Donation model fields
+                $donorModel = null;
+                try {
+                    $donorModel = \Give\Donors\Models\Donor::find($subscription->donorId);
+                } catch (\Throwable $e) {
+                    $donorModel = null;
+                }
+
+                $donorEmail = $donorModel && isset($donorModel->email) ? (string) $donorModel->email : '';
+                $donorName  = $donorModel && isset($donorModel->name) ? (string) $donorModel->name : '';
+                $firstName  = '';
+                $lastName   = '';
+                if ($donorName) {
+                    $parts = preg_split('/\s+/', trim($donorName));
+                    if ($parts) {
+                        $firstName = (string) array_shift($parts);
+                        $lastName  = (string) trim(implode(' ', $parts));
+                    }
+                }
+
+                $donationAttributes = [
+                    'subscriptionId' => $subscription->id,
+                    'gatewayId' => ! empty( $attributes['gatewayId'] ) ? $attributes['gatewayId'] : 'manual',
+                    'amount' => $subscription->amount,
+                    'status' => \Give\Donations\ValueObjects\DonationStatus::COMPLETE(),
+                    'type' => \Give\Donations\ValueObjects\DonationType::SUBSCRIPTION(),
+                    'donorId' => $subscription->donorId,
+                    'formId' => $subscription->donationFormId,
+                    'feeAmountRecovered' => $subscription->feeAmountRecovered,
+                    'mode' => $subscription->mode->isLive() ? \Give\Donations\ValueObjects\DonationMode::LIVE() : \Give\Donations\ValueObjects\DonationMode::TEST(),
+                    'firstName' => $firstName,
+                    'lastName'  => $lastName,
+                    'email'     => $donorEmail,
+                ];
+
+                if ( ! empty( $attributes['transactionId'] ) ) {
+                    $donationAttributes['gatewayTransactionId'] = (string) $attributes['transactionId'];
+                }
+                if ( ! empty( $subscription->createdAt ) ) {
+                    $donationAttributes['createdAt'] = $subscription->createdAt;
+                }
+
+                $initialDonation = \Give\Donations\Models\Donation::create( $donationAttributes );
+
+                // Maintain legacy linkage and set payment_mode in subscriptions table
+                if ( $initialDonation && $initialDonation->id ) {
+                    give()->subscriptions->updateLegacyParentPaymentId( $subscription->id, $initialDonation->id );
+                }
+            } catch ( \Throwable $e ) {
+                // If initial donation fails, still report subscription created but count a failure for visibility
+                $report['failed_subscription_initial_donation'] = ( ! empty( $report['failed_subscription_initial_donation'] ) ? ( absint( $report['failed_subscription_initial_donation'] ) + 1 ) : 1 );
+            }
             $report['create_subscription'] = ( ! empty( $report['create_subscription'] ) ? ( absint( $report['create_subscription'] ) + 1 ) : 1 );
             give_import_subscription_report_update( $report );
             return (int) $subscription->id;

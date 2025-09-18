@@ -122,6 +122,16 @@ function give_import_donation_csv_not_valid() {
 }
 
 /**
+ * Check if admin is on step 2 and Subscriptions CSV is invalid
+ */
+function give_import_subscription_csv_not_valid() {
+    const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-subscriptions-form table.step-2 .csv_not_valid';
+    if ( jQuery( import_step ).length > 0 ) {
+        window.location = jQuery( import_step ).val();
+    }
+}
+
+/**
  * Check if admin is on step 1 and csv is valid
  *
  * @since 2.1
@@ -132,6 +142,16 @@ function give_import_donation_valid_csv() {
 	if ( jQuery( import_step ).length > 0 ) {
 		window.location = jQuery( import_step ).val();
 	}
+}
+
+/**
+ * Subscriptions: Check if admin is on step 1 and csv is valid
+ */
+function give_import_subscription_valid_csv() {
+    const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-subscriptions-form table.step-1 .is_csv_valid';
+    if ( jQuery( import_step ).length > 0 ) {
+        window.location = jQuery( import_step ).val();
+    }
 }
 
 /**
@@ -306,7 +326,9 @@ function give_import_donation_onload() {
 		give_start_importing_donations();
         give_start_importing_subscriptions();
 		give_import_donation_valid_csv();
+        give_import_subscription_valid_csv();
 		give_import_donation_csv_not_valid();
+        give_import_subscription_csv_not_valid();
 		give_on_core_settings_import_start();
 		give_import_core_settings_json_is_valid();
 	};

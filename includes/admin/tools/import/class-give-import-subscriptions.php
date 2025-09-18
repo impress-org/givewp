@@ -340,7 +340,7 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
             $return = true;
             if ( isset( $_REQUEST['mapto'] ) ) {
                 $mapto = (array) $_REQUEST['mapto'];
-                $required = array( 'donationFormId', 'donorId', 'period', 'frequency', 'amount', 'status' );
+                $required = array( 'donation_form_id', 'donor_id', 'period', 'frequency', 'amount', 'status' );
                 foreach ( $required as $key ) {
                     if ( false === in_array( $key, $mapto ) ) {
                         Give_Admin_Settings::add_error( 'give-import-csv-subscriptions', sprintf( __( 'A column must be mapped to "%s".', 'give' ), $key ) );
@@ -386,27 +386,21 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
 
                         <ul class="give-import-subscription-required-fields">
                             <li class="give-import-subscription-required-donorId" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
-                                <span class="give-import-donation-required-text"><?php _e( 'Donor ID', 'give' ); ?></span>
+                                <class="give-import-donation-required-text"><?php _e( 'Donor ID', 'give' ); ?></span>
                             </li>
                             <li class="give-import-subscription-required-donationFormId" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
                                 <span class="give-import-donation-required-text"><?php _e( 'Form ID', 'give' ); ?></span>
                             </li>
                             <li class="give-import-subscription-required-period" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
                                 <span class="give-import-donation-required-text"><?php _e( 'Period', 'give' ); ?></span>
                             </li>
                             <li class="give-import-subscription-required-frequency" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
                                 <span class="give-import-donation-required-text"><?php _e( 'Frequency', 'give' ); ?></span>
                             </li>
                             <li class="give-import-subscription-required-amount" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
                                 <span class="give-import-donation-required-text"><?php _e( 'Amount', 'give' ); ?></span>
                             </li>
                             <li class="give-import-subscription-required-status" title="Please configure all required fields to start the import process.">
-                                <span class="give-import-donation-required-symbol dashicons dashicons-no-alt"></span>
                                 <span class="give-import-donation-required-text"><?php _e( 'Status', 'give' ); ?></span>
                             </li>
                         </ul>
@@ -496,6 +490,28 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
                             if ( $selected ) {
                                 $selectedOptions[] = $option;
                                 break;
+                            }
+                        }
+                        // Extra heuristics: match header to option key by normalized token
+                        if ( ! $selected ) {
+                            $normalize = static function( $str ) {
+                                $str = strtolower( (string) $str );
+                                return preg_replace( '/[^a-z0-9]/', '', $str );
+                            };
+
+                            $valueNorm  = $normalize( $value );
+                            $optionNorm = $normalize( $option );
+
+                            if ( $valueNorm && $optionNorm && $valueNorm === $optionNorm ) {
+                                $selected = 'selected';
+                                $selectedOptions[] = $option;
+                            } else {
+                                // Try normalized match against visible label too
+                                $labelNorm = $normalize( $option_text );
+                                if ( $labelNorm && $valueNorm && $labelNorm === $valueNorm ) {
+                                    $selected = 'selected';
+                                    $selectedOptions[] = $option;
+                                }
                             }
                         }
                     }
