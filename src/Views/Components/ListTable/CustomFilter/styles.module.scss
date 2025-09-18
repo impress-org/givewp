@@ -98,6 +98,14 @@
                 }
             }
 
+            &__indicators {
+                padding-left: 2.5rem;
+
+                &:has(.searchableSelect__loading-indicator) {
+                    padding-left: 0;
+                }
+            }
+
             &__indicator-separator {
                 display: none;
             }
