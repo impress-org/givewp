@@ -607,7 +607,7 @@ function give_import_subscription_options() {
     return (array) apply_filters(
         'give_import_subscription_options',
         [
-            'donation_form_id'      => [ __( 'Donation Form ID', 'give' ), __( 'Form ID', 'give' ) ],
+            'form_id'      => [ __( 'Donation Form ID', 'give' ), __( 'Form ID', 'give' ) ],
             'donor_id'              => [ __( 'Donor ID', 'give' ) ],
             'first_name'            => [ __( 'Donor First Name', 'give' ), __( 'First Name', 'give' ) ],
             'last_name'             => [ __( 'Donor Last Name', 'give' ), __( 'Last Name', 'give' ) ],
@@ -1051,7 +1051,7 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
     $data = array_combine( $raw_key, $row_data );
 
     // Required fields (donor is donor_id OR email)
-    $required = [ 'donation_form_id', 'period', 'frequency', 'amount', 'status' ];
+    $required = [ 'form_id', 'period', 'frequency', 'amount', 'status' ];
     foreach ( $required as $key ) {
         if ( empty( $data[ $key ] ) && '0' !== (string) ( $data[ $key ] ?? '' ) ) {
             $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
@@ -1072,7 +1072,7 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
         $currency = ! empty( $data['currency'] ) && array_key_exists( $data['currency'], give_get_currencies_list() ) ? $data['currency'] : give_get_currency();
 
         $attributes = [];
-        $attributes['donationFormId'] = (int) $data['donation_form_id'];
+        $attributes['donationFormId'] = (int) $data['form_id'];
 
         // Resolve donor id
         $resolvedDonorId = 0;

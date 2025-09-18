@@ -354,7 +354,7 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
             $return = true;
             if ( isset( $_REQUEST['mapto'] ) ) {
                 $mapto = (array) $_REQUEST['mapto'];
-                $required = array( 'donation_form_id', 'donor_id', 'period', 'frequency', 'amount', 'status' );
+                $required = array( 'form_id', 'donor_id', 'period', 'frequency', 'amount', 'status' );
                 foreach ( $required as $key ) {
                     if ( false === in_array( $key, $mapto ) ) {
                         Give_Admin_Settings::add_error( 'give-import-csv-subscriptions', sprintf( __( 'A column must be mapped to "%s".', 'give' ), $key ) );

@@ -39,11 +39,11 @@ class TestGiveImportSubscriptions extends TestCase
         $importer = \Give_Import_Subscriptions::get_instance();
 
         // Missing required field should fail
-        $_REQUEST['mapto'] = [ 'donation_form_id', 'period', 'frequency', 'amount', 'status' ];
+        $_REQUEST['mapto'] = [ 'form_id', 'period', 'frequency', 'amount', 'status' ];
         $this->assertFalse($importer->check_for_dropdown_or_import());
 
         // Include all required -> passes
-        $_REQUEST['mapto'] = [ 'donation_form_id', 'donor_id', 'period', 'frequency', 'amount', 'status' ];
+        $_REQUEST['mapto'] = [ 'form_id', 'donor_id', 'period', 'frequency', 'amount', 'status' ];
         $this->assertTrue($importer->check_for_dropdown_or_import());
     }
 
@@ -56,12 +56,12 @@ class TestGiveImportSubscriptions extends TestCase
         $importer = \Give_Import_Subscriptions::get_instance();
         $options = give_import_subscription_options();
 
-        // donation_form_id should auto-select donation_form_id
+        // form_id should auto-select form_id
         $selectedOptions = [];
         ob_start();
-        $importer->get_dropdown_option_html($options, '', 'donation_form_id', $selectedOptions);
+        $importer->get_dropdown_option_html($options, '', 'form_id', $selectedOptions);
         $html = ob_get_clean();
-        $this->assertStringContainsString('value="donation_form_id" selected', $html);
+        $this->assertStringContainsString('value="form_id" selected', $html);
 
         // fee_amount_recovered should auto-select fee_amount_recovered
         $selectedOptions = [];
@@ -96,12 +96,12 @@ class TestGiveImportSubscriptions extends TestCase
 
         // With step=2 but missing required -> remains on step 2
         $_REQUEST['step'] = 2;
-        $_REQUEST['mapto'] = [ 'donation_form_id', 'period', 'frequency', 'amount', 'status' ];
+        $_REQUEST['mapto'] = [ 'form_id', 'period', 'frequency', 'amount', 'status' ];
         $this->assertSame(2, $importer->get_step());
 
         // With all required present -> goes to step 3
         $_REQUEST['step'] = 2;
-        $_REQUEST['mapto'] = [ 'donation_form_id', 'donor_id', 'period', 'frequency', 'amount', 'status' ];
+        $_REQUEST['mapto'] = [ 'form_id', 'donor_id', 'period', 'frequency', 'amount', 'status' ];
         $this->assertSame(3, $importer->get_step());
     }
 
