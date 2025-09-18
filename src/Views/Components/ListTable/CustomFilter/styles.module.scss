@@ -1,6 +1,6 @@
 .searchableSelect {
     z-index: 999;
-    
+
     &:has(:global(.searchableSelect__control--menu-is-open)) {
         &::before {
             background-color: var(--givewp-shades-white);
@@ -34,7 +34,7 @@
                 }
 
                 &--menu-is-open {
-                    &:has(.searchableSelect__menu) {
+                    &:has(+ .searchableSelect__menu) {
                         border-radius: var(--givewp-rounded-4) var(--givewp-rounded-4) 0 0;
                     }
                 }
