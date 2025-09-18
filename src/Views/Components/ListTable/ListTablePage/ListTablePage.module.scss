@@ -77,14 +77,18 @@
     }
 
     .testModeBadge {
+        align-items: center;
         background: var(--givewp-orange-400);
-        border-radius: var(--givewp-rounded-8);
+        border-radius: var(--givewp-rounded-full);
+        border: 1px solid var(--statusBadgeBorderColor);
         color: var(--givewp-shades-white);
-        font-size: 0.875rem;
-        font-weight: 700;
-        line-height: 1.43;
-        margin-left: var(--givewp-spacing-2);
-        padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
+        display: flex;
+        font-size: 0.75rem;
+        font-weight: 600;
+        gap: var(--givewp-spacing-1);
+        justify-content: center;
+        padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+        text-align: center;
         text-transform: uppercase;
     }
 }
