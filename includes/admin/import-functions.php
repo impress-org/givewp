@@ -606,6 +606,9 @@ function give_import_subscription_options() {
         [
             'donation_form_id'      => [ __( 'Donation Form ID', 'give' ), __( 'Form ID', 'give' ) ],
             'donor_id'              => [ __( 'Donor ID', 'give' ) ],
+            'first_name'            => [ __( 'Donor First Name', 'give' ), __( 'First Name', 'give' ) ],
+            'last_name'             => [ __( 'Donor Last Name', 'give' ), __( 'Last Name', 'give' ) ],
+            'email'                 => [ __( 'Donor Email', 'give' ), __( 'Email', 'give' ) ],
             'period'                => [ __( 'Period', 'give' ), __( 'Subscription Period', 'give' ) ],
             'frequency'             => [ __( 'Frequency', 'give' ) ],
             'installments'          => [ __( 'Installments', 'give' ) ],
@@ -1044,14 +1047,19 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
     // Combine keys → values
     $data = array_combine( $raw_key, $row_data );
 
-    // Required fields
-    $required = [ 'donation_form_id', 'donor_id', 'period', 'frequency', 'amount', 'status' ];
+    // Required fields (donor is donor_id OR email)
+    $required = [ 'donation_form_id', 'period', 'frequency', 'amount', 'status' ];
     foreach ( $required as $key ) {
         if ( empty( $data[ $key ] ) && '0' !== (string) ( $data[ $key ] ?? '' ) ) {
             $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
             give_import_subscription_report_update( $report );
             return false;
         }
+    }
+    if ( empty( $data['donor_id'] ) && empty( $data['email'] ) ) {
+        $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
+        give_import_subscription_report_update( $report );
+        return false;
     }
 
     // Build attributes for Subscription model
@@ -1060,7 +1068,26 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
 
         $attributes = [];
         $attributes['donationFormId'] = (int) $data['donation_form_id'];
-        $attributes['donorId'] = (int) $data['donor_id'];
+
+        // Resolve donor id
+        $resolvedDonorId = 0;
+        if ( ! empty( $data['donor_id'] ) ) {
+            $resolvedDonorId = (int) $data['donor_id'];
+        } else {
+            // Resolve via Donor model action
+            try {
+                $email = (string) $data['email'];
+                $firstNameCsv = (string) ( $data['first_name'] ?? '' );
+                $lastNameCsv  = (string) ( $data['last_name'] ?? '' );
+                $donorModel = give( \Give\DonationForms\Actions\GetOrCreateDonor::class )( null, $email, $firstNameCsv, $lastNameCsv, null, null );
+                $resolvedDonorId = (int) $donorModel->id;
+            } catch ( \Throwable $e ) {
+                $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
+                give_import_subscription_report_update( $report );
+                return false;
+            }
+        }
+        $attributes['donorId'] = $resolvedDonorId;
         $attributes['period'] = new \Give\Subscriptions\ValueObjects\SubscriptionPeriod( strtolower( trim( (string) $data['period'] ) ) );
         $attributes['frequency'] = (int) $data['frequency'];
         $attributes['installments'] = isset( $data['installments'] ) ? (int) $data['installments'] : 0;
@@ -1146,6 +1173,17 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
                     'lastName'  => $lastName,
                     'email'     => $donorEmail,
                 ];
+
+                // If CSV provided identity fields alongside donor_id, prefer those for the initial donation
+                if ( ! empty( $data['first_name'] ) ) {
+                    $donationAttributes['firstName'] = (string) $data['first_name'];
+                }
+                if ( ! empty( $data['last_name'] ) ) {
+                    $donationAttributes['lastName'] = (string) $data['last_name'];
+                }
+                if ( ! empty( $data['email'] ) ) {
+                    $donationAttributes['email'] = (string) $data['email'];
+                }
 
                 if ( ! empty( $attributes['transactionId'] ) ) {
                     $donationAttributes['gatewayTransactionId'] = (string) $attributes['transactionId'];
