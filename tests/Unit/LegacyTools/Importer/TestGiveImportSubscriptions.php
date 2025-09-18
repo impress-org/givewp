@@ -1,13 +1,5 @@
 <?php
 
-namespace {
-    if (!function_exists('give_get_current_setting_tab')) {
-        function give_get_current_setting_tab() {
-            return 'import';
-        }
-    }
-}
-
 namespace Give\Tests\Unit\LegacyTools\Importer {
 
 use Give\Tests\TestCase;
@@ -22,6 +14,7 @@ class TestGiveImportSubscriptions extends TestCase
      */
     public function setUp(): void
     {
+        require_once \GIVE_PLUGIN_DIR . 'includes/admin/setting-page-functions.php';
         require_once \GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-subscriptions.php';
         require_once \GIVE_PLUGIN_DIR . 'includes/admin/import-functions.php';
 
