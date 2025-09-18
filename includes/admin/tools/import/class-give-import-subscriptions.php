@@ -18,7 +18,7 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
     /**
      * Give_Import_Subscriptions.
      *
-     * @since @unreleased
+     * @unreleased
      */
     final class Give_Import_Subscriptions {
 
@@ -264,6 +264,19 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
                         }
                         if ( isset( $report['failed_subscription'] ) ) {
                             echo '<p>' . sprintf( _n( '%s subscription failed', '%s subscriptions failed', (int) $report['failed_subscription'], 'give' ), (int) $report['failed_subscription'] ) . '</p>';
+                        }
+                        if ( ! empty( $report['failed_subscription_initial_donation'] ) ) {
+                            echo '<p>' . sprintf( _n( '%s initial donation failed', '%s initial donations failed', (int) $report['failed_subscription_initial_donation'], 'give' ), (int) $report['failed_subscription_initial_donation'] ) . '</p>';
+                        }
+                        if ( ! empty( $report['errors'] ) && is_array( $report['errors'] ) ) {
+                            echo '<div class="notice notice-error" style="margin-top:10px;">';
+                            echo '<p><strong>' . esc_html__( 'Errors', 'give' ) . ':</strong></p>';
+                            echo '<ul style="margin-left:20px;list-style:disc;">';
+                            foreach ( $report['errors'] as $err ) {
+                                echo '<li>' . esc_html( $err ) . '</li>';
+                            }
+                            echo '</ul>';
+                            echo '</div>';
                         }
                     }
                     ?>

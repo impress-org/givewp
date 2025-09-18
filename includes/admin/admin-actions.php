@@ -762,12 +762,18 @@ function give_donation_import_callback() {
 	remove_action( 'give_insert_user', 'give_new_user_notification', 10 );
 	remove_action( 'give_insert_payment', 'give_payment_save_page_data' );
 
-	$current_key = $start;
-	foreach ( $raw_data as $row_data ) {
-		$import_setting['donation_key'] = $current_key;
-		give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
-		$current_key ++;
-	}
+    $current_key = $start;
+    foreach ( $raw_data as $row_data ) {
+        $import_setting['donation_key'] = $current_key;
+        $result = give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
+        if ( is_string( $result ) && ! empty( $result ) ) {
+            if ( empty( $json_data['errors'] ) ) {
+                $json_data['errors'] = [];
+            }
+            $json_data['errors'][] = sprintf( __( 'Row %1$d: %2$s', 'give' ), $current_key, $result );
+        }
+        $current_key ++;
+    }
 
 	// Check if function exists or not.
 	if ( function_exists( 'give_payment_save_page_data' ) ) {
@@ -836,7 +842,7 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 /**
  * Load subscription import ajax callback
  *
- * @since @unreleased
+ * @unreleased
  */
 function give_subscription_import_callback() {
 
@@ -880,7 +886,13 @@ function give_subscription_import_callback() {
     $current_key = $start;
     foreach ( $raw_data as $row_data ) {
         $import_setting['row_key'] = $current_key;
-        give_save_import_subscription_to_db( $raw_key, $row_data, $main_key, $import_setting );
+        $result = give_save_import_subscription_to_db( $raw_key, $row_data, $main_key, $import_setting );
+        if ( is_string( $result ) && ! empty( $result ) ) {
+            if ( empty( $json_data['errors'] ) ) {
+                $json_data['errors'] = [];
+            }
+            $json_data['errors'][] = sprintf( __( 'Row %1$d: %2$s', 'give' ), $current_key, $result );
+        }
         $current_key ++;
     }
 

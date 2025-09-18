@@ -48,7 +48,7 @@ function give_import_donation_report_reset() {
 /**
  * Get the Import report of subscriptions
  *
- * @since @unreleased
+ * @unreleased
  */
 function give_import_subscription_report() {
     return get_option( 'give_import_subscription_report', [] );
@@ -57,7 +57,7 @@ function give_import_subscription_report() {
 /**
  * Update the Import report of subscriptions
  *
- * @since @unreleased
+ * @unreleased
  */
 function give_import_subscription_report_update( $value = [] ) {
     update_option( 'give_import_subscription_report', $value, false );
@@ -66,7 +66,7 @@ function give_import_subscription_report_update( $value = [] ) {
 /**
  * Delete the Import report of subscriptions
  *
- * @since @unreleased
+ * @unreleased
  */
 function give_import_subscription_report_reset() {
     update_option( 'give_import_subscription_report', [], false );
@@ -601,7 +601,7 @@ function give_import_donation_form_options() {
  *
  * Keys intentionally match Subscription model properties and related fields
  *
- * @since @unreleased
+ * @unreleased
  */
 function give_import_subscription_options() {
     return (array) apply_filters(
@@ -707,7 +707,7 @@ function give_get_file_data_by_file_id( $file_id ) {
  * @param string $delimiter
  *
  * @return array
- * @since @unreleased
+ * @unreleased
  */
 function give_get_subscription_data_from_csv( $file_id, $start, $end, $delimiter = 'csv' ) {
     $delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
@@ -1029,7 +1029,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
  * @param array $import_setting Global settings
  *
  * @return bool|int Subscription id or true on dry-run; false on failure
- * @since @unreleased
+ * @unreleased
  */
 function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [], $import_setting = [] ) {
     $report = give_import_subscription_report();
@@ -1055,14 +1055,16 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
     foreach ( $required as $key ) {
         if ( empty( $data[ $key ] ) && '0' !== (string) ( $data[ $key ] ?? '' ) ) {
             $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
+            $report['errors'][] = sprintf( __( 'Row %1$d: Missing required field "%2$s"', 'give' ), (int) ( $import_setting['row_key'] ?? 0 ), $key );
             give_import_subscription_report_update( $report );
-            return false;
+            return 'Missing required field ' . $key;
         }
     }
     if ( empty( $data['donor_id'] ) && empty( $data['email'] ) ) {
         $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
+        $report['errors'][] = sprintf( __( 'Row %d: Either donor_id or email is required to resolve the donor', 'give' ), (int) ( $import_setting['row_key'] ?? 0 ) );
         give_import_subscription_report_update( $report );
-        return false;
+        return 'Missing donor identifier (donor_id or email)';
     }
 
     // Build attributes for Subscription model
@@ -1216,6 +1218,7 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
             } catch ( \Throwable $e ) {
                 // If initial donation fails, still report subscription created but count a failure for visibility
                 $report['failed_subscription_initial_donation'] = ( ! empty( $report['failed_subscription_initial_donation'] ) ? ( absint( $report['failed_subscription_initial_donation'] ) + 1 ) : 1 );
+                $report['errors'][] = sprintf( __( 'Row %1$d: Initial donation creation failed (%2$s)', 'give' ), (int) ( $import_setting['row_key'] ?? 0 ), $e->getMessage() );
             }
             $report['create_subscription'] = ( ! empty( $report['create_subscription'] ) ? ( absint( $report['create_subscription'] ) + 1 ) : 1 );
             give_import_subscription_report_update( $report );
@@ -1228,8 +1231,9 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
 
     } catch ( \Throwable $e ) {
         $report['failed_subscription'] = ( ! empty( $report['failed_subscription'] ) ? ( absint( $report['failed_subscription'] ) + 1 ) : 1 );
+        $report['errors'][] = sprintf( __( 'Row %1$d: %2$s', 'give' ), (int) ( $import_setting['row_key'] ?? 0 ), $e->getMessage() );
         give_import_subscription_report_update( $report );
-        return false;
+        return $e->getMessage();
     }
 }
 
@@ -1434,7 +1438,7 @@ function give_import_page_url( $parameter = [] ) {
  *
  * This mirrors the logic used elsewhere to keep backwards compatibility fields in sync.
  *
- * @since @unreleased
+ * @unreleased
  */
 function give_import_update_legacy_after_initial_donation( \Give\Donations\Models\Donation $donation ) {
     try {
@@ -1470,7 +1474,7 @@ function give_import_update_legacy_after_initial_donation( \Give\Donations\Model
 /**
  * Calculate total intended (amount - recovered fee) for a donor across donations
  *
- * @since @unreleased
+ * @unreleased
  */
 function give_import_get_donor_total_intended_amount( int $donorId ): float {
     return (float) DB::table('posts', 'posts')
