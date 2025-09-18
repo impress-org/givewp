@@ -5,6 +5,9 @@ import { Campaign, CampaignOption } from './utils';
 
 const CAMPAIGNS_PER_PAGE = 30;
 
+/**
+ * @unreleased
+ */
 type UseCampaignAsyncSelectReturn = {
     selectedOption: CampaignOption | null;
     setSelectedOption: (option: CampaignOption | null) => void;

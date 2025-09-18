@@ -78,6 +78,9 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, default
 	);
 }
 
+/**
+ * @unreleased
+ */
 function AsyncFilter({name, placeholder, onChange, isSearchable, isClearable}: CustomFilterProps) {
 	const { loadOptions, mapOptionsForMenu, selectedOption, setSelectedOption } = useCampaignAsyncSelect();
 
