@@ -50,7 +50,7 @@ class TestCurrencyRule extends TestCase
         }
 
         $testCases = [
-            // Empty values should now fail
+            // Empty values should fail
             ['', false],
             [null, false],
         ];
