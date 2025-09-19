@@ -132,6 +132,10 @@ class RegisterCampaignRoutes
                         ],
                         'default' => 'desc',
                     ],
+                    'search' => [
+                        'type' => 'string',
+                        'default' => '',
+                    ],
                 ],
             ]
         );

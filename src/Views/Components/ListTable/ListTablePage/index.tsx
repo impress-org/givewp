@@ -14,6 +14,7 @@ import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
+import ListTableStats, { StatConfig } from '../ListTableStats/ListTableStats';
 
 export interface ListTablePageProps {
     //required
@@ -35,12 +36,13 @@ export interface ListTablePageProps {
     banner?: () => JSX.Element;
     contentMode?: boolean;
     perPage?: number;
+    statsConfig?: Record<string, StatConfig>;
 }
 
 export interface FilterConfig {
     // required
     name: string;
-    type: 'select' | 'formselect' | 'search' | 'checkbox' | 'hidden';
+    type: 'select' | 'campaignselect' | 'search' | 'checkbox' | 'hidden';
 
     // optional
     ariaLabel?: string;
@@ -119,6 +121,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     banner,
     contentMode,
     perPage = 30,
+    statsConfig,
 }: ListTablePageProps, ref) => {
     const [page, setPage] = useState<number>(1);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
@@ -163,12 +166,16 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
+    const {data: statsData, error: statsError, isValidating: statsIsValidating, mutate: mutateStats} = statsConfig ? archiveApi.useStats(testMode) : {data: null, error: null, isValidating: false, mutate: async () => {}};
 
     useResetPage(data, page, setPage, filters);
 
     useImperativeHandle(ref, () => ({
-        refresh: () => mutate()
-    }), [mutate]);
+        refresh: async () => {
+           await mutate();
+           statsConfig && await mutateStats();
+        }
+    }), [mutate, mutateStats, statsConfig]);
 
     const handleFilterChange = (name, value) => {
         setFilters((prevState) => ({...prevState, [name]: value}));
@@ -238,23 +245,27 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
             disabled={!data}
             totalItems={data ? parseInt(data.totalItems) : -1}
             setPage={setPage}
-            singleName={singleName}
-            pluralName={pluralName}
+            singleName={__('result', 'give')}
+            pluralName={__('results', 'give')}
         />
     );
 
     const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => {
         return (
             <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
-                <BulkActionSelect
-                    selectedState={[selectedAction, setSelectedAction]}
-                    parameters={parameters}
-                    data={data}
-                    bulkActions={bulkActions}
-                    showModal={openBulkActionModal}
-                />
-                {PageActionsTop && testModeFilter && <TestModeFilter />}
-                {!PageActionsTop && page && setPage && showPagination()}
+                {PageActionsTop ? (
+                    <BulkActionSelect
+                        selectedState={[selectedAction, setSelectedAction]}
+                        parameters={parameters}
+                        data={data}
+                        bulkActions={bulkActions}
+                        showModal={openBulkActionModal}
+                    />
+            ) : (
+                    <>
+                        {page && setPage && showPagination()}
+                    </>
+                )}
             </div>
         );
     };
@@ -263,62 +274,55 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
         <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
     );
 
-    const TestModeBadge = () => <span>{testModeFilter?.text}</span>;
+    const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;
+
+    const SearchSection = () => (
+        <section role="search" className={styles.searchContainer}>
+            <div className={styles.flexRow}>
+                <PageActions PageActionsTop />
+            </div>
+            <div className={styles.flexRow}>
+                {filterSettings.map((filter) => (
+                    <Filter
+                        key={filter.name}
+                        value={filters[filter.name]}
+                        filter={filter}
+                        onChange={handleFilterChange}
+                        debouncedOnChange={handleDebouncedFilterChange}
+                    />
+                ))}
+            </div>
+        </section>
+    );
 
     return (
         <>
             <article className={styles.page}>
-                {contentMode ? (
-                    <>
-                        <section role="search" className={styles.searchContainer}>
-                            <div className={styles.flexRow}>
-                                <PageActions PageActionsTop />
-                            </div>
-                            <div className={styles.flexRow}>
-                                {filterSettings.map((filter) => (
-                                    <Filter
-                                        key={filter.name}
-                                        value={filters[filter.name]}
-                                        filter={filter}
-                                        onChange={handleFilterChange}
-                                        debouncedOnChange={handleDebouncedFilterChange}
-                                    />
-                                ))}
-                            </div>
-                        </section>
-                    </>
-                ) : (
+                {!contentMode && (
                     <>
                         <header className={styles.pageHeader}>
                             <div className={styles.flexRow}>
-                                <GiveIcon size={'1.875rem'} />
+                                <GiveIcon size={'2.25rem'} />
                                 <h1 className={styles.pageTitle}>{title}</h1>
                                 {testModeFilter && testMode && <TestModeBadge />}
                             </div>
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
+
+                        <div className={cx('wp-header-end', 'hidden')} />
+
                         {banner && <section role="banner">{banner()}</section>}
-                        <section role="search" className={styles.searchContainer}>
-                            <div className={styles.flexRow}>
-                                <PageActions PageActionsTop />
+                        {testModeFilter && (
+                            <div className={styles.filtersRow}>
+                                <TestModeFilter />
                             </div>
-                            <div className={styles.flexRow}>
-                                {filterSettings.map((filter) => (
-                                    <Filter
-                                        key={filter.name}
-                                        value={filters[filter.name]}
-                                        filter={filter}
-                                        onChange={handleFilterChange}
-                                        debouncedOnChange={handleDebouncedFilterChange}
-                                    />
-                                ))}
-                            </div>
-                        </section>
+                        )}
+                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
                     </>
                 )}
 
-                <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
+                    <SearchSection />
                     {contentMode && children ? <>{children}</> : <></>}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
@@ -380,6 +384,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                             try {
                                 await modalContent.action(selectedIds);
                                 await mutate();
+                                await mutateStats();
                             } catch (error) {
                                 console.error('Bulk action error:', error);
 

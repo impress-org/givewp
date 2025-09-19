@@ -2,19 +2,20 @@
 
 .interweave {
     .statusBadge {
-        display: flex;
-        justify-content: center;
         align-items: center;
-        width: fit-content;
-        height: safe-rem(1.375);
-        padding: 0.125rem 0.75rem 0.125rem 0.75rem;
         background-color: black;
+        border-radius: 0.75rem;
         color: #fff;
-        border-radius: safe-rem(1);
-        letter-spacing: 0.04rem;
-        transform: translateY(0.075rem);
         column-gap: safe-rem(1);
+        display: flex;
+        font-size: 0.75rem;
+        font-weight: 600;
+        justify-content: center;
+        line-height: 1.5;
+        padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
         text-transform: capitalize;
+        transform: translateY(0.075rem);
+        width: fit-content;
 
         div,
         p {
@@ -23,6 +24,10 @@
             line-height: safe-rem(1.125);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+
+        p {
+            margin: 0;
         }
 
         &--completed,
@@ -149,7 +154,7 @@
         visibility: visible;
     }
 
-    .subscriptionDonationTypeBadge {
+    .badge {
         --border-width: 1px;
         --padding-x: calc(var(--givewp-spacing-3) - var(--border-width));
         --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
@@ -169,101 +174,6 @@
             margin: 0;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-        }
-    }
-
-    .badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-        inline-size: -moz-fit-content;
-        max-inline-size: fit-content;
-        block-size: 2rem;
-        margin: 0;
-        padding: 0;
-        background-color: white;
-        font-family: Open Sans;
-        border: 0;
-        border-radius: safe-rem(0.1875);
-        box-shadow: inset 0 0 0 1px rgba(203, 203, 203, 1);
-        overflow: hidden;
-
-        & > * {
-            flex: 0 0 auto;
-        }
-
-        .icon {
-            display: inline;
-            min-width: 1.75rem;
-            max-width: 1.75rem;
-            border-top-left-radius: 0.1875rem;
-            border-bottom-left-radius: 0.1875rem;
-            font-size: 1.125rem;
-            font-weight: 700;
-            letter-spacing: 0;
-            color: #555555;
-            box-sizing: content-box !important;
-            overflow: hidden;
-
-            &--onetime,
-            &--single {
-                background: #556e79;
-                block-size: 1.125rem;
-                inline-size: 1.375rem;
-                padding-block: 0.575rem;
-                padding-inline: 0.3rem;
-                transform: translateY(2px);
-            }
-
-            &--recurring,
-            &--subscription,
-            &--subscriber {
-                background: linear-gradient(225.34deg, #59ad70 0%, #2ebbbb 101.17%);
-                block-size: 1.125rem;
-                inline-size: 1.375rem;
-                padding-block: 0.4375rem;
-                padding-inline: 0.3125rem;
-            }
-
-            &--repeat {
-                background: #f49420;
-                block-size: 1.125rem;
-                inline-size: 1.375rem;
-                padding-block: 0.4375rem;
-                padding-inline: 0.2025rem;
-                border-left: 4px solid #f49420;
-            }
-
-            &--new {
-                background: #000000;
-                block-size: 1.125rem;
-                inline-size: 1.375rem;
-                padding-block: 0.4375rem;
-                padding-inline: 0.2125rem;
-                padding: 16px 0 0 8px;
-            }
-        }
-
-        &__label {
-            flex-basis: fit-content;
-            margin: 0;
-            padding: safe-rem(0.6125) safe-rem(0.65);
-            color: #555555;
-            font-size: safe-rem(0.75);
-            font-weight: 400;
-            text-align: center;
-            text-transform: uppercase;
-            cursor: default;
-        }
-
-        .star {
-            display: inline;
-            color: rgba(255, 215, 0, 1);
-            position: absolute;
-            z-index: 2;
-            top: safe-rem(-0.5);
-            right: safe-rem(-0.5);
         }
     }
 
@@ -381,75 +291,32 @@
     }
 
     .amount {
-        font-size: safe-rem(1.125);
-        font-weight: 700;
-        color: #69b868;
+        color: var(--givewp-neutral-700);
+        font-size: 1rem;
+        font-weight: 500;
     }
 }
 
 .idBadge {
-    display: inline-flex;
-    flex-shrink: 0;
-    flex-grow: 0;
     align-items: center;
-    background-color: #f3f2ec;
-    border: safe-rem(0.0625) solid #e0dfd9;
-    border-radius: 9999px;
-    color: #5f5f5f;
-    padding-block: 0.1em;
-    padding-inline: 0.5em;
+    background-color: var(--givewp-neutral-50);
+    border-radius: 0.5rem;
+    border: 1px solid var(--givewp-neutral-200);
+    color: var(--givewp-neutral-700);
+    display: inline-flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: normal;
+    padding: 0.1875rem 0.5rem;
     text-align: center;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
     width: fit-content;
-}
 
-.idBadge::before {
-    content: '#';
-    font-size: 0.615em;
-    padding-inline-end: 0.25em;
-}
-
-.list-table-page-container--new-design {
-    .interweave {
-        .campaignLink {
-            font-weight: 600;
-        }
-
-        .statusBadge {
-            border-radius: 0.75rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            height: auto;
-            letter-spacing: 0;
-            line-height: 1.5;
-            padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
-
-            p {
-                margin: 0;
-            }
-        }
-
-        .amount {
-            color: var(--givewp-neutral-700);
-            font-size: 1rem;
-            font-weight: 500;
-        }
-    }
-
-    .idBadge {
-        background-color: var(--givewp-neutral-50);
-        border-radius: 0.5rem;
-        border: 1px solid var(--givewp-neutral-200);
-        color: var(--givewp-neutral-700);
-        font-size: 0.8125rem;
-        font-weight: 600;
-        line-height: normal;
-        padding: 0.1875rem 0.5rem;
-
-        &::before {
-            font-size: 0.5rem;
-            padding: 0;
-        }
+    &::before {
+        content: '#';
+        font-size: 0.5rem;
+        padding: 0;
+        width: 0.5rem;
     }
 }

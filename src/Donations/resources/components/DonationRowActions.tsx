@@ -31,12 +31,14 @@ export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters
                     `edit.php?post_type=give_forms&page=give-payment-history&id=${item.id}`
                 }
                 displayText={__('Edit', 'give')}
+                ariaLabel={sprintf(__('Edit donation #%d', 'give'), item.id)}
             />
             <RowAction
                 onClick={confirmModal}
                 actionId={item.id}
                 displayText={__('Trash', 'give')}
                 hiddenText={item.name}
+                ariaLabel={sprintf(__('Move donation #%d to trash', 'give'), item.id)}
                 highlight
             />
         </>

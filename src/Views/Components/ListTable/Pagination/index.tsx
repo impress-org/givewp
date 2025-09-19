@@ -1,15 +1,10 @@
 import PropTypes from 'prop-types';
-import {useState, useEffect} from 'react';
+import React from 'react';
 import styles from './Pagination.module.scss';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';
 
 const Pagination = ({currentPage = 1, totalPages = 0, totalItems = -1, disabled = false, setPage = (n) => {}, singleName, pluralName}) => {
-    const [pageInput, setPageInput] = useState(1);
-
-    useEffect(() => {
-        setPageInput(currentPage);
-    }, [currentPage]);
 
     // @ts-ignore
     const nextPage = parseInt(currentPage) + 1;
@@ -55,23 +50,22 @@ const Pagination = ({currentPage = 1, totalPages = 0, totalItems = -1, disabled 
                         <label htmlFor={styles.currentPage} className={styles.visuallyHidden}>
                             {__('Current Page', 'give')}
                         </label>
-                        <input
+                        <select
                             className={styles.navElement}
                             id={styles.currentPage}
                             name={'currentPageSelector'}
-                            type="number"
-                            min={1}
-                            max={totalPages}
-                            value={pageInput}
+                            value={currentPage}
                             onChange={(e) => {
-                                const cleanValue = parseInt(e.target.value.replace(/[^0-9]/, ''));
-                                const page = Number(cleanValue);
-                                setPageInput(cleanValue);
-                                if (totalPages >= page && page > 0) {
-                                    setPage(page);
-                                }
+                                const page = Number(e.target.value);
+                                setPage(page);
                             }}
-                        />
+                        >
+                            {Array.from({length: totalPages}, (_, i) => i + 1).map((pageNumber) => (
+                                <option key={pageNumber} value={pageNumber}>
+                                    {pageNumber}
+                                </option>
+                            ))}
+                        </select>
                         <span>
                             {' '}
                             {__('of', 'give')} <span>{totalPages}</span>{' '}

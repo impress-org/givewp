@@ -28,13 +28,14 @@ class CreatedAtColumn extends ModelColumn
     }
 
     /**
+     * @unreleased Updated column label
      * @since 2.24.0
      *
      * @inheritDoc
      */
     public function getLabel(): string
     {
-        return __('Created At', 'give');
+        return __('Date', 'give');
     }
 
     /**

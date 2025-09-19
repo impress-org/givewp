@@ -25,18 +25,18 @@ const API = new ListTableApi(window.GiveSubscriptions);
 
 const filters: Array<FilterConfig> = [
     {
-        name: 'form',
-        type: 'formselect',
-        text: __('Select Form', 'give'),
-        ariaLabel: __('filter donation forms by status', 'give'),
+        name: 'campaignId',
+        type: 'campaignselect',
+        text: __('Select Campaign', 'give'),
+        ariaLabel: __('filter subscriptions by campaign', 'give'),
         options: window.GiveSubscriptions.forms,
     },
     {
         name: 'search',
         type: 'search',
         inlineSize: '14rem',
-        text: __('Name, Email, or  ID', 'give'),
-        ariaLabel: __('search donations', 'give'),
+        text: __('Name, Email, or Subscription ID', 'give'),
+        ariaLabel: __('search subscriptions', 'give'),
     },
     {
         name: 'toggle',
@@ -59,9 +59,9 @@ const bulkActions: Array<BulkActionsConfig> = [
             <>
                 <p>{__('Really delete the following subscriptions?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
-                    {selected.map((donationId, index) => (
-                        <li key={donationId}>
-                            <IdBadge id={donationId} />{' '}
+                    {selected.map((subscriptionId, index) => (
+                        <li key={subscriptionId}>
+                            <IdBadge id={subscriptionId} />{' '}
                             <span>
                                 {__('from ', 'give')} <Interweave content={names[index]} />
                             </span>
@@ -98,11 +98,11 @@ const bulkActions: Array<BulkActionsConfig> = [
                     ),
                 confirm: (selected, names) => (
                     <>
-                        <p>{__('Set status for the following donations?', 'give')}</p>
+                        <p>{__('Set status for the following subscriptions?', 'give')}</p>
                         <ul role="document" tabIndex={0}>
-                            {selected.map((donationId, index) => (
-                                <li key={donationId}>
-                                    <IdBadge id={donationId} /> <span>{__('from', 'give')}</span>
+                            {selected.map((subscriptionId, index) => (
+                                <li key={subscriptionId}>
+                                    <IdBadge id={subscriptionId} /> <span>{__('from', 'give')}</span>
                                     <Interweave content={names[index]} />
                                 </li>
                             ))}
@@ -140,7 +140,7 @@ export default function SubscriptionsListTable() {
             paymentMode={!!window.GiveSubscriptions.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
         >
-            <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
+            <button className={`button button-tertiary ${tableStyles.secondaryActionButton}`} onClick={showLegacyDonations}>
                 {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>

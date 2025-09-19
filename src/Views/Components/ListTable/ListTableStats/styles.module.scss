@@ -1,0 +1,16 @@
+.tableStatsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-inline: var(--givewp-spacing-6);
+}
+
+.tableStatWidget {
+    height: 7.75rem;
+    border-radius: 8px;
+    border: solid 1px var(--givewp-neutral-50);
+
+    :global(a[data-addon-tooltip])::after {
+        right: -2rem;
+    }
+}

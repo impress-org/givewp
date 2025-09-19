@@ -53,6 +53,7 @@ class CampaignRequestController
         $status = $request->get_param('status');
         $sortBy = $request->get_param('sortBy');
         $orderBy = $request->get_param('orderBy');
+        $search = $request->get_param('search');
 
         $query = Campaign::query();
 
@@ -60,6 +61,10 @@ class CampaignRequestController
 
         if ( ! empty($ids)) {
             $query->whereIn('id', $ids);
+        }
+
+        if ($search) {
+            $query->whereLike('campaign_title', '%%' . $search . '%%');
         }
 
         $totalQuery = clone $query;

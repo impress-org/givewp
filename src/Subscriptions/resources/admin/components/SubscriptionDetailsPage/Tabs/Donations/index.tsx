@@ -91,8 +91,7 @@ export default function SubscriptionDetailsPageDonationsTab() {
             </div>
             <button className={styles.button} onClick={() => setIsAddRenewalDialogOpen(true)}>{__('Add renewal', 'give')}</button>
 
-            {/* TODO: Remove the inline classname once the new design is implemented in all list tables */}
-            <div className={cn(styles.tableWrapper, 'list-table-page-container--new-design')}>
+            <div className={styles.tableWrapper}>
                 <ListTablePage
                     ref={listTableRef}
                     title={__('Donations', 'give')}
@@ -102,7 +101,6 @@ export default function SubscriptionDetailsPageDonationsTab() {
                     pluralName={__('results', 'give')}
                     paymentMode={mode === 'test'}
                     contentMode={true}
-                    perPage={10}
                     rowActions={DonationRowActions}
                 />
             </div>

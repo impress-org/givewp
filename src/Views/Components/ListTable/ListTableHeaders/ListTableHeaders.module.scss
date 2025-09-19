@@ -1,11 +1,11 @@
 .sortButton {
-    display: flex;
     align-items: center;
     background: none;
-    color: #2271b1;
     border: none;
+    color: var(--givewp-neutral-900);
     cursor: pointer;
-    transform: translateX(-10px);
+    display: flex;
+    padding: 0;
 
     .text {
         white-space: nowrap;
@@ -16,33 +16,17 @@
         transform: scale(112%);
         margin: 3px 0 3px 8px;
 
-        >path {
-            &:hover {
-                fill: #0878b0 !important;
+        &[data-sorting="true"] {
+            >path {
+                fill: var(--givewp-neutral-900) !important;
             }
         }
-    }
-}
 
-:global(.list-table-page-container--new-design) {
-    .sortButton {
-        color: var(--givewp-neutral-900);
-        padding: 0;
-        transform: none;
+        >path {
+            fill: var(--givewp-neutral-300);
 
-        svg {
-            &[data-sorting="true"] {
-                >path {
-                    fill: var(--givewp-neutral-900) !important;
-                }
-            }
-
-            >path {
-                fill: var(--givewp-neutral-200);
-
-                &:hover {
-                    fill: var(--givewp-neutral-900) !important;
-                }
+            &:hover {
+                fill: var(--givewp-neutral-900) !important;
             }
         }
     }
