@@ -26,6 +26,7 @@ class Page
     /**
      * Dismiss the Setup Page.
      *
+     * @unreleased redirect to campaigns page
      * @since 2.8.0
      */
     public function dismissSetupPage()
