@@ -77,7 +77,7 @@ export default function SubscriptionSummaryGrid({subscription, isLoading}: Subsc
                     )}
                 </GridCard>
 
-                {/* Associated   */}
+                {/* Associated Donor */}
                 <DonorCard donor={donor} />
 
                 {/* Gateway Info */}
