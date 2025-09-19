@@ -1101,31 +1101,31 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
             }
         }
         $attributes['donorId'] = $resolvedDonorId;
-		// Normalize and validate subscription period from raw input
-		$rawPeriod = strtolower( trim( (string) $data['period'] ) );
-		$periodAliases = [
-			'daily'    => 'day',
-			'days'     => 'day',
-			'day'      => 'day',
-			'weekly'   => 'week',
-			'weeks'    => 'week',
-			'week'     => 'week',
-			'monthly'  => 'month',
-			'months'   => 'month',
-			'month'    => 'month',
-			'quarterly'=> 'quarter',
-			'quarters' => 'quarter',
-			'qtr'      => 'quarter',
-			'qtrs'     => 'quarter',
-			'quarter'  => 'quarter',
-			'yearly'   => 'year',
-			'annually' => 'year',
-			'annual'   => 'year',
-			'yrs'      => 'year',
-			'yr'       => 'year',
-			'years'    => 'year',
-			'year'     => 'year',
-		];
+        // Normalize and validate subscription period from raw input
+        $rawPeriod = strtolower( trim( (string) $data['period'] ) );
+        $periodAliases = [
+            'daily'    => 'day',
+            'days'     => 'day',
+            'day'      => 'day',
+            'weekly'   => 'week',
+            'weeks'    => 'week',
+            'week'     => 'week',
+            'monthly'  => 'month',
+            'months'   => 'month',
+            'month'    => 'month',
+            'quarterly'=> 'quarter',
+            'quarters' => 'quarter',
+            'qtr'      => 'quarter',
+            'qtrs'     => 'quarter',
+            'quarter'  => 'quarter',
+            'yearly'   => 'year',
+            'annually' => 'year',
+            'annual'   => 'year',
+            'yrs'      => 'year',
+            'yr'       => 'year',
+            'years'    => 'year',
+            'year'     => 'year',
+        ];
 		$normalizedPeriod = isset( $periodAliases[ $rawPeriod ] ) ? $periodAliases[ $rawPeriod ] : $rawPeriod;
 		if ( ! \Give\Subscriptions\ValueObjects\SubscriptionPeriod::isValid( $normalizedPeriod ) ) {
 			throw new \UnexpectedValueException( sprintf(
