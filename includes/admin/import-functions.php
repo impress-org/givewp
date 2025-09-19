@@ -1101,7 +1101,40 @@ function give_save_import_subscription_to_db( $raw_key, $row_data, $main_key = [
             }
         }
         $attributes['donorId'] = $resolvedDonorId;
-        $attributes['period'] = new \Give\Subscriptions\ValueObjects\SubscriptionPeriod( strtolower( trim( (string) $data['period'] ) ) );
+		// Normalize and validate subscription period from raw input
+		$rawPeriod = strtolower( trim( (string) $data['period'] ) );
+		$periodAliases = [
+			'daily'    => 'day',
+			'days'     => 'day',
+			'day'      => 'day',
+			'weekly'   => 'week',
+			'weeks'    => 'week',
+			'week'     => 'week',
+			'monthly'  => 'month',
+			'months'   => 'month',
+			'month'    => 'month',
+			'quarterly'=> 'quarter',
+			'quarters' => 'quarter',
+			'qtr'      => 'quarter',
+			'qtrs'     => 'quarter',
+			'quarter'  => 'quarter',
+			'yearly'   => 'year',
+			'annually' => 'year',
+			'annual'   => 'year',
+			'yrs'      => 'year',
+			'yr'       => 'year',
+			'years'    => 'year',
+			'year'     => 'year',
+		];
+		$normalizedPeriod = isset( $periodAliases[ $rawPeriod ] ) ? $periodAliases[ $rawPeriod ] : $rawPeriod;
+		if ( ! \Give\Subscriptions\ValueObjects\SubscriptionPeriod::isValid( $normalizedPeriod ) ) {
+			throw new \UnexpectedValueException( sprintf(
+				__( 'Invalid subscription period "%1$s". Valid options: %2$s. You can also use: daily, weekly, monthly, quarterly, yearly.', 'give' ),
+				(string) $data['period'],
+				implode( ', ', array_values( \Give\Subscriptions\ValueObjects\SubscriptionPeriod::toArray() ) )
+			) );
+		}
+		$attributes['period'] = new \Give\Subscriptions\ValueObjects\SubscriptionPeriod( $normalizedPeriod );
         $attributes['frequency'] = (int) $data['frequency'];
         $attributes['installments'] = isset( $data['installments'] ) ? (int) $data['installments'] : 0;
         $attributes['transactionId'] = isset( $data['transaction_id'] ) ? (string) $data['transaction_id'] : '';
