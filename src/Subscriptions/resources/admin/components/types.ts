@@ -42,12 +42,16 @@ type Money = {
     currency: string;
 };
 
+/**
+ * @unreleased
+ */
 type Form = {
     id: number;
     title: string;
 };
 
 /**
+ * @unreleased added _embedded
  * @since 4.8.0
  */
 export type Subscription = {

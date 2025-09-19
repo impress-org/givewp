@@ -29,6 +29,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
+     * @unreleased added campaignId
      * @since 4.8.0
      */
     public function testGetSubscriptionsShouldReturnAllViewModelProperties()

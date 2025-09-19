@@ -12,6 +12,7 @@ import CampaignCard from './CampaignCard';
 import styles from './styles.module.scss';
 
 /**
+ * @unreleased removed donation
  * @since 4.8.0
  */
 type SubscriptionSummaryGridProps = {
@@ -20,6 +21,7 @@ type SubscriptionSummaryGridProps = {
 };
 
 /**
+ * @unreleased removed donation dependency
  * @since 4.8.0
  */
 export default function SubscriptionSummaryGrid({subscription, isLoading}: SubscriptionSummaryGridProps) {

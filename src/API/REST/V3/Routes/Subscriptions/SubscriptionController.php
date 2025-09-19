@@ -538,6 +538,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased added embeddable links for campaign and form
      * @since 4.8.0
      *
      * @param mixed           $item    WordPress representation of the item.

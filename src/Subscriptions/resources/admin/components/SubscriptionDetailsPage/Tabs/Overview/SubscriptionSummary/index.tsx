@@ -77,6 +77,7 @@ interface SummaryProps {
 }
 
 /**
+ * @unreleased removed donation from props
  * @since 4.8.0
  */
 export default function Summary({subscription, adminUrl, intendedAmount, isLoading}: SummaryProps) {
