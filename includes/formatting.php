@@ -578,6 +578,7 @@ function give_human_format_large_amount($amount, $args = [])
 /**
  * Returns a nicely formatted amount with custom decimal separator.
  *
+ * @unreleased Rollback backward compatibility for amount param - allows both array and individual parameter calls
  * @since 4.9.0 PHP 8 compatibility
  * @since 1.0
  *
@@ -594,6 +595,16 @@ function give_human_format_large_amount($amount, $args = [])
  */
 function give_format_decimal($args)
 {
+    // Backward compatibility.
+    if ( ! is_array($args)) {
+        $func_args = func_get_args();
+        $args = [
+            'amount' => $func_args[0],
+            'dp' => isset($func_args[1]) ? $func_args[1] : false,
+            'sanitize' => isset($func_args[2]) ? $func_args[2] : true,
+        ];
+    }
+    
     $args = wp_parse_args(
         $args,
         [
