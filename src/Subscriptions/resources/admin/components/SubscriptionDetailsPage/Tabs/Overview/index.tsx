@@ -4,6 +4,7 @@ import OverviewPanel from "@givewp/admin/components/OverviewPanel";
 import SubscriptionSummaryGrid from "./SubscriptionSummaryGrid";
 import { SubscriptionNotes } from "@givewp/admin/components/PrivateNotes";
 import { useSubscriptionAmounts } from '@givewp/subscriptions/hooks';
+import { getSubscriptionEmbeds } from '@givewp/subscriptions/common';
 import SubscriptionSummary from '@givewp/subscriptions/admin/components/SubscriptionDetailsPage/Tabs/Overview/SubscriptionSummary';
 import { getSubscriptionOptionsWindowData, useSubscriptionEntityRecord } from "@givewp/subscriptions/utils";
 import SubscriptionAnnualProjection from "./SubscriptionAnnualProjection";
@@ -19,7 +20,7 @@ export default function SubscriptionDetailsPageOverviewTab() {
     const { adminUrl } = getSubscriptionOptionsWindowData();
     const { record: subscription, hasResolved: subscriptionsResolved, isResolving: subscriptionLoading } = useSubscriptionEntityRecord();
     const { intendedAmount } = useSubscriptionAmounts(subscription);
-    const donations = subscription?._embedded?.['givewp:donations'][0];
+    const { donations } = getSubscriptionEmbeds(subscription);
 
     if (subscriptionLoading || !subscriptionsResolved) {
         return <Spinner />;

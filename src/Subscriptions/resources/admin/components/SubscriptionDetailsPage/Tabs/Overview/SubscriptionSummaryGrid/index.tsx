@@ -10,6 +10,7 @@ import {ClockIcon, HourGlassIcon} from './Icons';
 import DonorCard from './DonorCard';
 import CampaignCard from './CampaignCard';
 import styles from './styles.module.scss';
+import { getSubscriptionEmbeds } from '@givewp/subscriptions/common';
 
 /**
  * @unreleased removed donation
@@ -25,6 +26,7 @@ type SubscriptionSummaryGridProps = {
  * @since 4.8.0
  */
 export default function SubscriptionSummaryGrid({subscription, isLoading}: SubscriptionSummaryGridProps) {
+    const { campaign, donor } = getSubscriptionEmbeds(subscription);
     const isOngoing = subscription?.installments === 0;
     const badgeLabel = isOngoing ? (
         <>
@@ -42,8 +44,6 @@ export default function SubscriptionSummaryGrid({subscription, isLoading}: Subsc
     const hasPaymentMethodDetails = subscription?.gateway?.id;
     const gatewayLabel = subscription?.gateway?.label;
     const gatewayLink = subscription?.gateway?.subscriptionUrl;
-    const campaign = subscription?._embedded?.['givewp:campaign'][0];
-    const donor = subscription?._embedded?.['givewp:donor'][0];
 
     return (
            <OverviewPanel className={styles.overviewPanel}>

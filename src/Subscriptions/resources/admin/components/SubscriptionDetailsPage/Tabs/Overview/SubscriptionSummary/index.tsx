@@ -4,6 +4,7 @@ import {Subscription} from '@givewp/subscriptions/admin/components/types';
 import {dateI18n} from '@wordpress/date';
 import {__} from '@wordpress/i18n';
 import styles from './styles.module.scss';
+import {getSubscriptionEmbeds} from '@givewp/subscriptions/common';
 
 
 /**
@@ -81,7 +82,7 @@ interface SummaryProps {
  * @since 4.8.0
  */
 export default function Summary({subscription, adminUrl, intendedAmount, isLoading}: SummaryProps) {
-    const form = subscription?._embedded?.['givewp:form']?.[0];
+    const {form} = getSubscriptionEmbeds(subscription);
     const formTitle = form?.title ?? __('Donation Form', 'give');
     const endDate = calculateEndDate(subscription);
 
