@@ -42,8 +42,13 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
                 value={selectedAction}
                 isSearchable={false}
                 isSelectable={true}
+                isClearable={true}
             />
-            <button onClick={showModal} className={`button button-tertiary ${pageStyles.secondaryActionButton}`}>
+            <button
+                onClick={showModal}
+                className={`button button-tertiary ${pageStyles.secondaryActionButton}`}
+                disabled={!selectedAction}
+            >
                 {__('Apply', 'give')}
             </button>
         </div>

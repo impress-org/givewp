@@ -1,5 +1,6 @@
 import {__} from '@wordpress/i18n';
 import CustomFilter from '../CustomFilter';
+import styles from './styles.module.scss';
 
 /**
  * Filter type configurations
@@ -11,12 +12,14 @@ const filterConfigs = {
         id: 'select',
         isSearchable: false,
         isSelectable: true,
+        isClearable: true,
         useDebouncedOnChange: false,
     },
     campaignselect: {
         id: 'campaignselect',
         isSearchable: true,
         isSelectable: true,
+        isClearable: true,
         useDebouncedOnChange: false,
     },
     search: {
@@ -37,6 +40,20 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
         return null;
     }
 
+    if (filter.type === 'search') {
+        return (
+            <input
+                type="search"
+                name={filter.name}
+                defaultValue={value}
+                onChange={(event) => debouncedOnChange(event.target.name, event.target.value)}
+                placeholder={filter?.text}
+                aria-label={filter?.ariaLabel}
+                className={styles.searchInput}
+            />
+        )
+    }
+
     return (
         <CustomFilter
             name={filter.name}
@@ -47,6 +64,7 @@ export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
             value={value}
             isSearchable={config.isSearchable}
             isSelectable={config.isSelectable}
+            isClearable={config.isClearable}
             isAsync={config.id === 'campaignselect'}
         />
     );

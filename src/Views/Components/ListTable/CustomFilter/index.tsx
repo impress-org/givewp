@@ -38,7 +38,7 @@ export default function CustomFilter(props: CustomFilterProps) {
 /**
  * @unreleased
  */
-function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, isSearchable, isSelectable}: CustomFilterProps) {
+function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, isSearchable, isSelectable, isClearable}: CustomFilterProps) {
 	const formattedOptions = options?.map(({ value, text }) => ({
 		value,
 		label: text,
@@ -64,7 +64,7 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, 
 				placeholder={placeholder}
 				aria-label={ariaLabel}
 				isSearchable={isSearchable}
-				isClearable={false}
+				isClearable={isClearable}
 				classNamePrefix="searchableSelect"
 				className={styles.searchableSelect}
 				components={{
@@ -98,7 +98,7 @@ function AsyncFilter({name, placeholder, onChange, value, isSearchable, isCleara
 			isSearchable={isSearchable}
 			isClearable={isClearable}
 			mapOptionsForMenu={mapOptionsForMenu}
-			className={styles.searchableSelect}
+			className={`${styles.searchableSelect} ${styles.asyncSelect}`}
 			classNamePrefix="searchableSelect"
 			debounceTimeout={600}
 		/>

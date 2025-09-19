@@ -21,6 +21,20 @@
         }
     }
 
+    &.asyncSelect {
+        :global {
+            .searchableSelect {
+                &__indicators {
+                    padding-left: var(--givewp-spacing-10);
+
+                    &:has(.searchableSelect__loading-indicator) {
+                        padding-left: 0;
+                    }
+                }
+            }
+        }
+    }
+
     :global {
         .searchableSelect {
             &__control {
@@ -110,14 +124,6 @@
 
                 &:focus {
                     box-shadow: none !important;
-                }
-            }
-
-            &__indicators {
-                padding-left: var(--givewp-spacing-10);
-
-                &:has(.searchableSelect__loading-indicator) {
-                    padding-left: 0;
                 }
             }
 
