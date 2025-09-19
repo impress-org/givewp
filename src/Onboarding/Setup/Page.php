@@ -8,7 +8,7 @@
 
 namespace Give\Onboarding\Setup;
 
-use Give\DonationForms\V2\DonationFormsAdminPage;
+use Give\Campaigns\CampaignsAdminPage;
 
 defined('ABSPATH') || exit;
 
@@ -33,7 +33,7 @@ class Page
         if (wp_verify_nonce($_GET['_wpnonce'], 'dismiss_setup_page')) {
             give_update_option('setup_page_enabled', self::DISABLED);
 
-            wp_redirect(DonationFormsAdminPage::getUrl());
+            wp_redirect(CampaignsAdminPage::getUrl());
             exit;
         }
     }
