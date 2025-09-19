@@ -593,17 +593,6 @@ class SubscriptionController extends WP_REST_Controller
                         'embeddable' => true,
                     ],
                 ];
-
-                if ($subscription->initialDonation()) {
-                    $campaign_url = rest_url(
-                        sprintf('%s/%s/%d', $this->namespace, 'campaigns', $subscription->initialDonation()->campaignId)
-                    );
-
-                    $links[CURIE::relationUrl('campaign')] = [
-                        'href' => $campaign_url,
-                        'embeddable' => true,
-                    ];
-                }
             } else {
                 $links = [];
             }

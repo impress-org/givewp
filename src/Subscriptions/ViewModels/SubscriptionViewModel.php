@@ -3,7 +3,6 @@
 namespace Give\Subscriptions\ViewModels;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
-use Give\Campaigns\Models\Campaign;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
 use Give\Subscriptions\Models\Subscription;
@@ -48,6 +47,7 @@ class SubscriptionViewModel
     }
 
     /**
+     * @unreleased added campaignId
      * @since 4.8.0
      */
     public function exports(): array
@@ -61,7 +61,7 @@ class SubscriptionViewModel
                 'lastName' => $donor ? $donor->lastName : '',
                 'gateway' => $this->getGatewayDetails(),
                 'projectedAnnualRevenue' => $this->subscription->projectedAnnualRevenue(),
-                'campaignId' => $this->getCampaignId(),
+                'campaignId' => $this->subscription->campaign ? $this->subscription->campaign->id : null,
             ]
         );
 
@@ -118,19 +118,5 @@ class SubscriptionViewModel
                 'canSync' => $this->subscription->gateway()->subscriptionModule instanceof SubscriptionTransactionsSynchronizable
             ]
         );
-    }
-
-    /**
-     * @unreleased
-     */
-    private function getCampaignId(): ?int
-    {
-        $campaign = Campaign::findByFormId($this->subscription->donationFormId);
-
-        if ($campaign) {
-            return $campaign->id;
-        }
-
-        return null;
     }
 }
