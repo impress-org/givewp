@@ -44,7 +44,7 @@ export default function SubscriptionDetailsPageOverviewTab() {
 
             <div className={styles.right}>
                 <SubscriptionAnnualProjection donations={donations} currency={subscription?.amount?.currency} subscription={subscription} />
-                <SubscriptionSummary subscription={subscription}adminUrl={adminUrl} intendedAmount={intendedAmount} isLoading={subscriptionLoading || !subscriptionsResolved} />
+                <SubscriptionSummary subscription={subscription} adminUrl={adminUrl} intendedAmount={intendedAmount} isLoading={subscriptionLoading || !subscriptionsResolved} />
             </div>
         </div>
     );
