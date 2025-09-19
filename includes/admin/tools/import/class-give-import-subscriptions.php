@@ -400,7 +400,7 @@ if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
 
                         <ul class="give-import-subscription-required-fields">
                             <li class="give-import-subscription-required-donorId" title="Please configure all required fields to start the import process.">
-                                <class="give-import-donation-required-text"><?php _e( 'Donor ID', 'give' ); ?></span>
+                                <span class="give-import-donation-required-text"><?php _e( 'Donor ID', 'give' ); ?></span>
                             </li>
                             <li class="give-import-subscription-required-donationFormId" title="Please configure all required fields to start the import process.">
                                 <span class="give-import-donation-required-text"><?php _e( 'Form ID', 'give' ); ?></span>
