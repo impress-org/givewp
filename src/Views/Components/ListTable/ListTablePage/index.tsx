@@ -172,7 +172,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
 
     useImperativeHandle(ref, () => ({
         refresh: async () => {
-            await mutate();
+           await mutate();
            statsConfig && await mutateStats();
         }
     }), [mutate, mutateStats, statsConfig]);
@@ -384,6 +384,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                             try {
                                 await modalContent.action(selectedIds);
                                 await mutate();
+                                await mutateStats();
                             } catch (error) {
                                 console.error('Bulk action error:', error);
 
