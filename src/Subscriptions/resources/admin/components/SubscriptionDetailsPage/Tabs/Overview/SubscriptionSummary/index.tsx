@@ -4,9 +4,7 @@ import {Subscription} from '@givewp/subscriptions/admin/components/types';
 import {dateI18n} from '@wordpress/date';
 import {__} from '@wordpress/i18n';
 import styles from './styles.module.scss';
-import { getEntityRecord } from '@wordpress/core-data/build-types/selectors';
-import { useEntityRecord } from '@wordpress/core-data';
-import { useForm } from '@givewp/src/DonationForms/resources/utils';
+
 
 /**
  * Calculates the end date of a subscription based on its billing parameters.
@@ -82,7 +80,8 @@ interface SummaryProps {
  * @since 4.8.0
  */
 export default function Summary({subscription, adminUrl, intendedAmount, isLoading}: SummaryProps) {
-    const formTitle = subscription?._embedded?.['givewp:form']?.[0]?.title ?? __('Donation Form', 'give');
+    const form = subscription?._embedded?.['givewp:form']?.[0];
+    const formTitle = form?.title ?? __('Donation Form', 'give');
     const endDate = calculateEndDate(subscription);
 
     const summaryItems: SummaryItem[] = [
