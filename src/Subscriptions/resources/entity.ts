@@ -8,7 +8,7 @@ dispatch(coreStore).addEntities([
         name: 'subscription',
         kind: 'givewp',
         baseURL: '/givewp/v3/subscriptions',
-        baseURLParams: {},
+        baseURLParams: {_embed: true},
         plural: 'subscriptions',
         label: __('Subscription', 'give'),
         supportsPagination: true,

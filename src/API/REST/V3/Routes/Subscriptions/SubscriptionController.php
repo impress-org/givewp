@@ -564,6 +564,16 @@ class SubscriptionController extends WP_REST_Controller
                     'subscriptionId' => $subscription->id,
                 ], $donations_url);
 
+                $form_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'forms', $item['donationFormId']));
+                $form_url = add_query_arg([
+                    'mode' => $subscription->mode->getValue(),
+                ], $form_url);
+
+                $campaign_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'campaigns', $item['campaignId']));
+                $campaign_url = add_query_arg([
+                    'mode' => $subscription->mode->getValue(),
+                ], $campaign_url);
+
                 $links = [
                     'self' => ['href' => $self_url],
                     CURIE::relationUrl('donor') => [
@@ -572,6 +582,14 @@ class SubscriptionController extends WP_REST_Controller
                     ],
                     CURIE::relationUrl('donations') => [
                         'href' => $donations_url,
+                        'embeddable' => true,
+                    ],
+                    CURIE::relationUrl('form') => [
+                        'href' => $form_url,
+                        'embeddable' => true,
+                    ],
+                    CURIE::relationUrl('campaign') => [
+                        'href' => $campaign_url,
                         'embeddable' => true,
                     ],
                 ];

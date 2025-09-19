@@ -1,33 +1,28 @@
 import {Grid, GridCard, OverviewPanel, Spinner} from '@givewp/admin/components';
 import {formatTimestamp} from '@givewp/admin/utils';
-import {
-    CampaignCard,
-    DonorCard,
-    GatewayNotice,
-} from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
+import {GatewayNotice} from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid';
 import PaymentMethodIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/PaymentMethodIcon';
 import ExternalLinkIcon from '@givewp/donations/admin/components/DonationDetailsPage/Tabs/Overview/DonationSummaryGrid/icon';
-import {Donation} from '@givewp/donations/admin/components/types';
 import {Subscription} from '@givewp/subscriptions/admin/components/types';
 import {__} from '@wordpress/i18n';
 import classnames from 'classnames';
 import {ClockIcon, HourGlassIcon} from './Icons';
-
+import DonorCard from './DonorCard';
+import CampaignCard from './CampaignCard';
 import styles from './styles.module.scss';
 
 /**
  * @since 4.8.0
  */
-type SubscriptionDetailsProps = {
+type SubscriptionSummaryGridProps = {
     subscription: Subscription;
-    donation?: Donation;
     isLoading: boolean;
 };
 
 /**
  * @since 4.8.0
  */
-export default function SubscriptionSummaryGrid({subscription, donation, isLoading}: SubscriptionDetailsProps) {
+export default function SubscriptionSummaryGrid({subscription, isLoading}: SubscriptionSummaryGridProps) {
     const isOngoing = subscription?.installments === 0;
     const badgeLabel = isOngoing ? (
         <>
@@ -41,19 +36,21 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
         </>
     );
     const renewsAt = subscription?.renewsAt;
-    const paymentMethodId = subscription?.gatewayId || donation?.gateway?.id;
-    const hasPaymentMethodDetails = subscription?.gateway?.id || donation?.gateway?.id;
-    const gatewayLabel = subscription?.gateway?.label || donation?.gateway?.label;
-    const gatewayLink = subscription?.gateway?.subscriptionUrl || donation?.gateway?.transactionUrl;
+    const paymentMethodId = subscription?.gatewayId;
+    const hasPaymentMethodDetails = subscription?.gateway?.id;
+    const gatewayLabel = subscription?.gateway?.label;
+    const gatewayLink = subscription?.gateway?.subscriptionUrl;
+    const campaign = subscription?._embedded?.['givewp:campaign'][0];
+    const donor = subscription?._embedded?.['givewp:donor'][0];
 
     return (
-        <OverviewPanel className={styles.overviewPanel}>
+           <OverviewPanel className={styles.overviewPanel}>
             <h2 id="subscription-details-grid-title" className={'sr-only'}>
                 {__('Subscription Details', 'give')}
             </h2>
             <Grid ariaLabel={__('Subscription details', 'give')}>
                 {/* Campaign Name */}
-                <CampaignCard donation={donation} />
+                <CampaignCard campaign={campaign} />
 
                 {/* Next Payment */}
                 <GridCard className={styles.card} heading={__('Next payment', 'give')} headingId="next-payment">
@@ -78,8 +75,8 @@ export default function SubscriptionSummaryGrid({subscription, donation, isLoadi
                     )}
                 </GridCard>
 
-                {/* Associated Donor */}
-                <DonorCard donation={donation} />
+                {/* Associated   */}
+                <DonorCard donor={donor} />
 
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">
