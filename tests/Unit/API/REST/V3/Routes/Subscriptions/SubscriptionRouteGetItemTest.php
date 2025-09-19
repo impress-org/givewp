@@ -26,6 +26,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
+     * @unreleased added campaignId
      * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnAllViewModelProperties()
@@ -80,6 +81,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
                 ]
             ),
             'projectedAnnualRevenue' => $subscription->projectedAnnualRevenue()->toArray(),
+            'campaignId' => $subscription->campaign ? $subscription->campaign->id : null,
         ], $data);
     }
 

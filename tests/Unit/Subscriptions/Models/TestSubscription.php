@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\Subscriptions\Models;
 
 use DateTime;
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
@@ -196,6 +197,17 @@ class TestSubscription extends TestCase
         $subscription = Subscription::factory()->createWithDonation(['donorId' => $donor->id]);
 
         $this->assertSame($donor->id, $subscription->donor->id);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testSubscriptionShouldGetCampaign()
+    {
+        $campaign = Campaign::factory()->create();
+        $subscription = Subscription::factory()->createWithDonation(['donationFormId' => $campaign->defaultFormId]);
+
+        $this->assertSame($campaign->id, $subscription->campaign->id);
     }
 
     /**

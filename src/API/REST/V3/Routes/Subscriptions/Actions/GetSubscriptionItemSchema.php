@@ -195,6 +195,10 @@ class GetSubscriptionItemSchema
                     'description' => esc_html__('Projected annual revenue for this subscription', 'give'),
                     'readonly' => true,
                 ],
+                'campaignId' => [
+                    'type' => ['integer', 'null'],
+                    'description' => esc_html__('Campaign ID', 'give'),
+                ],
             ],
         ];
     }

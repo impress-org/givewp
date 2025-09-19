@@ -47,6 +47,7 @@ class SubscriptionViewModel
     }
 
     /**
+     * @unreleased added campaignId
      * @since 4.8.0
      */
     public function exports(): array
@@ -60,6 +61,7 @@ class SubscriptionViewModel
                 'lastName' => $donor ? $donor->lastName : '',
                 'gateway' => $this->getGatewayDetails(),
                 'projectedAnnualRevenue' => $this->subscription->projectedAnnualRevenue(),
+                'campaignId' => $this->subscription->campaign ? $this->subscription->campaign->id : null,
             ]
         );
 
