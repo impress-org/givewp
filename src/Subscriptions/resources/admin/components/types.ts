@@ -77,9 +77,8 @@ export type Subscription = {
     projectedAnnualRevenue?: Money;
     _embedded?: {
         'givewp:campaign': Campaign[];
-        'givewp:donations': [
-            Donation[]
-        ]
+        // the first item in the array is the array of donations
+        'givewp:donations': [Donation[]]
         'givewp:donor': Donor[];
         'givewp:form': Form[];
     };
