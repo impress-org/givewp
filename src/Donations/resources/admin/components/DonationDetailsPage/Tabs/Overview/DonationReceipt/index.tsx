@@ -36,9 +36,9 @@ export default function DonationReceipt({ donation }: { donation: Donation }) {
           </div>
         </div>
 
-        <nav className={styles.actions} aria-label={__('Receipt actions', 'give')}>
+        {donation?.status === 'publish' && <div className={styles.actions} aria-label={__('Receipt actions', 'give')}>
           <ReceiptActions />
-        </nav>
+        </div>}
       </aside>
     </OverviewPanel>
   );
