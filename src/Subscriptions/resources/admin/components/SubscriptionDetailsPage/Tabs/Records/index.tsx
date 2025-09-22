@@ -1,17 +1,15 @@
-import { Children } from 'react';
 import Notice from '@givewp/admin/components/Notices';
 import { AdminSectionsWrapper } from '@givewp/components/AdminDetailsPage/AdminSection';
 import { __ } from '@wordpress/i18n';
 import { useFormState } from 'react-hook-form';
 import { RecordsSlot } from '../../slots';
-import { NotesIcon } from '@givewp/admin/components/PrivateNotes/Icons';
-import styles from './styles.module.scss';
+import SubscriptionDetails from './SubscriptionDetails';
 
 /**
  * @since 4.8.0
  */
 export default function SubscriptionDetailsPageRecordsTab() {
-    const { isDirty } = useFormState();
+    const {isDirty} = useFormState();
 
     return (
         <>
@@ -23,20 +21,8 @@ export default function SubscriptionDetailsPageRecordsTab() {
                 </div>
             )}
             <AdminSectionsWrapper>
-                <RecordsSlot>
-                    {(fills) => {
-                        if (!fills || Children.count(fills) === 0) {
-                            return (
-                                <div className={styles.emptyState}>
-                                    <NotesIcon />
-                                    <p className={styles.description}>{__('No records found', 'give')}</p>
-                                </div>
-                            );
-                        }
-
-                        return fills;
-                    }}
-                </RecordsSlot>
+                <SubscriptionDetails />
+                <RecordsSlot/>
             </AdminSectionsWrapper>
         </>
     );
