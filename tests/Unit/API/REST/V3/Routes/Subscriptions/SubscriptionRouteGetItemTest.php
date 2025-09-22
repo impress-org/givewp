@@ -4,6 +4,8 @@ namespace Unit\API\REST\V3\Routes\Subscriptions;
 
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\Campaigns\Models\Campaign;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\Support\ValueObjects\Money;
@@ -127,6 +129,31 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $this->assertEquals($subscription->id, $data['id']);
         $this->assertArrayHasKey('_links', $data);
         $this->assertArrayHasKey('givewp:donor', $data['_links']);
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function testGetSubscriptionShouldReturnLinksForAllRelationships()
+    {
+        $campaign = Campaign::factory()->create();
+
+        $subscription = Subscription::factory()->create([
+            'donationFormId' => $campaign->defaultFormId,
+        ]);
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $data = $this->responseToData($response, true);
+
+        $this->assertArrayHasKey('givewp:donations', $data['_links']);
+        $this->assertArrayHasKey('givewp:donor', $data['_links']);
+        $this->assertArrayHasKey('givewp:form', $data['_links']);
+        $this->assertArrayHasKey('givewp:campaign', $data['_links']);
     }
 
     /**
