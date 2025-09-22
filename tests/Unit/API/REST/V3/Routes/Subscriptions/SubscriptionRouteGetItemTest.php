@@ -48,16 +48,9 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
 
-        // Verify DateTime object structure for createdAt and renewsAt
-        $this->assertIsArray($data['createdAt']);
-        $this->assertArrayHasKey('date', $data['createdAt']);
-        $this->assertArrayHasKey('timezone', $data['createdAt']);
-        $this->assertArrayHasKey('timezone_type', $data['createdAt']);
-
-        $this->assertIsArray($data['renewsAt']);
-        $this->assertArrayHasKey('date', $data['renewsAt']);
-        $this->assertArrayHasKey('timezone', $data['renewsAt']);
-        $this->assertArrayHasKey('timezone_type', $data['renewsAt']);
+        // Verify DateTime fields are now formatted as ISO strings
+        $this->assertIsString($data['createdAt']);
+        $this->assertIsString($data['renewsAt']);
 
         $donor = $subscription->donor()->get();
 
@@ -149,7 +142,8 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $sensitiveProperties = [
             'transactionId',
@@ -183,7 +177,8 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $sensitiveProperties = [
             'transactionId',
@@ -255,7 +250,8 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(0, $data['donorId']);

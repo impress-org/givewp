@@ -28,6 +28,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.8.0
      */
     public function register_routes()
@@ -44,15 +45,14 @@ class SubscriptionNotesController extends WP_REST_Controller
                         'required' => true,
                     ],
                 ], $this->get_collection_params()),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [$this, 'create_item'],
                 'permission_callback' => [$this, 'create_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::CREATABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route(
@@ -64,22 +64,20 @@ class SubscriptionNotesController extends WP_REST_Controller
                     'callback' => [$this, 'get_item'],
                     'permission_callback' => [$this, 'get_item_permissions_check'],
                     'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::READABLE),
-                    'schema' => [$this, 'get_public_item_schema'],
                 ],
                 [
                     'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'update_item'],
                     'permission_callback' => [$this, 'update_item_permissions_check'],
                     'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::EDITABLE),
-                    'schema' => [$this, 'get_public_item_schema'],
                 ],
                 [
                     'methods' => WP_REST_Server::DELETABLE,
                     'callback' => [$this, 'delete_item'],
                     'permission_callback' => [$this, 'delete_item_permissions_check'],
                     'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::DELETABLE),
-                    'schema' => [$this, 'get_public_item_schema'],
                 ],
+                'schema' => [$this, 'get_public_item_schema'],
             ]
         );
     }
@@ -96,7 +94,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     public function get_items($request)
     {
         $subscription = Subscription::find($request->get_param('subscriptionId'));
-        if ( ! $subscription) {
+        if (!$subscription) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
@@ -158,7 +156,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     public function create_item($request)
     {
         $subscription = Subscription::find($request->get_param('subscriptionId'));
-        if ( ! $subscription) {
+        if (!$subscription) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
@@ -192,12 +190,12 @@ class SubscriptionNotesController extends WP_REST_Controller
     public function get_item($request)
     {
         $subscription = Subscription::find($request->get_param('subscriptionId'));
-        if ( ! $subscription) {
+        if (!$subscription) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
         $note = SubscriptionNote::find($request->get_param('id'));
-        if ( ! $note || $note->subscriptionId !== $subscription->id) {
+        if (!$note || $note->subscriptionId !== $subscription->id) {
             return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
         }
 
@@ -220,12 +218,12 @@ class SubscriptionNotesController extends WP_REST_Controller
     public function update_item($request)
     {
         $subscription = Subscription::find($request->get_param('subscriptionId'));
-        if ( ! $subscription) {
+        if (!$subscription) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
         $note = SubscriptionNote::find($request->get_param('id'));
-        if ( ! $note || $note->subscriptionId !== $subscription->id) {
+        if (!$note || $note->subscriptionId !== $subscription->id) {
             return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
         }
 
@@ -266,12 +264,12 @@ class SubscriptionNotesController extends WP_REST_Controller
     public function delete_item($request)
     {
         $subscription = Subscription::find($request->get_param('subscriptionId'));
-        if ( ! $subscription) {
+        if (!$subscription) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
         $note = SubscriptionNote::find($request->get_param('id'));
-        if ( ! $note || $note->subscriptionId !== $subscription->id) {
+        if (!$note || $note->subscriptionId !== $subscription->id) {
             return new WP_Error('note_not_found', __('Note not found', 'give'), ['status' => 404]);
         }
 
@@ -380,7 +378,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         $schema = [
-            'schema' => 'http://json-schema.org/draft-07/schema#',
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/subscription-note',
             'type' => 'object',
             'properties' => [

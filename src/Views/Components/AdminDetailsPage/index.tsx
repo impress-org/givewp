@@ -1,34 +1,31 @@
 /**
  * External Dependencies
  */
-import {useEffect, useState, useRef} from 'react';
-import {JSONSchemaType} from 'ajv';
-import {ajvResolver} from '@hookform/resolvers/ajv';
+import {useEffect, useRef, useState} from 'react';
 import {FormProvider, SubmitHandler, useForm, useFormContext, useFormState} from 'react-hook-form';
+import {ajvResolver} from '@givewp/admin/ajv';
 
-/**
- * WordPress Dependencies
- */
-import {__} from '@wordpress/i18n';
+import {SlotFillProvider} from '@wordpress/components';
 import {useDispatch} from '@wordpress/data';
+import {__} from '@wordpress/i18n';
+import {PluginArea} from '@wordpress/plugins';
 import apiFetch from '@wordpress/api-fetch';
-import { SlotFillProvider } from '@wordpress/components';
-import { PluginArea } from '@wordpress/plugins';
+import {JSONSchemaType} from 'ajv';
 
 /**
  * Internal Dependencies
  */
 import {Spinner as GiveSpinner} from '@givewp/components';
-import TabsRouter from './Tabs/Router';
-import TabList from './Tabs/TabList';
+import styles from './AdminDetailsPage.module.scss';
+import AdminSection, {AdminSectionField} from './AdminSection';
+import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
+import ErrorBoundary from './ErrorBoundary';
 import {BreadcrumbSeparatorIcon, DotsIcons} from './Icons';
 import NotificationPlaceholder from './Notifications';
-import {AdminDetailsPageProps} from './types';
-import styles from './AdminDetailsPage.module.scss';
-import ErrorBoundary from './ErrorBoundary';
+import TabsRouter from './Tabs/Router';
+import TabList from './Tabs/TabList';
 import TabPanels from './Tabs/TabPanels';
-import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
-import AdminSection, { AdminSectionField, AdminSectionsWrapper } from './AdminSection';
+import {AdminDetailsPageProps} from './types';
 
 import './store';
 
@@ -75,7 +72,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                 resolver: ajvResolver(schema),
             });
         });
-    }, [objectId]);
+    }, [objectId, objectTypePlural]);
 
     const {record, hasResolved, save, edit} = useObjectEntityRecord(objectId);
 
@@ -127,13 +124,11 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
 
         if (shouldSave) {
             setIsSaving(true);
-
             edit(data);
 
             try {
                 // @ts-ignore
                 const response: T = await save();
-
                 setIsSaving(false);
                 reset(response);
 
@@ -142,7 +137,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                     content: __(`${objectType.charAt(0).toUpperCase() + objectType.slice(1)} updated`, 'give'),
                 });
             } catch (err) {
-                console.error(err);
+                console.error('🔴 Save failed with error:', err);
                 setIsSaving(false);
 
                 dispatch.addSnackbarNotice({
@@ -174,7 +169,9 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                             <TabsRouter tabDefinitions={tabDefinitions}>
                                 <header className={styles.pageHeader}>
                                     <div className={styles.breadcrumb}>
-                                        <a href={breadcrumbUrl}>{objectTypePlural.charAt(0).toUpperCase() + objectTypePlural.slice(1)}</a>
+                                        <a href={breadcrumbUrl}>
+                                            {objectTypePlural.charAt(0).toUpperCase() + objectTypePlural.slice(1)}
+                                        </a>
                                         <BreadcrumbSeparatorIcon />
                                         <span>{breadcrumbTitle || record?.name}</span>
                                     </div>
@@ -252,6 +249,6 @@ const exposeAdminComponentsAndHooks = (): void => {
         hooks: {
             useFormContext,
             useFormState,
-        }
+        },
     });
-}
+};

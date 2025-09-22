@@ -1,22 +1,23 @@
 /**
  * External Dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { useState } from 'react';
+import {__} from '@wordpress/i18n';
+import {useState} from 'react';
 import {useFormContext} from 'react-hook-form';
 
 /**
  * Internal Dependencies
  */
-import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
-import { getDonorOptionsWindowData } from '@givewp/donors/utils';
-import Upload from '../../../Inputs/Upload';
+import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
+import {getDonorOptionsWindowData} from '@givewp/donors/utils';
 import PhoneInput from '../../../Inputs/Phone';
+import Upload from '../../../Inputs/Upload';
 import styles from '../../DonorDetailsPage.module.scss';
 
 const {nameTitlePrefixes, intlTelInputSettings} = getDonorOptionsWindowData();
 
 /**
+ * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.4.0
  */
 export default function DonorPersonalDetails() {
@@ -50,9 +51,7 @@ export default function DonorPersonalDetails() {
             title={__('Personal Details', 'give')}
             description={__('This includes profile photo, name, phone, etc.', 'give')}
         >
-            <AdminSectionField
-                error={errors.avatar ? `${errors.avatar.message}` : undefined}
-            >
+            <AdminSectionField error={errors.avatar ? `${errors.avatar.message}` : undefined}>
                 <Upload
                     id="givewp-donor-upload-avatar"
                     label={__('Photo', 'give')}
@@ -73,10 +72,16 @@ export default function DonorPersonalDetails() {
                 error={errors.title ? `${errors.title.message}` : undefined}
             >
                 <div className={styles.sectionFieldInputWrapper}>
-                    <select {...register('prefix')} className={styles.prefixSelect} aria-label={__('Title prefix', 'give')}>
+                    <select
+                        {...register('prefix')}
+                        className={styles.prefixSelect}
+                        aria-label={__('Title prefix', 'give')}
+                    >
                         <option value=""></option>
                         {nameTitlePrefixes.map((prefix) => (
-                            <option key={prefix} value={prefix}>{prefix}</option>
+                            <option key={prefix} value={prefix}>
+                                {prefix}
+                            </option>
                         ))}
                     </select>
                     <input {...register('firstName')} aria-label={__('First name', 'give')} />
@@ -96,7 +101,10 @@ export default function DonorPersonalDetails() {
                 />
             </AdminSectionField>
 
-            <AdminSectionField subtitle={__('Company name', 'give')}>
+            <AdminSectionField
+                subtitle={__('Company name', 'give')}
+                error={errors.company ? `${errors.company.message}` : undefined}
+            >
                 <input {...register('company')} aria-label={__('Company name', 'give')} />
             </AdminSectionField>
         </AdminSection>

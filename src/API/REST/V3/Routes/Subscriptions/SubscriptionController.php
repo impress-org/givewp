@@ -14,6 +14,7 @@ use Give\API\REST\V3\Routes\Subscriptions\Permissions\SubscriptionPermissions;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\API\REST\V3\Support\CURIE;
 use Give\API\REST\V3\Support\Headers;
+use Give\API\REST\V3\Support\Item;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\SubscriptionQuery;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
@@ -52,24 +53,23 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.8.0
      */
     public function register_routes()
     {
-        register_rest_route($this->namespace, '/'.$this->rest_base, [
+        register_rest_route($this->namespace, '/' . $this->rest_base, [
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => array_merge($this->get_collection_params(), give(GetSubscriptionSharedParamsForGetMethods::class)()),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [$this, 'create_item'],
                 'permission_callback' => [$this, 'create_item_permissions_check'],
                 'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::CREATABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
@@ -90,11 +90,11 @@ class SubscriptionController extends WP_REST_Controller
                         'default' => false,
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
-        register_rest_route($this->namespace, '/'.$this->rest_base.'/(?P<id>[\d]+)', [
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
@@ -117,14 +117,12 @@ class SubscriptionController extends WP_REST_Controller
                         'default' => false,
                     ],
                 ], give(GetSubscriptionSharedParamsForGetMethods::class)()),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
@@ -142,8 +140,8 @@ class SubscriptionController extends WP_REST_Controller
                         'default' => false,
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/cancel', [
@@ -204,7 +202,7 @@ class SubscriptionController extends WP_REST_Controller
             $query->whereDonorId($donorId);
         }
 
-        if (! in_array('any', (array) $status, true)) {
+        if (!in_array('any', (array) $status, true)) {
             $query->whereStatus((array)$status);
         }
 
@@ -218,7 +216,10 @@ class SubscriptionController extends WP_REST_Controller
         $subscriptions = $query->getAll() ?? [];
 
         $subscriptions = array_map(function ($subscription) use ($donorAnonymousMode, $includeSensitiveData, $request) {
-            $item = (new SubscriptionViewModel($subscription))->anonymousMode($donorAnonymousMode)->includeSensitiveData($includeSensitiveData)->exports();
+            $item = (new SubscriptionViewModel($subscription))
+                ->anonymousMode($donorAnonymousMode)
+                ->includeSensitiveData($includeSensitiveData)
+                ->exports();
 
             return $this->prepare_response_for_collection(
                 $this->prepare_item_for_response($item, $request)
@@ -247,14 +248,17 @@ class SubscriptionController extends WP_REST_Controller
     {
         $subscription = Subscription::find($request->get_param('id'));
 
-        if (! $subscription) {
+        if (!$subscription) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
-        $item = (new SubscriptionViewModel($subscription))->anonymousMode($donorAnonymousMode)->includeSensitiveData($includeSensitiveData)->exports();
+        $item = (new SubscriptionViewModel($subscription))
+            ->anonymousMode($donorAnonymousMode)
+            ->includeSensitiveData($includeSensitiveData)
+            ->exports();
 
         $response = $this->prepare_item_for_response($item, $request);
 
@@ -295,7 +299,9 @@ class SubscriptionController extends WP_REST_Controller
             ], 500);
         }
 
-        $item = (new SubscriptionViewModel($subscription))->includeSensitiveData(true)->exports();
+        $item = (new SubscriptionViewModel($subscription))
+            ->includeSensitiveData(true)
+            ->exports();
 
         $response = $this->prepare_item_for_response($item, $request);
         $response->set_status(201);
@@ -318,7 +324,7 @@ class SubscriptionController extends WP_REST_Controller
     {
         $subscription = Subscription::find($request->get_param('id'));
 
-        if (! $subscription) {
+        if (!$subscription) {
             return new WP_REST_Response(__('Subscription not found', 'give'), 404);
         }
 
@@ -331,7 +337,7 @@ class SubscriptionController extends WP_REST_Controller
         ];
 
         foreach ($request->get_params() as $key => $value) {
-            if (! in_array($key, $nonEditableFields, true)) {
+            if (!in_array($key, $nonEditableFields, true)) {
                 if (in_array($key, $subscription::propertyKeys(), true)) {
                     try {
                         $processedValue = SubscriptionFields::processValue($key, $value);
@@ -378,7 +384,7 @@ class SubscriptionController extends WP_REST_Controller
         $subscription = Subscription::find($request->get_param('id'));
         $force = $request->get_param('force');
 
-        if (! $subscription) {
+        if (!$subscription) {
             return new WP_REST_Response(['message' => __('Subscription not found', 'give')], 404);
         }
 
@@ -387,13 +393,13 @@ class SubscriptionController extends WP_REST_Controller
         if ($force) { // Permanently delete the subscription
             $deleted = $subscription->delete();
 
-            if (! $deleted) {
+            if (!$deleted) {
                 return new WP_REST_Response(['message' => __('Failed to delete subscription', 'give')], 500);
             }
         } else { // Move the subscription to trash (soft delete)
             $trashed = $subscription->trash();
 
-            if (! $trashed) {
+            if (!$trashed) {
                 return new WP_REST_Response(['message' => __('Failed to trash subscription', 'give')], 500);
             }
         }
@@ -422,7 +428,7 @@ class SubscriptionController extends WP_REST_Controller
         foreach ($ids as $id) {
             $subscription = Subscription::find($id);
 
-            if (! $subscription) {
+            if (!$subscription) {
                 $errors[] = ['id' => $id, 'message' => __('Subscription not found', 'give')];
 
                 continue;
@@ -465,7 +471,7 @@ class SubscriptionController extends WP_REST_Controller
     {
         $subscription = Subscription::find($request->get_param('id'));
 
-        if (! $subscription) {
+        if (!$subscription) {
             return new WP_REST_Response(__('Subscription not found', 'give'), 404);
         }
 
@@ -535,7 +541,7 @@ class SubscriptionController extends WP_REST_Controller
      * @since 4.8.0
      *
      * @param mixed           $item    WordPress representation of the item.
-	 * @param WP_REST_Request $request Request object.
+     * @param WP_REST_Request $request Request object.
      *
      * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
      */
@@ -557,7 +563,6 @@ class SubscriptionController extends WP_REST_Controller
                     'mode' => $subscription->mode->getValue(),
                     'subscriptionId' => $subscription->id,
                 ], $donations_url);
-
 
                 $links = [
                     'self' => ['href' => $self_url],
@@ -585,8 +590,8 @@ class SubscriptionController extends WP_REST_Controller
                 $links = [];
             }
 
-            $response = new WP_REST_Response($item);
-            if ( ! empty($links)) {
+            $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt', 'renewsAt']));
+            if (!empty($links)) {
                 $response->add_links($links);
             }
 
@@ -690,7 +695,7 @@ class SubscriptionController extends WP_REST_Controller
      */
     public function get_item_schema(): array
     {
-        $schema =  give(GetSubscriptionItemSchema::class)();
+        $schema = give(GetSubscriptionItemSchema::class)();
         return $this->add_additional_fields_schema($schema);
     }
 }

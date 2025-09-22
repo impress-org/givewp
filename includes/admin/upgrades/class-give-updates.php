@@ -163,7 +163,7 @@ class Give_Updates {
 	/**
 	 * Register plugin add-on updates.
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public
 	 */
@@ -203,7 +203,7 @@ class Give_Updates {
 	/**
 	 * Rename `Donations` menu title if updates exists
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public
 	 */
@@ -238,7 +238,7 @@ class Give_Updates {
 	/**
 	 * Register updates menu
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public
 	 */
@@ -289,7 +289,7 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 */
@@ -312,7 +312,7 @@ class Give_Updates {
 	/**
 	 * Pause db upgrade
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
 	 *
@@ -377,7 +377,7 @@ class Give_Updates {
 	/**
 	 * Restart db upgrade
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.1
 	 * @access public
 	 *
@@ -421,7 +421,7 @@ class Give_Updates {
 	/**
 	 * Health check for updates.
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 *
@@ -585,7 +585,7 @@ class Give_Updates {
 	/**
 	 * Show update related notices
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 */
@@ -751,7 +751,7 @@ class Give_Updates {
 	/**
 	 * Delete resume updates
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public
 	 */
@@ -767,7 +767,7 @@ class Give_Updates {
 	/**
 	 * Initialize updates
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 *
@@ -800,7 +800,7 @@ class Give_Updates {
 	/**
 	 * This function handle ajax query for dn update status.
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 *

@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\Campaigns\Models\Campaign;
+use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\Support\ValueObjects\Money;
@@ -15,10 +16,9 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
-use Give\Donors\Models\Donor;
 
 /**
  * @since 4.8.0
@@ -56,16 +56,9 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
 
-        // Verify DateTime object structure for createdAt and renewsAt
-        $this->assertIsArray($data[0]['createdAt']);
-        $this->assertArrayHasKey('date', $data[0]['createdAt']);
-        $this->assertArrayHasKey('timezone', $data[0]['createdAt']);
-        $this->assertArrayHasKey('timezone_type', $data[0]['createdAt']);
-
-        $this->assertIsArray($data[0]['renewsAt']);
-        $this->assertArrayHasKey('date', $data[0]['renewsAt']);
-        $this->assertArrayHasKey('timezone', $data[0]['renewsAt']);
-        $this->assertArrayHasKey('timezone_type', $data[0]['renewsAt']);
+        // Verify DateTime fields are now formatted as ISO strings
+        $this->assertIsString($data[0]['createdAt']);
+        $this->assertIsString($data[0]['renewsAt']);
 
         $donor = $subscription->donor()->get();
 
@@ -95,7 +88,6 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
                 ]
             ),
             'projectedAnnualRevenue' => $subscription->projectedAnnualRevenue()->toArray(),
-
         ], $data[0]);
     }
 
@@ -138,7 +130,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $sensitiveProperties = [
             'transactionId',
@@ -174,7 +167,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $sensitiveProperties = [
             'transactionId',
@@ -211,7 +205,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $this->assertEquals(403, $status);
     }
 
-        /**
+    /**
      * @since 4.8.0
      *
      * @throws Exception
@@ -228,7 +222,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
@@ -259,7 +254,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
@@ -319,7 +315,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
@@ -363,7 +360,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
         $headers = $response->get_headers();
 
         $this->assertEquals(200, $status);
@@ -382,7 +380,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
         $headers = $response->get_headers();
 
         $this->assertEquals(200, $status);
@@ -417,7 +416,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
@@ -447,7 +447,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
@@ -477,7 +478,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
@@ -513,7 +515,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(1, count($data));
@@ -554,7 +557,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
@@ -564,6 +568,16 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
             $expected1 = $subscription1->donor()->get()->{$sortableColumn};
             $expected2 = $subscription2->donor()->get()->{$sortableColumn};
             $expected3 = $subscription3->donor()->get()->{$sortableColumn};
+        } elseif (in_array($sortableColumn, ['createdAt', 'renewsAt'], true)) {
+            // For date fields, we need to compare the formatted ISO strings (without timezone)
+            $expected1 = $subscription1->{$sortableColumn} ? $subscription1->{$sortableColumn}->format('Y-m-d\TH:i:s') : null;
+            $expected2 = $subscription2->{$sortableColumn} ? $subscription2->{$sortableColumn}->format('Y-m-d\TH:i:s') : null;
+            $expected3 = $subscription3->{$sortableColumn} ? $subscription3->{$sortableColumn}->format('Y-m-d\TH:i:s') : null;
+        } elseif (in_array($sortableColumn, ['amount', 'feeAmountRecovered'], true)) {
+            // For Money fields, we need to compare the array format
+            $expected1 = $subscription1->{$sortableColumn}->toArray();
+            $expected2 = $subscription2->{$sortableColumn}->toArray();
+            $expected3 = $subscription3->{$sortableColumn}->toArray();
         } else {
             $expected1 = $subscription1->{$sortableColumn};
             $expected2 = $subscription2->{$sortableColumn};
@@ -590,7 +604,8 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
-        $data = $response->get_data();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
@@ -600,6 +615,16 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
             $expected3 = $subscription3->donor()->get()->{$sortableColumn};
             $expected2 = $subscription2->donor()->get()->{$sortableColumn};
             $expected1 = $subscription1->donor()->get()->{$sortableColumn};
+        } elseif (in_array($sortableColumn, ['createdAt', 'renewsAt'], true)) {
+            // For date fields, we need to compare the formatted ISO strings (without timezone)
+            $expected3 = $subscription3->{$sortableColumn} ? $subscription3->{$sortableColumn}->format('Y-m-d\TH:i:s') : null;
+            $expected2 = $subscription2->{$sortableColumn} ? $subscription2->{$sortableColumn}->format('Y-m-d\TH:i:s') : null;
+            $expected1 = $subscription1->{$sortableColumn} ? $subscription1->{$sortableColumn}->format('Y-m-d\TH:i:s') : null;
+        } elseif (in_array($sortableColumn, ['amount', 'feeAmountRecovered'], true)) {
+            // For Money fields, we need to compare the array format
+            $expected3 = $subscription3->{$sortableColumn}->toArray();
+            $expected2 = $subscription2->{$sortableColumn}->toArray();
+            $expected1 = $subscription1->{$sortableColumn}->toArray();
         } else {
             $expected3 = $subscription3->{$sortableColumn};
             $expected2 = $subscription2->{$sortableColumn};

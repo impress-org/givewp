@@ -382,7 +382,7 @@ class LegacyPaymentGatewayAdapter
               <input type="checkbox" id="give-gateway-opt-refund" name="give_gateway_opt_refund" value="1" />
               <label for="give-gateway-opt-refund">
                   <?php
-                    esc_html_e(sprintf('Refund the donation at %s?', $registeredGateway->getName()), 'give');
+                    echo sprintf(esc_html__('Refund the donation at %s?', 'give'), esc_html($registeredGateway->getName()));
                     ?>
               </label>
             </p>

@@ -2,6 +2,7 @@
 
 namespace Give\Framework\Support\Facades;
 
+use Give\Framework\Support\Currencies\GiveCurrencies;
 use Give\Log\Log;
 use Money\Converter;
 use Money\Currencies;
@@ -126,12 +127,14 @@ class CurrencyFacade
 
     /**
      * Retrieves a list for all supported currencies.
-     *
+     * 
+     * @unreleased Updated to use GiveCurrencies as the primary source of currencies
      * @since 2.27.3
      */
     private function getCurrenciesList(): Currencies
     {
         return new AggregateCurrencies([
+            new GiveCurrencies(),
             new ISOCurrencies(),
             new BitcoinCurrencies(),
         ]);

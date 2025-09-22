@@ -223,7 +223,7 @@ class Give_DB_Sessions extends Give_DB {
 	 * Replace table data
 	 * Note: only for internal use
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.2.0
 	 * @access public
 	 *

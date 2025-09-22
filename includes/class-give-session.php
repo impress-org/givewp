@@ -253,7 +253,7 @@ class Give_Session {
 	/**
 	 * Load session cookie by ajax
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since 2.2.6
 	 * @access private
 	 *
@@ -577,7 +577,7 @@ class Give_Session {
 	 * When a user is logged out, ensure they have a unique nonce by using the donor/session ID.
 	 * Note: for internal logic only.
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.2.0
 	 * @access public
 	 *
@@ -594,7 +594,7 @@ class Give_Session {
 	 * Cleanup session data from the database and clear caches.
 	 * Note: for internal logic only.
 	 *
-     * @unreleased rename function - PHP 8 compatibility
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.2.0
 	 * @access public
 	 */

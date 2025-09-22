@@ -433,6 +433,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.8.1 Remove campaignId from the attributes array since it is auto-generated based on the subscription's form.
      * @since 4.8.0 Add campaignId support.
      * @since 3.20.0
      * @throws Exception
@@ -440,11 +441,6 @@ class SubscriptionRepository
    public function createRenewal(Subscription $subscription, array $attributes = []): Donation
    {
        $initialDonation = $subscription->initialDonation();
-       $campaignId = $initialDonation->campaignId;
-
-        if (is_null($campaignId) && $campaign = give()->campaigns->getByFormId($subscription->donationFormId)) {
-            $campaignId = $campaign->id;
-        }
 
         $donation = Donation::create(
             array_merge([
@@ -470,7 +466,6 @@ class SubscriptionRepository
                 'formTitle' => $initialDonation->formTitle,
                 'mode' => $subscription->mode->isLive() ? DonationMode::LIVE() : DonationMode::TEST(),
                 'donorIp' => $initialDonation->donorIp,
-                'campaignId' => $campaignId,
             ], $attributes)
         );
 

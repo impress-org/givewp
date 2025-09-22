@@ -47,6 +47,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.6.0
      */
     public function register_routes()
@@ -58,11 +59,13 @@ class DonationController extends WP_REST_Controller
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => [
                     '_embed' => [
-                        'description' => __('Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:donor" when we wish to embed only a specific one.',
-                            'give'),
+                        'description' => __(
+                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:donor" when we wish to embed only a specific one.',
+                            'give'
+                        ),
                         'type' => [
                             'string',
-                            'boolean'
+                            'boolean',
                         ],
                         'default' => false,
                     ],
@@ -84,14 +87,12 @@ class DonationController extends WP_REST_Controller
                         ],
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
@@ -108,8 +109,8 @@ class DonationController extends WP_REST_Controller
                         'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base, [
@@ -118,14 +119,12 @@ class DonationController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'permissionsCheck'],
                 'args' => $this->get_collection_params(),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [$this, 'create_item'],
                 'permission_callback' => [$this, 'create_item_permissions_check'],
                 'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::CREATABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
@@ -146,8 +145,8 @@ class DonationController extends WP_REST_Controller
                         'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)/refund', [
@@ -161,8 +160,8 @@ class DonationController extends WP_REST_Controller
                         'required' => true,
                     ],
                 ],
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
     }
 
@@ -204,7 +203,7 @@ class DonationController extends WP_REST_Controller
         $query->where('give_donationmeta_attach_meta_mode.meta_value', $mode);
 
         // Filter by status if not 'any'
-        if ( ! in_array('any', (array)$status, true)) {
+        if (!in_array('any', (array)$status, true)) {
             $query->whereIn('post_status', (array)$status);
         }
 
@@ -270,7 +269,7 @@ class DonationController extends WP_REST_Controller
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
 
-        if ( ! $donation || ($donation->anonymous && $donationAnonymousMode->isExcluded())) {
+        if (!$donation || ($donation->anonymous && $donationAnonymousMode->isExcluded())) {
             return new WP_Error('donation_not_found', __('Donation not found', 'give'), ['status' => 404]);
         }
 
@@ -341,7 +340,6 @@ class DonationController extends WP_REST_Controller
             'type',
             'mode',
             'gatewayTransactionId',
-            'campaignId'
         ];
 
         foreach ($request->get_params() as $key => $value) {
@@ -399,7 +397,7 @@ class DonationController extends WP_REST_Controller
 
         try {
             /** @var PaymentGatewayRefundable $gateway */
-            $command =  $gateway->refundDonation($donation);
+            $command = $gateway->refundDonation($donation);
 
             if ($command instanceof PaymentRefunded) {
                 $handler = new PaymentRefundedHandler($command);
@@ -440,7 +438,6 @@ class DonationController extends WP_REST_Controller
             if (!$deleted) {
                 return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
             }
-
         } else {
             // Move the donation to trash (soft delete)
             $trashed = $donation->trash();
@@ -478,21 +475,21 @@ class DonationController extends WP_REST_Controller
                 ->anonymousMode(new DonationAnonymousMode('include'))
                 ->exports();
 
-                if ($force) {
-                    if ($donation->delete()) {
-                        $deleted[] = ['id' => $id, 'previous' => $item];
-                    } else {
-                        $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
-                    }
+            if ($force) {
+                if ($donation->delete()) {
+                    $deleted[] = ['id' => $id, 'previous' => $item];
                 } else {
-                    $trashed = $donation->trash();
-
-                    if ($trashed) {
-                        $deleted[] = ['id' => $id, 'previous' => $item];
-                    } else {
-                        $errors[] = ['id' => $id, 'message' => __('Failed to trash donation', 'give')];
-                    }
+                    $errors[] = ['id' => $id, 'message' => __('Failed to delete donation', 'give')];
                 }
+            } else {
+                $trashed = $donation->trash();
+
+                if ($trashed) {
+                    $deleted[] = ['id' => $id, 'previous' => $item];
+                } else {
+                    $errors[] = ['id' => $id, 'message' => __('Failed to trash donation', 'give')];
+                }
+            }
         }
 
         return new WP_REST_Response([
@@ -829,6 +826,7 @@ class DonationController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         $schema = [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donation',
             'type' => 'object',
             'properties' => [
@@ -837,7 +835,6 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Donation ID', 'give'),
                     'readonly' => true,
                 ],
-
 
                 'donorId' => [
                     'type' => 'integer',
@@ -856,7 +853,7 @@ class DonationController extends WP_REST_Controller
                 'honorific' => [
                     'type' => ['string', 'null'],
                     'description' => esc_html__('Donor honorific/prefix', 'give'),
-                    'enum' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
+                    'enum' => $this->get_honorific_prefixes(),
                 ],
                 'email' => [
                     'type' => 'string',
@@ -1102,5 +1099,22 @@ class DonationController extends WP_REST_Controller
         ];
 
         return $this->add_additional_fields_schema($schema);
+    }
+
+    /**
+     * Gets all available honorific prefixes.
+     *
+     * Fetches the user-configured honorific prefixes from settings and merges them
+     * with a hardcoded 'anonymous' prefix. The 'anonymous' prefix is required
+     * when requests with anonymousDonations=redact are present.
+     *
+     * @return array<string, string> An associative array of honorific prefixes.
+     */
+    private function get_honorific_prefixes(): array {
+        $prefixes = (array) give_get_option( 'title_prefixes', array_values( give_get_default_title_prefixes() ) );
+
+        return array_merge( $prefixes, [
+            'anonymous' => __( 'anonymous', 'give' ),
+        ] );
     }
 }

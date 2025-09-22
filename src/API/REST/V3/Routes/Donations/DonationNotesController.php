@@ -28,6 +28,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.6.0
      */
     public function register_routes()
@@ -43,16 +44,15 @@ class DonationNotesController extends WP_REST_Controller
                         'type' => 'integer',
                         'required' => true,
                     ]
-                ], $this->get_collection_params()) ,
-                'schema' => [$this, 'get_public_item_schema'],
+                ], $this->get_collection_params()),
             ],
             [
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [$this, 'create_item'],
                 'permission_callback' => [$this, 'create_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::CREATABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<donationId>[\d]+)/notes/(?P<id>[\d]+)', [
@@ -61,22 +61,20 @@ class DonationNotesController extends WP_REST_Controller
                 'callback' => [$this, 'get_item'],
                 'permission_callback' => [$this, 'get_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::READABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::DELETABLE,
                 'callback' => [$this, 'delete_item'],
                 'permission_callback' => [$this, 'delete_item_permissions_check'],
                 'args' => $this->get_endpoint_args_for_item_schema(WP_REST_Server::DELETABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
     }
 
@@ -363,6 +361,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Get the donation note schema, conforming to JSON Schema.
      *
+     * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donation-note and add custom fields schema
      * @since 4.6.0
      *
@@ -371,7 +370,7 @@ class DonationNotesController extends WP_REST_Controller
     public function get_item_schema(): array
     {
         $schema = [
-            'schema' => 'http://json-schema.org/draft-07/schema#',
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donation-note',
             'type' => 'object',
             'properties' => [

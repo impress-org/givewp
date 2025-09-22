@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get formatted address
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param array $address

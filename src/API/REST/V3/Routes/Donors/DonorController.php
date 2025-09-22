@@ -34,6 +34,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.0.0
      */
     public function register_routes()
@@ -44,8 +45,8 @@ class DonorController extends WP_REST_Controller
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
 
         register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
@@ -88,15 +89,14 @@ class DonorController extends WP_REST_Controller
                         'default' => 0,
                     ],
                 ], $this->getSharedParams()),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => [$this, 'update_item_permissions_check'],
                 'args' => rest_get_endpoint_args_for_schema($this->get_public_item_schema(), WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'get_public_item_schema'],
             ],
+            'schema' => [$this, 'get_public_item_schema'],
         ]);
     }
 
@@ -197,7 +197,7 @@ class DonorController extends WP_REST_Controller
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
-        if (! $donor || ($donor->isAnonymous() && $donorAnonymousMode->isExcluded())) {
+        if (!$donor || ($donor->isAnonymous() && $donorAnonymousMode->isExcluded())) {
             return new WP_Error('donor_not_found', __('Donor not found', 'give'), ['status' => 404]);
         }
 
@@ -340,12 +340,14 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor and add custom fields schema
      * @since 4.4.0
      */
     public function get_item_schema(): array
     {
         $schema = [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donor',
             'type' => 'object',
             'properties' => [
@@ -553,7 +555,7 @@ class DonorController extends WP_REST_Controller
         $isAdmin = current_user_can('manage_options');
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if (! $isAdmin && $includeSensitiveData) {
+        if (!$isAdmin && $includeSensitiveData) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to include sensitive data.', 'give'),
@@ -563,7 +565,7 @@ class DonorController extends WP_REST_Controller
 
         if ($request->get_param('anonymousDonors') !== null) {
             $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-            if (! $isAdmin && $donorAnonymousMode->isIncluded()) {
+            if (!$isAdmin && $donorAnonymousMode->isIncluded()) {
                 return new WP_Error(
                     'rest_forbidden',
                     esc_html__('You do not have permission to include anonymous donors.', 'give'),

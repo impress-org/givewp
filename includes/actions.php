@@ -213,7 +213,7 @@ add_action( 'give_complete_donation', '_give_save_donor_billing_address', 9999 )
 /**
  * Verify addon dependency before addon update
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 4.1.0 add bailout for GiveWP to protect it from licensing issues
  * @since 2.1.4
  *
@@ -276,7 +276,7 @@ add_filter( 'upgrader_pre_install', 'give_verify_addon_dependency_before_update'
 /**
  * Function to add suppress_filters param if WPML add-on is activated.
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.4
  *
  * @param array WP query argument for Total Goal.
@@ -292,7 +292,7 @@ function give_wpml_total_goal_shortcode_agrs( $args ) {
 /**
  * Function to remove WPML post where filter in goal total amount shortcode.
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.4
  * @global SitePress $sitepress
  */
@@ -305,7 +305,7 @@ function give_remove_wpml_parse_query_filter() {
 /**
  * Function to add WPML post where filter in goal total amount shortcode.
  *
- * @unreleased rename function - PHP 8 compatibility
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.4
  * @global SitePress $sitepress
  */
