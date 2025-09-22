@@ -42,7 +42,7 @@
         --statusOptionColor: var(--givewp-green-500);
     }
 
-    &--failed,
+    &--failing,
     &--cancelled,
     &--revoked {
         --statusOptionColor: var(--givewp-red-500);

@@ -10,8 +10,9 @@ import styles from "./styles.module.scss";
  */
 export default function SubscriptionDetails() {
     const {errors} = useFormState();
-    const {register} = useFormContext();
+    const {register, watch} = useFormContext();
     const {subscriptionStatuses} = getSubscriptionOptionsWindowData();
+    const status = watch('status');
 
     return (
         <AdminSection
