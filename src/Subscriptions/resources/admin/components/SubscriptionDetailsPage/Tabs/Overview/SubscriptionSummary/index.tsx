@@ -97,7 +97,7 @@ export default function Summary({subscription, adminUrl, intendedAmount, isLoadi
         },
         {
             label: __('Donation form', 'give'),
-            value: (
+            value: subscription?.donationFormId ? (
                 <a
                     className={styles.link}
                     href={`${adminUrl}edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${subscription?.donationFormId}`}
@@ -106,7 +106,7 @@ export default function Summary({subscription, adminUrl, intendedAmount, isLoadi
                 >
                     {formTitle}
                 </a>
-            ),
+            ) : '',
         },
         {
             label: __('Renewal', 'give'),
