@@ -3,6 +3,7 @@
 namespace Give\Donations\Endpoints;
 
 use Exception;
+use Give\Donations\Models\Donation;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -16,6 +17,8 @@ class DonationActions extends Endpoint
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Add force parameter to delete action
      */
     public function registerRoute()
     {
@@ -37,6 +40,11 @@ class DonationActions extends Endpoint
                             'setStatus',
                             'resendEmailReceipt',
                         ],
+                    ],
+                    'force' => [
+                        'type' => 'boolean',
+                        'default' => false,
+                        'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                     'ids' => [
                         'type' => 'string',
@@ -78,7 +86,7 @@ class DonationActions extends Endpoint
      */
     public function permissionsCheck()
     {
-        if ( ! current_user_can('edit_give_payments')) {
+        if (!current_user_can('edit_give_payments')) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You don\'t have permission to edit Donations', 'give'),
@@ -90,6 +98,7 @@ class DonationActions extends Endpoint
     }
 
     /**
+     * @unreleased Add force parameter to delete action
      * @since 4.3.1 add permissions check for delete
      * @since 2.20.0
      *
@@ -104,7 +113,7 @@ class DonationActions extends Endpoint
 
         switch ($request->get_param('action')) {
             case 'delete':
-                if ( ! current_user_can('delete_give_payments')) {
+                if (!current_user_can('delete_give_payments')) {
                     return new WP_Error(
                         'rest_forbidden',
                         esc_html__('You don\'t have permission to delete Donations', 'give'),
@@ -113,7 +122,26 @@ class DonationActions extends Endpoint
                 }
                 foreach ($ids as $id) {
                     try {
-                        give_delete_donation($id);
+                        $donation = Donation::find($id);
+
+                        if (!$donation) {
+                            return new WP_REST_Response(['message' => __('Donation not found', 'give')], 404);
+                        }
+
+                        if ($request->get_param('force')) {
+                            $deleted = $donation->delete(); // Permanently delete the donation
+
+                            if (!$deleted) {
+                                return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
+                            }
+                        } else {
+                            $trashed = $donation->trash(); // Move the donation to trash (soft delete)
+
+                            if (!$trashed) {
+                                return new WP_REST_Response(['message' => __('Failed to trash donation', 'give')], 500);
+                            }
+                        }
+
                         $successes[] = $id;
                     } catch (Exception $e) {
                         $errors[] = $id;
@@ -123,7 +151,7 @@ class DonationActions extends Endpoint
                 break;
 
             case 'setStatus':
-                if ( ! current_user_can('view_give_payments')) {
+                if (!current_user_can('view_give_payments')) {
                     return new WP_Error(
                         'rest_forbidden',
                         esc_html__('You don\'t have permission to change donation statuses', 'give'),
@@ -155,7 +183,6 @@ class DonationActions extends Endpoint
             'successes' => $successes
         ]);
     }
-
 
     /**
      * Split string

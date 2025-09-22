@@ -29,6 +29,7 @@ export interface ListTableProps {
     productRecommendation?: JSX.Element;
     columnFilters?: Array<ColumnFilterConfig>;
     includeBulkActionsCheckbox?: boolean;
+    children?: JSX.Element | JSX.Element[] | null;
 }
 
 export interface ListTableColumn {
@@ -61,6 +62,7 @@ export const ListTable = ({
     productRecommendation,
     columnFilters = [],
     includeBulkActionsCheckbox = false,
+    children = null,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -123,10 +125,10 @@ export const ListTable = ({
     return (
         <>
             {initialLoad && !error ? (
-                <div className={styles.initialLoad}>
-                    <div role="dialog" aria-labelledby="giveListTableLoadingMessage" className={cx(styles.tableGroup)}>
-                        <Spinner size={'large'} />
-                        <h2 id="giveListTableLoadingMessage">{sprintf(__('Loading %s', 'give'), pluralName)}</h2>
+                <div className={styles.loadingContainer}>
+                    <div role="dialog" aria-labelledby="giveListTableLoadingMessage" className={styles.loadingContainerContent}>
+                        <Spinner />
+                        <h2 id="giveListTableLoadingMessage" className={styles.loadingContainerContentText}>{sprintf(__('Loading %s', 'give'), pluralName)}</h2>
                     </div>
                 </div>
             ) : (
@@ -151,6 +153,7 @@ export const ListTable = ({
                             {title}
                         </caption>
                         <thead className={styles[apiSettings.table.id]}>
+                            <tr className={styles.searchContainerRow}>{children}</tr>
                             <tr>
                                 {includeBulkActionsCheckbox && (
                                     <th
