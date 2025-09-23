@@ -1,7 +1,7 @@
-import pageStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
-import styles from './BulkActionSelect.module.scss';
 import {__} from '@wordpress/i18n';
-import Select from '@givewp/components/ListTable/Select';
+import CustomFilter from '../CustomFilter';
+import styles from './BulkActionSelect.module.scss';
+import pageStyles from '../ListTablePage/ListTablePage.module.scss';
 
 export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, data, parameters}) => {
     const [selectedAction, setSelectedAction] = selectedState;
@@ -14,26 +14,41 @@ export const BulkActionSelect = ({bulkActions = null, selectedState, showModal, 
         return null;
     }
 
-    const changeSelected = (event) => {
-        setSelectedAction(event.target.value);
+    // Format bulkActions for Custom Select
+    const filteredOptions = bulkActions
+        .filter(action => {
+            if (typeof action?.isVisible == 'function' && !action.isVisible(data, parameters)) {
+                return false;
+            }
+            return true;
+        })
+        .map(action => ({
+            value: action.value,
+            text: action.label
+        }));
+
+    const changeSelected = (name, value) => {
+        setSelectedAction(value);
     };
 
     return (
         <div id={styles.bulkActionsForm}>
-            <Select value={selectedAction} onChange={changeSelected}>
-                <option value="">{__('Bulk Actions', 'give')}</option>
-                {bulkActions.map((action) => {
-                    if (typeof action?.isVisible == 'function' && !action.isVisible(data, parameters)) {
-                        return null;
-                    }
-                    return (
-                        <option key={action.value} value={action.value}>
-                            {action.label}
-                        </option>
-                    );
-                })}
-            </Select>
-            <button onClick={showModal} className={pageStyles.addFormButton}>
+            <CustomFilter
+                name="bulkActions"
+                options={filteredOptions}
+                ariaLabel={__('Bulk Actions', 'give')}
+                placeholder={__('Bulk Actions', 'give')}
+                onChange={changeSelected}
+                value={selectedAction}
+                isSearchable={false}
+                isSelectable={true}
+                isClearable={true}
+            />
+            <button
+                onClick={showModal}
+                className={`button button-tertiary ${pageStyles.secondaryActionButton}`}
+                disabled={!selectedAction}
+            >
                 {__('Apply', 'give')}
             </button>
         </div>
