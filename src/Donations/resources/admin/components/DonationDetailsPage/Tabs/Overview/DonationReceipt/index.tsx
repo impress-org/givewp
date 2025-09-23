@@ -37,7 +37,7 @@ export default function DonationReceipt({ donation }: { donation: Donation }) {
           </div>
         </div>
 
-        {donation?.status === 'publish' && (
+        {['publish', 'give_subscription'].includes(donation?.status) && (
           <div className={styles.actions} aria-label={__('Receipt actions', 'give')}>
             <ReceiptActions />
           </div>
