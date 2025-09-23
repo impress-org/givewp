@@ -146,6 +146,7 @@ class GetSubscriptionItemSchema
                             'type' => 'string',
                             'format' => 'uri',
                             'description' => esc_html__('Gateway dashboard subscription URL', 'give'),
+                            'required' => false,
                         ],
                         'canSync' => [
                             'type' => 'boolean',
