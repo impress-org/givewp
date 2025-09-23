@@ -33,18 +33,22 @@
         width: 0.75rem;
     }
 
-    &--pending,
-    &--processing {
+    &--pending {
         --statusOptionColor: var(--givewp-blue-500);
     }
 
-    &--publish {
+    &--active {
         --statusOptionColor: var(--givewp-green-500);
     }
 
-    &--failing,
+    &--completed {
+        --statusOptionColor: var(--givewp-emerald-500);
+    }
+
+    &--expired,
     &--cancelled,
-    &--revoked {
+    &--failing,
+    &--trashed {
         --statusOptionColor: var(--givewp-red-500);
     }
 
