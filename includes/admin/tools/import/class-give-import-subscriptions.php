@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Subscriptions Import Class
- *
- * @unreleased
- */
-
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
@@ -53,6 +47,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Singleton
+         * @unreleased
          */
         private function __construct()
         {
@@ -62,6 +57,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Get instance
          *
+         * @unreleased
          * @return static
          */
         public static function get_instance()
@@ -75,6 +71,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Setup
+         *
+         * @unreleased
          */
         public function setup()
         {
@@ -83,6 +81,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Setup Hooks.
+         *
+         * @unreleased
          */
         private function setup_hooks()
         {
@@ -91,26 +91,27 @@ if (!class_exists('Give_Import_Subscriptions')) {
             }
 
             // Do not render main import tools page.
-            remove_action('give_admin_field_tools_import', array('Give_Settings_Import', 'render_import_field'));
+            remove_action('give_admin_field_tools_import', ['Give_Settings_Import', 'render_import_field']);
 
             // Render subscriptions import page
-            add_action('give_admin_field_tools_import', array($this, 'render_page'));
+            add_action('give_admin_field_tools_import', [$this, 'render_page']);
 
             // Print the HTML.
-            add_action('give_tools_import_subscriptions_form_start', array($this, 'html'), 10);
+            add_action('give_tools_import_subscriptions_form_start', [$this, 'html'], 10);
 
             // Handle submit
-            add_action('give-tools_save_import', array($this, 'save'));
+            add_action('give-tools_save_import', [$this, 'save']);
 
-            add_action('give-tools_update_notices', array($this, 'update_notices'), 11, 1);
+            add_action('give-tools_update_notices', [$this, 'update_notices'], 11, 1);
 
             // Used to add submit button.
-            add_action('give_tools_import_subscriptions_form_end', array($this, 'submit'), 10);
+            add_action('give_tools_import_subscriptions_form_end', [$this, 'submit'], 10);
         }
 
         /**
          * Update notice
          *
+         * @unreleased
          * @param $messages
          *
          * @return mixed
@@ -126,6 +127,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Print submit and nonce button.
+         *
+         * @unreleased
          */
         public function submit()
         {
@@ -139,6 +142,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Print the HTML for importer.
+         *
+         * @unreleased
          */
         public function html()
         {
@@ -199,6 +204,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Show success notice
+         *
+         * @unreleased
          */
         public function import_success()
         {
@@ -244,25 +251,25 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
                     <?php
                     $text = __('Import Subscriptions', 'give');
-                    $query_arg = array(
+                    $query_arg = [
                         'post_type' => 'give_forms',
                         'page' => 'give-tools',
                         'tab' => 'import',
-                    );
+                    ];
                     if ($success) {
                         if ($dry_run) {
-                            $query_arg = array(
+                            $query_arg = [
                                 'post_type' => 'give_forms',
                                 'page' => 'give-tools',
                                 'tab' => 'import',
                                 'importer-type' => 'import_subscriptions',
-                            );
+                            ];
                             $text = __('Start Import', 'give');
                         } else {
-                            $query_arg = array(
+                            $query_arg = [
                                 'post_type' => 'give_forms',
                                 'page' => 'give-subscriptions',
-                            );
+                            ];
                             $text = __('View Subscriptions', 'give');
                         }
                     }
@@ -301,6 +308,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Start Import
+         * @unreleased
          */
         public function start_import()
         {
@@ -359,13 +367,14 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Validate required mapped fields
+         * @unreleased
          */
         public function check_for_dropdown_or_import()
         {
             $return = true;
             if (isset($_REQUEST['mapto'])) {
                 $mapto = (array)$_REQUEST['mapto'];
-                $required = array('form_id', 'donor_id', 'period', 'frequency', 'amount', 'status');
+                $required = ['form_id', 'donor_id', 'period', 'frequency', 'amount', 'status'];
                 foreach ($required as $key) {
                     if (false === in_array($key, $mapto)) {
                         Give_Admin_Settings::add_error('give-import-csv-subscriptions', sprintf(__('A column must be mapped to "%s".', 'give'), $key));
@@ -381,6 +390,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Print the Dropdown option for CSV.
+         * @unreleased
          */
         public function render_dropdown()
         {
@@ -443,7 +453,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 <?php
                 $selectedOptions = [];
                 $raw_key = $this->get_importer($csv, 0, $delimiter);
-                $mapto = (array)(isset($_REQUEST['mapto']) ? $_REQUEST['mapto'] : array());
+                $mapto = (array)(isset($_REQUEST['mapto']) ? $_REQUEST['mapto'] : []);
 
                 foreach ($raw_key as $index => $value) {
                     ?>
@@ -477,7 +487,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Print the columns from the CSV.
          */
-        private function get_columns($index, $value = false, $mapto = array(), &$selectedOptions = array())
+        private function get_columns($index, $value = false, $mapto = [], &$selectedOptions = [])
         {
             $default = give_import_default_options();
             $current_mapto = (string)(!empty($mapto[$index]) ? $mapto[$index] : '');
@@ -495,10 +505,10 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Print the option html for select in importer
          */
-        public function get_dropdown_option_html($options, $current_mapto, $value = false, &$selectedOptions = array())
+        public function get_dropdown_option_html($options, $current_mapto, $value = false, &$selectedOptions = [])
         {
             foreach ($options as $option => $option_value) {
-                $ignore = array();
+                $ignore = [];
                 if (isset($option_value['ignore']) && is_array($option_value['ignore'])) {
                     $ignore = $option_value['ignore'];
                     unset($option_value['ignore']);
@@ -714,11 +724,11 @@ if (!class_exists('Give_Import_Subscriptions')) {
         {
             add_filter(
                 'give_import_subscription_submit_button_text',
-                array($this, 'give_import_subscription_submit_text_render_media_csv')
+                [$this, 'give_import_subscription_submit_text_render_media_csv']
             );
             add_action(
                 'give_import_subscription_submit_button',
-                array($this, 'give_import_subscription_submit_button_render_media_csv')
+                [$this, 'give_import_subscription_submit_button_render_media_csv']
             );
             ?>
             <tr valign="top">
@@ -753,77 +763,77 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 $sample_file_text
             );
 
-            $settings = array(
-                array(
+            $settings = [
+                [
                     'id' => 'csv',
                     'name' => __('Choose a CSV file:', 'give'),
                     'type' => 'file',
-                    'attributes' => array(
+                    'attributes' => [
                         'editing' => 'false',
                         'library' => 'text',
-                    ),
+                    ],
                     'description' => $csv_description,
                     'fvalue' => 'url',
                     'default' => $csv,
-                ),
-                array(
+                ],
+                [
                     'id' => 'csv_id',
                     'type' => 'hidden',
                     'value' => $csv_id,
-                ),
-                array(
+                ],
+                [
                     'id' => 'delimiter',
                     'name' => __('CSV Delimiter:', 'give'),
                     'description' => __('If your CSV uses a different delimiter (like a tab), set that here.', 'give'),
                     'default' => $delimiter,
                     'type' => 'select',
-                    'options' => array(
+                    'options' => [
                         'csv' => __('Comma', 'give'),
                         'tab-separated-values' => __('Tab', 'give'),
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'id' => 'mode',
                     'name' => __('Test Mode:', 'give'),
                     'description' => __('Select whether these subscriptions should be marked as "test".', 'give'),
                     'default' => $mode,
                     'type' => 'radio_inline',
-                    'options' => array(
+                    'options' => [
                         'enabled' => __('Enabled', 'give'),
                         'disabled' => __('Disabled', 'give'),
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'id' => 'create_user',
                     'name' => __('Create WP users for new donors:', 'give'),
                     'description' => __('Automatically create a WordPress user account for newly created donors.  This is required for donors to access their Donor Dashboard and manage their subscriptions.', 'give'),
                     'default' => $create_user,
                     'type' => 'radio_inline',
-                    'options' => array(
+                    'options' => [
                         'enabled' => __('Enabled', 'give'),
                         'disabled' => __('Disabled', 'give'),
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'id' => 'delete_csv',
                     'name' => __('Delete CSV after import:', 'give'),
                     'description' => __('Delete the uploaded CSV from the Media Library after import.', 'give'),
                     'default' => $delete_csv,
                     'type' => 'radio_inline',
-                    'options' => array(
+                    'options' => [
                         'enabled' => __('Enabled', 'give'),
                         'disabled' => __('Disabled', 'give'),
-                    ),
-                ),
-                array(
+                    ],
+                ],
+                [
                     'id' => 'per_page',
                     'name' => __('Process Rows Per Batch:', 'give'),
                     'type' => 'number',
                     'description' => __('Determine how many rows you would like to import per cycle.', 'give'),
                     'default' => $per_page,
                     'class' => 'give-text-small',
-                ),
-            );
+                ],
+            ];
 
             $settings = apply_filters('give_import_file_upload_html', $settings);
 
@@ -853,7 +863,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
                 if ($this->is_valid_csv($csv_id, esc_url($_POST['csv']))) {
                     $url = give_import_page_url(
-                        array(
+                        [
                             'step' => '2',
                             'importer-type' => $this->importer_type,
                             'csv' => $csv_id,
@@ -863,7 +873,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                             'delete_csv' => empty($_POST['delete_csv']) ? '1' : (give_is_setting_enabled(give_clean($_POST['delete_csv'])) ? '1' : '0'),
                             'per_page' => isset($_POST['per_page']) ? absint($_POST['per_page']) : self::$per_page,
                             'dry_run' => isset($_POST['dry_run']) ? absint($_POST['dry_run']) : 0,
-                        )
+                        ]
                     );
 
                     $this->is_csv_valid = wp_nonce_url($url, 'give-save-settings', '_give-save-settings');
@@ -926,7 +936,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
          * @param array $import_setting
          * @return bool|int|string
          */
-        public function import_row($raw_key, $row_data, $main_key = array(), $import_setting = array())
+        public function import_row($raw_key, $row_data, $main_key = [], $import_setting = [])
         {
             $report = $this->get_report();
             $dry_run = isset($import_setting['dry_run']) ? (bool)$import_setting['dry_run'] : false;
@@ -947,7 +957,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
             $data = array_combine($raw_key, $row_data);
 
-            $required = array('form_id', 'period', 'frequency', 'amount', 'status');
+            $required = ['form_id', 'period', 'frequency', 'amount', 'status'];
             foreach ($required as $key) {
                 if (empty($data[$key]) && '0' !== (string)(isset($data[$key]) ? $data[$key] : '')) {
                     $report['failed_subscription'] = (!empty($report['failed_subscription']) ? (absint($report['failed_subscription']) + 1) : 1);
@@ -966,7 +976,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
             try {
                 $currency = !empty($data['currency']) && array_key_exists($data['currency'], give_get_currencies_list()) ? $data['currency'] : give_get_currency();
 
-                $attributes = array();
+                $attributes = [];
                 $attributes['donationFormId'] = (int)$data['form_id'];
 
                 $resolvedDonorId = 0;
@@ -994,7 +1004,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 $attributes['donorId'] = $resolvedDonorId;
 
                 $rawPeriod = strtolower(trim((string)$data['period']));
-                $periodAliases = array(
+                $periodAliases = [
                     'daily' => 'day',
                     'days' => 'day',
                     'day' => 'day',
@@ -1016,7 +1026,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                     'yr' => 'year',
                     'years' => 'year',
                     'year' => 'year',
-                );
+                ];
                 $normalizedPeriod = isset($periodAliases[$rawPeriod]) ? $periodAliases[$rawPeriod] : $rawPeriod;
                 if (!\Give\Subscriptions\ValueObjects\SubscriptionPeriod::isValid($normalizedPeriod)) {
                     throw new \UnexpectedValueException(sprintf(
@@ -1090,7 +1100,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                             }
                         }
 
-                        $donationAttributes = array(
+                        $donationAttributes = [
                             'subscriptionId' => $subscription->id,
                             'gatewayId' => !empty($attributes['gatewayId']) ? $attributes['gatewayId'] : 'manual',
                             'amount' => $subscription->amount,
@@ -1103,7 +1113,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                             'firstName' => $firstName,
                             'lastName' => $lastName,
                             'email' => $donorEmail,
-                        );
+                        ];
 
                         if (!empty($data['first_name'])) {
                             $donationAttributes['firstName'] = (string)$data['first_name'];
@@ -1150,30 +1160,34 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Get current import report
+         * @unreleased
          */
         public function get_report()
         {
-            return get_option('give_import_subscription_report', array());
+            return get_option('give_import_subscription_report', []);
         }
 
         /**
          * Update import report
+         * @unreleased
          */
-        private function update_report($value = array())
+        private function update_report($value = [])
         {
             update_option('give_import_subscription_report', $value, false);
         }
 
         /**
          * Reset import report
+         * @unreleased
          */
         public function reset_report()
         {
-            update_option('give_import_subscription_report', array(), false);
+            update_option('give_import_subscription_report', [], false);
         }
 
         /**
          * Update legacy donor totals and fee meta for newly created initial donation
+         * @unreleased
          */
         private function update_legacy_after_initial_donation(Donation $donation)
         {
@@ -1182,10 +1196,10 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 if ($donor && isset($donor->id)) {
                     give()->donors->updateLegacyColumns(
                         $donor->id,
-                        array(
+                        [
                             'purchase_value' => $this->get_donor_total_intended_amount((int)$donor->id),
                             'purchase_count' => $donor->totalDonations(),
-                        )
+                        ]
                     );
                 }
                 if (null !== $donation->feeAmountRecovered) {
@@ -1194,7 +1208,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
                         '_give_fee_donation_amount',
                         give_sanitize_amount_for_db(
                             $donation->intendedAmount()->formatToDecimal(),
-                            array('currency' => $donation->amount->getCurrency())
+                            ['currency' => $donation->amount->getCurrency()]
                         )
                     );
                 }
@@ -1204,6 +1218,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Calculate donor total intended amount across donations
+         * @unreleased
          */
         private function get_donor_total_intended_amount($donorId)
         {
@@ -1225,37 +1240,38 @@ if (!class_exists('Give_Import_Subscriptions')) {
                 })
                 ->where('posts.post_type', 'give_payment')
                 ->where('donor_meta.meta_value', (int)$donorId)
-                ->whereIn('posts.post_status', array('publish', 'give_subscription'))
+                ->whereIn('posts.post_status', ['publish', 'give_subscription'])
                 ->sum('IFNULL(amount_meta.meta_value, 0) - IFNULL(fee_meta.meta_value, 0)');
         }
 
         /**
          * Subscription mapping options for CSV column selection
+         * @unreleased
          */
         public function get_subscription_options()
         {
             return (array)apply_filters(
                 'give_import_subscription_options',
-                array(
-                    'form_id' => array(__('Donation Form ID', 'give'), __('Form ID', 'give')),
-                    'donor_id' => array(__('Donor ID', 'give')),
-                    'first_name' => array(__('Donor First Name', 'give'), __('First Name', 'give')),
-                    'last_name' => array(__('Donor Last Name', 'give'), __('Last Name', 'give')),
-                    'email' => array(__('Donor Email', 'give'), __('Email', 'give')),
-                    'period' => array(__('Period', 'give'), __('Subscription Period', 'give')),
-                    'frequency' => array(__('Frequency', 'give')),
-                    'installments' => array(__('Installments', 'give')),
-                    'amount' => array(__('Amount', 'give'), __('Recurring Amount', 'give')),
-                    'fee_amount_recovered' => array(__('Recovered Fee Amount', 'give')),
-                    'status' => array(__('Status', 'give')),
-                    'mode' => array(__('Mode', 'give'), __('Payment Mode', 'give')),
-                    'transaction_id' => array(__('Transaction ID', 'give')),
-                    'gateway_id' => array(__('Gateway ID', 'give'), __('Gateway', 'give')),
-                    'gateway_subscription_id' => array(__('Gateway Subscription ID', 'give')),
-                    'created_at' => array(__('Created At', 'give'), __('Start Date', 'give')),
-                    'renews_at' => array(__('Renews At', 'give'), __('Next Renewal Date', 'give')),
-                    'currency' => array(__('Currency', 'give')),
-                )
+                [
+                    'form_id' => [__('Donation Form ID', 'give'), __('Form ID', 'give')],
+                    'donor_id' => [__('Donor ID', 'give')],
+                    'first_name' => [__('Donor First Name', 'give'), __('First Name', 'give')],
+                    'last_name' => [__('Donor Last Name', 'give'), __('Last Name', 'give')],
+                    'email' => [__('Donor Email', 'give'), __('Email', 'give')],
+                    'period' => [__('Period', 'give'), __('Subscription Period', 'give')],
+                    'frequency' => [__('Frequency', 'give')],
+                    'installments' => [__('Installments', 'give')],
+                    'amount' => [__('Amount', 'give'), __('Recurring Amount', 'give')],
+                    'fee_amount_recovered' => [__('Recovered Fee Amount', 'give')],
+                    'status' => [__('Status', 'give')],
+                    'mode' => [__('Mode', 'give'), __('Payment Mode', 'give')],
+                    'transaction_id' => [__('Transaction ID', 'give')],
+                    'gateway_id' => [__('Gateway ID', 'give'), __('Gateway', 'give')],
+                    'gateway_subscription_id' => [__('Gateway Subscription ID', 'give')],
+                    'created_at' => [__('Created At', 'give'), __('Start Date', 'give')],
+                    'renews_at' => [__('Renews At', 'give'), __('Next Renewal Date', 'give')],
+                    'currency' => [__('Currency', 'give')],
+                ]
             );
         }
     }
