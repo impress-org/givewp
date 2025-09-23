@@ -9,9 +9,6 @@
  * @since       1.8.14
  */
 
-use Give\Donations\ValueObjects\DonationMetaKeys;
-use Give\Framework\Database\DB;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
