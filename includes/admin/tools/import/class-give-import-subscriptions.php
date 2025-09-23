@@ -297,7 +297,7 @@ if (! class_exists('Give_Import_Subscriptions')) {
 
                     <p>
                         <a class="button button-large button-secondary"
-                            href="<?php echo esc_url(add_query_arg($query_arg, admin_url('edit.php'))); ?>"><?php echo $text; ?></a>
+                            href="<?php echo esc_url(add_query_arg($query_arg, admin_url('edit.php'))); ?>"><?php echo esc_html($text); ?></a>
                     </p>
                 </th>
             </tr>
@@ -339,23 +339,23 @@ if (! class_exists('Give_Import_Subscriptions')) {
                     <span class="spinner is-active"></span>
                     <div class="give-progress"
                         data-current="1"
-                        data-total_ajax="<?php echo esc_attr(absint($total_ajax)); ?>"
-                        data-start="<?php echo esc_attr(absint($index_start)); ?>"
-                        data-end="<?php echo esc_attr(absint($index_end)); ?>"
-                        data-next="<?php echo esc_attr(absint($next)); ?>"
-                        data-total="<?php echo esc_attr(absint($total)); ?>"
-                        data-per_page="<?php echo esc_attr(absint(self::$per_page)); ?>">
+                        data-total_ajax="<?php echo esc_attr((int) $total_ajax); ?>"
+                        data-start="<?php echo esc_attr((int) $index_start); ?>"
+                        data-end="<?php echo esc_attr((int) $index_end); ?>"
+                        data-next="<?php echo esc_attr((int) $next); ?>"
+                        data-total="<?php echo esc_attr((int) $total); ?>"
+                        data-per_page="<?php echo esc_attr((int) self::$per_page); ?>">
 
                         <div style="width: <?php echo esc_attr((float) $current_percentage); ?>%"></div>
                     </div>
                     <input type="hidden" value="3" name="step">
                     <input type="hidden" value='<?php echo esc_attr(maybe_serialize($_REQUEST['mapto'])); ?>' name="mapto" class="mapto">
-                    <input type="hidden" value="<?php echo esc_attr($csv); ?>" name="csv" class="csv">
-                    <input type="hidden" value="<?php echo esc_attr($_REQUEST['mode']); ?>" name="mode" class="mode">
-                    <input type="hidden" value="<?php echo esc_attr($_REQUEST['create_user']); ?>" name="create_user" class="create_user">
-                    <input type="hidden" value="<?php echo esc_attr($_REQUEST['delete_csv']); ?>" name="delete_csv" class="delete_csv">
+                    <input type="hidden" value="<?php echo esc_attr((int) $csv); ?>" name="csv" class="csv">
+                    <input type="hidden" value="<?php echo esc_attr(isset($_REQUEST['mode']) ? sanitize_text_field((string) $_REQUEST['mode']) : ''); ?>" name="mode" class="mode">
+                    <input type="hidden" value="<?php echo esc_attr(isset($_REQUEST['create_user']) ? (int) $_REQUEST['create_user'] : 0); ?>" name="create_user" class="create_user">
+                    <input type="hidden" value="<?php echo esc_attr(isset($_REQUEST['delete_csv']) ? (int) $_REQUEST['delete_csv'] : 0); ?>" name="delete_csv" class="delete_csv">
                     <input type="hidden" value="<?php echo esc_attr($delimiter); ?>" name="delimiter">
-                    <input type="hidden" value="<?php echo esc_attr(absint($_REQUEST['dry_run'])); ?>" name="dry_run">
+                    <input type="hidden" value="<?php echo esc_attr(isset($_REQUEST['dry_run']) ? (int) $_REQUEST['dry_run'] : 0); ?>" name="dry_run">
                     <input type="hidden" value='<?php echo esc_attr(maybe_serialize(self::get_importer($csv, 0, $delimiter))); ?>' name="main_key" class="main_key">
                 </th>
             </tr>
