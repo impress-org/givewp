@@ -52,3 +52,8 @@
         padding-left: calc(var(--givewp-spacing-6) + 0.75rem);
     }
 }
+
+.notice {
+    margin-top: var(--givewp-spacing-1);
+    transform: translateX(1px);
+}

@@ -8,6 +8,7 @@ import styles from './styles.module.scss';
  */
 interface Props {
     type: 'info' | 'warning' | 'error';
+    className?: string;
     children: React.ReactNode;
     dismissHandleClick?: () => void;
 }
@@ -15,7 +16,7 @@ interface Props {
 /**
  * @since 4.8.0
  */
-export default ({type, children, dismissHandleClick}: Props) => {
+export default ({type, children, dismissHandleClick, className}: Props) => {
     const [isVisible, setIsVisible] = useState(true);
 
     const handleDismiss = () => {
@@ -29,7 +30,7 @@ export default ({type, children, dismissHandleClick}: Props) => {
         return null;
     }
 
-    const noticeClasses = `${styles.notice} ${
+    const noticeClasses = `${styles.notice} ${className} ${
         type === 'warning' ? styles.warning : type === 'error' ? styles.error : styles.info
     }`;
 
