@@ -139,16 +139,16 @@ class TestGiveImportSubscriptions extends TestCase
             'raw_key'     => $rawKey,
         ];
 
-        give_import_subscription_report_reset();
+            \Give_Import_Subscriptions::get_instance()->resetReport();
 
         $rowKey = 1;
         foreach ($rawData as $row) {
             $import_setting['row_key'] = $rowKey;
-            give_save_import_subscription_to_db($rawKey, $row, $mainKey, $import_setting);
+            \Give_Import_Subscriptions::get_instance()->importRow($rawKey, $row, $mainKey, $import_setting);
             $rowKey++;
         }
 
-        $report = give_import_subscription_report();
+        $report = \Give_Import_Subscriptions::get_instance()->getReport();
         $this->assertNotEmpty($report);
         $this->assertArrayHasKey('create_subscription', $report);
         $this->assertGreaterThanOrEqual(1, (int) $report['create_subscription']);

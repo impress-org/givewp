@@ -879,6 +879,11 @@ function give_subscription_import_callback() {
     $per_page   = absint( $_REQUEST['per_page'] );
     $delimiter  = empty( $output['delimiter'] ) ? ',' : $output['delimiter'];
 
+    // Ensure importer class is loaded for admin-ajax context
+    if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
+        require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-subscriptions.php';
+    }
+
     // Processing
     $raw_data                  = give_get_subscription_data_from_csv( $output['csv'], $start, $end, $delimiter );
     $raw_key = give_maybe_safe_unserialize($output['mapto']);
@@ -887,7 +892,7 @@ function give_subscription_import_callback() {
     $current_key = $start;
     foreach ( $raw_data as $row_data ) {
         $import_setting['row_key'] = $current_key;
-        $result = give_save_import_subscription_to_db( $raw_key, $row_data, $main_key, $import_setting );
+        $result = \Give_Import_Subscriptions::get_instance()->importRow( $raw_key, $row_data, $main_key, $import_setting );
         if ( is_string( $result ) && ! empty( $result ) ) {
             if ( empty( $json_data['errors'] ) ) {
                 $json_data['errors'] = [];
