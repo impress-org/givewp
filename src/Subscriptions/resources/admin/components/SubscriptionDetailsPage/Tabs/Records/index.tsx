@@ -6,15 +6,19 @@ import { RecordsSlot } from '../../slots';
 import SubscriptionDetails from './SubscriptionDetails';
 
 /**
- * @unreleased add SubscriptionDetails 
+ * @unreleased add SubscriptionDetails
  * @since 4.8.0
  */
 export default function SubscriptionDetailsPageRecordsTab() {
-    const {isDirty} = useFormState();
+    const {isDirty, dirtyFields} = useFormState();
+
+    const isStatusDirty = isDirty && Boolean(dirtyFields?.status);
+    const totalDirtyFieldsCount = Object.keys(dirtyFields || {}).length;
+    const hasNonStatusFieldChanges = isDirty && totalDirtyFieldsCount > (isStatusDirty ? 1 : 0);
 
     return (
         <>
-            {isDirty && (
+            {hasNonStatusFieldChanges && (
                 <div style={{ marginBottom: 'var(--givewp-spacing-4)' }}>
                     <Notice type="info">
                         {__('Some changes made to this subscription will only affect future renewals.', 'give')}
