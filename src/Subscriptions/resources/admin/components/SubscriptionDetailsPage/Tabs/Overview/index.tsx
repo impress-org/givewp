@@ -26,7 +26,7 @@ export default function SubscriptionDetailsPageOverviewTab() {
         return <Spinner />;
     }
 
-    if (!subscriptionsResolved) {
+    if (!subscription) {
         return <p>{__('No subscription found', 'give')}</p>;
     }
 
