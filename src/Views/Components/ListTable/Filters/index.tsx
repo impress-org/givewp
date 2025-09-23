@@ -1,63 +1,73 @@
-import {FormSelect} from '@givewp/components/ListTable/FormSelect';
-import Select from '@givewp/components/ListTable/Select';
-import Input from '@givewp/components/ListTable/Input';
-import pageStyles from '@givewp/components/ListTable/ListTablePage/ListTablePage.module.scss';
 import {__} from '@wordpress/i18n';
-import styles from './Filters.module.scss';
+import CustomFilter from '../CustomFilter';
+import styles from './styles.module.scss';
 
+/**
+ * Filter type configurations
+ *
+ * @unreleased
+ */
+const filterConfigs = {
+    select: {
+        id: 'select',
+        isSearchable: false,
+        isSelectable: true,
+        isClearable: true,
+        useDebouncedOnChange: false,
+    },
+    campaignselect: {
+        id: 'campaignselect',
+        isSearchable: true,
+        isSelectable: true,
+        isClearable: true,
+        useDebouncedOnChange: false,
+    },
+    search: {
+        id: 'search',
+        isSearchable: true,
+        isSelectable: false,
+        useDebouncedOnChange: true,
+    },
+};
+
+/**
+ * @unreleased
+ */
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
-    switch (filter.type) {
-        case 'select':
-            return (
-                <div id={styles.select} className={styles.filterContainer}>
-                    <Select
-                        name={filter.name}
-                        aria-label={filter?.ariaLabel}
-                        onChange={(event) => onChange(event.target.name, event.target.value)}
-                        style={{inlineSize: filter?.inlineSize}}
-                        defaultValue={value}
-                    >
-                        {filter.options.map(({value, text}) => (
-                            <option key={value} value={value}>
-                                {text}
-                            </option>
-                        ))}
-                    </Select>
-                </div>
-            );
-        case 'formselect':
-            return (
-                <div id={styles.formselect} className={styles.filterContainer}>
-                    <FormSelect
-                        name={filter.name}
-                        options={filter.options}
-                        aria-label={filter?.ariaLabel}
-                        placeholder={filter?.text}
-                        onChange={onChange}
-                        style={{inlineSize: filter?.inlineSize}}
-                        defaultValue={value}
-                    />
-                </div>
-            );
-        case 'search':
-            return (
-                <div id={styles.search} className={styles.filterContainer}>
-                    <Input
-                        type="search"
-                        name={filter.name}
-                        aria-label={filter?.ariaLabel}
-                        placeholder={filter?.text}
-                        onChange={(event) => debouncedOnChange(event.target.name, event.target.value)}
-                        style={{inlineSize: filter?.inlineSize}}
-                        defaultValue={value}
-                    />
-                    <button className={pageStyles.addFormButton}>{__('Search', 'give')}</button>
-                </div>
-            );
-        default:
-            return null;
-            break;
+    const config = filterConfigs[filter.type];
+
+    if (!config) {
+        return null;
     }
+
+    if (filter.type === 'search') {
+        return (
+            <input
+                type="search"
+                name={filter.name}
+                defaultValue={value}
+                onChange={(event) => debouncedOnChange(event.target.name, event.target.value)}
+                placeholder={filter?.text}
+                aria-label={filter?.ariaLabel}
+                className={styles.searchInput}
+            />
+        )
+    }
+
+    return (
+        <CustomFilter
+            name={filter.name}
+            options={filter.options}
+            aria-label={filter?.ariaLabel}
+            placeholder={filter?.text}
+            onChange={config.useDebouncedOnChange ? debouncedOnChange : onChange}
+            value={value}
+            isSearchable={config.isSearchable}
+            isSelectable={config.isSelectable}
+            isClearable={config.isClearable}
+            isAsync={config.id === 'campaignselect'}
+        />
+    );
 };
 
 // figure out what the initial filter state should be based on the filter configuration
@@ -78,7 +88,7 @@ export const getInitialFilterState = (filters) => {
                     state[filter.name] = filter.options?.[0].value;
                     break;
                 case 'search':
-                case 'formselect':
+                case 'campaignselect':
                 default:
                     state[filter.name] = '';
                     break;

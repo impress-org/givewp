@@ -68,7 +68,7 @@ class ListSubscriptions extends Endpoint
                         'required' => false,
                         'validate_callback' => [$this, 'validateDate']
                     ],
-                    'form' => [
+                    'campaignId' => [
                         'type' => 'integer',
                         'required' => false,
                         'default' => 0
@@ -204,10 +204,10 @@ class ListSubscriptions extends Endpoint
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
-        $form = $this->request->get_param('form');
+        $campaignId = $this->request->get_param('campaignId');
         $testMode = $this->request->get_param('testMode');
 
-        $hasWhereConditions = $search || $start || $end || $form;
+        $hasWhereConditions = $search || $start || $end || $campaignId;
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -226,20 +226,20 @@ class ListSubscriptions extends Endpoint
             $query->where('date_created', $end, '<=');
         }
 
-        if ($form) {
+        if ($campaignId) {
             $query
-                ->whereIn('id', static function (QueryBuilder $builder) use ($form) {
+                ->whereIn('id', static function (QueryBuilder $builder) use ($campaignId) {
                     $builder
                         ->from('give_donationmeta')
                         ->distinct()
                         ->select('meta_value')
                         ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
-                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($campaignId) {
                             $builder
                                 ->from('give_donationmeta')
                                 ->select('donation_id')
-                                ->where('meta_key', DonationMetaKeys::FORM_ID)
-                                ->where('meta_value', $form);
+                                ->where('meta_key', DonationMetaKeys::CAMPAIGN_ID)
+                                ->where('meta_value', $campaignId);
                         });
                 });
         }

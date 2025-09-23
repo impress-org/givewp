@@ -26,10 +26,10 @@ const API = new ListTableApi(window.GiveDonors);
 
 const donorsFilters: Array<FilterConfig> = [
     {
-        name: 'form',
-        type: 'formselect',
-        text: __('All Donation Forms', 'give'),
-        ariaLabel: __('Filter donation forms by status', 'give'),
+        name: 'campaignId',
+        type: 'campaignselect',
+        text: __('All Campaigns', 'give'),
+        ariaLabel: __('Filter donors by campaign', 'give'),
         options: window.GiveDonors.forms,
     },
     {
@@ -117,7 +117,7 @@ export default function DonorsListTable() {
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={recommendation}
         >
-            <button className={styles.addFormButton} onClick={showLegacyDonors}>
+            <button className={`button button-tertiary ${styles.secondaryActionButton}`} onClick={showLegacyDonors}>
                 {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>

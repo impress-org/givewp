@@ -1,0 +1,49 @@
+input[type="checkbox"].checkbox {
+    --transition: 0.2s ease;
+
+    appearance: none;
+    background-color: transparent;
+    border-radius: 0.225rem;
+    border: solid 1px var(--givewp-neutral-200);
+    color: #2271b1;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: inherit;
+    height: 1.333rem;
+    margin: 0;
+    margin: 0;
+    padding: 0;
+    transform: translateY(-1px);
+    transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+    vertical-align: middle;
+    width: 1.333rem;
+
+    &::before {
+        content: none;
+    }
+
+    &:focus {
+        border-color: transparent;
+        box-shadow: #2271b1 0px 0px 0px 0.125rem;
+        outline: none;
+    }
+
+    &:checked,
+    &:checked:active,
+    &:checked:focus {
+        background-color: #2271b1;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27rgb%28255, 255, 255%29%27 stroke-width=%274%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpolyline points=%2720 6 9 17 4 12%27%3E%3C/polyline%3E%3C/svg%3E");
+        background-position: center;
+        background-size: 0.75em auto;
+        background-repeat: no-repeat;
+        border-color: #2271b1;
+    }
+
+    &[aria-invalid="false"] {
+        border-color: var(--givewp-green-500);
+    }
+
+    &[aria-invalid="true"] {
+        border-color: var(--givewp-red-400);
+    }
+}

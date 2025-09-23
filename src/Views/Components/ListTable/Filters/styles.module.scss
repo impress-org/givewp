@@ -1,0 +1,29 @@
+input[type="search"].searchInput {
+    border-radius: var(--givewp-rounded-4);
+    border: 1px solid #9ca0af;
+    color: var(--givewp-neutral-900);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.43;
+    margin: 0;
+    min-width: 14rem;
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+
+    &::placeholder {
+        color: var(--givewp-neutral-500);
+    }
+
+    &::-webkit-search-cancel-button {
+        display: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:focus {
+        border-color: var(--givewp-blue-500);
+        outline: none;
+        box-shadow: var(--givewp-blue-500) 0px 0px 0px 1px;
+    }
+}
