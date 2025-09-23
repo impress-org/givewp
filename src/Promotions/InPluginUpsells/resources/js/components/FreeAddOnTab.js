@@ -59,7 +59,7 @@ export const FreeAddOnTab = () => {
                         {hasSubscriptionError && (
                             <div className={styles.submissionError}>
                                 There was an issue submitting your information. Please try again. If the problem
-                                persists, try refreshing the page. If it still doesn't work, please{' '}
+                                persists, try refreshing the page. If it still doesn&apos;t work, please{' '}
                                 <a href="https://givewp.com/support" target="_blank">
                                     contact support.
                                 </a>

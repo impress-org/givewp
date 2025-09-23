@@ -8,7 +8,7 @@ const gateway: Gateway = {
         settings = this.settings;
     },
     Fields() {
-        return <Markup content={settings.markup}/>;
+        return <Markup content={settings.markup} />;
     }
 }
 

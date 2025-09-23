@@ -28,7 +28,9 @@
         "react/jsx-curly-spacing": "off",
         "react/jsx-tag-spacing": "warn",
         "react/jsx-no-target-blank": "off",
-        "react/no-unescaped-entities": "warn"
+        "react/no-unescaped-entities": "warn",
+        "@wordpress/no-unused-vars-before-return": "warn",
+        "react-hooks/exhaustive-deps": "off"
     },
     "overrides": [
         {

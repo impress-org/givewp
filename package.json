@@ -9,7 +9,8 @@
         "env": "wp-env",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip",
-        "lint:js": "wp-scripts lint-js ./src"
+        "lint:js": "wp-scripts lint-js ./src",
+        "lint:js-fix": "wp-scripts lint-js ./src --fix"
     },
     "repository": {
         "type": "git",

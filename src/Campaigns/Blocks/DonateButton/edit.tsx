@@ -30,26 +30,17 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<{
         []
     );
 
-    const campaignForms = (() => {
-        const {data, isLoading}: { data: { items: [] }, isLoading: boolean } = useSWR(
-            addQueryArgs('/give-api/v2/admin/forms', {campaignId: attributes.campaignId, status: 'publish'}),
-            path => apiFetch({path})
-        )
+    const { data, isLoading }: { data?: { items: Array<{ name: string; id: string }> }, isLoading: boolean } = useSWR(
+        addQueryArgs('/give-api/v2/admin/forms', {campaignId: attributes.campaignId, status: 'publish'}),
+        (path: string) => apiFetch({ path })
+    );
 
-        if (isLoading) {
-            return [{label: __('Loading...', 'give'), value: ''}]
-        }
-
-        const options = data?.items.map((form: { name: string, id: string }) => ({
-            label: form.name,
-            value: form.id
-        }))
-
-        return [
-            {label: __('Select form', 'give'), value: ''},
-            ...options
+    const campaignForms = isLoading
+        ? [{ label: __('Loading...', 'give'), value: '' }]
+        : [
+            { label: __('Select form', 'give'), value: '' },
+            ...((data?.items ?? []).map((form) => ({ label: form.name, value: form.id })))
         ];
-    })();
 
     return (
         <div {...blockProps}>

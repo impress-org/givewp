@@ -12,11 +12,11 @@ import './style.scss';
 import {__} from '@wordpress/i18n';
 
 const SelectControl = ({value, options, isLoading, label = null, onChange = null, placeholder = __('Select...', 'give'), width = null, isClearable = false}) => {
+    const accentColor = useAccentColor();
+
     if (options && options.length < 2) {
         return null;
     }
-
-    const accentColor = useAccentColor();
 
     const id = toUniqueId(label);
 

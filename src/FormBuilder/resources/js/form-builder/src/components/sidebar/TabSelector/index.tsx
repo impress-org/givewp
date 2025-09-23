@@ -16,7 +16,7 @@ export function TabSelector({close, selectTab, selected, tabs}: TabSelector) {
         <div className="components-panel__header interface-complementary-area-header edit-post-sidebar__panel-tabs">
             <ul className={'givewp-block-editor-sidebar__tabs'}>
                 {tabs.map(({name, label}) => (
-                    <li className={'givewp-block-editor-sidebar__tab'}>
+                    <li className={'givewp-block-editor-sidebar__tab'} key={name}>
                         <Button
                             type={'button'}
                             aria-label={label}

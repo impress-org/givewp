@@ -57,7 +57,7 @@ export default function FormDonationConfirmationSettingsGroup({settings, setSett
                         help={createInterpolateElement(
                           __( 'When enabled, donors are redirected to a separate page to view their donation confirmation rather than viewing it on the donation form page. This can be useful for event and conversion tracking tools like Google Analytics. <a>Learn how to customize the confirmation page.</a>', 'give' ),
                           {
-                            a: <a href="https://docs.givewp.com/success-page" target="_blank" title="GiveWP success page docs"/>,
+                            a: <a href="https://docs.givewp.com/success-page" target="_blank" title="GiveWP success page docs" />,
                           }
                         )}
                     />

@@ -145,6 +145,7 @@ const OrphanedFormsListTable = () => {
                         </option>
                         {campaigns.map((campaign) => (
                             <option
+                                key={campaign.id}
                                 selected={state.campaign === campaign.id}
                                 value={campaign.id}
                             >
