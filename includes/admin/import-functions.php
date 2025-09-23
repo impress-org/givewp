@@ -995,8 +995,6 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 	return $payment_id;
 }
 
-// Subscription import row function moved into Give_Import_Subscriptions
-
 /**
  * Get Donation form status
  *
@@ -1191,70 +1189,4 @@ function give_import_page_url( $parameter = [] ) {
 	$import_query_arg  = wp_parse_args( $parameter, $defalut_query_arg );
 
 	return esc_url_raw( add_query_arg( $import_query_arg, admin_url( 'edit.php' ) ) );
-}
-
-/**
- * Update legacy donor totals and fee meta for a newly created initial donation
- *
- * This mirrors the logic used elsewhere to keep backwards compatibility fields in sync.
- *
- * @unreleased
- */
-function give_import_update_legacy_after_initial_donation( \Give\Donations\Models\Donation $donation ) {
-    try {
-        $donor = $donation->donor;
-
-        if ( $donor && isset( $donor->id ) ) {
-            // Update legacy donor purchase totals and counts
-            give()->donors->updateLegacyColumns(
-                $donor->id,
-                [
-                    'purchase_value' => give_import_get_donor_total_intended_amount( (int) $donor->id ),
-                    'purchase_count' => $donor->totalDonations(),
-                ]
-            );
-        }
-
-        // Store fee-recovery intended amount meta on donation, if applicable
-        if ( null !== $donation->feeAmountRecovered ) {
-            give()->payment_meta->update_meta(
-                $donation->id,
-                '_give_fee_donation_amount',
-                give_sanitize_amount_for_db(
-                    $donation->intendedAmount()->formatToDecimal(),
-                    [ 'currency' => $donation->amount->getCurrency() ]
-                )
-            );
-        }
-    } catch ( \Throwable $e ) {
-        // silently ignore; non-critical
-    }
-}
-
-/**
- * Calculate total intended (amount - recovered fee) for a donor across donations
- *
- * @unreleased
- */
-function give_import_get_donor_total_intended_amount( int $donorId ): float {
-    return (float) DB::table('posts', 'posts')
-        ->join(function ($join) {
-            $join->leftJoin('give_donationmeta', 'donor_meta')
-                ->on('posts.ID', 'donor_meta.donation_id')
-                ->andOn('donor_meta.meta_key', DonationMetaKeys::DONOR_ID, true);
-        })
-        ->join(function ($join) {
-            $join->leftJoin('give_donationmeta', 'amount_meta')
-                ->on('posts.ID', 'amount_meta.donation_id')
-                ->andOn('amount_meta.meta_key', DonationMetaKeys::AMOUNT, true);
-        })
-        ->join(function ($join) {
-            $join->leftJoin('give_donationmeta', 'fee_meta')
-                ->on('posts.ID', 'fee_meta.donation_id')
-                ->andOn('fee_meta.meta_key', DonationMetaKeys::FEE_AMOUNT_RECOVERED, true);
-        })
-        ->where('posts.post_type', 'give_payment')
-        ->where('donor_meta.meta_value', $donorId)
-        ->whereIn('posts.post_status', ['publish', 'give_subscription'])
-        ->sum('IFNULL(amount_meta.meta_value, 0) - IFNULL(fee_meta.meta_value, 0)');
 }
