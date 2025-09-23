@@ -1,8 +1,8 @@
 import {__} from '@wordpress/i18n';
-import {GridCard} from '@givewp/src/Admin/components/Grid';
-
+import {GridCard} from '@givewp/admin/components/Grid';
+import {Campaign} from '@givewp/campaigns/admin/components/types';
 import styles from './styles.module.scss';
-import { Campaign } from '@givewp/campaigns/admin/components/types';
+
 /**
  * @unreleased
  */
