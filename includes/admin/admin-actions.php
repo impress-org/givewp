@@ -884,15 +884,17 @@ function give_subscription_import_callback() {
         require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-subscriptions.php';
     }
 
+    $importer = \Give_Import_Subscriptions::get_instance();
+
     // Processing
-    $raw_data                  = give_get_subscription_data_from_csv( $output['csv'], $start, $end, $delimiter );
+    $raw_data                  = $importer->get_subscription_data_from_csv( $output['csv'], $start, $end, $delimiter );
     $raw_key = give_maybe_safe_unserialize($output['mapto']);
     $import_setting['raw_key'] = $raw_key;
 
     $current_key = $start;
     foreach ( $raw_data as $row_data ) {
         $import_setting['row_key'] = $current_key;
-        $result = \Give_Import_Subscriptions::get_instance()->importRow( $raw_key, $row_data, $main_key, $import_setting );
+        $result = $importer->import_row( $raw_key, $row_data, $main_key, $import_setting );
         if ( is_string( $result ) && ! empty( $result ) ) {
             if ( empty( $json_data['errors'] ) ) {
                 $json_data['errors'] = [];

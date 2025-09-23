@@ -45,8 +45,6 @@ function give_import_donation_report_reset() {
 	update_option( 'give_import_donation_report', [], false );
 }
 
-// Subscription import report helpers moved into Give_Import_Subscriptions
-
 /**
  * Give get form data from csv if not then create and form and return the form value.
  *
@@ -572,39 +570,6 @@ function give_import_donation_form_options() {
 }
 
 /**
- * Return the options related to subscription import mapping (model properties)
- *
- * Keys intentionally match Subscription model properties and related fields
- *
- * @unreleased
- */
-function give_import_subscription_options() {
-    return (array) apply_filters(
-        'give_import_subscription_options',
-        [
-            'form_id'      => [ __( 'Donation Form ID', 'give' ), __( 'Form ID', 'give' ) ],
-            'donor_id'              => [ __( 'Donor ID', 'give' ) ],
-            'first_name'            => [ __( 'Donor First Name', 'give' ), __( 'First Name', 'give' ) ],
-            'last_name'             => [ __( 'Donor Last Name', 'give' ), __( 'Last Name', 'give' ) ],
-            'email'                 => [ __( 'Donor Email', 'give' ), __( 'Email', 'give' ) ],
-            'period'                => [ __( 'Period', 'give' ), __( 'Subscription Period', 'give' ) ],
-            'frequency'             => [ __( 'Frequency', 'give' ) ],
-            'installments'          => [ __( 'Installments', 'give' ) ],
-            'amount'                => [ __( 'Amount', 'give' ), __( 'Recurring Amount', 'give' ) ],
-            'fee_amount_recovered'  => [ __( 'Recovered Fee Amount', 'give' ) ],
-            'status'                => [ __( 'Status', 'give' ) ],
-            'mode'                  => [ __( 'Mode', 'give' ), __( 'Payment Mode', 'give' ) ],
-            'transaction_id'        => [ __( 'Transaction ID', 'give' ) ],
-            'gateway_id'            => [ __( 'Gateway ID', 'give' ), __( 'Gateway', 'give' ) ],
-            'gateway_subscription_id' => [ __( 'Gateway Subscription ID', 'give' ) ],
-            'created_at'            => [ __( 'Created At', 'give' ), __( 'Start Date', 'give' ) ],
-            'renews_at'             => [ __( 'Renews At', 'give' ), __( 'Next Renewal Date', 'give' ) ],
-            'currency'              => [ __( 'Currency', 'give' ) ],
-        ]
-    );
-}
-
-/**
  * Import CSV in DB
  *
  * @param int    $file_id   CSV id.
@@ -671,23 +636,6 @@ function give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter ) {
  */
 function give_get_file_data_by_file_id( $file_id ) {
 	return get_attached_file( $file_id );
-}
-
-/**
- * Import CSV (subscriptions) in memory
- *
- * @param int    $file_id
- * @param int    $start
- * @param int    $end
- * @param string $delimiter
- *
- * @return array
- * @unreleased
- */
-function give_get_subscription_data_from_csv( $file_id, $start, $end, $delimiter = 'csv' ) {
-    $delimiter = (string) apply_filters( 'give_import_delimiter_set', $delimiter );
-    $file_dir = give_get_file_data_by_file_id( $file_id );
-    return give_get_raw_data_from_file( $file_dir, $start, $end, $delimiter );
 }
 
 

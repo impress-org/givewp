@@ -54,7 +54,7 @@ class TestGiveImportSubscriptions extends TestCase
     public function testDropdownAutoselectsSnakeCaseHeaders(): void
     {
         $importer = \Give_Import_Subscriptions::get_instance();
-        $options = give_import_subscription_options();
+        $options = \Give_Import_Subscriptions::get_instance()->get_subscription_options();
 
         // form_id should auto-select form_id
         $selectedOptions = [];
@@ -77,7 +77,7 @@ class TestGiveImportSubscriptions extends TestCase
     public function testDropdownAutoselectsNormalizedHeaders(): void
     {
         $importer = \Give_Import_Subscriptions::get_instance();
-        $options = give_import_subscription_options();
+        $options = \Give_Import_Subscriptions::get_instance()->get_subscription_options();
 
         // "Gateway Subscription ID" should match gateway_subscription_id via normalization
         $selectedOptions = [];
@@ -139,16 +139,16 @@ class TestGiveImportSubscriptions extends TestCase
             'raw_key'     => $rawKey,
         ];
 
-            \Give_Import_Subscriptions::get_instance()->resetReport();
+            \Give_Import_Subscriptions::get_instance()->reset_report();
 
         $rowKey = 1;
         foreach ($rawData as $row) {
             $import_setting['row_key'] = $rowKey;
-            \Give_Import_Subscriptions::get_instance()->importRow($rawKey, $row, $mainKey, $import_setting);
+            \Give_Import_Subscriptions::get_instance()->import_row($rawKey, $row, $mainKey, $import_setting);
             $rowKey++;
         }
 
-        $report = \Give_Import_Subscriptions::get_instance()->getReport();
+        $report = \Give_Import_Subscriptions::get_instance()->get_report();
         $this->assertNotEmpty($report);
         $this->assertArrayHasKey('create_subscription', $report);
         $this->assertGreaterThanOrEqual(1, (int) $report['create_subscription']);
