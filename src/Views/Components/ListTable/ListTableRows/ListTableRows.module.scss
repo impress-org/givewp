@@ -42,19 +42,13 @@ tr.duplicated {
         flex-shrink: 0;
     }
 
-    > * + ::before {
-        position: absolute;
-        inset-block: auto;
-        color: var(--givewp-neutral-200);
-        background: none;
-        content: "|";
-        block-size: 100%;
-        inline-size: 1.25rem;
-        inset-inline-start: -1.25rem;
-        font-size: 0.8125rem;
-        font-weight: 600;
-        pointer-events: none;
+
+    :global {
+        span:last-child {
+            display: none !important;
+        }
     }
+
 
     > a {
         text-decoration: none;

@@ -7,7 +7,6 @@ import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePag
 import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
 import {createInterpolateElement} from '@wordpress/element';
-import styles from './styles.module.scss';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
