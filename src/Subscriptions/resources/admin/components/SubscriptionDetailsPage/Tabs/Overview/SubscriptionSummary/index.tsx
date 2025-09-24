@@ -1,10 +1,11 @@
 import {Header, OverviewPanel, SummaryItem, SummaryTable} from '@givewp/admin/components';
-import {Donation} from '@givewp/donations/admin/components/types';
 import {amountFormatter} from '@givewp/src/Admin/utils';
 import {Subscription} from '@givewp/subscriptions/admin/components/types';
 import {dateI18n} from '@wordpress/date';
 import {__} from '@wordpress/i18n';
 import styles from './styles.module.scss';
+import {getSubscriptionEmbeds} from '@givewp/subscriptions/common';
+
 
 /**
  * Calculates the end date of a subscription based on its billing parameters.
@@ -72,15 +73,17 @@ const calculateEndDate = (subscription: Subscription): string | null => {
 interface SummaryProps {
     subscription: Subscription;
     intendedAmount: number;
-    donation: Donation;
     adminUrl: string;
     isLoading: boolean;
 }
 
 /**
+ * @unreleased removed donation from props
  * @since 4.8.0
  */
-export default function Summary({subscription, donation, adminUrl, intendedAmount, isLoading}: SummaryProps) {
+export default function Summary({subscription, adminUrl, intendedAmount, isLoading}: SummaryProps) {
+    const {form} = getSubscriptionEmbeds(subscription);
+    const formTitle = form?.title ?? __('Donation Form', 'give');
     const endDate = calculateEndDate(subscription);
 
     const summaryItems: SummaryItem[] = [
@@ -94,16 +97,16 @@ export default function Summary({subscription, donation, adminUrl, intendedAmoun
         },
         {
             label: __('Donation form', 'give'),
-            value: (
+            value: subscription?.donationFormId ? (
                 <a
                     className={styles.link}
-                    href={`${adminUrl}edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${donation?.formId}`}
+                    href={`${adminUrl}edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${subscription?.donationFormId}`}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    {donation?.formTitle}
+                    {formTitle}
                 </a>
-            ),
+            ) : '',
         },
         {
             label: __('Renewal', 'give'),
