@@ -11,7 +11,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class GetSubscriptionItemSchema
 {
     /**
-     * @unreleased added campaignId
+     * @since 4.10.0 added campaignId
      * @since 4.8.0
      */
     public function __invoke(): array

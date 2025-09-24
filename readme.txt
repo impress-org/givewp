@@ -279,6 +279,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Enhancement: Improved the currency validation for donation forms
 * Fix: Resolved an issue where editing an option-based form was resetting various settings
 * Fix: Resolved various issues with deactiving and deleting GiveWP
+* Fix: Resolved occasional 404 console log errors in the new subscription detail screen
 * Dev: Added a sidebar slot fill to the donor details screen
 
 = 4.9.0: September 17th, 2025 =
