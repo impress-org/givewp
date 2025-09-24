@@ -12,7 +12,7 @@ trait Aggregate
     /**
      * Returns the number of rows returned by a query
      *
-     * @unreleased Return 0 when no result is null
+     * @since 4.10.0 Return 0 when no result is null
      * @since 2.19.0
      * @param  null|string  $column
      *

@@ -15,7 +15,7 @@ interface DonationStatsProps {
 }
 
 /**
- * @unreleased use upgrade object instead of inActive.
+ * @since 4.10.0 use upgrade object instead of inActive.
  * @since 4.6.0
  */
 export default function DonationStats({ donation, isResolving }: DonationStatsProps) {

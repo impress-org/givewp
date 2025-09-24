@@ -6,9 +6,9 @@
  * @subpackage  Array
  * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * 
- * @unreleased Updated to match current ISO 4217 standard as of 2024. Total: 169 currencies.
- * 
+ *
+ * @since 4.10.0 Updated to match current ISO 4217 standard as of 2024. Total: 169 currencies.
+ *
  * Major changes include:
  * - Added TVD (Tuvaluan dollar) - non-ISO but commonly used currency
  * - Marked VEF as (old) to indicate deprecated Venezuelan currency
@@ -24,9 +24,9 @@
  * - Added SVC (Salvadoran colón) - ISO 4217 currency
  * - Fixed incorrect label for TND (Tunisian Dinar) - was incorrectly labeled as "Turkmenistan manat"
  * - Added ZWL (Zimbabwean dollar) - ISO 4217 currency
- * 
+ *
  * @see https://www.iso.org/iso-4217-currency-codes.html
- * 
+ *
  * @since 2.20.0 update romanian to use RON
  * @since       2.4.0
  */

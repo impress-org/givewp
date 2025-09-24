@@ -7,7 +7,7 @@ import { useEntityRecord } from '@wordpress/core-data';
 const CAMPAIGNS_PER_PAGE = 30;
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 type UseCampaignAsyncSelectReturn = {
     selectedOption: CampaignOption | null;
@@ -22,7 +22,7 @@ type UseCampaignAsyncSelectReturn = {
 /**
  * Custom hook for handling async form selection with pagination and search
  *
- * @unreleased
+ * @since 4.10.0
  */
 export function useCampaignAsyncSelect(selectedCampaignId: number | null): UseCampaignAsyncSelectReturn {
     const [page, setPage] = useState(0);

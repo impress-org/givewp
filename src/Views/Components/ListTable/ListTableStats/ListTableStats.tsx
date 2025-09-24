@@ -3,7 +3,7 @@ import { __ } from "@wordpress/i18n";
 import styles from "./styles.module.scss";
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export type StatConfig = {
     label: string;
@@ -14,7 +14,7 @@ export type StatConfig = {
 };
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 type ListTableStatsProps = {
     config: Record<string, StatConfig>;
@@ -22,7 +22,7 @@ type ListTableStatsProps = {
 };
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export default function ListTableStats({config, values}: ListTableStatsProps) {
     return (

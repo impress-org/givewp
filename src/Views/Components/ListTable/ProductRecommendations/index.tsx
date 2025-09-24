@@ -46,7 +46,7 @@ interface RotatingMessageProps {
 }
 
 /**
- * @unreleased Refactor html structure to use a single p tag with a span and a link.
+ * @since 4.10.0 Refactor html structure to use a single p tag with a span and a link.
  * @since 2.27.1
  */
 function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: RotatingMessageProps) {

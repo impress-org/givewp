@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 /**
  * Filter type configurations
  *
- * @unreleased
+ * @since 4.10.0
  */
 const filterConfigs = {
     select: {
@@ -31,7 +31,7 @@ const filterConfigs = {
 };
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
     const config = filterConfigs[filter.type];
