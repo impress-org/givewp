@@ -14,16 +14,13 @@ export default function RowAction({
 }) {
     if (href) {
         return (
-            <>
-                <a
-                    href={href}
-                    className={cx(styles.action, {[styles.delete]: highlight}, className)}
-                    aria-label={ariaLabel || displayText}
-                >
-                    {displayText} {hiddenText && <span className="give-visually-hidden">{hiddenText}</span>}
-                </a>
-                <span className={styles.separator}>|</span>
-             </>
+            <a
+                href={href}
+                className={cx(styles.action, {[styles.delete]: highlight}, className)}
+                aria-label={ariaLabel || displayText}
+            >
+                {displayText} {hiddenText && <span className="give-visually-hidden">{hiddenText}</span>}
+            </a>
         );
     }
 
@@ -32,18 +29,15 @@ export default function RowAction({
     }
 
     return (
-        <>
-            <button
-                type="button"
-                onClick={onClick}
-                data-actionid={actionId}
-                className={cx(styles.action, {[styles.delete]: highlight}, className)}
-                disabled={disabled}
-                aria-label={ariaLabel || displayText}
-            >
-                {displayText} {hiddenText && <span className="give-visually-hidden">{hiddenText}</span>}
-            </button>
-            <span className={styles.separator}>|</span>
-        </>
+        <button
+            type="button"
+            onClick={onClick}
+            data-actionid={actionId}
+            className={cx(styles.action, {[styles.delete]: highlight}, className)}
+            disabled={disabled}
+            aria-label={ariaLabel || displayText}
+        >
+            {displayText} {hiddenText && <span className="give-visually-hidden">{hiddenText}</span>}
+        </button>
     );
 }
