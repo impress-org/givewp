@@ -7,6 +7,7 @@ import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePag
 import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
 import {createInterpolateElement} from '@wordpress/element';
+import styles from './styles.module.scss';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -120,7 +121,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                 </>
             ) : (
                 <>
-                    <RowAction href={item.edit} displayText={__('Edit', 'give')} hiddenText={item?.name} />
+                    <RowAction className={styles.donationFormsEditAction} href={item.edit} displayText={__('Edit', 'give')} hiddenText={item?.name} />
                     {!item.isDefaultCampaignForm && (
                         <RowAction
                             onClick={confirmTrashModal}
@@ -153,6 +154,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                     />
                     {isCampaignDetailsPage && !item.isDefaultCampaignForm && (
                         <RowAction
+                            className={styles.donationFormsMakeAsDefaultAction}
                             onClick={confirmDefaultCampaignFormModal}
                             actionId={item.id}
                             displayText={__('Make as default', 'give')}
