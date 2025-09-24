@@ -22,11 +22,12 @@ tr.duplicated {
 }
 
 .tableRowActions {
+    --column-gap: 1.25rem;
     position: absolute;
     inset-block-end: 1rem;
     display: flex;
     align-items: center;
-    column-gap: 1.25rem;
+    column-gap: var(--column-gap);
     word-break: keep-all;
     font-size: 0.875rem;
     font-weight: 600;
@@ -44,17 +45,14 @@ tr.duplicated {
 
     > * + ::before {
         position: absolute;
-        inset-block: auto;
         color: var(--givewp-neutral-200);
         background: none;
         content: "|";
-        block-size: 100%;
-        inline-size: 1.25rem;
-        inset-inline-start: -1.25rem;
         font-size: 0.8125rem;
         font-weight: 600;
         pointer-events: none;
-        text-align: center;
+        left: calc(var(--column-gap) * -0.5);
+        transform: translateX(-50%);
     }
 
     > a {

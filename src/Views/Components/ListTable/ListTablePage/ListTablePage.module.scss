@@ -346,6 +346,7 @@ ul[role='document'] + .flexRow {
         left: -.55rem;
         display: flex;
         align-items: center;
+        z-index: 2;
 
         svg {
             fill: #3A21D9;
