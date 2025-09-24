@@ -4,6 +4,7 @@ namespace Give\Subscriptions\Models;
 
 use DateTime;
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -25,6 +26,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class Subscription
  *
+ * @unreleased added campaign relationship
  * @since 2.23.0 added the renewsAt property
  * @since 2.19.6
  *
@@ -46,6 +48,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property Donor $donor
  * @property Donation[] $donations
  * @property float $projectedAnnualRevenue
+ * @property ?Campaign $campaign
  */
 class Subscription extends Model implements ModelCrud, ModelHasFactory
 {
@@ -78,6 +81,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'donor' => Relationship::BELONGS_TO,
         'donations' => Relationship::HAS_MANY,
         'notes' => Relationship::HAS_MANY,
+        'campaign' => Relationship::BELONGS_TO,
     ];
 
     /**
@@ -358,5 +362,15 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public function projectedAnnualRevenue(): Money
     {
         return give(CalculateProjectedAnnualRevenue::class)($this);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return ModelQueryBuilder<Campaign>
+     */
+    public function campaign(): ModelQueryBuilder
+    {
+        return give()->campaigns->queryByFormId($this->donationFormId);
     }
 }

@@ -11,6 +11,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class GetSubscriptionItemSchema
 {
     /**
+     * @unreleased added campaignId
      * @since 4.8.0
      */
     public function __invoke(): array
@@ -194,6 +195,10 @@ class GetSubscriptionItemSchema
                     ],
                     'description' => esc_html__('Projected annual revenue for this subscription', 'give'),
                     'readonly' => true,
+                ],
+                'campaignId' => [
+                    'type' => ['integer', 'null'],
+                    'description' => esc_html__('Campaign ID', 'give'),
                 ],
             ],
         ];
