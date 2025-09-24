@@ -1,7 +1,15 @@
 .donationFormsEditAction:not(:has(~ .donationFormsMakeAsDefaultAction)) {
-    padding-right: 1.25rem;
+    padding-right: .5rem;
+}
+
+.donationFormsEditAction:not(:has(~ .donationFormsMakeAsDefaultAction)) + * {
+    padding-right: .25rem;
 }
 
 .donationFormsEditAction:has(~ .donationFormsMakeAsDefaultAction) + * {
     padding-right: .75rem;
+}
+
+.donationFormsEditAction:has(~ .donationFormsMakeAsDefaultAction) + * + * {
+    padding-right: .25rem;
 }
