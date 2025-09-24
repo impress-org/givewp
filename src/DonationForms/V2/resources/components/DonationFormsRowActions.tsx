@@ -120,7 +120,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                 </>
             ) : (
                 <>
-                    <RowAction className={styles.donationFormsEditAction} href={item.edit} displayText={__('Edit', 'give')} hiddenText={item?.name} />
+                    <RowAction href={item.edit} displayText={__('Edit', 'give')} hiddenText={item?.name} />
                     {!item.isDefaultCampaignForm && (
                         <RowAction
                             onClick={confirmTrashModal}
@@ -153,7 +153,6 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                     />
                     {isCampaignDetailsPage && !item.isDefaultCampaignForm && (
                         <RowAction
-                            className={styles.donationFormsMakeAsDefaultAction}
                             onClick={confirmDefaultCampaignFormModal}
                             actionId={item.id}
                             displayText={__('Make as default', 'give')}
