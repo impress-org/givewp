@@ -19,21 +19,28 @@
 }
 
 .container {
+    --column-gap: 1.25rem;
     position: absolute;
-    bottom: 0.125rem;
     left: 4.6125rem;
     display: flex;
     align-items: center;
-    column-gap: 1.25rem;
+    column-gap: var(--column-gap);
     word-break: keep-all;
+    margin-top: var(--givewp-spacing-3);
+
+    > * {
+        position: relative;
+    }
 
     > * + ::before {
         position: absolute;
-        content: "";
-        inset-block: auto;
-        inset-inline-start: calc(2.1925rem);
-        block-size: 100%;
-        inline-size: 0.125rem;
-        background-color: #dedede;
+        color: var(--givewp-neutral-200);
+        background: none;
+        content: "|";
+        font-size: 0.8125rem;
+        font-weight: 600;
+        pointer-events: none;
+        left: calc(var(--column-gap) * -0.5);
+        transform: translateX(-50%);
     }
 }
