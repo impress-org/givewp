@@ -26,9 +26,9 @@ import TabsRouter from './Tabs/Router';
 import TabList from './Tabs/TabList';
 import TabPanels from './Tabs/TabPanels';
 import {AdminDetailsPageProps} from './types';
+import {prepareDefaultValuesFromSchema} from '@givewp/admin/utils';
 
 import './store';
-import { filterOutReadOnlyFields } from './utils';
 
 /**
  * @since 4.4.0
@@ -114,11 +114,11 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     // Set default values when entity is loaded
     useEffect(() => {
         if (hasResolved && schema && record) {
-            const filteredRecord = filterOutReadOnlyFields(record, (schema as any)?.properties) as T;
-            reset(filteredRecord);
+            const preparedRecord = prepareDefaultValuesFromSchema(record, (schema as any)?.properties) as T;
+            reset(preparedRecord);
             setIsLoading(false);
         }
-    }, [hasResolved, schema, record]);
+    }, [hasResolved, !!schema, !!record]);
 
     const onSubmit: SubmitHandler<T> = async (data) => {
         const shouldSave = shouldSaveForm ? shouldSaveForm(formState.isDirty, data) : formState.isDirty;
@@ -131,7 +131,9 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                 // @ts-ignore
                 const response: T = await save();
                 setIsSaving(false);
-                reset(response);
+
+                const preparedRecord = prepareDefaultValuesFromSchema(response, (schema as any)?.properties) as T;
+                reset(preparedRecord);
 
                 dispatch.addSnackbarNotice({
                     id: `save-success`,
