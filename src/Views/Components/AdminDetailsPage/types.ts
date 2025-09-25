@@ -42,11 +42,6 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
     };
 
     /**
-     * Function to reset the form
-     */
-    resetForm?: (reset: () => void) => void;
-
-    /**
      * Function to determine if the form should be saved
      */
     shouldSaveForm?: (isDirty: boolean, data: T) => boolean;
@@ -120,6 +115,17 @@ export type Notification = {
     autoHide?: boolean;
     onDismiss?: () => void;
     duration?: number,
+}
+
+/**
+ * Schema property interface for filtering read-only fields
+ *
+ * @unreleased
+ */
+export interface SchemaProperty {
+    readOnly?: boolean;
+    properties?: Record<string, SchemaProperty>;
+    [key: string]: any;
 }
 
 /**
