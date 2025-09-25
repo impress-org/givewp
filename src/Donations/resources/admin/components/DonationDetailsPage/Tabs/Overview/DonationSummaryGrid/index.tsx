@@ -96,7 +96,7 @@ export default function DonationSummaryGrid({
 }: DonationSummaryGridProps) {
      const isRecurringDonation = !!donation?.subscriptionId;
      const badgeLabel = isRecurringDonation ? __('Recurring', 'give') : __('One-time', 'give');
-     const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&view=overview&id=${donation?.subscriptionId}` : null;
+     const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&id=${donation?.subscriptionId}` : null;
      const createdAt = donation?.createdAt?.date;
      const paymentMethod = donation?.gateway?.id;
      const gatewayLabel = donation?.gateway?.label;
