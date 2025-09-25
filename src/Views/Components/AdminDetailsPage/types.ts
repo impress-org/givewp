@@ -118,17 +118,6 @@ export type Notification = {
 }
 
 /**
- * Schema property interface for filtering read-only fields
- *
- * @unreleased
- */
-export interface SchemaProperty {
-    readOnly?: boolean;
-    properties?: Record<string, SchemaProperty>;
-    [key: string]: any;
-}
-
-/**
  * @since 4.4.0
  */
 declare module "@wordpress/data" {

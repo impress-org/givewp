@@ -1,5 +1,3 @@
-import { SchemaProperty } from "./types";
-
 /**
  * @since 4.4.0
  */
@@ -43,39 +41,4 @@ export function formatDateLocal(dateString: string) {
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;
-}
-
-/**
- * @unreleased
- */
-export function filterOutReadOnlyFields(
-    record: Record<string, any>,
-    schemaProperties: Record<string, SchemaProperty>
-): Record<string, any> {
-    const processValue = (value: any, schema: SchemaProperty): any => {
-        // Handle nested objects
-        if (schema.properties && typeof value === "object" && value !== null && !Array.isArray(value)) {
-            return filterOutReadOnlyFields(value, schema.properties as Record<string, SchemaProperty>);
-        }
-
-        // Handle arrays of objects
-        if (schema.type === "array" && schema.items && Array.isArray(value)) {
-            return value.map(item =>
-                typeof item === "object" && item !== null
-                    ? filterOutReadOnlyFields(item, (schema.items as any).properties ?? {})
-                    : item
-            );
-        }
-
-        return value;
-    };
-
-    return Object.fromEntries(
-        Object.entries(record)
-            .filter(([key]) => !schemaProperties[key]?.readOnly && !schemaProperties[key]?.readonly)
-            .map(([key, value]) => [
-                key,
-                schemaProperties[key] ? processValue(value, schemaProperties[key]) : value
-            ])
-    );
 }
