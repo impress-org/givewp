@@ -11,6 +11,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class GetSubscriptionItemSchema
 {
     /**
+     * @unreleased Change subscriptionUrl to accept null
      * @unreleased added campaignId
      * @since 4.8.0
      */
@@ -147,6 +148,7 @@ class GetSubscriptionItemSchema
                             'type' => 'string',
                             'format' => 'uri',
                             'description' => esc_html__('Gateway dashboard subscription URL', 'give'),
+                            'nullable' => true,
                         ],
                         'canSync' => [
                             'type' => 'boolean',
