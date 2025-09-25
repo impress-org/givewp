@@ -213,6 +213,13 @@ function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>, data?: an
                 }
             }
 
+            // Remove readonly/readOnly fields from validation (they shouldn't be validated by frontend)
+            if (prop && typeof prop === 'object' && (prop.readonly === true || prop.readOnly === true)) {
+                // Skip validation for readonly fields by removing them from the schema
+                delete transformed.properties[key];
+                return; // Skip to next property
+            }
+
             // Add custom error messages for each property
             if (prop && typeof prop === 'object') {
                 errorMessages[key] = getCustomErrorMessage(prop, key);
