@@ -4,6 +4,7 @@ namespace Give\Subscriptions\Repositories;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\DonationForms\V2\Repositories\DonationFormsRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -200,6 +201,7 @@ class SubscriptionRepository
         $subscriptionId = DB::last_insert_id();
 
         $subscription->id = $subscriptionId;
+        $subscription->campaignId = give()->campaigns->getByFormId($subscription->donationFormId)->id;
         $subscription->createdAt = $dateCreated;
 
         Hooks::doAction('givewp_subscription_created', $subscription);
@@ -223,6 +225,10 @@ class SubscriptionRepository
         }
 
         Hooks::doAction('givewp_subscription_updating', $subscription);
+
+        if ($subscription->isDirty('donationFormId')) {
+            $subscription->campaignId = give()->campaigns->getByFormId($subscription->donationFormId)->id;
+        }
 
         DB::query('START TRANSACTION');
 

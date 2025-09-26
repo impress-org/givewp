@@ -13,6 +13,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class SubscriptionObjectData
  *
+ * @unreleased added campaignId property
  * @since 2.19.6
  */
 final class SubscriptionQueryData
@@ -76,11 +77,16 @@ final class SubscriptionQueryData
     /**
      * @var int
      */
+    public $campaignId;
+    /**
+     * @var int
+     */
     public $donationFormId;
 
     /**
      * Convert data from Subscription Object to Subscription Model
      *
+     * @unreleased load campaignId from donationFormId
      * @since 2.19.6
      */
     public static function fromObject($subscriptionQueryObject): self
@@ -104,6 +110,7 @@ final class SubscriptionQueryData
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
         $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
+        $self->campaignId = give()->campaigns->getByFormId((int)$subscriptionQueryObject->donationFormId)->id;
         $self->donationFormId = (int)$subscriptionQueryObject->donationFormId;
 
         return $self;

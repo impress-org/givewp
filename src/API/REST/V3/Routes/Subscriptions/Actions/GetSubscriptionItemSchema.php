@@ -32,6 +32,10 @@ class GetSubscriptionItemSchema
                     'default' => 'live',
                     'enum' => ['live', 'test'],
                 ],
+                'campaignId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Campaign ID', 'give'),
+                ],
                 'donationFormId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donation form ID', 'give'),
