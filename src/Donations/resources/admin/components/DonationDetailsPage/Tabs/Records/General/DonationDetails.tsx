@@ -21,7 +21,7 @@ import styles from '../styles.module.scss';
 // TODO: Move to shared components
 import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 import StatusField from '@givewp/admin/fields/Status';
-import CampaignForm from '@givewp/admin/fields/CampaignForm';
+import CampaignFormField from '@givewp/admin/fields/CampaignForm';
 
 const {donationStatuses, campaignsWithForms, intlTelInputSettings} = getDonationOptionsWindowData();
 
@@ -34,8 +34,6 @@ export default function DonationDetails() {
     const {getValues, setValue, register, watch, setError} = useFormContext();
     const {errors} = useFormState();
     const amount = getValues('amount');
-    const campaignId = watch('campaignId');
-    const formId = watch('formId');
     const createdAt = watch('createdAt');
 
     return (
@@ -91,11 +89,7 @@ export default function DonationDetails() {
                     />
                 </AdminSectionField>
 
-                <CampaignForm
-                    campaignId={campaignId}
-                    formId={formId}
-                    campaignsWithForms={campaignsWithForms}
-                />
+                <CampaignFormField campaignsWithForms={campaignsWithForms} />
 
                 {/* TODO: Add Fund field */}
 
