@@ -1,7 +1,7 @@
 import {__, sprintf} from '@wordpress/i18n';
 import {JSONSchemaType} from 'ajv';
-import addFormats from 'ajv-formats';
 import addErrors from 'ajv-errors';
+import addFormats from 'ajv-formats';
 
 /**
  * Create an AJV resolver for react-hook-form with WordPress REST API schema
@@ -15,6 +15,7 @@ import addErrors from 'ajv-errors';
  * Key advantage: WordPress REST API supports most JSON Schema Draft 4 features but lacks
  * some advanced features (if/then/else, allOf, not) that AJV can provide for enhanced frontend validation.
  *
+ * @since 4.10.0 Refactor transformWordPressSchemaToDraft7 to handle readonly/readOnly fields and conditionally remove enum from nullable fields when value is null to prevent AJV conflicts
  * @since 4.9.0
  *
  * @param schema - The JSON Schema from WordPress REST API
@@ -30,7 +31,7 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
 
             const transformedData = transformFormDataForValidation(data, schema);
             const ajv = configureAjvForWordPress();
-            const transformedSchema = transformWordPressSchemaToDraft7(schema);
+            const transformedSchema = transformWordPressSchemaToDraft7(schema, data);
             const validate = ajv.compile(transformedSchema);
             const valid = validate(transformedData);
 
@@ -63,7 +64,6 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
         }
     };
 }
-
 
 /**
  * Configure standard AJV (Draft 7/2019-09) for WordPress REST API compatibility
@@ -143,6 +143,8 @@ function configureAjvForWordPress() {
     // Add WordPress-specific custom formats that are not in the standard
     ajv.addFormat('text-field', true); // WordPress custom format - no validation, only sanitization
     ajv.addFormat('textarea-field', true); // WordPress custom format - no validation, only sanitization
+    ajv.addFormat('integer', true); // WordPress custom format - no validation, only sanitization
+    ajv.addFormat('boolean', true); // WordPress custom format - no validation, only sanitization
 
     // Transform WordPress schemas to be compatible with Draft 7/2019-09
     // This converts Draft 03/04 syntax (required: true on properties) to Draft 7 syntax
@@ -167,13 +169,15 @@ function configureAjvForWordPress() {
  * with AJV (Draft 7/2019-09). The transformation includes:
  * - Converts 'required: true' on individual properties to 'required' array at object level
  * - Updates $schema reference from Draft 04 to Draft 7/2019-09
+ * - Removes readonly/readOnly fields from validation (they shouldn't be validated by frontend)
+ * - Conditionally removes enum from nullable fields when value is null to prevent AJV conflicts
  * - Preserves all advanced features (if/then/else, allOf, etc.) that WordPress ignores
  *   but AJV can use for enhanced frontend validation
  *
  * Key benefit: WordPress schemas can include advanced validation rules (if/then/else, allOf, not)
  * that are ignored by the backend but utilized by the frontend for better UX.
  */
-function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>): JSONSchemaType<any> {
+function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>, data?: any): JSONSchemaType<any> {
     if (!schema || typeof schema !== 'object') {
         return schema;
     }
@@ -191,15 +195,36 @@ function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>): JSONSche
 
         Object.keys(transformed.properties).forEach((key) => {
             const prop = transformed.properties[key];
-            if (prop && typeof prop === 'object' && prop.required === true) {
+
+            // Early return if prop is not a valid object
+            if (!prop || typeof prop !== 'object') {
+                return;
+            }
+
+            // Converts 'required: true' on individual properties to 'required' array at object level
+            if (prop.required === true) {
                 requiredFields.push(key);
                 delete prop.required;
             }
 
-            // Add custom error messages for each property
-            if (prop && typeof prop === 'object') {
-                errorMessages[key] = getCustomErrorMessage(prop, key);
+            // Remove readonly/readOnly fields from validation (they shouldn't be validated by frontend)
+            if (prop.readonly === true || prop.readOnly === true) {
+                delete transformed.properties[key];
+                return;
             }
+
+            // For WordPress Array type + enum (like honorific), conditionally remove enum based on current value
+            // This prevents AJV conflicts when nullable fields have null values
+            if (Array.isArray(prop.type) && prop.enum) {
+                const currentValue = data && data[key];
+                const allowsNull = prop.type.includes('null');
+                if (currentValue === null && allowsNull) {
+                    delete prop.enum;
+                }
+            }
+
+            // Add custom error messages for each property
+            errorMessages[key] = getCustomErrorMessage(prop, key);
         });
 
         if (requiredFields.length > 0) {
@@ -292,7 +317,6 @@ function getCustomErrorMessage(prop: any, fieldName: string): string {
     // Generic fallback
     return sprintf(__('%s is invalid.', 'give'), fieldName);
 }
-
 
 /**
  * Transform form data to be compatible with JSON Schema validation
@@ -515,4 +539,3 @@ function transformOneOfValue(value: any, oneOfSchemas: any[]): any {
     // Fallback: return null
     return null;
 }
-

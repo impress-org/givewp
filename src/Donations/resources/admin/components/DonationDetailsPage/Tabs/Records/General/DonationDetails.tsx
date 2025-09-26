@@ -21,10 +21,12 @@ import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from '../styles.module.scss';
 // TODO: Move to shared components
 import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
+import StatusField from '@givewp/admin/fields/Status';
 
 const {donationStatuses, campaignsWithForms, intlTelInputSettings} = getDonationOptionsWindowData();
 
 /**
+ * @since 4.10.0 replace Status field with admin Status component
  * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.6.0
  */
@@ -79,17 +81,7 @@ export default function DonationDetails() {
                         />
                     </AdminSectionField>
                     <AdminSectionField error={errors.status?.message as string}>
-                        <label htmlFor="status">{__('Status', 'give')}</label>
-                        <div className={cx(styles.statusSelect, styles[`statusSelect--${status}`])}>
-                            <select id="status" className={styles.statusSelectInput} {...register('status')}>
-                                {donationStatuses &&
-                                    Object.entries(donationStatuses).map(([value, label]) => (
-                                        <option key={value} value={value}>
-                                            {label as string}
-                                        </option>
-                                    ))}
-                            </select>
-                        </div>
+                        <StatusField statusOptions={donationStatuses} />
                     </AdminSectionField>
                 </div>
 

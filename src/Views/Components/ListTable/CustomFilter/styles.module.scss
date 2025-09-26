@@ -1,5 +1,5 @@
 .searchableSelect {
-    z-index: 999;
+    z-index: 2;
 
     &:has(:global(.searchableSelect__control--menu-is-open)) {
         &::before {

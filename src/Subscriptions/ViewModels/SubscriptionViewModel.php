@@ -103,6 +103,7 @@ class SubscriptionViewModel
     }
 
     /**
+     * @since 4.10.0 Return null if subscription URL is not available
      * @since 4.8.0
      */
     private function getGatewayDetails(): ?array
@@ -111,10 +112,12 @@ class SubscriptionViewModel
             return null;
         }
 
+        $subscriptionUrl = $this->subscription->gateway()->gatewayDashboardSubscriptionUrl($this->subscription);
+
         return array_merge(
             $this->subscription->gateway()->toArray(),
             [
-                'subscriptionUrl' => $this->subscription->gateway()->gatewayDashboardSubscriptionUrl($this->subscription),
+                'subscriptionUrl' => $subscriptionUrl ?: null,
                 'canSync' => $this->subscription->gateway()->subscriptionModule instanceof SubscriptionTransactionsSynchronizable
             ]
         );

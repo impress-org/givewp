@@ -7,6 +7,7 @@ import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/Bu
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 import {ColumnFilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import { useTriggerResize } from '../../hooks';
 
 export interface ListTableProps {
     //required
@@ -74,6 +75,8 @@ export const ListTable = ({
     const [overlayWidth, setOverlayWidth] = useState(0);
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
+
+    useTriggerResize(data);
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
