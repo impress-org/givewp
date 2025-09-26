@@ -15,11 +15,11 @@ import { formatCampaignOptions, formatFormOptions } from './utils';
 /**
  * @unreleased
  */
-export default function CampaignForm({campaignsWithForms}: CampaignFormProps) {
+export default function CampaignForm({campaignsWithForms, campaignIdFieldName, formIdFieldName}: CampaignFormProps) {
     const {watch, setValue, control} = useFormContext();
     const {errors} = useFormState();
-    const campaignId = watch('campaignId');
-    const formId = watch('formId');
+    const campaignId = watch(campaignIdFieldName);
+    const formId = watch(formIdFieldName);
 
     useEffect(() => {
         if (!campaignId) {
@@ -28,7 +28,7 @@ export default function CampaignForm({campaignsWithForms}: CampaignFormProps) {
 
         const campaignFormIds = Object.keys(campaignsWithForms[campaignId]?.forms).map(Number);
         if (!campaignFormIds.includes(formId)) {
-            setValue('formId', Number(campaignsWithForms[campaignId]?.defaultFormId), {shouldDirty: true});
+            setValue(formIdFieldName, Number(campaignsWithForms[campaignId]?.defaultFormId), {shouldDirty: true});
         }
     }, [campaignId]);
 
@@ -40,7 +40,7 @@ export default function CampaignForm({campaignsWithForms}: CampaignFormProps) {
     return (
         <div className={styles.formRow}>
             <SelectField
-                name="campaignId"
+                name={campaignIdFieldName}
                 label="Campaign"
                 placeholder="Select a campaign..."
                 options={campaignOptions}
@@ -48,7 +48,7 @@ export default function CampaignForm({campaignsWithForms}: CampaignFormProps) {
                 error={errors.campaignId as FieldError}
             />
             <SelectField
-                name="formId"
+                name={formIdFieldName}
                 label="Form"
                 placeholder="Select a form..."
                 options={formOptions}

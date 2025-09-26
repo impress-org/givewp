@@ -89,7 +89,11 @@ export default function DonationDetails() {
                     />
                 </AdminSectionField>
 
-                <CampaignFormField campaignsWithForms={campaignsWithForms} />
+                <CampaignFormField
+                    campaignsWithForms={campaignsWithForms}
+                    campaignIdFieldName="campaignId"
+                    formIdFieldName="formId"
+                />
 
                 {/* TODO: Add Fund field */}
 

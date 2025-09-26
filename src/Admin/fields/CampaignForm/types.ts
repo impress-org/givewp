@@ -10,6 +10,8 @@ export interface CampaignFormProps {
             };
         };
     };
+    campaignIdFieldName: string;
+    formIdFieldName: string;
 }
 
 export interface SelectOption {
