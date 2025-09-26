@@ -3,8 +3,9 @@ import { useFormState } from "react-hook-form";
 import { __ } from "@wordpress/i18n";
 import AdminSection, { AdminSectionField } from "@givewp/components/AdminDetailsPage/AdminSection";
 import StatusField from "@givewp/admin/fields/Status";
+import CampaignFormField from "@givewp/admin/fields/CampaignForm";
 
-const { subscriptionStatuses } = getSubscriptionOptionsWindowData();
+const { subscriptionStatuses, campaignsWithForms } = getSubscriptionOptionsWindowData();
 
 /**
  * @unreleased
@@ -18,7 +19,12 @@ export default function SubscriptionDetails() {
             description={__('This includes the subscription information', 'give')}
         >
             <AdminSectionField error={errors.status?.message as string}>
-                <StatusField statusOptions={subscriptionStatuses} />  
+                <StatusField statusOptions={subscriptionStatuses} />
+                <CampaignFormField
+                    campaignsWithForms={campaignsWithForms}
+                    campaignIdFieldName="campaignId"
+                    formIdFieldName="donationFormId"
+                />
             </AdminSectionField>
         </AdminSection>
     );
