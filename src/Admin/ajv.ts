@@ -192,19 +192,30 @@ function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>, data?: an
 
         Object.keys(transformed.properties).forEach((key) => {
             const prop = transformed.properties[key];
-            if (prop && typeof prop === 'object' && prop.required === true) {
+
+            // Early return if prop is not a valid object
+            if (!prop || typeof prop !== 'object') {
+                return;
+            }
+
+            // Converts 'required: true' on individual properties to 'required' array at object level
+            if (prop.required === true) {
                 requiredFields.push(key);
                 delete prop.required;
             }
 
-            // Handle WordPress schema with Array type and enum
-            if (prop && typeof prop === 'object' && !Array.isArray(prop)) {
-                // For WordPress Array type + enum (like honorific), conditionally remove enum based on current value
-                // This prevents AJV conflicts when nullable fields have null values
+            // Remove readonly/readOnly fields from validation (they shouldn't be validated by frontend)
+            if (prop.readonly === true || prop.readOnly === true) {
+                delete transformed.properties[key];
+                return;
+            }
+
+            // For WordPress Array type + enum (like honorific), conditionally remove enum based on current value
+            // This prevents AJV conflicts when nullable fields have null values
+            if (!Array.isArray(prop)) {
                 if (Array.isArray(prop.type) && prop.enum) {
                     const currentValue = data && data[key];
                     const allowsNull = prop.type.includes('null');
-
                     // Remove enum when value is null to avoid AJV validation conflicts
                     // Keep enum when value is not null to maintain validation
                     if (currentValue === null && allowsNull) {
@@ -213,17 +224,8 @@ function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>, data?: an
                 }
             }
 
-            // Remove readonly/readOnly fields from validation (they shouldn't be validated by frontend)
-            if (prop && typeof prop === 'object' && (prop.readonly === true || prop.readOnly === true)) {
-                // Skip validation for readonly fields by removing them from the schema
-                delete transformed.properties[key];
-                return; // Skip to next property
-            }
-
             // Add custom error messages for each property
-            if (prop && typeof prop === 'object') {
-                errorMessages[key] = getCustomErrorMessage(prop, key);
-            }
+            errorMessages[key] = getCustomErrorMessage(prop, key);
         });
 
         if (requiredFields.length > 0) {
