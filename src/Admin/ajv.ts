@@ -168,6 +168,8 @@ function configureAjvForWordPress() {
  * with AJV (Draft 7/2019-09). The transformation includes:
  * - Converts 'required: true' on individual properties to 'required' array at object level
  * - Updates $schema reference from Draft 04 to Draft 7/2019-09
+ * - Removes readonly/readOnly fields from validation (they shouldn't be validated by frontend)
+ * - Conditionally removes enum from nullable fields when value is null to prevent AJV conflicts
  * - Preserves all advanced features (if/then/else, allOf, etc.) that WordPress ignores
  *   but AJV can use for enhanced frontend validation
  *
@@ -212,15 +214,11 @@ function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>, data?: an
 
             // For WordPress Array type + enum (like honorific), conditionally remove enum based on current value
             // This prevents AJV conflicts when nullable fields have null values
-            if (!Array.isArray(prop)) {
-                if (Array.isArray(prop.type) && prop.enum) {
-                    const currentValue = data && data[key];
-                    const allowsNull = prop.type.includes('null');
-                    // Remove enum when value is null to avoid AJV validation conflicts
-                    // Keep enum when value is not null to maintain validation
-                    if (currentValue === null && allowsNull) {
-                        delete prop.enum;
-                    }
+            if (Array.isArray(prop.type) && prop.enum) {
+                const currentValue = data && data[key];
+                const allowsNull = prop.type.includes('null');
+                if (currentValue === null && allowsNull) {
+                    delete prop.enum;
                 }
             }
 
