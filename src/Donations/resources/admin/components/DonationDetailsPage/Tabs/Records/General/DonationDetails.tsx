@@ -3,7 +3,6 @@
  */
 import {CurrencyControl} from '@givewp/form-builder-library';
 import {CurrencyCode} from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
-import cx from 'classnames';
 import {useEffect} from 'react';
 
 /**
@@ -22,11 +21,12 @@ import styles from '../styles.module.scss';
 // TODO: Move to shared components
 import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 import StatusField from '@givewp/admin/fields/Status';
+import CampaignForm from '@givewp/admin/fields/CampaignForm';
 
 const {donationStatuses, campaignsWithForms, intlTelInputSettings} = getDonationOptionsWindowData();
 
 /**
- * @unreleased replace Status field with admin Status component
+ * @unreleased Extract Status, Campaign and Form fields to shared components
  * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.6.0
  */
@@ -36,21 +36,7 @@ export default function DonationDetails() {
     const amount = getValues('amount');
     const campaignId = watch('campaignId');
     const formId = watch('formId');
-    const status = watch('status');
     const createdAt = watch('createdAt');
-
-    useEffect(() => {
-        if (!campaignId) {
-            return;
-        }
-
-        const campaignFormIds = Object.keys(campaignsWithForms[campaignId]?.forms).map(Number);
-        if (!campaignFormIds.includes(formId)) {
-            setValue('formId', campaignsWithForms[campaignId]?.defaultFormId, {shouldDirty: true});
-        }
-    }, [campaignId]);
-
-    const campaignForms = campaignsWithForms[campaignId]?.forms;
 
     return (
         <AdminSection
@@ -105,30 +91,11 @@ export default function DonationDetails() {
                     />
                 </AdminSectionField>
 
-                <div className={styles.formRow}>
-                    <AdminSectionField error={errors.campaignId?.message as string}>
-                        <label htmlFor="campaignId">{__('Campaign', 'give')}</label>
-                        <select id="campaignId" {...register('campaignId', {valueAsNumber: true})}>
-                            {campaignsWithForms &&
-                                Object.entries(campaignsWithForms).map(([campaignId, campaign]) => (
-                                    <option key={campaignId} value={campaignId}>
-                                        {campaign?.title}
-                                    </option>
-                                ))}
-                        </select>
-                    </AdminSectionField>
-                    <AdminSectionField error={errors.formId?.message as string}>
-                        <label htmlFor="formId">{__('Form', 'give')}</label>
-                        <select id="formId" {...register('formId', {valueAsNumber: true})}>
-                            {campaignForms &&
-                                Object.entries(campaignForms).map(([formId, formTitle]) => (
-                                    <option key={formId} value={formId}>
-                                        {formTitle}
-                                    </option>
-                                ))}
-                        </select>
-                    </AdminSectionField>
-                </div>
+                <CampaignForm
+                    campaignId={campaignId}
+                    formId={formId}
+                    campaignsWithForms={campaignsWithForms}
+                />
 
                 {/* TODO: Add Fund field */}
 
