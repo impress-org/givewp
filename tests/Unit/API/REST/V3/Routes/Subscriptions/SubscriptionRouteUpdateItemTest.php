@@ -81,6 +81,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased Exclude gatewaySubscriptionId from non-editable fields
      * @since 4.8.0
      */
     public function testUpdateSubscriptionShouldNotUpdateNonEditableFields()
@@ -90,7 +91,6 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
         $originalCreatedAt = $subscription->createdAt;
         $originalMode = $subscription->mode->getValue();
         $originalGatewayId = $subscription->gatewayId;
-        $originalGatewaySubscriptionId = $subscription->gatewaySubscriptionId;
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
         $request = $this->createRequest('PUT', $route, [], 'administrator');
@@ -99,7 +99,6 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
             'createdAt' => '2024-01-01T00:00:00+00:00',
             'mode' => 'test',
             'gatewayId' => 'test_gateway',
-            'gatewaySubscriptionId' => 'test_subscription_id',
         ]);
 
         $response = $this->dispatchRequest($request);
@@ -110,11 +109,10 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals($originalId, $data['id']);
-        // createdAt is now formatted as ISO string, so we need to compare differently
         $this->assertIsString($data['createdAt']);
+        $this->assertEquals($originalCreatedAt->format('Y-m-d\TH:i:s'), $data['createdAt']);
         $this->assertEquals($originalMode, $data['mode']);
         $this->assertEquals($originalGatewayId, $data['gatewayId']);
-        $this->assertEquals($originalGatewaySubscriptionId, $data['gatewaySubscriptionId']);
     }
 
     /**
