@@ -2,7 +2,7 @@ import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPa
 import {__} from '@wordpress/i18n';
 import {useFormContext, useFormState} from 'react-hook-form';
 import {AsyncPaginate} from 'react-select-async-paginate';
-import styles from '../../styles.module.scss';
+import styles from './styles.module.scss';
 import {DonorOption} from './types';
 import {useDonorAsyncSelect} from './useDonorAsyncSelect';
 

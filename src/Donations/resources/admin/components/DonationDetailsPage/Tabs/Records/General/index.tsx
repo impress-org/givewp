@@ -1,6 +1,6 @@
 import { AdminSectionsWrapper } from '@givewp/components/AdminDetailsPage/AdminSection';
 import DonationDetails from './DonationDetails';
-import AssociatedDonor from './AssociatedDonor';
+import AssociatedDonor from '@givewp/admin/fields/AssociatedDonor';
 import BillingDetails from './BillingDetails';
 
 /**
