@@ -239,7 +239,7 @@ function give_get_country_list() {
 		'NR' => esc_html__( 'Nauru', 'give' ),
 		'NP' => esc_html__( 'Nepal', 'give' ),
 		'NL' => esc_html__( 'Netherlands', 'give' ),
-		'AN' => esc_html__( 'Netherlands Antilles', 'give' ),
+		'CW' => esc_html__( 'Curaçao', 'give' ),
 		'NC' => esc_html__( 'New Caledonia', 'give' ),
 		'NZ' => esc_html__( 'New Zealand', 'give' ),
 		'NI' => esc_html__( 'Nicaragua', 'give' ),
