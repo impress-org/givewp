@@ -7,6 +7,7 @@ import {Interweave} from 'interweave';
 import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
+import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 
 declare global {
     interface Window {
@@ -18,6 +19,7 @@ declare global {
             adminUrl: string;
             pluginUrl: string;
             dissedRecommendations: Array<string>;
+            recurringDonations: boolean;
         };
     }
 }
@@ -104,6 +106,35 @@ const recommendation = (
     <ProductRecommendations options={[RecommendationConfig.feeRecovery]} apiSettings={window.GiveDonors} />
 );
 
+/**
+ * Configuration for the statistic tiles rendered above the ListTable.
+ *
+ * IMPORTANT: Object keys MUST MATCH the keys returned by the API's `stats` payload.
+ * For example, if the API returns:
+ *
+ *   data.stats = {
+ *     donorsCount: number;
+ *     oneTimeDonorsCount: number;
+ *     recurringDonationsCount: number;
+ *   }
+ *
+ * then this config must use those same keys: "donorsCount", "oneTimeDonorsCount", "subscribersCount".
+ * Missing or mismatched keys will result in empty/undefined values in the UI.
+ *
+ * @unreleased
+ */
+const statsConfig: Record<string, StatConfig> = {
+    donorsCount: { label: __('Number of Donors', 'give')},
+    oneTimeDonorsCount: { label: __('One-Time Donors', 'give')},
+    subscribersCount: {
+        label: __('Subscribers', 'give'),
+        upgrade: !window.GiveDonors.recurringDonations && {
+            href: ' https://docs.givewp.com/recurring-stat',
+            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
+        }
+    },
+};
+
 export default function DonorsListTable() {
     return (
         <ListTablePage
@@ -116,6 +147,7 @@ export default function DonorsListTable() {
             filterSettings={donorsFilters}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={recommendation}
+            statsConfig={statsConfig}
         >
             <button className={`button button-tertiary ${styles.secondaryActionButton}`} onClick={showLegacyDonors}>
                 {__('Switch to Legacy View', 'give')}
