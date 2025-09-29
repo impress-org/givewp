@@ -65,20 +65,7 @@ class ListDonorStats extends Endpoint
         $totalDonors = DB::table('give_donors')->count();
     
         // Count donors who have made recurring donations
-        $recurringDonors = DB::table('posts')
-            ->where('post_type', 'give_payment')
-            ->where('post_status', 'publish')
-            ->attachMeta(
-                'give_donationmeta',
-                'ID',
-                'donation_id',
-                [DonationMetaKeys::DONOR_ID()->getValue(), DonationMetaKeys::DONOR_ID()->getKeyAsCamelCase()],
-                [DonationMetaKeys::SUBSCRIPTION_ID()->getValue(), DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()]
-            )
-            ->selectRaw('COUNT(DISTINCT give_donationmeta_attach_meta_donorId.meta_value) as count')
-            ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', '0', '<>')
-            ->get()
-            ->count;
+        $recurringDonors = DB::table('give_subscriptions')->count('DISTINCT customer_id');
     
         $oneTimeDonors = $totalDonors - $recurringDonors;
     
