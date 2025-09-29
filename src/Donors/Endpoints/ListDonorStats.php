@@ -77,7 +77,6 @@ class ListDonorStats extends Endpoint
             )
             ->selectRaw('COUNT(DISTINCT give_donationmeta_attach_meta_donorId.meta_value) as count')
             ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', '0', '<>')
-            ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', '0', '<>')
             ->get()
             ->count;
     
