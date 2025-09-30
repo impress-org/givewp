@@ -26,6 +26,7 @@ import TabsRouter from './Tabs/Router';
 import TabList from './Tabs/TabList';
 import TabPanels from './Tabs/TabPanels';
 import {AdminDetailsPageProps} from './types';
+import {prepareDefaultValuesFromSchema} from '@givewp/admin/utils';
 
 import './store';
 
@@ -37,7 +38,6 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     objectType,
     objectTypePlural,
     useObjectEntityRecord,
-    resetForm,
     shouldSaveForm,
     breadcrumbUrl,
     breadcrumbTitle,
@@ -51,6 +51,8 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
 }: AdminDetailsPageProps<T>) {
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [schema, setSchema] = useState<JSONSchemaType<any> | null>(null);
     const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
     const contextMenuButtonRef = useRef<HTMLButtonElement>(null);
     const contextMenuRef = useRef<HTMLDivElement>(null);
@@ -68,6 +70,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
             path: `/givewp/v3/${objectTypePlural}/${objectId}`,
             method: 'OPTIONS',
         }).then(({schema}: {schema: JSONSchemaType<any>}) => {
+            setSchema(schema);
             setResolver({
                 resolver: ajvResolver(schema),
             });
@@ -110,14 +113,12 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
 
     // Set default values when entity is loaded
     useEffect(() => {
-        if (hasResolved) {
-            if (resetForm) {
-                resetForm(reset);
-            } else {
-                reset(record);
-            }
+        if (hasResolved && schema && record) {
+            const preparedRecord = prepareDefaultValuesFromSchema(record, (schema as any)?.properties) as T;
+            reset(preparedRecord);
+            setIsLoading(false);
         }
-    }, [hasResolved]);
+    }, [hasResolved, !!schema, !!record]);
 
     const onSubmit: SubmitHandler<T> = async (data) => {
         const shouldSave = shouldSaveForm ? shouldSaveForm(formState.isDirty, data) : formState.isDirty;
@@ -130,7 +131,9 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                 // @ts-ignore
                 const response: T = await save();
                 setIsSaving(false);
-                reset(response);
+
+                const preparedRecord = prepareDefaultValuesFromSchema(response, (schema as any)?.properties) as T;
+                reset(preparedRecord);
 
                 dispatch.addSnackbarNotice({
                     id: `save-success`,
@@ -149,7 +152,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
         }
     };
 
-    if (!hasResolved) {
+    if (isLoading) {
         return (
             <div className={styles.loadingContainer}>
                 <div className={styles.loadingContainerContent}>
