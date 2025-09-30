@@ -12,7 +12,6 @@ import {
     processOptionsForMenu,
     createDonorQueryParams
 } from './utils';
-import { getDonationOptionsWindowData } from '@givewp/donations/utils';
 
 const DONORS_PER_PAGE = 30;
 
@@ -21,8 +20,7 @@ const DONORS_PER_PAGE = 30;
  *
  * @since 4.8.0
  */
-export function useDonorAsyncSelect(selectedDonorId: number | null): UseDonorAsyncSelectReturn {
-    const { mode } = getDonationOptionsWindowData();
+export function useDonorAsyncSelect(selectedDonorId: number | null, mode: 'test' | 'live'): UseDonorAsyncSelectReturn {
     const [page, setPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState<DonorOption | null>(null);
     const [error, setError] = useState<Error | null>(null);

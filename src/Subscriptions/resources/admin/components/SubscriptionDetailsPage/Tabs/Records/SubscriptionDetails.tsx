@@ -3,9 +3,9 @@ import { useFormState } from "react-hook-form";
 import { __ } from "@wordpress/i18n";
 import AdminSection, { AdminSectionField } from "@givewp/components/AdminDetailsPage/AdminSection";
 import StatusField from "@givewp/admin/fields/Status";
-import AssociatedDonor from '@givewp/admin/fields/AssociatedDonor';
+import AssociatedDonorField from '@givewp/admin/fields/AssociatedDonor';
 
-const { subscriptionStatuses } = getSubscriptionOptionsWindowData();
+const { subscriptionStatuses, mode } = getSubscriptionOptionsWindowData();
 
 /**
  * @unreleased
@@ -23,7 +23,12 @@ export default function SubscriptionDetails() {
                     <StatusField statusOptions={subscriptionStatuses} />
                 </AdminSectionField>
             </AdminSection>
-            <AssociatedDonor />
+            <AdminSection
+                title={__('Associated donor', 'give')}
+                description={__('Manage the donor connected to this donation', 'give')}
+            >
+                <AssociatedDonorField mode={mode} />
+            </AdminSection>
         </>
     );
 }

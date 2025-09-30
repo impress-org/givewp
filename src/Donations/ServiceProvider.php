@@ -29,7 +29,6 @@ use Give\Donations\Repositories\DonationRepository;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
-use Give\Subscriptions\SubscriptionsAdminPage;
 
 class ServiceProvider implements ServiceProviderInterface
 {
@@ -165,7 +164,7 @@ class ServiceProvider implements ServiceProviderInterface
     private function loadDonationAdminOptions()
     {
         add_action('admin_enqueue_scripts', function () {
-            if (DonationsAdminPage::isShowingDetailsPage() || SubscriptionsAdminPage::isShowing()) {
+            if (DonationsAdminPage::isShowingDetailsPage()) {
                 give(LoadDonationAdminOptions::class)();
             }
         });
