@@ -129,7 +129,7 @@ const statsConfig: Record<string, StatConfig> = {
     subscribersCount: {
         label: __('Subscribers', 'give'),
         upgrade: !window.GiveDonors.recurringDonationsEnabled && {
-            href: ' https://docs.givewp.com/recurring-stat',
+            href: 'https://docs.givewp.com/subscribers-stat',
             tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
         }
     },
