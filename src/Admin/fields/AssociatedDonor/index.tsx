@@ -6,27 +6,34 @@ import styles from './styles.module.scss';
 import {DonorOption} from './types';
 import {useDonorAsyncSelect} from './useDonorAsyncSelect';
 
+type AssociatedDonorProps = {
+    name: string;
+    mode: 'test' | 'live';
+    label: string;
+    description: string;
+}
+
 /**
- * @unreleased add mode prop
+ * @unreleased added name, label, description, and mode props
  * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.8.0 updated to async donor dropdown
  * @since 4.6.0
  */
-export default function AssociatedDonor({mode}: {mode: 'test' | 'live'}) {
+export default function AssociatedDonor({name, mode, label, description}: AssociatedDonorProps) {
     const {watch, setValue} = useFormContext();
     const {errors} = useFormState();
-    const donationDonorId = watch('donorId');
+    const donorId = watch(name);
 
-    const {selectedOption, loadOptions, mapOptionsForMenu, error} = useDonorAsyncSelect(donationDonorId || null, mode);
+    const {selectedOption, loadOptions, mapOptionsForMenu, error} = useDonorAsyncSelect(donorId || null, mode);
 
     const handleDonorChange = (selectedOption: DonorOption | null) => {
-        setValue('donorId', selectedOption?.value ?? null, {shouldDirty: true});
+        setValue(name, selectedOption?.value ?? null, {shouldDirty: true});
     };
 
     return (
-        <AdminSectionField error={errors.donorId?.message as string}>
-            <label htmlFor="donorId">{__('Donor', 'give')}</label>
-            <p className={styles.fieldDescription}>{__('Link the donation to the selected donor', 'give')}</p>
+        <AdminSectionField error={errors[name]?.message as string}>
+            <label htmlFor="donorId">{label}</label>
+            <p>{description}</p>
             {error ? (
                 <div role="alert" style={{color: 'var(--givewp-red-500)', fontSize: '0.875rem'}}>
                     {__('Error loading donors. Please try again.', 'give')}
