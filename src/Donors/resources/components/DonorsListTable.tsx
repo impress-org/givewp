@@ -19,7 +19,7 @@ declare global {
             adminUrl: string;
             pluginUrl: string;
             dissedRecommendations: Array<string>;
-            recurringdonationsEnabled: boolean;
+            recurringDonationsEnabled: boolean;
         };
     }
 }
@@ -128,7 +128,7 @@ const statsConfig: Record<string, StatConfig> = {
     oneTimeDonorsCount: { label: __('One-Time Donors', 'give')},
     subscribersCount: {
         label: __('Subscribers', 'give'),
-        upgrade: !window.GiveDonors.recurringdonationsEnabled && {
+        upgrade: !window.GiveDonors.recurringDonationsEnabled && {
             href: ' https://docs.givewp.com/recurring-stat',
             tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
         }

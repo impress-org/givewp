@@ -39,7 +39,7 @@ class LoadDonorsListTableAssets
             'adminUrl' => admin_url(),
             'pluginUrl' => GIVE_PLUGIN_URL,
             'dismissedRecommendations' => $this->getDismissedRecommendations(),
-            'recurringdonationsEnabled' => Utils::isPluginActive('give-recurring/give-recurring.php'),
+            'recurringDonationsEnabled' => Utils::isPluginActive('give-recurring/give-recurring.php'),
         ]);
 
         wp_enqueue_script($handleName);
