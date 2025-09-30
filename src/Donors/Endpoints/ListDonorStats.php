@@ -61,18 +61,20 @@ class ListDonorStats extends Endpoint
      */
     public function getDonorStatistics(): array
     {
-        // Count total donors from the donors table
-        $totalDonors = DB::table('give_donors')->count();
-    
-        // Count donors who have made recurring donations
-        $recurringDonors = DB::table('give_subscriptions')->count('DISTINCT customer_id');
-    
-        $oneTimeDonors = $totalDonors - $recurringDonors;
+        $query = DB::table('give_donors', 'donors')
+            ->leftJoin('give_subscriptions as subscriptions', 'donors.id', 'subscriptions.customer_id')
+            ->selectRaw('SELECT
+                COUNT(DISTINCT donors.id) as total_donors,
+                COUNT(DISTINCT subscriptions.customer_id) as recurring_donors,
+                COUNT(DISTINCT donors.id) - COUNT(DISTINCT subscriptions.customer_id) as one_time_donors
+            ');
+
+        $result = $query->get();
     
         return [
-            'donorsCount' => (int) $totalDonors,
-            'oneTimeDonorsCount' => (int) $oneTimeDonors,
-            'subscribersCount' => (int) $recurringDonors,
+            'donorsCount' => (int) $result->total_donors,
+            'oneTimeDonorsCount' => (int) $result->one_time_donors,
+            'subscribersCount' => (int) $result->recurring_donors,
         ];
     }
     
