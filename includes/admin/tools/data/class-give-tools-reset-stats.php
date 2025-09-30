@@ -49,7 +49,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Success message to display when reset is complete
 	 *
-	 * @since @unreleased
+	 * @unreleased
 	 * @var string
 	 */
 	public $message = '';
