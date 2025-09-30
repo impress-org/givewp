@@ -70,6 +70,15 @@ class ListDonorStats extends Endpoint
             ');
 
         $result = $query->get();
+
+         // Handle case when no results are found
+         if (!$result) {
+            return [
+                'donorsCount' => 0,
+                'oneTimeDonorsCount' => 0,
+                'subscribersCount' => 0,
+            ];
+        }       
     
         return [
             'donorsCount' => (int) $result->total_donors,
