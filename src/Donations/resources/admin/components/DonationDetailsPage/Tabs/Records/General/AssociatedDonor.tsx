@@ -15,7 +15,12 @@ export default function AssociatedDonor() {
             title={__('Associated donor', 'give')}
             description={__('Manage the donor connected to this donation', 'give')}
         >
-            <AssociatedDonorField mode={mode} />
+            <AssociatedDonorField
+                mode={mode}
+                name="donorId"
+                label={__('Donor', 'give')}
+                description={__('Link the donation to the selected donor', 'give')}
+            />
         </AdminSection>
     );
 }

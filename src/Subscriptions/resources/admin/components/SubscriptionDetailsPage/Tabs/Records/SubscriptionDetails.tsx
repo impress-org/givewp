@@ -25,9 +25,14 @@ export default function SubscriptionDetails() {
             </AdminSection>
             <AdminSection
                 title={__('Associated donor', 'give')}
-                description={__('Manage the donor connected to this donation', 'give')}
+                description={__('Manage the donor connected to this subscription', 'give')}
             >
-                <AssociatedDonorField mode={mode} />
+                <AssociatedDonorField
+                    name="donorId"
+                    mode={mode}
+                    label={__('Donor', 'give')}
+                    description={__('Link the subscription to the selected donor', 'give')}
+                />
             </AdminSection>
         </>
     );
