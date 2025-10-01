@@ -1,10 +1,10 @@
-import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
+import {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
 import {__} from '@wordpress/i18n';
 import {useFormContext, useFormState} from 'react-hook-form';
 import {AsyncPaginate} from 'react-select-async-paginate';
 import styles from './styles.module.scss';
 import {DonorOption} from './types';
-import {useDonorAsyncSelect} from './useDonorAsyncSelect';
+import useDonorAsyncSelectOptions from './useDonorAsyncSelectOptions';
 
 type AssociatedDonorProps = {
     name: string;
@@ -24,7 +24,7 @@ export default function AssociatedDonor({name, mode, label, description}: Associ
     const {errors} = useFormState();
     const donorId = watch(name);
 
-    const {selectedOption, loadOptions, mapOptionsForMenu, error} = useDonorAsyncSelect(donorId || null, mode);
+    const {selectedOption, loadOptions, mapOptionsForMenu, error} = useDonorAsyncSelectOptions(donorId, {mode});
 
     const handleDonorChange = (selectedOption: DonorOption | null) => {
         setValue(name, selectedOption?.value ?? null, {shouldDirty: true});
