@@ -16,6 +16,13 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
+ * Test class for ListDonorsStats endpoint.
+ * 
+ * Note: Both DonationFactory and SubscriptionFactory automatically create donors when creating
+ * donations and subscriptions respectively. This means we don't need to explicitly create donors
+ * using Donor::factory() - the factories handle donor creation internally via their definition()
+ * methods which include 'donorId' => Donor::factory()->create()->id.
+ * 
  * @unreleased
  */
 class TestListDonorsStats extends TestCase
@@ -27,16 +34,7 @@ class TestListDonorsStats extends TestCase
      */
     public function testShouldReturnCorrectStatisticsForMultipleOneTimeDonorsOnly()
     {
-        // Create 2 donors
-        $donors = Donor::factory()->count(2)->create();
-
-        // Add One-time Donations to each donor
-        foreach ($donors as $donor) {
-            Donation::factory()->create([
-                'donorId' => $donor->id,
-                'status' => DonationStatus::COMPLETE()
-            ]);
-        }
+        Donation::factory()->count(2)->create();
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donors/stats');
 
@@ -56,16 +54,7 @@ class TestListDonorsStats extends TestCase
      */
     public function testShouldReturnCorrectStatisticsForMultipleSubscriptionDonorsOnly()
     {
-        // Create 3 donors
-        $donors = Donor::factory()->count(3)->create();
-
-        // Add subscriptions with donations to each donor
-        foreach ($donors as $donor) {
-            Subscription::factory()->createWithDonation([
-                'donorId' => $donor->id,
-                'status' => SubscriptionStatus::ACTIVE()
-            ]);
-        }
+        Subscription::factory()->count(3)->create();
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donors/stats');
 
@@ -85,25 +74,8 @@ class TestListDonorsStats extends TestCase
      */
     public function testShouldReturnCorrectStatisticsForMultipleMixedDonorTypes()
     {
-        // Create 2 donors for one-time donations
-        $oneTimeDonors = Donor::factory()->count(2)->create();
-
-        // Add one-time donations to each donor
-        foreach ($oneTimeDonors as $donor) {
-            Donation::factory()->create([
-                'donorId' => $donor->id,
-                'status' => DonationStatus::COMPLETE()
-            ]);
-        }
-
-        // Create 2 donors for recurring donations
-        $recurringDonors = Donor::factory()->count(2)->create();
-        foreach ($recurringDonors as $donor) {
-            Subscription::factory()->createWithDonation([
-                'donorId' => $donor->id,
-                'status' => SubscriptionStatus::ACTIVE()
-            ]);
-        }
+        Donation::factory()->count(2)->create();
+        Subscription::factory()->count(2)->create();
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donors/stats');
 
@@ -134,24 +106,5 @@ class TestListDonorsStats extends TestCase
         $this->assertEquals(0, $data['donorsCount']);
         $this->assertEquals(0, $data['oneTimeDonorsCount']);
         $this->assertEquals(0, $data['subscribersCount']);
-    }
-
-    /**
-     * @unreleased
-     */
-    private function createSubscription(int $campaignId, ?DateTime $donationDate = null): Subscription
-    {
-        $subscription = Subscription::factory()->createWithDonation([
-            'status' => SubscriptionStatus::ACTIVE(),
-            'mode' => SubscriptionMode::LIVE(),
-        ]);
-
-        // Update the donation to have the correct campaignId
-        $donation = $subscription->initialDonation();
-        $donation->campaignId = $campaignId;
-        $donation->createdAt = $donationDate ?? new DateTime('now');
-        $donation->save();
-
-        return $subscription;
     }
 }
