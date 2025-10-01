@@ -19,8 +19,7 @@ class CampaignPermissions
     public static function canEdit(): bool
     {
         return current_user_can('manage_options') || 
-               current_user_can('edit_give_forms') || 
-               current_user_can('edit_posts');
+               current_user_can('edit_give_forms');
     }
 
     /**
@@ -31,8 +30,7 @@ class CampaignPermissions
     public static function canViewPrivate(): bool
     {
         return current_user_can('manage_options') || 
-               current_user_can('edit_give_forms') || 
-               current_user_can('edit_posts');
+               current_user_can('edit_give_forms');
     }
 
     /**
