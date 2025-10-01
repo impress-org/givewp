@@ -110,8 +110,10 @@ final class SubscriptionQueryData
         $self->status = new SubscriptionStatus($subscriptionQueryObject->status);
         $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
-        $self->campaignId = give()->campaigns->getByFormId((int)$subscriptionQueryObject->donationFormId)->id;
         $self->donationFormId = (int)$subscriptionQueryObject->donationFormId;
+
+        $campaign = give()->campaigns->getByFormId((int)$subscriptionQueryObject->donationFormId);
+        $self->campaignId = $campaign ? $campaign->id : null;
 
         return $self;
     }

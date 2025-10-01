@@ -200,8 +200,10 @@ class SubscriptionRepository
 
         $subscriptionId = DB::last_insert_id();
 
+        $campaign = $subscription->campaign()->get();
+
         $subscription->id = $subscriptionId;
-        $subscription->campaignId = give()->campaigns->getByFormId($subscription->donationFormId)->id;
+        $subscription->campaignId = $campaign ? $campaign->id : null;
         $subscription->createdAt = $dateCreated;
 
         Hooks::doAction('givewp_subscription_created', $subscription);
@@ -227,7 +229,8 @@ class SubscriptionRepository
         Hooks::doAction('givewp_subscription_updating', $subscription);
 
         if ($subscription->isDirty('donationFormId')) {
-            $subscription->campaignId = give()->campaigns->getByFormId($subscription->donationFormId)->id;
+            $campaign = $subscription->campaign()->get();
+            $subscription->campaignId = $campaign ? $campaign->id : null;
         }
 
         DB::query('START TRANSACTION');
