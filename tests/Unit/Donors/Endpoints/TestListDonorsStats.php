@@ -40,7 +40,7 @@ class TestListDonorsStats extends TestCase
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donors/stats');
 
-        $endpoint = new ListDonorStats();
+        $endpoint = new ListDonorsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
@@ -69,7 +69,7 @@ class TestListDonorsStats extends TestCase
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donors/stats');
 
-        $endpoint = new ListDonorStats();
+        $endpoint = new ListDonorsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
@@ -107,7 +107,7 @@ class TestListDonorsStats extends TestCase
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donors/stats');
 
-        $endpoint = new ListDonorStats();
+        $endpoint = new ListDonorsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
@@ -125,7 +125,7 @@ class TestListDonorsStats extends TestCase
     {
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/donors/stats');
 
-        $endpoint = new ListDonorStats();
+        $endpoint = new ListDonorsStats();
         $response = $endpoint->handleRequest($request);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
