@@ -1,6 +1,5 @@
 import {useAsyncSelectOptions} from '@givewp/admin/hooks/useAsyncSelectOption';
 import {Donor} from '@givewp/donors/admin/components/types';
-import {UseDonorAsyncSelectReturn} from '@givewp/admin/fields/AssociatedDonor/types';
 
 /**
  *
@@ -8,7 +7,7 @@ import {UseDonorAsyncSelectReturn} from '@givewp/admin/fields/AssociatedDonor/ty
  *
  * @unreleased
  */
-export default function useDonorAsyncSelectOptions(donorId: number, queryParams?: {}): UseDonorAsyncSelectReturn {
+export default function useDonorAsyncSelectOptions(donorId: number, queryParams?: {}) {
     return useAsyncSelectOptions({
         recordId: donorId || null,
         endpoint: '/givewp/v3/donors',

@@ -1,6 +1,7 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
+import {UseAsyncSelectOptionReturn} from '@givewp/admin/types';
 
 /**
  * Custom hook for handling async option selection with pagination and search
@@ -14,7 +15,7 @@ export function useAsyncSelectOptions({
     optionFormatter,
     queryParams,
     perPage = 30,
-}: AsyncSelectOptionsConfig) {
+}: AsyncSelectOptionsConfig): UseAsyncSelectOptionReturn {
     const [page, setPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState<Option | null>(null);
     const [error, setError] = useState<Error | null>(null);
