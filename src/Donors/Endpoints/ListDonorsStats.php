@@ -2,7 +2,6 @@
 
 namespace Give\Donors\Endpoints;
 
-use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -10,7 +9,7 @@ use WP_REST_Response;
 /**
  * @unreleased
  */
-class ListDonorStats extends Endpoint
+class ListDonorsStats extends Endpoint
 {
     /**
      * @var string

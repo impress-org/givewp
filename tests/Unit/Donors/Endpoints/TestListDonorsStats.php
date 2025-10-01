@@ -3,19 +3,15 @@
 namespace Give\Tests\Unit\Donors\Endpoints;
 
 use DateTime;
-use Give\Donors\Endpoints\ListDonorStats;
+use Give\Donors\Endpoints\ListDonorsStats;
 use Give\Donors\Models\Donor;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donations\ValueObjects\DonationType;
-use Give\Donations\ValueObjects\DonationMode;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
-use Give\Framework\Database\DB;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use Give\ValueObjects\Money;
 use WP_REST_Request;
 use WP_REST_Response;
 
