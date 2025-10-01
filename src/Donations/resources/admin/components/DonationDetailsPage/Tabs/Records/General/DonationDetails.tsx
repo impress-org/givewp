@@ -26,7 +26,8 @@ import CampaignFormField from '@givewp/admin/fields/CampaignForm';
 const {donationStatuses, campaignsWithForms, intlTelInputSettings} = getDonationOptionsWindowData();
 
 /**
- * @unreleased Extract Status, Campaign and Form fields to shared components
+ * @unreleased Extract Campaign and Form fields to shared components
+ * @since 4.10.0 replace Status field with admin Status component
  * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.6.0
  */

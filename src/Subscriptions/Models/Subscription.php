@@ -26,7 +26,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class Subscription
  *
- * @unreleased added campaignId property and campaign relationship
+ * @unreleased added campaignId property
+ * @since 4.10.0 added campaign relationship
  * @since 2.23.0 added the renewsAt property
  * @since 2.19.6
  *
@@ -367,7 +368,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      *
      * @return ModelQueryBuilder<Campaign>
      */

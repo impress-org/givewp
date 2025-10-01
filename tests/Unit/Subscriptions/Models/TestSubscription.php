@@ -200,7 +200,7 @@ class TestSubscription extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testSubscriptionShouldGetCampaign()
     {

@@ -25,7 +25,7 @@ class EnqueueFormBuilderAssets
     }
 
     /**
-     * @unreleased use formTaxonomySettings.css instead of style-formTaxonomySettings.css
+     * @since 4.10.0 use formTaxonomySettings.css instead of style-formTaxonomySettings.css
      * @since 3.16.0
      */
     public function __invoke()

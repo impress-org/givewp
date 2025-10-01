@@ -43,7 +43,7 @@ type Money = {
 };
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 type Form = {
     id: number;
@@ -51,7 +51,7 @@ type Form = {
 };
 
 /**
- * @unreleased added _embedded
+ * @since 4.10.0 added _embedded
  * @since 4.8.0
  */
 export type Subscription = {
