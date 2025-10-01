@@ -12,7 +12,7 @@ import styles from './styles.module.scss';
 export default function AsyncSelectOption({
     name,
     label,
-    description,
+    description = '',
     selectedOption,
     loadOptions,
     mapOptionsForMenu,
@@ -29,7 +29,7 @@ export default function AsyncSelectOption({
     return (
         <AdminSectionField error={errorMessage}>
             <label htmlFor={name}>{label}</label>
-            <p>{description}</p>
+            {description && <p>{description}</p>}
             {isLoadingError ? (
                 <div role="alert" style={{color: 'var(--givewp-red-500)', fontSize: '0.875rem'}}>
                     {loadingError}
@@ -58,7 +58,7 @@ export default function AsyncSelectOption({
 interface AsyncSelectOptionProps {
     name: string;
     label: string;
-    description: string;
+    description?: string;
     handleChange: (selectedOption: SelectOption) => void;
     selectedOption: SelectOption | null;
     loadOptions: (searchInput: string) => Promise<{
