@@ -31,8 +31,7 @@ class DonationFormsRequestController
             return new WP_REST_Response(__('Form not found', 'give'), 404);
         }
 
-        // Check if user can access this form based on its status
-        if ($form->status->getValue() !== DonationFormStatus::PUBLISHED && !DonationFormPermissions::canViewPrivate()) {
+        if (!$form->status->isPublished() && !DonationFormPermissions::canViewPrivate()) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to view this donation form.', 'give'),

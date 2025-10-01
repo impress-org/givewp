@@ -41,8 +41,7 @@ class CampaignRequestController
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
-        // Check if user can access this campaign based on its status
-        if ($campaign->status->getValue() !== CampaignStatus::ACTIVE && !CampaignPermissions::canViewPrivate()) {
+        if (!$campaign->status->isActive() && !CampaignPermissions::canViewPrivate()) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to view this campaign.', 'give'),
