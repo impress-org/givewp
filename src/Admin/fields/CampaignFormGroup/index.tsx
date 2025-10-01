@@ -12,44 +12,38 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import SelectField from './SelectField';
 import styles from './styles.module.scss';
-import { CampaignFormProps, SelectOption } from './types';
-import { formatCampaignOptions, formatFormOptions } from './utils';
 import AsyncSelectOption from '../AsyncSelectOption';
 import useCampaignAsyncSelectOptions from './useCampaignAsyncSelectOptions';
 import useFormAsyncSelectOptions from './useFormAsyncSelectOptions';
+import { SelectOption } from '@givewp/admin/types';
+
+type CampaignFormGroupProps = {
+    campaignIdFieldName: string;
+    formIdFieldName: string;
+}
 
 /**
  * @unreleased
  */
-export default function CampaignFormGroup({ campaignsWithForms, campaignIdFieldName, formIdFieldName }: CampaignFormProps) {
+export default function CampaignFormGroup({ campaignIdFieldName, formIdFieldName }: CampaignFormGroupProps) {
     const { watch, setValue } = useFormContext();
     const { errors } = useFormState();
     const campaignId = watch(campaignIdFieldName);
     const formId = watch(formIdFieldName);
 
-    useEffect(() => {
-        if (!campaignId) {
-            return;
-        }
-
-        const campaignFormIds = Object.keys(campaignsWithForms[campaignId]?.forms).map(Number);
-        if (!campaignFormIds.includes(formId)) {
-            setValue(formIdFieldName, Number(campaignsWithForms[campaignId]?.defaultFormId), { shouldDirty: true });
-        }
-    }, [campaignId]);
+    const { selectedOption: campaignSelectedOption, loadOptions: campaignLoadOptions, mapOptionsForMenu: campaignMapOptionsForMenu, error: campaignError } = useCampaignAsyncSelectOptions(campaignId);
+    const { selectedOption: formSelectedOption, loadOptions: formLoadOptions, mapOptionsForMenu: formMapOptionsForMenu, error: formError } = useFormAsyncSelectOptions(formId, campaignId);
 
     const handleCampaignChange = (selectedOption: SelectOption) => {
         setValue(campaignIdFieldName, selectedOption?.value ?? null, { shouldDirty: true });
+        setValue(formIdFieldName, selectedOption?.record?.defaultFormId ?? null, { shouldDirty: true });
     };
 
     const handleFormChange = (selectedOption: SelectOption) => {
         setValue(formIdFieldName, selectedOption?.value ?? null, { shouldDirty: true });
     };
 
-    const { selectedOption: campaignSelectedOption, loadOptions: campaignLoadOptions, mapOptionsForMenu: campaignMapOptionsForMenu, error: campaignError } = useCampaignAsyncSelectOptions(campaignId);
-    const { selectedOption: formSelectedOption, loadOptions: formLoadOptions, mapOptionsForMenu: formMapOptionsForMenu, error: formError } = useFormAsyncSelectOptions(formId, campaignId);
 
     return (
         <div className={styles.formRow}>

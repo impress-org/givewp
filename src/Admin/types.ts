@@ -15,6 +15,7 @@ export interface SchemaProperty {
 export interface SelectOption {
     value: number;
     label: string;
+    record?: any;
 }
 
 /**

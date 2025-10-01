@@ -14,6 +14,7 @@ export default function useCampaignAsyncSelectOptions(campaignId: number, queryP
             return {
                 value: record.id,
                 label: record.title,
+                record,
             };
         },
         queryParams: {
