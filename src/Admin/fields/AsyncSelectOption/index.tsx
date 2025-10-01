@@ -1,7 +1,7 @@
-import {__} from '@wordpress/i18n';
-import {AsyncPaginate} from 'react-select-async-paginate';
-import {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
-import {SelectOption} from '@givewp/admin/types';
+import { __ } from '@wordpress/i18n';
+import { AsyncPaginate } from 'react-select-async-paginate';
+import { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
+import { SelectOption } from '@givewp/admin/types';
 
 import styles from './styles.module.scss';
 
@@ -31,7 +31,7 @@ export default function AsyncSelectOption({
             <label htmlFor={name}>{label}</label>
             {description && <p>{description}</p>}
             {isLoadingError ? (
-                <div role="alert" style={{color: 'var(--givewp-red-500)', fontSize: '0.875rem'}}>
+                <div role="alert" style={{ color: 'var(--givewp-red-500)', fontSize: '0.875rem' }}>
                     {loadingError}
                 </div>
             ) : (

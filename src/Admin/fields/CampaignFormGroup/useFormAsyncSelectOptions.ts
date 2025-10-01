@@ -15,7 +15,7 @@ export default function useFormAsyncSelectOptions(formId: number, campaignId: nu
                 path: '/give-api/v2/admin/forms?search=' + formId + '&return=model',
             });
 
-            if (!form.items.length) {
+            if (!form?.items.length) {
                 setSelectedForm(null);
                 return;
             }

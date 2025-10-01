@@ -23,9 +23,9 @@ import useFormAsyncSelectOptions from './useFormAsyncSelectOptions';
 /**
  * @unreleased
  */
-export default function CampaignFormGroup({campaignsWithForms, campaignIdFieldName, formIdFieldName}: CampaignFormProps) {
-    const {watch, setValue} = useFormContext();
-    const {errors} = useFormState();
+export default function CampaignFormGroup({ campaignsWithForms, campaignIdFieldName, formIdFieldName }: CampaignFormProps) {
+    const { watch, setValue } = useFormContext();
+    const { errors } = useFormState();
     const campaignId = watch(campaignIdFieldName);
     const formId = watch(formIdFieldName);
 
@@ -36,20 +36,20 @@ export default function CampaignFormGroup({campaignsWithForms, campaignIdFieldNa
 
         const campaignFormIds = Object.keys(campaignsWithForms[campaignId]?.forms).map(Number);
         if (!campaignFormIds.includes(formId)) {
-            setValue(formIdFieldName, Number(campaignsWithForms[campaignId]?.defaultFormId), {shouldDirty: true});
+            setValue(formIdFieldName, Number(campaignsWithForms[campaignId]?.defaultFormId), { shouldDirty: true });
         }
     }, [campaignId]);
 
     const handleCampaignChange = (selectedOption: SelectOption) => {
-        setValue(campaignIdFieldName, selectedOption?.value ?? null, {shouldDirty: true});
+        setValue(campaignIdFieldName, selectedOption?.value ?? null, { shouldDirty: true });
     };
 
     const handleFormChange = (selectedOption: SelectOption) => {
-        setValue(formIdFieldName, selectedOption?.value ?? null, {shouldDirty: true});
+        setValue(formIdFieldName, selectedOption?.value ?? null, { shouldDirty: true });
     };
 
-    const {selectedOption: campaignSelectedOption, loadOptions: campaignLoadOptions, mapOptionsForMenu: campaignMapOptionsForMenu, error: campaignError} = useCampaignAsyncSelectOptions(campaignId);
-    const {selectedOption: formSelectedOption, loadOptions: formLoadOptions, mapOptionsForMenu: formMapOptionsForMenu, error: formError} = useFormAsyncSelectOptions(formId, campaignId);
+    const { selectedOption: campaignSelectedOption, loadOptions: campaignLoadOptions, mapOptionsForMenu: campaignMapOptionsForMenu, error: campaignError } = useCampaignAsyncSelectOptions(campaignId);
+    const { selectedOption: formSelectedOption, loadOptions: formLoadOptions, mapOptionsForMenu: formMapOptionsForMenu, error: formError } = useFormAsyncSelectOptions(formId, campaignId);
 
     return (
         <div className={styles.formRow}>

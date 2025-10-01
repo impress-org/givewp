@@ -105,7 +105,7 @@ export type AsyncSelectOptionsConfig = {
     recordId: number | null;
     entity: string;
     selectedOptionRecord: any;
-    recordsFormatter: (records: any) => any;
+    recordsFormatter?: (records: any) => any;
     optionFormatter: (record: any) => Option;
     endpoint: string;
     queryParams: {};
