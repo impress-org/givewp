@@ -7,7 +7,7 @@ import StatusField from "@givewp/admin/fields/Status";
 const { subscriptionStatuses } = getSubscriptionOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export default function SubscriptionDetails() {
     const {errors} = useFormState();
@@ -18,7 +18,7 @@ export default function SubscriptionDetails() {
             description={__('This includes the subscription information', 'give')}
         >
             <AdminSectionField error={errors.status?.message as string}>
-                <StatusField statusOptions={subscriptionStatuses} />  
+                <StatusField statusOptions={subscriptionStatuses} />
             </AdminSectionField>
         </AdminSection>
     );

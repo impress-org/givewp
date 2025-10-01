@@ -18,7 +18,7 @@ class DonationActions extends Endpoint
     /**
      * @inheritDoc
      *
-     * @unreleased Add force parameter to delete action
+     * @since 4.10.0 Add force parameter to delete action
      */
     public function registerRoute()
     {
@@ -98,7 +98,7 @@ class DonationActions extends Endpoint
     }
 
     /**
-     * @unreleased Add force parameter to delete action
+     * @since 4.10.0 Add force parameter to delete action
      * @since 4.3.1 add permissions check for delete
      * @since 2.20.0
      *

@@ -32,7 +32,7 @@ export type Donor = {
 export type DonorStatus = 'current' | 'prospective' | 'retained' | 'lapsed' | 'new' | 'recaptured' | 'recurring';
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export type CustomField = {
     label: string;

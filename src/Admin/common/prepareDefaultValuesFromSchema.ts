@@ -1,7 +1,7 @@
 import { SchemaProperty } from '../types';
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export function prepareDefaultValuesFromSchema(
     record: Record<string, any>,

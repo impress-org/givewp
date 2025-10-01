@@ -49,7 +49,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Success message to display when reset is complete
 	 *
-	 * @unreleased
+	 * @since 4.10.0
 	 * @var string
 	 */
 	public $message = '';
@@ -67,7 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
-	 * @unreleased Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
+	 * @since 4.10.0 Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
@@ -248,7 +248,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Return the calculated completion percentage.
 	 *
-	 * @unreleased Check if items are set before counting to prevent fatal errors on PHP 8
+	 * @since 4.10.0 Check if items are set before counting to prevent fatal errors on PHP 8
 	 * @since 1.5
 	 * @return int
 	 */
@@ -283,7 +283,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Process a step
 	 *
-	 * @unreleased Updated success message
+	 * @since 4.10.0 Updated success message
 	 * @since 1.5
 	 * @return bool
 	 */
