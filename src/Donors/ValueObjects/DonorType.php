@@ -5,7 +5,7 @@ namespace Give\Donors\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
- * @unreleased Updated labels
+ * @since 4.10.0 Updated labels
  * @since 2.19.6
  *
  * @method static DonorType NEW()

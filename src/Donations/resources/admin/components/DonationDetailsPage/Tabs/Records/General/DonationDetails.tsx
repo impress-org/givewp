@@ -26,7 +26,7 @@ import StatusField from '@givewp/admin/fields/Status';
 const {donationStatuses, campaignsWithForms, intlTelInputSettings} = getDonationOptionsWindowData();
 
 /**
- * @unreleased replace Status field with admin Status component
+ * @since 4.10.0 replace Status field with admin Status component
  * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.6.0
  */

@@ -4,7 +4,7 @@ import {Donor} from '@givewp/donors/admin/components/types';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export default function DonorCard({donor}: {donor: Donor}) {
 

@@ -13,7 +13,7 @@ import styles from './styles.module.scss';
 import { getSubscriptionEmbeds } from '@givewp/subscriptions/common';
 
 /**
- * @unreleased removed donation
+ * @since 4.10.0 removed donation
  * @since 4.8.0
  */
 type SubscriptionSummaryGridProps = {
@@ -22,7 +22,7 @@ type SubscriptionSummaryGridProps = {
 };
 
 /**
- * @unreleased removed donation dependency
+ * @since 4.10.0 removed donation dependency
  * @since 4.8.0
  */
 export default function SubscriptionSummaryGrid({subscription, isLoading}: SubscriptionSummaryGridProps) {

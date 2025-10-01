@@ -4,7 +4,7 @@ import {Campaign} from '@givewp/campaigns/admin/components/types';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export default function CampaignCard({campaign}: {campaign: Campaign}) {
 
