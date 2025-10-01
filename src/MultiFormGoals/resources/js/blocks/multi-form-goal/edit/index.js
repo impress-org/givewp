@@ -7,7 +7,7 @@ const {InnerBlocks} = wp.blockEditor;
 const {useEffect} = wp.element;
 const {select, dispatch} = wp.data;
 
-const edit = ({isSelected, clientId}) => {
+const Edit = ({isSelected, clientId}) => {
     // When adding a new Multi-Form Goal block, select the inner Progress Bar block by default
     useEffect(() => {
         if (isSelected) {
@@ -54,4 +54,4 @@ const edit = ({isSelected, clientId}) => {
         </div>
     );
 };
-export default edit;
+export default Edit;

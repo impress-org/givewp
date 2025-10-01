@@ -37,11 +37,18 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
     const {id, blockId, displayStyle, continueButtonTitle} = attributes as DonationFormBlockAttributes;
     const {formOptions, isResolving} = useFormOptions();
     const [showPreview, setShowPreview] = useState<boolean>(!!id);
+    const blockProps = useBlockProps();
 
     const handleSelect = (id) => {
         setAttributes({id});
         setShowPreview(true);
     };
+
+      const [isLegacyForm, isLegacyTemplate, link] = (() => {
+          const form = formOptions.find((form) => form.value === id);
+
+          return [form?.isLegacyForm, form?.isLegacyTemplate, form?.link];
+      })();
 
     useEffect(() => {
         if (!blockId) {
@@ -51,24 +58,18 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
         if (!isLegacyForm && displayStyle === 'reveal') {
             setAttributes({displayStyle: 'modal'});
         }
-    }, []);
-
-    const [isLegacyForm, isLegacyTemplate, link] = (() => {
-        const form = formOptions.find((form) => form.value === id);
-
-        return [form?.isLegacyForm, form?.isLegacyTemplate, form?.link];
-    })();
+    }, [isLegacyForm, displayStyle, blockId, clientId]);
 
     if (isResolving !== false) {
         return (
-            <div {...useBlockProps()}>
+            <div {...blockProps}>
                 <p>{__('Loading...', 'give')}</p>
             </div>
         );
     }
 
     return (
-        <div {...useBlockProps()}>
+        <div {...blockProps}>
             {id && showPreview ? (
                 <>
                     <DonationFormBlockControls

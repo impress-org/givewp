@@ -8,7 +8,7 @@ import './styles.scss';
  * @since 3.14.0
  * Creates a portal to the Top Level document, rendering children elements within an iframe.
  */
-export default function createIframePortal(children, targetElement = window.top.document.body) {
+export default function IframePortalWrapper({children, targetElement = window.top.document.body}: {children: React.ReactNode, targetElement: HTMLElement}) {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
     const rootRef = useRef<any>(null);
 

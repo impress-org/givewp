@@ -15,10 +15,10 @@ const excludeFromTemplateWrapper = ['hidden', 'honeypot'];
 function FieldNode({node}: {node: Field}) {
     const {register} = window.givewp.form.hooks.useFormContext();
     const {errors} = window.givewp.form.hooks.useFormState();
-    const Field =
-        !excludeFromTemplateWrapper.includes(node.type)
-            ? useTemplateWrapper<FieldProps>(formTemplates.fields[node.type], 'div', node.name)
-            : formTemplates.fields[node.type];
+    const FieldWithTemplateWrapper = useTemplateWrapper<FieldProps>(formTemplates.fields[node.type], 'div', node.name);
+    const FieldWithoutTemplateWrapper = formTemplates.fields[node.type];
+    const Field = !excludeFromTemplateWrapper.includes(node.type) ? FieldWithTemplateWrapper : FieldWithoutTemplateWrapper;
+
     const fieldProps = registerFieldAndBuildProps(node, register, errors);
 
     return <Field key={node.name} {...fieldProps} />;
