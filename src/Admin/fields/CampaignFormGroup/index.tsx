@@ -24,7 +24,7 @@ import useFormAsyncSelectOptions from './useFormAsyncSelectOptions';
  * @unreleased
  */
 export default function CampaignFormGroup({campaignsWithForms, campaignIdFieldName, formIdFieldName}: CampaignFormProps) {
-    const {watch, setValue, control} = useFormContext();
+    const {watch, setValue} = useFormContext();
     const {errors} = useFormState();
     const campaignId = watch(campaignIdFieldName);
     const formId = watch(formIdFieldName);
@@ -39,11 +39,6 @@ export default function CampaignFormGroup({campaignsWithForms, campaignIdFieldNa
             setValue(formIdFieldName, Number(campaignsWithForms[campaignId]?.defaultFormId), {shouldDirty: true});
         }
     }, [campaignId]);
-
-    const campaignForms = campaignsWithForms[campaignId]?.forms;
-
-    const campaignOptions = formatCampaignOptions(campaignsWithForms);
-    const formOptions = formatFormOptions(campaignForms);
 
     const handleCampaignChange = (selectedOption: SelectOption) => {
         setValue(campaignIdFieldName, selectedOption?.value ?? null, {shouldDirty: true});
