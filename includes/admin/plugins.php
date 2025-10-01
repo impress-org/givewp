@@ -451,7 +451,7 @@ function give_get_recently_activated_addons() {
  * Renders the Give Deactivation Survey Form.
  * Note: only for internal use
  *
- * @unreleased Updated the icon path to the new build directory.
+ * @since 4.10.0 Updated the icon path to the new build directory.
  * @since 2.2
  */
 function give_deactivation_popup() {

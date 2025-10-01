@@ -6,7 +6,7 @@ import { useFormContext, useFormState } from "react-hook-form";
 import styles from "./styles.module.scss";
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export default function Status({statusOptions}: {statusOptions: Record<string, string>}) {
     const {register, watch} = useFormContext();
@@ -35,6 +35,6 @@ export default function Status({statusOptions}: {statusOptions: Record<string, s
                     {__('This will not change the status at the gateway.', 'give')}
                 </Notice>
             )}
-        </AdminSectionField>            
+        </AdminSectionField>
     );
 }

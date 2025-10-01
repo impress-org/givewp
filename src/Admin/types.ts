@@ -1,7 +1,7 @@
 /**
  * Schema property interface for filtering read-only fields
  *
- * @unreleased
+ * @since 4.10.0
  */
 export interface SchemaProperty {
     readOnly?: boolean;

@@ -220,7 +220,7 @@ const rotatingRecommendation = (
  * then this config must use those same keys: "donationsCount", "oneTimeDonationsCount", "recurringDonationsCount".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
- * @unreleased
+ * @since 4.10.0
  */
 const statsConfig: Record<string, StatConfig> = {
     donationsCount: { label: __('Total Donations', 'give')},
@@ -235,7 +235,7 @@ const statsConfig: Record<string, StatConfig> = {
 };
 
 /**
- * @unreleased Update button class names and add aria attributes.
+ * @since 4.10.0 Update button class names and add aria attributes.
  * @since 2.24.0
  */
 export default function DonationsListTable() {

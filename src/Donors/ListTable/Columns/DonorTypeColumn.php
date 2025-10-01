@@ -36,7 +36,7 @@ class DonorTypeColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Removed icon
+     * @since 4.10.0 Removed icon
      * @since 2.24.0
      *
      * @inheritDoc

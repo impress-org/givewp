@@ -8,7 +8,7 @@ import AssociatedDonorField from '@givewp/admin/fields/AssociatedDonor';
 const { subscriptionStatuses, mode } = getSubscriptionOptionsWindowData();
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export default function SubscriptionDetails() {
     const {errors} = useFormState();

@@ -1,7 +1,7 @@
 import {Subscription} from '@givewp/subscriptions/admin/components/types';
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export default function getSubscriptionEmbeds(subscription: Subscription) {
     return {

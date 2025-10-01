@@ -210,7 +210,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @since unreleased
+     * @since 4.10.0
      */
     public function getSchema(): array
     {

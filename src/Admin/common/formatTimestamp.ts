@@ -1,5 +1,5 @@
 /**
- * @since unreleased
+ * @since 4.10.0
  */
 export function formatTimestamp(timestamp: string | null | undefined, useComma: boolean = false): string {
     // Handle null, undefined, or empty string

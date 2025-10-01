@@ -36,7 +36,7 @@ class SubscriptionDonationTypeColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Updated badge classname
+     * @since 4.10.0 Updated badge classname
      * @since 4.8.0
      *
      * @inheritDoc

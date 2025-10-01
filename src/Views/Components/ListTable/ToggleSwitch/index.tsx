@@ -8,7 +8,7 @@ interface ToggleSwitchProps {
 }
 
 /**
- * @unreleased Remove checkbox to control state visibility.
+ * @since 4.10.0 Remove checkbox to control state visibility.
  * @since 2.24.0
  */
 const ToggleSwitch = ({ariaLabel, checked, onChange}: ToggleSwitchProps) => {

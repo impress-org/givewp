@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.9.0
+Stable tag: 4.10.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.10.0: October 1st, 2025 =
+* New: The admin list tables have been upgraded to a new design with various enhancements!
+* New: The admin donations list table now displays quick stats
+* Enhancement: Improved the currency validation for donation forms
+* Fix: Resolved an issue where editing an option-based form was resetting various settings
+* Fix: Resolved various issues with deactiving and deleting GiveWP
+* Fix: Resolved occasional 404 console log errors in the new subscription detail screen
+* Dev: Added a sidebar slot fill to the donor details screen
 
 = 4.9.0: September 17th, 2025 =
 * New: Added MCP server integration with compatibility for Angie by Elementor

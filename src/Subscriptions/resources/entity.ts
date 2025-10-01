@@ -3,7 +3,7 @@ import { dispatch } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 
 /**
- * @unreleased added _embed
+ * @since 4.10.0 added _embed
  * @since 4.8.0
  */
 //@ts-ignore
