@@ -21,7 +21,7 @@ import styles from '../styles.module.scss';
 // TODO: Move to shared components
 import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 import StatusField from '@givewp/admin/fields/Status';
-import CampaignFormField from '@givewp/admin/fields/CampaignForm';
+import CampaignFormField from '@givewp/admin/fields/CampaignFormGroup';
 
 const {donationStatuses, campaignsWithForms, intlTelInputSettings} = getDonationOptionsWindowData();
 

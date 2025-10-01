@@ -4,7 +4,7 @@ import { __ } from "@wordpress/i18n";
 import AdminSection, { AdminSectionField } from "@givewp/components/AdminDetailsPage/AdminSection";
 import StatusField from "@givewp/admin/fields/Status";
 import AssociatedDonorField from '@givewp/admin/fields/AssociatedDonor';
-import CampaignFormField from "@givewp/admin/fields/CampaignForm";
+import CampaignFormField from "@givewp/admin/fields/CampaignFormGroup";
 
 const { subscriptionStatuses, campaignsWithForms, mode } = getSubscriptionOptionsWindowData();
 
