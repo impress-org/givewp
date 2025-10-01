@@ -1,5 +1,4 @@
 import {useCallback, useEffect, useState} from 'react';
-import {useEntityRecord} from '@wordpress/core-data';
 import apiFetch from '@wordpress/api-fetch';
 import {UseAsyncSelectOptionReturn} from '@givewp/admin/types';
 
@@ -11,27 +10,32 @@ import {UseAsyncSelectOptionReturn} from '@givewp/admin/types';
 export function useAsyncSelectOptions({
     recordId,
     entity,
+    selectedOptionRecord,
     endpoint,
+    recordsFormatter = (records: any) => records,
     optionFormatter,
     queryParams,
     perPage = 30,
+    resetOnChange = false,
 }: AsyncSelectOptionsConfig): UseAsyncSelectOptionReturn {
     const [page, setPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState<Option | null>(null);
     const [error, setError] = useState<Error | null>(null);
 
-    const {
-        record,
-        hasResolved,
-    } = useEntityRecord<string[]>('givewp', entity, recordId);
+    // Reset page when reset property changes
+    useEffect(() => {
+        if (resetOnChange !== undefined) {
+            setPage(0);
+        }
+    }, [resetOnChange]);
 
     useEffect(() => {
-        if (hasResolved && record && recordId) {
-            setSelectedOption(optionFormatter(record));
+        if (selectedOptionRecord && recordId) {
+            setSelectedOption(optionFormatter(selectedOptionRecord));
         } else if (!recordId) {
             setSelectedOption(null);
         }
-    }, [record, hasResolved, recordId]);
+    }, [selectedOptionRecord, recordId]);
 
     // Load options function for AsyncPaginate
     const loadOptions = useCallback(async (searchInput: string) => {
@@ -47,9 +51,9 @@ export function useAsyncSelectOptions({
         setError(null);
 
         try {
-            const records = await apiFetch<[]>({
+            const records = recordsFormatter(await apiFetch<[]>({
                 path: `${endpoint}?${params.toString()}`,
-            });
+            }));
 
             const newOptions = (records || []).map(optionFormatter);
 
@@ -100,10 +104,13 @@ export type Option = {
 export type AsyncSelectOptionsConfig = {
     recordId: number | null;
     entity: string;
+    selectedOptionRecord: any;
+    recordsFormatter: (records: any) => any;
     optionFormatter: (record: any) => Option;
     endpoint: string;
     queryParams: {};
     perPage?: number;
+    resetOnChange?: any;
 }
 
 export function filterOptionsForSelect(options: Option[], selectedOption: Option | null): Option[] {

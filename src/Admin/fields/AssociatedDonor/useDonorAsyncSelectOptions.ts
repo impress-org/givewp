@@ -1,5 +1,6 @@
-import {useAsyncSelectOptions} from '@givewp/admin/hooks/useAsyncSelectOption';
-import {Donor} from '@givewp/donors/admin/components/types';
+import { useAsyncSelectOptions } from '@givewp/admin/hooks/useAsyncSelectOption';
+import { Donor } from '@givewp/donors/admin/components/types';
+import { useEntityRecord } from '@wordpress/core-data';
 
 /**
  *
@@ -8,10 +9,13 @@ import {Donor} from '@givewp/donors/admin/components/types';
  * @unreleased
  */
 export default function useDonorAsyncSelectOptions(donorId: number, queryParams?: {}) {
+    const { record } = useEntityRecord<string[]>('givewp', 'donor', donorId);
+
     return useAsyncSelectOptions({
         recordId: donorId || null,
-        endpoint: '/givewp/v3/donors',
         entity: 'donor',
+        selectedOptionRecord: record,
+        endpoint: '/givewp/v3/donors',
         optionFormatter: (record: Donor) => {
             return {
                 value: record.id,
