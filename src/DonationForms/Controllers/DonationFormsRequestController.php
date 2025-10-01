@@ -6,8 +6,11 @@ use Exception;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Routes\Permissions\DonationFormPermissions;
+use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\DonationFormsRoute;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -17,14 +20,24 @@ use WP_REST_Response;
 class DonationFormsRequestController
 {
     /**
+     * @unreleased Added status check to ensure non-authorized users can only access published forms
      * @since 4.2.0
      */
-    public function getForm(WP_REST_Request $request): WP_REST_Response
+    public function getForm(WP_REST_Request $request)
     {
         $form = DonationForm::find($request->get_param('id'));
 
         if ( ! $form) {
             return new WP_REST_Response(__('Form not found', 'give'), 404);
+        }
+
+        // Check if user can access this form based on its status
+        if ($form->status->getValue() !== DonationFormStatus::PUBLISHED && !DonationFormPermissions::canViewPrivate()) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to view this donation form.', 'give'),
+                ['status' => DonationFormPermissions::authorizationStatusCode()]
+            );
         }
 
         return new WP_REST_Response($form->toArray());
