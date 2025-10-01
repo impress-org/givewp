@@ -1,13 +1,14 @@
 import {useAsyncSelectOptions} from '@givewp/admin/hooks/useAsyncSelectOption';
 import {Donor} from '@givewp/donors/admin/components/types';
+import {UseDonorAsyncSelectReturn} from '@givewp/admin/fields/AssociatedDonor/types';
 
 /**
  *
- * Custom hook used to fetch donors
+ * Wrapper for custom hook used to fetch donors select options
  *
  * @unreleased
  */
-export default function useDonorAsyncSelect(donorId: number | null) {
+export default function useDonorAsyncSelectOptions(donorId: number, queryParams?: {}): UseDonorAsyncSelectReturn {
     return useAsyncSelectOptions({
         recordId: donorId || null,
         endpoint: '/givewp/v3/donors',
@@ -21,9 +22,10 @@ export default function useDonorAsyncSelect(donorId: number | null) {
         queryParams: {
             sort: 'name',
             direction: 'ASC',
-            includeSensitiveData: 'true',
+            includeSensitiveData: true,
             anonymousDonors: 'include',
-            onlyWithDonations: 'false',
+            onlyWithDonations: false,
+            ...queryParams,
         },
     });
 }
