@@ -4,7 +4,7 @@ import {useFormContext, useFormState} from 'react-hook-form';
 import {AsyncPaginate} from 'react-select-async-paginate';
 import styles from '../../styles.module.scss';
 import {DonorOption} from './types';
-import {useDonorAsyncSelect} from './useDonorAsyncSelect';
+import useDonorAsyncSelect from './useDonorAsyncSelect';
 
 /**
  * @since 4.9.0 Add error prop to all AdminSectionField components
@@ -16,7 +16,7 @@ export default function AssociatedDonor() {
     const {errors} = useFormState();
     const donationDonorId = watch('donorId');
 
-    const {selectedOption, loadOptions, mapOptionsForMenu, error} = useDonorAsyncSelect(donationDonorId || null);
+    const {selectedOption, loadOptions, mapOptionsForMenu, error} = useDonorAsyncSelect(donationDonorId);
 
     const handleDonorChange = (selectedOption: DonorOption | null) => {
         setValue('donorId', selectedOption?.value ?? null, {shouldDirty: true});
