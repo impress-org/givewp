@@ -39,8 +39,8 @@ export default function useFormAsyncSelectOptions(formId: number, campaignId: nu
             };
         },
         queryParams: {
-            sort: 'name',
-            direction: 'ASC',
+            sortColumn: 'title',
+            sortDirection: 'asc',
             return: 'model',
             campaignId,
             ...queryParams,
