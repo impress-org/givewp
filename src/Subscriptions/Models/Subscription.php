@@ -32,7 +32,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @since 2.19.6
  *
  * @property int $id
- * @property int $campaignId
+ * @property ?int $campaignId
  * @property int $donationFormId
  * @property DateTime $createdAt
  * @property DateTime $renewsAt The date the subscription will renew next
