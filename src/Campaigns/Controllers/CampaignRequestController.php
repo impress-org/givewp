@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Controllers;
 
 use Exception;
+use Give\API\REST\V3\Routes\Campaigns\Permissions\CampaignPermissions;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
@@ -27,6 +28,7 @@ use WP_REST_Response;
 class CampaignRequestController
 {
     /**
+     * @since 4.10.1 Added status check to ensure non-authorized users can only access active campaigns
      * @since 4.0.0
      *
      * @return WP_Error | WP_REST_Response
@@ -37,6 +39,14 @@ class CampaignRequestController
 
         if ( ! $campaign) {
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+        }
+
+        if (!$campaign->status->isActive() && !CampaignPermissions::canViewPrivate()) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to view this campaign.', 'give'),
+                ['status' => CampaignPermissions::authorizationStatusCode()]
+            );
         }
 
         return new WP_REST_Response((new CampaignViewModel($campaign))->exports());

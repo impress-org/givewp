@@ -3,6 +3,7 @@
 namespace Give\API\REST\V3\Routes\Campaigns;
 
 use DateTime;
+use Give\API\REST\V3\Routes\Campaigns\Permissions\CampaignPermissions;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Controllers\CampaignRequestController;
 use WP_REST_Request;
@@ -43,6 +44,7 @@ class RegisterCampaignRoutes
     /**
      * Get Campaign route
      *
+     * @since 4.10.1 Changed permission callback to use validationForGetItem method
      * @since 4.9.0 Add missing schema key to the route level
      * @since 4.0.0
      */
@@ -57,8 +59,8 @@ class RegisterCampaignRoutes
                     'callback' => function (WP_REST_Request $request) {
                         return $this->campaignRequestController->getCampaign($request);
                     },
-                    'permission_callback' => function () {
-                        return '__return_true';
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        return CampaignPermissions::validationForGetItem($request);
                     },
                 ],
                 'args' => [
@@ -75,6 +77,7 @@ class RegisterCampaignRoutes
     /**
      * Get Campaigns route
      *
+     * @since 4.10.1 Changed permission callback to use validationForGetItems method
      * @since 4.0.0
      */
     public function registerGetCampaigns()
@@ -88,7 +91,9 @@ class RegisterCampaignRoutes
                     'callback' => function (WP_REST_Request $request) {
                         return $this->campaignRequestController->getCampaigns($request);
                     },
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        return CampaignPermissions::validationForGetItems($request);
+                    },
                 ],
                 'args' => [
                     'status' => [
@@ -115,7 +120,7 @@ class RegisterCampaignRoutes
                         'maximum' => 100,
                     ],
                     'sortBy' => [
-                        'type' => 'enum',
+                        'type' => 'string',
                         'enum' => [
                             'date',
                             'amount',
@@ -125,7 +130,7 @@ class RegisterCampaignRoutes
                         'default' => 'date',
                     ],
                     'orderBy' => [
-                        'type' => 'enum',
+                        'type' => 'string',
                         'enum' => [
                             'asc',
                             'desc',
