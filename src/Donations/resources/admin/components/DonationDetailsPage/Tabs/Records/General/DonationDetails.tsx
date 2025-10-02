@@ -3,7 +3,6 @@
  */
 import {CurrencyControl} from '@givewp/form-builder-library';
 import {CurrencyCode} from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
-import {useEffect} from 'react';
 
 /**
  * WordPress dependencies
@@ -18,12 +17,12 @@ import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPa
 import {formatDateTimeLocal} from '@givewp/components/AdminDetailsPage/utils';
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from '../styles.module.scss';
-// TODO: Move to shared components
-import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 import StatusField from '@givewp/admin/fields/Status';
 import CampaignFormField from '@givewp/admin/fields/CampaignFormGroup';
+// TODO: Move to shared components
+import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 
-const {donationStatuses, campaignsWithForms, intlTelInputSettings} = getDonationOptionsWindowData();
+const {donationStatuses, intlTelInputSettings} = getDonationOptionsWindowData();
 
 /**
  * @unreleased Extract Campaign and Form fields to shared components
@@ -91,7 +90,6 @@ export default function DonationDetails() {
                 </AdminSectionField>
 
                 <CampaignFormField
-                    campaignsWithForms={campaignsWithForms}
                     campaignIdFieldName="campaignId"
                     formIdFieldName="formId"
                 />

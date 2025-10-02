@@ -22,15 +22,6 @@ export type GiveSubscriptionOptions = {
     isRecurringEnabled: boolean;
     isFeeRecoveryEnabled: boolean;
     subscriptionStatuses: { [statusCode: string]: string };
-    campaignsWithForms: {
-        [campaignId: string]: {
-            title: string;
-            defaultFormId: string;
-            forms: {
-                [formId: string]: string;
-            };
-        };
-    };
     mode: 'test' | 'live';
     gateways: Gateway[];
 }

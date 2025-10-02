@@ -6,7 +6,7 @@ import StatusField from "@givewp/admin/fields/Status";
 import AssociatedDonorField from '@givewp/admin/fields/AssociatedDonor';
 import CampaignFormField from "@givewp/admin/fields/CampaignFormGroup";
 
-const { subscriptionStatuses, campaignsWithForms, mode } = getSubscriptionOptionsWindowData();
+const { subscriptionStatuses, mode } = getSubscriptionOptionsWindowData();
 
 /**
  * @since 4.10.0
@@ -23,7 +23,6 @@ export default function SubscriptionDetails() {
                 <AdminSectionField error={errors.status?.message as string}>
                     <StatusField statusOptions={subscriptionStatuses} />
                     <CampaignFormField
-                        campaignsWithForms={campaignsWithForms}
                         campaignIdFieldName="campaignId"
                         formIdFieldName="donationFormId"
                     />
