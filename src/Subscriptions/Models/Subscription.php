@@ -370,7 +370,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * @since 4.10.0
      *
-     * @return ModelQueryBuilder<Campaign
+     * @return ModelQueryBuilder<Campaign>
      */
     public function campaign(): ModelQueryBuilder
     {
