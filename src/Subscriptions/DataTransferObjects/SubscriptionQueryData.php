@@ -13,7 +13,6 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class SubscriptionObjectData
  *
- * @unreleased added campaignId property
  * @since 2.19.6
  */
 final class SubscriptionQueryData
@@ -75,10 +74,6 @@ final class SubscriptionQueryData
      */
     public $gatewaySubscriptionId;
     /**
-     * @var ?int // TODO: Remove nullable once subscriptions implement the campaign id column.
-     */
-    public $campaignId;
-    /**
      * @var int
      */
     public $donationFormId;
@@ -86,7 +81,6 @@ final class SubscriptionQueryData
     /**
      * Convert data from Subscription Object to Subscription Model
      *
-     * @unreleased Set the campaign id
      * @since 2.19.6
      */
     public static function fromObject($subscriptionQueryObject): self
@@ -111,9 +105,6 @@ final class SubscriptionQueryData
         $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
         $self->donationFormId = (int)$subscriptionQueryObject->donationFormId;
-
-        $campaign = give()->campaigns->getByFormId((int)$subscriptionQueryObject->donationFormId);
-        $self->campaignId = $campaign ? $campaign->id : null;
 
         return $self;
     }

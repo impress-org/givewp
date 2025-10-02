@@ -45,7 +45,6 @@ class CampaignsRequestControllerTest extends TestCase
     }
 
     /**
-     * @unreleased Ignore response links
      * @since 4.0.0
      *
      * @throws Exception
@@ -63,12 +62,6 @@ class CampaignsRequestControllerTest extends TestCase
         $request->set_param('page', 1);
 
         $response = (new CampaignRequestController())->getCampaigns($request);
-
-        // Ignore response links
-        $response->data = array_map(function ($item) {
-            unset($item['_links']);
-            return $item;
-        }, $response->data);
 
         $this->assertInstanceOf(WP_REST_Response::class, $response);
         $this->assertEquals(

@@ -26,13 +26,11 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class Subscription
  *
- * @unreleased added campaignId property
  * @since 4.10.0 added campaign relationship
  * @since 2.23.0 added the renewsAt property
  * @since 2.19.6
  *
  * @property int $id
- * @property ?int $campaignId
  * @property int $donationFormId
  * @property DateTime $createdAt
  * @property DateTime $renewsAt The date the subscription will renew next
@@ -59,7 +57,6 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
-        'campaignId' => 'int',
         'donationFormId' => 'int',
         'createdAt' => DateTime::class,
         'renewsAt' => DateTime::class,

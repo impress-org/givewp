@@ -4,9 +4,6 @@ namespace Give\Campaigns\Controllers;
 
 use Exception;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
-use Give\API\REST\V3\Support\CURIE;
-use Give\API\REST\V3\Support\Headers;
-use Give\API\REST\V3\Support\Item;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
@@ -23,34 +20,13 @@ use Give_Form_Duplicator;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
-use WP_REST_Controller;
 
 /**
  * @since 4.0.0
  */
-class CampaignRequestController extends WP_REST_Controller
+class CampaignRequestController
 {
     /**
-     * @var string
-     */
-    protected $namespace;
-
-    /**
-     * @var string
-     */
-    protected $rest_base;
-
-    /**
-     * @unreleased
-     */
-    public function __construct()
-    {
-        $this->namespace = CampaignRoute::NAMESPACE;
-        $this->rest_base = CampaignRoute::CAMPAIGNS;
-    }
-
-    /**
-     * @unreleased prepare item for response
      * @since 4.0.0
      *
      * @return WP_Error | WP_REST_Response
@@ -63,14 +39,10 @@ class CampaignRequestController extends WP_REST_Controller
             return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
         }
 
-        $item = (new CampaignViewModel($campaign))->exports();
-        $response = $this->prepare_item_for_response($item, $request);
-
-        return rest_ensure_response($response);
+        return new WP_REST_Response((new CampaignViewModel($campaign))->exports());
     }
 
     /**
-     * @unreleased prepare items for response
      * @since 4.0.0
      */
     public function getCampaigns(WP_REST_Request $request): WP_REST_Response
@@ -115,28 +87,50 @@ class CampaignRequestController extends WP_REST_Controller
             ? CampaignsDataRepository::campaigns($ids)
             : null;
 
-        $campaigns = array_map(function ($campaign) use ($campaignsData, $request) {
+        $campaigns = array_map(function ($campaign) use ($campaignsData) {
             $view = new CampaignViewModel($campaign);
 
             if ($campaignsData) {
                 $view->setData($campaignsData);
             }
 
-            $item = $view->exports();
-
-            return $this->prepare_response_for_collection(
-                $this->prepare_item_for_response($item, $request)
-            );
+            return $view->exports();
         }, $campaigns);
 
         $response = rest_ensure_response($campaigns);
-        $response = Headers::addPagination($response, $request, $totalCampaigns, $perPage, $this->rest_base);
+        $response->header('X-WP-Total', $totalCampaigns);
+        $response->header('X-WP-TotalPages', $totalPages);
+
+        $base = add_query_arg(
+            map_deep($request->get_query_params(), function ($value) {
+                if (is_bool($value)) {
+                    $value = $value ? 'true' : 'false';
+                }
+
+                return urlencode($value);
+            }),
+            rest_url(CampaignRoute::CAMPAIGNS)
+        );
+
+        if ($page > 1) {
+            $prevPage = $page - 1;
+
+            if ($prevPage > $totalPages) {
+                $prevPage = $totalPages;
+            }
+
+            $response->link_header('prev', add_query_arg('page', $prevPage, $base));
+        }
+
+        if ($totalPages > $page) {
+            $nextPage = $page + 1;
+            $response->link_header('next', add_query_arg('page', $nextPage, $base));
+        }
 
         return $response;
     }
 
     /**
-     * @unreleased prepare item for response
      * @since 4.0.0
      *
      * @return WP_Error | WP_REST_Response
@@ -195,10 +189,7 @@ class CampaignRequestController extends WP_REST_Controller
             $campaign->save();
         }
 
-        $item = (new CampaignViewModel($campaign))->exports();
-        $response = $this->prepare_item_for_response($item, $request);
-
-        return rest_ensure_response($response);
+        return new WP_REST_Response((new CampaignViewModel($campaign))->exports());
     }
 
     /**
@@ -224,7 +215,6 @@ class CampaignRequestController extends WP_REST_Controller
 
 
     /**
-     * @unreleased prepare item for response
      * @since 4.0.0
      *
      * @throws Exception
@@ -247,11 +237,7 @@ class CampaignRequestController extends WP_REST_Controller
             'endDate' => $request->get_param('endDateTime'),
         ]);
 
-        $item = (new CampaignViewModel($campaign))->exports();
-        $response = $this->prepare_item_for_response($item, $request);
-        $response->set_status(201);
-
-        return rest_ensure_response($response);
+        return new WP_REST_Response((new CampaignViewModel($campaign))->exports(), 201);
     }
 
     /**
@@ -400,63 +386,6 @@ class CampaignRequestController extends WP_REST_Controller
                     ->orderBy('donorsCount', $orderBy);
 
                 break;
-        }
-    }
-
-        /**
-     * @unreleased added embeddable links for campaign and form
-     * @since 4.8.0
-     *
-     * @param mixed           $item    WordPress representation of the item.
-     * @param WP_REST_Request $request Request object.
-     *
-     * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
-     */
-    public function prepare_item_for_response($item, $request)
-    {
-        try {
-            $campaignId = $request->get_param('id') ?? $item['id'] ?? null;
-
-            if ($campaignId && $campaign = Campaign::find($campaignId)) {
-                $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $campaign->id));
-
-                $links = [
-                    'self' => ['href' => $self_url]
-                ];
-
-                /*
-                 * Campaign forms
-                 */
-                $forms_url = rest_url(sprintf('%s/%s', $this->namespace, 'forms'));
-                $forms_url = add_query_arg([
-                    'campaignId' => $campaign->id,
-                ], $forms_url);
-
-                $links[CURIE::relationUrl('forms')] = [
-                    'href' => $forms_url,
-                    'embeddable' => true,
-                ];
-            } else {
-                $links = [];
-            }
-
-            $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt', 'renewsAt']));
-            if (!empty($links)) {
-                $response->add_links($links);
-            }
-
-            $response->data = $this->add_additional_fields_to_object($response->data, $request);
-
-            return $response;
-        } catch (Exception $e) {
-            return new WP_Error(
-                'prepare_item_for_response_error',
-                sprintf(
-                    __('Error while preparing campaign for response: %s', 'give'),
-                    $e->getMessage()
-                ),
-                ['status' => 400]
-            );
         }
     }
 }

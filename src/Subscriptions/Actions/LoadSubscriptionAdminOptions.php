@@ -4,7 +4,6 @@ namespace Give\Subscriptions\Actions;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\BetaFeatures\Facades\FeatureFlag;
-use Give\Framework\Database\DB;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
@@ -26,7 +25,6 @@ class LoadSubscriptionAdminOptions
     /**
      * Get all donation options for localization
      *
-     * @unreleased Added campaigns with forms option
      * @since 4.8.0
      */
     private function getSubscriptionOptions(): array

@@ -9,7 +9,6 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased Change the expected query count to support temporary campaign relationships. This must be reverted once subscriptions implement the campaign id column.
  * @since 3.5.0
  */
 class TestEagerLoader extends TestCase
@@ -30,31 +29,27 @@ class TestEagerLoader extends TestCase
         Subscription::factory()->create(); // Also creates an associated donor.
 
         /**
-         * 7 queries are expected:
+         * 5 queries are expected:
          * 1. To get the donors
          * 2. To get the donors additional emails
          * 3. To get the donors addresses
          * 4. To get the first donor's subscriptions
-         * 5. To populate first donor's subscription campaign relationship
-         * 6. To get the second donor's subscriptions
-         * 7. To populate second donor's subscription campaign relationship
+         * 5. To get the second donor's subscriptions
          */
-        $this->assertQueryCount(7, function() {
+        $this->assertQueryCount(5, function() {
             foreach(Donor::query()->getAll() as $donor) {
                 $donor->subscriptions;
             }
         });
 
         /**
-         * 6 queries are expected:
+         * 4 queries are expected:
          * 1. To get the donors
          * 2. To get the donors additional emails
          * 3. To get the donors addresses
          * 4. To get the subscriptions
-         * 5. To populate the first donor's subscription campaign relationship
-         * 6. To populate the second donor's subscription campaign relationship
          */
-        $this->assertQueryCount(6, function() {
+        $this->assertQueryCount(4, function() {
             $eagerLoaderQuery = new EagerLoader(Donor::class, Subscription::class, 'subscriptions', 'customer_id', 'donorId');
             $eagerLoaderQuery->getAll();
         });
