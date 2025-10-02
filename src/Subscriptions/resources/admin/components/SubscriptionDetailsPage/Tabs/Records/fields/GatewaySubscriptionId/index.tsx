@@ -1,24 +1,23 @@
-import {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
+import LockedTextInput from '@givewp/admin/fields/LockedTextInput';
 import {__} from '@wordpress/i18n';
-import {useFormContext, useFormState} from 'react-hook-form';
 
 /**
  * @unreleased
  */
 export default function GatewaySubscriptionId() {
-    const {register, watch, getValues} = useFormContext();
-    const {errors} = useFormState();
-
     return (
-        <AdminSectionField error={errors.gatewaySubscriptionId?.message as string}>
-            <label htmlFor="gatewaySubscriptionId">{__('Gateway Subscription ID', 'give')}</label>
-            <input
-                id="gatewaySubscriptionId"
-                type="text"
-                className="givewp-admin-field-input"
-                {...register('gatewaySubscriptionId')}
-                placeholder={__('Enter gateway subscription ID', 'give')}
-            />
-        </AdminSectionField>
+        <LockedTextInput
+            name="gatewaySubscriptionId"
+            label={__('Gateway Subscription ID', 'give')}
+            description={__(
+                'Connects the subscription from the gateway to Give, syncing subscription changes and recording renewals.',
+                'give'
+            )}
+            placeholder={__('Enter gateway subscription ID', 'give')}
+            warningMessage={__(
+                'Changing the Gateway Subscription ID will stop renewal recordings in Give if not accurate.',
+                'give'
+            )}
+        />
     );
 }
