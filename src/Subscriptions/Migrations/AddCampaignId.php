@@ -48,17 +48,15 @@ class AddCampaignId extends Migration implements ReversibleMigration
         try {
             $query = <<<SQL
                 UPDATE %s AS subscriptions
-                JOIN %s donations
-                    ON subscriptions.parent_payment_id = donations.ID
-                SET subscriptions.campaign_id = (SELECT meta_value FROM %s WHERE donation_id = donations.ID AND meta_key = '%s' LIMIT 1)
+                JOIN %s campaignForms
+                    ON subscriptions.product_id = campaignForms.form_id
+                SET subscriptions.campaign_id = campaignForms.campaign_id
             SQL;
 
             DB::query(sprintf(
                 $query,
                 DB::prefix('give_subscriptions'),
-                DB::prefix('posts'),
-                DB::prefix('give_donationmeta'),
-                DonationMetaKeys::CAMPAIGN_ID
+                DB::prefix('give_campaign_forms')
             ));
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while adding campaign ID to the give_subscriptions table",
