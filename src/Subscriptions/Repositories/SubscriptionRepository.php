@@ -121,6 +121,19 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased
+     *
+     * @param int $campaignId
+     *
+     * @return ModelQueryBuilder<Subscription>
+     */
+    public function queryByCampaignId(int $campaignId): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('campaign_id', $campaignId);
+    }
+
+    /**
      * @deprecated Use give()->subscriptions->notes()->queryBySubscriptionId()->getAll() instead.
      * @since 2.19.6
      *
@@ -185,6 +198,7 @@ class SubscriptionRepository
                 'bill_times' => $subscription->installments,
                 'transaction_id' => $subscription->transactionId ?? '',
                 'product_id' => $subscription->donationFormId,
+                'campaign_id' => $subscription->campaignId,
                 'payment_mode' => $subscription->mode->getValue(),
             ]);
         } catch (Exception $exception) {
@@ -243,6 +257,7 @@ class SubscriptionRepository
                     'bill_times' => $subscription->installments,
                     'transaction_id' => $subscription->transactionId ?? '',
                     'product_id' => $subscription->donationFormId,
+                    'campaign_id' => $subscription->campaignId,
                     'payment_mode' => $subscription->mode->getValue(),
                 ]);
         } catch (Exception $exception) {
@@ -517,7 +532,8 @@ class SubscriptionRepository
                 ['recurring_fee_amount', 'feeAmount'],
                 'status',
                 ['profile_id', 'gatewaySubscriptionId'],
-                ['product_id', 'donationFormId']
+                ['product_id', 'donationFormId'],
+                ['campaign_id', 'campaignId']
             )
             ->attachMeta(
                 'give_donationmeta',
