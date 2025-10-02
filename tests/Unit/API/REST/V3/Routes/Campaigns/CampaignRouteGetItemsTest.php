@@ -11,7 +11,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.10.1
  */
 class CampaignRouteGetItemsTest extends RestApiTestCase
 {
@@ -21,7 +21,7 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that unauthenticated users cannot access non-active campaigns via GET /campaigns.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCannotAccessNonActiveCampaigns()
     {
@@ -42,7 +42,7 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that unauthenticated users can access active campaigns via GET /campaigns.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCanAccessActiveCampaigns()
     {
@@ -60,7 +60,7 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that unauthenticated users can access campaigns without status filter via GET /campaigns.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCanAccessCampaignsWithoutStatusFilter()
     {
@@ -77,7 +77,7 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that admin users can access all campaign statuses via GET /campaigns.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testAdminUserCanAccessAllCampaignStatuses()
     {
@@ -97,7 +97,7 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that mixed status requests are blocked for unauthenticated users.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCannotAccessMixedStatusRequests()
     {

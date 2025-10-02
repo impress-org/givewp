@@ -11,7 +11,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.10.1
  */
 class CampaignRouteGetItemTest extends RestApiTestCase
 {
@@ -21,7 +21,7 @@ class CampaignRouteGetItemTest extends RestApiTestCase
     /**
      * Test that unauthenticated users cannot access individual non-active campaign via GET /campaigns/{id}.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCannotAccessNonActiveCampaign()
     {
@@ -38,7 +38,7 @@ class CampaignRouteGetItemTest extends RestApiTestCase
     /**
      * Test that unauthenticated users can access individual active campaign via GET /campaigns/{id}.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCanAccessActiveCampaign()
     {
@@ -55,7 +55,7 @@ class CampaignRouteGetItemTest extends RestApiTestCase
     /**
      * Test that admin users can access individual non-active campaign via GET /campaigns/{id}.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testAdminUserCanAccessNonActiveCampaign()
     {
@@ -72,7 +72,7 @@ class CampaignRouteGetItemTest extends RestApiTestCase
     /**
      * Test that admin users can access individual archived campaign via GET /campaigns/{id}.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testAdminUserCanAccessArchivedCampaign()
     {
@@ -89,7 +89,7 @@ class CampaignRouteGetItemTest extends RestApiTestCase
     /**
      * Test that unauthenticated users get 404 for non-existent campaign.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserGets404ForNonExistentCampaign()
     {

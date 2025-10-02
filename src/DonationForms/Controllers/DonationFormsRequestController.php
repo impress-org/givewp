@@ -20,7 +20,7 @@ use WP_REST_Response;
 class DonationFormsRequestController
 {
     /**
-     * @unreleased Added status check to ensure non-authorized users can only access published forms
+     * @since 4.10.1 Added status check to ensure non-authorized users can only access published forms
      * @since 4.2.0
      */
     public function getForm(WP_REST_Request $request)

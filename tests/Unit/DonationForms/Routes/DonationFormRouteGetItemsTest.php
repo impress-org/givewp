@@ -10,7 +10,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.10.1
  */
 class DonationFormRouteGetItemsTest extends RestApiTestCase
 {
@@ -20,7 +20,7 @@ class DonationFormRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that unauthenticated users cannot access non-published forms via GET /forms.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCannotAccessNonPublishedForms()
     {
@@ -41,7 +41,7 @@ class DonationFormRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that unauthenticated users can access published forms via GET /forms.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCanAccessPublishedForms()
     {
@@ -59,7 +59,7 @@ class DonationFormRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that unauthenticated users can access forms without status filter via GET /forms.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCanAccessFormsWithoutStatusFilter()
     {
@@ -76,7 +76,7 @@ class DonationFormRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that admin users can access all form statuses via GET /forms.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testAdminUserCanAccessAllFormStatuses()
     {
@@ -96,7 +96,7 @@ class DonationFormRouteGetItemsTest extends RestApiTestCase
     /**
      * Test that mixed status requests are blocked for unauthenticated users.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCannotAccessMixedStatusRequests()
     {

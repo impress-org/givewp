@@ -28,7 +28,7 @@ use WP_REST_Response;
 class CampaignRequestController
 {
     /**
-     * @unreleased Added status check to ensure non-authorized users can only access active campaigns
+     * @since 4.10.1 Added status check to ensure non-authorized users can only access active campaigns
      * @since 4.0.0
      *
      * @return WP_Error | WP_REST_Response

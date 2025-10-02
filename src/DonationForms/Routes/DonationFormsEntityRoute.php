@@ -37,7 +37,7 @@ class DonationFormsEntityRoute
     /**
      * Get Form route
      *
-     * @unreleased Changed permission callback to use validationForGetItem method
+     * @since 4.10.1 Changed permission callback to use validationForGetItem method
      * @since 4.2.0
      */
     public function registerGetForm()
@@ -68,7 +68,7 @@ class DonationFormsEntityRoute
     /**
      * Get Forms route
      *
-     * @unreleased Changed permission callback to use validationForGetItems method
+     * @since 4.10.1 Changed permission callback to use validationForGetItems method
      * @since 4.2.0
      */
     public function registerGetForms()
@@ -119,7 +119,7 @@ class DonationFormsEntityRoute
     /**
      * Associate donation forms with campaign
      *
-     * @unreleased Changed permission callback to use validationForAssociateForms method
+     * @since 4.10.1 Changed permission callback to use validationForAssociateForms method
      * @since 4.2.0
      */
     public function registerAssociateFormsWithCampaign()

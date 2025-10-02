@@ -10,7 +10,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.10.1
  */
 class DonationFormRouteGetItemTest extends RestApiTestCase
 {
@@ -20,7 +20,7 @@ class DonationFormRouteGetItemTest extends RestApiTestCase
     /**
      * Test that unauthenticated users cannot access individual non-published form via GET /forms/{id}.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCannotAccessNonPublishedForm()
     {
@@ -37,7 +37,7 @@ class DonationFormRouteGetItemTest extends RestApiTestCase
     /**
      * Test that unauthenticated users can access individual published form via GET /forms/{id}.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCanAccessPublishedForm()
     {
@@ -54,7 +54,7 @@ class DonationFormRouteGetItemTest extends RestApiTestCase
     /**
      * Test that admin users can access individual non-published form via GET /forms/{id}.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testAdminUserCanAccessNonPublishedForm()
     {
@@ -71,7 +71,7 @@ class DonationFormRouteGetItemTest extends RestApiTestCase
     /**
      * Test that admin users can access individual private form via GET /forms/{id}.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testAdminUserCanAccessPrivateForm()
     {
@@ -88,7 +88,7 @@ class DonationFormRouteGetItemTest extends RestApiTestCase
     /**
      * Test that unauthenticated users get 404 for non-existent form.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserGets404ForNonExistentForm()
     {

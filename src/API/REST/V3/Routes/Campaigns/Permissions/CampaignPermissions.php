@@ -7,34 +7,34 @@ use WP_Error;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 4.10.1
  */
 class CampaignPermissions
 {
     /**
      * Check if current user can edit campaigns.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public static function canEdit(): bool
     {
-        return current_user_can('manage_options') || 
+        return current_user_can('manage_options') ||
                current_user_can('edit_give_forms');
     }
 
     /**
      * Check if current user can view private/draft/archived campaigns.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public static function canViewPrivate(): bool
     {
-        return current_user_can('manage_options') || 
+        return current_user_can('manage_options') ||
                current_user_can('edit_give_forms');
     }
 
     /**
-     * @unreleased
+     * @since 4.10.1
      */
     public static function authorizationStatusCode(): int
     {
@@ -44,7 +44,7 @@ class CampaignPermissions
     /**
      * Validate campaign access permissions for GET items (collections).
      *
-     * @unreleased
+     * @since 4.10.1
      *
      * @param WP_REST_Request $request
      *
@@ -53,7 +53,7 @@ class CampaignPermissions
     public static function validationForGetItems(WP_REST_Request $request)
     {
         $status = $request->get_param('status');
-        
+
         // If no status is specified, allow access (defaults to active campaigns)
         if (empty($status)) {
             return true;
@@ -83,7 +83,7 @@ class CampaignPermissions
     /**
      * Validate campaign access permissions for individual campaign GET method.
      *
-     * @unreleased
+     * @since 4.10.1
      *
      * @param WP_REST_Request $request
      *

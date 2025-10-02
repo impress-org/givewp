@@ -9,7 +9,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.10.1
  */
 class DonationFormRouteAssociateWithCampaignTest extends RestApiTestCase
 {
@@ -19,7 +19,7 @@ class DonationFormRouteAssociateWithCampaignTest extends RestApiTestCase
     /**
      * Test that unauthenticated users cannot associate forms with campaigns via POST /forms/associate-with-campaign.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testUnauthenticatedUserCannotAssociateFormsWithCampaign()
     {
@@ -38,7 +38,7 @@ class DonationFormRouteAssociateWithCampaignTest extends RestApiTestCase
     /**
      * Test that admin users can associate forms with campaigns via POST /forms/associate-with-campaign.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testAdminUserCanAssociateFormsWithCampaign()
     {
@@ -60,7 +60,7 @@ class DonationFormRouteAssociateWithCampaignTest extends RestApiTestCase
     /**
      * Test that non-admin users cannot associate forms with campaigns via POST /forms/associate-with-campaign.
      *
-     * @unreleased
+     * @since 4.10.1
      */
     public function testNonAdminUserCannotAssociateFormsWithCampaign()
     {

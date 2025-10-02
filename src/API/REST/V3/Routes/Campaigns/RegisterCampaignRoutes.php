@@ -44,7 +44,7 @@ class RegisterCampaignRoutes
     /**
      * Get Campaign route
      *
-     * @unreleased Changed permission callback to use validationForGetItem method
+     * @since 4.10.1 Changed permission callback to use validationForGetItem method
      * @since 4.9.0 Add missing schema key to the route level
      * @since 4.0.0
      */
@@ -77,7 +77,7 @@ class RegisterCampaignRoutes
     /**
      * Get Campaigns route
      *
-     * @unreleased Changed permission callback to use validationForGetItems method
+     * @since 4.10.1 Changed permission callback to use validationForGetItems method
      * @since 4.0.0
      */
     public function registerGetCampaigns()
