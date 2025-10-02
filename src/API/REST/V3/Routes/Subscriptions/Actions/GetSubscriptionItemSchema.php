@@ -34,6 +34,7 @@ class GetSubscriptionItemSchema
                 'campaignId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Campaign ID', 'give'),
+                    'nullable' => true,
                 ],
                 'donationFormId' => [
                     'type' => 'integer',

@@ -149,6 +149,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased Set the campaign id based on the subscription's form. This must be reverted once subscriptions implement the campaign id column.
      * @since 2.24.0 add payment_mode column to insert
      * @since 2.21.0 replace actions with givewp_subscription_creating and givewp_subscription_created
      * @since 2.19.6
@@ -200,16 +201,19 @@ class SubscriptionRepository
 
         $subscriptionId = DB::last_insert_id();
 
-        $campaign = $subscription->campaign()->get();
-
         $subscription->id = $subscriptionId;
-        $subscription->campaignId = $campaign ? $campaign->id : null;
         $subscription->createdAt = $dateCreated;
+
+        if (!$subscription->campaignId) {
+            $campaign = $subscription->campaign()->get();
+            $subscription->campaignId = $campaign ? $campaign->id : null;
+        }
 
         Hooks::doAction('givewp_subscription_created', $subscription);
     }
 
     /**
+     * @unreleased Set the campaign id based on the subscription's form. This must be reverted once subscriptions implement the campaign id column.
      * @since 3.17.0 add expiration column to update
      * @since 2.24.0 add payment_mode column to update
      * @since 2.21.0 replace actions with givewp_subscription_updating and givewp_subscription_updated

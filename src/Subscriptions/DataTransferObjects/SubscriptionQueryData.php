@@ -75,7 +75,7 @@ final class SubscriptionQueryData
      */
     public $gatewaySubscriptionId;
     /**
-     * @var int
+     * @var ?int // TODO: Remove nullable once subscriptions implement the campaign id column.
      */
     public $campaignId;
     /**
@@ -86,7 +86,7 @@ final class SubscriptionQueryData
     /**
      * Convert data from Subscription Object to Subscription Model
      *
-     * @unreleased load campaignId from donationFormId
+     * @unreleased Set the campaign id
      * @since 2.19.6
      */
     public static function fromObject($subscriptionQueryObject): self
