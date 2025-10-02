@@ -218,7 +218,7 @@ function give_sanitize_amount_for_db($number, $args = [])
 /**
  * Sanitize Amount before saving to database
  *
- * @unreleased Rollback backward compatibility - allows both array and individual parameter calls
+ * @since 4.10.0 Rollback backward compatibility - allows both array and individual parameter calls
  * @since 4.9.0 PHP 8 compatibility
  * @since      1.8.12
  *
@@ -309,7 +309,7 @@ function give_maybe_sanitize_amount($number, $args = [])
  *
  * Returns a sanitized amount by stripping out thousands separators.
  *
- * @unreleased Rollback backward compatibility - allows both array and individual parameter calls
+ * @since 4.10.0 Rollback backward compatibility - allows both array and individual parameter calls
  * @since 4.9.0 PHP 8 compatibility
  * @since      1.0
  *
@@ -604,7 +604,7 @@ function give_human_format_large_amount($amount, $args = [])
 /**
  * Returns a nicely formatted amount with custom decimal separator.
  *
- * @unreleased Rollback backward compatibility - allows both array and individual parameter calls
+ * @since 4.10.0 Rollback backward compatibility - allows both array and individual parameter calls
  * @since 4.9.0 PHP 8 compatibility
  * @since 1.0
  *

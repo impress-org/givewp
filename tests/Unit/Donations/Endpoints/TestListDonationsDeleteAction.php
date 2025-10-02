@@ -11,14 +11,14 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 class TestListDonationsDeleteAction extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function setUp(): void
     {
@@ -31,7 +31,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     private function setUpAdminUser(): void
     {
@@ -42,7 +42,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldPermanentlyDeleteDonationWithForceTrue()
     {
@@ -77,7 +77,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldMoveDonationToTrashWithForceFalse()
     {
@@ -109,7 +109,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldMoveDonationToTrashByDefaultWhenForceNotSpecified()
     {
@@ -140,7 +140,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldPermanentlyDeleteMultipleDonationsWithForceTrue()
     {
@@ -180,7 +180,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldMoveMultipleDonationsToTrashWithForceFalse()
     {
@@ -224,7 +224,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldReturnErrorWhenDonationNotFound()
     {
@@ -245,7 +245,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldReturnErrorWhenDonationNotFoundForTrash()
     {
@@ -266,7 +266,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldHandleMixedValidAndInvalidDonationIds()
     {
@@ -295,7 +295,7 @@ class TestListDonationsDeleteAction extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function getMockRequest(string $action = 'delete'): WP_REST_Request
     {

@@ -28,7 +28,7 @@ class CreatedAtColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Updated column label
+     * @since 4.10.0 Updated column label
      * @since 2.24.0
      *
      * @inheritDoc

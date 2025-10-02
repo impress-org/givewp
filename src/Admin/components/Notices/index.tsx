@@ -4,7 +4,7 @@ import {__} from '@wordpress/i18n';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased Add className prop
+ * @since 4.10.0 Add className prop
  * @since 4.8.0
  */
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 }
 
 /**
- * @unreleased Add className prop
+ * @since 4.10.0 Add className prop
  * @since 4.8.0
  */
 export default ({type, children, dismissHandleClick, className}: Props) => {

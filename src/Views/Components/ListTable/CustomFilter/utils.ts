@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export type Campaign = {
     id: number;
@@ -7,7 +7,7 @@ export type Campaign = {
 }
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export interface CampaignOption {
     value: number;
@@ -17,7 +17,7 @@ export interface CampaignOption {
 /**
  * Creates query parameters for form API requests
  *
- * @unreleased
+ * @since 4.10.0
  */
 export function createCampaignQueryParams(config: {
     perPage: number;
@@ -38,7 +38,7 @@ export function createCampaignQueryParams(config: {
 /**
  * Deduplicates and sorts form options
  *
- * @unreleased
+ * @since 4.10.0
  */
 export function processOptionsForMenu(
     options: CampaignOption[],
@@ -66,7 +66,7 @@ export function processOptionsForMenu(
 /**
  * Formats a campaign object into a select option
  *
- * @unreleased
+ * @since 4.10.0
  */
 export function formatCampaignOption(campaign: Campaign): CampaignOption {
     return {
@@ -78,7 +78,7 @@ export function formatCampaignOption(campaign: Campaign): CampaignOption {
 /**
  * Formats multiple campaigns into select options
  *
- * @unreleased
+ * @since 4.10.0
  */
 export function formatCampaignOptions(campaigns: Campaign[]): CampaignOption[] {
     return (campaigns || []).map(formatCampaignOption);

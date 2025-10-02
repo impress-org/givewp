@@ -4,7 +4,7 @@ import {__} from '@wordpress/i18n';
 
 /**
  * @unreleased Added gatewaySubscriptionId to baseURLParams
- * @unreleased added _embed
+ * @since 4.10.0 added _embed
  * @since 4.8.0
  */
 //@ts-ignore

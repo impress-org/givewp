@@ -6,7 +6,7 @@ import { RecordsSlot } from '../../slots';
 import SubscriptionDetails from './SubscriptionDetails';
 
 /**
- * @unreleased add SubscriptionDetails
+ * @since 4.10.0 add SubscriptionDetails
  * @since 4.8.0
  */
 export default function SubscriptionDetailsPageRecordsTab() {

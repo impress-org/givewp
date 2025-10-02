@@ -47,7 +47,7 @@ class SubscriptionViewModel
     }
 
     /**
-     * @unreleased added campaignId
+     * @since 4.10.0 added campaignId
      * @since 4.8.0
      */
     public function exports(): array
@@ -103,7 +103,7 @@ class SubscriptionViewModel
     }
 
     /**
-     * @unreleased Return null if subscription URL is not available
+     * @since 4.10.0 Return null if subscription URL is not available
      * @since 4.8.0
      */
     private function getGatewayDetails(): ?array

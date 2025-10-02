@@ -13,7 +13,7 @@ import { Spinner } from "@givewp/admin/components";
 import { __ } from '@wordpress/i18n';
 
 /**
- * @unreleased updated logic to use embed relationships
+ * @since 4.10.0 updated logic to use embed relationships
  * @since 4.8.0
  */
 export default function SubscriptionDetailsPageOverviewTab() {

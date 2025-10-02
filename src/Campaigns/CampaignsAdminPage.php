@@ -56,7 +56,7 @@ class CampaignsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public static function getUrl()
     {

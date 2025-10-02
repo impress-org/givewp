@@ -15,7 +15,7 @@ import addFormats from 'ajv-formats';
  * Key advantage: WordPress REST API supports most JSON Schema Draft 4 features but lacks
  * some advanced features (if/then/else, allOf, not) that AJV can provide for enhanced frontend validation.
  *
- * @unreleased Refactor transformWordPressSchemaToDraft7 to handle readonly/readOnly fields and conditionally remove enum from nullable fields when value is null to prevent AJV conflicts
+ * @since 4.10.0 Refactor transformWordPressSchemaToDraft7 to handle readonly/readOnly fields and conditionally remove enum from nullable fields when value is null to prevent AJV conflicts
  * @since 4.9.0
  *
  * @param schema - The JSON Schema from WordPress REST API
