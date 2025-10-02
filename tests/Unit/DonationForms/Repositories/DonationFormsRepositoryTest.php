@@ -72,7 +72,7 @@ final class DonationFormsRepositoryTest extends TestCase
         $forms = $response->data['items'];
 
         $this->assertEquals(1, count($forms), 'Search retrieves a single form');
-        $this->assertEquals('My Simple Form', $forms[0]->title, 'Search retrieves correct form');
+        $this->assertEquals('My Simple Form', $forms[0]['title'], 'Search retrieves correct form');
     }
 
 }
