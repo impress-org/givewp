@@ -47,7 +47,7 @@ export default function LockedTextInput({name, label, description, placeholder, 
                 <input
                     id={name}
                     type="text"
-                    className={`givewp-admin-field-input ${styles.input}`}
+                    className={styles.input}
                     {...register(name)}
                     placeholder={placeholder}
                     readOnly={!isEditing}
