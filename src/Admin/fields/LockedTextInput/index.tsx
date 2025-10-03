@@ -17,13 +17,7 @@ interface LockedTextInputProps {
 /**
  * @unreleased
  */
-export default function LockedTextInput({
-    name,
-    label,
-    description,
-    placeholder,
-    warningMessage
-}: LockedTextInputProps) {
+export default function LockedTextInput({name, label, description, placeholder, warningMessage}: LockedTextInputProps) {
     const {register} = useFormContext();
     const {errors, isSubmitSuccessful} = useFormState();
     const [isEditing, setIsEditing] = useState(false);
@@ -42,9 +36,7 @@ export default function LockedTextInput({
     return (
         <AdminSectionField error={errors[name]?.message as string}>
             <label htmlFor={name}>{label}</label>
-            <p className={styles.description}>
-                {description}
-            </p>
+            <p className={styles.description}>{description}</p>
             <div className={styles.inputContainer}>
                 <input
                     id={name}
@@ -52,7 +44,7 @@ export default function LockedTextInput({
                     className={`givewp-admin-field-input ${styles.input}`}
                     {...register(name)}
                     placeholder={placeholder}
-                    disabled={!isEditing}
+                    readOnly={!isEditing}
                 />
                 <button
                     type="button"
@@ -63,11 +55,7 @@ export default function LockedTextInput({
                     <EditIcon strokeColor={isEditing ? '#9ca0af' : '#000'} />
                 </button>
             </div>
-            {isEditing && (
-                <Notice type="warning">
-                    {warningMessage}
-                </Notice>
-            )}
+            {isEditing && <Notice type="warning">{warningMessage}</Notice>}
         </AdminSectionField>
     );
 }
