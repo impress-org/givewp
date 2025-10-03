@@ -79,7 +79,7 @@ export function useAsyncSelectOptions({
                 hasMore: false,
             };
         }
-    }, [page]);
+    }, [page, JSON.stringify(queryParams)]);
 
     // Map options for menu (deduplication and ordering)
     const mapOptionsForMenu = useCallback(
