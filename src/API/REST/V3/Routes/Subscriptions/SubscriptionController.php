@@ -312,6 +312,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Update a subscription.
      *
+     * @unreleased Exclude gatewaySubscriptionId from non-editable fields
      * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -333,7 +334,6 @@ class SubscriptionController extends WP_REST_Controller
             'createdAt',
             'mode',
             'gatewayId',
-            'gatewaySubscriptionId',
         ];
 
         foreach ($request->get_params() as $key => $value) {

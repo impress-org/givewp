@@ -1,11 +1,12 @@
-import { getSubscriptionOptionsWindowData } from "@givewp/subscriptions/utils";
-import { useFormState } from "react-hook-form";
-import { __ } from "@wordpress/i18n";
-import AdminSection, { AdminSectionField } from "@givewp/components/AdminDetailsPage/AdminSection";
-import StatusField from "@givewp/admin/fields/Status";
 import AssociatedDonorField from '@givewp/admin/fields/AssociatedDonor';
+import StatusField from '@givewp/admin/fields/Status';
+import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
+import {getSubscriptionOptionsWindowData} from '@givewp/subscriptions/utils';
+import {__} from '@wordpress/i18n';
+import {useFormState} from 'react-hook-form';
+import GatewaySubscriptionId from './fields/GatewaySubscriptionId';
 
-const { subscriptionStatuses, mode } = getSubscriptionOptionsWindowData();
+const {subscriptionStatuses, mode} = getSubscriptionOptionsWindowData();
 
 /**
  * @since 4.10.0
@@ -22,6 +23,7 @@ export default function SubscriptionDetails() {
                 <AdminSectionField error={errors.status?.message as string}>
                     <StatusField statusOptions={subscriptionStatuses} />
                 </AdminSectionField>
+                <GatewaySubscriptionId />
             </AdminSection>
             <AdminSection
                 title={__('Associated donor', 'give')}
