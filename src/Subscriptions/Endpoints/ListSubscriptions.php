@@ -192,6 +192,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
+     * @unreleased fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model
      * @since 2.21.0
      *
