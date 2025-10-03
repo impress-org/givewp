@@ -1,13 +1,12 @@
 import {default as AssociatedDonorField} from '@givewp/admin/fields/AssociatedDonor';
 import AdminSection from '@givewp/components/AdminDetailsPage/AdminSection';
 import {__} from '@wordpress/i18n';
-import { getDonationOptionsWindowData } from '@givewp/donations/utils';
+import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 
 /**
  * @unreleased
  */
 export default function AssociatedDonor() {
-
     const { mode } = getDonationOptionsWindowData();
 
     return (

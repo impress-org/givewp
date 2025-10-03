@@ -31,6 +31,11 @@ class GetSubscriptionItemSchema
                     'default' => 'live',
                     'enum' => ['live', 'test'],
                 ],
+                'campaignId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Campaign ID', 'give'),
+                    'nullable' => true,
+                ],
                 'donationFormId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Donation form ID', 'give'),
@@ -195,10 +200,6 @@ class GetSubscriptionItemSchema
                     ],
                     'description' => esc_html__('Projected annual revenue for this subscription', 'give'),
                     'readonly' => true,
-                ],
-                'campaignId' => [
-                    'type' => ['integer', 'null'],
-                    'description' => esc_html__('Campaign ID', 'give'),
                 ],
             ],
         ];

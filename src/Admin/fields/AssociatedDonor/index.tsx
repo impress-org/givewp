@@ -1,10 +1,8 @@
-import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
 import {__} from '@wordpress/i18n';
 import {useFormContext, useFormState} from 'react-hook-form';
-import {AsyncPaginate} from 'react-select-async-paginate';
-import styles from './styles.module.scss';
-import {DonorOption} from './types';
-import {useDonorAsyncSelect} from './useDonorAsyncSelect';
+import {SelectOption} from '@givewp/admin/types';
+import useDonorAsyncSelectOptions from './useDonorAsyncSelectOptions';
+import AsyncSelectOption from '@givewp/admin/fields/AsyncSelectOption';
 
 type AssociatedDonorProps = {
     name: string;
@@ -14,7 +12,7 @@ type AssociatedDonorProps = {
 }
 
 /**
- * @unreleased added name, label, description, and mode props
+ * @unreleased use AsyncSelectOption
  * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.8.0 updated to async donor dropdown
  * @since 4.6.0
@@ -24,36 +22,28 @@ export default function AssociatedDonor({name, mode, label, description}: Associ
     const {errors} = useFormState();
     const donorId = watch(name);
 
-    const {selectedOption, loadOptions, mapOptionsForMenu, error} = useDonorAsyncSelect(donorId || null, mode);
+    const {selectedOption, loadOptions, mapOptionsForMenu, error} = useDonorAsyncSelectOptions(donorId, {mode});
 
-    const handleDonorChange = (selectedOption: DonorOption | null) => {
+    const handleChange = (selectedOption: SelectOption) => {
         setValue(name, selectedOption?.value ?? null, {shouldDirty: true});
     };
 
     return (
-        <AdminSectionField error={errors[name]?.message as string}>
-            <label htmlFor="donorId">{label}</label>
-            <p>{description}</p>
-            {error ? (
-                <div role="alert" style={{color: 'var(--givewp-red-500)', fontSize: '0.875rem'}}>
-                    {__('Error loading donors. Please try again.', 'give')}
-                </div>
-            ) : (
-                <AsyncPaginate
-                    inputId="donorId"
-                    className={styles.searchableSelect}
-                    classNamePrefix="searchableSelect"
-                    value={selectedOption}
-                    loadOptions={loadOptions}
-                    mapOptionsForMenu={mapOptionsForMenu}
-                    onChange={handleDonorChange}
-                    debounceTimeout={600}
-                    placeholder={__('Search for a donor...', 'give')}
-                    loadingMessage={() => __('Loading donors...', 'give')}
-                    noOptionsMessage={() => __('No donors found.', 'give')}
-                    aria-label={__('Select a donor', 'give')}
-                />
-            )}
-        </AdminSectionField>
+        <AsyncSelectOption
+            name={name}
+            label={label}
+            description={description}
+            handleChange={handleChange}
+            selectedOption={selectedOption}
+            loadOptions={loadOptions}
+            mapOptionsForMenu={mapOptionsForMenu}
+            isLoadingError={error}
+            errorMessage={errors[name]?.message as string}
+            searchPlaceholder={__('Search for a donor...', 'give')}
+            loadingMessage={__('Loading donors...', 'give')}
+            loadingError={__('Error loading donors. Please try again.', 'give')}
+            ariaLabel={__('Select a donor', 'give')}
+            noOptionsMessage={__('No donors found.', 'give')}
+        />
     );
 }
