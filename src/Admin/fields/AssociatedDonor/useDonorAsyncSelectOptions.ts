@@ -13,7 +13,6 @@ export default function useDonorAsyncSelectOptions(donorId: number, queryParams?
 
     return useAsyncSelectOptions({
         recordId: donorId || null,
-        entity: 'donor',
         selectedOptionRecord: record,
         endpoint: '/givewp/v3/donors',
         optionFormatter: (record: Donor) => {

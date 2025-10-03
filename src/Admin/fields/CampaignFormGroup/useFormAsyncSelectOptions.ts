@@ -28,7 +28,6 @@ export default function useFormAsyncSelectOptions(formId: number, campaignId: nu
 
     return useAsyncSelectOptions({
         recordId: formId || null,
-        entity: 'form',
         selectedOptionRecord: selectedForm,
         endpoint: '/give-api/v2/admin/forms',
         recordsFormatter: (records) => records.items,

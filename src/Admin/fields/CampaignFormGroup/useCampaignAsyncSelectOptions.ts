@@ -7,7 +7,6 @@ export default function useCampaignAsyncSelectOptions(campaignId: number, queryP
 
     return useAsyncSelectOptions({
         recordId: campaignId || null,
-        entity: 'campaign',
         selectedOptionRecord: record,
         endpoint: '/givewp/v3/campaigns',
         optionFormatter: (record: Campaign) => {

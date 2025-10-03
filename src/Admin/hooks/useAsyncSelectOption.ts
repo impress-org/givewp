@@ -9,7 +9,6 @@ import {UseAsyncSelectOptionReturn} from '@givewp/admin/types';
  */
 export function useAsyncSelectOptions({
     recordId,
-    entity,
     selectedOptionRecord,
     endpoint,
     recordsFormatter = (records: any) => records,
@@ -71,9 +70,9 @@ export function useAsyncSelectOptions({
                 hasMore: hasMoreResults,
             };
         } catch (err) {
-            const loadError = err instanceof Error ? err : new Error(`Failed to load ${entity}`);
+            const loadError = err instanceof Error ? err : new Error(`Failed to load options`);
             setError(loadError);
-            console.error(`Failed to load ${entity}`, loadError);
+            console.error(`Failed to load options`, loadError);
 
             return {
                 options: [],
@@ -103,7 +102,6 @@ export type Option = {
 
 export type AsyncSelectOptionsConfig = {
     recordId: number | null;
-    entity: string;
     selectedOptionRecord: any;
     recordsFormatter?: (records: any) => any;
     optionFormatter: (record: any) => Option;
