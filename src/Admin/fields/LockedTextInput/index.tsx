@@ -18,12 +18,18 @@ interface LockedTextInputProps {
  * @unreleased
  */
 export default function LockedTextInput({name, label, description, placeholder, warningMessage}: LockedTextInputProps) {
-    const {register} = useFormContext();
+    const {register, setFocus} = useFormContext();
     const {errors, isSubmitSuccessful} = useFormState();
     const [isEditing, setIsEditing] = useState(false);
 
     const handleEditClick = () => {
-        setIsEditing(!isEditing);
+        const newEditingState = !isEditing;
+        setIsEditing(newEditingState);
+
+        // Focus on input when editing is activated
+        if (newEditingState) {
+            setFocus(name);
+        }
     };
 
     // Reset editing mode when form is successfully submitted
