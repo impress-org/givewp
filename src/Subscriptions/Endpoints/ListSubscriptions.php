@@ -192,6 +192,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
+     * @unreleased fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model
      * @since 2.21.0
      *
@@ -213,8 +214,14 @@ class ListSubscriptions extends Endpoint
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else {
-                $query->whereLike('name', $search);
-                $query->orWhereLike('email', $search);
+                $query->whereIn('customer_id', static function (QueryBuilder $builder) use ($search) {
+                    $builder
+                        ->from('give_donors')
+                        ->distinct()
+                        ->select('id')
+                        ->whereLike('name', $search)
+                        ->orWhereLike('email', $search);
+                });
             }
         }
 

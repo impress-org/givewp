@@ -78,6 +78,7 @@ interface SummaryProps {
 }
 
 /**
+ * @unreleased fix form link
  * @since 4.10.0 removed donation from props
  * @since 4.8.0
  */
@@ -100,7 +101,7 @@ export default function Summary({subscription, adminUrl, intendedAmount, isLoadi
             value: subscription?.donationFormId ? (
                 <a
                     className={styles.link}
-                    href={`${adminUrl}edit.php?post_type=give_forms&page=givewp-form-builder&donationFormID=${subscription?.donationFormId}`}
+                    href={`${adminUrl}post.php?post=${subscription?.donationFormId}&action=edit`}
                     target="_blank"
                     rel="noopener noreferrer"
                 >

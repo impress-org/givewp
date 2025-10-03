@@ -49,7 +49,7 @@ export function useDonorDonations({donorId, page = 1, perPage = 5, mode = 'live'
         direction
     };
 
-    const {records, hasResolved, isResolving} = useEntityRecords<DonationResponse>('givewp/v3', 'donations', query);
+    const {records, hasResolved, isResolving} = useEntityRecords<DonationResponse>('givewp', 'donation', query);
 
     return {
         donations: records,

@@ -22,7 +22,7 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
-            recurringDonations: boolean;
+            recurringDonationsEnabled: boolean;
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
             addonsBulkActions: Array<BulkActionsConfig>;
@@ -227,8 +227,8 @@ const statsConfig: Record<string, StatConfig> = {
     oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
     recurringDonationsCount: {
         label: __('Recurring Donations', 'give'),
-        upgrade: !window.GiveDonations.recurringDonations && {
-            href: ' https://docs.givewp.com/recurring-stat',
+        upgrade: !window.GiveDonations.recurringDonationsEnabled && {
+            href: 'https://docs.givewp.com/recurring-stat',
             tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
         }
     },
