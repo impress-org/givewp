@@ -42,7 +42,7 @@ export default function LockedTextInput({name, label, description, placeholder, 
     return (
         <AdminSectionField error={errors[name]?.message as string}>
             <label htmlFor={name}>{label}</label>
-            <p className={styles.description}>{description}</p>
+            <p>{description}</p>
             <div className={styles.inputContainer}>
                 <input
                     id={name}

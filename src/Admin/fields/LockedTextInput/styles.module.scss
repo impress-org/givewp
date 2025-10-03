@@ -3,7 +3,7 @@
     align-items: center;
     gap: 20px;
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: var(--givewp-spacing-1);
 }
 
 .input {
@@ -26,11 +26,4 @@
         height: 24px;
         transition: stroke 0.2s ease;
     }
-}
-
-.description {
-    color: var(--givewp-grey-600);
-    font-size: 0.875rem;
-    margin: 4px 0 8px 0;
-    line-height: 1.4;
 }
