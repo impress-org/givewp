@@ -176,6 +176,12 @@ class SubscriptionRepository
             $subscription->bumpRenewalDate();
         }
 
+        // If the subscription is not associated with a campaign, try to find the campaign ID by the form ID
+        if (!$subscription->campaignId) {
+            $campaign = give()->campaigns->getByFormId($subscription->donationFormId);
+            $subscription->campaignId = $campaign ? $campaign->id : null;
+        }
+
         Hooks::doAction('givewp_subscription_creating', $subscription);
 
         $dateCreated = Temporal::withoutMicroseconds($subscription->createdAt ?: Temporal::getCurrentDateTime());
