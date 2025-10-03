@@ -128,7 +128,7 @@ export default function DonationSummaryGrid({
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                {__('View details', 'give')}
+                                {__('View subscription', 'give')}
                                 <ExternalLinkIcon />
                             </a>
                         )}
