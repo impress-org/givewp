@@ -77,6 +77,11 @@ final class SubscriptionQueryData
      * @var int
      */
     public $donationFormId;
+    /**
+     * @unreleased
+     * @var int
+     */
+    public $campaignId;
 
     /**
      * Convert data from Subscription Object to Subscription Model
@@ -105,6 +110,7 @@ final class SubscriptionQueryData
         $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
         $self->donationFormId = (int)$subscriptionQueryObject->donationFormId;
+        $self->campaignId = (int)$subscriptionQueryObject->campaignId;
 
         return $self;
     }

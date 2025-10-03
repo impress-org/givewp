@@ -111,6 +111,12 @@ class Give_Subscription {
 	 */
 	public $donor;
 
+    /**
+     * @unreleased
+     * @var int
+     */
+    public $campaign_id = 0;
+
 	/**
 	 * @var int (backward compatibility - maps to donor_id)
 	 */
