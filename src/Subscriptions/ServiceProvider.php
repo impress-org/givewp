@@ -10,6 +10,8 @@ use Give\Subscriptions\Actions\RegisterSubscriptionEntity;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
+use Give\Subscriptions\Migrations\AddCampaignId;
+use Give\Subscriptions\Migrations\AddCampaignIdColumn;
 use Give\Subscriptions\Migrations\AddPaymentModeToSubscriptionTable;
 use Give\Subscriptions\Migrations\BackfillMissingCampaignIdForDonations;
 use Give\Subscriptions\Migrations\CreateSubscriptionTables;
@@ -69,6 +71,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers database migrations with the MigrationsRunner
      *
+     * @unreleased add AddCampaignIdColumn and AddCampaignId migrations
      * @since 2.24.0
      */
     private function registerMigrations()
@@ -79,6 +82,8 @@ class ServiceProvider implements ServiceProviderInterface
             CreateSubscriptionTables::class,
             AddPaymentModeToSubscriptionTable::class,
             BackfillMissingCampaignIdForDonations::class,
+            AddCampaignIdColumn::class,
+            AddCampaignId::class
         ]);
     }
 
