@@ -121,6 +121,19 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased
+     *
+     * @param int $campaignId
+     *
+     * @return ModelQueryBuilder<Subscription>
+     */
+    public function queryByCampaignId(int $campaignId): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('campaign_id', $campaignId);
+    }
+
+    /**
      * @deprecated Use give()->subscriptions->notes()->queryBySubscriptionId()->getAll() instead.
      * @since 2.19.6
      *
@@ -148,6 +161,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased add campaign_id column to insert
      * @since 2.24.0 add payment_mode column to insert
      * @since 2.21.0 replace actions with givewp_subscription_creating and givewp_subscription_created
      * @since 2.19.6
@@ -161,6 +175,12 @@ class SubscriptionRepository
 
         if ($subscription->renewsAt === null) {
             $subscription->bumpRenewalDate();
+        }
+
+        // If the subscription is not associated with a campaign, try to find the campaign ID by the form ID
+        if (!$subscription->campaignId) {
+            $campaign = give()->campaigns->getByFormId($subscription->donationFormId);
+            $subscription->campaignId = $campaign ? $campaign->id : null;
         }
 
         Hooks::doAction('givewp_subscription_creating', $subscription);
@@ -185,6 +205,7 @@ class SubscriptionRepository
                 'bill_times' => $subscription->installments,
                 'transaction_id' => $subscription->transactionId ?? '',
                 'product_id' => $subscription->donationFormId,
+                'campaign_id' => $subscription->campaignId,
                 'payment_mode' => $subscription->mode->getValue(),
             ]);
         } catch (Exception $exception) {
@@ -206,6 +227,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased add campaign_id column to update
      * @since 3.17.0 add expiration column to update
      * @since 2.24.0 add payment_mode column to update
      * @since 2.21.0 replace actions with givewp_subscription_updating and givewp_subscription_updated
@@ -243,6 +265,7 @@ class SubscriptionRepository
                     'bill_times' => $subscription->installments,
                     'transaction_id' => $subscription->transactionId ?? '',
                     'product_id' => $subscription->donationFormId,
+                    'campaign_id' => $subscription->campaignId,
                     'payment_mode' => $subscription->mode->getValue(),
                 ]);
         } catch (Exception $exception) {
@@ -494,6 +517,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased add campaign_id column to select
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>
@@ -517,7 +541,8 @@ class SubscriptionRepository
                 ['recurring_fee_amount', 'feeAmount'],
                 'status',
                 ['profile_id', 'gatewaySubscriptionId'],
-                ['product_id', 'donationFormId']
+                ['product_id', 'donationFormId'],
+                ['campaign_id', 'campaignId']
             )
             ->attachMeta(
                 'give_donationmeta',
