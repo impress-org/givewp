@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Give_Subscription
  *
+ * @unreleased add campaign_id
  * @since 2.19.0 - migrated from give-recurring
  * @since 1.0
  */
@@ -112,7 +113,6 @@ class Give_Subscription {
 	public $donor;
 
     /**
-     * @unreleased
      * @var int
      */
     public $campaign_id = 0;

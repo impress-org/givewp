@@ -13,6 +13,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class SubscriptionObjectData
  *
+ * @unreleased add campaign_id prop
  * @since 2.19.6
  */
 final class SubscriptionQueryData
@@ -78,7 +79,6 @@ final class SubscriptionQueryData
      */
     public $donationFormId;
     /**
-     * @unreleased
      * @var int
      */
     public $campaignId;
