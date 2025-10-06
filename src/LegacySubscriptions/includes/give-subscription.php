@@ -294,10 +294,10 @@ class Give_Subscription {
 		}
 
         if (
-            $args['form_id']
+            $args['product_id']
             && ! $args['campaign_id']
         ) {
-            if ($campaign = give()->campaigns->getByFormId($args['form_id'])) {
+            if ($campaign = give()->campaigns->getByFormId($args['product_id'])) {
                 $args['campaign_id'] = $campaign->id;
             }
         }
