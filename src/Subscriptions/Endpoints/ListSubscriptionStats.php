@@ -1,0 +1,109 @@
+<?php
+
+namespace Give\Subscriptions\Endpoints;
+
+use Give\Framework\Database\DB;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use WP_REST_Request;
+use WP_REST_Response;
+
+/**
+ * @unreleased
+ */
+class ListSubscriptionStats extends Endpoint
+{
+    /**
+     * @var string
+     */
+    protected $endpoint = 'admin/subscriptions/stats';
+
+    /**
+     * @var WP_REST_Request
+     */
+    protected $request;
+
+    /**
+     * @unreleased
+     */
+    public function registerRoute()
+    {
+        register_rest_route(
+            'give-api/v2',
+            $this->endpoint,
+            [
+                [
+                    'methods' => 'GET',
+                    'callback' => [$this, 'handleRequest'],
+                    'permission_callback' => [$this, 'permissionsCheck'],
+                ],
+                'args' => [
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function handleRequest(WP_REST_Request $request): WP_REST_Response
+    {
+        $this->request = $request;
+
+        $statistics = $this->getSubscriptionStatistics();
+
+        return new WP_REST_Response($statistics);
+    }
+
+    /**
+     * Get subscription statistics for total contributions and active subscriptions
+     *
+     * @unreleased
+     */
+    public function getSubscriptionStatistics(): array
+    {    
+        $query = DB::table('posts')
+            ->where('post_type', 'give_payment')
+            ->where('post_status', 'trash', '<>');
+
+        $query->attachMeta(
+            'give_donationmeta',
+            'ID',
+            'donation_id',
+            [DonationMetaKeys::AMOUNT()->getValue(), DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()],
+            [DonationMetaKeys::SUBSCRIPTION_ID()->getValue(), DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()]
+        );
+
+        $query->whereIsNotNull('give_donationmeta_attach_meta_subscriptionId.meta_value')
+              ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', '', '!=');
+
+        $query->leftJoin(
+            'give_subscriptions',
+            'give_donationmeta_attach_meta_subscriptionId.meta_value',
+            's.id',
+            's'
+        );
+
+        $query->selectRaw('
+            SUM(give_donationmeta_attach_meta_amount.meta_value) as total_contributions,
+            COUNT(DISTINCT CASE WHEN s.status = "active" THEN s.id END) as active_subscriptions
+        ');
+
+        $result = $query->get();
+
+        if (!$result) {
+             return [
+                'activeSubscriptions' => 0,
+                'totalContributions' => 0,
+            ];
+         }
+
+        return [
+            'activeSubscriptions' => (int) $result->active_subscriptions,
+             'totalContributions' => (float) $result->total_contributions,
+        ];
+    }
+}
+
+
+
+
