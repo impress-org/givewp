@@ -240,6 +240,7 @@ class Give_Subscription {
 	/**
 	 * Creates a subscription.
 	 *
+     * @unreleased add campaign_id
 	 * @since  1.0
 	 *
 	 * @param  array $data Array of attributes for a subscription
@@ -266,6 +267,7 @@ class Give_Subscription {
 			'expiration'           => '',
 			'status'               => '',
 			'profile_id'           => '',
+            'campaign_id'          => 0,
 		);
 
 		$args = wp_parse_args( $data, $defaults );
@@ -290,6 +292,15 @@ class Give_Subscription {
 		if ( ! empty( $args['donor_id'] ) ) {
 			$args['customer_id'] = $args['donor_id'];
 		}
+
+        if (
+            $args['form_id']
+            && ! $args['campaign_id']
+        ) {
+            if ($campaign = give()->campaigns->getByFormId($args['form_id'])) {
+                $args['campaign_id'] = $campaign->id;
+            }
+        }
 
 		$id = $this->subs_db->create( $args );
 
