@@ -55,10 +55,9 @@
     color: var(--givewp-neutral-900);
     font-size: 1rem;
     font-weight: 600;
-    inline-size: 8rem;
     line-height: 1.5;
     padding-block: var(--givewp-spacing-4);
-    padding-inline: var(--givewp-spacing-2);
+    padding-inline: var(--givewp-spacing-3);
     text-align: start;
     vertical-align: middle;
 
@@ -75,11 +74,11 @@
     }
 
     &:first-child {
-        padding-inline-start: var(--givewp-spacing-6);
+        padding-inline-start: var(--givewp-spacing-4);
     }
 
     &:last-child {
-        padding-inline-end: var(--givewp-spacing-6);
+        padding-inline-end: var(--givewp-spacing-4);
     }
 }
 
@@ -88,12 +87,8 @@
 }
 
 .selectAll {
-    inline-size: 1rem;
+    width: calc(var(--givewp-spacing-4) * 2 + 1.333rem);
     padding-right: 0;
-
-    input[type="checkbox"] {
-        transform: translateX(-2px);
-    }
 }
 
 #updateError {
@@ -214,24 +209,22 @@
     inline-size: 6rem;
 }
 
-.donors .donorInformation {
-    inline-size: 10rem;
-}
-
 .donors .donationRevenue {
-    inline-size: 6.5rem;
+    text-align: right;
 }
 
 .donors .donationCount {
-    inline-size: 6.5rem;
-}
-
-.donors .dateCreated {
-    inline-size: 6.5rem;
+    > button {
+        margin-left: auto;
+    }
 }
 
 .donors .donorType {
-    inline-size: 6.5rem;
+    text-align: center;
+}
+
+.donors .latestDonation {
+    text-align: right;
 }
 
 .subscriptions .amount {
