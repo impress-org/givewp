@@ -152,15 +152,10 @@ class ListDonors extends Endpoint
     {
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
-        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
-        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->donors->prepareQuery();
         $query = $this->getWhereConditions($query);
-
-        foreach ($sortColumns as $sortColumn) {
-            $query->orderBy($sortColumn, $sortDirection);
-        }
+        $this->sortColumns($query);
 
         $query->limit($perPage)
             ->offset(($page - 1) * $perPage);
@@ -172,6 +167,38 @@ class ListDonors extends Endpoint
         }
 
         return $donors;
+    }
+
+    /**
+     * @unreleased apply sorting for latestDonation column
+     * 
+     * @param QueryBuilder $query
+     */
+    private function sortColumns(QueryBuilder $query): void
+    {
+        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
+
+        foreach ($sortColumns as $sortColumn) {
+            switch ($sortColumn) {
+                case 'latestDonation':
+                    $postsTable = DB::prefix('posts');
+                    $donationMetaTable = DB::prefix('give_donationmeta');
+                    $donorTable = DB::prefix('give_donors');
+                    
+                    $query->selectRaw("(SELECT MAX(p.post_date) 
+                        FROM {$postsTable} p 
+                        LEFT JOIN {$donationMetaTable} dm ON p.ID = dm.donation_id 
+                        WHERE p.post_type = 'give_payment' 
+                        AND dm.meta_key = '_give_payment_donor_id' 
+                        AND dm.meta_value = {$donorTable}.id) as latest_donation_date");
+                    $query->orderBy('latest_donation_date', $sortDirection);
+                    break;
+                default:
+                    $query->orderBy($sortColumn, $sortDirection);
+                    break;
+            }
+        }
     }
 
     /**
