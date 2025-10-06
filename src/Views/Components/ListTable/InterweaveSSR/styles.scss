@@ -180,47 +180,24 @@
     .donorInformation {
         position: relative;
         display: flex;
-        flex-flow: column wrap;
-        align-content: flex-start;
-        justify-content: center;
-        column-gap: safe-rem(0.6125);
-        row-gap: safe-rem(0.25);
-        height: safe-rem(4);
-        width: 100%;
+        flex-flow: column;
+        gap: var(--givewp-spacing-1);
 
         & > a {
-            color: #0878b0;
-            font-size: 1.125rem;
-            font-weight: 700;
+            color: #2271b1;
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
         }
 
         &__email {
+            font-size: 0.875rem;
+            line-height: 1.43;
+            max-width: calc(100% - 4rem);
             min-width: 0;
             overflow: hidden;
-        }
-
-        &__gravatar {
-            border-radius: 9999px;
-            width: safe-rem(4);
-            height: safe-rem(4);
-        }
-
-        &__name {
-            display: inline;
-            inline-size: -webkit-fit-content;
-            inline-size: -moz-fit-content;
-            inline-size: fit-content;
-            font-size: safe-rem(1.125);
-            text-decoration: none;
-        }
-
-        &__email {
-            font-style: normal;
-            font-weight: 400;
-            line-height: 150%;
-            max-width: calc(100% - 4rem);
-            white-space: nowrap;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
