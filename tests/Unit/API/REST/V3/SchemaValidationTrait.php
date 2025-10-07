@@ -44,6 +44,7 @@ trait SchemaValidationTrait
     }
 
     /**
+     * @unreleased Add support for nullable property.
      * @since 4.9.0
      */
     private function validateDataTypes($schema, $actualData)
@@ -77,10 +78,12 @@ trait SchemaValidationTrait
                     "Property '{$property}' type '{$actualType}' should be one of: " . implode(', ', $expectedType)
                 );
             } else {
-                $this->assertEquals(
-                    $expectedType,
-                    $actualType,
-                    "Property '{$property}' type mismatch. Expected: {$expectedType}, Actual: {$actualType}"
+                $isValidType = ($actualType === $expectedType) || ($actualType === 'null' && ($schemaProperties[$property]['nullable'] ?? false));
+
+                $this->assertTrue(
+                    $isValidType,
+                    "Property '{$property}' type mismatch. Expected: {$expectedType}, Actual: {$actualType}" .
+                    ($actualType === 'null' ? " (nullable: " . ($schemaProperties[$property]['nullable'] ?? 'false') . ")" : "")
                 );
             }
         }

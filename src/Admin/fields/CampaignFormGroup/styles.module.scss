@@ -1,0 +1,5 @@
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--givewp-spacing-4);
+}
