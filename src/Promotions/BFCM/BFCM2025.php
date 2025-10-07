@@ -21,7 +21,7 @@ class BFCM2025
     /**
      * @var string
      */
-    private const START_DATE = '2025-11-24 00:00:00';
+    private const START_DATE = '2022-11-24 00:00:00';
 
     /**
      * @var string
