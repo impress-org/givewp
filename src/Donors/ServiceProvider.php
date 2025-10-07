@@ -11,6 +11,7 @@ use Give\Donors\CustomFields\Controllers\DonorDetailsController;
 use Give\Donors\Exceptions\FailedDonorUserCreationException;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Migrations\AddPhoneColumn;
+use Give\Donors\Migrations\AddStatusColumn;
 use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorNotesRepository;
 use Give\Donors\Repositories\DonorRepositoryProxy;
@@ -62,6 +63,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         give(MigrationsRegister::class)->addMigrations([
             AddPhoneColumn::class,
+            AddStatusColumn::class
         ]);
 
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);

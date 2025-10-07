@@ -4,16 +4,20 @@ namespace Give\Donors\Endpoints;
 
 use Exception;
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorStatus;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
-class DeleteDonor extends Endpoint
+/**
+ * @unreleased
+ */
+class UpdateStatus extends Endpoint
 {
     /**
      * @var string
      */
-    protected $endpoint = 'admin/donors/delete';
+    protected $endpoint = 'admin/donors/status';
 
     /**
      * @inheritDoc
@@ -25,7 +29,7 @@ class DeleteDonor extends Endpoint
             $this->endpoint,
             [
                 [
-                    'methods' => 'DELETE',
+                    'methods' => 'POST',
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
@@ -43,10 +47,12 @@ class DeleteDonor extends Endpoint
                             return true;
                         },
                     ],
-                    'deleteDonationsAndRecords' => [
-                        'type' => 'boolean',
-                        'required' => 'false',
-                        'default' => 'false',
+                    'status' => [
+                        'enum' => [
+                            DonorStatus::ACTIVE,
+                            DonorStatus::TRASH,
+                        ],
+                        'required' => true,
                     ],
                 ],
             ]
@@ -54,60 +60,43 @@ class DeleteDonor extends Endpoint
     }
 
     /**
-     * @since 4.3.1 updated permissions check
-     * @since 3.0.0 update validation to align with legacy view
-     * @since 2.25.2
-     *
      * @inheritDoc
      */
     public function permissionsCheck()
     {
-        if (current_user_can('manage_options') || current_user_can('delete_give_payments')) {
+        if (current_user_can('manage_options') || current_user_can('edit_give_payments')) {
             return true;
         }
 
-       return new WP_Error(
+        return new WP_Error(
             'rest_forbidden',
-            esc_html__('You don\'t have permission to delete Donors', 'give'),
+            esc_html__('You don\'t have permission to update Donors status', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
 
     /**
-     * @since 2.20.0
-     * @since 2.23.1 Cast `$ids` as integers.
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return WP_REST_Response
+     * @unreleased
      */
-    public function handleRequest(WP_REST_Request $request)
+    public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $ids = array_map('intval', $this->splitString($request->get_param('ids')));
-        $delete_donation = $request->get_param('deleteDonationsAndRecords');
+        $status = $request->get_param('status');
         $errors = $successes = [];
 
         foreach ($ids as $id) {
             try {
                 /**
-                 * Fires before deleting donor.
+                 * Fires before updating donor status.
                  *
-                 * @since 2.20.0
-                 *
-                 * @param int  $donor_id        The ID of the donor.
-                 * @param bool $delete_donor    Confirm Donor Deletion.
-                 * @param bool $delete_donation Confirm Donor related donations deletion.
+                 * @param int  $id     The ID of the donor.
+                 * @param bool $status Confirm Donor related donations deletion.
                  */
-                do_action('give_pre_delete_donor', $id, true, $delete_donation);
+                do_action('give_pre_donor_status_update', $id, $status);
                 $donor = Donor::find($id);
-                if ($delete_donation) {
-                    foreach ($donor->donations as $donation) {
-                        $donation->delete();
-                    }
-                } else {
-                    give_update_payment_meta($id, '_give_payment_donor_id', 0);
-                }
-                $donor->delete();
+                $donorStatus = new DonorStatus($status);
+                $donor->status = $donorStatus;
+                $donor->save();
                 $successes[] = $id;
             } catch (Exception $e) {
                 $errors[] = $id;

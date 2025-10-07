@@ -20,6 +20,7 @@ declare global {
             pluginUrl: string;
             dissedRecommendations: Array<string>;
             recurringDonationsEnabled: boolean;
+            statuses: Array<{value: string; text: string}>;
         };
     }
 }
@@ -35,6 +36,13 @@ const donorsFilters: Array<FilterConfig> = [
         options: window.GiveDonors.forms,
     },
     {
+        name: 'status',
+        type: 'select',
+        text: __('Donor status', 'give'),
+        ariaLabel: __('Filter donors by status', 'give'),
+        options: window.GiveDonors.statuses,
+    },
+    {
         name: 'search',
         type: 'search',
         inlineSize: '14rem',
@@ -48,6 +56,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
+        isVisible: (data, parameters) => parameters.status === 'trash',
         action: async (selected) => {
             const deleteDonations = document.querySelector('#giveDonorsTableDeleteDonations') as HTMLInputElement;
             const args = {ids: selected.join(','), deleteDonationsAndRecords: deleteDonations.checked};
@@ -69,6 +78,50 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
                     <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
                     {__('Delete all associated donations and records', 'give')}
                 </label>
+            </>
+        ),
+    },
+    {
+        label: __('Trash', 'give'),
+        value: 'trash',
+        type: 'warning',
+        isVisible: (data, parameters) => parameters.status === 'active',
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/status', {ids: selected.join(','), status: 'trash'}, 'POST');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want to add to trash the following donors?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((id, index) => (
+                        <li key={id}>
+                            <Interweave attributes={{className: 'donorBulkModalContent'}} content={names[index]} />
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Restore', 'give'),
+        value: 'restore',
+        type: 'normal',
+        isVisible: (data, parameters) => parameters.status === 'trash',
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/status', {ids: selected.join(','), status: 'active'}, 'POST');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want to remove from trash the following donors?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((id, index) => (
+                        <li key={id}>
+                            <Interweave attributes={{className: 'donorBulkModalContent'}} content={names[index]} />
+                        </li>
+                    ))}
+                </ul>
             </>
         ),
     },
