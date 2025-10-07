@@ -11,8 +11,24 @@
     background-repeat: no-repeat;
     height: 186px;
     width: calc(100% - (2 * var(--givewp-spacing-2)));
-    margin-inline: var(--givewp-spacing-2);
-    margin-top: calc(var(--givewp-spacing-2) * -1);
+    margin: var(--givewp-spacing-2) {
+        bottom: var(--givewp-spacing-4);
+    };
+
+    &:has(+ #give-admin-campaigns-root, #give-admin-donations-root, #give-admin-donors-root, #give-admin-subscriptions-root),
+    &:has(+ #give-admin-donations-root),
+    &:has(+ #give-admin-donors-root),
+    &:has(+ #give-admin-subscriptions-root) {
+        display: none;
+    }
+
+    #give-admin-campaigns-root &,
+    #give-admin-donations-root &,
+    #give-admin-donors-root &,
+    #give-admin-subscriptions-root & {
+        margin-top: calc(var(--givewp-spacing-2) * -1);
+        margin-bottom: 0;
+    }
 
     @media (min-width: 768px) {
         background-image: var(--bg-medium);
@@ -32,15 +48,14 @@
         gap: var(--givewp-spacing-2);
         position: relative;
         z-index: 2;
-        padding: var(--givewp-spacing-4) var(--givewp-spacing-2);
-        margin: 21px 0 21px 24px;
+        padding: 21px 0 21px 24px;
 
         @media (min-width: 768px) {
-            margin: 24px 0 24px 56px;
+            padding: 24px 0 24px 56px;
         }
-    
+
         @media (min-width: 1024px) {
-            margin: 32px 0 30px 88px;
+            padding: 32px 0 30px 88px;
         }
     }
 

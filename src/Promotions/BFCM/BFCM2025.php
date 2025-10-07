@@ -54,7 +54,7 @@ class BFCM2025
             ->on('give-payment-history')
             ->on('give-subscriptions')
             ->on('give-settings')
-            ->on('give-addons') 
+            ->on('give-add-ons')
             ->on('give-reports');
     }
 
