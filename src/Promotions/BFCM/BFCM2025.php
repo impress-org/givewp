@@ -26,7 +26,7 @@ class BFCM2025
     /**
      * @var string
      */
-    private const END_DATE   = '2025-12-04 23:59:59';
+    private const END_DATE   = '2025-12-02 23:59:59';
 
     /**
      * @unreleased
@@ -48,7 +48,6 @@ class BFCM2025
             ->location('inline')
             ->enqueueStylesheet(GIVE_PLUGIN_URL . 'build/bfcm2025.css', [], '1.0.0')
             ->between($start, $end)
-            ->on('plugins.php')
             ->on('give-campaigns')
             ->on('give-donors')
             ->on('give-payment-history')
