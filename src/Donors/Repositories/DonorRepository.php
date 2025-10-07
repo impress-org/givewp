@@ -163,11 +163,12 @@ class DonorRepository
             'date_created' => Temporal::getFormattedDateTime($dateCreated),
             'user_id' => $donor->userId ?? 0,
             'email' => $donor->email,
-            'name' => $donor->name,
-            'status' => $donor->status
-                ? $donor->status->getValue()
-                : DonorStatus::ACTIVE,
+            'name' => $donor->name
         ];
+
+        $args['status'] = is_a($donor->status, DonorStatus::class)
+            ? $donor->status->getValue()
+            : DonorStatus::ACTIVE;
 
         if (isset($donor->phone)) {
             $args['phone'] = $donor->phone;
