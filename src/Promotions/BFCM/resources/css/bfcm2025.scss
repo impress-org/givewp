@@ -1,4 +1,3 @@
-// High specificity selectors to override WordPress admin styles
 .givewp-bfcm-2025-banner {
     display: flex;
     align-items: center;
@@ -35,50 +34,58 @@
 
     &__title {
         font-family: Montserrat;
-        font-weight: 900;
-        font-size: 32px;
-        line-height: 36px;
-        letter-spacing: -1%;
+        font-weight: 700;
+        font-size: 1.5rem;
+        line-height: 1.25;
         color: #022603;
         margin: 0;
         padding: 0;
+
+        @media (min-width: 768px) {
+            font-size: 1.75rem;
+            line-height: 1.125;
+        }
+
+        @media (min-width: 1024px) {
+            font-size: 2rem;
+            line-height: 1.1;
+        }
     }
 
-    h1#{&}__title,
-    .wrap h1#{&}__title,
-    .postbox h1#{&}__title {
-        font-family: Montserrat;
-        font-weight: 900;
-        font-size: 32px;
-        line-height: 36px;
-        letter-spacing: -1%;
-        color: #022603;
-        margin: 0;
-        padding: 0;
+    &__discount {
+        font-weight: 500;
+        font-size: 0.75rem;
+        line-height: 1.3;
+        color: #459948;
+
+        @media (min-width: 768px) {
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        @media (min-width: 1024px) {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
     }
 
     &__description {
         font-family: Inter;
         font-weight: 500;
-        font-size: 20px;
-        line-height: 32px;
-        letter-spacing: 0%;
+        font-size: 0.875rem;
+        line-height: 1.4;
         color: #022603;
         margin: 0;
         padding: 0;
-    }
 
-    p#{&}__description,
-    .wrap p#{&}__description,
-    .postbox p#{&}__description {
-        font-family: Inter;
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 32px;
-        letter-spacing: 0%;
-        color: #022603;
-        margin: 0;
-        padding: 0;
+        @media (min-width: 768px) {
+            font-size: 1.125rem;
+            line-height: 1.5;
+        }
+
+        @media (min-width: 1024px) {
+            font-size: 1.25rem;
+        }
     }
 
     &__cta {
@@ -87,13 +94,11 @@
         align-items: center;
         justify-content: center;
         gap: 8px;
-        width: 293;
-        height: 48;
+        width: 293px;
+        height: 48px;
         font-weight: 700;
-        font-style: Bold;
-        font-size: 16px;
-        line-height: 24px;
-        letter-spacing: 0%;
+        font-size: 0.875rem;
+        line-height: 1.2;
         border-radius: 36px;
         margin-top: .5rem;
         padding: 12px 24px;
@@ -104,6 +109,11 @@
         transition: all 0.3s ease;
         border: none;
 
+        @media (min-width: 768px) {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
         img {
             width: 20px;
             height: 20px;
@@ -113,28 +123,6 @@
         &:hover {
             background: #D98715;
             color: #fff;
-        }
-    }
-
-    &__discount {
-        color: #459948;
-    }
-
-    @media (max-width: 767px) {
-        &__title {
-            font-size: 24px;
-            line-height: 28px;
-        }
-
-        &__description {
-            font-size: 16px;
-            line-height: 24px;
-        }
-
-        &__cta {
-            width: 100%;
-            max-width: 293px;
-            font-size: 14px;
         }
     }
 }
