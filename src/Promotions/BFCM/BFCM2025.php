@@ -47,6 +47,7 @@ class BFCM2025
             ->custom()
             ->location('inline')
             ->enqueueStylesheet(GIVE_PLUGIN_URL . 'build/bfcm2025.css', [], '1.0.0')
+            ->enqueueScript(GIVE_PLUGIN_URL . 'build/bfcm2025.js', [], '1.0.0')
             ->between($start, $end)
             ->on('give-campaigns')
             ->on('give-donors')

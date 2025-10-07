@@ -14,6 +14,7 @@
 ?>
 
 <section <?php echo $elements->customWrapperAttributes; ?>
+    id='givewp-bfcm-2025-banner'
     class='givewp-bfcm-2025-banner'
     role='banner'
     aria-label='<?php echo esc_attr__('Black Friday Cyber Monday 2025 Promotion', 'give'); ?>'
