@@ -65,7 +65,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Are you sure you want to delete the following donors?', 'give')}</p>
+                <p>{__('Are you sure you want to permamently delete the following donors?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
@@ -92,7 +92,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Are you sure you want to add to trash the following donors?', 'give')}</p>
+                <p>{__('Are you sure you want add to trash the following donors?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
@@ -114,7 +114,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Are you sure you want to remove from trash the following donors?', 'give')}</p>
+                <p>{__('Are you sure you want remove from trash the following donors?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>

@@ -49,7 +49,7 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
 
     const confirmDeleteDonor = () => (
         <div>
-            <p>{__('Really delete the follow donor?', 'give')}</p>
+            <p>{__('Permamently delete the follow donor?', 'give')}</p>
             <Interweave attributes={{className: 'donorBulkModalContent'}} content={item?.donorInformation} />
             <br></br>
             <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
