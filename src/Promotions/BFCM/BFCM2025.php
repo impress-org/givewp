@@ -2,6 +2,7 @@
 
 namespace Give\Promotions\BFCM;
 
+use DateTimeImmutable;
 use Give\Framework\Views\View;
 use Give\Vendors\StellarWP\AdminNotices\AdminNotice;
 use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
@@ -18,6 +19,16 @@ class BFCM2025
     public $id = 'givewp-bfcm-2025';
 
     /**
+     * @var string
+     */
+    private const START_DATE = '2025-11-24 00:00:00';
+
+    /**
+     * @var string
+     */
+    private const END_DATE   = '2025-12-04 23:59:59';
+
+    /**
      * @unreleased
      */
     public function __invoke()
@@ -30,19 +41,34 @@ class BFCM2025
      */
     public function render()
     {
+        [$start, $end] = $this->getDateRange();
+
         AdminNotices::show($this->id, [$this, 'renderCallback'])
             ->custom()
             ->location('inline')
             ->enqueueStylesheet(GIVE_PLUGIN_URL . 'build/bfcm2025.css', [], '1.0.0')
-            ->between('2022-11-24 00:00:00', '2025-12-04 23:59:59')
+            ->between($start, $end)
             ->on('plugins.php')
             ->on('give-campaigns')
             ->on('give-donors')
             ->on('give-payment-history')
             ->on('give-subscriptions')
             ->on('give-settings')
-            ->on('give-addons')
+            ->on('give-addons') 
             ->on('give-reports');
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getDateRange(): array
+    {
+        $timezone = wp_timezone();
+
+        return [
+            new DateTimeImmutable(self::START_DATE, $timezone),
+            new DateTimeImmutable(self::END_DATE, $timezone),
+        ];
     }
 
     /**
