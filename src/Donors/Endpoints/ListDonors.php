@@ -78,7 +78,8 @@ class ListDonors extends Endpoint
                             DonorStatus::ACTIVE,
                             DonorStatus::TRASH,
                         ],
-                        'required' => true
+                        'default' => DonorStatus::ACTIVE,
+                        'required' => false
                     ],
                     'end' => [
                         'type' => 'string',
