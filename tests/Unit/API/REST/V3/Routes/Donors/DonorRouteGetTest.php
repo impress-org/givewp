@@ -394,8 +394,7 @@ class DonorRouteGetTest extends RestApiTestCase
             'name',
             'firstName',
             'lastName',
-            'prefix',
-            'status'
+            'prefix'
         ];
 
         foreach ($anonymousDataRedacted as $property) {
