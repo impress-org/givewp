@@ -1,0 +1,140 @@
+// High specificity selectors to override WordPress admin styles
+.givewp-bfcm-2025-banner {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-image: var(--bg-small);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 186px;
+    width: 100%;
+    margin-bottom: .5rem;
+
+    @media (min-width: 768px) {
+        background-image: var(--bg-medium);
+        height: 220px;
+    }
+
+    @media (min-width: 1024px) {
+        background-image: var(--bg-large);
+        height: 210px;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: .5rem;
+        position: relative;
+        z-index: 2;
+        padding: 2rem 1rem;
+        margin-left: 5rem;
+    }
+
+    &__title {
+        font-family: Montserrat;
+        font-weight: 900;
+        font-size: 32px;
+        line-height: 36px;
+        letter-spacing: -1%;
+        color: #022603;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1#{&}__title,
+    .wrap h1#{&}__title,
+    .postbox h1#{&}__title {
+        font-family: Montserrat;
+        font-weight: 900;
+        font-size: 32px;
+        line-height: 36px;
+        letter-spacing: -1%;
+        color: #022603;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__description {
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 32px;
+        letter-spacing: 0%;
+        color: #022603;
+        margin: 0;
+        padding: 0;
+    }
+
+    p#{&}__description,
+    .wrap p#{&}__description,
+    .postbox p#{&}__description {
+        font-family: Inter;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 32px;
+        letter-spacing: 0%;
+        color: #022603;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__cta {
+        font-family: Montserrat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 293;
+        height: 48;
+        font-weight: 700;
+        font-style: Bold;
+        font-size: 16px;
+        line-height: 24px;
+        letter-spacing: 0%;
+        border-radius: 36px;
+        margin-top: .5rem;
+        padding: 12px 24px;
+        background: #F29718;
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+
+        img {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        &:hover {
+            background: #D98715;
+            color: #fff;
+        }
+    }
+
+    &__discount {
+        color: #459948;
+    }
+
+    @media (max-width: 767px) {
+        &__title {
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        &__description {
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        &__cta {
+            width: 100%;
+            max-width: 293px;
+            font-size: 14px;
+        }
+    }
+}
