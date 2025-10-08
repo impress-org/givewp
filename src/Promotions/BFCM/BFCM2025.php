@@ -52,7 +52,6 @@ class BFCM2025
             ->on('give-campaigns')
             ->on('give-donors')
             ->on('give-payment-history')
-            ->on('give-subscriptions')
             ->on('give-settings')
             ->on('give-add-ons')
             ->on('give-reports');
