@@ -317,7 +317,7 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
                                 <TestModeFilter />
                             </div>
                         )}
-                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
+                        {statsConfig && !statsIsValidating && <ListTableStats apiSettings={apiSettings} config={statsConfig} values={statsData} />}
                     </>
                 )}
 

@@ -145,7 +145,9 @@ const ListTableBlankSlate = (
  * @unreleased
  */
 const statsConfig: Record<string, StatConfig> = {
-    totalContributions: { label: __('Total Contributions', 'give')},
+    totalContributions: { label: __('Total Contributions', 'give'), 
+    //@ts-ignore
+    currency: window?.GiveSubscriptionOptions?.currency,},
     activeSubscriptions: { label: __('Active Subscriptions', 'give')},
 };
 
