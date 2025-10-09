@@ -1,11 +1,10 @@
 import StatWidget from "@givewp/admin/components/StatWidget";
 import { __ } from "@wordpress/i18n";
 import { amountFormatter } from '@givewp/src/Admin/utils';
-import useCurrencyFormatter from "@givewp/forms/app/hooks/useCurrencyFormatter";
 import styles from "./styles.module.scss";
 
 /**
- * @unreleased add suspport for currency formatting
+ * @unreleased add support for currency
  * @since 4.10.0
  */
 export type StatConfig = {
@@ -26,7 +25,7 @@ type ListTableStatsProps = {
 };
 
 /**
- * @unreleased add suspport for currency formatting
+ * @unreleased add support for currency formatting
  * @since 4.10.0
  */
 export default function ListTableStats({config, values}: ListTableStatsProps) {
