@@ -37,6 +37,7 @@ export default ({currentPage, totalPages, setPage}: PaginationProps) => {
                         const page = i + 1;
                         return (
                             <button
+                                key={page}
                                 title={sprintf(__('Page %d', 'give'), page)}
                                 className={cx('give-campaign-components-pagination__pages-links-page', {'give-campaign-components-pagination__pages-links-current': currentPage === page})}
                                 onClick={(e) => {

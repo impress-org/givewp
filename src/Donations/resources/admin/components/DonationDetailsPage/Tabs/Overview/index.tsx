@@ -24,7 +24,7 @@ export default function DonationDetailsPageOverviewTab() {
             <DonationStats donation={donation} isResolving={!hasResolvedDonation} />
 
             <div className={styles.left}>
-                <DonationSummaryGrid donation={donation}/>
+                <DonationSummaryGrid donation={donation} />
 
                 <div className={styles.card}>
                     <DonationNotes donationId={donationId} />

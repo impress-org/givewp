@@ -1,12 +1,13 @@
 import {__} from '@wordpress/i18n';
 import {Markup} from 'interweave';
 import {Button} from '@wordpress/components';
-import createIframePortal from './createIframePortal';
 
 import './styles.scss';
+import IframePortalWrapper from './createIframePortal';
 
 export default function ConsentModal({setShowModal, modalHeading, modalAcceptanceText, agreementText, acceptTerms}) {
-    return createIframePortal(
+    return (
+    <IframePortalWrapper targetElement={window.top.document.body}>
         <div className={'givewp-fields-consent-modal'} role="dialog" aria-label={modalHeading}>
             <div className={'givewp-fields-consent-modal-content'}>
                 <h2>{modalHeading}</h2>
@@ -24,7 +25,7 @@ export default function ConsentModal({setShowModal, modalHeading, modalAcceptanc
                     </Button>
                 </div>
             </div>
-        </div>,
-        window.top.document.body
+        </div>
+    </IframePortalWrapper>
     );
 }
