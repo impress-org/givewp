@@ -55,6 +55,7 @@ class ChargeRefunded extends StripeEventListener
     }
 
     /**
+     * @unreleased attempt with payment_intent for StripePaymentElement
      * @since 2.21.0
      * @inerhitDoc
      */
@@ -63,6 +64,9 @@ class ChargeRefunded extends StripeEventListener
         /* @var Charge $stripeCharge */
         $stripeCharge = $event->data->object;
 
-        return give(DonationRepository::class)->getByGatewayTransactionId($stripeCharge->id);
+        // Try payment_intent first,otherwise fall back to charge id
+        $transactionId = $stripeCharge->payment_intent ?: $stripeCharge->id;
+
+        return give(DonationRepository::class)->getByGatewayTransactionId($transactionId);
     }
 }
