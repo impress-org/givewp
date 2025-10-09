@@ -178,73 +178,40 @@
 }
 
 .id {
-    inline-size: 2.5rem;
+    inline-size: 8rem;
 }
 
-.donationForms .goal {
-    inline-size: 9.5rem;
-}
+.campaigns .status,
+.donationForms .status,
+.donations .paymentType,
+.donations .status,
+.donations .subscriptionDonationType,
+.donors .donorType,
+.subscriptions .status {
+    text-align: center;
 
-.donationForms .donationCount {
-    inline-size: 6.5rem;
-}
-
-.donationForms .donationRevenue {
-    inline-size: 5rem;
-}
-
-.donationForms .shortcode {
-    inline-size: 9rem;
-}
-
-.donations .amount {
-    inline-size: 5.5rem;
-}
-
-.donations .status {
-    inline-size: 6rem;
-}
-
-.donations .subscriptionDonationType {
-    inline-size: 6rem;
-}
-
-.donors .donationRevenue {
-    text-align: right;
-}
-
-.donors .donationCount {
     > button {
-        margin-left: auto;
+        margin-inline: auto;
     }
 }
 
-.donors .donorType {
-    text-align: center;
-}
-
-.donors .latestDonation {
+.campaigns .donationsCount,
+.campaigns .revenue,
+.donationForms .dateCreated,
+.donationForms .donationCount,
+.donationForms .donationRevenue,
+.donations .amount,
+.donations .createdAt,
+.donors .donationCount,
+.donors .donationRevenue,
+.donors .latestDonation,
+.subscriptions .amount,
+.subscriptions .renewalDate {
     text-align: right;
-}
 
-.subscriptions .amount {
-    inline-size: 6rem;
-}
-
-.subscriptions .donor {
-    inline-size: 6.5rem;
-}
-
-.subscriptions .form {
-    inline-size: 6.5rem;
-}
-
-.subscriptions .billingPeriod {
-    inline-size: 6.5rem;
-}
-
-.subscriptions .status {
-    inline-size: 6.5rem;
+    > button {
+        margin-left: auto;
+    }
 }
 
 @keyframes appear {

@@ -88,13 +88,27 @@
         }
     }
 
-    &[data-column-id="donorType"] {
+    &[data-column-id="campaigns-status"],
+    &[data-column-id="donationForms-status"],
+    &[data-column-id="donations-paymentType"],
+    &[data-column-id="donations-status"],
+    &[data-column-id="donations-subscriptionDonationType"],
+    &[data-column-id="donors-donorType"] {
         text-align: center;
     }
 
-    &[data-column-id="latestDonation"],
-    &[data-column-id="donationCount"],
-    &[data-column-id="donationRevenue"] {
+    &[data-column-id="campaigns-donationsCount"],
+    &[data-column-id="campaigns-revenue"],
+    &[data-column-id="donationForms-dateCreated"],
+    &[data-column-id="donationForms-donationCount"],
+    &[data-column-id="donationForms-donationRevenue"],
+    &[data-column-id="donations-amount"],
+    &[data-column-id="donations-createdAt"],
+    &[data-column-id="donors-donationCount"],
+    &[data-column-id="donors-donationRevenue"],
+    &[data-column-id="donors-latestDonation"],
+    &[data-column-id="subscriptions-amount"],
+    &[data-column-id="subscriptions-renewalDate"] {
         text-align: right;
     }
 }

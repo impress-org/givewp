@@ -7,7 +7,7 @@
         border-radius: 0.75rem;
         color: #fff;
         column-gap: safe-rem(1);
-        display: flex;
+        display: inline-flex;
         font-size: 0.75rem;
         font-weight: 600;
         justify-content: center;
@@ -88,6 +88,7 @@
     .subscriptionStatus {
         display: flex;
         gap: 10px;
+        justify-content: center;
 
         &__container {
             position: relative;
