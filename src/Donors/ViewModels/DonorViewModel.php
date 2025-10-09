@@ -49,6 +49,7 @@ class DonorViewModel
     }
 
     /**
+     * @unreleased Add status property
      * @since 4.4.0
      */
     public function exports(): array
@@ -74,7 +75,8 @@ class DonorViewModel
                 'company',
                 'addresses',
                 'wpUserPermalink',
-                'customFields'
+                'customFields',
+                'status',
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
@@ -104,7 +106,8 @@ class DonorViewModel
                 'phone',
                 'additionalEmails',
                 'wpUserPermalink',
-                'customFields'
+                'customFields',
+                'status',
             ];
 
             foreach ($anonymousDataRedacted as $propertyName) {
@@ -112,6 +115,7 @@ class DonorViewModel
                     case 'id':
                         $data[$propertyName] = 0;
                         break;
+                    case 'status':
                     case 'wpUserPermalink':
                     case 'avatarUrl':
                         $data[$propertyName] = '';

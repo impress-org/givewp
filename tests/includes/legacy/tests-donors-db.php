@@ -129,6 +129,7 @@ class Tests_Donors_DB extends TestCase {
 			'user_id'         => '%d',
 			'name'            => '%s',
 			'email'           => '%s',
+			'status'          => '%s',
 			'payment_ids'     => '%s',
 			'purchase_value'  => '%f',
 			'purchase_count'  => '%d',
