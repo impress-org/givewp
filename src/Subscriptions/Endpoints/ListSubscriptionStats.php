@@ -63,7 +63,8 @@ class ListSubscriptionStats extends Endpoint
     {    
         $query = DB::table('posts')
             ->where('post_type', 'give_payment')
-            ->where('post_status', 'trash', '<>');
+            ->where('post_status', 'trash', '<>')
+            ->where('post_status', 'refunded', '<>');
 
         $query->attachMeta(
             'give_donationmeta',
