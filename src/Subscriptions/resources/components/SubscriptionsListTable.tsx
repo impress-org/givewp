@@ -7,6 +7,7 @@ import {SubscriptionsRowActions} from './SubscriptionsRowActions';
 import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
+import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
 
 declare global {
     interface Window {
@@ -17,6 +18,9 @@ declare global {
             forms: Array<{value: string; text: string}>;
             paymentMode: boolean;
             pluginUrl: string;
+        };
+        GiveSubscriptionOptions?: {
+            currency: string;
         };
     }
 }
@@ -127,6 +131,30 @@ const ListTableBlankSlate = (
     />
 );
 
+/**
+ * Configuration for the statistic tiles rendered above the ListTable.
+ *
+ * IMPORTANT: Object keys MUST MATCH the keys returned by the API's `stats` payload.
+ * For example, if the API returns:
+ *
+ *   data.stats = {
+ *     totalContributions: number;
+ *     activeSubscriptions: number;
+ *   }
+ *
+ * then this config must use those same keys: "totalContributions", "activeSubscriptions".
+ * Missing or mismatched keys will result in empty/undefined values in the UI.
+ *
+ * @unreleased
+ */
+const statsConfig: Record<string, StatConfig> = {
+    totalContributions: {
+        label: __('Total Contributions', 'give'), 
+        currency: window.GiveSubscriptionOptions?.currency
+    },
+    activeSubscriptions: { label: __('Active Subscriptions', 'give')},
+};
+
 export default function SubscriptionsListTable() {
     return (
         <ListTablePage
@@ -134,6 +162,7 @@ export default function SubscriptionsListTable() {
             singleName={__('subscription', 'give')}
             pluralName={__('subscriptions', 'give')}
             rowActions={SubscriptionsRowActions}
+            statsConfig={statsConfig}
             bulkActions={bulkActions}
             apiSettings={window.GiveSubscriptions}
             filterSettings={filters}

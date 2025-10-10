@@ -30,6 +30,7 @@ use Give\Donors\Endpoints\ListDonors;
 use Give\Donors\Endpoints\ListDonorsStats;
 use Give\Donors\Endpoints\SwitchDonorView;
 use Give\Subscriptions\Endpoints\ListSubscriptions;
+use Give\Subscriptions\Endpoints\ListSubscriptionStats;
 use Give\Subscriptions\Endpoints\SubscriptionActions;
 use Give\Subscriptions\Endpoints\SwitchSubscriptionView;
 
@@ -58,6 +59,7 @@ class RestAPI implements ServiceProvider
         ListDonations::class,
         ListDonationsStats::class,
         ListSubscriptions::class,
+        ListSubscriptionStats::class,
         SwitchDonorView::class,
         SwitchDonationView::class,
         SwitchDonationFormView::class,
