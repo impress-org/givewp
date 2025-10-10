@@ -46,20 +46,25 @@
 .date {
   font-weight: 500;
   font-size: 1.125rem;
+  line-height: calc(28 / 18);
   color: var(--givewp-neutral-900);
 }
 
 .badge {
-  display: block;
-  margin-top: var(--givewp-spacing-2);
-  color: var(--givewp-neutral-900);
-  border: 1px solid var(--givewp-neutral-900);
-  padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  text-transform: none;
-  letter-spacing: 0.05em;
+    --border-width: 1px;
+    --padding-x: calc(var(--givewp-spacing-3) - var(--border-width));
+    --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
+    align-items: center;
+    background-color: var(--givewp-neutral-25);
+    border-radius: 1.5rem;
+    border: var(--border-width) solid var(--givewp-neutral-600);
+    color: var(--givewp-neutral-900);
+    display: inline-flex ;
+    font-size: 0.75rem;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.5;
+    padding: var(--padding-y) var(--padding-x);
 }
 
 .notice {

@@ -204,6 +204,7 @@ export const ListTable = ({
                                 columns={visibleColumns}
                                 data={data}
                                 isLoading={isLoading}
+                                tableId={apiSettings.table.id}
                                 singleName={singleName}
                                 rowActions={rowActions}
                                 parameters={parameters}
