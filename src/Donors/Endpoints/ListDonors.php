@@ -6,6 +6,8 @@ use Give\Donors\ListTable\DonorsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Support\Currencies\GiveCurrencies;
+use Money\Currency;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -179,21 +181,31 @@ class ListDonors extends Endpoint
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
+        $postsTable = DB::prefix('posts');
+        $donationMetaTable = DB::prefix('give_donationmeta');
+        $donorTable = DB::prefix('give_donors');
+
         foreach ($sortColumns as $sortColumn) {
             switch ($sortColumn) {
                 case 'latestDonation':
-                    $postsTable = DB::prefix('posts');
-                    $donationMetaTable = DB::prefix('give_donationmeta');
-                    $donorTable = DB::prefix('give_donors');
-                    
-                    $query->selectRaw("(SELECT MAX(p.post_date) 
-                        FROM {$postsTable} p 
-                        LEFT JOIN {$donationMetaTable} dm ON p.ID = dm.donation_id 
-                        WHERE p.post_type = 'give_payment' 
-                        AND dm.meta_key = '_give_payment_donor_id' 
-                        AND dm.meta_value = {$donorTable}.id) as latest_donation_date");
-                    $query->orderBy('latest_donation_date', $sortDirection);
+                    $query->selectRaw("(SELECT MAX(posts.post_date) 
+                        FROM {$postsTable} posts
+                        LEFT JOIN {$donationMetaTable} donationMeta ON posts.ID = donationMeta.donation_id 
+                        WHERE posts.post_type = 'give_payment' 
+                        AND donationMeta.meta_key = '_give_payment_donor_id' 
+                        AND donationMeta.meta_value = {$donorTable}.id) as latest_donation_date")
+                        ->orderBy('latest_donation_date', $sortDirection);
                     break;
+                 case 'donationRevenue':
+                    $currency = give_get_option('currency', 'USD');
+                    $currencies = give(GiveCurrencies::class);
+                    $decimals = $currencies->subunitFor(new Currency($currency));
+                    
+                    $query->selectRaw("ROUND(SUM({$donorTable}.purchase_value), {$decimals}) as donation_revenue")
+                         ->groupBy("{$donorTable}.id")
+                        ->orderByRaw("donation_revenue {$sortDirection}");
+                    break;
+                    
                 default:
                     $query->orderBy($sortColumn, $sortDirection);
                     break;

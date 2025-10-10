@@ -14,6 +14,7 @@ use Give\Framework\ListTable\ModelColumn;
  */
 class DonationRevenueColumn extends ModelColumn
 {
+    protected $sortColumn = 'donationRevenue';
 
     /**
      * @since 2.24.0
