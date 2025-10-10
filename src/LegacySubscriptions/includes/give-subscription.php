@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Give_Subscription
  *
+ * @unreleased add campaign_id
  * @since 2.19.0 - migrated from give-recurring
  * @since 1.0
  */
@@ -110,6 +111,11 @@ class Give_Subscription {
 	 * @var Give_Donor
 	 */
 	public $donor;
+
+    /**
+     * @var int
+     */
+    public $campaign_id = 0;
 
 	/**
 	 * @var int (backward compatibility - maps to donor_id)
@@ -234,6 +240,7 @@ class Give_Subscription {
 	/**
 	 * Creates a subscription.
 	 *
+     * @unreleased add campaign_id
 	 * @since  1.0
 	 *
 	 * @param  array $data Array of attributes for a subscription
@@ -260,6 +267,7 @@ class Give_Subscription {
 			'expiration'           => '',
 			'status'               => '',
 			'profile_id'           => '',
+            'campaign_id'          => 0,
 		);
 
 		$args = wp_parse_args( $data, $defaults );
@@ -284,6 +292,15 @@ class Give_Subscription {
 		if ( ! empty( $args['donor_id'] ) ) {
 			$args['customer_id'] = $args['donor_id'];
 		}
+
+        if (
+            $args['product_id']
+            && ! $args['campaign_id']
+        ) {
+            if ($campaign = give()->campaigns->getByFormId($args['product_id'])) {
+                $args['campaign_id'] = $campaign->id;
+            }
+        }
 
 		$id = $this->subs_db->create( $args );
 
