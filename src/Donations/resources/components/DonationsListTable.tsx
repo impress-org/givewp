@@ -253,6 +253,13 @@ export default function DonationsListTable() {
             productRecommendation={rotatingRecommendation}
             statsConfig={statsConfig}
         >
+            <button
+                className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
+                onClick={showLegacyDonations}
+                aria-label={__('Switch to the legacy donations table view', 'give')}
+            >
+                {__('Switch to Legacy View', 'give')}
+            </button>
             {window.GiveDonations.manualDonations ? (
                 <a
                     className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
@@ -290,13 +297,6 @@ export default function DonationsListTable() {
             >
                 {__('Import donations', 'give')}
             </a>
-            <button
-                className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
-                onClick={showLegacyDonations}
-                aria-label={__('Switch to the legacy donations table view', 'give')}
-            >
-                {__('Switch to Legacy View', 'give')}
-            </button>
         </ListTablePage>
     );
 }
