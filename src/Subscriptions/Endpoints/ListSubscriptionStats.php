@@ -75,7 +75,8 @@ class ListSubscriptionStats extends Endpoint
         );
 
         $query->whereIsNotNull('give_donationmeta_attach_meta_subscriptionId.meta_value')
-              ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', '', '!=');
+              ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', '', '!=')
+              ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', '0', '!=');
 
         $query->leftJoin(
             'give_subscriptions',
