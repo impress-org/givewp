@@ -145,6 +145,7 @@ class ListDonors extends Endpoint
     }
 
     /**
+     * @unreleased abstract column sorting into sortColumns method
      * @since 2.24.0 Replace Query Builder with Donors model
      * @since 2.21.0
      *
@@ -157,6 +158,7 @@ class ListDonors extends Endpoint
 
         $query = give()->donors->prepareQuery();
         $query = $this->getWhereConditions($query);
+
         $this->sortColumns($query);
 
         $query->limit($perPage)
@@ -172,7 +174,7 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @unreleased apply sorting for latestDonation column
+     * @unreleased apply sorting for latestDonation and donationRevenue columns
      * 
      * @param QueryBuilder $query
      */
