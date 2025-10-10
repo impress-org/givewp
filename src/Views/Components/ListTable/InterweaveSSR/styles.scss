@@ -291,23 +291,20 @@
 .idBadge {
     align-items: center;
     background-color: var(--givewp-neutral-50);
-    border-radius: 0.5rem;
+    border-radius: var(--givewp-rounded-8);
     border: 1px solid var(--givewp-neutral-200);
     color: var(--givewp-neutral-700);
     display: inline-flex;
     flex-grow: 0;
     flex-shrink: 0;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 600;
-    line-height: normal;
-    padding: 0.1875rem 0.5rem;
+    line-height: 1.25rem;
+    padding: calc(0.5 * var(--givewp-spacing-1)) var(--givewp-spacing-2);
     text-align: center;
     width: fit-content;
 
     &::before {
         content: '#';
-        font-size: 0.5rem;
-        padding: 0;
-        width: 0.5rem;
     }
 }
