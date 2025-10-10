@@ -58,10 +58,8 @@ class DonationCountColumn extends ModelColumn
         $totalDonations = $donationFormData->getDonationsCount($model);
 
         return sprintf(
-            '<a class="column-donations-count-value" href="%s" aria-label="%s">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-payment-history&form_id=$model->id"),
-            __('Visit donations page', 'give'),
-            apply_filters("givewp_list_table_cell_value_{$this::getId()}_content", $totalDonations, $model, $this)
+            '<div class="donationCount"><span>%s</span></div>',
+            $totalDonations
         );
     }
 }

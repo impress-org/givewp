@@ -87,7 +87,7 @@
 }
 
 .selectAll {
-    width: calc(var(--givewp-spacing-4) * 2 + 1.333rem);
+    width: 3.5rem;
     padding-right: 0;
 }
 
@@ -197,16 +197,13 @@
 
 .campaigns .donationsCount,
 .campaigns .revenue,
-.donationForms .dateCreated,
 .donationForms .donationCount,
 .donationForms .donationRevenue,
 .donations .amount,
-.donations .createdAt,
 .donors .donationCount,
 .donors .donationRevenue,
 .donors .latestDonation,
-.subscriptions .amount,
-.subscriptions .renewalDate {
+.subscriptions .amount {
     text-align: right;
 
     > button {
