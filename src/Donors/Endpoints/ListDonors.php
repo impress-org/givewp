@@ -74,10 +74,7 @@ class ListDonors extends Endpoint
                         'default' => 0
                     ],
                     'status' => [
-                        'enum' => [
-                            DonorStatus::ACTIVE,
-                            DonorStatus::TRASH,
-                        ],
+                        'enum' => [...array_values(DonorStatus::toArray())],
                         'default' => DonorStatus::ACTIVE,
                         'required' => false
                     ],

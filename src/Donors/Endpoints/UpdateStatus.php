@@ -48,10 +48,7 @@ class UpdateStatus extends Endpoint
                         },
                     ],
                     'status' => [
-                        'enum' => [
-                            DonorStatus::ACTIVE,
-                            DonorStatus::TRASH,
-                        ],
+                        'enum' => [...array_values(DonorStatus::toArray())],
                         'required' => true,
                     ],
                 ],
