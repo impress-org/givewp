@@ -6,6 +6,7 @@ use Give\Subscriptions\Endpoints\ListSubscriptionStats;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Subscriptions\Models\Subscription;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\TestCase;
@@ -39,11 +40,13 @@ class TestSubscriptionStats extends TestCase
             $donation = Donation::factory()->create([
                 'amount' => new Money(5000, 'USD'),
                 'status' => DonationStatus::COMPLETE(),
+                'mode' => DonationMode::LIVE(),
             ]);
             give()->payment_meta->update_meta($donation->id, 'subscription_id', $subscription->id);
         }
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/subscriptions/stats');
+        $request->set_param('testMode', false);
 
         $endpoint = new ListSubscriptionStats();
         $response = $endpoint->handleRequest($request);
@@ -72,18 +75,21 @@ class TestSubscriptionStats extends TestCase
         $donation1 = Donation::factory()->create([
             'amount' => new Money(5000, 'USD'), // $50.00
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
         ]);
         give()->payment_meta->update_meta($donation1->id, 'subscription_id', $subscription1->id);
 
         $donation2 = Donation::factory()->create([
             'amount' => new Money(7500, 'USD'), // $75.00
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
         ]);
         give()->payment_meta->update_meta($donation2->id, 'subscription_id', $subscription1->id);
 
         $donation3 = Donation::factory()->create([
             'amount' => new Money(10000, 'USD'), // $100.00
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
         ]);
         give()->payment_meta->update_meta($donation3->id, 'subscription_id', $subscription2->id);
         
@@ -92,9 +98,11 @@ class TestSubscriptionStats extends TestCase
         Donation::factory()->create([
             'amount' => new Money(2500, 'USD'), // $25.00
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
         ]);
 
         $request = new WP_REST_Request('GET', '/give-api/v2/admin/subscriptions/stats');
+        $request->set_param('testMode', false);
 
         $endpoint = new ListSubscriptionStats();
         $response = $endpoint->handleRequest($request);
