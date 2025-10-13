@@ -37,6 +37,11 @@ class ListSubscriptionStats extends Endpoint
                     'permission_callback' => [$this, 'permissionsCheck'],
                 ],
                 'args' => [
+                    'testMode' => [
+                        'type' => 'boolean',
+                        'required' => false,
+                        'default' => give_is_test_mode(),
+                    ],
                 ],
             ]
         );
@@ -61,6 +66,8 @@ class ListSubscriptionStats extends Endpoint
      */
     public function getSubscriptionStatistics(): array
     {    
+        $testMode = $this->request->get_param('testMode');
+
         $query = DB::table('posts')
             ->where('post_type', 'give_payment')
             ->whereIn('post_status', ['publish', 'give_subscription']);
@@ -70,8 +77,18 @@ class ListSubscriptionStats extends Endpoint
             'ID',
             'donation_id',
             [DonationMetaKeys::AMOUNT()->getValue(), DonationMetaKeys::AMOUNT()->getKeyAsCamelCase()],
-            [DonationMetaKeys::SUBSCRIPTION_ID()->getValue(), DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()]
+            [DonationMetaKeys::SUBSCRIPTION_ID()->getValue(), DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()],
+            [DonationMetaKeys::MODE()->getValue(), DonationMetaKeys::MODE()->getKeyAsCamelCase()]
         );
+
+        if ($testMode) {
+            $query->where('give_donationmeta_attach_meta_mode.meta_value', 'test');
+        } else {
+            $query->where(function ($query) {
+                $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
+                    ->orWhere('give_donationmeta_attach_meta_mode.meta_value', 'test', '<>');
+            });
+        }
 
         $query->whereIsNotNull('give_donationmeta_attach_meta_subscriptionId.meta_value')
               ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', '', '!=')
