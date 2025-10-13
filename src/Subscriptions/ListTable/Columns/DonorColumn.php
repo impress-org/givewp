@@ -15,7 +15,7 @@ use Give\Subscriptions\Models\Subscription;
  */
 class DonorColumn extends ModelColumn
 {
-    protected $sortColumn = 'name';
+    protected $sortColumn = 'donorName';
 
     /**
      * @since 2.24.0

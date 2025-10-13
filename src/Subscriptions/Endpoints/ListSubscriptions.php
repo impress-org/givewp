@@ -163,7 +163,7 @@ class ListSubscriptions extends Endpoint
 
         $query = give()->subscriptions->prepareQuery();
 
-        if ('name' === $sortColumns[0]) {
+        if ('donorName' === $sortColumns[0]) {
             $query->attachMeta(
                 'give_donormeta',
                 'customer_id',
