@@ -35,7 +35,12 @@ abstract class Endpoint implements RestRoute
      */
     public function validateDate($param, $request, $key)
     {
-        if (empty($param) || (strlen($param) <= 3 && strpos($param, 'd') !== false)) {
+        if (empty($param)) {
+            return true;
+        }
+
+        // Allow relative date expressions like "7d", "30d"
+        if (preg_match('/^\d+d$/', $param)) {
             return true;
         }
 

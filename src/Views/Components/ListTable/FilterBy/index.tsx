@@ -6,19 +6,29 @@ import {FilterByGroupedOptions} from '@givewp/components/ListTable/ListTablePage
 /**
  * @unreleased
  */
-export default function FilterBy({groupedOptions, onChange, values}) {
+interface FilterByProps {
+    groupedOptions: FilterByGroupedOptions[];
+    onChange: (key: string, values: string[]) => void;
+    values?: Record<string, string[]>;
+}
+
+/**
+ * @unreleased
+ */
+export default function FilterBy({groupedOptions, onChange, values}: FilterByProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        const newSelectedFilters: Record<string, string[]> = {};
+
         groupedOptions.forEach((group) => {
-            setSelectedFilters((prev) => ({
-                ...prev,
-                [group.id]: values?.[group.id] || [],
-            }));
+            newSelectedFilters[group.id] = values?.[group.id] || [];
         });
-    }, [values]);
+
+        setSelectedFilters(newSelectedFilters);
+    }, [values, groupedOptions]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -56,21 +66,25 @@ export default function FilterBy({groupedOptions, onChange, values}) {
 
     const handleRadioChange = (groupId: string, optionValue: string) => {
         setSelectedFilters((prev) => {
-            const groupValues = prev[groupId] || [];
-            const isCurrentlySelected = groupValues.includes(optionValue);
-
-            if (isCurrentlySelected) {
-                return {
-                    ...prev,
-                    [groupId]: [],
-                };
-            }
-
             return {
                 ...prev,
                 [groupId]: [optionValue],
             };
         });
+    };
+
+    const handleRadioClick = (groupId: string, optionValue: string) => {
+        const groupValues = selectedFilters[groupId] || [];
+        const isCurrentlySelected = groupValues.includes(optionValue);
+
+        if (isCurrentlySelected) {
+            setSelectedFilters((prev) => {
+                return {
+                    ...prev,
+                    [groupId]: [],
+                };
+            });
+        }
     };
 
     const handleReset = () => {
@@ -151,11 +165,12 @@ export default function FilterBy({groupedOptions, onChange, values}) {
                                                     name={group.id}
                                                     value={option.value}
                                                     checked={isChecked}
-                                                    onClick={() =>
+                                                    onChange={() =>
                                                         group.type === 'checkbox'
                                                             ? handleCheckboxChange(group.id, option.value)
                                                             : handleRadioChange(group.id, option.value)
                                                     }
+                                                    onClick={() => group.type === 'radio' && handleRadioClick(group.id, option.value)}
                                                     className={styles.filterInput}
                                                 />
                                                 <span className={styles.filterLabel}>{option.text}</span>

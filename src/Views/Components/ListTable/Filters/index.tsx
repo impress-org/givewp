@@ -85,7 +85,7 @@ export const getInitialFilterState = (filters) => {
         else {
             switch (filter.type) {
                 case 'filterby':
-                    break;
+                    break; // 'filterby' is handled in the FilterBy component
                 case 'select':
                     state[filter.name] = filter.options?.[0].value;
                     break;

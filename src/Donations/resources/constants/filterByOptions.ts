@@ -1,7 +1,7 @@
 import { FilterByGroupedOptions } from "@givewp/components/ListTable/ListTablePage";
 import { __ } from "@wordpress/i18n";
 
-const donationStatuses = window.GiveDonations.donationStatuses;
+const donationStatuses = window.GiveDonations.donationStatuses || {};
 
 const filterByOptions: Array<FilterByGroupedOptions> = [
     {

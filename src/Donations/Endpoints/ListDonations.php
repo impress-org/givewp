@@ -347,11 +347,11 @@ class ListDonations extends Endpoint
             return $date;
         }
 
-        $intervalString = str_replace('d', '', $date);
+        $intervalString = (int) str_replace('d', '', $date);
         $date = new DateTimeImmutable('now', wp_timezone());
         $interval = DateInterval::createFromDateString($direction === 'before' ? "-$intervalString days" : "+$intervalString days");
-        $date = $date->add($interval);
+        $calculatedDate = $date->add($interval);
 
-        return $date->format('Y-m-d');
+        return $calculatedDate->format('Y-m-d');
     }
 }
