@@ -456,6 +456,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased add campaignId to renewal
      * @since 4.8.1 Remove campaignId from the attributes array since it is auto-generated based on the subscription's form.
      * @since 4.8.0 Add campaignId support.
      * @since 3.20.0
@@ -489,6 +490,7 @@ class SubscriptionRepository
                 'formTitle' => $initialDonation->formTitle,
                 'mode' => $subscription->mode->isLive() ? DonationMode::LIVE() : DonationMode::TEST(),
                 'donorIp' => $initialDonation->donorIp,
+                'campaignId' => $subscription->campaignId,
             ], $attributes)
         );
 

@@ -3,7 +3,6 @@
 namespace Give\Subscriptions\Factories;
 
 use Exception;
-use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
@@ -21,7 +20,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFactory extends ModelFactory
 {
     /**
-     * @unreleased create campaign and assign it to the subscription
+     * @unreleased add campaignId property
      * @since 2.24.0 add mode property
      * @since 2.20.0 update default donorId to create factory
      * @since 2.19.6
@@ -32,7 +31,6 @@ class SubscriptionFactory extends ModelFactory
     public function definition(): array
     {
         $frequency = $this->faker->numberBetween(1, 4);
-        $campaign = Campaign::factory()->create();
 
         return [
             'amount' => new Money($this->faker->numberBetween(25, 50000), 'USD'),
@@ -44,8 +42,8 @@ class SubscriptionFactory extends ModelFactory
             'feeAmountRecovered' => new Money(0, 'USD'),
             'status' => SubscriptionStatus::PENDING(),
             'renewsAt' => give(GenerateNextRenewalForSubscription::class)(SubscriptionPeriod::MONTH(), $frequency),
-            'donationFormId' => $campaign->defaultFormId,
-            'campaignId' => $campaign->id,
+            'donationFormId' => 1,
+            'campaignId' => 1,
             'mode' => SubscriptionMode::TEST(),
         ];
     }
