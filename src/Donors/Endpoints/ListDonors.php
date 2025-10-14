@@ -7,8 +7,6 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\ValueObjects\DonorStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Framework\Support\Currencies\GiveCurrencies;
-use Money\Currency;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -161,12 +159,11 @@ class ListDonors extends Endpoint
     {
         $page = $this->request->get_param('page');
         $perPage = $this->request->get_param('perPage');
+        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->donors->prepareQuery();
         $query = $this->getWhereConditions($query);
-
-        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
-        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         foreach ($sortColumns as $sortColumn) {
             $query->orderBy($sortColumn, $sortDirection);
