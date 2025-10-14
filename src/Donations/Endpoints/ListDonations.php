@@ -2,12 +2,15 @@
 
 namespace Give\Donations\Endpoints;
 
+use DateInterval;
+use DateTimeImmutable;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Helpers\Temporal;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -33,6 +36,7 @@ class ListDonations extends Endpoint
     protected $listTable;
 
     /**
+     * @unreleased Updated status parameter to accept multiple comma-separated values
      * @since 4.6.0 add status parameter to filter donations by status
      * @since 3.4.0
      * @access public
@@ -129,12 +133,9 @@ class ListDonations extends Endpoint
                     'status' => [
                         'type' => 'string',
                         'required' => false,
-                        'default' => 'active',
-                        'enum' => [
-                            'active',
-                            'trash',
-                        ],
-                        'description' => 'Filter donations by status: active (all except trash), or trash.'
+                        'sanitize_callback' => 'sanitize_text_field',
+                        'validate_callback' => [$this, 'validateStatus'],
+                        'description' => 'Filter donations by status. Accepts comma-separated list of DonationStatus values (e.g., "pending,publish,trash"). If not provided, excludes trash donations by default.'
                     ],
                 ],
             ]
@@ -231,6 +232,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Updated status filtering to accept multiple comma-separated values
      * @since 4.8.0 Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
      * @since 3.4.0 Make this method protected so it can be extended
@@ -245,8 +247,8 @@ class ListDonations extends Endpoint
     protected function getWhereConditions(QueryBuilder $query): array
     {
         $search = $this->request->get_param('search');
-        $start = $this->request->get_param('start');
-        $end = $this->request->get_param('end');
+        $start = $this->maybeExpandDate($this->request->get_param('start'), 'before');
+        $end = $this->maybeExpandDate($this->request->get_param('end'), 'after');
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
         $campaignId = $this->request->get_param('campaignId');
@@ -260,9 +262,12 @@ class ListDonations extends Endpoint
 
         $query->where('post_type', 'give_payment');
 
-        if ($status === 'trash') {
-            $query->where('post_status', 'trash');
-        } elseif ($status === 'active') {
+        // Handle status filtering
+        if (!empty($status)) {
+            $statuses = array_map('trim', explode(',', $status));
+            $query->whereIn('post_status', $statuses);
+        } else {
+            // Default behavior: exclude trash donations
             $query->where('post_status', 'trash', '<>');
         }
 
@@ -329,5 +334,24 @@ class ListDonations extends Endpoint
             $query,
             $dependencies,
         ];
+    }
+
+    /**
+     * @param string $date
+     *
+     * @return string
+     */
+    private function maybeExpandDate(?string $date, string $direction): ?string
+    {
+        if (empty($date) || strlen($date) > 3) {
+            return $date;
+        }
+
+        $intervalString = str_replace('d', '', $date);
+        $date = new DateTimeImmutable('now', wp_timezone());
+        $interval = DateInterval::createFromDateString($direction === 'before' ? "-$intervalString days" : "+$intervalString days");
+        $date = $date->add($interval);
+
+        return $date->format('Y-m-d');
     }
 }
