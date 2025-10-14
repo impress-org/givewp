@@ -4,6 +4,7 @@ namespace Give\Donors\Endpoints;
 
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\ValueObjects\DonorStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Framework\Support\Currencies\GiveCurrencies;
@@ -73,6 +74,11 @@ class ListDonors extends Endpoint
                         'type' => 'integer',
                         'required' => false,
                         'default' => 0
+                    ],
+                    'status' => [
+                        'enum' => [...array_values(DonorStatus::toArray())],
+                        'default' => DonorStatus::ACTIVE,
+                        'required' => false
                     ],
                     'end' => [
                         'type' => 'string',
@@ -193,6 +199,7 @@ class ListDonors extends Endpoint
     }
 
     /**
+     * @unreleased Add "status" where condition
      * @since 2.24.0 Replace Query Builder with Donors model
      * @since 2.21.0
      *
@@ -206,6 +213,7 @@ class ListDonors extends Endpoint
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
         $campaignId = $this->request->get_param('campaignId');
+        $status = $this->request->get_param('status');
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -241,6 +249,9 @@ class ListDonors extends Endpoint
                         });
                 });
         }
+
+
+        $query->where('status', $status);
 
         return $query;
     }
