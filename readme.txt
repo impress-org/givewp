@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 4.11.0: October 16th, 2025 =
-* New: Added a new csv subscriptions importer tool for the abilility to import recurring donations into GiveWP
+* New: Added a new csv subscriptions importer tool for the ability to import recurring donations into GiveWP
 * New: The admin donor list table now displays quick stats
 * New: The new admin subscription details screen now has record fields for status, gateway subscription ID, campaign, form, and associated donor
 * Fix: Resolved conflict from composer with some plugins like KestrelWP
