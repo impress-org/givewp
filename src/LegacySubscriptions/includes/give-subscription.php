@@ -502,7 +502,7 @@ class Give_Subscription {
 	 *
 	 * Records a new payment on the subscription.
 	 *
-     * @unreleased add campaign_id to renewal
+     * @since 4.11.0 add campaign_id to renewal
 	 * @since 2.21.3 add support for anonymous donations
 	 * @since 1.12.7 Set donor first and last name in new donation
 	 *
