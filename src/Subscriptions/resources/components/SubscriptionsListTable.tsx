@@ -17,6 +17,7 @@ declare global {
             forms: Array<{value: string; text: string}>;
             paymentMode: boolean;
             pluginUrl: string;
+            statuses: Array<{value: string; text: string}>;
         };
     }
 }
@@ -30,6 +31,13 @@ const filters: Array<FilterConfig> = [
         text: __('Select Campaign', 'give'),
         ariaLabel: __('filter subscriptions by campaign', 'give'),
         options: window.GiveSubscriptions.forms,
+    },
+    {
+        name: 'status',
+        type: 'select',
+        text: __('Subscription status', 'give'),
+        ariaLabel: __('Filter subscriptions by status', 'give'),
+        options: window.GiveSubscriptions.statuses,
     },
     {
         name: 'search',
@@ -51,6 +59,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
+        isVisible: (data, parameters) => parameters.status === 'trash',
         action: async (selected) => {
             const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
             return response;
@@ -58,6 +67,56 @@ const bulkActions: Array<BulkActionsConfig> = [
         confirm: (selected, names) => (
             <>
                 <p>{__('Really delete the following subscriptions?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((subscriptionId, index) => (
+                        <li key={subscriptionId}>
+                            <IdBadge id={subscriptionId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Trash', 'give'),
+        value: 'trash',
+        type: 'warning',
+        isVisible: (data, parameters) => parameters.status !== 'trash',
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/setStatus', {ids: selected.join(','), status: 'trashed'}, 'POST');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want add to trash the following subscriptions?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((subscriptionId, index) => (
+                        <li key={subscriptionId}>
+                            <IdBadge id={subscriptionId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Restore', 'give'),
+        value: 'restore',
+        type: 'normal',
+        isVisible: (data, parameters) => parameters.status === 'trash',
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/setStatus', {ids: selected.join(','), status: 'active'}, 'POST');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want remove from trash the following subscriptions?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((subscriptionId, index) => (
                         <li key={subscriptionId}>

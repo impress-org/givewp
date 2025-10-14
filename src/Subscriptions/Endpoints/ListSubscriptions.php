@@ -8,6 +8,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -111,6 +112,11 @@ class ListSubscriptions extends Endpoint
                             'columns',
                         ],
                     ],
+                    'status' => [
+                        'enum' => [...array_values(SubscriptionStatus::toArray())],
+                        'default' => SubscriptionStatus::ACTIVE,
+                        'required' => false
+                    ],
                 ],
             ]
         );
@@ -206,6 +212,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
+     * @unreleased add status where condition
      * @unreleased fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model
      * @since 2.21.0
@@ -221,6 +228,7 @@ class ListSubscriptions extends Endpoint
         $end = $this->request->get_param('end');
         $campaignId = $this->request->get_param('campaignId');
         $testMode = $this->request->get_param('testMode');
+        $status = $this->request->get_param('status');
 
         $hasWhereConditions = $search || $start || $end || $campaignId;
 
@@ -270,6 +278,8 @@ class ListSubscriptions extends Endpoint
         } else {
             $query->where('payment_mode', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
         }
+
+        $query->where('status', $status);
 
         return $query;
     }

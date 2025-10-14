@@ -6,6 +6,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * @since 4.8.0
@@ -37,6 +38,7 @@ class LoadSubscriptionsListTableAssets
             'adminUrl' => admin_url(),
             'paymentMode' => give_is_test_mode(),
             'pluginUrl' => GIVE_PLUGIN_URL,
+            'statuses' => $this->getStatuses(),
         ]);
 
         wp_enqueue_script($handleName);
@@ -58,6 +60,31 @@ class LoadSubscriptionsListTableAssets
             [],
             $asset['version']
         );
+    }
+
+    /**
+     * @unreleased
+     */
+    private function getStatuses(): array
+    {
+        $statuses = [];
+
+        foreach(SubscriptionStatus::labels() as $value => $label) {
+            if ($value !== SubscriptionStatus::ACTIVE) {
+                $statuses[] = [
+                    'value' => $value,
+                    'text' => $label,
+                ];
+            }
+        }
+
+        // Make active status default
+        return array_merge([
+            [
+                'value' => SubscriptionStatus::ACTIVE,
+                'text' => __('Active', 'give'),
+            ],
+        ], $statuses);
     }
 
     /**

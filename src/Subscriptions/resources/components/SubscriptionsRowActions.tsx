@@ -18,12 +18,38 @@ export function SubscriptionsRowActions({item, setUpdateErrors, parameters}) {
         return response;
     };
 
-    const deleteItem = async (selected) => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
+    const fetchAndUpdateStatus = async (id: number, status: string) => {
+        const response = await subscriptionsApi.fetchWithArgs(
+            '/setStatus',
+            {
+                ids: [id],
+                status
+            },
+            'POST'
+        );
+        setUpdateErrors(response);
+        await mutate(parameters);
+        return response;
+    };
 
-    const confirmDelete = (selected) => <p>{sprintf(__('Really delete donation #%d?', 'give'), item.id)}</p>;
+    const deleteItem = async () => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
+    const trashItem = async () => await fetchAndUpdateStatus( item.id, 'trashed');
+    const restoreItem = async () => await fetchAndUpdateStatus( item.id, 'active');
 
-    const confirmModal = (event) => {
+    const confirmDelete = () => <p>{sprintf(__('Really delete donation #%d?', 'give'), item.id)}</p>;
+    const confirmTrash = () => <p>{sprintf(__('Trash the following subscription #%d?', 'give'), item.id)}</p>;
+    const confirmRestore = () => <p>{sprintf(__('Restore the following subscription #%d?', 'give'), item.id)}</p>;
+
+    const confirmDeleteModal = () => {
         showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
+    };
+
+    const confirmTrashModal = () => {
+        showConfirmModal(__('Trash', 'give'), confirmTrash, trashItem, 'warning');
+    };
+
+    const confirmRestoreModal = () => {
+        showConfirmModal(__('Restore', 'give'), confirmRestore, restoreItem, 'normal');
     };
 
     return (
@@ -32,13 +58,30 @@ export function SubscriptionsRowActions({item, setUpdateErrors, parameters}) {
                 href={`edit.php?post_type=give_forms&page=give-subscriptions&id=${item.id}`}
                 displayText={__('Edit', 'give')}
             />
-            <RowAction
-                onClick={confirmModal}
-                actionId={item.id}
-                displayText={__('Delete', 'give')}
-                hiddenText={item.name}
-                highlight
-            />
+            {parameters.status === 'trashed' ? (
+                <>
+                    <RowAction
+                        onClick={confirmRestoreModal}
+                        actionId={item.id}
+                        displayText={__('Restore', 'give')}
+                    />
+                    <RowAction
+                        onClick={confirmDeleteModal}
+                        actionId={item.id}
+                        displayText={__('Delete', 'give')}
+                        hiddenText={item.name}
+                        highlight
+                    />
+                </>
+            ) : (
+                <RowAction
+                    onClick={confirmTrashModal}
+                    actionId={item.id}
+                    displayText={__('Trash', 'give')}
+                    hiddenText={item.name}
+                    highlight
+                />
+            )}
         </>
     );
 }
