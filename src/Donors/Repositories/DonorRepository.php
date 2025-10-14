@@ -573,7 +573,8 @@ class DonorRepository
             ->where('post_type', 'give_payment')
             ->where('meta_key', DonationMetaKeys::DONOR_ID)
             ->where('meta_value', $donorId)
-            ->orderBy('ID', 'DESC')
+            ->whereIn('post_status', ['publish', 'give_subscription'])
+            ->orderBy('CAST(post_date AS DATETIME)', 'DESC')
             ->limit(1)
             ->get();
 
