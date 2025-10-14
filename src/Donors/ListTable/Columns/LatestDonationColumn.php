@@ -17,7 +17,7 @@ use Give\Helpers\Date;
 class LatestDonationColumn extends ModelColumn
 {
 
-    protected $sortColumn = 'latestDonation';
+    // protected $sortColumn = 'latestDonation';
 
 
     /**

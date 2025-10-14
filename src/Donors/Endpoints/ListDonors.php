@@ -159,7 +159,12 @@ class ListDonors extends Endpoint
         $query = give()->donors->prepareQuery();
         $query = $this->getWhereConditions($query);
 
-        $this->sortColumns($query);
+        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
+        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
+
+        foreach ($sortColumns as $sortColumn) {
+            $query->orderBy($sortColumn, $sortDirection);
+        }
 
         $query->limit($perPage)
             ->offset(($page - 1) * $perPage);
@@ -171,48 +176,6 @@ class ListDonors extends Endpoint
         }
 
         return $donors;
-    }
-
-    /**
-     * @unreleased apply sorting for latestDonation and donationRevenue columns
-     * 
-     * @param QueryBuilder $query
-     */
-    private function sortColumns(QueryBuilder $query): void
-    {
-        $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
-        $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
-
-        $postsTable = DB::prefix('posts');
-        $donationMetaTable = DB::prefix('give_donationmeta');
-        $donorTable = DB::prefix('give_donors');
-
-        foreach ($sortColumns as $sortColumn) {
-            switch ($sortColumn) {
-                case 'latestDonation':
-                    $query->selectRaw("(SELECT MAX(posts.post_date) 
-                        FROM {$postsTable} posts
-                        LEFT JOIN {$donationMetaTable} donationMeta ON posts.ID = donationMeta.donation_id 
-                        WHERE posts.post_type = 'give_payment' 
-                        AND donationMeta.meta_key = '_give_payment_donor_id' 
-                        AND donationMeta.meta_value = {$donorTable}.id) as latest_donation_date")
-                        ->orderBy('latest_donation_date', $sortDirection);
-                    break;
-                 case 'donationRevenue':
-                    $currency = give_get_option('currency', 'USD');
-                    $currencies = give(GiveCurrencies::class);
-                    $decimals = $currencies->subunitFor(new Currency($currency));
-                    
-                    $query->selectRaw("ROUND(SUM({$donorTable}.purchase_value), {$decimals}) as donation_revenue")
-                         ->groupBy("{$donorTable}.id")
-                        ->orderByRaw("donation_revenue {$sortDirection}");
-                    break;
-                    
-                default:
-                    $query->orderBy($sortColumn, $sortDirection);
-                    break;
-            }
-        }
     }
 
     /**
