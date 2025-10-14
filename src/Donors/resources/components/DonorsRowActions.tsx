@@ -96,13 +96,11 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
             {parameters.status === 'trash' ? (
                 <>
                     <RowAction
-                        className={styles.action}
                         onClick={confirmRestoreModal}
                         actionId={item.id}
                         displayText={__('Restore', 'give')}
                     />
                     <RowAction
-                        className={styles.action}
                         onClick={confirmDeleteModal}
                         actionId={item.id}
                         displayText={__('Delete', 'give')}
@@ -112,7 +110,6 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
                 </>
             ) : (
                 <RowAction
-                    className={styles.action}
                     onClick={confirmTrashModal}
                     actionId={item.id}
                     displayText={__('Trash', 'give')}
@@ -120,6 +117,6 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
                     highlight
                 />
             )}
-        </div>
+        </>
     );
 }
