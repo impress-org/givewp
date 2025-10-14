@@ -561,6 +561,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased filter by status
      * @since 2.20.0
      *
      * @return string|null

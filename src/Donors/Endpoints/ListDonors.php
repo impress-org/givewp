@@ -149,7 +149,6 @@ class ListDonors extends Endpoint
     }
 
     /**
-     * @unreleased abstract column sorting into sortColumns method
      * @since 2.24.0 Replace Query Builder with Donors model
      * @since 2.21.0
      *
