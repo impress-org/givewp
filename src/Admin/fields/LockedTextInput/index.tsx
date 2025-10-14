@@ -15,7 +15,7 @@ interface LockedTextInputProps {
 }
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 export default function LockedTextInput({name, label, description, placeholder, warningMessage}: LockedTextInputProps) {
     const {register, setFocus} = useFormContext();

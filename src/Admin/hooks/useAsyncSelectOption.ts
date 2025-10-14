@@ -5,7 +5,7 @@ import {UseAsyncSelectOptionReturn} from '@givewp/admin/types';
 /**
  * Custom hook for handling async option selection with pagination and search
  *
- * @unreleased
+ * @since 4.11.0
  */
 export function useAsyncSelectOptions({
     recordId,

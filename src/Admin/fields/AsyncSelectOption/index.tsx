@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 export default function AsyncSelectOption({
     name,

@@ -78,7 +78,7 @@ interface SummaryProps {
 }
 
 /**
- * @unreleased fix form link
+ * @since 4.11.0 fix form link
  * @since 4.10.0 removed donation from props
  * @since 4.8.0
  */

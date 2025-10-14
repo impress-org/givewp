@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Give_Subscription
  *
- * @unreleased add campaign_id
+ * @since 4.11.0 add campaign_id
  * @since 2.19.0 - migrated from give-recurring
  * @since 1.0
  */
@@ -240,7 +240,7 @@ class Give_Subscription {
 	/**
 	 * Creates a subscription.
 	 *
-     * @unreleased add campaign_id
+     * @since 4.11.0 add campaign_id
 	 * @since  1.0
 	 *
 	 * @param  array $data Array of attributes for a subscription

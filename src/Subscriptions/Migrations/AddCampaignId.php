@@ -10,7 +10,7 @@ use Give\Framework\Migrations\Contracts\ReversibleMigration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 class AddCampaignId extends Migration implements ReversibleMigration
 {

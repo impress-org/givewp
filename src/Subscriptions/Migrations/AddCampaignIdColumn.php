@@ -7,7 +7,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 class AddCampaignIdColumn extends Migration
 {

@@ -121,7 +121,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      *
      * @param int $campaignId
      *
@@ -161,7 +161,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased add campaign_id column to insert
+     * @since 4.11.0 add campaign_id column to insert
      * @since 2.24.0 add payment_mode column to insert
      * @since 2.21.0 replace actions with givewp_subscription_creating and givewp_subscription_created
      * @since 2.19.6
@@ -227,7 +227,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased add campaign_id column to update
+     * @since 4.11.0 add campaign_id column to update
      * @since 3.17.0 add expiration column to update
      * @since 2.24.0 add payment_mode column to update
      * @since 2.21.0 replace actions with givewp_subscription_updating and givewp_subscription_updated
@@ -517,7 +517,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased add campaign_id column to select
+     * @since 4.11.0 add campaign_id column to select
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>

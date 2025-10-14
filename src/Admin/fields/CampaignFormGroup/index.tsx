@@ -24,7 +24,7 @@ type CampaignFormGroupProps = {
 }
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 export default function CampaignFormGroup({ campaignIdFieldName, formIdFieldName }: CampaignFormGroupProps) {
     const { watch, setValue } = useFormContext();

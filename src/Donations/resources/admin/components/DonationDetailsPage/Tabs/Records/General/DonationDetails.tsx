@@ -25,7 +25,7 @@ import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
 const {donationStatuses, intlTelInputSettings} = getDonationOptionsWindowData();
 
 /**
- * @unreleased Extract Campaign and Form fields to shared components
+ * @since 4.11.0 Extract Campaign and Form fields to shared components
  * @since 4.10.0 replace Status field with admin Status component
  * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.6.0
