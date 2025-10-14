@@ -3,12 +3,14 @@
 namespace Give\Donors\Factories;
 
 use Give\Donors\ValueObjects\DonorAddress;
+use Give\Donors\ValueObjects\DonorStatus;
 use Give\Framework\Models\Factories\ModelFactory;
 use Give\Framework\Support\ValueObjects\Money;
 
 class DonorFactory extends ModelFactory
 {
     /**
+     * @unreleased Add "status" property
      * @since 4.4.0 Add "company", "avatarId", "additionalEmails", and "addresses" properties
      * @since 3.7.0 Add "phone" property
      * @since 2.19.6
@@ -44,6 +46,7 @@ class DonorFactory extends ModelFactory
             'lastName' => $lastName,
             'prefix' => $this->faker->randomElement(give_get_option('title_prefixes', array_values(give_get_default_title_prefixes()))),
             'name' => trim("$firstName $lastName"),
+            'status' => new DonorStatus(DonorStatus::ACTIVE),
             'email' => $this->faker->email,
             'phone' => $this->faker->phoneNumber,
             'company' => $this->faker->company,
