@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -267,7 +268,7 @@ class ListDonations extends Endpoint
             $query->whereIn('post_status', $statuses);
         } else {
             // Default behavior: exclude trash donations
-            $query->where('post_status', 'trash', '<>');
+            $query->where('post_status', DonationStatus::TRASH, '<>');
         }
 
         if ($search) {
