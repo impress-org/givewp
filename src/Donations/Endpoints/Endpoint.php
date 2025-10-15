@@ -71,7 +71,7 @@ abstract class Endpoint implements RestRoute
      */
     public function validateStatus($param, $request, $key)
     {
-        if (empty($param) || $param === 'active') {
+        if (empty($param)) {
             return true;
         }
 
@@ -135,7 +135,7 @@ abstract class Endpoint implements RestRoute
     /**
      * @unreleased
      */
-    protected function isValidPeriod(string $period): bool
+    protected function isValidPeriod(?string $period): bool
     {
         return !empty($period) && in_array($period, ['90d', '30d', '7d']);
     }
