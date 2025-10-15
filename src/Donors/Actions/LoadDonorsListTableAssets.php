@@ -15,7 +15,7 @@ use Give\Helpers\Utils;
 class LoadDonorsListTableAssets
 {
     /**
-     * @unreleased Add "statuses" property to the localize script
+     * @unreleased Add "donorStatuses" property to the localize script
      * @unreleased add recurringDonations check to the localize script
      * @since 2.27.1 Pass dismissed recommendations to the localize script
      * @since 2.20.0
@@ -42,7 +42,7 @@ class LoadDonorsListTableAssets
             'pluginUrl' => GIVE_PLUGIN_URL,
             'dismissedRecommendations' => $this->getDismissedRecommendations(),
             'recurringDonationsEnabled' => Utils::isPluginActive('give-recurring/give-recurring.php'),
-            'statuses' => $this->getStatuses()
+            'donorStatuses' => DonorStatus::labels(),
         ]);
 
         wp_enqueue_script($handleName);
@@ -88,31 +88,6 @@ class LoadDonorsListTableAssets
                 'text' => __('Any', 'give'),
             ],
         ], $options);
-    }
-
-    /**
-     * @unreleased
-     */
-    private function getStatuses(): array
-    {
-        $statuses = [];
-
-        foreach(DonorStatus::labels() as $value => $label) {
-            if ($value !== DonorStatus::ACTIVE) {
-                $statuses[] = [
-                    'value' => $value,
-                    'text' => $label,
-                ];
-            }
-        }
-
-        // Make active status default
-        return array_merge([
-            [
-                'value' => DonorStatus::ACTIVE,
-                'text' => __('Active', 'give'),
-            ],
-        ], $statuses);
     }
 
     /**
