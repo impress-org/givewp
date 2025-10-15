@@ -1,4 +1,4 @@
-import {useState, useRef, useEffect} from 'react';
+import {useState, useRef, useEffect, useMemo} from 'react';
 import {__} from '@wordpress/i18n';
 import styles from './styles.module.scss';
 import {FilterByGroupedOptions} from '@givewp/components/ListTable/ListTablePage';
@@ -21,15 +21,24 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
     const dropdownRef = useRef<HTMLDivElement>(null);
 
+    const appliedFiltersCount = useMemo(() => {
+        if (!values) {
+            return 0;
+        }
+
+        return groupedOptions.reduce((total, group) => {
+            const groupValues = values?.[group.id];
+            return total + (groupValues ? groupValues.length : 0);
+        }, 0);
+    }, [JSON.stringify(values)]);
+
     useEffect(() => {
         const newSelectedFilters: Record<string, string[]> = {};
-
         groupedOptions.forEach((group) => {
             newSelectedFilters[group.id] = values?.[group.id] || [];
         });
-
         setSelectedFilters(newSelectedFilters);
-    }, [values, groupedOptions]);
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -107,12 +116,6 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
         setIsOpen(false);
     };
 
-    const getSelectedCount = () => {
-        return Object.values(selectedFilters).reduce((total, group) => total + group.length, 0);
-    };
-
-    const selectedCount = getSelectedCount();
-
     return (
         <div className={styles.filterBy} ref={dropdownRef}>
             <button
@@ -123,7 +126,7 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
                 aria-haspopup="true"
             >
                 {__('Filter by', 'give')}
-                {selectedCount > 0 && <span className={styles.badge}>{selectedCount}</span>}
+                {appliedFiltersCount > 0 && <span className={styles.badge}>{appliedFiltersCount}</span>}
                 <FilterByIcon />
             </button>
 
