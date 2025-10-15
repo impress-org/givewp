@@ -233,7 +233,7 @@ class ListSubscriptions extends Endpoint
         $testMode = $this->request->get_param('testMode');
         $status = $this->request->get_param('status');
 
-        $hasWhereConditions = $search || $start || $end || $campaignId;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $status;
 
         if (!empty($status)) {
             $statuses = array_map('trim', explode(',', $status));
