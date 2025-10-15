@@ -15,6 +15,7 @@ use Give\Subscriptions\Migrations\AddCampaignIdColumn;
 use Give\Subscriptions\Migrations\AddPaymentModeToSubscriptionTable;
 use Give\Subscriptions\Migrations\BackfillMissingCampaignIdForDonations;
 use Give\Subscriptions\Migrations\CreateSubscriptionTables;
+use Give\Subscriptions\Migrations\UpdateProductID;
 use Give\Subscriptions\Repositories\SubscriptionNotesRepository;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 
@@ -83,7 +84,8 @@ class ServiceProvider implements ServiceProviderInterface
             AddPaymentModeToSubscriptionTable::class,
             BackfillMissingCampaignIdForDonations::class,
             AddCampaignIdColumn::class,
-            AddCampaignId::class
+            AddCampaignId::class,
+            UpdateProductID::class
         ]);
     }
 
