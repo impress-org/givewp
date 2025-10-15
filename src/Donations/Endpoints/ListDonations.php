@@ -341,15 +341,15 @@ class ListDonations extends Endpoint
      *
      * @return string
      */
-    private function maybeExpandDate(?string $date, string $direction): ?string
+    private function maybeExpandDate(?string $date, string $direction = 'before'): ?string
     {
-        if (empty($date) || strlen($date) > 3) {
+        if (!$this->isValidPeriod($date)) {
             return $date;
         }
 
-        $intervalString = (int) str_replace('d', '', $date);
+        $period = (int) $date;
         $date = new DateTimeImmutable('now', wp_timezone());
-        $interval = DateInterval::createFromDateString($direction === 'before' ? "-$intervalString days" : "+$intervalString days");
+        $interval = DateInterval::createFromDateString($direction === 'after' ? "+$period days" : "-$period days");
         $calculatedDate = $date->add($interval);
 
         return $calculatedDate->format('Y-m-d');

@@ -39,8 +39,7 @@ abstract class Endpoint implements RestRoute
             return true;
         }
 
-        // Allow relative date expressions like "7d", "30d"
-        if (preg_match('/^\d+d$/', $param)) {
+        if ($this->isValidPeriod($param)) {
             return true;
         }
 
@@ -131,5 +130,13 @@ abstract class Endpoint implements RestRoute
         }
 
         return 401;
+    }
+
+    /**
+     * @unreleased
+     */
+    protected function isValidPeriod(string $period): bool
+    {
+        return !empty($period) && in_array($period, ['90d', '30d', '7d']);
     }
 }
