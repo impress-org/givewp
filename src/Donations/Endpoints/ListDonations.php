@@ -336,9 +336,7 @@ class ListDonations extends Endpoint
     }
 
     /**
-     * @param string $date
-     *
-     * @return string
+     * @unreleased
      */
     private function maybeExpandDate(?string $date, string $direction = 'before'): ?string
     {

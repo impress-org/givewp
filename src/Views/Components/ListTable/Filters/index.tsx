@@ -85,7 +85,12 @@ export const getInitialFilterState = (filters) => {
         else {
             switch (filter.type) {
                 case 'filterby':
-                    break; // 'filterby' is handled in the FilterBy component
+                    filter.groupedOptions.forEach((group) => {
+                        if (group.defaultValue) {
+                            state[group.id] = [group.defaultValue];
+                        }
+                    });
+                    break;
                 case 'select':
                     state[filter.name] = filter.options?.[0].value;
                     break;
