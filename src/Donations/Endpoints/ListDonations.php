@@ -262,8 +262,8 @@ class ListDonations extends Endpoint
 
         $query->where('post_type', 'give_payment');
 
-        // Handle status filtering
-        if (!empty($status)) {
+        // Deprecated: The "active" status value is deprecated. Leave the status parameter empty to exclude trash donations.
+        if (!empty($status) && $status !== 'active') {
             $statuses = array_map('trim', explode(',', $status));
             $query->whereIn('post_status', $statuses);
         } else {

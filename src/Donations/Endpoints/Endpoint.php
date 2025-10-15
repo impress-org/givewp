@@ -72,7 +72,7 @@ abstract class Endpoint implements RestRoute
      */
     public function validateStatus($param, $request, $key)
     {
-        if (empty($param)) {
+        if (empty($param) || $param === 'active') {
             return true;
         }
 
