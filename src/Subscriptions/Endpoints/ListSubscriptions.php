@@ -2,12 +2,15 @@
 
 namespace Give\Subscriptions\Endpoints;
 
+use DateInterval;
+use DateTimeImmutable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -110,6 +113,13 @@ class ListSubscriptions extends Endpoint
                             'model',
                             'columns',
                         ],
+                    ],
+                    'status' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'sanitize_callback' => 'sanitize_text_field',
+                        'validate_callback' => [$this, 'validateStatus'],
+                        'description' => 'Filter subscriptions by status. Accepts comma-separated list of SubscriptionStatus values (e.g., "active,expired,pending"). If not provided, excludes trash subscriptions by default.'
                     ],
                 ],
             ]
@@ -217,12 +227,21 @@ class ListSubscriptions extends Endpoint
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
         $search = $this->request->get_param('search');
-        $start = $this->request->get_param('start');
-        $end = $this->request->get_param('end');
+        $start = $this->maybeExpandDate($this->request->get_param('start'), 'before');
+        $end = $this->maybeExpandDate($this->request->get_param('end'), 'after');
         $campaignId = $this->request->get_param('campaignId');
         $testMode = $this->request->get_param('testMode');
+        $status = $this->request->get_param('status');
 
         $hasWhereConditions = $search || $start || $end || $campaignId;
+
+        if (!empty($status)) {
+            $statuses = array_map('trim', explode(',', $status));
+            $query->whereIn('status', $statuses);
+        } else {
+            // Default behavior: exclude trashed subscriptions
+            $query->where('status', SubscriptionStatus::TRASHED, '<>');
+        }
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -240,11 +259,11 @@ class ListSubscriptions extends Endpoint
         }
 
         if ($start && $end) {
-            $query->whereBetween('date_created', $start, $end);
+            $query->whereBetween('created', $start, $end);
         } elseif ($start) {
-            $query->where('date_created', $start, '>=');
+            $query->where('created', $start, '>=');
         } elseif ($end) {
-            $query->where('date_created', $end, '<=');
+            $query->where('created', $end, '<=');
         }
 
         if ($campaignId) {
@@ -272,5 +291,22 @@ class ListSubscriptions extends Endpoint
         }
 
         return $query;
+    }
+
+    /**
+     * @unreleased
+     */
+    private function maybeExpandDate(?string $date, string $direction = 'before'): ?string
+    {
+        if (!$this->isValidPeriod($date)) {
+            return $date;
+        }
+
+        $period = (int) $date;
+        $date = new DateTimeImmutable('now', wp_timezone());
+        $interval = DateInterval::createFromDateString($direction === 'after' ? "+$period days" : "-$period days");
+        $calculatedDate = $date->add($interval);
+
+        return $calculatedDate->format('Y-m-d');
     }
 }
