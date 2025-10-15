@@ -1,12 +1,15 @@
 import StatWidget from "@givewp/admin/components/StatWidget";
 import { __ } from "@wordpress/i18n";
+import { amountFormatter } from '@givewp/src/Admin/utils';
 import styles from "./styles.module.scss";
 
 /**
+ * @unreleased add support for currency
  * @since 4.10.0
  */
 export type StatConfig = {
     label: string;
+    currency?: string;
     upgrade?: {
         href: string;
         tooltip: string;
@@ -22,6 +25,7 @@ type ListTableStatsProps = {
 };
 
 /**
+ * @unreleased add support for currency formatting
  * @since 4.10.0
  */
 export default function ListTableStats({config, values}: ListTableStatsProps) {
@@ -34,8 +38,12 @@ export default function ListTableStats({config, values}: ListTableStatsProps) {
                     key={key}
                     className={styles.tableStatWidget}
                     {...statConfig}
-                    value={values?.[key] ?? 0}
-                />
+                    value={statConfig.currency ? amountFormatter(statConfig.currency, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                        roundingMode: 'trunc',
+                    }).format(values?.[key]) : values?.[key]}
+                    />
             ))}
         </section>
     );
