@@ -258,7 +258,7 @@ class ListDonations extends Endpoint
             DonationMetaKeys::MODE(),
         ];
 
-        $hasWhereConditions = $search || $start || $end || $campaignId || $subscriptionId || $donor;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $subscriptionId || $donor || $status;
 
         $query->where('post_type', 'give_payment');
 
