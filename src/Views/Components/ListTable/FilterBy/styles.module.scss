@@ -4,69 +4,67 @@
 }
 
 .filterByButton {
-    display: flex;
     align-items: center;
-    gap: var(--givewp-spacing-2);
-    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
-    border: 1px solid #9ca0af;
-    border-radius: var(--givewp-rounded-4);
     background: white;
+    border-radius: var(--givewp-rounded-4);
+    border: 1px solid var(--givewp-neutral-300);
     color: var(--givewp-neutral-900);
+    cursor: pointer;
+    display: flex;
     font-size: 0.875rem;
     font-weight: 500;
-    line-height: 1.43;
-    cursor: pointer;
+    gap: var(--givewp-spacing-1);
+    line-height: 1.4285714286;
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     transition: all 0.2s ease;
 
+    &:has(.badge) {
+        background-color: var(--givewp-neutral-50);
+    }
+
+    svg {
+        color: var(--givewp-neutral-500);
+        order: -1;
+        margin-right: var(--givewp-spacing-1);
+    }
+
     &:hover {
-        border-color: var(--givewp-neutral-700);
+        background-color: var(--givewp-neutral-200);
     }
 
-    &:focus {
-        outline: none;
-        border-color: var(--givewp-blue-500);
-        box-shadow: var(--givewp-blue-500) 0px 0px 0px 1px;
-    }
-
+    &:focus,
     &[aria-expanded="true"] {
-        border-color: var(--givewp-blue-500);
-        box-shadow: var(--givewp-blue-500) 0px 0px 0px 1px;
+        outline: 2px solid #2271b1;
+        outline-offset: 2px;
     }
 }
 
 .badge {
-    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-width: 1.25rem;
-    height: 1.25rem;
-    padding: 0 var(--givewp-spacing-1);
-    background: var(--givewp-blue-500);
-    color: white;
+    background: var(--givewp-neutral-700);
+    border-radius: var(--givewp-rounded-full);
+    color: var(--givewp-shades-white);
+    display: inline-flex;
     font-size: 0.75rem;
     font-weight: 600;
-    border-radius: 10px;
-}
-
-.chevron {
-    transition: transform 0.2s ease;
-
-    [aria-expanded="true"] & {
-        transform: rotate(180deg);
-    }
+    height: 1.25rem;
+    justify-content: center;
+    min-width: 1.25rem;
+    padding: 0 var(--givewp-spacing-1);
 }
 
 .dropdown {
-    position: absolute;
-    top: calc(100% + var(--givewp-spacing-2));
-    right: 0;
-    z-index: 1000;
-    min-width: 550px;
-    background: white;
-    border: 1px solid var(--givewp-neutral-300);
-    border-radius: var(--givewp-rounded-8);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     animation: slideDown 0.2s ease;
+    background: var(--givewp-shades-white);
+    border-radius: var(--givewp-rounded-4);
+    border: 1px solid var(--givewp-neutral-50);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05);
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-1);
+    position: absolute;
+    right: 0;
+    top: calc(100% + var(--givewp-spacing-1));
+    width: 35rem;
+    z-index: 1000;
 }
 
 @keyframes slideDown {
@@ -81,40 +79,52 @@
 }
 
 .dropdownContent {
-    max-height: 500px;
-    overflow-y: auto;
-    padding: var(--givewp-spacing-6);
     display: flex;
     flex-direction: column;
-    gap: var(--givewp-spacing-6);
+    gap: var(--givewp-spacing-2);
 }
 
 .filterGroup {
     display: flex;
     flex-direction: column;
-    gap: var(--givewp-spacing-3);
 }
 
 .filterGroupTitle {
-    margin: 0;
-    color: var(--givewp-neutral-600);
-    font-size: 0.6875rem;
+    color: var(--givewp-neutral-300);
+    font-size: 0.75rem;
     font-weight: 600;
+    letter-spacing: 0.015rem;
+    line-height: 1.5;
+    margin: 0;
+    padding: var(--givewp-spacing-1) var(--givewp-spacing-4);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .filterGroupOptions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--givewp-spacing-3) var(--givewp-spacing-6);
+    &--checkbox {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    &--radio {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--givewp-spacing-2);
+        padding: var(--givewp-spacing-1) var(--givewp-spacing-4);
+
+        .filterOption {
+            padding: 0;
+        }
+    }
+
 }
 
 .filterOption {
-    display: flex;
     align-items: center;
-    gap: var(--givewp-spacing-2);
     cursor: pointer;
+    display: flex;
+    gap: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     user-select: none;
 
     &:hover .filterLabel {
@@ -123,75 +133,126 @@
 }
 
 .filterInput {
-    flex-shrink: 0;
-    width: 1.125rem;
-    height: 1.125rem;
-    margin: 0;
-    cursor: pointer;
-    accent-color: var(--givewp-blue-500);
-
     &[type="checkbox"] {
+        --transition: 0.2s ease;
+
+        appearance: none;
+        background-color: transparent;
         border-radius: var(--givewp-rounded-2);
+        border: solid 1px var(--givewp-neutral-300);
+        color: #2271b1;
+        cursor: pointer;
+        flex-shrink: 0;
+        font-size: inherit;
+        height: 1.25rem;
+        margin: 0;
+        margin: 0;
+        padding: 0;
+        transform: translateY(-1px);
+        transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+        vertical-align: middle;
+        width: 1.25rem;
+
+        &::before {
+            content: none;
+        }
+
+        &:focus {
+            border-color: transparent;
+            box-shadow: #2271b1 0px 0px 0px 0.125rem;
+            outline: none;
+        }
+
+        &:checked,
+        &:checked:active,
+        &:checked:focus {
+            background-color: #2271b1;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27rgb%28255, 255, 255%29%27 stroke-width=%274%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpolyline points=%2720 6 9 17 4 12%27%3E%3C/polyline%3E%3C/svg%3E");
+            background-position: center;
+            background-size: 1rem auto;
+            background-repeat: no-repeat;
+            border-color: #2271b1;
+
+            &:before {
+                content: none;
+            }
+        }
+
+        &[aria-invalid="false"] {
+            border-color: var(--givewp-green-500);
+        }
+
+        &[aria-invalid="true"] {
+            border-color: var(--givewp-red-400);
+        }
+    }
+
+    &[type="radio"] {
+        display: none;
+
+        + .filterLabel {
+            border: 1px solid var(--givewp-neutral-200);
+            border-radius: var(--givewp-rounded-full);
+            padding: var(--givewp-spacing-2) var(--givewp-spacing-6);
+
+            &:hover {
+                border-color: var(--givewp-neutral-600);
+            }
+
+        }
+
+        &:checked + .filterLabel {
+            background-color: var(--givewp-neutral-600);
+            border-color: var(--givewp-neutral-600);
+            color: var(--givewp-shades-white);
+        }
     }
 }
 
 .filterLabel {
     color: var(--givewp-neutral-700);
     font-size: 0.875rem;
-    font-weight: 400;
-    line-height: 1.43;
+    font-weight: 500;
+    line-height: 1.4285714286;
     transition: color 0.2s ease;
 }
 
 .dropdownActions {
     display: flex;
     gap: var(--givewp-spacing-3);
-    padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
-    border-top: 1px solid var(--givewp-neutral-200);
+    padding: var(--givewp-spacing-5) var(--givewp-spacing-6) var(--givewp-spacing-1);
 }
 
 .resetButton,
 .applyButton {
-    flex: 1;
-    padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
     border-radius: var(--givewp-rounded-4);
+    cursor: pointer;
+    flex: 1;
     font-size: 0.875rem;
     font-weight: 500;
-    line-height: 1.43;
-    cursor: pointer;
+    line-height: 1.4285714286;
+    padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
     transition: all 0.2s ease;
 }
 
 .resetButton {
-    background: white;
-    border: 1px solid var(--givewp-neutral-400);
-    color: var(--givewp-neutral-700);
+    background: var(--givewp-shades-white);
+    border: 1px solid var(--givewp-neutral-300);
+    color: var(--givewp-neutral-900);
 
     &:hover {
-        background: var(--givewp-neutral-50);
-        border-color: var(--givewp-neutral-500);
-    }
-
-    &:focus {
-        outline: none;
-        border-color: var(--givewp-neutral-600);
-        box-shadow: 0 0 0 1px var(--givewp-neutral-600);
+        background: var(--givewp-neutral-100);
     }
 }
 
 .applyButton {
-    background: var(--givewp-blue-500);
-    border: 1px solid var(--givewp-blue-500);
-    color: white;
+    background: #2271b1;
+    border: 1px solid #2271b1;
+    color: var(--givewp-shades-white);
 
     &:hover {
-        background: var(--givewp-blue-600);
-        border-color: var(--givewp-blue-600);
-    }
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        background: #135e96;
+        border-color: #135e96;
     }
 }
 

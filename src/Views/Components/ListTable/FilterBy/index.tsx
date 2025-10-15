@@ -2,6 +2,7 @@ import {useState, useRef, useEffect} from 'react';
 import {__} from '@wordpress/i18n';
 import styles from './styles.module.scss';
 import {FilterByGroupedOptions} from '@givewp/components/ListTable/ListTablePage';
+import FilterByIcon from './Icon';
 
 /**
  * @unreleased
@@ -123,22 +124,7 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
             >
                 {__('Filter by', 'give')}
                 {selectedCount > 0 && <span className={styles.badge}>{selectedCount}</span>}
-                <svg
-                    className={styles.chevron}
-                    width="10"
-                    height="6"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        d="M1 1L5 5L9 1"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    />
-                </svg>
+                <FilterByIcon />
             </button>
 
             {isOpen && (
@@ -147,7 +133,7 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
                         {groupedOptions.map((group: FilterByGroupedOptions) => (
                             <div key={group.id} className={styles.filterGroup}>
                                 <h3 className={styles.filterGroupTitle}>{group.name}</h3>
-                                <div className={styles.filterGroupOptions}>
+                                <div className={styles[`filterGroupOptions--${group.type}`]}>
                                     {group.options.map((option) => {
                                         const inputId = `${group.id}-${option.value}`;
                                         const isChecked =

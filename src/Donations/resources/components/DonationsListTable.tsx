@@ -61,8 +61,6 @@ const filters: Array<FilterConfig> = [
     {
         name: 'filterBy',
         type: 'filterby',
-        text: __('Filter By', 'give'),
-        ariaLabel: __('Filter donations', 'give'),
         groupedOptions: filterByOptions,
     },
 ];
