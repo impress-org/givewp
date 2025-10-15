@@ -6,7 +6,7 @@ const donorStatuses = window.GiveDonors.donorStatuses || {};
 const filterByOptions: Array<FilterByGroupedOptions> = [
     {
         id: 'status',
-        name: __('Donor Status', 'give'),
+        name: __('Status', 'give'),
         type: 'radio',
         options: Object.entries(donorStatuses).map(([value, text]) => ({ text, value })),
         defaultValue: 'active',
