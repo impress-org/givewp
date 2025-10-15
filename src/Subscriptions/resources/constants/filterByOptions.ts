@@ -6,7 +6,7 @@ const subscriptionStatuses = window.GiveSubscriptions.subscriptionStatuses || {}
 const filterByOptions: Array<FilterByGroupedOptions> = [
     {
         id: 'status',
-        name: __('Subscription Status', 'give'),
+        name: __('Status', 'give'),
         type: 'checkbox',
         options: Object.entries(subscriptionStatuses).map(([value, text]) => ({ text, value }))
     },
