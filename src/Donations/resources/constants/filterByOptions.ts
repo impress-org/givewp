@@ -6,7 +6,7 @@ const donationStatuses = window.GiveDonations.donationStatuses || {};
 const filterByOptions: Array<FilterByGroupedOptions> = [
     {
         id: 'status',
-        name: __('Donation Status', 'give'),
+        name: __('Status', 'give'),
         type: 'checkbox',
         options: Object.entries(donationStatuses).map(([value, text]) => ({ text, value }))
     },
