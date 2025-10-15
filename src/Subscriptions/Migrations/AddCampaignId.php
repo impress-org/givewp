@@ -34,7 +34,7 @@ class AddCampaignId extends Migration implements ReversibleMigration
      */
     public static function timestamp(): string
     {
-        return strtotime('2025-10-02 00:00:00');
+        return strtotime('2025-10-16 00:00:00');
     }
 
     /**
