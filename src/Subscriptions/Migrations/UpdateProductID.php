@@ -53,23 +53,16 @@ class UpdateProductID extends Migration
         try {
             $query = <<<SQL
                 UPDATE %s AS subscriptions
-                INNER JOIN %s donationMeta
-                    ON donationMeta.meta_key = '%s'
-                    AND donationMeta.meta_value = subscriptions.id
-                INNER JOIN %s donationMeta2
-                    ON donationMeta2.donation_id = donationMeta.donation_id
-                    AND donationMeta2.meta_key = '%s'
-                SET subscriptions.product_id = donationMeta2.meta_value
-                WHERE subscriptions.product_id != donationMeta2.meta_value
+                INNER JOIN %s revenue
+                    ON subscriptions.parent_payment_id = revenue.donation_id
+                SET subscriptions.product_id = revenue.form_id
+                WHERE subscriptions.product_id != revenue.form_id
             SQL;
 
             DB::query(sprintf(
                 $query,
                 DB::prefix('give_subscriptions'),
-                DB::prefix('give_donationmeta'),
-                DonationMetaKeys::SUBSCRIPTION_ID,
-                DB::prefix('give_donationmeta'),
-                DonationMetaKeys::FORM_ID,
+                DB::prefix('give_revenue')
             ));
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while updating the give_subscriptions table",
