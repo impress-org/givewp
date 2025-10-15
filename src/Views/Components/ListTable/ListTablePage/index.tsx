@@ -60,7 +60,7 @@ export interface FilterByGroupedOptions {
     name: string;
     type: 'checkbox' | 'radio';
     options: Array<{text: string; value: string}>;
-    defaultValue?: string;
+    defaultValue?: string | string[];
 }
 
 interface FilterConfigWithGroupedOptions extends FilterConfigBase {

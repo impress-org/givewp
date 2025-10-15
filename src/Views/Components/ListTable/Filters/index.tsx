@@ -87,7 +87,7 @@ export const getInitialFilterState = (filters) => {
                 case 'filterby':
                     filter.groupedOptions.forEach((group) => {
                         if (group.defaultValue) {
-                            state[group.id] = [group.defaultValue];
+                            state[group.id] = [].concat(group.defaultValue);
                         }
                     });
                     break;
