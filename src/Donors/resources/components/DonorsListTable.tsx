@@ -84,7 +84,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         label: __('Trash', 'give'),
         value: 'trash',
         type: 'warning',
-        isVisible: (data, parameters) => parameters?.status?.includes('active'),
+        isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/status', {ids: selected.join(','), status: 'trash'}, 'POST');
             return response;
