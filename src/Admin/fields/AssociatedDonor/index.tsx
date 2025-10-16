@@ -12,7 +12,7 @@ type AssociatedDonorProps = {
 }
 
 /**
- * @unreleased use AsyncSelectOption
+ * @since 4.11.0 use AsyncSelectOption
  * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.8.0 updated to async donor dropdown
  * @since 4.6.0

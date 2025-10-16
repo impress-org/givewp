@@ -4,9 +4,6 @@ namespace Give\Tests\Unit\Subscriptions\Repositories;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
-use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -206,7 +203,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased add campaignId to renewal
+     * @since 4.11.0 add campaignId to renewal
      * @since 3.20.0
      * @throws Exception
      */
@@ -265,7 +262,7 @@ class TestSubscriptionRepository extends TestCase
 
 
     /**
-     * @unreleased
+     * @since 4.11.0
      * @throws Exception
      */
     public function testCreateRenewalShouldCreateNewRenewalWithUpdatedCampaignId(): void

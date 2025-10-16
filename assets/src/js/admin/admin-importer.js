@@ -101,7 +101,7 @@ function give_start_importing_donations() {
 
 /**
  * Check if admin is on step 3 for Subscriptions import
- * @unreleased
+ * @since 4.11.0
  */
 function give_start_importing_subscriptions() {
     const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-subscriptions-form table.step-3';
@@ -124,7 +124,7 @@ function give_import_donation_csv_not_valid() {
 
 /**
  * Check if admin is on step 2 and Subscriptions CSV is invalid
- * @unreleased
+ * @since 4.11.0
  */
 function give_import_subscription_csv_not_valid() {
     const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-subscriptions-form table.step-2 .csv_not_valid';
@@ -148,7 +148,7 @@ function give_import_donation_valid_csv() {
 
 /**
  * Subscriptions: Check if admin is on step 1 and csv is valid
- * @unreleased
+ * @since 4.11.0
  */
 function give_import_subscription_valid_csv() {
     const import_step = 'body.give_forms_page_give-tools .give-tools-import-tab #give-import-subscriptions-form table.step-1 .is_csv_valid';
@@ -249,7 +249,7 @@ function give_on_donation_import_ajax() {
 
 /**
  * Upload Subscriptions CSV via AJAX
- * @unreleased
+ * @since 4.11.0
  */
 function give_on_subscription_import_ajax() {
     const $form = jQuery( 'form.tools-setting-page-import' );

@@ -1,14 +1,14 @@
 <?php
 /**
  * BFCM 2025 Banner Template
- * 
+ *
  * @var $elements NoticeElementProperties
  * @var $backgroundLarge string
  * @var $backgroundMedium string
  * @var $backgroundSmall string
  * @var $cartIcon string
- * 
- * @unreleased
+ *
+ * @since 4.11.0
  */
 
 ?>
@@ -23,7 +23,7 @@
     <div class='givewp-bfcm-2025-banner__content'>
         <h1 class='givewp-bfcm-2025-banner__title'><?php echo wp_kses(__('Amplify Your Impact With <span class="givewp-bfcm-2025-banner__discount">30%</span> Off', 'give'), ['span' => ['class' => []]]); ?></h1>
         <p class='givewp-bfcm-2025-banner__description'><?php echo esc_html__('Your cause deserves the best! Do more good & spend less: Nov 24 - Dec 2.', 'give'); ?></p>
-        <a class='givewp-bfcm-2025-banner__cta' 
+        <a class='givewp-bfcm-2025-banner__cta'
            href='https://docs.givewp.com/givecore-bfcm2025'
            target='_blank'
            rel='noopener noreferrer'
