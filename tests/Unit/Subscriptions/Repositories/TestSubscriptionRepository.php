@@ -4,9 +4,6 @@ namespace Give\Tests\Unit\Subscriptions\Repositories;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
-use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
