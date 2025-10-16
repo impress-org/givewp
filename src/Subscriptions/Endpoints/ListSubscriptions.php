@@ -229,8 +229,8 @@ class ListSubscriptions extends Endpoint
     private function getWhereConditions(QueryBuilder $query): QueryBuilder
     {
         $search = $this->request->get_param('search');
-        $start = $this->maybeExpandDate($this->request->get_param('start'), 'before');
-        $end = $this->maybeExpandDate($this->request->get_param('end'), 'after');
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
         $campaignId = $this->request->get_param('campaignId');
         $testMode = $this->request->get_param('testMode');
         $status = $this->request->get_param('status');
@@ -292,22 +292,5 @@ class ListSubscriptions extends Endpoint
         }
 
         return $query;
-    }
-
-    /**
-     * @unreleased
-     */
-    private function maybeExpandDate(?string $date, string $direction = 'before'): ?string
-    {
-        if (!$this->isValidPeriod($date)) {
-            return $date;
-        }
-
-        $period = (int) $date;
-        $date = new DateTimeImmutable('now', wp_timezone());
-        $interval = DateInterval::createFromDateString($direction === 'after' ? "+$period days" : "-$period days");
-        $calculatedDate = $date->add($interval);
-
-        return $calculatedDate->format('Y-m-d');
     }
 }

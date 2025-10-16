@@ -35,14 +35,6 @@ abstract class Endpoint implements RestRoute
      */
     public function validateDate($param, $request, $key)
     {
-        if (empty($param)) {
-            return true;
-        }
-
-        if ($this->isValidPeriod($param)) {
-            return true;
-        }
-
         // Check that date is valid, and formatted YYYY-MM-DD
         list($year, $month, $day) = explode('-', $param);
         $valid = checkdate($month, $day, $year);
@@ -90,13 +82,5 @@ abstract class Endpoint implements RestRoute
         }
 
         return 401;
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function isValidPeriod(?string $period): bool
-    {
-        return !empty($period) && in_array($period, ['90d', '30d', '7d']);
     }
 }
