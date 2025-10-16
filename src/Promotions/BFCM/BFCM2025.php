@@ -9,7 +9,7 @@ use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
 use Give\Vendors\StellarWP\AdminNotices\DataTransferObjects\NoticeElementProperties;
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 class BFCM2025
 {
@@ -29,7 +29,7 @@ class BFCM2025
     private const END_DATE   = '2025-12-02 23:59:59';
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function __invoke()
     {
@@ -37,7 +37,7 @@ class BFCM2025
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function render()
     {
@@ -58,7 +58,7 @@ class BFCM2025
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     private function getDateRange(): array
     {
@@ -71,7 +71,7 @@ class BFCM2025
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function renderCallback(AdminNotice $notice, NoticeElementProperties $elements): string
     {

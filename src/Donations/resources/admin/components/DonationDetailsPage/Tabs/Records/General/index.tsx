@@ -4,7 +4,7 @@ import AssociatedDonor from './AssociatedDonor';
 import BillingDetails from './BillingDetails';
 
 /**
- * @unreleased add back AssociatedDonor
+ * @since 4.11.0 add back AssociatedDonor
  * @since 4.7.0 removed AssociatedDonor
  * @since 4.6.0
  */

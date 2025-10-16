@@ -26,7 +26,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class Subscription
  *
- * @unreleased added campaign ID property
+ * @since 4.11.0 added campaign ID property
  * @since 4.10.0 added campaign relationship
  * @since 2.23.0 added the renewsAt property
  * @since 2.19.6

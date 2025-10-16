@@ -82,23 +82,4 @@ abstract class Endpoint implements RestRoute
 
         return 401;
     }
-
-
-    /**
-     * Split string
-     *
-     * @unreleased
-     *
-     * @param string $ids
-     *
-     * @return string[]
-     */
-    protected function splitString(string $ids): array
-    {
-        if (strpos($ids, ',')) {
-            return array_map('trim', explode(',', $ids));
-        }
-
-        return [trim($ids)];
-    }
 }

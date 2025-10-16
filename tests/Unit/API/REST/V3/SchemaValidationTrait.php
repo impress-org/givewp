@@ -44,7 +44,7 @@ trait SchemaValidationTrait
     }
 
     /**
-     * @unreleased Add support for nullable property.
+     * @since 4.11.0 Add support for nullable property.
      * @since 4.9.0
      */
     private function validateDataTypes($schema, $actualData)

@@ -17,20 +17,20 @@ use WP_REST_Response;
 
 /**
  * Test class for ListDonorsStats endpoint.
- * 
+ *
  * Note: Both DonationFactory and SubscriptionFactory automatically create donors when creating
  * donations and subscriptions respectively. This means we don't need to explicitly create donors
  * using Donor::factory() - the factories handle donor creation internally via their definition()
  * methods which include 'donorId' => Donor::factory()->create()->id.
- * 
- * @unreleased
+ *
+ * @since 4.11.0
  */
 class TestListDonorsStats extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function testShouldReturnCorrectStatisticsForMultipleOneTimeDonorsOnly()
     {
@@ -50,7 +50,7 @@ class TestListDonorsStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function testShouldReturnCorrectStatisticsForMultipleSubscriptionDonorsOnly()
     {
@@ -70,7 +70,7 @@ class TestListDonorsStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function testShouldReturnCorrectStatisticsForMultipleMixedDonorTypes()
     {
@@ -91,7 +91,7 @@ class TestListDonorsStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function testShouldReturnEmptyStatisticsForNoDonors()
     {

@@ -45,7 +45,7 @@ class Give_Subscriptions_DB extends Give_DB
      *
      * @access  public
      *
-     * @unreleased add campaign_id column
+     * @since 4.11.0 add campaign_id column
      * @since 2.24.0 add payment_mode column
      * @since   1.0
      */
@@ -79,7 +79,7 @@ class Give_Subscriptions_DB extends Give_DB
      *
      * @access  public
      *
-     * @unreleased add campaign_id column
+     * @since 4.11.0 add campaign_id column
      * @since   1.0
      */
     public function get_column_defaults()
