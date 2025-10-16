@@ -113,7 +113,6 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
                     ),
                 ]);
             }
-
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while caching campaign data", 0, $exception);
         }
@@ -129,17 +128,20 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Add campaign type filter
      */
     public function getBatchItemsAfter($lastId): ?array
     {
         $item = DB::get_row(sprintf(
-            'SELECT MIN(id) AS first_id, MAX(id) AS last_id FROM (SELECT id FROM %1s WHERE id > %d ORDER BY id ASC LIMIT %d) as batch',
+            'SELECT MIN(id) AS first_id, MAX(id) AS last_id FROM (SELECT id FROM %1s WHERE campaign_type = %2s AND id > %d ORDER BY id ASC LIMIT %d) as batch',
             DB::prefix('give_campaigns'),
+            DB::prepare('%s', CampaignType::CORE),
             $lastId,
             $this->getBatchSize()
         ));
 
-        if ( ! $item) {
+        if (!$item) {
             return null;
         }
 
