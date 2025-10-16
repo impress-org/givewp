@@ -53,13 +53,12 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
                 displayText={__('Edit', 'give')}
             />
             <RowAction
-                className={styles.action}
                 onClick={confirmModal}
                 actionId={item.id}
                 displayText={__('Delete', 'give')}
                 hiddenText={item.name}
                 highlight
             />
-        </div>
+        </>
     );
 }
