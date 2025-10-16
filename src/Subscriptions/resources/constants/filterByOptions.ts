@@ -5,13 +5,26 @@ const subscriptionStatuses = window.GiveSubscriptions.subscriptionStatuses || {}
 
 const filterByOptions: Array<FilterByGroupedOptions> = [
     {
-        id: 'status',
+        id: 'showTrashed',
+        apiParam: 'status',
         name: __('Status', 'give'),
-        type: 'checkbox',
-        options: Object.entries(subscriptionStatuses).map(([value, text]) => ({ text, value }))
+        type: 'toggle',
+        options: [{ text: __('Show trashed', 'give'), value: 'trashed' }],
     },
     {
-        id: 'start',
+        id: 'status',
+        apiParam: 'status',
+        name: __('Status', 'give'),
+        showTitle: false,
+        type: 'checkbox',
+        isVisible: (values) => !values?.status?.includes('trashed'),
+        options: Object.entries(subscriptionStatuses)
+            .filter(([value]) => value !== 'trashed')
+            .map(([value, text]) => ({ text, value })),
+    },
+    {
+        id: 'period',
+        apiParam: 'start',
         name: __('Period', 'give'),
         type: 'radio',
         options: [
