@@ -4,15 +4,8 @@ import { subDays } from "date-fns";
 
 const filterByOptions: Array<FilterByGroupedOptions> = [
     {
-        id: 'showTrashed',
-        apiParam: 'status',
-        name: __('Status', 'give'),
-        type: 'toggle',
-        options: [{ text: __('Show trashed', 'give'), value: 'trash' }],
-    },
-    {
-        id: 'status',
-        apiParam: 'status',
+        id: 'period',
+        apiParam: 'start',
         name: __('Period', 'give'),
         type: 'radio',
         options: [
