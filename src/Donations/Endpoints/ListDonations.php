@@ -250,8 +250,8 @@ class ListDonations extends Endpoint
     protected function getWhereConditions(QueryBuilder $query): array
     {
         $search = $this->request->get_param('search');
-        $start = $this->maybeExpandDate($this->request->get_param('start'), 'before');
-        $end = $this->maybeExpandDate($this->request->get_param('end'), 'after');
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
         $campaignId = $this->request->get_param('campaignId');
@@ -335,22 +335,5 @@ class ListDonations extends Endpoint
             $query,
             $dependencies,
         ];
-    }
-
-    /**
-     * @unreleased
-     */
-    private function maybeExpandDate(?string $date, string $direction = 'before'): ?string
-    {
-        if (!$this->isValidPeriod($date)) {
-            return $date;
-        }
-
-        $period = (int) $date;
-        $date = new DateTimeImmutable('now', wp_timezone());
-        $interval = DateInterval::createFromDateString($direction === 'after' ? "+$period days" : "-$period days");
-        $calculatedDate = $date->add($interval);
-
-        return $calculatedDate->format('Y-m-d');
     }
 }
