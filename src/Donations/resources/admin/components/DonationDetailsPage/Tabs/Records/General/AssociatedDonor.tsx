@@ -4,7 +4,7 @@ import {__} from '@wordpress/i18n';
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 export default function AssociatedDonor() {
     const { mode } = getDonationOptionsWindowData();

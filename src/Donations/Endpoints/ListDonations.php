@@ -132,10 +132,12 @@ class ListDonations extends Endpoint
                         ],
                     ],
                     'status' => [
-                        'type' => 'string',
+                        'type' => 'array',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                        'validate_callback' => [$this, 'validateStatus'],
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => array_values(DonationStatus::toArray()),
+                        ],
                         'description' => 'Filter donations by status. Accepts comma-separated list of DonationStatus values (e.g., "pending,publish,trash"). If not provided, excludes trash donations by default.'
                     ],
                 ],
@@ -248,8 +250,8 @@ class ListDonations extends Endpoint
     protected function getWhereConditions(QueryBuilder $query): array
     {
         $search = $this->request->get_param('search');
-        $start = $this->maybeExpandDate($this->request->get_param('start'), 'before');
-        $end = $this->maybeExpandDate($this->request->get_param('end'), 'after');
+        $start = $this->request->get_param('start');
+        $end = $this->request->get_param('end');
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
         $campaignId = $this->request->get_param('campaignId');
@@ -264,8 +266,7 @@ class ListDonations extends Endpoint
         $query->where('post_type', 'give_payment');
 
         if (!empty($status)) {
-            $statuses = array_map('trim', explode(',', $status));
-            $query->whereIn('post_status', $statuses);
+            $query->whereIn('post_status', $status);
         } else {
             // Default behavior: exclude trash donations
             $query->where('post_status', DonationStatus::TRASH, '<>');
@@ -334,22 +335,5 @@ class ListDonations extends Endpoint
             $query,
             $dependencies,
         ];
-    }
-
-    /**
-     * @unreleased
-     */
-    private function maybeExpandDate(?string $date, string $direction = 'before'): ?string
-    {
-        if (!$this->isValidPeriod($date)) {
-            return $date;
-        }
-
-        $period = (int) $date;
-        $date = new DateTimeImmutable('now', wp_timezone());
-        $interval = DateInterval::createFromDateString($direction === 'after' ? "+$period days" : "-$period days");
-        $calculatedDate = $date->add($interval);
-
-        return $calculatedDate->format('Y-m-d');
     }
 }

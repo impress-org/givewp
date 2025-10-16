@@ -21,7 +21,7 @@ import GatewaySubscriptionId from './fields/GatewaySubscriptionId';
 const { subscriptionStatuses, mode } = getSubscriptionOptionsWindowData();
 
 /**
- * @unreleased Added Campaign, Form, and Gateway Subscription ID fields
+ * @since 4.11.0 Added Campaign, Form, and Gateway Subscription ID fields
  * @since 4.10.0
  */
 export default function SubscriptionDetails() {

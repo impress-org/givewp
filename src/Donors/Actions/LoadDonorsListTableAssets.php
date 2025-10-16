@@ -3,7 +3,6 @@
 namespace Give\Donors\Actions;
 
 use Give\Donors\ListTable\DonorsListTable;
-use Give\Donors\ValueObjects\DonorStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
@@ -16,7 +15,7 @@ class LoadDonorsListTableAssets
 {
     /**
      * @unreleased Add "donorStatuses" property to the localize script
-     * @unreleased add recurringDonations check to the localize script
+     * @since 4.11.0 add recurringDonations check to the localize script
      * @since 2.27.1 Pass dismissed recommendations to the localize script
      * @since 2.20.0
      */

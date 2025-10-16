@@ -13,7 +13,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
     /**
      * Give_Import_Subscriptions.
      *
-     * @unreleased
+     * @since 4.11.0
      */
     final class Give_Import_Subscriptions
     {
@@ -47,7 +47,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Singleton
-         * @unreleased
+         * @since 4.11.0
          */
         private function __construct()
         {
@@ -57,7 +57,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Get instance
          *
-         * @unreleased
+         * @since 4.11.0
          * @return static
          */
         public static function get_instance()
@@ -72,7 +72,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Setup
          *
-         * @unreleased
+         * @since 4.11.0
          */
         public function setup()
         {
@@ -82,7 +82,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Setup Hooks.
          *
-         * @unreleased
+         * @since 4.11.0
          */
         private function setup_hooks()
         {
@@ -111,7 +111,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Update notice
          *
-         * @unreleased
+         * @since 4.11.0
          * @param $messages
          *
          * @return mixed
@@ -128,7 +128,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Print submit and nonce button.
          *
-         * @unreleased
+         * @since 4.11.0
          */
         public function submit()
         {
@@ -143,7 +143,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Print the HTML for importer.
          *
-         * @unreleased
+         * @since 4.11.0
          */
         public function html()
         {
@@ -205,7 +205,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
         /**
          * Show success notice
          *
-         * @unreleased
+         * @since 4.11.0
          */
         public function import_success()
         {
@@ -308,7 +308,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Start Import
-         * @unreleased
+         * @since 4.11.0
          */
         public function start_import()
         {
@@ -367,7 +367,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Validate required mapped fields
-         * @unreleased
+         * @since 4.11.0
          */
         public function check_for_dropdown_or_import()
         {
@@ -390,7 +390,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Print the Dropdown option for CSV.
-         * @unreleased
+         * @since 4.11.0
          */
         public function render_dropdown()
         {
@@ -1160,7 +1160,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Get current import report
-         * @unreleased
+         * @since 4.11.0
          */
         public function get_report()
         {
@@ -1169,7 +1169,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Update import report
-         * @unreleased
+         * @since 4.11.0
          */
         private function update_report($value = [])
         {
@@ -1178,7 +1178,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Reset import report
-         * @unreleased
+         * @since 4.11.0
          */
         public function reset_report()
         {
@@ -1187,7 +1187,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Update legacy donor totals and fee meta for newly created initial donation
-         * @unreleased
+         * @since 4.11.0
          */
         private function update_legacy_after_initial_donation(Donation $donation)
         {
@@ -1218,7 +1218,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Calculate donor total intended amount across donations
-         * @unreleased
+         * @since 4.11.0
          */
         private function get_donor_total_intended_amount($donorId)
         {
@@ -1246,7 +1246,7 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Subscription mapping options for CSV column selection
-         * @unreleased
+         * @since 4.11.0
          */
         public function get_subscription_options()
         {

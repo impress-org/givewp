@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.10.1
+Stable tag: 4.11.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.11.0: October 16th, 2025 =
+* New: Added a new csv subscriptions importer tool for the ability to import recurring donations into GiveWP
+* New: The admin donor list table now displays quick stats
+* New: The new admin subscription details screen now has record fields for status, gateway subscription ID, campaign, form, and associated donor
+* Fix: Resolved conflict from composer with some plugins like KestrelWP
 
 = 4.10.1: October 2nd, 2025 =
 * Security: Improved REST endpoint permissions for campaigns and forms (CVE-2025-11227, CVE-2025-11228)

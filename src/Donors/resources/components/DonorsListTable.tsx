@@ -55,7 +55,6 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
-        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
         action: async (selected) => {
             const deleteDonations = document.querySelector('#giveDonorsTableDeleteDonations') as HTMLInputElement;
             const args = {ids: selected.join(','), deleteDonationsAndRecords: deleteDonations.checked};
@@ -64,7 +63,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Are you sure you want to permamently delete the following donors?', 'give')}</p>
+                <p>{__('Are you sure you want to delete the following donors?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
@@ -77,50 +76,6 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
                     <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
                     {__('Delete all associated donations and records', 'give')}
                 </label>
-            </>
-        ),
-    },
-    {
-        label: __('Trash', 'give'),
-        value: 'trash',
-        type: 'warning',
-        isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
-        action: async (selected) => {
-            const response = await API.fetchWithArgs('/status', {ids: selected.join(','), status: 'trash'}, 'POST');
-            return response;
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Are you sure you want add to trash the following donors?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave attributes={{className: 'donorBulkModalContent'}} content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
-            </>
-        ),
-    },
-    {
-        label: __('Restore', 'give'),
-        value: 'restore',
-        type: 'normal',
-        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
-        action: async (selected) => {
-            const response = await API.fetchWithArgs('/status', {ids: selected.join(','), status: 'active'}, 'POST');
-            return response;
-        },
-        confirm: (selected, names) => (
-            <>
-                <p>{__('Are you sure you want remove from trash the following donors?', 'give')}</p>
-                <ul role="document" tabIndex={0}>
-                    {selected.map((id, index) => (
-                        <li key={id}>
-                            <Interweave attributes={{className: 'donorBulkModalContent'}} content={names[index]} />
-                        </li>
-                    ))}
-                </ul>
             </>
         ),
     },
@@ -173,7 +128,7 @@ const recommendation = (
  * then this config must use those same keys: "donorsCount", "oneTimeDonorsCount", "subscribersCount".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
- * @unreleased
+ * @since 4.11.0
  */
 const statsConfig: Record<string, StatConfig> = {
     donorsCount: { label: __('Number of Donors', 'give')},

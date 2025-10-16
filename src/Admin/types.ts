@@ -10,7 +10,7 @@ export interface SchemaProperty {
 }
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 export interface SelectOption {
     value: number;
@@ -19,7 +19,7 @@ export interface SelectOption {
 }
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 export interface UseAsyncSelectOptionReturn {
     selectedOption: SelectOption | null;

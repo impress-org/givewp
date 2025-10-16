@@ -2,7 +2,7 @@ import LockedTextInput from '@givewp/admin/fields/LockedTextInput';
 import {__} from '@wordpress/i18n';
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 export default function GatewaySubscriptionId() {
     return (
