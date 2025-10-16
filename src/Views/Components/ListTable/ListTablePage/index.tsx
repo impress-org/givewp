@@ -57,10 +57,13 @@ interface FilterConfigWithSimpleOptions extends FilterConfigBase {
 
 export interface FilterByGroupedOptions {
     id: string;
+    apiParam: string;
     name: string;
-    type: 'checkbox' | 'radio';
+    type: 'checkbox' | 'radio' | 'toggle';
     options: Array<{text: string; value: string}>;
     defaultValue?: string | string[];
+    isVisible?: (values: Record<string, string[]>) => boolean;
+    showTitle?: boolean;
 }
 
 interface FilterConfigWithGroupedOptions extends FilterConfigBase {

@@ -1,117 +1,73 @@
-import {useState, useRef, useEffect, useMemo} from 'react';
-import {__} from '@wordpress/i18n';
+import { useMemo } from 'react';
+import { __ } from '@wordpress/i18n';
 import styles from './styles.module.scss';
-import {FilterByGroupedOptions} from '@givewp/components/ListTable/ListTablePage';
+import { FilterByProps } from './types';
+import { useFilterState } from './hooks/useFilterState';
+import { useDropdownToggle } from './hooks/useDropdownToggle';
+import { calculateAppliedFiltersCount } from './utils/calculateAppliedFiltersCount';
+import { FilterGroup } from './components/FilterGroup';
 import FilterByIcon from './Icon';
 
 /**
  * @unreleased
  */
-interface FilterByProps {
-    groupedOptions: FilterByGroupedOptions[];
-    onChange: (key: string, values: string[]) => void;
-    values?: Record<string, string[]>;
-}
+export default function FilterBy({ groupedOptions, onChange, values }: FilterByProps) {
+    const { isOpen, setIsOpen, dropdownRef } = useDropdownToggle();
+    const { selectedFilters, setSelectedFilters, visibleGroups } = useFilterState(
+        groupedOptions,
+        values
+    );
 
-/**
- * @unreleased
- */
-export default function FilterBy({groupedOptions, onChange, values}: FilterByProps) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
-    const dropdownRef = useRef<HTMLDivElement>(null);
+    const appliedFiltersCount = useMemo(
+        () => calculateAppliedFiltersCount(groupedOptions, values),
+        [groupedOptions, values]
+    );
 
-    const appliedFiltersCount = useMemo(() => {
-        if (!values) {
-            return 0;
-        }
+    const handleToggle = () => setIsOpen(!isOpen);
 
-        return groupedOptions.reduce((total, group) => {
-            const groupValues = values?.[group.id];
-            return total + (groupValues ? groupValues.length : 0);
-        }, 0);
-    }, [JSON.stringify(values)]);
-
-    useEffect(() => {
-        const newSelectedFilters: Record<string, string[]> = {};
-        groupedOptions.forEach((group) => {
-            newSelectedFilters[group.id] = values?.[group.id] || [];
-        });
-        setSelectedFilters(newSelectedFilters);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [isOpen]);
-
-    const handleToggle = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const handleCheckboxChange = (groupId: string, optionValue: string) => {
+    const handleCheckboxChange = (apiParam: string, optionValue: string) => {
         setSelectedFilters((prev) => {
-            const groupValues = prev[groupId] || [];
+            const groupValues = prev[apiParam] || [];
             const newGroupValues = groupValues.includes(optionValue)
                 ? groupValues.filter((v) => v !== optionValue)
                 : [...groupValues, optionValue];
 
-            return {
-                ...prev,
-                [groupId]: newGroupValues,
-            };
+            return { ...prev, [apiParam]: newGroupValues };
         });
     };
 
-    const handleRadioChange = (groupId: string, optionValue: string) => {
-        setSelectedFilters((prev) => {
-            return {
-                ...prev,
-                [groupId]: [optionValue],
-            };
-        });
+    const handleRadioChange = (apiParam: string, optionValue: string) => {
+        setSelectedFilters((prev) => ({
+            ...prev,
+            [apiParam]: [optionValue],
+        }));
     };
 
-    const handleRadioClick = (groupId: string, optionValue: string) => {
-        const groupValues = selectedFilters[groupId] || [];
+    const handleRadioClick = (apiParam: string, optionValue: string) => {
+        const groupValues = selectedFilters[apiParam] || [];
         const isCurrentlySelected = groupValues.includes(optionValue);
 
         if (isCurrentlySelected) {
-            setSelectedFilters((prev) => {
-                return {
-                    ...prev,
-                    [groupId]: [],
-                };
-            });
+            setSelectedFilters((prev) => ({
+                ...prev,
+                [apiParam]: [],
+            }));
         }
     };
 
     const handleReset = () => {
         setSelectedFilters((prev) => {
             const resetFilters = { ...prev };
-
-            groupedOptions.forEach((group) => {
-                resetFilters[group.id] = [];
+            visibleGroups.forEach((group) => {
+                resetFilters[group.apiParam] = [];
             });
-
             return resetFilters;
         });
     };
 
     const handleApply = () => {
-        Object.entries(selectedFilters).forEach(([key, values]) => {
-            onChange(key, values);
+        Object.entries(selectedFilters).forEach(([apiParam, values]) => {
+            onChange(apiParam, values);
         });
         setIsOpen(false);
     };
@@ -126,48 +82,24 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
                 aria-haspopup="true"
             >
                 {__('Filter by', 'give')}
-                {appliedFiltersCount > 0 && <span className={styles.badge}>{appliedFiltersCount}</span>}
+                {appliedFiltersCount > 0 && (
+                    <span className={styles.badge}>{appliedFiltersCount}</span>
+                )}
                 <FilterByIcon />
             </button>
 
             {isOpen && (
                 <div className={styles.dropdown}>
                     <div className={styles.dropdownContent}>
-                        {groupedOptions.map((group: FilterByGroupedOptions) => (
-                            <div key={group.id} className={styles.filterGroup}>
-                                <h3 className={styles.filterGroupTitle}>{group.name}</h3>
-                                <div className={styles[`filterGroupOptions--${group.type}`]}>
-                                    {group.options.map((option) => {
-                                        const inputId = `${group.id}-${option.value}`;
-                                        const isChecked =
-                                            selectedFilters[group.id]?.includes(option.value) || false;
-
-                                        return (
-                                            <label
-                                                key={option.value}
-                                                htmlFor={inputId}
-                                                className={styles.filterOption}
-                                            >
-                                                <input
-                                                    type={group.type}
-                                                    id={inputId}
-                                                    name={group.id}
-                                                    value={option.value}
-                                                    checked={isChecked}
-                                                    onChange={() =>
-                                                        group.type === 'checkbox'
-                                                            ? handleCheckboxChange(group.id, option.value)
-                                                            : handleRadioChange(group.id, option.value)
-                                                    }
-                                                    onClick={() => group.type === 'radio' && handleRadioClick(group.id, option.value)}
-                                                    className={styles.filterInput}
-                                                />
-                                                <span className={styles.filterLabel}>{option.text}</span>
-                                            </label>
-                                        );
-                                    })}
-                                </div>
-                            </div>
+                        {visibleGroups.map((group) => (
+                            <FilterGroup
+                                key={group.id}
+                                group={group}
+                                selectedFilters={selectedFilters}
+                                onCheckboxChange={handleCheckboxChange}
+                                onRadioChange={handleRadioChange}
+                                onRadioClick={handleRadioClick}
+                            />
                         ))}
                     </div>
 

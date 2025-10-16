@@ -101,7 +101,8 @@
 }
 
 .filterGroupOptions {
-    &--checkbox {
+    &--checkbox,
+    &--toggle {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
     }
@@ -125,6 +126,7 @@
     display: flex;
     gap: var(--givewp-spacing-2);
     padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+    position: relative;
     user-select: none;
 
     &:hover .filterLabel {
@@ -185,6 +187,20 @@
         &[aria-invalid="true"] {
             border-color: var(--givewp-red-400);
         }
+
+        .filterGroupOptions--toggle & {
+            display: none;
+
+            &:checked + .filterToggleSlider {
+                background-color: #2271b1;
+                border-color: #2271b1;
+            }
+
+            &:checked + .filterToggleSlider::before {
+                background-color: var(--givewp-shades-white);
+                transform: translateX(1.125rem) translateY(-50%);
+            }
+        }
     }
 
     &[type="radio"] {
@@ -207,6 +223,30 @@
             color: var(--givewp-shades-white);
         }
     }
+}
+
+.filterToggleSlider {
+    background-color: var(--givewp-shades-white);
+    border: 1px solid var(--givewp-neutral-700);
+    border-radius: var(--givewp-rounded-full);
+    cursor: pointer;
+    height: 1.25rem;
+    position: relative;
+    transition: .4s;
+    width: 2.5rem;
+
+    &::before {
+        background-color: var(--givewp-neutral-700);
+        border-radius: var(--givewp-rounded-full);
+        content: "";
+        height: 0.75rem;
+        left: 0.25rem;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: .4s;
+        width: 0.75rem;
+      }
 }
 
 .filterLabel {
