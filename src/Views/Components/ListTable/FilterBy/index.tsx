@@ -21,13 +21,48 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
     const dropdownRef = useRef<HTMLDivElement>(null);
 
+    const isGroupVisible = (group: FilterByGroupedOptions): boolean => {
+        if (group.isVisible) {
+            return group.isVisible(selectedFilters);
+        }
+
+        return true;
+    };
+
+    const visibleGroups = useMemo(() => {
+        return groupedOptions.filter(isGroupVisible);
+    }, [groupedOptions, selectedFilters]);
+
+    useEffect(() => {
+        const invisibleGroups = groupedOptions.filter(group => !isGroupVisible(group));
+
+        if (invisibleGroups.length > 0) {
+            setSelectedFilters((prev) => {
+                const newFilters = { ...prev };
+
+                invisibleGroups.forEach((group) => {
+                    const groupOptionValues = group.options.map(opt => opt.value);
+                    const currentValues = newFilters[group.apiParam] || [];
+
+                    newFilters[group.apiParam] = currentValues.filter(
+                        value => !groupOptionValues.includes(value)
+                    );
+                });
+
+                return newFilters;
+            });
+        }
+    }, [visibleGroups, groupedOptions]);
+
     const appliedFiltersCount = useMemo(() => {
         if (!values) {
             return 0;
         }
 
-        return groupedOptions.reduce((total, group) => {
-            const groupValues = values?.[group.id];
+        const uniqueApiParams = Array.from(new Set(groupedOptions.map(group => group.apiParam)));
+
+        return uniqueApiParams.reduce((total, apiParam) => {
+            const groupValues = values[apiParam];
             return total + (groupValues ? groupValues.length : 0);
         }, 0);
     }, [JSON.stringify(values)]);
@@ -35,7 +70,7 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
     useEffect(() => {
         const newSelectedFilters: Record<string, string[]> = {};
         groupedOptions.forEach((group) => {
-            newSelectedFilters[group.id] = values?.[group.id] || [];
+            newSelectedFilters[group.apiParam] = values?.[group.apiParam] || [];
         });
         setSelectedFilters(newSelectedFilters);
     }, []);
@@ -60,38 +95,38 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
         setIsOpen(!isOpen);
     };
 
-    const handleCheckboxChange = (groupId: string, optionValue: string) => {
+    const handleCheckboxChange = (apiParam: string, optionValue: string) => {
         setSelectedFilters((prev) => {
-            const groupValues = prev[groupId] || [];
+            const groupValues = prev[apiParam] || [];
             const newGroupValues = groupValues.includes(optionValue)
                 ? groupValues.filter((v) => v !== optionValue)
                 : [...groupValues, optionValue];
 
             return {
                 ...prev,
-                [groupId]: newGroupValues,
+                [apiParam]: newGroupValues,
             };
         });
     };
 
-    const handleRadioChange = (groupId: string, optionValue: string) => {
+    const handleRadioChange = (apiParam: string, optionValue: string) => {
         setSelectedFilters((prev) => {
             return {
                 ...prev,
-                [groupId]: [optionValue],
+                [apiParam]: [optionValue],
             };
         });
     };
 
-    const handleRadioClick = (groupId: string, optionValue: string) => {
-        const groupValues = selectedFilters[groupId] || [];
+    const handleRadioClick = (apiParam: string, optionValue: string) => {
+        const groupValues = selectedFilters[apiParam] || [];
         const isCurrentlySelected = groupValues.includes(optionValue);
 
         if (isCurrentlySelected) {
             setSelectedFilters((prev) => {
                 return {
                     ...prev,
-                    [groupId]: [],
+                    [apiParam]: [],
                 };
             });
         }
@@ -101,8 +136,8 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
         setSelectedFilters((prev) => {
             const resetFilters = { ...prev };
 
-            groupedOptions.forEach((group) => {
-                resetFilters[group.id] = [];
+            visibleGroups.forEach((group) => {
+                resetFilters[group.apiParam] = [];
             });
 
             return resetFilters;
@@ -110,8 +145,8 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
     };
 
     const handleApply = () => {
-        Object.entries(selectedFilters).forEach(([key, values]) => {
-            onChange(key, values);
+        Object.entries(selectedFilters).forEach(([apiParam, values]) => {
+            onChange(apiParam, values);
         });
         setIsOpen(false);
     };
@@ -133,14 +168,14 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
             {isOpen && (
                 <div className={styles.dropdown}>
                     <div className={styles.dropdownContent}>
-                        {groupedOptions.map((group: FilterByGroupedOptions) => (
+                        {visibleGroups.map((group: FilterByGroupedOptions) => (
                             <div key={group.id} className={styles.filterGroup}>
-                                <h3 className={styles.filterGroupTitle}>{group.name}</h3>
+                                {group.showTitle !== false && <h3 className={styles.filterGroupTitle}>{group.name}</h3>}
                                 <div className={styles[`filterGroupOptions--${group.type}`]}>
                                     {group.options.map((option) => {
                                         const inputId = `${group.id}-${option.value}`;
                                         const isChecked =
-                                            selectedFilters[group.id]?.includes(option.value) || false;
+                                            selectedFilters[group.apiParam]?.includes(option.value) || false;
 
                                         return (
                                             <label
@@ -149,19 +184,22 @@ export default function FilterBy({groupedOptions, onChange, values}: FilterByPro
                                                 className={styles.filterOption}
                                             >
                                                 <input
-                                                    type={group.type}
+                                                    type={group.type === 'toggle' ? 'checkbox' : group.type}
                                                     id={inputId}
                                                     name={group.id}
                                                     value={option.value}
                                                     checked={isChecked}
                                                     onChange={() =>
-                                                        group.type === 'checkbox'
-                                                            ? handleCheckboxChange(group.id, option.value)
-                                                            : handleRadioChange(group.id, option.value)
+                                                        group.type === 'checkbox' || group.type === 'toggle'
+                                                            ? handleCheckboxChange(group.apiParam, option.value)
+                                                            : handleRadioChange(group.apiParam, option.value)
                                                     }
-                                                    onClick={() => group.type === 'radio' && handleRadioClick(group.id, option.value)}
+                                                    onClick={() => group.type === 'radio' && handleRadioClick(group.apiParam, option.value)}
                                                     className={styles.filterInput}
                                                 />
+                                                {group.type === 'toggle' && (
+                                                    <span className={styles.filterToggleSlider} />
+                                                )}
                                                 <span className={styles.filterLabel}>{option.text}</span>
                                             </label>
                                         );
