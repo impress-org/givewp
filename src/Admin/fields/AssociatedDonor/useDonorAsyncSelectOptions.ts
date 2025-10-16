@@ -6,7 +6,7 @@ import { useEntityRecord } from '@wordpress/core-data';
  *
  * Wrapper for custom hook used to fetch donors select options
  *
- * @unreleased
+ * @since 4.11.0
  */
 export default function useDonorAsyncSelectOptions(donorId: number, queryParams?: {}) {
     const { record } = useEntityRecord<string[]>('givewp', 'donor', donorId);

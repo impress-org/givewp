@@ -168,7 +168,7 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment method successfully creates a renewal payment.
      *
-     * @unreleased add campaign_id to renewal
+     * @since 4.11.0 add campaign_id to renewal
      * @since 4.3.2
      */
     public function testAddPaymentCreatesRenewalPayment()

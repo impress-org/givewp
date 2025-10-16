@@ -206,7 +206,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased add campaignId to renewal
+     * @since 4.11.0 add campaignId to renewal
      * @since 3.20.0
      * @throws Exception
      */
@@ -265,7 +265,7 @@ class TestSubscriptionRepository extends TestCase
 
 
     /**
-     * @unreleased
+     * @since 4.11.0
      * @throws Exception
      */
     public function testCreateRenewalShouldCreateNewRenewalWithUpdatedCampaignId(): void

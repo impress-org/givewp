@@ -71,7 +71,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers database migrations with the MigrationsRunner
      *
-     * @unreleased add AddCampaignIdColumn and AddCampaignId migrations
+     * @since 4.11.0 add AddCampaignIdColumn and AddCampaignId migrations
      * @since 2.24.0
      */
     private function registerMigrations()

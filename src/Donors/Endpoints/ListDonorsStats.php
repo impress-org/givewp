@@ -7,7 +7,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 4.11.0
  */
 class ListDonorsStats extends Endpoint
 {
@@ -22,7 +22,7 @@ class ListDonorsStats extends Endpoint
     protected $request;
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function registerRoute()
     {
@@ -42,7 +42,7 @@ class ListDonorsStats extends Endpoint
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
@@ -56,7 +56,7 @@ class ListDonorsStats extends Endpoint
     /**
      * Get all donor statistics in a single optimized query
      *
-     * @unreleased
+     * @since 4.11.0
      */
     public function getDonorStatistics(): array
     {
@@ -77,13 +77,13 @@ class ListDonorsStats extends Endpoint
                 'oneTimeDonorsCount' => 0,
                 'subscribersCount' => 0,
             ];
-        }       
-    
+        }
+
         return [
             'donorsCount' => (int) $result->total_donors,
             'oneTimeDonorsCount' => (int) $result->one_time_donors,
             'subscribersCount' => (int) $result->recurring_donors,
         ];
     }
-    
+
 }
