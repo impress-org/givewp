@@ -5,13 +5,26 @@ const donationStatuses = window.GiveDonations.donationStatuses || {};
 
 const filterByOptions: Array<FilterByGroupedOptions> = [
     {
-        id: 'status',
+        id: 'showTrashed',
+        apiParam: 'status',
         name: __('Status', 'give'),
-        type: 'checkbox',
-        options: Object.entries(donationStatuses).map(([value, text]) => ({ text, value }))
+        type: 'toggle',
+        options: [{ text: __('Show trashed', 'give'), value: 'trash' }],
     },
     {
-        id: 'start',
+        id: 'status',
+        apiParam: 'status',
+        name: __('Status', 'give'),
+        showTitle: false,
+        type: 'checkbox',
+        isVisible: (values) => !values?.status?.includes('trash'),
+        options: Object.entries(donationStatuses)
+            .filter(([value]) => value !== 'trash')
+            .map(([value, text]) => ({ text, value })),
+    },
+    {
+        id: 'period',
+        apiParam: 'start',
         name: __('Period', 'give'),
         type: 'radio',
         options: [
