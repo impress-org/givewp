@@ -21,7 +21,6 @@ declare global {
             pluginUrl: string;
             dissedRecommendations: Array<string>;
             recurringDonationsEnabled: boolean;
-            donorStatuses: {[statusCode: string]: string};
         };
     }
 }
