@@ -58,45 +58,6 @@ abstract class Endpoint implements RestRoute
     }
 
     /**
-     * Validate status parameter values against SubscriptionStatus constants.
-     *
-     * @unreleased
-     *
-     * @param string $param The status parameter value (comma-separated list)
-     * @param WP_REST_Request $request The REST request object
-     * @param string $key The parameter key
-     *
-     * @return bool|WP_Error True if valid, WP_Error if invalid
-     */
-    public function validateStatus($param, $request, $key)
-    {
-        if (empty($param)) {
-            return true;
-        }
-
-        $statuses = array_map('trim', explode(',', $param));
-        $validStatuses = array_values(SubscriptionStatus::toArray());
-
-        foreach ($statuses as $status) {
-            if (!in_array($status, $validStatuses, true)) {
-                return new WP_Error(
-                    'rest_invalid_param',
-                    sprintf(
-                        /* translators: 1: parameter name, 2: invalid status value, 3: comma-separated list of valid statuses */
-                        __('%1$s has an invalid status value: %2$s. Valid values are: %3$s', 'give'),
-                        $key,
-                        $status,
-                        implode(', ', $validStatuses)
-                    ),
-                    ['status' => 400]
-                );
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Check user permissions
      * @since 4.3.1 updates permissions
      * @since 2.20.0

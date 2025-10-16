@@ -115,10 +115,12 @@ class ListSubscriptions extends Endpoint
                         ],
                     ],
                     'status' => [
-                        'type' => 'string',
+                        'type' => 'array',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                        'validate_callback' => [$this, 'validateStatus'],
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => array_values(SubscriptionStatus::toArray()),
+                        ],
                         'description' => 'Filter subscriptions by status. Accepts comma-separated list of SubscriptionStatus values (e.g., "active,expired,pending"). If not provided, excludes trash subscriptions by default.'
                     ],
                 ],
@@ -236,8 +238,7 @@ class ListSubscriptions extends Endpoint
         $hasWhereConditions = $search || $start || $end || $campaignId || $status;
 
         if (!empty($status)) {
-            $statuses = array_map('trim', explode(',', $status));
-            $query->whereIn('status', $statuses);
+            $query->whereIn('status', $status);
         } else {
             // Default behavior: exclude trashed subscriptions
             $query->where('status', SubscriptionStatus::TRASHED, '<>');
