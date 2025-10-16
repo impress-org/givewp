@@ -51,7 +51,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', DonationStatus::PENDING);
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
 
         $listDonations = give(ListDonations::class);
 
@@ -156,7 +156,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', DonationStatus::PENDING);
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
         $mockRequest->set_param('end', '2023-02-28');
 
@@ -194,7 +194,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', DonationStatus::PENDING);
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
 
         $listDonations = give(ListDonations::class);
@@ -231,7 +231,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', DonationStatus::PENDING);
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('end', '2023-02-28');
 
         $listDonations = give(ListDonations::class);
@@ -272,7 +272,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', DonationStatus::PENDING);
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
         $mockRequest->set_param('end', '2023-02-28');
 
@@ -306,7 +306,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', DonationStatus::PENDING);
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
         $mockRequest->set_param('end', '2023-02-28');
 
@@ -344,7 +344,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', implode(',', [DonationStatus::COMPLETE, DonationStatus::PENDING]));
+        $mockRequest->set_param('status', [DonationStatus::COMPLETE, DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
         $mockRequest->set_param('end', '2023-02-28');
 
