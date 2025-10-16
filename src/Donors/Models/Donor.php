@@ -9,7 +9,6 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\DataTransferObjects\DonorQueryData;
 use Give\Donors\Factories\DonorFactory;
 use Give\Donors\ValueObjects\DonorAddress;
-use Give\Donors\ValueObjects\DonorStatus;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
 use Give\Framework\Models\Contracts\ModelHasFactory;
@@ -22,7 +21,6 @@ use Give\Subscriptions\Models\Subscription;
 /**
  * Class Donor
  *
- * @unreleased Add "status" property
  * @since 4.4.0 Add "notes" property
  * @since 3.7.0 Add "phone" property
  * @since 2.24.0 add new properties $totalAmountDonated and $totalNumberOfDonations
@@ -31,7 +29,6 @@ use Give\Subscriptions\Models\Subscription;
  * @property int $id
  * @property int $userId
  * @property DateTime $createdAt
- * @property DonorStatus $status
  * @property string $name
  * @property string $prefix
  * @property string $firstName
@@ -57,7 +54,6 @@ class Donor extends Model implements ModelCrud, ModelHasFactory
         'id' => 'int',
         'userId' => ['int', 0],
         'createdAt' => DateTime::class,
-        'status' => DonorStatus::class,
         'name' => 'string',
         'firstName' => 'string',
         'lastName' => 'string',

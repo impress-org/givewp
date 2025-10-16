@@ -5,14 +5,12 @@ namespace Give\Donors\DataTransferObjects;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorAddress;
 use Give\Donors\ValueObjects\DonorMetaKeys;
-use Give\Donors\ValueObjects\DonorStatus;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 
 /**
  * Class DonorObjectData
  *
- * @unreleased  Add "status" property
  * @since 4.4.0 Add "avatarId" and "company" properties
  * @since 2.19.6
  */
@@ -23,10 +21,6 @@ final class DonorQueryData
      * @var int
      */
     public $id;
-    /**
-     * @var DonorStatus
-     */
-    public $status;
     /**
      * @var string
      */
@@ -87,7 +81,6 @@ final class DonorQueryData
     /**
      * Convert data from donor object to Donor Model
      *
-     * @unreleased Add "status" property
      * @since 4.4.0 Add "avatarId" and "company" properties
      * @since 3.7.0 Add "phone" property
      * @since 2.24.0 add $totalAmountDonated and $totalNumberOfDonations
@@ -104,7 +97,6 @@ final class DonorQueryData
         $self->userId = (int)$object->userId;
         $self->prefix = $object->{DonorMetaKeys::PREFIX()->getKeyAsCamelCase()};
         $self->email = $object->email;
-        $self->status = new DonorStatus($object->status);
         $self->phone = $object->phone;
         $self->name = $object->name;
         $self->firstName = $object->firstName;
