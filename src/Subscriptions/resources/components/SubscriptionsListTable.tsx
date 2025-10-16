@@ -59,7 +59,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
-        isVisible: (data, parameters) => parameters.status === 'trash',
+        isVisible: (data, parameters) => parameters.status === 'trashed',
         action: async (selected) => {
             const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
             return response;
@@ -84,9 +84,9 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Trash', 'give'),
         value: 'trash',
         type: 'warning',
-        isVisible: (data, parameters) => parameters.status !== 'trash',
+        isVisible: (data, parameters) => parameters.status !== 'trashed',
         action: async (selected) => {
-            const response = await API.fetchWithArgs('/setStatus', {ids: selected.join(','), status: 'trashed'}, 'POST');
+            const response = await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
             return response;
         },
         confirm: (selected, names) => (
@@ -109,9 +109,9 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Restore', 'give'),
         value: 'restore',
         type: 'normal',
-        isVisible: (data, parameters) => parameters.status === 'trash',
+        isVisible: (data, parameters) => parameters.status === 'trashed',
         action: async (selected) => {
-            const response = await API.fetchWithArgs('/setStatus', {ids: selected.join(','), status: 'active'}, 'POST');
+            const response = await API.fetchWithArgs('/untrash', {ids: selected.join(',')}, 'POST');
             return response;
         },
         confirm: (selected, names) => (

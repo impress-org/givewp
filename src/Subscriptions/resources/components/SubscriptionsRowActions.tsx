@@ -18,23 +18,9 @@ export function SubscriptionsRowActions({item, setUpdateErrors, parameters}) {
         return response;
     };
 
-    const fetchAndUpdateStatus = async (id: number, status: string) => {
-        const response = await subscriptionsApi.fetchWithArgs(
-            '/setStatus',
-            {
-                ids: [id],
-                status
-            },
-            'POST'
-        );
-        setUpdateErrors(response);
-        await mutate(parameters);
-        return response;
-    };
-
     const deleteItem = async () => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
-    const trashItem = async () => await fetchAndUpdateStatus( item.id, 'trashed');
-    const restoreItem = async () => await fetchAndUpdateStatus( item.id, 'active');
+    const trashItem = async () => await fetchAndUpdateErrors(parameters, '/trash', item.id, 'DELETE');
+    const restoreItem = async () => await fetchAndUpdateErrors(parameters, '/untrash', item.id, 'POST');
 
     const confirmDelete = () => <p>{sprintf(__('Really delete donation #%d?', 'give'), item.id)}</p>;
     const confirmTrash = () => <p>{sprintf(__('Trash the following subscription #%d?', 'give'), item.id)}</p>;

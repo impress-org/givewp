@@ -40,6 +40,8 @@ class SubscriptionActions extends Endpoint
                         'required' => true,
                         'enum' => [
                             'delete',
+                            'trash',
+                            'untrash',
                             'setStatus',
                         ],
                     ],
@@ -117,6 +119,44 @@ class SubscriptionActions extends Endpoint
 
                     try {
                         $subscription->delete();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
+                }
+
+                break;
+
+            case 'trash':
+                foreach ($ids as $id) {
+                    $subscription = Subscription::find($id);
+
+                    if ( ! $subscription) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
+                    try {
+                        $subscription->trash();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
+                }
+
+                break;
+
+            case 'untrash':
+                foreach ($ids as $id) {
+                    $subscription = Subscription::find($id);
+
+                    if ( ! $subscription) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
+                    try {
+                        $subscription->unTrash();
                         $successes[] = $id;
                     } catch (Exception $e) {
                         $errors[] = $id;
