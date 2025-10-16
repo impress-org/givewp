@@ -34,6 +34,6 @@ class UpdateProductIDTest extends TestCase
 
         $updatedSubscription = Subscription::find($subscription->id);
 
-        $this->assertEquals($subscription->donationFormId, $updatedSubscription->donationFormId);
+        $this->assertEquals(200, $updatedSubscription->donationFormId);
     }
 }
