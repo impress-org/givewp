@@ -132,10 +132,12 @@ class ListDonations extends Endpoint
                         ],
                     ],
                     'status' => [
-                        'type' => 'string',
+                        'type' => 'array',
                         'required' => false,
-                        'sanitize_callback' => 'sanitize_text_field',
-                        'validate_callback' => [$this, 'validateStatus'],
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => array_values(DonationStatus::toArray()),
+                        ],
                         'description' => 'Filter donations by status. Accepts comma-separated list of DonationStatus values (e.g., "pending,publish,trash"). If not provided, excludes trash donations by default.'
                     ],
                 ],
@@ -264,8 +266,7 @@ class ListDonations extends Endpoint
         $query->where('post_type', 'give_payment');
 
         if (!empty($status)) {
-            $statuses = array_map('trim', explode(',', $status));
-            $query->whereIn('post_status', $statuses);
+            $query->whereIn('post_status', $status);
         } else {
             // Default behavior: exclude trash donations
             $query->where('post_status', DonationStatus::TRASH, '<>');
