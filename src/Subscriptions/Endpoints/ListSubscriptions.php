@@ -2,8 +2,6 @@
 
 namespace Give\Subscriptions\Endpoints;
 
-use DateInterval;
-use DateTimeImmutable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
