@@ -29,8 +29,8 @@ use Give\Donors\Endpoints\DeleteDonor;
 use Give\Donors\Endpoints\ListDonors;
 use Give\Donors\Endpoints\ListDonorsStats;
 use Give\Donors\Endpoints\SwitchDonorView;
-use Give\Donors\Endpoints\UpdateStatus;
 use Give\Subscriptions\Endpoints\ListSubscriptions;
+use Give\Subscriptions\Endpoints\ListSubscriptionStats;
 use Give\Subscriptions\Endpoints\SubscriptionActions;
 use Give\Subscriptions\Endpoints\SwitchSubscriptionView;
 
@@ -59,6 +59,7 @@ class RestAPI implements ServiceProvider
         ListDonations::class,
         ListDonationsStats::class,
         ListSubscriptions::class,
+        ListSubscriptionStats::class,
         SwitchDonorView::class,
         SwitchDonationView::class,
         SwitchDonationFormView::class,
@@ -66,7 +67,6 @@ class RestAPI implements ServiceProvider
         DonationActions::class,
         SubscriptionActions::class,
         DeleteDonor::class,
-        UpdateStatus::class,
         FormActions::class,
         GetMigrations::class,
         RunMigration::class,

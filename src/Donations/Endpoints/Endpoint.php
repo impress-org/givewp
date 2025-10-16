@@ -35,14 +35,6 @@ abstract class Endpoint implements RestRoute
      */
     public function validateDate($param, $request, $key)
     {
-        if (empty($param)) {
-            return true;
-        }
-
-        if ($this->isValidPeriod($param)) {
-            return true;
-        }
-
         // Check that date is valid, and formatted YYYY-MM-DD
         if (substr_count($param, '-') !== 2) return false;
         list($year, $month, $day) = array_map('intval', explode('-', $param));
@@ -56,45 +48,6 @@ abstract class Endpoint implements RestRoute
         }
 
         return $valid;
-    }
-
-    /**
-     * Validate status parameter values against DonationStatus constants.
-     *
-     * @unreleased
-     *
-     * @param string $param The status parameter value (comma-separated list)
-     * @param WP_REST_Request $request The REST request object
-     * @param string $key The parameter key
-     *
-     * @return bool|WP_Error True if valid, WP_Error if invalid
-     */
-    public function validateStatus($param, $request, $key)
-    {
-        if (empty($param)) {
-            return true;
-        }
-
-        $statuses = array_map('trim', explode(',', $param));
-        $validStatuses = array_values(DonationStatus::toArray());
-
-        foreach ($statuses as $status) {
-            if (!in_array($status, $validStatuses, true)) {
-                return new WP_Error(
-                    'rest_invalid_param',
-                    sprintf(
-                        /* translators: 1: parameter name, 2: invalid status value, 3: comma-separated list of valid statuses */
-                        __('%1$s has an invalid status value: %2$s. Valid values are: %3$s', 'give'),
-                        $key,
-                        $status,
-                        implode(', ', $validStatuses)
-                    ),
-                    ['status' => 400]
-                );
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -130,13 +83,5 @@ abstract class Endpoint implements RestRoute
         }
 
         return 401;
-    }
-
-    /**
-     * @unreleased
-     */
-    protected function isValidPeriod(?string $period): bool
-    {
-        return !empty($period) && in_array($period, ['90d', '30d', '7d']);
     }
 }

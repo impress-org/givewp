@@ -1196,7 +1196,7 @@ class DonationRouteCreateTest extends RestApiTestCase
 
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function testCreateRenewalShouldUseCampaignIdFromSubscription()
     {

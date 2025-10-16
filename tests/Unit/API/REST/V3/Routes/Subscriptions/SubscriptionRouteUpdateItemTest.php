@@ -81,7 +81,7 @@ class SubscriptionRouteUpdateItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Exclude gatewaySubscriptionId from non-editable fields
+     * @since 4.11.0 Exclude gatewaySubscriptionId from non-editable fields
      * @since 4.8.0
      */
     public function testUpdateSubscriptionShouldNotUpdateNonEditableFields()

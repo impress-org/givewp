@@ -102,7 +102,7 @@ class ServiceProvider implements GiveServiceProvider
      *
      * @see https://getcomposer.org/doc/07-runtime.md#installed-versions
      *
-     * @unreleased use class_exists instead of InstalledVersions::isInstalled to avoid conflicts with other plugins using composer
+     * @since 4.11.0 use class_exists instead of InstalledVersions::isInstalled to avoid conflicts with other plugins using composer
      * @since 3.17.2
      *
      * @return bool
