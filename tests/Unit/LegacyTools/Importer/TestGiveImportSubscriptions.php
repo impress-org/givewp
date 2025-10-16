@@ -32,7 +32,7 @@ class TestGiveImportSubscriptions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function testRequiredFieldsValidationPassesAndFails(): void
     {
@@ -48,7 +48,7 @@ class TestGiveImportSubscriptions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      * @return void
      */
     public function testDropdownAutoselectsSnakeCaseHeaders(): void
@@ -72,7 +72,7 @@ class TestGiveImportSubscriptions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function testDropdownAutoselectsNormalizedHeaders(): void
     {
@@ -88,7 +88,7 @@ class TestGiveImportSubscriptions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
         public function testGetStepLogicWithAndWithoutMapto(): void
     {
@@ -106,7 +106,7 @@ class TestGiveImportSubscriptions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0
      */
     public function testImportsFromCsvCreatesSubscriptions(): void
     {

@@ -16,7 +16,7 @@ class LoadDonorsListTableAssets
 {
     /**
      * @unreleased Add "statuses" property to the localize script
-     * @unreleased add recurringDonations check to the localize script
+     * @since 4.11.0 add recurringDonations check to the localize script
      * @since 2.27.1 Pass dismissed recommendations to the localize script
      * @since 2.20.0
      */

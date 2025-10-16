@@ -697,7 +697,7 @@ function give_maybe_safe_unserialize($data)
  * Load donation import ajax callback
  * Fire when importing from CSV start
  *
- * @unreleased Updated error handling to display errors in the import page.
+ * @since 4.11.0 Updated error handling to display errors in the import page.
  * @since 3.5.0 Extract safe unserialize logic to a function and use it in other places.
  * @since 2.25.3 Append nonce to response url.
  * @since  1.8.13
@@ -843,7 +843,7 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 /**
  * Load subscription import ajax callback
  *
- * @unreleased
+ * @since 4.11.0
  */
 function give_subscription_import_callback() {
 

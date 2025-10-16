@@ -3,7 +3,6 @@ $breakpoint-desktop: 900px;
 .summaryTableContainer {
   display: flex;
   flex-direction: column;
-  gap: var(--givewp-spacing-2);
   width: 100%;
 }
 
@@ -20,13 +19,16 @@ $breakpoint-desktop: 900px;
   }
 }
 
+.summaryTable {
+    padding: var(--givewp-spacing-4) 0;
+}
+
 .summaryTableLabel {
   flex-grow: 1;
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.5;
   color: #4b5563;
-  padding: var(--givewp-spacing-3) 0;
   margin: 0;
 }
 
@@ -35,6 +37,22 @@ $breakpoint-desktop: 900px;
   font-weight: 600;
   line-height: 1.5;
   color: #1f2937;
-  padding: var(--givewp-spacing-3) 0;
   text-align: right;
+}
+
+.pill {
+    --border-width: 1px;
+    --padding-x: calc(var(--givewp-spacing-3) - var(--border-width));
+    --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
+    align-items: center;
+    background-color: var(--givewp-neutral-25);
+    border-radius: 1.5rem;
+    border: var(--border-width) solid var(--givewp-neutral-600);
+    color: var(--givewp-neutral-900);
+    display: inline-flex ;
+    font-size: 0.75rem;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.5;
+    padding: var(--padding-y) var(--padding-x);
 }

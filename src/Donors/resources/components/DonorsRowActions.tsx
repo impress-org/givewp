@@ -4,7 +4,6 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
 import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
-import styles from './DonorsRowActions.module.scss';
 import {Interweave} from 'interweave';
 import './style.scss';
 
@@ -86,9 +85,8 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
     };
 
     return (
-        <div className={styles.container}>
+        <>
             <RowAction
-                className={styles.action}
                 href={
                     window.GiveDonors.adminUrl +
                     `edit.php?post_type=give_forms&page=give-donors&view=overview&id=${item.id}`
@@ -98,13 +96,11 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
             {parameters.status === 'trash' ? (
                 <>
                     <RowAction
-                        className={styles.action}
                         onClick={confirmRestoreModal}
                         actionId={item.id}
                         displayText={__('Restore', 'give')}
                     />
                     <RowAction
-                        className={styles.action}
                         onClick={confirmDeleteModal}
                         actionId={item.id}
                         displayText={__('Delete', 'give')}
@@ -114,7 +110,6 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
                 </>
             ) : (
                 <RowAction
-                    className={styles.action}
                     onClick={confirmTrashModal}
                     actionId={item.id}
                     displayText={__('Trash', 'give')}
@@ -122,6 +117,6 @@ export function DonorsRowActions({item, setUpdateErrors, parameters}) {
                     highlight
                 />
             )}
-        </div>
+        </>
     );
 }

@@ -213,7 +213,7 @@ class ListSubscriptions extends Endpoint
 
     /**
      * @unreleased add status where condition
-     * @unreleased fix search by donor name or email
+     * @since 4.11.0 fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model
      * @since 2.21.0
      *

@@ -43,17 +43,21 @@
 }
 
 .badge {
-  align-items: center;
-  border-radius: var(--givewp-rounded-full);
-  border: 1px solid var(--givewp-neutral-900);
-  color: var(--givewp-neutral-900);
-  display: flex;
-  font-size: 0.75rem;
-  font-weight: 600;
-  gap: var(--givewp-spacing-1);
-  justify-content: center;
-  line-height: 1.5;
-  padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
+    --border-width: 1px;
+    --padding-x: calc(var(--givewp-spacing-3) - var(--border-width));
+    --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
+    align-items: center;
+    background-color: var(--givewp-neutral-25);
+    border-radius: 1.5rem;
+    border: var(--border-width) solid var(--givewp-neutral-600);
+    color: var(--givewp-neutral-900);
+    display: inline-flex ;
+    font-size: 0.75rem;
+    font-weight: 600;
+    gap: var(--givewp-spacing-1);
+    justify-content: center;
+    line-height: 1.5;
+    padding: var(--padding-y) var(--padding-x);
 
   &.limited {
     color: #d98715;

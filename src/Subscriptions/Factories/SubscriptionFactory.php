@@ -20,6 +20,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFactory extends ModelFactory
 {
     /**
+     * @since 4.11.0 add campaignId property
      * @since 2.24.0 add mode property
      * @since 2.20.0 update default donorId to create factory
      * @since 2.19.6
@@ -42,6 +43,7 @@ class SubscriptionFactory extends ModelFactory
             'status' => SubscriptionStatus::PENDING(),
             'renewsAt' => give(GenerateNextRenewalForSubscription::class)(SubscriptionPeriod::MONTH(), $frequency),
             'donationFormId' => 1,
+            'campaignId' => 1,
             'mode' => SubscriptionMode::TEST(),
         ];
     }

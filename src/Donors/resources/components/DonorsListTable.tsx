@@ -174,7 +174,7 @@ const recommendation = (
  * then this config must use those same keys: "donorsCount", "oneTimeDonorsCount", "subscribersCount".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
- * @unreleased
+ * @since 4.11.0
  */
 const statsConfig: Record<string, StatConfig> = {
     donorsCount: { label: __('Number of Donors', 'give')},
