@@ -1,18 +1,17 @@
 import { FilterByGroupedOptions } from "@givewp/components/ListTable/ListTablePage";
 import { __ } from "@wordpress/i18n";
 
-const donorStatuses = window.GiveDonors.donorStatuses || {};
-
 const filterByOptions: Array<FilterByGroupedOptions> = [
     {
-        id: 'status',
+        id: 'showTrashed',
+        apiParam: 'status',
         name: __('Status', 'give'),
-        type: 'radio',
-        options: Object.entries(donorStatuses).map(([value, text]) => ({ text, value })),
-        defaultValue: 'active',
+        type: 'toggle',
+        options: [{ text: __('Show trashed', 'give'), value: 'trash' }],
     },
     {
-        id: 'start',
+        id: 'status',
+        apiParam: 'status',
         name: __('Period', 'give'),
         type: 'radio',
         options: [
