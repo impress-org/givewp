@@ -4,6 +4,7 @@ import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
 import GeneralTab from './General';
 import AdditionalInfoTab from './AdditionalInfo';
 import cx from 'classnames';
+import { useTriggerResize } from '@givewp/components/hooks';
 
 import styles from './styles.module.scss';
 
@@ -12,6 +13,8 @@ import styles from './styles.module.scss';
  */
 export default function DonationDetailsPageRecordsTab() {
     const [selectedKey, setSelectedKey] = useState('general');
+
+    useTriggerResize(selectedKey);
 
     const subtabs = [
         {

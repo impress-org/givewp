@@ -173,7 +173,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
-     * @unreleased Updated return value
+     * @since 4.10.0 Updated return value
      * @since 4.4.0
      */
     public function getDonorType()

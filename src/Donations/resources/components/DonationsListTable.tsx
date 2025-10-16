@@ -22,7 +22,7 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
-            recurringDonations: boolean;
+            recurringDonationsEnabled: boolean;
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
             addonsBulkActions: Array<BulkActionsConfig>;
@@ -220,22 +220,22 @@ const rotatingRecommendation = (
  * then this config must use those same keys: "donationsCount", "oneTimeDonationsCount", "recurringDonationsCount".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
- * @unreleased
+ * @since 4.10.0
  */
 const statsConfig: Record<string, StatConfig> = {
     donationsCount: { label: __('Total Donations', 'give')},
     oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
     recurringDonationsCount: {
         label: __('Recurring Donations', 'give'),
-        upgrade: !window.GiveDonations.recurringDonations && {
-            href: ' https://docs.givewp.com/recurring-stat',
+        upgrade: !window.GiveDonations.recurringDonationsEnabled && {
+            href: 'https://docs.givewp.com/recurring-stat',
             tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
         }
     },
 };
 
 /**
- * @unreleased Update button class names and add aria attributes.
+ * @since 4.10.0 Update button class names and add aria attributes.
  * @since 2.24.0
  */
 export default function DonationsListTable() {
@@ -253,6 +253,13 @@ export default function DonationsListTable() {
             productRecommendation={rotatingRecommendation}
             statsConfig={statsConfig}
         >
+            <button
+                className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
+                onClick={showLegacyDonations}
+                aria-label={__('Switch to the legacy donations table view', 'give')}
+            >
+                {__('Switch to Legacy View', 'give')}
+            </button>
             {window.GiveDonations.manualDonations ? (
                 <a
                     className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
@@ -290,13 +297,6 @@ export default function DonationsListTable() {
             >
                 {__('Import donations', 'give')}
             </a>
-            <button
-                className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
-                onClick={showLegacyDonations}
-                aria-label={__('Switch to the legacy donations table view', 'give')}
-            >
-                {__('Switch to Legacy View', 'give')}
-            </button>
         </ListTablePage>
     );
 }

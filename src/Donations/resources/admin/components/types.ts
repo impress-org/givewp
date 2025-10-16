@@ -58,6 +58,12 @@ export type Donation = {
   };
   eventTickets: EventTicket[];
   gateway: PaymentGateway;
+  customFields: CustomField[];
+};
+
+export type CustomField = {
+    label: string;
+    value: string;
 };
 
 export type Event = {

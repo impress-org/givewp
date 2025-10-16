@@ -8,7 +8,7 @@ const InterweaveSSR = ({column, item}) => {
         value = null;
     }
 
-    if (!isNaN(value)) {
+    if (column.id === 'id') {
         return <div className={'idBadge'}>{value}</div>;
     }
 

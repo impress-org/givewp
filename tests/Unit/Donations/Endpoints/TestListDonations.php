@@ -20,7 +20,7 @@ class TestListDonations extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function setUp(): void
     {
@@ -130,7 +130,7 @@ class TestListDonations extends TestCase
 
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByDateRange()
     {
@@ -168,7 +168,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByStartDateOnly()
     {
@@ -205,7 +205,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByEndDateOnly()
     {
@@ -242,7 +242,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByExactDateRange()
     {
@@ -284,7 +284,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldReturnEmptyResultsForDateRangeWithNoDonations()
     {
@@ -318,7 +318,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByDateWithMixedDonationTypes()
     {
@@ -357,7 +357,7 @@ class TestListDonations extends TestCase
 
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     private function createSubscription(int $campaignId, DateTime $donationDate = null): Subscription
     {

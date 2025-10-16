@@ -23,12 +23,21 @@ export type Donor = {
   totalNumberOfDonations: number;
   wpUserPermalink: string;
   status: DonorStatus;
+  customFields: CustomField[];
 };
 
 /**
  * @since 4.4.0
  */
 export type DonorStatus = 'current' | 'prospective' | 'retained' | 'lapsed' | 'new' | 'recaptured' | 'recurring';
+
+/**
+ * @since 4.10.0
+ */
+export type CustomField = {
+    label: string;
+    value: string;
+};
 
 /**
  * @since 4.4.0

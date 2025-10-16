@@ -32,18 +32,6 @@ export type GiveDonationOptions = {
     isFeeRecoveryEnabled: boolean;
     eventTicketsEnabled: boolean;
     donationStatuses: {[statusCode: string]: string};
-    campaignsWithForms: {
-        [campaignId: string]: {
-            title: string;
-            defaultFormId: string;
-            forms: {
-                [formId: string]: string;
-            };
-        };
-    };
-    donors: {
-        [donorId: string]: string;
-    };
     mode: 'test' | 'live';
     gateways: Gateway[];
 }

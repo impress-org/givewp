@@ -11,6 +11,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class GetSubscriptionItemSchema
 {
     /**
+     * @since 4.10.0 added campaignId
      * @since 4.8.0
      */
     public function __invoke(): array
@@ -29,6 +30,11 @@ class GetSubscriptionItemSchema
                     'description' => esc_html__('Subscription mode (live or test)', 'give'),
                     'default' => 'live',
                     'enum' => ['live', 'test'],
+                ],
+                'campaignId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Campaign ID', 'give'),
+                    'nullable' => true,
                 ],
                 'donationFormId' => [
                     'type' => 'integer',

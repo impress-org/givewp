@@ -7,6 +7,7 @@ import styles from '../CampaignDetailsPage.module.scss';
 import tabsDefinitions from './definitions';
 import NotificationsPlaceholder from '../../Notifications';
 import CampaignDetailsErrorBoundary from '../Components/CampaignDetailsErrorBoundary';
+import { useTriggerResize } from '@givewp/components/hooks';
 
 const tabs: CampaignDetailsTab[] = tabsDefinitions;
 
@@ -15,6 +16,8 @@ const tabs: CampaignDetailsTab[] = tabsDefinitions;
  */
 export default function CampaignDetailsTabs() {
     const [activeTab, setActiveTab] = useState<CampaignDetailsTab>(tabs[0]);
+
+    useTriggerResize(activeTab);
 
     const getTabFromURL = () => {
         const urlParams = new URLSearchParams(window.location.search);

@@ -41,7 +41,7 @@ class LoadDonationsListTableAssets
             'addonsBulkActions' => [],
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
-            'recurringDonations' => Utils::isPluginActive('give-recurring/give-recurring.php'),
+            'recurringDonationsEnabled' => Utils::isPluginActive('give-recurring/give-recurring.php'),
         ]);
 
         wp_enqueue_script($handleName);

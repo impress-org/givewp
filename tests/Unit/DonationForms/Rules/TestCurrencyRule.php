@@ -8,7 +8,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 class TestCurrencyRule extends TestCase
 {
@@ -16,7 +16,7 @@ class TestCurrencyRule extends TestCase
     use HasValidationRules;
 
     /**
-     * @unreleased
+     * @since 4.10.0
      * @dataProvider currencyProvider
      */
     public function testCurrencyRule($value, bool $shouldBeValid): void
@@ -31,7 +31,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      *
      * @return array<int, array<mixed, bool>>
      */
@@ -88,7 +88,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testCurrencyRuleErrorMessage(): void
     {
@@ -115,7 +115,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testCurrencyRuleFormatValidation(): void
     {
@@ -150,7 +150,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testCurrencyRuleInvalidCodeWithCorrectCase(): void
     {
@@ -177,7 +177,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testCurrencyRuleInvalidLength(): void
     {
@@ -204,7 +204,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testCurrencyRuleId(): void
     {
@@ -212,7 +212,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testCurrencyRuleFromString(): void
     {
@@ -224,7 +224,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      * @dataProvider validFormatProvider
      */
     public function testIsValidFormat($value, bool $expected): void
@@ -241,7 +241,7 @@ class TestCurrencyRule extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      *
      * @return array<int, array<mixed, bool>>
      */

@@ -4,6 +4,7 @@ namespace Give\Subscriptions\Models;
 
 use DateTime;
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -25,11 +26,14 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class Subscription
  *
+ * @unreleased added campaign ID property
+ * @since 4.10.0 added campaign relationship
  * @since 2.23.0 added the renewsAt property
  * @since 2.19.6
  *
  * @property int $id
  * @property int $donationFormId
+ * @property int $campaignId
  * @property DateTime $createdAt
  * @property DateTime $renewsAt The date the subscription will renew next
  * @property int $donorId
@@ -46,6 +50,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property Donor $donor
  * @property Donation[] $donations
  * @property float $projectedAnnualRevenue
+ * @property ?Campaign $campaign
  */
 class Subscription extends Model implements ModelCrud, ModelHasFactory
 {
@@ -55,6 +60,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     protected $properties = [
         'id' => 'int',
         'donationFormId' => 'int',
+        'campaignId' => 'int',
         'createdAt' => DateTime::class,
         'renewsAt' => DateTime::class,
         'donorId' => 'int',
@@ -78,6 +84,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'donor' => Relationship::BELONGS_TO,
         'donations' => Relationship::HAS_MANY,
         'notes' => Relationship::HAS_MANY,
+        'campaign' => Relationship::BELONGS_TO,
     ];
 
     /**
@@ -358,5 +365,15 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public function projectedAnnualRevenue(): Money
     {
         return give(CalculateProjectedAnnualRevenue::class)($this);
+    }
+
+    /**
+     * @since 4.10.0
+     *
+     * @return ModelQueryBuilder<Campaign>
+     */
+    public function campaign(): ModelQueryBuilder
+    {
+        return give()->campaigns->queryByFormId($this->donationFormId);
     }
 }

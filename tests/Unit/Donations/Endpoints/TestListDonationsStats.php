@@ -18,14 +18,14 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 class TestListDonationsStats extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldReturnCorrectStatisticsForMixedDonations()
     {
@@ -52,7 +52,7 @@ class TestListDonationsStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldReturnCorrectStatisticsForOneTimeDonationsOnly()
     {
@@ -76,7 +76,7 @@ class TestListDonationsStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldReturnCorrectStatisticsForRecurringDonationsOnly()
     {
@@ -98,7 +98,7 @@ class TestListDonationsStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldReturnEmptyStatisticsForNoDonations()
     {
@@ -116,7 +116,7 @@ class TestListDonationsStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterByTestMode()
     {
@@ -148,7 +148,7 @@ class TestListDonationsStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldExcludeTrashDonations()
     {
@@ -179,7 +179,7 @@ class TestListDonationsStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     private function createSubscription(int $campaignId, DateTime $donationDate = null): Subscription
     {

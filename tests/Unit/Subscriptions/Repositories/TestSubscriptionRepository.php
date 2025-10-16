@@ -3,6 +3,7 @@
 namespace Give\Tests\Unit\Subscriptions\Repositories;
 
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
@@ -205,12 +206,16 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
+     * @unreleased add campaignId to renewal
      * @since 3.20.0
      * @throws Exception
      */
     public function testCreateRenewalShouldCreateNewRenewal(): void
     {
-        $subscription = Subscription::factory()->createWithDonation();
+        $campaign = Campaign::factory()->create();
+        $subscription = Subscription::factory()->createWithDonation([
+            'campaignId' => $campaign->id,
+        ]);
         $repository = new SubscriptionRepository();
 
         $renewalCreatedAt = Temporal::getCurrentDateTime();
@@ -255,5 +260,34 @@ class TestSubscriptionRepository extends TestCase
         $this->assertSame($initialDonation->billingAddress->toArray(), $renewal->billingAddress->toArray());
         $this->assertSame($renewalCreatedAt->getTimestamp(), $renewal->createdAt->getTimestamp());
         $this->assertSame($subscription->renewsAt->getTimestamp(), $nextRenewalDate->getTimestamp());
+        $this->assertSame($campaign->id, $renewal->campaignId);
+    }
+
+
+    /**
+     * @unreleased
+     * @throws Exception
+     */
+    public function testCreateRenewalShouldCreateNewRenewalWithUpdatedCampaignId(): void
+    {
+        $campaign = Campaign::factory()->create();
+        $campaign2 = Campaign::factory()->create();
+        $subscription = Subscription::factory()->createWithDonation([
+            'campaignId' => $campaign->id,
+        ]);
+        $repository = new SubscriptionRepository();
+
+        $renewalCreatedAt = Temporal::getCurrentDateTime();
+        $gatewayTransactionId = 'transaction-id';
+
+        $subscription->campaignId = $campaign2->id;
+        $subscription->save();
+
+        $renewal = $repository->createRenewal($subscription, [
+            'gatewayTransactionId' => $gatewayTransactionId,
+            'createdAt' => $renewalCreatedAt,
+        ]);
+
+        $this->assertSame($campaign2->id, $renewal->campaignId);
     }
 }

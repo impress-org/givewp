@@ -3,6 +3,7 @@
 namespace Give\Subscriptions\Endpoints;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
@@ -148,6 +149,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
+     * @unreleased add sort by donor name
      * @since 2.24.0
      *
      * @return array
@@ -160,6 +162,18 @@ class ListSubscriptions extends Endpoint
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->subscriptions->prepareQuery();
+
+        if ('donorName' === $sortColumns[0]) {
+            $query->attachMeta(
+                'give_donormeta',
+                'customer_id',
+                'donor_id',
+                [DonorMetaKeys::FIRST_NAME, 'firstName'],
+                [DonorMetaKeys::LAST_NAME, 'lastName']
+            );
+            $sortColumns = ['firstName', 'lastName'];
+        }
+
         $query = $this->getWhereConditions($query);
 
         foreach ($sortColumns as $sortColumn) {
@@ -192,6 +206,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
+     * @unreleased fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model
      * @since 2.21.0
      *
@@ -213,16 +228,22 @@ class ListSubscriptions extends Endpoint
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else {
-                $query->whereLike('name', $search);
-                $query->orWhereLike('email', $search);
+                $query->whereIn('customer_id', static function (QueryBuilder $builder) use ($search) {
+                    $builder
+                        ->from('give_donors')
+                        ->distinct()
+                        ->select('id')
+                        ->whereLike('name', $search)
+                        ->orWhereLike('email', $search);
+                });
             }
         }
 
         if ($start && $end) {
             $query->whereBetween('date_created', $start, $end);
-        } else if ($start) {
+        } elseif ($start) {
             $query->where('date_created', $start, '>=');
-        } else if ($end) {
+        } elseif ($end) {
             $query->where('date_created', $end, '<=');
         }
 

@@ -6,6 +6,7 @@ use Exception;
 use Give\Donors\Endpoints\ListDonors;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorStatus;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -28,6 +29,7 @@ class TestListDonors extends TestCase
         $mockRequest = $this->getMockRequest();
         // set_params
         $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('status', DonorStatus::ACTIVE);
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
 

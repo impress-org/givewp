@@ -8,6 +8,7 @@ import styles from './styles.module.scss';
 import type { Donation } from '@givewp/donations/admin/components/types';
 
 /**
+ * @since 4.10.0 the actions are only shown for completed donations
  * @since 4.6.0
  */
 export default function DonationReceipt({ donation }: { donation: Donation }) {
@@ -36,9 +37,11 @@ export default function DonationReceipt({ donation }: { donation: Donation }) {
           </div>
         </div>
 
-        <nav className={styles.actions} aria-label={__('Receipt actions', 'give')}>
-          <ReceiptActions />
-        </nav>
+        {['publish', 'give_subscription'].includes(donation?.status) && (
+          <div className={styles.actions} aria-label={__('Receipt actions', 'give')}>
+            <ReceiptActions />
+          </div>
+        )}
       </aside>
     </OverviewPanel>
   );

@@ -3,7 +3,6 @@
     flex-direction: column;
     gap: var(--givewp-spacing-1);
     margin: 0;
-    padding: var(--givewp-spacing-5) 0 var(--givewp-spacing-3) 0;
 
     p {
         margin: 0;
@@ -22,26 +21,5 @@
             line-height: 1.43;
             color: #4b5563;
         }
-    }
-}
-
-.summaryTableValue {
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.5;
-    color: #1f2937;
-    padding: var(--givewp-spacing-3) 0;
-
-    &.pill {
-        background-color: #f9fafb;
-        border-radius: 9999px;
-        color: #060c1a;
-        border: 1px solid #374151;
-        display: inline-flex;
-        justify-content: center;
-        font-size: 0.75rem;
-        line-height: 1.5;
-        margin: var(--givewp-spacing-3) 0;
-        padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
     }
 }
