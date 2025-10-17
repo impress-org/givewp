@@ -368,6 +368,11 @@ class SubscriptionRepository
         try {
             $previousStatus = give()->subscription_meta->get_meta($subscription->id, '_wp_trash_meta_status', true);
 
+            // If no previous status was saved, default to 'active'
+            if (empty($previousStatus)) {
+                $previousStatus = SubscriptionStatus::ACTIVE;
+            }
+
             DB::table('give_subscriptions')
                 ->where('id', $subscription->id)
                 ->update(['status' => $previousStatus]);

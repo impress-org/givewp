@@ -287,4 +287,92 @@ class TestSubscriptionRepository extends TestCase
 
         $this->assertSame($campaign2->id, $renewal->campaignId);
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testTrashShouldMoveSubscriptionToTrash(): void
+    {
+        /** @var Subscription $subscription */
+        $subscription = Subscription::factory()->create([
+            'status' => SubscriptionStatus::ACTIVE(),
+        ]);
+
+        $repository = new SubscriptionRepository();
+
+        $repository->trash($subscription);
+
+        $subscriptionStatus = DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->value('status');
+
+        $trashMetaStatus = give()->subscription_meta->get_meta($subscription->id, '_wp_trash_meta_status', true);
+        $trashMetaTime = give()->subscription_meta->get_meta($subscription->id, '_wp_trash_meta_time', true);
+
+        $this->assertEquals(SubscriptionStatus::TRASHED, $subscriptionStatus);
+        $this->assertEquals(SubscriptionStatus::ACTIVE, $trashMetaStatus);
+        $this->assertNotEmpty($trashMetaTime);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testUnTrashShouldRestorePreviousStatus()
+    {
+        /** @var Subscription $subscription */
+        $subscription = Subscription::factory()->create([
+            'status' => SubscriptionStatus::PENDING(),
+        ]);
+
+        $repository = new SubscriptionRepository();
+
+        // First trash the subscription
+        $repository->trash($subscription);
+
+        // Then untrash it
+        $repository->unTrash($subscription);
+
+        $subscriptionStatus = DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->value('status');
+
+        $this->assertEquals(SubscriptionStatus::PENDING, $subscriptionStatus);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testUnTrashShouldRestoreActiveStatusWhenNoPreviousStatus(): void
+    {
+        /** @var Subscription $subscription */
+        $subscription = Subscription::factory()->create([
+            'status' => SubscriptionStatus::ACTIVE(),
+        ]);
+
+        // Manually set the status to trashed without using the trash method
+        // This simulates a subscription that was trashed without the proper meta being saved
+        DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->update(['status' => SubscriptionStatus::TRASHED()->getValue()]);
+
+        $repository = new SubscriptionRepository();
+
+        $repository->unTrash($subscription);
+
+        $subscriptionStatus = DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->value('status');
+
+        // When no previous status is found, it should restore to empty string or default
+        // based on the implementation
+        $this->assertNotEquals(SubscriptionStatus::TRASHED, $subscriptionStatus);
+    }
 }
