@@ -40,17 +40,22 @@ export function useFilterState(
         if (invisibleGroups.length > 0) {
             setSelectedFilters((prev) => {
                 const newFilters = { ...prev };
+                let hasChanges = false;
 
                 invisibleGroups.forEach((group) => {
                     const groupOptionValues = group.options.map((opt) => opt.value);
                     const currentValues = newFilters[group.apiParam] || [];
-
-                    newFilters[group.apiParam] = currentValues.filter(
+                    const filteredValues = currentValues.filter(
                         (value) => !groupOptionValues.includes(value)
                     );
+
+                    if (filteredValues.length !== currentValues.length) {
+                        newFilters[group.apiParam] = filteredValues;
+                        hasChanges = true;
+                    }
                 });
 
-                return newFilters;
+                return hasChanges ? newFilters : prev;
             });
         }
     }, [visibleGroups, groupedOptions]);
