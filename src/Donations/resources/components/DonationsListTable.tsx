@@ -11,6 +11,7 @@ import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
+import filterByOptions from '../constants/filterByOptions';
 
 declare global {
     interface Window {
@@ -26,6 +27,7 @@ declare global {
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
             addonsBulkActions: Array<BulkActionsConfig>;
+            donationStatuses: {[statusCode: string]: string};
         };
     }
 }
@@ -55,6 +57,11 @@ const filters: Array<FilterConfig> = [
     {
         name: 'donor',
         type: 'hidden',
+    },
+    {
+        name: 'filterBy',
+        type: 'filterby',
+        groupedOptions: filterByOptions,
     },
 ];
 

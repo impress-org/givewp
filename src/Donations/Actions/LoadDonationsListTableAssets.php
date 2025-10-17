@@ -3,6 +3,7 @@
 namespace Give\Donations\Actions;
 
 use Give\Donations\ListTable\DonationsListTable;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
@@ -42,6 +43,7 @@ class LoadDonationsListTableAssets
             'paymentMode' => give_is_test_mode(),
             'manualDonations' => Utils::isPluginActive('give-manual-donations/give-manual-donations.php'),
             'recurringDonationsEnabled' => Utils::isPluginActive('give-recurring/give-recurring.php'),
+            'donationStatuses' => DonationStatus::labels(),
         ]);
 
         wp_enqueue_script($handleName);
