@@ -19,7 +19,6 @@ class DonationActions extends Endpoint
      * @inheritDoc
      *
      * @unreleased Add trash and untrash actions
-     * @since 4.10.0 Add force parameter to delete action
      */
     public function registerRoute()
     {
@@ -43,11 +42,6 @@ class DonationActions extends Endpoint
                             'setStatus',
                             'resendEmailReceipt',
                         ],
-                    ],
-                    'force' => [
-                        'type' => 'boolean',
-                        'default' => false,
-                        'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                     'ids' => [
                         'type' => 'string',
@@ -102,7 +96,6 @@ class DonationActions extends Endpoint
 
     /**
      * @unreleased Add trash and untrash actions
-     * @since 4.10.0 Add force parameter to delete action
      * @since 4.3.1 add permissions check for delete
      * @since 2.20.0
      *

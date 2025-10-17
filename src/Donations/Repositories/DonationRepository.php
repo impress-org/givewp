@@ -404,6 +404,11 @@ class DonationRepository
         try {
             $previousStatus = give()->payment_meta->get_meta($donation->id, '_wp_trash_meta_status', true);
 
+            // If no previous status was saved, default to 'publish' (completed)
+            if (empty($previousStatus)) {
+                $previousStatus = DonationStatus::COMPLETE;
+            }
+
             DB::table('posts')
                 ->where('id', $donation->id)
                 ->update(['post_status' => $previousStatus]);
