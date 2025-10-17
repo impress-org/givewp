@@ -53,6 +53,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
+     * @unreleased add early return if no campaigns found
      * @since 4.8.0
      *
      * @throws DatabaseMigrationException
@@ -73,6 +74,10 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
             $campaignIds = array_map(function ($campaign) {
                 return $campaign->id;
             }, $campaigns);
+
+            if (empty($campaignIds)) {
+                return;
+            }
 
             $donations = CampaignsDataQuery::donations($campaignIds);
 
