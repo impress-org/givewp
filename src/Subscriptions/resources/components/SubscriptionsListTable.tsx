@@ -38,13 +38,6 @@ const filters: Array<FilterConfig> = [
         options: window.GiveSubscriptions.forms,
     },
     {
-        name: 'status',
-        type: 'select',
-        text: __('Subscription status', 'give'),
-        ariaLabel: __('Filter subscriptions by status', 'give'),
-        options: window.GiveSubscriptions.statuses,
-    },
-    {
         name: 'search',
         type: 'search',
         inlineSize: '14rem',
@@ -69,7 +62,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
-        isVisible: (data, parameters) => parameters.status === 'trashed',
+        isVisible: (data, parameters) => parameters?.status?.includes('trashed'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
             return response;
@@ -94,7 +87,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Trash', 'give'),
         value: 'trash',
         type: 'warning',
-        isVisible: (data, parameters) => parameters.status !== 'trashed',
+        isVisible: (data, parameters) => !parameters?.status?.includes('trashed'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
             return response;
@@ -119,7 +112,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Restore', 'give'),
         value: 'restore',
         type: 'normal',
-        isVisible: (data, parameters) => parameters.status === 'trashed',
+        isVisible: (data, parameters) => parameters?.status?.includes('trashed'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/untrash', {ids: selected.join(',')}, 'POST');
             return response;
@@ -214,7 +207,7 @@ const ListTableBlankSlate = (
  */
 const statsConfig: Record<string, StatConfig> = {
     totalContributions: {
-        label: __('Total Contributions', 'give'), 
+        label: __('Total Contributions', 'give'),
         currency: window.GiveSubscriptionOptions?.currency
     },
     activeSubscriptions: { label: __('Active Subscriptions', 'give')},

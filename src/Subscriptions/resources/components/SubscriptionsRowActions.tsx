@@ -40,11 +40,7 @@ export function SubscriptionsRowActions({item, setUpdateErrors, parameters}) {
 
     return (
         <>
-            <RowAction
-                href={`edit.php?post_type=give_forms&page=give-subscriptions&id=${item.id}`}
-                displayText={__('Edit', 'give')}
-            />
-            {parameters.status === 'trashed' ? (
+            {parameters?.status?.includes('trashed') ? (
                 <>
                     <RowAction
                         onClick={confirmRestoreModal}
@@ -60,13 +56,19 @@ export function SubscriptionsRowActions({item, setUpdateErrors, parameters}) {
                     />
                 </>
             ) : (
-                <RowAction
-                    onClick={confirmTrashModal}
-                    actionId={item.id}
-                    displayText={__('Trash', 'give')}
-                    hiddenText={item.name}
-                    highlight
-                />
+                <>
+                    <RowAction
+                        href={`edit.php?post_type=give_forms&page=give-subscriptions&id=${item.id}`}
+                        displayText={__('Edit', 'give')}
+                    />
+                    <RowAction
+                        onClick={confirmTrashModal}
+                        actionId={item.id}
+                        displayText={__('Trash', 'give')}
+                        hiddenText={item.name}
+                        highlight
+                    />
+                </>
             )}
         </>
     );
