@@ -33,7 +33,7 @@ class TestListSubscriptions extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', SubscriptionStatus::PENDING);
+        $mockRequest->set_param('status', [SubscriptionStatus::PENDING]);
 
         $listSubscriptions = new ListSubscriptions();
 
@@ -60,7 +60,7 @@ class TestListSubscriptions extends TestCase
         $mockRequest->set_param('testMode', true);
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
-        $mockRequest->set_param('status', SubscriptionStatus::PENDING);
+        $mockRequest->set_param('status', [SubscriptionStatus::PENDING]);
 
         $expectedItems = $this->getMockColumns($subscriptions,$sortDirection);
 
