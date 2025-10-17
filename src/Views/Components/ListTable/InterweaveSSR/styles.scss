@@ -92,7 +92,8 @@
             --color: var(--givewp-green-25);
         }
 
-        &--trash {
+        &--trash,
+        &--trashed {
             --bg-color: var(--givewp-red-700);
             --color: var(--givewp-red-25);
         }
