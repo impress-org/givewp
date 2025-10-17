@@ -3,7 +3,6 @@
 namespace Give\Subscriptions\Endpoints;
 
 use Give\API\RestRoute;
-use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use WP_Error;
 use WP_REST_Request;
 
