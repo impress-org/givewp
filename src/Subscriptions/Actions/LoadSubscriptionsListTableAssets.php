@@ -14,7 +14,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class LoadSubscriptionsListTableAssets
 {
     /**
-     * @unreleased add statuses prop to the localize script
+     * @unreleased Add "subscriptionStatuses" property to the localize script
      * @since 2.27.1 Pass dismissed recommendations to the localize script
      * @since 2.20.0
      */
@@ -39,7 +39,7 @@ class LoadSubscriptionsListTableAssets
             'adminUrl' => admin_url(),
             'paymentMode' => give_is_test_mode(),
             'pluginUrl' => GIVE_PLUGIN_URL,
-            'statuses' => $this->getStatuses(),
+            'subscriptionStatuses' => SubscriptionStatus::labels(),
         ]);
 
         wp_enqueue_script($handleName);
@@ -61,29 +61,6 @@ class LoadSubscriptionsListTableAssets
             [],
             $asset['version']
         );
-    }
-
-    /**
-     * @unreleased
-     */
-    private function getStatuses(): array
-    {
-        $statuses = [];
-
-        foreach(SubscriptionStatus::labels() as $value => $label) {
-            $statuses[] = [
-                'value' => $value,
-                'text' => $label,
-            ];
-        }
-
-        // Make active status default
-        return array_merge([
-            [
-                'value' => 'any',
-                'text' => __('Any', 'give'),
-            ],
-        ], $statuses);
     }
 
     /**

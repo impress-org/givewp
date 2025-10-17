@@ -119,4 +119,23 @@ class DeleteDonor extends Endpoint
             'successes' => $successes,
         ]);
     }
+
+
+    /**
+     * Split string
+     *
+     * @since 2.20.0
+     *
+     * @param string $ids
+     *
+     * @return string[]
+     */
+    protected function splitString($ids)
+    {
+        if (strpos($ids, ',')) {
+            return array_map('trim', explode(',', $ids));
+        }
+
+        return [trim($ids)];
+    }
 }

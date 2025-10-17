@@ -113,9 +113,13 @@ class ListSubscriptions extends Endpoint
                         ],
                     ],
                     'status' => [
-                        'enum' => ['any', ...array_values(SubscriptionStatus::toArray())],
-                        'default' => SubscriptionStatus::ACTIVE,
-                        'required' => false
+                        'type' => 'array',
+                        'required' => false,
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => array_values(SubscriptionStatus::toArray()),
+                        ],
+                        'description' => 'Filter subscriptions by status. Accepts comma-separated list of SubscriptionStatus values (e.g., "active,expired,pending"). If not provided, excludes trash subscriptions by default.'
                     ],
                 ],
             ]
@@ -212,7 +216,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
-     * @unreleased add status where condition
+     * @unreleased Add "status" where condition
      * @since 4.11.0 fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model
      * @since 2.21.0
@@ -230,7 +234,14 @@ class ListSubscriptions extends Endpoint
         $testMode = $this->request->get_param('testMode');
         $status = $this->request->get_param('status');
 
-        $hasWhereConditions = $search || $start || $end || $campaignId;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $status;
+
+        if (!empty($status)) {
+            $query->whereIn('status', $status);
+        } else {
+            // Default behavior: exclude trashed subscriptions
+            $query->where('status', SubscriptionStatus::TRASHED, '<>');
+        }
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -248,11 +259,11 @@ class ListSubscriptions extends Endpoint
         }
 
         if ($start && $end) {
-            $query->whereBetween('date_created', $start, $end);
+            $query->whereBetween('created', $start, $end);
         } elseif ($start) {
-            $query->where('date_created', $start, '>=');
+            $query->where('created', $start, '>=');
         } elseif ($end) {
-            $query->where('date_created', $end, '<=');
+            $query->where('created', $end, '<=');
         }
 
         if ($campaignId) {
@@ -277,12 +288,6 @@ class ListSubscriptions extends Endpoint
             $query->having('payment_mode', '=', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
         } else {
             $query->where('payment_mode', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
-        }
-
-        if ($status === 'any') {
-            $query->where('status', SubscriptionStatus::TRASHED, '!=');
-        } else {
-            $query->where('status', $status);
         }
 
         return $query;

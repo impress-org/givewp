@@ -59,7 +59,6 @@ class DonorRouteGetTest extends RestApiTestCase
         $this->assertEquals([
             'id' => $donor->id,
             'userId' => $donor->userId,
-            'status' => $donor->status->getValue(),
             'createdAt' => json_decode($createdAtJson, true),
             'name' => $donor->name,
             'firstName' => $donor->firstName,
@@ -198,7 +197,6 @@ class DonorRouteGetTest extends RestApiTestCase
             'additionalEmails',
             'lastName',
             'addresses',
-            'status'
         ];
 
         $this->assertEquals(200, $status);
@@ -246,7 +244,6 @@ class DonorRouteGetTest extends RestApiTestCase
             'additionalEmails',
             'lastName',
             'addresses',
-            'status'
         ];
 
         $this->assertEquals(200, $status);
@@ -394,7 +391,7 @@ class DonorRouteGetTest extends RestApiTestCase
             'name',
             'firstName',
             'lastName',
-            'prefix'
+            'prefix',
         ];
 
         foreach ($anonymousDataRedacted as $property) {

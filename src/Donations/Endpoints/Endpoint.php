@@ -3,6 +3,7 @@
 namespace Give\Donations\Endpoints;
 
 use Give\API\RestRoute;
+use Give\Donations\ValueObjects\DonationStatus;
 use WP_Error;
 use WP_REST_Request;
 

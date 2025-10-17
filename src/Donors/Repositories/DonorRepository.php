@@ -8,7 +8,6 @@ use Give\Donors\Exceptions\FailedDonorUpdateException;
 use Give\Donors\Models\Donor;
 use Give\Donors\Models\DonorModelQueryBuilder;
 use Give\Donors\ValueObjects\DonorMetaKeys;
-use Give\Donors\ValueObjects\DonorStatus;
 use Give\Donors\ValueObjects\DonorType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -61,19 +60,6 @@ class DonorRepository
     }
 
     /**
-     * Query Donors by status
-     *
-     * @unreleased
-     *
-     * @return DonorModelQueryBuilder<Donor>
-     */
-    public function queryByStatus(string $status): DonorModelQueryBuilder
-    {
-        return $this->prepareQuery()
-            ->where('status', $status);
-    }
-
-    /**
      * Get Donor By ID
      *
      * @since 2.19.6
@@ -83,19 +69,6 @@ class DonorRepository
     public function getById(int $donorId)
     {
         return $this->queryById($donorId)->get();
-    }
-
-
-    /**
-     * Get Donors by status
-     *
-     * @unreleased
-     *
-     * @return Donor[]|null
-     */
-    public function getByStatus(string $status)
-    {
-        return $this->queryByStatus($status)->getAll();
     }
 
     /**
@@ -138,7 +111,6 @@ class DonorRepository
     }
 
     /**
-     * @unreleased Add "status" property
      * @since 3.20.0 store meta using native WP functions
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
@@ -163,12 +135,8 @@ class DonorRepository
             'date_created' => Temporal::getFormattedDateTime($dateCreated),
             'user_id' => $donor->userId ?? 0,
             'email' => $donor->email,
-            'name' => $donor->name
+            'name' => $donor->name,
         ];
-
-        $args['status'] = is_a($donor->status, DonorStatus::class)
-            ? $donor->status->getValue()
-            : DonorStatus::ACTIVE;
 
         if (isset($donor->phone)) {
             $args['phone'] = $donor->phone;
@@ -218,7 +186,6 @@ class DonorRepository
     }
 
     /**
-     * @unreleased Add "status" property
      * @since 4.4.0 Add support for addresses
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
@@ -243,7 +210,6 @@ class DonorRepository
             'email' => $donor->email,
             'phone' => $donor->phone,
             'name' => $donor->name,
-            'status' => $donor->status->getValue(),
         ];
 
         if (isset($donor->totalAmountDonated) && $donor->isDirty('totalAmountDonated')) {
@@ -353,38 +319,6 @@ class DonorRepository
     }
 
     /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
-    public function updateStatus(Donor $donor, DonorStatus $status): bool
-    {
-        DB::query('START TRANSACTION');
-
-        Hooks::doAction('givewp_donor_update_status', $donor, $status);
-
-        try {
-            DB::table('give_donors')
-                ->where('id', $donor->id)
-                ->update([
-                    'status' => $status->getValue(),
-                ]);
-        } catch (Exception $exception) {
-            DB::query('ROLLBACK');
-
-            Log::error('Failed updating donor status', compact('donor'));
-
-            throw new $exception('Failed updating donor status');
-        }
-
-        DB::query('COMMIT');
-
-        Hooks::doAction('givewp_donor_status_updated', $donor, $status);
-
-        return true;
-    }
-
-    /**
      * @since 4.4.0 Add avatarId and company to core donor meta
      * @since 2.19.6
      */
@@ -457,7 +391,6 @@ class DonorRepository
     }
 
     /**
-     * @unreleased  Add "status" column
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 replace ModelQueryBuilder with DonorModelQueryBuilder
      * @since 2.19.6
@@ -475,7 +408,6 @@ class DonorRepository
                 'email',
                 'phone',
                 'name',
-                'status',
                 ['purchase_value', 'totalAmountDonated'],
                 ['purchase_count', 'totalNumberOfDonations'],
                 ['payment_ids', 'paymentIds'],
@@ -561,6 +493,7 @@ class DonorRepository
     }
 
     /**
+     * @unreleased filter by status
      * @since 2.20.0
      *
      * @return string|null
@@ -573,7 +506,8 @@ class DonorRepository
             ->where('post_type', 'give_payment')
             ->where('meta_key', DonationMetaKeys::DONOR_ID)
             ->where('meta_value', $donorId)
-            ->orderBy('ID', 'DESC')
+            ->whereIn('post_status', ['publish', 'give_subscription'])
+            ->orderBy('CAST(post_date AS DATETIME)', 'DESC')
             ->limit(1)
             ->get();
 

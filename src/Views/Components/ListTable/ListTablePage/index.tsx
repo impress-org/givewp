@@ -15,6 +15,7 @@ import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkAct
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
 import ListTableStats, { StatConfig } from '../ListTableStats/ListTableStats';
+import FilterBy from '../FilterBy';
 
 export interface ListTablePageProps {
     //required
@@ -39,17 +40,38 @@ export interface ListTablePageProps {
     statsConfig?: Record<string, StatConfig>;
 }
 
-export interface FilterConfig {
+interface FilterConfigBase {
     // required
     name: string;
-    type: 'select' | 'campaignselect' | 'search' | 'checkbox' | 'hidden';
 
     // optional
     ariaLabel?: string;
     inlineSize?: string;
     text?: string;
+}
+
+interface FilterConfigWithSimpleOptions extends FilterConfigBase {
+    type: 'select' | 'campaignselect' | 'search' | 'checkbox' | 'hidden';
     options?: Array<{text: string; value: string}>;
 }
+
+export interface FilterByGroupedOptions {
+    id: string;
+    apiParam: string;
+    name: string;
+    type: 'checkbox' | 'radio' | 'toggle';
+    options: Array<{text: string; value: string}>;
+    defaultValue?: string | string[];
+    isVisible?: (values: Record<string, string[]>) => boolean;
+    showTitle?: boolean;
+}
+
+interface FilterConfigWithGroupedOptions extends FilterConfigBase {
+    type: 'filterby';
+    groupedOptions?: Array<FilterByGroupedOptions>;
+}
+
+export type FilterConfig = FilterConfigWithSimpleOptions | FilterConfigWithGroupedOptions;
 
 export interface ColumnFilterConfig {
     column: string;
@@ -178,7 +200,13 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     }), [mutate, mutateStats, statsConfig]);
 
     const handleFilterChange = (name, value) => {
-        setFilters((prevState) => ({...prevState, [name]: value}));
+        setFilters((prevState) => {
+            if (!value || (Array.isArray(value) && value.length === 0)) {
+                const {[name]: _, ...rest} = prevState as Record<string, string[]>;
+                return rest;
+            }
+            return {...prevState, [name]: value};
+        });
     };
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
@@ -283,13 +311,22 @@ const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
             </div>
             <div className={styles.flexRow}>
                 {filterSettings.map((filter) => (
-                    <Filter
-                        key={filter.name}
-                        value={filters[filter.name]}
-                        filter={filter}
-                        onChange={handleFilterChange}
-                        debouncedOnChange={handleDebouncedFilterChange}
-                    />
+                    filter.type === 'filterby' ? (
+                        <FilterBy
+                            key={filter.name}
+                            groupedOptions={filter.groupedOptions}
+                            onChange={handleFilterChange}
+                            values={filters}
+                        />
+                    ) : (
+                        <Filter
+                            key={filter.name}
+                            value={filters[filter.name]}
+                            filter={filter}
+                            onChange={handleFilterChange}
+                            debouncedOnChange={handleDebouncedFilterChange}
+                        />
+                    )
                 ))}
             </div>
         </section>
