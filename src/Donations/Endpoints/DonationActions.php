@@ -111,7 +111,7 @@ class DonationActions extends Endpoint
 
         switch ($request->get_param('action')) {
             case 'delete':
-                if ( ! current_user_can('delete_give_payments')) {
+                if (! current_user_can('delete_give_payments')) {
                     return new WP_Error(
                         'rest_forbidden',
                         esc_html__('You don\'t have permission to delete Donation', 'give'),
@@ -122,7 +122,7 @@ class DonationActions extends Endpoint
                 foreach ($ids as $id) {
                     $donation = Donation::find($id);
 
-                    if ( ! $donation) {
+                    if (! $donation) {
                         $errors[] = $id;
                         continue;
                     }
@@ -141,7 +141,7 @@ class DonationActions extends Endpoint
                 foreach ($ids as $id) {
                     $donation = Donation::find($id);
 
-                    if ( ! $donation) {
+                    if (! $donation) {
                         $errors[] = $id;
                         continue;
                     }
@@ -160,7 +160,7 @@ class DonationActions extends Endpoint
                 foreach ($ids as $id) {
                     $donation = Donation::find($id);
 
-                    if ( ! $donation) {
+                    if (! $donation) {
                         $errors[] = $id;
                         continue;
                     }
