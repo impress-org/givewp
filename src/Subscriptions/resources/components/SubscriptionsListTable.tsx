@@ -149,6 +149,7 @@ const bulkActions: Array<BulkActionsConfig> = [
             return {
                 label,
                 value,
+                isVisible: (data, parameters) => !parameters?.status?.includes('trashed'),
                 action: async (selected) =>
                     await API.fetchWithArgs(
                         '/setStatus',
