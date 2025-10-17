@@ -10,7 +10,7 @@ import ListTableApi from '@givewp/components/ListTable/api';
 const donationsApi = new ListTableApi(window.GiveDonations);
 
 /**
- * @.
+ * @unreleased
  */
 export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
     const showConfirmModal = useContext(ShowConfirmModalContext);
