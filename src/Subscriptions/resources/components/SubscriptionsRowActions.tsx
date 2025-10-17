@@ -22,7 +22,7 @@ export function SubscriptionsRowActions({item, setUpdateErrors, parameters}) {
     const trashItem = async () => await fetchAndUpdateErrors(parameters, '/trash', item.id, 'DELETE');
     const restoreItem = async () => await fetchAndUpdateErrors(parameters, '/untrash', item.id, 'POST');
 
-    const confirmDelete = () => <p>{sprintf(__('Really delete donation #%d?', 'give'), item.id)}</p>;
+    const confirmDelete = () => <p>{sprintf(__('Really delete subscription #%d?', 'give'), item.id)}</p>;
     const confirmTrash = () => <p>{sprintf(__('Trash the following subscription #%d?', 'give'), item.id)}</p>;
     const confirmRestore = () => <p>{sprintf(__('Restore the following subscription #%d?', 'give'), item.id)}</p>;
 
