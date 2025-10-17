@@ -18,6 +18,7 @@ class DonationActions extends Endpoint
     /**
      * @inheritDoc
      *
+     * @unreleased Add trash and untrash actions
      * @since 4.10.0 Add force parameter to delete action
      */
     public function registerRoute()
@@ -37,6 +38,8 @@ class DonationActions extends Endpoint
                         'required' => true,
                         'enum' => [
                             'delete',
+                            'trash',
+                            'untrash',
                             'setStatus',
                             'resendEmailReceipt',
                         ],
@@ -98,6 +101,7 @@ class DonationActions extends Endpoint
     }
 
     /**
+     * @unreleased Add trash and untrash actions
      * @since 4.10.0 Add force parameter to delete action
      * @since 4.3.1 add permissions check for delete
      * @since 2.20.0
@@ -113,35 +117,62 @@ class DonationActions extends Endpoint
 
         switch ($request->get_param('action')) {
             case 'delete':
-                if (!current_user_can('delete_give_payments')) {
+                if ( ! current_user_can('delete_give_payments')) {
                     return new WP_Error(
                         'rest_forbidden',
-                        esc_html__('You don\'t have permission to delete Donations', 'give'),
+                        esc_html__('You don\'t have permission to delete Donation', 'give'),
                         ['status' => $this->authorizationStatusCode()]
                     );
                 }
+
                 foreach ($ids as $id) {
+                    $donation = Donation::find($id);
+
+                    if ( ! $donation) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
                     try {
-                        $donation = Donation::find($id);
+                        $donation->delete();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
+                }
 
-                        if (!$donation) {
-                            return new WP_REST_Response(['message' => __('Donation not found', 'give')], 404);
-                        }
+                break;
 
-                        if ($request->get_param('force')) {
-                            $deleted = $donation->delete(); // Permanently delete the donation
+            case 'trash':
+                foreach ($ids as $id) {
+                    $donation = Donation::find($id);
 
-                            if (!$deleted) {
-                                return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
-                            }
-                        } else {
-                            $trashed = $donation->trash(); // Move the donation to trash (soft delete)
+                    if ( ! $donation) {
+                        $errors[] = $id;
+                        continue;
+                    }
 
-                            if (!$trashed) {
-                                return new WP_REST_Response(['message' => __('Failed to trash donation', 'give')], 500);
-                            }
-                        }
+                    try {
+                        $donation->trash();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
+                }
 
+                break;
+
+            case 'untrash':
+                foreach ($ids as $id) {
+                    $donation = Donation::find($id);
+
+                    if ( ! $donation) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
+                    try {
+                        $donation->unTrash();
                         $successes[] = $id;
                     } catch (Exception $e) {
                         $errors[] = $id;
