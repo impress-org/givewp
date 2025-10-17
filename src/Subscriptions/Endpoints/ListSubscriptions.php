@@ -113,7 +113,7 @@ class ListSubscriptions extends Endpoint
                         ],
                     ],
                     'status' => [
-                        'enum' => [...array_values(SubscriptionStatus::toArray())],
+                        'enum' => ['any', ...array_values(SubscriptionStatus::toArray())],
                         'default' => SubscriptionStatus::ACTIVE,
                         'required' => false
                     ],
@@ -279,7 +279,11 @@ class ListSubscriptions extends Endpoint
             $query->where('payment_mode', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
         }
 
-        $query->where('status', $status);
+        if ($status === 'any') {
+            $query->where('status', SubscriptionStatus::TRASHED, '!=');
+        } else {
+            $query->where('status', $status);
+        }
 
         return $query;
     }

@@ -71,19 +71,17 @@ class LoadSubscriptionsListTableAssets
         $statuses = [];
 
         foreach(SubscriptionStatus::labels() as $value => $label) {
-            if ($value !== SubscriptionStatus::ACTIVE) {
-                $statuses[] = [
-                    'value' => $value,
-                    'text' => $label,
-                ];
-            }
+            $statuses[] = [
+                'value' => $value,
+                'text' => $label,
+            ];
         }
 
         // Make active status default
         return array_merge([
             [
-                'value' => SubscriptionStatus::ACTIVE,
-                'text' => __('Active', 'give'),
+                'value' => 'any',
+                'text' => __('Any', 'give'),
             ],
         ], $statuses);
     }
