@@ -8,6 +8,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -110,6 +111,15 @@ class ListSubscriptions extends Endpoint
                             'model',
                             'columns',
                         ],
+                    ],
+                    'status' => [
+                        'type' => 'array',
+                        'required' => false,
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => array_values(SubscriptionStatus::toArray()),
+                        ],
+                        'description' => 'Filter subscriptions by status. Accepts comma-separated list of SubscriptionStatus values (e.g., "active,expired,pending"). If not provided, excludes trash subscriptions by default.'
                     ],
                 ],
             ]
@@ -221,8 +231,16 @@ class ListSubscriptions extends Endpoint
         $end = $this->request->get_param('end');
         $campaignId = $this->request->get_param('campaignId');
         $testMode = $this->request->get_param('testMode');
+        $status = $this->request->get_param('status');
 
-        $hasWhereConditions = $search || $start || $end || $campaignId;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $status;
+
+        if (!empty($status)) {
+            $query->whereIn('status', $status);
+        } else {
+            // Default behavior: exclude trashed subscriptions
+            $query->where('status', SubscriptionStatus::TRASHED, '<>');
+        }
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -240,11 +258,11 @@ class ListSubscriptions extends Endpoint
         }
 
         if ($start && $end) {
-            $query->whereBetween('date_created', $start, $end);
+            $query->whereBetween('created', $start, $end);
         } elseif ($start) {
-            $query->where('date_created', $start, '>=');
+            $query->where('created', $start, '>=');
         } elseif ($end) {
-            $query->where('date_created', $end, '<=');
+            $query->where('created', $end, '<=');
         }
 
         if ($campaignId) {

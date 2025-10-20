@@ -58,16 +58,16 @@ class DonationStatus extends Enum
     public static function labels(): array
     {
         return [
-            self::PENDING => __('Pending', 'give'),
-            self::PROCESSING => __('Processing', 'give'),
             self::COMPLETE => __('Completed', 'give'),
-            self::REFUNDED => __('Refunded', 'give'),
+            self::PENDING => __('Pending', 'give'),
             self::FAILED => __('Failed', 'give'),
+            self::PROCESSING => __('Processing', 'give'),
             self::CANCELLED => __('Cancelled', 'give'),
+            self::REFUNDED => __('Refunded', 'give'),
             self::ABANDONED => __('Abandoned', 'give'),
-            self::PREAPPROVAL => __('Preapproval', 'give'),
             self::REVOKED => __('Revoked', 'give'),
             self::RENEWAL => __('Renewal', 'give'),
+            self::PREAPPROVAL => __('Preapproval', 'give'),
             self::TRASH => __('Trash', 'give'),
         ];
     }

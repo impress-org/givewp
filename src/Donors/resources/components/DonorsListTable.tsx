@@ -8,6 +8,7 @@ import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
+import filterByOptions from '../constants/filterByOptions';
 
 declare global {
     interface Window {
@@ -41,6 +42,11 @@ const donorsFilters: Array<FilterConfig> = [
         text: __('Name, Email, or Donor ID', 'give'),
         ariaLabel: __('Search donors', 'give'),
     },
+    {
+        name: 'filterBy',
+        type: 'filterby',
+        groupedOptions: filterByOptions,
+    }
 ];
 
 const donorsBulkActions: Array<BulkActionsConfig> = [

@@ -8,6 +8,7 @@ import {IdBadge} from '@givewp/components/ListTable/TableCell';
 import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
+import filterByOptions from '../constants/filterByOptions';
 
 declare global {
     interface Window {
@@ -18,6 +19,7 @@ declare global {
             forms: Array<{value: string; text: string}>;
             paymentMode: boolean;
             pluginUrl: string;
+            subscriptionStatuses: {[statusCode: string]: string};
         };
         GiveSubscriptionOptions?: {
             currency: string;
@@ -48,6 +50,11 @@ const filters: Array<FilterConfig> = [
         text: __('Test', 'give'),
         ariaLabel: __('View Test Subscriptions', 'give'),
     },
+    {
+        name: 'filterBy',
+        type: 'filterby',
+        groupedOptions: filterByOptions,
+    }
 ];
 
 const bulkActions: Array<BulkActionsConfig> = [
