@@ -62,6 +62,7 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
+        isVisible: (data, parameters) => parameters?.status?.includes('trashed'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
             return response;
@@ -69,6 +70,56 @@ const bulkActions: Array<BulkActionsConfig> = [
         confirm: (selected, names) => (
             <>
                 <p>{__('Really delete the following subscriptions?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((subscriptionId, index) => (
+                        <li key={subscriptionId}>
+                            <IdBadge id={subscriptionId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Trash', 'give'),
+        value: 'trash',
+        type: 'warning',
+        isVisible: (data, parameters) => !parameters?.status?.includes('trashed'),
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want add to trash the following subscriptions?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((subscriptionId, index) => (
+                        <li key={subscriptionId}>
+                            <IdBadge id={subscriptionId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Restore', 'give'),
+        value: 'restore',
+        type: 'normal',
+        isVisible: (data, parameters) => parameters?.status?.includes('trashed'),
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/untrash', {ids: selected.join(',')}, 'POST');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want remove from trash the following subscriptions?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((subscriptionId, index) => (
                         <li key={subscriptionId}>
@@ -98,6 +149,7 @@ const bulkActions: Array<BulkActionsConfig> = [
             return {
                 label,
                 value,
+                isVisible: (data, parameters) => !parameters?.status?.includes('trashed'),
                 action: async (selected) =>
                     await API.fetchWithArgs(
                         '/setStatus',
@@ -156,7 +208,7 @@ const ListTableBlankSlate = (
  */
 const statsConfig: Record<string, StatConfig> = {
     totalContributions: {
-        label: __('Total Contributions', 'give'), 
+        label: __('Total Contributions', 'give'),
         currency: window.GiveSubscriptionOptions?.currency
     },
     activeSubscriptions: { label: __('Active Subscriptions', 'give')},
