@@ -96,9 +96,7 @@ const donationFormsFilters: Array<FilterConfig> = [
 if (isCampaignDetailsPage) {
     donationFormsFilters.push({
         name: 'campaignId',
-        type: 'select',
-        text: __('Campaign ID', 'give'),
-        ariaLabel: __('Filter donation forms by Campaign ID', 'give'),
+        type: 'hidden',
         options: [
             {
                 value: campaignId,
