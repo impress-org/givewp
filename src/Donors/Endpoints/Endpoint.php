@@ -4,7 +4,6 @@ namespace Give\Donors\Endpoints;
 
 use Give\API\RestRoute;
 use WP_Error;
-use WP_REST_Request;
 
 abstract class Endpoint implements RestRoute
 {
@@ -22,30 +21,6 @@ abstract class Endpoint implements RestRoute
     public function validateInt($value)
     {
         return filter_var($value, FILTER_VALIDATE_INT);
-    }
-
-    /**
-     * @param string $param
-     * @param WP_REST_Request $request
-     * @param string $key
-     * @since 2.20.0
-     *
-     * @return bool
-     */
-    public function validateDate($param, $request, $key)
-    {
-        // Check that date is valid, and formatted YYYY-MM-DD
-        list($year, $month, $day) = explode('-', $param);
-        $valid = checkdate($month, $day, $year);
-
-        // If checking end date, check that it is after start date
-        if ('end' === $key) {
-            $start = date_create($request->get_param('start'));
-            $end = date_create($request->get_param('end'));
-            $valid = $start <= $end ? $valid : false;
-        }
-
-        return $valid;
     }
 
     /**

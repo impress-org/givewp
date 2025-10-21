@@ -4,43 +4,80 @@ import {__, sprintf} from '@wordpress/i18n';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import { store as coreDataStore } from '@wordpress/core-data';
 import { useDispatch } from '@wordpress/data';
+import { useSWRConfig } from 'swr';
+import ListTableApi from '@givewp/components/ListTable/api';
+
+const donationsApi = new ListTableApi(window.GiveDonations);
 
 /**
+ * @unreleased Revert delete action to use Donation Actions API and add trash and restore actions.
  * @since 4.6.0 Soft delete donations with Donation v3 API.
  */
 export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
     const showConfirmModal = useContext(ShowConfirmModalContext);
-	const { deleteEntityRecord } = useDispatch( coreDataStore );
+    const {mutate} = useSWRConfig();
 
-    const deleteItem = async (selected) => {
-        await deleteEntityRecord('givewp', 'donation', item.id, {force: false});
-        window.location.reload();
+    const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
+        const response = await donationsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
+        setUpdateErrors(response);
+        await mutate(parameters);
+        return response;
     };
 
-    const confirmDelete = (selected) => <p>{sprintf(__('Are you sure you want to move donation #%d to the trash?', 'give'), item.id)}</p>;
+    const deleteItem = async () => await fetchAndUpdateErrors(parameters, '/delete', item.id, 'DELETE');
+    const trashItem = async () => await fetchAndUpdateErrors(parameters, '/trash', item.id, 'DELETE');
+    const restoreItem = async () => await fetchAndUpdateErrors(parameters, '/untrash', item.id, 'POST');
 
-    const confirmModal = (event) => {
-        showConfirmModal(__('Move donation to trash', 'give'), confirmDelete, deleteItem, 'danger', __('Trash Donation', 'give'));
+    const confirmDelete = () => <p>{sprintf(__('Really delete donation #%d?', 'give'), item.id)}</p>;
+    const confirmTrash = () => <p>{sprintf(__('Trash the following donation #%d?', 'give'), item.id)}</p>;
+    const confirmRestore = () => <p>{sprintf(__('Restore the following donation #%d?', 'give'), item.id)}</p>;
+
+    const confirmDeleteModal = () => {
+        showConfirmModal(__('Delete', 'give'), confirmDelete, deleteItem, 'danger');
+    };
+
+    const confirmTrashModal = () => {
+        showConfirmModal(__('Trash', 'give'), confirmTrash, trashItem, 'warning');
+    };
+
+    const confirmRestoreModal = () => {
+        showConfirmModal(__('Restore', 'give'), confirmRestore, restoreItem, 'normal');
     };
 
     return (
         <>
-            <RowAction
-                href={
-                    window.GiveDonations.adminUrl +
-                    `edit.php?post_type=give_forms&page=give-payment-history&id=${item.id}`
-                }
-                displayText={__('Edit', 'give')}
-                ariaLabel={sprintf(__('Edit donation #%d', 'give'), item.id)}
-            />
-            <RowAction
-                onClick={confirmModal}
-                actionId={item.id}
-                displayText={__('Trash', 'give')}
-                hiddenText={item.name}
-                ariaLabel={sprintf(__('Move donation #%d to trash', 'give'), item.id)}
-                highlight
-            />
+            {parameters?.status?.includes('trash') ? (
+                <>
+                    <RowAction
+                        onClick={confirmRestoreModal}
+                        actionId={item.id}
+                        displayText={__('Restore', 'give')}
+                    />
+                    <RowAction
+                        onClick={confirmDeleteModal}
+                        actionId={item.id}
+                        displayText={__('Delete', 'give')}
+                        hiddenText={item.name}
+                        highlight
+                    />
+                </>
+            ) : (
+                <>
+                    <RowAction
+                        href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-payment-history&id=${item.id}`}
+                        displayText={__('Edit', 'give')}
+                        ariaLabel={sprintf(__('Edit donation #%d.', 'give'), item.id)}
+                    />
+                    <RowAction
+                        onClick={confirmTrashModal}
+                        actionId={item.id}
+                        displayText={__('Trash', 'give')}
+                        ariaLabel={sprintf(__('Move donation #%d to trash.', 'give'), item.id)}
+                        hiddenText={item.name}
+                        highlight
+                    />
+                </>
+            )}
         </>
     );
 };

@@ -31,6 +31,8 @@ class ListSubscriptions extends Endpoint
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
     {
@@ -68,7 +70,7 @@ class ListSubscriptions extends Endpoint
                     'start' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'campaignId' => [
                         'type' => 'integer',
@@ -78,7 +80,7 @@ class ListSubscriptions extends Endpoint
                     'end' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'sortColumn' => [
                         'type' => 'string',
