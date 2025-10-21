@@ -91,7 +91,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased add support for sorting by revenue column
+     * @since 4.12.0 add support for sorting by revenue column
      * @since 4.0.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
@@ -151,7 +151,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased remove revenue column from sort
+     * @since 4.12.0 remove revenue column from sort
      * @since 4.0.0
      */
     public function getCampaigns(): array

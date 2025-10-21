@@ -278,6 +278,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * New: Updated the new admin donor list table with additional filters and sorting
 * New: Updated the new admin donation list table with additional filters
 * Fix: Subscriptions that were transferred to a form using the visual form builder are now referencing the correct form ID
+* Fix: Resolved an issue with sorting by revenue on the Campaigns list table
 * Fix: Resolved MCP server console errors with Angie v1.0.1
 * Fix: Resolved a migration issue that was causing the cache campaign data migration to be incomplete in some cases
 
