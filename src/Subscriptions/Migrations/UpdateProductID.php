@@ -9,7 +9,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
- * @unreleased
+ * @since 4.12.0
  *
  * During the v2 form data transfer to the v3 form
  * we update the _give_payment_form_id in donations meta table to reference the new v3 form id

@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 /**
  * Custom hook to handle dropdown open/close logic
  *
- * @unreleased
+ * @since 4.12.0
  */
 export function useDropdownToggle() {
     const [isOpen, setIsOpen] = useState(false);

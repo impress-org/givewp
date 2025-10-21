@@ -4,7 +4,7 @@ import { amountFormatter } from '@givewp/src/Admin/utils';
 import styles from "./styles.module.scss";
 
 /**
- * @unreleased add support for currency
+ * @since 4.12.0 add support for currency
  * @since 4.10.0
  */
 export type StatConfig = {
@@ -25,7 +25,7 @@ type ListTableStatsProps = {
 };
 
 /**
- * @unreleased add support for currency formatting
+ * @since 4.12.0 add support for currency formatting
  * @since 4.10.0
  */
 export default function ListTableStats({config, values}: ListTableStatsProps) {

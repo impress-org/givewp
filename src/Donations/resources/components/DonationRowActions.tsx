@@ -10,7 +10,7 @@ import ListTableApi from '@givewp/components/ListTable/api';
 const donationsApi = new ListTableApi(window.GiveDonations);
 
 /**
- * @unreleased Revert delete action to use Donation Actions API and add trash and restore actions.
+ * @since 4.12.0 Revert delete action to use Donation Actions API and add trash and restore actions.
  * @since 4.6.0 Soft delete donations with Donation v3 API.
  */
 export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters}) => {

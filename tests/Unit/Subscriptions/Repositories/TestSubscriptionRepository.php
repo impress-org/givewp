@@ -289,7 +289,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @throws Exception
      */
@@ -317,7 +317,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @return void
      *
@@ -346,7 +346,7 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @throws Exception
      */

@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.12.0
  */
 export interface FilterByProps {
     groupedOptions: FilterByGroupedOptions[];
@@ -8,7 +8,7 @@ export interface FilterByProps {
 }
 
 /**
- * @unreleased
+ * @since 4.12.0
  */
 export interface FilterByGroupedOptions {
     id: string;
@@ -21,7 +21,7 @@ export interface FilterByGroupedOptions {
 }
 
 /**
- * @unreleased
+ * @since 4.12.0
  */
 export interface FilterOption {
     value: string;

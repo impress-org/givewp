@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.12.0
  *
  * @covers \Give\Subscriptions\Migrations\UpdateProductID
  */
@@ -18,7 +18,7 @@ class UpdateProductIDTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @throws Exception
      */

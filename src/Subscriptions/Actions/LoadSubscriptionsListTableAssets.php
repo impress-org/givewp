@@ -14,7 +14,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class LoadSubscriptionsListTableAssets
 {
     /**
-     * @unreleased Add "subscriptionStatuses" property to the localize script
+     * @since 4.12.0 Add "subscriptionStatuses" property to the localize script
      * @since 2.27.1 Pass dismissed recommendations to the localize script
      * @since 2.20.0
      */

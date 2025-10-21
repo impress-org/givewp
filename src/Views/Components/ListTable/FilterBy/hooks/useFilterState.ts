@@ -4,7 +4,7 @@ import { FilterByGroupedOptions } from '../types';
 /**
  * Custom hook to manage filter state and visibility logic
  *
- * @unreleased
+ * @since 4.12.0
  */
 export function useFilterState(
     groupedOptions: FilterByGroupedOptions[],

@@ -38,7 +38,7 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Remove link from donation count column
+     * @since 4.12.0 Remove link from donation count column
      * @since 2.24.0
      *
      * @inheritDoc

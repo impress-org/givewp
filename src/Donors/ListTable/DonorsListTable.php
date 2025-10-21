@@ -27,7 +27,7 @@ class DonorsListTable extends ListTable
     }
 
     /**
-     * @unreleased Reorder DonorType column
+     * @since 4.12.0 Reorder DonorType column
      * @since 2.24.0
      *
      * @inheritDoc
@@ -46,7 +46,7 @@ class DonorsListTable extends ListTable
     }
 
     /**
-     * @unreleased Remove date created column
+     * @since 4.12.0 Remove date created column
      * @since 2.24.0
      *
      * @inheritDoc
