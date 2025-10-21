@@ -40,6 +40,8 @@ class SubscriptionActions extends Endpoint
                         'required' => true,
                         'enum' => [
                             'delete',
+                            'trash',
+                            'untrash',
                             'setStatus',
                         ],
                     ],
@@ -48,7 +50,7 @@ class SubscriptionActions extends Endpoint
                         'required' => true,
                         'validate_callback' => function ($ids) {
                             foreach ($this->splitString($ids) as $id) {
-                                if ( ! $this->validateInt($id)) {
+                                if (! $this->validateInt($id)) {
                                     return false;
                                 }
                             }
@@ -73,7 +75,7 @@ class SubscriptionActions extends Endpoint
      */
     public function permissionsCheck()
     {
-        if ( ! current_user_can('edit_give_payments')) {
+        if (! current_user_can('edit_give_payments')) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You don\'t have permission to edit Subscriptions', 'give'),
@@ -99,7 +101,7 @@ class SubscriptionActions extends Endpoint
 
         switch ($request->get_param('action')) {
             case 'delete':
-                if ( ! current_user_can('delete_give_payments')) {
+                if (! current_user_can('delete_give_payments')) {
                     return new WP_Error(
                         'rest_forbidden',
                         esc_html__('You don\'t have permission to delete Subscription', 'give'),
@@ -110,7 +112,7 @@ class SubscriptionActions extends Endpoint
                 foreach ($ids as $id) {
                     $subscription = Subscription::find($id);
 
-                    if ( ! $subscription) {
+                    if (! $subscription) {
                         $errors[] = $id;
                         continue;
                     }
@@ -125,11 +127,49 @@ class SubscriptionActions extends Endpoint
 
                 break;
 
+            case 'trash':
+                foreach ($ids as $id) {
+                    $subscription = Subscription::find($id);
+
+                    if (! $subscription) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
+                    try {
+                        $subscription->trash();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
+                }
+
+                break;
+
+            case 'untrash':
+                foreach ($ids as $id) {
+                    $subscription = Subscription::find($id);
+
+                    if (! $subscription) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
+                    try {
+                        $subscription->unTrash();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
+                }
+
+                break;
+
             case 'setStatus':
                 foreach ($ids as $id) {
                     $subscription = Subscription::find($id);
 
-                    if ( ! $subscription) {
+                    if (! $subscription) {
                         $errors[] = $id;
                         continue;
                     }

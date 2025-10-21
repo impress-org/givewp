@@ -355,6 +355,43 @@ class SubscriptionRepository
     }
 
     /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function unTrash(Subscription $subscription): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_subscription_untrashing', $subscription);
+
+        try {
+            $previousStatus = give()->subscription_meta->get_meta($subscription->id, '_wp_trash_meta_status', true);
+
+            // If no previous status was saved, default to 'active'
+            if (empty($previousStatus)) {
+                $previousStatus = SubscriptionStatus::ACTIVE;
+            }
+
+            DB::table('give_subscriptions')
+                ->where('id', $subscription->id)
+                ->update(['status' => $previousStatus]);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed untrashing a subscription', compact('subscription'));
+
+            throw new $exception('Failed untrashing a subscription');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_subscription_untrashed', $subscription);
+
+        return true;
+    }
+
+    /**
      * Up to this point the donation is created first and then the subscription, and the donation is stored as the
      * parent_payment_id of the subscription. This is backwards and should not be the case. But legacy code depends on
      * this value, so we still need to store it for now.
