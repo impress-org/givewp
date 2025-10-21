@@ -16,9 +16,7 @@ type TimeSeriesChartProps = {
  * @since 4.4.0
  */
 type Donation = {
-    createdAt: {
-        date: string;
-    };
+    createdAt: string;
     amount: {
         value: string;
     };
@@ -56,14 +54,14 @@ const normalizeData = (donations: Donation[]): DataPoint[] => {
 
     // Group donations by date with sum amounts - fill missing dates with 0.
     donations.forEach((donation) => {
-        const date = donation.createdAt.date.split(' ')[0];
+        const date = donation.createdAt.split(' ')[0];
         const amount = parseFloat(donation.amount.value);
         map.set(date, (map.get(date) || 0) + amount);
     });
 
     // Set graph range & points for single donations.
     if (map.size === 1) {
-        const donationDate = donations[0]?.createdAt.date.split(' ')[0];
+        const donationDate = donations[0]?.createdAt.split(' ')[0];
         const graphRange = getCenteredGraphRange(donationDate);
 
         return graphRange.map((date) => ({

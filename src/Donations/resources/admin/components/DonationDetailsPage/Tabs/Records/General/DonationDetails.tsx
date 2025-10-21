@@ -14,7 +14,7 @@ import {useFormContext, useFormState} from 'react-hook-form';
  * Internal dependencies
  */
 import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
-import {formatDateTimeLocal} from '@givewp/components/AdminDetailsPage/utils';
+import {formatDateTimeLocal, toISOStringFromLocalDateTime} from '@givewp/components/AdminDetailsPage/utils';
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from '../styles.module.scss';
 import StatusField from '@givewp/admin/fields/Status';
@@ -74,17 +74,11 @@ export default function DonationDetails() {
                     <input
                         type="datetime-local"
                         id="date"
-                        value={formatDateTimeLocal(createdAt?.date)}
+                        value={formatDateTimeLocal(createdAt)}
                         onChange={(e) => {
-                            setValue(
-                                'createdAt',
-                                {
-                                    date: formatDateTimeLocal(e.target.value),
-                                    timezone: createdAt?.timezone,
-                                    timezone_type: createdAt?.timezone_type,
-                                },
-                                {shouldDirty: true}
-                            );
+                            setValue('createdAt', toISOStringFromLocalDateTime(e.target.value), {
+                                shouldDirty: true,
+                            });
                         }}
                     />
                 </AdminSectionField>

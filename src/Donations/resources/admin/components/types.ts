@@ -14,16 +14,8 @@ export type Donation = {
   campaignId: number;
   formId: number;
   formTitle: string;
-  createdAt: {
-    date: string;
-    timezone: string;
-    timezone_type: number;
-  };
-  updatedAt: {
-    date: string;
-    timezone: string;
-    timezone_type: number;
-  };
+  createdAt: string;
+  updatedAt: string;
   status: string;
   mode: DonationMode;
   type: DonationType;

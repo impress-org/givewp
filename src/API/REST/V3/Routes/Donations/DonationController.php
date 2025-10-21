@@ -827,6 +827,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Updated schema to match actual response
      * @since 4.8.0 Change default status to complete
      * @since 4.7.0 Change title to givewp/donation and add custom fields schema
      * @since 4.6.1 Change type of billing address properties to accept null values

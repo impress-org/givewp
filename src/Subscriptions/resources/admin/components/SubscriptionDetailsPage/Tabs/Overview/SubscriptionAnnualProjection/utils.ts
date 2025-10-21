@@ -12,7 +12,7 @@ export const getCurrentYearCompletedDonations = (donations: Donation[]): Donatio
     const currentYear = new Date().getFullYear();
 
     return completedDonations?.filter(donation => {
-        const donationDate = new Date(donation.createdAt.date);
+        const donationDate = new Date(donation.createdAt);
         return donationDate.getFullYear() === currentYear;
     });
 };
