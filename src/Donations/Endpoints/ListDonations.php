@@ -46,6 +46,9 @@ class ListDonations extends Endpoint
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Add format parameter to start and end dates, replacing custom validation callback
+     * @since 3.4.0
      */
     public function registerRoute()
     {
@@ -84,12 +87,12 @@ class ListDonations extends Endpoint
                     'start' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'end' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'donor' => [
                         'type' => 'string',
