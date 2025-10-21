@@ -70,13 +70,64 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
+        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
             return response;
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Are you sure you want to delete the following donations?', 'give')}</p>
+                <p>{__('Really delete the following donations?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Trash', 'give'),
+        value: 'trash',
+        type: 'warning',
+        isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want add to trash the following donations?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Restore', 'give'),
+        value: 'restore',
+        type: 'normal',
+        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/untrash', {ids: selected.join(',')}, 'POST');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want remove from trash the following donations?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
@@ -107,6 +158,7 @@ const bulkActions: Array<BulkActionsConfig> = [
             return {
                 label,
                 value,
+                isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
                 action: async (selected) =>
                     await API.fetchWithArgs(
                         '/setStatus',
