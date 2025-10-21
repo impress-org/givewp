@@ -32,7 +32,7 @@ class ListSubscriptions extends Endpoint
     /**
      * @inheritDoc
      *
-     * @unreleased Add format parameter to start and end dates, replacing custom validation callback
+     * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
     {

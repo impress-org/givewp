@@ -47,7 +47,7 @@ class ListDonations extends Endpoint
     /**
      * @inheritDoc
      *
-     * @unreleased Add format parameter to start and end dates, replacing custom validation callback
+     * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      * @since 3.4.0
      */
     public function registerRoute()
