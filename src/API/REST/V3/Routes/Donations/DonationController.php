@@ -591,7 +591,6 @@ class DonationController extends WP_REST_Controller
             'donorId' => [
                 'type' => 'integer',
                 'default' => 0,
-                'required' => true,
             ],
             'subscriptionId' => [
                 'type' => 'integer',
@@ -906,7 +905,7 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Donor company', 'give'),
                     'format' => 'text-field',
                 ],
-                'amount' => SchemaTypes::money()->required()->description(esc_html__('Donation amount', 'give'))->toArray(),
+                'amount' => SchemaTypes::money()->description(esc_html__('Donation amount', 'give'))->toArray(),
                 'feeAmountRecovered' => SchemaTypes::money()->nullable()->description(esc_html__('Fee amount recovered', 'give'))->toArray(),
                 'eventTicketsAmount' => SchemaTypes::money()->nullable()->readonly()->description(esc_html__('Event tickets amount', 'give'))->toArray(),
                 'status' => [
@@ -914,7 +913,6 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Donation status', 'give'),
                     'enum' => array_values(DonationStatus::toArray()),
                     'default' => DonationStatus::COMPLETE,
-                    'required' => true,
                 ],
                 'type' => [
                     'type' => 'string',
@@ -926,7 +924,6 @@ class DonationController extends WP_REST_Controller
                     'type' => 'string',
                     'description' => esc_html__('Payment gateway ID', 'give'),
                     'format' => 'text-field',
-                    'required' => true,
                 ],
                 'mode' => [
                     'type' => 'string',
@@ -945,7 +942,6 @@ class DonationController extends WP_REST_Controller
                 'formId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Form ID', 'give'),
-                    'required' => true,
                 ],
                 'formTitle' => [
                     'type' => 'string',

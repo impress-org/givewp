@@ -9,6 +9,7 @@ use Give\DonationForms\Models\DonationForm;
 use Give\PaymentGateways\Gateways\Offline\OfflineGateway;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
@@ -76,7 +77,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -117,7 +118,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 50.00,
+                'value' => 50.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -149,7 +150,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 200.00,
+                'value' => 200.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -245,7 +246,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => 999999,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -275,7 +276,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -301,7 +302,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -332,7 +333,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -363,7 +364,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -420,7 +421,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -451,7 +452,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -470,8 +471,8 @@ class DonationRouteCreateTest extends RestApiTestCase
 
         $this->assertEquals(201, $status);
         $this->assertNotEquals(999999, $data['id']);
-        $this->assertNotEquals('2023-01-01T00:00:00Z', $data['createdAt']['date']);
-        $this->assertNotEquals('2023-01-01T00:00:00Z', $data['updatedAt']['date']);
+        $this->assertNotEquals('2023-01-01T00:00:00Z', $data['createdAt']);
+        $this->assertNotEquals('2023-01-01T00:00:00Z', $data['updatedAt']);
     }
 
     /**
@@ -483,7 +484,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -516,7 +517,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -551,7 +552,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'gatewayId' => TestGateway::id(),
             'mode' => 'test',
             'formId' => $this->form->id,
@@ -576,7 +577,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'gatewayId' => TestGateway::id(),
             'mode' => 'test',
             'formId' => $this->form->id,
@@ -601,7 +602,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'gatewayId' => TestGateway::id(),
             'mode' => 'test',
             'formId' => $this->form->id,
@@ -629,7 +630,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'gatewayId' => TestGateway::id(),
             'mode' => 'test',
             'formId' => $this->form->id,
@@ -659,7 +660,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'gatewayId' => TestGateway::id(),
             'mode' => 'test',
             'formId' => $this->form->id,
@@ -688,7 +689,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'gatewayId' => TestGateway::id(),
             'mode' => 'test',
             'formId' => $this->form->id,
@@ -719,7 +720,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'gatewayId' => TestGateway::id(),
             'mode' => 'test',
             'formId' => $this->form->id,
@@ -745,7 +746,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'gatewayId' => TestGateway::id(),
             'mode' => 'test',
             'formId' => $this->form->id,
@@ -801,7 +802,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
-            'amount' => ['amount' => 100.00, 'currency' => 'USD'],
+            'amount' => ['value' => 100.00, 'currency' => 'USD'],
             'gatewayId' => TestGateway::id(), // Same gateway
             'mode' => 'test',
             'formId' => $this->form->id,
@@ -875,26 +876,15 @@ class DonationRouteCreateTest extends RestApiTestCase
      */
     public function testCreateDonationWithCustomDatesShouldSucceed()
     {
-        $customCreatedAt = [
-            'date' => '2023-01-15T10:30:00',
-            'timezone' => 'America/New_York',
-            'timezone_type' => 2,
-        ];
-        $customUpdatedAt = [
-            'date' => '2023-01-15T11:45:00',
-            'timezone' => 'America/New_York',
-            'timezone_type' => 2,
-        ];
-
-        // Convert arrays to DateTime objects for comparison
-        $expectedCreatedAt = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
-        $expectedUpdatedAt = new \DateTime($customUpdatedAt['date'], new \DateTimeZone($customUpdatedAt['timezone']));
+        $now = current_datetime()->getTimestamp();
+        $customCreatedAt = wp_date('Y-m-d\TH:i:s', $now, wp_timezone());
+        $customUpdatedAt = wp_date('Y-m-d\TH:i:s', $now, wp_timezone());
 
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -916,13 +906,8 @@ class DonationRouteCreateTest extends RestApiTestCase
 
         $data = $response->get_data();
 
-        // Verify that the custom dates were set correctly
-        $this->assertInstanceOf(\DateTime::class, $data['createdAt']);
-        $this->assertInstanceOf(\DateTime::class, $data['updatedAt']);
-
-        // Compare the returned dates with the expected DateTime objects
-        $this->assertEquals($expectedCreatedAt->format('Y-m-d H:i:s'), $data['createdAt']->format('Y-m-d H:i:s'));
-        $this->assertEquals($expectedUpdatedAt->format('Y-m-d H:i:s'), $data['updatedAt']->format('Y-m-d H:i:s'));
+        $this->assertEquals($customCreatedAt, $data['createdAt']);
+        $this->assertEquals($customUpdatedAt, $data['updatedAt']);
     }
 
     /**
@@ -935,20 +920,9 @@ class DonationRouteCreateTest extends RestApiTestCase
             'installments' => 12, // Set higher installments to avoid limit
         ]);
 
-        $customCreatedAt = [
-            'date' => '2023-02-20T14:20:00',
-            'timezone' => 'America/New_York',
-            'timezone_type' => 2,
-        ];
-        $customUpdatedAt = [
-            'date' => '2023-02-20T15:30:00',
-            'timezone' => 'America/New_York',
-            'timezone_type' => 2,
-        ];
-
-        // Convert arrays to DateTime objects for comparison
-        $expectedCreatedAt = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
-        $expectedUpdatedAt = new \DateTime($customUpdatedAt['date'], new \DateTimeZone($customUpdatedAt['timezone']));
+        $now = current_datetime()->getTimestamp();
+        $customCreatedAt = wp_date('Y-m-d\TH:i:s', $now, wp_timezone());
+        $customUpdatedAt = wp_date('Y-m-d\TH:i:s', $now, wp_timezone());
 
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
@@ -968,13 +942,8 @@ class DonationRouteCreateTest extends RestApiTestCase
 
         $data = $response->get_data();
 
-        // Verify that the custom dates were set correctly
-        $this->assertInstanceOf(\DateTime::class, $data['createdAt']);
-        $this->assertInstanceOf(\DateTime::class, $data['updatedAt']);
-
-        // Compare the returned dates with the expected DateTime objects
-        $this->assertEquals($expectedCreatedAt->format('Y-m-d H:i:s'), $data['createdAt']->format('Y-m-d H:i:s'));
-        $this->assertEquals($expectedUpdatedAt->format('Y-m-d H:i:s'), $data['updatedAt']->format('Y-m-d H:i:s'));
+        $this->assertEquals($customCreatedAt, $data['createdAt']);
+        $this->assertEquals($customUpdatedAt, $data['updatedAt']);
 
         $this->assertEquals($subscription->id, $data['subscriptionId']);
         $this->assertEquals('renewal', $data['type']);
@@ -987,35 +956,17 @@ class DonationRouteCreateTest extends RestApiTestCase
     {
         $subscription = Subscription::factory()->createWithDonation([
             'gatewayId' => TestGateway::id(),
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
             'installments' => 12, // Set higher installments to avoid limit
         ]);
-
-        $customCreatedAt = [
-            'date' => '2023-03-25T16:30:00',
-            'timezone' => 'America/New_York',
-            'timezone_type' => 2,
-        ];
-
-        // Convert array to DateTime object for comparison
-        $baseRenewalDate = new \DateTime($customCreatedAt['date'], new \DateTimeZone($customCreatedAt['timezone']));
-
-        // Calculate expected renewal date based on subscription period and frequency
-        // The bumpRenewalDate() will calculate the next renewal date from the base date
-        $expectedRenewalDate = clone $baseRenewalDate;
-
-        // Get the actual subscription period from the subscription
-        $period = $subscription->period ?? 'month';
-        $frequency = $subscription->frequency ?? 1;
-
-        // Calculate the next renewal date based on the actual subscription settings
-        $expectedRenewalDate->modify("+{$frequency} {$period}");
 
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'subscriptionId' => $subscription->id,
             'type' => 'renewal',
             'gatewayId' => TestGateway::id(),
-            'createdAt' => $customCreatedAt,
+            'createdAt' => $subscription->createdAt->format('Y-m-d H:i:s'),
             'updateRenewalDate' => true,
         ]);
 
@@ -1035,7 +986,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         // Verify that the subscription renewal date was updated
         $updatedSubscription = Subscription::find($subscription->id);
         $this->assertNotNull($updatedSubscription->renewsAt);
-        $this->assertEquals($expectedRenewalDate->format('Y-m-d H:i:s'), $updatedSubscription->renewsAt->format('Y-m-d H:i:s'));
+        $this->assertEquals($subscription->createdAt->modify('+1 month')->format('Y-m-d'), $updatedSubscription->renewsAt->format('Y-m-d'));
     }
 
     /**
@@ -1050,17 +1001,13 @@ class DonationRouteCreateTest extends RestApiTestCase
         // Store the original renewal date
         $originalRenewalDate = $subscription->renewsAt;
 
-        $customCreatedAt = [
-            'date' => '2023-04-10T09:15:00',
-            'timezone' => 'America/New_York',
-            'timezone_type' => 2,
-        ];
+        $customCreatedAt = '2023-04-10T09:15:00Z';
 
         $request = $this->createRequest('POST', $this->route, [], 'administrator');
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -1102,7 +1049,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -1110,11 +1057,7 @@ class DonationRouteCreateTest extends RestApiTestCase
             'formId' => $this->form->id,
             'firstName' => 'John',
             'email' => 'john@example.com',
-            'createdAt' => [
-                'date' => '2023-05-20T12:00:00',
-                'timezone' => 'America/New_York',
-                'timezone_type' => 2,
-            ],
+            'createdAt' => '2023-05-20T12:00:00Z',
             'updateRenewalDate' => true,
         ]);
 
@@ -1139,7 +1082,7 @@ class DonationRouteCreateTest extends RestApiTestCase
         $request->set_body_params([
             'donorId' => $this->donor->id,
             'amount' => [
-                'amount' => 100.00,
+                'value' => 100.00,
                 'currency' => 'USD',
             ],
             'gatewayId' => TestGateway::id(),
@@ -1329,7 +1272,7 @@ class DonationRouteCreateTest extends RestApiTestCase
             'subscriptionId' => $subscription->id,
             'type' => 'renewal',
             'amount' => [
-                'amount' => $newAmount,
+                'value' => $newAmount,
                 'currency' => 'USD',
             ],
         ]);
