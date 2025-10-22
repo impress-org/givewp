@@ -2,23 +2,18 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {__, sprintf} from '@wordpress/i18n';
 import RowAction from '@givewp/components/ListTable/RowAction';
-import { store as coreDataStore } from '@wordpress/core-data';
-import { useDispatch } from '@wordpress/data';
 import { useSWRConfig } from 'swr';
-import ListTableApi from '@givewp/components/ListTable/api';
-
-const donationsApi = new ListTableApi(window.GiveDonations);
 
 /**
  * @since 4.12.0 Revert delete action to use Donation Actions API and add trash and restore actions.
  * @since 4.6.0 Soft delete donations with Donation v3 API.
  */
-export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters}) => {
+export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters, listTableApi}) => {
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const {mutate} = useSWRConfig();
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
-        const response = await donationsApi.fetchWithArgs(endpoint, {ids: [id]}, method);
+        const response = await listTableApi.fetchWithArgs(endpoint, {ids: [id]}, method);
         setUpdateErrors(response);
         await mutate(parameters);
         return response;
