@@ -20,7 +20,6 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
-use WP_REST_Request;
 use WP_REST_Server;
 
 /**
@@ -58,16 +57,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
 
-        // Verify DateTime object structure for createdAt and updatedAt
-        $this->assertIsArray($data[0]['createdAt']);
-        $this->assertArrayHasKey('date', $data[0]['createdAt']);
-        $this->assertArrayHasKey('timezone', $data[0]['createdAt']);
-        $this->assertArrayHasKey('timezone_type', $data[0]['createdAt']);
-
-        $this->assertIsArray($data[0]['updatedAt']);
-        $this->assertArrayHasKey('date', $data[0]['updatedAt']);
-        $this->assertArrayHasKey('timezone', $data[0]['updatedAt']);
-        $this->assertArrayHasKey('timezone_type', $data[0]['updatedAt']);
+        $this->assertIsString($data[0]['createdAt']);
+        $this->assertIsString($data[0]['updatedAt']);
 
         $this->assertEquals([
             'id' => $donation->id,
@@ -76,8 +67,8 @@ class GetDonationsRouteTest extends RestApiTestCase
             'formTitle' => $donation->formTitle,
             'purchaseKey' => $donation->purchaseKey,
             'donorIp' => $donation->donorIp,
-            'createdAt' => $data[0]['createdAt'], // Keep actual DateTime object structure
-            'updatedAt' => $data[0]['updatedAt'], // Keep actual DateTime object structure
+            'createdAt' => $data[0]['createdAt'],
+            'updatedAt' => $data[0]['updatedAt'],
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),
@@ -763,6 +754,10 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     private function getExpectedValue(Donation $donation, string $column)
     {
+        if ($column === 'createdAt' || $column === 'updatedAt') {
+            return $donation->{$column}->format('Y-m-d\TH:i:s');
+        }
+
         return $donation->{$column};
     }
 }
