@@ -53,6 +53,7 @@ class GetCampaignStatistics implements RestRoute
     }
 
     /**
+     * @unreleased return 404 error if campaign is not found
      * @since 4.0.0
      *
      * @throws Exception
@@ -60,6 +61,10 @@ class GetCampaignStatistics implements RestRoute
     public function handleRequest($request): WP_REST_Response
     {
         $campaign = Campaign::find($request->get_param('id'));
+
+        if (!$campaign) {
+            return new WP_REST_Response('Campaign not found', 404);
+        }
 
         $query = new CampaignDonationQuery($campaign);
 
