@@ -3,13 +3,14 @@
 namespace Give\ThirdPartyCompatibility\Divi;
 
 /**
+ * @unreleased include divi options page
  * @since 4.5.0
  */
 class DeregisterEntityScripts
 {
     public function __invoke()
     {
-        if ( ! isset($_GET['page']) || $_GET['page'] !== 'et_theme_builder') {
+        if ( ! isset($_GET['page']) || ! in_array($_GET['page'], ['et_theme_builder', 'et_divi_options'])) {
             return;
         }
 
