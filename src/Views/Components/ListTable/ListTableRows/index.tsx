@@ -5,8 +5,9 @@ import {useEffect, useState} from 'react';
 import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
+import ListTableApi from '@givewp/components/ListTable/api';
 
-export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, columnFilters, includeBulkActionsCheckbox = false, tableId}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, columnFilters, includeBulkActionsCheckbox = false, tableId, apiSettings}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -91,6 +92,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                                         addRow,
                                         setUpdateErrors,
                                         parameters,
+                                        listTableApi: new ListTableApi(apiSettings),
                                     })}
                                 </div>
                             )}
