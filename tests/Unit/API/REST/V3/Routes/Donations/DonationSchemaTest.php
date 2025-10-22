@@ -32,7 +32,9 @@ class DonationSchemaTest extends RestApiTestCase
             return $customFields;
         });
 
-        $donation = Donation::factory()->create();
+        $donation = Donation::factory()->create([
+            'anonymous' => false,
+        ]);
 
         // Get the schema via OPTIONS request
         $schemaRoute = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE;
@@ -44,7 +46,7 @@ class DonationSchemaTest extends RestApiTestCase
         // Get actual donation data
         $dataRoute = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id;
         $dataRequest = $this->createRequest(WP_REST_Server::READABLE, $dataRoute, [], 'administrator');
-        $dataRequest->set_query_params(['includeSensitiveData' => true]);
+        $dataRequest->set_query_params(['includeSensitiveData' => true, 'anonymousDonations' => 'include']);
         $dataResponse = $this->dispatchRequest($dataRequest);
         $actualDataJson = json_encode($dataResponse->get_data());
         $actualData = json_decode($actualDataJson, true);
