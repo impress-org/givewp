@@ -110,7 +110,7 @@ export default function AddRenewalDialog({
             await handleConfirm({
                 ...data,
                 amount: {
-                    amount: data.amount,
+                    value: data.amount,
                     currency: amount.currency,
                 },
             });
