@@ -8,13 +8,18 @@ namespace Give\Helpers;
 class Language
 {
     /**
+     * @unreleased Added early return if the textdomain is loaded
      * @since 3.0.0
      */
     public static function load()
     {
+        if (is_textdomain_loaded('give')) {
+            return;
+        }
+
         $giveRelativePath = self::getRelativePath();
 
-        $locale = is_admin() && ! wp_doing_ajax() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
+        $locale = is_admin() && !wp_doing_ajax() && function_exists('get_user_locale') ? get_user_locale() : get_locale();
         $locale = apply_filters('plugin_locale', $locale, 'give'); // Traditional WordPress plugin locale filter.
 
         // Setup paths to current locale file.

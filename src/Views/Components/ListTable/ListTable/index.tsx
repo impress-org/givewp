@@ -20,7 +20,7 @@ export interface ListTableProps {
     //optional
     pluralName?: string;
     singleName?: string;
-    rowActions?: (({item, data, addRow, removeRow}) => JSX.Element) | JSX.Element | JSX.Element[] | Function | null;
+    rowActions?: (({item, data, addRow, removeRow, listTableApi}) => JSX.Element) | JSX.Element | JSX.Element[] | Function | null;
     parameters?: {};
     error?: {} | Boolean;
     isLoading?: Boolean;
@@ -201,6 +201,7 @@ export const ListTable = ({
                         <tbody className={styles.tableContent}>
                             {productRecommendation}
                             <ListTableRows
+                                apiSettings={apiSettings}
                                 columns={visibleColumns}
                                 data={data}
                                 isLoading={isLoading}
