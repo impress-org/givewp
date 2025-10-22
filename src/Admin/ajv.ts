@@ -36,7 +36,9 @@ export function ajvResolver(schema: JSONSchemaType<any>) {
             const valid = validate(transformedData);
 
             if (valid) {
-                return {values: transformedData, errors: {}};
+                // Use original form data to avoid mutating field values on each validation cycle
+                // (e.g., prevent repeated timezone normalization of date-time fields)
+                return {values: data, errors: {}};
             } else {
                 console.error('🔴 Validation failed, errors:', validate.errors);
                 const errors: any = {};
@@ -211,6 +213,20 @@ function transformWordPressSchemaToDraft7(schema: JSONSchemaType<any>, data?: an
             if (prop.readonly === true || prop.readOnly === true) {
                 delete transformed.properties[key];
                 return;
+            }
+
+            // remove readonly/readOnly fields from nested properties
+            if (prop.properties) {
+                Object.keys(prop.properties).forEach((subKey) => {
+                    const subProp = prop.properties[subKey];
+                    if (subProp.readonly === true || subProp.readOnly === true) {
+                        delete prop.properties[subKey];
+                        if (Array.isArray(prop.required) && prop.required.includes(subKey)) {
+                            prop.required.splice(prop.required.indexOf(subKey), 1);
+                        }
+                        return;
+                    }
+                });
             }
 
             // For WordPress Array type + enum (like honorific), conditionally remove enum based on current value

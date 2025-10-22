@@ -14,7 +14,9 @@ import {useFormContext, useFormState} from 'react-hook-form';
  * Internal dependencies
  */
 import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
-import {formatDateTimeLocal, toISOStringFromLocalDateTime} from '@givewp/components/AdminDetailsPage/utils';
+
+import {formatToDateTimeLocalInput, convertLocalDateTimeToISOString} from '@givewp/admin/common';
+
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from '../styles.module.scss';
 import StatusField from '@givewp/admin/fields/Status';
@@ -56,7 +58,7 @@ export default function DonationDetails() {
                                 setValue(
                                     'amount',
                                     {
-                                        amount: Number(value ?? 0),
+                                        value: Number(value ?? 0),
                                         currency: amount.currency,
                                     },
                                     {shouldDirty: true}
@@ -70,13 +72,13 @@ export default function DonationDetails() {
                 </div>
 
                 <AdminSectionField error={errors.createdAt?.message as string}>
-                    <label htmlFor="date">{__('Donation date and time', 'give')}</label>
+                    <label htmlFor="createdAt">{__('Donation date and time', 'give')}</label>
                     <input
                         type="datetime-local"
-                        id="date"
-                        value={formatDateTimeLocal(createdAt)}
+                        id="createdAt"
+                        value={formatToDateTimeLocalInput(createdAt)}
                         onChange={(e) => {
-                            setValue('createdAt', toISOStringFromLocalDateTime(e.target.value), {
+                            setValue('createdAt', convertLocalDateTimeToISOString(e.target.value), {
                                 shouldDirty: true,
                             });
                         }}
@@ -87,8 +89,6 @@ export default function DonationDetails() {
                     campaignIdFieldName="campaignId"
                     formIdFieldName="formId"
                 />
-
-                {/* TODO: Add Fund field */}
 
                 <AdminSectionField error={errors.comment?.message as string}>
                     <label htmlFor="comment">{__('Donor comment', 'give')}</label>

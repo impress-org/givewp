@@ -47,8 +47,10 @@ class CreatedAtColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $format = _x('m/d/Y \a\t g:i a', 'human-readable datetime format', 'give');
+        $dateFormat = get_option('date_format');
+        $timeFormat = get_option('time_format');
+        $format = sprintf('%s \a\t %s', $dateFormat, $timeFormat);
 
-        return $model->createdAt->format($format);
+        return wp_date($format, $model->createdAt->getTimestamp(), wp_timezone());
     }
 }

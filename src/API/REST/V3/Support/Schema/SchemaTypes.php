@@ -27,6 +27,7 @@ class SchemaTypes
             'valueInMinorUnits' => [
                 'type' => 'integer',
                 'description' => esc_html__('Value in minor units (cents)', 'give'),
+                'readonly' => true,
             ],
             'currency' => [
                 'type' => 'string',

@@ -629,21 +629,48 @@ class DonationController extends WP_REST_Controller
     {
         $donationId = $request->get_param('id') ?? $item['id'] ?? null;
 
-        if ($donationId) {
+        if ($donationId && $donation = Donation::find($donationId)) {
             $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $donationId));
-            $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
-            $campaign_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'campaigns', $item['campaignId']));
+
             $links = [
-                'self' => ['href' => $self_url],
-                CURIE::relationUrl('donor') => [
+                'self' => ['href' => $self_url]
+            ];
+
+            if (!empty($item['donorId'])) {
+                $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
+                $donor_url = add_query_arg([
+                    'mode' => $request->get_param('mode'),
+                ], $donor_url);
+
+                $links[CURIE::relationUrl('donor')] = [
                     'href' => $donor_url,
                     'embeddable' => true,
-                ],
-                CURIE::relationUrl('campaign') => [
+                ];
+            }
+
+            if (!empty($item['campaignId'])) {
+                $campaign_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'campaigns', $item['campaignId']));
+                $campaign_url = add_query_arg([
+                    'mode' => $request->get_param('mode'),
+                ], $campaign_url);
+
+                $links[CURIE::relationUrl('campaign')] = [
                     'href' => $campaign_url,
                     'embeddable' => true,
-                ],
-            ];
+                ];
+            }
+
+            if (!empty($item['formId'])) {
+                $form_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'forms', $item['formId']));
+                $form_url = add_query_arg([
+                    'mode' => $request->get_param('mode'),
+                ], $form_url);
+
+                $links[CURIE::relationUrl('form')] = [
+                    'href' => $form_url,
+                    'embeddable' => true,
+                ];
+            }
 
             // Add subscription link when subscriptionId is greater than 0
             if (isset($item['subscriptionId']) && $item['subscriptionId'] > 0) {
@@ -973,7 +1000,7 @@ class DonationController extends WP_REST_Controller
                     'format' => 'text-field',
                 ],
                 'createdAt' => [
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                     'description' => esc_html__('Created at Date and Time string', 'give'),
                     'format' => 'date-time',
                 ],

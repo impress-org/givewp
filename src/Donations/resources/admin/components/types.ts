@@ -1,3 +1,5 @@
+import { Campaign } from '@givewp/campaigns/admin/components/types';
+import { Donor } from '@givewp/donors/admin/components/types';
 
 type PaymentGateway = {
     id: string;
@@ -6,51 +8,57 @@ type PaymentGateway = {
     transactionUrl: string;
 }
 
+export type Money = {
+    value: number;
+    valueInMinorUnits: number;
+    currency: string;
+}
+
 /**
+ * @unreleased added _embedded property and updated money types
  * @since 4.6.0
  */
 export type Donation = {
-  id: number;
-  campaignId: number;
-  formId: number;
-  formTitle: string;
-  createdAt: string;
-  updatedAt: string;
-  status: string;
-  mode: DonationMode;
-  type: DonationType;
-  amount: {
-    value: number;
-    currency: string;
-  };
-  feeAmountRecovered: {
-    value: number;
-    currency: string;
-  };
-  exchangeRate: string;
-  gatewayId: string;
-  donorId: number;
-  honorific: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  subscriptionId?: number;
-  billingAddress: DonationAddress;
-  purchaseKey: string;
-  donorIp: string;
-  anonymous: boolean;
-  levelId: string;
-  gatewayTransactionId: string;
-  company: string;
-  comment: string;
-  eventTicketsAmount: {
-    value: number;
-    currency: string;
-  };
-  eventTickets: EventTicket[];
-  gateway: PaymentGateway;
-  customFields: CustomField[];
+    id: number;
+    campaignId: number;
+    formId: number;
+    formTitle: string;
+    createdAt: string;
+    updatedAt: string;
+    status: string;
+    mode: DonationMode;
+    type: DonationType;
+    amount: Money;
+    feeAmountRecovered: Money;
+    exchangeRate: string;
+    gatewayId: string;
+    donorId: number;
+    honorific: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    subscriptionId?: number;
+    billingAddress: DonationAddress;
+    purchaseKey: string;
+    donorIp: string;
+    anonymous: boolean;
+    levelId: string;
+    gatewayTransactionId: string;
+    company: string;
+    comment: string;
+    eventTicketsAmount: Money;
+    eventTickets: EventTicket[];
+    gateway: PaymentGateway;
+    customFields: CustomField[];
+    _embedded?: {
+        'givewp:campaign': Campaign[];
+        'givewp:donor': Donor[];
+        'givewp:form': {
+            id: number;
+            title: string;
+        }[];
+    };
 };
 
 export type CustomField = {

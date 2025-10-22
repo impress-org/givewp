@@ -1,24 +1,25 @@
-import {dateI18n} from '@wordpress/date';
+import {dateI18n, getDate, getSettings} from '@wordpress/date';
 /**
+ * Format the timestamp using the WordPress site settings for timezone and format.
  * @since 4.10.0
  */
-export function formatTimestamp(timestamp: string | null | undefined, useComma: boolean = false): string {
+export function formatTimestamp(timestamp: string | null | undefined): string {
     // Handle null, undefined, or empty string
     if (!timestamp) {
         return '—';
     }
 
-    // Normalize naive timestamps (no timezone) as UTC to avoid shifts
-    const hasTimezone = /[zZ]|[+-]\d{2}:?\d{2}$/.test(timestamp);
-    const normalized = hasTimezone ? timestamp : `${timestamp}Z`;
-    const date = new Date(normalized);
+    // Parse timestamps using WordPress site timezone. Works with naive and offset/Z strings.
+    const date = getDate(timestamp);
 
     // Check if the date is valid
     if (isNaN(date.getTime())) {
         return '—';
     }
 
-    const format = useComma ? 'jS F Y, g:i a' : 'jS F Y • g:i a';
-    return dateI18n(format, date, undefined);
+    const {formats} = getSettings();
+    const datePart = dateI18n(formats.date || 'F j, Y', date, undefined);
+    const timePart = dateI18n(formats.time || 'g:i a', date, undefined);
+    return `${datePart} ${timePart}`;
 }
 

@@ -60,7 +60,7 @@ export default function SubscriptionSummaryGrid({subscription, isLoading}: Subsc
                     {!isLoading && (
                         <>
                             <time className={styles.date} dateTime={renewsAt}>
-                                {formatTimestamp(renewsAt, true)}
+                                {formatTimestamp(renewsAt)}
                             </time>
                             <div className={styles.donationType}>
                                 <span
