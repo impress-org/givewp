@@ -1034,6 +1034,29 @@ class DonationController extends WP_REST_Controller
                         ],
                     ],
                 ],
+                'gateway' => [
+                    'type' => 'object',
+                    'readonly' => true,
+                    'properties' => [
+                        'id' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Gateway ID', 'give'),
+                        ],
+                        'name' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Gateway name', 'give'),
+                        ],
+                        'label' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Payment method label', 'give'),
+                        ],
+                        'transactionUrl' => [
+                            'type' => 'string',
+                            'description' => esc_html__('Gateway transaction URL', 'give'),
+                            'format' => 'uri',
+                        ],
+                    ],
+                ],
                 'eventTickets' => [
                     'type' => ['array', 'null'],
                     'readonly' => true,
@@ -1147,29 +1170,6 @@ class DonationController extends WP_REST_Controller
                                 ],
                         ],
                     ],
-                ],
-                ],
-                'gateway' => [
-                    'type' => 'object',
-                    'readonly' => true,
-                    'properties' => [
-                        'id' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Gateway ID', 'give'),
-                        ],
-                        'name' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Gateway name', 'give'),
-                        ],
-                        'label' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Payment method label', 'give'),
-                        ],
-                        'transactionUrl' => [
-                            'type' => 'string',
-                            'description' => esc_html__('Gateway transaction URL', 'give'),
-                            'format' => 'uri',
-                        ],
                     ],
                 ],
             ],
