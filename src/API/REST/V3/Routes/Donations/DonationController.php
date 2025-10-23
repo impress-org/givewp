@@ -620,6 +620,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased updated embeddable links
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.6.0
      * @throws Exception

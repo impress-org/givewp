@@ -538,6 +538,7 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased added anonymousDonors and includeSensitiveData to embeddable links
      * @since 4.10.0 added embeddable links for campaign and form
      * @since 4.8.0
      *
