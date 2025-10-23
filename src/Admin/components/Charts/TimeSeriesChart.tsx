@@ -3,6 +3,7 @@ import Chart from 'react-apexcharts';
 import {ApexOptions} from 'apexcharts';
 import apiFetch from '@wordpress/api-fetch';
 import {getDate} from '@wordpress/date';
+import { formatTimestamp } from '@givewp/admin/common';
 
 /**
  * @since 4.4.0
@@ -81,6 +82,7 @@ const normalizeData = (donations: Donation[]): DataPoint[] => {
 };
 
 /**
+ * @unreleased updated the date format
  * @since 4.4.0
  */
 export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}: TimeSeriesChartProps) {
@@ -101,7 +103,9 @@ export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}:
         },
         xaxis: {
             type: 'datetime',
-            labels: {format: 'MMM dd, yyyy'},
+            labels: {
+                formatter: (val) => formatTimestamp(val, false),
+            },
         },
         yaxis: {
             min: 0,
