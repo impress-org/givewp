@@ -922,6 +922,7 @@ class DonationController extends WP_REST_Controller
                     'description' => esc_html__('Donation type', 'give'),
                     'enum' => array_values(DonationType::toArray()),
                     'default' => DonationType::SINGLE,
+                    'required' => true,
                 ],
                 'gatewayId' => [
                     'type' => 'string',
@@ -1169,6 +1170,39 @@ class DonationController extends WP_REST_Controller
                                 ],
                         ],
                     ],
+                    ],
+                ],
+                'anyOf' => [
+                    [
+                        // 1) type = renewal -> require subscriptionId
+                        [
+                            'properties' => [
+                                'type' => [
+                                    'enum' => ['renewal'],
+                                ],
+                            ],
+                            'required' => ['subscriptionId'],
+                        ],
+
+                        // 2) type = single -> require donorId, amount, gatewayId, mode, formId, firstName, email
+                        [
+                            'properties' => [
+                                'type' => [
+                                    'enum' => ['single'],
+                                ],
+                            ],
+                            'required' => ['donorId', 'amount', 'gatewayId', 'mode', 'formId', 'firstName', 'email'],
+                        ],
+
+                        // 3) type = subscription -> require donorId, amount, gatewayId, mode, formId, firstName, email, subscriptionId
+                        [
+                            'properties' => [
+                                'type' => [
+                                    'enum' => ['subscription'],
+                                ],
+                            ],
+                            'required' => ['donorId', 'amount', 'gatewayId', 'mode', 'formId', 'firstName', 'email', 'subscriptionId'],
+                        ],
                     ],
                 ],
             ],
