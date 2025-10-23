@@ -13,7 +13,7 @@ const InterweaveSSR = ({column, item}) => {
     }
 
     if (value === '' || value === null) {
-        return <>'-'</>;
+        return <>-</>;
     }
 
     return <Interweave attributes={{className: 'interweave'}} content={value} />;

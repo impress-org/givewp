@@ -83,7 +83,7 @@ export default function CampaignDetailsTabs() {
 
             <div className={`${styles.pageContent} ${activeTab.fullwidth ? styles.fullWidth : ''}`}>
                 {Object.values(tabs).map((tab) => (
-                    <CampaignDetailsErrorBoundary>
+                    <CampaignDetailsErrorBoundary key={tab.id}>
                         <TabPanel key={tab.id} id={tab.id}>
                             <tab.content />
                         </TabPanel>

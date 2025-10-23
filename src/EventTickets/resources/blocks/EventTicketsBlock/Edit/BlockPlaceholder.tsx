@@ -10,11 +10,12 @@ import {getWindowData} from '@givewp/form-builder/common';
 export default function BlockPlaceholder({attributes}) {
     const {events, ticketsLabel, soldOutMessage} = window.eventTicketsBlockSettings;
     const event = events.find((event) => event.id === attributes.eventId);
-    const {currency} = getWindowData();
 
     if (!event) {
         return null;
     }
+
+    const {currency} = getWindowData();
 
     const startDateTimeObj = new Date(event.startDateTime);
     const endDateTimeObj = new Date(event.endDateTime);

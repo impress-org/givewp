@@ -1,0 +1,45 @@
+{
+    "extends": ["plugin:@wordpress/eslint-plugin/react"],
+    "settings": {
+        "import/resolver": {
+            "webpack": {
+                "config": "./webpack.config.js"
+            },
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+        }
+    },
+    "parserOptions": {
+        "ecmaVersion": 2022,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "env": {
+        "browser": true,
+        "node": true,
+        "es2021": true
+    },
+    "rules": {
+        "react/jsx-indent": "off",
+        "react/jsx-indent-props": "off",
+        "react/jsx-curly-spacing": "off",
+        "react/jsx-tag-spacing": "warn",
+        "react/jsx-no-target-blank": "off",
+        "react/no-unescaped-entities": "warn",
+        "@wordpress/no-unused-vars-before-return": "warn",
+        "react-hooks/exhaustive-deps": "off"
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts", "**/*.tsx"],
+            "parser": "@typescript-eslint/parser",
+            "parserOptions": {
+                "ecmaVersion": 2022,
+                "sourceType": "module"
+            }
+        }
+    ]
+}
