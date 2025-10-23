@@ -1,6 +1,8 @@
 import {dateI18n, getDate, getSettings} from '@wordpress/date';
 /**
  * Format the timestamp using the WordPress site settings for timezone and format.
+ *
+ * @unreleased updated to use the @wordpress/date functions
  * @since 4.10.0
  */
 export function formatTimestamp(timestamp: string | null | undefined): string {

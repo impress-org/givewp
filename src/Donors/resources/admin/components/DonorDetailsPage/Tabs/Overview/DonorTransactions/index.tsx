@@ -56,7 +56,7 @@ export default function DonorTransactions({donorId}: DonorTransactionsProps) {
         : donations.map((donation) => ({
             campaign: donation.formTitle,
             status: statusMap[donation.status] || 'Pending',
-            timestamp: donation.createdAt.date,
+            timestamp: donation.createdAt,
             amount: amountFormatter(donation.amount.currency).format(parseFloat(donation.amount.value)),
         }));
 

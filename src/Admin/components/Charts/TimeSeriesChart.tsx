@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Chart from 'react-apexcharts';
 import {ApexOptions} from 'apexcharts';
 import apiFetch from '@wordpress/api-fetch';
+import {getDate} from '@wordpress/date';
 
 /**
  * @since 4.4.0
@@ -54,9 +55,9 @@ const normalizeData = (donations: Donation[]): DataPoint[] => {
 
     // Group donations by date with sum amounts - fill missing dates with 0.
     donations.forEach((donation) => {
-        const date = donation.createdAt.split(' ')[0];
+        const date = getDate(donation.createdAt);
         const amount = parseFloat(donation.amount.value);
-        map.set(date, (map.get(date) || 0) + amount);
+        map.set(date.toISOString().split('T')[0], (map.get(date.toISOString().split('T')[0]) || 0) + amount);
     });
 
     // Set graph range & points for single donations.

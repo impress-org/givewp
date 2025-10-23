@@ -1,6 +1,7 @@
 import {dateI18n, getDate} from '@wordpress/date';
 /**
  * Convert a datetime-local string (e.g., "2025-10-21T15:30") to an ISO string.
+ *
  * @unreleased
  */
 export default function convertLocalDateTimeToISOString(localDateTime: string): string {

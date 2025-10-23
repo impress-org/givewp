@@ -9,11 +9,7 @@ import {useEntityRecords} from '@wordpress/core-data';
 export interface DonationResponse {
     id: number;
     formTitle: string;
-    createdAt: {
-        date: string;
-        timezone_type: number;
-        timezone: string;
-    };
+    createdAt: string;
     status: string;
     amount: {
         value: string;
