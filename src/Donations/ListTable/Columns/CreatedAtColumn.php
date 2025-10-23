@@ -6,6 +6,7 @@ namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * @since 2.24.0
@@ -39,6 +40,8 @@ class CreatedAtColumn extends ModelColumn
     }
 
     /**
+     * @unreleased updated the date format
+     *
      * @since 2.24.0
      *
      * @inheritDoc
@@ -47,10 +50,6 @@ class CreatedAtColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $dateFormat = get_option('date_format');
-        $timeFormat = get_option('time_format');
-        $format = sprintf('%s \a\t %s', $dateFormat, $timeFormat);
-
-        return wp_date($format, $model->createdAt->getTimestamp(), wp_timezone());
+       return Temporal::getFormattedDateTimeUsingTimeZoneAndFormatSettings($model->createdAt);
     }
 }
