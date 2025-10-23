@@ -562,6 +562,8 @@ class SubscriptionController extends WP_REST_Controller
                     $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
                     $donor_url = add_query_arg([
                         'mode' => $request->get_param('mode'),
+                        'anonymousDonors' => $request->get_param('anonymousDonors'),
+                        'includeSensitiveData' => $request->get_param('includeSensitiveData'),
                     ], $donor_url);
 
                     $links[CURIE::relationUrl('donor')] = [
@@ -598,6 +600,8 @@ class SubscriptionController extends WP_REST_Controller
                 $donations_url = add_query_arg([
                     'mode' => $subscription->mode->getValue(),
                     'subscriptionId' => $subscription->id,
+                    'anonymousDonations' => $request->get_param('anonymousDonors'),
+                    'includeSensitiveData' => $request->get_param('includeSensitiveData'),
                 ], $donations_url);
 
                 $links[CURIE::relationUrl('donations')] = [
