@@ -15,14 +15,13 @@ import {useFormContext, useFormState} from 'react-hook-form';
  */
 import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
 
-import {formatToDateTimeLocalInput, convertLocalDateTimeToISOString} from '@givewp/admin/common';
-
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from '../styles.module.scss';
 import StatusField from '@givewp/admin/fields/Status';
 import CampaignFormField from '@givewp/admin/fields/CampaignFormGroup';
 // TODO: Move to shared components
 import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
+import {DateTimeLocalField} from '@givewp/admin/fields';
 
 const {donationStatuses, intlTelInputSettings} = getDonationOptionsWindowData();
 
@@ -36,7 +35,6 @@ export default function DonationDetails() {
     const {getValues, setValue, register, watch, setError} = useFormContext();
     const {errors} = useFormState();
     const amount = getValues('amount');
-    const createdAt = watch('createdAt');
 
     return (
         <AdminSection
@@ -71,19 +69,7 @@ export default function DonationDetails() {
                     </AdminSectionField>
                 </div>
 
-                <AdminSectionField error={errors.createdAt?.message as string}>
-                    <label htmlFor="createdAt">{__('Donation date and time', 'give')}</label>
-                    <input
-                        type="datetime-local"
-                        id="createdAt"
-                        value={formatToDateTimeLocalInput(createdAt)}
-                        onChange={(e) => {
-                            setValue('createdAt', convertLocalDateTimeToISOString(e.target.value), {
-                                shouldDirty: true,
-                            });
-                        }}
-                    />
-                </AdminSectionField>
+                <DateTimeLocalField name="createdAt" label={__('Donation date and time', 'give')} />
 
                 <CampaignFormField
                     campaignIdFieldName="campaignId"
