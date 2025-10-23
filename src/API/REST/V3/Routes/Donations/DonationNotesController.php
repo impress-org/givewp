@@ -361,6 +361,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Get the donation note schema, conforming to JSON Schema.
      *
+     * @unreleased add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donation-note and add custom fields schema
      * @since 4.6.0
@@ -372,6 +373,7 @@ class DonationNotesController extends WP_REST_Controller
         $schema = [
             '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donation-note',
+            'description' => 'Donation Note routes for CRUD operations',
             'type' => 'object',
             'properties' => [
                 'id' => [

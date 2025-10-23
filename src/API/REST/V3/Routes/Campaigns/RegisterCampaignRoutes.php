@@ -298,6 +298,7 @@ class RegisterCampaignRoutes
     }
 
     /**
+     * @unreleased add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.0.0
      */
@@ -306,6 +307,7 @@ class RegisterCampaignRoutes
         return [
             '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/campaign',
+            'description' => 'Campaign routes for CRUD operations',
             'type' => 'object',
             'properties' => [
                 'id' => [
