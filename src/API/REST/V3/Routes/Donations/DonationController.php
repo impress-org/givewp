@@ -15,7 +15,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
-use Give\Donations\ViewModels\DonationViewModel;
+use Give\API\REST\V3\Routes\Donations\ViewModels\DonationViewModel;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Donations\ViewModels;
+namespace Give\API\REST\V3\Routes\Donations\ViewModels;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\DonationForms\Models\DonationForm;
