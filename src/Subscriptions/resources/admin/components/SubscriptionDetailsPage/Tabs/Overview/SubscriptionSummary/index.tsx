@@ -1,5 +1,5 @@
 import {Header, OverviewPanel, SummaryItem, SummaryTable} from '@givewp/admin/components';
-import {amountFormatter} from '@givewp/src/Admin/utils';
+import {amountFormatter, formatTimestamp} from '@givewp/admin/common';
 import {Subscription} from '@givewp/subscriptions/admin/components/types';
 import {dateI18n} from '@wordpress/date';
 import {__} from '@wordpress/i18n';
@@ -90,11 +90,11 @@ export default function Summary({subscription, adminUrl, intendedAmount, isLoadi
     const summaryItems: SummaryItem[] = [
         {
             label: __('Start date', 'give'),
-            value: dateI18n('jS M, Y', subscription?.createdAt, undefined),
+            value: formatTimestamp(subscription?.createdAt, false),
         },
         {
             label: __('End date', 'give'),
-            value: endDate ? dateI18n('jS M, Y', endDate, undefined) : __('Ongoing', 'give'),
+            value: endDate ? formatTimestamp(endDate, false) : __('Ongoing', 'give'),
         },
         {
             label: __('Donation form', 'give'),
