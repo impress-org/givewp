@@ -416,27 +416,6 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
-     * Get the donation note schema for public display.
-     *
-     * @since 4.6.0
-     *
-     * @return array
-     */
-    public function get_public_item_schema(): array
-    {
-        $schema = $this->get_item_schema();
-
-        // Add additional properties for public display
-        $schema['properties']['_links'] = [
-            'description' => __('HATEOAS links for the note.', 'give'),
-            'type' => 'object',
-            'readonly' => true,
-        ];
-
-        return $schema;
-    }
-
-    /**
      * @since 4.4.0
      */
     public function get_endpoint_args_for_item_schema($method = WP_REST_Server::CREATABLE): array
