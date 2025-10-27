@@ -64,7 +64,7 @@ class GetCampaignStatistics implements RestRoute
     {
         $campaign = Campaign::find($request->get_param('id'));
 
-        if ( ! $campaign) {
+        if (!$campaign) {
             return new WP_REST_Response('Campaign not found', 404);
         }
 
@@ -106,19 +106,19 @@ class GetCampaignStatistics implements RestRoute
     {
         return [
             'title' => 'givewp/campaign-statistics',
-            'description' => 'Provides statistics for a specific campaign.',
+            'description' => esc_html__('Provides statistics for a specific campaign.', 'give'),
             'type' => 'object',
             'properties' => [
                 'id' => [
                     'type' => 'integer',
                     'description' => esc_html__('The Campaign ID.', 'give'),
+                    'required' => true,
                 ],
                 'rangeInDays' => [
                     'type' => 'integer',
                     'description' => esc_html__('The date range in days.', 'give'),
                 ],
-            ],
-            'required' => ['id'],
+            ]
         ];
     }
 }

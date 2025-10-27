@@ -113,12 +113,13 @@ class GetCampaignComments implements RestRoute
     {
         return [
             'title' => 'givewp/campaign-comments',
-            'description' => 'Provides comments for a specific campaign.',
+            'description' => esc_html__('Provides comments for a specific campaign.', 'give'),
             'type' => 'object',
             'properties' => [
                 'id' => [
                     'type' => 'integer',
                     'description' => esc_html__('The Campaign ID.', 'give'),
+                    'required' => true,
                 ],
                 'perPage' => [
                     'type' => 'integer',
@@ -128,8 +129,7 @@ class GetCampaignComments implements RestRoute
                     'type' => 'boolean',
                     'description' => esc_html__('Include anonymous comments', 'give'),
                 ]
-            ],
-            'required' => ['id'],
+            ]
         ];
     }
 }

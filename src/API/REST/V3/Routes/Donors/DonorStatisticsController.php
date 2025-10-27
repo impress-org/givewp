@@ -149,12 +149,13 @@ class DonorStatisticsController extends WP_REST_Controller
     {
         return [
             'title' => 'givewp/donor-statistics',
-            'description' => 'Provides statistics for a specific donor.',
+            'description' => esc_html__('Provides statistics for a specific donor.', 'give'),
             'type' => 'object',
             'properties' => [
                 'id' => [
                     'type' => 'integer',
                     'description' => esc_html__('The Donor ID.', 'give'),
+                    'required' => true,
                 ],
                 'mode' => [
                     'type' => 'string',
@@ -168,7 +169,6 @@ class DonorStatisticsController extends WP_REST_Controller
                     'default' => 0,
                 ],
             ],
-            'required' => ['id'],
         ];
     }
 }

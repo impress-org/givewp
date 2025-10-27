@@ -350,7 +350,7 @@ class DonorController extends WP_REST_Controller
         $schema = [
             '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donor',
-            'description' => 'Donor routes for CRUD operations',
+            'description' => esc_html__('Donor routes for CRUD operations', 'give'),
             'type' => 'object',
             'properties' => [
                 'id' => [

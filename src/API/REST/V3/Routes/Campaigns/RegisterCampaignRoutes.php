@@ -307,7 +307,7 @@ class RegisterCampaignRoutes
         return [
             '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/campaign',
-            'description' => 'Campaign routes for CRUD operations',
+            'description' => esc_html__('Campaign routes for CRUD operations', 'give'),
             'type' => 'object',
             'properties' => [
                 'id' => [
