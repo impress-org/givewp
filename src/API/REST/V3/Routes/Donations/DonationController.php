@@ -505,6 +505,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased updated the amount sort columns to CAST as DECIMAL
      * @since 4.6.0
      */
     public function getSortColumn(string $sortColumn): string
@@ -514,8 +515,8 @@ class DonationController extends WP_REST_Controller
             'createdAt' => 'post_date',
             'updatedAt' => 'post_modified',
             'status' => 'post_status',
-            'amount' => 'give_donationmeta_attach_meta_amount.meta_value',
-            'feeAmountRecovered' => 'give_donationmeta_attach_meta_feeAmountRecovered.meta_value',
+            'amount' => 'CAST(give_donationmeta_attach_meta_amount.meta_value AS DECIMAL(10, 2))',
+            'feeAmountRecovered' => 'CAST(give_donationmeta_attach_meta_feeAmountRecovered.meta_value AS DECIMAL(10, 2))',
             'donorId' => 'give_donationmeta_attach_meta_donorId.meta_value',
             'firstName' => 'give_donationmeta_attach_meta_firstName.meta_value',
             'lastName' => 'give_donationmeta_attach_meta_lastName.meta_value',

@@ -421,7 +421,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @since        4.0.0
+     * @since 4.0.0
      *
      * @dataProvider sortableColumnsDataProvider
      *
@@ -441,6 +441,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation1 = $this->createDonation1($campaign1->id);
         $donation2 = $this->createDonation2($campaign1->id);
         $donation3 = $this->createDonation3($campaign2->id);
+
 
         $route = '/' . DonorRoute::NAMESPACE . '/donations';
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -650,6 +651,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased updated the amount values
      * @since 4.0.0
      *
      * @throws Exception
@@ -660,8 +662,8 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation1 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'amount' => new Money(100, 'USD'),
-            'feeAmountRecovered' => new Money(10, 'USD'),
+            'amount' => Money::fromDecimal(91.27, 'USD'),
+            'feeAmountRecovered' => Money::fromDecimal(1.27, 'USD'),
             'firstName' => 'A',
             'lastName' => 'A',
             'mode' => DonationMode::LIVE(),
@@ -675,6 +677,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased updated the amount values
      * @since 4.0.0
      *
      * @throws Exception
@@ -685,8 +688,8 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'amount' => new Money(200, 'USD'),
-            'feeAmountRecovered' => new Money(20, 'USD'),
+            'amount' => Money::fromDecimal(221.38, 'USD'),
+            'feeAmountRecovered' => Money::fromDecimal(1.38, 'USD'),
             'firstName' => 'B',
             'lastName' => 'B',
             'mode' => DonationMode::LIVE(),
@@ -700,6 +703,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased updated the amount values
      * @since 4.0.0
      *
      * @throws Exception
@@ -710,8 +714,8 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation3 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'amount' => new Money(300, 'USD'),
-            'feeAmountRecovered' => new Money(30, 'USD'),
+            'amount' => Money::fromDecimal(316.45, 'USD'),
+            'feeAmountRecovered' => Money::fromDecimal(1.45, 'USD'),
             'firstName' => 'C',
             'lastName' => 'C',
             'mode' => DonationMode::LIVE(),
