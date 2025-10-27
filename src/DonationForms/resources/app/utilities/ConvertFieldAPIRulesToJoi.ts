@@ -49,6 +49,7 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
+ * @unrleased add support for optional false values
  * @since 3.0.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
@@ -128,7 +129,7 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
             joiRules = joiRules.required();
         }
     } else {
-        joiRules = joiRules.optional().allow('', null);
+        joiRules = joiRules.optional().allow('', null, false);
     }
 
     joiRules = getJoiRulesForAmountField(rules, joiRules);
