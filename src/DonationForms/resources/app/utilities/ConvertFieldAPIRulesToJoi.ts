@@ -49,7 +49,7 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
- * @unrleased add support for optional false values
+ * @unreleased add support for optional false values
  * @since 3.0.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
