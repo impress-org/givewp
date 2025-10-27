@@ -70,7 +70,7 @@ class GetCampaignStatistics implements RestRoute
 
         $query = new CampaignDonationQuery($campaign);
 
-        if ( ! $request->get_param('rangeInDays')) {
+        if (!$request->get_param('rangeInDays')) {
             return new WP_REST_Response([
                 [
                     'amountRaised' => $query->sumIntendedAmount(),
@@ -118,7 +118,7 @@ class GetCampaignStatistics implements RestRoute
                     'type' => 'integer',
                     'description' => esc_html__('The date range in days.', 'give'),
                 ],
-            ]
+            ],
         ];
     }
 }
