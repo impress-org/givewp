@@ -203,13 +203,14 @@ class GetCampaignRevenue implements RestRoute
         foreach ($results as $result) {
             $date = $this->getFormattedDateFromGroupBy($groupBy, date_create($result->date_created));
 
-            $resultMap[$date] = $result->amount;
+            $resultMap[$date] = (float)$result->amount;
         }
 
         return $resultMap;
     }
 
     /**
+     * @unreleased update schema to match actual response
      * @since 4.10.0
      */
     public function getSchema(): array
@@ -217,22 +218,21 @@ class GetCampaignRevenue implements RestRoute
         return [
             'title'   => 'campaign-revenue',
             'description' => esc_html__('Provides daily revenue data for a specific campaign.', 'give'),
-            'type'    => 'object',
-            'properties' => [
-                'date' => [
-                    'type'        => 'string',
-                    'format'      => 'date',
-                    'description' => esc_html__('The date for the revenue entry (YYYY-MM-DD).', 'give'),
-                    'required' => true
-                ],
-                'amount' => [
-                    'oneOf' => [
-                        [ 'type' => 'number' ],
-                        [ 'type' => 'string' ],
+            'type' => 'array',
+            'readonly' => true,
+            'items' => [
+                'type' => 'object',
+                'properties' => [
+                    'date' => [
+                        'type' => 'string',
+                        'format' => 'date',
+                        'description' => esc_html__('The date for the revenue entry (YYYY-MM-DD).', 'give'),
                     ],
-                    'description' => esc_html__('The amount of revenue received on the given date.', 'give'),
-                    'required' => true
-                ],
+                    'amount' => [
+                        'type' => ['integer', 'number'],
+                        'description' => esc_html__('The amount of revenue received on the given date.', 'give'),
+                    ],
+                ]
             ]
         ];
     }
