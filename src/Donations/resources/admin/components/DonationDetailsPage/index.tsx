@@ -23,7 +23,6 @@ import useDonationRefund from '@givewp/donations/hooks/useDonationRefund';
 import { useDonationAmounts } from '@givewp/donations/hooks';
 import { useDispatch } from '@wordpress/data';
 import { store as coreDataStore } from '@wordpress/core-data';
-import { getDonationEmbeds } from '@givewp/donations/common';
 
 const { donationStatuses } = getDonationOptionsWindowData();
 

@@ -2,17 +2,12 @@
  * External dependencies
  */
 import {useFormContext, useFormState} from 'react-hook-form';
-import {formatToDateTimeLocalInput, convertLocalDateTimeToISOString} from '@givewp/admin/common';
-
-/**
- * WordPress dependencies
- */
-import {__} from '@wordpress/i18n';
 
 /**
  * Internal dependencies
  */
 import {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
+import {formatToDateTimeLocalInput, convertLocalDateTimeToISOString} from '@givewp/admin/common';
 
 /**
  *
