@@ -28,6 +28,7 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased add schema
      * @since 4.4.0
      */
     public function register_routes()
@@ -58,6 +59,7 @@ class DonorStatisticsController extends WP_REST_Controller
                         'default' => 0,
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ],
         ]);
     }
@@ -137,5 +139,36 @@ class DonorStatisticsController extends WP_REST_Controller
         $response->add_links($links);
 
         return $response;
+    }
+
+
+    /**
+     * @unreleased
+     */
+    public function getSchema(): array
+    {
+        return [
+            'title' => 'givewp/donor-statistics',
+            'description' => esc_html__('Provides statistics for a specific donor.', 'give'),
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('The Donor ID.', 'give'),
+                    'required' => true,
+                ],
+                'mode' => [
+                    'type' => 'string',
+                    'description' => esc_html__('The mode of donations to filter by "live" or "test".', 'give'),
+                    'default' => 'live',
+                    'enum' => ['live', 'test'],
+                ],
+                'campaignId' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('The ID of the campaign to filter donors by - zero or empty mean "all campaigns".', 'give'),
+                    'default' => 0,
+                ],
+            ],
+        ];
     }
 }
