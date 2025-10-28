@@ -18,6 +18,7 @@ import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 import {amountFormatter} from '@givewp/campaigns/utils';
 import TextareaControl from '../CampaignDetailsPage/Components/TextareaControl';
 import {CampaignGoalInputAttributes, isValidGoalType} from '../../constants/goalInputAttributes';
+import { formatToDateTimeLocalInput } from '@givewp/admin/common';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -122,10 +123,8 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             image: campaign?.image ?? '',
             goalType: campaign?.goalType ?? 'amount',
             goal: campaign?.goal ?? null,
-            startDateTime: getDateString(
-                campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
-            ),
-            endDateTime: campaign?.endDateTime?.date ? getDateString(new Date(campaign.startDateTime.date)) : '',
+            startDateTime: formatToDateTimeLocalInput(campaign?.startDateTime?.date ?? ''),
+            endDateTime: formatToDateTimeLocalInput(campaign?.endDateTime?.date ?? ''),
         },
     });
 
@@ -172,8 +171,8 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         }
 
         try {
-            inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
-            inputs.endDateTime = inputs.endDateTime && getDateString(new Date(inputs.endDateTime));
+            inputs.startDateTime = formatToDateTimeLocalInput(inputs.startDateTime);
+            inputs.endDateTime = inputs.endDateTime && formatToDateTimeLocalInput(inputs.endDateTime);
 
             const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');

@@ -6,6 +6,9 @@ use DateTime;
 use Give\API\REST\V3\Routes\Campaigns\Permissions\CampaignPermissions;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Controllers\CampaignRequestController;
+use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Campaigns\ValueObjects\CampaignStatus;
+use Give\Campaigns\ValueObjects\CampaignType;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -142,6 +145,7 @@ class RegisterCampaignRoutes
                         'default' => '',
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -249,7 +253,7 @@ class RegisterCampaignRoutes
                         'required' => false,
                         'validate_callback' => 'rest_parse_date',
                         'sanitize_callback' => function ($value) {
-                            return new DateTime($value);
+                            return new DateTime($value, wp_timezone());
                         },
                     ],
                     'endDateTime' => [
@@ -258,7 +262,7 @@ class RegisterCampaignRoutes
                         'required' => false,
                         'validate_callback' => 'rest_parse_date',
                         'sanitize_callback' => function ($value) {
-                            return new DateTime($value);
+                            return new DateTime($value, wp_timezone());
                         },
                     ],
                 ] ),
@@ -313,61 +317,126 @@ class RegisterCampaignRoutes
                 'id' => [
                     'type' => 'integer',
                     'description' => esc_html__('Campaign ID', 'give'),
+                    'readonly' => true,
+                ],
+                'pagePermalink' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Campaign page permalink', 'give'),
+                    'readonly' => true,
                 ],
                 'title' => [
                     'type' => 'string',
                     'description' => esc_html__('Campaign title', 'give'),
                     'minLength' => 3,
                     'maxLength' => 128,
-                    'errorMessage' => esc_html__('Campaign title is required', 'give'),
+                    'required' => true,
                 ],
                 'status' => [
-                    'enum' => ['active', 'inactive', 'draft', 'pending', 'processing', 'failed', 'archived'],
+                    'enum' => [CampaignStatus::ACTIVE,CampaignStatus::ARCHIVED],
                     'description' => esc_html__('Campaign status', 'give'),
+                    'default' => CampaignStatus::ACTIVE,
                 ],
                 'shortDescription' => [
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                     'description' => esc_html__('Campaign short description', 'give'),
                     'maxLength' => 120,
                 ],
+                'longDescription' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Campaign long description', 'give'),
+                ],
+                'logo' => [
+                    'type' => ['string', 'null'],
+                    'format' => 'uri',
+                    'description' => esc_html__('Campaign logo URL', 'give'),
+                ],
+                'image' => [
+                    'type' => ['string', 'null'],
+                    'format' => 'uri',
+                    'description' => esc_html__('Campaign featured image URL', 'give'),
+                ],
                 'primaryColor' => [
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                     'description' => esc_html__('Primary color for the campaign', 'give'),
                 ],
                 'secondaryColor' => [
-                    'type' => 'string',
+                    'type' => ['string', 'null'],
                     'description' => esc_html__('Secondary color for the campaign', 'give'),
                 ],
                 'goal' => [
-                    'type' => 'number',
+                    'type' => 'integer',
                     'description' => esc_html__('Campaign goal', 'give'),
                     'errorMessage' => esc_html__('Must be a number', 'give'),
-                ],
-                'goalProgress' => [
-                    'type' => 'number',
-                    'description' => esc_html__('Campaign goal progress', 'give'),
+                    'required' => true,
                 ],
                 'goalType' => [
-                    'enum' => [
-                        'amount',
-                        'donations',
-                        'donors',
-                        'amountFromSubscriptions',
-                        'subscriptions',
-                        'donorsFromSubscriptions',
-                    ],
+                    'enum' => array_values(CampaignGoalType::toArray()),
                     'description' => esc_html__('Campaign goal type', 'give'),
+                    'required' => true,
+                ],
+                'goalStats' => [
+                    'type' => 'object',
+                    'description' => esc_html__('Campaign goal statistics', 'give'),
+                    'readonly' => true,
+                    'properties' => [
+                        'actual' => [
+                            'type' => ['integer', 'number'],
+                            'description' => esc_html__('Actual progress value', 'give'),
+                        ],
+                        'actualFormatted' => [
+                            'type' => ['string', 'number'],
+                            'description' => esc_html__('Formatted actual progress', 'give'),
+                        ],
+                        'percentage' => [
+                            'type' => 'number',
+                            'description' => esc_html__('Progress percentage', 'give'),
+                        ],
+                        'goal' => [
+                            'type' => ['integer', 'number'],
+                            'description' => esc_html__('Goal value', 'give'),
+                        ],
+                        'goalFormatted' => [
+                            'type' => ['string', 'number'],
+                            'description' => esc_html__('Formatted goal value', 'give'),
+                        ],
+                    ],
+                ],
+                'type' => [
+                    'type' => 'string',
+                    'enum' => array_values(CampaignType::toArray()),
+                    'description' => esc_html__('Campaign type', 'give'),
+                    'default' => CampaignType::CORE,
                 ],
                 'defaultFormId' => [
                     'type' => 'integer',
                     'description' => esc_html__('Default campaign form ID', 'give'),
+                    'readonly' => true,
+                ],
+                'defaultFormTitle' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Default campaign form title', 'give'),
+                    'readonly' => true,
                 ],
                 'pageId' => [
-                    'type' => 'integer',
+                    'type' => ['integer', 'null'],
                     'description' => esc_html__('Campaign page ID', 'give'),
                 ],
+                'startDate' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Campaign start date (Y-m-d H:i:s)', 'give'),
+                    'format' => 'date-time',
+                ],
+                'endDate' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Campaign end date (Y-m-d H:i:s) or null', 'give'),
+                    'format' => 'date-time',
+                ],
+                'createdAt' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Campaign creation date (Y-m-d H:i:s)', 'give'),
+                    'format' => 'date-time',
+                ],
             ],
-            'required' => ['id', 'title', 'goal', 'goalType'],
             'allOf' => [
                 [
                     'if' => [
@@ -381,7 +450,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 //'minimum' => 1,
-                                'type' => 'number',
+                                'type' => 'integer',
                             ],
                         ],
                         'errorMessage' => [
@@ -403,7 +472,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number',
+                                'type' => 'integer',
                             ],
                         ],
                         'errorMessage' => [
@@ -425,7 +494,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number',
+                                'type' => 'integer',
                             ],
                         ],
                         'errorMessage' => [
@@ -447,7 +516,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number',
+                                'type' => 'integer',
                             ],
                         ],
                         'errorMessage' => [
@@ -469,7 +538,7 @@ class RegisterCampaignRoutes
                         'properties' => [
                             'goal' => [
                                 'minimum' => 1,
-                                'type' => 'number',
+                                'type' => 'integer',
                             ],
                         ],
                         'errorMessage' => [
