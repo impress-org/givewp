@@ -381,6 +381,7 @@ class SubscriptionNotesController extends WP_REST_Controller
             '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/subscription-note',
             'type' => 'object',
+            'description' => esc_html__('Subscription Note routes for CRUD operations', 'give'),
             'properties' => [
                 'id' => [
                     'description' => __('Unique identifier for the note.', 'give'),

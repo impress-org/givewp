@@ -14,6 +14,7 @@ use WP_REST_Server;
 class GetCampaignComments implements RestRoute
 {
     /**
+     * @unreleased add schema
      * @since 4.0.0
      */
     public function registerRoute()
@@ -23,27 +24,28 @@ class GetCampaignComments implements RestRoute
             CampaignRoute::CAMPAIGN . '/comments',
             [
                 [
-                    'methods'             => WP_REST_Server::READABLE,
-                    'callback'            => [$this, 'handleRequest'],
+                    'methods' => WP_REST_Server::READABLE,
+                    'callback' => [$this, 'handleRequest'],
                     'permission_callback' => '__return_true',
                 ],
                 'args' => [
-                    'id'        => [
-                        'type'              => 'integer',
-                        'required'          => true,
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
                         'sanitize_callback' => 'absint',
                     ],
-                    'perPage'   => [
-                        'type'              => 'integer',
-                        'required'          => false,
+                    'perPage' => [
+                        'type' => 'integer',
+                        'required' => false,
                         'sanitize_callback' => 'absint',
                     ],
                     'anonymous' => [
-                        'type'     => 'boolean',
+                        'type' => 'boolean',
                         'required' => false,
                         'default'  => true,
                     ],
                 ],
+                'schema' => [$this, 'getSchema'],
             ]
         );
     }
@@ -61,7 +63,7 @@ class GetCampaignComments implements RestRoute
 
         $campaign = Campaign::find($campaignId);
 
-        if (!$campaign) {
+        if ( ! $campaign) {
             return new WP_REST_Response('Campaign not found', 404);
         }
 
@@ -72,7 +74,7 @@ class GetCampaignComments implements RestRoute
             ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors');
 
 
-        if (!$anonymous) {
+        if ( ! $anonymous) {
             $query->where('anonymousMeta.meta_value', '1', '!=');
         }
 
@@ -94,13 +96,40 @@ class GetCampaignComments implements RestRoute
 
             return [
                 'donorName' => $donorName,
-                'comment'   => $donation->comment,
+                'comment' => $donation->comment,
                 'anonymous' => $donation->anonymous === '1',
-                'date'      => human_time_diff(strtotime($donation->date)),
-                'avatar'    => (string) get_avatar_url($donation->email),
+                'date' => human_time_diff(strtotime($donation->date)),
+                'avatar' => (string)get_avatar_url($donation->email),
             ];
         }, $donations);
 
         return new WP_REST_Response($formattedComments);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function getSchema(): array
+    {
+        return [
+            'title' => 'givewp/campaign-comments',
+            'description' => esc_html__('Provides comments for a specific campaign.', 'give'),
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('The Campaign ID.', 'give'),
+                    'required' => true,
+                ],
+                'perPage' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Comments per page', 'give'),
+                ],
+                'anonymous' => [
+                    'type' => 'boolean',
+                    'description' => esc_html__('Include anonymous comments', 'give'),
+                ]
+            ]
+        ];
     }
 }

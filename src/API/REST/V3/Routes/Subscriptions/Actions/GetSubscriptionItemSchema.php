@@ -19,6 +19,7 @@ class GetSubscriptionItemSchema
         return [
             '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/subscription',
+            'description' => esc_html__('Subscription routes for CRUD operations', 'give'),
             'type' => 'object',
             'properties' => [
                 'id' => [

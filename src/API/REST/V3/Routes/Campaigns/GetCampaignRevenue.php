@@ -216,13 +216,14 @@ class GetCampaignRevenue implements RestRoute
     {
         return [
             'title'   => 'campaign-revenue',
-            'description' => 'Provides daily revenue data for a specific campaign.',
+            'description' => esc_html__('Provides daily revenue data for a specific campaign.', 'give'),
             'type'    => 'object',
             'properties' => [
                 'date' => [
                     'type'        => 'string',
                     'format'      => 'date',
                     'description' => esc_html__('The date for the revenue entry (YYYY-MM-DD).', 'give'),
+                    'required' => true
                 ],
                 'amount' => [
                     'oneOf' => [
@@ -230,9 +231,9 @@ class GetCampaignRevenue implements RestRoute
                         [ 'type' => 'string' ],
                     ],
                     'description' => esc_html__('The amount of revenue received on the given date.', 'give'),
+                    'required' => true
                 ],
-            ],
-            'required' => ['date', 'amount'],
+            ]
         ];
     }
 }
