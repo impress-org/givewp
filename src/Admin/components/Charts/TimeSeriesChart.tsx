@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import Chart from 'react-apexcharts';
 import {ApexOptions} from 'apexcharts';
 import apiFetch from '@wordpress/api-fetch';
+import {getDate} from '@wordpress/date';
+import { formatTimestamp } from '@givewp/admin/common';
 
 /**
  * @since 4.4.0
@@ -16,9 +18,7 @@ type TimeSeriesChartProps = {
  * @since 4.4.0
  */
 type Donation = {
-    createdAt: {
-        date: string;
-    };
+    createdAt: string;
     amount: {
         value: string;
     };
@@ -56,14 +56,14 @@ const normalizeData = (donations: Donation[]): DataPoint[] => {
 
     // Group donations by date with sum amounts - fill missing dates with 0.
     donations.forEach((donation) => {
-        const date = donation.createdAt.date.split(' ')[0];
+        const date = getDate(donation.createdAt);
         const amount = parseFloat(donation.amount.value);
-        map.set(date, (map.get(date) || 0) + amount);
+        map.set(date.toISOString().split('T')[0], (map.get(date.toISOString().split('T')[0]) || 0) + amount);
     });
 
     // Set graph range & points for single donations.
     if (map.size === 1) {
-        const donationDate = donations[0]?.createdAt.date.split(' ')[0];
+        const donationDate = donations[0]?.createdAt.split(' ')[0];
         const graphRange = getCenteredGraphRange(donationDate);
 
         return graphRange.map((date) => ({
@@ -82,6 +82,7 @@ const normalizeData = (donations: Donation[]): DataPoint[] => {
 };
 
 /**
+ * @unreleased updated the date format
  * @since 4.4.0
  */
 export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}: TimeSeriesChartProps) {
@@ -102,7 +103,9 @@ export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}:
         },
         xaxis: {
             type: 'datetime',
-            labels: {format: 'MMM dd, yyyy'},
+            labels: {
+                formatter: (val) => formatTimestamp(val, false),
+            },
         },
         yaxis: {
             min: 0,

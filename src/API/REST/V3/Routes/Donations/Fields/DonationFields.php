@@ -18,6 +18,7 @@ class DonationFields
     /**
      * Process field values for special data types before setting them on the donation model.
      *
+     * @unreleased update money object format to use value and currency
      * @since 4.8.0
      *
      * @param string $key
@@ -30,9 +31,9 @@ class DonationFields
             case 'amount':
             case 'feeAmountRecovered':
                 if (is_array($value)) {
-                    // Handle Money object array format: ['amount' => 100.00, 'currency' => 'USD']
-                    if (isset($value['amount']) && isset($value['currency'])) {
-                        return Money::fromDecimal($value['amount'], $value['currency']);
+                    // Handle Money object array format: ['value' => 100.00, 'currency' => 'USD']
+                    if (isset($value['value']) && isset($value['currency'])) {
+                        return Money::fromDecimal($value['value'], $value['currency']);
                     }
                 }
                 return $value;

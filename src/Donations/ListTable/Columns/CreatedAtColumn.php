@@ -6,6 +6,7 @@ namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * @since 2.24.0
@@ -39,6 +40,8 @@ class CreatedAtColumn extends ModelColumn
     }
 
     /**
+     * @unreleased updated the date format
+     *
      * @since 2.24.0
      *
      * @inheritDoc
@@ -47,8 +50,6 @@ class CreatedAtColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $format = _x('m/d/Y \a\t g:i a', 'human-readable datetime format', 'give');
-
-        return $model->createdAt->format($format);
+       return Temporal::getFormattedDateTimeUsingTimeZoneAndFormatSettings($model->createdAt);
     }
 }

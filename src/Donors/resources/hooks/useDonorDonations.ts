@@ -4,16 +4,13 @@
 import {useEntityRecords} from '@wordpress/core-data';
 
 /**
+ * @unreleased updated the date and amount types
  * @since 4.4.0
  */
 export interface DonationResponse {
     id: number;
     formTitle: string;
-    createdAt: {
-        date: string;
-        timezone_type: number;
-        timezone: string;
-    };
+    createdAt: string;
     status: string;
     amount: {
         value: string;

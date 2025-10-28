@@ -10,6 +10,9 @@ import Spinner from '@givewp/src/Admin/components/Spinner';
 import Grid, { GridCard } from '@givewp/src/Admin/components/Grid';
 
 import styles from './styles.module.scss';
+import { getDonationEmbeds } from '@givewp/donations/common';
+import { Campaign } from '@givewp/campaigns/admin/components/types';
+import { Donor } from '@givewp/donors/admin/components/types';
 
 /**
  * @since 4.6.0
@@ -19,16 +22,14 @@ export type DonationSummaryGridProps = {
 };
 
 /**
+ * @unreleased updated to accept Campaign type
  * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
-export function CampaignCard({donation}: {donation: Donation}) {
-    const {campaign, hasResolved: hasResolvedCampaign} = useCampaignEntityRecord(donation?.campaignId);
-
+export function CampaignCard({campaign}: {campaign: Campaign}) {
     return (
         <GridCard heading={__('Campaign name', 'give')} headingId="campaign-name">
-            {!hasResolvedCampaign && <Spinner />}
-            {hasResolvedCampaign && campaign && (
+            {campaign && (
                 <a
                     href={`edit.php?post_type=give_forms&page=give-campaigns&id=${campaign?.id}&tab=overview`}
                     className={styles.campaignLink}
@@ -41,29 +42,23 @@ export function CampaignCard({donation}: {donation: Donation}) {
 }
 
 /**
+ * @unreleased updated to accept Donor type
  * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
-export function DonorCard({donation}: {donation: Donation}) {
-    const {record: donor, hasResolved: hasResolvedDonor, isResolving: isResolvingDonor} = useDonorEntityRecord(donation?.donorId);
-
+export function DonorCard({donor}: {donor: Donor}) {
     return (
         <GridCard heading={__('Associated donor', 'give')} headingId="donor">
-         {!hasResolvedDonor && <Spinner />}
-         {hasResolvedDonor && (
-            <>
-                {donor ? (
-                    <>
-                        <a className={styles.donorLink} href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`}>
-                            {donor.name}
-                        </a>
-                        <p>{donor.email}</p>
-                    </>
-                ) : (
-                    <p>{__('No donor associated with this donation', 'give')}</p>
-                )}
-            </>
-         )}
+            {donor ? (
+                <>
+                    <a className={styles.donorLink} href={`edit.php?post_type=give_forms&page=give-donors&view=overview&id=${donor.id}`}>
+                        {donor.name}
+                    </a>
+                    <p>{donor.email}</p>
+                </>
+            ) : (
+                <p>{__('No donor associated with this donation', 'give')}</p>
+            )}
         </GridCard>
     );
 }
@@ -88,6 +83,7 @@ export function GatewayNotice() {
 }
 
 /**
+ * @unreleased updated to use embedded data
  * @unrleased add Grid components & variables
  * @since 4.6.0
  */
@@ -97,10 +93,11 @@ export default function DonationSummaryGrid({
      const isRecurringDonation = !!donation?.subscriptionId;
      const badgeLabel = isRecurringDonation ? __('Recurring', 'give') : __('One-time', 'give');
      const subscriptionPageUrl = donation?.subscriptionId ? `edit.php?post_type=give_forms&page=give-subscriptions&id=${donation?.subscriptionId}` : null;
-     const createdAt = donation?.createdAt?.date;
+     const createdAt = donation?.createdAt;
      const paymentMethod = donation?.gateway?.id;
      const gatewayLabel = donation?.gateway?.label;
      const gatewayLink = donation?.gateway?.transactionUrl;
+     const {campaign, donor} = getDonationEmbeds(donation);
 
     return (
         <OverviewPanel className={styles.overviewPanel}>
@@ -110,12 +107,12 @@ export default function DonationSummaryGrid({
 
           <Grid ariaLabel={__('Donation summary', 'give')}>
                 {/* Campaign Name */}
-                <CampaignCard donation={donation} />
+                <CampaignCard campaign={campaign} />
 
                 {/* Donation Info */}
                 <GridCard heading={__('Donation info', 'give')} headingId="donation-info">
                     <time className={styles.date} dateTime={createdAt}>
-                        {formatTimestamp(createdAt, true)}
+                        {formatTimestamp(createdAt)}
                     </time>
                     <div className={styles.donationType}>
                         <span className={styles.badge} aria-label={badgeLabel}>
@@ -136,7 +133,7 @@ export default function DonationSummaryGrid({
                 </GridCard>
 
                 {/* Associated Donor */}
-                <DonorCard donation={donation} />
+                <DonorCard donor={donor} />
 
                 {/* Gateway Info */}
                 <GridCard heading={__('Gateway', 'give')} headingId="gateway">

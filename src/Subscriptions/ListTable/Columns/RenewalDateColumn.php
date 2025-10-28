@@ -6,6 +6,7 @@ namespace Give\Subscriptions\ListTable\Columns;
 
 use Give\Subscriptions\Models\Subscription;
 use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 
 /**
  * @since 2.24.0
@@ -38,6 +39,7 @@ class RenewalDateColumn extends ModelColumn
     }
 
     /**
+     * @unreleased updated the date format
      * @since 2.24.0
      *
      * @inheritDoc
@@ -46,8 +48,6 @@ class RenewalDateColumn extends ModelColumn
      */
     public function getCellValue($model, $locale = ''): string
     {
-        $format = _x('jS F Y', 'human-readable date format', 'give');
-
-        return $model->renewsAt->format($format);
+        return Temporal::getFormattedDateTimeUsingTimeZoneAndFormatSettings($model->renewsAt);
     }
 }

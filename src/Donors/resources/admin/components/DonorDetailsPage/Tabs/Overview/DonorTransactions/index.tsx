@@ -7,7 +7,7 @@ import {formatTimestamp} from '@givewp/src/Admin/utils';
 import {amountFormatter} from '@givewp/src/Admin/utils';
 import {getDonorOptionsWindowData} from '@givewp/donors/utils';
 import {useDonorDonations} from '@givewp/donors/hooks/useDonorDonations';
-
+import {createInterpolateElement} from '@wordpress/element';
 import styles from './styles.module.scss';
 
 /**
@@ -56,7 +56,7 @@ export default function DonorTransactions({donorId}: DonorTransactionsProps) {
         : donations.map((donation) => ({
             campaign: donation.formTitle,
             status: statusMap[donation.status] || 'Pending',
-            timestamp: donation.createdAt.date,
+            timestamp: donation.createdAt,
             amount: amountFormatter(donation.amount.currency).format(parseFloat(donation.amount.value)),
         }));
 
@@ -95,7 +95,12 @@ export default function DonorTransactions({donorId}: DonorTransactionsProps) {
                         <div className={styles.transactionInfo}>
                             <div className={styles.campaign}>
                                 <span>
-                                    Donated to <strong>{campaign}</strong> Campaign.
+                                    {createInterpolateElement(
+                                        __('Donated to <campaign />', 'give'),
+                                        {
+                                            campaign: <strong>{campaign}</strong>
+                                        }
+                                    )}
                                 </span>
                                 <span className={classnames(styles.status, styles[status.toLowerCase()])}>
                                     {status}

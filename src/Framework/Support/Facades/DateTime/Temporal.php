@@ -19,6 +19,7 @@ use Give\Framework\Support\Facades\Facade;
  * @method static DateTimeInterface withEndOfDay(DateTimeInterface $dateTime)
  * @method static DateTimeInterface immutableOrClone(DateTimeInterface $dateTime)
  * @method static int getDateTimestamp(string $date, string $timezone = '')
+ * @method static string getFormattedDateTimeUsingTimeZoneAndFormatSettings(DateTimeInterface $dateTime)
  */
 class Temporal extends Facade
 {

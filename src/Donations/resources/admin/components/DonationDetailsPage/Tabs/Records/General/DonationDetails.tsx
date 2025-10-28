@@ -14,13 +14,14 @@ import {useFormContext, useFormState} from 'react-hook-form';
  * Internal dependencies
  */
 import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
-import {formatDateTimeLocal} from '@givewp/components/AdminDetailsPage/utils';
+
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from '../styles.module.scss';
 import StatusField from '@givewp/admin/fields/Status';
 import CampaignFormField from '@givewp/admin/fields/CampaignFormGroup';
 // TODO: Move to shared components
 import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
+import {DateTimeLocalField} from '@givewp/admin/fields';
 
 const {donationStatuses, intlTelInputSettings} = getDonationOptionsWindowData();
 
@@ -34,7 +35,6 @@ export default function DonationDetails() {
     const {getValues, setValue, register, watch, setError} = useFormContext();
     const {errors} = useFormState();
     const amount = getValues('amount');
-    const createdAt = watch('createdAt');
 
     return (
         <AdminSection
@@ -56,7 +56,7 @@ export default function DonationDetails() {
                                 setValue(
                                     'amount',
                                     {
-                                        amount: Number(value ?? 0),
+                                        value: Number(value ?? 0),
                                         currency: amount.currency,
                                     },
                                     {shouldDirty: true}
@@ -69,32 +69,12 @@ export default function DonationDetails() {
                     </AdminSectionField>
                 </div>
 
-                <AdminSectionField error={errors.createdAt?.message as string}>
-                    <label htmlFor="date">{__('Donation date and time', 'give')}</label>
-                    <input
-                        type="datetime-local"
-                        id="date"
-                        value={formatDateTimeLocal(createdAt?.date)}
-                        onChange={(e) => {
-                            setValue(
-                                'createdAt',
-                                {
-                                    date: formatDateTimeLocal(e.target.value),
-                                    timezone: createdAt?.timezone,
-                                    timezone_type: createdAt?.timezone_type,
-                                },
-                                {shouldDirty: true}
-                            );
-                        }}
-                    />
-                </AdminSectionField>
+                <DateTimeLocalField name="createdAt" label={__('Donation date and time', 'give')} />
 
                 <CampaignFormField
                     campaignIdFieldName="campaignId"
                     formIdFieldName="formId"
                 />
-
-                {/* TODO: Add Fund field */}
 
                 <AdminSectionField error={errors.comment?.message as string}>
                     <label htmlFor="comment">{__('Donor comment', 'give')}</label>

@@ -20,7 +20,6 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
-use WP_REST_Request;
 use WP_REST_Server;
 
 /**
@@ -32,6 +31,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
+     * @unreleased updated the date format
      * @since 4.0.0
      */
     public function testGetDonationShouldReturnAllModelProperties()
@@ -58,16 +58,8 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
 
-        // Verify DateTime object structure for createdAt and updatedAt
-        $this->assertIsArray($data[0]['createdAt']);
-        $this->assertArrayHasKey('date', $data[0]['createdAt']);
-        $this->assertArrayHasKey('timezone', $data[0]['createdAt']);
-        $this->assertArrayHasKey('timezone_type', $data[0]['createdAt']);
-
-        $this->assertIsArray($data[0]['updatedAt']);
-        $this->assertArrayHasKey('date', $data[0]['updatedAt']);
-        $this->assertArrayHasKey('timezone', $data[0]['updatedAt']);
-        $this->assertArrayHasKey('timezone_type', $data[0]['updatedAt']);
+        $this->assertIsString($data[0]['createdAt']);
+        $this->assertIsString($data[0]['updatedAt']);
 
         $this->assertEquals([
             'id' => $donation->id,
@@ -76,8 +68,8 @@ class GetDonationsRouteTest extends RestApiTestCase
             'formTitle' => $donation->formTitle,
             'purchaseKey' => $donation->purchaseKey,
             'donorIp' => $donation->donorIp,
-            'createdAt' => $data[0]['createdAt'], // Keep actual DateTime object structure
-            'updatedAt' => $data[0]['updatedAt'], // Keep actual DateTime object structure
+            'createdAt' => $data[0]['createdAt'],
+            'updatedAt' => $data[0]['updatedAt'],
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),
@@ -111,7 +103,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @since 4.0.0
+    * @since 4.0.0
      *
      * @throws Exception
      */
@@ -429,7 +421,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @since        4.0.0
+     * @since 4.0.0
      *
      * @dataProvider sortableColumnsDataProvider
      *
@@ -449,6 +441,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation1 = $this->createDonation1($campaign1->id);
         $donation2 = $this->createDonation2($campaign1->id);
         $donation3 = $this->createDonation3($campaign2->id);
+
 
         $route = '/' . DonorRoute::NAMESPACE . '/donations';
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -658,6 +651,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased updated the amount values
      * @since 4.0.0
      *
      * @throws Exception
@@ -668,8 +662,8 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation1 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'amount' => new Money(100, 'USD'),
-            'feeAmountRecovered' => new Money(10, 'USD'),
+            'amount' => Money::fromDecimal(91.27, 'USD'),
+            'feeAmountRecovered' => Money::fromDecimal(1.27, 'USD'),
             'firstName' => 'A',
             'lastName' => 'A',
             'mode' => DonationMode::LIVE(),
@@ -683,6 +677,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased updated the amount values
      * @since 4.0.0
      *
      * @throws Exception
@@ -693,8 +688,8 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'amount' => new Money(200, 'USD'),
-            'feeAmountRecovered' => new Money(20, 'USD'),
+            'amount' => Money::fromDecimal(221.38, 'USD'),
+            'feeAmountRecovered' => Money::fromDecimal(1.38, 'USD'),
             'firstName' => 'B',
             'lastName' => 'B',
             'mode' => DonationMode::LIVE(),
@@ -708,6 +703,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased updated the amount values
      * @since 4.0.0
      *
      * @throws Exception
@@ -718,8 +714,8 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation3 = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'anonymous' => $anonymous,
-            'amount' => new Money(300, 'USD'),
-            'feeAmountRecovered' => new Money(30, 'USD'),
+            'amount' => Money::fromDecimal(316.45, 'USD'),
+            'feeAmountRecovered' => Money::fromDecimal(1.45, 'USD'),
             'firstName' => 'C',
             'lastName' => 'C',
             'mode' => DonationMode::LIVE(),
@@ -763,6 +759,10 @@ class GetDonationsRouteTest extends RestApiTestCase
      */
     private function getExpectedValue(Donation $donation, string $column)
     {
+        if ($column === 'createdAt' || $column === 'updatedAt') {
+            return $donation->{$column}->format('Y-m-d\TH:i:s');
+        }
+
         return $donation->{$column};
     }
 }

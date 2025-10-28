@@ -20,6 +20,7 @@ class GetDonationRouteTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
+     * @unreleased updated the date format
      * @since 4.0.0
      */
     public function testGetDonationShouldReturnAllModelProperties()
@@ -47,16 +48,8 @@ class GetDonationRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
 
-        // Verify DateTime object structure for createdAt and updatedAt
-        $this->assertIsArray($data['createdAt']);
-        $this->assertArrayHasKey('date', $data['createdAt']);
-        $this->assertArrayHasKey('timezone', $data['createdAt']);
-        $this->assertArrayHasKey('timezone_type', $data['createdAt']);
-
-        $this->assertIsArray($data['updatedAt']);
-        $this->assertArrayHasKey('date', $data['updatedAt']);
-        $this->assertArrayHasKey('timezone', $data['updatedAt']);
-        $this->assertArrayHasKey('timezone_type', $data['updatedAt']);
+        $this->assertIsString($data['createdAt']);
+        $this->assertIsString($data['updatedAt']);
 
         $this->assertEquals([
             'id' => $donation->id,
@@ -65,8 +58,8 @@ class GetDonationRouteTest extends RestApiTestCase
             'formTitle' => $donation->formTitle,
             'purchaseKey' => $donation->purchaseKey,
             'donorIp' => $donation->donorIp,
-            'createdAt' => $data['createdAt'], // Keep actual DateTime object structure
-            'updatedAt' => $data['updatedAt'], // Keep actual DateTime object structure
+            'createdAt' => $data['createdAt'],
+            'updatedAt' => $data['updatedAt'],
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),

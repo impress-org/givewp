@@ -169,6 +169,9 @@ trait SchemaValidationTrait
             return 'string';
         }
         if (is_array($value)) {
+            if (empty($value)) {
+                return 'array';
+            }
             // In JSON Schema, associative arrays are objects, indexed arrays are arrays
             return array_keys($value) === range(0, count($value) - 1) ? 'array' : 'object';
         }

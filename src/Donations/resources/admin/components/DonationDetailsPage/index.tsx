@@ -54,12 +54,12 @@ const StatusBadge = ({ status, isTest }: { status: string, isTest: boolean }) =>
  * @since 4.6.0
  */
 export default function DonationDetailsPage() {
-    const { adminUrl, donationsAdminUrl} = getDonationOptionsWindowData();
+    const {adminUrl, donationsAdminUrl} = getDonationOptionsWindowData();
     const [showConfirmationDialog, setShowConfirmationDialog] = useState<string | null>(null);
-    const { record: donation } = useDonationEntityRecord();
+    const {record: donation} = useDonationEntityRecord();
     const {formatter} = useDonationAmounts(donation);
     const {canRefund, refund, isRefunding, isRefunded} = useDonationRefund(donation);
-    const { deleteEntityRecord } = useDispatch( coreDataStore );
+    const {deleteEntityRecord} = useDispatch( coreDataStore );
 
     const ContextMenuItems = ({ className }: { className: string }) => {
         return (

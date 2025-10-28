@@ -1,6 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {dateI18n} from '@wordpress/date';
-import {amountFormatter, getRelativeTimeString} from '@givewp/src/Admin/utils';
+import {amountFormatter, formatTimestamp, getRelativeTimeString} from '@givewp/admin/common';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
 import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/utils';
 import {Header, OverviewPanel, SummaryTable, type SummaryItem} from '@givewp/admin/components';
@@ -26,7 +25,7 @@ export default function Summary({donorId}: SummaryProps) {
         : [
               {
                   label: __('Donor Since', 'give'),
-                  value: dateI18n('M j, Y', donor?.createdAt.date, undefined),
+                  value: formatTimestamp(donor?.createdAt.date, false),
               },
               {
                   label: __('Last Contributed', 'give'),
@@ -40,7 +39,7 @@ export default function Summary({donorId}: SummaryProps) {
                       ? (
                           <div className={styles.summaryTableValues}>
                             <p>{amountFormatter(currency).format(parseFloat(stats.donations.first.amount))}</p>
-                            <p>{dateI18n('M j, Y', stats.donations.first.date, undefined)}</p>
+                            <p>{formatTimestamp(stats.donations.first.date, false)}</p>
                           </div>
                         )
                       : __('None', 'give'),

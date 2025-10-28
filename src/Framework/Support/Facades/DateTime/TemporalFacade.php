@@ -129,4 +129,19 @@ class TemporalFacade
             return 0;
         }
     }
+
+    /**
+     * Get the formatted date time using the site specific time zone and format settings
+     *
+     * @unreleased
+     */
+    public function getFormattedDateTimeUsingTimeZoneAndFormatSettings(DateTimeInterface $dateTime): string
+    {
+        $dateFormat = get_option('date_format');
+        $timeFormat = get_option('time_format');
+
+        $format = sprintf('%s \a\t %s', $dateFormat, $timeFormat);
+
+        return wp_date($format, $dateTime->getTimestamp(), wp_timezone());
+    }
 }

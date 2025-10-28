@@ -38,6 +38,7 @@ class LatestDonationColumn extends ModelColumn
     }
 
     /**
+     * @unreleased updated date format
      * @since 2.24.0
      *
      * @inheritDoc
@@ -52,8 +53,6 @@ class LatestDonationColumn extends ModelColumn
             return '-';
         }
 
-        $format = _x('m/d/Y \a\t g:i a', 'human-readable datetime format', 'give');
-
-        return Temporal::toDateTime($latestDonation)->format($format);
+        return Temporal::getFormattedDateTimeUsingTimeZoneAndFormatSettings(Temporal::toDateTime($latestDonation));
     }
 }
