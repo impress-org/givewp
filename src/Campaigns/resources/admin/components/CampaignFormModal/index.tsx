@@ -18,43 +18,10 @@ import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 import {amountFormatter} from '@givewp/campaigns/utils';
 import TextareaControl from '../CampaignDetailsPage/Components/TextareaControl';
 import {CampaignGoalInputAttributes, isValidGoalType} from '../../constants/goalInputAttributes';
-import { formatToDateTimeLocalInput } from '@givewp/admin/common';
+import {formatToDateTimeLocalInput} from '@givewp/admin/common';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
 const currencyFormatter = amountFormatter(currency);
-
-/**
- * Get the next sharp hour
- *
- * @since 4.0.0
- */
-const getNextSharpHour = (hoursToAdd: number) => {
-    const date = new Date();
-    date.setHours(date.getHours() + hoursToAdd, 0, 0, 0);
-
-    return date;
-};
-
-/**
- * Format a given date to be used in datetime inputs
- *
- * @since 4.0.0
- */
-const getDateString = (date: Date) => {
-    const offsetInMilliseconds = date.getTimezoneOffset() * 60 * 1000;
-    const dateWithOffset = new Date(date.getTime() - offsetInMilliseconds);
-
-    return removeTimezoneFromDateISOString(dateWithOffset.toISOString());
-};
-
-/**
- * Remove timezone from date string
- *
- * @since 4.0.0
- */
-const removeTimezoneFromDateISOString = (date: string) => {
-    return date.slice(0, -5);
-};
 
 /**
  * @since 4.0.0
