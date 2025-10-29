@@ -7,7 +7,6 @@ export interface CampaignModalProps {
         apiRoot: string;
         apiNonce: string;
     };
-    title: string;
     campaign?: Campaign;
 }
 

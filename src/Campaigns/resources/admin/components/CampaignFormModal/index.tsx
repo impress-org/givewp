@@ -18,7 +18,6 @@ import {getGiveCampaignsListTableWindowData} from '../CampaignsListTable';
 import {amountFormatter} from '@givewp/campaigns/utils';
 import TextareaControl from '../CampaignDetailsPage/Components/TextareaControl';
 import {CampaignGoalInputAttributes, isValidGoalType} from '../../constants/goalInputAttributes';
-import {formatToDateTimeLocalInput} from '@givewp/admin/common';
 
 const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
 const currencyFormatter = amountFormatter(currency);
@@ -77,9 +76,10 @@ const GoalTypeOption = ({type, label, description, selected, register}: GoalType
 /**
  * Campaign Form Modal component
  *
+ * @unreleased remove unused date inputs
  * @since 4.0.0
  */
-export default function CampaignFormModal({isOpen, handleClose, apiSettings, title, campaign}: CampaignModalProps) {
+export default function CampaignFormModal({isOpen, handleClose, apiSettings, campaign}: CampaignModalProps) {
     const API = new CampaignsApi(apiSettings);
     const [step, setStep] = useState<number>(1);
 
@@ -90,8 +90,6 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
             image: campaign?.image ?? '',
             goalType: campaign?.goalType ?? 'amount',
             goal: campaign?.goal ?? null,
-            startDateTime: formatToDateTimeLocalInput(campaign?.startDateTime?.date ?? ''),
-            endDateTime: formatToDateTimeLocalInput(campaign?.endDateTime?.date ?? ''),
         },
     });
 
@@ -138,9 +136,6 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         }
 
         try {
-            inputs.startDateTime = formatToDateTimeLocalInput(inputs.startDateTime);
-            inputs.endDateTime = inputs.endDateTime && formatToDateTimeLocalInput(inputs.endDateTime);
-
             const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
             const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
 
@@ -325,22 +320,6 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 )}
                             </div>
                         )}
-                        {/*<div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
-                        <div className="givewp-campaigns__form-column">
-                            <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>
-                            <input
-                                type="datetime-local"
-                                {...register('startDateTime', {
-                                    required: __('The campaign must have a start date!', 'give'),
-                                })}
-                                aria-invalid={errors.startDateTime ? 'true' : 'false'}
-                            />
-                        </div>
-                        <div className="givewp-campaigns__form-column">
-                            <label htmlFor="endDateTime">{__('End date and time', 'give')}</label>
-                            <input type="datetime-local" {...register('endDateTime')} />
-                        </div>
-                    </div>*/}
                         <div
                             className="givewp-campaigns__form-row givewp-campaigns__form-row--half"
                             style={{marginBottom: 0}}

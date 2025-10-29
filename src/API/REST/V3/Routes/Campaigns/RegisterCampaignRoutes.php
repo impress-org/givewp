@@ -423,12 +423,12 @@ class RegisterCampaignRoutes
                 ],
                 'startDate' => [
                     'type' => ['string', 'null'],
-                    'description' => esc_html__('Campaign start date (Y-m-d H:i:s)', 'give'),
+                    'description' => esc_html__('Campaign start date', 'give'),
                     'format' => 'date-time',
                 ],
                 'endDate' => [
                     'type' => ['string', 'null'],
-                    'description' => esc_html__('Campaign end date (Y-m-d H:i:s) or null', 'give'),
+                    'description' => esc_html__('Campaign end date', 'give'),
                     'format' => 'date-time',
                 ],
                 'createdAt' => [
