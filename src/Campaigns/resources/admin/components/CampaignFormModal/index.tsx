@@ -79,17 +79,17 @@ const GoalTypeOption = ({type, label, description, selected, register}: GoalType
  * @unreleased remove unused date inputs
  * @since 4.0.0
  */
-export default function CampaignFormModal({isOpen, handleClose, apiSettings, campaign}: CampaignModalProps) {
+export default function CampaignFormModal({isOpen, handleClose, apiSettings}: CampaignModalProps) {
     const API = new CampaignsApi(apiSettings);
     const [step, setStep] = useState<number>(1);
 
     const methods = useForm<CampaignFormInputs>({
         defaultValues: {
-            title: campaign?.title ?? '',
-            shortDescription: campaign?.shortDescription ?? '',
-            image: campaign?.image ?? '',
-            goalType: campaign?.goalType ?? 'amount',
-            goal: campaign?.goal ?? null,
+            title: '',
+            shortDescription: '',
+            image: '',
+            goalType: 'amount',
+            goal: null,
         },
     });
 
@@ -136,8 +136,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, cam
         }
 
         try {
-            const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
-            const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
+            const response = await API.fetchWithArgs('', inputs, 'POST');
 
             handleClose(response);
         } catch (error) {
