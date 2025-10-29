@@ -1,5 +1,5 @@
 /**
- * @unreleased
+ * @since 4.12.0
  */
 export default function FilterByIcon() {
     return (

@@ -8,7 +8,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 4.12.0
  */
 class ListSubscriptionStats extends Endpoint
 {
@@ -23,7 +23,7 @@ class ListSubscriptionStats extends Endpoint
     protected $request;
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function registerRoute()
     {
@@ -48,7 +48,7 @@ class ListSubscriptionStats extends Endpoint
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
@@ -62,10 +62,10 @@ class ListSubscriptionStats extends Endpoint
     /**
      * Get subscription statistics for total contributions and active subscriptions
      *
-     * @unreleased
+     * @since 4.12.0
      */
     public function getSubscriptionStatistics(): array
-    {    
+    {
         $testMode = $this->request->get_param('testMode');
 
         $query = DB::table('posts')

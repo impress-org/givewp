@@ -493,7 +493,7 @@ class DonorRepository
     }
 
     /**
-     * @unreleased filter by status
+     * @since 4.12.0 filter by status
      * @since 2.20.0
      *
      * @return string|null

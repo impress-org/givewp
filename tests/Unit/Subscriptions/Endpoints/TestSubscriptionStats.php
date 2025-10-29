@@ -16,15 +16,15 @@ use WP_REST_Response;
 
 /**
  * Test class for ListSubscriptionStats endpoint.
- * 
- * @unreleased
+ *
+ * @since 4.12.0
  */
 class TestSubscriptionStats extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldReturnCorrectStatisticsForTotalActiveSubscriptions()
     {
@@ -59,14 +59,14 @@ class TestSubscriptionStats extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldReturnCorrectStatisticsForTotalContributionsOfSubscriptionDonationsOnly()
     {
         $subscription1 = Subscription::factory()->create([
             'status' => SubscriptionStatus::ACTIVE(),
         ]);
-        
+
         $subscription2 = Subscription::factory()->create([
             'status' => SubscriptionStatus::ACTIVE(),
         ]);
@@ -92,7 +92,7 @@ class TestSubscriptionStats extends TestCase
             'mode' => DonationMode::LIVE(),
         ]);
         give()->payment_meta->update_meta($donation3->id, 'subscription_id', $subscription2->id);
-        
+
 
         // Create donation without subscription ID (should NOT be counted)
         Donation::factory()->create([

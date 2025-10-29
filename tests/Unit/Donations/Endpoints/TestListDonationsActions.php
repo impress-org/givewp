@@ -12,14 +12,14 @@ use WP_REST_Request;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.12.0
  */
 class TestListDonationsActions extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function setUp(): void
     {
@@ -32,7 +32,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     private function setUpAdminUser(): void
     {
@@ -47,7 +47,7 @@ class TestListDonationsActions extends TestCase
     // ===================
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldPermanentlyDeleteDonation()
     {
@@ -80,7 +80,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldPermanentlyDeleteMultipleDonations()
     {
@@ -119,7 +119,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldReturnErrorWhenDonationNotFoundForDelete()
     {
@@ -142,7 +142,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldHandleMixedValidAndInvalidDonationIdsForDelete()
     {
@@ -177,7 +177,7 @@ class TestListDonationsActions extends TestCase
     // ==================
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldMoveDonationToTrash()
     {
@@ -211,7 +211,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldMoveMultipleDonationsToTrash()
     {
@@ -254,7 +254,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldReturnErrorWhenDonationNotFoundForTrash()
     {
@@ -277,7 +277,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldHandleMixedValidAndInvalidDonationIdsForTrash()
     {
@@ -312,7 +312,7 @@ class TestListDonationsActions extends TestCase
     // =====================
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldRestoreDonationFromTrash()
     {
@@ -347,7 +347,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldRestoreMultipleDonationsFromTrash()
     {
@@ -393,7 +393,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldReturnErrorWhenDonationNotFoundForUntrash()
     {
@@ -416,7 +416,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function testShouldHandleMixedValidAndInvalidDonationIdsForUntrash()
     {
@@ -449,7 +449,7 @@ class TestListDonationsActions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function getMockRequest(string $action = 'delete'): WP_REST_Request
     {

@@ -29,7 +29,7 @@ class DonorInformationColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Update column label
+     * @since 4.12.0 Update column label
      * @since 2.24.0
      *
      * @inheritDoc
@@ -40,7 +40,7 @@ class DonorInformationColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Remove gravatar from donor information column
+     * @since 4.12.0 Remove gravatar from donor information column
      * @since 3.20.0 Use email to get avatar URL
      * @since 2.24.0
      *

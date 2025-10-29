@@ -355,7 +355,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @throws Exception
      */

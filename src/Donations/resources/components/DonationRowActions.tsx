@@ -5,7 +5,7 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import { useSWRConfig } from 'swr';
 
 /**
- * @unreleased Revert delete action to use Donation Actions API and add trash and restore actions.
+ * @since 4.12.0 Revert delete action to use Donation Actions API and add trash and restore actions.
  * @since 4.6.0 Soft delete donations with Donation v3 API.
  */
 export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters, listTableApi}) => {

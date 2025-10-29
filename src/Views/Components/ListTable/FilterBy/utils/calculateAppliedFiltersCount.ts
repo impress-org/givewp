@@ -3,7 +3,7 @@ import { FilterByGroupedOptions } from '../types';
 /**
  * Calculate the total count of applied filters
  *
- * @unreleased
+ * @since 4.12.0
  */
 export function calculateAppliedFiltersCount(
     groupedOptions: FilterByGroupedOptions[],

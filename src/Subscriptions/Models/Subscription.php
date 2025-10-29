@@ -280,7 +280,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      */
     public function unTrash(): bool
     {

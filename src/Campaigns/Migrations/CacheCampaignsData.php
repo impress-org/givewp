@@ -53,7 +53,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
-     * @unreleased add early return if no campaigns found
+     * @since 4.12.0 add early return if no campaigns found
      * @since 4.8.0
      *
      * @throws DatabaseMigrationException
@@ -134,7 +134,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
-     * @unreleased Add campaign type filter
+     * @since 4.12.0 Add campaign type filter
      */
     public function getBatchItemsAfter($lastId): ?array
     {

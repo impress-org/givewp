@@ -391,7 +391,7 @@ class DonationRepository
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @throws Exception
      */

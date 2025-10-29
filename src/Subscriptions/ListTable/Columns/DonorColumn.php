@@ -8,7 +8,7 @@ use Give\Framework\ListTable\ModelColumn;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased add sort column
+ * @since 4.12.0 add sort column
  * @since 2.24.0
  *
  * @extends ModelColumn<Subscription>

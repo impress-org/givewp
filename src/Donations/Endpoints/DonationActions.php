@@ -18,7 +18,7 @@ class DonationActions extends Endpoint
     /**
      * @inheritDoc
      *
-     * @unreleased Remove force parameter from delete action and add trash and untrash actions
+     * @since 4.12.0 Remove force parameter from delete action and add trash and untrash actions
      * @since 4.10.0 Add force parameter to delete action
      */
     public function registerRoute()
@@ -96,7 +96,7 @@ class DonationActions extends Endpoint
     }
 
     /**
-     * @unreleased Add trash and untrash actions
+     * @since 4.12.0 Add trash and untrash actions
      * @since 4.3.1 add permissions check for delete
      * @since 2.20.0
      *

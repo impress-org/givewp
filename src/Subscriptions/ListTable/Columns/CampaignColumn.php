@@ -8,7 +8,7 @@ use Give\Framework\ListTable\ModelColumn;
 use Give\Subscriptions\Models\Subscription;
 
 /**
- * @unreleased
+ * @since 4.12.0
  *
  * @extends ModelColumn<Subscription>
  */
@@ -17,7 +17,7 @@ class CampaignColumn extends ModelColumn
     protected $sortColumn = 'campaignId';
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @inheritDoc
      */
@@ -27,7 +27,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @inheritDoc
      */
@@ -37,7 +37,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @inheritDoc
      *

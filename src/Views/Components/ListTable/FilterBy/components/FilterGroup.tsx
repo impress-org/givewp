@@ -11,7 +11,7 @@ interface FilterGroupProps {
 }
 
 /**
- * @unreleased
+ * @since 4.12.0
  */
 export function FilterGroup({
     group,

@@ -32,7 +32,7 @@ class ListSubscriptions extends Endpoint
     /**
      * @inheritDoc
      *
-     * @unreleased Add format parameter to start and end dates, replacing custom validation callback
+     * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
     {
@@ -161,7 +161,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
-     * @unreleased add sort by donor name
+     * @since 4.12.0 add sort by donor name
      * @since 2.24.0
      *
      * @return array
@@ -218,7 +218,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
-     * @unreleased Add "status" where condition
+     * @since 4.12.0 Add "status" where condition
      * @since 4.11.0 fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model
      * @since 2.21.0

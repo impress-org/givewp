@@ -183,7 +183,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.12.0
      *
      * @throws Exception|InvalidArgumentException
      */

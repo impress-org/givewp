@@ -9,7 +9,7 @@ import { FilterGroup } from './components/FilterGroup';
 import FilterByIcon from './Icon';
 
 /**
- * @unreleased
+ * @since 4.12.0
  */
 export default function FilterBy({ groupedOptions, onChange, values }: FilterByProps) {
     const { isOpen, setIsOpen, dropdownRef } = useDropdownToggle();

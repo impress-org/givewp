@@ -204,7 +204,7 @@ const ListTableBlankSlate = (
  * then this config must use those same keys: "totalContributions", "activeSubscriptions".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
- * @unreleased
+ * @since 4.12.0
  */
 const statsConfig: Record<string, StatConfig> = {
     totalContributions: {
