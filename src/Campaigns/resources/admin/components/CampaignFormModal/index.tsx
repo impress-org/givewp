@@ -164,7 +164,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, cam
                             <span>{__("Give your campaign a title that tells donors what it's about.", 'give')}</span>
                             <input
                                 type="text"
-                                {...register('title', {required: __('The campaign must have a title!', 'give')})}
+                                {...register('title', {required: __('The campaign title is required.', 'give')})}
                                 aria-invalid={errors.title ? 'true' : 'false'}
                                 placeholder={__('Eg. Holiday Food Drive', 'give')}
                                 onBlur={validateTitle}
