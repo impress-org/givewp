@@ -379,6 +379,13 @@ function transformFormDataForValidation(data: any, schema: JSONSchemaType<any>):
 
                 // Only process fields that are present in the form OR are required
                 if (propSchema && (isFieldPresent || isRequired)) {
+                    // Coerce empty string to null for nullable fields to avoid format/type conflicts (e.g., uri, email)
+                    if (Array.isArray(propSchema.type) && propSchema.type.includes('null')) {
+                        if (['', null, undefined].includes(result[key])) {
+                            result[key] = null;
+                            return; // Skip further processing for this field
+                        }
+                    }
                     // Handle number types
                     if (propSchema.type === 'number' && typeof value === 'string') {
                         // Convert string to number

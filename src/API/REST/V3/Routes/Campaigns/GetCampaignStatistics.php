@@ -107,16 +107,23 @@ class GetCampaignStatistics implements RestRoute
         return [
             'title' => 'givewp/campaign-statistics',
             'description' => esc_html__('Provides statistics for a specific campaign.', 'give'),
-            'type' => 'object',
-            'properties' => [
-                'id' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('The Campaign ID.', 'give'),
-                    'required' => true,
-                ],
-                'rangeInDays' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('The date range in days.', 'give'),
+            'type' => 'array',
+            'readonly' => true,
+            'items' => [
+                'type' => 'object',
+                'properties' => [
+                    'amountRaised' => [
+                        'type' => ['integer', 'number'],
+                        'description' => esc_html__('The amount raised for the campaign.', 'give'),
+                    ],
+                    'donationCount' => [
+                        'type' => 'integer',
+                        'description' => esc_html__('The number of donations for the campaign.', 'give'),
+                    ],
+                    'donorCount' => [
+                        'type' => 'integer',
+                        'description' => esc_html__('The number of donors for the campaign.', 'give'),
+                    ],
                 ],
             ],
         ];

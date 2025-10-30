@@ -23,39 +23,6 @@ const {currency, isRecurringEnabled} = getGiveCampaignsListTableWindowData();
 const currencyFormatter = amountFormatter(currency);
 
 /**
- * Get the next sharp hour
- *
- * @since 4.0.0
- */
-const getNextSharpHour = (hoursToAdd: number) => {
-    const date = new Date();
-    date.setHours(date.getHours() + hoursToAdd, 0, 0, 0);
-
-    return date;
-};
-
-/**
- * Format a given date to be used in datetime inputs
- *
- * @since 4.0.0
- */
-const getDateString = (date: Date) => {
-    const offsetInMilliseconds = date.getTimezoneOffset() * 60 * 1000;
-    const dateWithOffset = new Date(date.getTime() - offsetInMilliseconds);
-
-    return removeTimezoneFromDateISOString(dateWithOffset.toISOString());
-};
-
-/**
- * Remove timezone from date string
- *
- * @since 4.0.0
- */
-const removeTimezoneFromDateISOString = (date: string) => {
-    return date.slice(0, -5);
-};
-
-/**
  * @since 4.0.0
  */
 const getGoalTypeIcon = (type: string) => {
@@ -109,23 +76,20 @@ const GoalTypeOption = ({type, label, description, selected, register}: GoalType
 /**
  * Campaign Form Modal component
  *
+ * @unreleased remove unused date inputs
  * @since 4.0.0
  */
-export default function CampaignFormModal({isOpen, handleClose, apiSettings, title, campaign}: CampaignModalProps) {
+export default function CampaignFormModal({isOpen, handleClose, apiSettings}: CampaignModalProps) {
     const API = new CampaignsApi(apiSettings);
     const [step, setStep] = useState<number>(1);
 
     const methods = useForm<CampaignFormInputs>({
         defaultValues: {
-            title: campaign?.title ?? '',
-            shortDescription: campaign?.shortDescription ?? '',
-            image: campaign?.image ?? '',
-            goalType: campaign?.goalType ?? 'amount',
-            goal: campaign?.goal ?? null,
-            startDateTime: getDateString(
-                campaign?.startDateTime?.date ? new Date(campaign?.startDateTime?.date) : getNextSharpHour(1)
-            ),
-            endDateTime: campaign?.endDateTime?.date ? getDateString(new Date(campaign.startDateTime.date)) : '',
+            title: '',
+            shortDescription: '',
+            image: '',
+            goalType: 'amount',
+            goal: null,
         },
     });
 
@@ -172,11 +136,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
         }
 
         try {
-            inputs.startDateTime = getDateString(new Date(inputs.startDateTime));
-            inputs.endDateTime = inputs.endDateTime && getDateString(new Date(inputs.endDateTime));
-
-            const endpoint = campaign?.id ? `/campaign/${campaign.id}` : '';
-            const response = await API.fetchWithArgs(endpoint, inputs, 'POST');
+            const response = await API.fetchWithArgs('', inputs, 'POST');
 
             handleClose(response);
         } catch (error) {
@@ -203,7 +163,7 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                             <span>{__("Give your campaign a title that tells donors what it's about.", 'give')}</span>
                             <input
                                 type="text"
-                                {...register('title', {required: __('The campaign must have a title!', 'give')})}
+                                {...register('title', {required: __('The campaign title is required.', 'give')})}
                                 aria-invalid={errors.title ? 'true' : 'false'}
                                 placeholder={__('Eg. Holiday Food Drive', 'give')}
                                 onBlur={validateTitle}
@@ -359,22 +319,6 @@ export default function CampaignFormModal({isOpen, handleClose, apiSettings, tit
                                 )}
                             </div>
                         )}
-                        {/*<div className="givewp-campaigns__form-row givewp-campaigns__form-row--half">
-                        <div className="givewp-campaigns__form-column">
-                            <label htmlFor="startDateTime">{__('Start date and time', 'give')}</label>
-                            <input
-                                type="datetime-local"
-                                {...register('startDateTime', {
-                                    required: __('The campaign must have a start date!', 'give'),
-                                })}
-                                aria-invalid={errors.startDateTime ? 'true' : 'false'}
-                            />
-                        </div>
-                        <div className="givewp-campaigns__form-column">
-                            <label htmlFor="endDateTime">{__('End date and time', 'give')}</label>
-                            <input type="datetime-local" {...register('endDateTime')} />
-                        </div>
-                    </div>*/}
                         <div
                             className="givewp-campaigns__form-row givewp-campaigns__form-row--half"
                             style={{marginBottom: 0}}
