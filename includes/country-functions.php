@@ -650,7 +650,6 @@ function give_get_country_locale() {
 			'HU' => [
 				'state' => [
 					'label'  => __( 'County', 'give' ),
-					'hidden' => true,
 				],
 			],
 			'ID' => [
