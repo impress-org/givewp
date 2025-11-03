@@ -280,6 +280,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix: Resolved a compatibility issue with the Divi color pickers default palette setting
 * Fix: Resolved an issue with Loco Translate that was preventing custom translation files from being loaded properly
 * Dev: Updated the schema for Campaigns and Donations in the v3 REST API
+* Dev: Updated MCP server to be compatible with Angie 1.0.2
 
 = 4.12.0: October 29th, 2025 =
 * New: The admin subscription list table has been upgraded to a new design with additional sorting, filters and statistics
