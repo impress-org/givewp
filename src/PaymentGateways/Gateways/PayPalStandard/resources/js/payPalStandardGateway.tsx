@@ -25,7 +25,7 @@ const paypalStandardGateway: Gateway = {
                 rowGap: "1rem",
                 textAlign: "center"
             }}>
-                <PayPalLogo/>
+                <PayPalLogo />
                 <b>{fields.heading}</b>
                 <div><b>{fields.subheading}:</b> {fields.body}</div>
             </div>

@@ -4,7 +4,7 @@ import {useRef, useEffect} from 'react';
 // adapted from https://viralganatra.com/how-to-fix-swr-to-work%20correctly-with-initialData-or-fallbackData/
 
 export default function useFallbackAsInitial(useSWRNext) {
-    return (key, fetcher, config) => {
+    return function useFallbackAsInitialMiddleware(key, fetcher, config) {
         const hasMounted = useRef(false);
 
         useEffect(() => {
@@ -18,6 +18,6 @@ export default function useFallbackAsInitial(useSWRNext) {
             revalidateOnMount: hasMounted.current && config?.fallbackData,
         });
 
-        return swr;
-    };
+		return swr;
+	};
 }

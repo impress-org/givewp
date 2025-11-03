@@ -5,7 +5,7 @@ const Component = function () {
                 <path
                     d="M130 65.8535C130 29.9689 100.885 0.853516 65 0.853516C29.1154 0.853516 0 29.9689 0 65.8535C0 101.738 29.1154 130.854 65 130.854C100.885 130.854 130 101.738 130 65.8535Z"
                     fill="#66BB6A" />
-                <mask id="mask0" mask-type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="130" height="131">
+                <mask id="mask0" type="alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="130" height="131">
                     <path
                         d="M130 65.8535C130 29.9689 100.885 0.853516 65 0.853516C29.1154 0.853516 0 29.9689 0 65.8535C0 101.738 29.1154 130.854 65 130.854C100.885 130.854 130 101.738 130 65.8535Z"
                         fill="black" />

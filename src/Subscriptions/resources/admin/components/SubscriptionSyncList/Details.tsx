@@ -40,7 +40,7 @@ export default function SyncDetails({ isAccurate, platform, gateway }: SyncDetai
           <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
           <p className={styles.detailValue}>{platform ? capitalizeFirstLetter(platform) : __('Completed', 'give')}</p>
         </div>
-        <CheckCircleIcon aria-label={__('Payment synchronization successful', 'give')}/>
+        <CheckCircleIcon aria-label={__('Payment synchronization successful', 'give')} />
         <div className={styles.detailItem}>
           <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
           <p className={styles.detailValue}>{gateway ? capitalizeFirstLetter(gateway) : __('Completed', 'give')}</p>
@@ -118,7 +118,7 @@ export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: S
             <p className={styles.detailLabel}>{__('Platform', 'give')}</p>
             <p className={styles.detailValue}>{platform ? capitalizeFirstLetter(platform) : __('Completed', 'give')}</p>
           </div>
-          <CheckCircleIcon aria-label={__('Payment synchronization successful', 'give')}/>
+          <CheckCircleIcon aria-label={__('Payment synchronization successful', 'give')} />
           <div className={styles.detailItem}>
             <p className={styles.detailLabel}>{__('Gateway', 'give')}</p>
             <p className={styles.detailValue}>{gateway ? capitalizeFirstLetter(gateway) : __('Completed', 'give')}</p>
@@ -144,7 +144,7 @@ export function SyncPaymentDetails({ payment, platform, gateway, isAccurate }: S
       >
         <div className={classnames(styles.paymentItem)}>
             <div className={styles.paymentIcon}>
-                <HandHeartIcon aria-label={__('Donation icon', 'give')}/>
+                <HandHeartIcon aria-label={__('Donation icon', 'give')} />
             </div>
             <div className={styles.paymentsContent}>
                 <p className={styles.paymentDescription}>{description}</p>

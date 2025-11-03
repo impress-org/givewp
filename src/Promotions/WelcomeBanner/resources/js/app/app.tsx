@@ -11,11 +11,12 @@ import RightContentSection from './components/Sections/RightContentSection';
  */
 export default function App() {
     const {showBanner, dismissBanner} = useDismiss();
-    const {assets} = getWindowData();
 
     if (!showBanner) {
         return;
     }
+
+    const {assets} = getWindowData();
 
     return (
         <div className={'givewp-welcome-banner'}>
