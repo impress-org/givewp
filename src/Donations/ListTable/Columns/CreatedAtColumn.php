@@ -40,7 +40,7 @@ class CreatedAtColumn extends ModelColumn
     }
 
     /**
-     * @unreleased updated the date format
+     * @since 4.13.0 updated the date format
      *
      * @since 2.24.0
      *

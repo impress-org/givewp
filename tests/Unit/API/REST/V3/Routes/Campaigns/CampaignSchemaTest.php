@@ -15,7 +15,7 @@ use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Tests\Unit\API\REST\V3\SchemaValidationTrait;
 
 /**
- * @unreleased
+ * @since 4.13.0
  */
 class CampaignSchemaTest extends RestApiTestCase
 {
@@ -24,7 +24,7 @@ class CampaignSchemaTest extends RestApiTestCase
     use SchemaValidationTrait;
 
     /**
-        * @unreleased
+        * @since 4.13.0
      */
     public function testCampaignSchemaShouldMatchActualResponse()
     {
@@ -59,7 +59,7 @@ class CampaignSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function testCampaignCollectionSchemaShouldMatchActualResponse()
     {
@@ -94,7 +94,7 @@ class CampaignSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function testCampaignStatisticsSchemaShouldMatchActualResponse()
     {
@@ -130,7 +130,7 @@ class CampaignSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function testCampaignRevenueSchemaShouldMatchActualResponse()
     {

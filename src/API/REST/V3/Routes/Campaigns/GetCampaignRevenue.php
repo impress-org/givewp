@@ -210,7 +210,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @unreleased update schema to match actual response
+     * @since 4.13.0 update schema to match actual response
      * @since 4.10.0
      */
     public function getSchema(): array

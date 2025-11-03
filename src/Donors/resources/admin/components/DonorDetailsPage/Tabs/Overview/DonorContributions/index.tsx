@@ -16,7 +16,7 @@ interface DonorContributionsProps {
 }
 
 /**
- * @unreleased update the donations endpoint to account for sensitive data and anonymous donations
+ * @since 4.13.0 update the donations endpoint to account for sensitive data and anonymous donations
  * @since 4.5.0
  */
 export default function DonorContributions({donorId}: DonorContributionsProps) {

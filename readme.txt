@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.12.0
+Stable tag: 4.13.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.13.0: November 5th, 2025 =
+* Enhancement: Updated the date and time formatting throughout the new admin screens to respect WordPress settings for timezone, date format, and time format
+* Fix: Resolved an issue with form field manager checkboxes and conditional logic
+* Fix: Resolved an issue with the legacy future status of donations
+* Fix: Resolved a compatibility issue with the Divi color pickers default palette setting
+* Fix: Resolved an issue with Loco Translate that was preventing custom translation files from being loaded properly
+* Dev: Updated the schema for Campaigns and Donations in the v3 REST API
 
 = 4.12.0: October 29th, 2025 =
 * New: The admin subscription list table has been upgraded to a new design with additional sorting, filters and statistics

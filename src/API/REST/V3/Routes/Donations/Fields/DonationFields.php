@@ -18,7 +18,7 @@ class DonationFields
     /**
      * Process field values for special data types before setting them on the donation model.
      *
-     * @unreleased update money object format to use value and currency
+     * @since 4.13.0 update money object format to use value and currency
      * @since 4.8.0
      *
      * @param string $key

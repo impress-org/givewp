@@ -4,7 +4,7 @@
 import {useEntityRecords} from '@wordpress/core-data';
 
 /**
- * @unreleased updated the date and amount types
+ * @since 4.13.0 updated the date and amount types
  * @since 4.4.0
  */
 export interface DonationResponse {

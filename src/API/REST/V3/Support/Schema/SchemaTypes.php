@@ -5,7 +5,7 @@ namespace Give\API\REST\V3\Support\Schema;
 use Give\API\REST\V3\Support\Schema\SchemaType;
 
 /**
- * @unreleased
+ * @since 4.13.0
  */
 class SchemaTypes
 {
@@ -13,7 +13,7 @@ class SchemaTypes
     /**
      * This is used to define a money schema for fields that use the Give\Framework\Support\ValueObjects class.
      *
-     * @unreleased
+     * @since 4.13.0
      */
     public static function money(): SchemaType
     {

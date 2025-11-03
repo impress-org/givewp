@@ -8,7 +8,7 @@ namespace Give\Helpers;
 class Language
 {
     /**
-     * @unreleased Added early return if the textdomain is loaded
+     * @since 4.13.0 Added early return if the textdomain is loaded
      * @since 3.0.0
      */
     public static function load()

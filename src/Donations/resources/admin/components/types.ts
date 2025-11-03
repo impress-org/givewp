@@ -15,7 +15,7 @@ export type Money = {
 }
 
 /**
- * @unreleased added _embedded property and updated money types
+ * @since 4.13.0 added _embedded property and updated money types
  * @since 4.6.0
  */
 export type Donation = {

@@ -82,7 +82,7 @@ const normalizeData = (donations: Donation[]): DataPoint[] => {
 };
 
 /**
- * @unreleased updated the date format
+ * @since 4.13.0 updated the date format
  * @since 4.4.0
  */
 export default function TimeSeriesChart({endpoint, amountFormatter, title = ''}: TimeSeriesChartProps) {

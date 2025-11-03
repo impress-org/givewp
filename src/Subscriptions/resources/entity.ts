@@ -3,7 +3,7 @@ import {dispatch} from '@wordpress/data';
 import {__} from '@wordpress/i18n';
 
 /**
- * @unreleased added anonymousDonors to baseURLParams
+ * @since 4.13.0 added anonymousDonors to baseURLParams
  * @since 4.11.0 Added gatewaySubscriptionId to baseURLParams
  * @since 4.10.0 added _embed
  * @since 4.8.0

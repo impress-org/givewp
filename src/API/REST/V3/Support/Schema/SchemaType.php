@@ -5,7 +5,7 @@ namespace Give\API\REST\V3\Support\Schema;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
- * @unreleased
+ * @since 4.13.0
  */
 class SchemaType implements Arrayable
 {
@@ -18,7 +18,7 @@ class SchemaType implements Arrayable
     public bool $readonly = false;
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function type(string $type): self
     {
@@ -28,7 +28,7 @@ class SchemaType implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function readonly(bool $readonly = true): self
     {
@@ -38,7 +38,7 @@ class SchemaType implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function nullable(bool $nullable = true): self
     {
@@ -48,7 +48,7 @@ class SchemaType implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function description(string $description): self
     {
@@ -58,7 +58,7 @@ class SchemaType implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function properties(array $properties): self
     {
@@ -68,7 +68,7 @@ class SchemaType implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function additional(array $additional): self
     {
@@ -78,7 +78,7 @@ class SchemaType implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function required(bool $required = true): self
     {
@@ -88,7 +88,7 @@ class SchemaType implements Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function toArray(): array
     {

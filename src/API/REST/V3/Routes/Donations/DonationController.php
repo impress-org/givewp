@@ -505,7 +505,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased updated the amount sort columns to CAST as DECIMAL
+     * @since 4.13.0 updated the amount sort columns to CAST as DECIMAL
      * @since 4.6.0
      */
     public function getSortColumn(string $sortColumn): string
@@ -621,7 +621,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased updated embeddable links
+     * @since 4.13.0 updated embeddable links
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.6.0
      * @throws Exception
@@ -857,7 +857,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Updated schema to match actual response, add schema description
+     * @since 4.13.0 Updated schema to match actual response, add schema description
      * @since 4.8.0 Change default status to complete
      * @since 4.7.0 Change title to givewp/donation and add custom fields schema
      * @since 4.6.1 Change type of billing address properties to accept null values

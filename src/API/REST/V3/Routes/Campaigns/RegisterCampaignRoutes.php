@@ -302,7 +302,7 @@ class RegisterCampaignRoutes
     }
 
     /**
-     * @unreleased add schema description
+     * @since 4.13.0 add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.0.0
      */

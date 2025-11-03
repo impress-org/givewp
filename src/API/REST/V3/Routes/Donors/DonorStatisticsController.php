@@ -28,7 +28,7 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased add schema
+     * @since 4.13.0 add schema
      * @since 4.4.0
      */
     public function register_routes()
@@ -143,7 +143,7 @@ class DonorStatisticsController extends WP_REST_Controller
 
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function getSchema(): array
     {

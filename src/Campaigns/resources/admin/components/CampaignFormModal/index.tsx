@@ -76,7 +76,7 @@ const GoalTypeOption = ({type, label, description, selected, register}: GoalType
 /**
  * Campaign Form Modal component
  *
- * @unreleased remove unused date inputs
+ * @since 4.13.0 remove unused date inputs
  * @since 4.0.0
  */
 export default function CampaignFormModal({isOpen, handleClose, apiSettings}: CampaignModalProps) {

@@ -20,7 +20,7 @@ use WP_REST_Server;
 class GetCampaignStatistics implements RestRoute
 {
     /**
-     * @unreleased add schema
+     * @since 4.13.0 add schema
      * @since 4.0.0
      */
     public function registerRoute()
@@ -55,7 +55,7 @@ class GetCampaignStatistics implements RestRoute
     }
 
     /**
-     * @unreleased return 404 error if campaign is not found
+     * @since 4.13.0 return 404 error if campaign is not found
      * @since      4.0.0
      *
      * @throws Exception
@@ -100,7 +100,7 @@ class GetCampaignStatistics implements RestRoute
     }
 
     /**
-     * @unreleased
+     * @since 4.13.0
      */
     public function getSchema(): array
     {
