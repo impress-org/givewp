@@ -3,18 +3,22 @@
 namespace Unit\API\REST\V3\Routes\Campaigns;
 
 use Exception;
-use Give\API\REST\V3\Routes\Campaigns\GetCampaignRevenue;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Tests\TestCase;
+use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use WP_REST_Request;
+use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 
-class GetCampaignRevenueTest extends TestCase
+/**
+ * @unreleased updated to use REST API test case
+ * @since 4.0.0
+ */
+class GetCampaignRevenueTest extends RestApiTestCase
 {
     use RefreshDatabase;
+    use HasDefaultWordPressUsers;
 
     /**
      * @since 4.0.0
@@ -41,11 +45,9 @@ class GetCampaignRevenueTest extends TestCase
             ]);
         }
 
-        $request = new WP_REST_Request('GET', "/give-api/v2/campaigns/$campaign->id/revenue");
+        $request = $this->createRequest('GET', "/givewp/v3/campaigns/$campaign->id/revenue", [], 'administrator');
         $request->set_param('id', $campaign->id);
-
-        $route = new GetCampaignRevenue();
-        $response = $route->handleRequest($request);
+        $response = $this->dispatchRequest($request);
 
         $this->assertEquals([
             $this->getResultData('2025-03-01', '10'),
@@ -58,7 +60,7 @@ class GetCampaignRevenueTest extends TestCase
             $this->getResultData('2025-03-08'),
             $this->getResultData('2025-03-09'),
             $this->getResultData('2025-03-10'),
-        ], $response->data);
+        ], $response->get_data());
     }
 
     /**
@@ -90,11 +92,9 @@ class GetCampaignRevenueTest extends TestCase
             ]);
         }
 
-        $request = new WP_REST_Request('GET', "/give-api/v2/campaigns/$campaign->id/revenue");
+        $request = $this->createRequest('GET', "/givewp/v3/campaigns/$campaign->id/revenue", [], 'administrator');
         $request->set_param('id', $campaign->id);
-
-        $route = new GetCampaignRevenue();
-        $response = $route->handleRequest($request);
+        $response = $this->dispatchRequest($request);
 
         $this->assertEquals([
             $this->getResultData('2024-01', '30'),
@@ -113,7 +113,7 @@ class GetCampaignRevenueTest extends TestCase
             $this->getResultData('2025-02'),
             $this->getResultData('2025-03', '30'),
 
-        ], $response->data);
+        ], $response->get_data());
     }
 
     /**
@@ -148,11 +148,9 @@ class GetCampaignRevenueTest extends TestCase
             ]);
         }
 
-        $request = new WP_REST_Request('GET', "/give-api/v2/campaigns/$campaign->id/revenue");
+        $request = $this->createRequest('GET', "/givewp/v3/campaigns/$campaign->id/revenue", [], 'administrator');
         $request->set_param('id', $campaign->id);
-
-        $route = new GetCampaignRevenue();
-        $response = $route->handleRequest($request);
+        $response = $this->dispatchRequest($request);
 
         $this->assertEquals([
             $this->getResultData('2020', '20'),
@@ -161,7 +159,7 @@ class GetCampaignRevenueTest extends TestCase
             $this->getResultData('2023'),
             $this->getResultData('2024', '40'),
             $this->getResultData('2025', '30'),
-        ], $response->data);
+        ], $response->get_data());
     }
 
     /**

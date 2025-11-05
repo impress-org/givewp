@@ -5,198 +5,137 @@ namespace Give\API\REST\V3\Routes\Campaigns;
 use DateTime;
 use Give\API\REST\V3\Routes\Campaigns\Permissions\CampaignPermissions;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
-use Give\Campaigns\Controllers\CampaignRequestController;
+use Give\API\REST\V3\Routes\Campaigns\RequestControllers\CampaignRequestController;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
+use WP_REST_Controller;
 use WP_REST_Request;
+use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @since 4.0.0
+ * @unreleased
  */
-class RegisterCampaignRoutes
+class CampaignController extends WP_REST_Controller
 {
+    /**
+     * @var string
+     */
+    protected $namespace;
+
+    /**
+     * @var string
+     */
+    protected $rest_base;
+
     /**
      * @var CampaignRequestController
      */
-    protected $campaignRequestController;
+    protected $requestController;
 
     /**
-     * @since 4.0.0
+     * @unreleased
      */
-    public function __construct(CampaignRequestController $campaignRequestController)
+    public function __construct()
     {
-        $this->campaignRequestController = $campaignRequestController;
+        $this->namespace = CampaignRoute::NAMESPACE;
+        $this->rest_base = CampaignRoute::CAMPAIGNS;
+        $this->requestController = new CampaignRequestController();
     }
 
     /**
-     * @since 4.0.0
+     * @unreleased
      */
-    public function __invoke()
+    public function register_routes()
     {
-        $this->registerGetCampaign();
-        $this->registerUpdateCampaign();
-        $this->registerGetCampaigns();
-        $this->registerMergeCampaigns();
-        $this->registerCreateCampaign();
-        $this->registerCreateCampaignPage();
-        $this->registerDuplicateCampaign();
-    }
-
-    /**
-     * Get Campaign route
-     *
-     * @since 4.10.1 Changed permission callback to use validationForGetItem method
-     * @since 4.9.0 Add missing schema key to the route level
-     * @since 4.0.0
-     */
-    public function registerGetCampaign()
-    {
-        register_rest_route(
-            CampaignRoute::NAMESPACE,
-            CampaignRoute::CAMPAIGN,
+        // Single campaign routes
+        register_rest_route($this->namespace, '/' . CampaignRoute::CAMPAIGN, [
             [
-                [
-                    'methods' => WP_REST_Server::READABLE,
-                    'callback' => function (WP_REST_Request $request) {
-                        return $this->campaignRequestController->getCampaign($request);
-                    },
-                    'permission_callback' => function (WP_REST_Request $request) {
-                        return CampaignPermissions::validationForGetItem($request);
-                    },
-                ],
+                'methods' => WP_REST_Server::READABLE,
+                'callback' => [$this, 'get_item'],
+                'permission_callback' => function (WP_REST_Request $request) {
+                    return CampaignPermissions::validationForGetItem($request);
+                },
                 'args' => [
                     'id' => [
                         'type' => 'integer',
                         'required' => true,
                     ],
                 ],
-                'schema' => [$this, 'getSchema'],
-            ]
-        );
-    }
-
-    /**
-     * Get Campaigns route
-     *
-     * @since 4.10.1 Changed permission callback to use validationForGetItems method
-     * @since 4.0.0
-     */
-    public function registerGetCampaigns()
-    {
-        register_rest_route(
-            CampaignRoute::NAMESPACE,
-            CampaignRoute::CAMPAIGNS,
+            ],
             [
-                [
-                    'methods' => WP_REST_Server::READABLE,
-                    'callback' => function (WP_REST_Request $request) {
-                        return $this->campaignRequestController->getCampaigns($request);
-                    },
-                    'permission_callback' => function (WP_REST_Request $request) {
-                        return CampaignPermissions::validationForGetItems($request);
-                    },
-                ],
-                'args' => [
-                    'status' => [
-                        'type' => 'array',
-                        'items' => [
+                'methods' => WP_REST_Server::EDITABLE,
+                'callback' => [$this, 'update_item'],
+                'permission_callback' => function () {
+                    return current_user_can('manage_options');
+                },
+                'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::EDITABLE),
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
+
+        // Collections and create
+        register_rest_route($this->namespace, '/' . $this->rest_base, [
+            [
+                'methods' => WP_REST_Server::READABLE,
+            'callback' => [$this, 'get_items'],
+                'permission_callback' => function (WP_REST_Request $request) {
+                    return CampaignPermissions::validationForGetItems($request);
+                },
+                'args' => $this->get_collection_params(),
+            ],
+            [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [$this, 'create_item'],
+                'permission_callback' => function () {
+                    return current_user_can('manage_options');
+                },
+                'args' => array_merge(
+                    rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::CREATABLE),
+                    [
+                        'logo' => [
                             'type' => 'string',
-                            'enum' => ['active', 'draft', 'archived'],
+                            'format' => 'uri',
+                            'required' => false,
                         ],
-                        'default' => ['active'],
-                    ],
-                    'ids' => [
-                        'type' => 'array',
-                        'default' => [],
-                    ],
-                    'page' => [
-                        'type' => 'integer',
-                        'default' => 1,
-                        'minimum' => 1,
-                    ],
-                    'per_page' => [
-                        'type' => 'integer',
-                        'default' => 30,
-                        'minimum' => 1,
-                        'maximum' => 100,
-                    ],
-                    'sortBy' => [
-                        'type' => 'string',
-                        'enum' => [
-                            'date',
-                            'amount',
-                            'donors',
-                            'donations',
+                        'image' => [
+                            'type' => 'string',
+                            'format' => 'uri',
+                            'required' => false,
                         ],
-                        'default' => 'date',
-                    ],
-                    'orderBy' => [
-                        'type' => 'string',
-                        'enum' => [
-                            'asc',
-                            'desc',
+                        'startDateTime' => [
+                            'type' => 'string',
+                            'format' => 'date-time',
+                            'required' => false,
+                            'validate_callback' => 'rest_parse_date',
+                            'sanitize_callback' => function ($value) {
+                                return new DateTime($value, wp_timezone());
+                            },
                         ],
-                        'default' => 'desc',
-                    ],
-                    'search' => [
-                        'type' => 'string',
-                        'default' => '',
-                    ],
-                ],
-                'schema' => [$this, 'getSchema'],
-            ]
-        );
-    }
+                        'endDateTime' => [
+                            'type' => 'string',
+                            'format' => 'date-time',
+                            'required' => false,
+                            'validate_callback' => 'rest_parse_date',
+                            'sanitize_callback' => function ($value) {
+                                return new DateTime($value, wp_timezone());
+                            },
+                        ],
+                    ]
+                ),
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
 
-    /**
-     * Update Campaign route
-     *
-     * @since 4.0.0
-     */
-    public function registerUpdateCampaign()
-    {
-        register_rest_route(
-            CampaignRoute::NAMESPACE,
-            CampaignRoute::CAMPAIGN,
+        // Merge campaigns
+        register_rest_route($this->namespace, '/' . CampaignRoute::CAMPAIGN . '/merge', [
             [
-                [
-                    'methods' => WP_REST_Server::EDITABLE,
-                    'callback' => function (WP_REST_Request $request) {
-                        return $this->campaignRequestController->updateCampaign($request);
-                    },
-                    'permission_callback' => function () {
-                        return current_user_can('manage_options');
-                    },
-                ],
-                'args' => rest_get_endpoint_args_for_schema($this->getSchema(), WP_REST_Server::EDITABLE),
-                'schema' => [$this, 'getSchema'],
-            ]
-        );
-    }
-
-    /**
-     * Update Campaign route
-     *
-     * @since 4.9.0 Add missing schema key to the route level
-     * @since 4.0.0
-     */
-    public function registerMergeCampaigns()
-    {
-        register_rest_route(
-            CampaignRoute::NAMESPACE,
-            CampaignRoute::CAMPAIGN . '/merge',
-            [
-                [
-                    'methods' => WP_REST_Server::EDITABLE,
-                    'callback' => function (WP_REST_Request $request) {
-                        return $this->campaignRequestController->mergeCampaigns($request);
-                    },
-                    'permission_callback' => function () {
-                        return current_user_can('manage_options');
-                    },
-                ],
+                'methods' => WP_REST_Server::EDITABLE,
+                'callback' => [$this, 'merge_items'],
+                'permission_callback' => function () {
+                    return current_user_can('manage_options');
+                },
                 'args' => [
                     'id' => [
                         'type' => 'integer',
@@ -210,103 +149,157 @@ class RegisterCampaignRoutes
                         ],
                     ],
                 ],
-                'schema' => [$this, 'getSchema'],
-            ]
-        );
-    }
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
 
-    /**
-     * Create Campaign route
-     *
-     * @since 4.9.0 Add missing schema key to the route level
-     * @since 4.0.0
-     */
-    public function registerCreateCampaign()
-    {
-        register_rest_route(
-            CampaignRoute::NAMESPACE,
-            CampaignRoute::CAMPAIGNS,
+        // Create campaign page
+        register_rest_route($this->namespace, '/' . CampaignRoute::CAMPAIGN . '/page', [
             [
-                [
-                    'methods' => WP_REST_Server::CREATABLE,
-                    'callback' => function (WP_REST_Request $request) {
-                        return $this->campaignRequestController->createCampaign($request);
-                    },
-                    'permission_callback' => function () {
-                        return current_user_can('manage_options');
-                    },
-                ],
-                'args' => array_merge(rest_get_endpoint_args_for_schema($this->getSchema(), WP_REST_Server::CREATABLE), [
-                    'logo' => [
-                        'type' => 'string',
-                        'format' => 'uri',
-                        'required' => false,
-                    ],
-                    'image' => [
-                        'type' => 'string',
-                        'format' => 'uri',
-                        'required' => false,
-                    ],
-                    'startDateTime' => [
-                        'type' => 'string',
-                        'format' => 'date-time', // @link https://datatracker.ietf.org/doc/html/rfc3339#section-5.8
-                        'required' => false,
-                        'validate_callback' => 'rest_parse_date',
-                        'sanitize_callback' => function ($value) {
-                            return new DateTime($value, wp_timezone());
-                        },
-                    ],
-                    'endDateTime' => [
-                        'type' => 'string',
-                        'format' => 'date-time', // @link https://datatracker.ietf.org/doc/html/rfc3339#section-5.8
-                        'required' => false,
-                        'validate_callback' => 'rest_parse_date',
-                        'sanitize_callback' => function ($value) {
-                            return new DateTime($value, wp_timezone());
-                        },
-                    ],
-                ] ),
-                'schema' => [$this, 'getSchema'],
-            ]
-        );
-    }
-
-    /**
-     * @since 4.9.0 Add missing schema key to the route level
-     * @since 4.2.0
-     */
-    public function registerDuplicateCampaign()
-    {
-        register_rest_route(
-            CampaignRoute::NAMESPACE,
-            CampaignRoute::CAMPAIGN . '/duplicate',
-            [
-                [
-                    'methods' => WP_REST_Server::CREATABLE,
-                    'callback' => function (WP_REST_Request $request) {
-                        return $this->campaignRequestController->duplicateCampaign($request);
-                    },
-                    'permission_callback' => function () {
-                        return current_user_can('manage_options');
-                    },
-                ],
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [$this, 'create_page'],
+                'permission_callback' => function () {
+                    return current_user_can('manage_options');
+                },
                 'args' => [
                     'id' => [
                         'type' => 'integer',
                         'required' => true,
                     ],
                 ],
-                'schema' => [$this, 'getSchema'],
-            ]
-        );
+            ],
+        ]);
+
+        // Duplicate campaign
+        register_rest_route($this->namespace, '/' . CampaignRoute::CAMPAIGN . '/duplicate', [
+            [
+                'methods' => WP_REST_Server::CREATABLE,
+                'callback' => [$this, 'duplicate_item'],
+                'permission_callback' => function () {
+                    return current_user_can('manage_options');
+                },
+                'args' => [
+                    'id' => [
+                        'type' => 'integer',
+                        'required' => true,
+                    ],
+                ],
+            ],
+            'schema' => [$this, 'get_public_item_schema'],
+        ]);
     }
 
     /**
-     * @since 4.13.0 add schema description
-     * @since 4.9.0 Set proper JSON Schema version
-     * @since 4.0.0
+     * @unreleased
      */
-    public function getSchema(): array
+    public function get_items($request)
+    {
+        return $this->requestController->getCampaigns($request);
+    }
+
+    /**
+     * @return WP_REST_Response|\WP_Error
+     */
+    public function get_item($request)
+    {
+        return $this->requestController->getCampaign($request);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function create_item($request): WP_REST_Response
+    {
+        return $this->requestController->createCampaign($request);
+    }
+
+    /**
+     * @return WP_REST_Response|\WP_Error
+     */
+    public function update_item($request): WP_REST_Response
+    {
+        return $this->requestController->updateCampaign($request);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function merge_items($request): WP_REST_Response
+    {
+        return $this->requestController->mergeCampaigns($request);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function create_page($request): WP_REST_Response
+    {
+        return $this->requestController->createCampaignPage($request);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function duplicate_item($request): WP_REST_Response
+    {
+        return $this->requestController->duplicateCampaign($request);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function get_collection_params(): array
+    {
+        return [
+            'status' => [
+                'type' => 'array',
+                'items' => [
+                    'type' => 'string',
+                    'enum' => ['active', 'draft', 'archived'],
+                ],
+                'default' => ['active'],
+            ],
+            'ids' => [
+                'type' => 'array',
+                'default' => [],
+            ],
+            'page' => [
+                'type' => 'integer',
+                'default' => 1,
+                'minimum' => 1,
+            ],
+            'per_page' => [
+                'type' => 'integer',
+                'default' => 30,
+                'minimum' => 1,
+                'maximum' => 100,
+            ],
+            'sortBy' => [
+                'type' => 'string',
+                'enum' => [
+                    'date',
+                    'amount',
+                    'donors',
+                    'donations',
+                ],
+                'default' => 'date',
+            ],
+            'orderBy' => [
+                'type' => 'string',
+                'enum' => ['asc', 'desc'],
+                'default' => 'desc',
+            ],
+            'search' => [
+                'type' => 'string',
+                'default' => '',
+            ],
+        ];
+    }
+
+    /**
+     * @unreleased
+     */
+    public function get_item_schema(): array
     {
         return [
             '$schema' => 'http://json-schema.org/draft-04/schema#',
@@ -332,7 +325,7 @@ class RegisterCampaignRoutes
                     'required' => true,
                 ],
                 'status' => [
-                    'enum' => [CampaignStatus::ACTIVE,CampaignStatus::ARCHIVED],
+                    'enum' => [CampaignStatus::ACTIVE, CampaignStatus::ARCHIVED],
                     'description' => esc_html__('Campaign status', 'give'),
                     'default' => CampaignStatus::ACTIVE,
                 ],
@@ -449,7 +442,6 @@ class RegisterCampaignRoutes
                     'then' => [
                         'properties' => [
                             'goal' => [
-                                //'minimum' => 1,
                                 'type' => 'integer',
                             ],
                         ],
@@ -572,33 +564,5 @@ class RegisterCampaignRoutes
                 ],
             ],
         ];
-    }
-
-    /**
-     * @since 4.0.0
-     */
-    public function registerCreateCampaignPage(): void
-    {
-        register_rest_route(
-            CampaignRoute::NAMESPACE,
-            CampaignRoute::CAMPAIGN . '/page',
-            [
-                [
-                    'methods' => WP_REST_Server::CREATABLE,
-                    'callback' => function (WP_REST_Request $request) {
-                        return $this->campaignRequestController->createCampaignPage($request);
-                    },
-                    'permission_callback' => function () {
-                        return current_user_can('manage_options');
-                    },
-                ],
-                'args' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                ],
-            ]
-        );
     }
 }

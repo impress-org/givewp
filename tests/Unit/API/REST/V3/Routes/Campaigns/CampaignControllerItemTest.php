@@ -11,9 +11,9 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @since 4.10.1
+ * @unreleased item endpoint tests for campaigns
  */
-class CampaignRouteGetItemTest extends RestApiTestCase
+class CampaignControllerItemTest extends RestApiTestCase
 {
     use RefreshDatabase;
     use HasDefaultWordPressUsers;
@@ -101,3 +101,5 @@ class CampaignRouteGetItemTest extends RestApiTestCase
         $this->assertEquals(404, $response->get_status());
     }
 }
+
+

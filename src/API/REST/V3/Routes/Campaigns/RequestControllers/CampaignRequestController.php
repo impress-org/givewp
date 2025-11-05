@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Campaigns\Controllers;
+namespace Give\API\REST\V3\Routes\Campaigns\RequestControllers;
 
 use Exception;
 use Give\API\REST\V3\Routes\Campaigns\Permissions\CampaignPermissions;
@@ -13,7 +13,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
-use Give\Campaigns\ViewModels\CampaignViewModel;
+use Give\API\REST\V3\Routes\Campaigns\ViewModels\CampaignViewModel;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;

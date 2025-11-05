@@ -3,23 +3,24 @@
 namespace Unit\API\REST\V3\Routes\Campaigns;
 
 use DateTime;
-use Give\API\REST\V3\Routes\Campaigns\GetCampaignStatistics;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Support\ValueObjects\Money;
-use Give\Tests\TestCase;
+use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
-use WP_REST_Request;
+use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 
 /**
+ * @unreleased updated to use REST API test case
  * @since 4.0.0
  */
-final class GetCampaignStatisticsTest extends TestCase
+final class GetCampaignStatisticsTest extends RestApiTestCase
 {
     use RefreshDatabase;
+    use HasDefaultWordPressUsers;
 
     /**
      * @since 4.0.0
@@ -53,15 +54,14 @@ final class GetCampaignStatisticsTest extends TestCase
             'createdAt' => new DateTime('now'),
         ]);
 
-        $request = new WP_REST_Request('GET', "/give-api/v2/campaigns/$campaign->id/statistics");
+        $request = $this->createRequest('GET', "/givewp/v3/campaigns/$campaign->id/statistics", [], 'administrator');
         $request->set_param('id', $campaign->id);
+        $response = $this->dispatchRequest($request);
 
-        $route = new GetCampaignStatistics;
-        $response = $route->handleRequest($request);
-
-        $this->assertEquals(3, $response->data[0]['donorCount']);
-        $this->assertEquals(3, $response->data[0]['donationCount']);
-        $this->assertEquals(30, $response->data[0]['amountRaised']);
+        $data = $response->get_data();
+        $this->assertEquals(3, $data[0]['donorCount']);
+        $this->assertEquals(3, $data[0]['donationCount']);
+        $this->assertEquals(30, $data[0]['amountRaised']);
     }
 
     /**
@@ -96,19 +96,18 @@ final class GetCampaignStatisticsTest extends TestCase
             'createdAt' => new DateTime('now'),
         ]);
 
-        $request = new WP_REST_Request('GET', "/give-api/v2/campaigns/$campaign->id/statistics");
+        $request = $this->createRequest('GET', "/givewp/v3/campaigns/$campaign->id/statistics", [], 'administrator');
         $request->set_param('id', $campaign->id);
         $request->set_param('rangeInDays', 30);
+        $response = $this->dispatchRequest($request);
 
-        $route = new GetCampaignStatistics;
-        $response = $route->handleRequest($request);
+        $data = $response->get_data();
+        $this->assertEquals(2, $data[0]['donorCount']);
+        $this->assertEquals(2, $data[0]['donationCount']);
+        $this->assertEquals(20, $data[0]['amountRaised']);
 
-        $this->assertEquals(2, $response->data[0]['donorCount']);
-        $this->assertEquals(2, $response->data[0]['donationCount']);
-        $this->assertEquals(20, $response->data[0]['amountRaised']);
-
-        $this->assertEquals(1, $response->data[1]['donorCount']);
-        $this->assertEquals(1, $response->data[1]['donationCount']);
-        $this->assertEquals(10, $response->data[1]['amountRaised']);
+        $this->assertEquals(1, $data[1]['donorCount']);
+        $this->assertEquals(1, $data[1]['donationCount']);
+        $this->assertEquals(10, $data[1]['amountRaised']);
     }
 }

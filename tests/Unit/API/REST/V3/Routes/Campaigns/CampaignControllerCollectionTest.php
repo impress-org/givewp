@@ -11,9 +11,9 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @since 4.10.1
+ * @unreleased collection endpoint tests for campaigns
  */
-class CampaignRouteGetItemsTest extends RestApiTestCase
+class CampaignControllerCollectionTest extends RestApiTestCase
 {
     use RefreshDatabase;
     use HasDefaultWordPressUsers;
@@ -25,10 +25,9 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
      */
     public function testUnauthenticatedUserCannotAccessNonActiveCampaigns()
     {
-        // Create campaigns with different statuses
-        $activeCampaign = Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
-        $draftCampaign = Campaign::factory()->create(['status' => CampaignStatus::DRAFT()]);
-        $archivedCampaign = Campaign::factory()->create(['status' => CampaignStatus::ARCHIVED()]);
+        Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
+        Campaign::factory()->create(['status' => CampaignStatus::DRAFT()]);
+        Campaign::factory()->create(['status' => CampaignStatus::ARCHIVED()]);
 
         $route = '/' . CampaignRoute::NAMESPACE . '/' . CampaignRoute::CAMPAIGNS;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -46,7 +45,7 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
      */
     public function testUnauthenticatedUserCanAccessActiveCampaigns()
     {
-        $activeCampaign = Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
+        Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
 
         $route = '/' . CampaignRoute::NAMESPACE . '/' . CampaignRoute::CAMPAIGNS;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -64,7 +63,7 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
      */
     public function testUnauthenticatedUserCanAccessCampaignsWithoutStatusFilter()
     {
-        $activeCampaign = Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
+        Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
 
         $route = '/' . CampaignRoute::NAMESPACE . '/' . CampaignRoute::CAMPAIGNS;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -81,9 +80,9 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
      */
     public function testAdminUserCanAccessAllCampaignStatuses()
     {
-        $activeCampaign = Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
-        $draftCampaign = Campaign::factory()->create(['status' => CampaignStatus::DRAFT()]);
-        $archivedCampaign = Campaign::factory()->create(['status' => CampaignStatus::ARCHIVED()]);
+        Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
+        Campaign::factory()->create(['status' => CampaignStatus::DRAFT()]);
+        Campaign::factory()->create(['status' => CampaignStatus::ARCHIVED()]);
 
         $route = '/' . CampaignRoute::NAMESPACE . '/' . CampaignRoute::CAMPAIGNS;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
@@ -101,8 +100,8 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
      */
     public function testUnauthenticatedUserCannotAccessMixedStatusRequests()
     {
-        $activeCampaign = Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
-        $draftCampaign = Campaign::factory()->create(['status' => CampaignStatus::DRAFT()]);
+        Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
+        Campaign::factory()->create(['status' => CampaignStatus::DRAFT()]);
 
         $route = '/' . CampaignRoute::NAMESPACE . '/' . CampaignRoute::CAMPAIGNS;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -113,3 +112,5 @@ class CampaignRouteGetItemsTest extends RestApiTestCase
         $this->assertEquals(401, $response->get_status());
     }
 }
+
+
