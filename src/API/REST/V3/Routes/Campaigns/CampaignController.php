@@ -565,7 +565,7 @@ class CampaignController extends WP_REST_Controller
      */
     public function get_item_schema(): array
     {
-        return [
+        $schema = [
             '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/campaign',
             'description' => esc_html__('Campaign routes for CRUD operations', 'give'),
@@ -830,5 +830,7 @@ class CampaignController extends WP_REST_Controller
                 ],
             ],
         ];
+
+        return $this->add_additional_fields_schema($schema);
     }
 }
