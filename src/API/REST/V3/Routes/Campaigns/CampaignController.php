@@ -3,12 +3,18 @@
 namespace Give\API\REST\V3\Routes\Campaigns;
 
 use DateTime;
+use Exception;
 use Give\API\REST\V3\Routes\Campaigns\Permissions\CampaignPermissions;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\API\REST\V3\Routes\Campaigns\RequestControllers\CampaignRequestController;
+use Give\API\REST\V3\Routes\Campaigns\ViewModels\CampaignViewModel;
+use Give\API\REST\V3\Support\Item;
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
+use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -50,7 +56,7 @@ class CampaignController extends WP_REST_Controller
     public function register_routes()
     {
         // Single campaign routes
-        register_rest_route($this->namespace, '/' . CampaignRoute::CAMPAIGN, [
+        register_rest_route($this->namespace, '/' . $this->rest_base . '/(?P<id>[\d]+)', [
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
@@ -79,7 +85,7 @@ class CampaignController extends WP_REST_Controller
         register_rest_route($this->namespace, '/' . $this->rest_base, [
             [
                 'methods' => WP_REST_Server::READABLE,
-            'callback' => [$this, 'get_items'],
+                'callback' => [$this, 'get_items'],
                 'permission_callback' => function (WP_REST_Request $request) {
                     return CampaignPermissions::validationForGetItems($request);
                 },
@@ -198,27 +204,181 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased
+     *
      * @return WP_REST_Response|\WP_Error
      */
     public function get_item($request)
     {
-        return $this->requestController->getCampaign($request);
+        $campaign = Campaign::find($request->get_param('id'));
+
+        if (!$campaign) {
+            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+        }
+
+        if (!$campaign->status->isActive() && !CampaignPermissions::canViewPrivate()) {
+            return new WP_Error(
+                'rest_forbidden',
+                esc_html__('You do not have permission to view this campaign.', 'give'),
+                ['status' => CampaignPermissions::authorizationStatusCode()]
+            );
+        }
+
+        $item = (new CampaignViewModel($campaign))->exports();
+
+        $response = $this->prepare_item_for_response($item, $request);
+
+        return rest_ensure_response($response);
     }
 
     /**
      * @unreleased
      */
-    public function create_item($request): WP_REST_Response
+    public function prepare_item_for_response($item, $request)
     {
-        return $this->requestController->createCampaign($request);
+        try {
+            $campaignId = $item['id'] ?? $request->get_param('id') ?? null;
+
+            if ($campaignId) {
+                $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $campaignId));
+
+                $links = [
+                    'self' => ['href' => $self_url]
+                ];
+            } else {
+                $links = [];
+            }
+
+            $itemWithDatesFormatted = Item::formatDatesForResponse($item, ['startDate', 'endDate', 'createdAt']);
+
+            $response = new WP_REST_Response($itemWithDatesFormatted);
+
+            if (!empty($links)) {
+                $response->add_links($links);
+            }
+
+            $response->data = $this->add_additional_fields_to_object($response->data, $request);
+
+            return $response;
+        } catch (Exception $e) {
+            return new WP_Error(
+                'prepare_item_for_response_error',
+                sprintf(
+                    __('Error while preparing campaign for response: %s', 'give'),
+                    $e->getMessage()
+                ),
+                ['status' => 400]
+            );
+        }
+    }
+
+    /**
+     * @unreleased
+     *
+     * @return WP_REST_Response|\WP_Error
+     */
+    public function create_item($request)
+    {
+        try {
+            $campaign = Campaign::create([
+                'type' => CampaignType::CORE(),
+                'title' => $request->get_param('title'),
+                'shortDescription' => $request->get_param('shortDescription') ?? '',
+                'longDescription' => '',
+                'logo' => '',
+                'image' => $request->get_param('image') ?? '',
+                'primaryColor' => '#0b72d9',
+                'secondaryColor' => '#27ae60',
+                'goal' => (int)$request->get_param('goal'),
+                'goalType' => new CampaignGoalType($request->get_param('goalType')),
+                'status' => CampaignStatus::ACTIVE(),
+                'startDate' => $request->get_param('startDateTime'),
+                'endDate' => $request->get_param('endDateTime'),
+            ]);
+
+            $fieldsUpdate = $this->update_additional_fields_for_object($campaign, $request);
+
+            if (is_wp_error($fieldsUpdate)) {
+                return $fieldsUpdate;
+            }
+
+            $item = (new CampaignViewModel($campaign))->exports();
+
+            $response = $this->prepare_item_for_response($item, $request);
+            $response->set_status(201);
+
+            return rest_ensure_response($response);
+        } catch (Exception $e) {
+            return new WP_Error('create_campaign_error', __('Error while creating campaign', 'give'), ['status' => 400]);
+        }
     }
 
     /**
      * @return WP_REST_Response|\WP_Error
      */
-    public function update_item($request): WP_REST_Response
+    public function update_item($request)
     {
-        return $this->requestController->updateCampaign($request);
+        $campaign = Campaign::find($request->get_param('id'));
+
+        if (!$campaign) {
+            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+        }
+
+        $statusMap = [
+            'archived' => CampaignStatus::ARCHIVED(),
+            'draft' => CampaignStatus::DRAFT(),
+            'active' => CampaignStatus::ACTIVE(),
+        ];
+
+        foreach ($request->get_params() as $key => $value) {
+            switch ($key) {
+                case 'id':
+                    break;
+                case 'status':
+                    $status = array_key_exists($value, $statusMap)
+                        ? $statusMap[$value]
+                        : CampaignStatus::DRAFT();
+
+                    $campaign->status = $status;
+
+                    break;
+                case 'goal':
+                    $campaign->goal = (int)$value;
+                    break;
+                case 'goalType':
+                    $campaign->goalType = new CampaignGoalType($value);
+                    break;
+                case 'defaultFormId':
+                    give(CampaignRepository::class)->updateDefaultCampaignForm(
+                        $campaign,
+                        $request->get_param('defaultFormId')
+                    );
+                    break;
+                case 'pageId':
+                    $campaign->pageId = (int)$value;
+                    break;
+                default:
+                    if ($campaign->hasProperty($key)) {
+                        $campaign->$key = $value;
+                    }
+            }
+        }
+
+        if ($campaign->isDirty()) {
+            $campaign->save();
+        }
+
+        $fieldsUpdate = $this->update_additional_fields_for_object($campaign, $request);
+
+        if (is_wp_error($fieldsUpdate)) {
+            return $fieldsUpdate;
+        }
+
+        $item = (new CampaignViewModel($campaign))->exports();
+
+        $response = $this->prepare_item_for_response($item, $request);
+
+        return rest_ensure_response($response);
     }
 
     /**
@@ -325,6 +485,7 @@ class CampaignController extends WP_REST_Controller
                     'required' => true,
                 ],
                 'status' => [
+                    'type' => 'string',
                     'enum' => [CampaignStatus::ACTIVE, CampaignStatus::ARCHIVED],
                     'description' => esc_html__('Campaign status', 'give'),
                     'default' => CampaignStatus::ACTIVE,
@@ -363,6 +524,7 @@ class CampaignController extends WP_REST_Controller
                     'required' => true,
                 ],
                 'goalType' => [
+                    'type' => 'string',
                     'enum' => array_values(CampaignGoalType::toArray()),
                     'description' => esc_html__('Campaign goal type', 'give'),
                     'required' => true,
