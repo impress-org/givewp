@@ -349,7 +349,7 @@ class CampaignRequestController
     /**
      * @since 4.0.0
      */
-    private function orderCampaigns(ModelQueryBuilder $query, $sortBy, $orderBy)
+    public function orderCampaigns(ModelQueryBuilder $query, $sortBy, $orderBy)
     {
         switch ($sortBy) {
             case 'date':

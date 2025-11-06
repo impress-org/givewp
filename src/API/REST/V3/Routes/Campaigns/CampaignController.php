@@ -8,12 +8,16 @@ use Give\API\REST\V3\Routes\Campaigns\Permissions\CampaignPermissions;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\API\REST\V3\Routes\Campaigns\RequestControllers\CampaignRequestController;
 use Give\API\REST\V3\Routes\Campaigns\ViewModels\CampaignViewModel;
+use Give\API\REST\V3\Support\Headers;
 use Give\API\REST\V3\Support\Item;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
+use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Framework\Database\DB;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -200,7 +204,107 @@ class CampaignController extends WP_REST_Controller
      */
     public function get_items($request)
     {
-        return $this->requestController->getCampaigns($request);
+        $ids = $request->get_param('ids');
+        $page = $request->get_param('page');
+        $perPage = $request->get_param('per_page');
+        $status = $request->get_param('status');
+        $sortBy = $request->get_param('sortBy');
+        $orderBy = $request->get_param('orderBy');
+        $search = $request->get_param('search');
+
+        $query = Campaign::query();
+
+        $query->whereIn('status', $status);
+
+        if (!empty($ids)) {
+            $query->whereIn('id', $ids);
+        }
+
+        if ($search) {
+            $query->whereLike('campaign_title', '%%' . $search . '%%');
+        }
+
+        $totalQuery = clone $query;
+
+        $query
+            ->limit($perPage)
+            ->offset(($page - 1) * $perPage);
+
+        switch ($sortBy) {
+            case 'date':
+                $query->orderBy('date_created', $orderBy);
+
+                break;
+            case 'amount':
+                $query
+                    ->selectRaw(
+                        '(SELECT SUM(amount) FROM %1s WHERE campaign_id = campaigns.id) AS amount',
+                        DB::prefix('give_revenue')
+                    )
+                    ->orderBy('amount', $orderBy);
+
+                break;
+            case 'donations':
+                $query
+                    ->selectRaw(
+                        '(SELECT COUNT(donation_id) FROM %1s WHERE campaign_id = campaigns.id) AS donationsCount',
+                        DB::prefix('give_revenue')
+                    )
+                    ->orderBy('donationsCount', $orderBy);
+
+                break;
+            case 'donors':
+                $postsTable = DB::prefix('posts');
+                $metaTable = DB::prefix('give_donationmeta');
+                $campaignIdKey = DonationMetaKeys::CAMPAIGN_ID;
+                $donorIdKey = DonationMetaKeys::DONOR_ID;
+
+                $query
+                    ->selectRaw(
+                        "(
+                            SELECT COUNT(DISTINCT donorId.meta_value)
+                            FROM {$postsTable} AS donation
+                            LEFT JOIN {$metaTable} campaignId ON donation.ID = campaignId.donation_id AND campaignId.meta_key = '{$campaignIdKey}'
+                            LEFT JOIN {$metaTable} donorId ON donation.ID = donorId.donation_id AND donorId.meta_key = '{$donorIdKey}'
+                            WHERE post_type = 'give_payment'
+                            AND donation.post_status IN ('publish', 'give_subscription')
+                            AND campaignId.meta_value = campaigns.id
+                        ) AS donorsCount"
+                    )
+                    ->orderBy('donorsCount', $orderBy);
+
+                break;
+        }
+
+        $campaigns = $query->getAll() ?? [];
+
+        $ids = array_map(function ($campaign) {
+            return $campaign->id;
+        }, $campaigns);
+
+        $campaignsData = !empty($ids)
+            ? CampaignsDataRepository::campaigns($ids)
+            : null;
+
+        $campaigns = array_map(function ($campaign) use ($campaignsData, $request) {
+            $view = new CampaignViewModel($campaign);
+
+            if ($campaignsData) {
+                $view->setData($campaignsData);
+            }
+
+            $item = $view->exports();
+
+            return $this->prepare_response_for_collection(
+                $this->prepare_item_for_response($item, $request)
+            );
+        }, $campaigns);
+
+        $totalCampaigns = empty($campaigns) ? 0 : $totalQuery->count();
+        $response = rest_ensure_response($campaigns);
+        $response = Headers::addPagination($response, $request, $totalCampaigns, $perPage, $this->rest_base);
+
+        return $response;
     }
 
     /**
