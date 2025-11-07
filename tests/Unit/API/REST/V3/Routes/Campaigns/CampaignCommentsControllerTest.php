@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\API\REST\V3\Routes\Campaigns;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Campaigns;
 
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\Models\Campaign;

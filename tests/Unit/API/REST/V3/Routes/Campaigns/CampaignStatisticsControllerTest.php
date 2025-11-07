@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\API\REST\V3\Routes\Campaigns;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Campaigns;
 
 use DateTime;
 use Give\Campaigns\Models\Campaign;
@@ -17,7 +17,7 @@ use Give\Tests\TestTraits\HasDefaultWordPressUsers;
  * @unreleased updated to use REST API test case
  * @since 4.0.0
  */
-final class GetCampaignStatisticsTest extends RestApiTestCase
+final class CampaignStatisticsControllerTest extends RestApiTestCase
 {
     use RefreshDatabase;
     use HasDefaultWordPressUsers;

@@ -78,19 +78,23 @@ class CampaignStatisticsController extends WP_REST_Controller
         $campaign = Campaign::find($request->get_param('id'));
 
         if (!$campaign) {
-            return new WP_REST_Response('Campaign not found', 404);
+            $response = new WP_REST_Response(__('Campaign not found', 'give'), 404);
+
+            return rest_ensure_response($response);
         }
 
         $query = new CampaignDonationQuery($campaign);
 
         if (!$request->get_param('rangeInDays')) {
-            return new WP_REST_Response([
-                [
-                    'amountRaised' => $query->sumIntendedAmount(),
-                    'donationCount' => $query->countDonations(),
-                    'donorCount' => $query->countDonors(),
-                ],
-            ]);
+            $data = [[
+                'amountRaised' => $query->sumIntendedAmount(),
+                'donationCount' => $query->countDonations(),
+                'donorCount' => $query->countDonors(),
+            ]];
+
+            $items = new WP_REST_Response($data);
+
+            return rest_ensure_response($items);
         }
 
         $days = (int)$request->get_param('rangeInDays');
@@ -98,7 +102,7 @@ class CampaignStatisticsController extends WP_REST_Controller
         $interval = DateInterval::createFromDateString("-$days days");
         $period = new DatePeriod($date, $interval, 1);
 
-        return new WP_REST_Response(array_map(function ($targetDate) use ($query, $interval) {
+        $data = array_map(function ($targetDate) use ($query, $interval) {
             $rangeQuery = $query->between(
                 Temporal::withStartOfDay($targetDate->add($interval)),
                 Temporal::withEndOfDay($targetDate)
@@ -109,7 +113,11 @@ class CampaignStatisticsController extends WP_REST_Controller
                 'donationCount' => $rangeQuery->countDonations(),
                 'donorCount' => $rangeQuery->countDonors(),
             ];
-        }, iterator_to_array($period)));
+        }, iterator_to_array($period));
+
+        $items = new WP_REST_Response($data);
+
+        return rest_ensure_response($items);
     }
 
     /**

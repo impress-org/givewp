@@ -75,7 +75,9 @@ class CampaignCommentsController extends WP_REST_Controller
         $campaign = Campaign::find($campaignId);
 
         if (!$campaign) {
-            return new WP_REST_Response('Campaign not found', 404);
+            $response = new WP_REST_Response(__('Campaign not found', 'give'), 404);
+
+            return rest_ensure_response($response);
         }
 
         $query = (new CampaignDonationQuery($campaign))
@@ -115,7 +117,9 @@ class CampaignCommentsController extends WP_REST_Controller
             ];
         }, $donations);
 
-        return new WP_REST_Response($formattedComments);
+        $items = new WP_REST_Response($formattedComments);
+
+        return rest_ensure_response($items);
     }
 
     /**

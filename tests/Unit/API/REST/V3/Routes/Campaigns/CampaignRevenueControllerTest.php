@@ -1,6 +1,6 @@
 <?php
 
-namespace Unit\API\REST\V3\Routes\Campaigns;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Campaigns;
 
 use Exception;
 use Give\Campaigns\Models\Campaign;
@@ -15,7 +15,7 @@ use Give\Tests\TestTraits\HasDefaultWordPressUsers;
  * @unreleased updated to use REST API test case
  * @since 4.0.0
  */
-class GetCampaignRevenueTest extends RestApiTestCase
+class CampaignRevenueControllerTest extends RestApiTestCase
 {
     use RefreshDatabase;
     use HasDefaultWordPressUsers;
@@ -151,6 +151,7 @@ class GetCampaignRevenueTest extends RestApiTestCase
         $request = $this->createRequest('GET', "/givewp/v3/campaigns/$campaign->id/revenue", [], 'administrator');
         $request->set_param('id', $campaign->id);
         $response = $this->dispatchRequest($request);
+        $data = $response->get_data();
 
         $this->assertEquals([
             $this->getResultData('2020', '20'),
@@ -159,7 +160,7 @@ class GetCampaignRevenueTest extends RestApiTestCase
             $this->getResultData('2023'),
             $this->getResultData('2024', '40'),
             $this->getResultData('2025', '30'),
-        ], $response->get_data());
+        ], $data);
     }
 
     /**

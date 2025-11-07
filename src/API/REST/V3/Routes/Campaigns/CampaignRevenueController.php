@@ -69,7 +69,9 @@ class CampaignRevenueController extends WP_REST_Controller
         $campaign = Campaign::find((int)$request->get_param('id'));
 
         if (!$campaign) {
-            return new WP_REST_Response([], 404);
+            $response = new WP_REST_Response(__('Campaign not found', 'give'), 404);
+
+            return rest_ensure_response($response);
         }
 
         $query = new CampaignDonationQuery($campaign);
@@ -77,7 +79,9 @@ class CampaignRevenueController extends WP_REST_Controller
         $oldestRevenueDate = $query->getOldestDonationDate();
 
         if (!$oldestRevenueDate) {
-            return new WP_REST_Response([], 200);
+            $items = new WP_REST_Response([]);
+
+            return rest_ensure_response($items);
         }
 
         $firstResultDate = new DateTime($oldestRevenueDate, wp_timezone());
@@ -91,7 +95,9 @@ class CampaignRevenueController extends WP_REST_Controller
         $results = $query->getDonationsByDate($groupBy);
 
         if (empty($results)) {
-            return new WP_REST_Response([], 200);
+            $items = new WP_REST_Response([]);
+
+            return rest_ensure_response($items);
         }
 
         // Map the results by date
@@ -105,7 +111,9 @@ class CampaignRevenueController extends WP_REST_Controller
         // Merge the results with the dates to ensure that all dates are included
         $data = $this->mergeResultsWithDates($dates, $resultMap);
 
-        return new WP_REST_Response($data, 200);
+        $items = new WP_REST_Response($data);
+
+        return rest_ensure_response($items);
     }
 
     /**
