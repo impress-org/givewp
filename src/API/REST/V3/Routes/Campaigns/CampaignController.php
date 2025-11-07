@@ -501,8 +501,10 @@ class CampaignController extends WP_REST_Controller
 
     /**
      * @unreleased
+     *
+     * @return WP_REST_Response|\WP_Error
      */
-    public function duplicate_item($request): WP_REST_Response
+    public function duplicate_item($request)
     {
         $campaign = Campaign::find((int)$request->get_param('id'));
 
