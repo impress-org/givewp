@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes;
 
 use Give\API\REST\V3\Routes\Campaigns\CampaignController;
 use Give\API\REST\V3\Routes\Campaigns\CampaignCommentsController;
+use Give\API\REST\V3\Routes\Campaigns\CampaignPageController;
 use Give\API\REST\V3\Routes\Campaigns\CampaignRevenueController;
 use Give\API\REST\V3\Routes\Campaigns\CampaignStatisticsController;
 use Give\API\REST\V3\Routes\Donations\DonationController;
@@ -59,6 +60,9 @@ class ServiceProvider implements ServiceProviderInterface
 
                 $campaignCommentsController = new CampaignCommentsController();
                 $campaignCommentsController->register_routes();
+
+                $campaignPageController = new CampaignPageController();
+                $campaignPageController->register_routes();
 
                 $campaignRevenueController = new CampaignRevenueController();
 

@@ -11,9 +11,11 @@ use Give\API\REST\V3\Routes\Campaigns\ViewModels\CampaignViewModel;
 use Give\API\REST\V3\Support\Headers;
 use Give\API\REST\V3\Support\Item;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -163,22 +165,7 @@ class CampaignController extends WP_REST_Controller
             'schema' => [$this, 'get_public_item_schema'],
         ]);
 
-        // Create campaign page
-        register_rest_route($this->namespace, '/' . CampaignRoute::CAMPAIGN . '/page', [
-            [
-                'methods' => WP_REST_Server::CREATABLE,
-                'callback' => [$this, 'create_page'],
-                'permission_callback' => function () {
-                    return current_user_can('manage_options');
-                },
-                'args' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'required' => true,
-                    ],
-                ],
-            ],
-        ]);
+        // Create campaign page moved to CampaignPageController
 
         // Duplicate campaign
         register_rest_route($this->namespace, '/' . CampaignRoute::CAMPAIGN . '/duplicate', [
@@ -492,13 +479,13 @@ class CampaignController extends WP_REST_Controller
      */
     public function merge_items($request)
     {
-        $destinationCampaign = Campaign::find($request->get_param('id'));
-
-        if (!$destinationCampaign) {
-            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
-        }
-
         try {
+            $destinationCampaign = Campaign::find($request->get_param('id'));
+
+            if (!$destinationCampaign) {
+                return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+            }
+
             $campaignsToMerge = Campaign::query()->whereIn('id', $request->get_param('campaignsToMergeIds'))->getAll();
 
             $destinationCampaign->merge(...$campaignsToMerge);
@@ -512,14 +499,6 @@ class CampaignController extends WP_REST_Controller
         } catch (Exception $e) {
             return new WP_Error('merge_campaigns_error', __('Error while merging campaigns', 'give'), ['status' => 400]);
         }
-    }
-
-    /**
-     * @unreleased
-     */
-    public function create_page($request): WP_REST_Response
-    {
-        return $this->requestController->createCampaignPage($request);
     }
 
     /**

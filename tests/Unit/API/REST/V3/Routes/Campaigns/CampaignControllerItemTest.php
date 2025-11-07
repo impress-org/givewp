@@ -213,6 +213,8 @@ class CampaignControllerItemTest extends RestApiTestCase
         $this->assertEquals(403, $status);
     }
 
+    // Page subresource tests moved to CampaignPageControllerTest
+
     /**
      * Test that unauthenticated users cannot access individual non-active campaign via GET /campaigns/{id}.
      *
