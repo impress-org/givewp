@@ -26,7 +26,10 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot(): void
     {
-        $this->setFeatureFlagNotificationCounter();
+        /**
+         * @unreleased This is intentionally being set to 0 until we can revisit Event Tickets Beta in the future.  Ideally this value would be dynamic based on the number of beta features.
+         */
+        $this->setFeatureFlagNotificationCounter(0);
 
         Hooks::addFilter('give_get_settings_general', Actions\RegisterSettings::class);
         Hooks::addFilter('give_get_sections_general', Actions\RegisterSettingSection::class);
@@ -54,12 +57,19 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * This is intended to add the initial notification count
+     *
+     * @unreleased added $count parameter to set the initial notification count
      * @since 3.6.0
      */
-    private function setFeatureFlagNotificationCounter(): void
+    private function setFeatureFlagNotificationCounter(int $count = 1): void
     {
+        if ($count === 0) {
+            return;
+        }
+
         if (get_option('givewp_feature_flag_notifications_count', false) === false) {
-            update_option('givewp_feature_flag_notifications_count', 1);
+            update_option('givewp_feature_flag_notifications_count', $count);
         }
     }
 
