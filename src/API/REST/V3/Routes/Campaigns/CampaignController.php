@@ -305,6 +305,8 @@ class CampaignController extends WP_REST_Controller
                 esc_html__('You do not have permission to view this campaign.', 'give'),
                 ['status' => CampaignPermissions::authorizationStatusCode()]
             );
+
+            return rest_ensure_response($response);
         }
 
         $item = (new CampaignViewModel($campaign))->exports();
