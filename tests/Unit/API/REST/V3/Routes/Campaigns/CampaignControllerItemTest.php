@@ -216,6 +216,76 @@ class CampaignControllerItemTest extends RestApiTestCase
     // Page subresource tests moved to CampaignPageControllerTest
 
     /**
+     * Test that admin users can duplicate a campaign via POST /campaigns/{id}/duplicate.
+     *
+     * @unreleased
+     */
+    public function testDuplicateCampaignShouldReturn201AndReturnDuplicatedCampaign()
+    {
+        $campaign = Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
+
+        $route = '/' . CampaignRoute::NAMESPACE . '/' . str_replace('(?P<id>[0-9]+)', $campaign->id, CampaignRoute::CAMPAIGN) . '/duplicate';
+        $request = $this->createRequest('POST', $route, [], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
+
+        $this->assertEquals(201, $status);
+        $this->assertArrayHasKey('id', $data);
+
+        // Verify response is the duplicated campaign
+        $this->assertNotEquals($campaign->id, $data['id']);
+
+        $copiedCampaign = Campaign::find($data['id']);
+        $this->assertNotNull($copiedCampaign);
+        $this->assertEquals(sprintf('%s (copy)', $campaign->title), $data['title']);
+        $this->assertEquals('active', $data['status']);
+
+        // List table compatibility
+        if (array_key_exists('errors', $data)) {
+            $this->assertEquals(0, $data['errors']);
+        }
+    }
+
+    /**
+     * Test that duplicating a non-existent campaign returns 404.
+     *
+     * @unreleased
+     */
+    public function testDuplicateCampaignShouldReturn404WhenCampaignNotFound()
+    {
+        $route = '/' . CampaignRoute::NAMESPACE . '/' . str_replace('(?P<id>[0-9]+)', '999999', CampaignRoute::CAMPAIGN) . '/duplicate';
+        $request = $this->createRequest('POST', $route, [], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(404, $status);
+    }
+
+    /**
+     * Test that non-admin users cannot duplicate a campaign.
+     *
+     * @unreleased
+     */
+    public function testDuplicateCampaignShouldReturn403WhenNotAdminUser()
+    {
+        $campaign = Campaign::factory()->create(['status' => CampaignStatus::ACTIVE()]);
+
+        $route = '/' . CampaignRoute::NAMESPACE . '/' . str_replace('(?P<id>[0-9]+)', $campaign->id, CampaignRoute::CAMPAIGN) . '/duplicate';
+        $request = $this->createRequest('POST', $route, [], 'subscriber');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+
+        $this->assertEquals(403, $status);
+    }
+    /**
      * Test that unauthenticated users cannot access individual non-active campaign via GET /campaigns/{id}.
      *
      * @since 4.10.1

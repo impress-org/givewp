@@ -7,6 +7,7 @@ use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -75,7 +76,7 @@ class CampaignCommentsController extends WP_REST_Controller
         $campaign = Campaign::find($campaignId);
 
         if (!$campaign) {
-            $response = new WP_REST_Response(__('Campaign not found', 'give'), 404);
+            $response = new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
 
             return rest_ensure_response($response);
         }

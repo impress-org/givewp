@@ -6,16 +6,14 @@ use DateTime;
 use Exception;
 use Give\API\REST\V3\Routes\Campaigns\Permissions\CampaignPermissions;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
-use Give\API\REST\V3\Routes\Campaigns\RequestControllers\CampaignRequestController;
 use Give\API\REST\V3\Routes\Campaigns\ViewModels\CampaignViewModel;
 use Give\API\REST\V3\Support\Headers;
 use Give\API\REST\V3\Support\Item;
+use Give\Campaigns\Actions\DuplicateCampaign;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
-use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -42,18 +40,12 @@ class CampaignController extends WP_REST_Controller
     protected $rest_base;
 
     /**
-     * @var CampaignRequestController
-     */
-    protected $requestController;
-
-    /**
      * @unreleased
      */
     public function __construct()
     {
         $this->namespace = CampaignRoute::NAMESPACE;
         $this->rest_base = CampaignRoute::CAMPAIGNS;
-        $this->requestController = new CampaignRequestController();
     }
 
     /**
@@ -164,8 +156,6 @@ class CampaignController extends WP_REST_Controller
             ],
             'schema' => [$this, 'get_public_item_schema'],
         ]);
-
-        // Create campaign page moved to CampaignPageController
 
         // Duplicate campaign
         register_rest_route($this->namespace, '/' . CampaignRoute::CAMPAIGN . '/duplicate', [
@@ -304,11 +294,13 @@ class CampaignController extends WP_REST_Controller
         $campaign = Campaign::find($request->get_param('id'));
 
         if (!$campaign) {
-            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+            $response = new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+
+            return rest_ensure_response($response);
         }
 
         if (!$campaign->status->isActive() && !CampaignPermissions::canViewPrivate()) {
-            return new WP_Error(
+            $response = new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to view this campaign.', 'give'),
                 ['status' => CampaignPermissions::authorizationStatusCode()]
@@ -412,7 +404,9 @@ class CampaignController extends WP_REST_Controller
         $campaign = Campaign::find($request->get_param('id'));
 
         if (!$campaign) {
-            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+            $response = new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+
+            return rest_ensure_response($response);
         }
 
         $statusMap = [
@@ -483,7 +477,9 @@ class CampaignController extends WP_REST_Controller
             $destinationCampaign = Campaign::find($request->get_param('id'));
 
             if (!$destinationCampaign) {
-                return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+                $response = new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+
+                return rest_ensure_response($response);
             }
 
             $campaignsToMerge = Campaign::query()->whereIn('id', $request->get_param('campaignsToMergeIds'))->getAll();
@@ -506,7 +502,24 @@ class CampaignController extends WP_REST_Controller
      */
     public function duplicate_item($request): WP_REST_Response
     {
-        return $this->requestController->duplicateCampaign($request);
+        $campaign = Campaign::find((int)$request->get_param('id'));
+
+        if (!$campaign) {
+            $response = new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+
+            return rest_ensure_response($response);
+        }
+
+        $duplicatedCampaign = (new DuplicateCampaign())($campaign);
+
+        $item = array_merge((new CampaignViewModel($duplicatedCampaign))->exports(), [
+            'errors' => 0, // needed by the list table
+        ]);
+
+        $response = $this->prepare_item_for_response($item, $request);
+        $response->set_status(201);
+
+        return rest_ensure_response($response);
     }
 
     /**
