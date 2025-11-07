@@ -487,10 +487,31 @@ class CampaignController extends WP_REST_Controller
 
     /**
      * @unreleased
+     *
+     * @return WP_REST_Response|\WP_Error
      */
-    public function merge_items($request): WP_REST_Response
+    public function merge_items($request)
     {
-        return $this->requestController->mergeCampaigns($request);
+        $destinationCampaign = Campaign::find($request->get_param('id'));
+
+        if (!$destinationCampaign) {
+            return new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+        }
+
+        try {
+            $campaignsToMerge = Campaign::query()->whereIn('id', $request->get_param('campaignsToMergeIds'))->getAll();
+
+            $destinationCampaign->merge(...$campaignsToMerge);
+
+            $item = (new CampaignViewModel($destinationCampaign))->exports();
+
+            $response = $this->prepare_item_for_response($item, $request);
+            $response->set_status(200);
+
+            return rest_ensure_response($response);
+        } catch (Exception $e) {
+            return new WP_Error('merge_campaigns_error', __('Error while merging campaigns', 'give'), ['status' => 400]);
+        }
     }
 
     /**
