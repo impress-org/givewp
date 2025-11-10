@@ -8,64 +8,71 @@ use DateTime;
 use DateTimeInterface;
 use Exception;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
-use Give\API\RestRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
+use WP_Error;
+use WP_REST_Controller;
 use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @since 4.0.0
+ * @unreleased
  */
-class GetCampaignRevenue implements RestRoute
+class CampaignRevenueController extends WP_REST_Controller
 {
     /**
-     * @since 4.0.0
+     * @var string
      */
-    public function registerRoute()
+    protected $namespace;
+
+    /**
+     * @unreleased
+     */
+    public function __construct()
+    {
+        $this->namespace = CampaignRoute::NAMESPACE;
+    }
+
+    /**
+     * @unreleased
+     */
+    public function register_routes()
     {
         register_rest_route(
-            CampaignRoute::NAMESPACE,
-            CampaignRoute::CAMPAIGN . '/revenue',
+            $this->namespace,
+            '/' . CampaignRoute::CAMPAIGN . '/revenue',
             [
                 [
                     'methods' => WP_REST_Server::READABLE,
-                    'callback' => [$this, 'handleRequest'],
+                    'callback' => [$this, 'get_items'],
                     'permission_callback' => function () {
                         return current_user_can('manage_options');
                     },
-                ],
-                'args' => [
-                    'id' => [
-                        'type' => 'integer',
-                        'required' => true,
-                        'sanitize_callback' => 'absint',
+                    'args' => [
+                        'id' => [
+                            'type' => 'integer',
+                            'required' => true,
+                            'sanitize_callback' => 'absint',
+                        ],
                     ],
                 ],
-                'schema' => [$this, 'getSchema'],
+                'schema' => [$this, 'get_public_item_schema'],
             ]
         );
     }
 
     /**
-     *
-     * This request returns revenue over time based on the oldest data point for the campaign in the database.
-     * The result will return an array of revenue that includes date and amount.
-     * The revenue is grouped by day, month, or year based on the date range.
-     * If the date range is less than 7 days, the result will be padded to include the last 7 days.
-     * If the date range is more than 6 months, the result will be grouped by month.
-     * If the date range is more than 5 years, the result will be grouped by year.
-     *
-     * @since 4.0.0
-     *
+     * @unreleased
      * @throws Exception
      */
-    public function handleRequest($request): WP_REST_Response
+    public function get_items($request): WP_REST_Response
     {
         $campaign = Campaign::find((int)$request->get_param('id'));
 
         if (!$campaign) {
-            return new WP_REST_Response([], 404);
+            $response = new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
+
+            return rest_ensure_response($response);
         }
 
         $query = new CampaignDonationQuery($campaign);
@@ -73,7 +80,9 @@ class GetCampaignRevenue implements RestRoute
         $oldestRevenueDate = $query->getOldestDonationDate();
 
         if (!$oldestRevenueDate) {
-            return new WP_REST_Response([], 200);
+            $items = new WP_REST_Response([]);
+
+            return rest_ensure_response($items);
         }
 
         $firstResultDate = new DateTime($oldestRevenueDate, wp_timezone());
@@ -87,23 +96,29 @@ class GetCampaignRevenue implements RestRoute
         $results = $query->getDonationsByDate($groupBy);
 
         if (empty($results)) {
-            return new WP_REST_Response([], 200);
+            $items = new WP_REST_Response([]);
+
+            return rest_ensure_response($items);
         }
 
         // Map the results by date
         $resultMap = $this->mapResultsByDate($results, $groupBy);
 
         // Get all dates between the start and end date based on the group by
-        $dates = $this->getDatesFromRange($queryStartDate, $queryEndDate->modify("+1 day"), $groupBy);
+        $endTimestamp = strtotime($queryEndDate->format('Y-m-d H:i:s') . ' +1 day');
+        $queryEndDatePlusOne = new DateTime(date('Y-m-d H:i:s', $endTimestamp), wp_timezone());
+        $dates = $this->getDatesFromRange($queryStartDate, $queryEndDatePlusOne, $groupBy);
 
         // Merge the results with the dates to ensure that all dates are included
         $data = $this->mergeResultsWithDates($dates, $resultMap);
 
-        return new WP_REST_Response($data, 200);
+        $items = new WP_REST_Response($data);
+
+        return rest_ensure_response($items);
     }
 
     /**
-     * @since 4.0.0
+     * @unreleased
      */
     public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate, string $groupBy): array
     {
@@ -111,9 +126,10 @@ class GetCampaignRevenue implements RestRoute
 
         // If the date range is less than 7 days, pad the start date to include the last 7 days
         // This is to ensure that the chart always shows at least 7 days of data
+        $start = new DateTime($startDate->format('Y-m-d H:i:s'), wp_timezone());
         if ($startDateInterval->days < 7) {
             $defaultDays = 7 - $startDateInterval->days;
-            $startDate->modify("-$defaultDays days");
+            $start = new DateTime(date('Y-m-d H:i:s', strtotime($start->format('Y-m-d H:i:s') . " -$defaultDays days")), wp_timezone());
         }
 
         $differenceInMonths = ($startDateInterval->y * 12) + $startDateInterval->m;
@@ -128,7 +144,7 @@ class GetCampaignRevenue implements RestRoute
         }
 
         $interval = DateInterval::createFromDateString("1 $intervalTime");
-        $dateRange = new DatePeriod($startDate, $interval, $endDate);
+        $dateRange = new DatePeriod($start, $interval, $endDate);
 
         $dates = [];
         foreach ($dateRange as $date) {
@@ -141,7 +157,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @since 4.0.0
+     * @unreleased
      */
     public function getGroupByFromDateRange(DateTimeInterface $startDate, DateTimeInterface $endDate): string
     {
@@ -162,7 +178,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @since 4.0.0
+     * @unreleased
      */
     public function getFormattedDateFromGroupBy(string $groupBy, DateTimeInterface $date): string
     {
@@ -178,12 +194,12 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @since 4.0.0
+     * @unreleased
      */
     public function mergeResultsWithDates(array $dates, array $resultMap): array
     {
         $data = [];
-         // Fill in the data with the results
+        // Fill in the data with the results
         foreach ($dates as $date) {
             $data[] = [
                 'date' => $date,
@@ -195,7 +211,7 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @since 4.0.0
+     * @unreleased
      */
     public function mapResultsByDate(array $results, string $groupBy): array
     {
@@ -210,10 +226,9 @@ class GetCampaignRevenue implements RestRoute
     }
 
     /**
-     * @since 4.13.0 update schema to match actual response
-     * @since 4.10.0
+     * @unreleased
      */
-    public function getSchema(): array
+    public function get_item_schema(): array
     {
         return [
             'title'   => 'campaign-revenue',
