@@ -64,7 +64,6 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * This is intended to add the initial notification count
      *
-     * @unreleased added $count parameter to set the initial notification count
      * @since 3.6.0
      */
     private function setFeatureFlagNotificationCounter(): void
