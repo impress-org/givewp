@@ -27,6 +27,7 @@ use Give\Campaigns\Migrations\RevenueTable\AddIndexes;
 use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
+use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
 use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
@@ -254,6 +255,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased added givewp_campaigns_merged hook
      * @since 4.8.0
      */
     private function registerCampaignCache(): void
@@ -268,5 +270,9 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('give_recurring_add_subscription_payment', function (Give_Payment $legacyPayment) {
             give(CacheCampaignData::class)((int)$legacyPayment->ID);
         }, 11, 1);
+
+        add_action('givewp_campaigns_merged', function (Campaign $campaign) {
+            give(CacheCampaignData::class)->dispatch($campaign->id);
+        });
     }
 }
