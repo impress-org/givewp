@@ -66,7 +66,6 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
 
-        $this->registerDonorEntity();
         $this->loadDonorAdminOptions();
     }
 
@@ -105,14 +104,6 @@ class ServiceProvider implements ServiceProviderInterface
                 }
             }
         }, 10, 2);
-    }
-
-    /**
-     * @since 4.4.0
-     */
-    private function registerDonorEntity()
-    {
-        Hooks::addAction('init', Actions\RegisterDonorEntity::class);
     }
 
     /**

@@ -1,26 +1,26 @@
 <?php
 
-namespace Give\Donations\Actions;
+namespace Give\API\REST\V3\Entities\Actions;
 
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
 /**
- * @since 4.6.0
+ * @unreleased
  */
-class RegisterDonationEntity
+class RegisterAdminEntities
 {
     /**
-     * @since 4.6.0
+     * @unreleased
      */
     public function __invoke()
     {
-        $handleName = 'givewp-donation-entity';
-        $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/donationEntity.asset.php');
+        $handleName = 'givewp-entities-admin';
+        $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/entitiesAdmin.asset.php');
 
         wp_register_script(
             $handleName,
-            GIVE_PLUGIN_URL . 'build/donationEntity.js',
+            GIVE_PLUGIN_URL . 'build/entitiesAdmin.js',
             $scriptAsset['dependencies'],
             $scriptAsset['version'],
             true
