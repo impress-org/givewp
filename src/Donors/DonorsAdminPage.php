@@ -39,7 +39,7 @@ class DonorsAdminPage
         if (self::isShowingDetailsPage()) {
             $donor = Donor::find(absint($_GET['id']));
 
-            if ( ! $donor) {
+            if (! $donor) {
                 wp_die(__('Donor not found', 'give'), 404);
             }
 
@@ -99,6 +99,14 @@ class DonorsAdminPage
     public static function isShowingDetailsPage(): bool
     {
         return isset($_GET['id'], $_GET['page']) && 'give-donors' === $_GET['page'];
+    }
+
+    /**
+     * @unreleased
+     */
+    public static function isShowingNewDetailsPage(): bool
+    {
+        return self::isShowingDetailsPage() && isset($_GET['view']) && $_GET['view'] === 'overview';
     }
 
     /**
