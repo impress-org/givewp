@@ -30,9 +30,7 @@ use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
-use Give\DonationForms\Blocks\DonationFormBlock\Controllers\BlockRenderController;
 use Give\DonationForms\V2\DonationFormsAdminPage;
-use Give\Donations\Models\Donation;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
@@ -66,7 +64,6 @@ class ServiceProvider implements ServiceProviderInterface
         $this->setupCampaignPages();
         $this->registerMigrations();
         $this->registerListTableRoutes();
-        $this->registerCampaignEntity();
         $this->registerCampaignBlocks();
         $this->setupCampaignForms();
         $this->loadCampaignAdminOptions();
@@ -183,14 +180,6 @@ class ServiceProvider implements ServiceProviderInterface
     private function setupCampaignPages()
     {
         Hooks::addAction('enqueue_block_editor_assets', Actions\EnqueueCampaignPageEditorAssets::class);
-    }
-
-    /**
-     * @since 4.0.0
-     */
-    private function registerCampaignEntity()
-    {
-        Hooks::addAction('init', Actions\RegisterCampaignEntity::class);
     }
 
     /**

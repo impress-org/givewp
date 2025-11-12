@@ -3,7 +3,6 @@
 namespace Give\Donations;
 
 use Give\Donations\Actions\LoadDonationAdminOptions;
-use Give\Donations\Actions\RegisterDonationEntity;
 use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
@@ -56,7 +55,6 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootLegacyListeners();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
-        $this->registerDonationEntity();
         $this->loadDonationAdminOptions();
 
         give(MigrationsRegister::class)->addMigrations([
@@ -147,14 +145,6 @@ class ServiceProvider implements ServiceProviderInterface
 
             (new UpdateDonorMetaWithLastDonatedCurrency())($donation);
         });
-    }
-
-    /**
-     * @since 4.6.0
-     */
-    private function registerDonationEntity()
-    {
-        Hooks::addAction('init', RegisterDonationEntity::class);
     }
 
     /**

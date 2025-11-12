@@ -20,6 +20,7 @@ import Tabs from './Tabs';
 import CampaignDetailsErrorBoundary from '@givewp/campaigns/admin/components/CampaignDetailsPage/Components/CampaignDetailsErrorBoundary';
 import {useEntityRecord} from '@wordpress/core-data';
 import styles from './CampaignDetailsPage.module.scss';
+import '@givewp/campaigns/store';
 
 interface Show {
     contextMenu?: boolean;
