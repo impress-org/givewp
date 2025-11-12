@@ -49,13 +49,15 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
+ * @unreleased account for custom rules with only excludeUnless property
  * @since 4.13.0 add support for optional false values
  * @since 3.0.0
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
     let joiRules;
+    const ruleKeys = Object.keys(rules);
 
-    if (Object.keys(rules).length === 0) {
+    if (ruleKeys.length === 0 || (ruleKeys.length === 1 && 'excludeUnless' in rules)) {
         return Joi.any();
     }
 
