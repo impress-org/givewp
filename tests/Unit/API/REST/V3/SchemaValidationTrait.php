@@ -12,7 +12,7 @@ trait SchemaValidationTrait
      * Accepts an OPTIONS response wrapper or a raw schema fragment.
      * If the schema describes an array of objects, returns the item schema.
      *
-     * @unreleased
+     * @since 4.13.0
      */
     private function resolveSchemaNode(array $schema): array
     {
@@ -28,7 +28,7 @@ trait SchemaValidationTrait
     /**
      * Get properties from the resolved schema node.
      *
-     * @unreleased
+     * @since 4.13.0
      */
     private function getSchemaProperties(array $schema): array
     {
@@ -39,7 +39,7 @@ trait SchemaValidationTrait
     /**
      * Get required properties from the resolved schema node.
      *
-     * @unreleased
+     * @since 4.13.0
      */
     private function getRequiredProperties(array $schema): array
     {
@@ -48,7 +48,7 @@ trait SchemaValidationTrait
     }
 
     /**
-     * @unreleased Validate schema properties for both objects and arrays.
+     * @since 4.13.0 Validate schema properties for both objects and arrays.
      * @since 4.9.0
      */
     private function validateSchemaProperties($schema, $actualData)
@@ -93,7 +93,7 @@ trait SchemaValidationTrait
     }
 
     /**
-     * @unreleased Validate data types for both objects and arrays, with support for nullable properties.
+     * @since 4.13.0 Validate data types for both objects and arrays, with support for nullable properties.
      * @since 4.9.0
      */
     private function validateDataTypes($schema, $actualData)

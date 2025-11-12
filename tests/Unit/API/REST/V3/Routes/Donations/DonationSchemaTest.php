@@ -19,7 +19,7 @@ class DonationSchemaTest extends RestApiTestCase
 
     /**
      * TODO: add customfields and eventTickets
-     * @unreleased
+     * @since 4.13.0
      */
     public function testDonationSchemaShouldMatchActualResponse()
     {

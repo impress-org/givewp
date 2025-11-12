@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Campaigns\ViewModels;
+namespace Give\API\REST\V3\Routes\Campaigns\ViewModels;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignsDataRepository;

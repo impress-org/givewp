@@ -12,6 +12,7 @@ import styles from './CampaignDetailsPage.module.scss';
 import AdminDetailsPage from '@givewp/components/AdminDetailsPage';
 import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
 import tabDefinitions from './Tabs/definitions';
+import '@givewp/campaigns/store';
 
 const StatusBadge = ({ status }: { status: string }) => {
     const statusMap = {

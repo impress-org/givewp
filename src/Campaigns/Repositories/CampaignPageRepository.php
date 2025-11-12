@@ -42,6 +42,7 @@ class CampaignPageRepository
     public function queryByCampaignId(int $campaignId): ModelQueryBuilder
     {
         return $this->prepareQuery()
+            ->where('post_status', CampaignPageStatus::TRASH()->getValue(), '!=')
             ->where('postmeta_attach_meta_campaignId.meta_value', $campaignId);
     }
 

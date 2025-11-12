@@ -7,6 +7,7 @@ use Give\Campaigns\Actions\CreateDefaultLayoutForCampaignPage;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Models\CampaignPage;
 use Give\Campaigns\Repositories\CampaignPageRepository;
+use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -147,5 +148,23 @@ final class CampaignPageRepositoryTest extends TestCase
         ]);
 
         $this->assertEquals($campaign->title, get_the_title($campaignPage->id));
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testCampaignPageShouldNotBeReturnedWhenInTrash()
+    {
+        $campaign = Campaign::factory()->create();
+        $campaignPage = $campaign->page();
+
+        $campaignPage->status = CampaignPageStatus::TRASH();
+        $campaignPage->save();
+
+        $repository = give(CampaignPageRepository::class);
+
+        $this->assertNull($repository->findByCampaignId($campaign->id));
     }
 }

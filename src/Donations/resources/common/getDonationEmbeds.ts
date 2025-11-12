@@ -2,7 +2,7 @@
 import {Donation} from '../admin/components/types';
 
 /**
- * @unreleased
+ * @since 4.13.0
  */
 export default function getDonationEmbeds(donation: Donation) {
     return {

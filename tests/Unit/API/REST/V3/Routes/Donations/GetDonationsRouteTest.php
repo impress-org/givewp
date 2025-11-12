@@ -31,7 +31,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased updated the date format
+     * @since 4.13.0 updated the date format
      * @since 4.0.0
      */
     public function testGetDonationShouldReturnAllModelProperties()
@@ -651,7 +651,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased updated the amount values
+     * @since 4.13.0 updated the amount values
      * @since 4.0.0
      *
      * @throws Exception
@@ -677,7 +677,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased updated the amount values
+     * @since 4.13.0 updated the amount values
      * @since 4.0.0
      *
      * @throws Exception
@@ -703,7 +703,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased updated the amount values
+     * @since 4.13.0 updated the amount values
      * @since 4.0.0
      *
      * @throws Exception

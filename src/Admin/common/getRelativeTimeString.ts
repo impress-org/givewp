@@ -3,7 +3,7 @@ import {humanTimeDiff, getDate} from '@wordpress/date';
 /**
  * Returns a relative time string for a given date (e.g. "Today" or "2 days ago")
  *
- * @unreleased updated to use the @wordpress/date functions
+ * @since 4.13.0 updated to use the @wordpress/date functions
  * @since 4.10.0
  */
 export function getRelativeTimeString(date: Date): string {

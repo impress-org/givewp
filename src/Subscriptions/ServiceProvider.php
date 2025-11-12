@@ -6,7 +6,6 @@ use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Subscriptions\Actions\LoadSubscriptionAdminOptions;
-use Give\Subscriptions\Actions\RegisterSubscriptionEntity;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
@@ -45,7 +44,6 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $this->bootLegacyListeners();
         $this->registerMigrations();
-        $this->registerSubscriptionEntity();
         $this->registerSubscriptionAdminOptions();
 
         $userId = get_current_user_id();
@@ -87,14 +85,6 @@ class ServiceProvider implements ServiceProviderInterface
             AddCampaignId::class,
             UpdateProductID::class
         ]);
-    }
-
-    /**
-     * @since 4.8.0
-     */
-    private function registerSubscriptionEntity()
-    {
-        Hooks::addAction('init', RegisterSubscriptionEntity::class);
     }
 
     /**

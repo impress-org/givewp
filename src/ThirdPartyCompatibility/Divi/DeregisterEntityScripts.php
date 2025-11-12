@@ -3,7 +3,7 @@
 namespace Give\ThirdPartyCompatibility\Divi;
 
 /**
- * @unreleased include divi options page
+ * @since 4.13.0 include divi options page
  * @since 4.5.0
  */
 class DeregisterEntityScripts

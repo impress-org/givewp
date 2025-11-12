@@ -22,7 +22,7 @@ export type DonationSummaryGridProps = {
 };
 
 /**
- * @unreleased updated to accept Campaign type
+ * @since 4.13.0 updated to accept Campaign type
  * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
@@ -42,7 +42,7 @@ export function CampaignCard({campaign}: {campaign: Campaign}) {
 }
 
 /**
- * @unreleased updated to accept Donor type
+ * @since 4.13.0 updated to accept Donor type
  * @since 4.8.0 export function for SubscriptionSummaryGrid & add GridCard component
  * @since 4.6.0
  */
@@ -83,7 +83,7 @@ export function GatewayNotice() {
 }
 
 /**
- * @unreleased updated to use embedded data
+ * @since 4.13.0 updated to use embedded data
  * @unrleased add Grid components & variables
  * @since 4.6.0
  */

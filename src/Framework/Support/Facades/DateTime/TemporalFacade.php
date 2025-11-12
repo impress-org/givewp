@@ -133,7 +133,7 @@ class TemporalFacade
     /**
      * Get the formatted date time using the site specific time zone and format settings
      *
-     * @unreleased
+     * @since 4.13.0
      */
     public function getFormattedDateTimeUsingTimeZoneAndFormatSettings(DateTimeInterface $dateTime): string
     {

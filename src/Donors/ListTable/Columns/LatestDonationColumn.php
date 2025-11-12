@@ -38,7 +38,7 @@ class LatestDonationColumn extends ModelColumn
     }
 
     /**
-     * @unreleased updated date format
+     * @since 4.13.0 updated date format
      * @since 2.24.0
      *
      * @inheritDoc

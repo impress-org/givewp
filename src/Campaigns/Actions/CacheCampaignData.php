@@ -12,6 +12,7 @@ use Give\Donations\Models\Donation;
  * @uses give_insert_payment hook
  * @uses give_update_payment_status hook
  * @uses give_recurring_add_subscription_payment hook
+ * @uses givewp_campaigns_merged hook
  *
  * Action used to update campaign's stats data
  *
@@ -19,6 +20,7 @@ use Give\Donations\Models\Donation;
 class CacheCampaignData
 {
     /**
+     * @unreleased added dispatch method
      * @since 4.8.0
      */
     public function __invoke(int $donationId): void
@@ -30,9 +32,17 @@ class CacheCampaignData
         }
 
         if ($donation->status->isComplete() || $donation->status->isRenewal()) {
-            as_enqueue_async_action('givewp_cache_campaign_data', [$donation->campaignId], 'givewp_campaigns_cache');
+            $this->dispatch($donation->campaignId);
         }
+    }
 
+    /**
+     * Dispatch the cache campaign data action
+     * @unreleased
+     */
+    public function dispatch(int $campaignId): void
+    {
+        as_enqueue_async_action('givewp_cache_campaign_data', [$campaignId], 'givewp_campaigns_cache');
     }
 
     /**

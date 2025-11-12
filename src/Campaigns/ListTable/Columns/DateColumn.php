@@ -30,7 +30,7 @@ class DateColumn extends ModelColumn
     }
 
     /**
-     * @unreleased updated date format
+     * @since 4.13.0 updated date format
      * @since 4.0.0
      *
      * @param Campaign $model

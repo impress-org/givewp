@@ -2,7 +2,7 @@ import {dateI18n, getDate} from '@wordpress/date';
 
 /**
  * Format the date and time to a datetime-local input compatible string
- * @unreleased
+ * @since 4.13.0
  */
 export default function formatToDateTimeLocalInput(dateString: string) {
     if (!dateString) {

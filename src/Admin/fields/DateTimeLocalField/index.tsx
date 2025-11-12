@@ -13,7 +13,7 @@ import {formatToDateTimeLocalInput, convertLocalDateTimeToISOString} from '@give
  *
  * DateTimeLocalField component that formats the date and time to a datetime-local input and is compatible with the server-side validation date-time format RFC3339 validation.
  *
- * @unreleased
+ * @since 4.13.0
  */
 export default function DateTimeLocalField({name, label}: {name: string, label: string}) {
     const {watch, setValue} = useFormContext();
