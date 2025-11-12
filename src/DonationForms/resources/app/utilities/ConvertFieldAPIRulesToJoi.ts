@@ -49,6 +49,7 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
+ * @unreleased add support for object rules
  * @since 4.13.0 add support for optional false values
  * @since 3.0.0
  */
@@ -69,7 +70,7 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         joiRules = Joi.boolean();
     } else if (rules.hasOwnProperty('array')) {
         joiRules = Joi.array();
-    } else if (rules.hasOwnProperty('file')) {
+    } else if (rules.hasOwnProperty('object') || rules.hasOwnProperty('file')) {
         joiRules = Joi.object();
     } else if (rules.hasOwnProperty('dateTime')) {
         joiRules = Joi.date();
