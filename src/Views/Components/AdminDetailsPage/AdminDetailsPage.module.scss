@@ -134,10 +134,6 @@
     display: flex;
     gap: 0.25rem;
     margin-top: 1rem;
-
-    &.fullWidth {
-        padding-left: var(--givewp-spacing-6);
-    }
 }
 
 .tabs [data-reach-tab],
@@ -289,10 +285,11 @@
 }
 
 .pageContent {
-    /*padding: 0 var(--givewp-spacing-6) var(--givewp-spacing-6);*/
+    padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+    position: relative;
 
-    &:not(.fullWidth) {
-        padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+    &.fullWidth {
+        padding: var(--givewp-spacing-4) 0;
     }
 
     section {
@@ -349,9 +346,10 @@
     }
 
     .sectionDescription {
-        font-size: 16px;
-        line-height: 1.5;
         color: var(--givewp-neutral-500);
+        font-size: 14px;
+        line-height: 1.43;
+        margin: 0;
     }
 
     .sectionSubtitle {

@@ -28,7 +28,7 @@ export type Campaign = {
 };
 
 export type CampaignEntity = {
-    campaign: Campaign;
+    record: Campaign;
     hasResolved: boolean;
     edit: (data: Campaign) => void
     save: () => any
