@@ -55,8 +55,9 @@ function getJoiRulesForField(field: Field): AnySchema {
  */
 function convertFieldAPIRulesToJoi(rules): AnySchema {
     let joiRules;
+    const ruleKeys = Object.keys(rules);
 
-    if (Object.keys(rules).length === 0) {
+    if (ruleKeys.length === 0 || (ruleKeys.length === 1 && 'excludeUnless' in rules)) {
         return Joi.any();
     }
 
