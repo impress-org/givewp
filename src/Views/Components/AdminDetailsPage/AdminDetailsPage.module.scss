@@ -286,6 +286,7 @@
 
 .pageContent {
     padding: var(--givewp-spacing-4) var(--givewp-spacing-6);
+    position: relative;
 
     &.fullWidth {
         padding: var(--givewp-spacing-4) 0;
