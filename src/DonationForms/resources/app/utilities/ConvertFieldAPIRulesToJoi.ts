@@ -70,7 +70,7 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
         joiRules = Joi.boolean();
     } else if (rules.hasOwnProperty('array')) {
         joiRules = Joi.array();
-    } else if (rules.hasOwnProperty('object') || rules.hasOwnProperty('file')) {
+    } else if (rules.hasOwnProperty('file')) {
         joiRules = Joi.object();
     } else if (rules.hasOwnProperty('dateTime')) {
         joiRules = Joi.date();
