@@ -10,7 +10,7 @@
         "stripe/stripe-php": "^7.97.0",
         "paypal/paypal-checkout-sdk": "^1.0",
         "kjohnson/format-object-list": "^0.1.0",
-        "symfony/http-foundation": "^v5.4.46",
+        "symfony/http-foundation": "v5.4.50",
         "stellarwp/field-conditions": "^1.1",
         "stellarwp/validation": "1.5.0",
         "symfony/polyfill-ctype": "^1.19",
