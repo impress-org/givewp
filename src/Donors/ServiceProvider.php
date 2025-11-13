@@ -25,7 +25,6 @@ use Give_Donor as LegacyDonor;
  */
 class ServiceProvider implements ServiceProviderInterface
 {
-
     /**
      * @inheritDoc
      */
@@ -49,8 +48,8 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         $userId = get_current_user_id();
-        $showLegacy = get_user_meta($userId, '_give_donors_archive_show_legacy', true);
-        // only register new admin page if user hasn't chosen to use the old one
+        $showLegacy = DonorsAdminPage::isShowingNewDetailsPage() ? false : get_user_meta($userId, '_give_donors_archive_show_legacy', true);
+        // only register new admin page if user hasn't chosen to use the old one or is trying to access the new donor details page
         if (empty($showLegacy)) {
             Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem', 30);
         } elseif (DonorsAdminPage::isShowing()) {

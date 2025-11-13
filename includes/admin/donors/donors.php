@@ -9,6 +9,7 @@
  * @since       1.0
  */
 
+use Give\Donors\DonorsAdminPage;
 use Give\Donors\Models\Donor;
 use Give\Helpers\IntlTelInput;
 
@@ -111,10 +112,15 @@ function give_get_format_address( $address, $address_args = array() ) {
  *
  * Renders the donors page contents.
  *
+ * @unreleased add early return if showing new details page
  * @since  1.0
  * @return void
  */
 function give_donors_page() {
+    if (DonorsAdminPage::isShowingNewDetailsPage()) {
+        return;
+    }
+
 	$default_views  = give_donor_views();
 	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'donors';
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[ $requested_view ] ) ) {
