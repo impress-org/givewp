@@ -608,6 +608,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased cast totalAmountDonated to decimal
      * @since 4.0.0
      */
     public function getSortColumn(string $sortColumn): string
@@ -618,7 +619,7 @@ class DonorController extends WP_REST_Controller
             'name' => 'name',
             'firstName' => 'give_donormeta_attach_meta_firstName.meta_value',
             'lastName' => 'give_donormeta_attach_meta_lastName.meta_value',
-            'totalAmountDonated' => 'purchase_value',
+            'totalAmountDonated' => 'CAST(purchase_value AS DECIMAL(10, 2))',
             'totalNumberOfDonations' => 'purchase_count',
         ];
 

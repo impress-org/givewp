@@ -741,7 +741,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
         $donor1->firstName = 'A';
         $donor1->lastName = 'A';
         $donor1->name = 'A A';
-        $donor1->totalAmountDonated = new Money(100, 'USD');
+        $donor1->totalAmountDonated = Money::fromDecimal(90.99, 'USD');
         $donor1->totalNumberOfDonations = 1;
         $donor1->save();
 
@@ -772,7 +772,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
         $donor2->firstName = 'B';
         $donor2->lastName = 'B';
         $donor2->name = 'B B';
-        $donor2->totalAmountDonated = new Money(200, 'USD');
+        $donor2->totalAmountDonated = Money::fromDecimal(189.00, 'USD');
         $donor2->totalNumberOfDonations = 2;
         $donor2->save();
 
@@ -803,7 +803,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
         $donor3->firstName = 'C';
         $donor3->lastName = 'C';
         $donor3->name = 'C C';
-        $donor3->totalAmountDonated = new Money(300, 'USD');
+        $donor3->totalAmountDonated = Money::fromDecimal(289.00, 'USD');
         $donor3->totalNumberOfDonations = 3;
         $donor3->save();
 
