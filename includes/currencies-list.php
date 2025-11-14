@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Core Supported Currency List
  *
@@ -7,6 +8,7 @@
  * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  *
+ * @unreleased added XCG (Caribbean Guilder)
  * @since 4.10.0 Updated to match current ISO 4217 standard as of 2024. Total: 169 currencies.
  *
  * Major changes include:
@@ -832,6 +834,16 @@ return array(
 			'number_decimals'     => 2,
 		),
 	),
+    'XCG' => array(
+        'admin_label' => sprintf(__('Caribbean Guilder (%1$s)', 'give'), 'Cg'),
+        'symbol'      => 'Cg',
+        'setting'     => array(
+            'currency_position'   => 'before',
+            'thousands_separator' => ',',
+            'decimal_separator'   => '.',
+            'number_decimals'     => 2,
+        ),
+    ),
 	'XDR' => array(
 		'admin_label' => sprintf( __( 'Special Drawing Rights (%1$s)', 'give' ), 'XDR' ),
 		'symbol'      => 'XDR',
