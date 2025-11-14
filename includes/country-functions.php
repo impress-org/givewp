@@ -2333,6 +2333,7 @@ function give_get_spain_states_list() {
 		'CR' => esc_html__( 'Ciudad Real', 'give' ),
 		'CO' => esc_html__( 'C&oacute;rdoba', 'give' ),
 		'CU' => esc_html__( 'Cuenca', 'give' ),
+        'CW' => esc_html__( 'Curaçao', 'give' ),
 		'GI' => esc_html__( 'Girona', 'give' ),
 		'GR' => esc_html__( 'Granada', 'give' ),
 		'GU' => esc_html__( 'Guadalajara', 'give' ),
