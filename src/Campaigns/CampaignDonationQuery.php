@@ -50,6 +50,7 @@ class CampaignDonationQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.0.0
      *
      * @return int|float
@@ -59,6 +60,7 @@ class CampaignDonationQuery extends QueryBuilder
         $query = clone $this;
         $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
         $query->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
+        $query->joinDonationMeta(DonationMetaKeys::EXCHANGE_RATE, 'exchangeRate');
         return $query->sum(
             /**
              * The intended amount meta and the amount meta could either be 0 or NULL.
@@ -66,7 +68,7 @@ class CampaignDonationQuery extends QueryBuilder
              * Then we coalesce the values to select the first non-NULL value.
              * @link https://github.com/impress-org/givewp/pull/7411
              */
-            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)'
+            '(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) / IFNULL(exchangeRate.meta_value, 1)'
         );
     }
 
@@ -108,6 +110,7 @@ class CampaignDonationQuery extends QueryBuilder
     }
 
     /**
+     * @since 4.5.0 update to account for exchange rate
      * @since 4.0.0
      */
     public function getDonationsByDate($groupBy = 'DATE'): array
@@ -116,8 +119,9 @@ class CampaignDonationQuery extends QueryBuilder
 
         $query->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amount');
         $query->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
+        $query->joinDonationMeta(DonationMetaKeys::EXCHANGE_RATE, 'exchangeRate');
         $query->select(
-            'SUM(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) as amount'
+            'SUM((IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) / IFNULL(exchangeRate.meta_value, 1)) as amount'
         );
 
         $query->select('YEAR(donation.post_date) as year');

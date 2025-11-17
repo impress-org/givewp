@@ -5,6 +5,7 @@ namespace Give\Donors\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
+ * @since 4.10.0 Updated labels
  * @since 2.19.6
  *
  * @method static DonorType NEW()
@@ -31,8 +32,8 @@ class DonorType extends Enum
         return [
             self::NEW => __( 'No Donations', 'give' ),
             self::SUBSCRIBER => __( 'Subscriber', 'give' ),
-            self::REPEAT => __( 'Repeat Donor', 'give' ),
-            self::SINGLE => __( 'One-time Donor', 'give' ),
+            self::REPEAT => __( 'Repeat donor', 'give' ),
+            self::SINGLE => __( 'One-time', 'give' ),
         ];
     }
 

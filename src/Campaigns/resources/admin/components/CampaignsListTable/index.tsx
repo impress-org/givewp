@@ -50,10 +50,6 @@ const campaignStatus = [
         value: 'inactive',
         text: __('Archived', 'give'),
     },
-    {
-        value: 'draft',
-        text: __('Draft', 'give'),
-    },
 ];
 
 const filters: Array<FilterConfig> = [

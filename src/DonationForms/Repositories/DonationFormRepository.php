@@ -485,6 +485,30 @@ class DonationFormRepository
     }
 
     /**
+     * @since 4.7.0
+     */
+    public function getColorSettings(DonationForm $donationForm): array
+    {
+        $primaryColor = $donationForm->settings->primaryColor;
+        $secondaryColor = $donationForm->settings->secondaryColor;
+
+        if ($donationForm->settings->inheritCampaignColors) {
+            /** @var Campaign $campaign */
+            $campaign = give()->campaigns->getByFormId($donationForm->id);
+
+            if ($campaign) {
+                $primaryColor = $campaign->primaryColor;
+                $secondaryColor = $campaign->secondaryColor;
+            }
+        }
+
+        return [
+            'primaryColor' => $primaryColor,
+            'secondaryColor' => $secondaryColor,
+        ];
+    }
+
+    /**
      * Get gateway form settings and handle any exceptions.
      *
      * @since 3.0.0

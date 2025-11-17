@@ -23,6 +23,7 @@ use Give\ValueObjects\ValueObjects;
  * @property FormEntry $formEntry
  * @property DonorInfo $donorInfo
  */
+#[\AllowDynamicProperties]
 class Donation implements Objects
 {
     /**

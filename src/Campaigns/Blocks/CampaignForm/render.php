@@ -28,8 +28,12 @@ if (! isset($attributes['campaignId']) ||
         'content_display'       => $attributes['contentDisplay'] ?? 'above',
         'show_goal'             => $attributes['showGoal'] ?? true,
         'show_content'          => $attributes['showContent'] ?? true,
-        'use_Default_form'      => $attributes['useDefaultForm'] ?? true,
+        'use_default_form'      => $attributes['useDefaultForm'] ?? true,
     ];
+
+    if ($atts['use_default_form'] === true) {
+        $atts['id'] = $campaign->defaultFormId;
+    }
 
     echo give_form_shortcode($atts);
 

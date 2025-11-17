@@ -23,18 +23,21 @@ interface AdminSectionProps {
  */
 interface AdminSectionFieldProps {
     subtitle?: string;
+    description?: string;
     children: ReactNode;
     error?: string;
 }
 
 /**
+ * @unreleased Add description prop
  * @since 4.4.0
  */
-export function AdminSectionField({ subtitle, children, error }: AdminSectionFieldProps) {
+export function AdminSectionField({ subtitle, description, children, error }: AdminSectionFieldProps) {
     return (
         <ErrorBoundary>
             <div className={sharedStyles.sectionField}>
                 {subtitle && <h3 className={sharedStyles.sectionSubtitle}>{subtitle}</h3>}
+                {description && <p className={sharedStyles.sectionDescription}>{description}</p>}
                 {children}
                 {error && <div className={sharedStyles.errorMsg}>{error}</div>}
             </div>

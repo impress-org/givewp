@@ -41,7 +41,7 @@ class UpdateSubscriptionStatus
 
 
     /**
-     * @unreleased Add support for PAUSED and PENDING statuses
+     * @since 4.5.0 Add support for PAUSED and PENDING statuses
      * @since 3.6.0
      */
     protected function getMessageFromStatus(SubscriptionStatus $status): string

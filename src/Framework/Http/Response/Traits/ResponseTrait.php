@@ -123,6 +123,7 @@ trait ResponseTrait
      * @param  Cookie|mixed  $cookie
      * @return $this
      */
+    //phpcs:ignore PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
     public function withCookie($cookie)
     {
         if (is_string($cookie) && function_exists('cookie')) {

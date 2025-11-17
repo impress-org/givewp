@@ -9,6 +9,7 @@
  * @since       1.0
  */
 
+use Give\Donors\DonorsAdminPage;
 use Give\Donors\Models\Donor;
 use Give\Helpers\IntlTelInput;
 
@@ -21,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get formatted address
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param array $address
@@ -28,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return string
  */
-function __give_get_format_address( $address, $address_args = array() ) {
+function give_get_format_address( $address, $address_args = array() ) {
 	$address_html = '';
 	$address_args = wp_parse_args(
 		$address_args,
@@ -110,10 +112,15 @@ function __give_get_format_address( $address, $address_args = array() ) {
  *
  * Renders the donors page contents.
  *
+ * @unreleased add early return if showing new details page
  * @since  1.0
  * @return void
  */
 function give_donors_page() {
+    if (DonorsAdminPage::isShowingNewDetailsPage()) {
+        return;
+    }
+
 	$default_views  = give_donor_views();
 	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'donors';
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[ $requested_view ] ) ) {
@@ -613,7 +620,7 @@ function give_donor_view( $donor ) {
 									case is_array( end( $addresses ) ):
 										$index = 1;
 										foreach ( $addresses as $id => $address ) {
-											echo __give_get_format_address(
+											echo give_get_format_address(
 												$address,
 												array(
 													'type' => $address_type,
@@ -627,7 +634,7 @@ function give_donor_view( $donor ) {
 										break;
 
 									case is_string( end( $addresses ) ):
-										echo __give_get_format_address(
+										echo give_get_format_address(
 											$addresses,
 											array(
 												'type' => $address_type,
@@ -1033,6 +1040,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
+ * @since 4.6.0 Escape donor note
  * @since  1.0
  *
  * @param  Give_Donor $donor The donor object being displayed.
@@ -1086,7 +1094,7 @@ function give_donor_notes_view( $donor ) {
 				<?php foreach ( $donor_notes as $key => $note ) : ?>
 					<div class="donor-note-wrapper dashboard-comment-wrap comment-item">
 					<span class="note-content-wrap">
-						<?php echo stripslashes( $note ); ?>
+						<?php echo stripslashes( esc_html( $note ) ); ?>
 					</span>
 					</div>
 				<?php endforeach; ?>

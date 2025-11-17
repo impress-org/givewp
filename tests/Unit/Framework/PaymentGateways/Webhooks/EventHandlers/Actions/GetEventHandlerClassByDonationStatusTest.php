@@ -16,12 +16,12 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\DonationRevoked;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class GetEventHandlerClassByDonationStatusTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testShouldReturnDonationStatusEventHandlerClass()
     {

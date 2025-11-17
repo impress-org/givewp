@@ -81,7 +81,7 @@ class Give_Cache {
 		add_action( 'give_save_settings_give_settings', array( __CLASS__, 'flush_cache' ) );
 
 		add_action( 'wp', array( __CLASS__, 'prevent_caching' ) );
-		add_action( 'admin_notices', array( $this, '__notices' ) );
+		add_action( 'admin_notices', array($this, 'notices') );
 	}
 
 	/**
@@ -149,11 +149,12 @@ class Give_Cache {
 	/**
 	 * Notices function.
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0.5
 	 * @access public
 	 * @credit WooCommerce
 	 */
-	public function __notices() {
+	public function notices() {
 		if ( ! function_exists( 'w3tc_pgcache_flush' ) || ! function_exists( 'w3_instance' ) ) {
 			return;
 		}

@@ -223,6 +223,7 @@ class Give_DB_Sessions extends Give_DB {
 	 * Replace table data
 	 * Note: only for internal use
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.2.0
 	 * @access public
 	 *
@@ -230,7 +231,7 @@ class Give_DB_Sessions extends Give_DB {
 	 * @param array  $data       Data.
 	 * @param array  $format     Array for data format of each key:value in data.
 	 */
-	public function __replace( $table_name, $data, $format = null ) {
+	public function replace( $table_name, $data, $format = null ) {
 		global $wpdb;
 
 		wp_cache_set( $data['session_key'], $data['session_value'], $this->cache_group, $data['session_expiry'] - time() );

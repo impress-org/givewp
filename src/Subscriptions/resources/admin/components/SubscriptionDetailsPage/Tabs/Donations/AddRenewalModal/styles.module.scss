@@ -1,0 +1,189 @@
+// Add Renewal Dialog Styles
+.addRenewalDialog {
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-6);
+
+        .text {
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--givewp-neutral-700);
+        }
+    }
+
+    .formRow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--givewp-spacing-4);
+    }
+
+    .label {
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        color: var(--givewp-neutral-700);
+    }
+
+    .optional {
+        color: var(--givewp-neutral-500);
+    }
+
+    .checkboxLabel {
+        align-items: center;
+        color: var(--givewp-neutral-700);
+        display: flex;
+        font-size: 1rem;
+        font-weight: 500;
+        gap: var(--givewp-spacing-2);
+        line-height: 1.5;
+    }
+
+    .formField {
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-1);
+
+        .input {
+            border-radius: var(--givewp-rounded-4);
+            border: 1px solid var(--givewp-neutral-300);
+            color: var(--givewp-neutral-900);
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            margin-top: var(--givewp-spacing-1);
+            padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+            transition: all 0.2s ease;
+            width: 100%;
+
+            &.inputError {
+                border-color: var(--givewp-red-400);
+            }
+
+            &:focus {
+                border-color: rgb(34, 113, 177);
+                box-shadow: rgb(34, 113, 177) 0px 0px 0px 1px;
+                outline: none;
+            }
+
+            &.inputError:focus {
+                border-color: var(--givewp-red-400);
+                box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            }
+        }
+
+        .select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-position: right 0.75rem center;
+            background-repeat: no-repeat;
+            background-size: 1rem;
+            cursor: pointer;
+            max-width: none;
+            width: 100%;
+        }
+
+        .errorMessage {
+            color: var(--givewp-red-500);
+            font-size: 0.875rem;
+            font-weight: 400;
+            line-height: 1.43;
+            margin-top: var(--givewp-spacing-1);
+        }
+    }
+
+    .checkboxField {
+        .checkbox {
+            --transition: 0.2s ease;
+
+            appearance: none;
+            background-color: transparent;
+            border-radius: var(--givewp-rounded-1, 0.25rem);
+            border: solid 1px var(--givewp-grey-400);
+            color: #2271b1;
+            cursor: pointer;
+            flex-shrink: 0;
+            font-size: inherit;
+            height: 1.25rem;
+            margin: 0;
+            transition: background-color var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
+            vertical-align: middle;
+            width: 1.25rem;
+
+            &::before {
+                content: none;
+            }
+
+            &:focus {
+                border-color: transparent;
+                box-shadow: #2271b1 0px 0px 0px 0.125rem;
+                outline: none;
+            }
+
+            &:checked,
+            &:checked:active,
+            &:checked:focus {
+                background-color: #2271b1;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2724%27 height=%2724%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27rgb%28255, 255, 255%29%27 stroke-width=%274%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpolyline points=%2720 6 9 17 4 12%27%3E%3C/polyline%3E%3C/svg%3E");
+                background-position: center;
+                background-size: 0.75em auto;
+                background-repeat: no-repeat;
+                border-color: #2271b1;
+            }
+
+            &[aria-invalid="false"] {
+                border-color: var(--givewp-green-500);
+            }
+
+            &[aria-invalid="true"] {
+                border-color: var(--givewp-red-400);
+            }
+        }
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: var(--givewp-spacing-2);
+        margin-top: var(--givewp-spacing-10);
+
+        button {
+            cursor: pointer;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.5;
+            padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+            border: none;
+        }
+
+        .addButton {
+            padding: var(--givewp-spacing-4) var(--givewp-spacing-8);
+        }
+
+        &.loading {
+            pointer-events: none;
+        }
+    }
+
+    .note {
+        background-color: var(--givewp-blue-25);
+        border-color: var(--givewp-blue-400);
+        border-radius: var(--givewp-rounded-4);
+        border-style: solid;
+        border-width: 1px 1px 1px 4px;
+        color: var(--givewp-blue-900);
+        display: flex;
+        gap: var(--givewp-spacing-2);
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.43;
+        margin-top: var(--givewp-spacing-2);
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-4);
+    }
+}

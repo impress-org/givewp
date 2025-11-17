@@ -15,6 +15,7 @@ use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\InvalidRequestException;
 use Stripe\PaymentIntent;
+use Stripe\Refund;
 
 trait StripePaymentElementRepository
 {
@@ -30,6 +31,17 @@ trait StripePaymentElementRepository
             $data->toParams(),
             $data->toOptions($stripeConnectAccountId)
         );
+    }
+
+    /**
+     * @since 4.7.0
+     * @throws ApiErrorException
+     */
+    protected function refundStripePayment(Donation $donation): Refund
+    {
+        return Refund::create([
+            'payment_intent' => $donation->gatewayTransactionId,
+        ]);
     }
 
     /**

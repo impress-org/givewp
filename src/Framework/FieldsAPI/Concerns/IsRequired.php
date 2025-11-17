@@ -37,7 +37,7 @@ trait IsRequired
     {
         return [
             'error_id' => $this->name,
-            'error_message' => __('Please enter a value for ' . $this->name, 'give'),
+            'error_message' => __('Please enter a value for ', 'give') . $this->name,
         ];
     }
 }

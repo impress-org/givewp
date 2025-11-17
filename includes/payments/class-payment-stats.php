@@ -279,7 +279,7 @@ class Give_Payment_Stats extends Give_Stats {
 	public function get_best_selling( $number = 10 ) {
 		global $wpdb;
 
-		$meta_table = __give_v20_bc_table_details( 'form' );
+		$meta_table = give_v20_bc_table_details( 'form' );
 
 		$give_forms = $wpdb->get_results(
 			$wpdb->prepare(

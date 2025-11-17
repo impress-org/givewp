@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.4.0
+Stable tag: 4.13.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -106,7 +106,7 @@ If you are a GiveWP customer with an active license of any of our popular add-on
 
 GiveWP comes with several payment gateway options:
 
-* **Stripe Donations** -- Accept donations through any payment method (like Apple Pay, Google Pay, or ACH) activated in your Stripe accounts.
+* **Stripe Donations** -- Accept donations through any payment method (like Apple Pay, Google Pay, or ACH) activated in your Stripe accounts. Additional fees may apply for free users. Read our [Stripe documentation](https://docs.givewp.com/stripe-fees) for more information.
 * **PayPal Donations** -- Allow worldwide donations with PayPal Donations. No additional fees applied.
 * **Venmo Donations** -- Give donors the option to pay through Venmo with their account balance or connected bank account.
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
@@ -179,7 +179,7 @@ Here’s a few ways you can contribute to GiveWP:
 
 = Minimum Requirements =
 
-* WordPress 6.5 or greater
+* WordPress 6.6 or greater
 * PHP version 7.4 or greater
 * MySQL version 5.7 or greater
 * MariaDB version 10 or later
@@ -272,6 +272,96 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.13.0: November 5th, 2025 =
+* Enhancement: Updated the date and time formatting throughout the new admin screens to respect WordPress settings for timezone, date format, and time format
+* Fix: Resolved an issue with form field manager checkboxes and conditional logic
+* Fix: Resolved an issue with the legacy future status of donations
+* Fix: Resolved a compatibility issue with the Divi color pickers default palette setting
+* Fix: Resolved an issue with Loco Translate that was preventing custom translation files from being loaded properly
+* Dev: Updated the schema for Campaigns and Donations in the v3 REST API
+* Dev: Updated MCP server to be compatible with Angie 1.0.2
+
+= 4.12.0: October 29th, 2025 =
+* New: The admin subscription list table has been upgraded to a new design with additional sorting, filters and statistics
+* New: Updated the new admin donor list table with additional filters and sorting
+* New: Updated the new admin donation list table with additional filters
+* Fix: Subscriptions that were transferred to a form using the visual form builder are now referencing the correct form ID
+* Fix: Resolved an issue with sorting by revenue on the Campaigns list table
+* Fix: Resolved MCP server console errors with Angie v1.0.1
+* Fix: Resolved a migration issue that was causing the cache campaign data migration to be incomplete in some cases
+
+= 4.11.0: October 16th, 2025 =
+* New: Added a new csv subscriptions importer tool for the ability to import recurring donations into GiveWP
+* New: The admin donor list table now displays quick stats
+* New: The new admin subscription details screen now has record fields for status, gateway subscription ID, campaign, form, and associated donor
+* Fix: Resolved conflict from composer with some plugins like KestrelWP
+
+= 4.10.1: October 2nd, 2025 =
+* Security: Improved REST endpoint permissions for campaigns and forms (CVE-2025-11227, CVE-2025-11228)
+
+= 4.10.0: October 1st, 2025 =
+* New: The admin list tables have been upgraded to a new design with various enhancements!
+* New: The admin donations list table now displays quick stats
+* Enhancement: Improved the currency validation for donation forms
+* Fix: Resolved an issue where editing an option-based form was resetting various settings
+* Fix: Resolved various issues with deactiving and deleting GiveWP
+* Fix: Resolved occasional 404 console log errors in the new subscription detail screen
+* Dev: Added a sidebar slot fill to the donor details screen
+
+= 4.9.0: September 17th, 2025 =
+* New: Added MCP server integration with compatibility for Angie by Elementor
+* Enhancement: Updated GiveWP for PHP 8.3 compatibility
+* Fix: Updated various strings that were missing translations (open-source contribution by @DAnn2012)
+* Fix: Resolved schema registration issues in V3 REST endpoints
+
+
+= 4.8.1: September 15th, 2025 =
+* Fix: Resolved an issue with the campaign field in the new donation detail screen not saving properly
+
+= 4.8.0: September 10th, 2025 =
+* New: The subscription admin details screen has been upgraded to a new design and experience!
+* Enhancement: Improved the loading performance of the campaign list table and grid
+* Enhancement: Added Stripe webhook compatibility with their latest version 2025-03-31.basil
+* Enhancement: Improved the performance and experience of the associated donor field in the donation details screen
+* Fix: Resolved an issue with some campaign blocks not rendering option-based forms
+
+= 4.7.1: September 4th, 2025 =
+* Fix: Resolved an issue with the legacy form widget for Elementor not displaying a preview in the builder
+* Fix: Resolved an issue with the Elementor GiveWP category not showing up as intended
+
+= 4.7.0: August 20th, 2025 =
+* New: Elementor support for widgets and campaign landing pages have been added to GiveWP without the need for a separate add-on
+* Enhancement: Stripe Payment Element and PayPal Donations have been updated to support refunding
+* Fix: Resolved an issue with donation form goal progress when using custom date ranges
+* Fix: Resolved an issue with some campaign shortcodes not loading properly
+* Dev: Added support for custom REST API fields for donation and donor endpoints
+
+= 4.6.1: July 29th, 2025 =
+* Security: Addressed an issue with donor information visibility (CVE-2025-47444)
+
+= 4.6.0: July 23rd, 2025 =
+* New: The donation admin details screen has been upgraded to a new design and experience!
+* Fix: Resolved an issue with the bulk actions selector on the campaign forms list
+* Fix: Resolved an issue with PayPal donations and zero decimal currencies like Japanese Yen
+* Fix: Resolved an issue with some form migrations using different goal formats and PHP 8.1+
+* Security: Added additional sanitization and escaping to donor notes (CVE-2025-7205)
+* Security: Added additional auth checks for certain Give user roles (CVE-2025-7221)
+* Security: Removed PayPal donations client token when not being used
+
+= 4.5.0: July 9th, 2025 =
+* New: Added a new PayPal setting to optionally accept credit cards when using Smart Buttons
+* New: Added shortcodes for givewp_campaign_donations, givewp_campaign_donors, and givewp_campaign_comments
+* New: Added support for the gateway transaction ID to the donation importer
+* Enhancement: Added core Stripe gateway support for customers in countries BR, IN, MY, MX, SG, TH
+* Fix: Resolved a Divi compatibility issue
+* Fix: Ensure campaign overview and goal statistics are calculated in the base currency
+* Fix: Resolved a style issue causing a double border around the custom amount field
+* Fix: Resolved an issue with translations that use ajax (Open-source contribution  @Genevieve-K)
+* Fix: Resolved PHP 8.1+ compatibility issues with Form Goal Settings
+* Fix: Resolved an issue with the global css form setting where some characters were being encoded
+* Fix: Resolved an issue with the terms and conditions modal not working properly in Firefox
+* Dev: Added API for gateway webhook events
 
 = 4.4.0: June 18th, 2025 =
 * New: The donor admin details screen has been upgraded to a new design and experience!

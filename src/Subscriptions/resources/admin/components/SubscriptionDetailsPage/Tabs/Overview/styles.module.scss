@@ -1,0 +1,44 @@
+$breakpoint-desktop: 900px;
+
+.overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--givewp-spacing-4);
+
+    @media (max-width: $breakpoint-desktop) {
+        grid-template-columns: 1fr;
+        gap: var(--givewp-spacing-6);
+    }
+}
+
+.left, .right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-6);
+    margin-top: var(--givewp-spacing-2);
+}
+
+.left{
+    grid-column: span 2;
+
+    @media (max-width: $breakpoint-desktop) {
+        grid-column: span 1;
+    }
+}
+
+.right {
+    grid-column: span 1;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 1rem 1.5rem 1.5rem;
+    border-radius: 8px;
+    border: solid 1px #f3f4f6;
+    background-color: var(--givewp-shades-white);
+    width: 100%;
+    box-sizing: border-box;
+}

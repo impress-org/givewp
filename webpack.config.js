@@ -140,6 +140,9 @@ const alias = {
     '@givewp/src': path.resolve(__dirname, 'src/'),
     '@givewp/campaigns': srcPath('Campaigns/resources'),
     '@givewp/donors': srcPath('Donors/resources'),
+    '@givewp/donations': srcPath('Donations/resources'),
+    '@givewp/subscriptions': srcPath('Subscriptions/resources'),
+    '@givewp/admin': srcPath('Admin'),
     ...defaultConfig.resolve.alias,
 };
 
@@ -178,7 +181,6 @@ const entry = {
     formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
     formTaxonomySettings: srcPath('FormTaxonomies/resources/form-builder/index.tsx'),
     adminBlocks: path.resolve(process.cwd(), 'blocks', 'load.js'),
-    campaignEntity: srcPath('Campaigns/resources/entity.ts'),
     campaignDetails: srcPath('Campaigns/resources/admin/campaign-details.tsx'),
     campaignBlocks: srcPath('Campaigns/Blocks/blocks.ts'),
     campaignBlocksLandingPage: srcPath('Campaigns/Blocks/landingPage.ts'),
@@ -200,11 +202,30 @@ const entry = {
     campaignFormBlockApp: srcPath('Campaigns/Blocks/CampaignForm/resources/app.tsx'),
     campaignPagePostTypeEditor: srcPath('Campaigns/resources/editor/campaign-page-post-type-editor.tsx'),
     campaignWelcomeBannerCss: srcPath('Promotions/Campaigns/resources/css/styles.scss'),
-    campaignWelcomeBannerJs: srcPath('Promotions/Campaigns/resources/js/index.ts'),
+    bfcm2025: srcPath('Promotions/BFCM/resources/index.ts'),
     campaignListTable: srcPath('Campaigns/resources/admin/campaigns-list-table.tsx'),
-    formEntity: srcPath('DonationForms/resources/entity.ts'),
-    donorEntity: srcPath('Donors/resources/entity.ts'),
     donorDetails: srcPath('Donors/resources/admin/donor-details.tsx'),
+    donationDetails: srcPath('Donations/resources/admin/donation-details.tsx'),
+    subscriptionDetails: srcPath('Subscriptions/resources/admin/subscription-details.tsx'),
+    elementorDonationFormWidget: srcPath(
+        'ThirdPartySupport/Elementor/Widgets/V2/ElementorDonationFormWidget/resources/widget.jsx'
+    ),
+    elementorCampaignGoalWidget: srcPath(
+        'ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignGoalWidget/resources/widget.jsx'
+    ),
+    elementorCampaignGridWidget: srcPath(
+        'ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignGridWidget/resources/widget.jsx'
+    ),
+    elementorCampaignWidget: srcPath(
+        'ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignWidget/resources/widget.jsx'
+    ),
+    elementorCampaignCommentsWidget: srcPath(
+        'ThirdPartySupport/Elementor/Widgets/V2/ElementorCampaignCommentsWidget/resources/widget.jsx'
+    ),
+    elementorLegacyGiveFormWidget: srcPath('ThirdPartySupport/Elementor/Widgets/V1/resources/formWidget.jsx'),
+    angieMcp: srcPath('MCP/assets/angie.ts'),
+    entitiesAdmin: srcPath('API/REST/V3/Entities/resources/entities-admin.ts'),
+    entitiesPublic: srcPath('API/REST/V3/Entities/resources/entities-public.ts'),
     ...legacyScriptsEntry,
     ...legacyStyleEntry,
 };

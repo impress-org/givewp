@@ -72,7 +72,7 @@ class Give_Email_Template_Tags {
 	 * }
 	 */
 	public function add( $args ) {
-		__give_211_bc_email_template_tag_param( $args, func_get_args() );
+		give_211_bc_email_template_tag_param( $args, func_get_args() );
 
 		if ( is_callable( $args['func'] ) ) {
 			$this->tags[ $args['tag'] ] = [
@@ -206,7 +206,7 @@ class Give_Email_Template_Tags {
  *                    Check Give_Email_Template_Tags::add function description for more information
  */
 function give_add_email_tag( $args ) {
-	__give_211_bc_email_template_tag_param( $args, func_get_args() );
+	give_211_bc_email_template_tag_param( $args, func_get_args() );
 
 	Give()->email_tags->add( $args );
 }
@@ -550,7 +550,7 @@ function give_email_tag_first_name( $tag_args ) {
 	$firstname = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -604,7 +604,7 @@ function give_email_tag_fullname( $tag_args ) {
 	$fullname = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -653,7 +653,7 @@ function give_email_tag_username( $tag_args ) {
 	$username = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -706,7 +706,7 @@ function give_email_tag_user_email( $tag_args ) {
 	$email = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -754,7 +754,7 @@ function give_email_tag_billing_address( $tag_args ) {
 	$address = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -804,7 +804,7 @@ function give_email_tag_date( $tag_args ) {
 	$date = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -838,7 +838,7 @@ function give_email_tag_amount( $tag_args ) {
 	$amount = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -886,7 +886,7 @@ function give_email_tag_payment_id( $tag_args ) {
 	$payment_id = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -918,7 +918,7 @@ function give_email_tag_donation( $tag_args ) {
 	$donation_form_title = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -965,7 +965,7 @@ function give_email_tag_form_title( $tag_args ) {
     $donation_form_title = '';
 
     // Backward compatibility.
-    $tag_args = __give_20_bc_str_type_email_tag_param($tag_args);
+    $tag_args = give_20_bc_str_type_email_tag_param($tag_args);
 
     switch (true) {
         case give_check_variable($tag_args, 'isset', 0, 'payment_id'):
@@ -1005,7 +1005,7 @@ function give_email_tag_company_name( $tag_args ) {
 	$company_name = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -1041,10 +1041,10 @@ function give_email_tag_payment_method( $tag_args ) {
 	$payment_method = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -1083,7 +1083,7 @@ function give_email_tag_payment_total( $tag_args ) {
 	$payment_total = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 		case give_check_variable( $tag_args, 'isset', 0, 'payment_id' ):
@@ -1120,7 +1120,7 @@ function give_email_tag_sitename( $tag_args = [] ) {
 	$sitename = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	/**
 	 * Filter the {sitename} email template tag output.
@@ -1148,7 +1148,7 @@ function give_email_tag_sitename( $tag_args = [] ) {
  */
 function give_email_tag_receipt_link( $tag_args ) {
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	$donation_id = give_check_variable( $tag_args, 'empty', 0, 'payment_id' );
 	$receipt_url = give_get_view_receipt_url( $donation_id );
@@ -1188,7 +1188,7 @@ function give_email_tag_receipt_link( $tag_args ) {
  */
 function give_email_tag_receipt_link_url( $tag_args ) {
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	$receipt_link_url = give_get_view_receipt_url( give_check_variable( $tag_args, 'empty', 0, 'payment_id' ) );
 
@@ -1222,7 +1222,7 @@ function give_email_tag_donation_history_link( $tag_args ) {
 	$email_access_link = '';
 
 	// Backward compatibility.
-	$tag_args = __give_20_bc_str_type_email_tag_param( $tag_args );
+	$tag_args = give_20_bc_str_type_email_tag_param( $tag_args );
 
 	switch ( true ) {
 
@@ -1314,13 +1314,14 @@ function give_email_tag_donation_history_link( $tag_args ) {
  *
  * Note: from 2.0 email tag render function will start accepting array values.
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param $tag_args
  *
  * @return array
  */
-function __give_20_bc_str_type_email_tag_param( $tag_args ) {
+function give_20_bc_str_type_email_tag_param( $tag_args ) {
 	if ( ! is_array( $tag_args ) ) {
 		switch ( true ) {
 			case ( 'give_payment' === get_post_type( $tag_args ) ):
@@ -1352,9 +1353,10 @@ function __give_20_bc_str_type_email_tag_param( $tag_args ) {
  * @param string|array $args      Function arguments.
  * @param array        $func_args Deprecated argument list.
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.1
  */
-function __give_211_bc_email_template_tag_param( &$args, $func_args = [] ) {
+function give_211_bc_email_template_tag_param( &$args, $func_args = [] ) {
 
 	/**
 	 * This is for backward-compatibility, i.e.; if the parameters are
@@ -1645,6 +1647,7 @@ function give_email_donor_comment( $tag_args ) {
  * This function helps to render meta data with from dynamic meta data email tag.
  * Note: meta data email tag must be in given format {meta_*}
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0.3
  * @see   https://github.com/impress-org/give/issues/2801#issuecomment-365136602
  *
@@ -1653,7 +1656,7 @@ function give_email_donor_comment( $tag_args ) {
  *
  * @return mixed
  */
-function __give_render_metadata_email_tag( $content, $tag_args ) {
+function give_render_metadata_email_tag( $content, $tag_args ) {
 	preg_match_all( '/{meta_([A-z0-9\-\_\ ]+)}/s', $content, $matches );
 
 	if ( ! empty( $matches[0] ) ) {
@@ -1746,4 +1749,4 @@ function __give_render_metadata_email_tag( $content, $tag_args ) {
 	return $content;
 }
 
-add_filter( 'give_email_template_tags', '__give_render_metadata_email_tag', 10, 2 );
+add_filter( 'give_email_template_tags', 'give_render_metadata_email_tag', 10, 2 );

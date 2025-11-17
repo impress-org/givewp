@@ -12,12 +12,12 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function register()
     {
@@ -25,7 +25,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function boot()
     {
@@ -33,7 +33,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased     
+     * @since 4.5.0
      */
     private function registerWebhookEventHandlers()
     {
@@ -49,7 +49,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     private function addDonationStatusEventHandlers(string $gatewayId)
     {
@@ -64,13 +64,13 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     private function addSubscriptionStatusEventHandlers(string $gatewayId)
     {
         foreach (SubscriptionStatus::values() as $status) {
-            if ($eventHandlerClass = (new GetEventHandlerClassBySubscriptionStatus())($status)) {                
-                $parameterCount = $status->isActive() ? 3 : 2;                
+            if ($eventHandlerClass = (new GetEventHandlerClassBySubscriptionStatus())($status)) {
+                $parameterCount = $status->isActive() ? 3 : 2;
                 Hooks::addAction(
                     sprintf('givewp_%s_webhook_event_subscription_status_%s', $gatewayId, $status->getValue()),
                     $eventHandlerClass, '__invoke', 10, $parameterCount
@@ -80,7 +80,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     private function addSubscriptionFirstDonationEventHandler(string $gatewayId)
     {
@@ -91,7 +91,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     private function addSubscriptionRenewalDonationEventHandler(string $gatewayId)
     {

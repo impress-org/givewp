@@ -5,6 +5,7 @@ namespace Give\Subscriptions\ValueObjects;
 use Give\Framework\Support\ValueObjects\Enum;
 
 /**
+ * @since 4.8.0 Added a new "trashed" status
  * @since 3.17.0 Added a new "paused" status
  * @since 2.19.6
  *
@@ -28,6 +29,7 @@ use Give\Framework\Support\ValueObjects\Enum;
  * @method bool isCancelled()
  * @method bool isSuspended()
  * @method bool isPaused()
+ * @method bool isTrashed()
  */
 class SubscriptionStatus extends Enum {
     const PENDING = 'pending';
@@ -38,6 +40,7 @@ class SubscriptionStatus extends Enum {
     const CANCELLED = 'cancelled';
     const SUSPENDED = 'suspended';
     const PAUSED = 'paused';
+    const TRASHED = 'trashed';
 
     /**
      * @deprecated Do not use this. Use SubscriptionStatus::CANCELLED or SubscriptionStatus::SUSPENDED instead.
@@ -58,16 +61,17 @@ class SubscriptionStatus extends Enum {
     public static function labels(): array
     {
         return [
-            self::PENDING => __( 'Pending', 'give' ),
             self::ACTIVE => __( 'Active', 'give' ),
-            self::EXPIRED => __( 'Expired', 'give' ),
-            self::COMPLETED => __( 'Completed', 'give' ),
-            self::REFUNDED => __( 'Refunded', 'give' ),
-            self::FAILING => __( 'Failed', 'give' ),
+            self::PENDING => __( 'Pending', 'give' ),
             self::CANCELLED => __( 'Cancelled', 'give' ),
+            self::COMPLETED => __( 'Completed', 'give' ),
+            self::PAUSED => __('Paused', 'give'),
+            self::FAILING => __( 'Failed', 'give' ),
             self::ABANDONED => __( 'Abandoned', 'give' ),
             self::SUSPENDED => __( 'Suspended', 'give' ),
-            self::PAUSED => __('Paused', 'give'),
+            self::EXPIRED => __( 'Expired', 'give' ),
+            self::REFUNDED => __( 'Refunded', 'give' ),
+            self::TRASHED => __('Trashed', 'give'),
         ];
     }
 

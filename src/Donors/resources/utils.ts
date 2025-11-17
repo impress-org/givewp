@@ -1,4 +1,4 @@
-import {useEntityRecord} from '@wordpress/core-data';
+import { useEntityRecord } from '@wordpress/core-data';
 import {Donor} from '@givewp/donors/admin/components/types';
 import type {GiveDonorOptions} from '@givewp/donors/types';
 
@@ -13,18 +13,20 @@ export function useDonorEntityRecord(donorId?: number) {
     const urlParams = new URLSearchParams(window.location.search);
 
     const {
-        record,
+        record: donor,
         hasResolved,
+        isResolving,
         save,
         edit,
     }: {
         record: Donor;
         hasResolved: boolean;
+        isResolving: boolean;
         save: () => any;
         edit: (data: Donor | Partial<Donor>) => void;
     } = useEntityRecord('givewp', 'donor', donorId ?? urlParams.get('id'));
 
-    return {record, hasResolved, save, edit};
+    return {record: donor, hasResolved, isResolving, save, edit};
 }
 
 /**

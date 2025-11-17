@@ -1,6 +1,6 @@
-import {useEntityRecord} from '@wordpress/core-data';
-import {Campaign} from '@givewp/campaigns/admin/components/types';
-import type {GiveCampaignOptions} from '@givewp/campaigns/types';
+import { useEntityRecord } from '@wordpress/core-data';
+import { Campaign } from '@givewp/campaigns/admin/components/types';
+import type { GiveCampaignOptions } from '@givewp/campaigns/types';
 import apiFetch from '@wordpress/api-fetch';
 
 declare const window: {
@@ -8,6 +8,7 @@ declare const window: {
 } & Window;
 
 /**
+ * @unreleased Return "record" instead of "campaign"
  * @since 4.0.0
  */
 export function useCampaignEntityRecord(campaignId?: number) {
@@ -16,16 +17,18 @@ export function useCampaignEntityRecord(campaignId?: number) {
     const {
         record: campaign,
         hasResolved,
+        isResolving,
         save,
         edit,
     }: {
         record: Campaign;
         hasResolved: boolean;
+        isResolving: boolean;
         save: () => any;
         edit: (data: Campaign | Partial<Campaign>) => void;
     } = useEntityRecord('givewp', 'campaign', campaignId ?? urlParams.get('id'));
 
-    return {campaign, hasResolved, save, edit};
+    return { record: campaign, hasResolved, isResolving, save, edit };
 }
 
 /**
@@ -56,9 +59,9 @@ export function amountFormatter(currency: Intl.NumberFormatOptions['currency'], 
 /**
  * @since 4.0.0
  */
-export async function updateUserNoticeOptions(metaKey: string){
+export async function updateUserNoticeOptions(metaKey: string) {
     try {
-        const currentUser = await apiFetch( { path: '/wp/v2/users/me' } );
+        const currentUser = await apiFetch({ path: '/wp/v2/users/me' });
         // @ts-ignore
         const currentUserId = currentUser?.id;
 
@@ -88,5 +91,22 @@ export async function createCampaignPage(campaignId: number) {
         };
     } catch (error) {
         console.error('Error creating Campaign page:', error);
+    }
+}
+
+/**
+ * @unreleased
+ */
+export async function updateCampaignStatus(campaignId: number, status: 'archived' | 'active') {
+    try {
+        const response = await apiFetch({
+            path: `/givewp/v3/campaigns/${campaignId}`,
+            method: 'PUT',
+            data: { status }
+        });
+
+        return response as Campaign;
+    } catch (error) {
+        console.error('Error updating campaign status:', error);
     }
 }

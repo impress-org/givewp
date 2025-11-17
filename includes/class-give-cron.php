@@ -63,11 +63,12 @@ class Give_Cron {
 	/**
 	 * Setup
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since 1.8.13
 	 */
 	private function setup() {
-		add_filter( 'cron_schedules', array( self::$instance, '__add_schedules' ) );
-		add_action( 'wp', array( self::$instance, '__schedule_events' ) );
+		add_filter( 'cron_schedules', array( self::$instance, 'add_schedules' ) );
+		add_action( 'wp', array( self::$instance, 'schedule_events' ) );
 	}
 
 	/**
@@ -76,10 +77,12 @@ class Give_Cron {
 	 * @param array $schedules An array of non-default cron schedules.
 	 *
 	 * @return array            An array of non-default cron schedules.
+     *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.3.2
 	 * @access public
 	 */
-	public function __add_schedules( $schedules = array() ) {
+	public function add_schedules( $schedules = array() ) {
 		// Adds once weekly to the existing schedules.
 		$schedules['weekly'] = array(
 			'interval' => 604800, // 7 * 24 * 3600
@@ -105,10 +108,12 @@ class Give_Cron {
 	 * Schedules our events
 	 *
 	 * @return void
+     *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.3.2
 	 * @access public
 	 */
-	public function __schedule_events() {
+	public function schedule_events() {
 		$this->monthly_events();
 		$this->weekly_events();
 		$this->daily_events();

@@ -1,0 +1,52 @@
+
+.statusSelect {
+    --statusOptionColor: var(--givewp-grey-500);
+    position: relative;
+
+    &::before {
+        background-color: var(--statusOptionColor);
+        border-radius: 50%;
+        content: '';
+        display: inline-block;
+        height: 0.75rem;
+        left: var(--givewp-spacing-4);
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0.75rem;
+    }
+
+    &--pending,
+    &--processing {
+        --statusOptionColor: var(--givewp-blue-500);
+    }
+
+    &--active,
+    &--publish {
+        --statusOptionColor: var(--givewp-green-500);
+    }
+
+    &--completed {
+        --statusOptionColor: var(--givewp-emerald-500);
+    }
+
+    &--expired,
+    &--cancelled,
+    &--failing,
+    &--failed,
+    &--cancelled,
+    &--revoked,
+    &--trashed {
+        --statusOptionColor: var(--givewp-red-500);
+    }
+
+    select.statusSelectInput {
+        padding-left: calc(var(--givewp-spacing-6) + 0.75rem);
+    }
+}
+
+.notice {
+    margin-top: var(--givewp-spacing-1);
+    transform: translateX(1px);
+}

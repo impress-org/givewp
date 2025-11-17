@@ -186,12 +186,12 @@ abstract class ListTable implements Arrayable
                 ]
             );
 
-            $cellValue = __(
-                sprintf(
+            $cellValue = sprintf(
+                __(
                     'Something went wrong, more in detail in <a href="%s">logs</a>',
-                    admin_url('edit.php?post_type=give_forms&page=give-tools&tab=logs')
+                    'give'
                 ),
-                'give'
+                admin_url('edit.php?post_type=give_forms&page=give-tools&tab=logs')
             );
         }
 

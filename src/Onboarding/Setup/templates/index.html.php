@@ -109,9 +109,9 @@
                             : $this->image('stripe@2x.min.png'),
                         'icon_alt' => esc_html__('Stripe', 'give'),
                         'title' => esc_html__('Connect to Stripe', 'give'),
-                        'description' => esc_html__(
-                            'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods.',
-                            'give'
+                        'description' => sprintf(
+                            __('Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Additional fees may apply for free users. Read our <a href="%s" target="_blank" rel="noopener noreferrer">Stripe documentation</a> for more information.', 'give'), 
+                            'https://docs.givewp.com/stripe-fees'
                         ),
                         'action' => ($this->isStripeSetup()) ? sprintf(
                             '<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Stripe Settings</a>',

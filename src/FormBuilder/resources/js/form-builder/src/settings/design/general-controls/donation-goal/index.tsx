@@ -15,7 +15,7 @@ import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowDat
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import {CurrencyControl} from '@givewp/form-builder/components/CurrencyControl';
 import DatePicker from '@givewp/form-builder/components/DatePicker';
-import {getCampaignOptionsWindowData, updateUserNoticeOptions} from '@givewp/campaigns/utils';
+import {updateUserNoticeOptions} from '@givewp/campaigns/utils';
 
 declare const window: {
     goalNotificationData: {
@@ -58,7 +58,7 @@ const noticeStyles = {
 } as CSSProperties;
 
 
-const {goalTypeOptions, goalSourceOptions, goalProgressOptions} = getFormBuilderWindowData();
+const {goalTypeOptions, goalSourceOptions, goalProgressOptions, showFormGoalNotice} = getFormBuilderWindowData();
 
 const DonationGoal = ({dispatch}) => {
     const {
@@ -75,10 +75,9 @@ const DonationGoal = ({dispatch}) => {
         },
     } = useFormState();
 
-    const campaignWindowData = getCampaignOptionsWindowData();
     const {publishGoal, publishGoalType, publishGoalSource} = useDonationFormPubSub();
     const [showNotice, setShowNotice] = useState(!window.goalNotificationData.isDismissed);
-    const [showGoalSourceNotice, setShowGoalSourceNotice] = useState(campaignWindowData.admin.showFormGoalNotice);
+    const [showGoalSourceNotice, setShowGoalSourceNotice] = useState(showFormGoalNotice);
 
     const selectedGoalType = goalTypeOptions.find((option) => option.value === goalType);
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';

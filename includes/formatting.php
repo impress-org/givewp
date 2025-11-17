@@ -218,6 +218,8 @@ function give_sanitize_amount_for_db($number, $args = [])
 /**
  * Sanitize Amount before saving to database
  *
+ * @since 4.10.0 Rollback backward compatibility - allows both array and individual parameter calls
+ * @since 4.9.0 PHP 8 compatibility
  * @since      1.8.12
  *
  * @param int|float|string $number Expects either a float or a string with a decimal separator only (no thousands)
@@ -227,12 +229,14 @@ function give_sanitize_amount_for_db($number, $args = [])
  */
 function give_maybe_sanitize_amount($number, $args = [])
 {
+    // Get function arguments first to maintain PHP 7.0+ compatibility.
+    // func_get_args() must be called before any parameter modifications to avoid warnings.
+    $func_args = func_get_args();
+
     // Bailout.
     if (empty($number) || ( ! is_numeric($number) && ! is_string($number))) {
         return $number;
     }
-
-    $func_args = func_get_args();
 
     // Backward compatibility.
     if (isset($func_args[1]) && (is_bool($func_args[1]) || is_numeric($func_args[1]))) {
@@ -305,6 +309,8 @@ function give_maybe_sanitize_amount($number, $args = [])
  *
  * Returns a sanitized amount by stripping out thousands separators.
  *
+ * @since 4.10.0 Rollback backward compatibility - allows both array and individual parameter calls
+ * @since 4.9.0 PHP 8 compatibility
  * @since      1.0
  *
  * @param int|float|string $number Expects either a float or a string with a decimal separator only (no thousands)
@@ -314,13 +320,14 @@ function give_maybe_sanitize_amount($number, $args = [])
  */
 function give_sanitize_amount($number, $args = [])
 {
+    // Get function arguments first to maintain PHP 7.0+ compatibility.
+    // func_get_args() must be called before any parameter modifications to avoid warnings.
+    $func_args = func_get_args();
+
     // Bailout.
     if (empty($number) || ( ! is_numeric($number) && ! is_string($number))) {
         return $number;
     }
-
-    // Get function arguments.
-    $func_args = func_get_args();
 
     // Backward compatibility.
     if (isset($func_args[1]) && (is_bool($func_args[1]) || is_numeric($func_args[1]))) {
@@ -597,6 +604,8 @@ function give_human_format_large_amount($amount, $args = [])
 /**
  * Returns a nicely formatted amount with custom decimal separator.
  *
+ * @since 4.10.0 Rollback backward compatibility - allows both array and individual parameter calls
+ * @since 4.9.0 PHP 8 compatibility
  * @since 1.0
  *
  * @param array           $args        {
@@ -612,9 +621,12 @@ function give_human_format_large_amount($amount, $args = [])
  */
 function give_format_decimal($args)
 {
+    // Get function arguments first to maintain PHP 7.0+ compatibility.
+    // func_get_args() must be called before any parameter modifications to avoid warnings.
+    $func_args = func_get_args();
+
     // Backward compatibility.
     if ( ! is_array($args)) {
-        $func_args = func_get_args();
         $args = [
             'amount' => $func_args[0],
             'dp' => isset($func_args[1]) ? $func_args[1] : false,
@@ -625,7 +637,7 @@ function give_format_decimal($args)
     $args = wp_parse_args(
         $args,
         [
-            'amount' => '',
+            'amount' => 0,
             'donation_id' => 0,
             'currency' => '',
             'dp' => false,

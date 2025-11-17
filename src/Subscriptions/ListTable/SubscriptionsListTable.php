@@ -8,6 +8,7 @@ use Give\Subscriptions\ListTable\Columns\FormColumn;
 use Give\Subscriptions\ListTable\Columns\IdColumn;
 use Give\Framework\ListTable\ListTable;
 use Give\Subscriptions\ListTable\Columns\BillingPeriodColumn;
+use Give\Subscriptions\ListTable\Columns\CampaignColumn;
 use Give\Subscriptions\ListTable\Columns\RenewalDateColumn;
 use Give\Subscriptions\ListTable\Columns\StatusColumn;
 
@@ -36,9 +37,9 @@ class SubscriptionsListTable extends ListTable
         return [
             new IdColumn(),
             new AmountColumn(),
-            new DonorColumn(),
-            new FormColumn(),
             new BillingPeriodColumn(),
+            new DonorColumn(),
+            new CampaignColumn(),
             new RenewalDateColumn(),
             new StatusColumn(),
         ];
@@ -55,7 +56,7 @@ class SubscriptionsListTable extends ListTable
             IdColumn::getId(),
             AmountColumn::getId(),
             DonorColumn::getId(),
-            FormColumn::getId(),
+            CampaignColumn::getId(),
             BillingPeriodColumn::getId(),
             RenewalDateColumn::getId(),
             StatusColumn::getId(),

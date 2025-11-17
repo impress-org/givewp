@@ -3,6 +3,7 @@
 namespace Give\DonationForms\Routes;
 
 use Give\DonationForms\Controllers\DonationFormsRequestController;
+use Give\DonationForms\Routes\Permissions\DonationFormPermissions;
 use Give\DonationForms\ValueObjects\DonationFormsRoute as Route;
 use WP_REST_Request;
 use WP_REST_Server;
@@ -36,6 +37,7 @@ class DonationFormsEntityRoute
     /**
      * Get Form route
      *
+     * @since 4.10.1 Changed permission callback to use validationForGetItem method
      * @since 4.2.0
      */
     public function registerGetForm()
@@ -49,8 +51,8 @@ class DonationFormsEntityRoute
                     'callback' => function (WP_REST_Request $request) {
                         return $this->controller->getForm($request);
                     },
-                    'permission_callback' => function () {
-                        return '__return_true';
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        return DonationFormPermissions::validationForGetItem($request);
                     },
                 ],
                 'args' => [
@@ -66,6 +68,7 @@ class DonationFormsEntityRoute
     /**
      * Get Forms route
      *
+     * @since 4.10.1 Changed permission callback to use validationForGetItems method
      * @since 4.2.0
      */
     public function registerGetForms()
@@ -79,7 +82,9 @@ class DonationFormsEntityRoute
                     'callback' => function (WP_REST_Request $request) {
                         return $this->controller->getForms($request);
                     },
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        return DonationFormPermissions::validationForGetItems($request);
+                    },
                 ],
                 'args' => [
                     'status' => [
@@ -88,7 +93,7 @@ class DonationFormsEntityRoute
                             'type' => 'string',
                             'enum' => ['publish', 'future', 'draft', 'pending', 'trash', 'upgraded', 'private', 'orphaned'],
                         ],
-                        'default' => 'publish',
+                        'default' => ['publish'],
                     ],
                     'ids' => [
                         'type' => 'array',
@@ -114,6 +119,7 @@ class DonationFormsEntityRoute
     /**
      * Associate donation forms with campaign
      *
+     * @since 4.10.1 Changed permission callback to use validationForAssociateForms method
      * @since 4.2.0
      */
     public function registerAssociateFormsWithCampaign()
@@ -127,8 +133,8 @@ class DonationFormsEntityRoute
                     'callback' => function (WP_REST_Request $request) {
                         return $this->controller->associateFormsWithCampaign($request);
                     },
-                    'permission_callback' => function () {
-                        return '__return_true';
+                    'permission_callback' => function (WP_REST_Request $request) {
+                        return DonationFormPermissions::validationForAssociateForms($request);
                     },
                 ],
                 'args' => [

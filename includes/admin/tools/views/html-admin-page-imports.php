@@ -49,12 +49,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 							<p><?php esc_html_e( 'Import a CSV of Donations.', 'give' ); ?></p>
 						</td>
 						<td>
-							<a class="button" href="<?php echo esc_url( add_query_arg( array( 'importer-type' => 'import_donations' ) ) ); ?>">
+						<a class="button" href="<?php echo esc_url( add_query_arg( array( 'importer-type' => 'import_donations' ) ) ); ?>">
 								<?php esc_html_e( 'Import CSV', 'give' ); ?>
 							</a>
 						</td>
 					</tr>
-
+                    <?php if (defined('GIVE_RECURRING_VERSION')): ?>
+                    <tr>
+                        <td scope="row" class="row-title">
+                            <h3>
+                                <span><?php esc_html_e( 'Import Subscriptions', 'give' ); ?></span>
+                            </h3>
+                            <p class="description"><?php esc_html_e('Import a CSV of subscriptions (recurring donations).', 'give' ); ?></p>
+                        </td>
+                        <td>
+                            <a class="button" href="<?php echo esc_url( add_query_arg( array( 'importer-type' => 'import_subscriptions' ) ) ); ?>">
+                                <?php esc_html_e( 'Import Subscriptions', 'give' ); ?>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endif; ?>
 					<tr class="give-import-core-settings">
 						<td scope="row" class="row-title">
 							<h3>

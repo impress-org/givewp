@@ -83,6 +83,7 @@ export default function DonorDetailsPage() {
                         <ViewIcon /> {__('View WordPress profile', 'give')}
                     </a>
                 )}
+
                 {/* <a
                     href="#"
                     className={cx(className, styles.archive)}
@@ -104,7 +105,7 @@ export default function DonorDetailsPage() {
             breadcrumbUrl={`${adminUrl}edit.php?post_type=give_forms&page=give-donors`}
             StatusBadge={() => <StatusBadge status={donor?.status} />}
             SecondaryActionButton={SendEmailButton}
-            ContextMenuItems={ContextMenuItems}
+            ContextMenuItems={donor?.wpUserPermalink ? ContextMenuItems : null} // TODO: Remove this once we have items always being shown in the context menu
         >
             <ConfirmationDialog
                 title={__('Delete Donor', 'give')}

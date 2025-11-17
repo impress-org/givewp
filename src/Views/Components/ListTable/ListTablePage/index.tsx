@@ -1,4 +1,4 @@
-import {createContext, useRef, useState} from 'react';
+import {createContext, useRef, useState, forwardRef, useImperativeHandle} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';
@@ -14,6 +14,8 @@ import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
 import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
+import ListTableStats, { StatConfig } from '../ListTableStats/ListTableStats';
+import FilterBy from '../FilterBy';
 
 export interface ListTablePageProps {
     //required
@@ -34,19 +36,42 @@ export interface ListTablePageProps {
     columnFilters?: Array<ColumnFilterConfig>;
     banner?: () => JSX.Element;
     contentMode?: boolean;
+    perPage?: number;
+    statsConfig?: Record<string, StatConfig>;
 }
 
-export interface FilterConfig {
+interface FilterConfigBase {
     // required
     name: string;
-    type: 'select' | 'formselect' | 'search' | 'checkbox' | 'hidden';
 
     // optional
     ariaLabel?: string;
     inlineSize?: string;
     text?: string;
+}
+
+interface FilterConfigWithSimpleOptions extends FilterConfigBase {
+    type: 'select' | 'campaignselect' | 'search' | 'checkbox' | 'hidden';
     options?: Array<{text: string; value: string}>;
 }
+
+export interface FilterByGroupedOptions {
+    id: string;
+    apiParam: string;
+    name: string;
+    type: 'checkbox' | 'radio' | 'toggle';
+    options: Array<{text: string; value: string}>;
+    defaultValue?: string | string[];
+    isVisible?: (values: Record<string, string[]>) => boolean;
+    showTitle?: boolean;
+}
+
+interface FilterConfigWithGroupedOptions extends FilterConfigBase {
+    type: 'filterby';
+    groupedOptions?: Array<FilterByGroupedOptions>;
+}
+
+export type FilterConfig = FilterConfigWithSimpleOptions | FilterConfigWithGroupedOptions;
 
 export interface ColumnFilterConfig {
     column: string;
@@ -97,7 +122,11 @@ export const ShowConfirmModalContext = createContext(
 );
 export const CheckboxContext = createContext(null);
 
-export default function ListTablePage({
+export interface ListTablePageRef {
+    refresh: () => Promise<any>;
+}
+
+const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     title,
     apiSettings,
     bulkActions = null,
@@ -113,9 +142,10 @@ export default function ListTablePage({
     columnFilters = [],
     banner,
     contentMode,
-}: ListTablePageProps) {
+    perPage = 30,
+    statsConfig,
+}: ListTablePageProps, ref) => {
     const [page, setPage] = useState<number>(1);
-    const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
     const [isOpen, setOpen] = useState(false);
     const [modalContent, setModalContent] = useState<{
@@ -158,11 +188,25 @@ export default function ListTablePage({
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
+    const {data: statsData, error: statsError, isValidating: statsIsValidating, mutate: mutateStats} = statsConfig ? archiveApi.useStats(testMode) : {data: null, error: null, isValidating: false, mutate: async () => {}};
 
     useResetPage(data, page, setPage, filters);
 
+    useImperativeHandle(ref, () => ({
+        refresh: async () => {
+           await mutate();
+           statsConfig && await mutateStats();
+        }
+    }), [mutate, mutateStats, statsConfig]);
+
     const handleFilterChange = (name, value) => {
-        setFilters((prevState) => ({...prevState, [name]: value}));
+        setFilters((prevState) => {
+            if (!value || (Array.isArray(value) && value.length === 0)) {
+                const {[name]: _, ...rest} = prevState as Record<string, string[]>;
+                return rest;
+            }
+            return {...prevState, [name]: value};
+        });
     };
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
@@ -229,23 +273,27 @@ export default function ListTablePage({
             disabled={!data}
             totalItems={data ? parseInt(data.totalItems) : -1}
             setPage={setPage}
-            singleName={singleName}
-            pluralName={pluralName}
+            singleName={__('result', 'give')}
+            pluralName={__('results', 'give')}
         />
     );
 
     const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => {
         return (
             <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
-                <BulkActionSelect
-                    selectedState={[selectedAction, setSelectedAction]}
-                    parameters={parameters}
-                    data={data}
-                    bulkActions={bulkActions}
-                    showModal={openBulkActionModal}
-                />
-                {PageActionsTop && testModeFilter && <TestModeFilter />}
-                {!PageActionsTop && page && setPage && showPagination()}
+                {PageActionsTop ? (
+                    <BulkActionSelect
+                        selectedState={[selectedAction, setSelectedAction]}
+                        parameters={parameters}
+                        data={data}
+                        bulkActions={bulkActions}
+                        showModal={openBulkActionModal}
+                    />
+            ) : (
+                    <>
+                        {page && setPage && showPagination()}
+                    </>
+                )}
             </div>
         );
     };
@@ -254,63 +302,65 @@ export default function ListTablePage({
         <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
     );
 
-    const TestModeBadge = () => <span>{testModeFilter?.text}</span>;
+    const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;
+
+    const SearchSection = () => (
+        <section role="search" className={styles.searchContainer}>
+            <div className={styles.flexRow}>
+                <PageActions PageActionsTop />
+            </div>
+            <div className={styles.flexRow}>
+                {filterSettings.map((filter) => (
+                    filter.type === 'filterby' ? (
+                        <FilterBy
+                            key={filter.name}
+                            groupedOptions={filter.groupedOptions}
+                            onChange={handleFilterChange}
+                            values={filters}
+                        />
+                    ) : (
+                        <Filter
+                            key={filter.name}
+                            value={filters[filter.name]}
+                            filter={filter}
+                            onChange={handleFilterChange}
+                            debouncedOnChange={handleDebouncedFilterChange}
+                        />
+                    )
+                ))}
+            </div>
+        </section>
+    );
 
     return (
         <>
             <article className={styles.page}>
-                {contentMode ? (
-                    <>
-                        <section role="search" id={styles.searchContainer}>
-                            <div className={styles.flexRow}>
-                                <PageActions PageActionsTop />
-                            </div>
-                            <div className={styles.flexRow}>
-                                {filterSettings.map((filter) => (
-                                    <Filter
-                                        key={filter.name}
-                                        value={filters[filter.name]}
-                                        filter={filter}
-                                        onChange={handleFilterChange}
-                                        debouncedOnChange={handleDebouncedFilterChange}
-                                    />
-                                ))}
-                            </div>
-                        </section>
-                    </>
-                ) : (
+                {!contentMode && (
                     <>
                         <header className={styles.pageHeader}>
                             <div className={styles.flexRow}>
-                                <GiveIcon size={'1.875rem'} />
+                                <GiveIcon size={'2.25rem'} />
                                 <h1 className={styles.pageTitle}>{title}</h1>
                                 {testModeFilter && testMode && <TestModeBadge />}
                             </div>
                             {children && <div className={styles.flexRow}>{children}</div>}
                         </header>
+
+                        <div className={cx('wp-header-end', 'hidden')} />
+
                         {banner && <section role="banner">{banner()}</section>}
-                        <section role="search" id={styles.searchContainer}>
-                            <div className={styles.flexRow}>
-                                <PageActions PageActionsTop />
+                        {testModeFilter && (
+                            <div className={styles.filtersRow}>
+                                <TestModeFilter />
                             </div>
-                            <div className={styles.flexRow}>
-                                {filterSettings.map((filter) => (
-                                    <Filter
-                                        key={filter.name}
-                                        value={filters[filter.name]}
-                                        filter={filter}
-                                        onChange={handleFilterChange}
-                                        debouncedOnChange={handleDebouncedFilterChange}
-                                    />
-                                ))}
-                            </div>
-                        </section>
+                        )}
+                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
                     </>
                 )}
 
-                <div className={cx('wp-header-end', 'hidden')} />
                 <div className={styles.pageContent}>
-                    {contentMode && children ? <>{children}</> : <br />}
+                    <SearchSection />
+                    {contentMode && children ? <>{children}</> : <></>}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
@@ -330,6 +380,7 @@ export default function ListTablePage({
                                 listTableBlankSlate={listTableBlankSlate}
                                 productRecommendation={productRecommendation}
                                 columnFilters={columnFilters}
+                                includeBulkActionsCheckbox={bulkActions?.length > 0}
                             />
                         </ShowConfirmModalContext.Provider>
                     </CheckboxContext.Provider>
@@ -367,8 +418,31 @@ export default function ListTablePage({
                         id={styles.confirm}
                         onClick={async (event) => {
                             dialog.current?.hide();
-                            await modalContent.action(selectedIds);
-                            await mutate();
+                            try {
+                                await modalContent.action(selectedIds);
+                                await mutate();
+                                await mutateStats();
+                            } catch (error) {
+                                console.error('Bulk action error:', error);
+
+                                // Create a user-friendly error message
+                                let errorMessage = __('An error occurred while performing this action.', 'give');
+
+                                if (error.message && error.message.includes('permission')) {
+                                    errorMessage = __('You don\'t have permission to perform this action.', 'give');
+                                } else if (error.message && error.message.includes('403')) {
+                                    errorMessage = __('Access denied. You don\'t have permission to perform this action.', 'give');
+                                } else if (error.message) {
+                                    // Try to extract a meaningful message from the error
+                                    const match = error.message.match(/You don't have permission[^"]*|You don&#039;t have permission[^"]*/i);
+                                    if (match) {
+                                        errorMessage = match[0].replace(/&#039;/g, "'");
+                                    }
+                                }
+
+                                // Show error as a notice/alert
+                                alert(errorMessage);
+                            }
                         }}
                     >
                         {modalContent?.confirmButtonText ?? __('Confirm', 'give')}
@@ -377,4 +451,8 @@ export default function ListTablePage({
             </A11yDialog>
         </>
     );
-}
+});
+
+ListTablePage.displayName = 'ListTablePage';
+
+export default ListTablePage;

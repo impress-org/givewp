@@ -7,12 +7,12 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateSubscrip
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class SubscriptionPending
 {
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @throws Exception
      */

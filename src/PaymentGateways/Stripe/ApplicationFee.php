@@ -56,10 +56,20 @@ class ApplicationFee
     /**
      * Return whether country support application fee.
      *
+     * @since 4.5.0 Add India, Malaysia, Mexico, Singapore, Thailand to the list of unsupported countries
      * @since 2.10.2
      */
     public function doesCountrySupportApplicationFee(): bool
     {
-        return 'BR' !== $this->accountDetail->accountCountry;
+        $unsupportedCountries = [
+            'BR', // Brazil
+            'IN', // India
+            'MY', // Malaysia
+            'MX', // Mexico
+            'SG', // Singapore
+            'TH', // Thailand
+        ];
+
+        return !in_array($this->accountDetail->accountCountry, $unsupportedCountries);
     }
 }

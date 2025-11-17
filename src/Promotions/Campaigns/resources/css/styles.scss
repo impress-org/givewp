@@ -119,5 +119,9 @@
             text-align: center;
             line-height: 1.5;
         }
+
+        &:hover {
+            background: var(--givewp-orange-500);
+        }
     }
 }

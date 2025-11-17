@@ -78,6 +78,7 @@ interface FormBuilderWindowData {
     isExcerptEnabled: boolean;
     intlTelInputSettings: IntlTelInputSettings;
     campaignColors: FormColors;
+    showFormGoalNotice: boolean;
 }
 
 /**

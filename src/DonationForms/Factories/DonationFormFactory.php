@@ -40,6 +40,7 @@ class DonationFormFactory extends ModelFactory
                     'give'
                 ),
                 'goalAchievedMessage' => __('Thank you to all our donors, we have met our fundraising goal.', 'give'),
+                'inheritCampaignColors' => true,
             ]),
             'blocks' => BlockCollection::fromJson($blocksJson),
         ];

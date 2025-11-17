@@ -6,6 +6,27 @@
  * @subpackage  Array
  * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ *
+ * @since 4.10.0 Updated to match current ISO 4217 standard as of 2024. Total: 169 currencies.
+ *
+ * Major changes include:
+ * - Added TVD (Tuvaluan dollar) - non-ISO but commonly used currency
+ * - Marked VEF as (old) to indicate deprecated Venezuelan currency
+ * - Added VES (Venezuelan bolívar soberano) - new ISO 4217 currency replacing VEF
+ * - Added VED (Venezuelan bolívar digital) - new ISO 4217 currency
+ * - Added XDR (Special Drawing Rights) - ISO 4217 currency used by IMF
+ * - Marked MRO as (old) to indicate deprecated Mauritanian currency
+ * - Added MRU (Mauritanian ouguiya) - new ISO 4217 currency replacing MRO in 2018
+ * - Marked SLL as (old) to indicate deprecated Sierra Leonean currency
+ * - Added SLE (Sierra Leonean leone) - new ISO 4217 currency replacing SLL in 2022
+ * - Marked STD as (old) to indicate deprecated São Tomé and Príncipe currency
+ * - Added STN (São Tomé and Príncipe dobra) - new ISO 4217 currency replacing STD in 2018
+ * - Added SVC (Salvadoran colón) - ISO 4217 currency
+ * - Fixed incorrect label for TND (Tunisian Dinar) - was incorrectly labeled as "Turkmenistan manat"
+ * - Added ZWL (Zimbabwean dollar) - ISO 4217 currency
+ *
+ * @see https://www.iso.org/iso-4217-currency-codes.html
+ *
  * @since 2.20.0 update romanian to use RON
  * @since       2.4.0
  */
@@ -741,6 +762,16 @@ return array(
 			'number_decimals'     => 2,
 		),
 	),
+	'TVD' => array(
+		'admin_label' => sprintf( __( 'Tuvaluan dollar (%1$s)', 'give' ), '&#36;' ),
+		'symbol'      => '&#36;',
+		'setting'     => array(
+			'currency_position'   => 'before',
+			'thousands_separator' => ',',
+			'decimal_separator'   => '.',
+			'number_decimals'     => 2,
+		),
+	),
 	'UAH' => array(
 		'admin_label' => sprintf( __( 'Ukrainian hryvnia (%1$s)', 'give' ), '&#8372;' ),
 		'symbol'      => '&#8372;',
@@ -762,7 +793,27 @@ return array(
 		),
 	),
 	'VEF' => array(
-		'admin_label' => sprintf( __( 'Venezuelan bolívar (%1$s)', 'give' ), '&#66;&#115;' ),
+		'admin_label' => sprintf( __( 'Venezuelan bolívar (old) (%1$s)', 'give' ), '&#66;&#115;' ),
+		'symbol'      => '&#66;&#115;',
+		'setting'     => array(
+			'currency_position'   => 'before',
+			'thousands_separator' => '.',
+			'decimal_separator'   => ',',
+			'number_decimals'     => 2,
+		),
+	),
+	'VES' => array(
+		'admin_label' => sprintf( __( 'Venezuelan bolívar soberano (%1$s)', 'give' ), '&#66;&#115;' ),
+		'symbol'      => '&#66;&#115;',
+		'setting'     => array(
+			'currency_position'   => 'before',
+			'thousands_separator' => '.',
+			'decimal_separator'   => ',',
+			'number_decimals'     => 2,
+		),
+	),
+	'VED' => array(
+		'admin_label' => sprintf( __( 'Venezuelan bolívar digital (%1$s)', 'give' ), '&#66;&#115;' ),
 		'symbol'      => '&#66;&#115;',
 		'setting'     => array(
 			'currency_position'   => 'before',
@@ -774,6 +825,16 @@ return array(
 	'XCD' => array(
 		'admin_label' => sprintf( __( 'East Caribbean dollar (%1$s)', 'give' ), '&#69;&#67;&#36;' ),
 		'symbol'      => '&#69;&#67;&#36;',
+		'setting'     => array(
+			'currency_position'   => 'before',
+			'thousands_separator' => ',',
+			'decimal_separator'   => '.',
+			'number_decimals'     => 2,
+		),
+	),
+	'XDR' => array(
+		'admin_label' => sprintf( __( 'Special Drawing Rights (%1$s)', 'give' ), 'XDR' ),
+		'symbol'      => 'XDR',
 		'setting'     => array(
 			'currency_position'   => 'before',
 			'thousands_separator' => ',',
@@ -1242,6 +1303,16 @@ return array(
 		),
 	),
 	'MRO' => array(
+		'admin_label' => sprintf( __( 'Mauritanian ouguiya (old) (%1$s)', 'give' ), 'UM' ),
+		'symbol'      => 'UM',
+		'setting'     => array(
+			'currency_position'   => 'after',
+			'thousands_separator' => ',',
+			'decimal_separator'   => '.',
+			'number_decimals'     => 2,
+		),
+	),
+	'MRU' => array(
 		'admin_label' => sprintf( __( 'Mauritanian ouguiya (%1$s)', 'give' ), 'UM' ),
 		'symbol'      => 'UM',
 		'setting'     => array(
@@ -1432,6 +1503,16 @@ return array(
 		),
 	),
 	'SLL' => array(
+		'admin_label' => sprintf( __( 'Sierra Leonean leone (old) (%1$s)', 'give' ), 'Le' ),
+		'symbol'      => 'Le',
+		'setting'     => array(
+			'currency_position'   => 'before',
+			'thousands_separator' => ',',
+			'decimal_separator'   => '.',
+			'number_decimals'     => 2,
+		),
+	),
+	'SLE' => array(
 		'admin_label' => sprintf( __( 'Sierra Leonean leone (%1$s)', 'give' ), 'Le' ),
 		'symbol'      => 'Le',
 		'setting'     => array(
@@ -1472,8 +1553,28 @@ return array(
 		),
 	),
 	'STD' => array(
+		'admin_label' => sprintf( __( 'São Tomé and Príncipe dobra (old) (%1$s)', 'give' ), 'Db' ),
+		'symbol'      => 'Db',
+		'setting'     => array(
+			'currency_position'   => 'before',
+			'thousands_separator' => ',',
+			'decimal_separator'   => '.',
+			'number_decimals'     => 2,
+		),
+	),
+	'STN' => array(
 		'admin_label' => sprintf( __( 'São Tomé and Príncipe dobra (%1$s)', 'give' ), 'Db' ),
 		'symbol'      => 'Db',
+		'setting'     => array(
+			'currency_position'   => 'before',
+			'thousands_separator' => ',',
+			'decimal_separator'   => '.',
+			'number_decimals'     => 2,
+		),
+	),
+	'SVC' => array(
+		'admin_label' => sprintf( __( 'Salvadoran colón (%1$s)', 'give' ), '&#36;' ),
+		'symbol'      => '&#36;',
 		'setting'     => array(
 			'currency_position'   => 'before',
 			'thousands_separator' => ',',
@@ -1512,7 +1613,7 @@ return array(
 		),
 	),
 	'TND' => array(
-		'admin_label' => sprintf( __( 'Turkmenistan manat (%1$s)', 'give' ), '&#x62f;.&#x62a;' ),
+		'admin_label' => sprintf( __( 'Tunisian Dinar (%1$s)', 'give' ), '&#x62f;.&#x62a;' ),
 		'symbol'      => '&#x62f;.&#x62a;',
 		'setting'     => array(
 			'currency_position'   => 'before',
@@ -1624,6 +1725,16 @@ return array(
 	'ZMW' => array(
 		'admin_label' => sprintf( __( 'Zambian kwacha (%1$s)', 'give' ), 'ZK' ),
 		'symbol'      => 'ZK',
+		'setting'     => array(
+			'currency_position'   => 'before',
+			'thousands_separator' => ',',
+			'decimal_separator'   => '.',
+			'number_decimals'     => 2,
+		),
+	),
+	'ZWL' => array(
+		'admin_label' => sprintf( __( 'Zimbabwean dollar (%1$s)', 'give' ), '&#36;' ),
+		'symbol'      => '&#36;',
 		'setting'     => array(
 			'currency_position'   => 'before',
 			'thousands_separator' => ',',

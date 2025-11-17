@@ -10,7 +10,7 @@ _e(
 );
 echo '</p>
         <a href="https://docs.givewp.com/recurring-legacy" target="_blank" class="givewp-donation-options_external">';
-_e('Get more donations');
+_e('Get more donations', 'give');
 echo '<img src="' . GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/external-link-icon.svg' . '" alt="external-link" />
         </a>
     </div>

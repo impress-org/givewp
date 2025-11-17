@@ -106,6 +106,7 @@ class DonationQuery extends QueryBuilder
     /**
      * Returns a calculated sum of the intended amounts (without recovered fees) for the donations.
      *
+     * @since 4.5.0 update to account for exchange rate
      * @since 3.14.0 Use the NULLIF function to prevent zero values that can generate a wrong final result and use $this->includeOnlyValidStatuses() and $this->includeOnlyCurrentMode()
      * @since 3.12.0
      * @return int|float
@@ -122,8 +123,9 @@ class DonationQuery extends QueryBuilder
 
         $this->joinMeta(DonationMetaKeys::AMOUNT, 'amount');
         $this->joinMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered');
+        $this->joinMeta(DonationMetaKeys::EXCHANGE_RATE, 'exchangeRate');
         return $this->sum(
-            'IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)'
+            '(IFNULL(amount.meta_value, 0) - IFNULL(feeAmountRecovered.meta_value, 0)) / IFNULL(exchangeRate.meta_value, 1)'
         );
     }
 

@@ -761,9 +761,10 @@ add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_conf
  * Render receipt by ajax
  * Note: only for internal use
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  */
-function __give_get_receipt() {
+function give_get_receipt() {
 
 	$get_data = give_clean( filter_input_array( INPUT_GET ) );
 
@@ -776,8 +777,8 @@ function __give_get_receipt() {
 
 	wp_send_json( $data );
 }
-add_action( 'wp_ajax_get_receipt', '__give_get_receipt' );
-add_action( 'wp_ajax_nopriv_get_receipt', '__give_get_receipt' );
+add_action( 'wp_ajax_get_receipt', 'give_get_receipt');
+add_action( 'wp_ajax_nopriv_get_receipt', 'give_get_receipt');
 
 /**
  * Get ajax url to render content from other website into thickbox

@@ -6,13 +6,14 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\BatchMigration;
+use Give\Framework\Migrations\Contracts\ReversibleMigration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 use Give\Framework\QueryBuilder\QueryBuilder;
 
 /**
  * @since 4.0.0
  */
-class AddCampaignId extends BatchMigration
+class AddCampaignId extends BatchMigration implements ReversibleMigration
 {
     /**
      * @inheritDoc
@@ -50,6 +51,9 @@ class AddCampaignId extends BatchMigration
 
     /**
      * @inheritDoc
+     *
+     * @since 4.0.0
+     *
      * @throws DatabaseMigrationException
      */
     public function runBatch($firstId, $lastId)
@@ -156,5 +160,17 @@ class AddCampaignId extends BatchMigration
             ->where('ID', $lastProcessedId, '>')
             ->limit(1)
             ->count();
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @since 4.6.0
+     */
+    public function reverse(): void
+    {
+        DB::table('give_donationmeta')
+            ->where('meta_key', DonationMetaKeys::CAMPAIGN_ID)
+            ->delete();
     }
 }

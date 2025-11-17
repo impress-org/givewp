@@ -3,7 +3,7 @@
 namespace Give\Framework\PaymentGateways\Contracts;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 interface WebhookNotificationsListener
 {
@@ -11,7 +11,7 @@ interface WebhookNotificationsListener
      * Update subscription payment method.
      *
      *
-     * @unreleased
+     * @since 4.5.0
      */
     public function webhookNotificationsListener();
 }

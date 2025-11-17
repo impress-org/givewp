@@ -13,12 +13,12 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\SubscriptionSuspended;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class GetEventHandlerClassBySubscriptionStatus
 {
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function __invoke(SubscriptionStatus $status): string
     {

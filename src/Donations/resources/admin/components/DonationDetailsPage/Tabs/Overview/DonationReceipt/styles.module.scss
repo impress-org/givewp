@@ -1,0 +1,234 @@
+.receipt {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-4);
+    width: 100%;
+    border-radius: .5rem;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--givewp-spacing-1);
+    width: 100%;
+    padding: var(--givewp-spacing-6) var(--givewp-spacing-3);
+    background-color: var(--givewp-neutral-500);
+    color: var(--givewp-shades-white);
+    border-radius: .5rem .5rem 0 0;
+
+
+    .title {
+        color: var(--givewp-shades-white);
+        margin: 0;
+        margin-bottom: 0;
+        padding: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.56;
+        text-align: center;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+}
+
+.content {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.sections {
+    padding: var(--givewp-spacing-6) var(--givewp-spacing-3);
+}
+
+.rowContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--givewp-spacing-3) 0;
+    width: 100%;
+
+    li, dd {
+        margin-bottom: 0;
+    }
+
+    .label {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--givewp-spacing-3);
+        color: var(--givewp-neutral-700);
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+
+        strong {
+            font-size: 1.125rem;
+            font-weight: 600;
+            line-height: 1.56;
+            color: #060c1a;
+            padding: var(--givewp-spacing-1) 0;
+        }
+    }
+
+    .value {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+        color: var(--givewp-neutral-700);
+
+        strong {
+            font-size: 1.125rem;
+            font-weight: 600;
+            line-height: 1.75rem;
+            color: var(--givewp-neutral-900);
+        }
+    }
+}
+
+.donationRow {
+    border-bottom: solid 1px #f3f4f6;
+}
+
+.donationRow:first-child {
+    padding-top: 0;
+}
+
+.currencyRow {
+    padding: var(--givewp-spacing-4) 0;
+    border-top: solid 1px #f3f4f6;
+
+    .label {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #1f2937;
+    }
+
+    .value {
+        display: flex;
+        align-items: center;
+        gap: var(--givewp-spacing-1);
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.67;
+        color: #4b5563;
+    }
+}
+
+.totalRow {
+    padding: var(--givewp-spacing-4) 0;
+}
+
+.eventLabel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-1);
+
+    p {
+        margin: 0;
+        padding: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.25rem;
+        color: var(--givewp-neutral-700);
+    }
+
+    .eventLink {
+        font-size: 0.75rem;
+        font-weight: 500;
+        line-height: 1.125rem;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.address {
+    border-top: dotted 1px #d1d5db;
+
+    h3 {
+        margin: var(--givewp-spacing-3) 0 var(--givewp-spacing-1) 0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--givewp-neutral-700);
+    }
+
+    address {
+        margin: 0;
+        font-style: normal;
+
+        p {
+            margin: 0;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+            font-weight: 500;
+            text-align: left;
+            color: var(--givewp-neutral-500);
+        }
+
+        a {
+            color: var(--givewp-blue-600);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.sections .address {
+    margin-bottom: 0;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-4);
+    margin-top: var(--givewp-spacing-4);
+
+    .action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1 1 0;
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+        border-radius: 4px;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        font-weight: 500;
+        cursor: pointer;
+        background-color: #2271b1;
+        color: var(--givewp-shades-white);
+        border: none;
+        outline: none;
+        box-shadow: none;
+
+        &:hover {
+             background-color: #135e96;;
+         }
+     }
+}
+
+:global(div[aria-label*="Resend Receipt"] .givewp-modal-content button:last-child) {
+    background-color: #2271b1;
+
+    &:hover {
+        background-color:#135e96;
+    }
+}
+

@@ -1,0 +1,97 @@
+.searchableSelect {
+    :global {
+        .searchableSelect {
+            &__control {
+                border-radius: var(--givewp-rounded-4);
+                border: 1px solid var(--givewp-neutral-300);
+
+                &--is-focused {
+                    border-color: #2271b1;
+                    outline: none;
+                    box-shadow: #2271b1 0px 0px 0px 1px;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            &__menu {
+                border-radius: var(--givewp-rounded-4);
+                border: 1px solid var(--givewp-neutral-200);
+                box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+                margin: var(--givewp-spacing-1) 0;
+                transform: translate(-1px, 0);
+                width: calc(100% + 2px);
+            }
+
+            &__menu-list {
+                display: flex;
+                flex-direction: column;
+                gap: var(--givewp-spacing-1);
+                padding: var(--givewp-spacing-1);
+            }
+
+            &__option {
+                border-radius: var(--givewp-rounded-2);
+                color: var(--givewp-neutral-900);
+                line-height: 1.5;
+                padding: var(--givewp-spacing-2) var(--givewp-spacing-4);
+
+                &--is-focused {
+                    background-color: var(--givewp-neutral-100);
+                }
+
+                &--is-selected {
+                    color: var(--givewp-shades-white);
+                    background-color: #2271b1;
+                    font-weight: 600;
+                }
+            }
+
+            &__single-value {
+                color: var(--givewp-neutral-900);
+                font-size: 1rem;
+                font-weight: 500;
+                line-height: 1.5;
+                margin: 0;
+            }
+
+            &__value-container {
+                padding: var(--givewp-spacing-4);
+            }
+
+            &__input-container {
+                color: var(--givewp-neutral-900);
+                font-size: 1rem;
+                line-height: 1.5;
+                margin: 0;
+            }
+
+            &__input {
+                min-height: auto;
+
+                &:focus {
+                    box-shadow: none !important;
+                }
+            }
+
+            &__indicator-separator {
+                display: none;
+            }
+
+            &__dropdown-indicator {
+                background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E');
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: 1rem;
+                padding: var(--givewp-spacing-4);
+                width: calc(var(--givewp-spacing-4) * 2 + 1rem);
+
+                svg {
+                    display: none;
+                }
+            }
+        }
+    }
+}

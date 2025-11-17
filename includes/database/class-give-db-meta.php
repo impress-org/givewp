@@ -106,19 +106,19 @@ class Give_DB_Meta extends Give_DB {
 		}
 
 		if ( in_array( 'posts_where', $this->supports ) ) {
-			add_filter( 'posts_where', [ $this, '__rename_meta_table_name_in_query' ], 99999, 2 );
+			add_filter( 'posts_where', [$this, 'rename_meta_table_name_in_query'], 99999, 2 );
 		}
 
 		if ( in_array( 'posts_join', $this->supports ) ) {
-			add_filter( 'posts_join', [ $this, '__rename_meta_table_name_in_query' ], 99999, 2 );
+			add_filter( 'posts_join', [$this, 'rename_meta_table_name_in_query'], 99999, 2 );
 		}
 
 		if ( in_array( 'posts_groupby', $this->supports ) ) {
-			add_filter( 'posts_groupby', [ $this, '__rename_meta_table_name_in_query' ], 99999, 2 );
+			add_filter( 'posts_groupby', [$this, 'rename_meta_table_name_in_query'], 99999, 2 );
 		}
 
 		if ( in_array( 'posts_orderby', $this->supports ) ) {
-			add_filter( 'posts_orderby', [ $this, '__rename_meta_table_name_in_query' ], 99999, 2 );
+			add_filter( 'posts_orderby', [$this, 'rename_meta_table_name_in_query'], 99999, 2 );
 		}
 	}
 
@@ -284,6 +284,7 @@ class Give_DB_Meta extends Give_DB {
 	/**
 	 * Rename query clauses of every query for new meta table
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.0
 	 * @access public
 	 *
@@ -292,10 +293,10 @@ class Give_DB_Meta extends Give_DB {
 	 *
 	 * @return string
 	 */
-	public function __rename_meta_table_name_in_query( $clause, $wp_query ) {
+	public function rename_meta_table_name_in_query( $clause, $wp_query ) {
 		// Add new table to sql query.
 		if ( $this->is_post_type_query( $wp_query ) && ! empty( $wp_query->meta_query->queries ) ) {
-			$clause = $this->__rename_meta_table_name( $clause, current_filter() );
+			$clause = $this->rename_meta_table_name( $clause, current_filter() );
 		}
 
 		return $clause;
@@ -305,12 +306,13 @@ class Give_DB_Meta extends Give_DB {
 	/**
 	 * Rename query clauses for new meta table
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @param $clause
 	 * @param $filter
 	 *
 	 * @return mixed
 	 */
-	public function __rename_meta_table_name( $clause, $filter ) {
+	public function rename_meta_table_name( $clause, $filter ) {
 		global $wpdb;
 
 		$clause = str_replace( "{$wpdb->postmeta}.post_id", "{$this->table_name}.{$this->meta_type}_id", $clause );
