@@ -274,6 +274,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 4.13.1: November 18th, 2025 =
+* Enhancement: Added Caribbean guilder (XCG) as a currency option
+* Enhancement: Added Curaçao as a country option (open-source contribution by @Genevieve-K)
 * Security: Added additional escaping to the donor wall (CVE-2025-13206)
 * Fix: Resolved a validation issue with some custom form fields using conditional logic
 * Fix: Resolved an issue that was causing REST API console log errors in the browser for not being logged in
