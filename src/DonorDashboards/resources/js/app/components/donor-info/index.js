@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useSelector} from 'react-redux';
-import {__} from '@wordpress/i18n';
+import {__, sprintf} from '@wordpress/i18n';
 
 import './style.scss';
 
