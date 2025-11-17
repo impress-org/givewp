@@ -19,7 +19,7 @@ class FeatureFlagRepository
     /**
      * In the future this will be dynamic, however right now we need a simple iteration of a notifications counter.
      *
-     * @unreleased added filter givewp_feature_flag_notifications_count
+     * @since 4.13.1 added filter givewp_feature_flag_notifications_count
      * @since 3.6.0
      */
     public function getNotificationCount(): int

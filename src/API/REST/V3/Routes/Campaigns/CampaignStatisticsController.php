@@ -16,7 +16,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.13.1
  */
 class CampaignStatisticsController extends WP_REST_Controller
 {
@@ -26,7 +26,7 @@ class CampaignStatisticsController extends WP_REST_Controller
     protected $namespace;
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function __construct()
     {

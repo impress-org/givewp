@@ -112,7 +112,7 @@ function give_get_format_address( $address, $address_args = array() ) {
  *
  * Renders the donors page contents.
  *
- * @unreleased add early return if showing new details page
+ * @since 4.13.1 add early return if showing new details page
  * @since  1.0
  * @return void
  */

@@ -13,7 +13,7 @@ class DuplicateCampaign
     /**
      * Duplicate a campaign
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function __invoke(Campaign $campaign): Campaign
     {

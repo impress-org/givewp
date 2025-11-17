@@ -11,7 +11,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @unreleased collection endpoint tests for campaigns
+ * @since 4.13.1 collection endpoint tests for campaigns
  */
 class CampaignControllerCollectionTest extends RestApiTestCase
 {
@@ -21,7 +21,7 @@ class CampaignControllerCollectionTest extends RestApiTestCase
     /**
      * Ensure collection returns all expected view model properties.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testGetCampaignsShouldReturnAllViewModelProperties()
     {
@@ -76,7 +76,7 @@ class CampaignControllerCollectionTest extends RestApiTestCase
     /**
      * Ensure collection items include self links like other resources.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testGetCampaignsShouldReturnSelfLink()
     {
@@ -102,7 +102,7 @@ class CampaignControllerCollectionTest extends RestApiTestCase
     /**
      * Verify pagination headers and page results.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testGetCampaignsWithPagination()
     {

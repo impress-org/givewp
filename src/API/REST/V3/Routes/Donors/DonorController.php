@@ -608,7 +608,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased cast totalAmountDonated to decimal
+     * @since 4.13.1 cast totalAmountDonated to decimal
      * @since 4.0.0
      */
     public function getSortColumn(string $sortColumn): string

@@ -151,7 +151,7 @@ final class CampaignPageRepositoryTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      *
      * @throws Exception
      */

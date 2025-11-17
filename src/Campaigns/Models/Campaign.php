@@ -176,7 +176,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function createPage(?array $attributes = []): ?CampaignPage
     {

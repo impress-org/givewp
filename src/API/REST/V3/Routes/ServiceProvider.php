@@ -57,7 +57,7 @@ class ServiceProvider implements ServiceProviderInterface
 
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     private function registerEntities()
     {
@@ -66,7 +66,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased updated to use REST controllers
+     * @since 4.13.1 updated to use REST controllers
      * @since 4.2.0
      */
     private function loadCampaignsRoutes()
@@ -141,7 +141,7 @@ class ServiceProvider implements ServiceProviderInterface
 
     /**
      * @since 4.2.0
-     * @unreleased
+     * @since 4.13.1
      */
     private function loadDonationFormsRoutes()
     {

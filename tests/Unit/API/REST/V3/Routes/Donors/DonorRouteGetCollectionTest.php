@@ -724,7 +724,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased updated amount
+     * @since 4.13.1 updated amount
      * @since 4.0.0
      *
      * @throws Exception
@@ -756,7 +756,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased updated amount
+     * @since 4.13.1 updated amount
      * @since 4.0.0
      *
      * @throws Exception
@@ -788,7 +788,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased updated amount
+     * @since 4.13.1 updated amount
      * @since 4.0.0
      *
      * @throws Exception

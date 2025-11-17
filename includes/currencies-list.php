@@ -8,7 +8,7 @@
  * @copyright   Copyright (c) 2018, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
  *
- * @unreleased added XCG (Caribbean Guilder)
+ * @since 4.13.1 added XCG (Caribbean Guilder)
  * @since 4.10.0 Updated to match current ISO 4217 standard as of 2024. Total: 169 currencies.
  *
  * Major changes include:

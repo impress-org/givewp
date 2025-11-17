@@ -43,7 +43,7 @@ class MergeCampaignsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased updated to assert return data
+     * @since 4.13.1 updated to assert return data
      * @since 4.0.0
      *
      * @throws Exception
@@ -91,7 +91,7 @@ class MergeCampaignsTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function testMergeCampaignsRouteShouldReturnNotFoundWhenDestinationMissing()
     {

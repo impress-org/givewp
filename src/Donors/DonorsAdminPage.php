@@ -102,7 +102,7 @@ class DonorsAdminPage
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public static function isShowingNewDetailsPage(): bool
     {

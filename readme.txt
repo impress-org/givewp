@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 4.13.0
+Stable tag: 4.13.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.13.1: November 18th, 2025 =
+* Security: Added additional escaping to the donor wall (CVE-2025-13206)
+* Fix: Resolved a validation issue with some custom form fields using conditional logic
+* Fix: Resolved an issue that was causing REST API console log errors in the browser for not being logged in
+* Fix: Resolved an issue with Donor REST API and sorting by totalAmountDonated
+* Fix: Resolved an issue with merging campaigns and cached campaign goal data
 
 = 4.13.0: November 5th, 2025 =
 * Enhancement: Updated the date and time formatting throughout the new admin screens to respect WordPress settings for timezone, date format, and time format

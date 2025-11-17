@@ -21,7 +21,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased commented out the setFeatureFlagNotificationCounter method and added a filter to set the count to 0
+     * @since 4.13.1 commented out the setFeatureFlagNotificationCounter method and added a filter to set the count to 0
      * @since 3.6.0
      * @inheritDoc
      */
@@ -30,7 +30,7 @@ class ServiceProvider implements ServiceProviderInterface
         //$this->setFeatureFlagNotificationCounter();
 
         /**
-         * @unreleased This is intentionally being set to 0 until we can revisit Event Tickets Beta.
+         * @since 4.13.1 This is intentionally being set to 0 until we can revisit Event Tickets Beta.
          */
         add_filter('givewp_feature_flag_notifications_count', function ($count) {
             return 0;

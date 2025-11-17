@@ -14,7 +14,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 
 /**
- * @unreleased updated to use REST API test case
+ * @since 4.13.1 updated to use REST API test case
  * @since 4.0.0
  */
 final class CampaignStatisticsControllerTest extends RestApiTestCase
