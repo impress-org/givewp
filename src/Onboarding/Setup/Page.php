@@ -8,7 +8,7 @@
 
 namespace Give\Onboarding\Setup;
 
-use Give\DonationForms\V2\DonationFormsAdminPage;
+use Give\Campaigns\CampaignsAdminPage;
 
 defined('ABSPATH') || exit;
 
@@ -26,6 +26,7 @@ class Page
     /**
      * Dismiss the Setup Page.
      *
+     * @since 4.10.0 redirect to campaigns page
      * @since 2.8.0
      */
     public function dismissSetupPage()
@@ -33,7 +34,7 @@ class Page
         if (wp_verify_nonce($_GET['_wpnonce'], 'dismiss_setup_page')) {
             give_update_option('setup_page_enabled', self::DISABLED);
 
-            wp_redirect(DonationFormsAdminPage::getUrl());
+            wp_redirect(CampaignsAdminPage::getUrl());
             exit;
         }
     }

@@ -3,7 +3,7 @@ import {CampaignBlockType} from './types';
 import useCampaign from '../shared/hooks/useCampaign';
 import CampaignCard from '../shared/components/CampaignCard';
 
-const BlockApp = ({attributes}: { attributes: CampaignBlockType }) => {
+export const CampaignBlockApp = ({attributes}: { attributes: CampaignBlockType }) => {
     const {campaign, hasResolved} = useCampaign(attributes?.campaignId);
 
     if (!hasResolved) {
@@ -31,6 +31,6 @@ if (nodeList) {
     containers.map((container: any) => {
         const attributes: CampaignBlockType = JSON.parse(container.dataset?.attributes);
         const root = createRoot(container);
-        return root.render(<BlockApp attributes={attributes} />)
+        return root.render(<CampaignBlockApp attributes={attributes} />)
     });
 }

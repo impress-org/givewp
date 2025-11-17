@@ -451,6 +451,7 @@ function give_get_recently_activated_addons() {
  * Renders the Give Deactivation Survey Form.
  * Note: only for internal use
  *
+ * @since 4.10.0 Updated the icon path to the new build directory.
  * @since 2.2
  */
 function give_deactivation_popup() {
@@ -466,7 +467,7 @@ function give_deactivation_popup() {
 	?>
 
 	<h2 id="deactivation-survey-title">
-		<img src="<?php echo esc_url( GIVE_PLUGIN_URL ); ?>/assets/dist/images/give-icon-full-circle.svg">
+		<img src="<?php echo esc_url( GIVE_PLUGIN_URL ); ?>/build/assets/dist/images/give-icon-full-circle.svg">
 		<span><?php esc_html_e( 'GiveWP Deactivation', 'give' ); ?></span>
 	</h2>
 	<form class="deactivation-survey-form" method="POST">

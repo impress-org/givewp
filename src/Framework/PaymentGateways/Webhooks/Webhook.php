@@ -6,26 +6,26 @@ use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\PaymentGateway;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class Webhook
 {
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @var string $webhookNotificationsListener
      */
     private $webhookNotificationsListener = 'webhookNotificationsListener';
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @var PaymentGateway $paymentGateway
      */
     private $paymentGateway;
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @var WebhookEvents $webhookEvents
      */
@@ -42,7 +42,7 @@ class Webhook
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @throws Exception
      */

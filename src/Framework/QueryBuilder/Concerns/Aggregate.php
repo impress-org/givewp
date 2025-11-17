@@ -12,6 +12,7 @@ trait Aggregate
     /**
      * Returns the number of rows returned by a query
      *
+     * @since 4.10.0 Return 0 when no result is null
      * @since 2.19.0
      * @param  null|string  $column
      *
@@ -19,7 +20,7 @@ trait Aggregate
      */
     public function count($column = null)
     {
-        $column = ( ! $column || $column === '*') ? '1' : trim($column);
+        $column = (!$column || $column === '*') ? '1' : trim($column);
 
         if (empty($this->selects)) {
             $this->selects[] = new RawSQL('SELECT COUNT(%1s) AS count', $column);
@@ -27,7 +28,8 @@ trait Aggregate
             $this->selects[] = new RawSQL('COUNT(%1s) AS count', $column);
         }
 
-        return +$this->get()->count;
+        $result = $this->get();
+        return is_null($result) ? 0 : +$result->count;
     }
 
     /**
@@ -44,7 +46,6 @@ trait Aggregate
 
         return +$this->get()->sum;
     }
-
 
     /**
      * Get the average value in a set of values

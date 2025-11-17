@@ -5,6 +5,7 @@ namespace Give\Campaigns\ListTable\Routes;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
+use Give\Campaigns\ListTable\Columns\RevenueColumn;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
@@ -90,12 +91,15 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
+     * @since 4.12.0 add support for sorting by revenue column
      * @since 4.0.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
         $this->request = $request;
         $this->listTable = give(CampaignsListTable::class);
+        $sortColumns = $this->listTable->getSortColumnById($request->get_param('sortColumn') ?: 'id');
+        $sortDirection = $request->get_param('sortDirection') ?: 'desc';
 
         $campaignsCount = $this->getTotalCampaignsCount();
 
@@ -118,6 +122,15 @@ class GetCampaignsListTable implements RestRoute
 
         $campaignsData = CampaignsDataRepository::campaigns($ids);
 
+        // Sort by revenue column
+        if (in_array(RevenueColumn::getId(), $sortColumns)) {
+            usort($campaigns, function(Campaign $a, Campaign $b) use ($campaignsData, $sortDirection) {
+                return $sortDirection === 'asc'
+                    ? $campaignsData->getRevenue($a) <=> $campaignsData->getRevenue($b)
+                    : $campaignsData->getRevenue($b) <=> $campaignsData->getRevenue($a);
+            });
+        }
+
         $this->listTable
             ->setData($campaignsData)
             ->items($campaigns, $this->request->get_param('locale') ?? '');
@@ -138,6 +151,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
+     * @since 4.12.0 remove revenue column from sort
      * @since 4.0.0
      */
     public function getCampaigns(): array
@@ -151,6 +165,10 @@ class GetCampaignsListTable implements RestRoute
         $query = $this->getWhereConditions($query);
 
         foreach ($sortColumns as $sortColumn) {
+            if (RevenueColumn::getId() === $sortColumn) {
+                continue;
+            }
+
             $query->orderBy($sortColumn, $sortDirection);
         }
 

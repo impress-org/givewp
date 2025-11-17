@@ -7,7 +7,7 @@ use Give\Framework\Support\Facades\ActionScheduler\AsBackgroundJobs;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class WebhookEvents
 {
@@ -17,7 +17,7 @@ class WebhookEvents
     protected $gatewayId;
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function __construct(string $gatewayId)
     {
@@ -25,7 +25,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function donationAbandoned(
         string $gatewayTransactionId,
@@ -36,7 +36,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function donationCancelled(
         string $gatewayTransactionId,
@@ -47,7 +47,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function donationCompleted(
         string $gatewayTransactionId,
@@ -58,7 +58,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function donationFailed(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
@@ -66,7 +66,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function donationPending(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
@@ -74,7 +74,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function donationPreapproval(
         string $gatewayTransactionId,
@@ -86,7 +86,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function donationProcessing(
         string $gatewayTransactionId,
@@ -99,7 +99,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function donationRefunded(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
@@ -107,7 +107,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function donationRevoked(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
     {
@@ -115,7 +115,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function subscriptionActive(
         string $gatewaySubscriptionId,
@@ -128,7 +128,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function subscriptionCancelled(string $gatewaySubscriptionId, string $message = '')
     {
@@ -136,7 +136,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function subscriptionCompleted(string $gatewaySubscriptionId, string $message = '')
     {
@@ -144,7 +144,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function subscriptionExpired(string $gatewaySubscriptionId, string $message = '')
     {
@@ -152,7 +152,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function subscriptionFailing(string $gatewaySubscriptionId, string $message = '')
     {
@@ -160,7 +160,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function subscriptionPaused(string $gatewaySubscriptionId, string $message = '')
     {
@@ -168,7 +168,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function subscriptionPending(string $gatewaySubscriptionId, string $message = '')
     {
@@ -176,7 +176,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function subscriptionSuspended(string $gatewaySubscriptionId, string $message = '')
     {
@@ -184,7 +184,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.
      */
@@ -192,7 +192,7 @@ class WebhookEvents
         string $gatewayTransactionId,
         string $message = '',
         bool $setSubscriptionActive = true,
-        bool $setDonationComplete = true, 
+        bool $setDonationComplete = true,
         string $gatewaySubscriptionId = ''
     ): int {
         $hook = sprintf('givewp_%s_webhook_event_subscription_first_donation', $this->gatewayId);
@@ -203,7 +203,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.
      */
@@ -220,7 +220,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.
      */
@@ -238,7 +238,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.
      */
@@ -261,7 +261,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     protected function getGroup(): string
     {

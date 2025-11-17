@@ -1,11 +1,11 @@
 .sortButton {
-    display: flex;
     align-items: center;
     background: none;
-    color: #2271b1;
     border: none;
+    color: var(--givewp-neutral-900);
     cursor: pointer;
-    transform: translateX(-10px);
+    display: flex;
+    padding: 0;
 
     .text {
         white-space: nowrap;
@@ -16,12 +16,18 @@
         transform: scale(112%);
         margin: 3px 0 3px 8px;
 
-        > path {
+        &[data-sorting="true"] {
+            >path {
+                fill: var(--givewp-neutral-900) !important;
+            }
+        }
+
+        >path {
+            fill: var(--givewp-neutral-300);
+
             &:hover {
-                fill: #0878b0 !important;
-                }
+                fill: var(--givewp-neutral-900) !important;
             }
         }
     }
-
-
+}

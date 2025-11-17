@@ -96,9 +96,7 @@ const donationFormsFilters: Array<FilterConfig> = [
 if (isCampaignDetailsPage) {
     donationFormsFilters.push({
         name: 'campaignId',
-        type: 'select',
-        text: __('Campaign ID', 'give'),
-        ariaLabel: __('Filter donation forms by Campaign ID', 'give'),
+        type: 'hidden',
         options: [
             {
                 value: campaignId,
@@ -108,6 +106,9 @@ if (isCampaignDetailsPage) {
     });
 }
 
+/**
+ * @since 4.6.0 add option based form editor enabled check.
+ */
 const columnFilters: Array<ColumnFilterConfig> = [
     {
         column: 'title',
@@ -123,7 +124,7 @@ const columnFilters: Array<ColumnFilterConfig> = [
                 <>
                     <div className={styles.titleContainer}>
                         <div className={styles.migratedForm}>
-                            {item?.v3form && <CubeTooltip />}
+                            {item?.v3form && window?.GiveDonationForms?.isOptionBasedFormEditorEnabled && <CubeTooltip />}
                             <Interweave attributes={{className: 'interweave'}} content={item?.title} />
                         </div>
                         {item?.isDefaultCampaignForm && (

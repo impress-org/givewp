@@ -9,10 +9,8 @@ import 'intl-tel-input/build/css/intlTelInput.css';
 /**
  * Internal Dependencies
  */
-import { getDonorOptionsWindowData } from '@givewp/donors/utils';
 import styles from './styles.module.scss';
-
-const { intlTelInputSettings } = getDonorOptionsWindowData();
+import { IntlTelInputSettings } from '../../types';
 
 /**
  * @since 4.4.0
@@ -23,12 +21,14 @@ type PhoneInputProps = {
     onChange: (value: string) => void;
     onError?: (errorMessage: string | null) => void;
     className?: string;
+    intlTelInputSettings: IntlTelInputSettings;
 };
 
 /**
+ * @since 4.6.1 Add intlTelInputSettings to props
  * @since 4.4.0
  */
-export default function PhoneInput({ id, value, onChange, onError, className }: PhoneInputProps) {
+export default function PhoneInput({ id, value, onChange, onError, className, intlTelInputSettings }: PhoneInputProps) {
     const [country, setCountry] = useState<string>(intlTelInputSettings.initialCountry);
 
     const isIntlTelInput = intlTelInputSettings.initialCountry && intlTelInputSettings.utilsScriptUrl;

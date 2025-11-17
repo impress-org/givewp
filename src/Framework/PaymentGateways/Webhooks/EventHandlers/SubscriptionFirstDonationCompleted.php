@@ -16,20 +16,20 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFirstDonationCompleted
 {
     /**
-     * @unreleased Add $setDonationComplete and $gatewaySubscriptionId parameters
+     * @since 4.5.0 Add $setDonationComplete and $gatewaySubscriptionId parameters
      * @since 3.6.0
      */
     public function __invoke(
-        string $gatewayTransactionId, 
-        string $message = '', 
-        bool $setSubscriptionActive = true, 
-        bool $setDonationComplete = true, 
+        string $gatewayTransactionId,
+        string $message = '',
+        bool $setSubscriptionActive = true,
+        bool $setDonationComplete = true,
         string $gatewaySubscriptionId = ''
     )
     {
         $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
-    
-        if (! $donation && ! empty($gatewaySubscriptionId) && $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId)) {        
+
+        if (! $donation && ! empty($gatewaySubscriptionId) && $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId)) {
             $donation = $subscription->initialDonation();
             $donation->gatewayTransactionId = $gatewayTransactionId;
             $donation->save();

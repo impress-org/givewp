@@ -2,6 +2,7 @@
 
 namespace Unit\LegacySubscriptions;
 
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
@@ -167,17 +168,19 @@ class GiveSubscriptionTest extends TestCase
     /**
      * Test that add_payment method successfully creates a renewal payment.
      *
+     * @since 4.11.0 add campaign_id to renewal
      * @since 4.3.2
      */
     public function testAddPaymentCreatesRenewalPayment()
     {
+        $campaign = Campaign::factory()->create();
         // Create a donor
         $donor = Donor::factory()->create();
 
         // Create a parent payment manually using Give_Payment
         $parentPayment = new Give_Payment();
         $parentPayment->total = 100;
-        $parentPayment->form_id = 1;
+        $parentPayment->form_id = $campaign->defaultFormId;
         $parentPayment->customer_id = $donor->id;
         $parentPayment->first_name = $donor->firstName;
         $parentPayment->last_name = $donor->lastName;
@@ -194,12 +197,13 @@ class GiveSubscriptionTest extends TestCase
         $subscriptionId = $subscription->create([
             'customer_id' => $donor->id,
             'parent_payment_id' => $parentPayment->ID,
-            'form_id' => 1,
+            'form_id' => $campaign->defaultFormId,
             'period' => 'month',
             'frequency' => 1,
             'initial_amount' => 100,
             'recurring_amount' => 80,
             'status' => 'active',
+            'campaign_id' => $campaign->id,
         ]);
         $subscription = new Give_Subscription($subscriptionId);
 
@@ -227,6 +231,7 @@ class GiveSubscriptionTest extends TestCase
         $this->assertEquals('give_subscription', $renewalPayment->status);
         $this->assertEquals($parentPayment->ID, $renewalPayment->parent_payment);
         $this->assertEquals($subscription->id, $renewalPayment->get_meta('subscription_id'));
+        $this->assertEquals($campaign->id, $renewalPayment->campaign_id);
     }
 
     /**

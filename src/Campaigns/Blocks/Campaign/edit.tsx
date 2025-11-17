@@ -49,7 +49,7 @@ export default function Edit({attributes, setAttributes}: BlockEditProps<Campaig
     const blockProps = useBlockProps();
     const campaignWindowData = getCampaignOptionsWindowData();
     const [showNotification, setShowNotification] = useState(campaignWindowData.admin.showCampaignInteractionNotice);
-    const {campaign, hasResolved, edit, save} = useCampaignEntityRecord(attributes.campaignId);
+    const {record: campaign, hasResolved, edit, save} = useCampaignEntityRecord(attributes.campaignId);
 
 
     const Notices = () => {

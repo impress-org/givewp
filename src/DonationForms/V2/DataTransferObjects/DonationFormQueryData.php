@@ -155,6 +155,7 @@ final class DonationFormQueryData
 
 
     /**
+     * @since 4.6.0 Cast $queryObject->goalFormat to string
      * @since 4.3.0
      */
     private function getGoalSettings(object $queryObject): GoalSettings
@@ -185,12 +186,11 @@ final class DonationFormQueryData
             ]);
         }
 
-
         // v2 form
         return GoalSettings::fromArray([
             'goalSource' => 'form',
             'enableDonationGoal' => $queryObject->goalOption === 'enabled',
-            'goalType' => $this->convertGoalType($queryObject->goalFormat, (bool)$queryObject->recurringGoalFormat),
+            'goalType' => $this->convertGoalType((string)$queryObject->goalFormat, (bool)$queryObject->recurringGoalFormat),
             'goalAmount' => $queryObject->goalAmount,
         ]);
     }

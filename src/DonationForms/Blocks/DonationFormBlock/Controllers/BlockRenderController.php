@@ -19,6 +19,7 @@ class BlockRenderController
     protected static int $embedInstance = 0;
 
     /**
+     * @since 4.7.0 detach check for gutenberg editor to make this more reusable
      * @since 4.1.0 updated with embed ID instance fallback when block ID is not set.
      * @since 3.22.0 Add locale support
      * @since 3.2.0 include form url for new tab format.
@@ -28,11 +29,6 @@ class BlockRenderController
      */
     public function render(array $attributes)
     {
-        // return early if we're still inside the editor to avoid server side effects
-        if (!empty($_REQUEST['post']) || !empty($_REQUEST['action']) || !empty($_REQUEST['_locale'])) {
-            return null;
-        }
-
         static::$embedInstance++;
 
         $blockAttributes = BlockAttributes::fromArray($attributes);
@@ -52,12 +48,25 @@ class BlockRenderController
         $viewUrl = $this->getViewUrl($donationForm, $embedId);
         $formUrl = esc_url(add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms')));
         $formViewUrl = $this->getFormViewUrl($donationForm);
+        $colorSettings = $donationForm->getColorSettings();
 
         /**
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<div class='root-data-givewp-embed' data-form-locale='$locale' data-form-url='$formUrl' data-form-view-url='$formViewUrl' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$blockAttributes->formFormat' data-open-form-button='$blockAttributes->openFormButton'></div>";
+        return "<div class='root-data-givewp-embed' data-form-locale='$locale' data-form-url='$formUrl' data-form-view-url='$formViewUrl' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$blockAttributes->formFormat' data-open-form-button='$blockAttributes->openFormButton' style='--givewp-primary-color: {$colorSettings['primaryColor']}; --givewp-secondary-color: {$colorSettings['secondaryColor']};'></div>";
+    }
+
+    /**
+     * Return early if we're still inside the editor to avoid server side effects
+     *
+     * @since 4.7.0
+     *
+     * @return boolean
+     */
+    public function isGutenbergEditor(): bool
+    {
+        return !empty($_REQUEST['post']) || !empty($_REQUEST['action']) || !empty($_REQUEST['_locale']);
     }
 
     /**

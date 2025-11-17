@@ -686,6 +686,7 @@ if ( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
 /**
  * Delete pre upgrade cache for donations.
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  *
  * @param $check
@@ -693,7 +694,7 @@ if ( give_has_upgrade_completed( 'v20_upgrades_payment_metadata' ) ) {
  *
  * @return mixed
  */
-function __give_20_bc_flush_cache( $check, $object_id ) {
+function give_20_bc_flush_cache( $check, $object_id ) {
 	if ( 'give_payment' === get_post_type( $object_id ) ) {
 		Give_Cache::delete_group( $object_id, 'give-donations' );
 	}
@@ -703,6 +704,6 @@ function __give_20_bc_flush_cache( $check, $object_id ) {
 
 // Apply only if upgrade does not complete.
 if ( ! give_has_upgrade_completed( 'v20_move_metadata_into_new_table' ) ) {
-	add_action( 'update_post_metadata', '__give_20_bc_flush_cache', 9999, 2 );
-	add_action( 'add_post_metadata', '__give_20_bc_flush_cache', 9999, 2 );
+	add_action( 'update_post_metadata', 'give_20_bc_flush_cache', 9999, 2 );
+	add_action( 'add_post_metadata', 'give_20_bc_flush_cache', 9999, 2 );
 }

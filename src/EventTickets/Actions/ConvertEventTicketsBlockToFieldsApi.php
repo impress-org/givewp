@@ -7,6 +7,7 @@ use Give\EventTickets\DataTransferObjects\EventTicketTypeData;
 use Give\EventTickets\DataTransferObjects\TicketPurchaseData;
 use Give\EventTickets\Fields\EventTickets;
 use Give\EventTickets\Repositories\EventRepository;
+use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\Blocks\BlockModel;
 use Give\Framework\FieldsAPI\Exceptions\EmptyNameException;
 use Give\Framework\Support\ValueObjects\Money;
@@ -14,6 +15,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class ConvertEventTicketsBlockToFieldsApi
 {
     /**
+     * @since 4.6.0 Add support for currency conversion
      * @since 3.20.0 Set event end date and time.
      * @since 3.12.2 Remove event ID from field name
      * @since 3.6.0
@@ -45,11 +47,9 @@ class ConvertEventTicketsBlockToFieldsApi
 
                     array_walk($ticketPurchaseData, new GenerateTicketsFromPurchaseData($donation));
 
-                    $donation->amount = array_reduce($ticketPurchaseData, function (Money $carry, TicketPurchaseData $purchaseData) {
-                        return $carry->add(
-                            $purchaseData->ticketType->price->multiply($purchaseData->quantity)
-                        );
-                    }, $donation->amount);
+                    $totalTicketsAmount = give(EventTicketRepository::class)->getTotalByDonation($donation);
+
+                    $donation->amount = $donation->amount->add($totalTicketsAmount);
 
                     $donation->save();
                 });

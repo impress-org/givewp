@@ -73,7 +73,7 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 
 		$offset     = ( $this->step - 1 ) * $this->per_step;
 		$step_items = array_slice( $items, $offset, $this->per_step );
-		$meta_table = __give_v20_bc_table_details( 'payment' );
+		$meta_table = give_v20_bc_table_details( 'payment' );
 
 		if ( $step_items ) {
 			foreach ( $step_items as $item ) {
@@ -95,7 +95,9 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	public function get_percentage_complete() {
 
 		$items = $this->get_stored_data( 'give_temp_delete_test_ids', false );
-		$total = count( $items );
+		$total = is_array( $items )
+			? count( $items )
+			: 0;
 
 		$percentage = 100;
 

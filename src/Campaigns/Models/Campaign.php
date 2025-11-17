@@ -10,6 +10,7 @@ use Give\Campaigns\Factories\CampaignFactory;
 use Give\Campaigns\Repositories\CampaignPageRepository;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
+use Give\Campaigns\ValueObjects\CampaignPageStatus;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\V2\Models\DonationForm;
@@ -172,6 +173,21 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     public function merge(Campaign ...$campaignsToMerge): bool
     {
         return give(CampaignRepository::class)->mergeCampaigns($this, ...$campaignsToMerge);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function createPage(?array $attributes = []): ?CampaignPage
+    {
+        $page = CampaignPage::create(array_merge([
+            'campaignId' => $this->id,
+            'status' => CampaignPageStatus::DRAFT(),
+        ], $attributes));
+
+        $this->pageId = $page->id;
+
+        return $page;
     }
 
     /**

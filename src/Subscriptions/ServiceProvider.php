@@ -5,22 +5,30 @@ namespace Give\Subscriptions;
 use Give\Framework\Migrations\MigrationsRegister;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
+use Give\Subscriptions\Actions\LoadSubscriptionAdminOptions;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPostCreate;
 use Give\Subscriptions\LegacyListeners\DispatchGiveSubscriptionPreCreate;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
+use Give\Subscriptions\Migrations\AddCampaignId;
+use Give\Subscriptions\Migrations\AddCampaignIdColumn;
 use Give\Subscriptions\Migrations\AddPaymentModeToSubscriptionTable;
 use Give\Subscriptions\Migrations\BackfillMissingCampaignIdForDonations;
 use Give\Subscriptions\Migrations\CreateSubscriptionTables;
+use Give\Subscriptions\Migrations\UpdateProductID;
+use Give\Subscriptions\Repositories\SubscriptionNotesRepository;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 
 class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * @inheritDoc
+     *
+     * @since 4.8.0 Register Subscription Repository to container
      */
     public function register()
     {
         give()->singleton('subscriptions', SubscriptionRepository::class);
+        give()->singleton('subscriptionNotes', SubscriptionNotesRepository::class);
         give()->singleton(SubscriptionsListTable::class, function() {
             $listTable = new SubscriptionsListTable();
             Hooks::doAction('givewp_subscriptions_list_table', $listTable);
@@ -36,12 +44,13 @@ class ServiceProvider implements ServiceProviderInterface
     {
         $this->bootLegacyListeners();
         $this->registerMigrations();
+        $this->registerSubscriptionAdminOptions();
 
         $userId = get_current_user_id();
         $showLegacy = get_user_meta($userId, '_give_subscriptions_archive_show_legacy', true);
         // only register new admin page if user hasn't chosen to use the old one
         if (empty($showLegacy) && SubscriptionsAdminPage::isShowing()) {
-            Hooks::addAction('admin_enqueue_scripts', SubscriptionsAdminPage::class, 'loadScripts');
+            Hooks::addAction('give_forms_page_give-subscriptions', SubscriptionsAdminPage::class, 'render', 1);
         } elseif (SubscriptionsAdminPage::isShowing()) {
             Hooks::addAction('admin_head', SubscriptionsAdminPage::class, 'renderReactSwitch');
         }
@@ -61,6 +70,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Registers database migrations with the MigrationsRunner
      *
+     * @since 4.11.0 add AddCampaignIdColumn and AddCampaignId migrations
      * @since 2.24.0
      */
     private function registerMigrations()
@@ -71,6 +81,21 @@ class ServiceProvider implements ServiceProviderInterface
             CreateSubscriptionTables::class,
             AddPaymentModeToSubscriptionTable::class,
             BackfillMissingCampaignIdForDonations::class,
+            AddCampaignIdColumn::class,
+            AddCampaignId::class,
+            UpdateProductID::class
         ]);
+    }
+
+    /**
+     * @since 4.8.0
+     */
+    private function registerSubscriptionAdminOptions()
+    {
+        add_action('admin_enqueue_scripts', function() {
+            if (SubscriptionsAdminPage::isShowing()) {
+                give(LoadSubscriptionAdminOptions::class)();
+            }
+        });
     }
 }

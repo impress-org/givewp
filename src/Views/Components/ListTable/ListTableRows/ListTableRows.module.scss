@@ -22,13 +22,18 @@ tr.duplicated {
 }
 
 .tableRowActions {
+    --column-gap: 1.25rem;
     position: absolute;
     inset-block-end: 1rem;
     display: flex;
     align-items: center;
-    column-gap: 1.25rem;
+    column-gap: var(--column-gap);
     word-break: keep-all;
-    transition: opacity 150ms ease-in-out;
+    font-size: 0.875rem;
+    font-weight: 600;
+    inset-block-end: initial;
+    line-height: 1.29;
+    margin-top: var(--givewp-spacing-3);
 
     > * {
         position: relative;
@@ -40,12 +45,14 @@ tr.duplicated {
 
     > * + ::before {
         position: absolute;
-        content: "";
-        inset-block: auto;
-        inset-inline-start: calc(-.6725rem);
-        block-size: 110%;
-        inline-size: 0.125rem;
-        background-color: #dedede;
+        color: var(--givewp-neutral-200);
+        background: none;
+        content: "|";
+        font-size: 0.8125rem;
+        font-weight: 600;
+        pointer-events: none;
+        left: calc(var(--column-gap) * -0.5);
+        transform: translateX(-50%);
     }
 
     > a {
@@ -58,16 +65,16 @@ tr.duplicated {
 }
 
 .tableRow {
-    &:nth-child(odd) {
-        background-color: #f6f7f7;
-    }
+    background-color: var(--givewp-shades-white);
 
-    &:nth-child(even) {
-        background-color: #fff;
-    }
+    &:hover {
+        > * {
+            background-color: var(--givewp-grey-5);
+        }
 
-    &:hover .tableRowActions {
-        opacity: 1;
+        .tableRowActions {
+            opacity: 1;
+        }
     }
 
     & .start {
@@ -140,5 +147,3 @@ div.abandoned {
         }
     }
 }
-
-

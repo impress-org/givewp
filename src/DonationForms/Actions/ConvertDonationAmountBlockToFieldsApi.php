@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\Actions;
 
+use Give\DonationForms\Rules\CurrencyRule;
 use Give\DonationForms\Rules\DonationTypeRule;
 use Give\DonationForms\Rules\Max;
 use Give\DonationForms\Rules\Min;
@@ -27,6 +28,7 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
+     * @since 4.10.0: Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
      * @since 3.0.0
      *
      * @throws EmptyNameException
@@ -79,7 +81,7 @@ class ConvertDonationAmountBlockToFieldsApi
             $currencyNode = $group->getNodeByName('currency');
             $currencyNode
                 ->defaultValue($currency)
-                ->rules('required', 'currency');
+                ->rules('required', new CurrencyRule());
         });
 
         if (!$block->isRecurringEnabled()) {

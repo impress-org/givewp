@@ -20,23 +20,15 @@ export type Campaign = {
         goal: number;
     };
     status: string;
-    startDateTime: {
-        date: string;
-        timezone_type: number;
-        timezone: string;
-    };
-    endDateTime: {
-        date: string;
-        timezone_type: number;
-        timezone: string;
-    };
     createdAt: string;
+    startDate: string;
+    endDate: string;
     defaultFormId: number;
     defaultFormTitle: string;
 };
 
 export type CampaignEntity = {
-    campaign: Campaign;
+    record: Campaign;
     hasResolved: boolean;
     edit: (data: Campaign) => void
     save: () => any

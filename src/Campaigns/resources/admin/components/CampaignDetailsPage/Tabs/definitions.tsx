@@ -3,8 +3,9 @@ import {__} from '@wordpress/i18n';
 import OverviewTab from './Overview';
 import SettingsTab from './Settings';
 import FormsTab from './Forms';
+import { Tab } from '@givewp/components/AdminDetailsPage/types';
 
-const campaignDetailsTabs: CampaignDetailsTab[] = [
+const campaignDetailsTabs: Tab[] = [
     {
         id: 'overview',
         title: __('Overview', 'give'),

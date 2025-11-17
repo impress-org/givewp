@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\PaymentGateways\Actions\GenerateGatewayRouteUrl;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayInterface;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionAmountEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionDashboardLinkable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPausable;
@@ -21,8 +22,11 @@ use Give\Log\Log;
 use Give\Subscriptions\Models\Subscription;
 use ReflectionException;
 use ReflectionMethod;
+use Give\Framework\Support\Contracts\Arrayable;
+use JsonSerializable;
 
 /**
+ * @since 4.6.0 Added JSONSerializable and Arrayable interfaces
  * @since 2.30.0 added enqueueScript() and formSettings() methods.
  * @since 2.18.0
  */
@@ -30,7 +34,9 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
                                          SubscriptionDashboardLinkable,
                                          SubscriptionAmountEditable,
                                          SubscriptionPaymentMethodEditable,
-                                         SubscriptionTransactionsSynchronizable
+                                         SubscriptionTransactionsSynchronizable,
+    JsonSerializable,
+    Arrayable
 {
     use HandleHttpResponses;
     use HasRouteMethods {
@@ -45,21 +51,22 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     public $subscriptionModule;
 
     /**
-     * @unreleased
+     * @since 4.5.0
      *
      * @var Webhook $webhook
      */
     public $webhook;
 
     /**
-     * @unreleased Add the webhookEvents property
+     * @since 4.6.0 add explicit nullable type to subscriptionModule parameter
+     * @since 4.5.0 Add the webhookEvents property
      *
      * @since 2.20.0 Change first argument type to SubscriptionModule abstract class.
      * @since 2.18.0
      *
      * @param  SubscriptionModule|null  $subscriptionModule
      */
-    public function __construct(SubscriptionModule $subscriptionModule = null)
+    public function __construct(?SubscriptionModule $subscriptionModule = null)
     {
         if ($subscriptionModule !== null) {
             $subscriptionModule->setGateway($this);
@@ -70,7 +77,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public static function webhook(): Webhook
     {
@@ -80,7 +87,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     }
 
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function canListeningWebhookNotifications(): bool
     {
@@ -131,12 +138,18 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
 
     /**
      * @inheritDoc
+     * @since 4.6.0 updated to use PaymentGatewayRefundable interface
      *
      * @since 2.29.0
      */
     public function supportsRefund(): bool
     {
-        return $this->isFunctionImplementedInGatewayClass('refundDonation');
+        if ($this instanceof PaymentGatewayRefundable) {
+            return true;
+        }
+
+        // backward compatibility for add-on legacy gateways that don't implement the PaymentGatewayRefundable interface
+        return method_exists($this, 'refundDonation');
     }
 
     /**
@@ -414,5 +427,51 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
         }
 
         return ($reflector->getDeclaringClass()->getName() === get_class($this));
+    }
+
+    /**
+     * @since 4.6.0
+     */
+    public function getTransactionUrl(Donation $donation): ?string
+    {
+        $link = apply_filters('give_payment_details_transaction_id-' . $donation->gatewayId, $donation->gatewayTransactionId, $donation->id);
+
+        // If no link is returned, return null
+        if (empty($link)) {
+            return null;
+        }
+
+        // Extract URL from anchor tag using regex
+        if (preg_match('/href=["\']([^"\']+)["\']/', $link, $matches)) {
+            return $matches[1];
+        }
+
+        // If it's already a URL (not an anchor tag), return as is
+        if (filter_var($link, FILTER_VALIDATE_URL)) {
+            return $link;
+        }
+
+        return null;
+    }
+
+    /**
+     * @since 4.6.0
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id(),
+            'name' => $this->getName(),
+            'label' => $this->getPaymentMethodLabel(),
+        ];
+    }
+
+    /**
+     * @since 4.6.0
+     */
+    #[\ReturnTypeWillChange]
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

@@ -40,9 +40,7 @@
         "sortBy": {
             "type": "string",
             "default": "date",
-            "enum": [
-                "date"
-            ]
+            "enum": ["date", "amount", "donations", "donors"]
         },
         "orderBy": {
             "type": "string",

@@ -5,10 +5,10 @@ namespace Give\Donations\Endpoints;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Framework\QueryBuilder\Types\Operator;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -34,6 +34,8 @@ class ListDonations extends Endpoint
     protected $listTable;
 
     /**
+     * @since 4.12.0 Updated status parameter to accept multiple comma-separated values
+     * @since 4.6.0 add status parameter to filter donations by status
      * @since 3.4.0
      * @access public
      */
@@ -44,6 +46,9 @@ class ListDonations extends Endpoint
 
     /**
      * @inheritDoc
+     *
+     * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
+     * @since 3.4.0
      */
     public function registerRoute()
     {
@@ -82,12 +87,12 @@ class ListDonations extends Endpoint
                     'start' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'end' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'donor' => [
                         'type' => 'string',
@@ -125,6 +130,15 @@ class ListDonations extends Endpoint
                             'model',
                             'columns',
                         ],
+                    ],
+                    'status' => [
+                        'type' => 'array',
+                        'required' => false,
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => array_values(DonationStatus::toArray()),
+                        ],
+                        'description' => 'Filter donations by status. Accepts comma-separated list of DonationStatus values (e.g., "pending,publish,trash"). If not provided, excludes trash donations by default.'
                     ],
                 ],
             ]
@@ -221,9 +235,12 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
+     * @since 4.8.0 Added support for subscriptionId parameter to filter donations
+     * @since 4.6.0 add status status condition to filter donations
      * @since 3.4.0 Make this method protected so it can be extended
      * @since 3.2.0 Updated query to account for possible null and empty values for _give_payment_mode meta
-     * @since 2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
+     * @since      2.24.0 Remove joins as it uses ModelQueryBuilder and change clauses to use attach_meta
      * @since      2.21.0
      *
      * @param QueryBuilder $query
@@ -238,12 +255,22 @@ class ListDonations extends Endpoint
         $donor = $this->request->get_param('donor');
         $testMode = $this->request->get_param('testMode');
         $campaignId = $this->request->get_param('campaignId');
-
+        $subscriptionId = $this->request->get_param('subscriptionId');
+        $status = $this->request->get_param('status');
         $dependencies = [
             DonationMetaKeys::MODE(),
         ];
 
-        $hasWhereConditions = $search || $start || $end || $campaignId || $donor;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $subscriptionId || $donor || $status;
+
+        $query->where('post_type', 'give_payment');
+
+        if (!empty($status)) {
+            $query->whereIn('post_status', $status);
+        } else {
+            // Default behavior: exclude trash donations
+            $query->where('post_status', DonationStatus::TRASH, '<>');
+        }
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -281,6 +308,12 @@ class ListDonations extends Endpoint
             $dependencies[] = DonationMetaKeys::CAMPAIGN_ID();
         }
 
+        if ($subscriptionId) {
+            $query
+                ->where('give_donationmeta_attach_meta_subscriptionId.meta_value', $subscriptionId);
+            $dependencies[] = DonationMetaKeys::SUBSCRIPTION_ID();
+        }
+
         if ($start && $end) {
             $query->whereBetween('post_date', $start, $end);
         } elseif ($start) {
@@ -290,12 +323,12 @@ class ListDonations extends Endpoint
         }
 
         if ($hasWhereConditions) {
-           $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
+            $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
         } elseif ($testMode) {
             $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
             $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-            ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+                ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
         }
 
         return [

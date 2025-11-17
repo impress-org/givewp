@@ -1,6 +1,7 @@
 import {__, sprintf} from '@wordpress/i18n';
 import {useContext, useEffect, useState} from 'react';
 import {CheckboxContext} from '@givewp/components/ListTable/ListTablePage';
+import styles from './BulkActionCheckbox.module.scss';
 
 export const BulkActionCheckbox = ({id, name, singleName}) => {
     const checkboxRefs = useContext<CheckboxContextProps>(CheckboxContext);
@@ -57,7 +58,7 @@ export const BulkActionCheckboxAll = ({pluralName, data}) => {
             <input
                 id="giveListTableSelectAll"
                 type="checkbox"
-                className="giveListTableSelect"
+                className={styles.checkbox}
                 aria-labelledby="giveListTableSelectAll-Label"
                 onChange={(event) => toggleAllRowCheckboxes(event, checkboxRefs, setChecked, checked)}
                 checked={checked}

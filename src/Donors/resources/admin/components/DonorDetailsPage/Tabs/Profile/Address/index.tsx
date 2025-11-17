@@ -1,26 +1,27 @@
 /**
  * External Dependencies
  */
-import { useState } from "react";
-import { useFormContext } from "react-hook-form";
+import {useState} from 'react';
+import {useFormContext, useFormState} from 'react-hook-form';
 
 /**
  * WordPress Dependencies
  */
-import { __ } from "@wordpress/i18n";
+import {__} from '@wordpress/i18n';
 
 /**
  * Internal Dependencies
  */
-import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
-import EditAddressDialog from './EditAddressDialog';
-import DeleteAddressDialog from './DeleteAddressDialog';
-import BlankSlate from './BlankSlate';
+import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
+import {DonorAddress as DonorAddressType} from '../../../../types';
 import AddressItem from './AddressItem';
+import BlankSlate from './BlankSlate';
+import DeleteAddressDialog from './DeleteAddressDialog';
+import EditAddressDialog from './EditAddressDialog';
 import styles from './styles.module.scss';
-import { DonorAddress as DonorAddressType } from "../../../../types";
 
 /**
+ * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.4.0
  */
 export default function DonorAddress() {
@@ -29,10 +30,8 @@ export default function DonorAddress() {
     const [addressToDelete, setAddressToDelete] = useState<number | null>(null);
     const [addressToEdit, setAddressToEdit] = useState<number | null>(null);
 
-    const {
-        watch,
-        setValue,
-    } = useFormContext();
+    const {watch, setValue} = useFormContext();
+    const {errors} = useFormState();
 
     const addresses: DonorAddressType[] = watch('addresses') || [];
 
@@ -47,7 +46,7 @@ export default function DonorAddress() {
             const remainingAddresses = addresses.filter((_, index: number) => index !== addressIndex);
             const reorderedAddresses = [selectedAddress, ...remainingAddresses];
 
-            setValue('addresses', reorderedAddresses, { shouldDirty: true });
+            setValue('addresses', reorderedAddresses, {shouldDirty: true});
         }
     };
 
@@ -60,9 +59,9 @@ export default function DonorAddress() {
         if (addressIndex !== null) {
             const newAddresses = [...addresses];
             newAddresses[addressIndex] = newAddress;
-            setValue('addresses', newAddresses, { shouldDirty: true });
+            setValue('addresses', newAddresses, {shouldDirty: true});
         } else {
-            setValue('addresses', [...addresses, newAddress], { shouldDirty: true });
+            setValue('addresses', [...addresses, newAddress], {shouldDirty: true});
         }
 
         setIsEditDialogOpen(false);
@@ -70,7 +69,11 @@ export default function DonorAddress() {
     };
 
     const handleDeleteAddressConfirm = () => {
-        setValue('addresses', addresses.filter((_, index: number) => index !== addressToDelete), { shouldDirty: true });
+        setValue(
+            'addresses',
+            addresses.filter((_, index: number) => index !== addressToDelete),
+            {shouldDirty: true}
+        );
 
         setIsDeleteDialogOpen(false);
         setAddressToDelete(null);
@@ -81,11 +84,8 @@ export default function DonorAddress() {
 
     return (
         <>
-            <AdminSection
-                title={__('Address', 'give')}
-                description={__('Manage the address of the donor', 'give')}
-            >
-                <AdminSectionField>
+            <AdminSection title={__('Address', 'give')} description={__('Manage the address of the donor', 'give')}>
+                <AdminSectionField error={errors.addresses?.message as string}>
                     <div
                         className={styles.donorAddress}
                         role="region"
@@ -126,7 +126,9 @@ export default function DonorAddress() {
                                 aria-label={
                                     addresses.length === 0
                                         ? __('Add the first address for this donor', 'give')
-                                        : `${__('Add new address. Currently', 'give')} ${addresses.length} ${addresses.length === 1 ? __('address', 'give') : __('addresses', 'give')} ${__('total', 'give')}`
+                                        : `${__('Add new address. Currently', 'give')} ${addresses.length} ${
+                                              addresses.length === 1 ? __('address', 'give') : __('addresses', 'give')
+                                          } ${__('total', 'give')}`
                                 }
                                 aria-describedby={descriptionId}
                             >

@@ -139,4 +139,12 @@ class DonationForm extends Model implements ModelCrud, ModelHasFactory
     {
         return give(DonationFormRepository::class)->getFormSchemaFromBlocks($this->id, $this->blocks);
     }
+
+    /**
+     * @since 4.7.0
+     */
+    public function getColorSettings(): array
+    {
+        return give(DonationFormRepository::class)->getColorSettings($this);
+    }
 }

@@ -1,0 +1,29 @@
+.inputContainer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: var(--givewp-spacing-1);
+}
+
+.input {
+    flex: 1;
+    margin: 0;
+}
+
+.editButton {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+        width: 24px;
+        height: 24px;
+        transition: stroke 0.2s ease;
+    }
+}

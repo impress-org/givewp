@@ -400,6 +400,7 @@ function give_import_donations_options() {
 	/**
 	 * Filter to modify donations option in the import dropdown
 	 *
+	 * @since 4.5.0 Add gateway transaction id option
 	 * @since 1.8.13
 	 *
 	 * @return array
@@ -484,6 +485,11 @@ function give_import_donations_options() {
 				__( 'Method', 'give' ),
 				__( 'Payment Gateway', 'give' ),
 				__( 'Gateway', 'give' ),
+			],
+			'gateway_transaction_id' => [
+				__( 'Transaction ID', 'give' ),
+				__( 'Gateway Transaction ID', 'give' ),
+				__( 'Transaction Identifier', 'give' ),
 			],
 			'notes'        => __( 'Notes', 'give' ),
 			'mode'         => [
@@ -818,6 +824,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 	/**
 	 * Filter to modify payment Data before getting imported.
 	 *
+	 * @since 4.5.0 Add gateway transaction id to payment data
 	 * @since 2.1.0
 	 *
 	 * @param array $payment_data payment data
@@ -879,6 +886,11 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 				// Insert Donor IP address.
 				if ( ! empty( $data['donor_ip'] ) ) {
 					$payment->update_meta( '_give_payment_donor_ip', $data['donor_ip'] );
+				}
+
+				// Insert Transaction ID.
+				if ( ! empty( $data['gateway_transaction_id'] ) ) {
+					give_set_payment_transaction_id( $payment_id, $data['gateway_transaction_id'] );
 				}
 
 				// Insert Notes.

@@ -28,15 +28,14 @@ export default function CreateCampaignModal({isOpen, setOpen}) {
 
     return (
         <>
-            <a style={{borderRadius: '4px'}} className={`button button-primary ${styles.createCampaignButton}`} onClick={openModal}>
+            <a
+                style={{borderRadius: '4px'}}
+                className={`button button-primary ${styles.createCampaignButton}`}
+                onClick={openModal}
+            >
                 {__('Create campaign', 'give')}
             </a>
-            <CampaignFormModal
-                isOpen={isOpen}
-                handleClose={closeModal}
-                title={__('Create your campaign', 'give')}
-                apiSettings={apiSettings}
-            />
+            <CampaignFormModal isOpen={isOpen} handleClose={closeModal} apiSettings={apiSettings} />
         </>
     );
 }

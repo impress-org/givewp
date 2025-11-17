@@ -4,6 +4,7 @@ namespace Give\Subscriptions\Models;
 
 use DateTime;
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -14,20 +15,25 @@ use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Actions\GenerateNextRenewalForSubscription;
+use Give\Subscriptions\Actions\CalculateProjectedAnnualRevenue;
 use Give\Subscriptions\DataTransferObjects\SubscriptionQueryData;
 use Give\Subscriptions\Factories\SubscriptionFactory;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
+
 /**
  * Class Subscription
  *
+ * @since 4.11.0 added campaign ID property
+ * @since 4.10.0 added campaign relationship
  * @since 2.23.0 added the renewsAt property
  * @since 2.19.6
  *
  * @property int $id
  * @property int $donationFormId
+ * @property int $campaignId
  * @property DateTime $createdAt
  * @property DateTime $renewsAt The date the subscription will renew next
  * @property int $donorId
@@ -43,6 +49,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
  * @property string $gatewaySubscriptionId
  * @property Donor $donor
  * @property Donation[] $donations
+ * @property float $projectedAnnualRevenue
+ * @property ?Campaign $campaign
  */
 class Subscription extends Model implements ModelCrud, ModelHasFactory
 {
@@ -52,6 +60,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     protected $properties = [
         'id' => 'int',
         'donationFormId' => 'int',
+        'campaignId' => 'int',
         'createdAt' => DateTime::class,
         'renewsAt' => DateTime::class,
         'donorId' => 'int',
@@ -65,6 +74,7 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
         'status' => SubscriptionStatus::class,
         'gatewaySubscriptionId' => ['string', ''],
         'gatewayId' => 'string',
+        'projectedAnnualRevenue' => Money::class,
     ];
 
     /**
@@ -73,6 +83,8 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     protected $relationships = [
         'donor' => Relationship::BELONGS_TO,
         'donations' => Relationship::HAS_MANY,
+        'notes' => Relationship::HAS_MANY,
+        'campaign' => Relationship::BELONGS_TO,
     ];
 
     /**
@@ -110,14 +122,27 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @since 4.8.0
+     *
+     * @return ModelQueryBuilder<SubscriptionNote>
+     */
+    public function notes(): ModelQueryBuilder
+    {
+        return give()->subscriptions->notes->queryBySubscriptionId($this->id);
+    }
+
+    /**
      * Get Subscription notes
      *
+     * @deprecated Access notes via $subscription->notes()->getAll() instead.
      * @since 2.19.6
      *
      * @return object[]
      */
     public function getNotes(): array
     {
+        _give_deprecated_function(__METHOD__, '4.6.0', '$subscription->notes()->getAll()');
+
         return give()->subscriptions->getNotesBySubscriptionId($this->id);
     }
 
@@ -151,10 +176,17 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     /**
      * Returns the donation that began the subscription.
      *
+     * @since 4.8.0 Returns null if no initial donation found.
      * @since 2.23.0
      */
-    public function initialDonation(): Donation
+    public function initialDonation(): ?Donation
     {
+        $initialDonationId = give()->subscriptions->getInitialDonationId($this->id);
+
+        if (!$initialDonationId) {
+            return null;
+        }
+
         return Donation::find(give()->subscriptions->getInitialDonationId($this->id));
     }
 
@@ -240,6 +272,22 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @since 4.8.0
+     */
+    public function trash(): bool
+    {
+        return give()->subscriptions->trash($this);
+    }
+
+    /**
+     * @since 4.12.0
+     */
+    public function unTrash(): bool
+    {
+        return give()->subscriptions->unTrash($this);
+    }
+
+    /**
      * @since 2.20.0
      *
      * @param bool $force Set to true to ignore the status of the subscription
@@ -317,5 +365,23 @@ class Subscription extends Model implements ModelCrud, ModelHasFactory
     public static function factory(): SubscriptionFactory
     {
         return new SubscriptionFactory(static::class);
+    }
+
+    /**
+     * @since 4.8.0
+     */
+    public function projectedAnnualRevenue(): Money
+    {
+        return give(CalculateProjectedAnnualRevenue::class)($this);
+    }
+
+    /**
+     * @since 4.10.0
+     *
+     * @return ModelQueryBuilder<Campaign>
+     */
+    public function campaign(): ModelQueryBuilder
+    {
+        return give()->campaigns->queryByFormId($this->donationFormId);
     }
 }

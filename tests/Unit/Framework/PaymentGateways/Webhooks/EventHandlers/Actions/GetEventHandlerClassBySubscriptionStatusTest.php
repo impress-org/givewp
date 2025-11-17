@@ -15,12 +15,12 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
 
 /**
- * @unreleased
+ * @since 4.5.0
  */
 class GetEventHandlerClassBySubscriptionStatusTest extends TestCase
 {
     /**
-     * @unreleased
+     * @since 4.5.0
      */
     public function testShouldReturnSubscriptionStatusEventHandlerClass()
     {

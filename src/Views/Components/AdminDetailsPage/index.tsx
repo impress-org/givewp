@@ -1,34 +1,32 @@
 /**
  * External Dependencies
  */
-import {useEffect, useState, useRef} from 'react';
-import {JSONSchemaType} from 'ajv';
-import {ajvResolver} from '@hookform/resolvers/ajv';
+import {useEffect, useRef, useState} from 'react';
 import {FormProvider, SubmitHandler, useForm, useFormContext, useFormState} from 'react-hook-form';
+import {ajvResolver} from '@givewp/admin/ajv';
 
-/**
- * WordPress Dependencies
- */
-import {__} from '@wordpress/i18n';
+import {SlotFillProvider} from '@wordpress/components';
 import {useDispatch} from '@wordpress/data';
+import {__} from '@wordpress/i18n';
+import {PluginArea} from '@wordpress/plugins';
 import apiFetch from '@wordpress/api-fetch';
-import { SlotFillProvider } from '@wordpress/components';
-import { PluginArea } from '@wordpress/plugins';
+import {JSONSchemaType} from 'ajv';
 
 /**
  * Internal Dependencies
  */
 import {Spinner as GiveSpinner} from '@givewp/components';
-import TabsRouter from './Tabs/Router';
-import TabList from './Tabs/TabList';
+import styles from './AdminDetailsPage.module.scss';
+import AdminSection, {AdminSectionField} from './AdminSection';
+import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
+import ErrorBoundary from './ErrorBoundary';
 import {BreadcrumbSeparatorIcon, DotsIcons} from './Icons';
 import NotificationPlaceholder from './Notifications';
-import {AdminDetailsPageProps} from './types';
-import styles from './AdminDetailsPage.module.scss';
-import ErrorBoundary from './ErrorBoundary';
+import TabsRouter from './Tabs/Router';
+import TabList from './Tabs/TabList';
 import TabPanels from './Tabs/TabPanels';
-import DefaultPrimaryActionButton from './DefaultPrimaryActionButton';
-import AdminSection, { AdminSectionField, AdminSectionsWrapper } from './AdminSection';
+import {AdminDetailsPageProps} from './types';
+import {prepareDefaultValuesFromSchema} from '@givewp/admin/utils';
 
 import './store';
 
@@ -40,7 +38,6 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     objectType,
     objectTypePlural,
     useObjectEntityRecord,
-    resetForm,
     shouldSaveForm,
     breadcrumbUrl,
     breadcrumbTitle,
@@ -54,6 +51,8 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
 }: AdminDetailsPageProps<T>) {
     const [resolver, setResolver] = useState({});
     const [isSaving, setIsSaving] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [schema, setSchema] = useState<JSONSchemaType<any> | null>(null);
     const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
     const contextMenuButtonRef = useRef<HTMLButtonElement>(null);
     const contextMenuRef = useRef<HTMLDivElement>(null);
@@ -63,15 +62,20 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
     exposeAdminComponentsAndHooks();
 
     useEffect(() => {
+        if (!objectId) {
+            return;
+        }
+
         apiFetch({
             path: `/givewp/v3/${objectTypePlural}/${objectId}`,
             method: 'OPTIONS',
         }).then(({schema}: {schema: JSONSchemaType<any>}) => {
+            setSchema(schema);
             setResolver({
                 resolver: ajvResolver(schema),
             });
         });
-    }, []);
+    }, [objectId, objectTypePlural]);
 
     const {record, hasResolved, save, edit} = useObjectEntityRecord(objectId);
 
@@ -109,35 +113,34 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
 
     // Set default values when entity is loaded
     useEffect(() => {
-        if (hasResolved) {
-            if (resetForm) {
-                resetForm(reset);
-            } else {
-                reset(record);
-            }
+        if (hasResolved && schema && record) {
+            const preparedRecord = prepareDefaultValuesFromSchema(record, (schema as any)?.properties) as T;
+            reset(preparedRecord);
+            setIsLoading(false);
         }
-    }, [hasResolved]);
+    }, [hasResolved, !!schema, !!record]);
 
     const onSubmit: SubmitHandler<T> = async (data) => {
         const shouldSave = shouldSaveForm ? shouldSaveForm(formState.isDirty, data) : formState.isDirty;
 
         if (shouldSave) {
             setIsSaving(true);
-
             edit(data);
 
             try {
-                const response = await save();
-
+                // @ts-ignore
+                const response: T = await save();
                 setIsSaving(false);
-                reset(response);
+
+                const preparedRecord = prepareDefaultValuesFromSchema(response, (schema as any)?.properties) as T;
+                reset(preparedRecord);
 
                 dispatch.addSnackbarNotice({
                     id: `save-success`,
                     content: __(`${objectType.charAt(0).toUpperCase() + objectType.slice(1)} updated`, 'give'),
                 });
             } catch (err) {
-                console.error(err);
+                console.error('🔴 Save failed with error:', err);
                 setIsSaving(false);
 
                 dispatch.addSnackbarNotice({
@@ -149,7 +152,7 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
         }
     };
 
-    if (!hasResolved) {
+    if (isLoading) {
         return (
             <div className={styles.loadingContainer}>
                 <div className={styles.loadingContainerContent}>
@@ -169,7 +172,9 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                             <TabsRouter tabDefinitions={tabDefinitions}>
                                 <header className={styles.pageHeader}>
                                     <div className={styles.breadcrumb}>
-                                        <a href={breadcrumbUrl}>{objectTypePlural.charAt(0).toUpperCase() + objectTypePlural.slice(1)}</a>
+                                        <a href={breadcrumbUrl}>
+                                            {objectTypePlural.charAt(0).toUpperCase() + objectTypePlural.slice(1)}
+                                        </a>
                                         <BreadcrumbSeparatorIcon />
                                         <span>{breadcrumbTitle || record?.name}</span>
                                     </div>
@@ -247,6 +252,6 @@ const exposeAdminComponentsAndHooks = (): void => {
         hooks: {
             useFormContext,
             useFormState,
-        }
+        },
     });
-}
+};

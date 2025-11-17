@@ -1,0 +1,42 @@
+  .container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    min-height: fit-content;
+  }
+  
+  .section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0;
+  }
+
+  .heading {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.43;
+    color: #1f2937;
+  }
+  
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--givewp-spacing-2);
+    width: 100%;
+    height: auto;
+    background: var(--givewp-shades-white);
+    border: 1px solid var(--givewp-neutral-50);
+    border-radius: 0.5rem;
+    padding: var(--givewp-spacing-4);
+  }
+
+  .card p:last-child {
+    margin: 0;
+  }

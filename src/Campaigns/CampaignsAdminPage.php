@@ -54,4 +54,12 @@ class CampaignsAdminPage
     {
         return isset($_GET['id'], $_GET['page']) && 'give-campaigns' === $_GET['page'];
     }
+
+    /**
+     * @since 4.10.0
+     */
+    public static function getUrl()
+    {
+        return admin_url('edit.php?post_type=give_forms&page=give-campaigns');
+    }
 }

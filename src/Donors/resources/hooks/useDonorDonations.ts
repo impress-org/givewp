@@ -4,16 +4,13 @@
 import {useEntityRecords} from '@wordpress/core-data';
 
 /**
+ * @since 4.13.0 updated the date and amount types
  * @since 4.4.0
  */
 export interface DonationResponse {
     id: number;
     formTitle: string;
-    createdAt: {
-        date: string;
-        timezone_type: number;
-        timezone: string;
-    };
+    createdAt: string;
     status: string;
     amount: {
         value: string;
@@ -49,7 +46,7 @@ export function useDonorDonations({donorId, page = 1, perPage = 5, mode = 'live'
         direction
     };
 
-    const {records, hasResolved, isResolving} = useEntityRecords<DonationResponse>('givewp/v3', 'donations', query);
+    const {records, hasResolved, isResolving} = useEntityRecords<DonationResponse>('givewp', 'donation', query);
 
     return {
         donations: records,

@@ -7,6 +7,7 @@ import {BulkActionCheckboxAll} from '@givewp/components/ListTable/BulkActions/Bu
 import ListTableHeaders from '@givewp/components/ListTable/ListTableHeaders';
 import ListTableRows from '@givewp/components/ListTable/ListTableRows';
 import {ColumnFilterConfig} from '@givewp/components/ListTable/ListTablePage';
+import { useTriggerResize } from '../../hooks';
 
 export interface ListTableProps {
     //required
@@ -19,7 +20,7 @@ export interface ListTableProps {
     //optional
     pluralName?: string;
     singleName?: string;
-    rowActions?: (({item, data, addRow, removeRow}) => JSX.Element) | JSX.Element | JSX.Element[] | Function | null;
+    rowActions?: (({item, data, addRow, removeRow, listTableApi}) => JSX.Element) | JSX.Element | JSX.Element[] | Function | null;
     parameters?: {};
     error?: {} | Boolean;
     isLoading?: Boolean;
@@ -28,6 +29,8 @@ export interface ListTableProps {
     listTableBlankSlate: JSX.Element;
     productRecommendation?: JSX.Element;
     columnFilters?: Array<ColumnFilterConfig>;
+    includeBulkActionsCheckbox?: boolean;
+    children?: JSX.Element | JSX.Element[] | null;
 }
 
 export interface ListTableColumn {
@@ -59,6 +62,8 @@ export const ListTable = ({
     listTableBlankSlate,
     productRecommendation,
     columnFilters = [],
+    includeBulkActionsCheckbox = false,
+    children = null,
 }: ListTableProps) => {
     const [updateErrors, setUpdateErrors] = useState<{errors: Array<number>; successes: Array<number>}>({
         errors: [],
@@ -70,6 +75,8 @@ export const ListTable = ({
     const [overlayWidth, setOverlayWidth] = useState(0);
     const tableRef = useRef<null | HTMLTableElement>();
     const isEmpty = !error && data?.items.length === 0;
+
+    useTriggerResize(data);
 
     useEffect(() => {
         initialLoad && data && setInitialLoad(false);
@@ -121,10 +128,10 @@ export const ListTable = ({
     return (
         <>
             {initialLoad && !error ? (
-                <div className={styles.initialLoad}>
-                    <div role="dialog" aria-labelledby="giveListTableLoadingMessage" className={cx(styles.tableGroup)}>
-                        <Spinner size={'large'} />
-                        <h2 id="giveListTableLoadingMessage">{sprintf(__('Loading %s', 'give'), pluralName)}</h2>
+                <div className={styles.loadingContainer}>
+                    <div role="dialog" aria-labelledby="giveListTableLoadingMessage" className={styles.loadingContainerContent}>
+                        <Spinner />
+                        <h2 id="giveListTableLoadingMessage" className={styles.loadingContainerContentText}>{sprintf(__('Loading %s', 'give'), pluralName)}</h2>
                     </div>
                 </div>
             ) : (
@@ -149,17 +156,20 @@ export const ListTable = ({
                             {title}
                         </caption>
                         <thead className={styles[apiSettings.table.id]}>
+                            <tr className={styles.searchContainerRow}>{children}</tr>
                             <tr>
-                                <th
-                                    scope="col"
-                                    aria-sort="none"
-                                    className={cx(styles.tableColumnHeader, styles.selectAll, {
-                                        [styles['testMode']]: testMode,
-                                    })}
-                                    data-column="select"
-                                >
-                                    <BulkActionCheckboxAll pluralName={pluralName} data={data} />
-                                </th>
+                                {includeBulkActionsCheckbox && (
+                                    <th
+                                        scope="col"
+                                        aria-sort="none"
+                                        className={cx(styles.tableColumnHeader, styles.selectAll, {
+                                            [styles['testMode']]: testMode,
+                                        })}
+                                        data-column="select"
+                                    >
+                                        <BulkActionCheckboxAll pluralName={pluralName} data={data} />
+                                    </th>
+                                )}
                                 <>
                                     {visibleColumns?.map((column) => (
                                         <th
@@ -191,14 +201,17 @@ export const ListTable = ({
                         <tbody className={styles.tableContent}>
                             {productRecommendation}
                             <ListTableRows
+                                apiSettings={apiSettings}
                                 columns={visibleColumns}
                                 data={data}
                                 isLoading={isLoading}
+                                tableId={apiSettings.table.id}
                                 singleName={singleName}
                                 rowActions={rowActions}
                                 parameters={parameters}
                                 setUpdateErrors={setUpdateErrors}
                                 columnFilters={columnFilters}
+                                includeBulkActionsCheckbox={includeBulkActionsCheckbox}
                             />
                         </tbody>
                     </table>

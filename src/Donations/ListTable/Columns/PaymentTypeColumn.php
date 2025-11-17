@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Give\Donations\ListTable\Columns;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationType;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
@@ -35,6 +36,7 @@ class PaymentTypeColumn extends ModelColumn
     }
 
     /**
+     * @since 4.10.0 Removed badge icon
      * @since 2.24.0
      *
      * @inheritDoc
@@ -43,31 +45,23 @@ class PaymentTypeColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
-        $template = '
-            <div class="badge">
-                <img role="img" aria-labelledby="badgeId-%1$d" class="icon icon--%2$s" src="%3$s" alt="%4$s" />
-                <p id="badgeId-%1$d" class="badge__label">%5$s</p>
-            </div>
-        ';
+        $map = [
+            'single' => [
+                'class' => 'one-time',
+                'label' => __('One-time', 'give'),
+            ],
+            'recurring' => [
+                'class' => 'recurring',
+                'label' => __('Recurring', 'give'),
+            ],
+        ];
 
-        if ($model->type->isRecurring()) {
-            return sprintf(
-                $template,
-                $model->id,
-                'recurring',
-                GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/recurring-donation-icon.svg',
-                __('Recurring donation icon', 'give'),
-                __('recurring', 'give')
-            );
-        }
+        $donationType = $map[$model->type->isRecurring() ? 'recurring' : 'single'];
 
         return sprintf(
-            $template,
-            $model->id,
-            'onetime',
-            GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/onetime-donation-icon.svg',
-            __('One-time donation icon', 'give'),
-            __('one-time', 'give')
+            '<div class="badge badge--%1$s"><p>%2$s</p></div>',
+            $donationType['class'],
+            $donationType['label']
         );
     }
 }

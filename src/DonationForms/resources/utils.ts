@@ -15,6 +15,7 @@ export function useForm(formId: number) {
             ...data?.record as Form
         },
         hasResolved: data?.hasResolved,
+        isResolving: data?.isResolving,
     };
 }
 
@@ -45,6 +46,7 @@ export function useForms({
         //@ts-ignore
         totalPages: data.totalPages,
         hasResolved: data?.hasResolved,
+        isResolving: data?.isResolving,
     };
 }
 

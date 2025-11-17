@@ -96,7 +96,7 @@ function give_run_install()
     update_option('give_default_api_version', 'v' . $api->get_version(), false);
 
     // Create databases.
-    __give_register_tables();
+    give_register_tables();
 
     // Add a temporary option to note that Give pages have been created.
     Give_Cache::set('_give_installed', $options, 30, true);
@@ -499,7 +499,7 @@ add_action('admin_init', 'give_create_pages', -1);
 function give_install_tables_on_plugin_update($old_version)
 {
     update_option('give_version_upgraded_from', $old_version, false);
-    __give_register_tables();
+    give_register_tables();
 }
 
 add_action('update_option_give_version', 'give_install_tables_on_plugin_update', 0, 2);
@@ -510,9 +510,10 @@ add_action('update_option_give_version', 'give_install_tables_on_plugin_update',
  *
  * Note: only for internal purpose use
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @sice 2.3.1
  */
-function __give_get_tables()
+function give_get_tables()
 {
     $tables = [
         'donors_db' => new Give_DB_Donors(),
@@ -532,13 +533,14 @@ function __give_get_tables()
  * Register classes
  * Note: only for internal purpose use
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.21.0 Install migration table on fresh install because this table is required to run migrations.
  * @since 2.3.1
  * @throws DatabaseMigrationException
  */
-function __give_register_tables()
+function give_register_tables()
 {
-    $tables = __give_get_tables();
+    $tables = give_get_tables();
 
     /* @var Give_DB $table */
     foreach ($tables as $table) {

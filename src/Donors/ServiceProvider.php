@@ -4,7 +4,7 @@ namespace Give\Donors;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Actions\CreateUserFromDonor;
-use Give\Donors\Actions\LoadDonorOptions;
+use Give\Donors\Actions\LoadDonorAdminOptions;
 use Give\Donors\Actions\SendDonorUserRegistrationNotification;
 use Give\Donors\Actions\UpdateAdminDonorDetails;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
@@ -25,7 +25,6 @@ use Give_Donor as LegacyDonor;
  */
 class ServiceProvider implements ServiceProviderInterface
 {
-
     /**
      * @inheritDoc
      */
@@ -49,8 +48,8 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot()
     {
         $userId = get_current_user_id();
-        $showLegacy = get_user_meta($userId, '_give_donors_archive_show_legacy', true);
-        // only register new admin page if user hasn't chosen to use the old one
+        $showLegacy = DonorsAdminPage::isShowingNewDetailsPage() ? false : get_user_meta($userId, '_give_donors_archive_show_legacy', true);
+        // only register new admin page if user hasn't chosen to use the old one or is trying to access the new donor details page
         if (empty($showLegacy)) {
             Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem', 30);
         } elseif (DonorsAdminPage::isShowing()) {
@@ -66,8 +65,7 @@ class ServiceProvider implements ServiceProviderInterface
 
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
 
-        $this->registerDonorEntity();
-        $this->loadDonorOptions();
+        $this->loadDonorAdminOptions();
     }
 
     /**
@@ -108,18 +106,15 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since 4.6.1 Move to admin_enqueue_scripts hook
      * @since 4.4.0
      */
-    private function registerDonorEntity()
+    private function loadDonorAdminOptions()
     {
-        Hooks::addAction('init', Actions\RegisterDonorEntity::class);
-    }
-
-    /**
-     * @since 4.4.0
-     */
-    private function loadDonorOptions()
-    {
-        Hooks::addAction('init', LoadDonorOptions::class);
+        add_action('admin_enqueue_scripts', function () {
+            if (DonorsAdminPage::isShowingDetailsPage()) {
+                give(LoadDonorAdminOptions::class)();
+            }
+        });
     }
 }
