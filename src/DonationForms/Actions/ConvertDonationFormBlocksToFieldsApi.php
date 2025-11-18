@@ -340,6 +340,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 $group->getNodeByName('country')
                     ->label($block->getAttribute('countryLabel'))
                     ->options(...$countryList)
+                    ->defaultValue($block->getAttribute('defaultCountry'))
                     ->rules('required');
 
                 $group->getNodeByName('address1')
