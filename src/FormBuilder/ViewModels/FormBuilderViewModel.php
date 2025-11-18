@@ -25,9 +25,10 @@ use Give_License;
 class FormBuilderViewModel
 {
     /**
-     * @since 3.12.0  Add goalProgressOptions key to the returned array
+     * @unreleased Add countries key to the returned array
+     * @since 3.12.0 Add goalProgressOptions key to the returned array
      * @since 3.9.0 Add support to intlTelInputSettings key in the returned array
-     * @since      3.7.0 Add support to isExcerptEnabled key in the returned array
+     * @since 3.7.0 Add support to isExcerptEnabled key in the returned array
      * @since 3.2.0 Add nameTitlePrefixes key to the returned array
      * @since 3.0.0
      */
