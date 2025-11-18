@@ -16,7 +16,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.13.1
  */
 class CampaignRevenueController extends WP_REST_Controller
 {
@@ -26,7 +26,7 @@ class CampaignRevenueController extends WP_REST_Controller
     protected $namespace;
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function __construct()
     {
@@ -34,7 +34,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function register_routes()
     {
@@ -62,7 +62,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      * @throws Exception
      */
     public function get_items($request): WP_REST_Response
@@ -118,7 +118,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function getDatesFromRange(DateTimeInterface $startDate, DateTimeInterface $endDate, string $groupBy): array
     {
@@ -157,7 +157,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function getGroupByFromDateRange(DateTimeInterface $startDate, DateTimeInterface $endDate): string
     {
@@ -178,7 +178,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function getFormattedDateFromGroupBy(string $groupBy, DateTimeInterface $date): string
     {
@@ -194,7 +194,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function mergeResultsWithDates(array $dates, array $resultMap): array
     {
@@ -211,7 +211,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function mapResultsByDate(array $results, string $groupBy): array
     {
@@ -226,7 +226,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function get_item_schema(): array
     {

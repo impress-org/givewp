@@ -11,7 +11,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * @unreleased item endpoint tests for campaigns
+ * @since 4.13.1 item endpoint tests for campaigns
  */
 class CampaignControllerItemTest extends RestApiTestCase
 {
@@ -21,7 +21,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that admin users can create a campaign via POST /campaigns.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testCreateCampaignShouldCreateModelWithValidData()
     {
@@ -58,7 +58,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that creating a campaign validates required fields.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testCreateCampaignShouldReturn400ErrorWhenRequiredFieldsMissing()
     {
@@ -85,7 +85,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that creating a campaign with invalid params returns 400.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testCreateCampaignShouldReturn400ErrorForInvalidParameters()
     {
@@ -111,7 +111,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that non-admin users cannot create a campaign.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testCreateCampaignShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -133,7 +133,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that admin users can update a campaign via PUT /campaigns/{id}.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testUpdateCampaignShouldUpdateModelProperties()
     {
@@ -174,7 +174,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that updating a non-existent campaign returns 404.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testUpdateCampaignShouldReturn404ErrorWhenCampaignNotFound()
     {
@@ -194,7 +194,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that non-admin users cannot update a campaign.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testUpdateCampaignShouldReturn403ErrorWhenNotAdminUser()
     {
@@ -218,7 +218,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that admin users can duplicate a campaign via POST /campaigns/{id}/duplicate.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testDuplicateCampaignShouldReturn201AndReturnDuplicatedCampaign()
     {
@@ -253,7 +253,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that duplicating a non-existent campaign returns 404.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testDuplicateCampaignShouldReturn404WhenCampaignNotFound()
     {
@@ -270,7 +270,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that non-admin users cannot duplicate a campaign.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testDuplicateCampaignShouldReturn403WhenNotAdminUser()
     {
@@ -371,7 +371,7 @@ class CampaignControllerItemTest extends RestApiTestCase
     /**
      * Test that DELETE is not supported for campaigns and returns 404 (no route).
      *
-     * @unreleased
+     * @since 4.13.1
      */
     public function testDeleteCampaignShouldReturn404WhenRouteNotFound()
     {

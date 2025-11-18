@@ -12,7 +12,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 
 /**
- * @unreleased
+ * @since 4.13.1
  */
 final class CampaignCommentsControllerTest extends RestApiTestCase
 {
@@ -20,7 +20,7 @@ final class CampaignCommentsControllerTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function testReturnsCommentsIncludingAnonymousByDefault(): void
     {
@@ -72,7 +72,7 @@ final class CampaignCommentsControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function testExcludesAnonymousWhenAnonymousParamFalse(): void
     {

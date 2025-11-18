@@ -8,7 +8,7 @@ declare const window: {
 } & Window;
 
 /**
- * @unreleased Return "record" instead of "campaign"
+ * @since 4.13.1 Return "record" instead of "campaign"
  * @since 4.0.0
  */
 export function useCampaignEntityRecord(campaignId?: number) {
@@ -95,7 +95,7 @@ export async function createCampaignPage(campaignId: number) {
 }
 
 /**
- * @unreleased
+ * @since 4.13.1
  */
 export async function updateCampaignStatus(campaignId: number, status: 'archived' | 'active') {
     try {

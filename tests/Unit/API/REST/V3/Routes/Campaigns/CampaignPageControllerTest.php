@@ -11,7 +11,7 @@ use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased tests for campaign page subresource
+ * @since 4.13.1 tests for campaign page subresource
  */
 class CampaignPageControllerTest extends RestApiTestCase
 {
@@ -19,7 +19,7 @@ class CampaignPageControllerTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function testCreateCampaignPageShouldReturn201AndCampaignPageResource()
     {
@@ -51,7 +51,7 @@ class CampaignPageControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function testCreateCampaignPageShouldReturn404WhenCampaignNotFound()
     {
@@ -69,7 +69,7 @@ class CampaignPageControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function testCreateCampaignPageShouldReturn403WhenNotAdminUser()
     {

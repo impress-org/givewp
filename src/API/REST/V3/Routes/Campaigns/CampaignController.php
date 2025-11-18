@@ -25,7 +25,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.13.1
  */
 class CampaignController extends WP_REST_Controller
 {
@@ -40,7 +40,7 @@ class CampaignController extends WP_REST_Controller
     protected $rest_base;
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function __construct()
     {
@@ -49,7 +49,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function register_routes()
     {
@@ -177,7 +177,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function get_items($request)
     {
@@ -285,7 +285,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      *
      * @return WP_REST_Response|\WP_Error
      */
@@ -317,7 +317,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function prepare_item_for_response($item, $request)
     {
@@ -358,7 +358,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      *
      * @return WP_REST_Response|\WP_Error
      */
@@ -469,7 +469,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      *
      * @return WP_REST_Response|\WP_Error
      */
@@ -500,7 +500,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      *
      * @return WP_REST_Response|\WP_Error
      */
@@ -527,7 +527,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function get_collection_params(): array
     {
@@ -578,7 +578,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function get_item_schema(): array
     {

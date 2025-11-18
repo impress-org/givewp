@@ -6,12 +6,12 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
 /**
- * @unreleased
+ * @since 4.13.1
  */
 class RegisterPublicEntities
 {
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function __invoke()
     {
@@ -58,7 +58,7 @@ class RegisterPublicEntities
      * - Only applied for logged-out visitors (see caller).
      * - Does not affect logged-in users or other endpoints.
      *
-     * @unreleased
+     * @since 4.13.1
      */
     private function disableCurrentUserFetch()
     {

@@ -6,12 +6,12 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 
 /**
- * @unreleased
+ * @since 4.13.1
  */
 class RegisterAdminEntities
 {
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function __invoke()
     {

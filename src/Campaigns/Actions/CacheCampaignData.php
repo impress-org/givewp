@@ -20,7 +20,7 @@ use Give\Donations\Models\Donation;
 class CacheCampaignData
 {
     /**
-     * @unreleased added dispatch method
+     * @since 4.13.1 added dispatch method
      * @since 4.8.0
      */
     public function __invoke(int $donationId): void
@@ -38,7 +38,7 @@ class CacheCampaignData
 
     /**
      * Dispatch the cache campaign data action
-     * @unreleased
+     * @since 4.13.1
      */
     public function dispatch(int $campaignId): void
     {

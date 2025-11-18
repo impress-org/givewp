@@ -244,7 +244,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased added givewp_campaigns_merged hook
+     * @since 4.13.1 added givewp_campaigns_merged hook
      * @since 4.8.0
      */
     private function registerCampaignCache(): void

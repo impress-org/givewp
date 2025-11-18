@@ -29,7 +29,7 @@ interface AdminSectionFieldProps {
 }
 
 /**
- * @unreleased Add description prop
+ * @since 4.13.1 Add description prop
  * @since 4.4.0
  */
 export function AdminSectionField({ subtitle, description, children, error }: AdminSectionFieldProps) {

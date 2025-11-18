@@ -25,7 +25,7 @@ class CampaignPageController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function register_routes()
     {
@@ -52,7 +52,7 @@ class CampaignPageController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      *
      * @return WP_REST_Response|WP_Error
      */
@@ -86,7 +86,7 @@ class CampaignPageController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function prepare_item_for_response($item, $request)
     {
@@ -127,7 +127,7 @@ class CampaignPageController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.13.1
      */
     public function get_item_schema(): array
     {
