@@ -32,7 +32,7 @@ $blockInlineStyles = sprintf(
         if ($attributes['showButton'] && ! empty($donors)) : ?>
             <div class="givewp-campaign-donors-block__donate-button">
                 <?php
-                echo give(RenderDonateButton::class)($campaign, $attributes, $donateButtonText);
+                echo wp_kses_post(give(RenderDonateButton::class)($campaign, $attributes, $donateButtonText));
                 ?>
             </div>
         <?php
@@ -57,7 +57,7 @@ $blockInlineStyles = sprintf(
 
             <div class="givewp-campaign-donors-block__empty-icon">
                 <?php
-                echo file_get_contents(dirname(__DIR__) . '/icons/empty-state.svg'); ?>
+                echo wp_kses_post(wp_remote_get(dirname(__DIR__) . '/icons/empty-state.svg')); ?>
             </div>
 
             <?php
@@ -66,7 +66,7 @@ $blockInlineStyles = sprintf(
                     <?php
                     $firstDonationButtonText = __('Be the first donor', 'give');
 
-                    echo give(RenderDonateButton::class)($campaign, $attributes, $firstDonationButtonText);
+                    echo wp_kses_post(give(RenderDonateButton::class)($campaign, $attributes, $firstDonationButtonText));
                     ?>
                 </div>
             <?php
@@ -85,7 +85,7 @@ $blockInlineStyles = sprintf(
                                 src="<?php
                                 echo get_avatar_url($donor->id, ['size' => 64]); ?>"
                                 alt="<?php
-                                _e('Donor avatar', 'give'); ?>"
+                                esc_attr_e('Donor avatar', 'give'); ?>"
                             />
                         </div>
                     <?php
@@ -100,7 +100,7 @@ $blockInlineStyles = sprintf(
                             <span class="givewp-campaign-donors-block__donor-ribbon" data-position="<?php
                             echo esc_attr($key + 1); ?>">
                                <?php
-                               echo file_get_contents(dirname(__DIR__) . '/icons/ribbon.svg'); ?>
+                               echo wp_kses_post(wp_remote_get(dirname(__DIR__) . '/icons/ribbon.svg')); ?>
                             </span>
                         <?php
                         endif; ?>
@@ -110,7 +110,8 @@ $blockInlineStyles = sprintf(
                             <span class="givewp-campaign-donors-block__donor-date"><?php
                                 echo esc_html(
                                     sprintf(
-                                        _x('%s ago', 'human-readable time difference', 'give'),
+                                        /* translators: %s: human-readable time difference */
+                                        esc_html_x('%s ago', 'human-readable time difference', 'give'),
                                         $donor->date
                                     )
                                 ); ?></span>
