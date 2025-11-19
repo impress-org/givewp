@@ -83,7 +83,7 @@ $blockInlineStyles = sprintf(
                         <div class="givewp-campaign-donors-block__donor-avatar">
                             <img
                                 src="<?php
-                                echo get_avatar_url($donor->id, ['size' => 64]); ?>"
+                                echo esc_url($donor->avatarUrl); ?>"
                                 alt="<?php
                                 esc_attr_e('Donor avatar', 'give'); ?>"
                             />
