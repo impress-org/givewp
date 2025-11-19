@@ -2,6 +2,7 @@
 
 namespace Give\Revenue\Listeners;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Revenue\Repositories\Revenue;
 
@@ -25,8 +26,9 @@ class DeleteRevenueWhenDonationDeleted
     }
 
     /**
-     * Deletes the revenue associated with a donation when a donation is deleted
+     * Deletes the revenue associated with a donation when a donation is deleted triggered by the WP delete_post hook
      *
+     * @unreleased use deleteRevenue method
      * @since 2.9.2
      * @since 2.9.4 removed $post parameter for < WP 5.5 compatibility
      *
@@ -40,6 +42,34 @@ class DeleteRevenueWhenDonationDeleted
             return;
         }
 
-        $this->revenueRepository->deleteByDonationId($postId);
+        $this->deleteRevenue((int) $postId);
+    }
+
+    /**
+     * Handles deletion of revenue when a donation is deleted triggered by the givewp_donation_deleted hook
+     *
+     * @unreleased
+     */
+    public function handleDonationDeleted(Donation $donation)
+    {
+        if (! $donation->id) {
+            return;
+        }
+
+        $this->deleteRevenue((int) $donation->id);
+    }
+
+    /**
+     * Deletes the revenue associated with a donation
+     *
+     * @unreleased
+     */
+    private function deleteRevenue(int $donationId)
+    {
+        if (! $donationId) {
+            return;
+        }
+
+        $this->revenueRepository->deleteByDonationId($donationId);
     }
 }
