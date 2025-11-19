@@ -99,6 +99,7 @@ class FormBuilderViewModelTest extends TestCase
                     'secondaryColor' => '',
                 ],
                 'showFormGoalNotice' => true,
+                'countries' => give_get_country_list(),
             ],
             $viewModel->storageData($formId)
         );
