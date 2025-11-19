@@ -77,7 +77,7 @@ $blockInlineStyles = sprintf(
                         <div class="givewp-campaign-donations-block__donation-icon">
                             <img
                                 src="<?php
-                                echo get_avatar_url($donation->donorId, ['size' => 64]); ?>"
+                                echo esc_url($donation->donorAvatarUrl); ?>"
                                 alt="<?php
                                 esc_attr_e('Donation icon', 'give'); ?>"
                             />
