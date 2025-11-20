@@ -7,9 +7,10 @@ use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Revenue\Repositories\Revenue;
 
 /**
- * @unreleased
+ * @unreleased rename class to DeleteRevenueWhenDonationPostDeleted
+ * @since 2.9.2
  */
-class DeleteRevenueWhenDonationDeleted
+class DeleteRevenueWhenDonationPostDeleted
 {
     /**
      * @var Revenue
@@ -17,9 +18,9 @@ class DeleteRevenueWhenDonationDeleted
     private $revenueRepository;
 
     /**
-     * DeleteRevenueWhenDonationDeleted constructor.
+     * DeleteRevenueWhenDonationPostDeleted constructor.
      *
-     * @
+     * @since 2.9.2
      *
      * @param Revenue $revenueRepository
      */
@@ -31,14 +32,19 @@ class DeleteRevenueWhenDonationDeleted
     /**
      * Deletes the revenue associated with a donation when a donation is deleted
      *
-     * @unreleased
+     * @since 2.9.4 removed $post parameter for < WP 5.5 compatibility
+     * @since 2.9.2
+     *
+     * @param int $postId
+     *
+     * @throws DatabaseQueryException
      */
-    public function __invoke(Donation $donation)
+    public function __invoke($postId)
     {
-        if (! $donation->id) {
+        if ('give_payment' !== get_post_type($postId)) {
             return;
         }
 
-        $this->revenueRepository->deleteByDonationId((int) $donation->id);
+        $this->revenueRepository->deleteByDonationId((int) $postId);
     }
 }

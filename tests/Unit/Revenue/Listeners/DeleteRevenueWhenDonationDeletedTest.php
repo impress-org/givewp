@@ -60,4 +60,3 @@ class DeleteRevenueWhenDonationDeletedTest extends TestCase
         );
     }
 }
-
