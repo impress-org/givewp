@@ -19,7 +19,7 @@ class DeleteRevenueWhenDonationDeleted
     /**
      * DeleteRevenueWhenDonationDeleted constructor.
      *
-     * @
+     * @unreleased
      *
      * @param Revenue $revenueRepository
      */
