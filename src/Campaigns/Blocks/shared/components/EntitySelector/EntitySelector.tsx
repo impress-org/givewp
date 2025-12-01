@@ -5,6 +5,7 @@ import logo from './givewp-logo.svg';
 import usePostState from "../../hooks/usePostState";
 import {reactSelectStyles, reactSelectThemeStyles} from "./styles/reactSelectStyles";
 import './styles/index.scss';
+import { EmotionStylesProvider } from '@givewp/admin/providers';
 
 /**
  * @since 4.3.0
@@ -58,6 +59,7 @@ export default function EntitySelector({
                     {label}
                 </label>
 
+            <EmotionStylesProvider cacheKey="givewp-entity-selector">
                 <ReactSelect
                     name={id}
                     inputId={id}
@@ -72,6 +74,7 @@ export default function EntitySelector({
                     styles={reactSelectStyles}
                     placeholder={isLoading ? loadingMessage : __('Select...', 'give')}
                 />
+                </EmotionStylesProvider>
             </div>
 
             <button
