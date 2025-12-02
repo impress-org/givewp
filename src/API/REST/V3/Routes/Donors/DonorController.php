@@ -2,9 +2,11 @@
 
 namespace Give\API\REST\V3\Routes\Donors;
 
+use Give\API\REST\V3\Routes\Donors\Actions\GetDonorItemSchema;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\API\REST\V3\Support\CURIE;
+use Give\API\REST\V3\Support\Item;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorAddress;
@@ -314,6 +316,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Format dates as strings using Item::formatDatesForResponse
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.4.0
      */
@@ -332,7 +335,7 @@ class DonorController extends WP_REST_Controller
             ],
         ];
 
-        $response = new WP_REST_Response($item);
+        $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt']));
         $response->add_links($links);
         $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
@@ -340,6 +343,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Add missing properties to the schema and extract it to GetDonorItemSchema class
      * @since 4.13.0 add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor and add custom fields schema
@@ -347,133 +351,7 @@ class DonorController extends WP_REST_Controller
      */
     public function get_item_schema(): array
     {
-        $schema = [
-            '$schema' => 'http://json-schema.org/draft-04/schema#',
-            'title' => 'givewp/donor',
-            'description' => esc_html__('Donor routes for CRUD operations', 'give'),
-            'type' => 'object',
-            'properties' => [
-                'id' => [
-                    'type' => 'integer',
-                    'description' => esc_html__('Donor ID', 'give'),
-                    'readonly' => true,
-                ],
-                'prefix' => [
-                    'type' => ['string', 'null'],
-                    'description' => esc_html__('Donor prefix', 'give'),
-                    'format' => 'text-field',
-                ],
-                'firstName' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Donor first name', 'give'),
-                    'minLength' => 1,
-                    'maxLength' => 128,
-                    'errorMessage' => esc_html__('First name is required', 'give'),
-                    'format' => 'text-field',
-                    'required' => true,
-                ],
-                'lastName' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Donor last name', 'give'),
-                    'minLength' => 1,
-                    'maxLength' => 128,
-                    'errorMessage' => esc_html__('Last name is required', 'give'),
-                    'format' => 'text-field',
-                    'required' => true,
-                ],
-                'email' => [
-                    'type' => 'string',
-                    'description' => esc_html__('Donor email', 'give'),
-                    'format' => 'email',
-                    'required' => true,
-                ],
-                'additionalEmails' => [
-                    'type' => 'array',
-                    'description' => esc_html__('Donor additional emails', 'give'),
-                    'items' => [
-                        'type' => 'string',
-                        'format' => 'email',
-                    ],
-                ],
-                'phone' => [
-                    'type' => ['string', 'null'],
-                    'description' => esc_html__('Donor phone', 'give'),
-                    'pattern' => '^$|^[\+]?[1-9][\d\s\-\(\)]{7,20}$',
-                ],
-                'company' => [
-                    'type' => ['string', 'null'],
-                    'description' => esc_html__('Donor company', 'give'),
-                    'format' => 'text-field',
-                ],
-                'avatarId' => [
-                    'type' => ['integer', 'string', 'null'],
-                    'description' => esc_html__('Donor avatar ID', 'give'),
-                    'pattern' => '^$|^[0-9]+$',
-                    'errorMessage' => esc_html__('Invalid avatar ID', 'give'),
-                ],
-                'addresses' => [
-                    'type' => 'array',
-                    'description' => esc_html__('Donor addresses', 'give'),
-                    'items' => [
-                        'type' => 'object',
-                        'description' => esc_html__('Donor address', 'give'),
-                        'properties' => [
-                            'address1' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address line 1', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'address2' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address line 2', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'city' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address city', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'state' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address state', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'country' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address country', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'zip' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Donor address zip', 'give'),
-                                'format' => 'text-field',
-                            ],
-                        ],
-                    ],
-                ],
-                'customFields' => [
-                    'type' => 'array',
-                    'readonly' => true,
-                    'description' => esc_html__('Custom fields (sensitive data)', 'give'),
-                    'items' => [
-                        'type' => 'object',
-                        'properties' => [
-                            'label' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Field label', 'give'),
-                                'format' => 'text-field',
-                            ],
-                            'value' => [
-                                'type' => 'string',
-                                'description' => esc_html__('Field value', 'give'),
-                                'format' => 'text-field',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
+        $schema = give(GetDonorItemSchema::class)();
         return $this->add_additional_fields_schema($schema);
     }
 
