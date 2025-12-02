@@ -5,8 +5,8 @@ namespace Unit\API\REST\V3\Routes\Donors;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\Models\Donor;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 
 class DonorRouteUpdateTest extends RestApiTestCase
@@ -66,6 +66,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased Update createdAt comparison to expect string format instead of DateTime object
      * @since 4.4.0
      */
     public function testUpdateDonorShouldNotUpdateNonEditableFields()
@@ -92,7 +93,11 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals($originalId, $data['id']);
         $this->assertEquals($originalUserId, $data['userId']);
-        $this->assertEquals($originalCreatedAt, $data['createdAt']);
+        // createdAt is formatted as string in API response
+        $expectedCreatedAt = $originalCreatedAt instanceof \DateTime
+            ? mysql_to_rfc3339($originalCreatedAt->format('c'))
+            : $originalCreatedAt;
+        $this->assertEquals($expectedCreatedAt, $data['createdAt']);
     }
 
     /**

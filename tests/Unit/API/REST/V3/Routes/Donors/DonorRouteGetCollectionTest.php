@@ -77,7 +77,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
             'additionalEmails' => $donor->additionalEmails,
             'avatarId' => $donor->avatarId,
             'company' => $donor->company,
-            'addresses' => array_map(fn($address) => $address->toArray(), $donor->addresses),
+            'addresses' => array_map(fn ($address) => $address->toArray(), $donor->addresses),
             'avatarUrl' => null,
             'customFields' => [],
             'wpUserPermalink' => $donor->userId ? get_edit_user_link($donor->userId) : null,
@@ -577,11 +577,12 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'),$data[1][$property]);
+            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
         }
     }
 
     /**
+     * @unreleased Update createdAt comparison to expect string format instead of DateTime object
      * @since 4.0.0
      *
      * @dataProvider sortableColumnsDataProvider
@@ -599,7 +600,6 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
             ]
         );
         wp_set_current_user($newAdminUser);
-
 
         DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
@@ -636,9 +636,21 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donor1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donor3->{$sortableColumn}, $data[2][$sortableColumn]);
+
+        // Format createdAt as string for comparison if it's a DateTime object
+        $expected1 = $sortableColumn === 'createdAt' && $donor1->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor1->{$sortableColumn}->format('c'))
+            : $donor1->{$sortableColumn};
+        $expected2 = $sortableColumn === 'createdAt' && $donor2->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor2->{$sortableColumn}->format('c'))
+            : $donor2->{$sortableColumn};
+        $expected3 = $sortableColumn === 'createdAt' && $donor3->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor3->{$sortableColumn}->format('c'))
+            : $donor3->{$sortableColumn};
+
+        $this->assertEquals($expected1, $data[0][$sortableColumn]);
+        $this->assertEquals($expected2, $data[1][$sortableColumn]);
+        $this->assertEquals($expected3, $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -658,8 +670,17 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donor1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
+
+        // Format createdAt as string for comparison if it's a DateTime object
+        $expected1 = $sortableColumn === 'createdAt' && $donor1->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor1->{$sortableColumn}->format('c'))
+            : $donor1->{$sortableColumn};
+        $expected2 = $sortableColumn === 'createdAt' && $donor2->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor2->{$sortableColumn}->format('c'))
+            : $donor2->{$sortableColumn};
+
+        $this->assertEquals($expected1, $data[0][$sortableColumn]);
+        $this->assertEquals($expected2, $data[1][$sortableColumn]);
 
         /**
          * Descendant Direction
@@ -681,9 +702,20 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donor3->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donor1->{$sortableColumn}, $data[2][$sortableColumn]);
+        // Format createdAt as string for comparison if it's a DateTime object
+        $expected3 = $sortableColumn === 'createdAt' && $donor3->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor3->{$sortableColumn}->format('c'))
+            : $donor3->{$sortableColumn};
+        $expected2 = $sortableColumn === 'createdAt' && $donor2->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor2->{$sortableColumn}->format('c'))
+            : $donor2->{$sortableColumn};
+        $expected1 = $sortableColumn === 'createdAt' && $donor1->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor1->{$sortableColumn}->format('c'))
+            : $donor1->{$sortableColumn};
+
+        $this->assertEquals($expected3, $data[0][$sortableColumn]);
+        $this->assertEquals($expected2, $data[1][$sortableColumn]);
+        $this->assertEquals($expected1, $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -703,8 +735,17 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donor2->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donor1->{$sortableColumn}, $data[1][$sortableColumn]);
+
+        // Format createdAt as string for comparison if it's a DateTime object
+        $expected2 = $sortableColumn === 'createdAt' && $donor2->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor2->{$sortableColumn}->format('c'))
+            : $donor2->{$sortableColumn};
+        $expected1 = $sortableColumn === 'createdAt' && $donor1->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor1->{$sortableColumn}->format('c'))
+            : $donor1->{$sortableColumn};
+
+        $this->assertEquals($expected2, $data[0][$sortableColumn]);
+        $this->assertEquals($expected1, $data[1][$sortableColumn]);
     }
 
     /**
