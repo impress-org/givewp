@@ -9,6 +9,7 @@ use Give\API\REST\V3\Routes\Donors\Permissions\DonorPermissions;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\API\REST\V3\Support\CURIE;
+use Give\API\REST\V3\Support\Headers;
 use Give\API\REST\V3\Support\Item;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
@@ -109,6 +110,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
+     * @unreleased Use Headers::addPagination() helper for pagination headers
      * @since 4.8.0 Add support for search parameter
      * @since 4.0.0
      *
@@ -139,6 +141,7 @@ class DonorController extends WP_REST_Controller
             $query->whereDonorsHaveDonations($mode, $campaignId, $donorAnonymousMode->isExcluded());
         }
 
+        $totalQuery = $query->clone();
         $query
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
@@ -152,38 +155,9 @@ class DonorController extends WP_REST_Controller
             return $this->prepare_response_for_collection($response);
         }, $donors);
 
-        $totalDonors = empty($donors) ? 0 : Donor::query()->count();
-        $totalPages = (int)ceil($totalDonors / $perPage);
-
+        $totalDonors = empty($donors) ? 0 : $totalQuery->count();
         $response = rest_ensure_response($donors);
-        $response->header('X-WP-Total', $totalDonors);
-        $response->header('X-WP-TotalPages', $totalPages);
-
-        $base = add_query_arg(
-            map_deep($request->get_query_params(), function ($value) {
-                if (is_bool($value)) {
-                    $value = $value ? 'true' : 'false';
-                }
-
-                return urlencode($value);
-            }),
-            rest_url(DonorRoute::BASE)
-        );
-
-        if ($page > 1) {
-            $prevPage = $page - 1;
-
-            if ($prevPage > $totalPages) {
-                $prevPage = $totalPages;
-            }
-
-            $response->link_header('prev', add_query_arg('page', $prevPage, $base));
-        }
-
-        if ($totalPages > $page) {
-            $nextPage = $page + 1;
-            $response->link_header('next', add_query_arg('page', $nextPage, $base));
-        }
+        $response = Headers::addPagination($response, $request, $totalDonors, $perPage, $this->rest_base);
 
         return $response;
     }
