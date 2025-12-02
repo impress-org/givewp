@@ -2,7 +2,10 @@
 
 namespace Give\API\REST\V3\Routes\Donors;
 
+use Give\API\REST\V3\Routes\Donors\Actions\GetDonorCollectionParams;
 use Give\API\REST\V3\Routes\Donors\Actions\GetDonorItemSchema;
+use Give\API\REST\V3\Routes\Donors\Actions\GetDonorSharedParamsForGetMethods;
+use Give\API\REST\V3\Routes\Donors\Permissions\DonorPermissions;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\API\REST\V3\Support\CURIE;
@@ -19,8 +22,9 @@ use WP_REST_Server;
 
 /**
  * The methods using snake case like register_routes() are present in the base class,
- * and the methods using camel case like getSharedParams() are available only on this class.
+ * and the methods using camel case like getSortColumn() are available only on this class.
  *
+ * @unreleased Extract permissions, collection params, and shared params to separate classes
  * @since 4.4.0 Extends WP_REST_Controller class and rename methods
  * @since 4.0.0
  */
@@ -46,7 +50,7 @@ class DonorController extends WP_REST_Controller
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
-                'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
+                'args' => array_merge($this->get_collection_params(), give(GetDonorSharedParamsForGetMethods::class)()),
             ],
             'schema' => [$this, 'get_public_item_schema'],
         ]);
@@ -90,7 +94,7 @@ class DonorController extends WP_REST_Controller
                         'type' => 'integer',
                         'default' => 0,
                     ],
-                ], $this->getSharedParams()),
+                ], give(GetDonorSharedParamsForGetMethods::class)()),
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
@@ -272,6 +276,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Use DonorPermissions class
      * @since 4.0.0
      *
      * @param WP_REST_Request $request
@@ -280,10 +285,11 @@ class DonorController extends WP_REST_Controller
      */
     public function get_items_permissions_check($request)
     {
-        return $this->permissionsCheck($request);
+        return DonorPermissions::validationForGetMethods($request);
     }
 
     /**
+     * @unreleased Use DonorPermissions class
      * @since 4.0.0
      *
      * @param WP_REST_Request $request
@@ -292,10 +298,11 @@ class DonorController extends WP_REST_Controller
      */
     public function get_item_permissions_check($request)
     {
-        return $this->permissionsCheck($request);
+        return DonorPermissions::validationForGetMethods($request);
     }
 
     /**
+     * @unreleased Use DonorPermissions class
      * @since 4.4.0
      *
      * @param WP_REST_Request $request
@@ -304,15 +311,7 @@ class DonorController extends WP_REST_Controller
      */
     public function update_item_permissions_check($request)
     {
-        if (!current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to update donors.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        return true;
+        return DonorPermissions::validationForUpdateMethod($request);
     }
 
     /**
@@ -356,6 +355,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Extract collection params to GetDonorCollectionParams class
      * @since 4.8.0 Re-add search parameter
      * @since 4.4.0
      */
@@ -369,120 +369,9 @@ class DonorController extends WP_REST_Controller
         // Remove default parameters not being used
         unset($params['context']);
 
-        $params += [
-            'sort' => [
-                'description' => __('The field by which to sort the donors.', 'give'),
-                'type' => 'string',
-                'default' => 'id',
-                'enum' => [
-                    'id',
-                    'createdAt',
-                    'name',
-                    'firstName',
-                    'lastName',
-                    'totalAmountDonated',
-                    'totalNumberOfDonations',
-                ],
-            ],
-            'direction' => [
-                'description' => __('The direction of sorting: ascending (ASC) or descending (DESC).', 'give'),
-                'type' => 'string',
-                'default' => 'DESC',
-                'enum' => ['ASC', 'DESC'],
-            ],
-            'onlyWithDonations' => [
-                'description' => __('Whether to include only donors who have made donations.', 'give'),
-                'type' => 'boolean',
-                'default' => true,
-            ],
-            'mode' => [
-                'description' => __(
-                    'The mode of donations to filter by "live" or "test" (it only gets applied when "onlyWithDonations" is set to true).',
-                    'give'
-                ),
-                'type' => 'string',
-                'default' => 'live',
-                'enum' => ['live', 'test'],
-            ],
-            'campaignId' => [
-                'description' => __(
-                    'The ID of the campaign to filter donors by - zero or empty mean "all campaigns" (it only gets applied when "onlyWithDonations" is set to true).',
-                    'give'
-                ),
-                'type' => 'integer',
-                'default' => 0,
-            ],
-        ];
+        $params += give(GetDonorCollectionParams::class)();
 
         return $params;
-    }
-
-    /**
-     * @since 4.4.0
-     */
-    public function getSharedParams(): array
-    {
-        return [
-            'includeSensitiveData' => [
-                'description' => __(
-                    'Include or not include data that can be used to contact or locate the donors, such as phone number, email, billing address, etc. (require proper permissions)',
-                    'give'
-                ),
-                'type' => 'boolean',
-                'default' => false,
-            ],
-            'anonymousDonors' => [
-                'description' => __(
-                    'Exclude, include, or redact data that can be used to identify the donors, such as ID, first name, last name, etc (require proper permissions).',
-                    'give'
-                ),
-                'type' => 'string',
-                'default' => 'exclude',
-                'enum' => ['exclude', 'include', 'redact'],
-            ],
-        ];
-    }
-
-    /**
-     * @since 4.0.0
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return true|WP_Error
-     */
-    public function permissionsCheck(WP_REST_Request $request)
-    {
-        $isAdmin = current_user_can('manage_options');
-
-        $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if (!$isAdmin && $includeSensitiveData) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to include sensitive data.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        if ($request->get_param('anonymousDonors') !== null) {
-            $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-            if (!$isAdmin && $donorAnonymousMode->isIncluded()) {
-                return new WP_Error(
-                    'rest_forbidden',
-                    esc_html__('You do not have permission to include anonymous donors.', 'give'),
-                    ['status' => $this->authorizationStatusCode()]
-                );
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @since 4.0.0
-     */
-    public function authorizationStatusCode(): int
-    {
-        return is_user_logged_in() ? 403 : 401;
     }
 
     /**
