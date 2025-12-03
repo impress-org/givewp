@@ -319,13 +319,29 @@ class onBoardingRedirectHandler
     /**
      * Return whether or not PayPal user redirect to GiveWP setting page after successful onboarding.
      *
+     * @unreleased Add state parameter verification for CSRF protection.
      * @since 2.9.0
      *
      * @return bool
      */
     private function isPayPalUserRedirected()
     {
-        return isset($_GET['merchantIdInPayPal']) && Give_Admin_Settings::is_setting_page('gateways', 'paypal');
+        if (!isset($_GET['merchantIdInPayPal']) || !Give_Admin_Settings::is_setting_page('gateways', 'paypal')) {
+            return false;
+        }
+
+        // Verify the state parameter to protect against CSRF attacks.
+        $mode = isset($_GET['mode']) && in_array($_GET['mode'], ['live', 'sandbox'], true) ? $_GET['mode'] : 'live';
+        $storedState = get_transient('give_paypal_onboarding_state_' . $mode);
+
+        if (!isset($_GET['give_paypal_state']) || !$storedState || !hash_equals($storedState, $_GET['give_paypal_state'])) {
+            return false;
+        }
+
+        // Delete the transient after successful verification to prevent replay attacks.
+        delete_transient('give_paypal_onboarding_state_' . $mode);
+
+        return true;
     }
 
     /**
