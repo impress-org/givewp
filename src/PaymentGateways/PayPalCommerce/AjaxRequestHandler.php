@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\ProcessorResponseError;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -51,7 +50,7 @@ class AjaxRequestHandler
     /**
      * @since 2.9.0
      *
-     * @var ConnectClient
+     * @var RefreshToken
      */
     private $refreshToken;
 
