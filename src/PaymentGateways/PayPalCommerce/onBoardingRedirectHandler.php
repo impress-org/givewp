@@ -215,6 +215,7 @@ class onBoardingRedirectHandler
     /**
      * Redirects the user to the account connected url
      *
+     * @unreleased Add nonce to redirect URL for CSRF protection.
      * @since 2.9.0
      */
     private function redirectAccountConnected()
@@ -222,16 +223,19 @@ class onBoardingRedirectHandler
         $this->refreshAccountStatus();
 
         wp_redirect(
-            add_query_arg(
-                [
-                    'post_type' => 'give_forms',
-                    'page' => 'give-settings',
-                    'tab' => 'gateways',
-                    'section' => 'paypal',
-                    'group' => 'paypal-commerce',
-                    'paypal-commerce-account-connected' => '1'
-                ],
-                admin_url('edit.php')
+            wp_nonce_url(
+                add_query_arg(
+                    [
+                        'post_type' => 'give_forms',
+                        'page' => 'give-settings',
+                        'tab' => 'gateways',
+                        'section' => 'paypal',
+                        'group' => 'paypal-commerce',
+                        'paypal-commerce-account-connected' => '1'
+                    ],
+                    admin_url('edit.php')
+                ),
+                'give_paypal_account_connected'
             )
         );
 
@@ -327,16 +331,22 @@ class onBoardingRedirectHandler
     /**
      * Return whether or not PayPal account details saved.
      *
+     * @unreleased Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
      * @return bool
      */
     private function isPayPalAccountDetailsSaved()
     {
-        return isset($_GET['paypal-commerce-account-connected']) && Give_Admin_Settings::is_setting_page(
-                'gateways',
-                'paypal'
-            );
+        if (!isset($_GET['paypal-commerce-account-connected']) || !Give_Admin_Settings::is_setting_page('gateways', 'paypal')) {
+            return false;
+        }
+
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'give_paypal_account_connected')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
