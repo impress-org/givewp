@@ -82,7 +82,7 @@ class Give_Donor_Wall {
     /**
      * Displays donors in a grid layout.
      *
-     * @unreleased add strip_shortcodes to the html output
+     * @since 4.13.2 add strip_shortcodes to the html output
      * @since 4.3.1 remove redundant _give_redirect_form_id() function.
      * @since 3.7.0 Sanitize attributes
      * @since 2.27.0 Moved AJAX nonce verification to ajax_handler method.
