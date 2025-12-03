@@ -313,17 +313,20 @@ class AdminSettingFields
 
                 <?php if ($this->merchantRepository->accountIsConnected()) :?>
                     <?php
-                    $reCheckAccountStatusUrl = add_query_arg(
-                        [
-                            'post_type' => 'give_forms',
-                            'page' => 'give-settings',
-                            'tab' => 'gateways',
-                            'section' => 'paypal',
-                            'group' => 'paypal-commerce',
-                            'paypalStatusCheck' => '1',
-                            'mode' => $merchantDetailsRepository->getMode()
-                        ],
-                        admin_url('edit.php')
+                    $reCheckAccountStatusUrl = wp_nonce_url(
+                        add_query_arg(
+                            [
+                                'post_type' => 'give_forms',
+                                'page' => 'give-settings',
+                                'tab' => 'gateways',
+                                'section' => 'paypal',
+                                'group' => 'paypal-commerce',
+                                'paypalStatusCheck' => '1',
+                                'mode' => $merchantDetailsRepository->getMode()
+                            ],
+                            admin_url('edit.php')
+                        ),
+                        'give_paypal_status_refresh'
                     );
                     ?>
                     <p>

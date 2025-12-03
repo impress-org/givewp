@@ -294,13 +294,22 @@ class onBoardingRedirectHandler
     /**
      * Returns whether or not the current request is for refreshing the account status
      *
+     * @unreleased Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
      * @return bool
      */
     private function isStatusRefresh()
     {
-        return isset($_GET['paypalStatusCheck']) && Give_Admin_Settings::is_setting_page('gateways', 'paypal');
+        if (!isset($_GET['paypalStatusCheck']) || !Give_Admin_Settings::is_setting_page('gateways', 'paypal')) {
+            return false;
+        }
+
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'give_paypal_status_refresh')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
