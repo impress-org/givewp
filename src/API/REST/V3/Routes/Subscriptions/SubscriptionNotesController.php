@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes\Subscriptions;
 
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\API\REST\V3\Support\Item;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Models\SubscriptionNote;
 use Give\Subscriptions\ValueObjects\SubscriptionNoteType;
@@ -326,6 +327,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Format dates as strings using Item::formatDatesForResponse
      * @since 4.8.0
      */
     public function prepare_item_for_response($note, $request): WP_REST_Response
@@ -344,7 +346,8 @@ class SubscriptionNotesController extends WP_REST_Controller
             'self' => ['href' => $self_url],
         ];
 
-        $response = new WP_REST_Response($note->toArray());
+        $item = $note->toArray();
+        $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt', 'updatedAt']));
         $response->add_links($links);
         $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
