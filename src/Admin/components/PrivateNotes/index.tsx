@@ -1,6 +1,6 @@
+import { formatTimestamp } from '@givewp/admin/common';
+import { Header } from '@givewp/admin/components';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import Header from '@givewp/src/Admin/components/Header';
-import { formatTimestamp } from '@givewp/src/Admin/utils';
 import apiFetch from '@wordpress/api-fetch';
 import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
