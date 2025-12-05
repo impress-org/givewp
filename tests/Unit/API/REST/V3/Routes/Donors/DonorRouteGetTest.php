@@ -77,7 +77,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $response = $this->dispatchRequest($request);
 
@@ -112,6 +112,56 @@ class DonorRouteGetTest extends RestApiTestCase
         $this->assertEquals($donor->id, $data['id']);
         $this->assertArrayHasKey('_links', $data);
         $this->assertArrayHasKey('givewp:statistics', $data['_links']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonorShouldReturnDonationsLink()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _links data
+        $data = $this->responseToData($response, false);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data['id']);
+        $this->assertArrayHasKey('_links', $data);
+        $this->assertArrayHasKey('givewp:donations', $data['_links']);
+        $this->assertArrayHasKey('href', $data['_links']['givewp:donations'][0]);
+        $this->assertStringContainsString('donorId=' . $donor->id, $data['_links']['givewp:donations'][0]['href']);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonorShouldReturnSubscriptionsLink()
+    {
+        /** @var  Donor $donor */
+        $donor = Donor::factory()->create();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _links data
+        $data = $this->responseToData($response, false);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data['id']);
+        $this->assertArrayHasKey('_links', $data);
+        $this->assertArrayHasKey('givewp:subscriptions', $data['_links']);
+        $this->assertArrayHasKey('href', $data['_links']['givewp:subscriptions'][0]);
+        $this->assertStringContainsString('donorId=' . $donor->id, $data['_links']['givewp:subscriptions'][0]['href']);
     }
 
     /**
@@ -384,7 +434,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Allow donors to view their own data
+     * @unreleased
      *
      * @throws Exception
      */
@@ -415,7 +465,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Donors should not be able to view other donors' data
+     * @unreleased
      *
      * @throws Exception
      */
@@ -444,7 +494,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Allow donors to view their own sensitive data
+     * @unreleased
      *
      * @throws Exception
      */
@@ -482,7 +532,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Donors should not be able to view other donors' sensitive data
+     * @unreleased
      *
      * @throws Exception
      */
