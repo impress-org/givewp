@@ -52,7 +52,7 @@ class DonorPermissions
     }
 
     /**
-     * @unreleased Allow donors to view their own data
+     * @unreleased
      *
      * @param WP_REST_Request $request
      *
@@ -63,15 +63,6 @@ class DonorPermissions
         $isAdmin = self::canEdit();
         $donorId = $request->get_param('id');
         $isOwner = $donorId ? self::isOwner($donorId) : false;
-
-        // Allow access if user is admin or owns the donor
-        if (!$isAdmin && !$isOwner) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to view this donor.', 'give'),
-                ['status' => self::authorizationStatusCode()]
-            );
-        }
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         if (!$isAdmin && !$isOwner && $includeSensitiveData) {

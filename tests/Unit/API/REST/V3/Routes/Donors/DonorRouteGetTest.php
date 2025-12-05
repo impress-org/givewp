@@ -82,7 +82,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -105,7 +105,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -128,7 +128,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -153,7 +153,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -178,7 +178,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:statistics'], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:statistics']);
 
         $response = $this->dispatchRequest($request);
 
@@ -203,7 +203,8 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = $this->createDonorWithDonation();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:donations'], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request->set_query_params(['_embed' => 'givewp:donations']);
 
         $response = $this->dispatchRequest($request);
 
@@ -228,7 +229,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = $this->createDonorWithSubscription();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:subscriptions'], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:subscriptions']);
 
         $response = $this->dispatchRequest($request);
 
@@ -253,7 +254,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -275,7 +276,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -492,66 +493,6 @@ class DonorRouteGetTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorShouldAllowOwnerToViewOwnData()
-    {
-        // Create a user
-        $user = $this->factory()->user->create([
-            'role' => 'subscriber',
-            'user_login' => 'testDonorOwner',
-            'user_email' => 'testDonorOwner@test.com',
-        ]);
-        wp_set_current_user($user);
-
-        // Create a donor linked to this user
-        /** @var Donor $donor */
-        $donor = Donor::factory()->create([
-            'userId' => $user,
-        ]);
-
-        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-
-        $response = $this->dispatchRequest($request);
-
-        $this->assertEquals(200, $response->get_status());
-        $data = $response->get_data();
-        $this->assertEquals($donor->id, $data['id']);
-    }
-
-    /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
-    public function testGetDonorShouldReturn403WhenOwnerTriesToViewOtherDonor()
-    {
-        // Create a user
-        $user = $this->factory()->user->create([
-            'role' => 'subscriber',
-            'user_login' => 'testDonorOwner2',
-            'user_email' => 'testDonorOwner2@test.com',
-        ]);
-        wp_set_current_user($user);
-
-        // Create a donor NOT linked to this user
-        /** @var Donor $otherDonor */
-        $otherDonor = Donor::factory()->create([
-            'userId' => null, // No user linked
-        ]);
-
-        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $otherDonor->id;
-        $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-
-        $response = $this->dispatchRequest($request);
-
-        $this->assertEquals(403, $response->get_status());
-    }
-
-    /**
-     * @unreleased
-     *
-     * @throws Exception
-     */
     public function testGetDonorShouldAllowOwnerToViewOwnSensitiveData()
     {
         // Create a user
@@ -560,7 +501,6 @@ class DonorRouteGetTest extends RestApiTestCase
             'user_login' => 'testDonorOwner3',
             'user_email' => 'testDonorOwner3@test.com',
         ]);
-        wp_set_current_user($user);
 
         // Create a donor linked to this user
         /** @var Donor $donor */
@@ -571,10 +511,10 @@ class DonorRouteGetTest extends RestApiTestCase
         ]);
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        // Use WP_REST_Request directly to maintain the custom user
+        wp_set_current_user($user);
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-        $request->set_query_params([
-            'includeSensitiveData' => true,
-        ]);
+        $request->set_query_params(['includeSensitiveData' => true]);
 
         $response = $this->dispatchRequest($request);
 
@@ -590,7 +530,7 @@ class DonorRouteGetTest extends RestApiTestCase
      *
      * @throws Exception
      */
-    public function testGetDonorShouldReturn403WhenOwnerTriesToViewOtherDonorSensitiveData()
+    public function testGetDonorShouldReturn403WhenNonOwnerTriesToViewOtherDonorSensitiveData()
     {
         // Create a user
         $user = $this->factory()->user->create([
@@ -598,7 +538,6 @@ class DonorRouteGetTest extends RestApiTestCase
             'user_login' => 'testDonorOwner4',
             'user_email' => 'testDonorOwner4@test.com',
         ]);
-        wp_set_current_user($user);
 
         // Create another user and donor
         $otherUser = $this->factory()->user->create([
@@ -613,10 +552,10 @@ class DonorRouteGetTest extends RestApiTestCase
         ]);
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $otherDonor->id;
+        // Use WP_REST_Request directly to maintain the custom user
+        wp_set_current_user($user);
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
-        $request->set_query_params([
-            'includeSensitiveData' => true,
-        ]);
+        $request->set_query_params(['includeSensitiveData' => true]);
 
         $response = $this->dispatchRequest($request);
 
