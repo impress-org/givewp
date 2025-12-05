@@ -52,23 +52,11 @@ class DonorStatisticsSchemaTest extends RestApiTestCase
         $actualDataJson = json_encode($dataResponse->get_data());
         $actualData = json_decode($actualDataJson, true);
 
-        // Note: DonorStatistics schema only describes input parameters, not the response structure
-        // So we validate the response structure directly instead of against the schema
-        $this->assertIsArray($actualData, 'Statistics should be an array');
-        $this->assertArrayHasKey('donations', $actualData, 'Statistics should have donations key');
-        $this->assertArrayHasKey('donorType', $actualData, 'Statistics should have donorType key');
-        $this->assertArrayHasKey('preferredPaymentMethod', $actualData, 'Statistics should have preferredPaymentMethod key');
+        // Validate that all required schema properties exist in actual response
+        $this->validateSchemaProperties($schema, $actualData);
 
-        // Validate donations structure
-        if (isset($actualData['donations'])) {
-            $this->assertIsArray($actualData['donations'], 'Donations should be an array');
-            $this->assertArrayHasKey('lifetimeAmount', $actualData['donations'], 'Donations should have lifetimeAmount');
-            $this->assertArrayHasKey('highestAmount', $actualData['donations'], 'Donations should have highestAmount');
-            $this->assertArrayHasKey('averageAmount', $actualData['donations'], 'Donations should have averageAmount');
-            $this->assertArrayHasKey('count', $actualData['donations'], 'Donations should have count');
-            $this->assertArrayHasKey('first', $actualData['donations'], 'Donations should have first');
-            $this->assertArrayHasKey('last', $actualData['donations'], 'Donations should have last');
-        }
+        // Validate data types match schema
+        $this->validateDataTypes($schema, $actualData);
     }
 
     /**
