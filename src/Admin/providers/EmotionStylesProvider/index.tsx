@@ -14,7 +14,7 @@ import createCache from '@emotion/cache';
  */
 
 /**
- * @unreleased
+ * @since 4.13.2
  */
 type EmotionStylesProviderProps = {
     children: ReactNode;
@@ -24,7 +24,7 @@ type EmotionStylesProviderProps = {
 /**
  * Provides an Emotion cache that injects styles into the current document.
  * This is essential for WordPress 6.9+ where blocks render in an iframe.
- * @unreleased
+ * @since 4.13.2
  */
 export default function EmotionStylesProvider({children, cacheKey = 'givewp'}: EmotionStylesProviderProps) {
     const containerRef = useRef<HTMLDivElement>(null);
