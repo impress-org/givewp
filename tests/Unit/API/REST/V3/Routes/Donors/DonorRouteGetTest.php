@@ -10,6 +10,11 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
+use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
+use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -179,7 +184,6 @@ class DonorRouteGetTest extends RestApiTestCase
 
         $status = $response->get_status();
         //The $response->get_data() method do not include _embedded data
-        // Only embed statistics, not donations/subscriptions to avoid database errors
         $data = $this->responseToData($response, ['givewp:statistics']);
 
         $this->assertEquals(200, $status);
@@ -188,6 +192,56 @@ class DonorRouteGetTest extends RestApiTestCase
         $this->assertArrayHasKey('givewp:statistics', $data['_embedded']);
         $this->assertIsArray($data['_embedded']['givewp:statistics']);
         $this->assertNotEmpty($data['_embedded']['givewp:statistics'][0]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonorShouldEmbedDonations()
+    {
+        /** @var  Donor $donor */
+        $donor = $this->createDonorWithDonation();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:donations'], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _embedded data
+        $data = $this->responseToData($response, ['givewp:donations']);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data['id']);
+        $this->assertArrayHasKey('_embedded', $data);
+        $this->assertArrayHasKey('givewp:donations', $data['_embedded']);
+        $this->assertIsArray($data['_embedded']['givewp:donations']);
+        $this->assertNotEmpty($data['_embedded']['givewp:donations'][0]);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testGetDonorShouldEmbedSubscriptions()
+    {
+        /** @var  Donor $donor */
+        $donor = $this->createDonorWithSubscription();
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:subscriptions'], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        //The $response->get_data() method do not include _embedded data
+        $data = $this->responseToData($response, ['givewp:subscriptions']);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($donor->id, $data['id']);
+        $this->assertArrayHasKey('_embedded', $data);
+        $this->assertArrayHasKey('givewp:subscriptions', $data['_embedded']);
+        $this->assertIsArray($data['_embedded']['givewp:subscriptions']);
+        $this->assertNotEmpty($data['_embedded']['givewp:subscriptions'][0]);
     }
 
     /**
@@ -594,5 +648,60 @@ class DonorRouteGetTest extends RestApiTestCase
         give()->payment_meta->update_meta($donation1->id, DonationMetaKeys::DONOR_ID, $donor1->id);
 
         return Donor::find($donor1->id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    private function createDonorWithDonation(): Donor
+    {
+        /** @var  Donation $donation */
+        $donation = Donation::factory()->create([
+            'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
+        ]);
+        $donor = $donation->donor;
+
+        give()->payment_meta->update_meta($donation->id, DonationMetaKeys::DONOR_ID, $donor->id);
+
+        return Donor::find($donor->id);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    private function createDonorWithSubscription(): Donor
+    {
+        $subscription = $this->createSubscription();
+
+        return $subscription->donor;
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    private function createSubscription(string $mode = 'live', string $status = 'active', int $amount = 10000): Subscription
+    {
+        $donor = Donor::factory()->create();
+
+        return Subscription::factory()->createWithDonation([
+            'gatewayId' => TestGateway::id(),
+            'amount' => new Money($amount, 'USD'),
+            'status' => new SubscriptionStatus($status),
+            'period' => SubscriptionPeriod::MONTH(),
+            'frequency' => 1,
+            'installments' => 0,
+            'mode' => new SubscriptionMode($mode),
+            'donorId' => $donor->id,
+        ], [
+            'anonymous' => false,
+            'donorId' => $donor->id,
+        ]);
     }
 }
