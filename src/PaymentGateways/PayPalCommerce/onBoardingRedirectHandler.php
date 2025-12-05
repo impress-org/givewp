@@ -215,7 +215,7 @@ class onBoardingRedirectHandler
     /**
      * Redirects the user to the account connected url
      *
-     * @unreleased Add nonce to redirect URL for CSRF protection.
+     * @since 4.13.2 Add nonce to redirect URL for CSRF protection.
      * @since 2.9.0
      */
     private function redirectAccountConnected()
@@ -298,7 +298,7 @@ class onBoardingRedirectHandler
     /**
      * Returns whether or not the current request is for refreshing the account status
      *
-     * @unreleased Add nonce verification for CSRF protection.
+     * @since 4.13.2 Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
      * @return bool
@@ -319,7 +319,7 @@ class onBoardingRedirectHandler
     /**
      * Return whether or not PayPal user redirect to GiveWP setting page after successful onboarding.
      *
-     * @unreleased Add state parameter verification for CSRF protection.
+     * @since 4.13.2 Add state parameter verification for CSRF protection.
      * @since 2.9.0
      *
      * @return bool
@@ -347,7 +347,7 @@ class onBoardingRedirectHandler
     /**
      * Return whether or not PayPal account details saved.
      *
-     * @unreleased Add nonce verification for CSRF protection.
+     * @since 4.13.2 Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
      * @return bool
