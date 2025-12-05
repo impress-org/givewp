@@ -2,6 +2,7 @@
 
 namespace Give\API\REST\V3\Routes\Donors;
 
+use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Routes\Donors\Actions\GetDonorCollectionParams;
 use Give\API\REST\V3\Routes\Donors\Actions\GetDonorItemSchema;
 use Give\API\REST\V3\Routes\Donors\Actions\GetDonorSharedParamsForGetMethods;
@@ -9,6 +10,7 @@ use Give\API\REST\V3\Routes\Donors\Permissions\DonorPermissions;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\API\REST\V3\Routes\Donors\ViewModels\DonorViewModel;
+use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\API\REST\V3\Support\CURIE;
 use Give\API\REST\V3\Support\Headers;
 use Give\API\REST\V3\Support\Item;
@@ -72,7 +74,7 @@ class DonorController extends WP_REST_Controller
                     ],
                     '_embed' => [
                         'description' => __(
-                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:statistics" when we wish to embed only a specific one.',
+                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:statistics" when we wish to embed only a specific one. Available embeddable resources: givewp:statistics | givewp:donations | givewp:subscriptions. IMPORTANT: Use with caution when setting to true, as donations and subscriptions return 30 items by default, which can result in a large payload.',
                             'give'
                         ),
                         'type' => ['string', 'boolean'],
@@ -289,21 +291,60 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Format dates as strings using Item::formatDatesForResponse
+     * @unreleased Add links to donations and subscriptions and format dates as strings using Item::formatDatesForResponse
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.4.0
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
     {
-        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $request->get_param('id')));
+        $donorId = $request->get_param('id');
+        $mode = $request->get_param('mode');
+        $campaignId = $request->get_param('campaignId');
+        $includeSensitiveData = $request->get_param('includeSensitiveData') ? '1' : '0';
+        $anonymousDonors = $request->get_param('anonymousDonors');
+        $anonymousDonations = $anonymousDonors;
+
+        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $donorId));
+
         $statistics_url = add_query_arg([
-            'mode' => $request->get_param('mode'),
-            'campaignId' => $request->get_param('campaignId'),
+            'mode' => $mode,
+            'campaignId' => $campaignId,
         ], $self_url . '/statistics');
+
+        $donations_url = rest_url(sprintf('%s/%s', DonationRoute::NAMESPACE, DonationRoute::BASE));
+        $donations_url = add_query_arg([
+            'donorId' => $donorId,
+            'mode' => $mode,
+            'campaignId' => $campaignId,
+            'includeSensitiveData' => $includeSensitiveData,
+            'anonymousDonations' => $anonymousDonations,
+            'page' => 1,
+            'per_page' => 30,
+        ], $donations_url);
+
+        $subscriptions_url = rest_url(sprintf('%s/%s', SubscriptionRoute::NAMESPACE, SubscriptionRoute::BASE));
+        $subscriptions_url = add_query_arg([
+            'donorId' => $donorId,
+            'mode' => $mode,
+            'campaignId' => $campaignId,
+            'includeSensitiveData' => $includeSensitiveData,
+            'anonymousDonors' => $anonymousDonors,
+            'page' => 1,
+            'per_page' => 30,
+        ], $subscriptions_url);
+
         $links = [
             'self' => ['href' => $self_url],
             CURIE::relationUrl('statistics') => [
                 'href' => $statistics_url,
+                'embeddable' => true,
+            ],
+            CURIE::relationUrl('donations') => [
+                'href' => $donations_url,
+                'embeddable' => true,
+            ],
+            CURIE::relationUrl('subscriptions') => [
+                'href' => $subscriptions_url,
                 'embeddable' => true,
             ],
         ];
