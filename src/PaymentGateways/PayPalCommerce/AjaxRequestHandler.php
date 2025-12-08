@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\ProcessorResponseError;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -51,7 +50,7 @@ class AjaxRequestHandler
     /**
      * @since 2.9.0
      *
-     * @var ConnectClient
+     * @var RefreshToken
      */
     private $refreshToken;
 
@@ -157,12 +156,18 @@ class AjaxRequestHandler
         $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
         $accountType = sanitize_text_field(wp_unslash($_GET['accountType']));
         $mode = sanitize_text_field(wp_unslash($_GET['mode']));
+
+        // Generate a unique state token for CSRF protection on PayPal callback.
+        $stateToken = wp_generate_password(32, false);
+        set_transient('give_paypal_onboarding_state_' . $mode, $stateToken, HOUR_IN_SECONDS);
+
         $redirectUrl = add_query_arg(
             [
                 'tab' => 'gateways',
                 'section' => 'paypal',
                 'group' => 'paypal-commerce',
                 'mode' => $mode,
+                'give_paypal_state' => $stateToken,
             ],
             admin_url('edit.php?post_type=give_forms&page=give-settings')
         );

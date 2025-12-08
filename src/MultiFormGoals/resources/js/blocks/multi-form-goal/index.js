@@ -22,6 +22,7 @@ import '../../../css/editor.scss';
  */
 
 export default registerBlockType('give/multi-form-goal', {
+    apiVersion: 3,
     title: __('Multi-Form Goal', 'give'),
     description: __(
         'The Multi-Form Goals block displays progress made across donation forms towards a common goal.',
