@@ -600,6 +600,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donation = Donation::factory()->create([
             'status' => DonationStatus::COMPLETE(),
             'mode' => DonationMode::LIVE(),
+            'anonymous' => false,
         ]);
         $donor = $donation->donor;
 
