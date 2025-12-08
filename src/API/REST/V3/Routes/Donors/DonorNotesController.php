@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes\Donors;
 
 use Exception;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
+use Give\API\REST\V3\Support\Headers;
 use Give\API\REST\V3\Support\Item;
 use Give\Donors\Models\Donor;
 use Give\Donors\Models\DonorNote;
@@ -82,6 +83,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get a collection of donor notes.
      *
+     * @unreleased Use Headers::addPagination() helper for pagination headers
      * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -111,29 +113,10 @@ class DonorNotesController extends WP_REST_Controller
         }, $notes);
 
         $totalNotes = DonorNote::query()->where('comment_parent', $donor->id)->count();
-        $totalPages = (int)ceil($totalNotes / $perPage);
+        $routeBase = sprintf('%s/%s/%d/notes', $this->namespace, $this->rest_base, $donor->id);
 
         $response = rest_ensure_response($notes);
-        $response->header('X-WP-Total', $totalNotes);
-        $response->header('X-WP-TotalPages', $totalPages);
-
-        $base = add_query_arg(
-            $request->get_query_params(),
-            rest_url(sprintf('%s/%s/%d/notes', $this->namespace, $this->rest_base, $donor->id))
-        );
-
-        if ($page > 1) {
-            $prevPage = $page - 1;
-            if ($prevPage > $totalPages) {
-                $prevPage = $totalPages;
-            }
-            $response->link_header('prev', add_query_arg('page', $prevPage, $base));
-        }
-
-        if ($totalPages > $page) {
-            $nextPage = $page + 1;
-            $response->link_header('next', add_query_arg('page', $nextPage, $base));
-        }
+        $response = Headers::addPagination($response, $request, $totalNotes, $perPage, $routeBase);
 
         return $response;
     }
