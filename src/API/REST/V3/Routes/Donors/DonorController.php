@@ -3,9 +3,6 @@
 namespace Give\API\REST\V3\Routes\Donors;
 
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
-use Give\API\REST\V3\Routes\Donors\Actions\GetDonorCollectionParams;
-use Give\API\REST\V3\Routes\Donors\Actions\GetDonorItemSchema;
-use Give\API\REST\V3\Routes\Donors\Actions\GetDonorSharedParamsForGetMethods;
 use Give\API\REST\V3\Routes\Donors\Permissions\DonorPermissions;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
@@ -27,7 +24,7 @@ use WP_REST_Server;
  * The methods using snake case like register_routes() are present in the base class,
  * and the methods using camel case like getSortColumn() are available only on this class.
  *
- * @unreleased Extract permissions, collection params, and shared params to separate classes
+ * @unreleased Extract permissions logic to separate classes
  * @since 4.4.0 Extends WP_REST_Controller class and rename methods
  * @since 4.0.0
  */
@@ -53,7 +50,7 @@ class DonorController extends WP_REST_Controller
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
-                'args' => array_merge($this->get_collection_params(), give(GetDonorSharedParamsForGetMethods::class)()),
+                'args' => array_merge($this->get_collection_params(), $this->getSharedParamsForGetMethods()),
             ],
             'schema' => [$this, 'get_public_item_schema'],
         ]);
@@ -97,7 +94,7 @@ class DonorController extends WP_REST_Controller
                         'type' => 'integer',
                         'default' => 0,
                     ],
-                ], give(GetDonorSharedParamsForGetMethods::class)()),
+                ], $this->getSharedParamsForGetMethods()),
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
@@ -357,7 +354,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Add missing properties to the schema and extract it to GetDonorItemSchema class
+     * @unreleased Add missing properties to the schema
      * @since 4.13.0 add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor and add custom fields schema
@@ -365,12 +362,195 @@ class DonorController extends WP_REST_Controller
      */
     public function get_item_schema(): array
     {
-        $schema = give(GetDonorItemSchema::class)();
+        $schema = [
+            '$schema' => 'http://json-schema.org/draft-04/schema#',
+            'title' => 'givewp/donor',
+            'description' => esc_html__('Donor routes for CRUD operations', 'give'),
+            'type' => 'object',
+            'properties' => [
+                'id' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Donor ID', 'give'),
+                    'readonly' => true,
+                ],
+                'prefix' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor prefix', 'give'),
+                    'format' => 'text-field',
+                ],
+                'firstName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor first name', 'give'),
+                    'minLength' => 1,
+                    'maxLength' => 128,
+                    'errorMessage' => esc_html__('First name is required', 'give'),
+                    'format' => 'text-field',
+                    'required' => true,
+                ],
+                'lastName' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor last name', 'give'),
+                    'minLength' => 1,
+                    'maxLength' => 128,
+                    'errorMessage' => esc_html__('Last name is required', 'give'),
+                    'format' => 'text-field',
+                    'required' => true,
+                ],
+                'email' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor email', 'give'),
+                    'format' => 'email',
+                    'required' => true,
+                ],
+                'additionalEmails' => [
+                    'type' => 'array',
+                    'description' => esc_html__('Donor additional emails', 'give'),
+                    'items' => [
+                        'type' => 'string',
+                        'format' => 'email',
+                    ],
+                ],
+                'phone' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor phone', 'give'),
+                    'pattern' => '^$|^[\+]?[1-9][\d\s\-\(\)]{7,20}$',
+                ],
+                'company' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Donor company', 'give'),
+                    'format' => 'text-field',
+                ],
+                'avatarId' => [
+                    'type' => ['integer', 'string', 'null'],
+                    'description' => esc_html__('Donor avatar ID', 'give'),
+                    'pattern' => '^$|^[0-9]+$',
+                    'errorMessage' => esc_html__('Invalid avatar ID', 'give'),
+                ],
+                'addresses' => [
+                    'type' => 'array',
+                    'description' => esc_html__('Donor addresses', 'give'),
+                    'items' => [
+                        'type' => 'object',
+                        'description' => esc_html__('Donor address', 'give'),
+                        'properties' => [
+                            'address1' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address line 1', 'give'),
+                                'format' => 'text-field',
+                            ],
+                            'address2' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address line 2', 'give'),
+                                'format' => 'text-field',
+                            ],
+                            'city' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address city', 'give'),
+                                'format' => 'text-field',
+                            ],
+                            'state' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address state', 'give'),
+                                'format' => 'text-field',
+                            ],
+                            'country' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address country', 'give'),
+                                'format' => 'text-field',
+                            ],
+                            'zip' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Donor address zip', 'give'),
+                                'format' => 'text-field',
+                            ],
+                        ],
+                    ],
+                ],
+                'customFields' => [
+                    'type' => 'array',
+                    'readonly' => true,
+                    'description' => esc_html__('Custom fields (sensitive data)', 'give'),
+                    'items' => [
+                        'type' => 'object',
+                        'properties' => [
+                            'label' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Field label', 'give'),
+                                'format' => 'text-field',
+                            ],
+                            'value' => [
+                                'type' => 'string',
+                                'description' => esc_html__('Field value', 'give'),
+                                'format' => 'text-field',
+                            ],
+                        ],
+                    ],
+                ],
+                'createdAt' => [
+                    'type' => ['string', 'null'],
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('Donor creation date in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
+                    'readonly' => true,
+                ],
+                'userId' => [
+                    'type' => ['integer', 'null'],
+                    'description' => esc_html__('WordPress user ID associated with the donor', 'give'),
+                    'readonly' => true,
+                ],
+                'name' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor full name (calculated from firstName and lastName)', 'give'),
+                    'readonly' => true,
+                ],
+                'avatarUrl' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('URL of the donor avatar image', 'give'),
+                    'format' => 'uri',
+                    'readonly' => true,
+                ],
+                'wpUserPermalink' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Link to edit the WordPress user associated with the donor', 'give'),
+                    'format' => 'uri',
+                    'readonly' => true,
+                ],
+                'totalAmountDonated' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'value' => [
+                            'type' => 'number',
+                            'description' => esc_html__('Total amount donated in decimal format', 'give'),
+                        ],
+                        'valueInMinorUnits' => [
+                            'type' => 'integer',
+                            'description' => esc_html__('Total amount donated in minor units (cents)', 'give'),
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                            'format' => 'text-field',
+                            'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
+                        ],
+                    ],
+                    'description' => esc_html__('Total amount donated by the donor', 'give'),
+                    'readonly' => true,
+                ],
+                'totalNumberOfDonations' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Total number of donations made by the donor', 'give'),
+                    'readonly' => true,
+                ],
+            ],
+        ];
+
         return $this->add_additional_fields_schema($schema);
     }
 
     /**
-     * @unreleased Extract collection params to GetDonorCollectionParams class
      * @since 4.8.0 Re-add search parameter
      * @since 4.4.0
      */
@@ -384,7 +564,54 @@ class DonorController extends WP_REST_Controller
         // Remove default parameters not being used
         unset($params['context']);
 
-        $params += give(GetDonorCollectionParams::class)();
+        $params += [
+            'sort' => [
+                'description' => __('The field by which to sort the donors.', 'give'),
+                'type' => 'string',
+                'default' => 'id',
+                'enum' => [
+                    'id',
+                    'createdAt',
+                    'name',
+                    'firstName',
+                    'lastName',
+                    'totalAmountDonated',
+                    'totalNumberOfDonations',
+                ],
+            ],
+            'direction' => [
+                'description' => __('The direction of sorting: ascending (ASC) or descending (DESC).', 'give'),
+                'type' => 'string',
+                'default' => 'DESC',
+                'enum' => ['ASC', 'DESC'],
+            ],
+            'onlyWithDonations' => [
+                'description' => __('Whether to include only donors who have made donations.', 'give'),
+                'type' => 'boolean',
+                'default' => true,
+            ],
+            'mode' => [
+                'description' => __(
+                    'The mode of donations to filter by "live" or "test" (it only gets applied when "onlyWithDonations" is set to true).',
+                    'give'
+                ),
+                'type' => 'string',
+                'default' => 'live',
+                'enum' => ['live', 'test'],
+            ],
+            'campaignId' => [
+                'description' => __(
+                    'The ID of the campaign to filter donors by - zero or empty mean "all campaigns" (it only gets applied when "onlyWithDonations" is set to true).',
+                    'give'
+                ),
+                'type' => 'integer',
+                'default' => 0,
+            ],
+            'search' => [
+                'description' => __('Search donors by name or email.', 'give'),
+                'type' => 'string',
+            ],
+        ];
 
         return $params;
     }
@@ -406,5 +633,35 @@ class DonorController extends WP_REST_Controller
         ];
 
         return $sortColumnsMap[$sortColumn];
+    }
+
+    /**
+     * Get shared parameters for GET methods (both collection and item).
+     *
+     * @since 4.4.0
+     *
+     * @return array
+     */
+    private function getSharedParamsForGetMethods(): array
+    {
+        return [
+            'includeSensitiveData' => [
+                'description' => __(
+                    'Include or not include data that can be used to contact or locate the donors, such as phone number, email, billing address, etc. (require proper permissions)',
+                    'give'
+                ),
+                'type' => 'boolean',
+                'default' => false,
+            ],
+            'anonymousDonors' => [
+                'description' => __(
+                    'Exclude, include, or redact data that can be used to identify the donors, such as ID, first name, last name, etc (require proper permissions).',
+                    'give'
+                ),
+                'type' => 'string',
+                'default' => 'exclude',
+                'enum' => ['exclude', 'include', 'redact'],
+            ],
+        ];
     }
 }

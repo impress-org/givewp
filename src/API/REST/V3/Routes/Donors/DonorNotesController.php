@@ -251,7 +251,6 @@ class DonorNotesController extends WP_REST_Controller
         $note->delete();
 
         $response = new WP_REST_Response($noteData);
-        //$response->set_status(200);
 
         return $response;
     }
