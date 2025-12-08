@@ -56,8 +56,12 @@ $blockInlineStyles = sprintf(
             </p>
 
             <div class="givewp-campaign-donors-block__empty-icon">
-                <?php
-                echo wp_kses_post(wp_remote_get(dirname(__DIR__) . '/icons/empty-state.svg')); ?>
+                <img
+                    src="<?php
+                    echo esc_url(plugin_dir_url(__DIR__) . 'icons/empty-state.svg'); ?>"
+                    alt="<?php
+                    esc_attr_e('Empty state icon', 'give'); ?>"
+                />
             </div>
 
             <?php
@@ -92,15 +96,19 @@ $blockInlineStyles = sprintf(
                     endif; ?>
 
                     <div class="givewp-campaign-donors-block__donor-info">
-                                    <span class="givewp-campaign-donors-block__donor-name"><?php
-                                        echo esc_html(!$donor->isAnonymous ? $donor->name : __('Anonymous', 'give')); ?></span>
+                        <span class="givewp-campaign-donors-block__donor-name"><?php
+                            echo esc_html(!$donor->isAnonymous ? $donor->name : __('Anonymous', 'give')); ?></span>
 
                         <?php
                         if ($sortBy === 'top-donors' && $key < 3) : ?>
                             <span class="givewp-campaign-donors-block__donor-ribbon" data-position="<?php
                             echo esc_attr($key + 1); ?>">
-                               <?php
-                               echo wp_kses_post(wp_remote_get(dirname(__DIR__) . '/icons/ribbon.svg')); ?>
+                                <img
+                                    src="<?php
+                                    echo esc_url(plugin_dir_url(__DIR__) . 'icons/ribbon.svg'); ?>"
+                                    alt="<?php
+                                    esc_attr_e('Ribbon', 'give'); ?>"
+                                />
                             </span>
                         <?php
                         endif; ?>

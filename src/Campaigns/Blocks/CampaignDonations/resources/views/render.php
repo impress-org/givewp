@@ -50,8 +50,12 @@ $blockInlineStyles = sprintf(
             </p>
 
             <div class="givewp-campaign-donations-block__empty-icon">
-                <?php
-                echo wp_kses_post(wp_remote_get(dirname(__DIR__) . '/icons/empty-state.svg')); ?>
+                <img
+                    src="<?php
+                    echo esc_url(plugin_dir_url(__DIR__) . 'icons/empty-state.svg'); ?>"
+                    alt="<?php
+                    esc_attr_e('Empty state icon', 'give'); ?>"
+                />
             </div>
 
             <?php
@@ -111,8 +115,12 @@ $blockInlineStyles = sprintf(
                     if ($sortBy === 'top-donations' && $key < 3) : ?>
                         <div class="givewp-campaign-donations-block__donation-ribbon" data-position="<?php
                         echo esc_attr($key + 1); ?>">
-                            <?php
-                            echo wp_kses_post(wp_remote_get(dirname(__DIR__) . '/icons/ribbon.svg')); ?>
+                            <img
+                                src="<?php
+                                echo esc_url(plugin_dir_url(__DIR__) . 'icons/ribbon.svg'); ?>"
+                                alt="<?php
+                                esc_attr_e('Ribbon', 'give'); ?>"
+                            />
                         </div>
                     <?php
                     endif; ?>
