@@ -275,8 +275,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 4.13.2: December 8th, 2025 =
 * Fix: Resolved block compatibility with WordPress 6.9
-* Security: Added additional sanitization to the donor wall (CVE-2025-66533)
-* Security: Added additional CSRF protection to PayPal onboarding settings
+* Security: Added additional sanitization to the donor wall and campaign blocks (CVE-2025-66533)
+* Security: Added additional CSRF protection to PayPal onboarding settings (CVE-2025-67467)
 
 = 4.13.1: November 18th, 2025 =
 * Enhancement: Added Caribbean guilder (XCG) as a currency option
