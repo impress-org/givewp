@@ -215,6 +215,7 @@ class onBoardingRedirectHandler
     /**
      * Redirects the user to the account connected url
      *
+     * @since 4.13.2 Add nonce to redirect URL for CSRF protection.
      * @since 2.9.0
      */
     private function redirectAccountConnected()
@@ -222,16 +223,19 @@ class onBoardingRedirectHandler
         $this->refreshAccountStatus();
 
         wp_redirect(
-            add_query_arg(
-                [
-                    'post_type' => 'give_forms',
-                    'page' => 'give-settings',
-                    'tab' => 'gateways',
-                    'section' => 'paypal',
-                    'group' => 'paypal-commerce',
-                    'paypal-commerce-account-connected' => '1'
-                ],
-                admin_url('edit.php')
+            wp_nonce_url(
+                add_query_arg(
+                    [
+                        'post_type' => 'give_forms',
+                        'page' => 'give-settings',
+                        'tab' => 'gateways',
+                        'section' => 'paypal',
+                        'group' => 'paypal-commerce',
+                        'paypal-commerce-account-connected' => '1'
+                    ],
+                    admin_url('edit.php')
+                ),
+                'give_paypal_account_connected'
             )
         );
 
@@ -294,40 +298,71 @@ class onBoardingRedirectHandler
     /**
      * Returns whether or not the current request is for refreshing the account status
      *
+     * @since 4.13.2 Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
      * @return bool
      */
     private function isStatusRefresh()
     {
-        return isset($_GET['paypalStatusCheck']) && Give_Admin_Settings::is_setting_page('gateways', 'paypal');
+        if (!isset($_GET['paypalStatusCheck']) || !Give_Admin_Settings::is_setting_page('gateways', 'paypal')) {
+            return false;
+        }
+
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'give_paypal_status_refresh')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * Return whether or not PayPal user redirect to GiveWP setting page after successful onboarding.
      *
+     * @since 4.13.2 Add state parameter verification for CSRF protection.
      * @since 2.9.0
      *
      * @return bool
      */
     private function isPayPalUserRedirected()
     {
-        return isset($_GET['merchantIdInPayPal']) && Give_Admin_Settings::is_setting_page('gateways', 'paypal');
+        if (!isset($_GET['merchantIdInPayPal']) || !Give_Admin_Settings::is_setting_page('gateways', 'paypal')) {
+            return false;
+        }
+
+        // Verify the state parameter to protect against CSRF attacks.
+        $mode = isset($_GET['mode']) && in_array($_GET['mode'], ['live', 'sandbox'], true) ? $_GET['mode'] : 'live';
+        $storedState = get_transient('give_paypal_onboarding_state_' . $mode);
+
+        if (!isset($_GET['give_paypal_state']) || !$storedState || !hash_equals($storedState, $_GET['give_paypal_state'])) {
+            return false;
+        }
+
+        // Delete the transient after successful verification to prevent replay attacks.
+        delete_transient('give_paypal_onboarding_state_' . $mode);
+
+        return true;
     }
 
     /**
      * Return whether or not PayPal account details saved.
      *
+     * @since 4.13.2 Add nonce verification for CSRF protection.
      * @since 2.9.0
      *
      * @return bool
      */
     private function isPayPalAccountDetailsSaved()
     {
-        return isset($_GET['paypal-commerce-account-connected']) && Give_Admin_Settings::is_setting_page(
-                'gateways',
-                'paypal'
-            );
+        if (!isset($_GET['paypal-commerce-account-connected']) || !Give_Admin_Settings::is_setting_page('gateways', 'paypal')) {
+            return false;
+        }
+
+        if (!isset($_GET['_wpnonce']) || !wp_verify_nonce($_GET['_wpnonce'], 'give_paypal_account_connected')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

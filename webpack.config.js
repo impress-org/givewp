@@ -143,6 +143,13 @@ const alias = {
     '@givewp/donations': srcPath('Donations/resources'),
     '@givewp/subscriptions': srcPath('Subscriptions/resources'),
     '@givewp/admin': srcPath('Admin'),
+    /**
+     * Dedupe Emotion packages to prevent multiple instances warning.
+     * Required for react-select in WordPress 6.9+ iframe context.
+     * @see https://emotion.sh/docs/emotion-11#multiple-instances
+     */
+    '@emotion/react': path.resolve(__dirname, 'node_modules/@emotion/react'),
+    '@emotion/cache': path.resolve(__dirname, 'node_modules/@emotion/cache'),
     ...defaultConfig.resolve.alias,
 };
 

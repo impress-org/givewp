@@ -316,6 +316,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @unreleased Add support for default country value in billing address field
      * @since 3.4.0 updated fields to add optional rules last so they can be dynamically validated.
      * @since 3.0.0
      */
@@ -340,6 +341,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 $group->getNodeByName('country')
                     ->label($block->getAttribute('countryLabel'))
                     ->options(...$countryList)
+                    ->defaultValue($block->getAttribute('defaultCountry'))
                     ->rules('required');
 
                 $group->getNodeByName('address1')

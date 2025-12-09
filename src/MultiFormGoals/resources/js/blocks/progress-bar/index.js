@@ -22,6 +22,7 @@ import '../../../css/editor.scss';
  */
 
 export default registerBlockType('give/progress-bar', {
+    apiVersion: 3,
     title: __('Progress Bar', 'give'),
     description: __(
         'The Progress Bar block displays progress made across donation forms towards a common goal.',
