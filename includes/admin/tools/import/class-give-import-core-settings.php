@@ -485,7 +485,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		public static function json_upload_mimes( $existing_mimes = array() ) {
 
 			$existing_mimes['json'] = 'application/json';
-            $existing_mimes['text'] = 'text/plain';        
+            $existing_mimes['text'] = 'text/plain';
 
 			return $existing_mimes;
 		}

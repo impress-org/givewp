@@ -21,12 +21,20 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since 4.13.1 commented out the setFeatureFlagNotificationCounter method and added a filter to set the count to 0
      * @since 3.6.0
      * @inheritDoc
      */
     public function boot(): void
     {
-        $this->setFeatureFlagNotificationCounter();
+        //$this->setFeatureFlagNotificationCounter();
+
+        /**
+         * @since 4.13.1 This is intentionally being set to 0 until we can revisit Event Tickets Beta.
+         */
+        add_filter('givewp_feature_flag_notifications_count', function ($count) {
+            return 0;
+        });
 
         Hooks::addFilter('give_get_settings_general', Actions\RegisterSettings::class);
         Hooks::addFilter('give_get_sections_general', Actions\RegisterSettingSection::class);
@@ -46,7 +54,7 @@ class ServiceProvider implements ServiceProviderInterface
         add_action('give_admin_field_beta_features_feedback_link', function () {
             echo sprintf(
                 '<div class="give-admin-beta-features-feedback-link"><p><img src="%s" alt="feedback link icon" /> %s <a href="https://feedback.givewp.com/events-beta-feedback" target="_blank" rel="noopener noreferrer">%s</a></p></div>',
-                GIVE_PLUGIN_URL . 'assets/dist/images/admin/feedback-icon.svg',
+                GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/feedback-icon.svg',
                 __('How can we improve this feature?', 'give'),
                 __('Submit your feedback.', 'give')
             );
@@ -54,6 +62,8 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * This is intended to add the initial notification count
+     *
      * @since 3.6.0
      */
     private function setFeatureFlagNotificationCounter(): void

@@ -4,6 +4,7 @@ namespace Give\Subscriptions\Factories;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
@@ -19,6 +20,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFactory extends ModelFactory
 {
     /**
+     * @since 4.11.0 add campaignId property
      * @since 2.24.0 add mode property
      * @since 2.20.0 update default donorId to create factory
      * @since 2.19.6
@@ -41,32 +43,40 @@ class SubscriptionFactory extends ModelFactory
             'status' => SubscriptionStatus::PENDING(),
             'renewsAt' => give(GenerateNextRenewalForSubscription::class)(SubscriptionPeriod::MONTH(), $frequency),
             'donationFormId' => 1,
+            'campaignId' => 1,
             'mode' => SubscriptionMode::TEST(),
         ];
     }
 
     /**
+     * @since 4.8.0 Respect subscription mode property
+     * @since 4.0.0 Add $donationAttributes parameter and merge it with the default attributes when creating a donation
      * @since 2.23.0
      *
      * @return Subscription|Subscription[]
      * @throws Exception
      */
-    public function createWithDonation(array $attributes = [])
+    public function createWithDonation(array $subscriptionAttributes = [], array $donationAttributes = [])
     {
-        $subscriptions = $this->create($attributes);
+        $subscriptions = $this->create($subscriptionAttributes);
 
-        if ( $this->count === 1 ) {
+        if ($this->count === 1) {
             $subscriptions = [$subscriptions];
         }
 
         foreach ($subscriptions as $subscription) {
-            $donation = Donation::factory()->create([
+            $defaultDonationAttributes = [
                 'amount' => $subscription->amount,
                 'type' => DonationType::SUBSCRIPTION(),
                 'status' => DonationStatus::COMPLETE(),
                 'gatewayId' => $subscription->gatewayId,
                 'subscriptionId' => $subscription->id,
-            ]);
+                'mode' => $subscription->mode->isTest() ? DonationMode::TEST() : DonationMode::LIVE(),
+            ];
+
+            $donation = Donation::factory()->create(
+                array_merge($defaultDonationAttributes, $donationAttributes)
+            );
 
             give()->subscriptions->updateLegacyParentPaymentId($subscription->id, $donation->id);
         }

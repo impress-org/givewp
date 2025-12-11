@@ -1,0 +1,47 @@
+import {GoalType} from '@givewp/campaigns/types';
+
+export type Campaign = {
+    id?: number;
+    pageId?: number;
+    pagePermalink?: string & Location;
+    type: string;
+    title: string;
+    shortDescription: string;
+    longDescription: string;
+    logo: string;
+    image: string;
+    primaryColor: string;
+    secondaryColor: string;
+    goalType: GoalType;
+    goal: number;
+    goalStats: {
+        actual: number;
+        percentage: number;
+        goal: number;
+    };
+    status: string;
+    createdAt: string;
+    startDate: string;
+    endDate: string;
+    defaultFormId: number;
+    defaultFormTitle: string;
+};
+
+export type CampaignEntity = {
+    record: Campaign;
+    hasResolved: boolean;
+    edit: (data: Campaign) => void
+    save: () => any
+}
+
+/*export interface Campaign {
+    id: number;
+    title: string;
+    type: string;
+    status: string;
+    shortDescription: string;
+    longDescription: string;
+    logo: string;
+    image: string;
+    goal: number;
+}*/

@@ -32,15 +32,26 @@ class DonorRepositoryProxy
     private $donorRepository;
 
     /**
+     * @var DonorNotesRepository
+     */
+    public $notes;
+
+    /**
      * The Give_DB_Donors class extends Give_DB which has & assigns public properties that we need to
      * dynamically assign to this proxy class or else they won't be accessible.
      *
+     * @since 4.4.0 Add "notes" property
      * @since 2.19.6
      */
-    public function __construct(Give_DB_Donors $legacyDonorRepository, DonorRepository $donorRepository)
+    public function __construct(
+        Give_DB_Donors $legacyDonorRepository,
+        DonorRepository $donorRepository,
+        DonorNotesRepository $donorNotesRepository
+    )
     {
         $this->legacyDonorRepository = $legacyDonorRepository;
         $this->donorRepository = $donorRepository;
+        $this->notes = $donorNotesRepository;
 
         $properties = get_object_vars($legacyDonorRepository);
 

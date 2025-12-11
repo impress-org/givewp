@@ -48,16 +48,13 @@ That's it. You're now ready to start development.
 
 **Available commands**
 
-Note: as of GiveWP 3.0 we have two separate build processes. One for the legacy codebase that uses [Laravel Mix](https://laravel.com/docs/6.x/mix) and one for scripts introduced 3.0+ that use [@wordpress/scripts](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/). There are commands for running both and individual processes.  The commands are as follows:
+Note: We use [@wordpress/scripts](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/). The commands are as follows:
 
-| Command            | Description                                                                       |
-|:-------------------|:----------------------------------------------------------------------------------|
-| `npm run dev`      | (v2 & v3) Runs a one time build for development. No production files are created. |
-| `npm run dev:v3`   | (v3) Runs a one time build for development. No production files are created.      |
-| `npm run watch`    | (v2) Automatically re-builds as changes are made.                                 |
-| `npm run watch:v3` | (v3) Automatically re-builds as changes are made.                                 |
-| `npm run build`    | (v2 & v3) Builds the minified production files for release.                       |
-| `npm run build:v3` | (v3) Builds the minified production files for release.                            |
+| Command         | Description                                                             |
+|:----------------|:------------------------------------------------------------------------|
+| `npm run dev`   | Runs a one time build for development. No production files are created. |
+| `npm run watch` | Automatically re-builds as changes are made.                            |
+| `npm run build` | Builds the minified production files for release.                       |
 
 **Development Notes**
 

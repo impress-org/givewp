@@ -1,0 +1,26 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: PHP Standards
+globs: *.php
+alwaysApply: false
+---
+- Follow PSR-12 coding standards
+- Write code compatible with PHP 7.4
+- Use proper WordPress prefix for functions and classes
+- Implement WordPress nonce verification
+- Follow WordPress database operations best practices
+- Structure plugin hooks logically
+- Use short-array syntax
+- Prefer to bail early with conditionals to avoid cognitive load
+
+## Package Version Annotations
+
+When needing to add a package version number inside a DocBlock, please use it as such:
+
+- `@unreleased`
+
+The `@unreleased` tag will be automatically replaced with the correct `@since` tag with the package version number the next time a new version of that package is released.

@@ -87,3 +87,9 @@ form {
 ul li {
   list-style: disc;
 }
+
+// selection
+::selection {
+  background-color: #B3D4FC; /* light blue */
+  color: black;
+}

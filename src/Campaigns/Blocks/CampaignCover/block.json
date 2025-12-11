@@ -1,0 +1,52 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "givewp/campaign-cover-block",
+    "version": "1.0.0",
+    "title": "Campaign Cover",
+    "category": "give",
+    "description": "Displays the cover image of the campaign.",
+    "attributes": {
+        "campaignId": {
+            "type": "integer"
+        },
+        "alt": {
+            "type": "string"
+        },
+        "width": {
+            "type": "number",
+            "default": 645
+        },
+        "height": {
+            "type": "number",
+            "default": 865
+        },
+        "align": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "align": [
+            "wide",
+            "full",
+            "left",
+            "center",
+            "right"
+        ],
+        "filter": {
+            "duotone": true
+        },
+        "selectors": {
+            "filter": {
+                "duotone": ".wp-block-givewp-campaign-cover-block img"
+            }
+        },
+        "anchor": true,
+        "className": true
+    },
+    "example":{},
+    "textdomain": "give",
+    "render": "file:./render.php",
+    "style": "file:../../../../build/campaignCoverBlock.css"
+}

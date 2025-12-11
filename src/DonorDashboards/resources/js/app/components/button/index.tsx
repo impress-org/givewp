@@ -28,8 +28,10 @@ const Button = ({icon, children, onClick, href, type, variant,classnames, ...res
                 href={href}
                 {...rest}
             >
-                {children}
-                {icon && <FontAwesomeIcon icon={icon} />}
+                <span>
+                    {children}
+                    {icon && <FontAwesomeIcon icon={icon} />}
+                </span>
             </a>
         );
     }

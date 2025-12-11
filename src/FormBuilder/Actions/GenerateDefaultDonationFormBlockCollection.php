@@ -91,7 +91,8 @@ class GenerateDefaultDonationFormBlockCollection
         ]);
     }
 
-     /**
+    /**
+     * @since 4.3.0 update firstNamePlaceholder and lastNamePlaceholder values.
      * @since 3.1.0
      */
     protected function createDonorNameBlock(): BlockModel
@@ -106,9 +107,9 @@ class GenerateDefaultDonationFormBlockCollection
                     __("Mrs", 'give')
                 ],
                 "firstNameLabel" => __("First name", 'give'),
-                "firstNamePlaceholder" => __("First name", 'give'),
+                "firstNamePlaceholder" => __("John", 'give'),
                 "lastNameLabel" => __("Last name", 'give'),
-                "lastNamePlaceholder" => __("Last name", 'give'),
+                "lastNamePlaceholder" => __("Doe", 'give'),
                 "requireLastName" => false
             ],
             "innerBlocks" => []

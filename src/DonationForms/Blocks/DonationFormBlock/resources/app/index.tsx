@@ -1,9 +1,9 @@
-import {createRoot, render} from '@wordpress/element';
-import ModalForm from './Components/ModalForm';
+import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-
-import '../editor/styles/index.scss';
 import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
+import ModalForm from '@givewp/src/Campaigns/Blocks/shared/components/ModalForm';
+import '../editor/styles/index.scss';
+import renderDonationForm from './renderDonationForm';
 
 /**
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage".
@@ -34,11 +34,12 @@ const isRedirect = (url: string) => {
 };
 
 /**
+ * @since 4.3.0 replace ModalForm with Campaigns ModalForm.
  * @since 3.4.0 add logic for inline redirects.
  * @since 3.2.0 replace form format reveal with new tab.
  * @since 3.0.0
  */
-function DonationFormBlockApp({
+export default function DonationFormBlockApp({
     formFormat,
     dataSrc,
     embedId,
@@ -50,7 +51,13 @@ function DonationFormBlockApp({
 
     if (formFormat === 'newTab') {
         return (
-            <a className={'givewp-donation-form-link'} href={formUrl} target={'_blank'} rel={'noopener noreferrer'}>
+            <a
+                className={'givewp-donation-form-link'}
+                href={formUrl}
+                target={'_blank'}
+                rel={'noopener noreferrer'}
+                aria-label={`${openFormButton} ${__('Opens in a new tab', 'give')}`}
+            >
                 {openFormButton}
             </a>
         );
@@ -59,7 +66,7 @@ function DonationFormBlockApp({
     if (formFormat === 'modal' || formFormat === 'reveal') {
         return (
             <ModalForm
-                openFormButton={openFormButton}
+                buttonText={openFormButton}
                 dataSrc={dataSrc}
                 embedId={embedId}
                 isFormRedirect={isFormRedirect}
@@ -70,6 +77,7 @@ function DonationFormBlockApp({
 
     return (
         <IframeResizer
+            title={__('Donation Form', 'give')}
             id={embedId}
             src={dataSrc}
             checkOrigin={false}
@@ -85,22 +93,10 @@ function DonationFormBlockApp({
 
 const roots = document.querySelectorAll('.root-data-givewp-embed');
 
-roots.forEach((root) => {
-    const dataSrc = root.getAttribute('data-src');
-    const embedId = root.getAttribute('data-givewp-embed-id');
-    const formFormat = root.getAttribute('data-form-format');
-    const openFormButton = root.getAttribute('data-open-form-button');
-    const formUrl = root.getAttribute('data-form-url');
-    const formViewUrl = root.getAttribute('data-form-view-url');
-
-    createRoot(root).render(
-        <DonationFormBlockApp
-            openFormButton={openFormButton}
-            formFormat={formFormat}
-            dataSrc={dataSrc}
-            embedId={embedId}
-            formUrl={formUrl}
-            formViewUrl={formViewUrl}
-        />
-    );
+/**
+ * @since 4.7.0 update to use renderDonationForm
+ * @since 3.22.0 Add locale support
+ */
+roots?.forEach((root) => {
+    renderDonationForm(root);
 });

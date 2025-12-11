@@ -6,20 +6,6 @@
 class Tests_Cache_Settings extends Give_Unit_Test_Case {
 
 	/**
-	 * Set it up.
-	 */
-	public function setUp() {
-		parent::setUp();
-	}
-
-	/**
-	 * Tear it down.
-	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
-
-	/**
 	 * Initial cache testing
 	 *
 	 * @since 2.4.0

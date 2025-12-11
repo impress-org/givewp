@@ -1,0 +1,104 @@
+.givewp-donation-form-modal {
+    outline: none;
+    width: 100%;
+    padding: 1rem;
+    overflow-y: scroll;
+
+    &[data-entering="true"] {
+        animation: modal-fade 300ms, modal-zoom 600ms;
+    }
+
+    @keyframes modal-fade {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes modal-zoom {
+        from {
+            transform: scale(0.8);
+        }
+
+        to {
+            transform: scale(1);
+        }
+    }
+
+    &__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: var(--visual-viewport-height);
+        background: rgba(0 0 0 / .7);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+
+        &[data-loading="true"] {
+            display: none;
+        }
+
+        &[data-entering="true"] {
+            animation: modal-fade 300ms;
+        }
+
+        &[data-exiting="true"] {
+            animation: modal-fade 150ms reverse ease-in;
+        }
+    }
+
+    &__open__spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+        line-height: 1;
+    }
+
+    &__open {
+        position: relative;
+    }
+
+    &__close {
+        display: flex;
+        position: fixed;
+        top: 25px;
+        right: 25px;
+        padding: .75rem;
+        width: fit-content;
+        background: #e7e8ed;
+        cursor: pointer;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        z-index: 999;
+        transition: 0.2s;
+
+        svg {
+            height: 1rem;
+            width: 1rem;
+        }
+
+        &:hover, &:focus, &:active {
+            border: 1px solid darken(#e7e8ed, 10%);
+            background-color: darken(#e7e8ed, 10%);
+        }
+    }
+}
+
+// Account for admin bar
+.admin-bar {
+    .givewp-donation-form-modal {
+        margin-top: 32px;
+        &__close {
+            top: calc(32px + 25px);
+        }
+    }
+}

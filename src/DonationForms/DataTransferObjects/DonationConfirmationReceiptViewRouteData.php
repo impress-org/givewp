@@ -15,7 +15,6 @@ class DonationConfirmationReceiptViewRouteData
     public $receiptId;
 
     /**
-     *
      * @since 3.0.0
      */
     public static function fromRequest(array $request): self

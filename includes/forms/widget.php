@@ -88,7 +88,7 @@ class Give_Forms_Widget extends WP_Widget {
 		}
 
 		// Directories of assets.
-		$js_dir = GIVE_PLUGIN_URL . 'assets/dist/';
+		$js_dir = GIVE_PLUGIN_URL . 'build/assets/dist/';
 
 		wp_enqueue_script( "{$this->scriptHandle}-js", $js_dir . 'js/admin-widgets.js', [ 'give-admin-scripts' ], GIVE_VERSION, false );
 		wp_enqueue_style( "{$this->scriptHandle}-css", $js_dir . 'css/admin-widgets.css', [], GIVE_VERSION, false );
@@ -505,4 +505,11 @@ class Give_Forms_Widget extends WP_Widget {
 	}
 }
 
-new Give_Forms_Widget();
+
+/**
+ * @since 4.3.0 use widgets_init action and register_widget
+ */
+add_action( 'widgets_init', static function() {
+    register_widget( 'Give_Forms_Widget' );
+} );
+

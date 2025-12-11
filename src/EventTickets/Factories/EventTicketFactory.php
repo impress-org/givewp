@@ -12,7 +12,7 @@ use Give\Framework\Models\Factories\ModelFactory;
 class EventTicketFactory extends ModelFactory
 {
     /**
-     * @unreleased Add amount to the properties array using the price from the ticket type
+     * @since 3.20.0 Add amount to the properties array using the price from the ticket type
      * @since 3.6.0
      *
      * @throws Exception

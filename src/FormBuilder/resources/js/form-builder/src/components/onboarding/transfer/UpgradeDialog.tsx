@@ -15,7 +15,7 @@ export default function UpgradeSuccessDialog() {
         dispatch(setTransferState({showUpgradeModal: false}))
         fetch(migrationActionUrl + `&formId=${formId}`, {method: 'POST'})
     }
-    const getImage = (name: string) => `${window.migrationOnboardingData.pluginUrl}assets/dist/images/form-migration/${name}`;
+    const getImage = (name: string) => `${window.migrationOnboardingData.pluginUrl}build/assets/dist/images/form-migration/${name}`;
 
     if(!transfer.showUpgradeModal) {
         return null;

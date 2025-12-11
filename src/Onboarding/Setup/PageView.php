@@ -126,7 +126,7 @@ class PageView
      */
     public function image($src)
     {
-        return GIVE_PLUGIN_URL . "assets/dist/images/setup-page/$src";
+        return GIVE_PLUGIN_URL . "build/assets/dist/images/setup-page/$src";
     }
 
     /**

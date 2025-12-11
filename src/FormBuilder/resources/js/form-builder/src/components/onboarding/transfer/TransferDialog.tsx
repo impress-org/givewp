@@ -29,30 +29,29 @@ function Confirmation({handleTransferConfirmation}) {
 
     function handleInputChange(e) {
         e.persist();
-        setState(prev => ({...prev, input: e.target.value}))
+        setState((prev) => ({...prev, input: e.target.value}));
     }
 
     function handleCheckboxChange(e, name) {
         e.persist();
-        setState(prev => ({...prev, [name]: e.target.checked}))
+        setState((prev) => ({...prev, [name]: e.target.checked}));
     }
 
     return (
         <>
-            <div className="givewp-dialog-title">
-                {__('Transferring donation data to the upgraded form', 'give')}
-            </div>
+            <div className="givewp-dialog-title">{__('Transferring donation data to the upgraded form', 'give')}</div>
 
             <div className="givewp-dialog-content">
                 <Interweave
-                    content={__('Type <strong>transfer</strong> to confirm transfer of donation data for the form selected. This means all blocks, shortcodes, and the form URL will automatically redirect to the upgraded form.', 'give')} />
+                    content={__(
+                        'Type <strong>transfer</strong> to confirm transfer of donation data for the form selected. This means all blocks, shortcodes, and the form URL will automatically redirect to the upgraded form.',
+                        'give'
+                    )}
+                />
             </div>
 
             <div>
-                <Input
-                    value={state.input}
-                    onChange={handleInputChange}
-                />
+                <Input value={state.input} onChange={handleInputChange} />
             </div>
 
             <br />
@@ -62,7 +61,7 @@ function Confirmation({handleTransferConfirmation}) {
                     label={__('Delete the existing form after transfer', 'give')}
                     type="checkbox"
                     checked={state.delete}
-                    onChange={e => handleCheckboxChange(e, 'delete')}
+                    onChange={(e) => handleCheckboxChange(e, 'delete')}
                 />
             </div>
 
@@ -72,14 +71,16 @@ function Confirmation({handleTransferConfirmation}) {
                 disabled={state.input !== 'transfer'}
                 size="large"
                 style={{width: '100%'}}
-                onClick={() => handleTransferConfirmation({
-                    delete: state.delete,
-                })}
+                onClick={() =>
+                    handleTransferConfirmation({
+                        delete: state.delete,
+                    })
+                }
             >
                 {__('Yes, proceed', 'give')}
             </Button>
         </>
-    )
+    );
 }
 
 export default function TransferSuccessDialog() {
@@ -91,13 +92,13 @@ export default function TransferSuccessDialog() {
         step: 0,
         showHeader: true,
         dialogTitle: __('Transfer existing donation data', 'give'),
-        dialogIcon: <AlertTriangle />
-    }
+        dialogIcon: <AlertTriangle />,
+    };
 
     const [state, setState] = useState<DialogStateProps>(initialState);
 
     function handleClose() {
-        dispatch(setTransferState({showTransferModal: false}))
+        dispatch(setTransferState({showTransferModal: false}));
         setState(initialState);
     }
 
@@ -106,52 +107,58 @@ export default function TransferSuccessDialog() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-WP-Nonce': window.migrationOnboardingData.apiNonce
+                'X-WP-Nonce': window.migrationOnboardingData.apiNonce,
             },
-            body: JSON.stringify({...params, formId: window.migrationOnboardingData.isMigratedForm})
+            body: JSON.stringify({...params, formId: window.migrationOnboardingData.isMigratedForm}),
         }).then((response) => {
-            if(response.ok) {
-                window.migrationOnboardingData.isTransferredForm = true
+            if (response.ok) {
+                window.migrationOnboardingData.isTransferredForm = true;
             }
-            dispatch(setTransferState({showNotice: !response.ok}))
-            setState(prev => ({
+            dispatch(setTransferState({showNotice: !response.ok}));
+            setState((prev) => ({
                 ...prev,
                 showHeader: false,
                 step: response.ok ? 2 : 3,
-                dialogIcon: response.ok ? <CheckCircle /> : <AlertTriangle />
-            }))
-        })
+                dialogIcon: response.ok ? <CheckCircle /> : <AlertTriangle />,
+            }));
+        });
 
-        fetch(window.migrationOnboardingData.transferActionUrl + `&formId=${window.migrationOnboardingData.formId}`, {method: 'POST'})
+        fetch(window.migrationOnboardingData.transferActionUrl + `&formId=${window.migrationOnboardingData.formId}`, {
+            method: 'POST',
+        });
     }
 
     const Notice = () => (
         <>
-            <div className="givewp-dialog-title">
-                {__('Transferring donation data cannot be undone', 'give')}
-            </div>
+            <div className="givewp-dialog-title">{__('Transferring donation data cannot be undone', 'give')}</div>
 
             <div className="givewp-dialog-content">
                 <Interweave
-                    content={__(sprintf('Transferring donations involves moving all donations from the existing form %s to the upgraded form, leaving no donations associated with the existing form after the transfer.', `<span class="givewp-dialog-form-name">[${settings.formTitle}]</span>`), 'give')} />
+                    content={__(
+                        sprintf(
+                            'Transferring donations involves moving all donations from the existing form %s to the upgraded form, leaving no donations associated with the existing form after the transfer.',
+                            `<span class="givewp-dialog-form-name">[${settings.formTitle}]</span>`
+                        ),
+                        'give'
+                    )}
+                />
             </div>
 
             <Button
                 size="large"
                 onClick={() => {
-                    setState(prev => ({
+                    setState((prev) => ({
                         ...prev,
                         step: 1,
-                        dialogTitle: __('Confirm transfer', 'give')
-                    }))
+                        dialogTitle: __('Confirm transfer', 'give'),
+                    }));
                 }}
                 style={{width: '100%'}}
             >
                 {__('Transfer', 'give')}
             </Button>
         </>
-    )
-
+    );
 
     const Completed = () => (
         <>
@@ -165,13 +172,13 @@ export default function TransferSuccessDialog() {
 
             <Button
                 size="large"
-                onClick={() => window.location.href = 'edit.php?post_type=give_forms&page=give-forms'}
+                onClick={() => (window.location.href = window.headerContainer.campaignUrl + '&tab=forms')}
                 style={{width: '100%'}}
             >
-                {__('Go back to your donation form list', 'give')}
+                {__('Go back to campaign forms', 'give')}
             </Button>
         </>
-    )
+    );
 
     const Error = () => (
         <>
@@ -183,15 +190,11 @@ export default function TransferSuccessDialog() {
                 {__('Something went wrong with the transfer.', 'give')}
             </div>
 
-            <Button
-                size="large"
-                onClick={handleClose}
-                style={{width: '100%'}}
-            >
+            <Button size="large" onClick={handleClose} style={{width: '100%'}}>
                 {__('Close', 'give')}
             </Button>
         </>
-    )
+    );
 
     const Screen = () => {
         switch (state.step) {
@@ -204,7 +207,7 @@ export default function TransferSuccessDialog() {
             default:
                 return <Notice />;
         }
-    }
+    };
 
     if (!transfer.showTransferModal) {
         return null;
@@ -221,5 +224,4 @@ export default function TransferSuccessDialog() {
             <Screen />
         </ModalDialog>
     );
-
 }

@@ -98,7 +98,7 @@ class Give_Comment {
 			add_filter( 'comments_clauses', array( $this, 'hide_comments_pre_wp_41' ), 10, 1 );
 			add_filter( 'comment_feed_where', array( $this, 'hide_comments_from_feeds' ), 10, 1 );
 			add_filter( 'wp_count_comments', array( $this, 'remove_comments_from_comment_counts' ), 10, 2 );
-			add_filter( 'get_comment_author', array( $this, '__get_comment_author' ), 10, 3 );
+			add_filter( 'get_comment_author', array($this, 'get_comment_author'), 10, 3 );
 		}
 	}
 
@@ -432,6 +432,7 @@ class Give_Comment {
 	/**
 	 * Get donor name
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.2.0
 	 * @access public
 	 *
@@ -441,7 +442,7 @@ class Give_Comment {
 	 *
 	 * @return mixed
 	 */
-	public function __get_comment_author( $author, $comment_id, $comment ) {
+	public function get_comment_author( $author, $comment_id, $comment ) {
 		if ( in_array( $comment->comment_type, $this->comment_types ) ) {
 			switch ( $comment->comment_type ) {
 				case 'give_payment_note':

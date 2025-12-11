@@ -85,7 +85,7 @@ class Block
     {
         wp_enqueue_script(
             'give-donor-dashboards-block',
-            GIVE_PLUGIN_URL . 'assets/dist/js/donor-dashboards-block.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/donor-dashboards-block.js',
             [],
             GIVE_VERSION,
             true

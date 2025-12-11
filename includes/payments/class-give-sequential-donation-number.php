@@ -58,14 +58,15 @@ class Give_Sequential_Donation_Number {
 	 * @since 2.1.0
 	 */
 	public function init() {
-        add_action('wp_insert_post', array($this, '__save_donation_title'), 10, 3);
-        add_action('after_delete_post', array($this, '__remove_serial_number'), 10, 1);
+        add_action('wp_insert_post', array($this, 'save_donation_title'), 10, 3);
+        add_action('after_delete_post', array($this, 'remove_serial_number'), 10, 1);
     }
 
 	/**
 	 * Set serialize donation number as donation title.
 	 * Note: only for internal use
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
      * @since 3.0.0 replace wp_update_post with DB::update to avoid affecting the post update date and invalidating the donation model's updatedAt date
 	 * @since  2.1.0
 	 * @access public
@@ -76,7 +77,7 @@ class Give_Sequential_Donation_Number {
 	 *
 	 * @return void
 	 */
-	public function __save_donation_title( $donation_id, $post, $existing_donation_updated ) {
+	public function save_donation_title( $donation_id, $post, $existing_donation_updated ) {
 		// Bailout
 		if (
 			! give_is_setting_enabled( give_get_option( 'sequential-ordering_status', 'disabled' ) )
@@ -86,7 +87,7 @@ class Give_Sequential_Donation_Number {
 			return;
 		}
 
-		$serial_number = $this->__set_donation_number( $donation_id );
+		$serial_number = $this->set_donation_number( $donation_id );
 		$serial_code   = $this->set_number_padding( $serial_number );
 
 		// Add prefix.
@@ -136,6 +137,7 @@ class Give_Sequential_Donation_Number {
 	 * Set donation number
 	 * Note: only for internal use
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.1.0
 	 * @access public
 	 *
@@ -143,7 +145,7 @@ class Give_Sequential_Donation_Number {
 	 *
 	 * @return int
 	 */
-	public function __set_donation_number( $donation_id ) {
+	public function set_donation_number( $donation_id ) {
 		$table_data = array(
 			'payment_id' => $donation_id,
 		);
@@ -177,6 +179,7 @@ class Give_Sequential_Donation_Number {
 	 * Remove sequential donation data
 	 * Note: only internal use.
 	 *
+     * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  2.1.0
 	 * @access public
 	 *
@@ -184,7 +187,7 @@ class Give_Sequential_Donation_Number {
 	 *
 	 * @return bool
 	 */
-	public function __remove_serial_number( $donation_id ) {
+	public function remove_serial_number( $donation_id ) {
 		return Give()->sequential_donation_db->delete( $this->get_serial_number( $donation_id ) );
 	}
 

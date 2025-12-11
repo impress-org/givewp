@@ -6,6 +6,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\UpdateStripeInvoiceMetaData;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Decorators\SubscriptionModelDecorator;
 use Give\Subscriptions\Models\Subscription;
 use Stripe\Event;
@@ -42,6 +43,8 @@ class InvoicePaymentSucceeded
     }
 
     /**
+     * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
+     * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      * @throws \Exception
@@ -51,20 +54,38 @@ class InvoicePaymentSucceeded
         /* @var Invoice $invoice */
         $invoice = $event->data->object;
 
-        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($invoice->subscription)->get();
+        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+
+        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
 
         // only use this for next gen for now
         if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
             return false;
         }
 
-        if ($initialDonation = give()->donations->getByGatewayTransactionId($invoice->payment_intent)) {
+        /**
+         * This checking is necessary because the invoice data returned in webhook events
+         * can be incomplete and may not include the payment_intent property, especially
+         * with newer Stripe API versions like 2025-03-31.basil. By making a direct
+         * API call to retrieve the invoice, we ensure we get all properties including
+         * the payment_intent which is required for processing this webhook.
+         */
+        if (is_null($invoice->payment_intent)) {
+            $invoice = $this->getCompleteInvoiceFromStripe($event->data->object->id);
+        }
+
+        $gatewayTransactionId = $invoice->payment_intent;
+        $initialDonation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+        if ($initialDonation) {
             $this->handleInitialDonation($initialDonation);
+            $this->updateStripeInvoiceMetaData($invoice, $initialDonation);
         } else {
             $subscriptionModel = $this->getSubscriptionModelDecorator($subscription);
 
             if ($subscriptionModel->shouldCreateRenewal()) {
                 $subscriptionModel = $subscriptionModel->handleRenewal($invoice);
+                $renewalDonation = $subscriptionModel->subscription->donations[0];
+                $this->updateStripeInvoiceMetaData($invoice, $renewalDonation);
             }
 
             if ($subscriptionModel->shouldEndSubscription()) {
@@ -83,7 +104,6 @@ class InvoicePaymentSucceeded
     {
         return new SubscriptionModelDecorator($subscription);
     }
-
 
     /**
      * @since 3.0.0
@@ -112,5 +132,13 @@ class InvoicePaymentSucceeded
     protected function cancelSubscription(SubscriptionModelDecorator $subscriptionModel)
     {
         $subscriptionModel->cancelSubscription();
+    }
+
+    /**
+     * @since 4.3.0
+     */
+    protected function updateStripeInvoiceMetaData(Invoice $invoice, Donation $donation)
+    {
+        give(UpdateStripeInvoiceMetaData::class)($invoice, $donation);
     }
 }

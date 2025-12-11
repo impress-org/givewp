@@ -1,9 +1,13 @@
 <?php
 
+use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
+
 /**
  * Class Give_Tests_Donors
  */
-class Tests_Give_Donors extends Give_Unit_Test_Case {
+class Tests_Give_Donors extends TestCase {
+    use RefreshDatabase;
 
 	protected $_post_id = null;
 
@@ -14,7 +18,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	/**
 	 * Set it up
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		// Create a Donation Form
@@ -119,9 +123,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	/**
 	 * Tear it Down
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test Add Donor
@@ -248,17 +250,17 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 
 		$donor = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertEquals( '20', $donor->get_total_donation_amount() );
+		$this->assertEquals( 20, (int)$donor->get_total_donation_amount() );
 		$this->assertEquals( '1', $donor->purchase_count );
 
 		$donor->increase_purchase_count();
 		$donor->increase_value( 10 );
 
-		$this->assertEquals( '30', $donor->get_total_donation_amount() );
+		$this->assertEquals( 30, (int)$donor->get_total_donation_amount() );
 		$this->assertEquals( '2', $donor->purchase_count );
 
 		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '2' );
-		$this->assertEquals( give_donation_total_of_user( $this->_user_id ), '30' );
+		$this->assertEquals( (int)give_donation_total_of_user( $this->_user_id ), 30 );
 
 		// Make sure we hit the false conditions
 		$this->assertFalse( $donor->increase_purchase_count( - 1 ) );
@@ -280,7 +282,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 		$this->assertEquals( $donor->purchase_count, '0' );
 
 		$this->assertEquals( give_count_donations_of_donor( $this->_user_id ), '0' );
-		$this->assertEquals( give_donation_total_of_user( $this->_user_id ), '10' );
+		$this->assertEquals((int)give_donation_total_of_user( $this->_user_id ), 10 );
 
 		// Make sure we hit the false conditions
 		$this->assertFalse( $donor->decrease_donation_count( - 1 ) );
@@ -301,7 +303,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 
 		$donor = new Give_Donor( 'testadmin@domain.com' );
 
-		$this->assertInternalType( 'array', $donor->notes );
+        $this->assertIsArray( $donor->notes );
 		$this->assertEquals( 0, $donor->get_notes_count() );
 
 		$note_1 = $donor->add_note( 'Testing' );
@@ -334,7 +336,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 
 		$out = give_get_users_donations( $this->_user_id );
 
-		$this->assertInternalType( 'object', $out[0] );
+        $this->assertIsObject( $out[0] );
 		$this->assertEquals( 'give_payment', $out[0]->post_type );
 		$this->assertTrue( give_has_donations( $this->_user_id ) );
 		$this->assertEquals( 1, give_count_donations_of_donor( $this->_user_id ) );
@@ -354,9 +356,9 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 
 		$out2 = give_get_users_completed_donations( $this->_user_id );
 
-		$this->assertInternalType( 'array', $out2 );
+        $this->assertisArray( $out2 );
 		$this->assertEquals( 1, count( $out2 ) );
-		$this->assertInternalType( 'object', $out2[0] );
+		$this->assertIsObject( $out2[0] );
 		$this->assertEquals( $out2[0]->post_type, 'give_forms' );
 
 	}
@@ -367,7 +369,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	public function test_get_donation_stats_by_user() {
 
 		$donation_stats = give_get_donation_stats_by_user( $this->_user_id );
-		$this->assertInternalType( 'array', $donation_stats );
+        $this->assertIsArray( $donation_stats );
 		$this->assertEquals( 2, count( $donation_stats ) );
 		$this->assertTrue( isset( $donation_stats['purchases'] ) );
 		$this->assertTrue( isset( $donation_stats['total_spent'] ) );
@@ -515,7 +517,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 	 */
 	public function test_count_total_donors() {
 		$donor_count = give_count_total_donors();
-		$this->assertEquals( 2, $donor_count );
+		$this->assertEquals( 1, $donor_count );
 	}
 
 	/**
@@ -582,14 +584,14 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 		 *
 		 * @since 2.0
 		 */
-		$this->assertInternalType( 'object', $donor_name_split );
+        $this->assertIsObject( $donor_name_split );
 
 		/**
 		 * Check 2 - Check for existence of attribute first_name in object.
 		 *
 		 * @since 2.0
 		 */
-		$this->assertObjectHasAttribute( 'first_name', $donor_name_split );
+		$this->assertObjectHasProperty( 'first_name', $donor_name_split );
 
 		/**
 		 * Check 3 - Check that first_name attribute of object is not empty.
@@ -603,7 +605,7 @@ class Tests_Give_Donors extends Give_Unit_Test_Case {
 		 *
 		 * @since 2.0
 		 */
-		$this->assertObjectHasAttribute( 'last_name', $donor_name_split );
+		$this->assertObjectHasProperty( 'last_name', $donor_name_split );
 
 	}
 }

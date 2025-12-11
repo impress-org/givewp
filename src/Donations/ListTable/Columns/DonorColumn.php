@@ -28,13 +28,14 @@ class DonorColumn extends ModelColumn
     }
 
     /**
+     * @since 4.10.0 Updated column label
      * @since 2.24.0
      *
      * @inheritDoc
      */
     public function getLabel(): string
     {
-        return __('Donor Name', 'give');
+        return __('Donor', 'give');
     }
 
     /**

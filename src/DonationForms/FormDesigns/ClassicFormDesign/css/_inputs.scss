@@ -37,7 +37,7 @@ select:not(.givewp-fields-amount__currency-select) {
     }
 }
 
-input[type="text"]:not([name="amount"], [name="amount-custom"]),
+input[type="text"],
 input[type="password"],
 input[type="email"],
 textarea {
@@ -56,6 +56,7 @@ textarea {
     line-height: 1.2;
 
     &::placeholder {
+        color: var(--givewp-grey-400);
         opacity: 0.6;
     }
 

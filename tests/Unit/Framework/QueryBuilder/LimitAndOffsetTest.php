@@ -17,7 +17,7 @@ final class LimitAndOffsetTest extends TestCase
             ->where('post_status', 'published')
             ->limit(5);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_status = 'published' LIMIT 5",
             $builder->getSQL()
         );
@@ -35,7 +35,7 @@ final class LimitAndOffsetTest extends TestCase
             ->limit(5)
             ->offset(10);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT * FROM posts WHERE post_status = 'published' LIMIT 5 OFFSET 10",
             $builder->getSQL()
         );

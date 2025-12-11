@@ -3,6 +3,7 @@
 namespace Give\Donors\DataTransferObjects;
 
 use Give\Donors\Models\Donor;
+use Give\Donors\ValueObjects\DonorAddress;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
@@ -10,6 +11,7 @@ use Give\Framework\Support\ValueObjects\Money;
 /**
  * Class DonorObjectData
  *
+ * @since 4.4.0 Add "avatarId" and "company" properties
  * @since 2.19.6
  */
 final class DonorQueryData
@@ -52,9 +54,21 @@ final class DonorQueryData
      */
     public $additionalEmails;
     /**
+     * @var DonorAddress[]
+     */
+    public $addresses;
+    /**
      * @var string
      */
     public $prefix;
+    /**
+     * @var int
+     */
+    public $avatarId;
+    /**
+     * @var string
+     */
+    public $company;
     /**
      * @var Money
      */
@@ -67,6 +81,7 @@ final class DonorQueryData
     /**
      * Convert data from donor object to Donor Model
      *
+     * @since 4.4.0 Add "avatarId" and "company" properties
      * @since 3.7.0 Add "phone" property
      * @since 2.24.0 add $totalAmountDonated and $totalNumberOfDonations
      * @since 2.20.0 add donor prefix property
@@ -88,6 +103,9 @@ final class DonorQueryData
         $self->lastName = $object->lastName;
         $self->createdAt = Temporal::toDateTime($object->createdAt);
         $self->additionalEmails = $object->additionalEmails;
+        $self->addresses = $object->addresses ?? [];
+        $self->avatarId = (int)$object->{DonorMetaKeys::AVATAR_ID()->getKeyAsCamelCase()};
+        $self->company = $object->{DonorMetaKeys::COMPANY()->getKeyAsCamelCase()};
         $self->totalAmountDonated = Money::fromDecimal($object->totalAmountDonated, give_get_currency());
         $self->totalNumberOfDonations = (int)$object->totalNumberOfDonations;
 

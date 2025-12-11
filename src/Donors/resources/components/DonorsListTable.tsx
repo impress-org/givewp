@@ -7,6 +7,8 @@ import {Interweave} from 'interweave';
 import './style.scss';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
+import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
+import filterByOptions from '../constants/filterByOptions';
 
 declare global {
     interface Window {
@@ -18,6 +20,7 @@ declare global {
             adminUrl: string;
             pluginUrl: string;
             dissedRecommendations: Array<string>;
+            recurringDonationsEnabled: boolean;
         };
     }
 }
@@ -26,6 +29,13 @@ const API = new ListTableApi(window.GiveDonors);
 
 const donorsFilters: Array<FilterConfig> = [
     {
+        name: 'campaignId',
+        type: 'campaignselect',
+        text: __('All Campaigns', 'give'),
+        ariaLabel: __('Filter donors by campaign', 'give'),
+        options: window.GiveDonors.forms,
+    },
+    {
         name: 'search',
         type: 'search',
         inlineSize: '14rem',
@@ -33,12 +43,10 @@ const donorsFilters: Array<FilterConfig> = [
         ariaLabel: __('Search donors', 'give'),
     },
     {
-        name: 'form',
-        type: 'formselect',
-        text: __('All Donation Forms', 'give'),
-        ariaLabel: __('Filter donation forms by status', 'give'),
-        options: window.GiveDonors.forms,
-    },
+        name: 'filterBy',
+        type: 'filterby',
+        groupedOptions: filterByOptions,
+    }
 ];
 
 const donorsBulkActions: Array<BulkActionsConfig> = [
@@ -54,7 +62,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Really delete the following donors?', 'give')}</p>
+                <p>{__('Are you sure you want to delete the following donors?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((id, index) => (
                         <li key={id}>
@@ -62,12 +70,11 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
                         </li>
                     ))}
                 </ul>
-                <div>
+                <br></br>
+                <label htmlFor="giveDonorsTableDeleteDonations">
                     <input id="giveDonorsTableDeleteDonations" type="checkbox" defaultChecked={true} />
-                    <label htmlFor="giveDonorsTableDeleteDonations">
-                        {__('Delete all associated donations and records', 'give')}
-                    </label>
-                </div>
+                    {__('Delete all associated donations and records', 'give')}
+                </label>
             </>
         ),
     },
@@ -79,7 +86,7 @@ const donorsBulkActions: Array<BulkActionsConfig> = [
  */
 const ListTableBlankSlate = (
     <BlankSlate
-        imagePath={`${window.GiveDonors.pluginUrl}assets/dist/images/list-table/blank-slate-donor-icon.svg`}
+        imagePath={`${window.GiveDonors.pluginUrl}build/assets/dist/images/list-table/blank-slate-donor-icon.svg`}
         description={__('No donors found', 'give')}
         href={'https://docs.givewp.com/donors'}
         linkText={__('GiveWP Donors.', 'give')}
@@ -105,6 +112,35 @@ const recommendation = (
     <ProductRecommendations options={[RecommendationConfig.feeRecovery]} apiSettings={window.GiveDonors} />
 );
 
+/**
+ * Configuration for the statistic tiles rendered above the ListTable.
+ *
+ * IMPORTANT: Object keys MUST MATCH the keys returned by the API's `stats` payload.
+ * For example, if the API returns:
+ *
+ *   data.stats = {
+ *     donorsCount: number;
+ *     oneTimeDonorsCount: number;
+ *     recurringDonationsCount: number;
+ *   }
+ *
+ * then this config must use those same keys: "donorsCount", "oneTimeDonorsCount", "subscribersCount".
+ * Missing or mismatched keys will result in empty/undefined values in the UI.
+ *
+ * @since 4.11.0
+ */
+const statsConfig: Record<string, StatConfig> = {
+    donorsCount: { label: __('Number of Donors', 'give')},
+    oneTimeDonorsCount: { label: __('One-Time Donors', 'give')},
+    subscribersCount: {
+        label: __('Subscribers', 'give'),
+        upgrade: !window.GiveDonors.recurringDonationsEnabled && {
+            href: 'https://docs.givewp.com/subscribers-stat',
+            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
+        }
+    },
+};
+
 export default function DonorsListTable() {
     return (
         <ListTablePage
@@ -117,8 +153,9 @@ export default function DonorsListTable() {
             filterSettings={donorsFilters}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={recommendation}
+            statsConfig={statsConfig}
         >
-            <button className={styles.addFormButton} onClick={showLegacyDonors}>
+            <button className={`button button-tertiary ${styles.secondaryActionButton}`} onClick={showLegacyDonors}>
                 {__('Switch to Legacy View', 'give')}
             </button>
         </ListTablePage>

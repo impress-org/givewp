@@ -5,6 +5,7 @@ namespace Give\PaymentGateways\Gateways\PayPalCommerce;
 use Exception;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
+use Give\Helpers\Form\Utils;
 use Give\Helpers\Language;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
@@ -71,6 +72,8 @@ class PayPalCommerceGateway extends PayPalCommerce
     /**
      * List of PayPal query parameters: https://developer.paypal.com/docs/checkout/reference/customize-sdk/#query-parameters
      *
+     * @since 4.6.0 Removed data-client-token from the SDK options for v3 forms.  For v2 forms, we still need to pass the client token only when hosted fields are enabled.
+     * @since 4.5.0 Add support for disabling credit card funding via Smart Buttons Only.
      * @since 3.0.0
      * @throws Exception
      */
@@ -84,27 +87,59 @@ class PayPalCommerceGateway extends PayPalCommerce
 
         // Add hosted fields if payment field type is auto and connect account type supports custom payments.
         $paymentFieldType = give_get_option('paypal_payment_field_type', 'auto');
+        $acceptCreditCard = give_is_setting_enabled(give_get_option('paypal_commerce_accept_credit_card', 'enabled'));
+
         $paymentComponents[] = 'buttons';
-        if ('auto' === $paymentFieldType && $merchantDetailModel->supportsCustomPayments) {
-            $paymentComponents[] = 'hosted-fields';
+
+        $formIsV3 = Utils::isV3Form($formId);
+        $venmoEnabled = give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'));
+        $fieldsEnabled = 'auto' === $paymentFieldType && $merchantDetailModel->supportsCustomPayments;
+
+        $disableFunding = ['credit'];
+        if (!$acceptCreditCard && !$fieldsEnabled) {
+            $disableFunding[] = 'card';
         }
 
         $data = [
-            // data-namespace is required for multiple PayPal SDKs to load in harmony.
-            'data-namespace' => 'givewp/paypal-commerce',
-            'client-id' => $merchantDetailModel->clientId,
-            'merchant-id' => $merchantDetailModel->merchantIdInPayPal,
-            'components' => implode(',', $paymentComponents),
-            'disable-funding' => 'credit',
             'intent' => 'capture',
             'vault' => 'false',
-            'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
-            'data-client-token' => $merchantDetailRepository->getClientToken(),
             'currency' => give_get_currency($formId),
         ];
 
-        if (give_is_setting_enabled(give_get_option('paypal_commerce_accept_venmo', 'disabled'))) {
-            $data['enable-funding'] = 'venmo';
+        if ($formIsV3) {
+            if ($fieldsEnabled) {
+                $paymentComponents[] = 'card-fields';
+            }
+
+            $data = array_merge($data, [
+                'dataNamespace' => 'givewp/paypal-commerce',
+                'clientId' => $merchantDetailModel->clientId,
+                'disableFunding' => $disableFunding,
+                'dataPartnerAttributionId' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
+                'components' => implode(',', $paymentComponents),
+            ]);
+
+            if ($venmoEnabled){
+                $data['enableFunding'] = 'venmo';
+            }
+        } else {
+            if ($fieldsEnabled) {
+                $paymentComponents[] = 'hosted-fields';
+                $data['data-client-token'] = $merchantDetailRepository->getClientToken();
+            }
+
+            $data = array_merge($data, [
+                // data-namespace is required for multiple PayPal SDKs to load in harmony.
+                'data-namespace' => 'givewp/paypal-commerce',
+                'client-id' => $merchantDetailModel->clientId,
+                'disable-funding' => $disableFunding,
+                'data-partner-attribution-id' => give('PAYPAL_COMMERCE_ATTRIBUTION_ID'),
+                'components' => implode(',', $paymentComponents),
+            ]);
+
+            if ($venmoEnabled){
+                $data['enable-funding'] = 'venmo';
+            }
         }
 
         return $data;

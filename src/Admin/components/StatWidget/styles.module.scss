@@ -1,0 +1,156 @@
+.statWidget {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--givewp-spacing-2);
+    padding: var(--givewp-spacing-6);
+    background-color: var(--givewp-shades-white);
+    color: var(--givewp-neutral-700);
+    font-weight: 600;
+    border-radius: var(--givewp-rounded-8);
+    width: 100%;
+}
+
+.statWidget header, .statWidget footer {
+    flex: 1;
+}
+
+.statWidget footer {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: var(--givewp-neutral-700);
+}
+
+.statWidgetAmount {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.statWidgetDisplay {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 44px;
+    color: var(--givewp-neutral-900);
+    width: 100%;
+
+    span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 44px;
+    }
+}
+
+.requiresUpgrade {
+    color: var(--givewp-neutral-300);
+}
+
+.upgradeLink{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.375rem;
+    background: var(--givewp-green-500);
+    color: var(--givewp-shades-white);
+    padding: 0.125rem var(--givewp-spacing-3);
+    border-radius: 999px;;
+    text-decoration: none;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    &:hover, &:active, &:focus {
+        color: var(--givewp-shades-white);
+        background: var(--givewp-green-600);
+    }
+
+    &::before {
+        display: none !important;
+    }
+
+    &::after {
+        content: attr(data-addon-tooltip);
+        position: absolute;
+        right: -2.5rem;
+        bottom: calc(100% + 0.625rem);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        background: var(--givewp-shades-white);
+        padding: var(--givewp-spacing-2) var(--givewp-spacing-3);
+        border-radius: 4px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+        font-weight: 500;
+        z-index: 99999999;;
+        font-size: 0.75rem;
+        line-height: 1.33;
+        letter-spacing: 0.12px;
+        color: #4b5563;   
+        height: auto;
+        min-height: 5rem; 
+        width: 15rem;
+        text-align: left;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+        text-transform: none;
+    }
+
+    &:hover::after,
+    &:focus::after {
+        opacity: 1;
+    }
+}
+
+.upgradeLink:visited {
+    color: var(--givewp-shades-white);
+    border: none;
+}
+
+.revenueWidget {
+    flex: 2;
+    background-color: var(--givewp-shades-white);
+    padding: 20px;
+    border-radius: var(--givewp-rounded-8);
+    grid-column: span 2;
+}
+
+.percentChangePill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 12px 2px 4px;
+    font-size: .8rem;
+    border-radius: var(--givewp-rounded-16);
+    min-width: 71px;
+    height: 24px;
+    gap: 2px;
+}
+
+.progressWidget {
+    flex: 1;
+    background-color: var(--givewp-shades-white);
+    padding: 20px;
+    border-radius: var(--givewp-rounded-8);
+}
+
+@media (max-width: 900px) {
+    .statWidgetAmount {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .statWidgetDisplay {
+        text-align: center;
+    }
+}

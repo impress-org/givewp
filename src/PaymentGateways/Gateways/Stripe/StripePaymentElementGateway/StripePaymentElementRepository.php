@@ -15,6 +15,7 @@ use Stripe\ErrorObject;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Exception\InvalidRequestException;
 use Stripe\PaymentIntent;
+use Stripe\Refund;
 
 trait StripePaymentElementRepository
 {
@@ -30,6 +31,17 @@ trait StripePaymentElementRepository
             $data->toParams(),
             $data->toOptions($stripeConnectAccountId)
         );
+    }
+
+    /**
+     * @since 4.7.0
+     * @throws ApiErrorException
+     */
+    protected function refundStripePayment(Donation $donation): Refund
+    {
+        return Refund::create([
+            'payment_intent' => $donation->gatewayTransactionId,
+        ]);
     }
 
     /**
@@ -90,7 +102,7 @@ trait StripePaymentElementRepository
     }
 
     /**
-     * @unreleased removed statement_descriptor. As of 01/02/2024, Stripe no longer supports the `statement_descriptor` parameter on the PaymentIntent API for PaymentIntents in which one of the supported `payment_method_types` is `card`.
+     * @since 3.20.0 removed statement_descriptor. As of 01/02/2024, Stripe no longer supports the `statement_descriptor` parameter on the PaymentIntent API for PaymentIntents in which one of the supported `payment_method_types` is `card`.
      * @since 3.0.0
      *
      * @throws InvalidPropertyName

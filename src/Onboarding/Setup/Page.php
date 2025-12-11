@@ -8,7 +8,7 @@
 
 namespace Give\Onboarding\Setup;
 
-use Give\DonationForms\V2\DonationFormsAdminPage;
+use Give\Campaigns\CampaignsAdminPage;
 
 defined('ABSPATH') || exit;
 
@@ -26,6 +26,7 @@ class Page
     /**
      * Dismiss the Setup Page.
      *
+     * @since 4.10.0 redirect to campaigns page
      * @since 2.8.0
      */
     public function dismissSetupPage()
@@ -33,7 +34,7 @@ class Page
         if (wp_verify_nonce($_GET['_wpnonce'], 'dismiss_setup_page')) {
             give_update_option('setup_page_enabled', self::DISABLED);
 
-            wp_redirect(DonationFormsAdminPage::getUrl());
+            wp_redirect(CampaignsAdminPage::getUrl());
             exit;
         }
     }
@@ -80,22 +81,22 @@ class Page
 
         wp_enqueue_style(
             'give-admin-setup-style',
-            GIVE_PLUGIN_URL . 'assets/dist/css/admin-setup.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/admin-setup.css',
             [],
             GIVE_VERSION
         );
         wp_enqueue_style('givewp-admin-fonts');
         wp_enqueue_script(
             'give-admin-setup-script',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-setup.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-setup.js',
             ['jquery'],
             GIVE_VERSION,
             $in_footer = true
         );
-        
+
         wp_enqueue_script(
             'give-admin-add-ons-script',
-            GIVE_PLUGIN_URL . 'assets/dist/js/admin-add-ons.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-add-ons.js',
             ['jquery'],
             GIVE_VERSION,
             $in_footer = true

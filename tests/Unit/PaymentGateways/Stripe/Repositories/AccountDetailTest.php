@@ -20,7 +20,7 @@ class AccountDetailTest extends TestCase
      */
     private $form;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->repository = new AccountDetailRepository();
         $this->form = Give_Helper_Form::create_simple_form();

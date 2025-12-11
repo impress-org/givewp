@@ -47,6 +47,14 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	public $per_step = 30;
 
 	/**
+	 * Success message to display when reset is complete
+	 *
+	 * @since 4.10.0
+	 * @var string
+	 */
+	public $message = '';
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct( $_step = 1 ) {
@@ -59,6 +67,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	 * Get the Export Data
 	 *
 	 * @access public
+	 * @since 4.10.0 Added deletion logic for campaigns, campaign pages, subscriptions, events, logs, revenue, usermeta, etc.
 	 * @since  1.5
 	 * @global object $wpdb Used to query the database using the WordPress
 	 *                      Database API
@@ -101,7 +110,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 			}
 
 			$sql        = [];
-			$meta_table = __give_v20_bc_table_details( 'form' );
+			$meta_table = give_v20_bc_table_details( 'form' );
 
 			foreach ( $step_ids as $type => $ids ) {
 
@@ -121,6 +130,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 						$sql[] = "UPDATE {$meta_table['name']} SET meta_value = 0 WHERE meta_key = '_give_form_sales' AND {$meta_table['column']['id']} IN ($ids)";
 						$sql[] = "UPDATE {$meta_table['name']} SET meta_value = 0.00 WHERE meta_key = '_give_form_earnings' AND {$meta_table['column']['id']} IN ($ids)";
 						break;
+
 					case 'other':
 						// Delete main entries of forms and donations exists in posts table.
 						$sql[] = "DELETE FROM {$wpdb->posts} WHERE id IN ($ids)";
@@ -140,6 +150,52 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 						// Delete all the Give sessions data.
 						$sql[] = "DELETE FROM {$wpdb->prefix}give_sessions";
+
+						// Delete all Give logs data.
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_log";
+
+						// Delete all Give revenue data.
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_revenue";
+
+						// Delete campaigns and related data
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_campaign_forms";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_campaigns";
+
+						// Delete GiveWP Campaign Pages and their meta data
+						$sql[] = "DELETE FROM {$wpdb->posts} WHERE post_type = 'page' AND id IN (SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'give_campaign_id')";
+						$sql[] = "DELETE FROM {$wpdb->postmeta} WHERE meta_key = 'give_campaign_id'";
+
+						// Delete subscriptions and related data
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_subscriptionmeta";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_subscriptions";
+
+						// Delete events and related data
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_event_tickets";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_event_ticket_types";
+						$sql[] = "DELETE FROM {$wpdb->prefix}give_events";
+
+						// Clear all Give user meta data (notices, preferences, etc.)
+						$sql[] = "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE '%give%'";
+
+						// Reset GiveWP options to default values (preserve essential ones)
+						// Essential options that must be preserved to prevent plugin deactivation issues
+						$essential_options = [
+							'give_version',                    // Plugin version - needed for upgrade detection
+							'give_completed_upgrades',         // Completed upgrade routines - prevents re-running
+							'give_default_api_version',        // API version - needed for API functionality
+							'_give_table_check',              // Database table check - prevents table recreation
+							'give_temp_reset_ids',            // Temporary reset data used by this class
+							'give_settings',                  // Plugin settings - preserve to avoid pages recreation
+						];
+
+						// Create SQL placeholder string for the essential options list
+						$essential_options_placeholder = implode( "','", $essential_options );
+						// Delete all GiveWP options except the essential ones to prevent deactivation issues
+						$sql[] = "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%give%' AND option_name NOT IN ('{$essential_options_placeholder}')";
+
+						// Clear Action Scheduler data related to GiveWP
+						$sql[] = "DELETE FROM {$wpdb->prefix}actionscheduler_actions WHERE hook LIKE '%give%'";
+						$sql[] = "DELETE FROM {$wpdb->prefix}actionscheduler_groups WHERE slug LIKE '%give%'";
 
 						// Delete Give related categories and tags data from taxonomy tables.
 						$sql[] = $wpdb->prepare(
@@ -192,13 +248,14 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Return the calculated completion percentage.
 	 *
+	 * @since 4.10.0 Check if items are set before counting to prevent fatal errors on PHP 8
 	 * @since 1.5
 	 * @return int
 	 */
 	public function get_percentage_complete() {
 
 		$items = $this->get_stored_data( 'give_temp_reset_ids' );
-		$total = count( $items );
+		$total = $items ? count( $items ) : 0;
 
 		$percentage = 100;
 
@@ -226,6 +283,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 	/**
 	 * Process a step
 	 *
+	 * @since 4.10.0 Updated success message
 	 * @since 1.5
 	 * @return bool
 	 */
@@ -253,8 +311,8 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			$this->delete_data( 'give_temp_reset_ids' );
 
-			$this->done    = true;
-			$this->message = esc_html__( 'Donation forms, revenue, donations counts, and logs successfully reset.', 'give' );
+			$this->done = true;
+			$this->message = esc_html__( 'Successfully reset data for campaigns, campaign pages, donation forms, subscriptions, events, revenue, donation counts, logs, etc.', 'give' );
 
 			return false;
 		}
@@ -326,6 +384,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 					'type' => 'customer',
 				];
 			}
+
 
 			// Allow filtering of items to remove with an unassociative array for each item
 			// The array contains the unique ID of the item, and a 'type' for you to use in the execution of the get_data method

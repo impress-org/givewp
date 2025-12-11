@@ -330,6 +330,23 @@ tr.status-refunded td {
 	}
 }
 
+#give_payment_form_select {
+    + #give_payment_form_select_chosen {
+        a.chosen-single {
+            transition: background-color 1s ease-out;
+        }
+    }
+
+    &.flash {
+        + #give_payment_form_select_chosen {
+            a.chosen-single {
+                background-color: yellow !important;
+                transition: background-color 0.2s ease-in;
+            }
+        }
+    }
+}
+
 //Payment View Metabox
 #give-order-update {
 	.give-donation-status {

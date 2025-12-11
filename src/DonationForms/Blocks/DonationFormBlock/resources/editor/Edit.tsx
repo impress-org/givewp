@@ -2,16 +2,16 @@ import {useEffect, useState} from 'react';
 import {useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import ServerSideRender from '@wordpress/server-side-render';
-import DonationFormSelector from './components/DonationFormSelector';
+import {__} from '@wordpress/i18n';
 import useFormOptions from './hooks/useFormOptions';
 import DonationFormBlockControls from './components/DonationFormBlockControls';
-import DonationFormBlockPreview from './components/DonationFormBlockPreview';
 import type {BlockPreviewProps} from './components/DonationFormBlockPreview';
-
+import DonationFormBlockPreview from './components/DonationFormBlockPreview';
+import EntitySelector from '@givewp/src/Campaigns/Blocks/shared/components/EntitySelector/EntitySelector';
 import './styles/index.scss';
-import { __ } from '@wordpress/i18n';
 
 /**
+ * @since 4.3.0 replace DonationFormSelector with Campaigns EntitySelector.
  * @since 3.2.1
  *
  * @see 'class-give-block-donation-form.php'
@@ -26,7 +26,7 @@ type DonationFormBlockAttributes = {
     showGoal: boolean;
     showContent: boolean;
     contentDisplay: string;
-}
+};
 
 /**
  * @since 3.2.1 added isResolving loading state to prevent forms from prematurely being rendered.
@@ -60,9 +60,11 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
     })();
 
     if (isResolving !== false) {
-        return <div {...useBlockProps()}>
-            <p>{__('Loading...', 'give')}</p>
-        </div>
+        return (
+            <div {...useBlockProps()}>
+                <p>{__('Loading...', 'give')}</p>
+            </div>
+        );
     }
 
     return (
@@ -93,7 +95,16 @@ export default function Edit({attributes, isSelected, setAttributes, className, 
                     )}
                 </>
             ) : (
-                <DonationFormSelector formOptions={formOptions} isResolving={isResolving} handleSelect={handleSelect} />
+                <EntitySelector
+                    id={'formId'}
+                    label={__('Choose a donation form', 'give')}
+                    options={formOptions}
+                    isLoading={isResolving}
+                    emptyMessage={__('No donation forms were found.', 'give')}
+                    loadingMessage={__('Loading Donation Forms...', 'give')}
+                    buttonText={__('Confirm', 'give')}
+                    onConfirm={handleSelect}
+                />
             )}
         </div>
     );

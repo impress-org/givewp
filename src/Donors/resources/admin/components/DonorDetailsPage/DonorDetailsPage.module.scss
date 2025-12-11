@@ -1,0 +1,118 @@
+.statusBadge {
+    align-items: center;
+    background-color: var(--statusBadgeBgColor);
+    border-radius: var(--givewp-rounded-full);
+    border: 1px solid var(--statusBadgeIconColor);
+    display: flex;
+    gap: var(--givewp-spacing-1);
+    justify-content: center;
+    padding: calc(var(--givewp-spacing-1) - 1px) var(--givewp-spacing-3) calc(var(--givewp-spacing-1) - 1px) calc(var(--givewp-spacing-1) - 1px);
+
+    &.statusBadge--current {
+        --statusBadgeIconColor: var(--givewp-green-600);
+        --statusBadgeBgColor: var(--givewp-green-25);
+        --statusBadgeTextColor: var(--givewp-green-900);
+    }
+
+    &.statusBadge--prospective {
+        --statusBadgeIconColor: var(--givewp-orange-600);
+        --statusBadgeBgColor: var(--givewp-orange-25);
+        --statusBadgeTextColor: var(--givewp-orange-900);
+    }
+
+    &.statusBadge--retained {
+        --statusBadgeIconColor: var(--givewp-esmerald-600);
+        --statusBadgeBgColor: var(--givewp-esmerald-25);
+        --statusBadgeTextColor: var(--givewp-esmerald-900);
+    }
+
+    &.statusBadge--lapsed {
+        --statusBadgeIconColor: var(--givewp-red-600);
+        --statusBadgeBgColor: var(--givewp-red-25);
+        --statusBadgeTextColor: var(--givewp-red-900);
+    }
+
+    &.statusBadge--new {
+        --statusBadgeIconColor: var(--givewp-purple-500);
+        --statusBadgeBgColor: var(--givewp-purple-25);
+        --statusBadgeTextColor: var(--givewp-purple-900);
+    }
+
+    &.statusBadge--recaptured {
+        --statusBadgeIconColor: var(--givewp-yellow-600);
+        --statusBadgeBgColor: var(--givewp-yellow-25);
+        --statusBadgeTextColor: var(--givewp-yellow-900);
+    }
+
+    &.statusBadge--recurring {
+        --statusBadgeIconColor: var(--givewp-blue-600);
+        --statusBadgeBgColor: var(--givewp-blue-25);
+        --statusBadgeTextColor: var(--givewp-blue-900);
+    }
+}
+
+.statusBadgeIcon {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    color: var(--statusBadgeBgColor);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 50%;
+    background-color: var(--statusBadgeIconColor);
+}
+
+.statusBadgeText {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--statusBadgeTextColor);
+}
+
+.archive {
+    --contextMenuItemColor: var(--givewp-red-500);
+}
+
+
+$breakpoint-desktop: 900px;
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--givewp-spacing-4);
+
+    @media (max-width: $breakpoint-desktop) {
+        grid-template-columns: 1fr;
+        gap: var(--givewp-spacing-6);
+    }
+}
+
+.leftColumn, .rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--givewp-spacing-6);
+    margin-top: var(--givewp-spacing-2);
+}
+
+.leftColumn {
+    grid-column: span 2;
+
+    @media (max-width: $breakpoint-desktop) {
+        grid-column: span 1;
+    }
+}
+
+.rightColumn {
+    grid-column: span 1;
+}
+
+  .sectionFieldInputWrapper {
+    display: flex;
+    gap: var(--givewp-spacing-2);
+}
+
+.prefixSelect {
+    flex: 1 0 6.625rem;
+}

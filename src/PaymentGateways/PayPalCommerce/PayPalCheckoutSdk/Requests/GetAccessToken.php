@@ -7,6 +7,7 @@ use PayPalHttp\HttpRequest;
 /**
  * Class GetAccessTokenWithClientCredentials
  *
+ * @since 4.1.0 Add PayPal-Partner-Attribution-Id header
  * @since 2.32.0
  */
 class GetAccessToken extends HttpRequest
@@ -24,6 +25,7 @@ class GetAccessToken extends HttpRequest
         $this->headers = wp_parse_args($headers, $this->headers);
 
         $this->headers["Content-Type"] = "application/x-www-form-urlencoded";
+        $this->headers["PayPal-Partner-Attribution-Id"] = give('PAYPAL_COMMERCE_ATTRIBUTION_ID');
         $this->body = $requestBody;
     }
 }

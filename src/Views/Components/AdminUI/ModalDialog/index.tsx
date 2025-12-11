@@ -42,41 +42,55 @@ export default function Modal({
         };
     }, []);
 
+    useEffect(() => {
+        if (isOpen) {
+            document.body.classList.add('modalDialog-open');
+        } else {
+            document.body.classList.remove('modalDialog-open');
+        }
+
+        return () => {
+            document.body.classList.remove('modalDialog-open');
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
     return createPortal(
         <div className={`givewp-modal-wrapper ${wrapperClassName}`}>
             <div role="dialog" aria-label={title} className="givewp-modal-dialog">
-                {showHeader ? (
-                    <div className="givewp-modal-header">
-                        {icon && <div className="givewp-modal-icon-header">{icon}</div>}
-                        {title}
-                        {showCloseIcon && handleClose && (
-                            <button
-                                aria-label={__('Close dialog', 'give')}
-                                className="givewp-modal-close"
-                                onClick={handleClose}
-                            >
-                                <ExitIcon aria-label={__('Close dialog icon', 'give')} />
-                            </button>
-                        )}
-                    </div>
-                ) : (
-                    <>
-                        {showCloseIcon && handleClose && (
-                            <button
-                                aria-label={__('Close dialog', 'give')}
-                                className="givewp-modal-close-headless"
-                                onClick={handleClose}
-                            >
-                                <ExitIcon aria-label={__('Close dialog icon', 'give')} />
-                            </button>
-                        )}
-                        {icon && <div className="givewp-modal-icon-center">{icon}</div>}
-                    </>
-                )}
+                <div className={`givewp-modal-dialog-content`}>
+                    {showHeader ? (
+                        <div className="givewp-modal-header">
+                            {icon && <div className="givewp-modal-icon-header">{icon}</div>}
+                            {title}
+                            {showCloseIcon && handleClose && (
+                                <button
+                                    aria-label={__('Close dialog', 'give')}
+                                    className="givewp-modal-close"
+                                    onClick={handleClose}
+                                >
+                                    <ExitIcon aria-label={__('Close dialog icon', 'give')} />
+                                </button>
+                            )}
+                        </div>
+                    ) : (
+                        <>
+                            {showCloseIcon && handleClose && (
+                                <button
+                                    aria-label={__('Close dialog', 'give')}
+                                    className="givewp-modal-close-headless"
+                                    onClick={handleClose}
+                                >
+                                    <ExitIcon aria-label={__('Close dialog icon', 'give')} />
+                                </button>
+                            )}
+                            {icon && <div className="givewp-modal-icon-center">{icon}</div>}
+                        </>
+                    )}
 
-                <div className="givewp-modal-content">{children}</div>
+                    <div className="givewp-modal-content">{children}</div>
+                </div>
             </div>
         </div>,
         insertInto ? document.querySelector(insertInto) : document.body

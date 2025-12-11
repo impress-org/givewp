@@ -68,9 +68,12 @@ if ( ! class_exists( 'Give_Stripe_Payment_Intent' ) ) {
                 );
 
                 give_set_error('stripe_payment_intent_error',
-                    __('There was an issue with your donation transaction. Please check your payment method or contact your card issuer for assistance. If the issue persists, try a different payment method or contact the site administrators.',
-                        'give'));
-
+               	    sprintf( 
+                		__('There was an issue with your donation transaction: %s<br>Please check your payment method or contact your card issuer for assistance. If the issue persists, try a different payment method or contact the site administrators.', 'give'),
+                		$e->getMessage()
+                	)
+                );
+                give_send_back_to_checkout( '?payment-mode=' . give_clean( $_GET['payment-mode'] ) );
                 return false;
             } // End try().
         }

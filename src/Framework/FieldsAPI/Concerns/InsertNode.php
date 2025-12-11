@@ -28,12 +28,12 @@ trait InsertNode
     }
 
     /**
+     * @since 4.8.0 Updated to only fall through if no node was found
      * @since 2.10.2
      *
-     * @return void
      * @throws ReferenceNodeNotFoundException|NameCollisionException
      */
-    protected function insertAfterRecursive(string $siblingName, Node $node)
+    protected function insertAfterRecursive(string $siblingName, Node $node): bool
     {
         $siblingIndex = $this->getNodeIndexByName($siblingName);
         if (null !== $siblingIndex) {
@@ -42,19 +42,24 @@ trait InsertNode
                 $siblingIndex + 1
             );
 
-            return;
+            return true;
         }
 
         if ($this->nodes) {
             foreach ($this->nodes as $childNode) {
                 if ($childNode instanceof Collection) {
-                    $childNode->insertAfter($siblingName, $node);
+                    try {
+                        $childNode->insertAfter($siblingName, $node);
+                        return true; // Stop searching after successful insertion
+                    } catch (ReferenceNodeNotFoundException $e) {
+                        // Continue searching in other child nodes
+                        continue;
+                    }
                 }
             }
-
-            return;
         }
 
+        // Only throw exception if this is the root call and no node was found
         throw new ReferenceNodeNotFoundException($siblingName);
     }
 
@@ -74,33 +79,38 @@ trait InsertNode
     }
 
     /**
+     * @since 4.8.0 Updated to only fall through if no node was found
      * @since 2.10.2
      *
-     * @return void
      * @throws ReferenceNodeNotFoundException|NameCollisionException
      */
-    protected function insertBeforeRecursive(string $siblingName, Node $node)
+    protected function insertBeforeRecursive(string $siblingName, Node $node): bool
     {
         $siblingIndex = $this->getNodeIndexByName($siblingName);
         if (null !== $siblingIndex) {
             $this->insert(
                 $node,
-                $siblingIndex - 1
+                $siblingIndex
             );
 
-            return;
+            return true;
         }
 
         if ($this->nodes) {
             foreach ($this->nodes as $childNode) {
                 if ($childNode instanceof Collection) {
-                    $childNode->insertBefore($siblingName, $node);
+                    try {
+                        $childNode->insertBefore($siblingName, $node);
+                        return true; // Stop searching after successful insertion
+                    } catch (ReferenceNodeNotFoundException $e) {
+                        // Continue searching in other child nodes
+                        continue;
+                    }
                 }
             }
-
-            return;
         }
 
+        // Only throw exception if this is the root call and no node was found
         throw new ReferenceNodeNotFoundException($siblingName);
     }
 

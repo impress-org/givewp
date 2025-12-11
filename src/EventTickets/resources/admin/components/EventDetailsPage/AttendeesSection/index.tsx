@@ -14,7 +14,7 @@ const dateFormat = _x("MM/dd/yyyy 'at' h:mmaaa", 'Date format for event details 
  * @since 3.6.0
  */
 const BlankSlate = () => {
-    const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}/assets/dist/images/list-table/blank-slate-attendees-icon.svg`;
+    const imagePath = `${window.GiveEventTicketsDetails.pluginUrl}build/assets/dist/images/list-table/blank-slate-attendees-icon.svg`;
     return (
         <div className={styles.container}>
             <img src={imagePath} alt={__('No attendees yet', 'give')} />

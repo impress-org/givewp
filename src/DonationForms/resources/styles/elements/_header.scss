@@ -26,5 +26,14 @@
             color: inherit;
             margin: 0;
         }
+
+        a {
+            text-decoration: underline;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 }

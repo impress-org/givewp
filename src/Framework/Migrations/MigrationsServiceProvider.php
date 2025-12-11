@@ -2,6 +2,7 @@
 
 namespace Give\Framework\Migrations;
 
+use Give\Framework\Migrations\Actions\Notices;
 use Give\Framework\Migrations\Controllers\ManualMigration;
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider;
@@ -28,8 +29,9 @@ class MigrationsServiceProvider implements ServiceProvider
      */
     public function boot()
     {
+        Hooks::addAction('admin_notices', Notices::class);
         Hooks::addAction('admin_init', ManualMigration::class, '__invoke', 0);
-        Hooks::addAction('admin_init', MigrationsRunner::class, 'run', 0);
+        Hooks::addAction('action_scheduler_init', MigrationsRunner::class, 'run', 0);
         Hooks::addAction('give_upgrades', MigrationsRunner::class, 'run', 0);
     }
 }

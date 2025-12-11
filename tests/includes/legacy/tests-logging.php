@@ -10,16 +10,14 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	/**
 	 * Set it Up
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 
 	/**
 	 * Tear it Down
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 
 	/**
@@ -29,7 +27,7 @@ class Tests_Logging extends Give_Unit_Test_Case {
 	 */
 	public function test_add() {
 		$this->assertNotNull( Give()->logs->add() );
-		$this->assertInternalType( 'integer', Give()->logs->add() );
+        $this->assertIsInt( Give()->logs->add() );
 	}
 
 	/**
@@ -45,14 +43,12 @@ class Tests_Logging extends Give_Unit_Test_Case {
 				)
 			)
 		);
-		$this->assertInternalType(
-			'integer',
-			Give()->logs->insert_log(
+
+        $this->assertIsInt( Give()->logs->insert_log(
 				array(
 					'log_type' => 'error',
 				)
-			)
-		);
+			));
 	}
 
 	/**
@@ -69,11 +65,11 @@ class Tests_Logging extends Give_Unit_Test_Case {
 		$log_id = Give()->logs->insert_log( $args );
 		$out    = Give()->logs->get_logs( $log_id );
 
-		$this->assertObjectHasAttribute( 'ID', $out[0] );
-		$this->assertObjectHasAttribute( 'log_date', $out[0] );
-		$this->assertObjectHasAttribute( 'log_date_gmt', $out[0] );
-		$this->assertObjectHasAttribute( 'log_content', $out[0] );
-		$this->assertObjectHasAttribute( 'log_title', $out[0] );
+		$this->assertObjectHasProperty( 'ID', $out[0] );
+		$this->assertObjectHasProperty( 'log_date', $out[0] );
+		$this->assertObjectHasProperty( 'log_date_gmt', $out[0] );
+		$this->assertObjectHasProperty( 'log_content', $out[0] );
+		$this->assertObjectHasProperty( 'log_title', $out[0] );
 
 		$this->assertEquals( 'This is a test log inserted from PHPUnit', $out[0]->log_content );
 		$this->assertEquals( 'error', $out[0]->log_type );
@@ -119,7 +115,7 @@ class Tests_Logging extends Give_Unit_Test_Case {
 
 		$count = Give()->logs->get_log_count( 0, 'error' );
 
-		$this->assertInternalType( 'integer', $count );
+        $this->assertIsInt( $count );
 		$this->assertEquals( 5, $count );
 	}
 }

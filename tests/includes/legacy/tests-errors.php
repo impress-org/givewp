@@ -8,7 +8,7 @@ class Tests_Errors extends Give_Unit_Test_Case {
 	/**
 	 * Set it up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		give_set_error( 'invalid_email', 'Please enter a valid email address.' );
@@ -20,9 +20,7 @@ class Tests_Errors extends Give_Unit_Test_Case {
 	/**
 	 * Tear it down.
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test setting errors.

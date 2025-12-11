@@ -1,4 +1,5 @@
-import {createPortal, render} from 'react-dom';
+import {createPortal} from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import {useEffect, useRef} from 'react';
 
 import './styles.scss';
@@ -9,28 +10,46 @@ import './styles.scss';
  */
 export default function createIframePortal(children, targetElement = window.top.document.body) {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
+    const rootRef = useRef<any>(null);
 
     useEffect(() => {
         const iframe = iframeRef.current;
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        if (!iframe) return;
 
-        if (iframe) {
-            // Clear existing content.
-            iframeDoc.head.innerHTML = '';
-            iframeDoc.body.innerHTML = '';
+        // Wait for iframe to be ready
+        const setupIframe = () => {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+            // Clear existing content
+            iframeDoc.open();
+            iframeDoc.write('<!DOCTYPE html><html><head></head><body></body></html>');
+            iframeDoc.close();
 
             async function renderContent() {
                 try {
                     await fetchStylesheets(iframeDoc);
-                    render(children, iframeDoc.body);
+                    // Create a container in the iframe
+                    const iframeContainer = iframeDoc.createElement('div');
+                    iframeContainer.id = 'givewp-fields-consent-iframe-container';
+                    iframeDoc.body.appendChild(iframeContainer);
+
+                    // Create root and render
+                    rootRef.current = createRoot(iframeContainer);
+                    rootRef.current.render(children);
                 } catch (error) {
                     console.error('Error loading stylesheets:', error);
                 }
             }
 
             renderContent();
+        };
+
+        iframe.onload = setupIframe;
+
+        if (iframe.contentDocument?.readyState === 'complete') {
+            setupIframe();
         }
-    }, []);
+    }, [children, targetElement]);
 
     return createPortal(
         <iframe
@@ -80,6 +99,15 @@ export async function fetchStylesheets(iframeDoc: Document) {
                     });
                     iframeDoc.head.appendChild(newStyle);
                     resolve();
+                } else {
+                    const styleElement = styleSheet.ownerNode;
+                    if (styleElement) {
+                        const clonedStyle = styleElement.cloneNode(true);
+                        iframeDoc.head.appendChild(clonedStyle);
+                        resolve();
+                    } else {
+                        resolve();
+                    }
                 }
             } catch (error) {
                 reject(error);

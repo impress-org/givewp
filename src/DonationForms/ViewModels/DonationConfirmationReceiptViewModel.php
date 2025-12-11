@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\ViewModels;
 
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
@@ -9,7 +10,6 @@ use Give\Donations\Models\Donation;
 use Give\Framework\DesignSystem\Actions\RegisterDesignSystemStyles;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\Receipts\DonationReceipt;
-use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Scripts\Concerns\HasScriptAssetFile;
 use Give\Helpers\Language;
 
@@ -46,9 +46,7 @@ class DonationConfirmationReceiptViewModel
      */
     public function getReceipt(): DonationReceipt
     {
-        $receipt = new DonationReceipt($this->donation);
-
-        return (new DonationReceiptBuilder($receipt))->toConfirmationPage();
+        return $this->donation->receipt();
     }
 
     /**
@@ -84,6 +82,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
+     * @since 4.1.0 add campaign colors
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
      */
@@ -100,6 +99,18 @@ class DonationConfirmationReceiptViewModel
         $customCss = $donationForm && $donationForm->settings->customCss ? $donationForm->settings->customCss : null;
         $primaryColor = $donationForm ? $donationForm->settings->primaryColor : '#69B868';
         $secondaryColor = $donationForm ? $donationForm->settings->secondaryColor : '#000000';
+
+        if ($donationForm && $donationForm->settings->inheritCampaignColors){
+            $campaignColors = $this->getCampaignColors($donationForm->id);
+
+            if (isset($campaignColors['primaryColor'])) {
+                $primaryColor = $campaignColors['primaryColor'];
+            }
+
+            if (isset($campaignColors['secondaryColor'])) {
+                $secondaryColor = $campaignColors['secondaryColor'];
+            }
+        }
 
         $this->enqueueGlobalStyles($primaryColor, $secondaryColor);
 
@@ -239,5 +250,26 @@ class DonationConfirmationReceiptViewModel
             GIVE_VERSION,
             true
         );
+    }
+
+    /**
+     * @since 4.1.0
+     */
+    private function getCampaignColors(int $formId): array
+    {
+        /** @var Campaign|null $campaign */
+        $campaign = give()->campaigns->getByFormId($formId);
+
+        if ($campaign) {
+            return [
+                'primaryColor' => $campaign->primaryColor,
+                'secondaryColor' => $campaign->secondaryColor,
+            ];
+        }
+
+        return [
+            'primaryColor' => '',
+            'secondaryColor' => '',
+        ];
     }
 }

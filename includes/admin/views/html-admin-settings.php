@@ -110,7 +110,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
                         <a class="give-nav-addons-tab" href="' . esc_url(
                         admin_url('edit.php?post_type=give_forms&page=give-add-ons')
                     ) . '">
-                           <img src="' . GIVE_PLUGIN_URL . '/assets/dist/images/admin/add-on-star-icon.svg"/>
+                           <img src="' . GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/add-on-star-icon.svg"/>
                             <span>' . __('ADD-ONS', 'give') . '</span>
                         </a>
                     ';

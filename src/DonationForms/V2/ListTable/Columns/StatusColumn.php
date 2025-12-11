@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Give\DonationForms\V2\ListTable\Columns;
 
-use Give\DonationForms\V2\Models\DonationForm;
+use Give\DonationForms\Adapter\Form;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
  * @since 2.24.0
  *
- * @extends ModelColumn<DonationForm>
+ * @extends ModelColumn<Form>
  */
 class StatusColumn extends ModelColumn
 {
@@ -41,7 +41,7 @@ class StatusColumn extends ModelColumn
      *
      * @inheritDoc
      *
-     * @param DonationForm $model
+     * @param Form $model
      */
     public function getCellValue($model): string
     {

@@ -178,7 +178,7 @@ function give_edit_donor( $args ) {
                      array(
                          'post_type'       => 'give_forms',
                          'page'            => 'give-donors',
-                         'view'            => 'overview',
+                         'view'            => 'legacy-overview',
                          'id'              => $donor_id,
                          'give-messages[]' => 'profile-updated',
                      ),
@@ -348,7 +348,7 @@ function give_disconnect_donor_user_id( $args ) {
 		'user_id' => 0,
 	);
 
-	$redirect_url     = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' ) . $donor_id;
+	$redirect_url     = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' ) . $donor_id;
 	$is_donor_updated = $donor->update( $donor_args );
 
 	if ( $is_donor_updated ) {
@@ -455,7 +455,7 @@ function give_add_donor_email( $args ) {
 				);
 			}
 		} else {
-			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor_id . '&give-messages[]=email-added' );
+			$redirect = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor_id . '&give-messages[]=email-added' );
 			$output   = array(
 				'success'  => true,
 				'message'  => __( 'Email successfully added to donor.', 'give' ),
@@ -519,13 +519,13 @@ function give_remove_donor_email() {
 
 	$donor = new Give_Donor( $_GET['id'] );
 	if ( $donor->remove_email( $_GET['email'] ) ) {
-		$url        = add_query_arg( 'give-messages[]', 'email-removed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
+		$url        = add_query_arg( 'give-messages[]', 'email-removed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) );
 		$user       = wp_get_current_user();
 		$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
 		$donor_note = sprintf( __( 'Email address %1$s removed by %2$s', 'give' ), $_GET['email'], $user_login );
 		$donor->add_note( $donor_note );
 	} else {
-		$url = add_query_arg( 'give-messages[]', 'email-remove-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
+		$url = add_query_arg( 'give-messages[]', 'email-remove-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) );
 	}
 
 	wp_safe_redirect( esc_url_raw( $url ) );
@@ -571,14 +571,14 @@ function give_set_donor_primary_email() {
 	$donor = new Give_Donor( $_GET['id'] );
 
 	if ( $donor->set_primary_email( $_GET['email'] ) ) {
-		$url        = add_query_arg( 'give-messages[]', 'primary-email-updated', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
+		$url        = add_query_arg( 'give-messages[]', 'primary-email-updated', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) );
 		$user       = wp_get_current_user();
 		$user_login = ! empty( $user->user_login ) ? $user->user_login : __( 'System', 'give' );
 		$donor_note = sprintf( __( 'Email address %1$s set as primary by %2$s', 'give' ), $_GET['email'], $user_login );
 
 		$donor->add_note( $donor_note );
 	} else {
-		$url = add_query_arg( 'give-messages[]', 'primary-email-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) );
+		$url = add_query_arg( 'give-messages[]', 'primary-email-failed', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) );
 	}
 
 	wp_safe_redirect( esc_url_raw( $url ) );

@@ -92,14 +92,4 @@ class OfflineGateway extends PaymentGateway
     {
         return new PaymentPending();
     }
-
-    /**
-     * @since 3.0.0
-     */
-    public function refundDonation(Donation $donation)
-    {
-        throw new RuntimeException(
-            'Method has not been implemented yet. Please use the legacy method in the meantime.'
-        );
-    }
 }

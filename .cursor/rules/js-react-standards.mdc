@@ -1,0 +1,28 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+---
+description: React Standards
+globs: *.js,*.jsx,*.ts,*.tsx
+alwaysApply: false
+---
+## General guidelines
+
+- Write modern ES6+ code following WordPress JS standards
+- Always prefer using Typescript over vanilla Javascript
+- Use WordPress data store for state management
+- Follow WordPress component patterns
+- Implement proper WordPress hooks system
+- Structure components using WordPress conventions
+- Where it applies, make strings available for translation.
+- Use Gutenberg's `@wordpress/i18n` package to handle translations.
+- Use an appropriate unique text domain in your JS code.
+
+## React Components
+
+- Implement WordPress hooks system
+- Follow WordPress component lifecycle patterns
+- Use the WordPress block editor data stores for state management of WordPress block editor components
+- Follow WordPress accessibility guidelines

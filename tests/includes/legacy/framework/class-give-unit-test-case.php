@@ -1,6 +1,7 @@
 <?php
 
 use Give\Framework\Support\ValueObjects\Money;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Give Unit Test Case
@@ -29,7 +30,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
      *
      * @since 1.0
      */
-    public function setUp()
+    public function setUp(): void
     {
         // Ensure server variable is set for WP email functions.
         if (!isset($_SERVER['SERVER_NAME'])) {
@@ -49,7 +50,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
         }
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // Reset Give setting to prevent failing test which happen we update setting in test function.
         update_option('give_settings', self::$saved_settings);
@@ -106,7 +107,7 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
      *
      * @return void
      */
-    public static function assertNotFalse($condition, $message = '')
+    public static function assertNotFalse($condition, $message = ''): void
     {
         if (version_compare(phpversion(), '5.3', '<')) {
             self::assertThat($condition, self::logicalNot(self::isFalse()), $message);
@@ -122,10 +123,8 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
      *
      * @param Money $expected
      * @param Money $actual
-     *
-     * @return void
      */
-    public static function assertMoneyEquals(Money $expected, Money $actual)
+    public static function assertMoneyEquals(Money $expected, Money $actual): void
     {
         self::assertTrue($expected->equals($actual), "Failed asserting money is equal. Expected: {$expected->getAmount()} {$expected->getCurrency()->getCode()}, Actual: {$actual->getAmount()} {$actual->getCurrency()->getCode()}");
     }
@@ -141,10 +140,8 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
      *
      * @param string $abstract The class to create a mock for
      * @param null|callable $builderCallable A callable for applying additional changes to the builder
-     *
-     * @return object
      */
-    public function createMock($abstract, $builderCallable = null)
+    public function createMock($abstract, $builderCallable = null): MockObject
     {
         $mockBuilder = $this->getMockBuilder($abstract)
             ->disableOriginalConstructor()

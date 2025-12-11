@@ -33,7 +33,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	/**
 	 * Set it up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 
 		parent::setUp();
 
@@ -56,7 +56,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	/**
 	 * Tear it down.
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 
 		parent::tearDown();
 		Give_Helper_Payment::delete_payment( $this->_payment_id );
@@ -139,10 +139,10 @@ class Tests_Payments extends Give_Unit_Test_Case {
 	 */
 	public function test_give_get_payment_by() {
 		$payment = give_get_payment_by( 'id', $this->_payment_id );
-		$this->assertObjectHasAttribute( 'ID', $payment );
+		$this->assertObjectHasProperty( 'ID', $payment );
 
 		$payment = give_get_payment_by( 'key', $this->_key );
-		$this->assertObjectHasAttribute( 'ID', $payment );
+		$this->assertObjectHasProperty( 'ID', $payment );
 	}
 
 	/**
@@ -245,7 +245,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 			'revoked',
 		);
 
-		$this->assertInternalType( 'array', $out );
+        $this->assertIsArray( $out );
 		$this->assertEquals( $expected, $out );
 	}
 
@@ -266,7 +266,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		give_update_payment_status( $this->_payment_id, 'publish' );
 		$payment = new Give_Payment( $this->_payment_id );
-		$this->assertInternalType( 'string', $payment->completed_date );
+        $this->assertIsString( $payment->completed_date );
 		$this->assertEquals( date( 'Y-m-d' ), date( 'Y-m-d', strtotime( $payment->completed_date ) ) );
 
 	}
@@ -278,7 +278,7 @@ class Tests_Payments extends Give_Unit_Test_Case {
 
 		give_update_payment_status( $this->_payment_id, 'publish' );
 		$completed_date = give_get_payment_completed_date( $this->_payment_id );
-		$this->assertInternalType( 'string', $completed_date );
+		$this->assertIsString( $completed_date );
 		$this->assertEquals( date( 'Y-m-d' ), date( 'Y-m-d', strtotime( $completed_date ) ) );
 
 	}

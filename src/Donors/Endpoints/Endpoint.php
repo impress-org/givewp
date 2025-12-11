@@ -4,7 +4,6 @@ namespace Give\Donors\Endpoints;
 
 use Give\API\RestRoute;
 use WP_Error;
-use WP_REST_Request;
 
 abstract class Endpoint implements RestRoute
 {
@@ -25,46 +24,23 @@ abstract class Endpoint implements RestRoute
     }
 
     /**
-     * @param string $param
-     * @param WP_REST_Request $request
-     * @param string $key
-     * @since 2.20.0
-     *
-     * @return bool
-     */
-    public function validateDate($param, $request, $key)
-    {
-        // Check that date is valid, and formatted YYYY-MM-DD
-        list($year, $month, $day) = explode('-', $param);
-        $valid = checkdate($month, $day, $year);
-
-        // If checking end date, check that it is after start date
-        if ('end' === $key) {
-            $start = date_create($request->get_param('start'));
-            $end = date_create($request->get_param('end'));
-            $valid = $start <= $end ? $valid : false;
-        }
-
-        return $valid;
-    }
-
-    /**
      * Check user permissions
+     * @since 4.3.1 update permissions
      * @since 2.20.0
      *
      * @return bool|WP_Error
      */
     public function permissionsCheck()
     {
-        if (!current_user_can('edit_posts')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You dont have the right permissions to view Donors', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
+        if (current_user_can('manage_options') || current_user_can('view_give_payments')) {
+            return true;
         }
 
-        return true;
+        return new WP_Error(
+            'rest_forbidden',
+            esc_html__("You don't have permission to view Donors", 'give'),
+            ['status' => is_user_logged_in() ? 403 : 401]
+        );
     }
 
     /**

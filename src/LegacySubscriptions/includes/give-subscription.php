@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class Give_Subscription
  *
+ * @since 4.11.0 add campaign_id
  * @since 2.19.0 - migrated from give-recurring
  * @since 1.0
  */
@@ -110,6 +111,31 @@ class Give_Subscription {
 	 * @var Give_Donor
 	 */
 	public $donor;
+
+    /**
+     * @var int
+     */
+    public $campaign_id = 0;
+
+	/**
+	 * @var int (backward compatibility - maps to donor_id)
+	 */
+	public $customer_id = 0;
+
+	/**
+	 * @var string (backward compatibility - maps to form_id)
+	 */
+	public $product_id = 0;
+
+	/**
+	 * @var string (subscription payment mode)
+	 */
+	public $payment_mode = '';
+
+	/**
+	 * @var string (subscription notes)
+	 */
+	public $notes = '';
 
 	/**
 	 * Give_Subscription constructor.
@@ -214,6 +240,7 @@ class Give_Subscription {
 	/**
 	 * Creates a subscription.
 	 *
+     * @since 4.11.0 add campaign_id
 	 * @since  1.0
 	 *
 	 * @param  array $data Array of attributes for a subscription
@@ -240,6 +267,7 @@ class Give_Subscription {
 			'expiration'           => '',
 			'status'               => '',
 			'profile_id'           => '',
+            'campaign_id'          => 0,
 		);
 
 		$args = wp_parse_args( $data, $defaults );
@@ -264,6 +292,15 @@ class Give_Subscription {
 		if ( ! empty( $args['donor_id'] ) ) {
 			$args['customer_id'] = $args['donor_id'];
 		}
+
+        if (
+            $args['product_id']
+            && ! $args['campaign_id']
+        ) {
+            if ($campaign = give()->campaigns->getByFormId($args['product_id'])) {
+                $args['campaign_id'] = $campaign->id;
+            }
+        }
 
 		$id = $this->subs_db->create( $args );
 
@@ -465,6 +502,7 @@ class Give_Subscription {
 	 *
 	 * Records a new payment on the subscription.
 	 *
+     * @since 4.11.0 add campaign_id to renewal
 	 * @since 2.21.3 add support for anonymous donations
 	 * @since 1.12.7 Set donor first and last name in new donation
 	 *
@@ -540,6 +578,15 @@ class Give_Subscription {
 			$payment->date = $args['post_date'];
 		}
 
+		if ( ! empty( $this->campaign_id ) ) {
+			$payment->campaign_id = $this->campaign_id;
+		}
+
+		// Automatically derive campaign_id from form_id if campaign exists
+		if ( empty( $payment->campaign_id ) ) {
+			$payment->campaign_id = give_derive_campaign_id_from_form_id( $payment->form_id );
+		}
+
 		// Increase the earnings for the form in the subscription.
 		give_increase_earnings( $parent->form_id, $args['amount'] );
 		// Increase the donation count for this form as well.
@@ -547,6 +594,12 @@ class Give_Subscription {
 
 		$payment->add_donation( $parent->form_id, array( 'price' => $args['amount'], 'price_id' => $price_id ) );
 		$payment->save();
+
+		// Ensure campaign_id meta is saved (safety net)
+		if ( ! empty( $payment->campaign_id ) ) {
+			$payment->update_meta( '_give_campaign_id', $payment->campaign_id );
+		}
+
 		$payment->update_meta( 'subscription_id', $this->id );
 		$donor->increase_purchase_count( 1 );
 		$donor->increase_value( $args['amount'] );
@@ -625,7 +678,11 @@ class Give_Subscription {
 		}
 
 		$last_day   = cal_days_in_month( CAL_GREGORIAN, date( 'n', $base_date ), date( 'Y', $base_date ) );
-		$expiration = date( 'Y-m-d H:i:s', strtotime( '+1 ' . $this->period . ' 23:59:59', $base_date ) );
+		if ( $this->period == "quarter" ) {
+				$expiration = date( 'Y-m-d H:i:s', strtotime( '+3 months 23:59:59', $base_date ) );
+		} else {
+				$expiration = date( 'Y-m-d H:i:s', strtotime( '+1 ' . $this->period . ' 23:59:59', $base_date ) );
+		}
 
 		if ( date( 'j', $base_date ) == $last_day && 'day' != $this->period ) {
 			$expiration = date( 'Y-m-d H:i:s', strtotime( $expiration . ' +2 days' ) );
@@ -1166,11 +1223,7 @@ class Give_Subscription {
 
 		$updated = $this->update( array( 'notes' => $notes ) );
 
-		if ( $updated ) {
-			$this->notes = $this->get_notes();
-		}
-
-		do_action( 'give_subscription_post_add_note', $this->notes, $new_note, $this->id );
+		do_action( 'give_subscription_post_add_note', $this->get_notes(), $new_note, $this->id );
 
 		// Return the formatted note, so we can test, as well as update any displays
 		return $new_note;

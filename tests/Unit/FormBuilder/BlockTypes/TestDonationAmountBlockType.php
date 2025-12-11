@@ -25,6 +25,7 @@ class TestDonationAmountBlockType extends TestCase
     }
 
     /**
+     * @since 3.21.0 updated customAmountMax to expect int value
      * @since 3.12.0 Update test to use the new levels schema
      * @since 3.8.0
      * @throws Exception
@@ -47,7 +48,7 @@ class TestDonationAmountBlockType extends TestCase
         $this->assertSame(25, $block->setPrice);
         $this->assertTrue($block->customAmount);
         $this->assertSame(1, $block->customAmountMin);
-        $this->assertNull($block->customAmountMax);
+        $this->assertSame(0, $block->customAmountMax);
         $this->assertFalse($block->recurringEnabled);
         $this->assertSame(1, $block->recurringBillingInterval);
         $this->assertSame(["month"], $block->recurringBillingPeriodOptions);

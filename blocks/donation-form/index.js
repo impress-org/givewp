@@ -9,13 +9,14 @@ import {registerBlockType} from '@wordpress/blocks';
  */
 import GiveIcon from '@givewp/components/GiveIcon';
 import blockAttributes from './data/attributes';
-import Edit from '../../src/DonationForms/Blocks/DonationFormBlock/resources/editor/Edit';
+import Edit from '@givewp/src/DonationForms/Blocks/DonationFormBlock/resources/editor/Edit';
 
 /**
  * Register Block
  */
 
 export default registerBlockType('give/donation-form', {
+    apiVersion: 3,
     title: __('Donation Form', 'give'),
     description: __(
         "The GiveWP Donation Form block inserts an existing donation form into the page. Each donation form's presentation can be customized below.",

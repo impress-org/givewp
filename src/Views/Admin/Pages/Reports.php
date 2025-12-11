@@ -65,7 +65,7 @@ class Reports
             'apiNonce' => wp_create_nonce('wp_rest'),
         ];
 
-        EnqueueScript::make('give-admin-reports-v3-js', 'assets/dist/js/admin-reports.js')
+        EnqueueScript::make('give-admin-reports-v3-js', 'build/assets/dist/js/admin-reports.js')
             ->loadInFooter()
             ->dependencies(['wp-api'])
             ->registerTranslations()

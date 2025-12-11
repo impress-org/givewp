@@ -274,7 +274,7 @@ class DonationFormRepository
     {
         $builder = new ModelQueryBuilder(DonationForm::class);
 
-        return $builder->from('posts')
+        return $builder->from('posts', 'forms')
             ->select(
                 ['ID', 'id'],
                 ['post_date', 'createdAt'],
@@ -482,6 +482,30 @@ class DonationFormRepository
     public function isLegacyForm(int $formId): bool
     {
         return ! Utils::isV3Form($formId);
+    }
+
+    /**
+     * @since 4.7.0
+     */
+    public function getColorSettings(DonationForm $donationForm): array
+    {
+        $primaryColor = $donationForm->settings->primaryColor;
+        $secondaryColor = $donationForm->settings->secondaryColor;
+
+        if ($donationForm->settings->inheritCampaignColors) {
+            /** @var Campaign $campaign */
+            $campaign = give()->campaigns->getByFormId($donationForm->id);
+
+            if ($campaign) {
+                $primaryColor = $campaign->primaryColor;
+                $secondaryColor = $campaign->secondaryColor;
+            }
+        }
+
+        return [
+            'primaryColor' => $primaryColor,
+            'secondaryColor' => $secondaryColor,
+        ];
     }
 
     /**

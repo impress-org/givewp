@@ -1,4 +1,4 @@
-import {createContext, useRef, useState} from 'react';
+import {createContext, useRef, useState, forwardRef, useImperativeHandle} from 'react';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';
@@ -13,6 +13,9 @@ import styles from './ListTablePage.module.scss';
 import cx from 'classnames';
 import {BulkActionSelect} from '@givewp/components/ListTable/BulkActions/BulkActionSelect';
 import ToggleSwitch from '@givewp/components/ListTable/ToggleSwitch';
+import DeleteIcon from '@givewp/components/ListTable/ListTablePage/DeleteIcon';
+import ListTableStats, { StatConfig } from '../ListTableStats/ListTableStats';
+import FilterBy from '../FilterBy';
 
 export interface ListTablePageProps {
     //required
@@ -32,41 +35,98 @@ export interface ListTablePageProps {
     productRecommendation?: JSX.Element;
     columnFilters?: Array<ColumnFilterConfig>;
     banner?: () => JSX.Element;
+    contentMode?: boolean;
+    perPage?: number;
+    statsConfig?: Record<string, StatConfig>;
 }
 
-export interface FilterConfig {
+interface FilterConfigBase {
     // required
     name: string;
-    type: 'select' | 'formselect' | 'search' | 'checkbox';
 
     // optional
     ariaLabel?: string;
     inlineSize?: string;
     text?: string;
+}
+
+interface FilterConfigWithSimpleOptions extends FilterConfigBase {
+    type: 'select' | 'campaignselect' | 'search' | 'checkbox' | 'hidden';
     options?: Array<{text: string; value: string}>;
 }
 
-export interface ColumnFilterConfig {
-    column: string;
-    filter: Function
+export interface FilterByGroupedOptions {
+    id: string;
+    apiParam: string;
+    name: string;
+    type: 'checkbox' | 'radio' | 'toggle';
+    options: Array<{text: string; value: string}>;
+    defaultValue?: string | string[];
+    isVisible?: (values: Record<string, string[]>) => boolean;
+    showTitle?: boolean;
 }
 
-export interface BulkActionsConfig {
+interface FilterConfigWithGroupedOptions extends FilterConfigBase {
+    type: 'filterby';
+    groupedOptions?: Array<FilterByGroupedOptions>;
+}
+
+export type FilterConfig = FilterConfigWithSimpleOptions | FilterConfigWithGroupedOptions;
+
+export interface ColumnFilterConfig {
+    column: string;
+    filter: Function;
+}
+
+interface BulkActionsConfigBase {
     //required
     label: string;
     value: string | number;
-    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
-    confirm: (selected: Array<string | number>, names?: Array<string>) => JSX.Element | JSX.Element[] | string;
+    confirm: (
+        selected: Array<string | number>,
+        names?: Array<string>,
+        isOpen?: boolean,
+        setOpen?: (isOpen?: boolean) => void
+    ) => JSX.Element | JSX.Element[] | string;
 
     //optional
-    isVisible?: (data, parameters) => Boolean;
-    type?: 'normal' | 'warning' | 'danger';
+    isVisible?: (data: any, parameters: any) => boolean;
+    isIdSelectable?: (id: string, data: any) => boolean;
+    type?: 'normal' | 'warning' | 'danger' | 'custom';
 }
 
-export const ShowConfirmModalContext = createContext((label, confirm, action, type = null) => {});
+// Makes the "action" property required for the standard types
+interface BulkActionsConfigWithAction extends BulkActionsConfigBase {
+    type: 'normal' | 'warning' | 'danger';
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property required for the undefined type
+interface BulkActionsConfigWithoutType extends BulkActionsConfigBase {
+    type?: undefined;
+    action: (selected: Array<string | number>) => Promise<{errors: string | number; successes: string | number}>;
+}
+
+// Makes the "action" property forbidden for the custom type
+export interface BulkActionsConfigWithoutAction extends BulkActionsConfigBase {
+    type: 'custom';
+}
+
+export type BulkActionsConfig =
+    | BulkActionsConfigWithAction
+    | BulkActionsConfigWithoutType
+    | BulkActionsConfigWithoutAction;
+
+export const ShowConfirmModalContext = createContext(
+    (label, confirm, action, type = null, confirmButtonText = __('Confirm', 'give')) => {}
+);
 export const CheckboxContext = createContext(null);
 
-export default function ListTablePage({
+export interface ListTablePageRef {
+    refresh: () => Promise<any>;
+}
+
+const ListTablePage = forwardRef<ListTablePageRef, ListTablePageProps>(({
     title,
     apiSettings,
     bulkActions = null,
@@ -80,15 +140,25 @@ export default function ListTablePage({
     listTableBlankSlate,
     productRecommendation,
     columnFilters = [],
-    banner
-}: ListTablePageProps) {
+    banner,
+    contentMode,
+    perPage = 30,
+    statsConfig,
+}: ListTablePageProps, ref) => {
     const [page, setPage] = useState<number>(1);
-    const [perPage, setPerPage] = useState<number>(30);
     const [filters, setFilters] = useState(getInitialFilterState(filterSettings));
-    const [modalContent, setModalContent] = useState<{confirm; action; label; type?: 'normal' | 'warning' | 'danger'}>({
+    const [isOpen, setOpen] = useState(false);
+    const [modalContent, setModalContent] = useState<{
+        confirm;
+        action?;
+        label;
+        confirmButtonText?: string;
+        type?: 'normal' | 'warning' | 'danger' | 'custom';
+    }>({
         confirm: (selected) => {},
         action: (selected) => {},
         label: '',
+        confirmButtonText: '',
     });
     const [selectedAction, setSelectedAction] = useState<string>('');
     const [selectedIds, setSelectedIds] = useState([]);
@@ -118,17 +188,37 @@ export default function ListTablePage({
     const archiveApi = useRef(new ListTableApi(apiSettings)).current;
 
     const {data, error, isValidating, mutate} = archiveApi.useListTable(parameters);
+    const {data: statsData, error: statsError, isValidating: statsIsValidating, mutate: mutateStats} = statsConfig ? archiveApi.useStats(testMode) : {data: null, error: null, isValidating: false, mutate: async () => {}};
 
     useResetPage(data, page, setPage, filters);
 
+    useImperativeHandle(ref, () => ({
+        refresh: async () => {
+           await mutate();
+           statsConfig && await mutateStats();
+        }
+    }), [mutate, mutateStats, statsConfig]);
+
     const handleFilterChange = (name, value) => {
-        setFilters((prevState) => ({...prevState, [name]: value}));
+        setFilters((prevState) => {
+            if (!value || (Array.isArray(value) && value.length === 0)) {
+                const {[name]: _, ...rest} = prevState as Record<string, string[]>;
+                return rest;
+            }
+            return {...prevState, [name]: value};
+        });
     };
 
     const handleDebouncedFilterChange = useDebounce(handleFilterChange);
 
-    const showConfirmActionModal = (label, confirm, action, type: 'normal' | 'warning' | 'danger' | null = null) => {
-        setModalContent({confirm, action, label, type});
+    const showConfirmActionModal = (
+        label,
+        confirm,
+        action,
+        type?: 'normal' | 'warning' | 'danger' | 'custom' | null,
+        confirmButtonText?: string
+    ) => {
+        setModalContent({label, confirm, action, type, confirmButtonText});
         dialog.current.show();
     };
 
@@ -139,23 +229,30 @@ export default function ListTablePage({
             bulkActions = [...bulkActions, ...window.GiveDonations.addonsBulkActions];
         }
 
-        const actionIndex = bulkActions.findIndex((config) => selectedAction === config.value);
+        const bulkAction = bulkActions.find((config) => selectedAction === config.value);
 
-        if (actionIndex < 0) return;
+        if (!bulkAction) return;
 
         const selected = [];
         const names = [];
-        checkboxRefs.current.forEach((checkbox) => {
-            if (checkbox.checked) {
-                selected.push(checkbox.dataset.id);
-                names.push(checkbox.dataset.name);
-            }
+        const selectedRefs = checkboxRefs.current.filter((checkbox) => {
+            const isSelectable = bulkAction?.isIdSelectable?.(checkbox.dataset.id, data) ?? true;
+            return checkbox.checked && isSelectable;
+        });
+        selectedRefs.forEach((checkbox) => {
+            selected.push(checkbox.dataset.id);
+            names.push(checkbox.dataset.name);
         });
         setSelectedIds(selected);
         setSelectedNames(names);
         if (selected.length) {
-            setModalContent({...bulkActions[actionIndex]});
-            dialog.current.show();
+            setModalContent({...bulkAction});
+            if ('custom' === bulkAction.type) {
+                setOpen(true);
+                bulkAction?.confirm(selected, names, isOpen, setOpen);
+            } else {
+                dialog.current.show();
+            }
         }
     };
 
@@ -176,23 +273,27 @@ export default function ListTablePage({
             disabled={!data}
             totalItems={data ? parseInt(data.totalItems) : -1}
             setPage={setPage}
-            singleName={singleName}
-            pluralName={pluralName}
+            singleName={__('result', 'give')}
+            pluralName={__('results', 'give')}
         />
     );
 
     const PageActions = ({PageActionsTop}: {PageActionsTop?: boolean}) => {
         return (
             <div className={cx(styles.pageActions, {[styles.alignEnd]: !bulkActions})}>
-                <BulkActionSelect
-                    selectedState={[selectedAction, setSelectedAction]}
-                    parameters={parameters}
-                    data={data}
-                    bulkActions={bulkActions}
-                    showModal={openBulkActionModal}
-                />
-                {PageActionsTop && testModeFilter && <TestModeFilter />}
-                {page && setPage && showPagination()}
+                {PageActionsTop ? (
+                    <BulkActionSelect
+                        selectedState={[selectedAction, setSelectedAction]}
+                        parameters={parameters}
+                        data={data}
+                        bulkActions={bulkActions}
+                        showModal={openBulkActionModal}
+                    />
+            ) : (
+                    <>
+                        {page && setPage && showPagination()}
+                    </>
+                )}
             </div>
         );
     };
@@ -201,26 +302,23 @@ export default function ListTablePage({
         <ToggleSwitch ariaLabel={testModeFilter?.ariaLabel} onChange={setTestMode} checked={testMode} />
     );
 
-    const TestModeBadge = () => <span>{testModeFilter?.text}</span>;
+    const TestModeBadge = () => <span className={styles.testModeBadge}>{testModeFilter?.text}</span>;
 
-    return (
-        <>
-            <article className={styles.page}>
-                <header className={styles.pageHeader}>
-                    <div className={styles.flexRow}>
-                        <GiveIcon size={'1.875rem'} />
-                        <h1 className={styles.pageTitle}>{title}</h1>
-                        {testModeFilter && testMode && <TestModeBadge />}
-                    </div>
-                    {children && <div className={styles.flexRow}>{children}</div>}
-                </header>
-                {banner && (
-                    <section role="banner">
-                        {banner()}
-                    </section>
-                )}
-                <section role="search" id={styles.searchContainer}>
-                    {filterSettings.map((filter) => (
+    const SearchSection = () => (
+        <section role="search" className={styles.searchContainer}>
+            <div className={styles.flexRow}>
+                <PageActions PageActionsTop />
+            </div>
+            <div className={styles.flexRow}>
+                {filterSettings.map((filter) => (
+                    filter.type === 'filterby' ? (
+                        <FilterBy
+                            key={filter.name}
+                            groupedOptions={filter.groupedOptions}
+                            onChange={handleFilterChange}
+                            values={filters}
+                        />
+                    ) : (
                         <Filter
                             key={filter.name}
                             value={filters[filter.name]}
@@ -228,11 +326,41 @@ export default function ListTablePage({
                             onChange={handleFilterChange}
                             debouncedOnChange={handleDebouncedFilterChange}
                         />
-                    ))}
-                </section>
-                <div className={cx('wp-header-end', 'hidden')} />
+                    )
+                ))}
+            </div>
+        </section>
+    );
+
+    return (
+        <>
+            <article className={styles.page}>
+                {!contentMode && (
+                    <>
+                        <header className={styles.pageHeader}>
+                            <div className={styles.flexRow}>
+                                <GiveIcon size={'2.25rem'} />
+                                <h1 className={styles.pageTitle}>{title}</h1>
+                                {testModeFilter && testMode && <TestModeBadge />}
+                            </div>
+                            {children && <div className={styles.flexRow}>{children}</div>}
+                        </header>
+
+                        <div className={cx('wp-header-end', 'hidden')} />
+
+                        {banner && <section role="banner">{banner()}</section>}
+                        {testModeFilter && (
+                            <div className={styles.filtersRow}>
+                                <TestModeFilter />
+                            </div>
+                        )}
+                        {statsConfig && !statsIsValidating && <ListTableStats config={statsConfig} values={statsData} />}
+                    </>
+                )}
+
                 <div className={styles.pageContent}>
-                    <PageActions PageActionsTop />
+                    <SearchSection />
+                    {contentMode && children ? <>{children}</> : <></>}
                     <CheckboxContext.Provider value={checkboxRefs}>
                         <ShowConfirmModalContext.Provider value={showConfirmActionModal}>
                             <ListTable
@@ -252,6 +380,7 @@ export default function ListTablePage({
                                 listTableBlankSlate={listTableBlankSlate}
                                 productRecommendation={productRecommendation}
                                 columnFilters={columnFilters}
+                                includeBulkActionsCheckbox={bulkActions?.length > 0}
                             />
                         </ShowConfirmModalContext.Provider>
                     </CheckboxContext.Provider>
@@ -261,7 +390,12 @@ export default function ListTablePage({
             <A11yDialog
                 id="giveListTableModal"
                 dialogRef={(instance) => (dialog.current = instance)}
-                title={modalContent.label}
+                title={
+                    <>
+                        {modalContent?.type === 'danger' && <DeleteIcon />}
+                        {modalContent?.label}
+                    </>
+                }
                 titleId={styles.modalTitle}
                 classNames={{
                     container: styles.container,
@@ -273,7 +407,9 @@ export default function ListTablePage({
                     closeButton: 'hidden',
                 }}
             >
-                <div className={styles.modalContent}>{modalContent?.confirm(selectedIds, selectedNames) || null}</div>
+                <div className={styles.modalContent}>
+                    {modalContent?.confirm(selectedIds, selectedNames, isOpen, setOpen) || null}
+                </div>
                 <div className={styles.gutter}>
                     <button id={styles.cancel} onClick={(event) => dialog.current?.hide()}>
                         {__('Cancel', 'give')}
@@ -282,14 +418,41 @@ export default function ListTablePage({
                         id={styles.confirm}
                         onClick={async (event) => {
                             dialog.current?.hide();
-                            await modalContent.action(selectedIds);
-                            await mutate();
+                            try {
+                                await modalContent.action(selectedIds);
+                                await mutate();
+                                await mutateStats();
+                            } catch (error) {
+                                console.error('Bulk action error:', error);
+
+                                // Create a user-friendly error message
+                                let errorMessage = __('An error occurred while performing this action.', 'give');
+
+                                if (error.message && error.message.includes('permission')) {
+                                    errorMessage = __('You don\'t have permission to perform this action.', 'give');
+                                } else if (error.message && error.message.includes('403')) {
+                                    errorMessage = __('Access denied. You don\'t have permission to perform this action.', 'give');
+                                } else if (error.message) {
+                                    // Try to extract a meaningful message from the error
+                                    const match = error.message.match(/You don't have permission[^"]*|You don&#039;t have permission[^"]*/i);
+                                    if (match) {
+                                        errorMessage = match[0].replace(/&#039;/g, "'");
+                                    }
+                                }
+
+                                // Show error as a notice/alert
+                                alert(errorMessage);
+                            }
                         }}
                     >
-                        {__('Confirm', 'give')}
+                        {modalContent?.confirmButtonText ?? __('Confirm', 'give')}
                     </button>
                 </div>
             </A11yDialog>
         </>
     );
-}
+});
+
+ListTablePage.displayName = 'ListTablePage';
+
+export default ListTablePage;

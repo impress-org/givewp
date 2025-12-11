@@ -19,7 +19,7 @@ class EnqueueEventDetailsScripts
             'event' => (new EventDetails($event))->exports(),
         ];
 
-        EnqueueScript::make('give-admin-event-tickets-details', 'assets/dist/js/give-admin-event-tickets-details.js')
+        EnqueueScript::make('give-admin-event-tickets-details', 'build/assets/dist/js/give-admin-event-tickets-details.js')
             ->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('GiveEventTicketsDetails', $data)->enqueue();

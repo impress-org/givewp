@@ -18,7 +18,7 @@ class Tests_Donor_Meta extends Give_Unit_Test_Case {
 	/**
 	 * Set it up.
 	 */
-	function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$args = array(
@@ -57,7 +57,7 @@ class Tests_Donor_Meta extends Give_Unit_Test_Case {
 		$this->assertEmpty( $this->_donor->get_meta( 'key_that_does_not_exist', true ) );
 		$this->_donor->update_meta( 'test_key_2', '1' );
 		$this->assertEquals( '1', $this->_donor->get_meta( 'test_key_2', true ) );
-		$this->assertInternalType( 'array', $this->_donor->get_meta( 'test_key_2', false ) );
+        $this->assertIsArray( $this->_donor->get_meta( 'test_key_2', false  ));
 	}
 
 	/**

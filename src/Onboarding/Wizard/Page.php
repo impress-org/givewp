@@ -176,7 +176,7 @@ class Page
 
         EnqueueScript::make(
             'give-admin-onboarding-wizard-app',
-            'assets/dist/js/admin-onboarding-wizard.js'
+            'build/assets/dist/js/admin-onboarding-wizard.js'
         )->loadInFooter()
             ->registerTranslations()
             ->registerLocalizeData('giveOnboardingWizardData', $data)

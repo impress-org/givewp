@@ -11,7 +11,7 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 	 *
 	 * @since 2.5.1
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->_payment_id = Give_Helper_Payment::create_simple_payment();
@@ -22,7 +22,7 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 	 *
 	 * @since 2.5.1
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 
 		Give_Helper_Payment::delete_payment( $this->_payment_id );
@@ -70,7 +70,7 @@ class Test_Payments_Query extends Give_Unit_Test_Case {
 		$result   = $payment3->get_payment_by_group();
 		foreach ( $result as $donation_status => $value ) {
 			$this->assertContains( $donation_status, $donation_statuses );
-			$this->assertInternalType( 'array', $value );
+            $this->assertIsArray( $value );
 		}
 	}
 

@@ -27,6 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string     $key
  * @property string     $form_title
  * @property string|int $form_id
+ * @property string|int $campaign_id
  * @property string|int $price_id
  * @property string|int $total
  * @property string|int $subtotal
@@ -142,6 +143,16 @@ final class Give_Payment {
 	 * @var    string
 	 */
 	protected $form_id = 0;
+
+	/**
+	 * The Donation Campaign ID
+	 *
+	 * @since 4.3.2
+	 * @access protected
+	 *
+	 * @var    string|int
+	 */
+	protected $campaign_id = 0;
 
 	/**
 	 * The Donation Form Price ID
@@ -577,6 +588,7 @@ final class Give_Payment {
 			// Other Identifiers.
 			$this->form_title = $this->setup_form_title();
 			$this->form_id    = $this->setup_form_id();
+			$this->campaign_id = $this->setup_campaign_id();
 			$this->price_id   = $this->setup_price_id();
 			$this->key        = $this->setup_payment_key();
 			$this->number     = $this->setup_payment_number();
@@ -900,6 +912,10 @@ final class Give_Payment {
 
 					case 'form_id':
 						$this->update_meta( '_give_payment_form_id', $this->form_id );
+						break;
+
+					case 'campaign_id':
+						$this->update_meta( '_give_campaign_id', $this->campaign_id );
 						break;
 
 					case 'price_id':
@@ -1833,6 +1849,21 @@ final class Give_Payment {
 	}
 
 	/**
+	 * Setup the campaign ID.
+	 *
+	 * @since 4.3.2
+	 * @access private
+	 *
+	 * @return int The Campaign ID
+	 */
+	private function setup_campaign_id() {
+
+		$campaign_id = $this->get_meta( '_give_campaign_id', true );
+
+		return empty( $campaign_id ) ? 0 : $campaign_id;
+	}
+
+	/**
 	 * Setup the price ID.
 	 *
 	 * @since  1.5
@@ -2050,6 +2081,18 @@ final class Give_Payment {
 	 */
 	private function get_form_id() {
 		return apply_filters( 'give_payment_form_id', $this->form_id, $this->ID, $this );
+	}
+
+	/**
+	 * Retrieve payment campaign id
+	 *
+	 * @since 4.3.2
+	 * @access private
+	 *
+	 * @return string|int Payment campaign id
+	 */
+	private function get_campaign_id() {
+		return apply_filters( 'give_payment_campaign_id', $this->campaign_id, $this->ID, $this );
 	}
 
 	/**

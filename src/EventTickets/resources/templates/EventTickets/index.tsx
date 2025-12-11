@@ -6,7 +6,7 @@ import {Event} from '../../components/types';
 import './styles.scss';
 
 /**
- * @unreleased Hide tickets once the event has ended.
+ * @since 3.20.0 Hide tickets once the event has ended.
  * @since 3.6.0
  */
 export default function EventTicketsField({
@@ -16,7 +16,6 @@ export default function EventTicketsField({
     startDateTime,
     endDateTime,
     ticketTypes,
-    ticketsLabel,
 }: Event) {
     const startDateTimeObj = new Date(startDateTime);
     const endDateTimeObj = new Date(endDateTime);
@@ -28,7 +27,7 @@ export default function EventTicketsField({
 
             {description && <EventTicketsDescription description={description} />}
 
-            {!hasEnded && <EventTicketsListHOC name={name} ticketTypes={ticketTypes} ticketsLabel={ticketsLabel} />}
+            {!hasEnded && <EventTicketsListHOC name={name} ticketTypes={ticketTypes} />}
         </div>
     );
 }

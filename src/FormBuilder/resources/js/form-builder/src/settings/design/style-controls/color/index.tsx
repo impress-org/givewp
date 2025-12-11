@@ -3,7 +3,11 @@ import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-st
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
 import {PanelColorSettings} from '@wordpress/block-editor';
 import {PanelBody} from '@wordpress/components';
+import ColorInheritanceToggle from '@givewp/form-builder/settings/design/style-controls/color-inheritance-toggle';
 
+/**
+ * @since 4.3.0 Update the value of the default colors Primary color to improve accessibility color contrast.
+ */
 export default function Color({dispatch}) {
     const {
         settings: {primaryColor, secondaryColor},
@@ -14,7 +18,7 @@ export default function Color({dispatch}) {
     const defaultColors = [
         {name: 'Black', slug: 'black', color: '#000000'},
         {name: 'Dark Blue', slug: 'dark-blue', color: '#1E1AE2'},
-        {name: 'Give Primary Default', slug: 'give-primary-default', color: '#69b86b'},
+        {name: 'Give Primary Default', slug: 'give-primary-default', color: '#2d802f'},
         {name: 'Red', slug: 'red', color: '#BD3D36'},
         {name: 'Orange', slug: 'orange', color: '#EB712E'},
         {name: 'Gray', slug: 'gray', color: '#5F7385'},
@@ -27,30 +31,32 @@ export default function Color({dispatch}) {
 
     return (
         <PanelBody title={__('Color', 'give')}>
-            <PanelColorSettings
-                colorSettings={[
-                    {
-                        value: primaryColor,
-                        onChange: (primaryColor: string) => {
-                            dispatch(setFormSettings({primaryColor}));
-                            publishColors({primaryColor});
+            <ColorInheritanceToggle dispatch={dispatch}>
+                <PanelColorSettings
+                    colorSettings={[
+                        {
+                            value: primaryColor,
+                            onChange: (primaryColor: string) => {
+                                dispatch(setFormSettings({primaryColor}));
+                                publishColors({primaryColor});
+                            },
+                            label: __('Primary Color', 'give'),
+                            disableCustomColors: false,
+                            colors: defaultColors,
                         },
-                        label: __('Primary Color', 'give'),
-                        disableCustomColors: false,
-                        colors: defaultColors,
-                    },
-                    {
-                        value: secondaryColor,
-                        onChange: (secondaryColor: string) => {
-                            dispatch(setFormSettings({secondaryColor}));
-                            publishColors({secondaryColor});
+                        {
+                            value: secondaryColor,
+                            onChange: (secondaryColor: string) => {
+                                dispatch(setFormSettings({secondaryColor}));
+                                publishColors({secondaryColor});
+                            },
+                            label: __('Secondary Color', 'give'),
+                            disableCustomColors: false,
+                            colors: defaultColors,
                         },
-                        label: __('Secondary Color', 'give'),
-                        disableCustomColors: false,
-                        colors: defaultColors,
-                    },
-                ]}
-            />
+                    ]}
+                />
+            </ColorInheritanceToggle>
         </PanelBody>
     );
 }

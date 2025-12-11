@@ -286,7 +286,7 @@ class Give_Donor_Wall_Block {
 		ob_start();
 
 		$content = [
-			'image_url' => GIVE_PLUGIN_URL . 'assets/dist/images/give-icon-full-circle.svg',
+			'image_url' => GIVE_PLUGIN_URL . 'build/assets/dist/images/give-icon-full-circle.svg',
 			'image_alt' => __( 'GiveWP Icon', 'give' ),
 			'heading'   => __( 'No donors found.', 'give' ),
 			'help'      => sprintf(

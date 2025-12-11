@@ -272,7 +272,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				__( 'Unnamed Donor', 'give' )
 			);
 
-		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] );
+		$view_url = admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor['id'] );
 		$actions  = $this->get_row_actions( $donor );
 
 		return sprintf(
@@ -338,7 +338,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 
 		$actions = [
 			'id'     => '<span class="give-donor-id">ID: ' . $donor['id'] . '  </span>',
-			'view'   => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), esc_attr( $donor['name'] ) ), __( 'View Donor', 'give' ) ),
+			'view'   => sprintf( '<a href="%1$s" aria-label="%2$s">%3$s</a>', admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor['id'] ), sprintf( esc_attr__( 'View "%s"', 'give' ), esc_attr( $donor['name'] ) ), __( 'View Donor', 'give' ) ),
 			'delete' => sprintf( '<a class="%1$s" data-id="%2$s" href="#" aria-label="%3$s">%4$s</a>', 'give-single-donor-delete', $donor['id'], sprintf( esc_attr__( 'Delete "%s"', 'give' ), esc_attr( $donor['name'] ) ), __( 'Delete', 'give' ) ),
 		];
 

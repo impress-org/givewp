@@ -22,7 +22,7 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	/**
 	 * Set it Up
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		// Create form.
@@ -33,7 +33,7 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	/**
 	 * Tear it Down
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
 		Give_Helper_Form::delete_form( $this->_simple_form->ID );
 		Give_Helper_Form::delete_form( $this->_multi_form->ID );
@@ -90,7 +90,7 @@ class Tests_Donate_Form_Class extends Give_Unit_Test_Case {
 	public function test_minimum_price() {
 		$simple_form = new Give_Donate_Form( $this->_simple_form->ID );
 
-		$this->assertEquals( '1.00', $simple_form->get_minimum_price() );
+		$this->assertEquals( '1', $simple_form->get_minimum_price() );
 	}
 
 	/**

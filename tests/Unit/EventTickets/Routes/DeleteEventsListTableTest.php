@@ -19,7 +19,7 @@ class DeleteEventsListTableTest extends RestApiTestCase
     /**
      * Test that a valid request successfully deletes multiple events.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testMultipleEventsDeletionSuccess()
@@ -38,7 +38,7 @@ class DeleteEventsListTableTest extends RestApiTestCase
     /**
      * Test that an invalid Event ID returns it in the errors array.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventDeletionWithInvalidId()
@@ -51,7 +51,7 @@ class DeleteEventsListTableTest extends RestApiTestCase
     /**
      * Test that an event with associated tickets cannot be deleted.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventDeletionPreventedByTickets()
@@ -67,7 +67,7 @@ class DeleteEventsListTableTest extends RestApiTestCase
     /**
      * Test that unauthorized requests are denied.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventDeletionRequiresAuthorization()
@@ -82,7 +82,7 @@ class DeleteEventsListTableTest extends RestApiTestCase
     /**
      * Handle the request common to all tests.
      *
-     * @unreleased
+     * @since 3.20.0
      *
      * @param int[] $eventIds
      * @param bool  $authenticatedAsAdmin

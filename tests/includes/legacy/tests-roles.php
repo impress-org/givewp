@@ -12,7 +12,7 @@ class Tests_Roles extends Give_Unit_Test_Case {
 	/**
 	 * Setup
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->_roles = new Give_Roles();

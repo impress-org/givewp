@@ -9,6 +9,7 @@ import {FormColors, FormGoal, RequireAtLeastOne} from '@givewp/forms/types';
 export const PREVIEW_EVENTS = {
     SETTINGS: 'preview:settings',
     GOAL: 'preview:goal',
+    GOAL_SOURCE: 'preview:goal_source',
     COLORS: 'preview:colors',
     CSS: 'preview:css',
     DESIGN_SETTINGS: 'preview:design-settings',
@@ -88,6 +89,13 @@ export default function useDonationFormPubSub() {
         publish(PREVIEW_EVENTS.GOAL, data, iframeRef)
     }
 
+    /**
+     * @since 4.1.0
+     */
+    const publishGoalSource = (data: RequireAtLeastOne<FormSettings>) => {
+        publish(PREVIEW_EVENTS.GOAL_SOURCE, data, iframeRef)
+    }
+
     const publishGoalType = (type: string) => {
         const isMoney = ['amount', 'amountFromSubscriptions'].includes(type);
 
@@ -116,6 +124,13 @@ export default function useDonationFormPubSub() {
     }
 
     const subscribeToGoal = (callback: (data: FormGoal) => void) => {
+        subscribe(PREVIEW_EVENTS.GOAL, callback)
+    }
+
+    /**
+     * @since 4.1.0
+     */
+    const subscribeToGoalSource = (callback: (data: 'campaign' | 'form') => void) => {
         subscribe(PREVIEW_EVENTS.GOAL, callback)
     }
 
@@ -151,12 +166,14 @@ export default function useDonationFormPubSub() {
         unsubscribe,
         unsubscribeAll,
         publishGoal,
+        publishGoalSource,
         publishGoalType,
         publishColors,
         publishCss,
         publishSettings,
         publishDesignSettings,
         subscribeToGoal,
+        subscribeToGoalSource,
         subscribeToColors,
         subscribeToSettings,
         subscribeToCss,

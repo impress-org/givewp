@@ -3,6 +3,9 @@ import {__} from '@wordpress/i18n';
 import {plus, reset as minus} from '@wordpress/icons';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 
+/**
+ * @since 4.3.2 include proper labeling for accessibility. update title to <p> tag.
+ */
 export default function EventTicketsListItem({ticketType, currency, currencyRate, selectedTickets, handleSelect}) {
     const formatter = useCurrencyFormatter(currency);
     const ticketPrice =
@@ -17,7 +20,7 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
     return (
         <div className={'givewp-event-tickets__tickets__ticket'} key={ticketType.id}>
             <div className={'givewp-event-tickets__tickets__ticket__description'}>
-                <h5>{ticketType.title}</h5>
+                <p>{ticketType.title}</p>
                 <p>{ticketPrice}</p>
                 <p>{ticketType.description}</p>
             </div>
@@ -25,20 +28,39 @@ export default function EventTicketsListItem({ticketType, currency, currencyRate
                 {remainingTickets > 0 ? (
                     <>
                         <div className={'givewp-event-tickets__tickets__ticket__quantity__input'}>
-                            <button onClick={handleButtonClick(selectedTickets - 1)}>
+                            <button
+                                onClick={handleButtonClick(selectedTickets - 1)}
+                                aria-label={__('Decrease quantity of', 'give') + ' ' + ticketType.title}
+                            >
                                 <Icon icon={minus} />
                             </button>
-                            <input type="text" value={selectedTickets} />
-                            <button onClick={handleButtonClick(selectedTickets + 1)}>
+                            <input
+                                type="text"
+                                value={selectedTickets}
+                                aria-label={__('Ticket quantity', 'give')}
+                            />
+                            <button
+                                onClick={handleButtonClick(selectedTickets + 1)}
+                                aria-label={__('Increase quantity of', 'give') + ' ' + ticketType.title}
+                            >
                                 <Icon icon={plus} />
                             </button>
                         </div>
-                        <p className={'givewp-event-tickets__tickets__ticket__quantity__availability'}>
+                        <p
+                            className={'givewp-event-tickets__tickets__ticket__quantity__availability'}
+                            role="status"
+                            aria-live="polite"
+                            aria-label={`${remainingTickets} ${__('tickets remaining', 'give')}`}
+                        >
                             {remainingTickets} {__('remaining', 'give')}
                         </p>
                     </>
                 ) : (
-                    <span className={'givewp-event-tickets__tickets__ticket__quantity__sold-out'}>
+                    <span
+                        className={'givewp-event-tickets__tickets__ticket__quantity__sold-out'}
+                        role="status"
+                        aria-live="polite"
+                    >
                         {__('Sold out', 'give')}
                     </span>
                 )}

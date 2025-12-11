@@ -3,6 +3,7 @@
 namespace Give\Framework\Routes;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Helpers\Language;
 
 use function is_callable;
 use function str_contains;
@@ -89,6 +90,7 @@ class Router
     }
 
     /**
+     * @since 3.22.0 Add locale support
      * @since 3.0.0
      *
      * @param  string  $type
@@ -107,6 +109,7 @@ class Router
             }
 
             $request = $this->getRequestDataByType($type);
+            $request['locale'] = ! empty($request['locale']) ? $request['locale'] : Language::getLocale();
 
             if (is_callable($action)) {
                 return $action($request);
@@ -121,6 +124,7 @@ class Router
     }
 
     /**
+     * @since 4.3.0 Use trailingslashit() method to prevent errors on websites installed in subdirectories
      * @since 3.0.0
      */
     public function url(string $uri, array $args = []): string
@@ -130,7 +134,7 @@ class Router
                 ['givewp-route' => $uri],
                 $args
             ),
-            home_url()
+            trailingslashit(home_url())
         );
     }
 }

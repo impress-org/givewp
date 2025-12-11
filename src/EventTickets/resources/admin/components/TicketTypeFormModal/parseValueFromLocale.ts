@@ -1,5 +1,5 @@
 /*
- * @unreleased
+ * @since 3.20.0
  */
 export default function parseValueFromLocale(amount: string): string {
     if (!amount) {

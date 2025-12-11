@@ -7,6 +7,7 @@ use Give\Subscriptions\Endpoints\ListSubscriptions;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
@@ -30,8 +31,9 @@ class TestListSubscriptions extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('status', [SubscriptionStatus::PENDING]);
 
         $listSubscriptions = new ListSubscriptions();
 
@@ -54,10 +56,11 @@ class TestListSubscriptions extends TestCase
         // set_params
         $mockRequest->set_param('page', 1);
         $mockRequest->set_param('perPage', 30);
-        $mockRequest->set_param('locale', 'us-US');
+        $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
         $mockRequest->set_param('sortColumn', 'id');
         $mockRequest->set_param('sortDirection', $sortDirection);
+        $mockRequest->set_param('status', [SubscriptionStatus::PENDING]);
 
         $expectedItems = $this->getMockColumns($subscriptions,$sortDirection);
 
@@ -103,7 +106,7 @@ class TestListSubscriptions extends TestCase
         foreach ( $subscriptions as $subscription ) {
             $expectedItem = [];
             foreach ( $columns as $column ) {
-                $expectedItem[$column::getId()] = $column->getCellValue($subscription);
+                $expectedItem[$column::getId()] = $column->getCellValue($subscription, 'en-US');
             }
             $expectedItems[] = $expectedItem;
         }

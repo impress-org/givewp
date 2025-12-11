@@ -13,7 +13,7 @@ final class DonationFormsRepositoryTest extends TestCase
 
     public $testingForms = [];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -25,7 +25,7 @@ final class DonationFormsRepositoryTest extends TestCase
         Give_Helper_Form::create_simple_form();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 
@@ -72,7 +72,7 @@ final class DonationFormsRepositoryTest extends TestCase
         $forms = $response->data['items'];
 
         $this->assertEquals(1, count($forms), 'Search retrieves a single form');
-        $this->assertEquals('My Simple Form', $forms[0]->title, 'Search retrieves correct form');
+        $this->assertEquals('My Simple Form', $forms[0]['title'], 'Search retrieves correct form');
     }
 
 }

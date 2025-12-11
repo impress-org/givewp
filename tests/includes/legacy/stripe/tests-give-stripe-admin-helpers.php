@@ -24,7 +24,8 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 	 *
 	 * @return void
 	 */
-	public function setUp() {
+	public function setUp(): void
+    {
 		parent::setUp();
 
 		$this->gateways = give_get_option( 'gateways', array() );

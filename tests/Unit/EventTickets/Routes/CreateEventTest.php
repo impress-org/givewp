@@ -18,7 +18,7 @@ class CreateEventTest extends RestApiTestCase
     /**
      * Test that a valid request successfully creates a new Event.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventCreationSuccess()
@@ -43,7 +43,7 @@ class CreateEventTest extends RestApiTestCase
     /**
      * Test that creating an event with missing required fields returns an error.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventCreationWithMissingRequiredFields()
@@ -62,7 +62,7 @@ class CreateEventTest extends RestApiTestCase
     /**
      * Test that creating an event with an invalid date format returns an error.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventCreationWithInvalidDateFormat()
@@ -85,7 +85,7 @@ class CreateEventTest extends RestApiTestCase
     /**
      * Test that unauthorized requests are denied.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventCreationRequiresAuthorization()
@@ -103,7 +103,7 @@ class CreateEventTest extends RestApiTestCase
     /**
      * Handle the request common to all tests.
      *
-     * @unreleased
+     * @since 3.20.0
      *
      * @param array $data
      * @param bool  $authenticatedAsAdmin

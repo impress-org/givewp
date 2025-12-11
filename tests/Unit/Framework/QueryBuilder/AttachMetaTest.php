@@ -38,7 +38,7 @@ final class AttachMetaTest extends TestCase
             ->where('donationMeta.meta_value', 1)
             ->orderBy('posts.post_date', 'DESC');
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT posts.ID AS id, posts.post_date AS createdAt, wp_give_donationmeta_attach_meta_amount.meta_value AS amount FROM wp_posts AS posts LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_amount ON posts.ID = wp_give_donationmeta_attach_meta_amount.donation_id AND wp_give_donationmeta_attach_meta_amount.meta_key = '_give_payment_total' LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id WHERE posts.post_type = 'give_payment' AND posts.post_status = 'give_subscription' AND donationMeta.meta_key = 'subscription_id' AND donationMeta.meta_value = '1' ORDER BY posts.post_date DESC",
             $builder->getSQL()
         );
@@ -65,7 +65,7 @@ final class AttachMetaTest extends TestCase
                 ['additional_email', 'additionalEmails', true]
             );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT id, email, name, CONCAT('[',GROUP_CONCAT(DISTINCT CONCAT('\"',wp_give_donormeta_attach_meta_additionalEmails.meta_value,'\"')),']') AS additionalEmails FROM wp_give_donors LEFT JOIN wp_give_donormeta wp_give_donormeta_attach_meta_additionalEmails ON id = wp_give_donormeta_attach_meta_additionalEmails.donor_id AND wp_give_donormeta_attach_meta_additionalEmails.meta_key = 'additional_email' GROUP BY id",
             $builder->getSQL()
         );
@@ -101,7 +101,7 @@ final class AttachMetaTest extends TestCase
             ->where('donationMeta.custom_meta_key', 'subscription_id')
             ->where('donationMeta.custom_meta_value', 1);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             "SELECT posts.ID AS id, posts.post_date AS createdAt, wp_give_donationmeta_attach_meta_amount.custom_meta_value AS amount FROM wp_posts AS posts LEFT JOIN wp_give_donationmeta wp_give_donationmeta_attach_meta_amount ON posts.ID = wp_give_donationmeta_attach_meta_amount.donation_id AND wp_give_donationmeta_attach_meta_amount.custom_meta_key = '_give_payment_total' LEFT JOIN wp_give_donationmeta donationMeta ON posts.ID = donationMeta.donation_id WHERE posts.post_type = 'give_payment' AND posts.post_status = 'give_subscription' AND donationMeta.custom_meta_key = 'subscription_id' AND donationMeta.custom_meta_value = '1'",
             $builder->getSQL()
         );

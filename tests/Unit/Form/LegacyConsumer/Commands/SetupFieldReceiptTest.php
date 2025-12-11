@@ -2,15 +2,15 @@
 
 namespace Give\Tests\Unit\Form\LegacyConsumer\Commands;
 
+use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Text;
 use Give\Receipt\DonationReceipt;
-use Give_Helper_Payment;
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 final class SetupFieldReceiptTest extends TestCase
 {
-
-
+    use RefreshDatabase;
     /*
     |--------------------------------------------------------------------------
     | Donation Meta
@@ -27,7 +27,7 @@ final class SetupFieldReceiptTest extends TestCase
             );
         });
 
-        $paymentID = Give_Helper_Payment::create_simple_payment();
+        $paymentID = Donation::factory()->create()->id;
 
         give_update_payment_meta($paymentID, 'textField', 'foobar');
 
@@ -48,7 +48,7 @@ final class SetupFieldReceiptTest extends TestCase
             );
         });
 
-        $paymentID = Give_Helper_Payment::create_simple_payment();
+        $paymentID = Donation::factory()->create()->id;
 
         give_update_payment_meta( $paymentID, 'my-text-field', '' ); // NOTE: Empty value.
 
@@ -69,7 +69,7 @@ final class SetupFieldReceiptTest extends TestCase
             );
         });
 
-        $paymentID = Give_Helper_Payment::create_simple_payment();
+        $paymentID = Donation::factory()->create()->id;
 
         give_update_payment_meta( $paymentID, 'my-text-field', 'foobar' );
 
@@ -97,7 +97,7 @@ final class SetupFieldReceiptTest extends TestCase
             );
         });
 
-        $paymentID = Give_Helper_Payment::create_simple_payment();
+        $paymentID = Donation::factory()->create()->id;
 
         $donorID = give_get_payment_meta( $paymentID, '_give_payment_donor_id' );
         Give()->donor_meta->update_meta( $donorID, 'my-text-field', 'foobar' );
@@ -120,7 +120,7 @@ final class SetupFieldReceiptTest extends TestCase
             );
         });
 
-        $paymentID = Give_Helper_Payment::create_simple_payment();
+        $paymentID = Donation::factory()->create()->id;
 
         $donorID = give_get_payment_meta( $paymentID, '_give_payment_donor_id' );
         Give()->donor_meta->update_meta( $donorID, 'my-text-field', '' ); // NOTE: Empty value.
@@ -143,12 +143,12 @@ final class SetupFieldReceiptTest extends TestCase
             );
         });
 
-        $paymentID = Give_Helper_Payment::create_simple_payment();
+        $donation = Donation::factory()->create();
 
-        $donorID = give_get_payment_meta( $paymentID, '_give_payment_donor_id' );
+        $donorID = give_get_payment_meta( $donation->id, '_give_payment_donor_id' );
         Give()->donor_meta->update_meta( $donorID, 'my-text-field', 'foobar' );
 
-        $receipt = new DonationReceipt( $paymentID );
+        $receipt = new DonationReceipt( $donation->id );
         do_action( 'give_new_receipt', $receipt );
 
         $section = $receipt[ DonationReceipt::DONORSECTIONID ];

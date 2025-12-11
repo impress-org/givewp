@@ -13,7 +13,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
 	/**
 	 * Set it up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->_simple_form = Give_Helper_Form::create_simple_form();
 	}
@@ -21,9 +21,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
 	/**
 	 * Tear it down.
 	 */
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test payment gateways.

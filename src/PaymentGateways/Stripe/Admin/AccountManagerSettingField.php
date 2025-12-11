@@ -140,7 +140,7 @@ class AccountManagerSettingField
                     <div class="give-tooltip" data-tooltip="
 					<?php
                     esc_html_e(
-                        'You are using the Pro version of the GiveWP add-on which includes additional payment methods, zero additional fees, and premium support.',
+                        'You are using the Pro version of the GiveWP add-on, which includes additional connection options and premium support.',
                         'give'
                     );
                     ?>
@@ -155,17 +155,12 @@ class AccountManagerSettingField
 
             <p class="give-stripe-subheading-description">
                 <?php
-                esc_html_e(
-                    'Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen.',
-                    'give'
+                printf(
+                    __('Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen. An additional 2%% fee is applied to donations for free users (removed with any premium product license). Read our <a href="%s" target="_blank" rel="noopener noreferrer">Stripe documentation</a> for more information.', 'give'),
+                    'https://docs.givewp.com/stripe-fees'
                 );
                 ?>
             </p>
-            <?php
-            if ($this->canShowFreeStripeVersionNotice()) {
-                $this->getFreeStripeVersionNoticeMarkup();
-            }
-            ?>
             <hr style="margin: 25px 0; display: block" />
         </div>
         <?php
@@ -543,28 +538,6 @@ class AccountManagerSettingField
     /**
      * @since 2.13.0
      */
-    private function getFreeStripeVersionNoticeMarkup()
-    {
-        ?>
-        <p class="give-stripe-subheading-description">
-            <?php
-            printf(
-                __(
-                    'NOTE: You are using the free Stripe payment gateway integration. This includes an additional 2%% fee for processing one-time donations. This fee is removed by activating the premium <a href="%1$s" target="_blank">Stripe add-on</a> and never applies to subscription donations made through the <a href="%2$s" target="_blank">Recurring Donations add-on</a>. <a href="%3$s" target="_blank">Learn More ></a>',
-                    'give'
-                ),
-                esc_url('http://docs.givewp.com/settings-stripe-addon'),
-                esc_url('http://docs.givewp.com/settings-stripe-recurring'),
-                esc_url('http://docs.givewp.com/settings-stripe-free')
-            );
-            ?>
-        </p>
-        <?php
-    }
-
-    /**
-     * @since 2.13.0
-     */
     public function getNoStripeAccountMarkup()
     {
         ?>
@@ -667,15 +640,6 @@ class AccountManagerSettingField
             </div>
         </div>
         <?php
-    }
-
-    /**
-     * @since 2.13.0
-     * @return bool
-     */
-    private function canShowFreeStripeVersionNotice()
-    {
-        return ! give_stripe_is_premium_active();
     }
 
     /**

@@ -1,0 +1,24 @@
+---
+description: GiveWP gateway api
+globs:
+alwaysApply: false
+---
+# GiveWP Gateway API
+
+
+The GiveWP Gateway API is how our application interfaces our donation form with external payment gateways.
+
+The following should be used as reference for the API:
+- PaymentGateway framework folder: `..src/Framework/PaymentGateways/`
+- PaymentGateway abstract class: [PaymentGateway.php](mdc:wp-content/plugins/give/src/Framework/PaymentGateways/PaymentGateway.php)
+- PaymentGateway interface:  [PaymentGateway.php](mdc:wp-content/plugins/give/src/PaymentGateways/PaymentGateway.php)
+- PaymentGatewayRegister registrar: [PaymentGatewayRegister.php](mdc:wp-content/plugins/give/src/Framework/PaymentGateways/PaymentGatewayRegister.php)
+- SubscriptionModule abstract class: [SubscriptionMode.php](mdc:wp-content/plugins/give/src/Subscriptions/ValueObjects/SubscriptionMode.php)
+- Public high level documentation: https://givewp.com/documentation/developers/how-to-build-a-gateway-add-on-for-givewp/
+
+The following should be used as reference on how to implement a gateway using the gateway api:
+- TestGateway: [TestGateway.php](mdc:wp-content/plugins/give/src/PaymentGateways/Gateways/TestGateway/TestGateway.php)
+- StripeGateway: [StripePaymentElementGateway.php](mdc:wp-content/plugins/give/src/PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/StripePaymentElementGateway.php)
+
+
+

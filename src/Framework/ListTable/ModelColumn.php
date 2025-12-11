@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Give\Framework\ListTable;
 
+use Give\Framework\ListTable\Concerns\ListTableData;
 use Give\Framework\Support\Contracts\Arrayable;
 
 /**
@@ -13,6 +14,9 @@ use Give\Framework\Support\Contracts\Arrayable;
  */
 abstract class ModelColumn implements Arrayable
 {
+
+    use ListTableData;
+
     /**
      * @var string|array Define the meta key to be used when sorting the query by this column
      */

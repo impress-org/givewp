@@ -1,7 +1,7 @@
 import styles from './TableCell.module.scss';
 import cx from 'classnames';
 
-export default function TableCell({className = '', children = null, heading = false}) {
+export default function TableCell({className = '', children = null, heading = false, columnId = null}) {
     if (heading) {
         return (
             <th className={cx(styles.tableCell, styles.tableRowHeader, className)} scope="row">
@@ -10,7 +10,7 @@ export default function TableCell({className = '', children = null, heading = fa
         );
     }
 
-    return <td className={cx(styles.tableCell, className)}>{children}</td>;
+    return <td className={cx(styles.tableCell, className)} data-column-id={columnId}>{children}</td>;
 }
 
 export function IdBadge({id, addClass = ''}) {

@@ -98,11 +98,12 @@ add_action( 'wp_ajax_nopriv_give_donation_form_nonce', 'give_donation_form_nonce
  * Create all nonce of donation form using Ajax call.
  * Note: only for internal use
  *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  *
  * @return void
  */
-function __give_donation_form_reset_all_nonce() {
+function give_donation_form_reset_all_nonce() {
 	if ( isset( $_POST['give_form_id'] ) ) {
 
 		// Get donation form id.
@@ -127,8 +128,8 @@ function __give_donation_form_reset_all_nonce() {
 	wp_send_json_error();
 }
 
-add_action( 'wp_ajax_give_donation_form_reset_all_nonce', '__give_donation_form_reset_all_nonce' );
-add_action( 'wp_ajax_nopriv_give_donation_form_reset_all_nonce', '__give_donation_form_reset_all_nonce' );
+add_action( 'wp_ajax_give_donation_form_reset_all_nonce', 'give_donation_form_reset_all_nonce');
+add_action( 'wp_ajax_nopriv_give_donation_form_reset_all_nonce', 'give_donation_form_reset_all_nonce');
 
 /**
  * Sets an error within the donation form if no gateways are enabled.

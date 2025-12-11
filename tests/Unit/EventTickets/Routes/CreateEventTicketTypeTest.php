@@ -19,7 +19,7 @@ class CreateEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that a valid request successfully creates a new Event Ticket Type.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeCreationSuccess()
@@ -47,7 +47,7 @@ class CreateEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that creating an Event Ticket Type giving an invalid event ID returns an error.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeCreationWithInvalidEventId()
@@ -67,7 +67,7 @@ class CreateEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that creating an Event Ticket Type with missing required fields returns an error.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeCreationWithMissingRequiredFields()
@@ -88,7 +88,7 @@ class CreateEventTicketTypeTest extends RestApiTestCase
     /**
      * Test that unauthorized requests are denied.
      *
-     * @unreleased
+     * @since 3.20.0
      * @throws Exception
      */
     public function testEventTicketTypeCreationRequiresAuthorization()
@@ -108,7 +108,7 @@ class CreateEventTicketTypeTest extends RestApiTestCase
     /**
      * Handle the request common to all tests.
      *
-     * @unreleased
+     * @since 3.20.0
      *
      * @param int $eventId
      * @param array $data

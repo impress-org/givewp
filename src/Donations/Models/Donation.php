@@ -3,6 +3,8 @@
 namespace Give\Donations\Models;
 
 use DateTime;
+use Give\BetaFeatures\Facades\FeatureFlag;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\DataTransferObjects\DonationQueryData;
 use Give\Donations\Factories\DonationFactory;
 use Give\Donations\Properties\BillingAddress;
@@ -10,6 +12,8 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donations\ValueObjects\DonationType;
 use Give\Donors\Models\Donor;
+use Give\EventTickets\Models\EventTicket;
+use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\Models\Contracts\ModelCrud;
@@ -18,18 +22,21 @@ use Give\Framework\Models\Model;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Models\ValueObjects\Relationship;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Receipts\DonationReceipt;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 
 /**
  * Class Donation
  *
+ * @since 4.6.0 Add event tickets property
  * @since 3.9.0 Add phone property
  * @since 2.23.0 add type property; remove parentId property
  * @since 2.20.0 update amount type, fee recovered, and exchange rate
  * @since 2.19.6
  *
  * @property int $id
+ * @property int $campaignId
  * @property int $formId
  * @property string $formTitle
  * @property DateTime $createdAt
@@ -55,8 +62,10 @@ use Give\Subscriptions\Models\Subscription;
  * @property string $levelId
  * @property string $gatewayTransactionId
  * @property Donor $donor
+ * @property Campaign $campaign
  * @property Subscription $subscription
  * @property DonationNote[] $notes
+ * @property EventTicket[] $eventTickets
  * @property string $company
  * @property string $comment
  */
@@ -67,6 +76,7 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      */
     protected $properties = [
         'id' => 'int',
+        'campaignId' => 'int',
         'formId' => 'int',
         'formTitle' => 'string',
         'purchaseKey' => 'string',
@@ -99,9 +109,11 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
      * @inheritdoc
      */
     protected $relationships = [
+        'campaign' => Relationship::BELONGS_TO,
         'donor' => Relationship::BELONGS_TO,
         'subscription' => Relationship::BELONGS_TO,
         'notes' => Relationship::HAS_MANY,
+        'eventTickets' => Relationship::HAS_MANY,
     ];
 
     /**
@@ -161,6 +173,26 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @since 4.6.0
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function trash(): bool
+    {
+        return give()->donations->trash($this);
+    }
+
+    /**
+     * @since 4.12.0
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function unTrash(): bool
+    {
+        return give()->donations->unTrash($this);
+    }
+
+    /**
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Donor>
@@ -182,6 +214,16 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
         }
 
         return give()->subscriptions->queryByDonationId($this->id);
+    }
+
+    /**
+     * @since 4.0.0
+     *
+     * @return ModelQueryBuilder<Campaign>
+     */
+    public function campaign(): ModelQueryBuilder
+    {
+        return give()->campaigns->queryById($this->campaignId);
     }
 
     /**
@@ -228,6 +270,22 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @since 4.6.0
+     */
+    public function eventTicketsAmount(): Money
+    {
+        return give(EventTicketRepository::class)->getTotalByDonation($this);
+    }
+
+    /**
+     * @since 4.6.0
+     */
+    public function eventTickets(): ModelQueryBuilder
+    {
+        return give(EventTicketRepository::class)->queryByDonationId($this->id);
+    }
+
+    /**
      * Returns the amount intended in the currency the GiveWP site is set to
      *
      * @since 2.20.0
@@ -245,6 +303,14 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     public function gateway(): PaymentGateway
     {
         return give()->gateways->getPaymentGateway($this->gatewayId);
+    }
+
+    /**
+     * @since 4.3.0
+     */
+    public function receipt(): DonationReceipt
+    {
+        return give()->donations->getConfirmationPageReceipt($this);
     }
 
     /**

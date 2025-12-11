@@ -129,10 +129,16 @@ final class DonationQueryData
      * @var string|null
      */
     public $honorific;
+    /**
+     * @var int
+     */
+    public $campaignId;
 
     /**
      * Convert data from object to Donation
      *
+     * @since 4.13.0 prevent fatal error when status is not valid
+     * @since 4.0.0 Added campaignId property
      * @since 3.9.0 Add support for "phone" property
      * @since 3.2.0 add fallback for donation mode
      * @since 2.23.0 remove parentId property
@@ -170,7 +176,7 @@ final class DonationQueryData
         $self->gatewayId = $donationQueryObject->{DonationMetaKeys::GATEWAY()->getKeyAsCamelCase()};
         $self->createdAt = Temporal::toDateTime($donationQueryObject->createdAt);
         $self->updatedAt = Temporal::toDateTime($donationQueryObject->updatedAt);
-        $self->status = new DonationStatus($donationQueryObject->status);
+        $self->status = new DonationStatus(DonationStatus::isValid($donationQueryObject->status) ? $donationQueryObject->status : DonationStatus::PENDING);
         $self->subscriptionId = (int)$donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_ID()->getKeyAsCamelCase()};
         $self->mode = DonationMode::isValid($donationMode) ? new DonationMode($donationMode) : DonationMode::LIVE();
         $self->billingAddress = BillingAddress::fromArray([
@@ -191,6 +197,7 @@ final class DonationQueryData
             ->getKeyAsCamelCase()};
         $self->comment = $donationQueryObject->{DonationMetaKeys::COMMENT()
             ->getKeyAsCamelCase()};
+        $self->campaignId = (int)$donationQueryObject->{DonationMetaKeys::CAMPAIGN_ID()->getKeyAsCamelCase()};
 
         if (!empty($donationQueryObject->{DonationMetaKeys::SUBSCRIPTION_INITIAL_DONATION()->getKeyAsCamelCase()})) {
             $self->type = DonationType::SUBSCRIPTION();

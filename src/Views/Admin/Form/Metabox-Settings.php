@@ -51,7 +51,7 @@ echo $activatedTemplate ? ' has-activated-template' : ''; ?>">
             ); ?></p>
 
         <div class="form-template-notice">
-            <img src="<?= esc_url(GIVE_PLUGIN_URL . 'assets/dist/images/admin/cap-books.svg'); ?>" alt="" />
+            <img src="<?= esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/cap-books.svg'); ?>" alt="" />
             <p>
                 <?= esc_html__('Learn the ins and outs of creating the perfect Donation Form with GiveWP', 'give'); ?>
             </p>

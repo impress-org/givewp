@@ -4,7 +4,7 @@
  * @group email_tags
  */
 class Tests_Email_Tags extends Give_Unit_Test_Case {
-	public function setUp() {
+	public function setUp(): void {
 
         $current_user = new WP_User( 1 );
         $current_user->set_role( 'administrator' );
@@ -22,9 +22,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
         parent::setUp();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test function give_email_tag_first_name
@@ -660,12 +658,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			)
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/action=view_in_browser/',
 			$receipt_link_url
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/_give_hash=/',
 			$receipt_link_url
 		);
@@ -686,17 +684,17 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			)
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/>View the receipt in your browser &raquo;<\/a>/',
 			$receipt_link
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/<a href=".+?\?action=view_in_browser/',
 			$receipt_link
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/_give_hash=/',
 			$receipt_link
 		);
@@ -721,12 +719,12 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 
 		$link = give_email_tag_donation_history_link( array( 'user_id' => 1 ) );
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/target="_blank">View your donation history &raquo;<\/a>/',
 			$link
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/<a href=".+?\?give_nl=/',
 			$link
 		);
@@ -738,7 +736,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 			)
 		);
 
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			'/View your donation history: .+?\?give_nl=/',
 			$link
 		);
@@ -760,19 +758,19 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 * Case 1: donor meta data tests.
 		 */
 		$donor_tag_args = array( 'donor_id' => $donor_id );
-		$this->assertEquals( 'Admin', __give_render_metadata_email_tag( '{meta_donor__give_donor_first_name}', $donor_tag_args ) );
-		$this->assertEquals( 'User', __give_render_metadata_email_tag( '{meta_donor__give_donor_last_name}', $donor_tag_args ) );
+		$this->assertEquals( 'Admin', give_render_metadata_email_tag( '{meta_donor__give_donor_first_name}', $donor_tag_args ) );
+		$this->assertEquals( 'User', give_render_metadata_email_tag( '{meta_donor__give_donor_last_name}', $donor_tag_args ) );
 
 		Give()->donor_meta->update_meta( $donor_id, '_give_stripe_customer_id', 2 );
 
-		$this->assertEquals( 2, __give_render_metadata_email_tag( '{meta_donor__give_stripe_customer_id}', $donor_tag_args ) );
-		$this->assertEquals( 1, __give_render_metadata_email_tag( '{meta_donor_id}', $donor_tag_args ) );
-		$this->assertEquals( 1, __give_render_metadata_email_tag( '{meta_donor_user_id}', $donor_tag_args ) );
-		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', $donor_tag_args ) );
-		$this->assertEquals( 'admin@example.org', __give_render_metadata_email_tag( '{meta_donor_email}', $donor_tag_args ) );
+		$this->assertEquals( 2, give_render_metadata_email_tag( '{meta_donor__give_stripe_customer_id}', $donor_tag_args ) );
+		$this->assertEquals( $donor_id, give_render_metadata_email_tag( '{meta_donor_id}', $donor_tag_args ) );
+		$this->assertEquals( 1, give_render_metadata_email_tag( '{meta_donor_user_id}', $donor_tag_args ) );
+		$this->assertEquals( 'Admin User', give_render_metadata_email_tag( '{meta_donor_name}', $donor_tag_args ) );
+		$this->assertEquals( 'admin@example.org', give_render_metadata_email_tag( '{meta_donor_email}', $donor_tag_args ) );
 
-		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', array( 'user_id' => 1 ) ) );
-		$this->assertEquals( 'Admin User', __give_render_metadata_email_tag( '{meta_donor_name}', array( 'payment_id' => $payment_id ) ) );
+		$this->assertEquals( 'Admin User', give_render_metadata_email_tag( '{meta_donor_name}', array('user_id' => 1 ) ) );
+		$this->assertEquals( 'Admin User', give_render_metadata_email_tag( '{meta_donor_name}', array('payment_id' => $payment_id ) ) );
 
 		/*
 		 * Case 2: donation meta data tests.

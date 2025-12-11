@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\ProcessorResponseError;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -10,6 +9,7 @@ use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Settings;
 use Give\PaymentGateways\PayPalCommerce\Repositories\Webhooks;
+use Give\Helpers\Form\Utils as FormUtils;
 
 /**
  * Class AjaxRequestHandler
@@ -50,7 +50,7 @@ class AjaxRequestHandler
     /**
      * @since 2.9.0
      *
-     * @var ConnectClient
+     * @var RefreshToken
      */
     private $refreshToken;
 
@@ -156,12 +156,18 @@ class AjaxRequestHandler
         $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
         $accountType = sanitize_text_field(wp_unslash($_GET['accountType']));
         $mode = sanitize_text_field(wp_unslash($_GET['mode']));
+
+        // Generate a unique state token for CSRF protection on PayPal callback.
+        $stateToken = wp_generate_password(32, false);
+        set_transient('give_paypal_onboarding_state_' . $mode, $stateToken, HOUR_IN_SECONDS);
+
         $redirectUrl = add_query_arg(
             [
                 'tab' => 'gateways',
                 'section' => 'paypal',
                 'group' => 'paypal-commerce',
                 'mode' => $mode,
+                'give_paypal_state' => $stateToken,
             ],
             admin_url('edit.php?post_type=give_forms&page=give-settings')
         );
@@ -257,6 +263,7 @@ class AjaxRequestHandler
     }
 
     /**
+     * @since 4.2.1 only filter amount for v2 forms
      * @since 3.4.2
      */
     private function getOrderData(): array
@@ -264,11 +271,13 @@ class AjaxRequestHandler
         $postData = give_clean($_POST);
         $formId = absint($postData['give-form-id']);
         $donorAddress = $this->getDonorAddressFromPostedDataForPaypalOrder($postData);
+        $isV3Form = FormUtils::isV3Form($formId);
 
-        return [
-            'formId' => $formId,
-            'formTitle' => give_payment_gateway_item_title(['post_data' => $postData], 127),
-            'donationAmount' => isset($postData['give-amount']) ?
+        if ($isV3Form) {
+            // if coming from v3 forms, fee recovery is already included in the amount and should not be filtered.
+            $amount = isset($postData['give-amount']) ? give_clean($postData['give-amount']) : '0.00';
+        } else {
+            $amount = isset($postData['give-amount']) ?
                 (float)apply_filters(
                     'give_donation_total',
                     give_maybe_sanitize_amount(
@@ -276,7 +285,13 @@ class AjaxRequestHandler
                         ['currency' => give_get_currency($formId)]
                     )
                 ) :
-                '0.00',
+                '0.00';
+        }
+
+        return [
+            'formId' => $formId,
+            'formTitle' => give_payment_gateway_item_title(['post_data' => $postData], 127),
+            'donationAmount' => $amount,
             'payer' => [
                 'firstName' => $postData['give_first'],
                 'lastName' => $postData['give_last'],

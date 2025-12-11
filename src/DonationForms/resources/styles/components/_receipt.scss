@@ -218,6 +218,11 @@
             color: var(--givewp-primary-color);
             text-decoration: underline;
             font-weight: 400;
+
+            &:focus {
+                outline: 0.125rem solid var(--givewp-primary-color);
+                outline-offset: 0.25rem;
+            }
         }
 
         .download-btn {

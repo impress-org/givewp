@@ -53,6 +53,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 		/**
 		 * This function is used to include the related Stripe core files.
 		 *
+		 * @since 4.0.0 prevented loading translation when using get_plugin_data to avoid _load_textdomain_just_in_time error
 		 * @since  2.5.0
 		 * @since 2.11.0 Stripe sdk loading logic has been removed because
 		 *             Composer autoloader will load it when required.
@@ -83,7 +84,7 @@ if ( ! class_exists( 'Give_Stripe' ) ) {
 						require_once ABSPATH . 'wp-admin/includes/plugin.php';
 					}
 
-					$recurring_plugin_data = get_plugin_data( $recurring_file_path );
+					$recurring_plugin_data = get_plugin_data( $recurring_file_path, true, false );
 
 					// Avoid fatal error for smooth update for customers.
 					if (

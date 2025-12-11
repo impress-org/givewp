@@ -2,6 +2,7 @@
 
 namespace Give\Donations;
 
+use Give\Donations\Actions\LoadDonationAdminOptions;
 use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
@@ -12,9 +13,13 @@ use Give\Donations\LegacyListeners\DispatchGiveUpdatePaymentStatus;
 use Give\Donations\LegacyListeners\InsertSequentialId;
 use Give\Donations\LegacyListeners\RemoveSequentialId;
 use Give\Donations\LegacyListeners\UpdateDonorPaymentIds;
+use Give\Donations\LegacyListeners\UpdateDonationMetaWithLegacyFormCurrencySettings;
+use Give\Donations\Listeners\DonationCreated\UpdateDonationMetaWithCurrencySettings;
+use Give\Donations\Listeners\DonationCreated\UpdateDonorMetaWithLastDonatedCurrency;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Migrations\AddMissingDonorIdToDonationComments;
 use Give\Donations\Migrations\MoveDonationCommentToDonationMetaTable;
+use Give\Donations\Migrations\RecalculateExchangeRate;
 use Give\Donations\Migrations\SetAutomaticFormattingOption;
 use Give\Donations\Migrations\UnserializeTitlePrefix;
 use Give\Donations\Models\Donation;
@@ -46,15 +51,18 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function boot()
     {
+        $this->bootListeners();
         $this->bootLegacyListeners();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
+        $this->loadDonationAdminOptions();
 
         give(MigrationsRegister::class)->addMigrations([
             AddMissingDonorIdToDonationComments::class,
             SetAutomaticFormattingOption::class,
             MoveDonationCommentToDonationMetaTable::class,
             UnserializeTitlePrefix::class,
+            RecalculateExchangeRate::class,
         ]);
     }
 
@@ -69,6 +77,7 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_donation_creating', DispatchGivePreInsertPayment::class);
 
         add_action('givewp_donation_created', static function (Donation $donation) {
+            (new UpdateDonationMetaWithLegacyFormCurrencySettings())($donation);
             (new InsertSequentialId())($donation);
             (new DispatchGiveInsertPayment())($donation);
             (new UpdateDonorPaymentIds())($donation);
@@ -113,10 +122,6 @@ class ServiceProvider implements ServiceProviderInterface
         // only register new admin page if user hasn't chosen to use the old one
         if (empty($showLegacy)) {
             Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem', 20);
-
-            if (DonationsAdminPage::isShowing()) {
-                Hooks::addAction('admin_enqueue_scripts', DonationsAdminPage::class, 'loadScripts');
-            }
         }
     }
 
@@ -127,6 +132,31 @@ class ServiceProvider implements ServiceProviderInterface
     {
         add_action('give_view_donation_details_billing_after', static function ($donationId) {
             echo (new DonationDetailsController())->show($donationId);
+        });
+    }
+
+    /**
+     * @since 4.2.0
+     */
+    private function bootListeners()
+    {
+        add_action('givewp_donation_created', static function (Donation $donation) {
+            (new UpdateDonationMetaWithCurrencySettings())($donation);
+
+            (new UpdateDonorMetaWithLastDonatedCurrency())($donation);
+        });
+    }
+
+    /**
+     * @since 4.6.1 Move to admin_enqueue_scripts hook
+     * @since 4.6.0
+     */
+    private function loadDonationAdminOptions()
+    {
+        add_action('admin_enqueue_scripts', function () {
+            if (DonationsAdminPage::isShowingDetailsPage()) {
+                give(LoadDonationAdminOptions::class)();
+            }
         });
     }
 }

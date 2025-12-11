@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Repositories;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Actions\GeneratePurchaseKey;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -10,8 +11,11 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\FieldsAPI\Field;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\Receipts\DonationReceipt;
+use Give\Framework\Receipts\DonationReceiptBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Call;
 use Give\Helpers\Hooks;
@@ -166,7 +170,32 @@ class DonationRepository
     }
 
     /**
-     * @unreleased store meta using native WP functions
+     * @since 4.0.0
+     */
+    public function getByReceiptId(string $receiptId): ?Donation
+    {
+        return $this->queryByReceiptId($receiptId)->get();
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    public function queryByReceiptId(string $receiptId): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('post_type', 'give_payment')
+            ->whereIn('ID', function (QueryBuilder $builder) use ($receiptId) {
+                $builder
+                    ->select('donation_id')
+                    ->from('give_donationmeta')
+                    ->where('meta_key', DonationMetaKeys::PURCHASE_KEY)
+                    ->where('meta_value', $receiptId);
+            });
+    }
+
+    /**
+     * @since 4.8.1 Moved campaignId assignment logic to getCoreDonationMetaForDatabase method to eliminate code duplication.
+     * @since 3.20.0 store meta using native WP functions
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_creating and givewp_donation_created
      * @since 2.20.0 mutate model and return void
@@ -234,6 +263,7 @@ class DonationRepository
     }
 
     /**
+     * @since 4.6.0 Turn createdAt property updatable
      * @since 2.23.1 Use give_update_meta() method to update entries on give_donationmeta table
      * @since 2.23.0 retrieve the post_parent instead of relying on parentId property
      * @since 2.21.0 replace actions with givewp_donation_updating and givewp_donation_updated
@@ -249,6 +279,8 @@ class DonationRepository
 
         Hooks::doAction('givewp_donation_updating', $donation);
 
+        $dateCreated = Temporal::withoutMicroseconds($donation->createdAt);
+        $dateCreatedFormatted = Temporal::getFormattedDateTime($dateCreated);
         $now = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
         $nowFormatted = Temporal::getFormattedDateTime($now);
 
@@ -258,6 +290,8 @@ class DonationRepository
             DB::table('posts')
                 ->where('ID', $donation->id)
                 ->update([
+                    'post_date' => $dateCreatedFormatted,
+                    'post_date_gmt' => get_gmt_from_date($dateCreatedFormatted),
                     'post_modified' => $nowFormatted,
                     'post_modified_gmt' => get_gmt_from_date($nowFormatted),
                     'post_status' => $this->getPersistedDonationStatus($donation)->getValue(),
@@ -319,7 +353,83 @@ class DonationRepository
         return true;
     }
 
+     /**
+     * @since 4.6.0
+     *
+     * @throws Exception
+     */
+    public function trash(Donation $donation): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_donation_trashing', $donation);
+
+        try {
+            $previousStatus = DB::table('posts')
+                ->where('ID', $donation->id)
+                ->value('post_status');
+
+            give()->payment_meta->update_meta($donation->id, '_wp_trash_meta_status', $previousStatus);
+            give()->payment_meta->update_meta($donation->id, '_wp_trash_meta_time', time());
+
+            DB::table('posts')
+                ->where('ID', $donation->id)
+                ->update(['post_status' => 'trash']);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed trashing a donation', compact('donation'));
+
+            throw new $exception('Failed trashing a donation');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_donation_trashed', $donation);
+
+        return true;
+    }
+
     /**
+     * @since 4.12.0
+     *
+     * @throws Exception
+     */
+    public function unTrash(Donation $donation): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_donation_untrashing', $donation);
+
+        try {
+            $previousStatus = give()->payment_meta->get_meta($donation->id, '_wp_trash_meta_status', true);
+
+            // If no previous status was saved, default to 'publish' (completed)
+            if (empty($previousStatus)) {
+                $previousStatus = DonationStatus::COMPLETE;
+            }
+
+            DB::table('posts')
+                ->where('id', $donation->id)
+                ->update(['post_status' => $previousStatus]);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed untrashing a donation', compact('donation'));
+
+            throw new $exception('Failed untrashing a donation');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_donation_untrashed', $donation);
+
+        return true;
+    }
+
+    /**
+     * @since 4.8.1 Consolidated campaignId assignment logic from insert method to eliminate duplication and ensure donation model is updated.
+     * @since 4.0.0 added campaignId
      * @since 3.9.0 Added meta for phone property
      * @since 3.2.0 added meta for honorific property
      * @since 2.20.0 update amount to use new type, and add currency and exchange rate
@@ -352,8 +462,19 @@ class DonationRepository
                 ),
             DonationMetaKeys::DONOR_IP => $donation->donorIp ?? give_get_ip(),
             DonationMetaKeys::LEVEL_ID => $donation->levelId,
-            DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous
+            DonationMetaKeys::ANONYMOUS => (int)$donation->anonymous,
+            DonationMetaKeys::CAMPAIGN_ID => $donation->campaignId,
         ];
+
+        // If the donation is not associated with a campaign, try to find the campaign ID by the form ID
+        if (!$donation->campaignId) {
+            $campaign = give()->campaigns->getByFormId($donation->formId);
+            $donation->campaignId = $campaign ? $campaign->id : null;
+        }
+
+        if ($donation->campaignId !== null) {
+            $meta[DonationMetaKeys::CAMPAIGN_ID] = $donation->campaignId;
+        }
 
         if ($donation->feeAmountRecovered !== null) {
             $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
@@ -571,5 +692,15 @@ class DonationRepository
             ->limit(1)
             ->orderBy('post_date', 'DESC')
             ->get();
+    }
+
+    /**
+     * @since 4.3.0
+     */
+    public function getConfirmationPageReceipt(Donation $donation): DonationReceipt
+    {
+        $receipt = new DonationReceipt($donation);
+
+        return (new DonationReceiptBuilder($receipt))->toConfirmationPage();
     }
 }

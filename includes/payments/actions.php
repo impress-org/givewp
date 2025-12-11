@@ -135,6 +135,11 @@ function give_record_status_change( $payment_id, $new_status, $old_status ) {
 	$old_status = isset( $stati[ $old_status ] ) ? $stati[ $old_status ] : $old_status;
 	$new_status = isset( $stati[ $new_status ] ) ? $stati[ $new_status ] : $new_status;
 
+	// Skip recording payment status change if there is no update
+	if ( $old_status === $new_status ) {
+		return;
+	}
+
 	// translators: 1: old status 2: new status.
 	$status_change = sprintf( esc_html__( 'Status changed from %1$s to %2$s.', 'give' ), $old_status, $new_status );
 

@@ -2,9 +2,14 @@
 
 namespace Give\Tests\Unit\DonationForms\TestTraits;
 
+use Exception;
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
+use Give\DonationForms\Properties\GoalSettings;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\V2\Properties\DonationFormLevel;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
+use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
 use Give_Donate_Form;
@@ -54,8 +59,25 @@ trait LegacyDonationFormAdapter
             'createdAt' => Temporal::toDateTime($giveDonateForm->post_date),
             'updatedAt' => Temporal::toDateTime($giveDonateForm->post_date),
             'status' => new DonationFormStatus($giveDonateForm->post_status),
-            'levels' => $levels
+            'levels' => $levels,
+            'goalSettings' => GoalSettings::fromArray([
+                'goalSource' => 'form',
+                'enableDonationGoal' => $giveDonateForm->has_goal(),
+                'goalType' => GoalType::AMOUNT(),
+                'goalAmount' => $giveDonateForm->get_goal(),
+            ]),
+            'usesFormBuilder' => false,
+            'campaignId' => 0,
         ]);
+    }
+
+    /**
+     * @since 4.0.0
+     */
+    public function createCampaignForDonationForm($formId)
+    {
+        $campaign = Campaign::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($campaign, $formId);
     }
 
 }

@@ -13,7 +13,7 @@ use Give\MigrationLog\MigrationLogRepository;
  *
  * Helper class used to get migration data
  *
- * @since 2.10.0
+ * @since   2.10.0
  */
 class MigrationHelper
 {
@@ -36,7 +36,7 @@ class MigrationHelper
     /**
      * MigrationOrder constructor.
      *
-     * @param MigrationsRegister $migrationRegister
+     * @param MigrationsRegister     $migrationRegister
      * @param MigrationLogRepository $migrationRepository
      */
     public function __construct(
@@ -61,10 +61,10 @@ class MigrationHelper
         if (empty($migrations)) {
             /* @var Migration $migrationClass */
             foreach ($this->migrationRegister->getMigrations() as $migrationClass) {
-                $migrations[$migrationClass::timestamp() . '_' . $migrationClass::id()] = $migrationClass::id();
+                $migrations[$migrationClass::id()] = $migrationClass::timestamp();
             }
 
-            ksort($migrations);
+            asort($migrations);
         }
 
         return $migrations;
@@ -105,7 +105,7 @@ class MigrationHelper
      */
     public function getRunOrderForMigration($migrationId)
     {
-        return array_search($migrationId, array_values($this->getMigrationsSorted())) + 1;
+        return array_search($migrationId, array_keys($this->getMigrationsSorted())) + 1;
     }
 
     /**

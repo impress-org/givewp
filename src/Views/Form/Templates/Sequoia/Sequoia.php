@@ -81,6 +81,8 @@ class Sequoia extends Template implements Hookable, Scriptable
 
     /**
      * @inheritDoc
+     *
+     * @since 4.1.0 Added custom form styles
      * @since 2.16.0 Load google fonts if "enabled".
      */
     public function loadScripts()
@@ -131,7 +133,7 @@ class Sequoia extends Template implements Hookable, Scriptable
         // Enqueue Sequoia template styles
         wp_enqueue_style(
             'give-sequoia-template-css',
-            GIVE_PLUGIN_URL . 'assets/dist/css/give-sequoia-template.css',
+            GIVE_PLUGIN_URL . 'build/assets/dist/css/give-sequoia-template.css',
             ['give-styles'],
             GIVE_VERSION
         );
@@ -348,9 +350,15 @@ class Sequoia extends Template implements Hookable, Scriptable
 
         wp_add_inline_style('give-sequoia-template-css', $dynamicCss);
 
+        // Custom styles
+        wp_add_inline_style(
+            'give-sequoia-template-css',
+            wp_strip_all_tags(give_get_option('custom_form_styles', ''))
+        );
+
         wp_enqueue_script(
             'give-sequoia-template-js',
-            GIVE_PLUGIN_URL . 'assets/dist/js/give-sequoia-template.js',
+            GIVE_PLUGIN_URL . 'build/assets/dist/js/give-sequoia-template.js',
             ['give'],
             GIVE_VERSION,
             true
@@ -386,7 +394,7 @@ class Sequoia extends Template implements Hookable, Scriptable
      */
     public function getImage()
     {
-        return GIVE_PLUGIN_URL . 'assets/dist/images/admin/template-preview-multi-step.png';
+        return GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/template-preview-multi-step.png';
     }
 
     /**

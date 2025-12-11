@@ -5,12 +5,14 @@ namespace Give\Tests\Unit\PaymentGateways\Stripe;
 use Give\PaymentGateways\Stripe\ApplicationFee;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * Class ApplicationFeeTest
  */
 final class ApplicationFeeTest extends TestCase
 {
+    use RefreshDatabase;
 
     /**
      * @var AccountDetailRepository
@@ -22,169 +24,65 @@ final class ApplicationFeeTest extends TestCase
      */
     private $gate;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->setUpStripeAccounts();
         $this->repository = new AccountDetailRepository();
-        $this->gate = new ApplicationFee($this->repository->getAccountDetail('account_1'));
+        $this->gate = new ApplicationFee($this->repository->getAccountDetail('account_br'));
     }
 
     private function setUpStripeAccounts()
     {
+        $accounts = [];
+        $countries = $this->unsupportedCountriesProvider();
+        $countries['United States'] = ['account_us', 'US'];
+
+        foreach ($countries as $countryName => $data) {
+            [$accountSlug, $countryCode] = $data;
+
+            $accounts[$accountSlug] = [
+                'type' => 'manual',
+                'account_name' => $countryName . ' Account',
+                'account_slug' => $accountSlug,
+                'account_email' => 'dummy@example.com',
+                'account_country' => $countryCode,
+                'account_id' => $accountSlug,
+                'live_secret_key' => 'dummy',
+                'test_secret_key' => 'dummy',
+                'live_publishable_key' => 'dummy',
+                'test_publishable_key' => 'dummy',
+                'statement_descriptor' => get_bloginfo('name'),
+            ];
+        }
+
         give_update_option(
             '_give_stripe_get_all_accounts',
-            [
-                'account_1' => [
-                    'type' => 'manual',
-                    'account_name' => 'Account 1',
-                    'account_slug' => 'account_1',
-                    'account_email' => '',
-                    'account_country' => 'BR',
-                    'account_id' => 'account_1',
-                    'live_secret_key' => 'dummy',
-                    'test_secret_key' => 'dummy',
-                    'live_publishable_key' => 'dummy',
-                    'test_publishable_key' => 'dummy',
-                    'statement_descriptor' => get_bloginfo('name'),
-                ],
-                'account_2' => [
-                    'type' => 'manual',
-                    'account_name' => 'Account 2',
-                    'account_slug' => 'account_2',
-                    'account_email' => '',
-                    'account_country' => 'US',
-                    'account_id' => 'account_2',
-                    'live_secret_key' => 'dummy',
-                    'test_secret_key' => 'dummy',
-                    'live_publishable_key' => 'dummy',
-                    'test_publishable_key' => 'dummy',
-                    'statement_descriptor' => get_bloginfo('name'),
-                ],
-            ]
-        );
-    }
-
-    public function testCanAddFee()
-    {
-        give()->singleton(ApplicationFee::class, function () {
-            return new ApplicationFee($this->repository->getAccountDetail('account_2'));
-        });
-
-        $this->assertTrue(
-            ApplicationFee::canAddFee()
-        );
-    }
-
-    public function testCanNotAddFee()
-    {
-        give()->singleton(ApplicationFee::class, function () {
-            return new ApplicationFee($this->repository->getAccountDetail('account_1'));
-        });
-
-        $this->assertFalse(
-            ApplicationFee::canAddFee()
+            $accounts
         );
     }
 
     /**
-     * @note Run this test first, before GIVE_STRIPE_VERSION is defined in the next test.
+     * @dataProvider unsupportedCountriesProvider
      */
-    public function testNotIsStripeProAddonActive()
+    public function testCanNotAddFeeIfMerchantCountryIsUnsupported(string $accountSlug, string $countryCode)
     {
+        $applicationFee = new ApplicationFee($this->repository->getAccountDetail($accountSlug));
         $this->assertFalse(
-            $this->gate->isStripeProAddonActive()
+            $applicationFee->doesCountrySupportApplicationFee(),
+            "Country {$countryCode} should not support application fees"
         );
     }
 
-    public function testIsStripeProAddonActive()
+    public function testCanAddFeeIfMerchantCountryIsUS()
     {
-        // Mock the Give Stripe Add-on being active.
-        define('GIVE_STRIPE_VERSION', '1.2.3');
+        give()->singleton(ApplicationFee::class, function () {
+            return new ApplicationFee($this->repository->getAccountDetail('account_us'));
+        });
 
         $this->assertTrue(
-            $this->gate->isStripeProAddonActive()
-        );
-    }
-
-    public function testIsStripeProAddonInstalled()
-    {
-        // Mock Stripe Add-on installed.
-        $plugins = [
-            ['Name' => 'Give - Stripe Gateway'],
-        ];
-
-        $this->assertTrue(
-            $this->gate->isStripeProAddonInstalled($plugins)
-        );
-    }
-
-    public function testNotIsStripeProAddonInstalled()
-    {
-        // Mock no add-ons installed.
-        $plugins = [];
-
-        $this->assertFalse(
-            $this->gate->isStripeProAddonInstalled($plugins)
-        );
-    }
-
-    public function testHasLicense()
-    {
-        // Mock licensing with Stripe Add-on.
-        update_option(
-            'give_licenses',
-            [
-                [
-                    'is_all_access_pass' => false,
-                    'plugin_slug' => 'give-stripe',
-                ],
-            ]
-        );
-
-        $this->assertTrue(
-            $this->gate->hasLicense()
-        );
-    }
-
-    public function testNotHasLicense()
-    {
-        // Mock licensing without Stripe Add-on.
-        update_option(
-            'give_licenses',
-            [
-                [
-                    'is_all_access_pass' => false,
-                    'plugin_slug' => 'not-stripe-addon',
-                ],
-            ]
-        );
-
-        $this->assertFalse(
-            $this->gate->hasLicense()
-        );
-    }
-
-    public function testHasLicenseAllAccessPass()
-    {
-        // Mock licensing with All Access pass.
-        update_option(
-            'give_licenses',
-            [
-                [
-                    'is_all_access_pass' => true,
-                    'download' => [
-                        [
-                            'plugin_slug' => 'give-stripe',
-                        ],
-                    ],
-                ],
-            ]
-        );
-
-        $this->assertTrue(
-            $this->gate->hasLicense()
+            ApplicationFee::canAddFee()
         );
     }
 
@@ -197,9 +95,21 @@ final class ApplicationFeeTest extends TestCase
 
     public function testIsCountrySupportApplicationFee()
     {
-        $applicationFee = new ApplicationFee($this->repository->getAccountDetail('account_2'));
+        $applicationFee = new ApplicationFee($this->repository->getAccountDetail('account_us'));
         $this->assertTrue(
             $applicationFee->doesCountrySupportApplicationFee()
         );
+    }
+
+    public function unsupportedCountriesProvider(): array
+    {
+        return [
+            'Brazil' => ['account_br', 'BR'],
+            'India' => ['account_in', 'IN'],
+            'Malaysia' => ['account_my', 'MY'],
+            'Mexico' => ['account_mx', 'MX'],
+            'Singapore' => ['account_sg', 'SG'],
+            'Thailand' => ['account_th', 'TH'],
+        ];
     }
 }

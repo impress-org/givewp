@@ -10,7 +10,7 @@ jobs:
 
     release:
         name: New release
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
         environment: live
         needs: tests
         steps:
@@ -33,13 +33,12 @@ jobs:
             -   name: Copy tcpdf fonts to vendor
                 run: sudo COMPOSER_ALLOW_SUPERUSER=1 composer run copy-fonts
 
-            -   uses: actions/setup-node@v2
+            -   uses: actions/setup-node@v4
                 with:
-                    node-version: '12'
+                    node-version: '18'
 
             -   name: Install npm dependencies & build for translation
                 run: |
-                    npm install -g npm@7
                     npm ci
                     npm run dev
 

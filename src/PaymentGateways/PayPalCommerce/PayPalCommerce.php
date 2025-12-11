@@ -2,13 +2,18 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
+use Exception;
 use Give\Donations\Models\Donation;
-use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Donations\Models\DonationNote;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
+use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\Framework\Support\ValueObjects\Money;
+use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder;
 
 /**
  * Class PayPalCommerce
@@ -17,7 +22,7 @@ use Give\PaymentGateways\PayPalCommerce\Models\PayPalOrder;
  *
  * @since 2.9.0
  */
-class PayPalCommerce extends PaymentGateway
+class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
 {
     /**
      * @deprecated
@@ -76,35 +81,63 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @inerhitDoc
+     * @since 4.2.1 updated to use updateOrderFromDonation
+     * @since 4.1.0 updated to include 3D Secure validation
+     * @since 4.0.0 updated to update and capture payment
      * @since 2.19.0
      *
-     * @param array{paypalOrder: PayPalOrder} $gatewayData
+     * @param  array{payPalOrderId: string|null, payPalAuthorizationId: string|null}  $gatewayData
+     * @throws \Exception
      */
     public function createPayment(Donation $donation, $gatewayData): GatewayCommand
     {
-        /** @var PayPalOrder $paypalOrder */
-        $paypalOrder = $gatewayData['paypalOrder'];
+        $payPalOrderId = $gatewayData['payPalOrderId'];
 
-        $command = PaymentComplete::make($paypalOrder->payment->id)
-            ->setPaymentNotes(
-                sprintf(
-                    __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
-                    $paypalOrder->payment->id,
-                    $paypalOrder->id
-                )
-            );
+         /** @var Repositories\PayPalOrder $payPalOrderRepository */
+        $payPalOrderRepository = give(Repositories\PayPalOrder::class);
+
+        $payPalOrder = $payPalOrderRepository->getApprovedOrder($payPalOrderId);
+
+        if ($payPalOrder->status === 'COMPLETED') {
+            $this->validatePayPalOrder($payPalOrder);
+
+            $transactionId = $payPalOrder->purchase_units[0]->payments->captures[0]->id;
+
+        } elseif ($payPalOrder->status === 'APPROVED' || $payPalOrder->status === 'CREATED') {
+            $this->validate3dSecure($payPalOrder);
+
+            if ($this->shouldUpdateOrder($donation, $payPalOrder)){
+                $payPalOrderRepository->updateOrderFromDonation($payPalOrderId, $donation);
+            }
+
+            // ready to capture order, response is the updated PayPal order.
+            $response = $payPalOrderRepository->approveOrder($payPalOrderId);
+
+            $this->validatePayPalOrder($response);
+
+            $transactionId  = $response->purchase_units[0]->payments->captures[0]->id;
+        } else {
+            throw new PaymentGatewayException('PayPal Order status is not found.');
+        }
 
         give()->payment_meta->update_meta(
             $donation->id,
             '_give_order_id',
-            $paypalOrder->id
+            $payPalOrderId
         );
 
-        return $command;
+        return PaymentComplete::make($transactionId)
+            ->setPaymentNotes(
+                sprintf(
+                    __('Transaction Successful. PayPal Transaction ID: %1$s    PayPal Order ID: %2$s', 'give'),
+                    $transactionId,
+                    $payPalOrderId
+                )
+            );
     }
 
     /**
+     * @since 4.5.0 Add Accept Credit Card (Smart Buttons Only) setting.
      * @since 3.0.0 Conditionally add "Transaction Type" setting.
      * @since 2.33.0 Register new payment field type setting.
      * @since 2.27.3 Enable Venmo payment method by default.
@@ -177,6 +210,20 @@ class PayPalCommerce extends PaymentGateway
                 'default' => 'auto',
             ],
             [
+                'name' => esc_html__('Accept Credit Card (Smart Buttons Only)', 'give'),
+                'id' => 'paypal_commerce_accept_credit_card',
+                'type' => 'radio_inline',
+                'desc' => esc_html__(
+                    'Displays a button allowing Donors to pay with Credit Card. This option is only available if "Smart Buttons Only" is selected on Payment Field Type.',
+                    'give'
+                ),
+                'default' => 'enabled',
+                'options' => [
+                    'enabled' => esc_html__('Enabled', 'give'),
+                    'disabled' => esc_html__('Disabled', 'give'),
+                ],
+            ],
+            [
                 'name' => esc_html__('PayPal Donations Gateway Settings Docs Link', 'give'),
                 'id' => 'paypal_commerce_gateway_settings_docs_link',
                 'url' => esc_url('http://docs.givewp.com/paypal-donations'),
@@ -207,7 +254,7 @@ class PayPalCommerce extends PaymentGateway
                             'standard' => esc_html__('Standard Transaction', 'give'),
                         ],
                         'default' => 'donation',
-                    ]
+                    ],
                 ]
             );
         }
@@ -244,12 +291,109 @@ class PayPalCommerce extends PaymentGateway
     }
 
     /**
-     * @since 2.20.0
-     * @inerhitDoc
+     * @since 4.0.0
+     */
+    private function shouldUpdateOrder(Donation $donation, $payPalOrder): bool
+    {
+        $orderAmount = $payPalOrder->purchase_units[0]->amount->value;
+        $orderCurrency = $payPalOrder->purchase_units[0]->amount->currency_code;
+        $currentOrderAmount = Money::fromDecimal($orderAmount, $orderCurrency);
+
+        if (!$currentOrderAmount->equals($donation->amount)) {
+            Log::error(
+                sprintf(
+                    'Initial PayPal Order amount does not match donation amount. PayPal Order ID: %s, Donation ID: %s',
+                    $payPalOrder->id,
+                    $donation->id
+                )
+            );
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @throws PaymentGatewayException
+     */
+    private function validatePayPalOrder(object $payPalOrder): void
+    {
+        $transaction = $payPalOrder->purchase_units[0]->payments->captures[0];
+
+        $errors = property_exists($payPalOrder, 'details') ? $payPalOrder->details[0] : [];
+
+        if (!$transaction) {
+            throw new PaymentGatewayException('PayPal Order does not have a transaction.');
+        }
+
+        if ($transaction->status === "DECLINED") {
+            $errorMessage = sprintf(
+                __('PayPal Order has been declined.  Transaction status:: %s', 'give'),
+                $transaction->status
+            );
+
+            throw new PaymentGatewayException($errorMessage);
+        }
+
+        if (!empty($errors)) {
+            $errorMessage = sprintf(
+                __('PayPal Order has an error: %s', 'give'),
+                $errors->issue[0]->description
+            );
+
+            throw new PaymentGatewayException($errorMessage);
+        }
+
+        $this->validate3dSecure($payPalOrder);
+    }
+
+    /**
+     * @since 4.1.0
+     *
+     * @throws PaymentGatewayException
+     */
+    private function validate3dSecure(object $payPalOrder): void
+    {
+        // Check if the order is not ready for 3D Secure authentication
+        if (isset($payPalOrder->payment_source->card->authentication_result->liability_shift) && !in_array($payPalOrder->payment_source->card->authentication_result->liability_shift, ['POSSIBLE', 'YES'])) {
+            throw new PaymentGatewayException('Card type and issuing bank are not ready to complete a 3D Secure authentication.');
+        }
+    }
+
+    /**
+     * @since 4.7.0
+     *
      * @throws Exception
      */
-    public function refundDonation(Donation $donation)
+    public function refundDonation(Donation $donation): PaymentRefunded
     {
-        throw new Exception('Method has not been implemented yet. Please use the legacy method in the meantime.');
+        try {
+            $payPalOrderRepository = give(Repositories\PayPalOrder::class);
+            $payPalOrderRepository->refundPayment($donation->gatewayTransactionId);
+
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => sprintf(
+                    __('Donation refunded in PayPal for transaction ID: %s', 'give'),
+                    $donation->gatewayTransactionId
+                ),
+            ]);
+
+            return new PaymentRefunded();
+        } catch (Exception $e) {
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => sprintf(
+                    __(
+                        'Error! Donation %s was NOT refunded. Find more details on the error in the logs at Donations > Tools > Logs. To refund the donation, use the PayPal dashboard tools.',
+                        'give'
+                    ),
+                    $donation->id
+                ),
+            ]);
+
+            throw new PaymentGatewayException(sprintf(__('PayPal API error: %s', 'give'), $e->getMessage()));
+        }
     }
 }

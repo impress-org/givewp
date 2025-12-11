@@ -187,4 +187,9 @@ class Give_Shortcode_Donor_Wall extends Give_Shortcode_Generator {
 	}
 }
 
-new Give_Shortcode_Donor_Wall();
+/**
+ * @since 4.3.0 use init action
+ */
+add_action( 'init', static function () {
+    new Give_Shortcode_Donor_Wall();
+});

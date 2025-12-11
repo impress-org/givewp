@@ -27,6 +27,7 @@ class DonorsListTable extends ListTable
     }
 
     /**
+     * @since 4.12.0 Reorder DonorType column
      * @since 2.24.0
      *
      * @inheritDoc
@@ -36,15 +37,16 @@ class DonorsListTable extends ListTable
         return [
             new IdColumn(),
             new DonorInformationColumn(),
+            new DonorTypeColumn(),
             new DonationRevenueColumn(),
             new DonationCountColumn(),
             new LatestDonationColumn(),
-            new DonorTypeColumn(),
             new DateCreatedColumn(),
         ];
     }
 
     /**
+     * @since 4.12.0 Remove date created column
      * @since 2.24.0
      *
      * @inheritDoc
@@ -57,7 +59,6 @@ class DonorsListTable extends ListTable
             DonationCountColumn::getId(),
             LatestDonationColumn::getId(),
             DonorTypeColumn::getId(),
-            DateCreatedColumn::getId(),
         ];
     }
 }

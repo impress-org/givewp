@@ -1,0 +1,57 @@
+.givewp-entity-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+
+    &__label {
+        padding-bottom: 16px;
+    }
+
+    &__select {
+        input[type='text']:focus {
+            border-color: transparent;
+            box-shadow: 0 0 0 1px transparent;
+            outline: 2px solid transparent;
+        }
+    }
+
+    &__logo {
+        align-self: center;
+    }
+
+    &__open {
+        color: #fff;
+        background: #2271b1;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+    }
+
+    &__submit {
+        width: 100%;
+        background-color: #27ae60;
+        color: #fff;
+        padding: 1rem;
+        border-radius: 5px;
+        font-weight: bold;
+        text-align: center;
+        outline: none;
+        border: 0;
+        transition: 0.2s;
+
+        &:disabled {
+            background-color: #f3f4f6;
+            color: #9ca0af;
+        }
+
+        &:hover:not(:disabled) {
+            cursor: pointer;
+            filter: brightness(1.2);
+        }
+    }
+}

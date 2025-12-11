@@ -11,6 +11,7 @@ use Give\Tests\TestCase;
 class GenerateDonationFormViewRouteUrlTest extends TestCase
 {
     /**
+     * @since 4.3.0 Use trailingslashit() method to prevent errors on websites installed in subdirectories
      * @since 3.0.0
      *
      * @return void
@@ -25,7 +26,7 @@ class GenerateDonationFormViewRouteUrlTest extends TestCase
                     'givewp-route' => 'donation-form-view',
                     'form-id' => 1
                 ],
-                home_url()
+                trailingslashit(home_url())
             )
         ), $viewUrl);
     }

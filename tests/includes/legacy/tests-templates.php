@@ -10,15 +10,13 @@ class Tests_Templates extends Give_Unit_Test_Case {
 	/**
 	 * Set up.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		$this->_post = Give_Helper_Form::create_multilevel_form();
 
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * Test get_donation_form()
@@ -39,28 +37,28 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		// Remove html form whitespace.
 		$form = preg_replace( '/\s+/S', ' ', $form );
 
-		$this->assertInternalType( 'string', $form );
-		$this->assertContains( '<form id="give-form-', $form );
-		$this->assertContains( 'class="give-form', $form );
-		$this->assertContains( 'method="post">', $form );
-		$this->assertContains( 'data-currency_position="before"', $form );
-		$this->assertContains( 'data-currency_code="USD"', $form );
-		$this->assertContains( 'data-currency_symbol="&#36;"', $form );
-		$this->assertContains( 'data-decimal_separator="."', $form );
-		$this->assertContains( 'data-thousands_separator=","', $form );
-		$this->assertContains( 'data-number_decimals="2"', $form );
+        $this->assertIsString( $form );
+		$this->assertStringContainsString( '<form id="give-form-', $form );
+		$this->assertStringContainsString( 'class="give-form', $form );
+		$this->assertStringContainsString( 'method="post">', $form );
+		$this->assertStringContainsString( 'data-currency_position="before"', $form );
+		$this->assertStringContainsString( 'data-currency_code="USD"', $form );
+		$this->assertStringContainsString( 'data-currency_symbol="&#36;"', $form );
+		$this->assertStringContainsString( 'data-decimal_separator="."', $form );
+		$this->assertStringContainsString( 'data-thousands_separator=","', $form );
+		$this->assertStringContainsString( 'data-number_decimals="2"', $form );
 
 		// Test Hidden fields.
-		$this->assertContains( '<input type="hidden" name="give-form-id" value="' . $this->_post->ID . '"/>', $form );
-		$this->assertContains( '<input type="hidden" name="give-form-title" value="' . get_the_title( $this->_post->ID ) . '"/>', $form );
-		$this->assertContains( '<input type="hidden" name="give-form-url" value="' . htmlspecialchars( give_get_current_page_url() ) . '"/>', $form );
-		$this->assertContains( '<input type="hidden" name="give-current-url" value="' . htmlspecialchars( give_get_current_page_url() ) . '"/>', $form );
-		$this->assertNotContains( '<input type="hidden" name="give-form-minimum" value="' . give_format_amount( give_get_form_minimum_price( $this->_post->ID ) ) . '"/>', $form );
-		$this->assertContains( '<input id="give-form-honeypot-' . $this->_post->ID . '" type="text" name="give-honeypot" class="give-honeypot give-hidden"/>', $form );
+		$this->assertStringContainsString( '<input type="hidden" name="give-form-id" value="' . $this->_post->ID . '"/>', $form );
+		$this->assertStringContainsString( '<input type="hidden" name="give-form-title" value="' . get_the_title( $this->_post->ID ) . '"/>', $form );
+		$this->assertStringContainsString( '<input type="hidden" name="give-form-url" value="' . htmlspecialchars( give_get_current_page_url() ) . '"/>', $form );
+		$this->assertStringContainsString( '<input type="hidden" name="give-current-url" value="' . htmlspecialchars( give_get_current_page_url() ) . '"/>', $form );
+		$this->assertStringNotContainsString( '<input type="hidden" name="give-form-minimum" value="' . give_format_amount( give_get_form_minimum_price( $this->_post->ID ) ) . '"/>', $form );
+		$this->assertStringContainsString( '<input id="give-form-honeypot-' . $this->_post->ID . '" type="text" name="give-honeypot" class="give-honeypot give-hidden"/>', $form );
 
 		// The donation form we created has variable pricing, so ensure the price options render
-		$this->assertContains( 'class="give-donation-levels-wrap', $form );
-		$this->assertContains( '<input type="hidden" name="give-price-id"', $form );
+		$this->assertStringContainsString( 'class="give-donation-levels-wrap', $form );
+		$this->assertStringContainsString( '<input type="hidden" name="give-price-id"', $form );
 
 		// Test a single price point as well
 	}
@@ -89,8 +87,8 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		// Remove html form whitespace.
 		$form = preg_replace( '/\s+/S', ' ', $form );
 
-		$this->assertContains( '<input type="hidden" name="give-form-minimum" value="' . give_format_amount( give_get_form_minimum_price( $this->_post->ID ) ) . '"/>', $form );
-		$this->assertContains( '<input type="hidden" name="give-form-maximum" value="' . give_format_amount( give_get_form_maximum_price( $this->_post->ID ) ) . '"/>', $form );
+		$this->assertStringContainsString( '<input type="hidden" name="give-form-minimum" value="' . give_format_amount( give_get_form_minimum_price( $this->_post->ID ) ) . '"/>', $form );
+		$this->assertStringContainsString( '<input type="hidden" name="give-form-maximum" value="' . give_format_amount( give_get_form_maximum_price( $this->_post->ID ) ) . '"/>', $form );
 
 		// Custom amount disabled.
 		give_delete_meta( $this->_post->ID, '_give_custom_amount' );
@@ -101,7 +99,7 @@ class Tests_Templates extends Give_Unit_Test_Case {
 	 */
 	public function test_locate_template() {
 		// Test that a file path is found
-		$this->assertInternalType( 'string', give_locate_template( 'history-donations.php' ) );
+		$this->assertIsString( give_locate_template( 'history-donations.php' ) );
 	}
 
 	/**
@@ -109,13 +107,13 @@ class Tests_Templates extends Give_Unit_Test_Case {
 	 */
 	public function test_get_theme_template_paths() {
 		$paths = give_get_theme_template_paths();
-		$this->assertInternalType( 'array', $paths );
+        $this->assertIsArray( $paths );
 		$this->assertarrayHasKey( 1, $paths );
 		$this->assertarrayHasKey( 10, $paths );
 		$this->assertarrayHasKey( 100, $paths );
-		$this->assertInternalType( 'string', $paths[1] );
-		$this->assertInternalType( 'string', $paths[10] );
-		$this->assertInternalType( 'string', $paths[100] );
+		$this->assertIsString( $paths[1] );
+		$this->assertIsString( $paths[10] );
+		$this->assertIsString( $paths[100] );
 	}
 
 	/**

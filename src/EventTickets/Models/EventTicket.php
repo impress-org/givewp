@@ -25,7 +25,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     /**
      * @inheritdoc
      *
-     * @unreleased Add amount to the properties array
+     * @since 3.20.0 Add amount to the properties array
      * @since      3.6.0
      */
     protected $properties = [
@@ -160,7 +160,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
     }
 
     /**
-     * @unreleased Add amount to the properties array
+     * @since 3.20.0 Add amount to the properties array
      * @since 3.6.0
      *
      * @param object $object
@@ -172,7 +172,7 @@ class EventTicket extends Model implements ModelCrud /*, ModelHasFactory */
             'eventId' => (int)$object->event_id,
             'ticketTypeId' => (int)$object->ticket_type_id,
             'donationId' => (int)$object->donation_id,
-            'amount' => new Money($object->amount, give_get_currency()),
+            'amount' => new Money($object->amount, $object->currency),
             'createdAt' => Temporal::toDateTime($object->created_at),
             'updatedAt' => Temporal::toDateTime($object->updated_at),
         ]);

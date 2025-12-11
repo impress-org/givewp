@@ -1,0 +1,164 @@
+div.media-modal.wp-core-ui {
+    z-index: 99999999999999;
+}
+
+.givewp-media-library-control-wrapper {
+    &.is-disabled {
+        .givewp-media-library-drop-area {
+            opacity: 0.7;
+        }
+    }
+}
+
+.givewp-media-library-drop-area {
+    text-align: center;
+    padding: var(--givewp-spacing-8) 0;
+    border: 1px dotted;
+    border-radius: var(--givewp-rounded-4);
+
+    button {
+        cursor: pointer;
+        width: fit-content;
+        margin: var(--givewp-spacing-4) auto var(--givewp-spacing-2);
+        background: var(--givewp-neutral-100);
+        height: initial;
+        border: initial;
+        padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
+        border-radius: var(--givewp-rounded-4);
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    p, svg {
+        margin: 0;
+    }
+}
+
+.givewp-media-library-control {
+    & > button:not(svg + button) {
+        min-height: 160px;
+
+        & > img {
+            aspect-ratio: 4 / 1;
+        }
+    }
+
+    &__reset {
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        background: transparent;
+        width: 100%;
+        padding: 0;
+        color: var(--givewp-shades-white);
+        border: none;
+
+        &:hover:not(:disabled) {
+            svg {
+                visibility: visible;
+                pointer-events: none;
+            }
+
+            img {
+                filter: brightness(80%);
+            }
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        visibility: hidden;
+        z-index: 999;
+    }
+
+    &__image {
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+        transition: filter 0.3s ease;
+        border-radius: var(--givewp-rounded-4);
+    }
+
+    &__button {
+        display: flex;
+        justify-content: center;
+        height: 3rem;
+        width: 100%;
+        border: 1px dotted;
+
+        &--update {
+            margin-top: var(--givewp-spacing-2);
+            border: 1px solid;
+        }
+    }
+
+    &__options {
+        display: flex;
+        justify-content: center;
+        width: fit-content;
+        background: none;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        border-radius: var(--givewp-rounded-4);
+
+        button {
+            margin-top: var(--givewp-spacing-2);
+            padding: 0.4rem 0.8rem 0.4rem 0.8rem;
+        }
+
+        &--remove {
+            border: 1px solid var(--givewp-red-400);
+            color: var(--givewp-red-400);
+
+            &:hover {
+                background-color: var(--givewp-red-25);
+            }
+
+            &:disabled {
+                background-color: var(--givewp-red-50);
+                border-color: currentColor;
+                color: var(--givewp-red-200);
+                cursor: not-allowed;
+            }
+        }
+
+        &--update {
+            border: 1px solid var(--givewp-neutral-300);
+            color: var(--givewp-neutral-900);
+
+            &:hover {
+                background-color: var(--givewp-neutral-50);
+            }
+
+            &:disabled {
+                background-color: var(--givewp-neutral-50);
+                border-color: currentColor;
+                color: var(--givewp-neutral-300);
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .components-button.has-text {
+        justify-content: center;
+    }
+
+    .components-button.is-secondary {
+        box-shadow: none;
+
+        &:hover {
+            box-shadow: none;
+        }
+    }
+}

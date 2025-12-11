@@ -8,17 +8,13 @@ use Give\Donations\CustomFields\Views\DonationDetailsView;
 use Give\Donations\Models\Donation;
 
 /**
- * TODO: move into donations domain
  * @since 3.0.0
  */
 class DonationDetailsController
 {
     /**
+     * @since 4.0.0 return early if no form is found
      * @since 3.0.0
-     *
-     * @param  int  $donationID
-     *
-     * @return string
      */
     public function show(int $donationID): string
     {
@@ -29,8 +25,11 @@ class DonationDetailsController
             return '';
         }
 
-        /** @var DonationForm $form */
         $form = DonationForm::find($donation->formId);
+
+        if (!$form) {
+            return '';
+        }
 
         $fields = array_filter($form->schema()->getFields(), static function ($field) {
             return $field->shouldShowInAdmin() && !$field->shouldStoreAsDonorMeta();

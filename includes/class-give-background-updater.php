@@ -89,7 +89,7 @@ class Give_Background_Updater extends WPBackgroundProcess
 
             delete_option('give_paused_batches');
 
-            Give_Updates::get_instance()->__pause_db_update(true);
+            Give_Updates::get_instance()->pause_db_update(true);
 
             delete_option('give_pause_upgrade');
 
@@ -373,7 +373,7 @@ class Give_Background_Updater extends WPBackgroundProcess
             ! in_array($resume_update['update_info']['id'], $give_updates->get_update_ids())
         ) {
             if ( ! $this->is_paused_process()) {
-                $give_updates->__pause_db_update(true);
+                $give_updates->pause_db_update(true);
             }
 
             update_option('give_upgrade_error', 1, false);
@@ -403,7 +403,7 @@ class Give_Background_Updater extends WPBackgroundProcess
             }
         } catch (Exception $e) {
             if ( ! $this->is_paused_process()) {
-                $give_updates->__pause_db_update(true);
+                $give_updates->pause_db_update(true);
             }
 
             $log_data = 'Update Task' . "\n";

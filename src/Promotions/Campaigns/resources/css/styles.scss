@@ -1,0 +1,127 @@
+.givewp-campaign-welcome-banner-background {
+    position: relative;
+    box-sizing: border-box;
+    background-size: cover;
+    padding: 28px 56px;
+    border-radius: 8px;
+    overflow: hidden;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: linear-gradient(to right, #116239, #278455 32%, var(--givewp-emerald-600));
+        z-index: -1;
+    }
+}
+
+.givewp-campaign-welcome-banner {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &__badge {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            width: fit-content;
+            margin-bottom: var(--givewp-spacing-4);
+            padding: var(--givewp-spacing-1) var(--givewp-spacing-2);
+            background: var(--givewp-yellow-400);
+            color: var(--givewp-shades-black);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        &__dismiss {
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+    }
+
+    &__title {
+        margin: 0 0 var(--givewp-spacing-1) 0;
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--givewp-shades-white);
+        line-height: 1.43;
+    }
+
+    &__description {
+        margin: 0 0 24px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--givewp-shades-white);
+        line-height: 1.536;
+    }
+
+    &__features {
+        display: flex;
+        gap: var(--givewp-spacing-10);
+
+        &__group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--givewp-spacing-4);
+
+            &__item {
+                display: flex;
+                gap: var(--givewp-spacing-2);
+                color: var(--givewp-shades-white);
+                font-size: 14px;
+                line-height: 1.5;
+
+                img {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                span {
+                    font-size: 14px;
+                    color: var(--givewp-shades-white);
+                }
+            }
+        }
+    }
+
+    &__cta-button {
+        flex-grow: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        width: 324px;
+        margin: var(--givewp-spacing-10) 0;
+        padding: var(--givewp-spacing-3) var(--givewp-spacing-6);
+        background: var(--givewp-orange-400);
+        border-radius: var(--givewp-rounded-8);
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
+        color: var(--givewp-shades-white);
+        cursor: pointer;
+        text-decoration: none;
+
+        span {
+            color: var(--givewp-shades-white);
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        &:hover {
+            background: var(--givewp-orange-500);
+        }
+    }
+}

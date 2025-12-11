@@ -76,14 +76,15 @@ class AsBackgroundJobsFacade
 
     /**
      * @since 3.6.0
+     * @since 4.0.0 - switch parameter $status position with $returnFormat position
      *
      * @param string $group        The group to assign this job to.
-     * @param string $returnFormat OBJECT, ARRAY_A, or ids.
      * @param string $status ActionScheduler_Store::STATUS_COMPLETE or ActionScheduler_Store::STATUS_PENDING
+     * @param string $returnFormat OBJECT, ARRAY_A, or ids.     
      *
      * @return array
      */
-    public function getActionsByGroup(string $group, string $returnFormat = OBJECT, string $status = ''): array
+    public function getActionsByGroup(string $group, string $status = '', string $returnFormat = OBJECT): array
     {
         $args = [
             'group' => $group,
@@ -108,7 +109,7 @@ class AsBackgroundJobsFacade
      */
     public function deleteActionsByGroup(string $group, string $status = ''): int
     {
-        $actions = $this->getActionsByGroup($group, 'ids', $status);
+        $actions = $this->getActionsByGroup($group, $status, 'ids');
 
         $deletedActions = 0;
         foreach ($actions as $actionID) {

@@ -56,14 +56,7 @@
                     padding: 0;
                     width: 100%;
                     gap: 0;
-
-                    @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
-                        background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
-                    }
-
-                    .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
-                        color: var(--givewp-grey-900);
-                    }
+                    background-color: var(--givewp-primary-color);
 
                     .givewp-layouts-headerImage {
                         position: relative;
@@ -86,13 +79,7 @@
                 }
 
                 &--center {
-                    @supports (background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white)) {
-                        background-color: color-mix(in lab, var(--givewp-primary-color) 15%, white);
-                    }
-
-                    .givewp-layouts-headerTitle h2, .givewp-layouts-headerDescription p {
-                        color: var(--givewp-grey-900);
-                    }
+                    background-color: var(--givewp-primary-color);
 
                     .givewp-layouts-headerImage {
                         position: relative;
@@ -137,7 +124,6 @@
             width: 100%;
         }
     }
-
 
     .givewp-layouts-header__templates-ms {
         .givewp-layouts-headerImage {

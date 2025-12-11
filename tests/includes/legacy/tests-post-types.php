@@ -5,13 +5,11 @@
  */
 class Tests_Post_Types extends Give_Unit_Test_Case {
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
+
 
 	/**
 	 * @covers ::give_setup_post_types
@@ -29,16 +27,16 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 		$this->assertEquals( 'Donation Forms', $wp_post_types['give_forms']->labels->name );
 		$this->assertEquals( 'Form', $wp_post_types['give_forms']->labels->singular_name );
 		$this->assertEquals( 'Add Form', $wp_post_types['give_forms']->labels->add_new );
-        $this->assertEquals('Add New Donation Form', $wp_post_types['give_forms']->labels->add_new_item);
-        $this->assertEquals('Edit Donation Form', $wp_post_types['give_forms']->labels->edit_item);
+        $this->assertEquals('Add New Campaign Form', $wp_post_types['give_forms']->labels->add_new_item);
+        $this->assertEquals('Edit Campaign Form', $wp_post_types['give_forms']->labels->edit_item);
 		$this->assertEquals( 'New Form', $wp_post_types['give_forms']->labels->new_item );
 		$this->assertEquals( 'All Forms', $wp_post_types['give_forms']->labels->all_items );
 		$this->assertEquals( 'View Form', $wp_post_types['give_forms']->labels->view_item );
 		$this->assertEquals( 'Search Forms', $wp_post_types['give_forms']->labels->search_items );
 		$this->assertEquals( 'No forms found.', $wp_post_types['give_forms']->labels->not_found );
 		$this->assertEquals( 'No forms found in Trash.', $wp_post_types['give_forms']->labels->not_found_in_trash );
-		$this->assertEquals( 'Donations', $wp_post_types['give_forms']->labels->menu_name );
-		$this->assertEquals( 'Donation Form', $wp_post_types['give_forms']->labels->name_admin_bar );
+		$this->assertEquals( 'GiveWP', $wp_post_types['give_forms']->labels->menu_name );
+        $this->assertEquals('Campaign', $wp_post_types['give_forms']->labels->name_admin_bar);
 		$this->assertEquals( 1, $wp_post_types['give_forms']->publicly_queryable );
 		$this->assertEquals( 'give_form', $wp_post_types['give_forms']->capability_type );
 		$this->assertEquals( 1, $wp_post_types['give_forms']->map_meta_cap );
@@ -89,11 +87,11 @@ class Tests_Post_Types extends Give_Unit_Test_Case {
 
 		$wp_post_statuses = get_post_stati( array(), 'objects' );
 
-		$this->assertInternalType( 'object', $wp_post_statuses['refunded'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['failed'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['revoked'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['cancelled'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['abandoned'] );
-		$this->assertInternalType( 'object', $wp_post_statuses['processing'] );
+		$this->assertIsObject( $wp_post_statuses['refunded'] );
+		$this->assertIsObject( $wp_post_statuses['failed'] );
+		$this->assertIsObject( $wp_post_statuses['revoked'] );
+		$this->assertIsObject( $wp_post_statuses['cancelled'] );
+		$this->assertIsObject( $wp_post_statuses['abandoned'] );
+		$this->assertIsObject( $wp_post_statuses['processing'] );
 	}
 }

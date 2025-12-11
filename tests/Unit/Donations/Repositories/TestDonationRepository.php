@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\Donations\Repositories;
 
 use DateTime;
 use Exception;
+use Give\Campaigns\Models\Campaign;
 use Give\Donations\Models\Donation;
 use Give\Donations\Repositories\DonationRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -270,7 +271,7 @@ final class TestDonationRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      * @throws \Give\Framework\Exceptions\Primitives\Exception
      */
     public function testInsertShouldSafelyStoreMetaValues(): void
@@ -295,5 +296,120 @@ final class TestDonationRepository extends TestCase
 
         $this->assertSame($serializedFirstName, $metaValue);
         $this->assertSame(serialize($serializedFirstName), $metaQuery->meta_value);
+    }
+
+    /**
+     * @since 4.8.1
+     */
+    public function testInsertShouldSetCampaignIdIfNull()
+    {
+        $campaign = Campaign::factory()->create();
+        $donation = Donation::factory()->create([
+            'campaignId' => null,
+            'formId' => $campaign->defaultFormId,
+        ]);
+
+        $repository = new DonationRepository();
+        $repository->insert($donation);
+        $campaign = give()->campaigns->getByFormId($donation->formId);
+
+        $this->assertNotNull($donation->campaignId);
+        $this->assertSame($campaign->id, $donation->campaignId);
+    }
+
+    /**
+     * @since 4.12.0
+     *
+     * @throws Exception
+     */
+    public function testTrashShouldMoveDonationToTrash(): void
+    {
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'donorId' => $donor->id,
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        $repository = new DonationRepository();
+
+        $repository->trash($donation);
+
+        $postStatus = DB::table('posts')
+            ->where('ID', $donation->id)
+            ->value('post_status');
+
+        $trashMetaStatus = give()->payment_meta->get_meta($donation->id, '_wp_trash_meta_status', true);
+        $trashMetaTime = give()->payment_meta->get_meta($donation->id, '_wp_trash_meta_time', true);
+
+        $this->assertEquals('trash', $postStatus);
+        $this->assertEquals(DonationStatus::COMPLETE, $trashMetaStatus);
+        $this->assertNotEmpty($trashMetaTime);
+    }
+
+    /**
+     * @since 4.12.0
+     *
+     * @throws Exception
+     */
+    public function testUnTrashShouldRestorePreviousStatus(): void
+    {
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'donorId' => $donor->id,
+            'status' => DonationStatus::PENDING(),
+        ]);
+
+        $repository = new DonationRepository();
+
+        // First trash the donation
+        $repository->trash($donation);
+
+        // Then untrash it
+        $repository->unTrash($donation);
+
+        $postStatus = DB::table('posts')
+            ->where('ID', $donation->id)
+            ->value('post_status');
+
+        $this->assertEquals(DonationStatus::PENDING, $postStatus);
+    }
+
+    /**
+     * @since 4.12.0
+     *
+     * @throws Exception
+     */
+    public function testUnTrashShouldDefaultToCompleteWhenNoPreviousStatus(): void
+    {
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create();
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'donorId' => $donor->id,
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        // Manually set the post status to trash without using the trash method
+        // This simulates a donation that was trashed without the proper meta being saved
+        DB::table('posts')
+            ->where('ID', $donation->id)
+            ->update(['post_status' => 'trash']);
+
+        $repository = new DonationRepository();
+
+        $repository->unTrash($donation);
+
+        $postStatus = DB::table('posts')
+            ->where('ID', $donation->id)
+            ->value('post_status');
+
+        $this->assertEquals(DonationStatus::COMPLETE, $postStatus);
     }
 }

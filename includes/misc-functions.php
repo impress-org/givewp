@@ -9,8 +9,9 @@
  * @since       1.0
  */
 
-use Give\DonationForms\AsyncData\AsyncDataHelpers;
 use Give\License\PremiumAddonsListManager;
+use Give\License\Repositories\LicenseRepository;
+use Give\License\ValueObjects\LicenseOptionKeys;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -1165,10 +1166,12 @@ function give_get_completed_upgrades() {
  * @param string $type Context for table
  *
  * @return null|array
+ *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0
  * @global wpdb  $wpdb
  */
-function __give_v20_bc_table_details( $type ) {
+function give_v20_bc_table_details( $type ) {
 	global $wpdb;
 	$table = [];
 
@@ -1634,7 +1637,7 @@ function give_doing_it_wrong( $function, $message, $version = null ) {
 function give_ignore_user_abort() {
 	ignore_user_abort( true );
 
-	if ( ! give_is_func_disabled( 'set_time_limit' ) && ! ini_get( 'safe_mode' ) ) {
+	if ( ! give_is_func_disabled( 'set_time_limit' )) {
 		set_time_limit( 0 );
 	}
 }
@@ -1854,9 +1857,11 @@ function give_is_donor_comment_field_enabled( $form_id ) {
  * @param string $banner_addon_name Give add-on name.
  *
  * @return array
+ *
+ * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.1.0
  */
-function __give_get_active_by_user_meta( $banner_addon_name ) {
+function give_get_active_by_user_meta( $banner_addon_name ) {
 	global $wpdb;
 
 	// Get the option key.
@@ -2423,6 +2428,8 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
+ * @since 4.8.0 Update active license date after license refresh when active license is found
+ * @since 4.3.0 updated to store platform fee percentage
  * @since 2.27.0 delete update_plugins transient instead of invalidate it
  * @since  2.5.0
  *
@@ -2520,6 +2527,19 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 	update_option( 'give_licenses_refreshed_last_checked', $refresh, 'no' );
 
+    $platform_fee_percentage = get_platform_fee_from_licenses();
+
+    if (!is_null($platform_fee_percentage)) {
+        update_option( LicenseOptionKeys::PLATFORM_FEE_PERCENTAGE, $platform_fee_percentage, 'no' );
+    }
+
+    // Update active license date after license refresh when active license is found
+    $active_license_date = get_active_license_date();
+
+	if(!is_null($active_license_date)) {
+        update_option(LicenseOptionKeys::LAST_ACTIVE_LICENSE_DATE, $active_license_date, 'no');
+    }
+
 	// Tell WordPress to look for updates.
 	if ( $wp_check_updates ) {
 		delete_site_transient('update_plugins');
@@ -2529,6 +2549,30 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 		'give_licenses'     => $give_licenses,
 		'give_get_versions' => $tmp_update_plugins,
 	];
+}
+
+/**
+ * Get platform fee from stored licenses
+ */
+function get_platform_fee_from_licenses(): ?float
+{
+    /** @var LicenseRepository $repository */
+    $repository = give(LicenseRepository::class);
+
+    return $repository->findLowestPlatformFeePercentageFromActiveLicenses();
+}
+
+/**
+ * Set Active License Date
+ *
+ * @since 4.8.0
+ */
+function get_active_license_date(): ?int
+{
+    /** @var LicenseRepository $repository */
+    $repository = give(LicenseRepository::class);
+
+    return $repository->getCurrentActiveLicenseDate();
 }
 
 /**

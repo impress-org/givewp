@@ -29,6 +29,7 @@ export default function Edit({
     attributes: {
         groupLabel,
         country,
+        defaultCountry,
         countryLabel,
         address1Label,
         address1Placeholder,
@@ -148,6 +149,20 @@ export default function Edit({
                             label={__('Label')}
                             value={countryLabel}
                             onChange={(value) => setAttributes({countryLabel: value})}
+                        />
+                    </PanelRow>
+                    <PanelRow>
+                        <SelectControl
+                            label={__('Default Country', 'give')}
+                            value={defaultCountry}
+                            options={[
+                                { value: '', label: __('None', 'give') },
+                                ...Object.entries((window as any).giveStorageData?.countries || {}).map(([value, label]) => ({
+                                    value,
+                                    label: label as string,
+                                })),
+                            ]}
+                            onChange={(value) => setAttributes({ defaultCountry: value })}
                         />
                     </PanelRow>
                 </PanelBody>

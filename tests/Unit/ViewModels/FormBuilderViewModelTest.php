@@ -18,6 +18,7 @@ use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give_License;
 
 class FormBuilderViewModelTest extends TestCase
 {
@@ -73,6 +74,7 @@ class FormBuilderViewModelTest extends TestCase
                 ],
                 'formFieldManagerData' => [
                     'isInstalled' => defined('GIVE_FFM_VERSION'),
+                    'isLicensed' => (Give_License::get_license_by_plugin_dirname('give-form-field-manager')['license'] ?? '') === 'valid',
                 ],
                 'emailTemplateTags' => $viewModel->getEmailTemplateTags(),
                 'emailNotifications' => array_map(static function ($notification) {
@@ -87,15 +89,25 @@ class FormBuilderViewModelTest extends TestCase
                     'agreementText' => give_get_option('agreement_text'),
                 ],
                 'goalTypeOptions' => $viewModel->getGoalTypeOptions(),
+                'goalSourceOptions' => $viewModel->getGoalSourceOptions(),
                 'goalProgressOptions' => $viewModel->getGoalProgressOptions(),
                 'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
                 'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),
                 'intlTelInputSettings' => IntlTelInput::getSettings(),
+                'campaignColors' => [
+                    'primaryColor' => '',
+                    'secondaryColor' => '',
+                ],
+                'showFormGoalNotice' => true,
+                'countries' => give_get_country_list(),
             ],
             $viewModel->storageData($formId)
         );
     }
 
+    /**
+     * @since 4.3.2 Add country, state, city, zip, address1, and address2 to the disallowed field names.
+     */
     private function getDisallowedFieldNames(): array
     {
         $disallowedFieldNames = array_merge(
@@ -109,6 +121,12 @@ class FormBuilderViewModelTest extends TestCase
                 'login',
                 'consent',
                 'donation-summary',
+                'country',
+                'state',
+                'city',
+                'zip',
+                'address1',
+                'address2',
             ]
         );
 

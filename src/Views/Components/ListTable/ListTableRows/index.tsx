@@ -5,8 +5,9 @@ import {useEffect, useState} from 'react';
 import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';
+import ListTableApi from '@givewp/components/ListTable/api';
 
-export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, columnFilters}) {
+export default function ListTableRows({columns, data, isLoading, rowActions, setUpdateErrors, parameters, singleName, columnFilters, includeBulkActionsCheckbox = false, tableId, apiSettings}) {
     const [removed, setRemoved] = useState([]);
     const [added, setAdded] = useState([]);
 
@@ -61,21 +62,23 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                 [styles.duplicated]: added.indexOf(parseInt(item.id)) > -1,
             })}
         >
-            <TableCell>
-                <BulkActionCheckbox
-                    id={item.id}
-                    name={item?.donor ?? item?.title ?? item?.donorInformation}
-                    singleName={singleName}
-                />
-            </TableCell>
+            {includeBulkActionsCheckbox && (
+                <TableCell>
+                    <BulkActionCheckbox
+                        id={item.id}
+                        name={item?.donor ?? item?.title ?? item?.donorInformation}
+                        singleName={singleName}
+                    />
+                </TableCell>
+            )}
             <>
                 {columns?.map((column) => {
                     const columnFilter = columnGetFilter(column.id);
 
                     return (
-                        <TableCell key={column.id} heading={columns[0].id === column.id}>
+                        <TableCell key={column.id} heading={columns[0].id === column.id} columnId={`${tableId}-${column.id}`}>
                             {columnFilter.length > 0 ? (
-                                columnFilter[0].filter(item, column)
+                                columnFilter[0].filter(item, column, data)
                             ) : (
                                 <InterweaveSSR column={column} item={item} />
                             )}
@@ -89,6 +92,7 @@ export default function ListTableRows({columns, data, isLoading, rowActions, set
                                         addRow,
                                         setUpdateErrors,
                                         parameters,
+                                        listTableApi: new ListTableApi(apiSettings),
                                     })}
                                 </div>
                             )}

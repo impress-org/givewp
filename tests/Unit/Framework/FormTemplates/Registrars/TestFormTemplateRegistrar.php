@@ -19,7 +19,7 @@ class TestFormDesignRegistrar extends TestCase
     /**
      * @since 3.0.0
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->registrar = new FormDesignRegistrar();

@@ -55,6 +55,7 @@ class PaymentGateways implements ServiceProvider
     ];
 
     /**
+     * @since 4.1.0 changed BN code to GiveWP_SP_PPCPV2
      * @inheritDoc
      */
     public function register()
@@ -62,7 +63,7 @@ class PaymentGateways implements ServiceProvider
         give()->bind(
             'PAYPAL_COMMERCE_ATTRIBUTION_ID',
             static function () {
-                return 'GiveWP_SP_PCP';
+                return 'GiveWP_SP_PPCPV2';
             }
         ); // storage
 

@@ -1,0 +1,58 @@
+$breakpoint-desktop: 900px;
+
+.summaryTableContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.summaryPanel, .summaryTable {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid #f3f4f6;
+  background-color: var(--givewp-shades-white);
+
+  @media (max-width: $breakpoint-desktop) {
+    flex-wrap: wrap;
+  }
+}
+
+.summaryTable {
+    padding: var(--givewp-spacing-4) 0;
+}
+
+.summaryTableLabel {
+  flex-grow: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #4b5563;
+  margin: 0;
+}
+
+.summaryTableValue {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #1f2937;
+  text-align: right;
+}
+
+.pill {
+    --border-width: 1px;
+    --padding-x: calc(var(--givewp-spacing-3) - var(--border-width));
+    --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
+    align-items: center;
+    background-color: var(--givewp-neutral-25);
+    border-radius: 1.5rem;
+    border: var(--border-width) solid var(--givewp-neutral-600);
+    color: var(--givewp-neutral-900);
+    display: inline-flex ;
+    font-size: 0.75rem;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.5;
+    padding: var(--padding-y) var(--padding-x);
+}

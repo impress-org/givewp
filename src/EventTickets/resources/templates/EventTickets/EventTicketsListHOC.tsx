@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import EventTicketsList from '../../components/EventTicketsList';
 import {EventTicketsListHOCProps, OnSelectTicketProps} from './types';
 
-export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: EventTicketsListHOCProps) {
+export default function EventTicketsListHOC({name, ticketTypes}: EventTicketsListHOCProps) {
     const [selectedTickets, setSelectedTickets] = useState([]);
     const {useWatch, useCurrencyFormatter, useDonationFormSettings, useDonationSummary, useFormContext} =
         window.givewp.form.hooks;
@@ -69,7 +69,6 @@ export default function EventTicketsListHOC({name, ticketTypes, ticketsLabel}: E
     return (
         <EventTicketsList
             ticketTypes={ticketTypes}
-            ticketsLabel={ticketsLabel}
             currency={currency}
             currencyRate={currencyRate}
             selectedTickets={selectedTickets}

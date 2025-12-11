@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Give\Donors\ListTable\Columns;
 
+use Give\Donors\DonorsAdminPage;
 use Give\Donors\Models\Donor;
 use Give\Framework\ListTable\ModelColumn;
 
@@ -28,17 +29,19 @@ class DonorInformationColumn extends ModelColumn
     }
 
     /**
+     * @since 4.12.0 Update column label
      * @since 2.24.0
      *
      * @inheritDoc
      */
     public function getLabel(): string
     {
-        return __('Donor Information', 'give');
+        return __('Name', 'give');
     }
 
     /**
-     * @unreleased Use email to get avatar URL
+     * @since 4.12.0 Remove gravatar from donor information column
+     * @since 3.20.0 Use email to get avatar URL
      * @since 2.24.0
      *
      * @inheritDoc
@@ -49,16 +52,16 @@ class DonorInformationColumn extends ModelColumn
     {
         $template = '
             <div class="donorInformation">
-                <img class="donorInformation__gravatar" src="%s" alt="donor name" loading="lazy" />
                 <a href="%s">%s</a>
-                <address class="donorInformation__email">%s</address>
+                <span class="donorInformation__email">%s</span>
             </div>
         ';
 
+        $url = DonorsAdminPage::getDetailsPageUrl($model->id);
+
         return sprintf(
             $template,
-            get_avatar_url($model->email, ['size' => 64]),
-            admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id=$model->id"),
+            $url,
             trim("$model->firstName $model->lastName"),
             $model->email
         );

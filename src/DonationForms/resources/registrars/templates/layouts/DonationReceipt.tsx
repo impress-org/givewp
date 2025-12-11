@@ -4,11 +4,12 @@ import {DonationReceiptProps} from '@givewp/forms/propTypes';
 import {Interweave} from 'interweave';
 
 /**
+ * @since 4.3.2 include aria-live and role attributes to the secure badge for screen readers.
  * @since 3.0.0
  */
 const SecureBadge = () => {
     return (
-        <aside className="givewp-form-secure-badge">
+        <aside className="givewp-form-secure-badge" role="status" aria-live="polite">
             <i className="fa-regular fa-circle-check givewp-form-secure-badge-icon"></i>
             {__('Success!', 'give')}
         </aside>
@@ -16,7 +17,7 @@ const SecureBadge = () => {
 };
 
 /**
- *
+ * @since 4.3.2 replace <dl> tag with <div>. The <dl> element is reserved for definition lists, the content here represents labeled key-value pairs.
  * @since 3.4.0 updated to render value using Interweave
  * @since 3.0.0
  */
@@ -24,16 +25,23 @@ const Details = ({id, heading, details}: {id: string; heading: string; details: 
     details?.length > 0 && (
         <div className={`details details-${id}`}>
             <h3 className="headline">{heading}</h3>
-            <dl className="details-table">
+            <div className="details-table" role="list">
                 {details.map(({label, value}, index) => (
-                    <div key={index} className={`details-row details-row--${label.toLowerCase().replace(' ', '-')}`}>
-                        <dt className="detail">{label}</dt>
-                        <Interweave className="value" tagName="dd" data-value={value} content={value} />
+                    <div
+                        key={index}
+                        className={`details-row details-row--${label.toLowerCase().replace(' ', '-')}`}
+                        role="listitem"
+                    >
+                        <span className="detail">{label}</span>
+                        <span className="value" data-value={value}>
+                            <Interweave content={value} />
+                        </span>
                     </div>
                 ))}
-            </dl>
+            </div>
         </div>
     );
+
 /**
  * @since 3.0.0
  */

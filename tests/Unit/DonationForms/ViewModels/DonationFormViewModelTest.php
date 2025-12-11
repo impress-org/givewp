@@ -10,6 +10,7 @@ use Give\DonationForms\FormDesigns\ClassicFormDesign\ClassicFormDesign;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\DonationForms\ViewModels\DonationFormViewModel;
 use Give\Tests\TestCase;
@@ -29,7 +30,10 @@ class DonationFormViewModelTest extends TestCase
 
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::factory()->create([
-            'settings' => FormSettings::fromArray(['designId' => $formDesign::id()]),
+            'settings' => FormSettings::fromArray([
+                'designId' => $formDesign::id(),
+                'goalSource' => GoalSource::FORM(),
+            ]),
         ]);
 
         $donationFormRepository = give(DonationFormRepository::class);
@@ -53,23 +57,26 @@ class DonationFormViewModelTest extends TestCase
             'validateUrl' => $validateUrl,
             'authUrl' => $authUrl,
             'inlineRedirectRoutes' => [
-                'donation-confirmation-receipt-view'
+                'donation-confirmation-receipt-view',
             ],
             'registeredGateways' => $formDataGateways,
             'form' => array_merge($formApi->jsonSerialize(), [
                 'settings' => $donationForm->settings,
                 'currency' => $formApi->getDefaultCurrency(),
-                'goal' => $donationFormGoalData->toArray(),
-                'stats' => [
-                    'totalRevenue' => $totalRevenue,
-                    'totalCountValue' => $goalType->isDonors() ?
-                        $donationFormRepository->getTotalNumberOfDonors($donationForm->id) :
-                        $donationFormRepository->getTotalNumberOfDonations($donationForm->id),
-                    'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
-                        'Donations',
-                        'give'
-                    ),
-                ],
+                'goal' => $donationForm->settings->showHeader && $donationForm->settings->enableDonationGoal
+                    ? $donationFormGoalData->toArray()
+                    : [],
+                'stats' => $donationForm->settings->showHeader && $donationForm->settings->enableDonationGoal
+                    ? [
+                        'totalRevenue' => $totalRevenue,
+                        'totalCountValue' => $goalType->isDonors() ?
+                            $donationFormRepository->getTotalNumberOfDonors($donationForm->id) :
+                            $donationFormRepository->getTotalNumberOfDonations($donationForm->id),
+                        'totalCountLabel' => $goalType->isDonors() ? __('donors', 'give') : __(
+                            'Donations',
+                            'give'
+                        ),
+                    ] : [],
                 'design' => [
                     'id' => $formDesign::id(),
                     'name' => $formDesign::name(),
@@ -77,7 +84,7 @@ class DonationFormViewModelTest extends TestCase
                     'includeHeaderInMultiStep' => $formDesign->shouldIncludeHeaderInMultiStep(),
                 ],
             ]),
-            'previewMode' => false
+            'previewMode' => false,
         ]);
     }
 }

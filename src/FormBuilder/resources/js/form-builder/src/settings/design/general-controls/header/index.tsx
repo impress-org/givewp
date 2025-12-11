@@ -1,3 +1,4 @@
+import {useEffect} from "react";
 import {__} from '@wordpress/i18n';
 import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';
@@ -6,6 +7,7 @@ import {upload} from '@wordpress/icons';
 import {ClassicEditor} from '@givewp/form-builder-library';
 
 /**
+ * @since 4.3.0 set image overlay color and opacity for background image to improve accessibility contrast against text.
  * @since 3.16.2 Replace TextareaControl component with ClassicEditor component on the description option
  */
 export default function Header({dispatch, publishSettings}) {
@@ -18,8 +20,22 @@ export default function Header({dispatch, publishSettings}) {
             description,
             designSettingsImageUrl,
             designSettingsImageStyle = 'background',
+            designSettingsImageColor
         },
     } = useFormState();
+
+    useEffect(() => {
+        if (designSettingsImageUrl && designSettingsImageStyle === 'background' && !designSettingsImageColor) {
+            dispatch(setFormSettings({
+                designSettingsImageColor: '#000000',
+                designSettingsImageOpacity: '25'
+            }));
+            publishSettings({
+                designSettingsImageColor: '#000000',
+                designSettingsImageOpacity: '25'
+            });
+        }
+    }, [designSettingsImageUrl]);
 
     const resetSettings = () => {
         const reset = {

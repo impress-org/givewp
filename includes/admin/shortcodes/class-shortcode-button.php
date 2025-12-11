@@ -94,7 +94,7 @@ final class Give_Shortcode_Button {
 
 		wp_enqueue_script(
 			'give_shortcode',
-			GIVE_PLUGIN_URL . 'assets/dist/js/admin-shortcodes.js',
+			GIVE_PLUGIN_URL . 'build/assets/dist/js/admin-shortcodes.js',
 			array( 'jquery' ),
 			GIVE_VERSION,
 			true
@@ -102,7 +102,7 @@ final class Give_Shortcode_Button {
 
 		wp_enqueue_style(
 			'give-admin-shortcode-button-style',
-			GIVE_PLUGIN_URL . 'assets/dist/css/admin-shortcode-button' . $direction . '.css',
+			GIVE_PLUGIN_URL . 'build/assets/dist/css/admin-shortcode-button' . $direction . '.css',
 			array(),
 			GIVE_VERSION
 		);
@@ -164,7 +164,7 @@ final class Give_Shortcode_Button {
 
 			// check current WP version
 			$img = ( version_compare( get_bloginfo( 'version' ), '3.5', '<' ) )
-				? '<img src="' . GIVE_PLUGIN_URL . 'assets/dist/images/give-media.png" />'
+				? '<img src="' . GIVE_PLUGIN_URL . 'build/assets/dist/images/give-media.png" />'
 				: '<span class="wp-media-buttons-icon" id="give-media-button" style="background-image: url(' . give_svg_icons( 'give_grey' ) . ');"></span>';
 
 			reset( $shortcodes );

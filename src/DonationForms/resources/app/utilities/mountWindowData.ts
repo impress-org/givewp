@@ -2,6 +2,8 @@ import {useFormContext, useFormState, useWatch} from 'react-hook-form';
 import useCurrencyFormatter from '@givewp/forms/app/hooks/useCurrencyFormatter';
 import useDonationSummary from '@givewp/forms/app/hooks/useDonationSummary';
 import {useDonationFormSettings} from '@givewp/forms/app/store/form-settings';
+import useFormSubmitButton from '@givewp/forms/app/hooks/useFormSubmitButton';
+import useFormData from '@givewp/forms/app/hooks/useFormData';
 
 /**
  *
@@ -17,5 +19,7 @@ export default function mountWindowData(): void {
         useCurrencyFormatter,
         useDonationSummary,
         useDonationFormSettings,
+        useFormSubmitButton,
+        useFormData
     };
 }

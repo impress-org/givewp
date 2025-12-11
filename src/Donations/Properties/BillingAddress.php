@@ -6,7 +6,7 @@ use Give\Framework\Support\Contracts\Arrayable;
 use JsonSerializable;
 
 /**
- * @unreleased added JsonSerializable an Arrayable
+ * @since 3.20.0 added JsonSerializable an Arrayable
  * @since 2.19.6
  */
 final class BillingAddress implements JsonSerializable, Arrayable
@@ -58,7 +58,7 @@ final class BillingAddress implements JsonSerializable, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     public function toArray(): array
     {
@@ -73,7 +73,7 @@ final class BillingAddress implements JsonSerializable, Arrayable
     }
 
     /**
-     * @unreleased
+     * @since 3.20.0
      */
     #[\ReturnTypeWillChange]
     public function jsonSerialize()

@@ -6,8 +6,6 @@
  * @since 2.8.0
  */
 
-use Give\DonationForms\Models\DonationForm;
-
 /**
  * Variables from onboarding PageView
  *
@@ -45,16 +43,18 @@ use Give\DonationForms\Models\DonationForm;
     <!-- Configuration -->
     <?php
     if ($this->isFormConfigured()) {
-        $form = DonationForm::find((int)$settings['form_id']);
+        $campaign = give()->campaigns->getByFormId((int)$settings['form_id']);
 
-        $customizeFormURL = $form && $form->id ? admin_url('post.php?action=edit&post=' . $form->id) : admin_url('edit.php?post_type=give_forms&page=give-forms');
+        $customizeCampaignURL = $campaign && $campaign->id
+            ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&tab=settings&id=' . $campaign->id)
+            : admin_url('edit.php?post_type=give_forms&page=give-campaigns');
     }
 
     echo $this->render_template(
         'section',
         [
             'class' => !$this->isFormConfigured() ? 'current-step' : '',
-            'title' => sprintf('%s 1: %s', __('Step', 'give'), __('Create your first donation form', 'give')),
+            'title' => sprintf('%s 1: %s', __('Step', 'give'), __('Create your first campaign', 'give')),
             'badge' => ($this->isFormConfigured()
                 ? $this->render_template('badge', [
                     'class' => 'completed',
@@ -67,8 +67,8 @@ use Give\DonationForms\Models\DonationForm;
             ),
             'button' => ($this->isFormConfigured()
                 ? $this->render_template('action-button', [
-                    'href' => esc_url($customizeFormURL),
-                    'text' => esc_html__('Customize form', 'give'),
+                    'href' => esc_url($customizeCampaignURL),
+                    'text' => esc_html__('Customize campaign', 'give'),
                     'target' => '_blank',
                 ])
                 : $this->render_template('action-button', [
@@ -109,9 +109,9 @@ use Give\DonationForms\Models\DonationForm;
                             : $this->image('stripe@2x.min.png'),
                         'icon_alt' => esc_html__('Stripe', 'give'),
                         'title' => esc_html__('Connect to Stripe', 'give'),
-                        'description' => esc_html__(
-                            'Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Note: the FREE version of Stripe includes an additional 2% fee for processing one-time donations. Remove the fee by installing and activating the premium Stripe add-on.',
-                            'give'
+                        'description' => sprintf(
+                            __('Stripe is one of the most popular payment gateways, and for good reason! Receive one-time and Recurring Donations (add-on) using many of the most popular payment methods. Additional fees may apply for free users. Read our <a href="%s" target="_blank" rel="noopener noreferrer">Stripe documentation</a> for more information.', 'give'), 
+                            'https://docs.givewp.com/stripe-fees'
                         ),
                         'action' => ($this->isStripeSetup()) ? sprintf(
                             '<a href="%s"><i class="fab fa-stripe-s"></i>&nbsp;&nbsp;Stripe Settings</a>',

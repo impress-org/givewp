@@ -3,9 +3,7 @@
 namespace Give\Tests\Unit\Subscriptions\Repositories;
 
 use Exception;
-use Give\Donations\Models\Donation;
-use Give\Donations\ValueObjects\DonationStatus;
-use Give\Donations\ValueObjects\DonationType;
+use Give\Campaigns\Models\Campaign;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -79,11 +77,11 @@ class TestSubscriptionRepository extends TestCase
         $this->assertEquals($subscriptionQuery->product_id, $subscriptionInstance->donationFormId);
         $this->assertEquals($subscriptionQuery->period, $subscriptionInstance->period->getValue());
         $this->assertEquals($subscriptionQuery->frequency, $subscriptionInstance->frequency);
-        $this->assertEquals($subscriptionQuery->initial_amount, $subscriptionInstance->amount->formatToDecimal());
-        $this->assertEquals($subscriptionQuery->recurring_amount, $subscriptionInstance->amount->formatToDecimal());
+        $this->assertEquals((float)$subscriptionQuery->initial_amount, (float)$subscriptionInstance->amount->formatToDecimal());
+        $this->assertEquals((float)$subscriptionQuery->recurring_amount, (float)$subscriptionInstance->amount->formatToDecimal());
         $this->assertEquals(
-            $subscriptionQuery->recurring_fee_amount,
-            $subscriptionInstance->feeAmountRecovered->formatToDecimal()
+            (float)$subscriptionQuery->recurring_fee_amount,
+            (float)$subscriptionInstance->feeAmountRecovered->formatToDecimal(),
         );
         $this->assertEquals($subscriptionQuery->bill_times, $subscriptionInstance->installments);
         $this->assertEquals($subscriptionQuery->transaction_id, $subscriptionInstance->transactionId);
@@ -205,12 +203,16 @@ class TestSubscriptionRepository extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.11.0 add campaignId to renewal
+     * @since 3.20.0
      * @throws Exception
      */
     public function testCreateRenewalShouldCreateNewRenewal(): void
     {
-        $subscription = Subscription::factory()->createWithDonation();
+        $campaign = Campaign::factory()->create();
+        $subscription = Subscription::factory()->createWithDonation([
+            'campaignId' => $campaign->id,
+        ]);
         $repository = new SubscriptionRepository();
 
         $renewalCreatedAt = Temporal::getCurrentDateTime();
@@ -255,5 +257,122 @@ class TestSubscriptionRepository extends TestCase
         $this->assertSame($initialDonation->billingAddress->toArray(), $renewal->billingAddress->toArray());
         $this->assertSame($renewalCreatedAt->getTimestamp(), $renewal->createdAt->getTimestamp());
         $this->assertSame($subscription->renewsAt->getTimestamp(), $nextRenewalDate->getTimestamp());
+        $this->assertSame($campaign->id, $renewal->campaignId);
+    }
+
+
+    /**
+     * @since 4.11.0
+     * @throws Exception
+     */
+    public function testCreateRenewalShouldCreateNewRenewalWithUpdatedCampaignId(): void
+    {
+        $campaign = Campaign::factory()->create();
+        $campaign2 = Campaign::factory()->create();
+        $subscription = Subscription::factory()->createWithDonation([
+            'campaignId' => $campaign->id,
+        ]);
+        $repository = new SubscriptionRepository();
+
+        $renewalCreatedAt = Temporal::getCurrentDateTime();
+        $gatewayTransactionId = 'transaction-id';
+
+        $subscription->campaignId = $campaign2->id;
+        $subscription->save();
+
+        $renewal = $repository->createRenewal($subscription, [
+            'gatewayTransactionId' => $gatewayTransactionId,
+            'createdAt' => $renewalCreatedAt,
+        ]);
+
+        $this->assertSame($campaign2->id, $renewal->campaignId);
+    }
+
+    /**
+     * @since 4.12.0
+     *
+     * @throws Exception
+     */
+    public function testTrashShouldMoveSubscriptionToTrash(): void
+    {
+        /** @var Subscription $subscription */
+        $subscription = Subscription::factory()->create([
+            'status' => SubscriptionStatus::ACTIVE(),
+        ]);
+
+        $repository = new SubscriptionRepository();
+
+        $repository->trash($subscription);
+
+        $subscriptionStatus = DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->value('status');
+
+        $trashMetaStatus = give()->subscription_meta->get_meta($subscription->id, '_wp_trash_meta_status', true);
+        $trashMetaTime = give()->subscription_meta->get_meta($subscription->id, '_wp_trash_meta_time', true);
+
+        $this->assertEquals(SubscriptionStatus::TRASHED, $subscriptionStatus);
+        $this->assertEquals(SubscriptionStatus::ACTIVE, $trashMetaStatus);
+        $this->assertNotEmpty($trashMetaTime);
+    }
+
+    /**
+     * @since 4.12.0
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
+    public function testUnTrashShouldRestorePreviousStatus()
+    {
+        /** @var Subscription $subscription */
+        $subscription = Subscription::factory()->create([
+            'status' => SubscriptionStatus::PENDING(),
+        ]);
+
+        $repository = new SubscriptionRepository();
+
+        // First trash the subscription
+        $repository->trash($subscription);
+
+        // Then untrash it
+        $repository->unTrash($subscription);
+
+        $subscriptionStatus = DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->value('status');
+
+        $this->assertEquals(SubscriptionStatus::PENDING, $subscriptionStatus);
+    }
+
+    /**
+     * @since 4.12.0
+     *
+     * @throws Exception
+     */
+    public function testUnTrashShouldRestoreActiveStatusWhenNoPreviousStatus(): void
+    {
+        /** @var Subscription $subscription */
+        $subscription = Subscription::factory()->create([
+            'status' => SubscriptionStatus::ACTIVE(),
+        ]);
+
+        // Manually set the status to trashed without using the trash method
+        // This simulates a subscription that was trashed without the proper meta being saved
+        DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->update(['status' => SubscriptionStatus::TRASHED()->getValue()]);
+
+        $repository = new SubscriptionRepository();
+
+        $repository->unTrash($subscription);
+
+        $subscriptionStatus = DB::table('give_subscriptions')
+            ->where('id', $subscription->id)
+            ->value('status');
+
+        // When no previous status is found, it should restore to empty string or default
+        // based on the implementation
+        $this->assertNotEquals(SubscriptionStatus::TRASHED, $subscriptionStatus);
     }
 }

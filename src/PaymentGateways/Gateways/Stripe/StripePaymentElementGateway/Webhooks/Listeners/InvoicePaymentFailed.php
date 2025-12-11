@@ -39,6 +39,7 @@ class InvoicePaymentFailed
     }
 
     /**
+     * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 3.0.4 Return a bool value.
      * @since 3.0.0
      *
@@ -49,7 +50,8 @@ class InvoicePaymentFailed
         /* @var Invoice $invoice */
         $invoice = $event->data->object;
 
-        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($invoice->subscription)->get();
+        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+        $subscription = give()->subscriptions->queryByGatewaySubscriptionId($gatewaySubscriptionId)->get();
 
         // only use this for next gen for now
         if (!$subscription || !$this->shouldProcessSubscription($subscription)) {
@@ -71,12 +73,15 @@ class InvoicePaymentFailed
     }
 
     /**
+     * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 3.0.0
      */
     protected function triggerLegacyFailedEmailNotificationEvent(Invoice $invoice)
     {
+        $gatewaySubscriptionId = $this->getGatewaySubscriptionId($invoice);
+
         // @phpstan-ignore-next-line
-        $subscription = give_recurring_get_subscription_by('profile', $invoice->subscription);
+        $subscription = give_recurring_get_subscription_by('profile', $gatewaySubscriptionId);
 
         do_action('give_donor-subscription-payment-failed_email_notification', $subscription, $invoice);
 
