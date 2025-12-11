@@ -55,24 +55,29 @@ final class TestDonationPermissions extends TestCase
     public function canTrueProvider(): array
     {
         return [
-            // true
+            // give_worker has edit_give_payments but NOT view_give_payments
             ['give_worker', 'create'],
-            ['give_worker', 'read'],
             ['give_worker', 'update'],
             ['give_worker', 'edit'],
 
+            // give_manager has both edit_give_payments and view_give_payments
             ['give_manager', 'create'],
+            ['give_manager', 'view'],
             ['give_manager', 'read'],
             ['give_manager', 'update'],
             ['give_manager', 'edit'],
             ['give_manager', 'delete'],
 
+            // give_accountant has edit_give_payments and view_give_payments
             ['give_accountant', 'create'],
+            ['give_accountant', 'view'],
             ['give_accountant', 'read'],
             ['give_accountant', 'update'],
             ['give_accountant', 'edit'],
 
+            // administrator has all capabilities
             ['administrator', 'create'],
+            ['administrator', 'view'],
             ['administrator', 'read'],
             ['administrator', 'update'],
             ['administrator', 'edit'],
@@ -86,22 +91,28 @@ final class TestDonationPermissions extends TestCase
     public function canFalseProvider(): array
     {
         return [
-            // false
+            // give_worker does NOT have view_give_payments
+            ['give_worker', 'view'],
+            ['give_worker', 'read'],
+
             ['give_accountant', 'delete'],
 
             ['give_donor', 'create'],
+            ['give_donor', 'view'],
             ['give_donor', 'read'],
             ['give_donor', 'update'],
             ['give_donor', 'edit'],
             ['give_donor', 'delete'],
 
             ['give_subscriber', 'create'],
+            ['give_subscriber', 'view'],
             ['give_subscriber', 'read'],
             ['give_subscriber', 'update'],
             ['give_subscriber', 'edit'],
             ['give_subscriber', 'delete'],
 
             ['subscriber', 'create'],
+            ['subscriber', 'view'],
             ['subscriber', 'read'],
             ['subscriber', 'update'],
             ['subscriber', 'edit'],
