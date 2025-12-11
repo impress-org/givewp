@@ -15,9 +15,9 @@ final class TestSettingsPermissions extends TestCase
 
     /**
      * @unreleased
-     * @dataProvider canTrueProvider
+     * @dataProvider canManageTrueProvider
      */
-    public function testCanShouldBeTrue(string $role, string $capability): void
+    public function testCanManageShouldBeTrue(string $role): void
     {
         $user = self::factory()->user->create_and_get();
         $user->set_role($role);
@@ -25,15 +25,15 @@ final class TestSettingsPermissions extends TestCase
         wp_set_current_user($user->ID);
 
         $this->assertTrue(
-            (new SettingsPermissions())->can($capability)
+            (new SettingsPermissions())->canManage()
         );
     }
 
     /**
      * @unreleased
-     * @dataProvider canFalseProvider
+     * @dataProvider canManageFalseProvider
      */
-    public function testCanShouldBeFalse(string $role, string $capability): void
+    public function testCanManageShouldBeFalse(string $role): void
     {
         $user = self::factory()->user->create_and_get();
         $user->set_role($role);
@@ -41,83 +41,41 @@ final class TestSettingsPermissions extends TestCase
         wp_set_current_user($user->ID);
 
         $this->assertFalse(
-            (new SettingsPermissions())->can($capability)
+            (new SettingsPermissions())->canManage()
         );
     }
 
     /**
-     * Users with manage_options capability should always have full access.
-     *
      * @unreleased
-     * @dataProvider adminOverrideProvider
      */
-    public function testAdminWithManageOptionsAlwaysReturnsTrue(string $capability): void
+    public function testAdminWithManageOptionsAlwaysReturnsTrue(): void
     {
         $user = self::factory()->user->create_and_get();
         $user->set_role('administrator');
 
         wp_set_current_user($user->ID);
 
-        // Verify user has manage_options
         $this->assertTrue(current_user_can('manage_options'));
 
-        $this->assertTrue(
-            (new SettingsPermissions())->can($capability)
-        );
+        $permissions = new SettingsPermissions();
+        $this->assertTrue($permissions->canManage());
     }
 
-    /**
-     * @unreleased
-     */
-    public function adminOverrideProvider(): array
+    public function canManageTrueProvider(): array
     {
         return [
-            ['manage'],
-            ['edit'],
-            ['update'],
+            ['administrator'],
+            ['give_manager'],
         ];
     }
 
-    /**
-     * @unreleased
-     *
-     * @return array<int, array<mixed, bool>>
-     */
-    public function canTrueProvider(): array
+    public function canManageFalseProvider(): array
     {
         return [
-            ['administrator', 'manage'],
-            ['administrator', 'edit'],
-            ['administrator', 'update'],
-
-            ['give_manager', 'manage'],
-            ['give_manager', 'edit'],
-            ['give_manager', 'update'],
-        ];
-    }
-
-    /**
-     * @unreleased
-     */
-    public function canFalseProvider(): array
-    {
-        return [
-            // give_accountant does NOT have manage_give_settings
-            ['give_accountant', 'manage'],
-            ['give_accountant', 'edit'],
-            ['give_accountant', 'update'],
-
-            ['give_worker', 'manage'],
-            ['give_worker', 'edit'],
-            ['give_worker', 'update'],
-
-            ['give_donor', 'manage'],
-            ['give_donor', 'edit'],
-            ['give_donor', 'update'],
-
-            ['subscriber', 'manage'],
-            ['subscriber', 'edit'],
-            ['subscriber', 'update'],
+            ['give_accountant'],
+            ['give_worker'],
+            ['give_donor'],
+            ['subscriber'],
         ];
     }
 }

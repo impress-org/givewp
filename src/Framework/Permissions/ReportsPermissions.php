@@ -8,23 +8,30 @@ namespace Give\Framework\Permissions;
 class ReportsPermissions
 {
     /**
+     * Check if user can view reports.
+     *
      * @unreleased
      */
-    public function can(string $capability): bool
+    public function canView(): bool
     {
-        // Admins always have full access
         if (current_user_can('manage_options')) {
             return true;
         }
 
-        switch ($capability) {
-            case 'view':
-            case 'read':
-                return current_user_can('view_give_reports');
-            case 'export':
-                return current_user_can('export_give_reports');
-            default:
-                return false;
+        return current_user_can('view_give_reports');
+    }
+
+    /**
+     * Check if user can export reports.
+     *
+     * @unreleased
+     */
+    public function canExport(): bool
+    {
+        if (current_user_can('manage_options')) {
+            return true;
         }
+
+        return current_user_can('export_give_reports');
     }
 }

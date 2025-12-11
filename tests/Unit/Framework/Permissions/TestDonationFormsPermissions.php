@@ -15,9 +15,9 @@ final class TestDonationFormsPermissions extends TestCase
 
     /**
      * @unreleased
-     * @dataProvider canTrueProvider
+     * @dataProvider canViewTrueProvider
      */
-    public function testCanShouldBeTrue(string $role, string $capability): void
+    public function testCanViewShouldBeTrue(string $role): void
     {
         $user = self::factory()->user->create_and_get();
         $user->set_role($role);
@@ -25,15 +25,15 @@ final class TestDonationFormsPermissions extends TestCase
         wp_set_current_user($user->ID);
 
         $this->assertTrue(
-            (new DonationFormPermissions())->can($capability)
+            (new DonationFormPermissions())->canView()
         );
     }
 
     /**
      * @unreleased
-     * @dataProvider canFalseProvider
+     * @dataProvider canViewFalseProvider
      */
-    public function testCanShouldBeFalse(string $role, string $capability): void
+    public function testCanViewShouldBeFalse(string $role): void
     {
         $user = self::factory()->user->create_and_get();
         $user->set_role($role);
@@ -41,107 +41,144 @@ final class TestDonationFormsPermissions extends TestCase
         wp_set_current_user($user->ID);
 
         $this->assertFalse(
-            (new DonationFormPermissions())->can($capability)
+            (new DonationFormPermissions())->canView()
         );
     }
 
     /**
-     * Users with manage_options capability should always have full access.
-     *
      * @unreleased
-     * @dataProvider adminOverrideProvider
+     * @dataProvider canEditTrueProvider
      */
-    public function testAdminWithManageOptionsAlwaysReturnsTrue(string $capability): void
+    public function testCanEditShouldBeTrue(string $role): void
+    {
+        $user = self::factory()->user->create_and_get();
+        $user->set_role($role);
+
+        wp_set_current_user($user->ID);
+
+        $this->assertTrue(
+            (new DonationFormPermissions())->canEdit()
+        );
+    }
+
+    /**
+     * @unreleased
+     * @dataProvider canEditFalseProvider
+     */
+    public function testCanEditShouldBeFalse(string $role): void
+    {
+        $user = self::factory()->user->create_and_get();
+        $user->set_role($role);
+
+        wp_set_current_user($user->ID);
+
+        $this->assertFalse(
+            (new DonationFormPermissions())->canEdit()
+        );
+    }
+
+    /**
+     * @unreleased
+     * @dataProvider canDeleteTrueProvider
+     */
+    public function testCanDeleteShouldBeTrue(string $role): void
+    {
+        $user = self::factory()->user->create_and_get();
+        $user->set_role($role);
+
+        wp_set_current_user($user->ID);
+
+        $this->assertTrue(
+            (new DonationFormPermissions())->canDelete()
+        );
+    }
+
+    /**
+     * @unreleased
+     * @dataProvider canDeleteFalseProvider
+     */
+    public function testCanDeleteShouldBeFalse(string $role): void
+    {
+        $user = self::factory()->user->create_and_get();
+        $user->set_role($role);
+
+        wp_set_current_user($user->ID);
+
+        $this->assertFalse(
+            (new DonationFormPermissions())->canDelete()
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testAdminWithManageOptionsAlwaysReturnsTrue(): void
     {
         $user = self::factory()->user->create_and_get();
         $user->set_role('administrator');
 
         wp_set_current_user($user->ID);
 
-        // Verify user has manage_options
         $this->assertTrue(current_user_can('manage_options'));
 
-        $this->assertTrue(
-            (new DonationFormPermissions())->can($capability)
-        );
+        $permissions = new DonationFormPermissions();
+        $this->assertTrue($permissions->canCreate());
+        $this->assertTrue($permissions->canView());
+        $this->assertTrue($permissions->canEdit());
+        $this->assertTrue($permissions->canDelete());
     }
 
-    /**
-     * @unreleased
-     */
-    public function adminOverrideProvider(): array
+    public function canViewTrueProvider(): array
     {
         return [
-            ['create'],
-            ['read'],
-            ['view'],
-            ['update'],
-            ['edit'],
-            ['delete'],
+            ['give_worker'],
+            ['give_manager'],
+            ['give_accountant'],
+            ['administrator'],
         ];
     }
 
-
-    /**
-     * @unreleased
-     *
-     * @return array<int, array<mixed, bool>>
-     */
-    public function canTrueProvider(): array
+    public function canViewFalseProvider(): array
     {
         return [
-            // true
-            ['give_worker', 'create'],
-            ['give_worker', 'read'],
-            ['give_worker', 'update'],
-            ['give_worker', 'edit'],
-
-            ['give_manager', 'create'],
-            ['give_manager', 'read'],
-            ['give_manager', 'update'],
-            ['give_manager', 'edit'],
-            ['give_manager', 'delete'],
-
-            ['give_accountant', 'create'],
-            ['give_accountant', 'read'],
-            ['give_accountant', 'update'],
-            ['give_accountant', 'edit'],
-            ['give_accountant', 'read_private_give_forms'],
-
-            ['administrator', 'create'],
-            ['administrator', 'read'],
-            ['administrator', 'update'],
-            ['administrator', 'edit'],
-            ['administrator', 'delete'],
+            ['give_donor'],
+            ['subscriber'],
         ];
     }
 
-    /**
-     * @unreleased
-     */
-    public function canFalseProvider(): array
+    public function canEditTrueProvider(): array
     {
         return [
-            // false
-            ['give_accountant', 'delete'],
+            ['give_worker'],
+            ['give_manager'],
+            ['give_accountant'],
+            ['administrator'],
+        ];
+    }
 
-            ['give_donor', 'create'],
-            ['give_donor', 'read'],
-            ['give_donor', 'update'],
-            ['give_donor', 'edit'],
-            ['give_donor', 'delete'],
+    public function canEditFalseProvider(): array
+    {
+        return [
+            ['give_donor'],
+            ['subscriber'],
+        ];
+    }
 
-            ['give_subscriber', 'create'],
-            ['give_subscriber', 'read'],
-            ['give_subscriber', 'update'],
-            ['give_subscriber', 'edit'],
-            ['give_subscriber', 'delete'],
+    public function canDeleteTrueProvider(): array
+    {
+        return [
+            ['give_manager'],
+            ['give_worker'],  // give_worker has delete_give_forms capability
+            ['administrator'],
+        ];
+    }
 
-            ['subscriber', 'create'],
-            ['subscriber', 'read'],
-            ['subscriber', 'update'],
-            ['subscriber', 'edit'],
-            ['subscriber', 'delete'],
+    public function canDeleteFalseProvider(): array
+    {
+        return [
+            ['give_accountant'],
+            ['give_donor'],
+            ['subscriber'],
         ];
     }
 }

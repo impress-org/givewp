@@ -20,19 +20,13 @@ class DonationPermissions extends UserPermission
      *
      * @unreleased
      */
-    public function can(string $capability): bool
+    public function canView(): bool
     {
         // Admins always have full access
         if (current_user_can('manage_options')) {
             return true;
         }
 
-        switch ($capability) {
-            case 'view':
-            case 'read':
-                return current_user_can('view_give_payments');
-            default:
-                return parent::can($capability);
-        }
+        return current_user_can('view_give_payments');
     }
 }

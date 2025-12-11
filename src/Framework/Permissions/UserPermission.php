@@ -5,29 +5,58 @@ namespace Give\Framework\Permissions;
 abstract class UserPermission implements Contracts\UserPermissionsInterface
 {
     /**
+     * Check if user can create (maps to edit capability).
+     *
      * @unreleased
      */
-    public function can(string $capability): bool
+    public function canCreate(): bool
+    {
+        return $this->currentUserCan('edit');
+    }
+
+    /**
+     * Check if user can view/read (maps to edit capability).
+     *
+     * @unreleased
+     */
+    public function canView(): bool
+    {
+        return $this->currentUserCan('edit');
+    }
+
+    /**
+     * Check if user can edit.
+     *
+     * @unreleased
+     */
+    public function canEdit(): bool
+    {
+        return $this->currentUserCan('edit');
+    }
+
+    /**
+     * Check if user can delete.
+     *
+     * @unreleased
+     */
+    public function canDelete(): bool
+    {
+        return $this->currentUserCan('delete');
+    }
+
+    /**
+     * Check if the current user has the specified capability.
+     *
+     * @unreleased
+     */
+    protected function currentUserCan(string $capability): bool
     {
         // Admins always have full access
         if (current_user_can('manage_options')) {
             return true;
         }
 
-        switch ($capability) {
-            case 'delete':
-                $capability = $this->getCapability('delete');
-                break;
-            case 'read':
-            case 'view':
-            case 'create':
-            case 'update':
-            case 'edit':
-                $capability = $this->getCapability('edit');
-                break;
-        }
-
-        return current_user_can($capability);
+        return current_user_can($this->getCapability($capability));
     }
 
     /**

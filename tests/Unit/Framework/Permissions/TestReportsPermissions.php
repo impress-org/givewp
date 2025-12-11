@@ -15,9 +15,9 @@ final class TestReportsPermissions extends TestCase
 
     /**
      * @unreleased
-     * @dataProvider canTrueProvider
+     * @dataProvider canViewTrueProvider
      */
-    public function testCanShouldBeTrue(string $role, string $capability): void
+    public function testCanViewShouldBeTrue(string $role): void
     {
         $user = self::factory()->user->create_and_get();
         $user->set_role($role);
@@ -25,15 +25,15 @@ final class TestReportsPermissions extends TestCase
         wp_set_current_user($user->ID);
 
         $this->assertTrue(
-            (new ReportsPermissions())->can($capability)
+            (new ReportsPermissions())->canView()
         );
     }
 
     /**
      * @unreleased
-     * @dataProvider canFalseProvider
+     * @dataProvider canViewFalseProvider
      */
-    public function testCanShouldBeFalse(string $role, string $capability): void
+    public function testCanViewShouldBeFalse(string $role): void
     {
         $user = self::factory()->user->create_and_get();
         $user->set_role($role);
@@ -41,82 +41,92 @@ final class TestReportsPermissions extends TestCase
         wp_set_current_user($user->ID);
 
         $this->assertFalse(
-            (new ReportsPermissions())->can($capability)
+            (new ReportsPermissions())->canView()
         );
     }
 
     /**
-     * Users with manage_options capability should always have full access.
-     *
      * @unreleased
-     * @dataProvider adminOverrideProvider
+     * @dataProvider canExportTrueProvider
      */
-    public function testAdminWithManageOptionsAlwaysReturnsTrue(string $capability): void
+    public function testCanExportShouldBeTrue(string $role): void
+    {
+        $user = self::factory()->user->create_and_get();
+        $user->set_role($role);
+
+        wp_set_current_user($user->ID);
+
+        $this->assertTrue(
+            (new ReportsPermissions())->canExport()
+        );
+    }
+
+    /**
+     * @unreleased
+     * @dataProvider canExportFalseProvider
+     */
+    public function testCanExportShouldBeFalse(string $role): void
+    {
+        $user = self::factory()->user->create_and_get();
+        $user->set_role($role);
+
+        wp_set_current_user($user->ID);
+
+        $this->assertFalse(
+            (new ReportsPermissions())->canExport()
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testAdminWithManageOptionsAlwaysReturnsTrue(): void
     {
         $user = self::factory()->user->create_and_get();
         $user->set_role('administrator');
 
         wp_set_current_user($user->ID);
 
-        // Verify user has manage_options
         $this->assertTrue(current_user_can('manage_options'));
 
-        $this->assertTrue(
-            (new ReportsPermissions())->can($capability)
-        );
+        $permissions = new ReportsPermissions();
+        $this->assertTrue($permissions->canView());
+        $this->assertTrue($permissions->canExport());
     }
 
-    /**
-     * @unreleased
-     */
-    public function adminOverrideProvider(): array
+    public function canViewTrueProvider(): array
     {
         return [
-            ['view'],
-            ['read'],
-            ['export'],
+            ['administrator'],
+            ['give_manager'],
+            ['give_accountant'],
         ];
     }
 
-    /**
-     * @unreleased
-     *
-     * @return array<int, array<mixed, bool>>
-     */
-    public function canTrueProvider(): array
+    public function canViewFalseProvider(): array
     {
         return [
-            ['administrator', 'view'],
-            ['administrator', 'read'],
-            ['administrator', 'export'],
-
-            ['give_manager', 'view'],
-            ['give_manager', 'read'],
-            ['give_manager', 'export'],
-
-            ['give_accountant', 'view'],
-            ['give_accountant', 'read'],
-            ['give_accountant', 'export'],
+            ['give_worker'],
+            ['give_donor'],
+            ['subscriber'],
         ];
     }
 
-    /**
-     * @unreleased
-     */
-    public function canFalseProvider(): array
+    public function canExportTrueProvider(): array
     {
         return [
-            ['give_worker', 'view'],
-            ['give_worker', 'read'],
-            ['give_worker', 'export'],
+            ['administrator'],
+            ['give_manager'],
+            ['give_accountant'],
+        ];
+    }
 
-            ['give_donor', 'view'],
-            ['give_donor', 'read'],
-            ['give_donor', 'export'],
-
-            ['subscriber', 'view'],
-            ['subscriber', 'read'],
-            ['subscriber', 'export'],
+    public function canExportFalseProvider(): array
+    {
+        return [
+            ['give_worker'],
+            ['give_donor'],
+            ['subscriber'],
         ];
     }
 }

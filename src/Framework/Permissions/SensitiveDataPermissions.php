@@ -8,21 +8,16 @@ namespace Give\Framework\Permissions;
 class SensitiveDataPermissions
 {
     /**
+     * Check if user can view sensitive donor data (e.g., email, address).
+     *
      * @unreleased
      */
-    public function can(string $capability): bool
+    public function canView(): bool
     {
-        // Admins always have full access
         if (current_user_can('manage_options')) {
             return true;
         }
 
-        switch ($capability) {
-            case 'view':
-            case 'read':
-                return current_user_can('view_give_sensitive_data');
-            default:
-                return false;
-        }
+        return current_user_can('view_give_sensitive_data');
     }
 }
