@@ -46,6 +46,39 @@ final class TestReportsPermissions extends TestCase
     }
 
     /**
+     * Users with manage_options capability should always have full access.
+     *
+     * @unreleased
+     * @dataProvider adminOverrideProvider
+     */
+    public function testAdminWithManageOptionsAlwaysReturnsTrue(string $capability): void
+    {
+        $user = self::factory()->user->create_and_get();
+        $user->set_role('administrator');
+
+        wp_set_current_user($user->ID);
+
+        // Verify user has manage_options
+        $this->assertTrue(current_user_can('manage_options'));
+
+        $this->assertTrue(
+            (new ReportsPermissions())->can($capability)
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function adminOverrideProvider(): array
+    {
+        return [
+            ['view'],
+            ['read'],
+            ['export'],
+        ];
+    }
+
+    /**
      * @unreleased
      *
      * @return array<int, array<mixed, bool>>

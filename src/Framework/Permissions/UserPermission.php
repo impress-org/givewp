@@ -9,6 +9,11 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
      */
     public function can(string $capability): bool
     {
+        // Admins always have full access
+        if (current_user_can('manage_options')) {
+            return true;
+        }
+
         switch ($capability) {
             case 'delete':
                 $capability = $this->getCapability('delete');
