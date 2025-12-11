@@ -1,19 +1,13 @@
 {
     "$schema": "https://json.schemastore.org/block.json",
-    "apiVersion": 2,
+    "apiVersion": 3,
     "name": "givewp/campaign-block",
     "version": "1.0.0",
     "title": "Campaign Block",
     "category": "give",
     "description": "Insert an existing campaign into the page.",
     "supports": {
-        "align": [
-            "wide",
-            "full",
-            "left",
-            "center",
-            "right"
-        ]
+        "align": ["wide", "full", "left", "center", "right"]
     },
     "attributes": {
         "campaignId": {

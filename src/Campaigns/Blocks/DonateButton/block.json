@@ -1,16 +1,13 @@
 {
     "$schema": "https://json.schemastore.org/block.json",
-    "apiVersion": 2,
+    "apiVersion": 3,
     "name": "givewp/campaign-donate-button",
     "version": "1.0.0",
     "title": "Donate Button",
     "category": "give",
     "description": "The GiveWP Donate Button inserts an donate button into the page.",
     "supports": {
-        "align": [
-            "wide",
-            "full"
-        ]
+        "align": ["wide", "full"]
     },
     "attributes": {
         "campaignId": {
