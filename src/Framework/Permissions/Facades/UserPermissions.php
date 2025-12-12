@@ -13,6 +13,10 @@ use Give\Framework\Support\Facades\Facade;
  * @method static DonationFormPermissions donationForms()
  * @method static DonationPermissions donations()
  * @method static DonorPermissions donors()
+ * @method static CampaignPermissions campaigns()
+ * @method static ReportsPermissions reports()
+ * @method static SensitiveDataPermissions sensitiveData()
+ * @method static SettingsPermissions settings()
  */
 class UserPermissions extends Facade
 {
