@@ -3,16 +3,17 @@
 namespace Give\Framework\Permissions\Contracts;
 
 /**
- * Contract for resources that support private item permissions.
+ * Contract for resources that support restricted visibility permissions.
  *
- * Use this for post-type resources that can have a "private" status.
+ * Implement this interface for resources where certain items may have
+ * restricted visibility (e.g., not publicly accessible).
  *
  * @unreleased
  */
 interface HasPrivatePermissions
 {
     /**
-     * Check if user can view private items.
+     * Check if user can view items with restricted visibility.
      *
      * @unreleased
      */

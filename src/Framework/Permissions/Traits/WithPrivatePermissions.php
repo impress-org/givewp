@@ -3,14 +3,17 @@
 namespace Give\Framework\Permissions\Traits;
 
 /**
- * Trait for resources that support private item permissions.
+ * Trait for resources that support restricted visibility permissions.
+ *
+ * Use this trait with HasPrivatePermissions interface for resources
+ * where certain items may have restricted visibility.
  *
  * @unreleased
  */
 trait WithPrivatePermissions
 {
     /**
-     * Check if user can view private items.
+     * Check if user can view items with restricted visibility.
      *
      * @unreleased
      */
