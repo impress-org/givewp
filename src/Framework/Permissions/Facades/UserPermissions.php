@@ -2,12 +2,18 @@
 
 namespace Give\Framework\Permissions\Facades;
 
+use Give\Framework\Permissions\CampaignPermissions;
 use Give\Framework\Permissions\DonationFormPermissions;
 use Give\Framework\Permissions\DonationPermissions;
 use Give\Framework\Permissions\DonorPermissions;
+use Give\Framework\Permissions\ReportsPermissions;
+use Give\Framework\Permissions\SensitiveDataPermissions;
+use Give\Framework\Permissions\SettingsPermissions;
 use Give\Framework\Support\Facades\Facade;
 
 /**
+ * Facade for accessing user permission checks for different resources.
+ *
  * @unreleased
  *
  * @method static DonationFormPermissions donationForms()

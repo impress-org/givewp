@@ -2,16 +2,11 @@
 
 namespace Give\Framework\Permissions;
 
-use Give\Framework\Permissions\Contracts\HasPrivatePermissions;
-use Give\Framework\Permissions\Traits\WithPrivatePermissions;
-
 /**
  * @unreleased
  */
-class DonationFormPermissions extends UserPermission implements HasPrivatePermissions
+class DonationFormPermissions extends UserPermission
 {
-    use WithPrivatePermissions;
-
     /**
      * @unreleased
      */
