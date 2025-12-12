@@ -95,7 +95,7 @@ $blockInlineStyles = sprintf(
                             printf(
                                 /* translators: %1$s: donor name, %2$s: donation amount */
                                 esc_html_x('%1$s donated %2$s', 'donor name and donation amount', 'give'),
-                                '<strong>' . esc_html(!$donation->isAnonymous ? $donation->donorName : __('Anonymous', 'give')) . '</strong>',
+                                '<strong>' . esc_html(!$donation->isAnonymous ? strip_shortcodes($donation->donorName) : __('Anonymous', 'give')) . '</strong>',
                                 '<strong>' . esc_html($donation->amount->formatToLocale()) . '</strong>'
                             );
                             ?>
