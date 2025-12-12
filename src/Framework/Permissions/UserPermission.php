@@ -2,8 +2,12 @@
 
 namespace Give\Framework\Permissions;
 
+use Give\Framework\Permissions\Traits\WithAdminAccess;
+
 abstract class UserPermission implements Contracts\UserPermissionsInterface
 {
+    use WithAdminAccess;
+
     /**
      * Check if user can create (maps to edit capability).
      *
@@ -51,8 +55,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
      */
     protected function currentUserCan(string $capability): bool
     {
-        // Admins always have full access
-        if (current_user_can('manage_options')) {
+        if ($this->isAdmin()) {
             return true;
         }
 

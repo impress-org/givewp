@@ -2,11 +2,15 @@
 
 namespace Give\Framework\Permissions;
 
+use Give\Framework\Permissions\Traits\WithAdminAccess;
+
 /**
  * @unreleased
  */
 class SettingsPermissions
 {
+    use WithAdminAccess;
+
     /**
      * Check if user can manage GiveWP settings.
      *
@@ -14,7 +18,7 @@ class SettingsPermissions
      */
     public function canManage(): bool
     {
-        if (current_user_can('manage_options')) {
+        if ($this->isAdmin()) {
             return true;
         }
 

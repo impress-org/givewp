@@ -2,11 +2,15 @@
 
 namespace Give\Framework\Permissions;
 
+use Give\Framework\Permissions\Traits\WithAdminAccess;
+
 /**
  * @unreleased
  */
 class SensitiveDataPermissions
 {
+    use WithAdminAccess;
+
     /**
      * Check if user can view sensitive donor data (e.g., email, address).
      *
@@ -14,7 +18,7 @@ class SensitiveDataPermissions
      */
     public function canView(): bool
     {
-        if (current_user_can('manage_options')) {
+        if ($this->isAdmin()) {
             return true;
         }
 

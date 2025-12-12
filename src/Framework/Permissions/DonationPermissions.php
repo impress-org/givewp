@@ -27,8 +27,7 @@ class DonationPermissions extends UserPermission implements HasPrivatePermission
      */
     public function canView(): bool
     {
-        // Admins always have full access
-        if (current_user_can('manage_options')) {
+        if ($this->isAdmin()) {
             return true;
         }
 

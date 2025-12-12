@@ -2,11 +2,15 @@
 
 namespace Give\Framework\Permissions;
 
+use Give\Framework\Permissions\Traits\WithAdminAccess;
+
 /**
  * @unreleased
  */
 class ReportsPermissions
 {
+    use WithAdminAccess;
+
     /**
      * Check if user can view reports.
      *
@@ -14,7 +18,7 @@ class ReportsPermissions
      */
     public function canView(): bool
     {
-        if (current_user_can('manage_options')) {
+        if ($this->isAdmin()) {
             return true;
         }
 
@@ -28,7 +32,7 @@ class ReportsPermissions
      */
     public function canExport(): bool
     {
-        if (current_user_can('manage_options')) {
+        if ($this->isAdmin()) {
             return true;
         }
 
