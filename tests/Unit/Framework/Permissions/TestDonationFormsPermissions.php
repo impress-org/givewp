@@ -111,38 +111,6 @@ final class TestDonationFormsPermissions extends TestCase
 
     /**
      * @unreleased
-     * @dataProvider canViewPrivateTrueProvider
-     */
-    public function testCanViewPrivateShouldBeTrue(string $role): void
-    {
-        $user = self::factory()->user->create_and_get();
-        $user->set_role($role);
-
-        wp_set_current_user($user->ID);
-
-        $this->assertTrue(
-            (new DonationFormPermissions())->canViewPrivate()
-        );
-    }
-
-    /**
-     * @unreleased
-     * @dataProvider canViewPrivateFalseProvider
-     */
-    public function testCanViewPrivateShouldBeFalse(string $role): void
-    {
-        $user = self::factory()->user->create_and_get();
-        $user->set_role($role);
-
-        wp_set_current_user($user->ID);
-
-        $this->assertFalse(
-            (new DonationFormPermissions())->canViewPrivate()
-        );
-    }
-
-    /**
-     * @unreleased
      */
     public function testAdminWithManageOptionsAlwaysReturnsTrue(): void
     {
@@ -158,7 +126,6 @@ final class TestDonationFormsPermissions extends TestCase
         $this->assertTrue($permissions->canView());
         $this->assertTrue($permissions->canEdit());
         $this->assertTrue($permissions->canDelete());
-        $this->assertTrue($permissions->canViewPrivate());
     }
 
     public function canViewTrueProvider(): array
@@ -210,24 +177,6 @@ final class TestDonationFormsPermissions extends TestCase
     {
         return [
             ['give_accountant'],
-            ['give_donor'],
-            ['subscriber'],
-        ];
-    }
-
-    public function canViewPrivateTrueProvider(): array
-    {
-        return [
-            ['give_worker'],
-            ['give_manager'],
-            ['give_accountant'],
-            ['administrator'],
-        ];
-    }
-
-    public function canViewPrivateFalseProvider(): array
-    {
-        return [
             ['give_donor'],
             ['subscriber'],
         ];
