@@ -29,10 +29,12 @@ if (UserPermissions::settings()->canManage()) {
 
 | Resource | Methods |
 |----------|---------|
-| `donationForms()` | `canCreate()`, `canView()`, `canEdit()`, `canDelete()` |
-| `donations()` | `canCreate()`, `canView()`, `canEdit()`, `canDelete()` |
+| `donationForms()` | `canCreate()`, `canView()`, `canEdit()`, `canDelete()`, `canViewPrivate()` |
+| `donations()` | `canCreate()`, `canView()`, `canEdit()`, `canDelete()`, `canViewPrivate()` |
 | `donors()` | `canCreate()`, `canView()`, `canEdit()`, `canDelete()` |
-| `campaigns()` | `canCreate()`, `canView()`, `canEdit()`, `canDelete()` |
+| `campaigns()` | `canCreate()`, `canView()`, `canEdit()`, `canDelete()`, `canViewPrivate()` |
+
+> **Note:** `canViewPrivate()` is available on resources that have restricted visibility (e.g., items not publicly accessible). Resources like donors that don't have this concept don't include this method. Classes can opt-in by implementing `HasPrivatePermissions` and using the `WithPrivatePermissions` trait.
 
 ### Global Resources
 
