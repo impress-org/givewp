@@ -6,6 +6,7 @@ use Exception;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Support\Facades\Str;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -147,7 +148,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $this->assertNotContains('transactionUrl', $data['gateway']);
 
         // lastName should return only the first letter when sensitive data is not included
-        $this->assertEquals(substr($donation->lastName, 0, 1), $data['lastName']);
+        $this->assertEquals(Str::substr($donation->lastName, 0, 1), $data['lastName']);
     }
 
     /**

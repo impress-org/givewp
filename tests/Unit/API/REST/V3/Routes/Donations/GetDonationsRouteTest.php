@@ -11,6 +11,7 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
+use Give\Framework\Support\Facades\Str;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -136,7 +137,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $this->assertNotContains('transactionUrl', $data[0]['gateway']);
 
         // lastName should return only the first letter when sensitive data is not included
-        $this->assertEquals(substr($donation->lastName, 0, 1), $data[0]['lastName']);
+        $this->assertEquals(Str::substr($donation->lastName, 0, 1), $data[0]['lastName']);
     }
 
     /**

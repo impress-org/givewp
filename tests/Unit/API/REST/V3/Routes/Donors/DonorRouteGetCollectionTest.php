@@ -11,6 +11,7 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Support\Facades\Str;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -177,10 +178,10 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
         $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
 
         // lastName should return only the first letter when sensitive data is not included
-        $this->assertEquals(substr($donor->lastName, 0, 1), $data[0]['lastName']);
+        $this->assertEquals(Str::substr($donor->lastName, 0, 1), $data[0]['lastName']);
 
         // name should return the full name and the first letter of the last name
-        $this->assertEquals($donor->firstName . ' ' . substr($donor->lastName, 0, 1), $data[0]['name']);
+        $this->assertEquals($donor->firstName . ' ' . Str::substr($donor->lastName, 0, 1), $data[0]['name']);
     }
 
     /**

@@ -8,6 +8,7 @@ use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\Donors\Models\Donor;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Types;
+use Give\Framework\Support\Facades\Str;
 
 /**
  * @unreleased Move from Give\Donors\ViewModels to API REST V3 namespace
@@ -81,10 +82,10 @@ class DonorViewModel
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
                     case 'name':
-                        $data[$propertyName] = $data['firstName'] . ' ' . substr($data['lastName'], 0, 1);
+                        $data[$propertyName] = $data['firstName'] . ' ' . Str::substr($data['lastName'], 0, 1);
                         break;
                     case 'lastName':
-                        $data[$propertyName] = substr($data[$propertyName], 0, 1);
+                        $data[$propertyName] = Str::substr($data[$propertyName], 0, 1);
                         break;
                     case 'additionalEmails':
                     case 'customFields':

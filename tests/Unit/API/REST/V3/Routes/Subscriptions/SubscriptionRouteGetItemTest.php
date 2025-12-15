@@ -8,6 +8,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
+use Give\Framework\Support\Facades\Str;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -187,7 +188,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $this->assertNotContains('subscriptionUrl', $data['gateway']);
 
         // lastName should return only the first letter when sensitive data is not included
-        $this->assertEquals(substr($subscription->donor()->get()->lastName, 0, 1), $data['lastName']);
+        $this->assertEquals(Str::substr($subscription->donor()->get()->lastName, 0, 1), $data['lastName']);
     }
 
     /**

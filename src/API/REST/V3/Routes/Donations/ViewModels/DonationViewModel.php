@@ -10,6 +10,7 @@ use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Types;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\Support\Facades\Str;
 
 /**
  * @since 4.6.0
@@ -79,7 +80,7 @@ class DonationViewModel
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
                     case 'lastName':
-                        $data[$propertyName] = substr($data[$propertyName], 0, 1);
+                        $data[$propertyName] = Str::substr($data[$propertyName], 0, 1);
                         break;
                     case 'billingAddress':
                         $data[$propertyName] = null;

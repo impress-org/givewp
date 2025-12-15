@@ -5,6 +5,7 @@ namespace Give\Subscriptions\ViewModels;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\Support\Facades\Str;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -76,7 +77,7 @@ class SubscriptionViewModel
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
                     case 'lastName':
-                        $data[$propertyName] = substr($data[$propertyName], 0, 1);
+                        $data[$propertyName] = Str::substr($data[$propertyName], 0, 1);
                         break;
                     default:
                         $data[$propertyName] = '';
