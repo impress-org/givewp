@@ -19,6 +19,7 @@ use Give\API\REST\V3\Routes\Donations\ViewModels\DonationViewModel;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -817,35 +818,35 @@ class DonationController extends WP_REST_Controller
     /**
      * Check if current user can edit donations.
      *
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.6.0
      */
     private function canEditDonations(): bool
     {
-        return current_user_can('manage_options')
-            || (
-                current_user_can('edit_give_payments')
-                && current_user_can('view_give_payments')
-            );
+        //TODO: check if this needs to be both canEdit and canView
+        return UserPermissions::donations()->canEdit() && UserPermissions::donations()->canView();
     }
 
     /**
      * Check if current user can delete donations.
      *
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.6.0
      */
     private function canDeleteDonations(): bool
     {
-        return current_user_can('manage_options') || current_user_can('delete_give_payments');
+        return UserPermissions::donations()->canDelete();
     }
 
     /**
      * Check if current user can refund donations.
      *
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.6.0
      */
     private function canRefundDonations(): bool
     {
-        return current_user_can('manage_options') || current_user_can('edit_give_payments');
+        return UserPermissions::donations()->canEdit();
     }
 
     /**

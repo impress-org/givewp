@@ -3,6 +3,7 @@
 namespace Give\API\Endpoints\Logs;
 
 use Give\API\RestRoute;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 
 /**
@@ -25,7 +26,7 @@ abstract class Endpoint implements RestRoute
      */
     public function permissionsCheck()
     {
-        if ( ! current_user_can('manage_options')) {
+        if ( ! UserPermissions::settings()->canManage()) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You dont have the right permissions to view Logs', 'give'),

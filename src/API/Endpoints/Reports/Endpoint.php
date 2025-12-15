@@ -11,6 +11,7 @@ namespace Give\API\Endpoints\Reports;
 use DateInterval;
 use DateTime;
 use Give\API\RestRoute;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give_Cache;
 use Give_Payment;
 use WP_Error;
@@ -228,7 +229,7 @@ abstract class Endpoint implements RestRoute
      */
     public function permissionsCheck($request)
     {
-        if ( ! current_user_can('view_give_reports')) {
+        if ( ! UserPermissions::reports()->canView()) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You cannot view the reports resource.', 'give'),

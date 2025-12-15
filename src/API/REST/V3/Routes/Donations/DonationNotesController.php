@@ -7,6 +7,7 @@ use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationNoteType;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -277,43 +278,48 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function get_items_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::donations()->canView();
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function create_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::donations()->canCreate();
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function get_item_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::donations()->canView();
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function update_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::donations()->canEdit();
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function delete_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::donations()->canDelete();
     }
 
     /**
