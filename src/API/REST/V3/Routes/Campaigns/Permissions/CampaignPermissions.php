@@ -5,7 +5,7 @@ namespace Give\API\REST\V3\Routes\Campaigns\Permissions;
 use Give\Campaigns\ValueObjects\CampaignStatus;
 use WP_Error;
 use WP_REST_Request;
-
+use Give\Framework\Permissions\Facades\UserPermissions;
 /**
  * @since 4.10.1
  */
@@ -14,23 +14,23 @@ class CampaignPermissions
     /**
      * Check if current user can edit campaigns.
      *
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.10.1
      */
     public static function canEdit(): bool
     {
-        return current_user_can('manage_options') ||
-               current_user_can('edit_give_forms');
+        return UserPermissions::campaigns()->canEdit();
     }
 
     /**
      * Check if current user can view private/draft/archived campaigns.
      *
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.10.1
      */
     public static function canViewPrivate(): bool
     {
-        return current_user_can('manage_options') ||
-               current_user_can('edit_give_forms');
+        return UserPermissions::campaigns()->canEdit();
     }
 
     /**

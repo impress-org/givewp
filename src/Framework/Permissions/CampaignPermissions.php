@@ -7,4 +7,12 @@ namespace Give\Framework\Permissions;
  */
 class CampaignPermissions extends DonationFormPermissions
 {
+
+    /**
+     * @unreleased
+     */
+    public function canViewPrivate(): bool
+    {
+        return $this->canEdit();
+    }
 }

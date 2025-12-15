@@ -18,6 +18,7 @@ use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Database\DB;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -49,6 +50,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased updated permission logic with UserPermissions facade
      * @since 4.13.1
      */
     public function register_routes()
@@ -72,7 +74,7 @@ class CampaignController extends WP_REST_Controller
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'update_item'],
                 'permission_callback' => function () {
-                    return current_user_can('manage_options');
+                    return UserPermissions::campaigns()->canEdit();
                 },
                 'args' => rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::EDITABLE),
             ],
@@ -93,7 +95,7 @@ class CampaignController extends WP_REST_Controller
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [$this, 'create_item'],
                 'permission_callback' => function () {
-                    return current_user_can('manage_options');
+                    return UserPermissions::campaigns()->canCreate();
                 },
                 'args' => array_merge(
                     rest_get_endpoint_args_for_schema($this->get_item_schema(), WP_REST_Server::CREATABLE),
@@ -138,7 +140,7 @@ class CampaignController extends WP_REST_Controller
                 'methods' => WP_REST_Server::EDITABLE,
                 'callback' => [$this, 'merge_items'],
                 'permission_callback' => function () {
-                    return current_user_can('manage_options');
+                    return UserPermissions::campaigns()->canEdit();
                 },
                 'args' => [
                     'id' => [
@@ -163,7 +165,7 @@ class CampaignController extends WP_REST_Controller
                 'methods' => WP_REST_Server::CREATABLE,
                 'callback' => [$this, 'duplicate_item'],
                 'permission_callback' => function () {
-                    return current_user_can('manage_options');
+                    return UserPermissions::campaigns()->canCreate();
                 },
                 'args' => [
                     'id' => [
@@ -299,7 +301,7 @@ class CampaignController extends WP_REST_Controller
             return rest_ensure_response($response);
         }
 
-        if (!$campaign->status->isActive() && !CampaignPermissions::canViewPrivate()) {
+        if (!$campaign->status->isActive() && !UserPermissions::campaigns()->canViewPrivate()) {
             $response = new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to view this campaign.', 'give'),
