@@ -49,7 +49,7 @@ class DonationViewModel
     }
 
     /**
-     * @unreleased lastName should return only the first letter when sensitive data is not included
+     * @unreleased Add gatewayTransactionId to the sensitive data excluded list, lastName should return only the first letter when sensitive data is not included
      * @since 4.6.0
      */
     public function exports(): array
@@ -72,6 +72,7 @@ class DonationViewModel
                 'billingAddress',
                 'purchaseKey',
                 'customFields',
+                'gatewayTransactionId',
                 'lastName',
             ];
 
