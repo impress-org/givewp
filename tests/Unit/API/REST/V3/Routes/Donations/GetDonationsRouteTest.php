@@ -103,7 +103,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased lastName should return only the first letter when sensitive data is not included
+     * @unreleased transactionUrl should not be included in gateway details when sensitive data is not included, lastName should return only the first letter when sensitive data is not included
      * @since 4.0.0
      *
      * @throws Exception
@@ -131,6 +131,9 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
+
+        // gateway details should not include transactionUrl when sensitive data is not included
+        $this->assertNotContains('transactionUrl', $data[0]['gateway']);
 
         // lastName should return only the first letter when sensitive data is not included
         $this->assertEquals(substr($donation->lastName, 0, 1), $data[0]['lastName']);

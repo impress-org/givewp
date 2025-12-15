@@ -212,6 +212,7 @@ class DonationViewModel
     }
 
     /**
+     * @unreleased Return gateway details without transactionUrl when sensitive data is not included
      * @since 4.8.0 Return empty array if gateway is not registered
      * @since 4.6.0
      */
@@ -219,6 +220,10 @@ class DonationViewModel
     {
         if (!give(PaymentGatewayRegister::class)->hasPaymentGateway($this->donation->gatewayId)) {
             return [];
+        }
+
+        if (!$this->includeSensitiveData) {
+            return $this->donation->gateway()->toArray();
         }
 
         return array_merge(
