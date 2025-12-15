@@ -157,7 +157,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased lastName should return only the first letter when sensitive data is not included
+     * @unreleased subscriptionUrl should not be included in gateway details when sensitive data is not included, lastName should return only the first letter when sensitive data is not included
      * @since 4.8.0
      *
      * @throws Exception
@@ -182,6 +182,9 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEmpty(array_intersect_key($data, $sensitiveProperties));
+
+        // gateway details should not include subscriptionUrl when sensitive data is not included
+        $this->assertNotContains('subscriptionUrl', $data['gateway']);
 
         // lastName should return only the first letter when sensitive data is not included
         $this->assertEquals(substr($subscription->donor()->get()->lastName, 0, 1), $data['lastName']);

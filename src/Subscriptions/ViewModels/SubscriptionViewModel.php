@@ -108,6 +108,7 @@ class SubscriptionViewModel
     }
 
     /**
+     * @unreleased Return gateway details without subscriptionUrl when sensitive data is not included
      * @since 4.10.0 Return null if subscription URL is not available
      * @since 4.8.0
      */
@@ -115,6 +116,10 @@ class SubscriptionViewModel
     {
         if (empty($this->subscription->gatewayId) || !give(PaymentGatewayRegister::class)->hasPaymentGateway($this->subscription->gatewayId)) {
             return null;
+        }
+
+        if (!$this->includeSensitiveData) {
+            return $this->subscription->gateway()->toArray();
         }
 
         $subscriptionUrl = $this->subscription->gateway()->gatewayDashboardSubscriptionUrl($this->subscription);
