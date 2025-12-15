@@ -157,6 +157,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased lastName should return only the first letter when sensitive data is not included
      * @since 4.8.0
      *
      * @throws Exception
@@ -180,10 +181,10 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         ];
 
         $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data, $sensitiveProperties));
 
-        foreach ($sensitiveProperties as $property) {
-            $this->assertEmpty($data[$property]);
-        }
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(substr($subscription->donor()->get()->lastName, 0, 1), $data['lastName']);
     }
 
     /**

@@ -47,6 +47,7 @@ class SubscriptionViewModel
     }
 
     /**
+     * @unreleased lastName should return only the first letter when sensitive data is not included
      * @since 4.10.0 added campaignId
      * @since 4.8.0
      */
@@ -69,10 +70,14 @@ class SubscriptionViewModel
             $sensitiveDataExcluded = [
                 'transactionId',
                 'gatewaySubscriptionId',
+                'lastName',
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
+                    case 'lastName':
+                        $data[$propertyName] = substr($data[$propertyName], 0, 1);
+                        break;
                     default:
                         $data[$propertyName] = '';
                         break;

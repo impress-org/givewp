@@ -143,13 +143,14 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased name and lastName should return only the first letter of the last name when sensitive data is not included
      * @since 4.0.0
      *
      * @throws Exception
      */
     public function testGetDonorsShouldNotIncludeSensitiveData()
     {
-        Donor::factory()->create();
+        $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -169,15 +170,17 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
-            'lastName',
             'addresses',
         ];
 
         $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
 
-        foreach ($sensitiveProperties as $property) {
-            $this->assertEmpty($data[0][$property]);
-        }
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(substr($donor->lastName, 0, 1), $data[0]['lastName']);
+
+        // name should return the full name and the first letter of the last name
+        $this->assertEquals($donor->firstName . ' ' . substr($donor->lastName, 0, 1), $data[0]['name']);
     }
 
     /**

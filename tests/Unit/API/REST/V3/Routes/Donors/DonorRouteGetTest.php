@@ -266,6 +266,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased name and lastName should return only the first letter of the last name when sensitive data is not included
      * @since 4.0.0
      *
      * @throws Exception
@@ -288,12 +289,17 @@ class DonorRouteGetTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
-            'lastName',
             'addresses',
         ];
 
         $this->assertEquals(200, $status);
         $this->assertEmpty(array_intersect_key($data, $sensitiveProperties));
+
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(substr($donor->lastName, 0, 1), $data['lastName']);
+
+        // name should return the full name and the first letter of the last name
+        $this->assertEquals($donor->firstName . ' ' . substr($donor->lastName, 0, 1), $data['name']);
     }
 
     /**

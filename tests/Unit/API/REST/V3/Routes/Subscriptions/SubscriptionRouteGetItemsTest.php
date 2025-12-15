@@ -116,6 +116,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased lastName should return only the first letter when sensitive data is not included
      * @since 4.8.0
      *
      * @throws Exception
@@ -124,7 +125,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
-        $this->createSubscription();
+        $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -141,10 +142,10 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         ];
 
         $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
 
-        foreach ($sensitiveProperties as $property) {
-            $this->assertEmpty($data[0][$property]);
-        }
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(substr($subscription->donor()->get()->lastName, 0, 1), $data[0]['lastName']);
     }
 
     /**

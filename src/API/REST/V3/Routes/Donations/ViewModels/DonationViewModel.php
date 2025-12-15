@@ -49,6 +49,7 @@ class DonationViewModel
     }
 
     /**
+     * @unreleased lastName should return only the first letter when sensitive data is not included
      * @since 4.6.0
      */
     public function exports(): array
@@ -70,11 +71,15 @@ class DonationViewModel
                 'phone',
                 'billingAddress',
                 'purchaseKey',
-                'customFields'
+                'customFields',
+                'lastName',
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
+                    case 'lastName':
+                        $data[$propertyName] = substr($data[$propertyName], 0, 1);
+                        break;
                     case 'billingAddress':
                         $data[$propertyName] = null;
                         break;
@@ -211,7 +216,7 @@ class DonationViewModel
      */
     private function getGatewayDetails(): array
     {
-        if ( ! give(PaymentGatewayRegister::class)->hasPaymentGateway($this->donation->gatewayId)) {
+        if (!give(PaymentGatewayRegister::class)->hasPaymentGateway($this->donation->gatewayId)) {
             return [];
         }
 

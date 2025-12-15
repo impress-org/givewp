@@ -18,8 +18,8 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
@@ -103,13 +103,14 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-    * @since 4.0.0
+     * @unreleased lastName should return only the first letter when sensitive data is not included
+     * @since 4.0.0
      *
      * @throws Exception
      */
     public function testGetDonationsShouldNotIncludeSensitiveData()
     {
-        $this->createDonation1();
+        $donation = $this->createDonation1();
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -130,6 +131,9 @@ class GetDonationsRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
+
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(substr($donation->lastName, 0, 1), $data[0]['lastName']);
     }
 
     /**
@@ -437,11 +441,9 @@ class GetDonationsRouteTest extends RestApiTestCase
         /** @var Campaign $campaign2 */
         $campaign2 = Campaign::factory()->create();
 
-
         $donation1 = $this->createDonation1($campaign1->id);
         $donation2 = $this->createDonation2($campaign1->id);
         $donation3 = $this->createDonation3($campaign2->id);
-
 
         $route = '/' . DonorRoute::NAMESPACE . '/donations';
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
