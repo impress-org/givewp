@@ -10,6 +10,7 @@ use Give\EventTickets\Repositories\EventTicketRepository;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Types;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\Support\Facades\Str;
 
 /**
  * @since 4.6.0
@@ -49,6 +50,7 @@ class DonationViewModel
     }
 
     /**
+     * @unreleased Add gatewayTransactionId to the sensitive data excluded list, lastName should return only the first letter when sensitive data is not included
      * @since 4.6.0
      */
     public function exports(): array
@@ -70,11 +72,16 @@ class DonationViewModel
                 'phone',
                 'billingAddress',
                 'purchaseKey',
-                'customFields'
+                'customFields',
+                'gatewayTransactionId',
+                'lastName',
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
+                    case 'lastName':
+                        $data[$propertyName] = Str::substr($data[$propertyName], 0, 1);
+                        break;
                     case 'billingAddress':
                         $data[$propertyName] = null;
                         break;
@@ -206,13 +213,18 @@ class DonationViewModel
     }
 
     /**
+     * @unreleased Return gateway details without transactionUrl when sensitive data is not included
      * @since 4.8.0 Return empty array if gateway is not registered
      * @since 4.6.0
      */
     private function getGatewayDetails(): array
     {
-        if ( ! give(PaymentGatewayRegister::class)->hasPaymentGateway($this->donation->gatewayId)) {
+        if (!give(PaymentGatewayRegister::class)->hasPaymentGateway($this->donation->gatewayId)) {
             return [];
+        }
+
+        if (!$this->includeSensitiveData) {
+            return $this->donation->gateway()->toArray();
         }
 
         return array_merge(

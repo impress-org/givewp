@@ -9,6 +9,7 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
+use Give\Framework\Support\Facades\Str;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -266,6 +267,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
+     * @unreleased name and lastName should return only the first letter of the last name when sensitive data is not included
      * @since 4.0.0
      *
      * @throws Exception
@@ -288,12 +290,17 @@ class DonorRouteGetTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
-            'lastName',
             'addresses',
         ];
 
         $this->assertEquals(200, $status);
         $this->assertEmpty(array_intersect_key($data, $sensitiveProperties));
+
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(Str::substr($donor->lastName, 0, 1), $data['lastName']);
+
+        // name should return the full name and the first letter of the last name
+        $this->assertEquals($donor->firstName . ' ' . Str::substr($donor->lastName, 0, 1), $data['name']);
     }
 
     /**
