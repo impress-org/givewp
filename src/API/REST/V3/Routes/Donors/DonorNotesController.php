@@ -4,6 +4,8 @@ namespace Give\API\REST\V3\Routes\Donors;
 
 use Exception;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
+use Give\API\REST\V3\Support\Headers;
+use Give\API\REST\V3\Support\Item;
 use Give\Donors\Models\Donor;
 use Give\Donors\Models\DonorNote;
 use Give\Donors\ValueObjects\DonorNoteType;
@@ -81,6 +83,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get a collection of donor notes.
      *
+     * @unreleased Use Headers::addPagination() helper for pagination headers
      * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -110,29 +113,10 @@ class DonorNotesController extends WP_REST_Controller
         }, $notes);
 
         $totalNotes = DonorNote::query()->where('comment_parent', $donor->id)->count();
-        $totalPages = (int)ceil($totalNotes / $perPage);
+        $routeBase = sprintf('%s/%s/%d/notes', $this->namespace, $this->rest_base, $donor->id);
 
         $response = rest_ensure_response($notes);
-        $response->header('X-WP-Total', $totalNotes);
-        $response->header('X-WP-TotalPages', $totalPages);
-
-        $base = add_query_arg(
-            $request->get_query_params(),
-            rest_url(sprintf('%s/%s/%d/notes', $this->namespace, $this->rest_base, $donor->id))
-        );
-
-        if ($page > 1) {
-            $prevPage = $page - 1;
-            if ($prevPage > $totalPages) {
-                $prevPage = $totalPages;
-            }
-            $response->link_header('prev', add_query_arg('page', $prevPage, $base));
-        }
-
-        if ($totalPages > $page) {
-            $nextPage = $page + 1;
-            $response->link_header('next', add_query_arg('page', $nextPage, $base));
-        }
+        $response = Headers::addPagination($response, $request, $totalNotes, $perPage, $routeBase);
 
         return $response;
     }
@@ -267,7 +251,6 @@ class DonorNotesController extends WP_REST_Controller
         $note->delete();
 
         $response = new WP_REST_Response($noteData);
-        //$response->set_status(200);
 
         return $response;
     }
@@ -313,6 +296,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Format dates as strings using Item::formatDatesForResponse
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.4.0
      */
@@ -330,7 +314,8 @@ class DonorNotesController extends WP_REST_Controller
             'self' => ['href' => $self_url],
         ];
 
-        $response = new WP_REST_Response($note->toArray());
+        $item = $note->toArray();
+        $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt', 'updatedAt']));
         $response->add_links($links);
         $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
@@ -357,6 +342,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get the donor note schema, conforming to JSON Schema.
      *
+     * @unreleased Add date format examples
      * @since 4.13.0 add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor-note and add custom fields schema
@@ -395,15 +381,25 @@ class DonorNotesController extends WP_REST_Controller
                     'default' => 'admin',
                 ],
                 'createdAt' => [
-                    'description' => __('The date the note was created.', 'give'),
-                    'type' => 'string',
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('The date the note was created in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'type' => ['string', 'null'],
                     'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
                     'readonly' => true,
                 ],
                 'updatedAt' => [
-                    'description' => __('The date the note was last updated.', 'give'),
-                    'type' => 'string',
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('The date the note was last updated in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'type' => ['string', 'null'],
                     'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
                     'readonly' => true,
                 ],
             ],
