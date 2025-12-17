@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes\Donations;
 
 use Exception;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\API\REST\V3\Support\Item;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationNoteType;
@@ -317,6 +318,7 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased Format dates as strings using Item::formatDatesForResponse
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.6.0
      */
@@ -334,7 +336,8 @@ class DonationNotesController extends WP_REST_Controller
             'self' => ['href' => $self_url],
         ];
 
-        $response = new WP_REST_Response($note->toArray());
+        $item = $note->toArray();
+        $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt', 'updatedAt']));
         $response->add_links($links);
         $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
@@ -361,6 +364,7 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Get the donation note schema, conforming to JSON Schema.
      *
+     * @unreleased Add date format examples
      * @since 4.13.0 add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donation-note and add custom fields schema
@@ -400,15 +404,25 @@ class DonationNotesController extends WP_REST_Controller
                     'default' => 'admin',
                 ],
                 'createdAt' => [
-                    'description' => __('The date the note was created.', 'give'),
-                    'type' => 'string',
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('The date the note was created in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'type' => ['string', 'null'],
                     'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
                     'readonly' => true,
                 ],
                 'updatedAt' => [
-                    'description' => __('The date the note was last updated.', 'give'),
-                    'type' => 'string',
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('The date the note was last updated in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'type' => ['string', 'null'],
                     'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
                     'readonly' => true,
                 ],
             ],
