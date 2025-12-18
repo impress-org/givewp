@@ -23,6 +23,16 @@ class SubscriptionPermissions
     }
 
     /**
+     * Check if current user can view subscriptions.
+     *
+     * @unreleased
+     */
+    public static function canView(): bool
+    {
+        return UserPermissions::subscriptions()->canView();
+    }
+
+    /**
      * Check if current user can delete subscriptions.
      *
      * @since 4.8.0
@@ -49,7 +59,7 @@ class SubscriptionPermissions
      */
     public static function validationForGetMethods(WP_REST_Request $request)
     {
-        $isAdmin = self::canEdit();
+        $isAdmin = self::canView();
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         if ( ! $isAdmin && $includeSensitiveData) {

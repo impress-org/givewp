@@ -23,6 +23,17 @@ class DonorPermissions
         return UserPermissions::donors()->canEdit();
     }
 
+
+    /**
+     * Check if current user can view donors.
+     *
+     * @unreleased
+     */
+    public static function canView(): bool
+    {
+        return UserPermissions::donors()->canView();
+    }
+
     /**
      * Check if current user owns the donor (is the donor themselves).
      *
@@ -61,7 +72,7 @@ class DonorPermissions
      */
     public static function validationForGetMethods(WP_REST_Request $request)
     {
-        $isAdmin = self::canEdit();
+        $isAdmin = self::canView();
         $donorId = $request->get_param('id');
         $isOwner = $donorId ? self::isOwner($donorId) : false;
 

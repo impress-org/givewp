@@ -55,7 +55,7 @@ function give_add_donors_subpage() {
         'edit.php?post_type=give_forms',
         esc_html__('Donors', 'give'),
         esc_html__('Donors', 'give'),
-        UserPermissions::donors()->getCapability('edit'),
+        UserPermissions::donors()->viewCap(),
         'give-donors',
         'give_donors_page'
     );
