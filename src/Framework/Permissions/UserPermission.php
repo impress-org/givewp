@@ -77,6 +77,30 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     /**
      * @unreleased
      */
+    public function viewCap(): string
+    {
+        return $this->getCapability('view');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function editCap(): string
+    {
+        return $this->getCapability('edit');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function deleteCap(): string
+    {
+        return $this->getCapability('delete');
+    }
+
+    /**
+     * @unreleased
+     */
     protected function getCapabilities(string $type): array
     {
         return [

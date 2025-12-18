@@ -84,7 +84,7 @@ class Reports
             'edit.php?post_type=give_forms',
             esc_html__('Donation Reports', 'give'),
             esc_html__('Reports', 'give'),
-            UserPermissions::reports()->getCapability('view'),
+            UserPermissions::reports()->viewCap(),
             'give-reports',
             $render
         );

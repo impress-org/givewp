@@ -42,4 +42,12 @@ class SettingsPermissions
 
         return '';
     }
+
+    /**
+     * @unreleased
+     */
+    public function manageCap(): string
+    {
+        return $this->getCapability('manage');
+    }
 }

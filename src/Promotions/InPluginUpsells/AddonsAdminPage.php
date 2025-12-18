@@ -21,7 +21,7 @@ class AddonsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('GiveWP Add-ons', 'give'),
             esc_html__('Add-ons', 'give'),
-            UserPermissions::settings()->getCapability('manage'),
+            UserPermissions::settings()->manageCap(),
             'give-add-ons',
             [$this, 'render']
         );

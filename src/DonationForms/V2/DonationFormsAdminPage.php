@@ -69,7 +69,7 @@ class DonationFormsAdminPage
             '',
             esc_html__('Donation Forms', 'give'),
             esc_html__('All Forms', 'give'),
-            UserPermissions::donationForms()->getCapability('edit'),
+            UserPermissions::donationForms()->editCap(),
             'give-forms',
             [$this, 'render'],
             // Do not change the submenu position unless you have a strong reason.

@@ -34,7 +34,7 @@ class RegisterFormBuilderPageRoute
             '', // do not display in menu, just register page
             'Visual Donation Form Builder', // ignored
             'Add Form', // ignored
-            UserPermissions::donationForms()->getCapability('edit'),
+            UserPermissions::donationForms()->editCap(),
             FormBuilderRouteBuilder::SLUG,
             [$this, 'renderPage'],
             1

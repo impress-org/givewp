@@ -63,7 +63,7 @@ class Page
             'edit.php?post_type=give_forms',
             esc_html__('Set up GiveWP', 'give'),
             esc_html__('Setup', 'give'),
-            UserPermissions::settings()->getCapability('manage'),
+            UserPermissions::settings()->manageCap(),
             'give-setup',
             [$this, 'render_page']
         );

@@ -21,7 +21,7 @@ class CampaignsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('Campaigns', 'give'),
             esc_html__('Campaigns', 'give'),
-            UserPermissions::campaigns()->getCapability('edit'),
+            UserPermissions::campaigns()->editCap(),
             'give-campaigns',
             [$this, 'renderCampaignsPage'],
             0

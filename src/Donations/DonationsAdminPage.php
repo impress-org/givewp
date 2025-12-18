@@ -29,7 +29,7 @@ class DonationsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('Donations', 'give'),
             esc_html__('Donations', 'give'),
-            UserPermissions::donations()->getCapability('view'),
+            UserPermissions::donations()->viewCap(),
             'give-payment-history',
             [$this, 'render']
         );

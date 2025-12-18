@@ -30,7 +30,7 @@ class CampaignPermissions
      */
     public static function canViewPrivate(): bool
     {
-        return UserPermissions::campaigns()->canEdit();
+        return UserPermissions::campaigns()->canViewPrivate();
     }
 
     /**

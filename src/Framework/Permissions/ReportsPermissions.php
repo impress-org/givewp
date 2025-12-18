@@ -57,4 +57,20 @@ class ReportsPermissions
 
         return '';
     }
+
+    /**
+     * @unreleased
+     */
+    public function viewCap(): string
+    {
+        return $this->getCapability('view');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function exportCap(): string
+    {
+        return $this->getCapability('export');
+    }
 }
