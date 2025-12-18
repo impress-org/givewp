@@ -11,6 +11,7 @@
 
 // Exit if accessed directly.
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -54,7 +55,7 @@ function give_add_donors_subpage() {
         'edit.php?post_type=give_forms',
         esc_html__('Donors', 'give'),
         esc_html__('Donors', 'give'),
-        'view_give_reports',
+        UserPermissions::donors()->canView(),
         'give-donors',
         'give_donors_page'
     );
