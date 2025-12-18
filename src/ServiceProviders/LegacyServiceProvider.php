@@ -41,7 +41,7 @@ class LegacyServiceProvider implements ServiceProvider
     /**
      * Register migrations for legacy components.
      *
-     * @since 3.20.0
+     * @unreleased add FixGiveWorkerCapabilities migration
      */
     private function registerMigrations(): void
     {

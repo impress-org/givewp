@@ -6,6 +6,7 @@ use Give\Helpers\EnqueueScript;
 use Give\Framework\Permissions\Facades\UserPermissions;
 
 /**
+ *
  * @since 2.17.0
  */
 class AddonsAdminPage
@@ -13,6 +14,8 @@ class AddonsAdminPage
     protected $containerId = 'give-in-plugin-upsells';
 
     /**
+     * @unreleased update permission capability to use facade
+     * @since 2.17.0
      * Register menu item
      */
     public function register()
