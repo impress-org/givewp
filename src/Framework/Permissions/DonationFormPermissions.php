@@ -16,6 +16,16 @@ class DonationFormPermissions extends UserPermission
     }
 
     /**
+     * Check if user can view/read (maps to edit capability).
+     *
+     * @unreleased
+     */
+    public function canView(): bool
+    {
+        return $this->canEdit();
+    }
+
+    /**
      * @unreleased
      */
     public function canViewPrivate(): bool

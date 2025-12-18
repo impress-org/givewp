@@ -23,7 +23,7 @@ class DonorsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('Donors', 'give'),
             esc_html__('Donors', 'give'),
-            UserPermissions::donations()->getCapability('edit'),
+            UserPermissions::donors()->getCapability('edit'),
             'give-donors',
             [$this, 'render']
         );

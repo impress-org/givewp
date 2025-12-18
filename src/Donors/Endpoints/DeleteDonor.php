@@ -4,6 +4,7 @@ namespace Give\Donors\Endpoints;
 
 use Exception;
 use Give\Donors\Models\Donor;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -54,6 +55,7 @@ class DeleteDonor extends Endpoint
     }
 
     /**
+     * @unreleased replace permission callback logic with UserPermissions facade
      * @since 4.3.1 updated permissions check
      * @since 3.0.0 update validation to align with legacy view
      * @since 2.25.2
@@ -62,7 +64,7 @@ class DeleteDonor extends Endpoint
      */
     public function permissionsCheck()
     {
-        if (current_user_can('manage_options') || current_user_can('delete_give_payments')) {
+        if (UserPermissions::donors()->canDelete()) {
             return true;
         }
 

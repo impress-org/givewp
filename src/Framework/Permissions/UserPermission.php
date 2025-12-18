@@ -19,13 +19,13 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     }
 
     /**
-     * Check if user can view/read (maps to edit capability).
+     * Check if user can view/read.
      *
      * @unreleased
      */
     public function canView(): bool
     {
-        return $this->currentUserCan('edit');
+        return $this->currentUserCan('view');
     }
 
     /**
@@ -91,6 +91,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
             "delete_others" => "delete_others_{$type}s",
             "edit_private" => "edit_private_{$type}s",
             "edit_published" => "edit_published_{$type}s",
+            "view" => "view_{$type}s",
 
             // Terms / taxonomies.
             "manage_terms" => "manage_{$type}_terms",

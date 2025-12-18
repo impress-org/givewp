@@ -60,7 +60,7 @@ class DonationController extends WP_REST_Controller
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
-                'permission_callback' => [$this, 'permissionsCheck'],
+                'permission_callback' => [$this, 'get_item_permissions_check'],
                 'args' => [
                     '_embed' => [
                         'description' => __(
@@ -121,7 +121,7 @@ class DonationController extends WP_REST_Controller
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
-                'permission_callback' => [$this, 'permissionsCheck'],
+                'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => $this->get_collection_params(),
             ],
             [
@@ -704,15 +704,32 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased
+     */
+    public function get_item_permissions_check($request)
+    {
+        return $this->validationForGetMethods($request);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function get_items_permissions_check($request)
+    {
+        return $this->validationForGetMethods($request);
+    }
+
+    /**
+     * @unreleased update method name to validationForGetMethods
      * @since 4.6.0
      */
-    public function permissionsCheck(WP_REST_Request $request)
+    public function validationForGetMethods(WP_REST_Request $request)
     {
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $includeAnonymousDonations = $request->get_param('anonymousDonations');
-        $canEditDonations = $this->canEditDonations();
+        $canViewDonations = UserPermissions::donations()->canView();
 
-        if ($includeSensitiveData && !$canEditDonations) {
+        if ($includeSensitiveData && !$canViewDonations) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You do not have permission to include sensitive data.', 'give'),
@@ -723,7 +740,7 @@ class DonationController extends WP_REST_Controller
         if ($includeAnonymousDonations !== null) {
             $anonymousMode = new DonationAnonymousMode($includeAnonymousDonations);
 
-            if ($anonymousMode->isIncluded() && !$canEditDonations) {
+            if ($anonymousMode->isIncluded() && !$canViewDonations) {
                 return new WP_Error(
                     'rest_forbidden',
                     esc_html__('You do not have permission to include anonymous donations.', 'give'),
@@ -823,8 +840,7 @@ class DonationController extends WP_REST_Controller
      */
     private function canEditDonations(): bool
     {
-        //TODO: check if this needs to be both canEdit and canView
-        return UserPermissions::donations()->canEdit() && UserPermissions::donations()->canView();
+        return UserPermissions::donations()->canEdit();
     }
 
     /**

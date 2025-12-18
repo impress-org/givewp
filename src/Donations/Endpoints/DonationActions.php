@@ -4,6 +4,7 @@ namespace Give\Donations\Endpoints;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -84,7 +85,7 @@ class DonationActions extends Endpoint
      */
     public function permissionsCheck()
     {
-        if (!current_user_can('edit_give_payments')) {
+        if (!UserPermissions::donations()->canEdit()) {
             return new WP_Error(
                 'rest_forbidden',
                 esc_html__('You don\'t have permission to edit Donations', 'give'),

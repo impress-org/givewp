@@ -40,7 +40,7 @@ function give_add_donations_subpage() {
     	'edit.php?post_type=give_forms',
     	$give_payment->labels->name,
     	$give_payment->labels->menu_name,
-        UserPermissions::donations()->getCapability('edit'),
+        UserPermissions::donations()->getCapability('view'),
     	'give-payment-history',
     	'give_payment_history_page'
     );

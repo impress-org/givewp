@@ -162,7 +162,7 @@ class Give_Roles {
 			}
 
 			// Add Capabilities to Give Workers User Role.
-			$wp_roles->add_cap( 'give_worker', 'edit_give_payments' );
+			$wp_roles->add_cap( 'give_worker', 'view_give_payments' );
 			$wp_roles->add_cap( 'give_worker', 'delete_give_forms' );
 			$wp_roles->add_cap( 'give_worker', 'delete_others_give_forms' );
 			$wp_roles->add_cap( 'give_worker', 'delete_private_give_forms' );
@@ -203,6 +203,7 @@ class Give_Roles {
 		foreach ( $capability_types as $capability_type ) {
 			$capabilities[ $capability_type ] = array(
 				// Post type.
+				"view_{$capability_type}s",
 				"edit_{$capability_type}s",
 				"edit_others_{$capability_type}s",
 				"publish_{$capability_type}s",
@@ -297,6 +298,7 @@ class Give_Roles {
 			$wp_roles->remove_cap( 'give_manager', 'view_give_sensitive_data' );
 			$wp_roles->remove_cap( 'give_manager', 'export_give_reports' );
 			$wp_roles->remove_cap( 'give_manager', 'manage_give_settings' );
+			$wp_roles->remove_cap( 'give_manager', 'view_give_payments' );
 
 			// Site Administrator Capabilities.
 			$wp_roles->remove_cap( 'administrator', 'view_give_reports' );
@@ -317,7 +319,7 @@ class Give_Roles {
 			}
 
 			// Remove capabilities from the Give Worker role.
-			$wp_roles->remove_cap( 'give_worker', 'edit_give_payments' );
+			$wp_roles->remove_cap( 'give_worker', 'view_give_payments' );
 			$wp_roles->remove_cap( 'give_worker', 'delete_give_forms' );
 			$wp_roles->remove_cap( 'give_worker', 'delete_others_give_forms' );
 			$wp_roles->remove_cap( 'give_worker', 'delete_private_give_forms' );

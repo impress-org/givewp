@@ -3,6 +3,7 @@
 namespace Give\Donations\Endpoints;
 
 use Give\API\RestRoute;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 
 abstract class Endpoint implements RestRoute
@@ -32,7 +33,7 @@ abstract class Endpoint implements RestRoute
      */
     public function permissionsCheck()
     {
-        if (current_user_can('manage_options') || current_user_can('edit_give_payments')) {
+        if (UserPermissions::donations()->canView()) {
             return true;
         }
 
