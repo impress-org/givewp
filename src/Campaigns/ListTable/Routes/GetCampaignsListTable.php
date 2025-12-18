@@ -9,6 +9,7 @@ use Give\Campaigns\ListTable\Columns\RevenueColumn;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\Repositories\CampaignsDataRepository;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 use WP_REST_Request;
@@ -224,6 +225,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.3.1 update permissions
      * @since 4.0.0
      *
@@ -231,7 +233,7 @@ class GetCampaignsListTable implements RestRoute
      */
     public function permissionsCheck()
     {
-        if (current_user_can('manage_options') || current_user_can('edit_give_forms')) {
+        if (UserPermissions::campaigns()->canView()) {
             return true;
         }
 

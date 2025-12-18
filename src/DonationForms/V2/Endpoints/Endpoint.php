@@ -3,6 +3,7 @@
 namespace Give\DonationForms\V2\Endpoints;
 
 use Give\API\RestRoute;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 
 /**
@@ -38,11 +39,12 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Check user permissions
+     * @unreleased update permission capability to use facade
      * @return bool|WP_Error
      */
     public function permissionsCheck()
     {
-        if (current_user_can('manage_options') || current_user_can('edit_give_forms')) {
+        if (UserPermissions::donationForms()->canView()) {
             return true;
         }
 
