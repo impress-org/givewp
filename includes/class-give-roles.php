@@ -162,6 +162,7 @@ class Give_Roles {
 			}
 
 			// Add Capabilities to Give Workers User Role.
+            // @unreleased replaced edit_give_payments with view_give_payments
 			$wp_roles->add_cap( 'give_worker', 'view_give_payments' );
 			$wp_roles->add_cap( 'give_worker', 'delete_give_forms' );
 			$wp_roles->add_cap( 'give_worker', 'delete_others_give_forms' );
@@ -190,6 +191,7 @@ class Give_Roles {
 	 *
 	 * Retrieve core post type capabilities.
 	 *
+     * @unreleased added view to capability types
 	 * @since  1.0
 	 * @access public
 	 *
@@ -275,6 +277,7 @@ class Give_Roles {
 	 *
 	 * Remove core post type capabilities (called on uninstall).
 	 *
+     * @unreleased added view_give_payments to remove list
 	 * @since  1.0
 	 * @access public
 	 *

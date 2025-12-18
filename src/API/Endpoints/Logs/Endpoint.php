@@ -10,6 +10,7 @@ use WP_Error;
  * Class Endpoint
  * @package GiveDivi\Divi\Routes
  *
+ * @unreleased update permission capability to use facade
  * @since 2.10.0
  */
 abstract class Endpoint implements RestRoute

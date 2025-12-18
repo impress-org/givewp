@@ -51,6 +51,8 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     *
+     * @unreleased replaced permissionsCheck with get_item_permissions_check and get_items_permissions_check
      * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.6.0
      */
@@ -720,7 +722,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased update method name to validationForGetMethods
+     * @unreleased update method name to validationForGetMethods, replace logic with UserPermissions facade and add canViewDonations check
      * @since 4.6.0
      */
     public function validationForGetMethods(WP_REST_Request $request)

@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Creates the admin submenu pages under the Give menu and assigns their
  * links to global variables
  *
+ * @unreleased update permission capability to use facade
  * @since 1.0
  *
  * @global $give_settings_page
@@ -40,7 +41,7 @@ function give_add_donations_subpage() {
     	'edit.php?post_type=give_forms',
     	$give_payment->labels->name,
     	$give_payment->labels->menu_name,
-        UserPermissions::donations()->getCapability('view'),
+        UserPermissions::donations()->viewCap(),
     	'give-payment-history',
     	'give_payment_history_page'
     );

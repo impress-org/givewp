@@ -53,6 +53,7 @@ class SubscriptionPermissions
     }
 
     /**
+     * @unreleased updated to use canView method
      * @since 4.8.0
      *
      * @param WP_REST_Request $request

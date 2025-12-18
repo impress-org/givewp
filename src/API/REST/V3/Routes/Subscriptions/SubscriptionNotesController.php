@@ -288,6 +288,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.8.0
      */
     public function get_items_permissions_check($request): bool
@@ -296,6 +297,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.8.0
      */
     public function create_item_permissions_check($request): bool
@@ -304,6 +306,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.8.0
      */
     public function get_item_permissions_check($request): bool
@@ -312,6 +315,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.8.0
      */
     public function update_item_permissions_check($request): bool

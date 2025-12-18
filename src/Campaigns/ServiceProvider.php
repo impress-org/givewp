@@ -178,6 +178,10 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_forms_labels', ReplaceGiveFormsCptLabels::class);
     }
 
+    /**
+     * @unreleased update permission capability to use facade
+     * @since 4.0.0
+     */
     private function setupCampaignPages()
     {
         Hooks::addAction('enqueue_block_editor_assets', Actions\EnqueueCampaignPageEditorAssets::class);
