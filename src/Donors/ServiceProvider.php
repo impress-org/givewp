@@ -43,6 +43,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
+     * @unreleased move donor page registration to methods to defer conditionals and DB queries to appropriate hooks.
      * @since 3.7.0 Register "AddPhoneColumn" migration and add the "give_admin_donor_details_updating" action
      */
     public function boot()
