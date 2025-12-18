@@ -13,7 +13,7 @@ use Give\Framework\Migrations\Contracts\Migration;
  * not edit them. This migration removes the incorrectly assigned edit_give_payments
  * capability from the give_worker role.
  *
- * @since 3.20.0
+ * @unreleased
  */
 class FixGiveWorkerCapabilities extends Migration
 {
@@ -38,7 +38,7 @@ class FixGiveWorkerCapabilities extends Migration
      */
     public static function timestamp(): int
     {
-        return strtotime('2024-12-18');
+        return strtotime('2025-12-18');
     }
 
     /**
@@ -53,7 +53,7 @@ class FixGiveWorkerCapabilities extends Migration
     /**
      * Fix capabilities at the role level.
      *
-     * @since 3.20.0
+     * @unreleased
      */
     private function fixRoleCapabilities(): void
     {
@@ -83,7 +83,7 @@ class FixGiveWorkerCapabilities extends Migration
      *
      * This handles cases where edit_give_payments was manually granted to individual users.
      *
-     * @since 3.20.0
+     * @unreleased
      */
     private function fixUserCapabilities(): void
     {
