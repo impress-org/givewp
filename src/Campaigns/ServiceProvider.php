@@ -181,6 +181,8 @@ class ServiceProvider implements ServiceProviderInterface
     private function setupCampaignPages()
     {
         Hooks::addAction('enqueue_block_editor_assets', Actions\EnqueueCampaignPageEditorAssets::class);
+        Hooks::addFilter('map_meta_cap', Actions\AllowGiveRolesToEditCampaignPages::class, 'mapMetaCap', 10, 4);
+        Hooks::addFilter('user_has_cap', Actions\AllowGiveRolesToEditCampaignPages::class, 'grantPublishCapability', 10, 4);
     }
 
     /**
