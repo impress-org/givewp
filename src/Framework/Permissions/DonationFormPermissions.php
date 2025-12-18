@@ -32,4 +32,15 @@ class DonationFormPermissions extends UserPermission
     {
         return $this->canEdit();
     }
+
+    /**
+     *
+     * There is no separate view capability for donation forms, so we use the same as edit.
+     *
+     * @unreleased
+     */
+    public function viewCap(): string
+    {
+        return $this->editCap();
+    }
 }

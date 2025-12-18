@@ -16,7 +16,7 @@ class RegisterEventsMenuItem
             'edit.php?post_type=give_forms',
             esc_html__('Events', 'give'),
             esc_html__('Events', 'give') . ' <span class="update-plugins">BETA</span>',
-            UserPermissions::events()->editCap(),
+            UserPermissions::events()->viewCap(),
             'give-event-tickets',
             [$this, 'render']
         );
