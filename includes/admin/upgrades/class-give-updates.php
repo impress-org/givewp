@@ -240,6 +240,7 @@ class Give_Updates {
 	/**
 	 * Register updates menu
 	 *
+     * @unreleased update permission capability to use facade
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public

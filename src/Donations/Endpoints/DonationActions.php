@@ -79,6 +79,7 @@ class DonationActions extends Endpoint
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 2.25.2
      *
      * @inheritDoc

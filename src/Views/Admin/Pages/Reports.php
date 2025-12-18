@@ -72,7 +72,10 @@ class Reports
             ->registerLocalizeData('giveReportsData', $data)->enqueue();
     }
 
-    // Add Reports submenu page to admin menu
+    /**
+     * Add Reports submenu page to admin menu
+     * @unreleased update permission capability to use facade
+     */
     public function add_page()
     {
         $render = [$this, 'render_template'];

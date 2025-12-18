@@ -13,6 +13,7 @@ use Give\Framework\Permissions\Facades\UserPermissions;
 class CampaignsAdminPage
 {
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.0.0
      */
     public function addCampaignsSubmenuPage()

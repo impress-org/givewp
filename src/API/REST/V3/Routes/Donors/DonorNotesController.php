@@ -257,6 +257,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.4.0
      */
     public function get_items_permissions_check($request): bool

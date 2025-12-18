@@ -10,6 +10,7 @@ use Give\Framework\Permissions\Facades\UserPermissions;
 class DonorsAdminPage
 {
     /**
+     * @unreleased update permission capability to use facade
      * @since 2.20.0
      */
     public function registerMenuItem()

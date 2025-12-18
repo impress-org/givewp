@@ -35,6 +35,8 @@ class SubscriptionPermissions
     /**
      * Check if current user can delete subscriptions.
      *
+     * @unreleased update permission capability to use facade
+     *
      * @since 4.8.0
      */
     public static function canDelete(): bool

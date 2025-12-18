@@ -6,6 +6,7 @@ use Give\EventTickets\Models\Event;
 use Give\Framework\Permissions\Facades\UserPermissions;
 
 /**
+ * @unreleased update permission capability to use facade
  * @since 3.6.0
  */
 class RegisterEventsMenuItem

@@ -26,6 +26,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Check user permissions
+     * @unreleased update permission capability to use facade
      * @since 4.3.1 update permissions
      * @since 2.20.0
      *

@@ -35,6 +35,7 @@ class CampaignStatisticsController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.13.0 add schema
      * @since 4.0.0
      */

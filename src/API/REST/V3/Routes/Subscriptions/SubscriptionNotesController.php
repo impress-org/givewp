@@ -320,6 +320,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.8.0
      */
     public function delete_item_permissions_check($request): bool
