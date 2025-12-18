@@ -78,7 +78,9 @@ class AllowGiveRolesToEditCampaignPages
 
         // Fast check: only process if specific page caps are requested
         static $pageCaps = ['publish_pages' => true, 'edit_others_pages' => true, 'edit_published_pages' => true, 'delete_others_pages' => true];
-        $requestedPageCaps = array_intersect_key($pageCaps, array_flip($caps));
+        $requestedPageCaps = array_filter($caps, static function ($cap) use ($pageCaps) {
+            return is_string($cap) && isset($pageCaps[$cap]);
+        });
         if (empty($requestedPageCaps)) {
             return $allcaps;
         }
@@ -100,7 +102,7 @@ class AllowGiveRolesToEditCampaignPages
         }
 
         // Grant the requested page capabilities
-        foreach (array_keys($requestedPageCaps) as $cap) {
+        foreach ($requestedPageCaps as $cap) {
             $allcaps[$cap] = true;
         }
 

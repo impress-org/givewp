@@ -2,8 +2,6 @@
 
 namespace Give\Framework\Permissions;
 
-use Give\Framework\Permissions\Traits\WithPrivatePermissions;
-
 /**
  * @unreleased
  */

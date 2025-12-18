@@ -5,6 +5,7 @@ namespace Give\Campaigns;
 use Give\Campaigns\Actions\LoadCampaignDetailsAssets;
 use Give\Campaigns\Actions\LoadCampaignsListTableAssets;
 use Give\Campaigns\Models\Campaign;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 /**
  * @since 4.0.0
@@ -20,7 +21,7 @@ class CampaignsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('Campaigns', 'give'),
             esc_html__('Campaigns', 'give'),
-            'edit_give_forms',
+            UserPermissions::campaigns()->getCapability('edit'),
             'give-campaigns',
             [$this, 'renderCampaignsPage'],
             0

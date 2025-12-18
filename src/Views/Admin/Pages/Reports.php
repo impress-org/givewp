@@ -10,7 +10,7 @@ namespace Give\Views\Admin\Pages;
 
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Utils;
-
+use Give\Framework\Permissions\Facades\UserPermissions;
 defined('ABSPATH') || exit;
 
 /**
@@ -84,7 +84,7 @@ class Reports
             'edit.php?post_type=give_forms',
             esc_html__('Donation Reports', 'give'),
             esc_html__('Reports', 'give'),
-            'view_give_reports',
+            UserPermissions::reports()->getCapability('view'),
             'give-reports',
             $render
         );

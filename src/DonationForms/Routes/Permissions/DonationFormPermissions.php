@@ -3,6 +3,7 @@
 namespace Give\DonationForms\Routes\Permissions;
 
 use Give\DonationForms\ValueObjects\DonationFormStatus;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 
@@ -18,19 +19,18 @@ class DonationFormPermissions
      */
     public static function canEdit(): bool
     {
-        return current_user_can('manage_options') ||
-               current_user_can('edit_give_forms');
+        return UserPermissions::donationForms()->canEdit();
     }
 
     /**
      * Check if current user can view private/draft donation forms.
      *
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.10.1
      */
     public static function canViewPrivate(): bool
     {
-        return current_user_can('manage_options') ||
-               current_user_can('edit_give_forms');
+        return UserPermissions::donationForms()->canViewPrivate();
     }
 
     /**

@@ -8,6 +8,7 @@ use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Language;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Post;
 use WP_REST_Request;
 
@@ -68,7 +69,7 @@ class DonationFormsAdminPage
             '',
             esc_html__('Donation Forms', 'give'),
             esc_html__('All Forms', 'give'),
-            'edit_give_forms',
+            UserPermissions::donationForms()->getCapability('edit'),
             'give-forms',
             [$this, 'render'],
             // Do not change the submenu position unless you have a strong reason.

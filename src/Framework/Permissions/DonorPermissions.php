@@ -3,15 +3,9 @@
 namespace Give\Framework\Permissions;
 
 /**
+ * Donors do not have custom capabilities, so we use the same as donations.
  * @unreleased
  */
-class DonorPermissions extends UserPermission
+class DonorPermissions extends DonationPermissions
 {
-    /**
-     * @unreleased
-     */
-    public static function getType(): string
-    {
-        return 'give_donor';
-    }
 }

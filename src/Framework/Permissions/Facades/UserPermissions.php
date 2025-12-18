@@ -25,6 +25,7 @@ use Give\Framework\Support\Facades\Facade;
  * @method static SensitiveDataPermissions sensitiveData()
  * @method static SettingsPermissions settings()
  * @method static SubscriptionPermissions subscriptions()
+ * @method static EventPermissions events()
  */
 class UserPermissions extends Facade
 {

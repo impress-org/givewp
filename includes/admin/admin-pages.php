@@ -40,7 +40,7 @@ function give_add_donations_subpage() {
     	'edit.php?post_type=give_forms',
     	$give_payment->labels->name,
     	$give_payment->labels->menu_name,
-    	'edit_give_payments',
+        UserPermissions::donations()->getCapability('edit'),
     	'give-payment-history',
     	'give_payment_history_page'
     );
@@ -55,7 +55,7 @@ function give_add_donors_subpage() {
         'edit.php?post_type=give_forms',
         esc_html__('Donors', 'give'),
         esc_html__('Donors', 'give'),
-        UserPermissions::donors()->canView(),
+        UserPermissions::donors()->getCapability('edit'),
         'give-donors',
         'give_donors_page'
     );
@@ -72,7 +72,7 @@ function give_add_settings_subpage()
         'edit.php?post_type=give_forms',
         esc_html__('GiveWP Settings', 'give'),
         apply_filters('givewp_settings_menu_title_give-settings',esc_html__('Settings', 'give')),
-        'manage_give_settings',
+        UserPermissions::settings()->getCapability('manage'),
         'give-settings',
         [
             Give()->give_settings,
@@ -91,7 +91,7 @@ function give_add_tools_subpage()
         'edit.php?post_type=give_forms',
         esc_html__('GiveWP Tools', 'give'),
         esc_html__('Tools', 'give'),
-        'manage_give_settings',
+        UserPermissions::settings()->getCapability('manage'),
         'give-tools',
         [
             Give()->give_settings,

@@ -3,6 +3,7 @@
 namespace Give\Promotions\InPluginUpsells;
 
 use Give\Helpers\EnqueueScript;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 /**
  * @since 2.17.0
@@ -20,7 +21,7 @@ class AddonsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('GiveWP Add-ons', 'give'),
             esc_html__('Add-ons', 'give'),
-            'manage_give_settings',
+            UserPermissions::settings()->getCapability('manage'),
             'give-add-ons',
             [$this, 'render']
         );

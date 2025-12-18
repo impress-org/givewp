@@ -63,13 +63,15 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     }
 
     /**
+     * Get the user capability string for the given capability type.
+     *
      * @unreleased
      */
-    protected function getCapability(string $cap): string
+    public function getCapability(string $cap): string
     {
         $caps = $this->getCapabilities($this::getType());
 
-        return $caps[$cap];
+        return $caps[$cap] ?? '';
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Give\FormBuilder\Routes;
 
 
 use Give\Campaigns\Models\Campaign;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\Views\View;
@@ -33,7 +34,7 @@ class RegisterFormBuilderPageRoute
             '', // do not display in menu, just register page
             'Visual Donation Form Builder', // ignored
             'Add Form', // ignored
-            'edit_give_forms',
+            UserPermissions::donationForms()->getCapability('edit'),
             FormBuilderRouteBuilder::SLUG,
             [$this, 'renderPage'],
             1

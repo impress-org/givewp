@@ -14,4 +14,12 @@ class DonationFormPermissions extends UserPermission
     {
         return 'give_form';
     }
+
+    /**
+     * @unreleased
+     */
+    public function canViewPrivate(): bool
+    {
+        return $this->canEdit();
+    }
 }

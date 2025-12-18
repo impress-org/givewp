@@ -1,5 +1,7 @@
 <?php
 
+use Give\Framework\Permissions\Facades\UserPermissions;
+
 /**
  * Class Give_Updates
  *
@@ -279,7 +281,7 @@ class Give_Updates {
 					$this->get_total_update_count(),
 				$is_update ? '%' : ''
 			),
-			'manage_give_settings',
+			UserPermissions::settings()->getCapability('manage'),
 			'give-updates',
 			[ $this, 'render_page' ]
 		);

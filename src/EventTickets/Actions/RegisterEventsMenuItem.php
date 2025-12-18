@@ -3,6 +3,7 @@
 namespace Give\EventTickets\Actions;
 
 use Give\EventTickets\Models\Event;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 /**
  * @since 3.6.0
@@ -15,7 +16,7 @@ class RegisterEventsMenuItem
             'edit.php?post_type=give_forms',
             esc_html__('Events', 'give'),
             esc_html__('Events', 'give') . ' <span class="update-plugins">BETA</span>',
-            'edit_give_forms',
+            UserPermissions::events()->getCapability('edit'),
             'give-event-tickets',
             [$this, 'render']
         );
