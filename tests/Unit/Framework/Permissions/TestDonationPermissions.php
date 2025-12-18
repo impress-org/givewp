@@ -129,15 +129,15 @@ final class TestDonationPermissions extends TestCase
     }
 
     /**
-     * Donations use view_give_payments for canView (not edit_give_payments).
-     * give_manager, give_accountant, and administrator have view_give_payments.
-     * give_worker does NOT have view_give_payments.
+     * Donations use view_give_payments for canView.
+     * give_manager, give_accountant, give_worker, and administrator have view_give_payments.
      */
     public function canViewTrueProvider(): array
     {
         return [
             ['give_manager'],
             ['give_accountant'],
+            ['give_worker'],
             ['administrator'],
         ];
     }
@@ -145,16 +145,18 @@ final class TestDonationPermissions extends TestCase
     public function canViewFalseProvider(): array
     {
         return [
-            ['give_worker'],  // Has edit_give_payments but NOT view_give_payments
             ['give_donor'],
             ['subscriber'],
         ];
     }
 
+    /**
+     * Donations use edit_give_payments for canEdit.
+     * give_worker does NOT have edit_give_payments (can only view, not edit donations).
+     */
     public function canEditTrueProvider(): array
     {
         return [
-            ['give_worker'],
             ['give_manager'],
             ['give_accountant'],
             ['administrator'],
@@ -164,23 +166,32 @@ final class TestDonationPermissions extends TestCase
     public function canEditFalseProvider(): array
     {
         return [
+            ['give_worker'],
             ['give_donor'],
             ['subscriber'],
         ];
     }
 
+    /**
+     * Delete maps to edit for donations.
+     * Roles that have edit_give_payments capability can delete.
+     */
     public function canDeleteTrueProvider(): array
     {
         return [
             ['give_manager'],
+            ['give_accountant'],
             ['administrator'],
         ];
     }
 
+    /**
+     * Delete maps to edit for donations.
+     * Roles that do NOT have edit_give_payments capability cannot delete.
+     */
     public function canDeleteFalseProvider(): array
     {
         return [
-            ['give_accountant'],
             ['give_worker'],
             ['give_donor'],
             ['subscriber'],
