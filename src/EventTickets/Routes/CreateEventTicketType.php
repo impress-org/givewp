@@ -37,7 +37,7 @@ class CreateEventTicketType implements RestRoute
                     'methods' => WP_REST_Server::CREATABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return UserPermissions::donationForms()->canEdit();
+                        return UserPermissions::events()->canCreate();
                     }
                 ],
                 'args' => [

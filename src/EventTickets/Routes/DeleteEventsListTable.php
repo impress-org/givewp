@@ -46,7 +46,7 @@ class DeleteEventsListTable
                     'methods' => WP_REST_Server::DELETABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return UserPermissions::donationForms()->canEdit();
+                        return UserPermissions::events()->canDelete();
                     },
                 ],
                 'args' => [

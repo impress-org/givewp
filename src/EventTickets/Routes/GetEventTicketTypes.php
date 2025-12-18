@@ -35,7 +35,7 @@ class GetEventTicketTypes implements RestRoute
                     'methods' => 'GET',
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return UserPermissions::donationForms()->canEdit();
+                        return UserPermissions::events()->canView();
                     },
                 ],
                 'args' => [

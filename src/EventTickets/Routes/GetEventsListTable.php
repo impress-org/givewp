@@ -47,7 +47,7 @@ class GetEventsListTable
                     'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return UserPermissions::donationForms()->canView();
+                        return UserPermissions::events()->canView();
                     },
                 ],
                 'args' => [

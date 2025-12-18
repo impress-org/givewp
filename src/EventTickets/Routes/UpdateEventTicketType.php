@@ -37,7 +37,7 @@ class UpdateEventTicketType implements RestRoute
                     'methods' => WP_REST_Server::EDITABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return UserPermissions::donationForms()->canEdit();
+                        return UserPermissions::events()->canEdit();
                     },
                 ],
                 'args' => [
