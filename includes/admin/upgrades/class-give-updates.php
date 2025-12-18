@@ -281,7 +281,7 @@ class Give_Updates {
 					$this->get_total_update_count(),
 				$is_update ? '%' : ''
 			),
-			UserPermissions::settings()->getCapability('manage'),
+			UserPermissions::settings()->manageCap(),
 			'give-updates',
 			[ $this, 'render_page' ]
 		);
