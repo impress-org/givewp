@@ -5,6 +5,7 @@ namespace Give\Donations;
 use Give\Donations\Actions\LoadDonationDetailsAssets;
 use Give\Donations\Actions\LoadDonationsListTableAssets;
 use Give\Donations\Models\Donation;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 class DonationsAdminPage
 {
@@ -28,7 +29,7 @@ class DonationsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('Donations', 'give'),
             esc_html__('Donations', 'give'),
-            'edit_give_forms',
+            UserPermissions::donations()->canView(),
             'give-payment-history',
             [$this, 'render']
         );

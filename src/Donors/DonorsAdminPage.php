@@ -5,6 +5,7 @@ namespace Give\Donors;
 use Give\Donors\Actions\LoadDonorDetailsAssets;
 use Give\Donors\Actions\LoadDonorsListTableAssets;
 use Give\Donors\Models\Donor;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 class DonorsAdminPage
 {
@@ -22,7 +23,7 @@ class DonorsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('Donors', 'give'),
             esc_html__('Donors', 'give'),
-            'edit_give_forms',
+            UserPermissions::donors()->canView(),
             'give-donors',
             [$this, 'render']
         );

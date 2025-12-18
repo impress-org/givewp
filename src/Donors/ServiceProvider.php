@@ -80,11 +80,11 @@ class ServiceProvider implements ServiceProviderInterface
 
         // Render the "Switch to New View" button on the legacy donors page
         add_action('admin_head', function () {
-            if (! DonorsAdminPage::isShowing()) {
+            if (!DonorsAdminPage::isShowing()) {
                 return;
             }
 
-            if (! $this->shouldShowLegacyDonorsPage()) {
+            if (!$this->shouldShowLegacyDonorsPage()) {
                 return;
             }
 
