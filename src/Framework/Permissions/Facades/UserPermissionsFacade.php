@@ -9,6 +9,7 @@ use Give\Framework\Permissions\DonorPermissions;
 use Give\Framework\Permissions\ReportsPermissions;
 use Give\Framework\Permissions\SensitiveDataPermissions;
 use Give\Framework\Permissions\SettingsPermissions;
+use Give\Framework\Permissions\SubscriptionPermissions;
 
 /**
  * This is a facade for interacting with WP and GiveWP permissions.
@@ -73,5 +74,13 @@ class UserPermissionsFacade
     public function settings(): SettingsPermissions
     {
         return new SettingsPermissions();
+    }
+
+    /**
+     * @unreleased
+     */
+    public function subscriptions(): SubscriptionPermissions
+    {
+        return new SubscriptionPermissions();
     }
 }

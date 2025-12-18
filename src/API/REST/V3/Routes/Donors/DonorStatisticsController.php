@@ -8,6 +8,7 @@ use Give\API\REST\V3\Support\CURIE;
 use Give\Campaigns\Models\Campaign;
 use Give\Donors\DonorStatisticsQuery;
 use Give\Donors\Models\Donor;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -105,6 +106,7 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.4.0
      *
      * @param WP_REST_Request $request
@@ -113,7 +115,7 @@ class DonorStatisticsController extends WP_REST_Controller
      */
     public function get_item_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::donors()->canView();
     }
 
     /**

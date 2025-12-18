@@ -5,6 +5,7 @@ namespace Give\API\REST\V3\Routes\Subscriptions;
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\API\REST\V3\Support\Item;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Models\SubscriptionNote;
 use Give\Subscriptions\ValueObjects\SubscriptionNoteType;
@@ -291,7 +292,7 @@ class SubscriptionNotesController extends WP_REST_Controller
      */
     public function get_items_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::subscriptions()->canView();
     }
 
     /**
@@ -299,7 +300,7 @@ class SubscriptionNotesController extends WP_REST_Controller
      */
     public function create_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::subscriptions()->canCreate();
     }
 
     /**
@@ -307,7 +308,7 @@ class SubscriptionNotesController extends WP_REST_Controller
      */
     public function get_item_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::subscriptions()->canView();
     }
 
     /**
@@ -315,7 +316,7 @@ class SubscriptionNotesController extends WP_REST_Controller
      */
     public function update_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::subscriptions()->canEdit();
     }
 
     /**
@@ -323,7 +324,7 @@ class SubscriptionNotesController extends WP_REST_Controller
      */
     public function delete_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::subscriptions()->canDelete();
     }
 
     /**

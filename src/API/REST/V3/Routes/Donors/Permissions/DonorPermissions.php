@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes\Donors\Permissions;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\Donors\Models\Donor;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 
@@ -19,7 +20,7 @@ class DonorPermissions
      */
     public static function canEdit(): bool
     {
-        return current_user_can('manage_options');
+        return UserPermissions::donors()->canEdit();
     }
 
     /**

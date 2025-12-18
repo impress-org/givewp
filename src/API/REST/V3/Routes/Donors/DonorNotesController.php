@@ -9,6 +9,7 @@ use Give\API\REST\V3\Support\Item;
 use Give\Donors\Models\Donor;
 use Give\Donors\Models\DonorNote;
 use Give\Donors\ValueObjects\DonorNoteType;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -260,39 +261,43 @@ class DonorNotesController extends WP_REST_Controller
      */
     public function get_items_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::donors()->canView();
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.4.0
      */
     public function create_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::donors()->canCreate();
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.4.0
      */
     public function get_item_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::donors()->canView();
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.4.0
      */
     public function update_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::donors()->canEdit();
     }
 
     /**
+     * @unreleased replace logic with UserPermissions facade
      * @since 4.4.0
      */
     public function delete_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::donors()->canDelete();
     }
 
     /**

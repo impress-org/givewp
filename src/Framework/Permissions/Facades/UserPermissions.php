@@ -9,6 +9,7 @@ use Give\Framework\Permissions\DonorPermissions;
 use Give\Framework\Permissions\ReportsPermissions;
 use Give\Framework\Permissions\SensitiveDataPermissions;
 use Give\Framework\Permissions\SettingsPermissions;
+use Give\Framework\Permissions\SubscriptionPermissions;
 use Give\Framework\Support\Facades\Facade;
 
 /**
@@ -23,6 +24,7 @@ use Give\Framework\Support\Facades\Facade;
  * @method static ReportsPermissions reports()
  * @method static SensitiveDataPermissions sensitiveData()
  * @method static SettingsPermissions settings()
+ * @method static SubscriptionPermissions subscriptions()
  */
 class UserPermissions extends Facade
 {

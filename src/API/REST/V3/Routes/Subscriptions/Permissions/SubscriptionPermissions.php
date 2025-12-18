@@ -3,6 +3,7 @@
 namespace Give\API\REST\V3\Routes\Subscriptions\Permissions;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 
@@ -18,11 +19,7 @@ class SubscriptionPermissions
      */
     public static function canEdit(): bool
     {
-        return current_user_can('manage_options')
-               || (
-                   current_user_can('edit_give_payments')
-                   && current_user_can('view_give_payments')
-               );
+        return UserPermissions::subscriptions()->canEdit();
     }
 
     /**
@@ -32,7 +29,7 @@ class SubscriptionPermissions
      */
     public static function canDelete(): bool
     {
-        return current_user_can('manage_options') || current_user_can('delete_give_payments');
+        return UserPermissions::subscriptions()->canDelete();
     }
 
     /**
