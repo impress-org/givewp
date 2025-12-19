@@ -29,8 +29,6 @@ class ListDonors extends Endpoint
     /**
      * @inheritDoc
      *
-     * @unreleased replace permission callback logic with UserPermissions facade
-     *
      * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
