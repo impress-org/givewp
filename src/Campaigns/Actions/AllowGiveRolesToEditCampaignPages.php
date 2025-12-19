@@ -72,7 +72,7 @@ class AllowGiveRolesToEditCampaignPages
     public function grantPublishCapability(array $allcaps, array $caps, array $args, WP_User $user): array
     {
         // Fast check: skip if not in admin or REST context
-        if (!is_admin() && !(defined('REST_REQUEST') && REST_REQUEST)) {
+        if (!is_admin() && !wp_is_serving_rest_request()) {
             return $allcaps;
         }
 
