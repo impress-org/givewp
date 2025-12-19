@@ -160,7 +160,7 @@ class AllowGiveRolesToEditCampaignPages
         }
 
         // Check REST API route for post ID (e.g., /wp/v2/pages/123)
-        if (defined('REST_REQUEST') && REST_REQUEST) {
+        if (wp_is_serving_rest_request()) {
             $cachedPostId = $this->getPostIdFromRestRoute();
             if ($cachedPostId) {
                 return $cachedPostId;
@@ -192,10 +192,11 @@ class AllowGiveRolesToEditCampaignPages
         }
         $restChecked = true;
 
-        $requestUri = $_SERVER['REQUEST_URI'] ?? '';
+        global $wp;
+        $restRoute = $wp->query_vars['rest_route'] ?? '';
 
-        // Match routes like /wp-json/wp/v2/pages/123
-        if (preg_match('#/wp/v2/pages/(\d+)#', $requestUri, $matches)) {
+        // Match routes like /wp/v2/pages/123
+        if (preg_match('#/wp/v2/pages/(\d+)#', $restRoute, $matches)) {
             $cachedRestPostId = (int)$matches[1];
         }
 
