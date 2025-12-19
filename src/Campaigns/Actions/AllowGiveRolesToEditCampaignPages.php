@@ -153,14 +153,13 @@ class AllowGiveRolesToEditCampaignPages
             return $cachedPostId;
         }
 
-        // Check for post ID in REST API request
-        if (!empty($_GET['post_id'])) {
-            $cachedPostId = (int)$_GET['post_id'];
-            return $cachedPostId;
-        }
-
-        // Check REST API route for post ID (e.g., /wp/v2/pages/123)
+        // Check REST API for post ID (query param or route)
         if (wp_is_serving_rest_request()) {
+            if (!empty($_GET['post_id'])) {
+                $cachedPostId = (int)$_GET['post_id'];
+                return $cachedPostId;
+            }
+
             $cachedPostId = $this->getPostIdFromRestRoute();
             if ($cachedPostId) {
                 return $cachedPostId;
