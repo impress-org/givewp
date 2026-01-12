@@ -11,7 +11,7 @@ use Give\Framework\Migrations\Contracts\Migration;
  *
  * The give_worker role should only be able to read donations (view_give_payments),
  * not edit them. This migration removes the incorrectly assigned edit_give_payments
- * capability from the give_worker role.
+ * capability from the give_worker role. It also adds view_give_forms for consistency.
  *
  * @unreleased
  */
@@ -38,7 +38,7 @@ class FixGiveWorkerCapabilities extends Migration
      */
     public static function timestamp(): int
     {
-        return strtotime('2025-12-18');
+        return strtotime('2026-01-12');
     }
 
     /**
@@ -76,6 +76,9 @@ class FixGiveWorkerCapabilities extends Migration
 
         // Ensure give_worker has view_give_payments for reading donations
         $wp_roles->add_cap('give_worker', 'view_give_payments');
+
+        // Ensure give_worker has view_give_forms for consistency
+        $wp_roles->add_cap('give_worker', 'view_give_forms');
     }
 
     /**
@@ -107,6 +110,11 @@ class FixGiveWorkerCapabilities extends Migration
             // Ensure view_give_payments is present
             if (!$user->has_cap('view_give_payments')) {
                 $user->add_cap('view_give_payments');
+            }
+
+            // Ensure view_give_forms is present
+            if (!$user->has_cap('view_give_forms')) {
+                $user->add_cap('view_give_forms');
             }
         }
     }

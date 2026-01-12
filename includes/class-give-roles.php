@@ -162,8 +162,9 @@ class Give_Roles {
 			}
 
 			// Add Capabilities to Give Workers User Role.
-            // @unreleased replaced edit_give_payments with view_give_payments
+            // @unreleased replaced edit_give_payments with view_give_payments, added view_give_forms
 			$wp_roles->add_cap( 'give_worker', 'view_give_payments' );
+			$wp_roles->add_cap( 'give_worker', 'view_give_forms' );
 			$wp_roles->add_cap( 'give_worker', 'delete_give_forms' );
 			$wp_roles->add_cap( 'give_worker', 'delete_others_give_forms' );
 			$wp_roles->add_cap( 'give_worker', 'delete_private_give_forms' );
@@ -176,7 +177,8 @@ class Give_Roles {
 			$wp_roles->add_cap( 'give_worker', 'read_private_give_forms' );
 
 			// Add Capabilities to Give Accountant User Role.
-			$wp_roles->add_cap( 'give_accountant', 'edit_give_forms' );
+            // @unreleased replaced edit_give_forms with view_give_forms
+			$wp_roles->add_cap( 'give_accountant', 'view_give_forms' );
 			$wp_roles->add_cap( 'give_accountant', 'read_private_give_forms' );
 			$wp_roles->add_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->add_cap( 'give_accountant', 'export_give_reports' );
@@ -323,6 +325,7 @@ class Give_Roles {
 
 			// Remove capabilities from the Give Worker role.
 			$wp_roles->remove_cap( 'give_worker', 'view_give_payments' );
+			$wp_roles->remove_cap( 'give_worker', 'view_give_forms' );
 			$wp_roles->remove_cap( 'give_worker', 'delete_give_forms' );
 			$wp_roles->remove_cap( 'give_worker', 'delete_others_give_forms' );
 			$wp_roles->remove_cap( 'give_worker', 'delete_private_give_forms' );
@@ -335,7 +338,8 @@ class Give_Roles {
 			$wp_roles->remove_cap( 'give_worker', 'read_private_give_forms' );
 
 			// Remove Capabilities from Give Accountant User Role.
-			$wp_roles->remove_cap( 'give_accountant', 'edit_give_forms' );
+            // @unreleased replaced edit_give_forms with view_give_forms
+			$wp_roles->remove_cap( 'give_accountant', 'view_give_forms' );
 			$wp_roles->remove_cap( 'give_accountant', 'read_private_give_forms' );
 			$wp_roles->remove_cap( 'give_accountant', 'view_give_reports' );
 			$wp_roles->remove_cap( 'give_accountant', 'export_give_reports' );

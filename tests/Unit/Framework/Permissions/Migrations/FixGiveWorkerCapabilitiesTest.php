@@ -66,6 +66,26 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     /**
      * @unreleased
      */
+    public function testMigrationAddsViewGiveFormsToGiveWorkerRole(): void
+    {
+        global $wp_roles;
+
+        // Arrange: Ensure give_worker doesn't have view_give_forms initially
+        $wp_roles->remove_cap('give_worker', 'view_give_forms');
+
+        // Act: Run the migration
+        (new FixGiveWorkerCapabilities())->run();
+
+        // Assert: view_give_forms should be added to the role
+        $this->assertTrue(
+            $wp_roles->roles['give_worker']['capabilities']['view_give_forms'] ?? false,
+            'give_worker should have view_give_forms after migration'
+        );
+    }
+
+    /**
+     * @unreleased
+     */
     public function testMigrationRemovesEditGivePaymentsFromIndividualUser(): void
     {
         // Arrange: Create a give_worker user with individually granted edit_give_payments
@@ -121,6 +141,34 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
         $this->assertTrue(
             $user->has_cap('view_give_payments'),
             'give_worker user should have view_give_payments after migration'
+        );
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testMigrationAddsViewGiveFormsToIndividualUser(): void
+    {
+        global $wp_roles;
+
+        // Arrange: Remove view_give_forms from the role first
+        $wp_roles->remove_cap('give_worker', 'view_give_forms');
+
+        // Create a give_worker user
+        $user = self::factory()->user->create_and_get();
+        $user->set_role('give_worker');
+
+        // Act: Run the migration
+        (new FixGiveWorkerCapabilities())->run();
+
+        // Clear WordPress user cache and refresh user data
+        clean_user_cache($user->ID);
+        $user = new \WP_User($user->ID);
+
+        // Assert: view_give_forms should be present (via role, which was fixed by migration)
+        $this->assertTrue(
+            $user->has_cap('view_give_forms'),
+            'give_worker user should have view_give_forms after migration'
         );
     }
 

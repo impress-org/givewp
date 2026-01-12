@@ -4,6 +4,7 @@ namespace Give\ServiceProviders;
 
 use Closure;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\Permissions\Migrations\FixGiveAccountantCapabilities;
 use Give\Framework\Permissions\Migrations\FixGiveWorkerCapabilities;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\Route\Form;
@@ -47,6 +48,7 @@ class LegacyServiceProvider implements ServiceProvider
     {
         give(MigrationsRegister::class)->addMigrations([
             FixGiveWorkerCapabilities::class,
+            FixGiveAccountantCapabilities::class,
         ]);
     }
 
