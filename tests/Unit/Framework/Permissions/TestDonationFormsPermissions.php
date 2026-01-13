@@ -151,7 +151,6 @@ final class TestDonationFormsPermissions extends TestCase
         return [
             ['give_worker'],
             ['give_manager'],
-            ['give_accountant'],
             ['administrator'],
         ];
     }
@@ -161,6 +160,7 @@ final class TestDonationFormsPermissions extends TestCase
         return [
             ['give_donor'],
             ['subscriber'],
+            ['give_accountant'],
         ];
     }
 
