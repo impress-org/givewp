@@ -233,7 +233,7 @@ abstract class Endpoint implements RestRoute
         if ( ! UserPermissions::reports()->canView()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You cannot view the reports resource.', 'give'),
+                __('You do not have permission to view the reports resource.', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
