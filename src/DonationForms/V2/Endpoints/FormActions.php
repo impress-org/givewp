@@ -81,7 +81,7 @@ class FormActions extends Endpoint
         if ( ! UserPermissions::donationForms()->canEdit()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You don\'t have permission to edit Donation Forms', 'give'),
+                __('You don\'t have permission to edit Donation Forms', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
