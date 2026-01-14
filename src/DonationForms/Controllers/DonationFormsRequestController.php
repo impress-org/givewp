@@ -34,7 +34,7 @@ class DonationFormsRequestController
         if (!$form->status->isPublished() && !DonationFormPermissions::canViewPrivate()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to view this donation form.', 'give'),
+                __('You do not have permission to view this donation form.', 'give'),
                 ['status' => DonationFormPermissions::authorizationStatusCode()]
             );
         }

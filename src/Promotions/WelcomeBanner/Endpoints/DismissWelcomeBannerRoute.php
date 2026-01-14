@@ -48,7 +48,7 @@ class DismissWelcomeBannerRoute implements RestRoute
         if (!current_user_can('manage_options')) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__(
+                __(
                     'You don\'t have permission to dismiss options. Only users with the "manage_options" capability can perform this action.',
                     'give'
                 ),

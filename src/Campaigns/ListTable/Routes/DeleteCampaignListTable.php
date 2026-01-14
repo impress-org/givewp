@@ -113,7 +113,7 @@ class DeleteCampaignListTable implements RestRoute
     {
         return UserPermissions::campaigns()->canDelete() ?: new WP_Error(
             'rest_forbidden',
-            esc_html__("You don't have permission to delete Campaigns", 'give'),
+            __("You don't have permission to delete Campaigns", 'give'),
             ['status' => is_user_logged_in() ? 403 : 401]
         );
     }

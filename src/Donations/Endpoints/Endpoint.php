@@ -40,7 +40,7 @@ abstract class Endpoint implements RestRoute
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__("You don't have permission to view Donations", 'give'),
+            __("You don't have permission to view Donations", 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }

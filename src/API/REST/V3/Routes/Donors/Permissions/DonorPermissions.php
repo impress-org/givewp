@@ -80,7 +80,7 @@ class DonorPermissions
         if (!$isAdmin && !$isOwner && $includeSensitiveData) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to include sensitive data.', 'give'),
+                __('You do not have permission to include sensitive data.', 'give'),
                 ['status' => self::authorizationStatusCode()]
             );
         }
@@ -90,7 +90,7 @@ class DonorPermissions
             if (!$isAdmin && !$isOwner && $donorAnonymousMode->isIncluded()) {
                 return new WP_Error(
                     'rest_forbidden',
-                    esc_html__('You do not have permission to include anonymous donors.', 'give'),
+                    __('You do not have permission to include anonymous donors.', 'give'),
                     ['status' => self::authorizationStatusCode()]
                 );
             }
@@ -116,7 +116,7 @@ class DonorPermissions
         if (!$isAdmin && !$isOwner) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to update this donor.', 'give'),
+                __('You do not have permission to update this donor.', 'give'),
                 ['status' => self::authorizationStatusCode()]
             );
         }

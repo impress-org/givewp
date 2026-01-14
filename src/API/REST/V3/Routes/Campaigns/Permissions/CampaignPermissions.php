@@ -72,7 +72,7 @@ class CampaignPermissions
         if ($hasNonActiveStatus && !self::canViewPrivate()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to view private, draft, or archived campaigns.', 'give'),
+                __('You do not have permission to view private, draft, or archived campaigns.', 'give'),
                 ['status' => self::authorizationStatusCode()]
             );
         }

@@ -239,7 +239,7 @@ class GetCampaignsListTable implements RestRoute
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__("You don't have permission to view Campaigns", 'give'),
+            __("You don't have permission to view Campaigns", 'give'),
             ['status' => is_user_logged_in() ? 403 : 401]
         );
     }

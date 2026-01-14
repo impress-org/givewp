@@ -30,7 +30,7 @@ abstract class Endpoint implements RestRoute
         if ( ! UserPermissions::settings()->canManage()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You dont have the right permissions to view Migrations', 'give'),
+                __('You don\'t have the right permissions to view Migrations', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }

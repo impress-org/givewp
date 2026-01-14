@@ -70,7 +70,7 @@ class DeleteDonor extends Endpoint
 
        return new WP_Error(
             'rest_forbidden',
-            esc_html__('You don\'t have permission to delete Donors', 'give'),
+            __('You don\'t have permission to delete Donors', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }

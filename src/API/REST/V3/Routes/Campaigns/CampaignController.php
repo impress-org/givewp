@@ -304,7 +304,7 @@ class CampaignController extends WP_REST_Controller
         if (!$campaign->status->isActive() && !UserPermissions::campaigns()->canViewPrivate()) {
             $response = new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to view this campaign.', 'give'),
+                __('You do not have permission to view this campaign.', 'give'),
                 ['status' => CampaignPermissions::authorizationStatusCode()]
             );
 

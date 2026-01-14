@@ -117,7 +117,7 @@ class DonationActions extends Endpoint
                 if (!UserPermissions::donations()->canDelete()) {
                     return new WP_Error(
                         'rest_forbidden',
-                        esc_html__('You don\'t have permission to delete Donation', 'give'),
+                        __('You don\'t have permission to delete Donation', 'give'),
                         ['status' => $this->authorizationStatusCode()]
                     );
                 }
@@ -182,7 +182,7 @@ class DonationActions extends Endpoint
                 if (!UserPermissions::donations()->canEdit()) {
                     return new WP_Error(
                         'rest_forbidden',
-                        esc_html__('You don\'t have permission to change donation statuses', 'give'),
+                        __('You don\'t have permission to change donation statuses', 'give'),
                         ['status' => $this->authorizationStatusCode()]
                     );
                 }

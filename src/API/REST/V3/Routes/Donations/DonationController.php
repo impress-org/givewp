@@ -734,7 +734,7 @@ class DonationController extends WP_REST_Controller
         if ($includeSensitiveData && !$canViewDonations) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to include sensitive data.', 'give'),
+                __('You do not have permission to include sensitive data.', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
@@ -745,7 +745,7 @@ class DonationController extends WP_REST_Controller
             if ($anonymousMode->isIncluded() && !$canViewDonations) {
                 return new WP_Error(
                     'rest_forbidden',
-                    esc_html__('You do not have permission to include anonymous donations.', 'give'),
+                    __('You do not have permission to include anonymous donations.', 'give'),
                     ['status' => $this->authorizationStatusCode()]
                 );
             }
@@ -765,7 +765,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to update donations.', 'give'),
+            __('You do not have permission to update donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
@@ -781,7 +781,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to create donations.', 'give'),
+            __('You do not have permission to create donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
@@ -797,7 +797,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to delete donations.', 'give'),
+            __('You do not have permission to delete donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
@@ -813,7 +813,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to delete donations.', 'give'),
+            __('You do not have permission to delete donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
@@ -829,7 +829,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to refund donations.', 'give'),
+            __('You do not have permission to refund donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }

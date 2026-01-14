@@ -68,7 +68,7 @@ class SubscriptionPermissions
         if ( ! $isAdmin && $includeSensitiveData) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to include sensitive data.', 'give'),
+                __('You do not have permission to include sensitive data.', 'give'),
                 ['status' => self::authorizationStatusCode()]
             );
         }
@@ -78,7 +78,7 @@ class SubscriptionPermissions
             if ( ! $isAdmin && $donorAnonymousMode->isIncluded()) {
                 return new WP_Error(
                     'rest_forbidden',
-                    esc_html__('You do not have permission to include anonymous donors.', 'give'),
+                    __('You do not have permission to include anonymous donors.', 'give'),
                     ['status' => self::authorizationStatusCode()]
                 );
             }
@@ -99,7 +99,7 @@ class SubscriptionPermissions
         if (! self::canEdit()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to update subscriptions.', 'give'),
+                __('You do not have permission to update subscriptions.', 'give'),
                 ['status' => self::authorizationStatusCode()]
             );
         }
@@ -119,7 +119,7 @@ class SubscriptionPermissions
         if ( ! self::canDelete()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to delete subscriptions.', 'give'),
+                __('You do not have permission to delete subscriptions.', 'give'),
                 ['status' => self::authorizationStatusCode()]
             );
         }
