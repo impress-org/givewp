@@ -78,7 +78,7 @@ class SubscriptionActions extends Endpoint
         if (! current_user_can('edit_give_payments')) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You don\'t have permission to edit Subscriptions', 'give'),
+                __('You don\'t have permission to edit Subscriptions', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
@@ -104,7 +104,7 @@ class SubscriptionActions extends Endpoint
                 if (! current_user_can('delete_give_payments')) {
                     return new WP_Error(
                         'rest_forbidden',
-                        esc_html__('You don\'t have permission to delete Subscription', 'give'),
+                        __('You don\'t have permission to delete Subscription', 'give'),
                         ['status' => $this->authorizationStatusCode()]
                     );
                 }

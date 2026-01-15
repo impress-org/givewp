@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Routes\Donors\Permissions;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\Donors\Models\Donor;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 
@@ -19,7 +20,18 @@ class DonorPermissions
      */
     public static function canEdit(): bool
     {
-        return current_user_can('manage_options');
+        return UserPermissions::donors()->canEdit();
+    }
+
+
+    /**
+     * Check if current user can view donors.
+     *
+     * @unreleased
+     */
+    public static function canView(): bool
+    {
+        return UserPermissions::donors()->canView();
     }
 
     /**
@@ -60,7 +72,7 @@ class DonorPermissions
      */
     public static function validationForGetMethods(WP_REST_Request $request)
     {
-        $isAdmin = self::canEdit();
+        $isAdmin = self::canView();
         $donorId = $request->get_param('id');
         $isOwner = $donorId ? self::isOwner($donorId) : false;
 
@@ -68,7 +80,7 @@ class DonorPermissions
         if (!$isAdmin && !$isOwner && $includeSensitiveData) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to include sensitive data.', 'give'),
+                __('You do not have permission to include sensitive data.', 'give'),
                 ['status' => self::authorizationStatusCode()]
             );
         }
@@ -78,7 +90,7 @@ class DonorPermissions
             if (!$isAdmin && !$isOwner && $donorAnonymousMode->isIncluded()) {
                 return new WP_Error(
                     'rest_forbidden',
-                    esc_html__('You do not have permission to include anonymous donors.', 'give'),
+                    __('You do not have permission to include anonymous donors.', 'give'),
                     ['status' => self::authorizationStatusCode()]
                 );
             }
@@ -104,7 +116,7 @@ class DonorPermissions
         if (!$isAdmin && !$isOwner) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to update this donor.', 'give'),
+                __('You do not have permission to update this donor.', 'give'),
                 ['status' => self::authorizationStatusCode()]
             );
         }

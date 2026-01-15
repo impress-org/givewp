@@ -43,18 +43,12 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
+     * @unreleased move donor page registration to methods to defer conditionals and DB queries to appropriate hooks.
      * @since 3.7.0 Register "AddPhoneColumn" migration and add the "give_admin_donor_details_updating" action
      */
     public function boot()
     {
-        $userId = get_current_user_id();
-        $showLegacy = DonorsAdminPage::isShowingNewDetailsPage() ? false : get_user_meta($userId, '_give_donors_archive_show_legacy', true);
-        // only register new admin page if user hasn't chosen to use the old one or is trying to access the new donor details page
-        if (empty($showLegacy)) {
-            Hooks::addAction('admin_menu', DonorsAdminPage::class, 'registerMenuItem', 30);
-        } elseif (DonorsAdminPage::isShowing()) {
-            Hooks::addAction('admin_head', DonorsAdminPage::class, 'renderReactSwitch');
-        }
+        $this->registerDonorsAdminPage();
 
         $this->addCustomFieldsToDonorDetails();
         $this->enforceDonorsAsUsers();
@@ -66,6 +60,50 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
 
         $this->loadDonorAdminOptions();
+    }
+
+    /**
+     * Register the donors admin page, deferring conditionals and DB queries to appropriate hooks.
+     *
+     * @unreleased
+     */
+    private function registerDonorsAdminPage()
+    {
+        // Register new admin page if user hasn't chosen to use the legacy one
+        add_action('admin_menu', function () {
+            if ($this->shouldShowLegacyDonorsPage()) {
+                return;
+            }
+
+            give(DonorsAdminPage::class)->registerMenuItem();
+        }, 30);
+
+        // Render the "Switch to New View" button on the legacy donors page
+        add_action('admin_head', function () {
+            if (!DonorsAdminPage::isShowing()) {
+                return;
+            }
+
+            if (!$this->shouldShowLegacyDonorsPage()) {
+                return;
+            }
+
+            give(DonorsAdminPage::class)->renderReactSwitch();
+        });
+    }
+
+    /**
+     * @unreleased
+     */
+    private function shouldShowLegacyDonorsPage(): bool
+    {
+        if (DonorsAdminPage::isShowingNewDetailsPage()) {
+            return false;
+        }
+
+        $userId = get_current_user_id();
+
+        return (bool) get_user_meta($userId, '_give_donors_archive_show_legacy', true);
     }
 
     /**

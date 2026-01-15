@@ -7,7 +7,6 @@ namespace Give\Framework\Permissions;
  */
 class DonationPermissions extends UserPermission
 {
-
     /**
      * @unreleased
      */
@@ -17,16 +16,23 @@ class DonationPermissions extends UserPermission
     }
 
     /**
-     * Donations have a special 'view_give_payments' capability separate from edit.
+     * Delete permission maps to edit permission for donations.
+     *
+     * There is no explicit delete_give_payments capability assigned to most roles,
+     * so we use edit_give_payments as the gate for delete operations.
      *
      * @unreleased
      */
-    public function canView(): bool
+    public function canDelete(): bool
     {
-        if ($this->isAdmin()) {
-            return true;
-        }
+        return $this->canEdit();
+    }
 
-        return current_user_can('view_give_payments');
+    /**
+     * @unreleased
+     */
+    public function deleteCap(): string
+    {
+        return $this->editCap();
     }
 }

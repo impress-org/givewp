@@ -139,14 +139,18 @@ export default function AdminDetailsPage<T extends Record<string, any>>({
                     id: `save-success`,
                     content: __(`${objectType.charAt(0).toUpperCase() + objectType.slice(1)} updated`, 'give'),
                 });
-            } catch (err) {
+            } catch (err: any) {
                 console.error('🔴 Save failed with error:', err);
                 setIsSaving(false);
+
+                const errorMessage = err?.message
+                    ? err.message
+                    : __(`${objectType.charAt(0).toUpperCase() + objectType.slice(1)} update failed`, 'give');
 
                 dispatch.addSnackbarNotice({
                     id: `save-error`,
                     type: 'error',
-                    content: __(`${objectType.charAt(0).toUpperCase() + objectType.slice(1)} update failed`, 'give'),
+                    content: errorMessage,
                 });
             }
         }

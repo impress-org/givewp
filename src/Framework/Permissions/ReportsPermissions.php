@@ -38,4 +38,39 @@ class ReportsPermissions
 
         return current_user_can('export_give_reports');
     }
+
+    /**
+     * Get the user capability string for the given capability type.
+     *
+     * @unreleased
+     */
+    public function getCapability(string $cap): string
+    {
+        $caps = [
+            'view' => 'view_give_reports',
+            'export' => 'export_give_reports',
+        ];
+
+        if (isset($caps[$cap])) {
+            return $caps[$cap];
+        }
+
+        return '';
+    }
+
+    /**
+     * @unreleased
+     */
+    public function viewCap(): string
+    {
+        return $this->getCapability('view');
+    }
+
+    /**
+     * @unreleased
+     */
+    public function exportCap(): string
+    {
+        return $this->getCapability('export');
+    }
 }

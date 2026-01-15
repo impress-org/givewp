@@ -3,6 +3,7 @@
 namespace Give\Donors\Endpoints;
 
 use Give\API\RestRoute;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 
 abstract class Endpoint implements RestRoute
@@ -25,6 +26,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Check user permissions
+     * @unreleased update permission capability to use facade
      * @since 4.3.1 update permissions
      * @since 2.20.0
      *
@@ -32,13 +34,13 @@ abstract class Endpoint implements RestRoute
      */
     public function permissionsCheck()
     {
-        if (current_user_can('manage_options') || current_user_can('view_give_payments')) {
+        if (UserPermissions::donors()->canView()) {
             return true;
         }
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__("You don't have permission to view Donors", 'give'),
+            __("You don't have permission to view Donors", 'give'),
             ['status' => is_user_logged_in() ? 403 : 401]
         );
     }

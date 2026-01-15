@@ -9,6 +9,7 @@ use Exception;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use WP_Error;
 use WP_REST_Controller;
@@ -34,6 +35,7 @@ class CampaignStatisticsController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased update permission capability to use facade
      * @since 4.13.0 add schema
      * @since 4.0.0
      */
@@ -47,7 +49,7 @@ class CampaignStatisticsController extends WP_REST_Controller
                     'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'get_items'],
                     'permission_callback' => function () {
-                        return current_user_can('manage_options');
+                        return UserPermissions::campaigns()->canView();
                     },
                     'args' => [
                         'id' => [
