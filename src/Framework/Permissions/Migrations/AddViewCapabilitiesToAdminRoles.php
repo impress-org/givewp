@@ -9,19 +9,18 @@ use Give\Framework\Migrations\Contracts\Migration;
 /**
  * Adds new view capabilities to give_manager and administrator roles.
  *
- * This migration adds the new view_give_forms and view_give_payments capabilities
- * that were added to get_core_caps() for existing installations.
+ * This migration adds the new view_give_forms and view_give_payments capabilities that were added to get_core_caps() for existing installations.
  *
  * @unreleased
  */
-class AddViewCapabilitiesToManagerRole extends Migration
+class AddViewCapabilitiesToAdminRoles extends Migration
 {
     /**
      * @inheritdoc
      */
     public static function id(): string
     {
-        return 'add_view_capabilities_to_manager_role';
+        return 'add_view_capabilities_to_admin_roles';
     }
 
     /**

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Give\Tests\Unit\Framework\Permissions\Migrations;
 
-use Give\Framework\Permissions\Migrations\AddViewCapabilitiesToManagerRole;
+use Give\Framework\Permissions\Migrations\AddViewCapabilitiesToAdminRoles;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
  * @unreleased
  *
- * @covers \Give\Framework\Permissions\Migrations\AddViewCapabilitiesToManagerRole
+ * @covers \Give\Framework\Permissions\Migrations\AddViewCapabilitiesToAdminRoles
  */
-final class AddViewCapabilitiesToManagerRoleTest extends TestCase
+final class AddViewCapabilitiesToAdminRolesTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -28,7 +28,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
         $wp_roles->remove_cap('give_manager', 'view_give_forms');
 
         // Act: Run the migration
-        (new AddViewCapabilitiesToManagerRole())->run();
+        (new AddViewCapabilitiesToAdminRoles())->run();
 
         // Assert: view_give_forms should be added to the role
         $this->assertTrue(
@@ -48,7 +48,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
         $wp_roles->remove_cap('give_manager', 'view_give_payments');
 
         // Act: Run the migration
-        (new AddViewCapabilitiesToManagerRole())->run();
+        (new AddViewCapabilitiesToAdminRoles())->run();
 
         // Assert: view_give_payments should be added to the role
         $this->assertTrue(
@@ -68,7 +68,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
         $wp_roles->remove_cap('administrator', 'view_give_forms');
 
         // Act: Run the migration
-        (new AddViewCapabilitiesToManagerRole())->run();
+        (new AddViewCapabilitiesToAdminRoles())->run();
 
         // Assert: view_give_forms should be added to the role
         $this->assertTrue(
@@ -88,7 +88,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
         $wp_roles->remove_cap('administrator', 'view_give_payments');
 
         // Act: Run the migration
-        (new AddViewCapabilitiesToManagerRole())->run();
+        (new AddViewCapabilitiesToAdminRoles())->run();
 
         // Assert: view_give_payments should be added to the role
         $this->assertTrue(
@@ -112,7 +112,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
         $user->set_role('give_manager');
 
         // Act: Run the migration
-        (new AddViewCapabilitiesToManagerRole())->run();
+        (new AddViewCapabilitiesToAdminRoles())->run();
 
         // Clear WordPress user cache and refresh user data
         clean_user_cache($user->ID);
@@ -140,7 +140,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
         $user->set_role('give_manager');
 
         // Act: Run the migration
-        (new AddViewCapabilitiesToManagerRole())->run();
+        (new AddViewCapabilitiesToAdminRoles())->run();
 
         // Clear WordPress user cache and refresh user data
         clean_user_cache($user->ID);
@@ -168,7 +168,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
         $user->set_role('administrator');
 
         // Act: Run the migration
-        (new AddViewCapabilitiesToManagerRole())->run();
+        (new AddViewCapabilitiesToAdminRoles())->run();
 
         // Clear WordPress user cache and refresh user data
         clean_user_cache($user->ID);
@@ -196,7 +196,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
         $user->set_role('administrator');
 
         // Act: Run the migration
-        (new AddViewCapabilitiesToManagerRole())->run();
+        (new AddViewCapabilitiesToAdminRoles())->run();
 
         // Clear WordPress user cache and refresh user data
         clean_user_cache($user->ID);
@@ -229,7 +229,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
         $accountantHadViewPayments = $wp_roles->roles['give_accountant']['capabilities']['view_give_payments'] ?? false;
 
         // Act: Run the migration
-        (new AddViewCapabilitiesToManagerRole())->run();
+        (new AddViewCapabilitiesToAdminRoles())->run();
 
         // Assert: Other roles should not be affected by this migration
         $this->assertEquals(
@@ -262,7 +262,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
      */
     public function testMigrationHasCorrectId(): void
     {
-        $this->assertSame('add_view_capabilities_to_manager_role', AddViewCapabilitiesToManagerRole::id());
+        $this->assertSame('add_view_capabilities_to_admin_roles', AddViewCapabilitiesToAdminRoles::id());
     }
 
     /**
@@ -272,7 +272,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
     {
         $this->assertSame(
             'Add view capabilities to GiveWP Manager and Administrator roles',
-            AddViewCapabilitiesToManagerRole::title()
+            AddViewCapabilitiesToAdminRoles::title()
         );
     }
 
@@ -281,7 +281,7 @@ final class AddViewCapabilitiesToManagerRoleTest extends TestCase
      */
     public function testMigrationHasValidTimestamp(): void
     {
-        $timestamp = AddViewCapabilitiesToManagerRole::timestamp();
+        $timestamp = AddViewCapabilitiesToAdminRoles::timestamp();
 
         $this->assertIsInt($timestamp);
         $this->assertGreaterThan(0, $timestamp);

@@ -4,7 +4,7 @@ namespace Give\ServiceProviders;
 
 use Closure;
 use Give\Framework\Migrations\MigrationsRegister;
-use Give\Framework\Permissions\Migrations\AddViewCapabilitiesToManagerRole;
+use Give\Framework\Permissions\Migrations\AddViewCapabilitiesToAdminRoles;
 use Give\Framework\Permissions\Migrations\FixGiveAccountantCapabilities;
 use Give\Framework\Permissions\Migrations\FixGiveWorkerCapabilities;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
@@ -43,7 +43,7 @@ class LegacyServiceProvider implements ServiceProvider
     /**
      * Register migrations for legacy components.
      *
-     * @unreleased add AddViewCapabilitiesToManagerRole migration
+     * @unreleased add AddViewCapabilitiesToAdminRoles migration
      * @unreleased add FixGiveWorkerCapabilities migration
      */
     private function registerMigrations(): void
@@ -51,7 +51,7 @@ class LegacyServiceProvider implements ServiceProvider
         give(MigrationsRegister::class)->addMigrations([
             FixGiveWorkerCapabilities::class,
             FixGiveAccountantCapabilities::class,
-            AddViewCapabilitiesToManagerRole::class,
+            AddViewCapabilitiesToAdminRoles::class,
         ]);
     }
 
