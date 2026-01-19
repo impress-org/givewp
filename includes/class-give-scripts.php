@@ -63,7 +63,6 @@ class Give_Scripts {
 			add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_styles' ] );
 			add_action( 'enqueue_block_editor_assets', [ $this, 'gutenberg_admin_scripts' ] );
 			add_action( 'admin_head', [ $this, 'global_admin_head' ] );
-
 		} else {
 			add_action( 'wp_enqueue_scripts', [ $this, 'public_enqueue_styles' ] );
 			add_action( 'wp_enqueue_scripts', [ $this, 'public_enqueue_scripts' ] );
@@ -88,9 +87,13 @@ class Give_Scripts {
 	/**
 	 * Registers all plugin styles.
 	 *
+     * @unreleased Prevent loading styles on non-Give pages.
 	 * @since 2.1.0
 	 */
 	public function register_styles() {
+        if (!Give\Helpers\Frontend\Page::hasGiveContent()) {
+            return;
+        }
 
 		// Global WP-admin.
 		wp_register_style( 'give-admin-global-styles', GIVE_PLUGIN_URL . 'build/assets/dist/css/admin-global' . $this->direction . '.css', [], GIVE_VERSION );
@@ -115,9 +118,14 @@ class Give_Scripts {
 	/**
 	 * Registers all plugin scripts.
 	 *
+     * @unreleased Prevent loading scripts on non-Give pages.
 	 * @since 2.1.0
 	 */
 	public function register_scripts() {
+        if (!Give\Helpers\Frontend\Page::hasGiveContent()) {
+            return;
+        }
+
         // WP-Admin.
         EnqueueScript::make(
             'give-admin-scripts',
@@ -454,9 +462,14 @@ class Give_Scripts {
 	/**
 	 * Enqueues public styles.
 	 *
+     * @unreleased Prevent loading styles on non-Give pages.
 	 * @since 2.1.0
 	 */
 	public function public_enqueue_styles() {
+        if (!Give\Helpers\Frontend\Page::hasGiveContent()) {
+            return;
+        }
+
 		wp_enqueue_style( 'give-styles' );
 	}
 
@@ -464,9 +477,14 @@ class Give_Scripts {
 	/**
 	 * Enqueues public scripts.
 	 *
+     * @unreleased Prevent loading scripts on non-Give pages.
 	 * @since 2.1.0
 	 */
 	public function public_enqueue_scripts() {
+        if (!Give\Helpers\Frontend\Page::hasGiveContent()) {
+            return;
+        }
+
 		wp_enqueue_script( 'give' );
 
 		$this->public_localize_scripts();

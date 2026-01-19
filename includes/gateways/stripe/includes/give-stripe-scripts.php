@@ -16,11 +16,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load Frontend javascript
  *
+ * @unreleased Prevent loading scripts on non-Give pages.
  * @since 2.5.0
  *
  * @return void
  */
 function give_stripe_frontend_scripts() {
+    if (!Give\Helpers\Frontend\Page::hasGiveContent()) {
+        return;
+    }
 
 	/**
 	 * Bailout, if Stripe account is not configured.

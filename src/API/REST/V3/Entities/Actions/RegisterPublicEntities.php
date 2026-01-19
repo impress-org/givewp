@@ -4,6 +4,7 @@ namespace Give\API\REST\V3\Entities\Actions;
 
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
+use Give\Helpers\Frontend\Page;
 
 /**
  * @since 4.13.1
@@ -11,10 +12,15 @@ use Give\Helpers\Language;
 class RegisterPublicEntities
 {
     /**
+     * @unreleased Prevent loading scripts on non-Give pages.
      * @since 4.13.1
      */
     public function __invoke()
     {
+        if (!is_admin() && !Page::hasGiveContent()) {
+            return;
+        }
+
         $handleName = 'givewp-entities-public';
         $scriptAsset = ScriptAsset::get(GIVE_PLUGIN_DIR . 'build/entitiesPublic.asset.php');
 
