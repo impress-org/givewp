@@ -117,7 +117,7 @@ class ValidationRouteData implements Arrayable
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 3.22.0
      */
     private function isValidForm(DonationForm $form): bool

@@ -7,7 +7,7 @@ use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Revenue\Repositories\Revenue;
 
 /**
- * @unreleased rename class to DeleteRevenueWhenDonationPostDeleted
+ * @since 4.14.0 rename class to DeleteRevenueWhenDonationPostDeleted
  * @since 2.9.2
  */
 class DeleteRevenueWhenDonationPostDeleted

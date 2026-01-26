@@ -162,7 +162,7 @@ class Give_Roles {
 			}
 
 			// Add Capabilities to Give Workers User Role.
-            // @unreleased replaced edit_give_payments with view_give_payments, added view_give_forms
+            // @since 4.14.0 replaced edit_give_payments with view_give_payments, added view_give_forms
 			$wp_roles->add_cap( 'give_worker', 'view_give_payments' );
 			$wp_roles->add_cap( 'give_worker', 'view_give_forms' );
 			$wp_roles->add_cap( 'give_worker', 'delete_give_forms' );
@@ -177,7 +177,7 @@ class Give_Roles {
 			$wp_roles->add_cap( 'give_worker', 'read_private_give_forms' );
 
 			// Add Capabilities to Give Accountant User Role.
-            // @unreleased replaced edit_give_forms with view_give_forms
+            // @since 4.14.0 replaced edit_give_forms with view_give_forms
 			$wp_roles->add_cap( 'give_accountant', 'view_give_forms' );
 			$wp_roles->add_cap( 'give_accountant', 'read_private_give_forms' );
 			$wp_roles->add_cap( 'give_accountant', 'view_give_reports' );
@@ -193,7 +193,7 @@ class Give_Roles {
 	 *
 	 * Retrieve core post type capabilities.
 	 *
-     * @unreleased added view to capability types
+     * @since 4.14.0 added view to capability types
 	 * @since  1.0
 	 * @access public
 	 *
@@ -279,7 +279,7 @@ class Give_Roles {
 	 *
 	 * Remove core post type capabilities (called on uninstall).
 	 *
-     * @unreleased added view_give_payments to remove list
+     * @since 4.14.0 added view_give_payments to remove list
 	 * @since  1.0
 	 * @access public
 	 *
@@ -338,7 +338,7 @@ class Give_Roles {
 			$wp_roles->remove_cap( 'give_worker', 'read_private_give_forms' );
 
 			// Remove Capabilities from Give Accountant User Role.
-            // @unreleased replaced edit_give_forms with view_give_forms
+            // @since 4.14.0 replaced edit_give_forms with view_give_forms
 			$wp_roles->remove_cap( 'give_accountant', 'view_give_forms' );
 			$wp_roles->remove_cap( 'give_accountant', 'read_private_give_forms' );
 			$wp_roles->remove_cap( 'give_accountant', 'view_give_reports' );

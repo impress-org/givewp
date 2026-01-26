@@ -7,14 +7,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 final class TestSensitiveDataPermissions extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canViewTrueProvider
      */
     public function testCanViewShouldBeTrue(string $role): void
@@ -30,7 +30,7 @@ final class TestSensitiveDataPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canViewFalseProvider
      */
     public function testCanViewShouldBeFalse(string $role): void
@@ -46,7 +46,7 @@ final class TestSensitiveDataPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testAdminWithManageOptionsAlwaysReturnsTrue(): void
     {

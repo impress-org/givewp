@@ -74,7 +74,7 @@ class Reports
 
     /**
      * Add Reports submenu page to admin menu
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      */
     public function add_page()
     {

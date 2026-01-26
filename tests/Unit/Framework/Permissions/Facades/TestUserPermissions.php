@@ -13,14 +13,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 final class TestUserPermissions extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testDonationForms(): void
     {
@@ -31,7 +31,7 @@ final class TestUserPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testDonors(): void
     {
@@ -42,7 +42,7 @@ final class TestUserPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testDonations(): void
     {
@@ -53,7 +53,7 @@ final class TestUserPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testReports(): void
     {
@@ -64,7 +64,7 @@ final class TestUserPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testSensitiveData(): void
     {
@@ -75,7 +75,7 @@ final class TestUserPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testSettings(): void
     {

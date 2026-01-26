@@ -43,7 +43,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
-     * @unreleased move donor page registration to methods to defer conditionals and DB queries to appropriate hooks.
+     * @since 4.14.0 move donor page registration to methods to defer conditionals and DB queries to appropriate hooks.
      * @since 3.7.0 Register "AddPhoneColumn" migration and add the "give_admin_donor_details_updating" action
      */
     public function boot()
@@ -65,7 +65,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Register the donors admin page, deferring conditionals and DB queries to appropriate hooks.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function registerDonorsAdminPage()
     {
@@ -93,7 +93,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     private function shouldShowLegacyDonorsPage(): bool
     {

@@ -121,7 +121,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testGetDonorShouldReturnDonationsLink()
     {
@@ -146,7 +146,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testGetDonorShouldReturnSubscriptionsLink()
     {
@@ -196,7 +196,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testGetDonorShouldEmbedDonations()
     {
@@ -222,7 +222,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testGetDonorShouldEmbedSubscriptions()
     {
@@ -267,7 +267,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased name and lastName should return only the first letter of the last name when sensitive data is not included
+     * @since 4.14.0 name and lastName should return only the first letter of the last name when sensitive data is not included
      * @since 4.0.0
      *
      * @throws Exception
@@ -496,7 +496,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      *
      * @throws Exception
      */
@@ -533,7 +533,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      *
      * @throws Exception
      */
@@ -597,7 +597,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      *
      * @throws Exception
      */
@@ -617,7 +617,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      *
      * @throws Exception
      */
@@ -629,7 +629,7 @@ class DonorRouteGetTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      *
      * @throws Exception
      */

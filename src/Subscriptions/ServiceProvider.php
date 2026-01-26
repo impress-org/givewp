@@ -40,7 +40,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
-     * @unreleased move subscription page registration to method to defer conditionals and DB queries to appropriate hooks.
+     * @since 4.14.0 move subscription page registration to method to defer conditionals and DB queries to appropriate hooks.
      */
     public function boot()
     {
@@ -53,7 +53,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Register the subscriptions admin page, deferring conditionals and DB queries to appropriate hooks.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function registerSubscriptionsAdminPage()
     {
@@ -81,7 +81,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     private function shouldShowLegacySubscriptionsPage(): bool
     {

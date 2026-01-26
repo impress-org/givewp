@@ -28,7 +28,7 @@ class Query
     }
 
     /**
-     * @unreleased Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
+     * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
      * @since 3.14.0 Consider the donation mode (test or live) instead of querying both modes together
      * @return string
      */

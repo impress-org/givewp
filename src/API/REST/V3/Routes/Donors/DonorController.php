@@ -24,7 +24,7 @@ use WP_REST_Server;
  * The methods using snake case like register_routes() are present in the base class,
  * and the methods using camel case like getSortColumn() are available only on this class.
  *
- * @unreleased Extract permissions logic to separate classes
+ * @since 4.14.0 Extract permissions logic to separate classes
  * @since 4.4.0 Extends WP_REST_Controller class and rename methods
  * @since 4.0.0
  */
@@ -109,7 +109,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
-     * @unreleased Use Headers::addPagination() helper for pagination headers
+     * @since 4.14.0 Use Headers::addPagination() helper for pagination headers
      * @since 4.8.0 Add support for search parameter
      * @since 4.0.0
      *
@@ -249,7 +249,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Use DonorPermissions class
+     * @since 4.14.0 Use DonorPermissions class
      * @since 4.0.0
      *
      * @param WP_REST_Request $request
@@ -262,7 +262,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Use DonorPermissions class
+     * @since 4.14.0 Use DonorPermissions class
      * @since 4.0.0
      *
      * @param WP_REST_Request $request
@@ -275,7 +275,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Use DonorPermissions class
+     * @since 4.14.0 Use DonorPermissions class
      * @since 4.4.0
      *
      * @param WP_REST_Request $request
@@ -288,7 +288,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Add links to donations and subscriptions and format dates as strings using Item::formatDatesForResponse
+     * @since 4.14.0 Add links to donations and subscriptions and format dates as strings using Item::formatDatesForResponse
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.4.0
      */
@@ -354,7 +354,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Add missing properties to the schema
+     * @since 4.14.0 Add missing properties to the schema
      * @since 4.13.0 add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor and add custom fields schema

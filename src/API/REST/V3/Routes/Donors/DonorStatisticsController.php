@@ -106,7 +106,7 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.4.0
      *
      * @param WP_REST_Request $request
@@ -119,7 +119,7 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Add donor link to the response
+     * @since 4.14.0 Add donor link to the response
      * @since 4.4.0
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
@@ -164,7 +164,7 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Moved from getSchema to get_item_schema and added response schema
+     * @since 4.14.0 Moved from getSchema to get_item_schema and added response schema
      * @since 4.13.0
      */
     public function get_item_schema(): array

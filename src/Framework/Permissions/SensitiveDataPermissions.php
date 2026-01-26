@@ -5,7 +5,7 @@ namespace Give\Framework\Permissions;
 use Give\Framework\Permissions\Traits\WithAdminAccess;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class SensitiveDataPermissions
 {
@@ -14,7 +14,7 @@ class SensitiveDataPermissions
     /**
      * Check if user can view sensitive donor data (e.g., email, address).
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function canView(): bool
     {

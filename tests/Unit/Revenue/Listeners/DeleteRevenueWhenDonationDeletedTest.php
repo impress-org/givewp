@@ -10,14 +10,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class DeleteRevenueWhenDonationDeletedTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testRevenueIsDeletedWhenDonationIsDeleted(): void
     {
@@ -47,7 +47,7 @@ class DeleteRevenueWhenDonationDeletedTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     private function getRevenueForDonation(int $donationId)
     {

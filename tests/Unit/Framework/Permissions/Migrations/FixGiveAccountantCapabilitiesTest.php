@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.14.0
  *
  * @covers \Give\Framework\Permissions\Migrations\FixGiveAccountantCapabilities
  */
@@ -18,7 +18,7 @@ final class FixGiveAccountantCapabilitiesTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationRemovesEditGiveFormsFromGiveAccountantRole(): void
     {
@@ -44,7 +44,7 @@ final class FixGiveAccountantCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGiveFormsToGiveAccountantRole(): void
     {
@@ -64,7 +64,7 @@ final class FixGiveAccountantCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationRemovesEditGiveFormsFromIndividualUser(): void
     {
@@ -97,7 +97,7 @@ final class FixGiveAccountantCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGiveFormsToIndividualUser(): void
     {
@@ -125,7 +125,7 @@ final class FixGiveAccountantCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationDoesNotAffectOtherRoles(): void
     {
@@ -164,7 +164,7 @@ final class FixGiveAccountantCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationHasCorrectId(): void
     {
@@ -172,7 +172,7 @@ final class FixGiveAccountantCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationHasCorrectTitle(): void
     {
@@ -180,7 +180,7 @@ final class FixGiveAccountantCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationHasValidTimestamp(): void
     {

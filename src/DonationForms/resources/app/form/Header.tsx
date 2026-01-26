@@ -15,7 +15,7 @@ const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
 const HeaderImageTemplate = withTemplateWrapper(formTemplates.layouts.headerImage);
 
 /**
- * @unreleased Make the goal currency use the base currency always
+ * @since 4.14.0.0 Make the goal currency use the base currency always
  * @since 3.0.0
  */
 export default function Header({form}: {form: DonationForm}) {

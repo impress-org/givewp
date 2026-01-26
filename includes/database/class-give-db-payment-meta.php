@@ -45,7 +45,7 @@ class Give_DB_Payment_Meta extends Give_DB_Meta {
 	 *
 	 * @access  public
 	 *
-	 * @unreleased Remove {$wpdb->paymentmeta} registration in favor of {$wpdb->donationmeta}
+	 * @since 4.14.0 Remove {$wpdb->paymentmeta} registration in favor of {$wpdb->donationmeta}
 	 * @since   2.0
 	 */
 	public function __construct() {

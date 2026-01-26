@@ -288,7 +288,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function get_items_permissions_check($request): bool
@@ -297,7 +297,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function create_item_permissions_check($request): bool
@@ -306,7 +306,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function get_item_permissions_check($request): bool
@@ -315,7 +315,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function update_item_permissions_check($request): bool
@@ -324,7 +324,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function delete_item_permissions_check($request): bool
@@ -333,7 +333,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Format dates as strings using Item::formatDatesForResponse
+     * @since 4.14.0 Format dates as strings using Item::formatDatesForResponse
      * @since 4.8.0
      */
     public function prepare_item_for_response($note, $request): WP_REST_Response
@@ -380,7 +380,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     /**
      * Get the subscription note schema, conforming to JSON Schema.
      *
-     * @unreleased Add date format examples
+     * @since 4.14.0 Add date format examples
      * @since 4.8.0
      *
      * @return array

@@ -72,7 +72,7 @@ class Frontend
      * Return form id if admin previewing donation form.
      * Note: only for internal use. This function can be update or remove in future.
      *
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.7.0
      * @return int|null
      */

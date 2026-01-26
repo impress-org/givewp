@@ -43,7 +43,7 @@ class LegacyServiceProvider implements ServiceProvider
     /**
      * Register migrations for legacy components.
      *
-     * @unreleased added migrations FixGiveWorkerCapabilities, FixGiveAccountantCapabilities, AddViewCapabilitiesToAdminRoles
+     * @since 4.14.0 added migrations FixGiveWorkerCapabilities, FixGiveAccountantCapabilities, AddViewCapabilitiesToAdminRoles
      */
     private function registerMigrations(): void
     {

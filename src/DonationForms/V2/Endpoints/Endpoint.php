@@ -39,7 +39,7 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Check user permissions
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @return bool|WP_Error
      */
     public function permissionsCheck()

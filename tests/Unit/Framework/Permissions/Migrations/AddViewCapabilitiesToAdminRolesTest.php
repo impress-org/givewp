@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.14.0
  *
  * @covers \Give\Framework\Permissions\Migrations\AddViewCapabilitiesToAdminRoles
  */
@@ -18,7 +18,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGiveFormsToGiveManagerRole(): void
     {
@@ -38,7 +38,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGivePaymentsToGiveManagerRole(): void
     {
@@ -58,7 +58,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGiveFormsToAdministratorRole(): void
     {
@@ -78,7 +78,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGivePaymentsToAdministratorRole(): void
     {
@@ -98,7 +98,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGiveFormsToGiveManagerUser(): void
     {
@@ -126,7 +126,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGivePaymentsToGiveManagerUser(): void
     {
@@ -154,7 +154,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGiveFormsToAdministratorUser(): void
     {
@@ -182,7 +182,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGivePaymentsToAdministratorUser(): void
     {
@@ -210,7 +210,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationDoesNotAffectOtherRoles(): void
     {
@@ -258,7 +258,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationHasCorrectId(): void
     {
@@ -266,7 +266,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationHasCorrectTitle(): void
     {
@@ -277,7 +277,7 @@ final class AddViewCapabilitiesToAdminRolesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationHasValidTimestamp(): void
     {

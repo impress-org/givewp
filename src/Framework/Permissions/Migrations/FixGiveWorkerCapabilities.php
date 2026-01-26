@@ -13,7 +13,7 @@ use Give\Framework\Migrations\Contracts\Migration;
  * not edit them. This migration removes the incorrectly assigned edit_give_payments
  * capability from the give_worker role. It also adds view_give_forms for consistency.
  *
- * @unreleased
+ * @since 4.14.0
  */
 class FixGiveWorkerCapabilities extends Migration
 {
@@ -53,7 +53,7 @@ class FixGiveWorkerCapabilities extends Migration
     /**
      * Fix capabilities at the role level.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function fixRoleCapabilities(): void
     {
@@ -86,7 +86,7 @@ class FixGiveWorkerCapabilities extends Migration
      *
      * This handles cases where edit_give_payments was manually granted to individual users.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function fixUserCapabilities(): void
     {

@@ -11,7 +11,7 @@ use Give\Framework\Migrations\Contracts\Migration;
  *
  * This migration adds the new view_give_forms and view_give_payments capabilities that were added to get_core_caps() for existing installations.
  *
- * @unreleased
+ * @since 4.14.0
  */
 class AddViewCapabilitiesToAdminRoles extends Migration
 {
@@ -51,7 +51,7 @@ class AddViewCapabilitiesToAdminRoles extends Migration
     /**
      * Add view capabilities at the role level.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function fixRoleCapabilities(): void
     {
@@ -81,7 +81,7 @@ class AddViewCapabilitiesToAdminRoles extends Migration
     /**
      * Add view capabilities at the user level for all give_manager and administrator users.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function fixUserCapabilities(): void
     {

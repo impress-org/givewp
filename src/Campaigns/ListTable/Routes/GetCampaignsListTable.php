@@ -225,7 +225,7 @@ class GetCampaignsListTable implements RestRoute
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.3.1 update permissions
      * @since 4.0.0
      *

@@ -5,7 +5,7 @@ namespace Give\Framework\Permissions;
 use Give\Framework\Permissions\Traits\WithAdminAccess;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class ReportsPermissions
 {
@@ -14,7 +14,7 @@ class ReportsPermissions
     /**
      * Check if user can view reports.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function canView(): bool
     {
@@ -28,7 +28,7 @@ class ReportsPermissions
     /**
      * Check if user can export reports.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function canExport(): bool
     {
@@ -42,7 +42,7 @@ class ReportsPermissions
     /**
      * Get the user capability string for the given capability type.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function getCapability(string $cap): string
     {
@@ -59,7 +59,7 @@ class ReportsPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function viewCap(): string
     {
@@ -67,7 +67,7 @@ class ReportsPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function exportCap(): string
     {

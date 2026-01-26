@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Creates the admin submenu pages under the Give menu and assigns their
  * links to global variables
  *
- * @unreleased update permission capability to use facade
+ * @since 4.14.0 update permission capability to use facade
  * @since 1.0
  *
  * @global $give_settings_page

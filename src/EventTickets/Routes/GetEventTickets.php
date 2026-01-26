@@ -21,7 +21,7 @@ class GetEventTickets implements RestRoute
     /**
      * @inheritDoc
      *
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 3.20.0 Set the permission callback to "read".
      * @since 3.6.0
      */

@@ -50,7 +50,7 @@ class CampaignDonationsBlockViewModel
 
 
     /**
-     * @unreleased add avatar URL to donations data
+     * @since 4.14.0 add avatar URL to donations data
      * @since 4.0.0
      */
     private function formatDonationsData(array $donations): array

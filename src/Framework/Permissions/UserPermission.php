@@ -11,7 +11,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     /**
      * Check if user can create (maps to edit capability).
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function canCreate(): bool
     {
@@ -21,7 +21,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     /**
      * Check if user can view/read.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function canView(): bool
     {
@@ -31,7 +31,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     /**
      * Check if user can edit.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function canEdit(): bool
     {
@@ -41,7 +41,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     /**
      * Check if user can delete.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function canDelete(): bool
     {
@@ -51,7 +51,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     /**
      * Check if the current user has the specified capability.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     protected function currentUserCan(string $capability): bool
     {
@@ -65,7 +65,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     /**
      * Get the user capability string for the given capability type.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function getCapability(string $cap): string
     {
@@ -75,7 +75,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function viewCap(): string
     {
@@ -83,7 +83,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function editCap(): string
     {
@@ -91,7 +91,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function deleteCap(): string
     {
@@ -99,7 +99,7 @@ abstract class UserPermission implements Contracts\UserPermissionsInterface
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     protected function getCapabilities(string $type): array
     {

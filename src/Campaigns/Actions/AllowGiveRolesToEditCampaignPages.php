@@ -14,7 +14,7 @@ use WP_User;
  * maps the meta capabilities to allow full management of campaign pages
  * for users with edit_give_forms capability.
  *
- * @unreleased
+ * @since 4.14.0
  */
 class AllowGiveRolesToEditCampaignPages
 {
@@ -30,7 +30,7 @@ class AllowGiveRolesToEditCampaignPages
      *
      * Hooked to 'map_meta_cap' filter.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function mapMetaCap(array $caps, string $cap, int $userId, array $args): array
     {
@@ -67,7 +67,7 @@ class AllowGiveRolesToEditCampaignPages
      *
      * Hooked to 'user_has_cap' filter.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function grantPublishCapability(array $allcaps, array $caps, array $args, WP_User $user): array
     {
@@ -112,7 +112,7 @@ class AllowGiveRolesToEditCampaignPages
     /**
      * Check if a post is a campaign page (with caching).
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function isCampaignPage(int $postId): bool
     {
@@ -135,7 +135,7 @@ class AllowGiveRolesToEditCampaignPages
     /**
      * Get the post ID currently being edited (with static caching).
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function getCurrentEditingPostId(): ?int
     {
@@ -179,7 +179,7 @@ class AllowGiveRolesToEditCampaignPages
     /**
      * Extract post ID from REST API route.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function getPostIdFromRestRoute(): ?int
     {

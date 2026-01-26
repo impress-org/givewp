@@ -1972,7 +1972,7 @@ function give_v20_upgrades_payment_metadata_callback() {
 /**
  * Move payment and form metadata to new table
  *
- * @unreleased Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
+ * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
  * @since  2.0
  * @return void
  */
@@ -2324,7 +2324,7 @@ function give_v201_upgrades_payment_metadata_callback() {
 /**
  * Move payment and form metadata to new table
  *
- * @unreleased Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
+ * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
  * @since  2.0.1
  * @return void
  */

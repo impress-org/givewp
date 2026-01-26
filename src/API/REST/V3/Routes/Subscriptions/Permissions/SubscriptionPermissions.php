@@ -25,7 +25,7 @@ class SubscriptionPermissions
     /**
      * Check if current user can view subscriptions.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public static function canView(): bool
     {
@@ -35,7 +35,7 @@ class SubscriptionPermissions
     /**
      * Check if current user can delete subscriptions.
      *
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      *
      * @since 4.8.0
      */
@@ -53,7 +53,7 @@ class SubscriptionPermissions
     }
 
     /**
-     * @unreleased updated to use canView method
+     * @since 4.14.0 updated to use canView method
      * @since 4.8.0
      *
      * @param WP_REST_Request $request

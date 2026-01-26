@@ -8,7 +8,7 @@
  * @subpackage  Classes/Emails
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
- * @unreleased
+ * @since 4.14.0
  */
 
 // Exit if access directly.
@@ -21,7 +21,7 @@ use Give\Donations\Models\Donation;
 if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 
 	/**
-	 * @unreleased
+	 * @since 4.14.0
 	 */
 	class Give_Failed_Donation_Email extends Give_Email_Notification {
 
@@ -29,7 +29,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 		private $donation;
 
 		/**
-		 * @unreleased
+		 * @since 4.14.0
 		 */
 		public function init() {
 
@@ -52,7 +52,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 		}
 
 		/**
-		 * @unreleased
+		 * @since 4.14.0
          *
 		 * @return string
 		 */
@@ -70,7 +70,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 			/**
 			 * Filter the default failed donation notification email message.
 			 *
-			 * @unreleased
+			 * @since 4.14.0
 			 *
 			 * @param string $default_email_body Default email message.
 			 */
@@ -78,7 +78,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 		}
 
 		/**
-		 * @unreleased
+		 * @since 4.14.0
 		 *
 		 * @param int    $payment_id The ID number of the payment.
 		 * @param string $new_status The status of the payment.
@@ -105,13 +105,13 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 			 *
 			 * @param int $payment_id Payment ID.
 			 *
-			 * @unreleased
+			 * @since 4.14.0
 			 */
 			do_action( "give_{$this->config['id']}_email_notification", $payment_id );
 		}
 
 		/**
-		 * @unreleased
+		 * @since 4.14.0
 		 *
 		 * @param int $form_id
 		 *
@@ -130,7 +130,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 			/**
 			 * Filters the failed donation notification subject.
 			 *
-			 * @unreleased
+			 * @since 4.14.0
 			 */
 			$subject = apply_filters( "give_{$this->config['id']}_get_email_subject", $subject, $this, $form_id );
 
@@ -139,7 +139,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 
 
 		/**
-		 * @unreleased
+		 * @since 4.14.0
 		 *
 		 * @param int $form_id
 		 *
@@ -156,7 +156,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 			/**
 			 * Filter the email message
 			 *
-			 * @unreleased
+			 * @since 4.14.0
 			 */
 			$message = apply_filters(
 				"give_{$this->config['id']}_get_default_email_message",
@@ -170,7 +170,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 
 
 		/**
-		 * @unreleased
+		 * @since 4.14.0
 		 *
 		 * @param int $form_id
 		 * @return array
@@ -180,7 +180,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 			 * Filters the failed donation notification email attachments.
 			 * By default, there is no attachment but plugins can hook in to provide one more multiple.
 			 *
-			 * @unreleased
+			 * @since 4.14.0
 			 */
 			$attachments = apply_filters(
 				"give_{$this->config['id']}_get_email_attachments",
@@ -193,13 +193,13 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 		}
 
 		/**
-		 * @unreleased
+		 * @since 4.14.0
 		 */
 		public function setup_email_data() {
 			/**
 			 * Filters the from name.
 			 *
-			 * @unreleased
+			 * @since 4.14.0
 			 */
 			$from_name = apply_filters(
 				'give_failed_donation_from_name',
@@ -211,7 +211,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 			/**
 			 * Filters the from email.
 			 *
-			 * @unreleased
+			 * @since 4.14.0
 			 */
 			$from_email = apply_filters(
 				'give_failed_donation_from_address',
@@ -226,7 +226,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 			/**
 			 * Filters the failed donation notification email headers.
 			 *
-			 * @unreleased
+			 * @since 4.14.0
 			 */
 			$headers = apply_filters(
 				'give_failed_donation_notification_headers',
@@ -239,7 +239,7 @@ if ( ! class_exists( 'Give_Failed_Donation_Email' ) ) :
 		}
 
 		/**
-		 * @unreleased
+		 * @since 4.14.0
          *
 		 * @param int $payment_id
 		 */

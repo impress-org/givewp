@@ -52,7 +52,7 @@ class DonationController extends WP_REST_Controller
 
     /**
      *
-     * @unreleased replaced permissionsCheck with get_item_permissions_check and get_items_permissions_check
+     * @since 4.14.0 replaced permissionsCheck with get_item_permissions_check and get_items_permissions_check
      * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.6.0
      */
@@ -706,7 +706,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function get_item_permissions_check($request)
     {
@@ -714,7 +714,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function get_items_permissions_check($request)
     {
@@ -722,7 +722,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased update method name to validationForGetMethods, replace logic with UserPermissions facade and add canViewDonations check
+     * @since 4.14.0 update method name to validationForGetMethods, replace logic with UserPermissions facade and add canViewDonations check
      * @since 4.6.0
      */
     public function validationForGetMethods(WP_REST_Request $request)
@@ -837,7 +837,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Check if current user can edit donations.
      *
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     private function canEditDonations(): bool
@@ -848,7 +848,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Check if current user can delete donations.
      *
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     private function canDeleteDonations(): bool
@@ -859,7 +859,7 @@ class DonationController extends WP_REST_Controller
     /**
      * Check if current user can refund donations.
      *
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     private function canRefundDonations(): bool

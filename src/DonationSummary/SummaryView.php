@@ -56,7 +56,7 @@ class SummaryView
     }
 
     /**
-     * @unreleased load frontend assets
+     * @since 4.14.0 load frontend assets
      * @since 2.17.0
      */
     public function render()

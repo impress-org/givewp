@@ -11,7 +11,7 @@ use Give\Framework\FieldsAPI\Types;
 use Give\Framework\Support\Facades\Str;
 
 /**
- * @unreleased Move from Give\Donors\ViewModels to API REST V3 namespace
+ * @since 4.14.0 Move from Give\Donors\ViewModels to API REST V3 namespace
  * @since 4.4.0
  */
 class DonorViewModel
@@ -49,7 +49,7 @@ class DonorViewModel
     }
 
     /**
-     * @unreleased name and lastName should return only the first letter of the last name when sensitive data is not included
+     * @since 4.14.0 name and lastName should return only the first letter of the last name when sensitive data is not included
      * @since 4.4.0
      */
     public function exports(): array

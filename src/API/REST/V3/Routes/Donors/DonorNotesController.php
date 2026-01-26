@@ -84,7 +84,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get a collection of donor notes.
      *
-     * @unreleased Use Headers::addPagination() helper for pagination headers
+     * @since 4.14.0 Use Headers::addPagination() helper for pagination headers
      * @since 4.4.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -257,7 +257,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.4.0
      */
     public function get_items_permissions_check($request): bool
@@ -266,7 +266,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.4.0
      */
     public function create_item_permissions_check($request): bool
@@ -275,7 +275,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.4.0
      */
     public function get_item_permissions_check($request): bool
@@ -284,7 +284,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.4.0
      */
     public function update_item_permissions_check($request): bool
@@ -293,7 +293,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.4.0
      */
     public function delete_item_permissions_check($request): bool
@@ -302,7 +302,7 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased Format dates as strings using Item::formatDatesForResponse
+     * @since 4.14.0 Format dates as strings using Item::formatDatesForResponse
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.4.0
      */
@@ -348,7 +348,7 @@ class DonorNotesController extends WP_REST_Controller
     /**
      * Get the donor note schema, conforming to JSON Schema.
      *
-     * @unreleased Add date format examples
+     * @since 4.14.0 Add date format examples
      * @since 4.13.0 add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor-note and add custom fields schema

@@ -7,7 +7,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 final class TestDonorPermissions extends TestCase
 {
@@ -16,7 +16,7 @@ final class TestDonorPermissions extends TestCase
     /**
      * Roles with view_give_reports can view donors.
      *
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canViewTrueProvider
      */
     public function testCanViewShouldBeTrue(string $role): void
@@ -35,7 +35,7 @@ final class TestDonorPermissions extends TestCase
      * Roles without view_give_reports cannot view donors.
      * give_worker can view donations but NOT donors.
      *
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canViewFalseProvider
      */
     public function testCanViewShouldBeFalse(string $role): void
@@ -53,7 +53,7 @@ final class TestDonorPermissions extends TestCase
     /**
      * Roles with edit_give_payments can edit donors.
      *
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canEditTrueProvider
      */
     public function testCanEditShouldBeTrue(string $role): void
@@ -71,7 +71,7 @@ final class TestDonorPermissions extends TestCase
     /**
      * Roles without edit_give_payments cannot edit donors.
      *
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canEditFalseProvider
      */
     public function testCanEditShouldBeFalse(string $role): void
@@ -89,7 +89,7 @@ final class TestDonorPermissions extends TestCase
     /**
      * Roles with delete_give_payments can delete donors.
      *
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canDeleteTrueProvider
      */
     public function testCanDeleteShouldBeTrue(string $role): void
@@ -107,7 +107,7 @@ final class TestDonorPermissions extends TestCase
     /**
      * Roles without delete_give_payments cannot delete donors.
      *
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canDeleteFalseProvider
      */
     public function testCanDeleteShouldBeFalse(string $role): void
@@ -123,7 +123,7 @@ final class TestDonorPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testAdminWithManageOptionsAlwaysReturnsTrue(): void
     {

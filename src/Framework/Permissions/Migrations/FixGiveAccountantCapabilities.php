@@ -13,7 +13,7 @@ use Give\Framework\Migrations\Contracts\Migration;
  * not edit them. This migration removes the incorrectly assigned edit_give_forms
  * capability from the give_accountant role and replaces it with view_give_forms.
  *
- * @unreleased
+ * @since 4.14.0
  */
 class FixGiveAccountantCapabilities extends Migration
 {
@@ -53,7 +53,7 @@ class FixGiveAccountantCapabilities extends Migration
     /**
      * Fix capabilities at the role level.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function fixRoleCapabilities(): void
     {
@@ -83,7 +83,7 @@ class FixGiveAccountantCapabilities extends Migration
      *
      * This handles cases where edit_give_forms was manually granted to individual users.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     private function fixUserCapabilities(): void
     {

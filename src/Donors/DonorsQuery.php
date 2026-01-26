@@ -141,7 +141,7 @@ class DonorsQuery
     /**
      * Clone the query builder.
      *
-     * @unreleased
+     * @since 4.14.0
      *
      * @return self
      */

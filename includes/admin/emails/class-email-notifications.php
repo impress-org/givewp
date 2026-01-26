@@ -183,7 +183,7 @@ class Give_Email_Notifications {
 	/**
 	 * Add email notifications
 	 *
-	 * @unreleased Add failed donation email.
+	 * @since 4.14.0 Add failed donation email.
 	 * @since  2.0
 	 * @access private
 	 */

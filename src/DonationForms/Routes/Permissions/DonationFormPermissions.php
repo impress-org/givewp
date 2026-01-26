@@ -15,7 +15,7 @@ class DonationFormPermissions
     /**
      * Check if current user can edit donation forms.
      *
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.10.1
      */
     public static function canEdit(): bool
@@ -26,7 +26,7 @@ class DonationFormPermissions
     /**
      * Check if current user can view private/draft donation forms.
      *
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.10.1
      */
     public static function canViewPrivate(): bool

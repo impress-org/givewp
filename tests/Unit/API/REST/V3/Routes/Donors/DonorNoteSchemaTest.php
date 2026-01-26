@@ -15,7 +15,7 @@ use Give\Tests\Unit\API\REST\V3\SchemaValidationTrait;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class DonorNoteSchemaTest extends RestApiTestCase
 {
@@ -24,7 +24,7 @@ class DonorNoteSchemaTest extends RestApiTestCase
     use SchemaValidationTrait;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testDonorNoteSchemaShouldMatchActualResponse()
     {
@@ -61,7 +61,7 @@ class DonorNoteSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testDonorNoteCollectionSchemaShouldMatchActualResponse()
     {
@@ -101,7 +101,7 @@ class DonorNoteSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testDateFormatsShouldBeConsistentWithWordPressStandards()
     {
@@ -130,7 +130,7 @@ class DonorNoteSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      *
      * @throws Exception
      */

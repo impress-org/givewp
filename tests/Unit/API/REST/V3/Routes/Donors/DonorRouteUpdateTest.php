@@ -66,7 +66,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Update createdAt comparison to expect string format instead of DateTime object
+     * @since 4.14.0 Update createdAt comparison to expect string format instead of DateTime object
      * @since 4.4.0
      */
     public function testUpdateDonorShouldNotUpdateNonEditableFields()
@@ -349,7 +349,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Allow donors to update their own data
+     * @since 4.14.0 Allow donors to update their own data
      */
     public function testUpdateDonorShouldAllowOwnerToUpdateOwnData()
     {
@@ -388,7 +388,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Donors should not be able to update other donors' data
+     * @since 4.14.0 Donors should not be able to update other donors' data
      */
     public function testUpdateDonorShouldReturn403WhenOwnerTriesToUpdateOtherDonor()
     {

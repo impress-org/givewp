@@ -104,7 +104,7 @@ class GetDonationsRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased transactionUrl should not be included in gateway details when sensitive data is not included, lastName should return only the first letter when sensitive data is not included
+     * @since 4.14.0 transactionUrl should not be included in gateway details when sensitive data is not included, lastName should return only the first letter when sensitive data is not included
      * @since 4.0.0
      *
      * @throws Exception

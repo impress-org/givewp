@@ -29,7 +29,7 @@ class RevenueServiceProvider implements ServiceProvider
     /**
      * @inheritDoc
      *
-     * @unreleased rename delete_post handler to DeleteRevenueWhenDonationPostDeleted and add givewp_donation_deleted listener
+     * @since 4.14.0 rename delete_post handler to DeleteRevenueWhenDonationPostDeleted and add givewp_donation_deleted listener
      * @since 3.3.0 added support for givewp_donation_updated and updated give_updated_edited_donation implementation
      * @since 2.9.0
      */

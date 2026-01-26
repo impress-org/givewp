@@ -79,7 +79,7 @@ class DonationActions extends Endpoint
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.25.2
      *
      * @inheritDoc
@@ -98,7 +98,7 @@ class DonationActions extends Endpoint
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.12.0 Add trash and untrash actions
      * @since 4.3.1 add permissions check for delete
      * @since 2.20.0

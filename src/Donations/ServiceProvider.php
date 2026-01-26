@@ -113,7 +113,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Donations Admin page
      *
-     * @unreleased defer conditionals and DB queries to admin_menu hook.
+     * @since 4.14.0 defer conditionals and DB queries to admin_menu hook.
      * @since 2.20.0
      */
     private function registerDonationsAdminPage()

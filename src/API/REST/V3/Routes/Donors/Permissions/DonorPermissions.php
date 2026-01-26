@@ -9,14 +9,14 @@ use WP_Error;
 use WP_REST_Request;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class DonorPermissions
 {
     /**
      * Check if current user can edit donors.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public static function canEdit(): bool
     {
@@ -27,7 +27,7 @@ class DonorPermissions
     /**
      * Check if current user can view donors.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public static function canView(): bool
     {
@@ -37,9 +37,9 @@ class DonorPermissions
     /**
      * Check if current user owns the donor (is the donor themselves).
      *
-     * @unreleased
+     * @since 4.14.0
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public static function isOwner(int $donorId): bool
     {
@@ -56,7 +56,7 @@ class DonorPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public static function authorizationStatusCode(): int
     {
@@ -64,7 +64,7 @@ class DonorPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      *
      * @param WP_REST_Request $request
      *
@@ -100,7 +100,7 @@ class DonorPermissions
     }
 
     /**
-     * @unreleased Allow donors to update their own data
+     * @since 4.14.0 Allow donors to update their own data
      *
      * @param WP_REST_Request $request
      *

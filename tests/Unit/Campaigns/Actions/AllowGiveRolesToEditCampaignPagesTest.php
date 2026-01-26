@@ -11,7 +11,7 @@ use ReflectionClass;
 use WP_User;
 
 /**
- * @unreleased
+ * @since 4.14.0
  *
  * @covers \Give\Campaigns\Actions\AllowGiveRolesToEditCampaignPages
  */
@@ -25,7 +25,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     private AllowGiveRolesToEditCampaignPages $action;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function setUp(): void
     {
@@ -35,7 +35,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function tearDown(): void
     {
@@ -55,7 +55,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMapMetaCapGrantsAccessForCampaignPageWhenUserHasEditGiveFormsCapability(): void
     {
@@ -79,7 +79,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMapMetaCapDoesNotGrantAccessForNonCampaignPage(): void
     {
@@ -104,7 +104,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMapMetaCapDoesNotGrantAccessWhenUserLacksEditGiveFormsCapability(): void
     {
@@ -130,7 +130,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMapMetaCapIgnoresNonPageCapabilities(): void
     {
@@ -151,7 +151,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMapMetaCapHandlesPublishPostCapability(): void
     {
@@ -175,7 +175,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testGrantPublishCapabilityGrantsCapsForCampaignPage(): void
     {
@@ -205,7 +205,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testGrantPublishCapabilityGrantsMultipleCaps(): void
     {
@@ -236,7 +236,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testGrantPublishCapabilityDoesNotGrantCapsForNonCampaignPage(): void
     {
@@ -265,7 +265,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testGrantPublishCapabilityDoesNotGrantCapsWhenUserLacksEditGiveFormsCapability(): void
     {
@@ -295,7 +295,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testCampaignPageCacheIsUsed(): void
     {
@@ -331,7 +331,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      *
      * @dataProvider pageMetaCapabilitiesProvider
      */
@@ -357,7 +357,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function pageMetaCapabilitiesProvider(): array
     {

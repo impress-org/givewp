@@ -10,12 +10,12 @@ namespace Give\Framework\Permissions;
  * - give_worker should NOT be able to view donors
  * - view_give_reports is assigned to admin, manager, and accountant but NOT worker
  *
- * @unreleased
+ * @since 4.14.0
  */
 class DonorPermissions extends DonationPermissions
 {
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function canView(): bool
     {
@@ -27,7 +27,7 @@ class DonorPermissions extends DonationPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function viewCap(): string
     {

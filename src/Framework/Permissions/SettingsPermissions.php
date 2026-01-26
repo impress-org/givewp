@@ -5,7 +5,7 @@ namespace Give\Framework\Permissions;
 use Give\Framework\Permissions\Traits\WithAdminAccess;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class SettingsPermissions
 {
@@ -14,7 +14,7 @@ class SettingsPermissions
     /**
      * Check if user can manage GiveWP settings.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function canManage(): bool
     {
@@ -28,7 +28,7 @@ class SettingsPermissions
     /**
      * Get the user capability string for the given capability type.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function getCapability(string $cap): string
     {
@@ -44,7 +44,7 @@ class SettingsPermissions
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function manageCap(): string
     {

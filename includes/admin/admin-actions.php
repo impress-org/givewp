@@ -1159,7 +1159,7 @@ function give_get_user_roles() {
  * to prevent security issues if the default donor role setting is misconfigured.
  * Only basic subscriber-level roles should be available for donor registration.
  *
- * @unreleased
+ * @since 4.14.0
  * @return array
  */
 function give_get_donor_safe_user_roles() {

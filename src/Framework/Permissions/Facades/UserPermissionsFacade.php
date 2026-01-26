@@ -16,12 +16,12 @@ use Give\Framework\Permissions\EventPermissions;
  *
  * @see https://wordpress.org/documentation/article/roles-and-capabilities/
  *
- * @unreleased
+ * @since 4.14.0
  */
 class UserPermissionsFacade
 {
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function donationForms(): DonationFormPermissions
     {
@@ -29,7 +29,7 @@ class UserPermissionsFacade
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function donations(): DonationPermissions
     {
@@ -37,7 +37,7 @@ class UserPermissionsFacade
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function donors(): DonorPermissions
     {
@@ -45,7 +45,7 @@ class UserPermissionsFacade
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function campaigns(): CampaignPermissions
     {
@@ -53,7 +53,7 @@ class UserPermissionsFacade
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function reports(): ReportsPermissions
     {
@@ -61,7 +61,7 @@ class UserPermissionsFacade
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function sensitiveData(): SensitiveDataPermissions
     {
@@ -69,7 +69,7 @@ class UserPermissionsFacade
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function settings(): SettingsPermissions
     {
@@ -77,7 +77,7 @@ class UserPermissionsFacade
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function subscriptions(): SubscriptionPermissions
     {
@@ -85,7 +85,7 @@ class UserPermissionsFacade
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function events(): EventPermissions
     {

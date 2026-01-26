@@ -144,7 +144,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased name and lastName should return only the first letter of the last name when sensitive data is not included
+     * @since 4.14.0 name and lastName should return only the first letter of the last name when sensitive data is not included
      * @since 4.0.0
      *
      * @throws Exception
@@ -586,7 +586,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Update createdAt comparison to expect string format instead of DateTime object
+     * @since 4.14.0 Update createdAt comparison to expect string format instead of DateTime object
      * @since 4.0.0
      *
      * @dataProvider sortableColumnsDataProvider

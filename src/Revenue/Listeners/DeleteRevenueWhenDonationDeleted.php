@@ -7,7 +7,7 @@ use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Revenue\Repositories\Revenue;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class DeleteRevenueWhenDonationDeleted
 {
@@ -19,7 +19,7 @@ class DeleteRevenueWhenDonationDeleted
     /**
      * DeleteRevenueWhenDonationDeleted constructor.
      *
-     * @unreleased
+     * @since 4.14.0
      *
      * @param Revenue $revenueRepository
      */
@@ -31,7 +31,7 @@ class DeleteRevenueWhenDonationDeleted
     /**
      * Deletes the revenue associated with a donation when a donation is deleted
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function __invoke(Donation $donation)
     {

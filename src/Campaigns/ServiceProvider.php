@@ -179,7 +179,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.0.0
      */
     private function setupCampaignPages()
@@ -251,7 +251,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased dispatch cache campaign data action when donation is deleted
+     * @since 4.14.0 dispatch cache campaign data action when donation is deleted
      * @since 4.13.1 added givewp_campaigns_merged hook
      * @since 4.8.0
      */

@@ -11,7 +11,7 @@ class DonationsAdminPage
 {
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.20.0
      */
     public function registerMenuItem()

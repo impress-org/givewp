@@ -55,7 +55,7 @@ class DeleteDonor extends Endpoint
     }
 
     /**
-     * @unreleased replace permission callback logic with UserPermissions facade
+     * @since 4.14.0.0 replace permission callback logic with UserPermissions facade
      * @since 4.3.1 updated permissions check
      * @since 3.0.0 update validation to align with legacy view
      * @since 2.25.2

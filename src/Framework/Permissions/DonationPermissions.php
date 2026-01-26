@@ -3,12 +3,12 @@
 namespace Give\Framework\Permissions;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class DonationPermissions extends UserPermission
 {
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public static function getType(): string
     {
@@ -21,7 +21,7 @@ class DonationPermissions extends UserPermission
      * There is no explicit delete_give_payments capability assigned to most roles,
      * so we use edit_give_payments as the gate for delete operations.
      *
-     * @unreleased
+     * @since 4.14.0
      */
     public function canDelete(): bool
     {
@@ -29,7 +29,7 @@ class DonationPermissions extends UserPermission
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function deleteCap(): string
     {

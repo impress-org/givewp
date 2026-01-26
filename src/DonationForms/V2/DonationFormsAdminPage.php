@@ -60,7 +60,7 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.0.0 set submenu parent to empty string to hide "all forms" from admin menu
      */
     public function register()

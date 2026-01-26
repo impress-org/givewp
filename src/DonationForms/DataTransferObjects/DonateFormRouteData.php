@@ -149,7 +149,7 @@ class DonateFormRouteData implements Arrayable
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0.0 update permission capability to use facade
      * @since 3.14.0
      */
     private function isValidForm(DonationForm $form): bool

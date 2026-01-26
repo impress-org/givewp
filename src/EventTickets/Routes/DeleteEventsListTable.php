@@ -69,7 +69,7 @@ class DeleteEventsListTable
     }
 
     /**
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 3.6.0
      * @throws Exception
      */

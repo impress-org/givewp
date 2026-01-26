@@ -7,14 +7,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 final class TestReportsPermissions extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canViewTrueProvider
      */
     public function testCanViewShouldBeTrue(string $role): void
@@ -30,7 +30,7 @@ final class TestReportsPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canViewFalseProvider
      */
     public function testCanViewShouldBeFalse(string $role): void
@@ -46,7 +46,7 @@ final class TestReportsPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canExportTrueProvider
      */
     public function testCanExportShouldBeTrue(string $role): void
@@ -62,7 +62,7 @@ final class TestReportsPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canExportFalseProvider
      */
     public function testCanExportShouldBeFalse(string $role): void
@@ -78,7 +78,7 @@ final class TestReportsPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testAdminWithManageOptionsAlwaysReturnsTrue(): void
     {

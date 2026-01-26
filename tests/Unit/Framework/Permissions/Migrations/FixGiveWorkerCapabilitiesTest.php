@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.14.0
  *
  * @covers \Give\Framework\Permissions\Migrations\FixGiveWorkerCapabilities
  */
@@ -18,7 +18,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationRemovesEditGivePaymentsFromGiveWorkerRole(): void
     {
@@ -44,7 +44,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGivePaymentsToGiveWorkerRole(): void
     {
@@ -64,7 +64,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGiveFormsToGiveWorkerRole(): void
     {
@@ -84,7 +84,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationRemovesEditGivePaymentsFromIndividualUser(): void
     {
@@ -117,7 +117,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGivePaymentsToIndividualUser(): void
     {
@@ -145,7 +145,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationAddsViewGiveFormsToIndividualUser(): void
     {
@@ -173,7 +173,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationDoesNotAffectOtherRoles(): void
     {
@@ -212,7 +212,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationHasCorrectId(): void
     {
@@ -220,7 +220,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationHasCorrectTitle(): void
     {
@@ -228,7 +228,7 @@ final class FixGiveWorkerCapabilitiesTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testMigrationHasValidTimestamp(): void
     {

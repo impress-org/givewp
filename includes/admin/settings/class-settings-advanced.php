@@ -58,7 +58,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         /**
          * Get settings array.
          *
-         * @unreleased update donor default user role to use give_get_donor_safe_user_roles
+         * @since 4.14.0 update donor default user role to use give_get_donor_safe_user_roles
          * @since 4.1.0 Added Donation Forms section
          * @since  1.8
          * @return array

@@ -13,7 +13,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased Move from Give\Tests\Unit\Donors\ViewModels to API REST V3 namespace
+ * @since 4.14.0 Move from Give\Tests\Unit\Donors\ViewModels to API REST V3 namespace
  * @since 4.4.0
  */
 class DonorViewModelTest extends TestCase

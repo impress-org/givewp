@@ -17,7 +17,7 @@ use Give\Tests\Unit\API\REST\V3\SchemaValidationTrait;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class DonorStatisticsSchemaTest extends RestApiTestCase
 {
@@ -26,7 +26,7 @@ class DonorStatisticsSchemaTest extends RestApiTestCase
     use SchemaValidationTrait;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testDonorStatisticsSchemaShouldMatchActualResponse()
     {
@@ -60,7 +60,7 @@ class DonorStatisticsSchemaTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      *
      * @throws Exception
      */

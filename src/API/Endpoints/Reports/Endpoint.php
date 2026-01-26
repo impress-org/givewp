@@ -221,7 +221,7 @@ abstract class Endpoint implements RestRoute
     /**
      * Check permissions
      *
-     * @unreleased update permission capability to use facade
+     * @since 4.14.0 update permission capability to use facade
      * @since 3.22.2 change permissions to view_give_reports
      *
      * @param WP_REST_Request $request Current request.

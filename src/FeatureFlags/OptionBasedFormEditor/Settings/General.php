@@ -8,7 +8,7 @@ namespace Give\FeatureFlags\OptionBasedFormEditor\Settings;
 class General extends AbstractOptionBasedFormEditorSettings
 {
     /**
-     * @unreleased Remove auto_format_currency option from the list of disabled options
+     * @since 4.14.0 Remove auto_format_currency option from the list of disabled options
      * @since 3.18.0
      */
     public function getDisabledOptionIds(): array

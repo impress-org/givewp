@@ -13,7 +13,7 @@ interface SummaryProps {
 }
 
 /**
- * @unreleased Format dates as strings using formatTimestamp
+ * @since 4.14.0 Format dates as strings using formatTimestamp
  * @since 4.5.0
  */
 export default function Summary({donorId}: SummaryProps) {

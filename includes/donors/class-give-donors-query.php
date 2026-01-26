@@ -561,7 +561,7 @@ class Give_Donors_Query {
 	 *
 	 * @todo   : add phpunit test
 	 *
-	 * @unreleased Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
+	 * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
 	 * @since  2.1.0
 	 *
 	 * @access private

@@ -3,12 +3,12 @@
 namespace Give\Framework\Permissions;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 class DonationFormPermissions extends UserPermission
 {
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public static function getType(): string
     {
@@ -16,7 +16,7 @@ class DonationFormPermissions extends UserPermission
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function canViewPrivate(): bool
     {

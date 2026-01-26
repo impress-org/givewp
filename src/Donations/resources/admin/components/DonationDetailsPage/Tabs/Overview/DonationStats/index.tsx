@@ -15,7 +15,7 @@ interface DonationStatsProps {
 }
 
 /**
- * @unreleased updated to conditionally check isFeeRecoveryEnabled
+ * @since 4.14.0 updated to conditionally check isFeeRecoveryEnabled
  * @since 4.10.0 use upgrade object instead of inActive.
  * @since 4.6.0
  */

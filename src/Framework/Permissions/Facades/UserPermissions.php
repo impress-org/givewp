@@ -15,7 +15,7 @@ use Give\Framework\Support\Facades\Facade;
 /**
  * Facade for accessing user permission checks for different resources.
  *
- * @unreleased
+ * @since 4.14.0
  *
  * @method static DonationFormPermissions donationForms()
  * @method static DonationPermissions donations()

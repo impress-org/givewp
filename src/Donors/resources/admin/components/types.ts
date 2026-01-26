@@ -1,5 +1,5 @@
 /**
- * @unreleased Format dates as strings using formatTimestamp
+ * @since 4.14.0 Format dates as strings using formatTimestamp
  * @since 4.4.0
  */
 export type Donor = {

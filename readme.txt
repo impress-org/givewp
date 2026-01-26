@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 4.13.2
+Stable tag: 4.14.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -272,6 +272,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.14.0: January 28th, 2026 =
+* New: Added failed donation email notifications to keep you informed when donations don't go through
+* New: Added default country field setting for the billing address block to streamline the donation process
+* Enhancement: Improved compatibility with legacy user roles for sites upgrading from older versions of GiveWP
+* Fix: Resolved a conflict with the Paid Membership Subscriptions plugin
+* Fix: Resolved inconsistencies with the currency switcher display and functionality
+* Fix: Resolved an issue where revenue entries were not being properly removed when donations were deleted
+* Fix: Resolved schema mismatches for donors and donor subresources in the REST API V3
+* Fix: Resolved an issue with the admin fee recovery upgrade notice display
 
 = 4.13.2: December 8th, 2025 =
 * Fix: Resolved block compatibility with WordPress 6.9

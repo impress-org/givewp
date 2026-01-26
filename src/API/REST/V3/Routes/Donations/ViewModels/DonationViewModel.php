@@ -50,7 +50,7 @@ class DonationViewModel
     }
 
     /**
-     * @unreleased Add gatewayTransactionId to the sensitive data excluded list, lastName should return only the first letter when sensitive data is not included
+     * @since 4.14.0 Add gatewayTransactionId to the sensitive data excluded list, lastName should return only the first letter when sensitive data is not included
      * @since 4.6.0
      */
     public function exports(): array
@@ -213,7 +213,7 @@ class DonationViewModel
     }
 
     /**
-     * @unreleased Return gateway details without transactionUrl when sensitive data is not included
+     * @since 4.14.0 Return gateway details without transactionUrl when sensitive data is not included
      * @since 4.8.0 Return empty array if gateway is not registered
      * @since 4.6.0
      */

@@ -7,14 +7,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @unreleased
+ * @since 4.14.0
  */
 final class TestSettingsPermissions extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canManageTrueProvider
      */
     public function testCanManageShouldBeTrue(string $role): void
@@ -30,7 +30,7 @@ final class TestSettingsPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      * @dataProvider canManageFalseProvider
      */
     public function testCanManageShouldBeFalse(string $role): void
@@ -46,7 +46,7 @@ final class TestSettingsPermissions extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.0
      */
     public function testAdminWithManageOptionsAlwaysReturnsTrue(): void
     {

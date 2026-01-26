@@ -14,7 +14,7 @@ class CampaignPermissions
     /**
      * Check if current user can edit campaigns.
      *
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.10.1
      */
     public static function canEdit(): bool
@@ -25,7 +25,7 @@ class CampaignPermissions
     /**
      * Check if current user can view private/draft/archived campaigns.
      *
-     * @unreleased replace logic with UserPermissions facade
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.10.1
      */
     public static function canViewPrivate(): bool

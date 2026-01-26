@@ -38,7 +38,7 @@ class RegisterFormBuilderRestRoutes
     /**
      * Get Request
      *
-     * @unreleased replace permission callback logic with UserPermissions facade
+     * @since 4.14.0 replace permission callback logic with UserPermissions facade
      * @since 4.3.2 update capability to add edit_give_forms
      * @since 3.0.0
      *
@@ -66,7 +66,7 @@ class RegisterFormBuilderRestRoutes
     /**
      * Post Request
      *
-     * @unreleased replace permission callback logic with UserPermissions facade
+     * @since 4.14.0 replace permission callback logic with UserPermissions facade
      * @since 4.3.2 update capability to add edit_give_forms
      * @since 3.0.0
      *

@@ -35,7 +35,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased updated permission logic with UserPermissions facade
+     * @since 4.14.0 updated permission logic with UserPermissions facade
      * @since 4.13.1
      */
     public function register_routes()

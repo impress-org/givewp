@@ -278,7 +278,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased Update createdAt type assertion to accept array ['string', 'null']
+     * @since 4.14.0 Update createdAt type assertion to accept array ['string', 'null']
      * @since 4.8.0
      */
     public function testGetItemSchema()
