@@ -112,6 +112,7 @@ GiveWP comes with several payment gateway options:
 * **Offline Donations** -- Enable your donors to send checks or physical donations with an offline gateway with instructions.
 * **Test Gateway** -- use the Test Gateway to see exactly how your donors will walk through the donation process.
 * **And many more Gateways** - View additional payment gateways on our website. These include Authorize.net, Bitpay, Square, Razorpay, Paytm, and more.
+* **In-Person Donations (Tap To Pay)** -- Accept swipe, insert, or Tap to Pay card donations right from your mobile device or Stripe reader with [Jovvie](https://wordpress.org/plugins/jovvie-in-person-payments-givewp/).
 
 === ⚙️ Extend GiveWP with Powerful Add-ons ===
 
