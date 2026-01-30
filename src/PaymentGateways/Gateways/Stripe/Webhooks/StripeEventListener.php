@@ -59,9 +59,7 @@ abstract class StripeEventListener implements EventListener
     /**
      * Get Stripe Connect options for API calls.
      *
-     * Returns an array with the stripe_account option if a connected account is configured
-     * for the given form. This is required for Stripe Connect to make API calls to the
-     * correct connected account instead of the platform account.
+     * Returns an array with the stripe_account option if a connected account is configured for the given form. This is required for Stripe Connect to make API calls to the correct connected account instead of the platform account.
      *
      * @unreleased
      *
