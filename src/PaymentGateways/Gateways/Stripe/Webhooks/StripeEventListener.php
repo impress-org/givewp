@@ -34,8 +34,7 @@ abstract class StripeEventListener implements EventListener
     /**
      * Retrieves the full event from Stripe.
      *
-     * For Stripe Connect accounts, we need to pass the connected account ID to retrieve
-     * the event from the correct account, not the platform account.
+     * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the event from the correct account, not the platform account.
      *
      * @unreleased Added $formId parameter and stripe_account option for Stripe Connect support
      * @since 2.21.0

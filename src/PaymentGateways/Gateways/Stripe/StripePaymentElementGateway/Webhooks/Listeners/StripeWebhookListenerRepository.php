@@ -84,8 +84,7 @@ trait StripeWebhookListenerRepository
     /**
      * Retrieve a complete invoice from the Stripe API.
      *
-     * For Stripe Connect accounts, we need to pass the connected account ID to retrieve
-     * the invoice from the correct account, not the platform account.
+     * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the invoice from the correct account, not the platform account.
      *
      * @unreleased Added $formId parameter and stripe_account option for Stripe Connect support
      *
