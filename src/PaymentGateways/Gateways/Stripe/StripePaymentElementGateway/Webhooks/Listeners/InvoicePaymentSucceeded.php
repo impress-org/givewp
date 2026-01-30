@@ -71,7 +71,7 @@ class InvoicePaymentSucceeded
          * the payment_intent which is required for processing this webhook.
          */
         if (is_null($invoice->payment_intent)) {
-            $invoice = $this->getCompleteInvoiceFromStripe($event->data->object->id);
+            $invoice = $this->getCompleteInvoiceFromStripe($event->data->object->id, $subscription->donationFormId);
         }
 
         $gatewayTransactionId = $invoice->payment_intent;
