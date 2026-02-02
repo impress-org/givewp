@@ -339,6 +339,15 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 				$defaultGroup = current( array_keys( $groups ) );
 				?>
 				<div class="give-settings-section-content">
+					<?php
+					/**
+					 * Fires at the top of the section content, before the vertical group menu (tabs).
+					 *
+					 * @unreleased
+					 * @param string $current_section Current settings section slug.
+					 */
+					do_action( 'give_settings_section_content_before', $current_section );
+					?>
                     <?php
                     if (count($groups) > 1) : ?>
                         <div class="give-settings-section-group-menu">

@@ -35,6 +35,10 @@ use Give\PaymentGateways\Stripe\Controllers\SetDefaultStripeAccountController;
 use Give\PaymentGateways\Stripe\DonationFormElements;
 use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\GetStartedSettingField;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OptionsSettingField;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OrganizationSettingField;
+use Give\PaymentGateways\TheGivingBlock\Admin\TheGivingBlockSettingPage;
 
 /**
  * Class PaymentGateways
@@ -48,10 +52,13 @@ class PaymentGateways implements ServiceProvider
     /**
      * Array of SettingPage classes to be bootstrapped
      *
+     * @unreleased Add The Giving Block setting page
+     *
      * @var string[]
      */
     private $gatewaySettingsPages = [
         PaypalSettingPage::class,
+        TheGivingBlockSettingPage::class,
     ];
 
     /**
@@ -86,6 +93,8 @@ class PaymentGateways implements ServiceProvider
 
     /**
      * @inheritDoc
+     *
+     * @unreleased Register The Giving Block custom fields
      */
     public function boot()
     {
@@ -100,6 +109,7 @@ class PaymentGateways implements ServiceProvider
 
         $this->registerMigrations();
         $this->registerStripeCustomFields();
+        $this->registerTheGivingBlockCustomFields();
         $this->registerPayPalCommerceHooks();
     }
 
@@ -110,7 +120,7 @@ class PaymentGateways implements ServiceProvider
      */
     public function handleSellerOnBoardingRedirect()
     {
-        if( current_user_can('manage_give_settings') ) {
+        if (current_user_can('manage_give_settings')) {
             give(onBoardingRedirectHandler::class)->boot();
         }
     }
@@ -209,6 +219,18 @@ class PaymentGateways implements ServiceProvider
     }
 
     /**
+     * Register custom setting fields for The Giving Block (Organization and Options tabs).
+     *
+     * @unreleased
+     */
+    private function registerTheGivingBlockCustomFields()
+    {
+        Hooks::addAction('give_admin_field_the_giving_block_get_started', GetStartedSettingField::class, 'handle');
+        Hooks::addAction('give_admin_field_the_giving_block_organization', OrganizationSettingField::class, 'handle');
+        Hooks::addAction('give_admin_field_the_giving_block_options', OptionsSettingField::class, 'handle');
+    }
+
+    /**
      * Register action/filter hooks for paypal commerce.
      *
      * @since 2.19.0
@@ -244,8 +266,11 @@ class PaymentGateways implements ServiceProvider
             'approveOrder'
         );
 
-        Hooks::addAction('wp_ajax_give_paypal_commerce_update_order_amount', AjaxRequestHandler::class,
-            'updateOrderAmount');
+        Hooks::addAction(
+            'wp_ajax_give_paypal_commerce_update_order_amount',
+            AjaxRequestHandler::class,
+            'updateOrderAmount'
+        );
         Hooks::addAction(
             'wp_ajax_nopriv_give_paypal_commerce_update_order_amount',
             AjaxRequestHandler::class,
