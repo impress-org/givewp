@@ -2,8 +2,6 @@
 
 namespace Give\PaymentGateways\TheGivingBlock\Admin\CustomFields;
 
-use function esc_attr;
-
 /**
  * Custom setting field for GiveWP > Payment Gateways > The Giving Block > Organization tab.
  *

@@ -2,10 +2,6 @@
 
 namespace Give\PaymentGateways\TheGivingBlock\Admin\CustomFields;
 
-use function admin_url;
-use function esc_attr;
-use function esc_url;
-
 /**
  * Custom setting field for GiveWP > Payment Gateways > The Giving Block > Get Started tab.
  *

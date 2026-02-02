@@ -4,8 +4,6 @@ namespace Give\PaymentGateways\TheGivingBlock\Admin;
 
 use Give\PaymentGateways\SettingPage;
 
-use function give_get_current_setting_section as getCurrentSettingSection;
-
 /**
  * The Giving Block settings page under GiveWP > Payment Gateways.
  *
@@ -162,7 +160,7 @@ class TheGivingBlockSettingPage implements SettingPage
      */
     public function registerSettings(array $settings): array
     {
-        $currentSection = getCurrentSettingSection();
+        $currentSection = give_get_current_setting_section();
 
         if ($currentSection !== self::SECTION_ID) {
             return $settings;
