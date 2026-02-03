@@ -110,7 +110,7 @@ class HandleOnboardingSubmission
             if ($organizationId) {
                 $organizationResponse = TheGivingBlockApi::getOrganizationById($organizationId);
 
-                if (!is_wp_error($organizationResponse) && $organizationResponse['code'] === 200) {
+                if (is_array($organizationResponse) && ($organizationResponse['code'] ?? 0) === 200) {
                     $existingOrg = $organizationResponse['data']['data']['organization'] ?? null;
 
                     if ($existingOrg && $this->isSameOrganization($existingOrg, $organizationData)) {

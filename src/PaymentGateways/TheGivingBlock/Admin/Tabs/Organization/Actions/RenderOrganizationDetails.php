@@ -222,8 +222,8 @@ class RenderOrganizationDetails
     {
         $organizationResponse = TheGivingBlockApi::getOrganizationById($organizationId);
 
-        if (is_wp_error($organizationResponse)) {
-            return $organizationResponse;
+        if (!is_array($organizationResponse) || ($organizationResponse['code'] ?? 0) !== 200) {
+            return new \WP_Error('refresh_failed', __('Failed to refresh organization data from API', 'give-tgb'));
         }
 
         $code = $organizationResponse['code'];

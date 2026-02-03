@@ -157,7 +157,7 @@ class Organization
      */
     public static function fromOptions(): Organization
     {
-        $instance = new static();
+        $instance = new self();
 
         $organizationData = get_option('give_tgb_organization', []);
 
@@ -203,7 +203,7 @@ class Organization
      */
     public static function fromApiResponse(array $organizationData): Organization
     {
-        $instance = new static();
+        $instance = new self();
 
         $instance->id = $organizationData['id'] ?? '';
         $instance->name = $organizationData['name'] ?? '';
