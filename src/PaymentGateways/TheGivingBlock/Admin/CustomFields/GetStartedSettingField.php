@@ -47,7 +47,7 @@ class GetStartedSettingField
                     </li>
                 </ol>
                 <p class="give-tgb-quick-start-actions">
-                    <a href="<?php echo esc_url($organizationTabUrl); ?>" class="button button-primary give-tgb-connect-organization-btn" data-give-tgb-switch-group="organization">
+                    <a href="<?php echo esc_url($organizationTabUrl); ?>" class="button button-secondary give-tgb-connect-organization-btn" data-give-tgb-switch-group="organization">
                         <?php esc_html_e('Connect Organization', 'give'); ?>
                     </a>
                 </p>

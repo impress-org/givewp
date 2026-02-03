@@ -38,6 +38,11 @@ use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepos
 use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\GetStartedSettingField;
 use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OptionsSettingField;
 use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OrganizationSettingField;
+use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Options\Actions\HandleOrganizationDeletion;
+use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleApiRefresh;
+use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleConnectingSubmission;
+use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleOnboardingSubmission;
+use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleOrganizationDisconnect;
 use Give\PaymentGateways\TheGivingBlock\Admin\TheGivingBlockSettingPage;
 
 /**
@@ -109,8 +114,8 @@ class PaymentGateways implements ServiceProvider
 
         $this->registerMigrations();
         $this->registerStripeCustomFields();
-        $this->registerTheGivingBlockCustomFields();
         $this->registerPayPalCommerceHooks();
+        $this->registerTheGivingBlockHooks();
     }
 
     /**
@@ -219,18 +224,6 @@ class PaymentGateways implements ServiceProvider
     }
 
     /**
-     * Register custom setting fields for The Giving Block (Organization and Options tabs).
-     *
-     * @unreleased
-     */
-    private function registerTheGivingBlockCustomFields()
-    {
-        Hooks::addAction('give_admin_field_the_giving_block_get_started', GetStartedSettingField::class, 'handle');
-        Hooks::addAction('give_admin_field_the_giving_block_organization', OrganizationSettingField::class, 'handle');
-        Hooks::addAction('give_admin_field_the_giving_block_options', OptionsSettingField::class, 'handle');
-    }
-
-    /**
      * Register action/filter hooks for paypal commerce.
      *
      * @since 2.19.0
@@ -300,5 +293,51 @@ class PaymentGateways implements ServiceProvider
         );
 
         Hooks::addAction('admin_init', WebhookChecker::class, 'checkWebhookCriteria');
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerTheGivingBlockHooks()
+    {
+        // CustomFields
+        Hooks::addAction('give_admin_field_the_giving_block_get_started', GetStartedSettingField::class, 'handle');
+        Hooks::addAction('give_admin_field_the_giving_block_organization', OrganizationSettingField::class, 'handle');
+        Hooks::addAction('give_admin_field_the_giving_block_options', OptionsSettingField::class, 'handle');
+
+        //Assets – only on Settings > Gateways > The Giving Block
+        add_action('admin_enqueue_scripts', function ($hook) {
+            if (
+                strpos($hook, 'give-settings') !== false
+                && give_get_current_setting_tab() === 'gateways'
+                && give_get_current_setting_section() === 'the-giving-block'
+            ) {
+                wp_enqueue_style('giveTgbAdminPages', GIVE_PLUGIN_URL . 'src/PaymentGateways/TheGivingBlock/assets/css/adminPages.css', [], GIVE_VERSION);
+                wp_enqueue_script('giveTgbAdminPages', GIVE_PLUGIN_URL . 'src/PaymentGateways/TheGivingBlock/assets/js/adminPages.js', ['jquery', 'wp-i18n'], GIVE_VERSION, true);
+                wp_set_script_translations('giveTgbAdminPages', 'give-tgb');
+
+                wp_localize_script('giveTgbAdminPages', 'giveTgbSettings', [
+                    'ajaxurl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('giveTgbNonce'),
+                ]);
+            }
+        });
+
+        //Ajax
+        add_action('wp_ajax_giveTgbOnboarding', function () {
+            give(HandleOnboardingSubmission::class)();
+        });
+        add_action('wp_ajax_giveTgbConnectExisting', function () {
+            give(HandleConnectingSubmission::class)();
+        });
+        add_action('wp_ajax_giveTgbRefreshOrganization', function () {
+            give(HandleApiRefresh::class)();
+        });
+        add_action('wp_ajax_giveTgbDisconnectOrganization', function () {
+            give(HandleOrganizationDisconnect::class)();
+        });
+        add_action('wp_ajax_giveTgbDeleteAllOrganizationData', function () {
+            give(HandleOrganizationDeletion::class)();
+        });
     }
 }
