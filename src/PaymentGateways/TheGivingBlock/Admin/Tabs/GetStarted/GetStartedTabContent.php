@@ -59,12 +59,11 @@ class GetStartedTabContent
      */
     private function displaySetupInstructions()
     {
-        $classes = !empty($field['wrapper_class']) ? esc_attr($field['wrapper_class']) : '';
         $organizationTabUrl = admin_url(
             'edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=the-giving-block&group=organization'
         );
         ?>
-        <div class="give-tgb-setting-field give-tgb-get-started <?php echo $classes; ?>">
+        <div class="give-tgb-setting-field give-tgb-get-started">
 
             <div class="give-tgb-quick-start-box" style="background: #f0f8ff; border: 1px solid #0073aa; padding: 15px; border-radius: 5px; margin: 20px 0;">
                 <h3 class="give-tgb-quick-start-title" style="margin-top: 0; color: #1565c0;">
