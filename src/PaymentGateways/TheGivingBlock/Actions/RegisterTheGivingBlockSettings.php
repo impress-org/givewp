@@ -33,7 +33,7 @@ class RegisterTheGivingBlockSettings
         Hooks::addAction('give_admin_field_the_giving_block_organization', OrganizationSettingField::class, 'handle');
         Hooks::addAction('give_admin_field_the_giving_block_options', OptionsSettingField::class, 'handle');
 
-        //Assets – only on Settings > Gateways > The Giving Block
+        //Assets – loaded only on Settings > Gateways > The Giving Block
         add_action('admin_enqueue_scripts', function ($hook) {
             if (
                 strpos($hook, 'give-settings') !== false
@@ -52,20 +52,10 @@ class RegisterTheGivingBlockSettings
         });
 
         //Ajax actions for The Giving Block settings page
-        add_action('wp_ajax_giveTgbOnboarding', function () {
-            give(HandleOnboardingSubmission::class)();
-        });
-        add_action('wp_ajax_giveTgbConnectExisting', function () {
-            give(HandleConnectingSubmission::class)();
-        });
-        add_action('wp_ajax_giveTgbRefreshOrganization', function () {
-            give(HandleApiRefresh::class)();
-        });
-        add_action('wp_ajax_giveTgbDisconnectOrganization', function () {
-            give(HandleOrganizationDisconnect::class)();
-        });
-        add_action('wp_ajax_giveTgbDeleteAllOrganizationData', function () {
-            give(HandleOrganizationDeletion::class)();
-        });
+        Hooks::addAction('wp_ajax_giveTgbOnboarding', HandleOnboardingSubmission::class, '__invoke');
+        Hooks::addAction('wp_ajax_giveTgbConnectExisting', HandleConnectingSubmission::class, '__invoke');
+        Hooks::addAction('wp_ajax_giveTgbRefreshOrganization', HandleApiRefresh::class, '__invoke');
+        Hooks::addAction('wp_ajax_giveTgbDisconnectOrganization', HandleOrganizationDisconnect::class, '__invoke');
+        Hooks::addAction('wp_ajax_giveTgbDeleteAllOrganizationData', HandleOrganizationDeletion::class, '__invoke');
     }
 }
