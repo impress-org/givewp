@@ -1,0 +1,699 @@
+/* Basic styling for the settings page */
+.give-tgb-container {
+    max-width: 900px;
+    margin-top: 20px;
+}
+
+.give-tgb-card {
+    background: #fff;
+    margin: 20px 0 20px 0;
+}
+
+.give-tgb-card label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.give-tgb-card input[type='text'],
+.give-tgb-card input[type='email'],
+.give-tgb-card input[type='url'],
+.give-tgb-card textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #c3c4c7;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+    border-radius: 4px;
+}
+
+.give-tgb-card textarea {
+    max-width: 100%;
+}
+
+.give-tgb-button {
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.give-tgb-button.danger {
+    background: #dc3232;
+}
+
+.give-tgb-button:hover {
+    opacity: 0.9;
+}
+
+.give-tgb-status {
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.give-tgb-status.success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.give-tgb-status.error {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.give-tgb-status.warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+}
+
+.give-tgb-token-info code {
+    background: #eee;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    word-break: break-all;
+}
+
+/* Organization Details Styles */
+.give-tgb-organization-details {
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+.give-tgb-organization-details h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.give-tgb-organization-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.give-tgb-organization-logo {
+    margin-top: 10px;
+}
+
+.give-tgb-organization-logo img {
+    max-width: 200px;
+    max-height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+/* Widget Code Styles */
+.give-tgb-widget-script {
+    margin-top: 10px;
+    padding: 10px;
+    background: #e8f5e8;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+}
+
+.give-tgb-widget-popup {
+    margin-top: 10px;
+    padding: 10px;
+    background: #fff3e0;
+    border: 1px solid #ff9800;
+    border-radius: 5px;
+}
+
+.give-tgb-widget-iframe {
+    margin-top: 10px;
+    padding: 10px;
+    background: #e3f2fd;
+    border: 1px solid #2196f3;
+    border-radius: 5px;
+}
+
+.give-tgb-donation-form {
+    margin-top: 15px;
+    padding: 10px;
+    background: #e8f5e8;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+}
+
+.give-tgb-donation-form a {
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.give-tgb-donation-form small {
+    color: #666;
+}
+
+/* Form Styles */
+.give-tgb-form-section {
+    margin-bottom: 20px;
+}
+
+.give-tgb-form-section h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+/* Form Grid Layout - Two columns on larger screens */
+.give-tgb-form-section .give-tgb-form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* Two column layout for larger screens */
+@media (min-width: 768px) {
+    .give-tgb-form-section .give-tgb-form-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        max-width: 800px;
+    }
+
+    /* Full width for specific fields */
+    .give-tgb-form-row.full-width {
+        grid-column: 1 / -1;
+    }
+}
+
+.give-tgb-form-row {
+    margin-bottom: 15px;
+}
+
+.give-tgb-form-row label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.give-tgb-form-row input:not([type='checkbox']),
+.give-tgb-form-row textarea,
+.give-tgb-form-row select {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    border: 1px solid #c3c4c7;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+    border-radius: 4px;
+}
+
+.give-tgb-form-row textarea {
+    max-width: 100%;
+}
+
+.give-tgb-form-row small {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.give-tgb-checkbox-row {
+    margin-bottom: 15px;
+}
+
+/* Checkbox alignment - only take necessary width */
+.give-tgb-form-row .give-tgb-checkbox-row {
+    display: inline-block;
+    width: auto;
+    max-width: none;
+}
+
+.give-tgb-checkbox-row label {
+    font-weight: normal;
+    display: inline;
+    margin-left: 5px;
+}
+
+/* Readonly field styling */
+.give-tgb-form-row input[readonly] {
+    background-color: #f9f9f9;
+    color: #666;
+    cursor: not-allowed;
+    border-color: #ddd;
+}
+
+/* Country notice styling */
+.give-tgb-country-notice {
+    color: #d63638;
+    font-weight: 500;
+    display: block;
+    margin-top: 5px;
+}
+
+/* Required field asterisk */
+.required {
+    color: #d63638;
+    font-weight: bold;
+}
+
+.give-tgb-submit-row {
+    margin-top: 20px;
+}
+
+/* Tab Navigation */
+.give-tgb-tab-navigation {
+    display: flex;
+    border-bottom: 2px solid #e1e1e1;
+    margin-bottom: 20px;
+    background: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+}
+
+.give-tgb-tab-button {
+    flex: 1;
+    background: #f8f9fa;
+    border: none;
+    padding: 15px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.give-tgb-tab-button:hover {
+    background: #e9ecef;
+    color: #0073aa;
+}
+
+.give-tgb-tab-button.active {
+    background: #fff;
+    color: #0073aa;
+    border-bottom-color: #0073aa;
+    font-weight: 600;
+}
+
+.give-tgb-tab-button .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Tab Content */
+.give-tgb-tab-content {
+    position: relative;
+    min-height: 100px;
+}
+
+.give-tgb-tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.give-tgb-tab-panel.active {
+    display: block;
+}
+
+.give-tgb-tab-description {
+    background: #f0f8ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.give-tgb-tab-description h3 {
+    margin: 0 0 10px 0;
+    color: #0073aa;
+    font-size: 18px;
+}
+
+.give-tgb-tab-description p {
+    margin: 0;
+    color: #555;
+    line-height: 1.5;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Refresh Notice */
+.give-tgb-refresh-notice {
+    background: #f0f8ff;
+    border: 1px solid #b3d9ff;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+
+.give-tgb-refresh-notice .refresh-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.give-tgb-refresh-notice .refresh-btn {
+    margin-left: 10px;
+    font-size: 12px;
+    padding: 6px 12px;
+    background: #0073aa;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.give-tgb-refresh-notice .refresh-btn .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.give-tgb-refresh-notice .refresh-btn:hover {
+    background: #005a87;
+}
+
+.give-tgb-refresh-notice .refresh-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* Dashicon animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.give-tgb-refresh-notice .refresh-btn .dashicons {
+    margin-right: 3px;
+    vertical-align: middle;
+}
+
+/* Status Messages */
+.give-tgb-submit-row .give-tgb-status {
+    margin-left: 15px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    display: inline-block;
+    animation: slideIn 0.3s ease-out;
+}
+
+.give-tgb-submit-row .give-tgb-status.success,
+.give-tgb-submit-row span.give-tgb-status.success {
+    background: #d4edda !important;
+    color: #155724 !important;
+    border: 1px solid #c3e6cb !important;
+}
+
+.give-tgb-submit-row .give-tgb-status.error,
+.give-tgb-submit-row span.give-tgb-status.error {
+    background: #f8d7da !important;
+    color: #721c24 !important;
+    border: 1px solid #f5c6cb !important;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.give-tgb-submit-row #giveTgbOnboardingMessage {
+    margin-left: 10px;
+}
+
+/* Organization ID Copy Button */
+.organization-id-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.organization-id-value {
+    font-family: monospace;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+
+.copy-id-btn {
+    background: #0073aa;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 4px 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    transition: background-color 0.2s ease;
+}
+
+.copy-id-btn:hover {
+    background: #005a87;
+}
+
+.copy-id-btn .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+/* ID Security Notice */
+.id-security-notice {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    color: #856404;
+    padding: 6px 10px;
+    border-radius: 3px;
+    margin: 5px 0;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+}
+
+.id-security-notice .dashicons {
+    color: #f0ad4e;
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.id-security-notice strong {
+    color: #856404;
+}
+
+/* Disconnect Button */
+.disconnect-btn {
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 6px 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    transition: background-color 0.2s ease;
+}
+
+.disconnect-btn:hover {
+    background: #000;
+}
+
+/* Organization details grid - first column wide enough for UUID, reduced gap */
+.organization-details-grid {
+    grid-template-columns: minmax(280px, 360px) 1fr !important;
+    max-width: 900px !important;
+    gap: 20px !important;
+}
+
+.disconnect-btn .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.disconnect-btn.loading .dashicons {
+    animation: spin 1s linear infinite;
+}
+
+.disconnect-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Data Management */
+.give-tgb-data-management {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    background: #f9f9f9;
+    margin: 15px 0;
+}
+
+.give-tgb-data-management .data-info {
+    margin-bottom: 20px;
+}
+
+.give-tgb-data-management .data-info h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.give-tgb-data-management .data-info ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.give-tgb-data-management .data-info li {
+    margin: 5px 0;
+    color: #666;
+}
+
+.give-tgb-data-management .data-actions {
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+}
+
+/* Delete All Button */
+.delete-all-btn {
+    background: #dc3232;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    transition: background-color 0.2s ease;
+}
+
+.delete-all-btn:hover {
+    background: #a00;
+}
+
+.delete-all-btn .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.delete-all-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsive Organization Details Layout */
+@media (max-width: 768px) {
+    .organization-details-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .organization-header-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .organization-header-grid .logo-column {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+
+/* Welcome Page Button Icon Alignment - Ultra Specific */
+.give-tgb-card .button.button-secondary,
+.wrap .button.button-secondary {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    line-height: 1 !important;
+}
+
+.give-tgb-card .button.button-secondary .dashicons,
+.wrap .button.button-secondary .dashicons {
+    font-size: 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.give-tgb-card .button.button-secondary span:not(.dashicons),
+.wrap .button.button-secondary span:not(.dashicons) {
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.delete-all-btn.loading .dashicons {
+    animation: spin 1s linear infinite;
+}
+
+/* Error details styling */
+.give-tgb-status.error details summary {
+    list-style: none;
+    cursor: pointer;
+}
+
+.give-tgb-status.error details summary::-webkit-details-marker {
+    display: none;
+}
+
+.give-tgb-status.error details summary::marker {
+    display: none;
+}

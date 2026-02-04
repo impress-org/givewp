@@ -35,10 +35,7 @@ use Give\PaymentGateways\Stripe\Controllers\SetDefaultStripeAccountController;
 use Give\PaymentGateways\Stripe\DonationFormElements;
 use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
-use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\GetStartedSettingField;
-use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OptionsSettingField;
-use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OrganizationSettingField;
-use Give\PaymentGateways\TheGivingBlock\Admin\TheGivingBlockSettingPage;
+use Give\PaymentGateways\TheGivingBlock\Actions\RegisterTheGivingBlockSettings;
 
 /**
  * Class PaymentGateways
@@ -58,7 +55,6 @@ class PaymentGateways implements ServiceProvider
      */
     private $gatewaySettingsPages = [
         PaypalSettingPage::class,
-        TheGivingBlockSettingPage::class,
     ];
 
     /**
@@ -109,8 +105,8 @@ class PaymentGateways implements ServiceProvider
 
         $this->registerMigrations();
         $this->registerStripeCustomFields();
-        $this->registerTheGivingBlockCustomFields();
         $this->registerPayPalCommerceHooks();
+        $this->registerTheGivingBlockSettings();
     }
 
     /**
@@ -219,18 +215,6 @@ class PaymentGateways implements ServiceProvider
     }
 
     /**
-     * Register custom setting fields for The Giving Block (Organization and Options tabs).
-     *
-     * @unreleased
-     */
-    private function registerTheGivingBlockCustomFields()
-    {
-        Hooks::addAction('give_admin_field_the_giving_block_get_started', GetStartedSettingField::class, 'handle');
-        Hooks::addAction('give_admin_field_the_giving_block_organization', OrganizationSettingField::class, 'handle');
-        Hooks::addAction('give_admin_field_the_giving_block_options', OptionsSettingField::class, 'handle');
-    }
-
-    /**
      * Register action/filter hooks for paypal commerce.
      *
      * @since 2.19.0
@@ -300,5 +284,13 @@ class PaymentGateways implements ServiceProvider
         );
 
         Hooks::addAction('admin_init', WebhookChecker::class, 'checkWebhookCriteria');
+    }
+
+    /**
+     * @unreleased
+     */
+    private function registerTheGivingBlockSettings()
+    {
+        give(RegisterTheGivingBlockSettings::class)();
     }
 }
