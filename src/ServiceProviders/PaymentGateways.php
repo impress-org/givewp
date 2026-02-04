@@ -35,15 +35,7 @@ use Give\PaymentGateways\Stripe\Controllers\SetDefaultStripeAccountController;
 use Give\PaymentGateways\Stripe\DonationFormElements;
 use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
-use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\GetStartedSettingField;
-use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OptionsSettingField;
-use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OrganizationSettingField;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Options\Actions\HandleOrganizationDeletion;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleApiRefresh;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleConnectingSubmission;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleOnboardingSubmission;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleOrganizationDisconnect;
-use Give\PaymentGateways\TheGivingBlock\Admin\TheGivingBlockSettingPage;
+use Give\PaymentGateways\TheGivingBlock\Actions\RegisterTheGivingBlockSettings;
 
 /**
  * Class PaymentGateways
@@ -63,7 +55,6 @@ class PaymentGateways implements ServiceProvider
      */
     private $gatewaySettingsPages = [
         PaypalSettingPage::class,
-        TheGivingBlockSettingPage::class,
     ];
 
     /**
@@ -115,7 +106,7 @@ class PaymentGateways implements ServiceProvider
         $this->registerMigrations();
         $this->registerStripeCustomFields();
         $this->registerPayPalCommerceHooks();
-        $this->registerTheGivingBlockHooks();
+        $this->registerTheGivingBlockSettings();
     }
 
     /**
@@ -298,46 +289,8 @@ class PaymentGateways implements ServiceProvider
     /**
      * @unreleased
      */
-    private function registerTheGivingBlockHooks()
+    private function registerTheGivingBlockSettings()
     {
-        // CustomFields
-        Hooks::addAction('give_admin_field_the_giving_block_get_started', GetStartedSettingField::class, 'handle');
-        Hooks::addAction('give_admin_field_the_giving_block_organization', OrganizationSettingField::class, 'handle');
-        Hooks::addAction('give_admin_field_the_giving_block_options', OptionsSettingField::class, 'handle');
-
-        //Assets – only on Settings > Gateways > The Giving Block
-        add_action('admin_enqueue_scripts', function ($hook) {
-            if (
-                strpos($hook, 'give-settings') !== false
-                && give_get_current_setting_tab() === 'gateways'
-                && give_get_current_setting_section() === 'the-giving-block'
-            ) {
-                wp_enqueue_style('giveTgbAdminPages', GIVE_PLUGIN_URL . 'src/PaymentGateways/TheGivingBlock/assets/css/adminPages.css', [], GIVE_VERSION);
-                wp_enqueue_script('giveTgbAdminPages', GIVE_PLUGIN_URL . 'src/PaymentGateways/TheGivingBlock/assets/js/adminPages.js', ['jquery', 'wp-i18n'], GIVE_VERSION, true);
-                wp_set_script_translations('giveTgbAdminPages', 'give-tgb');
-
-                wp_localize_script('giveTgbAdminPages', 'giveTgbSettings', [
-                    'ajaxurl' => admin_url('admin-ajax.php'),
-                    'nonce' => wp_create_nonce('giveTgbNonce'),
-                ]);
-            }
-        });
-
-        //Ajax
-        add_action('wp_ajax_giveTgbOnboarding', function () {
-            give(HandleOnboardingSubmission::class)();
-        });
-        add_action('wp_ajax_giveTgbConnectExisting', function () {
-            give(HandleConnectingSubmission::class)();
-        });
-        add_action('wp_ajax_giveTgbRefreshOrganization', function () {
-            give(HandleApiRefresh::class)();
-        });
-        add_action('wp_ajax_giveTgbDisconnectOrganization', function () {
-            give(HandleOrganizationDisconnect::class)();
-        });
-        add_action('wp_ajax_giveTgbDeleteAllOrganizationData', function () {
-            give(HandleOrganizationDeletion::class)();
-        });
+        give(RegisterTheGivingBlockSettings::class)();
     }
 }
