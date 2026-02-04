@@ -52,10 +52,10 @@ class RegisterTheGivingBlockSettings
         });
 
         //Ajax actions for The Giving Block settings page
-        Hooks::addAction('wp_ajax_giveTgbOnboarding', HandleOnboardingSubmission::class, '__invoke');
-        Hooks::addAction('wp_ajax_giveTgbConnectExisting', HandleConnectingSubmission::class, '__invoke');
-        Hooks::addAction('wp_ajax_giveTgbRefreshOrganization', HandleApiRefresh::class, '__invoke');
-        Hooks::addAction('wp_ajax_giveTgbDisconnectOrganization', HandleOrganizationDisconnect::class, '__invoke');
-        Hooks::addAction('wp_ajax_giveTgbDeleteAllOrganizationData', HandleOrganizationDeletion::class, '__invoke');
+        Hooks::addAction('wp_ajax_giveTgbOnboarding', HandleOnboardingSubmission::class);
+        Hooks::addAction('wp_ajax_giveTgbConnectExisting', HandleConnectingSubmission::class);
+        Hooks::addAction('wp_ajax_giveTgbRefreshOrganization', HandleApiRefresh::class);
+        Hooks::addAction('wp_ajax_giveTgbDisconnectOrganization', HandleOrganizationDisconnect::class);
+        Hooks::addAction('wp_ajax_giveTgbDeleteAllOrganizationData', HandleOrganizationDeletion::class);
     }
 }
