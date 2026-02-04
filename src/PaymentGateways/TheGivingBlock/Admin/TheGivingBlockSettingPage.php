@@ -36,7 +36,7 @@ class TheGivingBlockSettingPage implements SettingPage
      */
     public function getName(): string
     {
-        return esc_html__('The Giving Block', 'give');
+        return esc_html__('Crypto and Stock Donations', 'give');
     }
 
     /**

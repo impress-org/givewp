@@ -16,11 +16,11 @@ class HandleOnboardingSubmission
     public function __invoke()
     {
         if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'giveTgbNonce')) {
-            wp_send_json_error(['message' => __('Invalid nonce. Please refresh the page and try again.', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Invalid nonce. Please refresh the page and try again.', 'give')]);
         }
 
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => __('Insufficient permissions', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Insufficient permissions', 'give')]);
         }
 
         $name = sanitize_text_field(wp_unslash($_POST['name'] ?? ''));
@@ -38,11 +38,11 @@ class HandleOnboardingSubmission
         if (empty($name) || empty($ein) || empty($address1) ||
             empty($city) || empty($state) || empty($postcode) ||
             empty($contact_email)) {
-            wp_send_json_error(['message' => __('Please fill in all required fields.', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Please fill in all required fields.', 'give')]);
         }
 
         if (!preg_match('/^\d{5}$/', $postcode)) {
-            wp_send_json_error(['message' => __('Postal code must be exactly 5 digits (e.g., 12345).', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Postal code must be exactly 5 digits (e.g., 12345).', 'give')]);
         }
 
         $organizationData = [
@@ -71,7 +71,7 @@ class HandleOnboardingSubmission
         $response = TheGivingBlockApi::nonProfitOnboarding($organizationData);
 
         if (!is_array($response) || !isset($response['code'])) {
-            wp_send_json_error(['message' => __('Unexpected response from onboarding API.', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Unexpected response from onboarding API.', 'give')]);
         }
 
         $code = $response['code'];
@@ -91,16 +91,16 @@ class HandleOnboardingSubmission
 
                 $cryptoOnboardingResponse = TheGivingBlockApi::nonProfitCryptoOnboarding($organizationId);
                 if (!is_array($cryptoOnboardingResponse) || !in_array($cryptoOnboardingResponse['code'], [200, 201], true)) {
-                    $warnings[] = __('Crypto onboarding could not be completed.', 'give-tgb');
+                    $warnings[] = __('Crypto onboarding could not be completed.', 'give');
                 }
 
                 $stockOnboardingResponse = TheGivingBlockApi::nonProfitStockOnboarding($organizationId);
                 if (!is_array($stockOnboardingResponse) || !in_array($stockOnboardingResponse['code'], [200, 201], true)) {
-                    $warnings[] = __('Stock onboarding could not be completed.', 'give-tgb');
+                    $warnings[] = __('Stock onboarding could not be completed.', 'give');
                 }
             }
             wp_send_json_success([
-                'message' => __('Organization has been successfully submitted for onboarding! Refreshing page, wait...', 'give-tgb'),
+                'message' => __('Organization has been successfully submitted for onboarding! Refreshing page, wait...', 'give'),
                 'reload' => empty($warnings),
                 'warnings' => $warnings,
             ]);
@@ -116,14 +116,14 @@ class HandleOnboardingSubmission
                     if ($existingOrg && $this->isSameOrganization($existingOrg, $organizationData)) {
                         OrganizationRepository::save($organizationData);
                         wp_send_json_success([
-                            'message' => __('Organization already exists and has been linked successfully! Refreshing page, wait...', 'give-tgb'),
+                            'message' => __('Organization already exists and has been linked successfully! Refreshing page, wait...', 'give'),
                             'reload' => true
                         ]);
                     }
                 }
             }
 
-            $errorMessage = isset($data['data']['errorMessage']) ? $data['data']['errorMessage'] : __('Organization with same EIN already exists', 'give-tgb');
+            $errorMessage = isset($data['data']['errorMessage']) ? $data['data']['errorMessage'] : __('Organization with same EIN already exists', 'give');
             wp_send_json_error(['message' => $errorMessage]);
         } else {
             $error_message = '';
@@ -187,7 +187,7 @@ class HandleOnboardingSubmission
                 }
             } else {
                 wp_send_json_error([
-                    'message' => __('Unknown error occurred', 'give-tgb'),
+                    'message' => __('Unknown error occurred', 'give'),
                     'response' => $response
                 ]);
             }

@@ -11,11 +11,11 @@
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(
             function () {
-                alert(__('Code copied to clipboard!', 'give-tgb'));
+                alert(__('Code copied to clipboard!', 'give'));
             },
             function (err) {
                 console.error('Could not copy text: ', err);
-                alert(__('Failed to copy code to clipboard.', 'give-tgb'));
+                alert(__('Failed to copy code to clipboard.', 'give'));
             }
         );
     }
@@ -54,7 +54,7 @@
             !confirm(
                 __(
                     'Are you sure you want to refresh the organization data from the API? This will update the saved data.',
-                    'give-tgb'
+                    'give'
                 )
             )
         ) {
@@ -67,7 +67,7 @@
             .prop('disabled', true)
             .html(
                 '<span class="dashicons dashicons-update" style="animation: spin 1s linear infinite;"></span> ' +
-                    __('Refreshing...', 'give-tgb')
+                    __('Refreshing...', 'give')
             );
 
         $.ajax({
@@ -85,15 +85,15 @@
                 } else {
                     alert(
                         sprintf(
-                            __('Failed to refresh data: %s', 'give-tgb'),
-                            response.data.message || __('Unknown error', 'give-tgb')
+                            __('Failed to refresh data: %s', 'give'),
+                            response.data.message || __('Unknown error', 'give')
                         )
                     );
                     $button.prop('disabled', false).html(originalText);
                 }
             },
             error: function () {
-                alert(__('Failed to refresh data. Please try again.', 'give-tgb'));
+                alert(__('Failed to refresh data. Please try again.', 'give'));
                 $button.prop('disabled', false).html(originalText);
             },
         });
@@ -105,7 +105,7 @@
         var $btn = $('#submitOnboarding');
         var $message = $('#giveTgbOnboardingMessage');
 
-        $btn.prop('disabled', true).val(__('Submitting...', 'give-tgb'));
+        $btn.prop('disabled', true).val(__('Submitting...', 'give'));
         $message.hide().removeClass('give-tgb-status success error');
 
         // Serialize by container: form may be nested inside #give-mainform, so browser can break
@@ -142,7 +142,7 @@
                         var warningsHtml =
                             '<div class="notice notice-warning" style="margin-top:10px;">' +
                             '<p><strong>' +
-                            __('Some payment channel onboardings did not complete:', 'give-tgb') +
+                            __('Some payment channel onboardings did not complete:', 'give') +
                             '</strong></p>' +
                             '<ul style="margin-left: 18px;">' +
                             response.data.warnings
@@ -155,20 +155,20 @@
                         $(warningsHtml).insertAfter($message);
                     }
 
-                    if (response.data.reload) {
+                    if (response.data.reload && giveTgbSettings.getStartedUrl) {
                         setTimeout(function () {
                             $(window).off('beforeunload');
-                            window.location.reload();
+                            window.location.href = giveTgbSettings.getStartedUrl;
                         }, 3000);
                     }
                 } else {
-                    var errorHtml = response.data.message || __('Unknown error occurred', 'give-tgb');
+                    var errorHtml = response.data.message || __('Unknown error occurred', 'give');
 
                     // If response object is available, display it for debugging
                     if (response.data.response) {
                         errorHtml +=
                             '<br><br><details style="margin-top: 20px; display: block;" class="error-details"><summary style="cursor: pointer; font-weight: bold; color: #856404; padding: 8px 0; display: flex; align-items: center; gap: 6px;"><span class="details-icon">▶</span> ' +
-                            __('View error details', 'give-tgb') +
+                            __('View error details', 'give') +
                             '</summary>';
                         errorHtml +=
                             '<div style="margin-top: 15px; padding: 12px; background: #fff; border: 1px solid #ddd; border-radius: 4px; max-height: 500px; overflow-y: auto; overflow-x: auto;">';
@@ -193,15 +193,15 @@
             error: function () {
                 showStatusMessage(
                     '<strong>' +
-                        __('❌ Onboarding Failed', 'give-tgb') +
+                        __('❌ Onboarding Failed', 'give') +
                         '</strong><p>' +
-                        __('An error occurred during submission.', 'give-tgb') +
+                        __('An error occurred during submission.', 'give') +
                         '</p>',
                     'error'
                 );
             },
             complete: function () {
-                $btn.prop('disabled', false).val(__('Submit Organization for Onboarding', 'give-tgb'));
+                $btn.prop('disabled', false).val(__('Submit Organization for Onboarding', 'give'));
             },
         });
     }
@@ -212,7 +212,7 @@
         var $submitBtn = $('#submitExistingOrganization');
         var $message = $('#giveTgbExistingOrganizationMessage');
 
-        $submitBtn.prop('disabled', true).val(__('Connecting...', 'give-tgb'));
+        $submitBtn.prop('disabled', true).val(__('Connecting...', 'give'));
         $message.hide().removeClass('give-tgb-status success error');
 
         // Serialize by container so inputs are included when form is nested inside #give-mainform.
@@ -248,7 +248,7 @@
                         var warningsHtml =
                             '<div class="notice notice-warning" style="margin-top:10px;">' +
                             '<p><strong>' +
-                            __('Some payment channel onboardings did not complete:', 'give-tgb') +
+                            __('Some payment channel onboardings did not complete:', 'give') +
                             '</strong></p>' +
                             '<ul style="margin-left: 18px;">' +
                             response.data.warnings
@@ -261,20 +261,20 @@
                         $(warningsHtml).insertAfter($message);
                     }
 
-                    if (response.data.reload) {
+                    if (response.data.reload && giveTgbSettings.getStartedUrl) {
                         setTimeout(function () {
                             $(window).off('beforeunload');
-                            window.location.reload();
+                            window.location.href = giveTgbSettings.getStartedUrl;
                         }, 3000);
                     }
                 } else {
-                    var errorHtml = response.data.message || __('Unknown error occurred', 'give-tgb');
+                    var errorHtml = response.data.message || __('Unknown error occurred', 'give');
 
                     // If response object is available, display it for debugging
                     if (response.data.response) {
                         errorHtml +=
                             '<br><br><details style="margin-top: 20px; display: block;" class="error-details"><summary style="cursor: pointer; font-weight: bold; color: #856404; padding: 8px 0; display: flex; align-items: center; gap: 6px;"><span class="details-icon">▶</span> ' +
-                            __('View error details', 'give-tgb') +
+                            __('View error details', 'give') +
                             '</summary>';
                         errorHtml +=
                             '<div style="margin-top: 15px; padding: 12px; background: #fff; border: 1px solid #ddd; border-radius: 4px; max-height: 500px; overflow-y: auto; overflow-x: auto;">';
@@ -297,13 +297,10 @@
                 }
             },
             error: function () {
-                $message
-                    .addClass('give-tgb-status error')
-                    .html(__('Failed to connect organization.', 'give-tgb'))
-                    .show();
+                $message.addClass('give-tgb-status error').html(__('Failed to connect organization.', 'give')).show();
             },
             complete: function () {
-                $submitBtn.prop('disabled', false).val(__('Connect Organization', 'give-tgb'));
+                $submitBtn.prop('disabled', false).val(__('Connect Organization', 'give'));
             },
         });
     }
@@ -409,11 +406,11 @@
     }
 
     function showCopySuccess() {
-        alert(__('Organization ID copied to clipboard!', 'give-tgb'));
+        alert(__('Organization ID copied to clipboard!', 'give'));
     }
 
     function showCopyError() {
-        alert(__('Failed to copy. Please try again.', 'give-tgb'));
+        alert(__('Failed to copy. Please try again.', 'give'));
     }
 
     window.copyOrganizationId = copyOrganizationId;
@@ -423,7 +420,7 @@
             !confirm(
                 __(
                     'Are you sure you want to disconnect this organization? This will remove the connection and you will need to reconnect or create a new organization.',
-                    'give-tgb'
+                    'give'
                 )
             )
         ) {
@@ -437,13 +434,13 @@
         var originalIcon = $buttonIcon.attr('class');
 
         $button.prop('disabled', true);
-        $buttonText.text(__('Disconnecting...', 'give-tgb'));
+        $buttonText.text(__('Disconnecting...', 'give'));
         $buttonIcon.attr('class', 'dashicons dashicons-update');
         $button.addClass('loading');
 
         var $statusDiv = $(
             '<div class="disconnect-status" style="margin-top: 10px; padding: 8px; background: #f0f0f0; border-radius: 3px; font-size: 12px; color: #666;">' +
-                __('Disconnecting organization from The Giving Block...', 'give-tgb') +
+                __('Disconnecting organization from The Giving Block...', 'give') +
                 '</div>'
         );
         $button.closest('div').append($statusDiv);
@@ -459,7 +456,7 @@
                 if (response.success) {
                     $statusDiv.html(
                         '<span style="color: #46b450;">' +
-                            __('✓ Organization disconnected successfully! Refreshing page...', 'give-tgb') +
+                            __('✓ Organization disconnected successfully! Refreshing page...', 'give') +
                             '</span>'
                     );
                     setTimeout(function () {
@@ -469,10 +466,7 @@
                 } else {
                     $statusDiv.html(
                         '<span style="color: #dc3232;">' +
-                            sprintf(
-                                __('✗ Error: %s', 'give-tgb'),
-                                response.data.message || __('Unknown error', 'give-tgb')
-                            ) +
+                            sprintf(__('✗ Error: %s', 'give'), response.data.message || __('Unknown error', 'give')) +
                             '</span>'
                     );
                     $button.prop('disabled', false);
@@ -484,7 +478,7 @@
             error: function () {
                 $statusDiv.html(
                     '<span style="color: #dc3232;">' +
-                        __('✗ Error disconnecting organization. Please try again.', 'give-tgb') +
+                        __('✗ Error disconnecting organization. Please try again.', 'give') +
                         '</span>'
                 );
                 $button.prop('disabled', false);
@@ -502,7 +496,7 @@
             !confirm(
                 __(
                     'WARNING: This will permanently delete ALL organization data from the database.\n\nThis includes:\n• Organization ID and connection status\n• Complete organization details\n• All cached data and preferences\n\nThis action CANNOT be undone. Are you sure you want to continue?',
-                    'give-tgb'
+                    'give'
                 )
             )
         ) {
@@ -516,13 +510,13 @@
         var originalIcon = $buttonIcon.attr('class');
 
         $button.prop('disabled', true);
-        $buttonText.text(__('Deleting...', 'give-tgb'));
+        $buttonText.text(__('Deleting...', 'give'));
         $buttonIcon.attr('class', 'dashicons dashicons-update');
         $button.addClass('loading');
 
         var $statusDiv = $(
             '<div class="delete-status" style="margin-top: 10px; padding: 8px; background: #f0f0f0; border-radius: 3px; font-size: 12px; color: #666;">' +
-                __('Deleting all organization data from database...', 'give-tgb') +
+                __('Deleting all organization data from database...', 'give') +
                 '</div>'
         );
         $button.closest('.data-actions').append($statusDiv);
@@ -538,7 +532,7 @@
                 if (response.success) {
                     $statusDiv.html(
                         '<span style="color: #46b450;">' +
-                            __('✓ All organization data deleted successfully! Refreshing page...', 'give-tgb') +
+                            __('✓ All organization data deleted successfully! Refreshing page...', 'give') +
                             '</span>'
                     );
                     setTimeout(function () {
@@ -548,10 +542,7 @@
                 } else {
                     $statusDiv.html(
                         '<span style="color: #dc3232;">' +
-                            sprintf(
-                                __('✗ Error: %s', 'give-tgb'),
-                                response.data.message || __('Unknown error', 'give-tgb')
-                            ) +
+                            sprintf(__('✗ Error: %s', 'give'), response.data.message || __('Unknown error', 'give')) +
                             '</span>'
                     );
                     $button.prop('disabled', false);
@@ -563,7 +554,7 @@
             error: function () {
                 $statusDiv.html(
                     '<span style="color: #dc3232;">' +
-                        __('✗ Error deleting data. Please try again.', 'give-tgb') +
+                        __('✗ Error deleting data. Please try again.', 'give') +
                         '</span>'
                 );
                 $button.prop('disabled', false);

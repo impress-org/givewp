@@ -17,7 +17,7 @@ class RenderOrganizationDetails
     public function __invoke(Organization $organization)
     {
         if (empty($organization->id)) {
-            $this->displayError(__('No organization data available.', 'give-tgb'));
+            $this->displayError(__('No organization data available.', 'give'));
             return;
         }
 
@@ -31,19 +31,19 @@ class RenderOrganizationDetails
     {
         ?>
         <div class="give-tgb-card">
-            <h2><span class="dashicons dashicons-building"></span> <?php esc_html_e('Organization Details', 'give-tgb'); ?></h2>
-            <p><?php esc_html_e('Information for your saved organization:', 'give-tgb'); ?></p>
+            <h2><span class="dashicons dashicons-building"></span> <?php esc_html_e('Organization Details', 'give'); ?></h2>
+            <p><?php esc_html_e('Information for your saved organization:', 'give'); ?></p>
 
             <div class="give-tgb-refresh-notice">
                 <div class="refresh-info">
                     <div>
-                        <strong><span class="dashicons dashicons-database"></span> <?php esc_html_e('Local Data', 'give-tgb'); ?></strong> -
-                        <?php esc_html_e('Data saved in local database. Click the button to update with latest data from The Giving Block.', 'give-tgb'); ?>
+                        <strong><span class="dashicons dashicons-database"></span> <?php esc_html_e('Local Data', 'give'); ?></strong> -
+                        <?php esc_html_e('Data saved in local database. Click the button to update with latest data from The Giving Block.', 'give'); ?>
                     </div>
                     <button type="button"
                         onclick="refreshOrganizationData('<?php echo esc_js($organization->id); ?>')"
                         class="refresh-btn">
-                        <span class="dashicons dashicons-update"></span> <?php esc_html_e('Refresh from API', 'give-tgb'); ?>
+                        <span class="dashicons dashicons-update"></span> <?php esc_html_e('Refresh from API', 'give'); ?>
                     </button>
                 </div>
             </div>
@@ -60,26 +60,26 @@ class RenderOrganizationDetails
                             <div class="logo-column" style="width: fit-content;">
                                 <div style="text-align: center;">
                                     <img src="<?php echo esc_url($organization->logo); ?>"
-                                        alt="<?php esc_attr_e('Organization Logo', 'give-tgb'); ?>"
+                                        alt="<?php esc_attr_e('Organization Logo', 'give'); ?>"
                                         style="max-width: 200px; max-height: 100px; border: 1px solid #ccc; border-radius: 3px;">
                                 </div>
                             </div>
 
                             <!-- Right Column: Name and ID -->
                             <div>
-                                <p><strong><?php esc_html_e('Name:', 'give-tgb'); ?></strong>
-                                    <?php echo esc_html($organization->name ?: esc_html__('N/A', 'give-tgb')); ?>
+                                <p><strong><?php esc_html_e('Name:', 'give'); ?></strong>
+                                    <?php echo esc_html($organization->name ?: esc_html__('N/A', 'give')); ?>
                                 </p>
                                 <div style="display: flex; align-items: center; gap: 20px; margin: 5px 0;">
                                     <div style="flex: 0 0 auto;">
-                                        <p><strong><?php esc_html_e('ID:', 'give-tgb'); ?></strong>
+                                        <p><strong><?php esc_html_e('ID:', 'give'); ?></strong>
                                             <span class="organization-id-container">
-                                                <span class="organization-id-value"><?php echo esc_html($organization->id ?: esc_html__('N/A', 'give-tgb')); ?></span>
+                                                <span class="organization-id-value"><?php echo esc_html($organization->id ?: esc_html__('N/A', 'give')); ?></span>
                                                 <?php if (!empty($organization->id)): ?>
                                                     <button type="button"
                                                         onclick="copyOrganizationId('<?php echo esc_js($organization->id); ?>')"
                                                         class="copy-id-btn"
-                                                        title="<?php esc_attr_e('Copy Organization ID', 'give-tgb'); ?>">
+                                                        title="<?php esc_attr_e('Copy Organization ID', 'give'); ?>">
                                                         <span class="dashicons dashicons-clipboard"></span>
                                                     </button>
                                                 <?php endif; ?>
@@ -89,8 +89,8 @@ class RenderOrganizationDetails
                                     <?php if (!empty($organization->id)): ?>
                                         <div class="id-security-notice" style="flex: 0 1 auto; max-width: fit-content;">
                                             <span class="dashicons dashicons-warning"></span>
-                                            <strong><?php esc_html_e('Important:', 'give-tgb'); ?></strong>
-                                            <?php esc_html_e('Store this ID in a secure location. You may need it for future reconnections to The Giving Block service.', 'give-tgb'); ?>
+                                            <strong><?php esc_html_e('Important:', 'give'); ?></strong>
+                                            <?php esc_html_e('Store this ID in a secure location. You may need it for future reconnections to The Giving Block service.', 'give'); ?>
                                         </div>
                                     <?php endif; ?>
                                 </div>
@@ -99,19 +99,19 @@ class RenderOrganizationDetails
                     <?php else: ?>
                         <!-- Single Column Layout (no logo) -->
                         <div style="margin: 5px 0;">
-                            <p><strong><?php esc_html_e('Name:', 'give-tgb'); ?></strong>
-                                <?php echo esc_html($organization->name ?: esc_html__('N/A', 'give-tgb')); ?>
+                            <p><strong><?php esc_html_e('Name:', 'give'); ?></strong>
+                                <?php echo esc_html($organization->name ?: esc_html__('N/A', 'give')); ?>
                             </p>
                             <div style="display: flex; align-items: center; gap: 20px; margin: 5px 0;">
                                 <div style="flex: 0 0 auto;">
-                                    <p><strong><?php esc_html_e('ID:', 'give-tgb'); ?></strong>
+                                    <p><strong><?php esc_html_e('ID:', 'give'); ?></strong>
                                         <span class="organization-id-container">
-                                            <span class="organization-id-value"><?php echo esc_html($organization->id ?: esc_html__('N/A', 'give-tgb')); ?></span>
+                                            <span class="organization-id-value"><?php echo esc_html($organization->id ?: esc_html__('N/A', 'give')); ?></span>
                                             <?php if (!empty($organization->id)): ?>
                                                 <button type="button"
                                                     onclick="copyOrganizationId('<?php echo esc_js($organization->id); ?>')"
                                                     class="copy-id-btn"
-                                                    title="<?php esc_attr_e('Copy Organization ID', 'give-tgb'); ?>">
+                                                    title="<?php esc_attr_e('Copy Organization ID', 'give'); ?>">
                                                     <span class="dashicons dashicons-clipboard"></span>
                                                 </button>
                                             <?php endif; ?>
@@ -121,8 +121,8 @@ class RenderOrganizationDetails
                                 <?php if (!empty($organization->id)): ?>
                                     <div class="id-security-notice" style="flex: 0 1 auto; margin-top: 0; max-width: fit-content;">
                                         <span class="dashicons dashicons-warning"></span>
-                                        <strong><?php esc_html_e('Important:', 'give-tgb'); ?></strong>
-                                        <?php esc_html_e('Store this ID in a secure location. You may need it for future reconnections to The Giving Block service.', 'give-tgb'); ?>
+                                        <strong><?php esc_html_e('Important:', 'give'); ?></strong>
+                                        <?php esc_html_e('Store this ID in a secure location. You may need it for future reconnections to The Giving Block service.', 'give'); ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -133,47 +133,47 @@ class RenderOrganizationDetails
                     <div class="organization-details-grid" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 30px; margin: 0; align-items: start; max-width: 600px;">
                         <!-- Left column -->
                         <div>
-                            <p><strong><?php esc_html_e('UUID:', 'give-tgb'); ?></strong>
-                                <?php echo esc_html($organization->uuid ?: esc_html__('N/A', 'give-tgb')); ?>
+                            <p><strong><?php esc_html_e('UUID:', 'give'); ?></strong>
+                                <?php echo esc_html($organization->uuid ?: esc_html__('N/A', 'give')); ?>
                             </p>
-                            <p><strong><?php esc_html_e('Tax ID:', 'give-tgb'); ?></strong>
-                                <?php echo esc_html($organization->nonprofitTaxID ?: esc_html__('N/A', 'give-tgb')); ?>
+                            <p><strong><?php esc_html_e('Tax ID:', 'give'); ?></strong>
+                                <?php echo esc_html($organization->nonprofitTaxID ?: esc_html__('N/A', 'give')); ?>
                             </p>
-                            <p><strong><?php esc_html_e('Country:', 'give-tgb'); ?></strong>
-                                <?php echo esc_html($organization->country ?: esc_html__('N/A', 'give-tgb')); ?>
+                            <p><strong><?php esc_html_e('Country:', 'give'); ?></strong>
+                                <?php echo esc_html($organization->country ?: esc_html__('N/A', 'give')); ?>
                             </p>
-                            <p><strong><?php esc_html_e('State:', 'give-tgb'); ?></strong>
-                                <?php echo esc_html($organization->state ?: esc_html__('N/A', 'give-tgb')); ?>
+                            <p><strong><?php esc_html_e('State:', 'give'); ?></strong>
+                                <?php echo esc_html($organization->state ?: esc_html__('N/A', 'give')); ?>
                             </p>
-                            <p><strong><?php esc_html_e('City:', 'give-tgb'); ?></strong>
-                                <?php echo esc_html($organization->city ?: esc_html__('N/A', 'give-tgb')); ?>
+                            <p><strong><?php esc_html_e('City:', 'give'); ?></strong>
+                                <?php echo esc_html($organization->city ?: esc_html__('N/A', 'give')); ?>
                             </p>
-                            <p><strong><?php esc_html_e('Postcode:', 'give-tgb'); ?></strong>
-                                <?php echo esc_html($organization->postcode ?: esc_html__('N/A', 'give-tgb')); ?>
+                            <p><strong><?php esc_html_e('Postcode:', 'give'); ?></strong>
+                                <?php echo esc_html($organization->postcode ?: esc_html__('N/A', 'give')); ?>
                             </p>
                         </div>
 
                         <!-- Right column -->
                         <div class="details-right-column">
-                            <p><strong><?php esc_html_e('Address:', 'give-tgb'); ?></strong>
-                                <?php echo esc_html($organization->nonprofitAddress1 ?: esc_html__('N/A', 'give-tgb')); ?>
+                            <p><strong><?php esc_html_e('Address:', 'give'); ?></strong>
+                                <?php echo esc_html($organization->nonprofitAddress1 ?: esc_html__('N/A', 'give')); ?>
                             </p>
                             <?php if (!empty($organization->nonprofitAddress2)): ?>
-                                <p><strong><?php esc_html_e('Address 2:', 'give-tgb'); ?></strong>
+                                <p><strong><?php esc_html_e('Address 2:', 'give'); ?></strong>
                                     <?php echo esc_html($organization->nonprofitAddress2); ?>
                                 </p>
                             <?php endif; ?>
-                            <p><strong><?php esc_html_e('Allows Anonymous:', 'give-tgb'); ?></strong>
-                                <?php echo $organization->allowsAnon ? '<span class="dashicons dashicons-yes-alt" style="color: #46b450;"></span> ' . esc_html__('Yes', 'give-tgb') : '<span class="dashicons dashicons-dismiss" style="color: #dc3232;"></span> ' . esc_html__('No', 'give-tgb'); ?>
+                            <p><strong><?php esc_html_e('Allows Anonymous:', 'give'); ?></strong>
+                                <?php echo $organization->allowsAnon ? '<span class="dashicons dashicons-yes-alt" style="color: #46b450;"></span> ' . esc_html__('Yes', 'give') : '<span class="dashicons dashicons-dismiss" style="color: #dc3232;"></span> ' . esc_html__('No', 'give'); ?>
                             </p>
-                            <p><strong><?php esc_html_e('Notes Enabled:', 'give-tgb'); ?></strong>
-                                <?php echo $organization->areNotesEnabled ? '<span class="dashicons dashicons-yes-alt" style="color: #46b450;"></span> ' . esc_html__('Yes', 'give-tgb') : '<span class="dashicons dashicons-dismiss" style="color: #dc3232;"></span> ' . esc_html__('No', 'give-tgb'); ?>
+                            <p><strong><?php esc_html_e('Notes Enabled:', 'give'); ?></strong>
+                                <?php echo $organization->areNotesEnabled ? '<span class="dashicons dashicons-yes-alt" style="color: #46b450;"></span> ' . esc_html__('Yes', 'give') : '<span class="dashicons dashicons-dismiss" style="color: #dc3232;"></span> ' . esc_html__('No', 'give'); ?>
                             </p>
-                            <p><strong><?php esc_html_e('Receipt Enabled:', 'give-tgb'); ?></strong>
-                                <?php echo $organization->isReceiptEnabled ? '<span class="dashicons dashicons-yes-alt" style="color: #46b450;"></span> ' . esc_html__('Yes', 'give-tgb') : '<span class="dashicons dashicons-dismiss" style="color: #dc3232;"></span> ' . esc_html__('No', 'give-tgb'); ?>
+                            <p><strong><?php esc_html_e('Receipt Enabled:', 'give'); ?></strong>
+                                <?php echo $organization->isReceiptEnabled ? '<span class="dashicons dashicons-yes-alt" style="color: #46b450;"></span> ' . esc_html__('Yes', 'give') : '<span class="dashicons dashicons-dismiss" style="color: #dc3232;"></span> ' . esc_html__('No', 'give'); ?>
                             </p>
-                            <p><strong><?php esc_html_e('Created:', 'give-tgb'); ?></strong>
-                                <?php echo esc_html($organization->createdAt ?: esc_html__('N/A', 'give-tgb')); ?>
+                            <p><strong><?php esc_html_e('Created:', 'give'); ?></strong>
+                                <?php echo esc_html($organization->createdAt ?: esc_html__('N/A', 'give')); ?>
                             </p>
 
                             <!-- Disconnect Button -->
@@ -182,7 +182,7 @@ class RenderOrganizationDetails
                                     onclick="disconnectOrganization()"
                                     class="disconnect-btn">
                                     <span class="dashicons dashicons-editor-unlink"></span>
-                                    <span class="button-text"><?php esc_html_e('Disconnect Organization', 'give-tgb'); ?></span>
+                                    <span class="button-text"><?php esc_html_e('Disconnect Organization', 'give'); ?></span>
                                 </button>
                             </div>
                         </div>
@@ -190,7 +190,7 @@ class RenderOrganizationDetails
 
                     <div class="address-notice" style="margin-top: 25px; font-style: italic; flex: 0 1 auto; max-width: fit-content;">
                         <span class="dashicons dashicons-info"></span>
-                        <?php esc_html_e("All donations are processed via The Giving Block's U.S. distribution partner, Modern Philanthropy Foundation. The EIN and address provided above are associated with this entity, which allocates the funds directly to your organization.", 'give-tgb'); ?>
+                        <?php esc_html_e("All donations are processed via The Giving Block's U.S. distribution partner, Modern Philanthropy Foundation. The EIN and address provided above are associated with this entity, which allocates the funds directly to your organization.", 'give'); ?>
                     </div>
                 </div>
             </div>
@@ -206,10 +206,10 @@ class RenderOrganizationDetails
         ?>
             <div class="give-tgb-card">
                 <h2>
-                    <span class="dashicons dashicons-warning"></span> <?php esc_html_e('Organization Details Error', 'give-tgb'); ?>
+                    <span class="dashicons dashicons-warning"></span> <?php esc_html_e('Organization Details Error', 'give'); ?>
                 </h2>
                 <div class="give-tgb-status error">
-                    <strong><?php esc_html_e('Error:', 'give-tgb'); ?></strong> <?php echo esc_html($message); ?>
+                    <strong><?php esc_html_e('Error:', 'give'); ?></strong> <?php echo esc_html($message); ?>
                 </div>
             </div>
     <?php
@@ -223,7 +223,7 @@ class RenderOrganizationDetails
         $organizationResponse = TheGivingBlockApi::getOrganizationById($organizationId);
 
         if (!is_array($organizationResponse) || ($organizationResponse['code'] ?? 0) !== 200) {
-            return new \WP_Error('refresh_failed', __('Failed to refresh organization data from API', 'give-tgb'));
+            return new \WP_Error('refresh_failed', __('Failed to refresh organization data from API', 'give'));
         }
 
         $code = $organizationResponse['code'];
@@ -234,6 +234,6 @@ class RenderOrganizationDetails
             return true;
         }
 
-        return new \WP_Error('refresh_failed', __('Failed to refresh organization data from API', 'give-tgb'));
+        return new \WP_Error('refresh_failed', __('Failed to refresh organization data from API', 'give'));
     }
 }
