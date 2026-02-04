@@ -40,13 +40,15 @@ class RegisterTheGivingBlockSettings
                 && give_get_current_setting_tab() === 'gateways'
                 && give_get_current_setting_section() === 'the-giving-block'
             ) {
+                wp_enqueue_style('dashicons');
                 wp_enqueue_style('giveTgbAdminPages', GIVE_PLUGIN_URL . 'src/PaymentGateways/TheGivingBlock/assets/css/adminPages.css', [], GIVE_VERSION);
                 wp_enqueue_script('giveTgbAdminPages', GIVE_PLUGIN_URL . 'src/PaymentGateways/TheGivingBlock/assets/js/adminPages.js', ['jquery', 'wp-i18n'], GIVE_VERSION, true);
-                wp_set_script_translations('giveTgbAdminPages', 'give-tgb');
+                wp_set_script_translations('giveTgbAdminPages', 'give');
 
                 wp_localize_script('giveTgbAdminPages', 'giveTgbSettings', [
                     'ajaxurl' => admin_url('admin-ajax.php'),
                     'nonce' => wp_create_nonce('giveTgbNonce'),
+                    'getStartedUrl' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=the-giving-block&group=get-started'),
                 ]);
             }
         });

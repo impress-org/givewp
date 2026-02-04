@@ -16,27 +16,27 @@ class HandleConnectingSubmission
     public function __invoke()
     {
         if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'giveTgbNonce')) {
-            wp_send_json_error(['message' => __('Invalid nonce. Please refresh the page and try again.', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Invalid nonce. Please refresh the page and try again.', 'give')]);
         }
 
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => __('Insufficient permissions', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Insufficient permissions', 'give')]);
         }
 
         $organizationId = sanitize_text_field(wp_unslash($_POST['organizationId'] ?? ''));
 
         if (empty($organizationId)) {
-            wp_send_json_error(['message' => __('Organization ID is required.', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Organization ID is required.', 'give')]);
         }
 
         if (!is_numeric($organizationId)) {
-            wp_send_json_error(['message' => __('Organization ID must be a valid number.', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Organization ID must be a valid number.', 'give')]);
         }
 
         $organizationResponse = TheGivingBlockApi::getOrganizationById($organizationId);
 
         if (!is_array($organizationResponse) || !isset($organizationResponse['code'])) {
-            wp_send_json_error(['message' => __('Unexpected response from organization API.', 'give-tgb')]);
+            wp_send_json_error(['message' => __('Unexpected response from organization API.', 'give')]);
         }
 
         $code = $organizationResponse['code'];
@@ -50,16 +50,16 @@ class HandleConnectingSubmission
 
             $cryptoOnboardingResponse = TheGivingBlockApi::nonProfitCryptoOnboarding($organizationIdNumeric);
             if (!is_array($cryptoOnboardingResponse) || !in_array($cryptoOnboardingResponse['code'], [200, 201], true)) {
-                $warnings[] = __('Crypto onboarding could not be completed.', 'give-tgb');
+                $warnings[] = __('Crypto onboarding could not be completed.', 'give');
             }
 
             $stockOnboardingResponse = TheGivingBlockApi::nonProfitStockOnboarding($organizationIdNumeric);
             if (!is_array($stockOnboardingResponse) || !in_array($stockOnboardingResponse['code'], [200, 201], true)) {
-                $warnings[] = __('Stock onboarding could not be completed.', 'give-tgb');
+                $warnings[] = __('Stock onboarding could not be completed.', 'give');
             }
 
             wp_send_json_success([
-                'message' => __('Organization connected successfully! Refreshing page, wait...', 'give-tgb'),
+                'message' => __('Organization connected successfully! Refreshing page, wait...', 'give'),
                 'reload' => empty($warnings),
                 'warnings' => $warnings,
             ]);
@@ -113,7 +113,7 @@ class HandleConnectingSubmission
                 wp_send_json_error(['message' => $error_message]);
             } else {
                 wp_send_json_error([
-                    'message' => __('Organization not found. Please check your Organization ID.', 'give-tgb'),
+                    'message' => __('Organization not found. Please check your Organization ID.', 'give'),
                     'response' => $organizationResponse
                 ]);
             }
