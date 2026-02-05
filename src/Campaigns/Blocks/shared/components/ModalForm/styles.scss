@@ -1,8 +1,7 @@
 .givewp-donation-form-modal {
     outline: none;
     width: 100%;
-    padding: 1rem;
-    max-height: 90dvh;
+    max-height: 100dvh;
     position: fixed;
     top: 50%;
     left: 0;
@@ -79,8 +78,8 @@
     &__close {
         display: flex;
         position: absolute;
-        top: var(--givewp-spacing-2);
-        right: var(--givewp-spacing-2);
+        top: var(--givewp-spacing-4);
+        right: var(--givewp-spacing-4);
         padding: .75rem;
         width: fit-content;
         background: #e7e8ed;
@@ -104,5 +103,24 @@
     &__dialog {
         max-height: inherit;
         overflow-y: auto;
+        padding: 1rem;
+    }
+}
+
+.admin-bar {
+    --admin-bar-height: 32px;
+
+    @media (max-width: 782px) {
+        --admin-bar-height: 46px;
+    }
+
+    .givewp-donation-form-modal {
+        &__dialog {
+            padding-top: calc(var(--admin-bar-height) + 1rem);
+        }
+
+        &__close {
+            top: calc(var(--admin-bar-height) + var(--givewp-spacing-4));
+        }
     }
 }
