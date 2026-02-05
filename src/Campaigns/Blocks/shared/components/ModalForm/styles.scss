@@ -2,7 +2,15 @@
     outline: none;
     width: 100%;
     padding: 1rem;
-    overflow-y: scroll;
+    max-height: 90dvh;
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+
+    @at-root body:has(&) {
+        position: relative;
+    }
 
     &[data-entering="true"] {
         animation: modal-fade 300ms, modal-zoom 600ms;
@@ -29,17 +37,18 @@
     }
 
     &__overlay {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         width: 100vw;
-        height: var(--visual-viewport-height);
+        height: 100%;
         background: rgba(0 0 0 / .7);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         z-index: 100;
+        overflow: hidden;
 
         &[data-loading="true"] {
             display: none;
@@ -69,9 +78,9 @@
 
     &__close {
         display: flex;
-        position: fixed;
-        top: 25px;
-        right: 25px;
+        position: absolute;
+        top: var(--givewp-spacing-2);
+        right: var(--givewp-spacing-2);
         padding: .75rem;
         width: fit-content;
         background: #e7e8ed;
@@ -91,14 +100,9 @@
             background-color: darken(#e7e8ed, 10%);
         }
     }
-}
 
-// Account for admin bar
-.admin-bar {
-    .givewp-donation-form-modal {
-        margin-top: 32px;
-        &__close {
-            top: calc(32px + 25px);
-        }
+    &__dialog {
+        max-height: inherit;
+        overflow-y: auto;
     }
 }
