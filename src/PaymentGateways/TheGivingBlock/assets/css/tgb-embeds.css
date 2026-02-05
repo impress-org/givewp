@@ -1,0 +1,8 @@
+/**
+ * Styles for The Giving Block embeds (shortcode/block) – frontend and block editor.
+ *
+ * @unreleased
+ */
+.give-tgb-donation-form [id^="tgb-widget-button-"] {
+	cursor: pointer;
+}

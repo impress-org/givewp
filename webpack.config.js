@@ -178,6 +178,7 @@ const entry = {
     offlineGatewayFormBuilder: srcPath('PaymentGateways/Gateways/Offline/resources/formBuilder/index.tsx'),
     payPalStandardGateway: srcPath('PaymentGateways/Gateways/PayPalStandard/resources/js/payPalStandardGateway.tsx'),
     payPalCommerceGateway: srcPath('PaymentGateways/Gateways/PayPalCommerce/payPalCommerceGateway.tsx'),
+    tgbDonationFormBlockApp: srcPath('PaymentGateways/TheGivingBlock/Embeds/Blocks/blocks.ts'),
     classicFormDesignCss: srcPath('DonationForms/FormDesigns/ClassicFormDesign/css/main.scss'),
     classicFormDesignJs: srcPath('DonationForms/FormDesigns/ClassicFormDesign/js/main.ts'),
     multiStepFormDesignCss: srcPath('DonationForms/FormDesigns/MultiStepFormDesign/css/main.scss'),
