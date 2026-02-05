@@ -19,6 +19,7 @@ use Give\API\REST\V3\Routes\Donations\ViewModels\DonationViewModel;
 use Give\Framework\PaymentGateways\CommandHandlers\PaymentRefundedHandler;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Contracts\PaymentGatewayRefundable;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -50,6 +51,8 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     *
+     * @since 4.14.0 replaced permissionsCheck with get_item_permissions_check and get_items_permissions_check
      * @since 4.9.0 Move schema key to the route level instead of defining it for each endpoint (which is incorrect)
      * @since 4.6.0
      */
@@ -59,7 +62,7 @@ class DonationController extends WP_REST_Controller
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_item'],
-                'permission_callback' => [$this, 'permissionsCheck'],
+                'permission_callback' => [$this, 'get_item_permissions_check'],
                 'args' => [
                     '_embed' => [
                         'description' => __(
@@ -120,7 +123,7 @@ class DonationController extends WP_REST_Controller
             [
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
-                'permission_callback' => [$this, 'permissionsCheck'],
+                'permission_callback' => [$this, 'get_items_permissions_check'],
                 'args' => $this->get_collection_params(),
             ],
             [
@@ -703,18 +706,35 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.14.0
+     */
+    public function get_item_permissions_check($request)
+    {
+        return $this->validationForGetMethods($request);
+    }
+
+    /**
+     * @since 4.14.0
+     */
+    public function get_items_permissions_check($request)
+    {
+        return $this->validationForGetMethods($request);
+    }
+
+    /**
+     * @since 4.14.0 update method name to validationForGetMethods, replace logic with UserPermissions facade and add canViewDonations check
      * @since 4.6.0
      */
-    public function permissionsCheck(WP_REST_Request $request)
+    public function validationForGetMethods(WP_REST_Request $request)
     {
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $includeAnonymousDonations = $request->get_param('anonymousDonations');
-        $canEditDonations = $this->canEditDonations();
+        $canViewDonations = UserPermissions::donations()->canView();
 
-        if ($includeSensitiveData && !$canEditDonations) {
+        if ($includeSensitiveData && !$canViewDonations) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You do not have permission to include sensitive data.', 'give'),
+                __('You do not have permission to include sensitive data.', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
@@ -722,10 +742,10 @@ class DonationController extends WP_REST_Controller
         if ($includeAnonymousDonations !== null) {
             $anonymousMode = new DonationAnonymousMode($includeAnonymousDonations);
 
-            if ($anonymousMode->isIncluded() && !$canEditDonations) {
+            if ($anonymousMode->isIncluded() && !$canViewDonations) {
                 return new WP_Error(
                     'rest_forbidden',
-                    esc_html__('You do not have permission to include anonymous donations.', 'give'),
+                    __('You do not have permission to include anonymous donations.', 'give'),
                     ['status' => $this->authorizationStatusCode()]
                 );
             }
@@ -745,7 +765,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to update donations.', 'give'),
+            __('You do not have permission to update donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
@@ -761,7 +781,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to create donations.', 'give'),
+            __('You do not have permission to create donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
@@ -777,7 +797,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to delete donations.', 'give'),
+            __('You do not have permission to delete donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
@@ -793,7 +813,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to delete donations.', 'give'),
+            __('You do not have permission to delete donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
@@ -809,7 +829,7 @@ class DonationController extends WP_REST_Controller
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__('You do not have permission to refund donations.', 'give'),
+            __('You do not have permission to refund donations.', 'give'),
             ['status' => $this->authorizationStatusCode()]
         );
     }
@@ -817,35 +837,34 @@ class DonationController extends WP_REST_Controller
     /**
      * Check if current user can edit donations.
      *
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     private function canEditDonations(): bool
     {
-        return current_user_can('manage_options')
-            || (
-                current_user_can('edit_give_payments')
-                && current_user_can('view_give_payments')
-            );
+        return UserPermissions::donations()->canEdit();
     }
 
     /**
      * Check if current user can delete donations.
      *
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     private function canDeleteDonations(): bool
     {
-        return current_user_can('manage_options') || current_user_can('delete_give_payments');
+        return UserPermissions::donations()->canDelete();
     }
 
     /**
      * Check if current user can refund donations.
      *
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     private function canRefundDonations(): bool
     {
-        return current_user_can('manage_options') || current_user_can('edit_give_payments');
+        return UserPermissions::donations()->canEdit();
     }
 
     /**

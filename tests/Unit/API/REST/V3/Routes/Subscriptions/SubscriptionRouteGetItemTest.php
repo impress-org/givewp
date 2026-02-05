@@ -8,6 +8,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
+use Give\Framework\Support\Facades\Str;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -157,6 +158,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.14.0 subscriptionUrl should not be included in gateway details when sensitive data is not included, lastName should return only the first letter when sensitive data is not included
      * @since 4.8.0
      *
      * @throws Exception
@@ -180,10 +182,13 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         ];
 
         $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data, $sensitiveProperties));
 
-        foreach ($sensitiveProperties as $property) {
-            $this->assertEmpty($data[$property]);
-        }
+        // gateway details should not include subscriptionUrl when sensitive data is not included
+        $this->assertNotContains('subscriptionUrl', $data['gateway']);
+
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(Str::substr($subscription->donor()->get()->lastName, 0, 1), $data['lastName']);
     }
 
     /**

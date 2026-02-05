@@ -10,7 +10,7 @@ namespace Give\Views\Admin\Pages;
 
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Utils;
-
+use Give\Framework\Permissions\Facades\UserPermissions;
 defined('ABSPATH') || exit;
 
 /**
@@ -72,7 +72,10 @@ class Reports
             ->registerLocalizeData('giveReportsData', $data)->enqueue();
     }
 
-    // Add Reports submenu page to admin menu
+    /**
+     * Add Reports submenu page to admin menu
+     * @since 4.14.0 update permission capability to use facade
+     */
     public function add_page()
     {
         $render = [$this, 'render_template'];
@@ -84,7 +87,7 @@ class Reports
             'edit.php?post_type=give_forms',
             esc_html__('Donation Reports', 'give'),
             esc_html__('Reports', 'give'),
-            'view_give_reports',
+            UserPermissions::reports()->viewCap(),
             'give-reports',
             $render
         );

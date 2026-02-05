@@ -178,9 +178,15 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addFilter('give_forms_labels', ReplaceGiveFormsCptLabels::class);
     }
 
+    /**
+     * @since 4.14.0 update permission capability to use facade
+     * @since 4.0.0
+     */
     private function setupCampaignPages()
     {
         Hooks::addAction('enqueue_block_editor_assets', Actions\EnqueueCampaignPageEditorAssets::class);
+        Hooks::addFilter('map_meta_cap', Actions\AllowGiveRolesToEditCampaignPages::class, 'mapMetaCap', 10, 4);
+        Hooks::addFilter('user_has_cap', Actions\AllowGiveRolesToEditCampaignPages::class, 'grantPublishCapability', 10, 4);
     }
 
     /**
@@ -245,7 +251,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased dispatch cache campaign data action when donation is deleted
+     * @since 4.14.0 dispatch cache campaign data action when donation is deleted
      * @since 4.13.1 added givewp_campaigns_merged hook
      * @since 4.8.0
      */

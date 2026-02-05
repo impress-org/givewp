@@ -4,6 +4,7 @@ namespace Give\Donations\Endpoints;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -78,16 +79,17 @@ class DonationActions extends Endpoint
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.25.2
      *
      * @inheritDoc
      */
     public function permissionsCheck()
     {
-        if (!current_user_can('edit_give_payments')) {
+        if (!UserPermissions::donations()->canEdit()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You don\'t have permission to edit Donations', 'give'),
+                __('You don\'t have permission to edit Donations', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
@@ -96,6 +98,7 @@ class DonationActions extends Endpoint
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.12.0 Add trash and untrash actions
      * @since 4.3.1 add permissions check for delete
      * @since 2.20.0
@@ -111,10 +114,10 @@ class DonationActions extends Endpoint
 
         switch ($request->get_param('action')) {
             case 'delete':
-                if (!current_user_can('delete_give_payments')) {
+                if (!UserPermissions::donations()->canDelete()) {
                     return new WP_Error(
                         'rest_forbidden',
-                        esc_html__('You don\'t have permission to delete Donation', 'give'),
+                        __('You don\'t have permission to delete Donation', 'give'),
                         ['status' => $this->authorizationStatusCode()]
                     );
                 }
@@ -176,10 +179,10 @@ class DonationActions extends Endpoint
                 break;
 
             case 'setStatus':
-                if (!current_user_can('view_give_payments')) {
+                if (!UserPermissions::donations()->canEdit()) {
                     return new WP_Error(
                         'rest_forbidden',
-                        esc_html__('You don\'t have permission to change donation statuses', 'give'),
+                        __('You don\'t have permission to change donation statuses', 'give'),
                         ['status' => $this->authorizationStatusCode()]
                     );
                 }

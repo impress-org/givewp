@@ -15,6 +15,7 @@ interface DonationStatsProps {
 }
 
 /**
+ * @since 4.14.0 updated to conditionally check isFeeRecoveryEnabled
  * @since 4.10.0 use upgrade object instead of inActive.
  * @since 4.6.0
  */
@@ -41,10 +42,10 @@ export default function DonationStats({ donation, isResolving }: DonationStatsPr
                 label={__('Fees recovered', 'give')}
                 value={formatter.format(feeAmountRecovered)}
                 loading={isResolving}
-                upgrade={{
+                upgrade={!isFeeRecoveryEnabled ? {
                     href: 'https://docs.givewp.com/fee-recovery-stats',
                     tooltip: __('Keep 100% of your fundraising revenue by providing donors with the option to cover the credit card processing fees.', 'give')
-                }}
+                } : null}
             />
         </div>
     );

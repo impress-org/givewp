@@ -5,11 +5,13 @@ namespace Give\Donations;
 use Give\Donations\Actions\LoadDonationDetailsAssets;
 use Give\Donations\Actions\LoadDonationsListTableAssets;
 use Give\Donations\Models\Donation;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 class DonationsAdminPage
 {
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.20.0
      */
     public function registerMenuItem()
@@ -28,7 +30,7 @@ class DonationsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('Donations', 'give'),
             esc_html__('Donations', 'give'),
-            'edit_give_forms',
+            UserPermissions::donations()->viewCap(),
             'give-payment-history',
             [$this, 'render']
         );

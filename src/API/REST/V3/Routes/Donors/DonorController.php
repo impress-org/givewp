@@ -2,13 +2,18 @@
 
 namespace Give\API\REST\V3\Routes\Donors;
 
+use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\API\REST\V3\Routes\Donors\Permissions\DonorPermissions;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
+use Give\API\REST\V3\Routes\Donors\ViewModels\DonorViewModel;
+use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
 use Give\API\REST\V3\Support\CURIE;
+use Give\API\REST\V3\Support\Headers;
+use Give\API\REST\V3\Support\Item;
 use Give\Donors\DonorsQuery;
 use Give\Donors\Models\Donor;
 use Give\Donors\ValueObjects\DonorAddress;
-use Give\Donors\ViewModels\DonorViewModel;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -17,8 +22,9 @@ use WP_REST_Server;
 
 /**
  * The methods using snake case like register_routes() are present in the base class,
- * and the methods using camel case like getSharedParams() are available only on this class.
+ * and the methods using camel case like getSortColumn() are available only on this class.
  *
+ * @since 4.14.0 Extract permissions logic to separate classes
  * @since 4.4.0 Extends WP_REST_Controller class and rename methods
  * @since 4.0.0
  */
@@ -44,7 +50,7 @@ class DonorController extends WP_REST_Controller
                 'methods' => WP_REST_Server::READABLE,
                 'callback' => [$this, 'get_items'],
                 'permission_callback' => [$this, 'get_items_permissions_check'],
-                'args' => array_merge($this->get_collection_params(), $this->getSharedParams()),
+                'args' => array_merge($this->get_collection_params(), $this->getSharedParamsForGetMethods()),
             ],
             'schema' => [$this, 'get_public_item_schema'],
         ]);
@@ -65,7 +71,7 @@ class DonorController extends WP_REST_Controller
                     ],
                     '_embed' => [
                         'description' => __(
-                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:statistics" when we wish to embed only a specific one.',
+                            'Whether to embed related resources in the response. It can be true when we want to embed all available resources, or a string like "givewp:statistics" when we wish to embed only a specific one. Available embeddable resources: givewp:statistics | givewp:donations | givewp:subscriptions. IMPORTANT: Use with caution when setting to true, as donations and subscriptions return 30 items by default, which can result in a large payload.',
                             'give'
                         ),
                         'type' => ['string', 'boolean'],
@@ -88,7 +94,7 @@ class DonorController extends WP_REST_Controller
                         'type' => 'integer',
                         'default' => 0,
                     ],
-                ], $this->getSharedParams()),
+                ], $this->getSharedParamsForGetMethods()),
             ],
             [
                 'methods' => WP_REST_Server::EDITABLE,
@@ -103,6 +109,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Get list of donors.
      *
+     * @since 4.14.0 Use Headers::addPagination() helper for pagination headers
      * @since 4.8.0 Add support for search parameter
      * @since 4.0.0
      *
@@ -133,6 +140,7 @@ class DonorController extends WP_REST_Controller
             $query->whereDonorsHaveDonations($mode, $campaignId, $donorAnonymousMode->isExcluded());
         }
 
+        $totalQuery = $query->clone();
         $query
             ->limit($perPage)
             ->offset(($page - 1) * $perPage)
@@ -146,38 +154,9 @@ class DonorController extends WP_REST_Controller
             return $this->prepare_response_for_collection($response);
         }, $donors);
 
-        $totalDonors = empty($donors) ? 0 : Donor::query()->count();
-        $totalPages = (int)ceil($totalDonors / $perPage);
-
+        $totalDonors = empty($donors) ? 0 : $totalQuery->count();
         $response = rest_ensure_response($donors);
-        $response->header('X-WP-Total', $totalDonors);
-        $response->header('X-WP-TotalPages', $totalPages);
-
-        $base = add_query_arg(
-            map_deep($request->get_query_params(), function ($value) {
-                if (is_bool($value)) {
-                    $value = $value ? 'true' : 'false';
-                }
-
-                return urlencode($value);
-            }),
-            rest_url(DonorRoute::BASE)
-        );
-
-        if ($page > 1) {
-            $prevPage = $page - 1;
-
-            if ($prevPage > $totalPages) {
-                $prevPage = $totalPages;
-            }
-
-            $response->link_header('prev', add_query_arg('page', $prevPage, $base));
-        }
-
-        if ($totalPages > $page) {
-            $nextPage = $page + 1;
-            $response->link_header('next', add_query_arg('page', $nextPage, $base));
-        }
+        $response = Headers::addPagination($response, $request, $totalDonors, $perPage, $this->rest_base);
 
         return $response;
     }
@@ -270,6 +249,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.14.0 Use DonorPermissions class
      * @since 4.0.0
      *
      * @param WP_REST_Request $request
@@ -278,10 +258,11 @@ class DonorController extends WP_REST_Controller
      */
     public function get_items_permissions_check($request)
     {
-        return $this->permissionsCheck($request);
+        return DonorPermissions::validationForGetMethods($request);
     }
 
     /**
+     * @since 4.14.0 Use DonorPermissions class
      * @since 4.0.0
      *
      * @param WP_REST_Request $request
@@ -290,10 +271,11 @@ class DonorController extends WP_REST_Controller
      */
     public function get_item_permissions_check($request)
     {
-        return $this->permissionsCheck($request);
+        return DonorPermissions::validationForGetMethods($request);
     }
 
     /**
+     * @since 4.14.0 Use DonorPermissions class
      * @since 4.4.0
      *
      * @param WP_REST_Request $request
@@ -302,37 +284,69 @@ class DonorController extends WP_REST_Controller
      */
     public function update_item_permissions_check($request)
     {
-        if (!current_user_can('manage_options')) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to update donors.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        return true;
+        return DonorPermissions::validationForUpdateMethod($request);
     }
 
     /**
+     * @since 4.14.0 Add links to donations and subscriptions and format dates as strings using Item::formatDatesForResponse
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.4.0
      */
     public function prepare_item_for_response($item, $request): WP_REST_Response
     {
-        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $request->get_param('id')));
+        $donorId = $request->get_param('id');
+        $mode = $request->get_param('mode');
+        $campaignId = $request->get_param('campaignId');
+        $includeSensitiveData = $request->get_param('includeSensitiveData') ? '1' : '0';
+        $anonymousDonors = $request->get_param('anonymousDonors');
+        $anonymousDonations = $anonymousDonors;
+
+        $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $donorId));
+
         $statistics_url = add_query_arg([
-            'mode' => $request->get_param('mode'),
-            'campaignId' => $request->get_param('campaignId'),
+            'mode' => $mode,
+            'campaignId' => $campaignId,
         ], $self_url . '/statistics');
+
+        $donations_url = rest_url(sprintf('%s/%s', DonationRoute::NAMESPACE, DonationRoute::BASE));
+        $donations_url = add_query_arg([
+            'donorId' => $donorId,
+            'mode' => $mode,
+            'campaignId' => $campaignId,
+            'includeSensitiveData' => $includeSensitiveData,
+            'anonymousDonations' => $anonymousDonations,
+            'page' => 1,
+            'per_page' => 30,
+        ], $donations_url);
+
+        $subscriptions_url = rest_url(sprintf('%s/%s', SubscriptionRoute::NAMESPACE, SubscriptionRoute::BASE));
+        $subscriptions_url = add_query_arg([
+            'donorId' => $donorId,
+            'mode' => $mode,
+            'campaignId' => $campaignId,
+            'includeSensitiveData' => $includeSensitiveData,
+            'anonymousDonors' => $anonymousDonors,
+            'page' => 1,
+            'per_page' => 30,
+        ], $subscriptions_url);
+
         $links = [
             'self' => ['href' => $self_url],
             CURIE::relationUrl('statistics') => [
                 'href' => $statistics_url,
                 'embeddable' => true,
             ],
+            CURIE::relationUrl('donations') => [
+                'href' => $donations_url,
+                'embeddable' => true,
+            ],
+            CURIE::relationUrl('subscriptions') => [
+                'href' => $subscriptions_url,
+                'embeddable' => true,
+            ],
         ];
 
-        $response = new WP_REST_Response($item);
+        $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt']));
         $response->add_links($links);
         $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
@@ -340,6 +354,7 @@ class DonorController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.14.0 Add missing properties to the schema
      * @since 4.13.0 add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donor and add custom fields schema
@@ -471,6 +486,64 @@ class DonorController extends WP_REST_Controller
                         ],
                     ],
                 ],
+                'createdAt' => [
+                    'type' => ['string', 'null'],
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('Donor creation date in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
+                    'readonly' => true,
+                ],
+                'userId' => [
+                    'type' => ['integer', 'null'],
+                    'description' => esc_html__('WordPress user ID associated with the donor', 'give'),
+                    'readonly' => true,
+                ],
+                'name' => [
+                    'type' => 'string',
+                    'description' => esc_html__('Donor full name (calculated from firstName and lastName)', 'give'),
+                    'readonly' => true,
+                ],
+                'avatarUrl' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('URL of the donor avatar image', 'give'),
+                    'format' => 'uri',
+                    'readonly' => true,
+                ],
+                'wpUserPermalink' => [
+                    'type' => ['string', 'null'],
+                    'description' => esc_html__('Link to edit the WordPress user associated with the donor', 'give'),
+                    'format' => 'uri',
+                    'readonly' => true,
+                ],
+                'totalAmountDonated' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'value' => [
+                            'type' => 'number',
+                            'description' => esc_html__('Total amount donated in decimal format', 'give'),
+                        ],
+                        'valueInMinorUnits' => [
+                            'type' => 'integer',
+                            'description' => esc_html__('Total amount donated in minor units (cents)', 'give'),
+                        ],
+                        'currency' => [
+                            'type' => 'string',
+                            'format' => 'text-field',
+                            'description' => esc_html__('Currency code (e.g., USD, EUR)', 'give'),
+                        ],
+                    ],
+                    'description' => esc_html__('Total amount donated by the donor', 'give'),
+                    'readonly' => true,
+                ],
+                'totalNumberOfDonations' => [
+                    'type' => 'integer',
+                    'description' => esc_html__('Total number of donations made by the donor', 'give'),
+                    'readonly' => true,
+                ],
             ],
         ];
 
@@ -534,15 +607,42 @@ class DonorController extends WP_REST_Controller
                 'type' => 'integer',
                 'default' => 0,
             ],
+            'search' => [
+                'description' => __('Search donors by name or email.', 'give'),
+                'type' => 'string',
+            ],
         ];
 
         return $params;
     }
 
     /**
-     * @since 4.4.0
+     * @since 4.13.1 cast totalAmountDonated to decimal
+     * @since 4.0.0
      */
-    public function getSharedParams(): array
+    public function getSortColumn(string $sortColumn): string
+    {
+        $sortColumnsMap = [
+            'id' => 'id',
+            'createdAt' => 'date_created',
+            'name' => 'name',
+            'firstName' => 'give_donormeta_attach_meta_firstName.meta_value',
+            'lastName' => 'give_donormeta_attach_meta_lastName.meta_value',
+            'totalAmountDonated' => 'CAST(purchase_value AS DECIMAL(10, 2))',
+            'totalNumberOfDonations' => 'purchase_count',
+        ];
+
+        return $sortColumnsMap[$sortColumn];
+    }
+
+    /**
+     * Get shared parameters for GET methods (both collection and item).
+     *
+     * @since 4.4.0
+     *
+     * @return array
+     */
+    private function getSharedParamsForGetMethods(): array
     {
         return [
             'includeSensitiveData' => [
@@ -563,66 +663,5 @@ class DonorController extends WP_REST_Controller
                 'enum' => ['exclude', 'include', 'redact'],
             ],
         ];
-    }
-
-    /**
-     * @since 4.0.0
-     *
-     * @param WP_REST_Request $request
-     *
-     * @return true|WP_Error
-     */
-    public function permissionsCheck(WP_REST_Request $request)
-    {
-        $isAdmin = current_user_can('manage_options');
-
-        $includeSensitiveData = $request->get_param('includeSensitiveData');
-        if (!$isAdmin && $includeSensitiveData) {
-            return new WP_Error(
-                'rest_forbidden',
-                esc_html__('You do not have permission to include sensitive data.', 'give'),
-                ['status' => $this->authorizationStatusCode()]
-            );
-        }
-
-        if ($request->get_param('anonymousDonors') !== null) {
-            $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
-            if (!$isAdmin && $donorAnonymousMode->isIncluded()) {
-                return new WP_Error(
-                    'rest_forbidden',
-                    esc_html__('You do not have permission to include anonymous donors.', 'give'),
-                    ['status' => $this->authorizationStatusCode()]
-                );
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @since 4.0.0
-     */
-    public function authorizationStatusCode(): int
-    {
-        return is_user_logged_in() ? 403 : 401;
-    }
-
-    /**
-     * @since 4.13.1 cast totalAmountDonated to decimal
-     * @since 4.0.0
-     */
-    public function getSortColumn(string $sortColumn): string
-    {
-        $sortColumnsMap = [
-            'id' => 'id',
-            'createdAt' => 'date_created',
-            'name' => 'name',
-            'firstName' => 'give_donormeta_attach_meta_firstName.meta_value',
-            'lastName' => 'give_donormeta_attach_meta_lastName.meta_value',
-            'totalAmountDonated' => 'CAST(purchase_value AS DECIMAL(10, 2))',
-            'totalNumberOfDonations' => 'purchase_count',
-        ];
-
-        return $sortColumnsMap[$sortColumn];
     }
 }

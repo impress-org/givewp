@@ -5,6 +5,7 @@ namespace Give\Subscriptions\ViewModels;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\PaymentGatewayRegister;
+use Give\Framework\Support\Facades\Str;
 use Give\Subscriptions\Models\Subscription;
 
 /**
@@ -47,6 +48,7 @@ class SubscriptionViewModel
     }
 
     /**
+     * @since 4.14.0 lastName should return only the first letter when sensitive data is not included
      * @since 4.10.0 added campaignId
      * @since 4.8.0
      */
@@ -69,10 +71,14 @@ class SubscriptionViewModel
             $sensitiveDataExcluded = [
                 'transactionId',
                 'gatewaySubscriptionId',
+                'lastName',
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
+                    case 'lastName':
+                        $data[$propertyName] = Str::substr($data[$propertyName], 0, 1);
+                        break;
                     default:
                         $data[$propertyName] = '';
                         break;
@@ -103,6 +109,7 @@ class SubscriptionViewModel
     }
 
     /**
+     * @since 4.14.0 Return gateway details without subscriptionUrl when sensitive data is not included
      * @since 4.10.0 Return null if subscription URL is not available
      * @since 4.8.0
      */
@@ -110,6 +117,10 @@ class SubscriptionViewModel
     {
         if (empty($this->subscription->gatewayId) || !give(PaymentGatewayRegister::class)->hasPaymentGateway($this->subscription->gatewayId)) {
             return null;
+        }
+
+        if (!$this->includeSensitiveData) {
+            return $this->subscription->gateway()->toArray();
         }
 
         $subscriptionUrl = $this->subscription->gateway()->gatewayDashboardSubscriptionUrl($this->subscription);

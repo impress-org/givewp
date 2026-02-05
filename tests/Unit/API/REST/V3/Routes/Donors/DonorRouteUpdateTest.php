@@ -5,8 +5,8 @@ namespace Unit\API\REST\V3\Routes\Donors;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\Models\Donor;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 
 class DonorRouteUpdateTest extends RestApiTestCase
@@ -66,6 +66,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.14.0 Update createdAt comparison to expect string format instead of DateTime object
      * @since 4.4.0
      */
     public function testUpdateDonorShouldNotUpdateNonEditableFields()
@@ -92,7 +93,11 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $this->assertEquals(200, $status);
         $this->assertEquals($originalId, $data['id']);
         $this->assertEquals($originalUserId, $data['userId']);
-        $this->assertEquals($originalCreatedAt, $data['createdAt']);
+        // createdAt is formatted as string in API response
+        $expectedCreatedAt = $originalCreatedAt instanceof \DateTime
+            ? mysql_to_rfc3339($originalCreatedAt->format('c'))
+            : $originalCreatedAt;
+        $this->assertEquals($expectedCreatedAt, $data['createdAt']);
     }
 
     /**
@@ -341,5 +346,85 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $this->assertEquals('', $data['addresses'][0]['address2']); // Should be empty
         $this->assertEquals('', $data['addresses'][0]['state']); // Should be empty
         $this->assertEquals('', $data['addresses'][0]['zip']); // Should be empty
+    }
+
+    /**
+     * @since 4.14.0 Allow donors to update their own data
+     */
+    public function testUpdateDonorShouldAllowOwnerToUpdateOwnData()
+    {
+        // Create a user
+        $user = $this->factory()->user->create([
+            'role' => 'subscriber',
+            'user_login' => 'testDonorOwnerUpdate',
+            'user_email' => 'testDonorOwnerUpdate@test.com',
+        ]);
+        wp_set_current_user($user);
+
+        // Create a donor linked to this user
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create([
+            'userId' => $user,
+            'firstName' => 'Original',
+            'lastName' => 'Name',
+        ]);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = new WP_REST_Request('PUT', $route);
+        $request->set_body_params([
+            'firstName' => 'Updated',
+            'lastName' => 'Name',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(200, $response->get_status());
+        $data = $response->get_data();
+        $this->assertEquals('Updated', $data['firstName']);
+
+        // Verify the donor was actually updated
+        $updatedDonor = Donor::find($donor->id);
+        $this->assertEquals('Updated', $updatedDonor->firstName);
+    }
+
+    /**
+     * @since 4.14.0 Donors should not be able to update other donors' data
+     */
+    public function testUpdateDonorShouldReturn403WhenOwnerTriesToUpdateOtherDonor()
+    {
+        // Create a user
+        $user = $this->factory()->user->create([
+            'role' => 'subscriber',
+            'user_login' => 'testDonorOwnerUpdate2',
+            'user_email' => 'testDonorOwnerUpdate2@test.com',
+        ]);
+        wp_set_current_user($user);
+
+        // Create another user and donor
+        $otherUser = $this->factory()->user->create([
+            'role' => 'subscriber',
+            'user_login' => 'otherUser2',
+            'user_email' => 'otherUser2@test.com',
+        ]);
+
+        /** @var Donor $otherDonor */
+        $otherDonor = Donor::factory()->create([
+            'userId' => $otherUser,
+            'firstName' => 'Original',
+        ]);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $otherDonor->id;
+        $request = new WP_REST_Request('PUT', $route);
+        $request->set_body_params([
+            'firstName' => 'Hacked',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(403, $response->get_status());
+
+        // Verify the donor was NOT updated
+        $unchangedDonor = Donor::find($otherDonor->id);
+        $this->assertEquals('Original', $unchangedDonor->firstName);
     }
 }

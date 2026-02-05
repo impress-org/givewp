@@ -7,6 +7,7 @@ use Give\API\RestRoute;
 use Give\Campaigns\ListTable\CampaignsListTable;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -102,6 +103,7 @@ class DeleteCampaignListTable implements RestRoute
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.3.1 update permissions
      * @since 4.0.0
      *
@@ -109,9 +111,9 @@ class DeleteCampaignListTable implements RestRoute
      */
     public function permissionsCheck()
     {
-        return current_user_can('manage_options') ?: new WP_Error(
+        return UserPermissions::campaigns()->canDelete() ?: new WP_Error(
             'rest_forbidden',
-            esc_html__("You don't have permission to delete Campaigns", 'give'),
+            __("You don't have permission to delete Campaigns", 'give'),
             ['status' => is_user_logged_in() ? 403 : 401]
         );
     }

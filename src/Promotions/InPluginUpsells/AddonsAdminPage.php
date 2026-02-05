@@ -3,8 +3,10 @@
 namespace Give\Promotions\InPluginUpsells;
 
 use Give\Helpers\EnqueueScript;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 /**
+ *
  * @since 2.17.0
  */
 class AddonsAdminPage
@@ -12,6 +14,8 @@ class AddonsAdminPage
     protected $containerId = 'give-in-plugin-upsells';
 
     /**
+     * @since 4.14.0 update permission capability to use facade
+     * @since 2.17.0
      * Register menu item
      */
     public function register()
@@ -20,7 +24,7 @@ class AddonsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('GiveWP Add-ons', 'give'),
             esc_html__('Add-ons', 'give'),
-            'manage_give_settings',
+            UserPermissions::settings()->manageCap(),
             'give-add-ons',
             [$this, 'render']
         );

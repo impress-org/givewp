@@ -4,6 +4,7 @@ namespace Give\FormBuilder\Routes;
 
 use Give\FormBuilder\Controllers\FormBuilderResourceController;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_REST_Request;
 use WP_REST_Server;
 
@@ -37,6 +38,7 @@ class RegisterFormBuilderRestRoutes
     /**
      * Get Request
      *
+     * @since 4.14.0 replace permission callback logic with UserPermissions facade
      * @since 4.3.2 update capability to add edit_give_forms
      * @since 3.0.0
      *
@@ -50,7 +52,7 @@ class RegisterFormBuilderRestRoutes
                 return $this->formBuilderResourceController->show($request);
             },
             'permission_callback' => function () {
-                return current_user_can('manage_options') || current_user_can('edit_give_forms');
+                return UserPermissions::donationForms()->canEdit();
             },
             'args' => [
                 'id' => [
@@ -64,6 +66,7 @@ class RegisterFormBuilderRestRoutes
     /**
      * Post Request
      *
+     * @since 4.14.0 replace permission callback logic with UserPermissions facade
      * @since 4.3.2 update capability to add edit_give_forms
      * @since 3.0.0
      *
@@ -77,7 +80,7 @@ class RegisterFormBuilderRestRoutes
                 return $this->formBuilderResourceController->update($request);
             },
             'permission_callback' => function () {
-                return current_user_can('manage_options') || current_user_can('edit_give_forms');
+                return UserPermissions::donationForms()->canEdit();
             },
             'args' => [
                 'id' => [

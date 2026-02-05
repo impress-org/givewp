@@ -183,12 +183,14 @@ class Give_Email_Notifications {
 	/**
 	 * Add email notifications
 	 *
+	 * @since 4.14.0 Add failed donation email.
 	 * @since  2.0
 	 * @access private
 	 */
 	private function add_emails_notifications() {
 		$this->emails = array(
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-donation-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-failed-donation-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-donation-receipt-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-offline-donation-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-offline-donation-instruction-email.php',

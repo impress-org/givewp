@@ -340,8 +340,8 @@ class Tests_Roles extends Give_Unit_Test_Case {
 		}
 
 		// Check 1.
-		$this->assertArrayHasKey( 'edit_give_payments', (array) $wp_roles->roles['give_worker']['capabilities'] );
-		$this->assertEquals( true, $wp_roles->roles['give_worker']['capabilities']['edit_give_payments'] );
+		$this->assertArrayHasKey( 'view_give_payments', (array) $wp_roles->roles['give_worker']['capabilities'] );
+		$this->assertEquals( true, $wp_roles->roles['give_worker']['capabilities']['view_give_payments'] );
 
 		// Check 2.
 		$this->assertArrayHasKey( 'delete_give_forms', (array) $wp_roles->roles['give_worker']['capabilities'] );

@@ -4,6 +4,7 @@ namespace Give\FormBuilder\Routes;
 
 
 use Give\Campaigns\Models\Campaign;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
 use Give\Framework\Views\View;
@@ -21,6 +22,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Use add_submenu_page to register page within WP admin
      *
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.3.2 update capability to edit_give_forms
      * @since 4.0.0 set parent slug to empty string
      * @since 3.0.0
@@ -33,7 +35,7 @@ class RegisterFormBuilderPageRoute
             '', // do not display in menu, just register page
             'Visual Donation Form Builder', // ignored
             'Add Form', // ignored
-            'edit_give_forms',
+            UserPermissions::donationForms()->editCap(),
             FormBuilderRouteBuilder::SLUG,
             [$this, 'renderPage'],
             1

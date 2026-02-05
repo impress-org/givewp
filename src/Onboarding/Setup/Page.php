@@ -9,6 +9,7 @@
 namespace Give\Onboarding\Setup;
 
 use Give\Campaigns\CampaignsAdminPage;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 defined('ABSPATH') || exit;
 
@@ -54,6 +55,7 @@ class Page
     /**
      * Add Setup submenu page to admin menu
      *
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.8.0
      */
     public function add_page()
@@ -62,7 +64,7 @@ class Page
             'edit.php?post_type=give_forms',
             esc_html__('Set up GiveWP', 'give'),
             esc_html__('Setup', 'give'),
-            'manage_give_settings',
+            UserPermissions::settings()->manageCap(),
             'give-setup',
             [$this, 'render_page']
         );
