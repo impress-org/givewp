@@ -92,6 +92,13 @@ class TheGivingBlockSettingPage implements SettingPage
                 'type' => 'title',
             ],
             [
+                'id' => 'give_tgb_add_block_to_new_campaigns',
+                'name' => __('Add "Donate Crypto" button to new GiveWP campaign pages', 'give'),
+                'desc' => __('When enabled, new campaign pages will automatically include The Giving Block donation button below the regular donate button. You can disable this if you prefer to add the block manually.', 'give'),
+                'type' => 'checkbox',
+                'default' => 'on',
+            ],
+            [
                 'name' => '',
                 'desc' => '',
                 'wrapper_class' => 'give-tgb-options-field-wrap',

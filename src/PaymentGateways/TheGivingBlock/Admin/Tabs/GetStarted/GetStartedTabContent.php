@@ -151,31 +151,48 @@ class GetStartedTabContent
                 <strong><?php esc_html_e('WordPress Integration:', 'give'); ?></strong>
                 <?php esc_html_e('For WordPress pages and posts, you have several options:', 'give'); ?>
             </p>
-            <ul>
-                <li>
-                    <strong><?php esc_html_e('Shortcode:', 'give'); ?></strong>
-                    <?php
-                        printf(
-                            /* translators: %1$s: iframe shortcode, %2$s: popup shortcode */
-                            esc_html__('Use %1$s to display the donation form directly, or %2$s to show a button that opens a popup modal', 'give'),
-                            '<code>[give_tgb_form type="iframe"]</code>',
-                            '<code>[give_tgb_form type="popup"]</code>'
-                        );
-        ?>
-                </li>
-                <li>
-                    <strong><?php esc_html_e('WordPress Block:', 'give'); ?></strong>
-                    <?php
-        printf(
-            /* translators: %s: Plugin name */
-            esc_html__('Add the "%s" block from the embed category and choose between iframe or popup display types', 'give'),
-            esc_html__('The Giving Block by GiveWP', 'give')
-        );
-        ?>
-                </li>
-            </ul>
             <p>
+                <strong><?php esc_html_e('WordPress Block:', 'give'); ?></strong>
+                <?php
+                printf(
+                    /* translators: %s: Plugin name */
+                    esc_html__('Add the "%s" block from the embed category. In the block editor you can choose display type (iframe or popup) and configure additional options in the block settings. Those same options are available as shortcode attributes and are described below.', 'give'),
+                    esc_html__('The Giving Block by GiveWP', 'give')
+                );
+                ?>
+            </p>
+            <p>
+                <strong><?php esc_html_e('Shortcode:', 'give'); ?></strong>
+                <?php
+                printf(
+                    /* translators: %1$s: iframe shortcode, %2$s: popup shortcode */
+                    esc_html__('Use %1$s to display the donation form directly, or %2$s to show a button that opens a popup modal. The same options available in the block (listed below) can be used as shortcode attributes.', 'give'),
+                    '<code>[give_tgb_form type="iframe"]</code>',
+                    '<code>[give_tgb_form type="popup"]</code>'
+                );
+                ?>
+            </p>
+            <p>
+                <strong><?php esc_html_e('Options (shortcode attributes / block settings)', 'give'); ?></strong>
+            </p>
+            <ul style="margin-bottom: 12px;">
+                <li><code>type</code> — <?php esc_html_e('"iframe" (default) or "popup". Iframe shows the form on the page; popup shows a button that opens the form in a modal.', 'give'); ?></li>
+                <li><code>popup_button_text</code> — <?php esc_html_e('Button label when type is popup (e.g. "Donate Crypto"). Leave empty for default.', 'give'); ?></li>
+                <li><code>popup_button_notice_enable</code> — <?php esc_html_e('Set to "true" to show the campaign stats notice below the button (explains that crypto/stock donations are not included in campaign statistics).', 'give'); ?></li>
+                <li><code>popup_button_notice_short_text</code> — <?php esc_html_e('Short text shown next to the info icon (e.g. "Do not affect stats"). Leave empty for default.', 'give'); ?></li>
+                <li><code>popup_button_notice_short_cta</code> — <?php esc_html_e('Link text that opens the detailed notice modal (e.g. "Learn more"). Leave empty for default.', 'give'); ?></li>
+                <li><code>popup_button_notice_long_text</code> — <?php esc_html_e('Full text shown in the notice modal. Leave empty for default explanation.', 'give'); ?></li>
+            </ul>
+            <p style="margin-bottom: 0;">
+                <em><?php esc_html_e('Example with custom button and notice:', 'give'); ?></em>
+                <code style="display: block; margin-top: 6px; padding: 8px; background: rgba(0,0,0,0.06); border-radius: 4px; font-size: 12px; white-space: pre-wrap;">[give_tgb_form type="popup" popup_button_text="Donate Crypto" popup_button_notice_enable="true"]</code>
+            </p>
+            <p style="margin-top: 12px; margin-bottom: 0;">
                 <em><?php esc_html_e('Note: The iframe type displays the donation form directly on the page, while the popup type shows a button that opens the donation form in a modal window.', 'give'); ?></em>
+            </p>
+            <p style="margin-top: 12px; margin-bottom: 0;">
+                <strong><?php esc_html_e('New GiveWP campaign pages:', 'give'); ?></strong>
+                <?php esc_html_e('When your organization is connected, a "Donate Crypto" button (The Giving Block block) is automatically added to new campaign pages, right below the regular donate button. You can disable this in the Options tab if you prefer to add the block manually.', 'give'); ?>
             </p>
         </div>
 

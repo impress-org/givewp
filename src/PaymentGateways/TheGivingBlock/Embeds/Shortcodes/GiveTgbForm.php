@@ -87,7 +87,7 @@ class GiveTgbForm
             $html = str_replace('>Donate Now</button>', '>' . esc_html($customButtonText) . '</button>', $html);
         }
 
-        $noticeEnabled = ! empty($atts['popup_button_notice_enable']);
+        $noticeEnabled = wp_validate_boolean($atts['popup_button_notice_enable']);
         if ($noticeEnabled) {
             $html .= $this->renderPopupNotice($atts);
         }

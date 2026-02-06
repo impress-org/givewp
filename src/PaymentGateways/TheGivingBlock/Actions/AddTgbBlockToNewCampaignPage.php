@@ -28,6 +28,10 @@ class AddTgbBlockToNewCampaignPage
             return $content;
         }
 
+        if (!wp_validate_boolean(give_get_option('give_tgb_add_block_to_new_campaigns', 'on'))) {
+            return $content;
+        }
+
         if (strpos($content, 'give/donation-form-block') !== false) {
             return $content;
         }
