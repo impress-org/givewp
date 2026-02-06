@@ -19,8 +19,25 @@ class RegisterTheGivingBlockEmbeds
         add_shortcode('give_tgb_form', [new GiveTgbForm(), 'renderShortcode']);
         add_action('init', [$this, 'registerBlock']);
         add_action('wp_enqueue_scripts', [$this, 'enqueueTgbEmbedsStyle']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueuePopupNoticeModalScript']);
         add_action('enqueue_block_editor_assets', [$this, 'enqueueBlockEditorAssets']);
         add_filter('givewp_campaign_page_default_layout', [new AddTgbBlockToNewCampaignPage(), '__invoke'], 10, 3);
+    }
+
+    /**
+     * Enqueues the script that opens/closes the popup notice modal (Learn more).
+     *
+     * @unreleased
+     */
+    public function enqueuePopupNoticeModalScript(): void
+    {
+        wp_enqueue_script(
+            'give-tgb-popup-notice-modal',
+            GIVE_PLUGIN_URL . 'src/PaymentGateways/TheGivingBlock/assets/js/popupNoticeModal.js',
+            [],
+            GIVE_VERSION,
+            true
+        );
     }
 
     /**
@@ -71,5 +88,6 @@ class RegisterTheGivingBlockEmbeds
         }
 
         $this->enqueueTgbEmbedsStyle();
+        $this->enqueuePopupNoticeModalScript();
     }
 }

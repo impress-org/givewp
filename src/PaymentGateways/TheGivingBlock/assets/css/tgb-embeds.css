@@ -1,8 +1,164 @@
-/**
- * Styles for The Giving Block embeds (shortcode/block) – frontend and block editor.
- *
- * @unreleased
- */
-.give-tgb-donation-form [id^="tgb-widget-button-"] {
-	cursor: pointer;
+.give-tgb-donation-form {
+    margin: 0 auto !important;
+    width: 100% !important;
+}
+
+/* TGB button: match campaign donate button width, height (48px), and typography */
+.give-tgb-donation-form [id^='tgb-widget-button-'] {
+    width: 100% !important;
+    min-height: 48px;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
+        sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+    padding: 0.75rem 1.25rem !important;
+    border: none !important;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Popup notice below button */
+.give-tgb-popup-notice-container {
+    margin-top: 0.35rem;
+    text-align: center;
+}
+
+.give-tgb-popup-notice {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.35rem;
+    justify-content: center;
+    font-size: 13px;
+    line-height: 1.25;
+    color: #50575e;
+}
+
+.give-tgb-popup-notice-icon,
+.give-tgb-popup-notice-text,
+.give-tgb-popup-notice-container .give-tgb-notice-cta {
+    align-self: center;
+}
+
+/* Info icon: circle with vertical stem and dot (letter “i”), centered with space from circle edge */
+/* Info icon: SVG (circle + i) – same in editor and frontend */
+.give-tgb-popup-notice-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    background: currentColor;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M12 11v6' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='8' r='1.5' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M12 11v6' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='8' r='1.5' fill='black'/%3E%3C/svg%3E");
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    opacity: 0.85;
+}
+
+/* CTA link: same look in editor and frontend (override editor link styles) */
+.give-tgb-popup-notice-container .give-tgb-notice-cta,
+.give-tgb-popup-notice-container a.give-tgb-notice-cta {
+    background: none;
+    border: none;
+    color: #50575e;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: 1;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+.give-tgb-popup-notice-container .give-tgb-notice-cta:hover,
+.give-tgb-popup-notice-container a.give-tgb-notice-cta:hover {
+    color: #50575e;
+    text-decoration: none;
+}
+
+/* Modal – z-index high enough to sit above block editor toolbar in the editor */
+.give-tgb-notice-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.give-tgb-notice-modal[hidden] {
+    display: none;
+}
+
+.give-tgb-notice-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Consistent width in editor and frontend; responsive on mobile */
+.give-tgb-notice-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 30rem;
+    max-height: 85vh;
+    background: #fff;
+    border-radius: 4px;
+    overflow: auto;
+    padding: 1.25rem 1.5rem;
+    box-sizing: border-box;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 480px) {
+    .give-tgb-notice-modal {
+        padding: 0.75rem;
+    }
+
+    .give-tgb-notice-modal-content {
+        padding: 1rem 1.25rem;
+    }
+}
+
+.give-tgb-notice-modal-body {
+    margin-bottom: 1rem;
+    font-size: 14px !important;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.give-tgb-notice-modal-body:first-child {
+    margin-top: 0;
+}
+
+.give-tgb-notice-modal-body p:first-child {
+    margin-top: 0;
+}
+
+.give-tgb-notice-modal-body p:last-child {
+    margin-bottom: 0;
+}
+
+.give-tgb-notice-modal-close {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background: #1e1e1e;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9375rem;
+}
+
+.give-tgb-notice-modal-close:hover {
+    background: #2c2c2c;
 }

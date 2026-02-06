@@ -12,11 +12,7 @@ use Give\PaymentGateways\TheGivingBlock\Repositories\OrganizationRepository;
  */
 class AddTgbBlockToNewCampaignPage
 {
-    private const OR_PARAGRAPH_MARKUP = '<!-- wp:paragraph -->
-<p>OR</p>
-<!-- /wp:paragraph -->';
-
-    private const TGB_BLOCK_MARKUP = '<!-- wp:give/donation-form-block {"displayType":"popup","popupButtonText":"Donate Crypto/Stock"} /-->';
+    private const TGB_BLOCK_MARKUP = '<!-- wp:give/donation-form-block {"displayType":"popup","popupButtonText":"Donate Crypto","popupButtonNoticeEnable":true} /-->';
 
     /**
      * @unreleased
@@ -42,7 +38,7 @@ class AddTgbBlockToNewCampaignPage
             return $content;
         }
 
-        $insert = "\n\n" . self::OR_PARAGRAPH_MARKUP . "\n\n" . self::TGB_BLOCK_MARKUP;
+        $insert = "\n\n" . self::TGB_BLOCK_MARKUP;
 
         return (string) preg_replace(
             $donateButtonPattern,
