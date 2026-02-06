@@ -77,9 +77,6 @@ class GiveTgbForm
 
         $customButtonText = $atts['popup_button_text'] ?? '';
         $wrapperAttrs = 'class="give-tgb-donation-form" style="text-align: center; margin: 20px 0;"';
-        if ($customButtonText !== '') {
-            $wrapperAttrs .= ' data-tgb-button-text="' . esc_attr($customButtonText) . '"';
-        }
 
         $html = '<div ' . $wrapperAttrs . '>' . $widgetCode['popup'];
 
