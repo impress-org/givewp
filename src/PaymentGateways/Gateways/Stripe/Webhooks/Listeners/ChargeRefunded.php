@@ -55,7 +55,7 @@ class ChargeRefunded extends StripeEventListener
     }
 
     /**
-     * @unreleased add support for payment_intent_id
+     * 4.14.1 add support for payment_intent_id
      * @since 2.21.0
      * @inerhitDoc
      */
