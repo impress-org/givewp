@@ -7,7 +7,7 @@ use Give\PaymentGateways\SettingPage;
 /**
  * The Giving Block settings page under GiveWP > Payment Gateways.
  *
- * Registers a horizontal sub-tab "The Giving Block" and vertical tabs (Get Started, Organization)
+ * Registers a horizontal sub-tab "The Giving Block" and vertical tabs (Get Started, Organization, Options)
  * following the same pattern as the Stripe gateway settings.
  *
  * @unreleased
@@ -86,6 +86,24 @@ class TheGivingBlockSettingPage implements SettingPage
             ],
         ];
 
+        $settings['options'] = [
+            [
+                'id' => 'give_title_tgb_options',
+                'type' => 'title',
+            ],
+            [
+                'id' => 'give_tgb_add_block_to_new_campaigns',
+                'name' => __('Add "Donate Crypto" button to new GiveWP campaign pages', 'give'),
+                'desc' => __('When enabled, new campaign pages will automatically include The Giving Block donation button below the regular donate button. You can disable this if you prefer to add the block manually.', 'give'),
+                'type' => 'checkbox',
+                'default' => 'on',
+            ],
+            [
+                'id' => 'give_title_tgb_options',
+                'type' => 'sectionend',
+            ],
+        ];
+
         return $settings;
     }
 
@@ -128,6 +146,7 @@ class TheGivingBlockSettingPage implements SettingPage
         return [
             'get-started' => __('Get Started', 'give'),
             'organization' => __('Organization', 'give'),
+            'options' => __('Options', 'give'),
         ];
     }
 

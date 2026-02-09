@@ -35,6 +35,7 @@ use Give\PaymentGateways\Stripe\Controllers\SetDefaultStripeAccountController;
 use Give\PaymentGateways\Stripe\DonationFormElements;
 use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
+use Give\PaymentGateways\TheGivingBlock\Actions\AddTgbBlockToNewCampaignPage;
 use Give\PaymentGateways\TheGivingBlock\Actions\RegisterTheGivingBlockEmbeds;
 use Give\PaymentGateways\TheGivingBlock\Actions\RegisterTheGivingBlockSettings;
 
@@ -294,5 +295,6 @@ class PaymentGateways implements ServiceProvider
     {
         give(RegisterTheGivingBlockSettings::class)();
         give(RegisterTheGivingBlockEmbeds::class)();
+        Hooks::addFilter('givewp_campaign_page_default_layout', AddTgbBlockToNewCampaignPage::class, '__invoke', 10, 3);
     }
 }

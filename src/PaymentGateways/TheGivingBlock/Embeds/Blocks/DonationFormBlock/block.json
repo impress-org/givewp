@@ -6,7 +6,17 @@
     "title": "The Giving Block by GiveWP",
     "category": "embed",
     "description": "Display The Giving Block donation form or modal button.",
-    "attributes": {"displayType": {"type": "string", "default": "iframe"}},
+    "attributes": {
+        "displayType": {"type": "string", "default": "iframe"},
+        "popupButtonText": {"type": "string", "default": "Donate Crypto"},
+        "popupButtonNoticeEnable": {"type": "boolean", "default": false},
+        "popupButtonNoticeShortText": {"type": "string", "default": "Do not affect stats."},
+        "popupButtonNoticeShortCta": {"type": "string", "default": "Learn more"},
+        "popupButtonNoticeLongText": {
+            "type": "string",
+            "default": "Crypto and stock donations are processed and counted independently from regular donations. Campaign statistics (amount raised, top donors, recent donations, etc.) only include donations made through the standard donation form. They do not include crypto or stock donations made via The Giving Block."
+        }
+    },
     "supports": {"className": true},
     "editorStyle": "file:../../../assets/css/tgb-embeds.css",
     "example": {},
