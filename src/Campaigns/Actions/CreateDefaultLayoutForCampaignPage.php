@@ -43,25 +43,14 @@ class CreateDefaultLayoutForCampaignPage
     }
 
     /**
-     * @unreleased Add filter to modify default layout block markup
      * @since 4.0.0
      */
     public function __invoke(int $campaignId, string $shortDescription): string
     {
-        $content = str_replace(
+        return str_replace(
             ['%campaignId%', '%description%'],
             [$campaignId, $shortDescription],
             $this->getBlocks()
         );
-
-        /**
-         * @unreleased
-         *
-         * @param string $content          Default layout block markup
-         * @param int    $campaignId      Campaign ID
-         * @param string $shortDescription Campaign short description
-         * @return string Filtered content
-         */
-        return (string) apply_filters('givewp_campaign_page_default_layout', $content, $campaignId, $shortDescription);
     }
 }

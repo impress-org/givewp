@@ -24,24 +24,6 @@ class RegisterTheGivingBlockEmbeds
     }
 
     /**
-     * Enqueues the script that opens/closes the popup notice modal (Learn more).
-     *
-     * @unreleased
-     */
-    public function enqueuePopupNoticeModalScript(): void
-    {
-        wp_enqueue_script(
-            'give-tgb-popup-notice-modal',
-            GIVE_PLUGIN_URL . 'src/PaymentGateways/TheGivingBlock/assets/js/popupNoticeModal.js',
-            [],
-            GIVE_VERSION,
-            true
-        );
-    }
-
-    /**
-     * Enqueues styles for TGB embeds (e.g. pointer cursor on popup button) on frontend and editor.
-     *
      * @unreleased
      */
     public function enqueueTgbEmbedsStyle(): void
