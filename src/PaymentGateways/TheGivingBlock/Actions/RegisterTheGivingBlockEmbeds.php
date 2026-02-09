@@ -26,6 +26,20 @@ class RegisterTheGivingBlockEmbeds
     /**
      * @unreleased
      */
+    public function enqueuePopupNoticeModalScript(): void
+    {
+        wp_enqueue_script(
+            'give-tgb-popup-notice-modal',
+            GIVE_PLUGIN_URL . 'src/PaymentGateways/TheGivingBlock/assets/js/popupNoticeModal.js',
+            [],
+            GIVE_VERSION,
+            true
+        );
+    }
+
+    /**
+     * @unreleased
+     */
     public function enqueueTgbEmbedsStyle(): void
     {
         wp_enqueue_style(
