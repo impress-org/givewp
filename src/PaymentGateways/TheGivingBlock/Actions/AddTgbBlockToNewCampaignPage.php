@@ -28,7 +28,7 @@ class AddTgbBlockToNewCampaignPage
             return $content;
         }
 
-        if (!wp_validate_boolean(give_get_option('give_tgb_add_block_to_new_campaigns', 'on'))) {
+        if (!give_is_setting_enabled(give_get_option('give_tgb_add_block_to_new_campaigns', 'on'))) {
             return $content;
         }
 
