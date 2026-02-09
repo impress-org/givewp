@@ -23,8 +23,6 @@ class RegisterTheGivingBlockEmbeds
     }
 
     /**
-     * Enqueues styles for TGB embeds (e.g. pointer cursor on popup button) on frontend and editor.
-     *
      * @unreleased
      */
     public function enqueueTgbEmbedsStyle(): void
