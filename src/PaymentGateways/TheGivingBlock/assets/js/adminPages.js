@@ -21,7 +21,7 @@
     }
 
     function showStatusMessage(message, type) {
-        var $message = $('#giveTgbStatusMessage');
+        const $message = $('#giveTgbStatusMessage');
         $message
             .removeClass()
             .addClass('give-tgb-status ' + type)
@@ -31,7 +31,7 @@
 
     function handleTabNavigation() {
         $('.give-tgb-tab-button').on('click', function () {
-            var tabName = $(this).data('tab');
+            const tabName = $(this).data('tab');
 
             $('.give-tgb-tab-button').removeClass('active');
             $(this).addClass('active');
@@ -61,8 +61,8 @@
             return;
         }
 
-        var $button = $('button[onclick*="refreshOrganizationData"]');
-        var originalText = $button.html();
+        const $button = $('button[onclick*="refreshOrganizationData"]');
+        const originalText = $button.html();
         $button
             .prop('disabled', true)
             .html(
@@ -100,17 +100,17 @@
     };
 
     function handleOnboardingSubmit() {
-        var $form = $('#giveTgbOnboardingForm');
-        var $container = $('#new-organization-form');
-        var $btn = $('#submitOnboarding');
-        var $message = $('#giveTgbOnboardingMessage');
+        const $form = $('#giveTgbOnboardingForm');
+        const $container = $('#new-organization-form');
+        const $btn = $('#submitOnboarding');
+        const $message = $('#giveTgbOnboardingMessage');
 
         $btn.prop('disabled', true).val(__('Submitting...', 'give'));
         $message.hide().removeClass('give-tgb-status success error');
 
         // Serialize by container: form may be nested inside #give-mainform, so browser can break
         // the inner form and .serialize() on $form would miss inputs; container always has them.
-        var formData = $container.find('input, select, textarea').serialize();
+        let formData = $container.find('input, select, textarea').serialize();
         formData += (formData ? '&' : '') + 'action=giveTgbOnboarding';
         formData += '&nonce=' + encodeURIComponent(giveTgbSettings.nonce);
 
@@ -129,7 +129,7 @@
                         $form[0].reset();
                     } else {
                         $container.find('input, select, textarea').each(function () {
-                            var $el = $(this);
+                            const $el = $(this);
                             if ($el.attr('type') === 'checkbox' || $el.attr('type') === 'radio') {
                                 $el.prop('checked', false);
                             } else {
@@ -139,7 +139,7 @@
                     }
 
                     if (response.data && Array.isArray(response.data.warnings) && response.data.warnings.length > 0) {
-                        var warningsHtml =
+                        const warningsHtml =
                             '<div class="notice notice-warning" style="margin-top:10px;">' +
                             '<p><strong>' +
                             __('Some payment channel onboardings did not complete:', 'give') +
@@ -162,7 +162,7 @@
                         }, 3000);
                     }
                 } else {
-                    var errorHtml = response.data.message || __('Unknown error occurred', 'give');
+                    let errorHtml = response.data.message || __('Unknown error occurred', 'give');
 
                     // If response object is available, display it for debugging
                     if (response.data.response) {
@@ -207,16 +207,16 @@
     }
 
     function handleExistingOrganizationSubmit() {
-        var $form = $('#giveTgbExistingOrganizationForm');
-        var $container = $('#existing-organization-form');
-        var $submitBtn = $('#submitExistingOrganization');
-        var $message = $('#giveTgbExistingOrganizationMessage');
+        const $form = $('#giveTgbExistingOrganizationForm');
+        const $container = $('#existing-organization-form');
+        const $submitBtn = $('#submitExistingOrganization');
+        const $message = $('#giveTgbExistingOrganizationMessage');
 
         $submitBtn.prop('disabled', true).val(__('Connecting...', 'give'));
         $message.hide().removeClass('give-tgb-status success error');
 
         // Serialize by container so inputs are included when form is nested inside #give-mainform.
-        var formData = $container.find('input, select, textarea').serializeArray();
+        const formData = $container.find('input, select, textarea').serializeArray();
         formData.push({name: 'action', value: 'giveTgbConnectExisting'});
         formData.push({name: 'nonce', value: giveTgbSettings.nonce});
 
@@ -235,7 +235,7 @@
                         $form[0].reset();
                     } else {
                         $container.find('input, select, textarea').each(function () {
-                            var $el = $(this);
+                            const $el = $(this);
                             if ($el.attr('type') === 'checkbox' || $el.attr('type') === 'radio') {
                                 $el.prop('checked', false);
                             } else {
@@ -245,7 +245,7 @@
                     }
 
                     if (response.data && Array.isArray(response.data.warnings) && response.data.warnings.length > 0) {
-                        var warningsHtml =
+                        const warningsHtml =
                             '<div class="notice notice-warning" style="margin-top:10px;">' +
                             '<p><strong>' +
                             __('Some payment channel onboardings did not complete:', 'give') +
@@ -268,7 +268,7 @@
                         }, 3000);
                     }
                 } else {
-                    var errorHtml = response.data.message || __('Unknown error occurred', 'give');
+                    let errorHtml = response.data.message || __('Unknown error occurred', 'give');
 
                     // If response object is available, display it for debugging
                     if (response.data.response) {
@@ -348,7 +348,7 @@
             }
         });
 
-        var activeTab = $('.give-tgb-tab-button.active').data('tab');
+        const activeTab = $('.give-tgb-tab-button.active').data('tab');
         if (activeTab === 'new') {
             $('#new-organization-form').show();
             $('#existing-organization-form').hide();
@@ -427,18 +427,18 @@
             return;
         }
 
-        var $button = $('.disconnect-btn');
-        var $buttonText = $button.find('.button-text');
-        var $buttonIcon = $button.find('.dashicons');
-        var originalText = $buttonText.text();
-        var originalIcon = $buttonIcon.attr('class');
+        const $button = $('.disconnect-btn');
+        const $buttonText = $button.find('.button-text');
+        const $buttonIcon = $button.find('.dashicons');
+        const originalText = $buttonText.text();
+        const originalIcon = $buttonIcon.attr('class');
 
         $button.prop('disabled', true);
         $buttonText.text(__('Disconnecting...', 'give'));
         $buttonIcon.attr('class', 'dashicons dashicons-update');
         $button.addClass('loading');
 
-        var $statusDiv = $(
+        const $statusDiv = $(
             '<div class="disconnect-status" style="margin-top: 10px; padding: 8px; background: #f0f0f0; border-radius: 3px; font-size: 12px; color: #666;">' +
                 __('Disconnecting organization from The Giving Block...', 'give') +
                 '</div>'
@@ -503,18 +503,18 @@
             return;
         }
 
-        var $button = $('.delete-all-btn');
-        var $buttonText = $button.find('.button-text');
-        var $buttonIcon = $button.find('.dashicons');
-        var originalText = $buttonText.text();
-        var originalIcon = $buttonIcon.attr('class');
+        const $button = $('.delete-all-btn');
+        const $buttonText = $button.find('.button-text');
+        const $buttonIcon = $button.find('.dashicons');
+        const originalText = $buttonText.text();
+        const originalIcon = $buttonIcon.attr('class');
 
         $button.prop('disabled', true);
         $buttonText.text(__('Deleting...', 'give'));
         $buttonIcon.attr('class', 'dashicons dashicons-update');
         $button.addClass('loading');
 
-        var $statusDiv = $(
+        const $statusDiv = $(
             '<div class="delete-status" style="margin-top: 10px; padding: 8px; background: #f0f0f0; border-radius: 3px; font-size: 12px; color: #666;">' +
                 __('Deleting all organization data from database...', 'give') +
                 '</div>'

@@ -35,6 +35,7 @@ use Give\PaymentGateways\Stripe\Controllers\SetDefaultStripeAccountController;
 use Give\PaymentGateways\Stripe\DonationFormElements;
 use Give\PaymentGateways\Stripe\DonationFormSettingPage;
 use Give\PaymentGateways\Stripe\Repositories\AccountDetail as AccountDetailRepository;
+use Give\PaymentGateways\TheGivingBlock\Actions\RegisterTheGivingBlockEmbeds;
 use Give\PaymentGateways\TheGivingBlock\Actions\RegisterTheGivingBlockSettings;
 
 /**
@@ -106,7 +107,7 @@ class PaymentGateways implements ServiceProvider
         $this->registerMigrations();
         $this->registerStripeCustomFields();
         $this->registerPayPalCommerceHooks();
-        $this->registerTheGivingBlockSettings();
+        $this->registerTheGivingBlock();
     }
 
     /**
@@ -289,8 +290,9 @@ class PaymentGateways implements ServiceProvider
     /**
      * @unreleased
      */
-    private function registerTheGivingBlockSettings()
+    private function registerTheGivingBlock()
     {
         give(RegisterTheGivingBlockSettings::class)();
+        give(RegisterTheGivingBlockEmbeds::class)();
     }
 }

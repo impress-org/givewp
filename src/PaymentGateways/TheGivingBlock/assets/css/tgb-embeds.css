@@ -1,0 +1,20 @@
+.give-tgb-donation-form {
+    margin: 0 auto !important;
+    width: 100% !important;
+}
+
+/* TGB button: match campaign donate button width, height (48px), and typography */
+.give-tgb-donation-form [id^='tgb-widget-button-'] {
+    width: 100% !important;
+    min-height: 48px;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
+        sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+    padding: 0.75rem 1.25rem !important;
+    border: none !important;
+    border-radius: 5px;
+    cursor: pointer;
+}

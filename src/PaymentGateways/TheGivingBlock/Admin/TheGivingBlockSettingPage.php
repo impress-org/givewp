@@ -7,7 +7,7 @@ use Give\PaymentGateways\SettingPage;
 /**
  * The Giving Block settings page under GiveWP > Payment Gateways.
  *
- * Registers a horizontal sub-tab "The Giving Block" and vertical tabs (Get Started, Organization, Options)
+ * Registers a horizontal sub-tab "The Giving Block" and vertical tabs (Get Started, Organization)
  * following the same pattern as the Stripe gateway settings.
  *
  * @unreleased
@@ -86,24 +86,6 @@ class TheGivingBlockSettingPage implements SettingPage
             ],
         ];
 
-        $settings['options'] = [
-            [
-                'id' => 'give_title_tgb_options',
-                'type' => 'title',
-            ],
-            [
-                'name' => '',
-                'desc' => '',
-                'wrapper_class' => 'give-tgb-options-field-wrap',
-                'id' => 'the_giving_block_options',
-                'type' => 'the_giving_block_options',
-            ],
-            [
-                'id' => 'give_title_tgb_options',
-                'type' => 'sectionend',
-            ],
-        ];
-
         return $settings;
     }
 
@@ -146,7 +128,6 @@ class TheGivingBlockSettingPage implements SettingPage
         return [
             'get-started' => __('Get Started', 'give'),
             'organization' => __('Organization', 'give'),
-            'options' => __('Options', 'give'),
         ];
     }
 

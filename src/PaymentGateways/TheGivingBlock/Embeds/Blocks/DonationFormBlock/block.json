@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "give/donation-form-block",
+    "version": "1.0.0",
+    "title": "The Giving Block by GiveWP",
+    "category": "embed",
+    "description": "Display The Giving Block donation form or modal button.",
+    "attributes": {"displayType": {"type": "string", "default": "iframe"}},
+    "supports": {"className": true},
+    "editorStyle": "file:../../../assets/css/tgb-embeds.css",
+    "example": {},
+    "textdomain": "give",
+    "render": "file:./render.php"
+}
