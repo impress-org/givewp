@@ -21,7 +21,6 @@ class RegisterTheGivingBlockEmbeds
         add_action('wp_enqueue_scripts', [$this, 'enqueueTgbEmbedsStyle']);
         add_action('wp_enqueue_scripts', [$this, 'enqueuePopupNoticeModalScript']);
         add_action('enqueue_block_editor_assets', [$this, 'enqueueBlockEditorAssets']);
-        add_filter('givewp_campaign_page_default_layout', [new AddTgbBlockToNewCampaignPage(), '__invoke'], 10, 3);
     }
 
     /**
