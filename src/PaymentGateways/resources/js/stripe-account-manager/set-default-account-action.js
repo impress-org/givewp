@@ -6,7 +6,7 @@
  *
  * @since 2.13.0
  */
-import { __ } from '@wordpress/i18n'
+import { __, sprintf } from '@wordpress/i18n'
 
 window.addEventListener('DOMContentLoaded', function () {
     const setStripeDefaults = Array.from(document.querySelectorAll('.give-stripe-account-set-default'));
