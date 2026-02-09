@@ -295,6 +295,6 @@ class PaymentGateways implements ServiceProvider
     {
         give(RegisterTheGivingBlockSettings::class)();
         give(RegisterTheGivingBlockEmbeds::class)();
-        Hooks::addFilter('givewp_campaign_page_default_layout', AddTgbBlockToNewCampaignPage::class);
+        Hooks::addFilter('givewp_campaign_page_default_layout', AddTgbBlockToNewCampaignPage::class, '__invoke', 10, 3);
     }
 }
