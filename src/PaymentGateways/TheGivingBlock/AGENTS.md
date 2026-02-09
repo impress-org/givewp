@@ -8,7 +8,7 @@
 
 -   **Namespace:** `Give\PaymentGateways\TheGivingBlock\`
 -   **Registration:** GiveWP’s `Give\ServiceProviders\PaymentGateways` registers:
-    -   `RegisterTheGivingBlockSettings` – settings page and admin (Get Started, Organization, Options).
+    -   `RegisterTheGivingBlockSettings` – settings page, custom field handlers for Get Started and Organization, and AJAX actions (onboarding, connect, refresh, disconnect, delete all). Options group holds the “add block to new campaigns” checkbox only.
     -   `RegisterTheGivingBlockEmbeds` – shortcode, block, styles, popup notice script, and campaign layout filter.
 -   **Entry:** The module is loaded as part of GiveWP when the Payment Gateways provider runs.
 
@@ -17,7 +17,7 @@
 | Area                    | Purpose                                                                                                                                                                                                        |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Actions**             | `RegisterTheGivingBlockSettings`, `RegisterTheGivingBlockEmbeds`, `AddTgbBlockToNewCampaignPage` (adds TGB block to new campaign page layout when option is on).                                               |
-| **Admin**               | Settings under GiveWP → Payment Gateways → The Giving Block: tabs Get Started, Organization, Options. Custom field types for each tab; AJAX handlers for onboarding, connect, refresh, disconnect, delete all. |
+| **Admin**               | Settings under GiveWP → Payment Gateways → The Giving Block: groups Get Started, Organization, Options. `Admin/CustomFields/GetStarted/GetStartedSettingField` renders Get Started; `Admin/CustomFields/Organization/OrganizationSettingField` renders Organization (onboarding form or details + data management). Organization uses `Organization/Actions/` for render (RenderOnboardingForm, RenderOrganizationDetails) and AJAX (HandleOnboardingSubmission, HandleConnectingSubmission, HandleApiRefresh, HandleOrganizationDisconnect, HandleOrganizationDeletion). Options group is a single checkbox (add block to new campaigns). |
 | **Repositories**        | `OrganizationRepository` – connection flag and organization data (options API).                                                                                                                                |
 | **DataTransferObjects** | `Organization` – DTO built from options; includes `widgetCode` (iframe/popup HTML from TGB).                                                                                                                   |
 | **API**                 | `TheGivingBlockApi` – communication with the gateway server (onboarding, organization fetch, etc.).                                                                                                            |
@@ -70,16 +70,20 @@
 
 ## Key files
 
-| Path                                         | Role                                                                                     |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `Actions/RegisterTheGivingBlockSettings.php` | Registers TGB settings page, custom fields, AJAX, assets for settings.                   |
-| `Actions/RegisterTheGivingBlockEmbeds.php`   | Registers shortcode, block, enqueues embeds CSS and popup modal script (front + editor). |
-| `Actions/AddTgbBlockToNewCampaignPage.php`   | Filter on campaign default layout to insert TGB block when option is on.                 |
-| `Repositories/OrganizationRepository.php`    | Read/write `give_tgb_organization_connected` and `give_tgb_organization`.                |
-| `Embeds/Shortcodes/GiveTgbForm.php`          | Shortcode callback; iframe vs popup; button text; notice + modal markup.                 |
-| `Embeds/Blocks/DonationFormBlock/`           | Block definition (`block.json`), editor (`edit.tsx`), server render (`render.php`).      |
-| `assets/css/tgb-embeds.css`                  | Frontend and editor styles for TGB embed and modal.                                      |
-| `assets/js/popupNoticeModal.js`              | “Learn more” modal behavior; parent-document modal in editor.                            |
+| Path                                                                 | Role                                                                                     |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `Actions/RegisterTheGivingBlockSettings.php`                         | Registers TGB settings page, custom field hooks, AJAX actions, assets for settings.   |
+| `Actions/RegisterTheGivingBlockEmbeds.php`                           | Registers shortcode, block, enqueues embeds CSS and popup modal script (front + editor). |
+| `Actions/AddTgbBlockToNewCampaignPage.php`                            | Filter on campaign default layout to insert TGB block when option is on.                 |
+| `Admin/TheGivingBlockSettingPage.php`                                | Defines section, groups (get-started, organization, options), and settings (checkbox).  |
+| `Admin/CustomFields/GetStarted/GetStartedSettingField.php`           | Renders Get Started content (instructions, connected state, widgets, sandbox).          |
+| `Admin/CustomFields/Organization/OrganizationSettingField.php`        | Renders Organization: onboarding form or organization details + data management.       |
+| `Admin/CustomFields/Organization/Actions/`                          | RenderOnboardingForm, RenderOrganizationDetails; HandleOnboardingSubmission, HandleConnectingSubmission, HandleApiRefresh, HandleOrganizationDisconnect, HandleOrganizationDeletion. |
+| `Repositories/OrganizationRepository.php`                            | Read/write `give_tgb_organization_connected` and `give_tgb_organization`.                |
+| `Embeds/Shortcodes/GiveTgbForm.php`                                  | Shortcode callback; iframe vs popup; button text; notice + modal markup.                 |
+| `Embeds/Blocks/DonationFormBlock/`                                   | Block definition (`block.json`), editor (`edit.tsx`), server render (`render.php`).      |
+| `assets/css/tgb-embeds.css`                                           | Frontend and editor styles for TGB embed and modal.                                      |
+| `assets/js/popupNoticeModal.js`                                       | “Learn more” modal behavior; parent-document modal in editor.                            |
 
 ## Build and standards
 

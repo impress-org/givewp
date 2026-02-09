@@ -99,13 +99,6 @@ class TheGivingBlockSettingPage implements SettingPage
                 'default' => 'on',
             ],
             [
-                'name' => '',
-                'desc' => '',
-                'wrapper_class' => 'give-tgb-options-field-wrap',
-                'id' => 'the_giving_block_options',
-                'type' => 'the_giving_block_options',
-            ],
-            [
                 'id' => 'give_title_tgb_options',
                 'type' => 'sectionend',
             ],

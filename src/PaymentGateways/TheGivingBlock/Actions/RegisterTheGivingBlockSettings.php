@@ -3,14 +3,13 @@
 namespace Give\PaymentGateways\TheGivingBlock\Actions;
 
 use Give\Helpers\Hooks;
-use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\GetStartedSettingField;
-use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OptionsSettingField;
-use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\OrganizationSettingField;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Options\Actions\HandleOrganizationDeletion;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleApiRefresh;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleConnectingSubmission;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleOnboardingSubmission;
-use Give\PaymentGateways\TheGivingBlock\Admin\Tabs\Organization\Actions\HandleOrganizationDisconnect;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\GetStarted\GetStartedSettingField;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\Organization\OrganizationSettingField;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\Organization\Actions\HandleOrganizationDeletion;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\Organization\Actions\HandleApiRefresh;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\Organization\Actions\HandleConnectingSubmission;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\Organization\Actions\HandleOnboardingSubmission;
+use Give\PaymentGateways\TheGivingBlock\Admin\CustomFields\Organization\Actions\HandleOrganizationDisconnect;
 use Give\PaymentGateways\TheGivingBlock\Admin\TheGivingBlockSettingPage;
 
 /**
@@ -31,7 +30,6 @@ class RegisterTheGivingBlockSettings
         // CustomFields (Groups/Vertical Tabs) for The Giving Block settings page
         Hooks::addAction('give_admin_field_the_giving_block_get_started', GetStartedSettingField::class, 'handle');
         Hooks::addAction('give_admin_field_the_giving_block_organization', OrganizationSettingField::class, 'handle');
-        Hooks::addAction('give_admin_field_the_giving_block_options', OptionsSettingField::class, 'handle');
 
         //Assets – loaded only on Settings > Gateways > The Giving Block
         add_action('admin_enqueue_scripts', function ($hook) {
