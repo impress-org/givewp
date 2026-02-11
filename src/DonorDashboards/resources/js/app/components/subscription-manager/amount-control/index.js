@@ -125,7 +125,7 @@ const AmountControl = ({currency, onChange, value, options, min, max}) => {
                                     placeholder={__('Enter amount...', 'give')}
                                     defaultValue={value ?? ''}
                                     onValueChange={(value, name, values) => {
-                                        // @unreleased Normalize to standard decimal format (period as decimal separator) or consistent API communication regardless of locale
+                                        // 4.14.1 Normalize to standard decimal format (period as decimal separator) or consistent API communication regardless of locale
                                         const normalizedValue = values?.float != null
                                             ? values.float.toFixed(formatConfig.decimalScale)
                                             : value;

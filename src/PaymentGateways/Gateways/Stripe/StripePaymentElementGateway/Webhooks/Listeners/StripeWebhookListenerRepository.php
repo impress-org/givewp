@@ -86,7 +86,7 @@ trait StripeWebhookListenerRepository
      *
      * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the invoice from the correct account, not the platform account.
      *
-     * @unreleased Added $formId parameter and stripe_account option for Stripe Connect support
+     * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      *
      * @param string $invoiceId The Stripe invoice ID
      * @param int|null $formId Form ID to determine the connected account

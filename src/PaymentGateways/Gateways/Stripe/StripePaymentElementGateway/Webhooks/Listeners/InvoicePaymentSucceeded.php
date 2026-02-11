@@ -43,7 +43,7 @@ class InvoicePaymentSucceeded
     }
 
     /**
-     * @unreleased Added $formId parameter and stripe_account option for Stripe Connect support
+     * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      * @since 4.8.0 Add support for Stripe API version 2025-03-31.basil and later versions
      * @since 4.3.0 Update Stripe Invoice metadata
      * @since 3.0.4 Return a bool value.

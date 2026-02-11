@@ -9,7 +9,7 @@ type WatchedFields = Map<string, any>;
  * Adds visibility conditions to a field. The given conditions are watched and the hook returns true or false based on
  * whether the conditions are met.
  *
- * @unreleased use watch instead of useWatch to get the field values.
+ * 4.14.1 use watch instead of useWatch to get the field values.
  * @since 3.0.0
  */
 export default function useVisibilityCondition(conditions: FieldCondition[]): boolean {

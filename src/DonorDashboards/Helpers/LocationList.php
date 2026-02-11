@@ -4,7 +4,7 @@ namespace Give\DonorDashboards\Helpers;
 
 /**
  * Normalize format of location type lists.
- * @unreleased Replaces FormatObjectList with formatAsValueLabelPairs
+ * 4.14.1 Replaces FormatObjectList with formatAsValueLabelPairs
  * @since 2.10.0
  */
 class LocationList
@@ -28,7 +28,7 @@ class LocationList
     /**
      * Formats an associative array as an array of value/label pairs for JS consumption.
      *
-     * @unreleased
+     * 4.14.1
      */
     private static function formatAsValueLabelPairs(array $data): array
     {
