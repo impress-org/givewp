@@ -14,6 +14,7 @@ if (!defined('ABSPATH')) {
 /**
  * List of changes
  *
+ * @unreleased Add aria-label to the wrapper link and aria-hidden to its inner elements
  * @since 3.16.0 Add filters to enable the async mode and to change the values of the "amount raised" and "donations count" on the progress bar
  * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
  */
@@ -89,6 +90,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
             esc_attr(sprintf(__('Open donation form: %s', 'give'), $formTemplate->getFormHeading($form_id)))
         );
     } else {
+        // Default to redirect display style.
         $form_grid_option = give_get_meta($form_id, '_give_form_grid_option', true);
         $form_grid_redirect_url = esc_url(give_get_meta($form_id, '_give_form_grid_redirect_url', true));
 
