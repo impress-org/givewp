@@ -43,6 +43,7 @@ const Details = ({id, heading, details}: {id: string; heading: string; details: 
     );
 
 /**
+ * @unreleased
  * @since 3.0.0
  */
 export default function DonationReceipt({
