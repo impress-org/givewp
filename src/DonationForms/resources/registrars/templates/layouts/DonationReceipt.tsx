@@ -4,24 +4,6 @@ import {DonationReceiptProps} from '@givewp/forms/propTypes';
 import {Interweave} from 'interweave';
 
 /**
- * Strips a single wrapping <p> tag from HTML so content can be safely placed inside
- * a block-level tag (e.g. h1 or p) without invalid nested paragraphs.
- *
- */
-function stripWrappingParagraph(html: string): string {
-    if (!html || typeof html !== 'string') {
-        return html ?? '';
-    }
-    const trimmed = html.trim();
-    const openTag = /^\s*<p(?:\s[^>]*)?>\s*/i;
-    const closeTag = /\s*<\/p>\s*$/i;
-    if (openTag.test(trimmed) && closeTag.test(trimmed)) {
-        return trimmed.replace(openTag, '').replace(closeTag, '').trim();
-    }
-    return html;
-}
-
-/**
  * @since 4.3.2 include aria-live and role attributes to the secure badge for screen readers.
  * @since 3.0.0
  */
@@ -79,8 +61,8 @@ export default function DonationReceipt({
             <div className="receipt-header">
                 <div className="receipt-header-top-wrap">
                     <SecureBadge />
-                    <Interweave tagName="h1" className="receipt-header-heading" content={stripWrappingParagraph(heading)} />
-                    <Interweave tagName="p" className="receipt-header-description" content={stripWrappingParagraph(description)} />
+                    <Interweave tagName="div" className="receipt-header-heading" content={heading} />
+                    <Interweave tagName="div" className="receipt-header-description" content={description} />
                 </div>
             </div>
 
