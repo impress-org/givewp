@@ -194,6 +194,7 @@ class DonationFormsAdminPage
                         'post_type' => 'give_forms',
                         'page' => 'givewp-form-builder',
                         'donationFormID' => $v3FormId,
+                        'showTransfer' => '1',
                     ], admin_url('edit.php'));
                 }
             }

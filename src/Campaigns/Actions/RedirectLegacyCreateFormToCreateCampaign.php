@@ -130,10 +130,27 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
+     * @unreleased Also check give_campaign_forms junction table for non-core campaigns (e.g., migrated P2P forms).
      * @since 4.0.0
      */
     private function isCampaignFormIdInvalidOrMissing(): bool
     {
-        return ! isset($_GET['donationFormID']) || ! Campaign::findByFormId(absint($_GET['donationFormID']));
+        if (!isset($_GET['donationFormID'])) {
+            return true;
+        }
+
+        $formId = absint($_GET['donationFormID']);
+
+        // Check core campaigns first
+        if (Campaign::findByFormId($formId)) {
+            return false;
+        }
+
+        // Fallback: check give_campaign_forms junction table for non-core campaigns
+        $campaignForm = DB::table('give_campaign_forms')
+            ->where('form_id', $formId)
+            ->get();
+
+        return !$campaignForm;
     }
 }

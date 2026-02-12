@@ -140,6 +140,8 @@ class RegisterFormBuilderPageRoute
         $migratedFormId = give_get_meta($donationFormId, 'migratedFormId', true);
         $transferredFormId = give_get_meta($donationFormId, 'transferredFormId', true);
 
+        $showTransferModal = isset($_GET['showTransfer']) && (bool)$migratedFormId && !(bool)$transferredFormId;
+
         wp_localize_script('@givewp/form-builder/script', 'migrationOnboardingData', [
             'pluginUrl' => GIVE_PLUGIN_URL,
             'formId' => $donationFormId,
@@ -149,11 +151,12 @@ class RegisterFormBuilderPageRoute
             'apiNonce' => wp_create_nonce('wp_rest'),
             'isMigratedForm' => $migratedFormId,
             'isTransferredForm' => $transferredFormId,
-            'showUpgradeDialog' => (bool)$migratedFormId && !(bool)give_get_meta(
+            'showUpgradeDialog' => !$showTransferModal && (bool)$migratedFormId && !(bool)give_get_meta(
                     $donationFormId,
                     'givewp-form-builder-migration-hide-notice',
                     true
                 ),
+            'showTransferModal' => $showTransferModal,
             'transferShowNotice' => (bool)$migratedFormId && !(bool)$transferredFormId && !(bool)give_get_meta(
                     $donationFormId,
                     'givewp-form-builder-transfer-hide-notice',
