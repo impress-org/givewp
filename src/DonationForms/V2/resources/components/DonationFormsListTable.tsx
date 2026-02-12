@@ -29,6 +29,7 @@ declare global {
             pluginUrl: string;
             showUpgradedTooltip: boolean;
             isMigrated: boolean;
+            migratedFormUrl: string;
             supportedAddons: Array<string>;
             supportedGateways: Array<string>;
             isOptionBasedFormEditorEnabled: boolean;

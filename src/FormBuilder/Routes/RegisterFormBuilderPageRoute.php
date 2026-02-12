@@ -175,11 +175,29 @@ class RegisterFormBuilderPageRoute
         ]);
 
         /**
+         * @unreleased updated logic with filter
          * @since 4.0.0
          */
+        $campaignUrl = '';
         if ($campaign = Campaign::findByFormId($donationFormId)) {
+            $campaignUrl = admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id);
+        }
+
+        /**
+         * Filters the campaign URL displayed in the form builder header.
+         * Allows add-ons (e.g., P2P) to provide their own campaign URL when
+         * the form belongs to a non-core campaign type.
+         *
+         * @unreleased
+         *
+         * @param string $campaignUrl - The campaign admin URL, or empty string if not found.
+         * @param int $donationFormId - The donation form ID being edited.
+         */
+        $campaignUrl = apply_filters('givewp_form_builder_campaign_url', $campaignUrl, $donationFormId);
+
+        if ($campaignUrl) {
             wp_localize_script('@givewp/form-builder/script', 'headerContainer', [
-                'campaignUrl' => admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id),
+                'campaignUrl' => $campaignUrl,
             ]);
         }
 
