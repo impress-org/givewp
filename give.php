@@ -255,6 +255,7 @@ final class Give
         Give\Framework\PaymentGateways\ServiceProvider::class,
         Give\ThirdPartySupport\Elementor\ServiceProvider::class,
         Give\MCP\ServiceProvider::class,
+        Give\VendorOverrides\Uplink\UplinkServiceProvider::class,
     ];
 
     /**

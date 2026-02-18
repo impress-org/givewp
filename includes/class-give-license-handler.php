@@ -12,6 +12,8 @@
 // Exit if accessed directly.
 use Give\Log\Log;
 use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
+use Give\Vendors\StellarWP\Uplink\Config as UplinkConfig;
+use Give\Vendors\StellarWP\Uplink\Register as UplinkRegister;
 
 if ( ! defined('ABSPATH') ) {
     exit;
@@ -256,7 +258,33 @@ if ( ! class_exists('Give_License') ) :
 
 			// Add plugin to registered licenses list.
             array_push(self::$licensed_addons, $this);
+
+            $this->registerWithUplink();
 		}
+
+        /**
+         * Registers this add-on with the StellarWP Uplink system for license management.
+         *
+         * @since 4.15.0
+         */
+        private function registerWithUplink(): void
+        {
+            if (!class_exists(UplinkConfig::class) || !UplinkConfig::has_container()) {
+                return;
+            }
+
+            try {
+                UplinkRegister::plugin(
+                    $this->plugin_dirname,
+                    $this->item_name,
+                    $this->version,
+                    $this->plugin_basename,
+                    self::class
+                );
+            } catch (\Exception $e) {
+                // Silently skip if already registered or any other registration error.
+            }
+        }
 
 		/**
 		 * Get plugin shortname
