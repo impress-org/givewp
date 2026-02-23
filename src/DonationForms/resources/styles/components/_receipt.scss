@@ -302,7 +302,7 @@
       }
     }
 
-    &-heading {
+    &-heading * {
         position: relative;
         margin-block-end: 1rem;
         font-size: 1.75rem;
@@ -325,7 +325,7 @@
         }
     }
 
-    &-description {
+    &-description * {
         font-size:1.125rem;
         line-height: 1.45;
         margin: 0 auto;

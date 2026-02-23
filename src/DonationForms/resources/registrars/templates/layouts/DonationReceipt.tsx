@@ -43,6 +43,7 @@ const Details = ({id, heading, details}: {id: string; heading: string; details: 
     );
 
 /**
+ * @unreleased
  * @since 3.0.0
  */
 export default function DonationReceipt({
@@ -61,8 +62,8 @@ export default function DonationReceipt({
             <div className="receipt-header">
                 <div className="receipt-header-top-wrap">
                     <SecureBadge />
-                    <Interweave tagName="h1" className="receipt-header-heading" content={heading} />
-                    <Interweave tagName="p" className="receipt-header-description" content={description} />
+                    <Interweave tagName="div" className="receipt-header-heading" content={heading} />
+                    <Interweave tagName="div" className="receipt-header-description" content={description} />
                 </div>
             </div>
 
