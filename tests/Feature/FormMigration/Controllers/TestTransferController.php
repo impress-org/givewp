@@ -18,7 +18,7 @@ use WP_REST_Response;
 use WP_REST_Server;
 
 /**
- * @unreleased
+ * @since 4.14.2
  *
  * @covers \Give\FormMigration\Controllers\TransferController
  */
@@ -27,7 +27,7 @@ class TestTransferController extends TestCase
     use RefreshDatabase, LegacyDonationFormAdapter;
 
     /**
-     * @unreleased
+     * @since 4.14.2
      */
     public function testShouldTransferCoreCampaignForm(): void
     {
@@ -60,7 +60,7 @@ class TestTransferController extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.2
      */
     public function testShouldTransferNonCoreCampaignForm(): void
     {
@@ -103,7 +103,7 @@ class TestTransferController extends TestCase
     /**
      * Creates a non-core campaign row directly in give_campaigns (simulating how P2P inserts campaigns).
      *
-     * @unreleased
+     * @since 4.14.2
      */
     private function createNonCoreCampaign(int $formId): int
     {
@@ -123,7 +123,7 @@ class TestTransferController extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.2
      */
     private function getMockRequest(string $method): WP_REST_Request
     {

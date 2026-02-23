@@ -18,7 +18,7 @@ use Give\FormBuilder\Actions\GenerateDefaultDonationFormBlockCollection;
 class CreateDefaultCampaignForm
 {
     /**
-     * @unreleased add formTitle to FormSettings
+     * @since 4.14.2 add formTitle to FormSettings
      * @since 4.2.0 return if campaign already has default form set
      * @since 4.1.0 Added inheritCampaignColors property to FormSettings
      * @since      4.0.0

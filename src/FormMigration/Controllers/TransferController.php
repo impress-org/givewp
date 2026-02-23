@@ -28,7 +28,7 @@ class TransferController
     }
 
     /**
-     * @unreleased updated logic to search for non-core campaigns (e.g., P2P)
+     * @since 4.14.2 updated logic to search for non-core campaigns (e.g., P2P)
      * @since 3.0.0
      */
     public function __invoke(DonationForm $formV2, TransferOptions $options)

@@ -179,7 +179,7 @@ class DonationFormsAdminPage
              * Filters the campaign URL displayed on the v2 form edit screen.
              * Allows add-ons (e.g., P2P) to provide their own campaign URL.
              *
-             * @unreleased
+             * @since 4.14.2
              *
              * @param string $campaignUrl The campaign admin URL, or empty string if not found.
              * @param int    $formId      The donation form ID being edited.

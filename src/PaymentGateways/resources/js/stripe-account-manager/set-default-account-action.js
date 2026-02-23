@@ -4,7 +4,7 @@
  * This will be used to set any non-default Stripe account from the list
  * to set that particular Stripe account as default.
  *
- * @unreleased import sprintf from @wordpress/i18n
+ * @since 4.14.2 import sprintf from @wordpress/i18n
  * @since 2.13.0
  */
 import { __, sprintf } from '@wordpress/i18n'

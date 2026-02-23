@@ -53,7 +53,7 @@ class TestMigrationController extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.2
      */
     public function testShouldAssociateV3FormWithNonCoreCampaign(): void
     {

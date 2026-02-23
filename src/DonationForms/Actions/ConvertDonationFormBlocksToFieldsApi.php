@@ -392,7 +392,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
-     * @unreleased add emailTag to field
+     * @since 4.14.2 add emailTag to field
      * @since 3.4.1 updated to be field specific and prevent overwriting of existing values
      * @since 3.0.0
      */

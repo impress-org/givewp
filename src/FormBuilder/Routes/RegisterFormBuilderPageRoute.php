@@ -178,7 +178,7 @@ class RegisterFormBuilderPageRoute
         ]);
 
         /**
-         * @unreleased updated logic with filter
+         * @since 4.14.2 updated logic with filter
          * @since 4.0.0
          */
         $campaignUrl = '';
@@ -191,7 +191,7 @@ class RegisterFormBuilderPageRoute
          * Allows add-ons (e.g., P2P) to provide their own campaign URL when
          * the form belongs to a non-core campaign type.
          *
-         * @unreleased
+         * @since 4.14.2
          *
          * @param string $campaignUrl - The campaign admin URL, or empty string if not found.
          * @param int $donationFormId - The donation form ID being edited.
