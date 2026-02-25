@@ -135,6 +135,48 @@ final class TestConvertDonationFormBlocksToFieldsApi extends TestCase
     }
 
     /**
+     * @since 4.14.2
+     *
+     * @throws Exception
+     */
+    public function testShouldMapEmailTagBlockAttributeToField(): void
+    {
+        $block = BlockModel::make([
+            'clientId' => '8371d4c7-0e8d-4aff-a1a1-b4520f008132',
+            'name' => 'givewp/section',
+            'isValid' => true,
+            'attributes' => [
+                'title' => 'custom section title',
+                'description' => 'custom section description',
+            ],
+            'innerBlocks' => [
+                [
+                    'clientId' => 'bddaa0ea-29bf-4143-b62d-aae3396e9b0f',
+                    'name' => 'givewp/text',
+                    'isValid' => true,
+                    'attributes' => [
+                        'fieldName' => 'my_custom_field',
+                        'label' => 'My Custom Field',
+                        'emailTag' => 'meta_donation_my_custom_field',
+                    ],
+                ],
+            ],
+        ]);
+
+        $formId = 1;
+        $blocks = BlockCollection::make([$block]);
+
+        /** @var DonationFormNode $formSchema */
+        [$formSchema] = (new ConvertDonationFormBlocksToFieldsApi())($blocks, $formId);
+
+        /** @var Text $field */
+        $field = $formSchema->getNodeByName('my_custom_field');
+
+        $this->assertInstanceOf(Text::class, $field);
+        $this->assertEquals('meta_donation_my_custom_field', $field->getEmailTag());
+    }
+
+    /**
      * @since 3.5.0
      *
      * @throws Exception

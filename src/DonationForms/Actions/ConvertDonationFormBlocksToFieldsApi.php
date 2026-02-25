@@ -392,6 +392,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 4.14.2 add emailTag to field
      * @since 3.4.1 updated to be field specific and prevent overwriting of existing values
      * @since 3.0.0
      */
@@ -418,6 +419,10 @@ class ConvertDonationFormBlocksToFieldsApi
 
         if ($block->hasAttribute('displayInReceipt') && $block->getAttribute('displayInReceipt')) {
             $field->showInReceipt($block->getAttribute('displayInReceipt'));
+        }
+
+        if ($block->hasAttribute('emailTag') && method_exists($field, 'emailTag')) {
+            $field->emailTag($block->getAttribute('emailTag'));
         }
 
         return $field;

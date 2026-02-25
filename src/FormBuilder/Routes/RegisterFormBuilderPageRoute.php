@@ -140,6 +140,8 @@ class RegisterFormBuilderPageRoute
         $migratedFormId = give_get_meta($donationFormId, 'migratedFormId', true);
         $transferredFormId = give_get_meta($donationFormId, 'transferredFormId', true);
 
+        $showTransferModal = isset($_GET['showTransfer']) && (bool)$migratedFormId && !(bool)$transferredFormId;
+
         wp_localize_script('@givewp/form-builder/script', 'migrationOnboardingData', [
             'pluginUrl' => GIVE_PLUGIN_URL,
             'formId' => $donationFormId,
@@ -149,11 +151,12 @@ class RegisterFormBuilderPageRoute
             'apiNonce' => wp_create_nonce('wp_rest'),
             'isMigratedForm' => $migratedFormId,
             'isTransferredForm' => $transferredFormId,
-            'showUpgradeDialog' => (bool)$migratedFormId && !(bool)give_get_meta(
+            'showUpgradeDialog' => !$showTransferModal && (bool)$migratedFormId && !(bool)give_get_meta(
                     $donationFormId,
                     'givewp-form-builder-migration-hide-notice',
                     true
                 ),
+            'showTransferModal' => $showTransferModal,
             'transferShowNotice' => (bool)$migratedFormId && !(bool)$transferredFormId && !(bool)give_get_meta(
                     $donationFormId,
                     'givewp-form-builder-transfer-hide-notice',
@@ -175,11 +178,29 @@ class RegisterFormBuilderPageRoute
         ]);
 
         /**
+         * @since 4.14.2 updated logic with filter
          * @since 4.0.0
          */
+        $campaignUrl = '';
         if ($campaign = Campaign::findByFormId($donationFormId)) {
+            $campaignUrl = admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id);
+        }
+
+        /**
+         * Filters the campaign URL displayed in the form builder header.
+         * Allows add-ons (e.g., P2P) to provide their own campaign URL when
+         * the form belongs to a non-core campaign type.
+         *
+         * @since 4.14.2
+         *
+         * @param string $campaignUrl - The campaign admin URL, or empty string if not found.
+         * @param int $donationFormId - The donation form ID being edited.
+         */
+        $campaignUrl = apply_filters('givewp_form_builder_campaign_url', $campaignUrl, $donationFormId);
+
+        if ($campaignUrl) {
             wp_localize_script('@givewp/form-builder/script', 'headerContainer', [
-                'campaignUrl' => admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id),
+                'campaignUrl' => $campaignUrl,
             ]);
         }
 

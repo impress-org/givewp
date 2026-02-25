@@ -87,17 +87,14 @@ export default function FeatureNoticeDialog({isUpgrading, isEditing, handleClose
                     </>
                 )}
 
-                {isUpgrading ? (
+                {isUpgrading || isEditing ? (
                     <Button size="large" onClick={handleUpgrade} className={styles.proceedButton}>
-                        {__('Proceed with upgrade', 'give')}
+                        {isUpgrading ? __('Proceed with upgrade', 'give') : __('Proceed with the new form builder', 'give')}
                     </Button>
                 ) : (
                     <Button
                         size="large"
                         onClick={() => {
-                            if (isEditing) {
-                                sessionStorage.setItem('givewp-show-return-btn', 'true');
-                            }
                             window.location.href = 'edit.php?post_type=give_forms&page=give-campaigns&new=campaign';
                         }}
                         className={styles.proceedButton}

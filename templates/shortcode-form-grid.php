@@ -14,6 +14,7 @@ if (!defined('ABSPATH')) {
 /**
  * List of changes
  *
+ * @since 4.14.2 Add aria-label to the wrapper link and aria-hidden to its inner elements
  * @since 3.16.0 Add filters to enable the async mode and to change the values of the "amount raised" and "donations count" on the progress bar
  * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
  */
@@ -81,7 +82,15 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 <div class="give-grid__item">
     <?php
     // Print the opening anchor tag based on display style.
-    if ('redirect' === $atts['display_style']) {
+    if ('modal_reveal' === $atts['display_style']) {
+        printf(
+            '<a id="give-card-%1$s" class="give-card js-give-grid-modal-launcher" data-effect="mfp-zoom-out" href="#give-modal-form-%1$s" aria-label="%2$s">',
+            esc_attr($form_id),
+            /* translators: %s: donation form title */
+            esc_attr(sprintf(__('Open donation form: %s', 'give'), $formTemplate->getFormHeading($form_id)))
+        );
+    } else {
+        // Default to redirect display style.
         $form_grid_option = give_get_meta($form_id, '_give_form_grid_option', true);
         $form_grid_redirect_url = esc_url(give_get_meta($form_id, '_give_form_grid_redirect_url', true));
 
@@ -90,19 +99,16 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
             : get_the_permalink();
 
         printf(
-            '<a id="give-card-%1$s" onclick="return !document.body.classList.contains( \'block-editor-page\' )" class="give-card" href="%2$s">',
+            '<a id="give-card-%1$s" onclick="return !document.body.classList.contains( \'block-editor-page\' )" class="give-card" href="%2$s" aria-label="%3$s">',
             esc_attr($form_id),
-            esc_attr($url)
-        );
-    } elseif ('modal_reveal' === $atts['display_style']) {
-        printf(
-            '<a id="give-card-%1$s" class="give-card js-give-grid-modal-launcher" data-effect="mfp-zoom-out" href="#give-modal-form-%1$s">',
-            esc_attr($form_id)
+            esc_attr($url),
+            /* translators: %s: donation form title */
+            esc_attr(sprintf(__('View donation form: %s', 'give'), $formTemplate->getFormHeading($form_id)))
         );
     }
     ?>
     <div class="give-form-grid" style="flex-direction:<?php
-    echo esc_attr($flex_direction) ?>">
+    echo esc_attr($flex_direction) ?>" aria-hidden="true">
         <?php
         // Maybe display the featured image.
         if (
@@ -214,14 +220,11 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                         ? $atts['donate_button_text_color']
                         : '#000000';
                     ?>
-                    <button style="text-decoration-color: <?php
-                    echo esc_attr($button_text_color); ?>">
-                                    <span style="color: <?php
-                                    echo esc_attr($button_text_color); ?>">
-                                        <?php
-                                        echo esc_html($button_text) ?: __('Donate', 'give'); ?>
-                                    </span>
-                    </button>
+                    <span class="give-card__button" style="text-decoration-color: <?php
+                    echo esc_attr($button_text_color); ?>; color: <?php
+                    echo esc_attr($button_text_color); ?>" aria-hidden="true">
+                        <?php echo esc_html($button_text) ?: __('Donate', 'give'); ?>
+                    </span>
                 <?php
                 endif; ?>
 
