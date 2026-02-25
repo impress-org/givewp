@@ -43,7 +43,7 @@ const Details = ({id, heading, details}: {id: string; heading: string; details: 
     );
 
 /**
- * @unreleased
+ * @since 4.14.2 replace tagName props to use div tags instead
  * @since 3.0.0
  */
 export default function DonationReceipt({

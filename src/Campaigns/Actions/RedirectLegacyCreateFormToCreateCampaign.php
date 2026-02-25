@@ -90,7 +90,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased updated logic to search the DB explicitly for P2P campaigns
+     * @since 4.14.2 updated logic to search the DB explicitly for P2P campaigns
      * @since 4.0.0
      */
     private function isP2PCampaignFormIdInvalidOrMissing(): bool
@@ -130,7 +130,7 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
-     * @unreleased Also check give_campaign_forms junction table for non-core campaigns (e.g., migrated P2P forms).
+     * @since 4.14.2 Also check give_campaign_forms junction table for non-core campaigns (e.g., migrated P2P forms).
      * @since 4.0.0
      */
     private function isCampaignFormIdInvalidOrMissing(): bool
