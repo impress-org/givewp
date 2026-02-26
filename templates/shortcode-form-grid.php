@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 /**
  * List of changes
  *
- * @unreleased Add aria-label to the wrapper link and aria-hidden to its inner elements
+ * @since 4.14.2 Add aria-label to the wrapper link and aria-hidden to its inner elements
  * @since 3.16.0 Add filters to enable the async mode and to change the values of the "amount raised" and "donations count" on the progress bar
  * @since 2.27.1 Use get_the_excerpt function to get short description of donation form to display in form grid.
  */

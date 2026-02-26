@@ -3,11 +3,13 @@
 namespace Give\FormMigration\Controllers;
 
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\FormMigration\Concerns\Blocks\BlockDifference;
 use Give\FormMigration\DataTransferObjects\FormMigrationPayload;
 use Give\FormMigration\Pipeline;
 use Give\Framework\Blocks\BlockModel;
+use Give\Framework\Database\DB;
 use Give\Log\Log;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -56,19 +58,35 @@ class MigrationController
                 $campaignRepository = give(CampaignRepository::class);
                 if ($campaign = $campaignRepository->getByFormId($payload->formV2->id)) {
                     $campaignRepository->addCampaignForm($campaign, $payload->formV3->id);
+                } else {
+                    // Fallback: Check for non-core campaigns (e.g., P2P) linked via give_campaigns.form_id
+                    $campaignData = DB::table('give_campaigns')
+                        ->where('form_id', $payload->formV2->id)
+                        ->where('campaign_type', CampaignType::CORE, '!=')
+                        ->get();
+
+                    if ($campaignData) {
+                        DB::table('give_campaign_forms')
+                            ->insert([
+                                'form_id' => $payload->formV3->id,
+                                'campaign_id' => $campaignData->id,
+                            ]);
+                    }
                 }
 
                 Log::info(esc_html__('Form migrated from v2 to v3.', 'give'), $this->debugContext);
             });
 
+        $redirectArgs = apply_filters('givewp_form_migration_redirect_args', [
+            'post_type' => 'give_forms',
+            'page' => 'givewp-form-builder',
+            'donationFormID' => $payload->formV3->id,
+        ], $payload->formV2->id, $payload->formV3->id);
+
         return new WP_REST_Response([
             'v2FormId' => $payload->formV2->id,
             'v3FormId' => $payload->formV3->id,
-            'redirect' => add_query_arg([
-                'post_type' => 'give_forms',
-                'page' => 'givewp-form-builder',
-                'donationFormID' => $payload->formV3->id,
-            ], admin_url('edit.php')),
+            'redirect' => add_query_arg($redirectArgs, admin_url('edit.php')),
         ]);
     }
 }
