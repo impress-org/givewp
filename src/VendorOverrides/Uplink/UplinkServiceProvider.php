@@ -30,9 +30,9 @@ class UplinkServiceProvider implements ServiceProviderContract
      */
     public function boot()
     {
-        Hooks::addFilter('stellarwp/uplink/product_registry', RegisterProduct::class, 10, 1);
+        Hooks::addFilter('stellarwp/uplink/product_registry', RegisterProduct::class);
 
-        Hooks::addFilter('stellarwp/uplink/legacy_licenses', ReportLegacyLicences::class, 10, 1);
+        Hooks::addFilter('stellarwp/uplink/legacy_licenses', ReportLegacyLicences::class);
 
         Hooks::addAction('admin_init', SuppressLegacyLicenses::class);
     }
