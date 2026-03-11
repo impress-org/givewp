@@ -284,6 +284,7 @@ class FormSettings implements Arrayable, Jsonable
     public bool $inheritCampaignColors;
 
     /**
+     * @since 4.14.3 Sanitize designId property
      * @since 4.1.0 Added $inheritCampaignColors
      * @since 3.16.0 Added $enableReceiptConfirmationPage
      * @since 3.7.0 Added formExcerpt
@@ -318,7 +319,7 @@ class FormSettings implements Arrayable, Jsonable
             : GoalProgressType::ALL_TIME();
         $self->goalStartDate = $array['goalStartDate'] ?? '';
         $self->goalEndDate = $array['goalEndDate'] ?? '';
-        $self->designId = $array['designId'] ?? null;
+        $self->designId = isset($array['designId']) ? sanitize_html_class($array['designId']) : null;
         $self->inheritCampaignColors = $array['inheritCampaignColors'] ?? false;
         $self->primaryColor = $array['primaryColor'] ?? '#2d802f';
         $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';

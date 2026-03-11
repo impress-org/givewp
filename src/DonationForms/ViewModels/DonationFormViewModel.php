@@ -280,6 +280,7 @@ class DonationFormViewModel
      * 5. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
+     * @since 4.14.3 Escape HTML attributes for classNames property
      * @since 3.20.0 Adds class for form design
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -315,7 +316,7 @@ class DonationFormViewModel
 
         <div data-theme="light" id="root-givewp-donation-form"
              data-iframe-height
-             class="<?= implode(' ', $classNames) ?>"></div>
+             class="<?= esc_attr(implode(' ', $classNames)) ?>"></div>
 
         <?php
         wp_print_footer_scripts();
