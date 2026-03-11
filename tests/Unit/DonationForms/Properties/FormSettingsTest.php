@@ -29,7 +29,7 @@ class FormSettingsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.3
      */
     public function testDesignIdStripsHtmlBreakingCharacters()
     {
@@ -43,7 +43,7 @@ class FormSettingsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.3
      */
     public function testDesignIdPreservesValidSlug()
     {
@@ -55,7 +55,7 @@ class FormSettingsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.3
      */
     public function testDesignIdIsNullWhenNotProvided()
     {
