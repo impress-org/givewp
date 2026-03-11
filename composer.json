@@ -20,7 +20,7 @@
         "stellarwp/admin-notices": "^2.0.1",
         "stellarwp/arrays": "^1.3",
         "moneyphp/money": "^3.3.3",
-        "stellarwp/uplink": "*"
+        "stellarwp/uplink": "@dev"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -48,7 +48,6 @@
         "strauss": [
             "bin/strauss-installar.sh",
             "@php vendor/stellarwp/validation/bin/set-domain domain=give",
-            "@php vendor/stellarwp/uplink/bin/stellar-uplink domain=give",
             "@php bin/strauss.phar",
             "@composer dump-autoload"
         ],
@@ -127,6 +126,13 @@
         }
     },
     "repositories": [
+        {
+            "type": "path",
+            "url": "/Users/jonwaldstein/Repos/uplink",
+            "options": {
+                "symlink": true
+            }
+        },
         {
             "type": "git",
             "url": "https://github.com/wordpress/wordpress-develop.git"

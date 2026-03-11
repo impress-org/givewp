@@ -9,9 +9,6 @@ use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 use Give\Vendors\StellarWP\Uplink\Config;
 use Give\Vendors\StellarWP\Uplink\Register;
 use Give\Vendors\StellarWP\Uplink\Uplink;
-use function Give\Vendors\StellarWP\Uplink\get_field;
-use function Give\Vendors\StellarWP\Uplink\get_form;
-use function Give\Vendors\StellarWP\Uplink\get_plugins;
 
 class UplinkServiceProvider implements ServiceProviderContract
 {
@@ -31,13 +28,29 @@ class UplinkServiceProvider implements ServiceProviderContract
      */
     public function boot()
     {
-        Register::plugin(
-            'give',
-            'GiveWP',
-            GIVE_VERSION,
-            plugin_basename(GIVE_PLUGIN_FILE),
-            Give::class
-        );
+        add_filter('stellarwp/uplink/legacy_licenses', function (array $licenses) {
+            $pageUrl = admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses');
+
+            return array_merge($licenses, [
+                [
+                    'key' => 'license-key-1',
+                    'slug' => 'give-recurring',
+                    'name' => 'Give Recurring',
+                    'brand' => 'give',
+                    'status' => 'valid',
+                    'page_url' => $pageUrl,
+                ],
+                [
+                    'key' => 'license-key-2',
+                    'slug' => 'give-form-field-manager',
+                    'name' => 'Give Form Field Manager',
+                    'brand' => 'give',
+                    'status' => 'expired',
+                    'expires_at' => '2026-01-01',
+                    'page_url' => $pageUrl,
+                ]
+            ]);
+        }, 10, 1);
 
         /**
          * Fix duplicate class bug: the field template puts "stellarwp-uplink-license-key-field" on both the <tr> wrapper and the inner <div> with data attributes, causing the JS to crash when it matches the <tr> (which has no data-action).
@@ -51,29 +64,15 @@ class UplinkServiceProvider implements ServiceProviderContract
             );
         });
 
-        add_action('admin_menu', function () {
-            add_menu_page(
-                'GiveWP Uplink',
-                'GiveWP Uplink',
-                'manage_options',
-                'givewp-uplink',
-                function () {
-                    $form = get_form();
-                    $plugins = get_plugins();
+        //$this->suppress_legacy_licenses();
+    }
 
-                    foreach ($plugins as $plugin) {
-                        $field = get_field($plugin->get_slug());
-                        $field->set_field_name('field-' . $plugin->get_slug());
-                        $field->set_label($plugin->get_name());
-                        $field->show_label(true);
+    private function suppress_legacy_licenses()
+    {
 
-                        $form->add_field($field);
-                    }
-
-                    $form->show_button(true, __('Submit', 'give'));
-                    $form->render();
-                }
-            );
-        }, 11);
+        remove_action('admin_notices', 'give_license_notices', 10);
+        remove_filter('pre_set_site_transient_update_plugins', 'give_check_addon_updates', 999);
+        remove_action('give_thricely_scheduled_events', 'give_refresh_licenses', 10);
+        wp_unschedule_hook('give_thricely_scheduled_events');
     }
 }

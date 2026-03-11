@@ -13,6 +13,7 @@
 use Give\Log\Log;
 use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
 use Give\Vendors\StellarWP\Uplink\Config as UplinkConfig;
+use Give\Vendors\StellarWP\Uplink\Legacy\Legacy_License;
 use Give\Vendors\StellarWP\Uplink\Register as UplinkRegister;
 
 if ( ! defined('ABSPATH') ) {
@@ -274,13 +275,25 @@ if ( ! class_exists('Give_License') ) :
             }
 
             try {
-                UplinkRegister::plugin(
+                $plugin = UplinkRegister::plugin(
                     $this->plugin_dirname,
                     $this->item_name,
                     $this->version,
                     $this->plugin_basename,
                     self::class
                 );
+
+                // $plugin->legacy()
+                // ->licenses(function () {
+                //     return [
+                //         new Legacy_License(
+                //             'license-key-' . $this->plugin_dirname,
+                //             $this->plugin_dirname,
+                //             'valid',
+                //             admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses'),
+                //         ),
+                //     ];
+                // });
             } catch (\Exception $e) {
                 // Silently skip if already registered or any other registration error.
             }
