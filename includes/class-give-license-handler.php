@@ -11,7 +11,7 @@
 
 // Exit if accessed directly.
 use Give\Log\Log;
-use Give\Vendors\StellarWP\AdminNotices\AdminNotices;;
+use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
 
 if ( ! defined('ABSPATH') ) {
     exit;
@@ -256,7 +256,6 @@ if ( ! class_exists('Give_License') ) :
 
 			// Add plugin to registered licenses list.
             array_push(self::$licensed_addons, $this);
-
 		}
 
 		/**
