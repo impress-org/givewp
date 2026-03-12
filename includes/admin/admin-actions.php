@@ -1604,8 +1604,13 @@ function give_license_notices() {
 		$license_data[ $give_license['license'] ]['count'] += 1;
 	}
 
-	// Set data for inactive add-ons.
-	$inactive_addons = array_diff( wp_list_pluck( $give_plugins, 'Dir' ), $addons_with_license );
+	// Set data for inactive add-ons, excluding those licensed via Uplink.
+	$inactive_addons = wp_list_pluck(
+		array_filter( $give_plugins, static function ( $plugin ) {
+			return ! $plugin['License'];
+		} ),
+		'Dir'
+	);
 
 	$license_data['inactive'] = [
 		'count'   => count( $inactive_addons ),

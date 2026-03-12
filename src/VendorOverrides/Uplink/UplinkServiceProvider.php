@@ -8,7 +8,6 @@ use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
 use Give\VendorOverrides\Uplink\Actions\RegisterProduct;
 use Give\VendorOverrides\Uplink\Actions\ReportLegacyLicences;
-use Give\VendorOverrides\Uplink\Actions\SuppressLegacyLicenses;
 use Give\Vendors\StellarWP\Uplink\Config;
 use Give\Vendors\StellarWP\Uplink\Uplink;
 
@@ -33,8 +32,6 @@ class UplinkServiceProvider implements ServiceProviderContract
         Hooks::addFilter('stellarwp/uplink/product_registry', RegisterProduct::class);
 
         Hooks::addFilter('stellarwp/uplink/legacy_licenses', ReportLegacyLicences::class);
-
-        Hooks::addAction('admin_init', SuppressLegacyLicenses::class);
     }
 
 }
