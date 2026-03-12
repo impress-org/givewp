@@ -12,10 +12,13 @@ use Give\License\Repositories\LicenseRepository;
  * associated with the correct license key.
  *
  * Hooked into the `stellarwp/uplink/legacy_licenses` filter.
+ *
+ * @unreleased
  */
 class ReportLegacyLicences
 {
     private LicenseRepository $licenseRepository;
+
 
     public function __construct(LicenseRepository $licenseRepository)
     {

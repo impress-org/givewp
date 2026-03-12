@@ -2428,6 +2428,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
+ * @unreleased add support for Uplink unified licenses
  * @since 4.8.0 Update active license date after license refresh when active license is found
  * @since 4.3.0 updated to store platform fee percentage
  * @since 2.27.0 delete update_plugins transient instead of invalidate it

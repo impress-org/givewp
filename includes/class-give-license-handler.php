@@ -578,6 +578,7 @@ if ( ! class_exists('Give_License') ) :
 		 *
 		 * @return array
 		 *
+         * @unreleased add support for Uplink unified licenses
 		 * @since  2.5.0
 		 * @access public
 		 */
