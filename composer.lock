@@ -879,12 +879,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/uplink.git",
-                "reference": "b39b6278eeba791646819adaf19e2cd348997b89"
+                "reference": "768219b5fb98c8183b994e2a6503a92501906641"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/uplink/zipball/b39b6278eeba791646819adaf19e2cd348997b89",
-                "reference": "b39b6278eeba791646819adaf19e2cd348997b89",
+                "url": "https://api.github.com/repos/stellarwp/uplink/zipball/768219b5fb98c8183b994e2a6503a92501906641",
+                "reference": "768219b5fb98c8183b994e2a6503a92501906641",
                 "shasum": ""
             },
             "require": {
@@ -922,6 +922,7 @@
                 "psr-4": {
                     "StellarWP\\Uplink\\": "src/Uplink/",
                     "StellarWP\\Uplink\\Views\\": "src/views/",
+                    "StellarWP\\Uplink\\Build_Dir\\": "build/",
                     "StellarWP\\Uplink\\Assets_Dir\\": "src/assets/",
                     "StellarWP\\Uplink\\Admin_Views\\": "src/admin-views/"
                 }
@@ -941,7 +942,7 @@
                 "issues": "https://github.com/stellarwp/uplink/issues",
                 "source": "https://github.com/stellarwp/uplink/tree/bucket/consolidation-program"
             },
-            "time": "2026-03-11T17:30:09+00:00"
+            "time": "2026-03-12T14:00:26+00:00"
         },
         {
             "name": "stellarwp/validation",
@@ -6378,7 +6379,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wordpress/wordpress-develop.git",
-                "reference": "876044bec69252bf7831211ded6857bb0df29f6a"
+                "reference": "21d3c57a1b46afb2f19be23db3acd55a392c664d"
             },
             "require": {
                 "ext-hash": "*",
@@ -6433,7 +6434,7 @@
             "support": {
                 "issues": "https://core.trac.wordpress.org/"
             },
-            "time": "2026-03-11T16:10:06+00:00"
+            "time": "2026-03-12T13:57:17+00:00"
         },
         {
             "name": "wp-cli/cache-command",
@@ -7772,16 +7773,16 @@
         },
         {
             "name": "wp-cli/mustangostang-spyc",
-            "version": "0.6.4",
+            "version": "0.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-cli/spyc.git",
-                "reference": "752b7bf37989214bf4b3344cb8bc4c581f820a5b"
+                "reference": "30f25baaaba939caaff1f4b8c7ed998632f59fe2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-cli/spyc/zipball/752b7bf37989214bf4b3344cb8bc4c581f820a5b",
-                "reference": "752b7bf37989214bf4b3344cb8bc4c581f820a5b",
+                "url": "https://api.github.com/repos/wp-cli/spyc/zipball/30f25baaaba939caaff1f4b8c7ed998632f59fe2",
+                "reference": "30f25baaaba939caaff1f4b8c7ed998632f59fe2",
                 "shasum": ""
             },
             "require": {
@@ -7817,9 +7818,9 @@
             "description": "A simple YAML loader/dumper class for PHP (WP-CLI fork)",
             "homepage": "https://github.com/mustangostang/spyc/",
             "support": {
-                "source": "https://github.com/wp-cli/spyc/tree/0.6.4"
+                "source": "https://github.com/wp-cli/spyc/tree/0.6.6"
             },
-            "time": "2026-03-10T17:15:34+00:00"
+            "time": "2026-03-12T12:30:41+00:00"
         },
         {
             "name": "wp-cli/package-command",
