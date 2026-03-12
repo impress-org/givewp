@@ -605,6 +605,11 @@ if ( ! class_exists('Give_License') ) :
 				}
 			}
 
+			// Fall back to Uplink feature availability when no legacy license is found.
+			if ( empty( $license ) && stellarwp_uplink_is_feature_available( $plugin_dirname ) ) {
+				$license = [ 'license' => 'valid' ];
+			}
+
 			return $license;
 		}
 
