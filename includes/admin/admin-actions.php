@@ -1561,6 +1561,7 @@ add_action( 'wp_ajax_give_cache_flush', 'give_cache_flush', 10, 0 );
  * note: only for internal use
  *
  * @access public
+ * @unreleased add support for Uplink unified licenses
  * @since  2.5.0
  * @return void
  */
