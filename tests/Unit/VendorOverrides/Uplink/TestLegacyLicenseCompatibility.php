@@ -237,7 +237,7 @@ class TestLegacyLicenseCompatibility extends TestCase
         $this->setUplinkFeatureAvailable(['give-stripe']);
 
         update_option(LicenseOptionKeys::LICENSES, [
-            'license-key-1234567890' => $this->getRawLicenseData(),
+            'license-key-1234567890' => $this->getRawLicenseData(['plugin_slug' => 'give-stripe']),
         ]);
 
         $result = \Give_License::get_license_by_plugin_dirname('give-stripe');
