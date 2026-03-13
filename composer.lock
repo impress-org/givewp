@@ -879,12 +879,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/uplink.git",
-                "reference": "768219b5fb98c8183b994e2a6503a92501906641"
+                "reference": "d2cdc80ade63d4fabaac8cc502b27e6e48d26684"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/uplink/zipball/768219b5fb98c8183b994e2a6503a92501906641",
-                "reference": "768219b5fb98c8183b994e2a6503a92501906641",
+                "url": "https://api.github.com/repos/stellarwp/uplink/zipball/d2cdc80ade63d4fabaac8cc502b27e6e48d26684",
+                "reference": "d2cdc80ade63d4fabaac8cc502b27e6e48d26684",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +924,8 @@
                     "StellarWP\\Uplink\\Views\\": "src/views/",
                     "StellarWP\\Uplink\\Build_Dir\\": "build/",
                     "StellarWP\\Uplink\\Assets_Dir\\": "src/assets/",
-                    "StellarWP\\Uplink\\Admin_Views\\": "src/admin-views/"
+                    "StellarWP\\Uplink\\Admin_Views\\": "src/admin-views/",
+                    "StellarWP\\Uplink\\Build_Dev_Dir\\": "build-dev/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -942,7 +943,7 @@
                 "issues": "https://github.com/stellarwp/uplink/issues",
                 "source": "https://github.com/stellarwp/uplink/tree/bucket/consolidation-program"
             },
-            "time": "2026-03-12T14:00:26+00:00"
+            "time": "2026-03-13T19:05:14+00:00"
         },
         {
             "name": "stellarwp/validation",
@@ -6379,7 +6380,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wordpress/wordpress-develop.git",
-                "reference": "21d3c57a1b46afb2f19be23db3acd55a392c664d"
+                "reference": "b00c4ac6399b46f1769b3824999290ffecb16109"
             },
             "require": {
                 "ext-hash": "*",
@@ -6434,7 +6435,7 @@
             "support": {
                 "issues": "https://core.trac.wordpress.org/"
             },
-            "time": "2026-03-12T13:57:17+00:00"
+            "time": "2026-03-13T01:36:00+00:00"
         },
         {
             "name": "wp-cli/cache-command",
