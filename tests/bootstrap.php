@@ -36,6 +36,33 @@ TestHooks::addFilter('setup_theme', static function () {
     give()->install();
 });
 
+// Register high-version test stubs for Uplink global functions so tests can control
+// stellarwp_uplink_is_product_license_active() and stellarwp_uplink_is_feature_available()
+// without spinning up real Uplink licensing logic.
+//
+// Must be hooked to 'init' (which fires before 'wp_loaded') so the write gate inside
+// _stellarwp_uplink_global_function_registry() is still open. Version '999.0.0-give-tests'
+// is higher than any real Uplink release, so these stubs win the leader election.
+TestHooks::addFilter('init', static function () {
+    _stellarwp_uplink_instance_registry('999.0.0-give-tests');
+
+    _stellarwp_uplink_global_function_registry(
+        'stellarwp_uplink_is_product_license_active',
+        '999.0.0-give-tests',
+        static function (string $product): bool {
+            return \Give\Tests\Unit\VendorOverrides\Uplink\UplinkStubs::$productActive;
+        }
+    );
+
+    _stellarwp_uplink_global_function_registry(
+        'stellarwp_uplink_is_feature_available',
+        '999.0.0-give-tests',
+        static function (string $slug): bool {
+            return in_array($slug, \Give\Tests\Unit\VendorOverrides\Uplink\UplinkStubs::$availableFeatures, true);
+        }
+    );
+}, 999);
+
 // pull in WP bootstrap file which looks for WP_TESTS_CONFIG_FILE_PATH defined above
 require_once $currentTestEnvironment->bootstrap();
 

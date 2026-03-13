@@ -21,21 +21,13 @@ class TestLegacyLicenseCompatibility extends TestCase
     use RefreshDatabase;
 
     /**
-     * A version key that will never clash with a real Uplink version.
-     */
-    private const TEST_VERSION = '99.0.0-test';
-
-    /**
      * @unreleased
      */
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->setUplinkProductActive(false);
-        $this->setUplinkFeatureAvailable([]);
-
-        add_filter('stellarwp/uplink/highest_version', [$this, 'filterHighestVersion'], 99);
+        UplinkStubs::reset();
     }
 
     /**
@@ -43,7 +35,7 @@ class TestLegacyLicenseCompatibility extends TestCase
      */
     public function tearDown(): void
     {
-        remove_filter('stellarwp/uplink/highest_version', [$this, 'filterHighestVersion'], 99);
+        UplinkStubs::reset();
 
         parent::tearDown();
     }
@@ -51,23 +43,9 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * @unreleased
      */
-    public function filterHighestVersion(): string
-    {
-        return self::TEST_VERSION;
-    }
-
-    /**
-     * @unreleased
-     */
     private function setUplinkProductActive(bool $active): void
     {
-        _stellarwp_uplink_global_function_registry(
-            'stellarwp_uplink_is_product_license_active',
-            self::TEST_VERSION,
-            static function (string $product) use ($active): bool {
-                return $active && $product === 'give';
-            }
-        );
+        UplinkStubs::$productActive = $active;
     }
 
     /**
@@ -77,13 +55,7 @@ class TestLegacyLicenseCompatibility extends TestCase
      */
     private function setUplinkFeatureAvailable(array $slugs): void
     {
-        _stellarwp_uplink_global_function_registry(
-            'stellarwp_uplink_is_feature_available',
-            self::TEST_VERSION,
-            static function (string $slug) use ($slugs): bool {
-                return in_array($slug, $slugs, true);
-            }
-        );
+        UplinkStubs::$availableFeatures = $slugs;
     }
 
     // -------------------------------------------------------------------------
