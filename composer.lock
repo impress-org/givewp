@@ -879,12 +879,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/uplink.git",
-                "reference": "d2cdc80ade63d4fabaac8cc502b27e6e48d26684"
+                "reference": "6f77ac4fb9cb07cbfc61932c3406fcb9887e3411"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/uplink/zipball/d2cdc80ade63d4fabaac8cc502b27e6e48d26684",
-                "reference": "d2cdc80ade63d4fabaac8cc502b27e6e48d26684",
+                "url": "https://api.github.com/repos/stellarwp/uplink/zipball/6f77ac4fb9cb07cbfc61932c3406fcb9887e3411",
+                "reference": "6f77ac4fb9cb07cbfc61932c3406fcb9887e3411",
                 "shasum": ""
             },
             "require": {
@@ -943,7 +943,7 @@
                 "issues": "https://github.com/stellarwp/uplink/issues",
                 "source": "https://github.com/stellarwp/uplink/tree/bucket/consolidation-program"
             },
-            "time": "2026-03-13T19:05:14+00:00"
+            "time": "2026-03-16T17:21:40+00:00"
         },
         {
             "name": "stellarwp/validation",
@@ -3104,16 +3104,16 @@
         },
         {
             "name": "mck89/peast",
-            "version": "v1.17.4",
+            "version": "v1.17.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mck89/peast.git",
-                "reference": "c6a63f32410d2e4ee2cd20fe94b35af147fb852d"
+                "reference": "e19a8bd896b7f04941a38fd38a140c9a6531c84f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mck89/peast/zipball/c6a63f32410d2e4ee2cd20fe94b35af147fb852d",
-                "reference": "c6a63f32410d2e4ee2cd20fe94b35af147fb852d",
+                "url": "https://api.github.com/repos/mck89/peast/zipball/e19a8bd896b7f04941a38fd38a140c9a6531c84f",
+                "reference": "e19a8bd896b7f04941a38fd38a140c9a6531c84f",
                 "shasum": ""
             },
             "require": {
@@ -3126,7 +3126,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.17.4-dev"
+                    "dev-master": "1.17.5-dev"
                 }
             },
             "autoload": {
@@ -3147,9 +3147,9 @@
             "description": "Peast is PHP library that generates AST for JavaScript code",
             "support": {
                 "issues": "https://github.com/mck89/peast/issues",
-                "source": "https://github.com/mck89/peast/tree/v1.17.4"
+                "source": "https://github.com/mck89/peast/tree/v1.17.5"
             },
-            "time": "2025-10-10T12:53:17+00:00"
+            "time": "2026-03-15T10:47:07+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -6380,7 +6380,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wordpress/wordpress-develop.git",
-                "reference": "b00c4ac6399b46f1769b3824999290ffecb16109"
+                "reference": "e7537812bc2e8c1a6ccf8528bfe193c9c8ca57aa"
             },
             "require": {
                 "ext-hash": "*",
@@ -6435,7 +6435,7 @@
             "support": {
                 "issues": "https://core.trac.wordpress.org/"
             },
-            "time": "2026-03-13T01:36:00+00:00"
+            "time": "2026-03-16T08:18:21+00:00"
         },
         {
             "name": "wp-cli/cache-command",
