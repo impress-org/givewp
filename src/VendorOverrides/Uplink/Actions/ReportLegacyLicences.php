@@ -47,12 +47,12 @@ class ReportLegacyLicences
                 }
 
                 $entry = [
-                    'key'      => $license->licenseKey,
-                    'slug'     => $download->pluginSlug,
-                    'name'     => $download->name,
-                    'brand'    => 'give',
-                    'status'   => $license->license,
-                    'page_url' => $pageUrl,
+                    'key'       => $license->licenseKey,
+                    'slug'      => $download->pluginSlug,
+                    'name'      => $download->name,
+                    'brand'     => 'give',
+                    'is_active' => $license->isActive,
+                    'page_url'  => $pageUrl,
                 ];
 
                 if (!empty($license->expires)) {
