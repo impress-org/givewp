@@ -31,20 +31,6 @@ class UplinkServiceProvider implements ServiceProviderContract
         Hooks::addFilter('stellarwp/uplink/product_registry', RegisterProduct::class);
 
         Hooks::addFilter('stellarwp/uplink/legacy_licenses', ReportLegacyLicences::class);
-
-        add_filter('stellarwp/uplink/legacy_licenses', function($licenses) {
-            return array_merge($licenses, [
-                [
-                    'key' => 'give-recurring-license-key',
-                    'slug' => 'give-recurring',
-                    'name' => 'Give Recurring',
-                    'brand' => 'give',
-                    'is_active' => false,
-                    'page_url' => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses'),
-                    'expires_at' => '2026-01-01',
-                ]
-            ]);
-        });
     }
 
 }
