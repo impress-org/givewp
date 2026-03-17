@@ -31,6 +31,8 @@ class UplinkServiceProvider implements ServiceProviderContract
         Hooks::addFilter('stellarwp/uplink/product_registry', RegisterProduct::class);
 
         Hooks::addFilter('stellarwp/uplink/legacy_licenses', ReportLegacyLicences::class);
+
+        remove_action('admin_notices', 'give_license_notices', 10);
     }
 
 }
