@@ -16,7 +16,7 @@ class RegisterProduct
         $licenseRepository = give(LicenseRepository::class);
 
         $products[] = [
-            'group'        => 'give',
+            'product'      => 'give',
             'slug'         => 'give',
             'embedded_key' => $licenseRepository->getBundledLicense(),
             'name'         => 'GiveWP',
