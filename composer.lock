@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d4ca2fc7d5ff857a1b4e2ea30165336d",
+    "content-hash": "39c04ce2a3b6eb71ab25694daee6608e",
     "packages": [
         {
             "name": "composer/installers",
@@ -874,17 +874,17 @@
             "time": "2023-04-01T00:38:22+00:00"
         },
         {
-            "name": "stellarwp/uplink",
-            "version": "dev-bucket/consolidation-program",
+            "name": "stellarwp/harbor",
+            "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "https://github.com/stellarwp/uplink.git",
-                "reference": "1d48af33f177feab14eb67afe796ec8d81711f50"
+                "url": "https://github.com/stellarwp/harbor.git",
+                "reference": "fcab6801bef422d4f6fc469094e87b83bb64a907"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/uplink/zipball/1d48af33f177feab14eb67afe796ec8d81711f50",
-                "reference": "1d48af33f177feab14eb67afe796ec8d81711f50",
+                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/fcab6801bef422d4f6fc469094e87b83bb64a907",
+                "reference": "fcab6801bef422d4f6fc469094e87b83bb64a907",
                 "shasum": ""
             },
             "require": {
@@ -914,18 +914,17 @@
                 "szepeviktor/phpstan-wordpress": ">=1.0",
                 "wp-cli/wp-cli": "^2"
             },
+            "default-branch": true,
             "bin": [
-                "bin/stellar-uplink"
+                "bin/stellar-harbor"
             ],
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "StellarWP\\Uplink\\": "src/Uplink/",
-                    "StellarWP\\Uplink\\Views\\": "src/views/",
-                    "StellarWP\\Uplink\\Build_Dir\\": "build/",
-                    "StellarWP\\Uplink\\Assets_Dir\\": "src/assets/",
-                    "StellarWP\\Uplink\\Admin_Views\\": "src/admin-views/",
-                    "StellarWP\\Uplink\\Build_Dev_Dir\\": "build-dev/"
+                    "LiquidWeb\\Harbor\\": "src/Harbor/",
+                    "LiquidWeb\\Harbor\\Views\\": "src/views/",
+                    "LiquidWeb\\Harbor\\Build_Dir\\": "build/",
+                    "LiquidWeb\\Harbor\\Build_Dev_Dir\\": "build-dev/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -934,16 +933,16 @@
             ],
             "authors": [
                 {
-                    "name": "StellarWP",
-                    "homepage": "https://stellarwp.com"
+                    "name": "Liquid Web",
+                    "homepage": "https://liquidweb.com"
                 }
             ],
-            "description": "A library that integrates a WordPress product with the StellarWP Licensing system.",
+            "description": "A library that integrates a WordPress product with the Liquid Web licensing system.",
             "support": {
-                "issues": "https://github.com/stellarwp/uplink/issues",
-                "source": "https://github.com/stellarwp/uplink/tree/bucket/consolidation-program"
+                "issues": "https://github.com/stellarwp/harbor/issues",
+                "source": "https://github.com/stellarwp/harbor/tree/main"
             },
-            "time": "2026-03-19T14:23:01+00:00"
+            "time": "2026-03-23T15:03:21+00:00"
         },
         {
             "name": "stellarwp/validation",
@@ -6380,7 +6379,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wordpress/wordpress-develop.git",
-                "reference": "ea53b9563fb8e6d1744b7f0e9897bb9a2b2cdeb3"
+                "reference": "e40e13bc843c88f3a4696417feaa93963ef32cdb"
             },
             "require": {
                 "ext-hash": "*",
@@ -6435,7 +6434,7 @@
             "support": {
                 "issues": "https://core.trac.wordpress.org/"
             },
-            "time": "2026-03-19T14:39:42+00:00"
+            "time": "2026-03-23T14:54:20+00:00"
         },
         {
             "name": "wp-cli/cache-command",
@@ -8826,7 +8825,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "stellarwp/uplink": 20,
+        "stellarwp/harbor": 20,
         "wordpress/wordpress": 20
     },
     "prefer-stable": false,

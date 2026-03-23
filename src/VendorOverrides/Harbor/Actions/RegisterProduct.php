@@ -1,13 +1,13 @@
 <?php
 
-namespace Give\VendorOverrides\Uplink\Actions;
+namespace Give\VendorOverrides\Harbor\Actions;
 
 use Give\License\Repositories\LicenseRepository;
 
 class RegisterProduct
 {
     /**
-     * Register the product with the Uplink product registry.
+     * Register the product with the Harbor product registry.
      *
      * @unreleased
      */

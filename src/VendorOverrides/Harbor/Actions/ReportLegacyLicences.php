@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Give\VendorOverrides\Uplink\Actions;
+namespace Give\VendorOverrides\Harbor\Actions;
 
 use Give\License\Repositories\LicenseRepository;
 
 /**
- * Reports legacy Give licenses to Uplink by expanding each license's downloads
+ * Reports legacy Give licenses to Harbor by expanding each license's downloads
  * into individual entries, so each plugin slug (e.g. "give-recurring") is
  * associated with the correct license key.
  *
- * Hooked into the `stellarwp/uplink/legacy_licenses` filter.
+ * Hooked into the `stellarwp/harbor/legacy_licenses` filter.
  *
  * @unreleased
  */
@@ -32,19 +32,17 @@ class ReportLegacyLicences
     public function __invoke(array $licenses): array
     {
         $storedLicenses = $this->licenseRepository->getLicenses();
-
-        if (empty($storedLicenses)) {
-            return $licenses;
-        }
-
         $pageUrl = admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses');
         $legacyLicenses = [];
+        $coveredSlugs = [];
 
         foreach ($storedLicenses as $license) {
             foreach ($license->downloads as $download) {
                 if (empty($download->pluginSlug)) {
                     continue;
                 }
+
+                $coveredSlugs[] = $download->pluginSlug;
 
                 $entry = [
                     'key'       => $license->licenseKey,
@@ -63,6 +61,37 @@ class ReportLegacyLicences
             }
         }
 
+        foreach ($this->getUnlicensedPremiumAddons($coveredSlugs, $pageUrl) as $entry) {
+            $legacyLicenses[] = $entry;
+        }
+
         return array_merge($licenses, $legacyLicenses);
+    }
+
+    /**
+     * Returns entries for premium add-ons that are installed but have no license key in the database.
+     */
+    private function getUnlicensedPremiumAddons(array $coveredSlugs, string $pageUrl): array
+    {
+        $entries = [];
+
+        foreach (give_get_plugins(['only_premium_add_ons' => true]) as $plugin) {
+            $slug = $plugin['Dir'];
+
+            if (in_array($slug, $coveredSlugs, true)) {
+                continue;
+            }
+
+            $entries[] = [
+                'key'       => '',
+                'slug'      => $slug,
+                'name'      => $plugin['Name'],
+                'brand'     => 'give',
+                'is_active' => false,
+                'page_url'  => $pageUrl,
+            ];
+        }
+
+        return $entries;
     }
 }

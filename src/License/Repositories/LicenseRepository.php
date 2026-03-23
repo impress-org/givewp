@@ -71,15 +71,15 @@ class LicenseRepository
     }
 
     /**
-     * Checks if we have any active licenses, including Uplink unified licenses.
+     * Checks if we have any active licenses, including Harbor unified licenses.
      *
-     * @unreleased add support for Uplink unified licenses
+     * @unreleased add support for Harbor unified licenses
      * @since 4.3.0
      */
     public function hasActiveLicenses(): bool
     {
         return !empty($this->getActiveLicenses())
-            || stellarwp_uplink_is_product_license_active('give');
+            || lw_harbor_is_product_license_active('give');
     }
 
     /**

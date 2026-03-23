@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Give\Tests\Unit\VendorOverrides\Uplink\Actions;
+namespace Give\Tests\Unit\VendorOverrides\Harbor\Actions;
 
 use Give\License\Repositories\LicenseRepository;
 use Give\License\ValueObjects\LicenseOptionKeys;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\Unit\License\TestTraits\HasLicenseData;
-use Give\VendorOverrides\Uplink\Actions\ReportLegacyLicences;
+use Give\VendorOverrides\Harbor\Actions\ReportLegacyLicences;
 
 /**
  * @unreleased
- * @coversDefaultClass \Give\VendorOverrides\Uplink\Actions\ReportLegacyLicences
+ * @coversDefaultClass \Give\VendorOverrides\Harbor\Actions\ReportLegacyLicences
  */
 class TestReportLegacyLicences extends TestCase
 {
@@ -67,7 +67,7 @@ class TestReportLegacyLicences extends TestCase
                 'slug'       => 'give-recurring',
                 'name'       => 'Give Recurring',
                 'brand'      => 'give',
-                'status'     => 'valid',
+                'is_active'  => true,
                 'page_url'   => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses'),
                 'expires_at' => '2025-06-19 23:59:59',
             ],
@@ -100,12 +100,12 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * Each download in a license becomes its own uplink legacy license entry,
+     * Each download in a license becomes its own Harbor legacy license entry,
      * with the parent license's key as the credential.
      *
      * @unreleased
      */
-    public function testEachDownloadBecomesASeparateUplinkEntry(): void
+    public function testEachDownloadBecomesASeparateHarborEntry(): void
     {
         update_option(LicenseOptionKeys::LICENSES, [
             'license-key-1234567890' => $this->getRawLicenseData([

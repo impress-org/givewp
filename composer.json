@@ -20,7 +20,7 @@
         "stellarwp/admin-notices": "^2.0.1",
         "stellarwp/arrays": "^1.3",
         "moneyphp/money": "^3.3.3",
-        "stellarwp/uplink": "dev-bucket/consolidation-program"
+        "stellarwp/harbor": "dev-main"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -48,7 +48,7 @@
         "strauss": [
             "bin/strauss-installar.sh",
             "@php vendor/stellarwp/validation/bin/set-domain domain=give",
-            "@php vendor/stellarwp/uplink/bin/stellar-uplink domain=give",
+            "@php vendor/stellarwp/harbor/bin/stellar-harbor domain=give",
             "@php bin/strauss.phar",
             "@composer dump-autoload"
         ],
@@ -100,10 +100,10 @@
                 "stellarwp/admin-notices",
                 "stellarwp/validation",
                 "stellarwp/field-conditions",
-                "stellarwp/uplink",
                 "symfony/polyfill-ctype",
                 "symfony/polyfill-mbstring",
-                "symfony/http-foundation"
+                "symfony/http-foundation",
+                "stellarwp/harbor"
             ],
             "exclude_from_copy": {
                 "packages": [

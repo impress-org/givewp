@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Give\Tests\Unit\VendorOverrides\Uplink;
+namespace Give\Tests\Unit\VendorOverrides\Harbor;
 
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -10,7 +10,7 @@ use Give\Tests\Unit\License\TestTraits\HasLicenseData;
 use Give\License\ValueObjects\LicenseOptionKeys;
 
 /**
- * Tests that legacy license functions correctly defer to Uplink when a unified
+ * Tests that legacy license functions correctly defer to Harbor when a unified
  * license is active, while continuing to serve users who have legacy licenses.
  *
  * @unreleased
@@ -27,7 +27,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     {
         parent::setUp();
 
-        UplinkStubs::reset();
+        HarborStubs::reset();
     }
 
     /**
@@ -35,7 +35,7 @@ class TestLegacyLicenseCompatibility extends TestCase
      */
     public function tearDown(): void
     {
-        UplinkStubs::reset();
+        HarborStubs::reset();
 
         parent::tearDown();
     }
@@ -43,19 +43,19 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * @unreleased
      */
-    private function setUplinkProductActive(bool $active): void
+    private function setHarborProductActive(bool $active): void
     {
-        UplinkStubs::$productActive = $active;
+        HarborStubs::$productActive = $active;
     }
 
     /**
      * @unreleased
      *
-     * @param string[] $slugs Add-on slugs available via Uplink.
+     * @param string[] $slugs Add-on slugs available via Harbor.
      */
-    private function setUplinkFeatureAvailable(array $slugs): void
+    private function setHarborFeatureAvailable(array $slugs): void
     {
-        UplinkStubs::$availableFeatures = $slugs;
+        HarborStubs::$availableFeatures = $slugs;
     }
 
     // -------------------------------------------------------------------------
@@ -63,31 +63,31 @@ class TestLegacyLicenseCompatibility extends TestCase
     // -------------------------------------------------------------------------
 
     /**
-     * New Uplink customer with no legacy licenses: update check should be skipped.
+     * New Harbor customer with no legacy licenses: update check should be skipped.
      *
      * @unreleased
      */
-    public function testCheckAddonUpdatesReturnsEarlyWhenUplinkActiveAndNoLegacyLicenses(): void
+    public function testCheckAddonUpdatesReturnsEarlyWhenHarborActiveAndNoLegacyLicenses(): void
     {
-        $this->setUplinkProductActive(true);
+        $this->setHarborProductActive(true);
 
         $transient = new \stdClass();
         $transient->checked = ['some-plugin/plugin.php' => '1.0.0'];
 
         $result = give_check_addon_updates($transient);
 
-        $this->assertSame($transient, $result, 'Transient should be returned unchanged when Uplink is active and no legacy licenses exist');
+        $this->assertSame($transient, $result, 'Transient should be returned unchanged when Harbor is active and no legacy licenses exist');
     }
 
     /**
-     * Mixed customer: Uplink active but legacy licenses still exist.
+     * Mixed customer: Harbor active but legacy licenses still exist.
      * Update check must continue running for the legacy-licensed add-ons.
      *
      * @unreleased
      */
     public function testCheckAddonUpdatesRunsNormallyWhenLegacyLicensesExist(): void
     {
-        $this->setUplinkProductActive(true);
+        $this->setHarborProductActive(true);
 
         update_option(LicenseOptionKeys::LICENSES, [
             'license-key-1234567890' => $this->getRawLicenseData(),
@@ -117,13 +117,13 @@ class TestLegacyLicenseCompatibility extends TestCase
     // -------------------------------------------------------------------------
 
     /**
-     * New Uplink customer: refresh should be skipped entirely.
+     * New Harbor customer: refresh should be skipped entirely.
      *
      * @unreleased
      */
-    public function testRefreshLicensesReturnsEarlyWhenUplinkActiveAndNoLegacyLicenses(): void
+    public function testRefreshLicensesReturnsEarlyWhenHarborActiveAndNoLegacyLicenses(): void
     {
-        $this->setUplinkProductActive(true);
+        $this->setHarborProductActive(true);
 
         $httpCalled = false;
         add_filter('pre_http_request', static function () use (&$httpCalled) {
@@ -136,18 +136,18 @@ class TestLegacyLicenseCompatibility extends TestCase
         remove_all_filters('pre_http_request');
 
         $this->assertSame([], $result, 'Should return empty array without calling the legacy API');
-        $this->assertFalse($httpCalled, 'Legacy license API should not be called when Uplink is active and no legacy licenses exist');
+        $this->assertFalse($httpCalled, 'Legacy license API should not be called when Harbor is active and no legacy licenses exist');
     }
 
     /**
-     * Mixed customer: Uplink active but legacy licenses exist.
+     * Mixed customer: Harbor active but legacy licenses exist.
      * Refresh must still call the legacy API to update those licenses.
      *
      * @unreleased
      */
     public function testRefreshLicensesCallsApiWhenLegacyLicensesExist(): void
     {
-        $this->setUplinkProductActive(true);
+        $this->setHarborProductActive(true);
 
         update_option(LicenseOptionKeys::LICENSES, [
             'license-key-1234567890' => $this->getRawLicenseData(),
@@ -171,42 +171,42 @@ class TestLegacyLicenseCompatibility extends TestCase
     // -------------------------------------------------------------------------
 
     /**
-     * Add-on covered by Uplink with no legacy license should be reported as licensed.
+     * Add-on covered by Harbor with no legacy license should be reported as licensed.
      *
      * @unreleased
      */
-    public function testGetLicenseByPluginDirnameReturnsValidWhenUplinkCoversAddon(): void
+    public function testGetLicenseByPluginDirnameReturnsValidWhenHarborCoversAddon(): void
     {
-        $this->setUplinkFeatureAvailable(['give-recurring']);
+        $this->setHarborFeatureAvailable(['give-recurring']);
 
         $result = \Give_License::get_license_by_plugin_dirname('give-recurring');
 
-        $this->assertNotEmpty($result, 'Should return a non-empty license array for Uplink-covered add-on');
-        $this->assertSame('valid', $result['license'], 'License status should be valid for Uplink-covered add-on');
+        $this->assertNotEmpty($result, 'Should return a non-empty license array for Harbor-covered add-on');
+        $this->assertSame('valid', $result['license'], 'License status should be valid for Harbor-covered add-on');
     }
 
     /**
-     * Add-on not covered by either legacy or Uplink should be reported as unlicensed.
+     * Add-on not covered by either legacy or Harbor should be reported as unlicensed.
      *
      * @unreleased
      */
     public function testGetLicenseByPluginDirnameReturnsEmptyWhenNotCovered(): void
     {
-        $this->setUplinkFeatureAvailable([]);
+        $this->setHarborFeatureAvailable([]);
 
         $result = \Give_License::get_license_by_plugin_dirname('give-recurring');
 
-        $this->assertEmpty($result, 'Should return empty array when add-on is not covered by legacy or Uplink');
+        $this->assertEmpty($result, 'Should return empty array when add-on is not covered by legacy or Harbor');
     }
 
     /**
-     * Legacy license takes precedence over Uplink stub when both cover the same add-on.
+     * Legacy license takes precedence over Harbor stub when both cover the same add-on.
      *
      * @unreleased
      */
     public function testGetLicenseByPluginDirnamePreservesLegacyLicenseWhenBothExist(): void
     {
-        $this->setUplinkFeatureAvailable(['give-stripe']);
+        $this->setHarborFeatureAvailable(['give-stripe']);
 
         update_option(LicenseOptionKeys::LICENSES, [
             'license-key-1234567890' => $this->getRawLicenseData(['plugin_slug' => 'give-stripe']),

@@ -1561,7 +1561,7 @@ add_action( 'wp_ajax_give_cache_flush', 'give_cache_flush', 10, 0 );
  * note: only for internal use
  *
  * @access public
- * @unreleased add support for Uplink unified licenses
+ * @unreleased add support for Harbor unified licenses
  * @since  2.5.0
  * @return void
  */
@@ -1605,7 +1605,7 @@ function give_license_notices() {
 		$license_data[ $give_license['license'] ]['count'] += 1;
 	}
 
-	// Set data for inactive add-ons, excluding those licensed via Uplink.
+	// Set data for inactive add-ons, excluding those licensed via Harbor.
 	$inactive_addons = wp_list_pluck(
 		array_filter( $give_plugins, static function ( $plugin ) {
 			return ! $plugin['License'];
