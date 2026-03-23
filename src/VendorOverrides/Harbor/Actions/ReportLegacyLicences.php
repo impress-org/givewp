@@ -48,7 +48,7 @@ class ReportLegacyLicences
                     'key'       => $license->licenseKey,
                     'slug'      => $download->pluginSlug,
                     'name'      => $download->name,
-                    'brand'     => 'give',
+                    'product'     => 'give',
                     'is_active' => $license->isActive,
                     'page_url'  => $pageUrl,
                 ];
@@ -86,7 +86,7 @@ class ReportLegacyLicences
                 'key'       => '',
                 'slug'      => $slug,
                 'name'      => $plugin['Name'],
-                'brand'     => 'give',
+                'product'   => 'give',
                 'is_active' => false,
                 'page_url'  => $pageUrl,
             ];

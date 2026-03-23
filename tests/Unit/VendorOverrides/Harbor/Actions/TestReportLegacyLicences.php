@@ -66,7 +66,7 @@ class TestReportLegacyLicences extends TestCase
                 'key'        => 'license-key-1234567890',
                 'slug'       => 'give-recurring',
                 'name'       => 'Give Recurring',
-                'brand'      => 'give',
+                'product'    => 'give',
                 'is_active'  => true,
                 'page_url'   => admin_url('edit.php?post_type=give_forms&page=give-settings&tab=licenses'),
                 'expires_at' => '2025-06-19 23:59:59',
@@ -90,7 +90,7 @@ class TestReportLegacyLicences extends TestCase
     public function testPreservesIncomingLicensesFromFilter(): void
     {
         $existing = [
-            ['key' => 'other-plugin-key', 'slug' => 'other-plugin', 'name' => 'Other Plugin', 'brand' => 'other', 'status' => 'valid', 'page_url' => 'https://example.com'],
+            ['key' => 'other-plugin-key', 'slug' => 'other-plugin', 'name' => 'Other Plugin', 'product' => 'other', 'is_active' => true, 'page_url' => 'https://example.com'],
         ];
 
         $result = ($this->action)($existing);
@@ -159,7 +159,7 @@ class TestReportLegacyLicences extends TestCase
         $result = ($this->action)([]);
 
         foreach ($result as $entry) {
-            $this->assertSame('expired', $entry['status']);
+            $this->assertFalse($entry['is_active']);
         }
     }
 
@@ -279,7 +279,7 @@ class TestReportLegacyLicences extends TestCase
     /**
      * @unreleased
      */
-    public function testEntryBrandIsAlwaysGive(): void
+    public function testEntryProductIsAlwaysGive(): void
     {
         update_option(LicenseOptionKeys::LICENSES, [
             'license-key-1234567890' => $this->getRawLicenseData(),
@@ -288,7 +288,7 @@ class TestReportLegacyLicences extends TestCase
         $result = ($this->action)([]);
 
         foreach ($result as $entry) {
-            $this->assertSame('give', $entry['brand']);
+            $this->assertSame('give', $entry['product']);
         }
     }
 }
