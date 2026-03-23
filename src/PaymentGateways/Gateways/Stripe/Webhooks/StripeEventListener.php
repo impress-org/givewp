@@ -17,7 +17,7 @@ abstract class StripeEventListener implements EventListener
     use CanSetupStripeApp;
 
     /**
-     * @unreleased Pass connected account ID to Event::retrieve for Stripe Connect support
+     * 4.14.1 Pass connected account ID to Event::retrieve for Stripe Connect support
      * @since 2.21.0
      * @throws Exception
      */
@@ -36,7 +36,7 @@ abstract class StripeEventListener implements EventListener
      *
      * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the event from the correct account, not the platform account.
      *
-     * @unreleased Added $formId parameter and stripe_account option for Stripe Connect support
+     * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      * @since 2.21.0
      *
      * @param string $eventId
@@ -61,7 +61,7 @@ abstract class StripeEventListener implements EventListener
      *
      * Returns an array with the stripe_account option if a connected account is configured for the given form. This is required for Stripe Connect to make API calls to the correct connected account instead of the platform account.
      *
-     * @unreleased
+     * 4.14.1
      *
      * @param int|null $formId Form ID to determine the connected account
      *

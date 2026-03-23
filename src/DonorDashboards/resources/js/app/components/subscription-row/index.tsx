@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {__} from '@wordpress/i18n';
 
@@ -10,6 +10,7 @@ import './style.scss';
 
 const SubscriptionRow = ({subscription}) => {
     const [isCancelModalOpen, setIsCancelModalOpen] = useState<boolean>(false);
+    const history = useHistory();
 
     const {width} = useWindowSize();
     const {id, payment, form, gateway} = subscription;
@@ -50,15 +51,23 @@ const SubscriptionRow = ({subscription}) => {
             <div className="give-donor-dashboard-table__pill">
                 <div className="give-donor-dashboard-table__donation-id">ID: {payment.serialCode}</div>
                 <div className="give-donor-dashboard-table__donation-receipt">
-                    <Link to={`/recurring-donations/receipt/${id}`}>
+                    <button
+                        className="give-donor-dashboard-table__donation-receipt-button"
+                        onClick={() => history.push(`/recurring-donations/receipt/${id}`)}
+                        type="button"
+                    >
                         {__('View Subscription', 'give')} <FontAwesomeIcon icon="arrow-right" />
-                    </Link>
+                    </button>
                 </div>
                 {gatewayCanUpdateSubscription && (
                     <div className="give-donor-dashboard-table__donation-receipt">
-                        <Link to={`/recurring-donations/manage/${id}`}>
+                        <button
+                            className="give-donor-dashboard-table__donation-receipt-button"
+                            onClick={() => history.push(`/recurring-donations/manage/${id}`)}
+                            type="button"
+                        >
                             {__('Manage Subscription', 'give')} <FontAwesomeIcon icon="arrow-right" />
-                        </Link>
+                        </button>
                     </div>
                 )}
                 {gateway.can_cancel && !gatewayCanUpdateSubscription && (
@@ -71,12 +80,13 @@ const SubscriptionRow = ({subscription}) => {
                             />
                         )}
                         <div className="give-donor-dashboard-table__donation-receipt">
-                            <a
+                            <button
                                 className={'give-donor-dashboard-table__donation-receipt__cancel'}
                                 onClick={() => setIsCancelModalOpen(true)}
+                                type="button"
                             >
                                 {__('Cancel Subscription', 'give')}
-                            </a>
+                            </button>
                         </div>
                     </>
                 )}

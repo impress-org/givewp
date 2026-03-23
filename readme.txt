@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 4.14.0
+Stable tag: 4.14.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,25 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+
+= 4.14.3: March 11th, 2026 =
+* Security: Added additional sanitization to the Donation Form.
+
+= 4.14.2: February 25th, 2026 =
+* Enhancement: Added form migration and campaign compatibility for P2P.
+* Fix: Resolved an accessibility issue with the Form Grid Block where screen readers announced all nested content as a single links
+* Fix: Resolved an accessibility issue with buttons on the View Subscription screen on Donor Dashboard page
+* Fix: Resolved an issue with the Donation Form modal when opened in a mobile device
+* Fix: Resolved an issue with emailTags not being assigned to block fields
+* Fix: Resolved an issue with the Donor Confirmation header and description colors on changing text
+* Fix: Resolved an issue where campaign default form title didn’t match campaign name
+
+= 4.14.1: February 11th, 2026 =
+* Fix: Resolved an issue with the Stripe refunded webhook
+* Fix: Resolved an issue with importing Subscriptions without a donor_id
+* Fix: Resolved an issue when using additional Stripe accounts and recurring donations
+* Fix: Resolved an issue with custom visibility conditions on donation forms when initially rendering
+* Fix: Resolved several PHP deprecated warnings on the donor dashboard
 
 = 4.14.0: January 28th, 2026 =
 * New: Added failed donation email notifications to keep you informed when donations don't go through
