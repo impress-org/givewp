@@ -1585,28 +1585,24 @@ function give_get_donation_form_title( $donation_id, $args = [] ) {
         $exchange_rate = give_get_meta($donation_id, '_give_cs_exchange_rate', true);
 
         foreach ( $options as $option ) {
-            if (isset($option['_give_amount'], $option['_give_text'])) {
+            if (!isset($option['_give_amount'], $option['_give_text'])) {
+                continue;
+            }
 
-                if ($default_currency === $payment_currency) {
-                    if (Money::of($option['_give_amount'], $default_currency )->getMinorAmount() == $donation->amount->getAmount()) {
-                        $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
-                        return apply_filters( 'give_get_donation_form_title', $form_title, $donation_id );
-                    }
-                }
-                else {
-                    // If exchange rate exists, convert option amount to donation currency and compare
-                    if (!empty($exchange_rate) && is_numeric($exchange_rate)) {
-                        $option_amount_converted = $option['_give_amount'] * $exchange_rate;
-                        $option_money = Money::of($option_amount_converted, $payment_currency);
+            $matched = false;
 
-                        // Compare minor amounts with small tolerance for floating-point precision
-                        $diff = abs($option_money->getMinorAmount() - $donation->amount->getAmount());
-                        if ($diff < 2) {
-                            $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
-                            return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
-                        }
-                    }
-                }
+            if ($default_currency === $payment_currency) {
+                $matched = Money::of($option['_give_amount'], $default_currency)->getMinorAmount() == $donation->amount->getAmount();
+            } elseif (!empty($exchange_rate) && is_numeric($exchange_rate)) {
+                $option_amount_converted = $option['_give_amount'] * $exchange_rate;
+                $option_money = Money::of($option_amount_converted, $payment_currency);
+                $diff = abs($option_money->getMinorAmount() - $donation->amount->getAmount());
+                $matched = ($diff < 2);
+            }
+
+            if ($matched) {
+                $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
             }
         }
     }
