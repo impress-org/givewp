@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39c04ce2a3b6eb71ab25694daee6608e",
+    "content-hash": "768eca8eb5f34a3adb8ba60c088e9df9",
     "packages": [
         {
             "name": "composer/installers",
@@ -879,12 +879,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/harbor.git",
-                "reference": "fcab6801bef422d4f6fc469094e87b83bb64a907"
+                "reference": "532d61e9c3ce621939472fe649a0cd75146361e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/fcab6801bef422d4f6fc469094e87b83bb64a907",
-                "reference": "fcab6801bef422d4f6fc469094e87b83bb64a907",
+                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/532d61e9c3ce621939472fe649a0cd75146361e4",
+                "reference": "532d61e9c3ce621939472fe649a0cd75146361e4",
                 "shasum": ""
             },
             "require": {
@@ -942,7 +942,7 @@
                 "issues": "https://github.com/stellarwp/harbor/issues",
                 "source": "https://github.com/stellarwp/harbor/tree/main"
             },
-            "time": "2026-03-23T15:03:21+00:00"
+            "time": "2026-03-25T12:51:23+00:00"
         },
         {
             "name": "stellarwp/validation",
@@ -6379,7 +6379,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wordpress/wordpress-develop.git",
-                "reference": "e40e13bc843c88f3a4696417feaa93963ef32cdb"
+                "reference": "117af7e9a37c02ee17ac8f143cb46b6b0f4cde15"
             },
             "require": {
                 "ext-hash": "*",
@@ -6434,7 +6434,7 @@
             "support": {
                 "issues": "https://core.trac.wordpress.org/"
             },
-            "time": "2026-03-23T14:54:20+00:00"
+            "time": "2026-03-24T19:47:47+00:00"
         },
         {
             "name": "wp-cli/cache-command",
