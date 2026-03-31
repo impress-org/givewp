@@ -263,7 +263,8 @@ class AjaxRequestHandler
     }
 
     /**
-     * @since 4.2.1 only filter amount for v2 forms
+     * @unreleased Validate donation amount before creating or updating an order.
+	 * @since 4.2.1 Only filter amount for v2 forms.
      * @since 3.4.2
      */
     private function getOrderData(): array
@@ -288,6 +289,8 @@ class AjaxRequestHandler
                 '0.00';
         }
 
+        $this->validateDonationAmount($amount, $formId);
+
         return [
             'formId' => $formId,
             'formTitle' => give_payment_gateway_item_title(['post_data' => $postData], 127),
@@ -306,6 +309,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment capture error on frontend.
      *
+	 * @unreleased Validate donation amount before approving an order.
      * @since 3.2.0 Discover error by checking capture status.
      * @since 2.9.0
      */
@@ -318,7 +322,9 @@ class AjaxRequestHandler
 
         try {
             if ($updateAmount) {
-                give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
+                $orderData = $this->getOrderData();
+                $this->validateOrderAmountNotDecreased($orderId, $orderData['donationAmount']);
+                give(PayPalOrder::class)->updateOrderAmount($orderId, $orderData);
             }
 
             $result = give(PayPalOrder::class)->approveOrder($orderId);
@@ -332,6 +338,7 @@ class AjaxRequestHandler
     }
 
     /**
+     * @unreleased Validate donation amount before updating an order amount.
      * @since 3.4.2
      */
     public function updateOrderAmount()
@@ -341,7 +348,9 @@ class AjaxRequestHandler
         $orderId = give_clean($_GET['order']);
 
         try {
-            give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
+            $orderData = $this->getOrderData();
+            $this->validateOrderAmountNotDecreased($orderId, $orderData['donationAmount']);
+            give(PayPalOrder::class)->updateOrderAmount($orderId, $orderData);
 
             wp_send_json_success(['order' => $orderId,]);
         } catch (\Exception $ex) {
@@ -411,6 +420,67 @@ class AjaxRequestHandler
 
         if (! $formId || ! give_verify_donation_form_nonce(give_clean($_POST['give-form-hash']), $formId)) {
             wp_die();
+        }
+    }
+
+    /**
+     * Validate the donation amount against the form's configured minimum and maximum.
+     *
+     * @unreleased
+     *
+     * @param float|string $amount
+     * @param int $formId
+     */
+    private function validateDonationAmount($amount, int $formId): void
+    {
+        $amount = (float)$amount;
+
+        if ($amount <= 0) {
+            wp_send_json_error(['error' => __('Invalid donation amount.', 'give')]);
+        }
+
+        $minAmount = (float)give_get_form_minimum_price($formId);
+        if ($minAmount > 0 && $amount < $minAmount) {
+            wp_send_json_error([
+                'error' => sprintf(
+                    /* translators: %s: minimum donation amount */
+                    __('Donation amount must be at least %s.', 'give'),
+                    give_currency_filter(give_format_amount($minAmount, ['sanitize' => false]))
+                ),
+            ]);
+        }
+
+        $maxAmount = (float)give_get_form_maximum_price($formId);
+        if ($maxAmount > 0 && $amount > $maxAmount) {
+            wp_send_json_error([
+                'error' => sprintf(
+                    /* translators: %s: maximum donation amount */
+                    __('Donation amount must not exceed %s.', 'give'),
+                    give_currency_filter(give_format_amount($maxAmount, ['sanitize' => false]))
+                ),
+            ]);
+        }
+    }
+
+    /**
+     * Validate that the new donation amount is not less than the original PayPal order amount.
+     *
+     * @unreleased
+     *
+     * @param string $orderId
+     * @param float|string $newAmount
+     */
+    private function validateOrderAmountNotDecreased(string $orderId, $newAmount): void
+    {
+        $newAmount = (float)$newAmount;
+
+        $currentOrder = give(PayPalOrder::class)->getApprovedOrder($orderId);
+        $currentAmount = (float)$currentOrder->purchase_units[0]->amount->value;
+
+        if ($newAmount < $currentAmount) {
+            wp_send_json_error([
+                'error' => __('Donation amount cannot be decreased.', 'give'),
+            ]);
         }
     }
 
