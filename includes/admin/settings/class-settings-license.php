@@ -39,6 +39,8 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 				add_action( 'give-settings_open_form', '__return_empty_string' );
 				add_action( 'give-settings_close_form', '__return_empty_string' );
 
+                lw_harbor_display_legacy_license_page_notice('GiveWP');
+
 				// Refresh licenses when visit license setting page.
 				give_refresh_licenses();
 			}

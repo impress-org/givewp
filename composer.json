@@ -130,6 +130,14 @@
         {
             "type": "git",
             "url": "https://github.com/wordpress/wordpress-develop.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:stellarwp/licensing-api-client.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:stellarwp/licensing-api-client-wordpress.git"
         }
     ]
 }
