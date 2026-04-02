@@ -424,7 +424,7 @@ class AjaxRequestHandler
     }
 
     /**
-     * Validate the donation amount against the form's configured minimum and maximum.
+     * Validate the donation amount against the form's configured maximum and that it is positive.
      *
      * @unreleased
      *
@@ -437,17 +437,6 @@ class AjaxRequestHandler
 
         if ($amount <= 0) {
             wp_send_json_error(['error' => __('Invalid donation amount.', 'give')]);
-        }
-
-        $minAmount = (float)give_get_form_minimum_price($formId);
-        if ($minAmount > 0 && $amount < $minAmount) {
-            wp_send_json_error([
-                'error' => sprintf(
-                    /* translators: %s: minimum donation amount */
-                    __('Donation amount must be at least %s.', 'give'),
-                    give_currency_filter(give_format_amount($minAmount, ['sanitize' => false]))
-                ),
-            ]);
         }
 
         $maxAmount = (float)give_get_form_maximum_price($formId);
