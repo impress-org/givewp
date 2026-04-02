@@ -263,7 +263,7 @@ class AjaxRequestHandler
     }
 
     /**
-     * @unreleased Validate donation amount before creating or updating an order.
+     * @since 4.14.4 Validate donation amount before creating or updating an order.
 	 * @since 4.2.1 Only filter amount for v2 forms.
      * @since 3.4.2
      */
@@ -309,7 +309,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment capture error on frontend.
      *
-	 * @unreleased Validate donation amount before approving an order.
+	 * @since 4.14.4 Validate donation amount before approving an order.
      * @since 3.2.0 Discover error by checking capture status.
      * @since 2.9.0
      */
@@ -338,7 +338,7 @@ class AjaxRequestHandler
     }
 
     /**
-     * @unreleased Validate donation amount before updating an order amount.
+     * @since 4.14.4 Validate donation amount before updating an order amount.
      * @since 3.4.2
      */
     public function updateOrderAmount()
@@ -426,7 +426,7 @@ class AjaxRequestHandler
     /**
      * Validate the donation amount against the form's configured maximum and that it is positive.
      *
-     * @unreleased
+     * @since 4.14.4
      *
      * @param float|string $amount
      * @param int $formId
@@ -454,7 +454,7 @@ class AjaxRequestHandler
     /**
      * Validate that the new donation amount is not less than the original PayPal order amount.
      *
-     * @unreleased
+     * @since 4.14.4
      *
      * @param string $orderId
      * @param float|string $newAmount
