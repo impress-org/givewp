@@ -7,6 +7,8 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+* Tweak: Updated branding references from StellarWP to Liquid Web.
+
 ## New
 -   Allow Fields API fields to be macroable (#5900)
 

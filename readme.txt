@@ -150,7 +150,7 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 
 === 💚 About the GiveWP Team ===
 
-GiveWP is part of StellarWP, a Liquid Web Family Brand. Our donation plugin is backed by a growing team of WordPress developers, support engineers, customer success managers, and marketing professionals who’ve worked with WordPress and nonprofits since 2009. This means GiveWP is made with best practices in mind; extremely extensible and customizable, stable, and reliable. We’ll be here in years to come for you and your nonprofit organization.
+GiveWP is part of Liquid Web, a Liquid Web Family Brand. Our donation plugin is backed by a growing team of WordPress developers, support engineers, customer success managers, and marketing professionals who’ve worked with WordPress and nonprofits since 2009. This means GiveWP is made with best practices in mind; extremely extensible and customizable, stable, and reliable. We’ll be here in years to come for you and your nonprofit organization.
 
 === 📧 Connect with GiveWP ===
 
@@ -273,6 +273,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= TBD =
+* Tweak: Updated branding references from StellarWP to Liquid Web.
+
 = 4.14.4: April 2nd, 2026 =
 * Security: Added additional validation to PayPal Commerce requests.
 
