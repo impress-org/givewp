@@ -47,7 +47,7 @@ class BlockRenderController
 
         $locale = Language::getLocale();
         $viewUrl = $this->getViewUrl($donationForm, $embedId);
-        $formUrl = esc_url(add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms')));
+        $formUrl = add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms'));
         $formViewUrl = $this->getFormViewUrl($donationForm);
         $colorSettings = $donationForm->getColorSettings();
 
@@ -55,7 +55,18 @@ class BlockRenderController
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<div class='root-data-givewp-embed' data-form-locale='" . esc_attr($locale) . "' data-form-url='" . esc_attr($formUrl) . "' data-form-view-url='" . esc_attr($formViewUrl) . "' data-src='" . esc_attr($viewUrl) . "' data-givewp-embed-id='" . esc_attr($embedId) . "' data-form-format='" . esc_attr($blockAttributes->formFormat) . "' data-open-form-button='" . esc_attr($blockAttributes->openFormButton) . "' style='--givewp-primary-color: " . esc_attr($colorSettings['primaryColor']) . "; --givewp-secondary-color: " . esc_attr($colorSettings['secondaryColor']) . ";'></div>";
+        return sprintf(
+            "<div class='root-data-givewp-embed' data-form-locale='%s' data-form-url='%s' data-form-view-url='%s' data-src='%s' data-givewp-embed-id='%s' data-form-format='%s' data-open-form-button='%s' style='--givewp-primary-color: %s; --givewp-secondary-color: %s;'></div>",
+            esc_attr($locale),
+            esc_attr($formUrl),
+            esc_attr($formViewUrl),
+            esc_attr($viewUrl),
+            esc_attr($embedId),
+            esc_attr($blockAttributes->formFormat),
+            esc_attr($blockAttributes->openFormButton),
+            esc_attr($colorSettings['primaryColor']),
+            esc_attr($colorSettings['secondaryColor'])
+        );
     }
 
     /**

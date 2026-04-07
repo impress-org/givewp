@@ -46,7 +46,7 @@ class BlockRenderControllerTest extends TestCase
      *
      * @throws Exception
      */
-    public function testRenderEscapesShortcodeAttributesInHtmlOutput(): void
+    public function testRenderEscapesBlockAttributesInHtmlOutput(): void
     {
         $donationForm = DonationForm::factory()->create();
 
@@ -59,9 +59,11 @@ class BlockRenderControllerTest extends TestCase
         );
 
         $xssPayload = "' onmouseover='alert(1)' x='";
+        $escapedPayload = esc_attr($xssPayload);
 
         $render = $blockRenderController->render([
             'formId' => $donationForm->id,
+            'blockId' => $xssPayload,
             'openFormButton' => $xssPayload,
             'formFormat' => $xssPayload,
         ]);
@@ -69,8 +71,10 @@ class BlockRenderControllerTest extends TestCase
         // The raw payload should not appear unescaped in the output
         $this->assertStringNotContainsString($xssPayload, $render);
 
-        // The escaped version should be present instead
-        $this->assertStringContainsString(esc_attr($xssPayload), $render);
+        // The escaped version should be present in each attribute
+        $this->assertStringContainsString("data-givewp-embed-id='$escapedPayload'", $render);
+        $this->assertStringContainsString("data-form-format='$escapedPayload'", $render);
+        $this->assertStringContainsString("data-open-form-button='$escapedPayload'", $render);
     }
 
     /**
