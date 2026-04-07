@@ -19,6 +19,7 @@ class BlockRenderController
     protected static int $embedInstance = 0;
 
     /**
+	 * @unreleased add escaping to the output.
      * @since 4.7.0 detach check for gutenberg editor to make this more reusable
      * @since 4.1.0 updated with embed ID instance fallback when block ID is not set.
      * @since 3.22.0 Add locale support
@@ -54,7 +55,7 @@ class BlockRenderController
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
          * It will also generate a dynamic ID - so when we have multiple embeds on a page there will be no conflict.
          */
-        return "<div class='root-data-givewp-embed' data-form-locale='$locale' data-form-url='$formUrl' data-form-view-url='$formViewUrl' data-src='$viewUrl' data-givewp-embed-id='$embedId' data-form-format='$blockAttributes->formFormat' data-open-form-button='$blockAttributes->openFormButton' style='--givewp-primary-color: {$colorSettings['primaryColor']}; --givewp-secondary-color: {$colorSettings['secondaryColor']};'></div>";
+        return "<div class='root-data-givewp-embed' data-form-locale='" . esc_attr($locale) . "' data-form-url='" . esc_attr($formUrl) . "' data-form-view-url='" . esc_attr($formViewUrl) . "' data-src='" . esc_attr($viewUrl) . "' data-givewp-embed-id='" . esc_attr($embedId) . "' data-form-format='" . esc_attr($blockAttributes->formFormat) . "' data-open-form-button='" . esc_attr($blockAttributes->openFormButton) . "' style='--givewp-primary-color: " . esc_attr($colorSettings['primaryColor']) . "; --givewp-secondary-color: " . esc_attr($colorSettings['secondaryColor']) . ";'></div>";
     }
 
     /**
