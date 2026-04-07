@@ -1,5 +1,5 @@
 == Changelog ==
-= TBD =
+= TBD: DATE TBD =
 * Tweak: Updated branding references from StellarWP to Liquid Web.
 
 = 3.22.2: March 19th, 2025 =
