@@ -42,7 +42,7 @@ class BlockRenderControllerTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.14.5
      *
      * @throws Exception
      */

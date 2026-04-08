@@ -19,7 +19,7 @@ class BlockRenderController
     protected static int $embedInstance = 0;
 
     /**
-	 * @unreleased add escaping to the output.
+	 * @since 4.14.5 add escaping to the output.
      * @since 4.7.0 detach check for gutenberg editor to make this more reusable
      * @since 4.1.0 updated with embed ID instance fallback when block ID is not set.
      * @since 3.22.0 Add locale support
