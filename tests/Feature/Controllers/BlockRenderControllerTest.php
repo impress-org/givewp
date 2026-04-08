@@ -42,6 +42,42 @@ class BlockRenderControllerTest extends TestCase
     }
 
     /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testRenderEscapesBlockAttributesInHtmlOutput(): void
+    {
+        $donationForm = DonationForm::factory()->create();
+
+        $blockRenderController = $this->createMockWithCallback(
+            BlockRenderController::class,
+            function (MockBuilder $mockBuilder) {
+                $mockBuilder->setMethods(['loadEmbedScript']);
+                return $mockBuilder->getMock();
+            }
+        );
+
+        $xssPayload = "' onmouseover='alert(1)' x='";
+        $escapedPayload = esc_attr($xssPayload);
+
+        $render = $blockRenderController->render([
+            'formId' => $donationForm->id,
+            'blockId' => $xssPayload,
+            'openFormButton' => $xssPayload,
+            'formFormat' => $xssPayload,
+        ]);
+
+        // The raw payload should not appear unescaped in the output
+        $this->assertStringNotContainsString($xssPayload, $render);
+
+        // The escaped version should be present in each attribute
+        $this->assertStringContainsString("data-givewp-embed-id='$escapedPayload'", $render);
+        $this->assertStringContainsString("data-form-format='$escapedPayload'", $render);
+        $this->assertStringContainsString("data-open-form-button='$escapedPayload'", $render);
+    }
+
+    /**
      * @since 3.0.0
      */
     public function testShouldReturnIframe(): void
