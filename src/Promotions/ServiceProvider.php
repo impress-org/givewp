@@ -41,7 +41,7 @@ class ServiceProvider implements ServiceProviderContract
     /**
      * @since 4.3.0 refactor to add conditional scripts inside admin_enqueue_scripts hook
      * @since 4.0.0 add CampaignWelcomeBanner
-     * @since 3.13.0 add Liquid Web banner.
+     * @since 3.13.0 add Stellar banner.
      * @since 2.27.1 Removed Recurring donations tab app.
      * @since 2.19.0
      *
