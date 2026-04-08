@@ -150,7 +150,7 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 
 === 💚 About the GiveWP Team ===
 
-GiveWP is part of Liquid Web, a Liquid Web Family Brand. Our donation plugin is backed by a growing team of WordPress developers, support engineers, customer success managers, and marketing professionals who’ve worked with WordPress and nonprofits since 2009. This means GiveWP is made with best practices in mind; extremely extensible and customizable, stable, and reliable. We’ll be here in years to come for you and your nonprofit organization.
+GiveWP Give is part of Software by Liquid Web. A Nexcess brand. Our donation plugin is backed by a growing team of WordPress developers, support engineers, customer success managers, and marketing professionals who’ve worked with WordPress and nonprofits since 2009. This means GiveWP is made with best practices in mind; extremely extensible and customizable, stable, and reliable. We’ll be here in years to come for you and your nonprofit organization.
 
 === 📧 Connect with GiveWP ===
 
