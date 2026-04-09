@@ -1,16 +1,17 @@
 <?php
 
-namespace Give\Donors\ViewModels;
+namespace Give\API\REST\V3\Routes\Donors\ViewModels;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Repositories\DonationFormRepository;
-use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
 use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\Types;
+use Give\Framework\Support\Facades\Str;
 
 /**
+ * @since 4.14.0 Move from Give\Donors\ViewModels to API REST V3 namespace
  * @since 4.4.0
  */
 class DonorViewModel
@@ -37,7 +38,6 @@ class DonorViewModel
         return $this;
     }
 
-
     /**
      * @since 4.4.0
      */
@@ -49,6 +49,7 @@ class DonorViewModel
     }
 
     /**
+     * @since 4.14.0 name and lastName should return only the first letter of the last name when sensitive data is not included
      * @since 4.4.0
      */
     public function exports(): array
@@ -56,29 +57,36 @@ class DonorViewModel
         $data = array_merge(
             $this->donor->toArray(),
             [
-                'addresses' => array_map(function($address) { return $address->toArray(); }, $this->donor->addresses),
+                'addresses' => array_map(function ($address) { return $address->toArray(); }, $this->donor->addresses),
                 'avatarUrl' => $this->getAvatarUrl(),
                 'wpUserPermalink' => $this->donor->userId ? get_edit_user_link($this->donor->userId) : null,
                 'customFields' => $this->getCustomFields(),
             ],
         );
 
-        if ( ! $this->includeSensitiveData) {
+        if (!$this->includeSensitiveData) {
             $sensitiveDataExcluded = [
                 'userId',
                 'email',
                 'phone',
                 'additionalEmails',
+                'name',
                 'lastName',
                 'avatarUrl',
                 'company',
                 'addresses',
                 'wpUserPermalink',
-                'customFields'
+                'customFields',
             ];
 
             foreach ($sensitiveDataExcluded as $propertyName) {
                 switch ($propertyName) {
+                    case 'name':
+                        $data[$propertyName] = $data['firstName'] . ' ' . Str::substr($data['lastName'], 0, 1);
+                        break;
+                    case 'lastName':
+                        $data[$propertyName] = Str::substr($data[$propertyName], 0, 1);
+                        break;
                     case 'additionalEmails':
                     case 'customFields':
                         $data[$propertyName] = [];
@@ -89,7 +97,6 @@ class DonorViewModel
                 }
             }
         }
-
 
         if (isset($this->anonymousMode) && $this->anonymousMode->isRedacted() && $this->donor->isAnonymous()) {
             $anonymousDataRedacted = [

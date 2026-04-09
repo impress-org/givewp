@@ -3,6 +3,7 @@
 namespace Give\DonationForms\V2\Endpoints;
 
 use Give\API\RestRoute;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 
 /**
@@ -38,17 +39,18 @@ abstract class Endpoint implements RestRoute
 
     /**
      * Check user permissions
+     * @since 4.14.0 update permission capability to use facade
      * @return bool|WP_Error
      */
     public function permissionsCheck()
     {
-        if (current_user_can('manage_options') || current_user_can('edit_give_forms')) {
+        if (UserPermissions::donationForms()->canView()) {
             return true;
         }
 
         return new WP_Error(
             'rest_forbidden',
-            esc_html__("You don't have permission to view forms", 'give'),
+            __("You don't have permission to view forms", 'give'),
             ['status' => is_user_logged_in() ? 403 : 401]
         );
     }

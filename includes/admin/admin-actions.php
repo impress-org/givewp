@@ -1153,6 +1153,62 @@ function give_get_user_roles() {
 
 
 /**
+ * Get user roles that are safe for donor registration.
+ *
+ * This excludes privileged roles like administrator, editor, give_accountant, etc.
+ * to prevent security issues if the default donor role setting is misconfigured.
+ * Only basic subscriber-level roles should be available for donor registration.
+ *
+ * @since 4.14.0
+ * @return array
+ */
+function give_get_donor_safe_user_roles() {
+	$user_roles = [];
+
+	// Capabilities that indicate a privileged role - exclude these
+	$privileged_caps = [
+		// WordPress privileged caps
+		'manage_options',
+		'edit_users',
+		'delete_users',
+		'create_users',
+		'edit_others_posts',
+		'delete_others_posts',
+		'edit_pages',
+		'edit_others_pages',
+		'publish_pages',
+		'delete_pages',
+		'edit_posts',
+		// GiveWP privileged caps - access to sensitive donor/payment data
+		'view_give_reports',
+		'export_give_reports',
+		'manage_give_settings',
+		'view_give_sensitive_data',
+		'edit_give_payments',
+		'edit_give_forms',
+	];
+
+	foreach ( get_editable_roles() as $role_name => $role_info ) {
+		$is_privileged = false;
+
+		// Check if role has any privileged capabilities
+		foreach ( $privileged_caps as $cap ) {
+			if ( ! empty( $role_info['capabilities'][ $cap ] ) ) {
+				$is_privileged = true;
+				break;
+			}
+		}
+
+		// Only include non-privileged roles
+		if ( ! $is_privileged ) {
+			$user_roles[ $role_name ] = $role_info['name'];
+		}
+	}
+
+	return $user_roles;
+}
+
+/**
  * Ajax handle for donor address.
  *
  * @since 2.0

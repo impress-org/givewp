@@ -9,7 +9,6 @@ use wpdb;
  */
 class Query
 {
-
     /** @var array */
     protected $formIDs;
 
@@ -29,6 +28,7 @@ class Query
     }
 
     /**
+     * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
      * @since 3.14.0 Consider the donation mode (test or live) instead of querying both modes together
      * @return string
      */
@@ -43,7 +43,7 @@ class Query
             FROM {$wpdb->posts} as payment
                 JOIN {$wpdb->give_revenue} as revenue
                     ON revenue.donation_id = payment.ID
-                JOIN {$wpdb->paymentmeta} paymentMode
+                JOIN {$wpdb->donationmeta} paymentMode
                     ON payment.ID = paymentMode.donation_id AND paymentMode.meta_key = '_give_payment_mode'
             WHERE
                 payment.post_type = 'give_payment'
@@ -53,7 +53,7 @@ class Query
                 paymentMode.meta_value = '{$mode}'
         ";
 
-        if ( ! empty($this->formIDs)) {
+        if (!empty($this->formIDs)) {
             $sql .= '
                 AND
                 revenue.form_id IN ( ' . $this->getFormsString() . ' )

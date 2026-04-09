@@ -1,18 +1,19 @@
 <?php
 
-namespace Give\Tests\Unit\Donors\ViewModels;
+namespace Give\Tests\Unit\API\REST\V3\Routes\Donors\ViewModels;
 
 use Exception;
+use Give\API\REST\V3\Routes\Donors\ViewModels\DonorViewModel;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donors\Models\Donor;
-use Give\Donors\ViewModels\DonorViewModel;
 use Give\Framework\Blocks\BlockCollection;
 use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
+ * @since 4.14.0 Move from Give\Tests\Unit\Donors\ViewModels to API REST V3 namespace
  * @since 4.4.0
  */
 class DonorViewModelTest extends TestCase

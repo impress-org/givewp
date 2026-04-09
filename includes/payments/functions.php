@@ -1548,6 +1548,7 @@ function give_filter_where_older_than_week( $where = '' ) {
  *                                   enabled. b. separator  = The separator between the Form Title and the Donation
  *                                   Level.
  *
+ * @since 4.14.5 add currency compatibility to determine whether the level is same as donation amount
  * @since 3.18.0 check if donation form is V3 form
  * @since 1.5
  *
@@ -1575,16 +1576,33 @@ function give_get_donation_form_title( $donation_id, $args = [] ) {
 
     // Check if the donation form is V3 form
     if (Utils::isV3Form($form_id)) {
-        $currency = give_get_option('currency');
+        $default_currency = give_get_option('currency'); // default currency
+        $payment_currency = give_get_payment_currency_code($donation_id); // donation currency
         $options = give()->form_meta->get_meta($form_id, '_give_donation_levels', true) ?? [];
         $donation = Donation::find($donation_id);
 
+        // Different currencies - use exchange rate from currency switcher
+        $exchange_rate = give_get_meta($donation_id, '_give_cs_exchange_rate', true);
+
         foreach ( $options as $option ) {
-            if (isset($option['_give_amount'], $option['_give_text'])) {
-                if (Money::of($option['_give_amount'], $currency )->getMinorAmount() == $donation->amount->getAmount()) {
-                    $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
-                    return apply_filters( 'give_get_donation_form_title', $form_title, $donation_id );
-                }
+            if (!isset($option['_give_amount'], $option['_give_text'])) {
+                continue;
+            }
+
+            $matched = false;
+
+            if ($default_currency === $payment_currency) {
+                $matched = Money::of($option['_give_amount'], $default_currency)->getMinorAmount() == $donation->amount->getAmount();
+            } elseif (!empty($exchange_rate) && is_numeric($exchange_rate)) {
+                $option_amount_converted = $option['_give_amount'] * $exchange_rate;
+                $option_money = Money::of($option_amount_converted, $payment_currency);
+                $diff = abs($option_money->getMinorAmount() - $donation->amount->getAmount());
+                $matched = ($diff < 2);
+            }
+
+            if ($matched) {
+                $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
             }
         }
     }

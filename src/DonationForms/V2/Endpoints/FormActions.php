@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\V2\Endpoints;
 
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -70,16 +71,17 @@ class FormActions extends Endpoint
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.25.2
      *
      * @inheritDoc
      */
     public function permissionsCheck()
     {
-        if ( ! current_user_can('edit_give_forms')) {
+        if ( ! UserPermissions::donationForms()->canEdit()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You don\'t have permission to edit Donation Forms', 'give'),
+                __('You don\'t have permission to edit Donation Forms', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }

@@ -84,16 +84,28 @@ trait StripeWebhookListenerRepository
     /**
      * Retrieve a complete invoice from the Stripe API.
      *
-     * @since 4.8.0
+     * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the invoice from the correct account, not the platform account.
+     *
+     * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      *
      * @param string $invoiceId The Stripe invoice ID
+     * @param int|null $formId Form ID to determine the connected account
      * @return Invoice The complete Stripe invoice object with all properties
      * @throws Exception If the API call fails
      */
-    protected function getCompleteInvoiceFromStripe(string $invoiceId): Invoice
+    protected function getCompleteInvoiceFromStripe(string $invoiceId, ?int $formId = null): Invoice
     {
         try {
-            return \Stripe\Invoice::retrieve($invoiceId);
+            $options = [];
+
+            if ($formId) {
+                $connectedAccountId = give_stripe_get_connected_account_id($formId);
+                if (!empty($connectedAccountId)) {
+                    $options = ['stripe_account' => $connectedAccountId];
+                }
+            }
+
+            return \Stripe\Invoice::retrieve($invoiceId, $options);
         } catch (ApiErrorException $exception) {
             throw new Exception(
                 sprintf(

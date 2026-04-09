@@ -11,6 +11,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\SecurityChallenge;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Support\Contracts\Arrayable;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 
 /**
@@ -116,6 +117,7 @@ class ValidationRouteData implements Arrayable
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 3.22.0
      */
     private function isValidForm(DonationForm $form): bool
@@ -124,7 +126,7 @@ class ValidationRouteData implements Arrayable
             return false;
         }
 
-        if (!$form->status->isPublished() && !current_user_can('edit_give_forms')) {
+        if (!$form->status->isPublished() && !UserPermissions::donationForms()->canEdit()) {
             return false;
         }
 

@@ -1,8 +1,8 @@
-import {__} from '@wordpress/i18n';
-import {amountFormatter, formatTimestamp, getRelativeTimeString} from '@givewp/admin/common';
-import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
-import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/utils';
-import {Header, OverviewPanel, SummaryTable, type SummaryItem} from '@givewp/admin/components';
+import { amountFormatter, formatTimestamp, getRelativeTimeString } from '@givewp/admin/common';
+import { Header, OverviewPanel, SummaryTable, type SummaryItem } from '@givewp/admin/components';
+import { useDonorStatistics } from '@givewp/donors/hooks/useDonorStatistics';
+import { getDonorOptionsWindowData, useDonorEntityRecord } from '@givewp/donors/utils';
+import { __ } from '@wordpress/i18n';
 import styles from "./styles.module.scss";
 
 /**
@@ -13,6 +13,7 @@ interface SummaryProps {
 }
 
 /**
+ * @since 4.14.0 Format dates as strings using formatTimestamp
  * @since 4.5.0
  */
 export default function Summary({donorId}: SummaryProps) {
@@ -25,7 +26,7 @@ export default function Summary({donorId}: SummaryProps) {
         : [
               {
                   label: __('Donor Since', 'give'),
-                  value: formatTimestamp(donor?.createdAt.date, false),
+                  value: formatTimestamp(donor?.createdAt, false),
               },
               {
                   label: __('Last Contributed', 'give'),

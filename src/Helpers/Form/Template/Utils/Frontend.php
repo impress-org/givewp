@@ -2,6 +2,7 @@
 
 namespace Give\Helpers\Form\Template\Utils;
 
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Session\SessionDonation\DonationAccessor;
 use WP_Post;
 
@@ -71,12 +72,13 @@ class Frontend
      * Return form id if admin previewing donation form.
      * Note: only for internal use. This function can be update or remove in future.
      *
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.7.0
      * @return int|null
      */
     public static function getPreviewDonationFormId()
     {
-        if ( ! current_user_can('edit_give_forms')) {
+        if ( ! UserPermissions::donationForms()->canEdit()) {
             return null;
         }
 

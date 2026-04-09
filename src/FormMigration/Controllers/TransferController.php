@@ -3,6 +3,7 @@
 namespace Give\FormMigration\Controllers;
 
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\FormMigration\Actions\GetMigratedFormId;
 use Give\FormMigration\Actions\TransferDonations;
@@ -26,6 +27,10 @@ class TransferController
         $this->request = $request;
     }
 
+    /**
+     * @since 4.14.2 updated logic to search for non-core campaigns (e.g., P2P)
+     * @since 3.0.0
+     */
     public function __invoke(DonationForm $formV2, TransferOptions $options)
     {
         DB::transaction(function() use ($formV2, $options) {
@@ -41,6 +46,20 @@ class TransferController
 
                 if ($defaultForm->id === $formV2->id) {
                     $campaignRepository->updateDefaultCampaignForm($campaign, $v3FormId);
+                }
+            } else {
+                // Fallback: Check for non-core campaigns (e.g., P2P) linked via give_campaigns.form_id
+                $campaignData = DB::table('give_campaigns')
+                    ->where('form_id', $formV2->id)
+                    ->where('campaign_type', CampaignType::CORE, '!=')
+                    ->get();
+
+                if ($campaignData) {
+                    DB::table('give_campaigns')
+                        ->where('id', $campaignData->id)
+                        ->update([
+                            'form_id' => $v3FormId,
+                        ]);
                 }
             }
 

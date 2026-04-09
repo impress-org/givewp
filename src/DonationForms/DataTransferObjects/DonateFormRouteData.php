@@ -7,6 +7,7 @@ use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\Support\Contracts\Arrayable;
 use WP_Error;
 
@@ -148,6 +149,7 @@ class DonateFormRouteData implements Arrayable
     }
 
     /**
+     * @since 4.14.0.0 update permission capability to use facade
      * @since 3.14.0
      */
     private function isValidForm(DonationForm $form): bool
@@ -156,7 +158,7 @@ class DonateFormRouteData implements Arrayable
             return false;
         }
 
-        if (!$form->status->isPublished() && !current_user_can('edit_give_forms')) {
+        if (!$form->status->isPublished() && !UserPermissions::donationForms()->canEdit()) {
             return false;
         }
 

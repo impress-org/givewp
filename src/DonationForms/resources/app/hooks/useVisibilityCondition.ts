@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import {useWatch} from 'react-hook-form';
+import {useFormContext} from 'react-hook-form';
 import {FieldCondition} from '@givewp/forms/types';
 import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOperatorFunctions';
 
@@ -9,9 +9,12 @@ type WatchedFields = Map<string, any>;
  * Adds visibility conditions to a field. The given conditions are watched and the hook returns true or false based on
  * whether the conditions are met.
  *
+ * 4.14.1 use watch instead of useWatch to get the field values.
  * @since 3.0.0
  */
 export default function useVisibilityCondition(conditions: FieldCondition[]): boolean {
+    const {watch} = useFormContext();
+
     const watchedFieldNames = useMemo<string[]>(() => {
         if (!conditions.length) {
             return [];
@@ -20,11 +23,9 @@ export default function useVisibilityCondition(conditions: FieldCondition[]): bo
         return [...conditions.reduce(watchFieldsReducer, new Set()).values()];
     }, [conditions]);
 
-    const fieldValues = useWatch({
-        name: watchedFieldNames,
-    });
+    const fieldValues = watch(watchedFieldNames);
 
-    // useWatch returns a numeric array of values, so we need to map them to the field names.
+    // watch returns a numeric array of values, so we need to map them to the field names.
     const watchedFields = useMemo<WatchedFields>(() => {
         return watchedFieldNames.reduce((fields, name, index) => {
             fields.set(name, fieldValues[index]);

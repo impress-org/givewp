@@ -7,6 +7,7 @@ use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\API\REST\V3\Support\Item;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignPageStatus;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Response;
@@ -25,6 +26,7 @@ class CampaignPageController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.14.0 updated permission logic with UserPermissions facade
      * @since 4.13.1
      */
     public function register_routes()
@@ -37,7 +39,7 @@ class CampaignPageController extends WP_REST_Controller
                     'methods' => WP_REST_Server::CREATABLE,
                     'callback' => [$this, 'create_item'],
                     'permission_callback' => function () {
-                        return current_user_can('manage_options');
+                        return UserPermissions::campaigns()->canCreate();
                     },
                     'args' => [
                         'id' => [

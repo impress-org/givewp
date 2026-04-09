@@ -55,6 +55,7 @@ class ChargeRefunded extends StripeEventListener
     }
 
     /**
+     * 4.14.1 add support for payment_intent_id
      * @since 2.21.0
      * @inerhitDoc
      */
@@ -63,6 +64,14 @@ class ChargeRefunded extends StripeEventListener
         /* @var Charge $stripeCharge */
         $stripeCharge = $event->data->object;
 
-        return give(DonationRepository::class)->getByGatewayTransactionId($stripeCharge->id);
+        // First try to find by charge ID (legacy Stripe gateways store charge ID)
+        $donation = give(DonationRepository::class)->getByGatewayTransactionId($stripeCharge->id);
+
+        // If not found, try payment_intent (StripePaymentElementGateway stores payment intent ID)
+        if (!$donation && !empty($stripeCharge->payment_intent)) {
+            $donation = give(DonationRepository::class)->getByGatewayTransactionId($stripeCharge->payment_intent);
+        }
+
+        return $donation;
     }
 }

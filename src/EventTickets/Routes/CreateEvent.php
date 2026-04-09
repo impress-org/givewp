@@ -4,6 +4,7 @@ namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
 use Give\EventTickets\Models\Event;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
@@ -19,6 +20,7 @@ class CreateEvent implements RestRoute
     /**
      * @inheritDoc
      *
+     * @since 4.14.0 update permission capability to use facade
      * @since 3.20.0 Set the permission callback to "publish_give_payments" and description's sanitize callback to "textarea".
      * @since 3.6.0
      */
@@ -32,7 +34,7 @@ class CreateEvent implements RestRoute
                     'methods' => WP_REST_Server::CREATABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('edit_give_forms');
+                        return UserPermissions::events()->canCreate();
                     }
                 ],
                 'args' => [

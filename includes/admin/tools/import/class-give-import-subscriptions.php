@@ -367,6 +367,8 @@ if (!class_exists('Give_Import_Subscriptions')) {
 
         /**
          * Validate required mapped fields
+         *
+         * 4.14.1 Check if donor_id or email is mapped to the columns
          * @since 4.11.0
          */
         public function check_for_dropdown_or_import()
@@ -374,7 +376,19 @@ if (!class_exists('Give_Import_Subscriptions')) {
             $return = true;
             if (isset($_REQUEST['mapto'])) {
                 $mapto = (array)$_REQUEST['mapto'];
-                $required = ['form_id', 'donor_id', 'period', 'frequency', 'amount', 'status'];
+                $required = ['form_id', 'period', 'frequency', 'amount', 'status'];
+
+                // Add donor_id or email to required based on what's present
+                if (in_array('donor_id', $mapto)) {
+                    $required[] = 'donor_id';
+                } elseif (in_array('email', $mapto)) {
+                    $required[] = 'email';
+                } else {
+                    // Neither is present, show custom error message
+                    Give_Admin_Settings::add_error('give-import-csv-subscriptions', __('A column must be mapped to "donor_id" or "email".', 'give'));
+                    $return = false;
+                }
+
                 foreach ($required as $key) {
                     if (false === in_array($key, $mapto)) {
                         Give_Admin_Settings::add_error('give-import-csv-subscriptions', sprintf(__('A column must be mapped to "%s".', 'give'), $key));

@@ -10,6 +10,7 @@ use Exception;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Response;
@@ -34,6 +35,7 @@ class CampaignRevenueController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.14.0 updated permission logic with UserPermissions facade
      * @since 4.13.1
      */
     public function register_routes()
@@ -46,7 +48,7 @@ class CampaignRevenueController extends WP_REST_Controller
                     'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'get_items'],
                     'permission_callback' => function () {
-                        return current_user_can('manage_options');
+                        return UserPermissions::campaigns()->canView();
                     },
                     'args' => [
                         'id' => [
