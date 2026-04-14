@@ -33,7 +33,7 @@ class AllowGiveRolesToEditCampaignPages
      * @unreleased Handle null $cap gracefully for better compatibility.
      * @since 4.14.0
      */
-    public function mapMetaCap(array $caps, $cap, int $userId, array $args): array
+    public function mapMetaCap(array $caps, ?string $cap, int $userId, array $args): array
     {
         // Fast check: only handle specific meta capabilities
         static $pageMetaCaps = ['edit_post' => true, 'delete_post' => true, 'publish_post' => true, 'read_post' => true];
