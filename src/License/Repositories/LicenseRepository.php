@@ -221,18 +221,4 @@ class LicenseRepository
 
         return (float)min($fees);
     }
-
-    /**
-     * @unreleased
-     */
-    public function getBundledLicense(): ?string
-    {
-        $file_path = GIVE_PLUGIN_DIR . 'PLUGIN_LICENSE.php';
-
-        if (!is_readable($file_path)) {
-            return null;
-        }
-
-        return include $file_path;
-    }
 }
