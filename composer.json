@@ -20,7 +20,7 @@
         "stellarwp/admin-notices": "^2.0.1",
         "stellarwp/arrays": "^1.3",
         "moneyphp/money": "^3.3.3",
-        "stellarwp/harbor": "dev-main"
+        "stellarwp/harbor": "^0.1"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",

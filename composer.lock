@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "768eca8eb5f34a3adb8ba60c088e9df9",
+    "content-hash": "face5d900c4293477095d62d60752c2d",
     "packages": [
         {
             "name": "composer/installers",
@@ -825,16 +825,16 @@
         },
         {
             "name": "stellarwp/harbor",
-            "version": "dev-main",
+            "version": "v0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/harbor.git",
-                "reference": "068f88378be5f7fff5bef3853fc381d860115165"
+                "reference": "e4ec92fe9c38140c447f3cf3207d97a318a1b741"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/068f88378be5f7fff5bef3853fc381d860115165",
-                "reference": "068f88378be5f7fff5bef3853fc381d860115165",
+                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/e4ec92fe9c38140c447f3cf3207d97a318a1b741",
+                "reference": "e4ec92fe9c38140c447f3cf3207d97a318a1b741",
                 "shasum": ""
             },
             "require": {
@@ -864,7 +864,6 @@
                 "szepeviktor/phpstan-wordpress": ">=1.0",
                 "wp-cli/wp-cli": "^2"
             },
-            "default-branch": true,
             "bin": [
                 "bin/stellar-harbor"
             ],
@@ -890,9 +889,9 @@
             "description": "A library that integrates a WordPress product with the Liquid Web licensing system.",
             "support": {
                 "issues": "https://github.com/stellarwp/harbor/issues",
-                "source": "https://github.com/stellarwp/harbor/tree/main"
+                "source": "https://github.com/stellarwp/harbor/tree/v0.1.0"
             },
-            "time": "2026-04-15T17:47:48+00:00"
+            "time": "2026-04-16T16:18:13+00:00"
         },
         {
             "name": "stellarwp/licensing-api-client",
@@ -6288,7 +6287,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wordpress/wordpress-develop.git",
-                "reference": "5044e953df6e6bc058f8c6bf2eb9e81e4889a9b1"
+                "reference": "9f8a3b1e1893f85fabc17b0d2b6d96e6bdb92208"
             },
             "require": {
                 "ext-hash": "*",
@@ -6343,7 +6342,7 @@
             "support": {
                 "issues": "https://core.trac.wordpress.org/"
             },
-            "time": "2026-04-14T22:29:29+00:00"
+            "time": "2026-04-16T07:37:31+00:00"
         },
         {
             "name": "wp-cli/cache-command",
@@ -8734,7 +8733,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "stellarwp/harbor": 20,
         "wordpress/wordpress": 20
     },
     "prefer-stable": false,
