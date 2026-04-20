@@ -63,4 +63,58 @@ class FormSettingsTest extends TestCase
 
         $this->assertNull($formSettings->designId);
     }
+
+    public function testPrimaryColorStripsXssPayload()
+    {
+        $formSettings = FormSettings::fromArray([
+            'primaryColor' => 'red;</style><script>alert(document.domain)</script><style>.x{',
+        ]);
+
+        $this->assertStringNotContainsString('<', $formSettings->primaryColor);
+        $this->assertStringNotContainsString('>', $formSettings->primaryColor);
+        $this->assertStringNotContainsString('"', $formSettings->primaryColor);
+        $this->assertStringNotContainsString('</style>', $formSettings->primaryColor);
+        $this->assertStringNotContainsString('script', $formSettings->primaryColor);
+        $this->assertSame('#2d802f', $formSettings->primaryColor);
+    }
+
+    public function testPrimaryColorPreservesValidHexColor()
+    {
+        $this->assertSame('#aabbcc', FormSettings::fromArray(['primaryColor' => '#aabbcc'])->primaryColor);
+        $this->assertSame('#abc', FormSettings::fromArray(['primaryColor' => '#abc'])->primaryColor);
+    }
+
+    public function testPrimaryColorDefaultsWhenMissing()
+    {
+        $formSettings = FormSettings::fromArray([]);
+
+        $this->assertSame('#2d802f', $formSettings->primaryColor);
+    }
+
+    public function testSecondaryColorStripsXssPayload()
+    {
+        $formSettings = FormSettings::fromArray([
+            'secondaryColor' => 'blue;</style><script>alert(1)</script><style>.x{',
+        ]);
+
+        $this->assertStringNotContainsString('<', $formSettings->secondaryColor);
+        $this->assertStringNotContainsString('>', $formSettings->secondaryColor);
+        $this->assertStringNotContainsString('"', $formSettings->secondaryColor);
+        $this->assertStringNotContainsString('</style>', $formSettings->secondaryColor);
+        $this->assertStringNotContainsString('script', $formSettings->secondaryColor);
+        $this->assertSame('#f49420', $formSettings->secondaryColor);
+    }
+
+    public function testSecondaryColorPreservesValidHexColor()
+    {
+        $this->assertSame('#112233', FormSettings::fromArray(['secondaryColor' => '#112233'])->secondaryColor);
+        $this->assertSame('#123', FormSettings::fromArray(['secondaryColor' => '#123'])->secondaryColor);
+    }
+
+    public function testSecondaryColorDefaultsWhenMissing()
+    {
+        $formSettings = FormSettings::fromArray([]);
+
+        $this->assertSame('#f49420', $formSettings->secondaryColor);
+    }
 }
