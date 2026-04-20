@@ -284,7 +284,6 @@ class FormSettings implements Arrayable, Jsonable
     public bool $inheritCampaignColors;
 
     /**
-     * @unreleased Sanitize primaryColor and secondaryColor properties
      * @since 4.14.3 Sanitize designId property
      * @since 4.1.0 Added $inheritCampaignColors
      * @since 3.16.0 Added $enableReceiptConfirmationPage
@@ -322,8 +321,8 @@ class FormSettings implements Arrayable, Jsonable
         $self->goalEndDate = $array['goalEndDate'] ?? '';
         $self->designId = isset($array['designId']) ? sanitize_html_class($array['designId']) : null;
         $self->inheritCampaignColors = $array['inheritCampaignColors'] ?? false;
-        $self->primaryColor = self::sanitizeHexColorOrDefault($array['primaryColor'] ?? '#2d802f', '#2d802f');
-        $self->secondaryColor = self::sanitizeHexColorOrDefault($array['secondaryColor'] ?? '#f49420', '#f49420');
+        $self->primaryColor = $array['primaryColor'] ?? '#2d802f';
+        $self->secondaryColor = $array['secondaryColor'] ?? '#f49420';
         $self->goalAmount = $array['goalAmount'] ?? 0;
         $self->registrationNotification = $array['registrationNotification'] ?? false;
         $self->customCss = wp_strip_all_tags($array['customCss'] ?? '');
@@ -406,16 +405,6 @@ class FormSettings implements Arrayable, Jsonable
         ) ? $array['currencySwitcherSettings'] : [];
 
         return $self;
-    }
-
-    /**
-     * Sanitize a color string to a valid hex color, falling back to the provided default.
-     *
-     * @unreleased
-     */
-    private static function sanitizeHexColorOrDefault(string $raw, string $default): string
-    {
-        return sanitize_hex_color($raw) ?? $default;
     }
 
     /**

@@ -78,43 +78,37 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased Sanitize output; campaign colors bypass FormSettings::fromArray.
      * @since 4.1.0 Add support for campaign colors
      * @since 3.0.0
      */
     public function primaryColor(): string
     {
-        $color = $this->formSettings->primaryColor ?? '';
-
         if ($this->formSettings->inheritCampaignColors) {
             $campaignColors = $this->getCampaignColors($this->donationFormId);
 
             if ($campaignColors['primaryColor']) {
-                $color = $campaignColors['primaryColor'];
+                return $campaignColors['primaryColor'];
             }
         }
 
-        return sanitize_hex_color($color) ?? '';
+        return $this->formSettings->primaryColor ?? '';
     }
 
     /**
-     * @unreleased Sanitize output; campaign colors bypass FormSettings::fromArray.
      * @since 4.1.0 Add support for campaign colors
      * @since 3.0.0
      */
     public function secondaryColor(): string
     {
-        $color = $this->formSettings->secondaryColor ?? '';
-
         if ($this->formSettings->inheritCampaignColors) {
             $campaignColors = $this->getCampaignColors($this->donationFormId);
 
             if ($campaignColors['secondaryColor']) {
-                $color = $campaignColors['secondaryColor'];
+                return $campaignColors['secondaryColor'];
             }
         }
 
-        return sanitize_hex_color($color) ?? '';
+        return $this->formSettings->secondaryColor ?? '';
     }
 
     /**
