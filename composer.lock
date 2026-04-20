@@ -825,16 +825,16 @@
         },
         {
             "name": "stellarwp/harbor",
-            "version": "v0.1.2",
+            "version": "v0.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/harbor.git",
-                "reference": "d85a809aa5f3e973adb45183597f5876e6178fcd"
+                "reference": "a8363683bd4280dd00c2c307efbcd44d3cd71348"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/d85a809aa5f3e973adb45183597f5876e6178fcd",
-                "reference": "d85a809aa5f3e973adb45183597f5876e6178fcd",
+                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/a8363683bd4280dd00c2c307efbcd44d3cd71348",
+                "reference": "a8363683bd4280dd00c2c307efbcd44d3cd71348",
                 "shasum": ""
             },
             "require": {
@@ -889,9 +889,9 @@
             "description": "A library that integrates a WordPress product with the Liquid Web licensing system.",
             "support": {
                 "issues": "https://github.com/stellarwp/harbor/issues",
-                "source": "https://github.com/stellarwp/harbor/tree/v0.1.2"
+                "source": "https://github.com/stellarwp/harbor/tree/v0.1.4"
             },
-            "time": "2026-04-17T12:50:15+00:00"
+            "time": "2026-04-20T18:53:12+00:00"
         },
         {
             "name": "stellarwp/licensing-api-client",
@@ -6287,7 +6287,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wordpress/wordpress-develop.git",
-                "reference": "bccb9c1143d15fd00da54059269aa2cc3dbd1665"
+                "reference": "047ef806c329a11ba6357f1a650f04f3703e3a44"
             },
             "require": {
                 "ext-hash": "*",
@@ -6342,7 +6342,7 @@
             "support": {
                 "issues": "https://core.trac.wordpress.org/"
             },
-            "time": "2026-04-16T18:42:53+00:00"
+            "time": "2026-04-19T22:24:22+00:00"
         },
         {
             "name": "wp-cli/cache-command",
