@@ -87,4 +87,56 @@ class DonationFormViewModelTest extends TestCase
             'previewMode' => false,
         ]);
     }
+
+    public function testPrimaryColorAccessorSanitizesMaliciousValue()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([]),
+        ]);
+
+        $donationForm->settings->primaryColor = 'red;</style><script>alert(1)</script>';
+
+        $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
+
+        $this->assertSame('', $viewModel->primaryColor());
+    }
+
+    public function testSecondaryColorAccessorSanitizesMaliciousValue()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([]),
+        ]);
+
+        $donationForm->settings->secondaryColor = 'blue;</style><script>alert(1)</script>';
+
+        $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
+
+        $this->assertSame('', $viewModel->secondaryColor());
+    }
+
+    public function testPrimaryColorAccessorPreservesValidHex()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray(['primaryColor' => '#123abc']),
+        ]);
+
+        $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
+
+        $this->assertSame('#123abc', $viewModel->primaryColor());
+    }
+
+    public function testSecondaryColorAccessorPreservesValidHex()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray(['secondaryColor' => '#abc']),
+        ]);
+
+        $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
+
+        $this->assertSame('#abc', $viewModel->secondaryColor());
+    }
 }
