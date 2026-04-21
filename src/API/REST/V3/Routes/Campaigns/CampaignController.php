@@ -301,7 +301,9 @@ class CampaignController extends WP_REST_Controller
             return rest_ensure_response($response);
         }
 
-        if (!$campaign->status->isActive() && !UserPermissions::campaigns()->canViewPrivate()) {
+        $canViewPrivate = UserPermissions::campaigns()->canViewPrivate();
+
+        if (!$campaign->status->isActive() && !$canViewPrivate) {
             $response = new WP_Error(
                 'rest_forbidden',
                 __('You do not have permission to view this campaign.', 'give'),
@@ -309,6 +311,19 @@ class CampaignController extends WP_REST_Controller
             );
 
             return rest_ensure_response($response);
+        }
+
+        if ($campaign->pageId) {
+            $pageStatus = get_post_status($campaign->pageId);
+            if ($pageStatus === 'private' && !$canViewPrivate) {
+                $response = new WP_Error(
+                    'rest_forbidden',
+                    __('You do not have permission to view this campaign.', 'give'),
+                    ['status' => CampaignPermissions::authorizationStatusCode()]
+                );
+
+                return rest_ensure_response($response);
+            }
         }
 
         $item = (new CampaignViewModel($campaign))->exports();

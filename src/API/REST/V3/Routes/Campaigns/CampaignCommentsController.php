@@ -3,10 +3,12 @@
 namespace Give\API\REST\V3\Routes\Campaigns;
 
 use Exception;
+use Give\API\REST\V3\Routes\Campaigns\Permissions\CampaignPermissions;
 use Give\API\REST\V3\Routes\Campaigns\ValueObjects\CampaignRoute;
 use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -38,7 +40,7 @@ class CampaignCommentsController extends WP_REST_Controller
                 [
                     'methods' => WP_REST_Server::READABLE,
                     'callback' => [$this, 'get_items'],
-                    'permission_callback' => '__return_true',
+                    'permission_callback' => '__return_true', // Public endpoint; access is validated inside get_items() based on campaign status and page privacy.
                     'args' => [
                         'id' => [
                             'type' => 'integer',
@@ -79,6 +81,31 @@ class CampaignCommentsController extends WP_REST_Controller
             $response = new WP_Error('campaign_not_found', __('Campaign not found', 'give'), ['status' => 404]);
 
             return rest_ensure_response($response);
+        }
+
+        $canViewPrivate = UserPermissions::campaigns()->canViewPrivate();
+
+        if (!$campaign->status->isActive() && !$canViewPrivate) {
+            return rest_ensure_response(
+                new WP_Error(
+                    'rest_forbidden',
+                    __('You do not have permission to view this campaign.', 'give'),
+                    ['status' => CampaignPermissions::authorizationStatusCode()]
+                )
+            );
+        }
+
+        if ($campaign->pageId) {
+            $pageStatus = get_post_status($campaign->pageId);
+            if ($pageStatus === 'private' && !$canViewPrivate) {
+                return rest_ensure_response(
+                    new WP_Error(
+                        'rest_forbidden',
+                        __('You do not have permission to view this campaign.', 'give'),
+                        ['status' => CampaignPermissions::authorizationStatusCode()]
+                    )
+                );
+            }
         }
 
         $query = (new CampaignDonationQuery($campaign))

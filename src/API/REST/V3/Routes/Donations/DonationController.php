@@ -722,6 +722,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @since TBD require view permission for all GET requests to prevent unauthenticated data enumeration
      * @since 4.14.0 update method name to validationForGetMethods, replace logic with UserPermissions facade and add canViewDonations check
      * @since 4.6.0
      */
@@ -730,6 +731,14 @@ class DonationController extends WP_REST_Controller
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $includeAnonymousDonations = $request->get_param('anonymousDonations');
         $canViewDonations = UserPermissions::donations()->canView();
+
+        if (!$canViewDonations) {
+            return new WP_Error(
+                'rest_forbidden',
+                __('You do not have permission to view donations.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
 
         if ($includeSensitiveData && !$canViewDonations) {
             return new WP_Error(
