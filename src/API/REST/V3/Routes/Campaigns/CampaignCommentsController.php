@@ -68,8 +68,10 @@ class CampaignCommentsController extends WP_REST_Controller
      * @since 4.0.0
      *
      * @throws Exception
+     *
+     * @return WP_REST_Response|WP_Error
      */
-    public function get_items($request): WP_REST_Response|WP_Error
+    public function get_items($request)
     {
         $campaignId = $request->get_param('id');
         $perPage = $request->get_param('perPage');
