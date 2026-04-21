@@ -53,7 +53,6 @@ class SubscriptionPermissions
     }
 
     /**
-     * @unreleased require view permission for all GET requests to prevent unauthenticated data enumeration
      * @since 4.14.0 updated to use canView method
      * @since 4.8.0
      *
@@ -64,14 +63,6 @@ class SubscriptionPermissions
     public static function validationForGetMethods(WP_REST_Request $request)
     {
         $isAdmin = self::canView();
-
-        if ( ! $isAdmin) {
-            return new WP_Error(
-                'rest_forbidden',
-                __('You do not have permission to view subscriptions.', 'give'),
-                ['status' => self::authorizationStatusCode()]
-            );
-        }
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         if ( ! $isAdmin && $includeSensitiveData) {

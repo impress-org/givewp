@@ -64,7 +64,6 @@ class DonorPermissions
     }
 
     /**
-     * @unreleased require view permission (or ownership) for all GET requests to prevent unauthenticated data enumeration
      * @since 4.14.0
      *
      * @param WP_REST_Request $request
@@ -76,14 +75,6 @@ class DonorPermissions
         $isAdmin = self::canView();
         $donorId = $request->get_param('id');
         $isOwner = $donorId ? self::isOwner($donorId) : false;
-
-        if (!$isAdmin && !$isOwner) {
-            return new WP_Error(
-                'rest_forbidden',
-                __('You do not have permission to view donors.', 'give'),
-                ['status' => self::authorizationStatusCode()]
-            );
-        }
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         if (!$isAdmin && !$isOwner && $includeSensitiveData) {

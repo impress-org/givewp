@@ -65,7 +65,7 @@ class CampaignCommentsController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased enforce campaign status and page privacy checks for non-admins
+     * @unreleased check campaign status to block comments on inactive campaigns for non-admins
      * @since 4.0.0
      *
      * @throws Exception
@@ -96,19 +96,6 @@ class CampaignCommentsController extends WP_REST_Controller
                     ['status' => CampaignPermissions::authorizationStatusCode()]
                 )
             );
-        }
-
-        if ($campaign->pageId) {
-            $pageStatus = get_post_status($campaign->pageId);
-            if ($pageStatus === 'private' && !$canViewPrivate) {
-                return rest_ensure_response(
-                    new WP_Error(
-                        'rest_forbidden',
-                        __('You do not have permission to view this campaign.', 'give'),
-                        ['status' => CampaignPermissions::authorizationStatusCode()]
-                    )
-                );
-            }
         }
 
         $query = (new CampaignDonationQuery($campaign))
