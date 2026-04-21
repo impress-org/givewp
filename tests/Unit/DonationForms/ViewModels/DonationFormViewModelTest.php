@@ -88,6 +88,9 @@ class DonationFormViewModelTest extends TestCase
         ]);
     }
 
+    /**
+     * @unreleased
+     */
     public function testPrimaryColorAccessorSanitizesMaliciousValue()
     {
         /** @var DonationForm $donationForm */
@@ -102,6 +105,9 @@ class DonationFormViewModelTest extends TestCase
         $this->assertSame('', $viewModel->primaryColor());
     }
 
+    /**
+     * @unreleased
+     */
     public function testSecondaryColorAccessorSanitizesMaliciousValue()
     {
         /** @var DonationForm $donationForm */
@@ -116,6 +122,9 @@ class DonationFormViewModelTest extends TestCase
         $this->assertSame('', $viewModel->secondaryColor());
     }
 
+    /**
+     * @unreleased
+     */
     public function testPrimaryColorAccessorPreservesValidHex()
     {
         /** @var DonationForm $donationForm */
@@ -128,6 +137,9 @@ class DonationFormViewModelTest extends TestCase
         $this->assertSame('#123abc', $viewModel->primaryColor());
     }
 
+    /**
+     * @unreleased
+     */
     public function testSecondaryColorAccessorPreservesValidHex()
     {
         /** @var DonationForm $donationForm */

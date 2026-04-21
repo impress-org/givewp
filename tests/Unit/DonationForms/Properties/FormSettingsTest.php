@@ -64,6 +64,9 @@ class FormSettingsTest extends TestCase
         $this->assertNull($formSettings->designId);
     }
 
+    /**
+     * @unreleased
+     */
     public function testPrimaryColorStripsXssPayload()
     {
         $formSettings = FormSettings::fromArray([
@@ -78,12 +81,18 @@ class FormSettingsTest extends TestCase
         $this->assertSame('#2d802f', $formSettings->primaryColor);
     }
 
+    /**
+     * @unreleased
+     */
     public function testPrimaryColorPreservesValidHexColor()
     {
         $this->assertSame('#aabbcc', FormSettings::fromArray(['primaryColor' => '#aabbcc'])->primaryColor);
         $this->assertSame('#abc', FormSettings::fromArray(['primaryColor' => '#abc'])->primaryColor);
     }
 
+    /**
+     * @unreleased
+     */
     public function testPrimaryColorDefaultsWhenMissing()
     {
         $formSettings = FormSettings::fromArray([]);
@@ -91,6 +100,9 @@ class FormSettingsTest extends TestCase
         $this->assertSame('#2d802f', $formSettings->primaryColor);
     }
 
+    /**
+     * @unreleased
+     */
     public function testSecondaryColorStripsXssPayload()
     {
         $formSettings = FormSettings::fromArray([
@@ -105,12 +117,18 @@ class FormSettingsTest extends TestCase
         $this->assertSame('#f49420', $formSettings->secondaryColor);
     }
 
+    /**
+     * @unreleased
+     */
     public function testSecondaryColorPreservesValidHexColor()
     {
         $this->assertSame('#112233', FormSettings::fromArray(['secondaryColor' => '#112233'])->secondaryColor);
         $this->assertSame('#123', FormSettings::fromArray(['secondaryColor' => '#123'])->secondaryColor);
     }
 
+    /**
+     * @unreleased
+     */
     public function testSecondaryColorDefaultsWhenMissing()
     {
         $formSettings = FormSettings::fromArray([]);
