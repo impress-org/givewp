@@ -19,7 +19,7 @@ use WP_REST_Server;
  * - Active campaigns with a private WordPress page are blocked for non-admins.
  * - Admins bypass both restrictions.
  *
- * @since TBD
+ * @unreleased
  */
 final class CampaignCommentsAccessControlTest extends RestApiTestCase
 {
@@ -56,7 +56,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     // --- Inactive campaign ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotViewCommentsOnDraftCampaign(): void
     {
@@ -72,7 +72,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotViewCommentsOnArchivedCampaign(): void
     {
@@ -88,7 +88,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAuthenticatedNonAdminCannotViewCommentsOnDraftCampaign(): void
     {
@@ -104,7 +104,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanViewCommentsOnDraftCampaign(): void
     {
@@ -117,7 +117,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanViewCommentsOnArchivedCampaign(): void
     {
@@ -132,7 +132,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     // --- Private campaign page ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotViewCommentsWhenCampaignPageIsPrivate(): void
     {
@@ -150,7 +150,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAuthenticatedNonAdminCannotViewCommentsWhenCampaignPageIsPrivate(): void
     {
@@ -168,7 +168,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanViewCommentsWhenCampaignPageIsPrivate(): void
     {
@@ -185,7 +185,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     // --- Sanity checks ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAnyoneCanViewCommentsOnActiveCampaignWithNoPage(): void
     {
@@ -198,7 +198,7 @@ final class CampaignCommentsAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAnyoneCanViewCommentsOnActiveCampaignWithPublicPage(): void
     {

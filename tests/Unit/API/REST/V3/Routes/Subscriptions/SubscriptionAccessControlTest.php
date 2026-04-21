@@ -23,7 +23,7 @@ use WP_REST_Server;
  * - Unauthenticated users receive 401; authenticated non-admins receive 403.
  * - Admins receive 200.
  *
- * @since TBD
+ * @unreleased
  */
 final class SubscriptionAccessControlTest extends RestApiTestCase
 {
@@ -43,7 +43,7 @@ final class SubscriptionAccessControlTest extends RestApiTestCase
     // --- GET /subscriptions (collection) ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotGetSubscriptionsCollection(): void
     {
@@ -56,7 +56,7 @@ final class SubscriptionAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAuthenticatedNonAdminCannotGetSubscriptionsCollection(): void
     {
@@ -69,7 +69,7 @@ final class SubscriptionAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanGetSubscriptionsCollection(): void
     {
@@ -83,7 +83,7 @@ final class SubscriptionAccessControlTest extends RestApiTestCase
     // --- GET /subscriptions/{id} (single item) ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotGetSingleSubscription(): void
     {
@@ -98,7 +98,7 @@ final class SubscriptionAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAuthenticatedNonAdminCannotGetSingleSubscription(): void
     {
@@ -113,7 +113,7 @@ final class SubscriptionAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanGetSingleSubscription(): void
     {

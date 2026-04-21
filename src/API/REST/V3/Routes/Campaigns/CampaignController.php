@@ -287,6 +287,7 @@ class CampaignController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased enforce campaign page privacy check for non-admins
      * @since 4.13.1
      *
      * @return WP_REST_Response|\WP_Error

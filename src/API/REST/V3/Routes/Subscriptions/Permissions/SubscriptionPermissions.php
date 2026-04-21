@@ -53,7 +53,7 @@ class SubscriptionPermissions
     }
 
     /**
-     * @since TBD require view permission for all GET requests to prevent unauthenticated data enumeration
+     * @unreleased require view permission for all GET requests to prevent unauthenticated data enumeration
      * @since 4.14.0 updated to use canView method
      * @since 4.8.0
      *

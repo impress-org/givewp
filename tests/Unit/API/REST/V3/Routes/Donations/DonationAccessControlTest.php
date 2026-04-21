@@ -18,7 +18,7 @@ use WP_REST_Server;
  * - Unauthenticated users receive 401; authenticated non-admins receive 403.
  * - Admins (with view_give_payments) receive 200.
  *
- * @since TBD
+ * @unreleased
  */
 final class DonationAccessControlTest extends RestApiTestCase
 {
@@ -38,7 +38,7 @@ final class DonationAccessControlTest extends RestApiTestCase
     // --- GET /donations (collection) ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotGetDonationsCollection(): void
     {
@@ -51,7 +51,7 @@ final class DonationAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAuthenticatedNonAdminCannotGetDonationsCollection(): void
     {
@@ -64,7 +64,7 @@ final class DonationAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanGetDonationsCollection(): void
     {
@@ -78,7 +78,7 @@ final class DonationAccessControlTest extends RestApiTestCase
     // --- GET /donations/{id} (single item) ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotGetSingleDonation(): void
     {
@@ -93,7 +93,7 @@ final class DonationAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAuthenticatedNonAdminCannotGetSingleDonation(): void
     {
@@ -108,7 +108,7 @@ final class DonationAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanGetSingleDonation(): void
     {

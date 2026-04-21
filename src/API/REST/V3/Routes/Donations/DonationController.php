@@ -722,7 +722,7 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @since TBD require view permission for all GET requests to prevent unauthenticated data enumeration
+     * @unreleased require view permission for all GET requests to prevent unauthenticated data enumeration
      * @since 4.14.0 update method name to validationForGetMethods, replace logic with UserPermissions facade and add canViewDonations check
      * @since 4.6.0
      */

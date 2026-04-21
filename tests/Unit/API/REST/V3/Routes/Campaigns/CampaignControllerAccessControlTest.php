@@ -20,7 +20,7 @@ use WP_REST_Server;
  *
  * Note: inactive campaign tests (draft, archived) already exist in CampaignControllerItemTest.
  *
- * @since TBD
+ * @unreleased
  */
 final class CampaignControllerAccessControlTest extends RestApiTestCase
 {
@@ -57,7 +57,7 @@ final class CampaignControllerAccessControlTest extends RestApiTestCase
     // --- Private campaign page: GET /campaigns/{id} ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotAccessActiveCampaignWithPrivatePage(): void
     {
@@ -74,7 +74,7 @@ final class CampaignControllerAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAuthenticatedNonAdminCannotAccessActiveCampaignWithPrivatePage(): void
     {
@@ -91,7 +91,7 @@ final class CampaignControllerAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanAccessActiveCampaignWithPrivatePage(): void
     {
@@ -109,7 +109,7 @@ final class CampaignControllerAccessControlTest extends RestApiTestCase
     /**
      * Admin can access even when both campaign is inactive AND page is private.
      *
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanAccessInactiveCampaignWithPrivatePage(): void
     {
@@ -127,7 +127,7 @@ final class CampaignControllerAccessControlTest extends RestApiTestCase
     // --- Sanity check ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAnyoneCanAccessActiveCampaignWithPublicPage(): void
     {

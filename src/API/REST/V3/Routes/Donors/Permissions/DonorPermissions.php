@@ -64,7 +64,7 @@ class DonorPermissions
     }
 
     /**
-     * @since TBD require view permission (or ownership) for all GET requests to prevent unauthenticated data enumeration
+     * @unreleased require view permission (or ownership) for all GET requests to prevent unauthenticated data enumeration
      * @since 4.14.0
      *
      * @param WP_REST_Request $request

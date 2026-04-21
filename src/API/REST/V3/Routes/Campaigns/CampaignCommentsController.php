@@ -65,6 +65,7 @@ class CampaignCommentsController extends WP_REST_Controller
     }
 
     /**
+     * @unreleased enforce campaign status and page privacy checks for non-admins
      * @since 4.0.0
      *
      * @throws Exception

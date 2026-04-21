@@ -19,7 +19,7 @@ use WP_REST_Server;
  * - Unauthenticated users receive 401; authenticated non-admin non-owners receive 403.
  * - Admins and the donor's linked WordPress user receive 200.
  *
- * @since TBD
+ * @unreleased
  */
 final class DonorAccessControlTest extends RestApiTestCase
 {
@@ -39,7 +39,7 @@ final class DonorAccessControlTest extends RestApiTestCase
     // --- GET /donors (collection) ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotGetDonorsCollection(): void
     {
@@ -52,7 +52,7 @@ final class DonorAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAuthenticatedNonAdminCannotGetDonorsCollection(): void
     {
@@ -65,7 +65,7 @@ final class DonorAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanGetDonorsCollection(): void
     {
@@ -79,7 +79,7 @@ final class DonorAccessControlTest extends RestApiTestCase
     // --- GET /donors/{id} (single item) ---
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testUnauthenticatedUserCannotGetSingleDonor(): void
     {
@@ -94,7 +94,7 @@ final class DonorAccessControlTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @unreleased
      */
     public function testAdminCanGetSingleDonor(): void
     {
@@ -110,7 +110,7 @@ final class DonorAccessControlTest extends RestApiTestCase
     /**
      * A non-admin subscriber who is not the donor owner is rejected.
      *
-     * @since TBD
+     * @unreleased
      */
     public function testAuthenticatedNonAdminCannotGetAnotherUsersDonor(): void
     {
@@ -136,7 +136,7 @@ final class DonorAccessControlTest extends RestApiTestCase
     /**
      * A subscriber who owns the donor record can read their own data.
      *
-     * @since TBD
+     * @unreleased
      */
     public function testDonorOwnerCanGetOwnDonorRecord(): void
     {
@@ -159,7 +159,7 @@ final class DonorAccessControlTest extends RestApiTestCase
     /**
      * A subscriber who is logged in but does not own the requested donor record is rejected.
      *
-     * @since TBD
+     * @unreleased
      */
     public function testNonOwnerSubscriberCannotGetAnotherDonorRecord(): void
     {
