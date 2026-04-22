@@ -87,4 +87,68 @@ class DonationFormViewModelTest extends TestCase
             'previewMode' => false,
         ]);
     }
+
+    /**
+     * @unreleased
+     */
+    public function testPrimaryColorAccessorSanitizesMaliciousValue()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([]),
+        ]);
+
+        $donationForm->settings->primaryColor = 'red;</style><script>alert(1)</script>';
+
+        $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
+
+        $this->assertSame('', $viewModel->primaryColor());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testSecondaryColorAccessorSanitizesMaliciousValue()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([]),
+        ]);
+
+        $donationForm->settings->secondaryColor = 'blue;</style><script>alert(1)</script>';
+
+        $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
+
+        $this->assertSame('', $viewModel->secondaryColor());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testPrimaryColorAccessorPreservesValidHex()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray(['primaryColor' => '#123abc']),
+        ]);
+
+        $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
+
+        $this->assertSame('#123abc', $viewModel->primaryColor());
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testSecondaryColorAccessorPreservesValidHex()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray(['secondaryColor' => '#abc']),
+        ]);
+
+        $viewModel = new DonationFormViewModel($donationForm->id, $donationForm->blocks, $donationForm->settings);
+
+        $this->assertSame('#abc', $viewModel->secondaryColor());
+    }
 }
