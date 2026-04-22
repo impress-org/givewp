@@ -78,7 +78,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased Sanitize output; campaign colors bypass FormSettings::fromArray.
+     * @since 4.14.6 Sanitize output; campaign colors bypass FormSettings::fromArray.
      * @since 4.1.0 Add support for campaign colors
      * @since 3.0.0
      */
@@ -98,7 +98,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @unreleased Sanitize output; campaign colors bypass FormSettings::fromArray.
+     * @since 4.14.6 Sanitize output; campaign colors bypass FormSettings::fromArray.
      * @since 4.1.0 Add support for campaign colors
      * @since 3.0.0
      */

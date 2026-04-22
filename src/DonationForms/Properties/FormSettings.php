@@ -284,7 +284,7 @@ class FormSettings implements Arrayable, Jsonable
     public bool $inheritCampaignColors;
 
     /**
-     * @unreleased Sanitize primaryColor and secondaryColor properties
+     * @since 4.14.6 Sanitize primaryColor and secondaryColor properties
      * @since 4.14.3 Sanitize designId property
      * @since 4.1.0 Added $inheritCampaignColors
      * @since 3.16.0 Added $enableReceiptConfirmationPage
@@ -411,7 +411,7 @@ class FormSettings implements Arrayable, Jsonable
     /**
      * Sanitize a color string to a valid hex color, falling back to the provided default.
      *
-     * @unreleased
+     * @since 4.14.6
      */
     private static function sanitizeHexColorOrDefault(string $raw, string $default): string
     {

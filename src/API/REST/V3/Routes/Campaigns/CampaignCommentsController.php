@@ -11,7 +11,6 @@ use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
-use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
@@ -65,7 +64,7 @@ class CampaignCommentsController extends WP_REST_Controller
     }
 
     /**
-     * @unreleased check campaign status to block comments on inactive campaigns for non-admins
+     * @since 4.14.6 check campaign status to block comments on inactive campaigns for non-admins
      * @since 4.0.0
      *
      * @throws Exception
