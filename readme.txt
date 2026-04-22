@@ -276,6 +276,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 4.15.0: TBD =
 * New: Added compabitility with Liquid Web licensing
 
+= 4.14.6: April 22nd, 2026 =
+* Security: Added additional sanitization to the Donation Form.
+* Security: Added additional access control checks to the REST API.
+
 = 4.14.5: April 8th, 2026 =
 * Security: Added additional escaping to the Donation Form Block attributes.
 * Fix: Resolved an issue with donation level labels not displaying correctly for multi-currency donations.
