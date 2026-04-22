@@ -22,6 +22,7 @@ class HarborServiceProvider implements ServiceProviderContract
      */
     public function register()
     {
+        Config::set_plugin_basename(GIVE_PLUGIN_BASENAME);
         Config::set_container(give()->getContainer());
 
         Harbor::init();
