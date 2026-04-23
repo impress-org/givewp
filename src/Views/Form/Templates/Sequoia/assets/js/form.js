@@ -13,8 +13,17 @@
     // Make donation form block selectable in editor
     if (parentWp && parentWp.data) {
         $container.on('click', function () {
-            const blockId = window.frameElement.closest('.wp-block').getAttribute('data-block');
-            parentWp.data.dispatch('core/block-editor').selectBlock(blockId);
+            const frameElement = window.frameElement;
+            const blockElement = frameElement && frameElement.closest ? frameElement.closest('.wp-block') : null;
+
+            if (!blockElement) {
+                return;
+            }
+
+            const blockId = blockElement.getAttribute('data-block');
+            if (blockId) {
+                parentWp.data.dispatch('core/block-editor').selectBlock(blockId);
+            }
         });
     }
 
