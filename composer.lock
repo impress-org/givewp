@@ -825,16 +825,16 @@
         },
         {
             "name": "stellarwp/harbor",
-            "version": "v0.1.6",
+            "version": "v0.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/harbor.git",
-                "reference": "de53230b9635633b678810fd708c7f0e2150d2fc"
+                "reference": "05b087a813d055260c23a7ade4a2675b8558d2c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/de53230b9635633b678810fd708c7f0e2150d2fc",
-                "reference": "de53230b9635633b678810fd708c7f0e2150d2fc",
+                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/05b087a813d055260c23a7ade4a2675b8558d2c6",
+                "reference": "05b087a813d055260c23a7ade4a2675b8558d2c6",
                 "shasum": ""
             },
             "require": {
@@ -845,7 +845,7 @@
                 "psr/http-factory": "^1.0",
                 "psr/http-message": "^1.1",
                 "stellarwp/container-contract": "^1.0",
-                "stellarwp/licensing-api-client-wordpress": "^0.11"
+                "stellarwp/licensing-api-client-wordpress": "^2.0"
             },
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^1",
@@ -889,22 +889,22 @@
             "description": "A library that integrates a WordPress product with the Liquid Web licensing system.",
             "support": {
                 "issues": "https://github.com/stellarwp/harbor/issues",
-                "source": "https://github.com/stellarwp/harbor/tree/v0.1.6"
+                "source": "https://github.com/stellarwp/harbor/tree/v0.1.7"
             },
-            "time": "2026-04-22T20:50:33+00:00"
+            "time": "2026-04-23T16:45:42+00:00"
         },
         {
             "name": "stellarwp/licensing-api-client",
-            "version": "0.11.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/licensing-api-client.git",
-                "reference": "271538e1f54a2959524c547fe3a2f2b14fd8e2ab"
+                "reference": "6f9e0b3e49831f49b735a9544c5fb2fea4eeedeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/licensing-api-client/zipball/271538e1f54a2959524c547fe3a2f2b14fd8e2ab",
-                "reference": "271538e1f54a2959524c547fe3a2f2b14fd8e2ab",
+                "url": "https://api.github.com/repos/stellarwp/licensing-api-client/zipball/6f9e0b3e49831f49b735a9544c5fb2fea4eeedeb",
+                "reference": "6f9e0b3e49831f49b735a9544c5fb2fea4eeedeb",
                 "shasum": ""
             },
             "require": {
@@ -917,7 +917,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "0.11.x-dev"
+                    "dev-main": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -931,33 +931,33 @@
             ],
             "description": "A PHP client for the Liquid Web Licensing API.",
             "support": {
-                "source": "https://github.com/stellarwp/licensing-api-client/tree/0.11.0"
+                "source": "https://github.com/stellarwp/licensing-api-client/tree/2.0.0"
             },
-            "time": "2026-04-10T21:14:53+00:00"
+            "time": "2026-04-23T03:36:42+00:00"
         },
         {
             "name": "stellarwp/licensing-api-client-wordpress",
-            "version": "0.11.0",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/licensing-api-client-wordpress.git",
-                "reference": "594d2a05cb7f7d9dd6865921f47cad3518b0d673"
+                "reference": "f4ece66587cd6de175ffd35d0fbc3dc06c76a1f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/licensing-api-client-wordpress/zipball/594d2a05cb7f7d9dd6865921f47cad3518b0d673",
-                "reference": "594d2a05cb7f7d9dd6865921f47cad3518b0d673",
+                "url": "https://api.github.com/repos/stellarwp/licensing-api-client-wordpress/zipball/f4ece66587cd6de175ffd35d0fbc3dc06c76a1f8",
+                "reference": "f4ece66587cd6de175ffd35d0fbc3dc06c76a1f8",
                 "shasum": ""
             },
             "require": {
                 "nyholm/psr7": "^1.8",
                 "php": ">=7.4",
-                "stellarwp/licensing-api-client": "^0.11"
+                "stellarwp/licensing-api-client": "^2.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "0.11.x-dev"
+                    "dev-main": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -971,9 +971,9 @@
             ],
             "description": "WordPress transport and factory integration for the Liquid Web Licensing API client.",
             "support": {
-                "source": "https://github.com/stellarwp/licensing-api-client-wordpress/tree/0.11.0"
+                "source": "https://github.com/stellarwp/licensing-api-client-wordpress/tree/2.0.0"
             },
-            "time": "2026-04-10T18:53:42+00:00"
+            "time": "2026-04-23T03:38:52+00:00"
         },
         {
             "name": "stellarwp/validation",
