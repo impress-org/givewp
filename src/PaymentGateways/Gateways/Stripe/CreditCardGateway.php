@@ -22,7 +22,7 @@ class CreditCardGateway extends PaymentGateway
     /** @var array */
     protected $errorMessages = [];
 
-    public function __construct(SubscriptionModule $subscriptionModule = null)
+    public function __construct(?SubscriptionModule $subscriptionModule = null)
     {
         parent::__construct($subscriptionModule);
 

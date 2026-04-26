@@ -336,7 +336,7 @@ class GenerateConfirmationPageReceipt
     /**
      * @since 3.0.0
      */
-    protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
+    protected function getHeading(DonationReceipt $receipt, ?DonationForm $donationForm = null): string
     {
         if (!$donationForm) {
             $content = __("Hey {first_name}, thanks for your donation!", 'give');
@@ -353,7 +353,7 @@ class GenerateConfirmationPageReceipt
     /**
      * @since 3.0.0
      */
-    protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
+    protected function getDescription(DonationReceipt $receipt, ?DonationForm $donationForm = null): string
     {
         if (!$donationForm) {
             $content = __(
