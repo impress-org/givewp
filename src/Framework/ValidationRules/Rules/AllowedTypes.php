@@ -42,7 +42,7 @@ class AllowedTypes implements ValidationRule
      *
      * @since 2.24.0
      */
-    public static function fromString(string $options = null): ValidationRule
+    public static function fromString(?string $options = null): ValidationRule
     {
         $types = explode(',', $options);
 

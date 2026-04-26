@@ -27,7 +27,7 @@ class DonationValidationException extends Exception
      * @param int $statusCode
      * @param Exception|null $previous
      */
-    public function __construct(string $message, string $errorCode, int $statusCode = 400, Exception $previous = null)
+    public function __construct(string $message, string $errorCode, int $statusCode = 400, ?Exception $previous = null)
     {
         parent::__construct($message, 0, $previous);
         $this->errorCode = $errorCode;
