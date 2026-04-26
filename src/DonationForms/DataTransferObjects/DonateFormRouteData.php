@@ -14,6 +14,7 @@ use WP_Error;
 /**
  * @since 3.0.0
  */
+#[\AllowDynamicProperties]
 class DonateFormRouteData implements Arrayable
 {
     /**

@@ -128,6 +128,22 @@ class DonateControllerData
      * @var string|null
      */
     public $comment;
+    /**
+     * @var string|null
+     */
+    public $text_block_meta;
+    /**
+     * @var string|null
+     */
+    public $customFieldString;
+    /**
+     * @var int|null
+     */
+    public $customFieldInteger;
+    /**
+     * @var bool|null
+     */
+    public $customFieldBoolean;
 
     /**
      * @since 3.9.0 Added phone property
