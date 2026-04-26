@@ -144,6 +144,10 @@ class DonateControllerData
      * @var bool|null
      */
     public $customFieldBoolean;
+    /**
+     * @var string|null
+     */
+    public $donationBirthday;
 
     /**
      * @since 3.9.0 Added phone property

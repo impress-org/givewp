@@ -14,7 +14,6 @@ use WP_Error;
 /**
  * @since 3.0.0
  */
-#[\AllowDynamicProperties]
 class DonateFormRouteData implements Arrayable
 {
     /**
@@ -97,6 +96,8 @@ class DonateFormRouteData implements Arrayable
          * @param array $data validated values in key value pairs
          */
         do_action('givewp_donation_form_fields_validated', $validatedValues);
+        // var_dump($validatedValues);
+        //     echo $className = get_class($validData);
 
         foreach ($validatedValues as $fieldId => $value) {
             $validData->{$fieldId} = $value;
