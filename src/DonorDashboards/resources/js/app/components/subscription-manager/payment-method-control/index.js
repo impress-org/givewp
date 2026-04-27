@@ -4,10 +4,11 @@ import AuthorizeControl from './authorize-control';
 import SquareControl from './square-control';
 import StripeControl from './stripe-control';
 import CardControl from './card-control';
-
+import StripeBillingPortalControl from './stripe-billing-portal-control';
 import './style.scss';
 
 /**
+ * @unreleased added Stripe Billing Portal control
  * @since 3.19.0 Add controller for Blink payment method.
  */
 const PaymentMethodControl = (props) => {
@@ -18,6 +19,9 @@ const PaymentMethodControl = (props) => {
         case 'stripe_checkout':
         case 'stripe_google_pay': {
             return <StripeControl {...props} />;
+        }
+        case 'stripe_payment_element': {
+            return <StripeBillingPortalControl {...props} />;
         }
         case 'authorize': {
             return <AuthorizeControl {...props} />;
