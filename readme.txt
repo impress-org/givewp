@@ -150,7 +150,7 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 
 === 💚 About the GiveWP Team ===
 
-The most downloaded fundraising plugin on WordPress, Give has helped users raise over $350 million since 2009. Behind it is a professional team of WordPress developers who know what serious fundraising operations need: flexible tools, rock-solid reliability, and software that grows with your mission. As part of Liquid Web’s software offerings, Give is backed by decades of experience building and hosting WordPress solutions.
+The most downloaded fundraising plugin on WordPress, Give has helped users raise over $350 million since 2009. Behind it is a professional team of WordPress developers who know what serious fundraising operations need: flexible tools, rock-solid reliability, and software that grows with your mission. As part of Nexcess’s software offerings, Give is backed by decades of experience building and hosting WordPress solutions.
 
 === 📧 Connect with GiveWP ===
 
@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = TBD =
-* Tweak: Updated branding references from StellarWP to Liquid Web.
+* Tweak: Updated branding references from StellarWP to Nexcess.
 
 = 4.14.4: April 2nd, 2026 =
 * Security: Added additional validation to PayPal Commerce requests.
