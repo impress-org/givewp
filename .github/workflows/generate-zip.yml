@@ -1,4 +1,5 @@
 name: Generate Plugin Zip
+run-name: Generate Zip (${{ inputs.ref }} | ${{ inputs.production == 'true' && 'production' || 'dev' }})
 
 on:
     workflow_dispatch:
