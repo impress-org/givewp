@@ -578,6 +578,7 @@ if ( ! class_exists('Give_License') ) :
 		 *
 		 * @return array
 		 *
+         * @unreleased add support for Harbor unified licenses
 		 * @since  2.5.0
 		 * @access public
 		 */
@@ -603,6 +604,11 @@ if ( ! class_exists('Give_License') ) :
 						}
 					}
 				}
+			}
+
+			// Fall back to Harbor feature availability when no legacy license is found.
+			if ( empty( $license ) && lw_harbor_is_feature_available( $plugin_dirname ) ) {
+				$license = [ 'license' => 'valid' ];
 			}
 
 			return $license;

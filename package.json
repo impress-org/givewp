@@ -7,6 +7,7 @@
         "build": "wp-scripts build",
         "watch": "wp-scripts start",
         "env": "wp-env",
+        "env:start": "wp-env start --auto-port",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip"
     },
@@ -38,7 +39,7 @@
         "@types/react-dom": "^18.0.11",
         "@types/wordpress__blocks": "^12.5.0",
         "@types/wordpress__components": "^23.0.1",
-        "@wordpress/env": "^5.10.0",
+        "@wordpress/env": "^11.4.0",
         "@wordpress/scripts": "^26.19.0",
         "copy-webpack-plugin": "^13.0.0",
         "fork-ts-checker-webpack-plugin": "^9.0.2",

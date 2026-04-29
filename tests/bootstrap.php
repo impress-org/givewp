@@ -36,6 +36,33 @@ TestHooks::addFilter('setup_theme', static function () {
     give()->install();
 });
 
+// Register high-version test stubs for Harbor global functions so tests can control
+// lw_harbor_is_product_license_active() and lw_harbor_is_feature_available()
+// without spinning up real Harbor licensing logic.
+//
+// Must be hooked to 'init' (which fires before 'wp_loaded') so the write gate inside
+// _lw_harbor_global_function_registry() is still open. Version '999.0.0-give-tests'
+// is higher than any real Harbor release, so these stubs win the leader election.
+TestHooks::addFilter('init', static function () {
+    _lw_harbor_instance_registry('999.0.0-give-tests');
+
+    _lw_harbor_global_function_registry(
+        'lw_harbor_is_product_license_active',
+        '999.0.0-give-tests',
+        static function (string $product): bool {
+            return \Give\Tests\Unit\VendorOverrides\Harbor\HarborStubs::$productActive;
+        }
+    );
+
+    _lw_harbor_global_function_registry(
+        'lw_harbor_is_feature_available',
+        '999.0.0-give-tests',
+        static function (string $slug): bool {
+            return in_array($slug, \Give\Tests\Unit\VendorOverrides\Harbor\HarborStubs::$availableFeatures, true);
+        }
+    );
+}, 999);
+
 // pull in WP bootstrap file which looks for WP_TESTS_CONFIG_FILE_PATH defined above
 require_once $currentTestEnvironment->bootstrap();
 
