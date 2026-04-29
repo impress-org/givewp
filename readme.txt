@@ -150,7 +150,7 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 
 === 💚 About the GiveWP Team ===
 
-GiveWP is part of StellarWP, a Liquid Web Family Brand. Our donation plugin is backed by a growing team of WordPress developers, support engineers, customer success managers, and marketing professionals who’ve worked with WordPress and nonprofits since 2009. This means GiveWP is made with best practices in mind; extremely extensible and customizable, stable, and reliable. We’ll be here in years to come for you and your nonprofit organization.
+The most downloaded fundraising plugin on WordPress, Give has helped users raise over $350 million since 2009. Behind it is a professional team of WordPress developers who know what serious fundraising operations need: flexible tools, rock-solid reliability, and software that grows with your mission. As part of Nexcess’s software offerings, Give is backed by decades of experience building and hosting WordPress solutions.
 
 === 📧 Connect with GiveWP ===
 
@@ -273,6 +273,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= TBD =
+* Tweak: Updated branding references from StellarWP to Nexcess.
+
 = 4.14.6: April 22nd, 2026 =
 * Security: Added additional sanitization to the Donation Form.
 * Security: Added additional access control checks to the REST API.
