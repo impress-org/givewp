@@ -1,4 +1,7 @@
 == Changelog ==
+= TBD: DATE TBD =
+* Tweak: Updated branding references from StellarWP to Nexcess.
+
 = 3.22.2: March 19th, 2025 =
 * Fix: Resolved an issue with PayPal hiding the donate button when hosted fields are available
 * Security: Improved the permission check for a GiveWP reporting request (CVE-2025-2331)
