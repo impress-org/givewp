@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 4.14.4
+Stable tag: 4.14.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -275,6 +275,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 = TBD =
 * Tweak: Updated branding references from StellarWP to Nexcess.
+
+= 4.14.6: April 22nd, 2026 =
+* Security: Added additional sanitization to the Donation Form.
+* Security: Added additional access control checks to the REST API.
+
+= 4.14.5: April 8th, 2026 =
+* Security: Added additional escaping to the Donation Form Block attributes.
+* Fix: Resolved an issue with donation level labels not displaying correctly for multi-currency donations.
 
 = 4.14.4: April 2nd, 2026 =
 * Security: Added additional validation to PayPal Commerce requests.
