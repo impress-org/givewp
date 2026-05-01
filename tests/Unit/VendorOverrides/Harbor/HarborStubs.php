@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Give\Tests\Unit\VendorOverrides\Harbor;
 
 /**
- * Holds per-test return values for the Harbor global function stubs registered in
- * tests/bootstrap.php. Set the public static properties before exercising code that
- * calls lw_harbor_is_product_license_active() or
- * lw_harbor_is_feature_available(), then call reset() in tearDown.
+ * Holds per-test return values for the Harbor global function stubs declared
+ * in harbor-stub-functions.php (loaded from tests/bootstrap.php). Set the
+ * public static properties before exercising code that calls
+ * lw_harbor_is_product_license_active() or lw_harbor_is_feature_available(),
+ * then call reset() in tearDown.
  *
  * @unreleased
  */
@@ -37,7 +38,7 @@ class HarborStubs
      */
     public static function reset(): void
     {
-        self::$productActive      = false;
-        self::$availableFeatures  = [];
+        self::$productActive     = false;
+        self::$availableFeatures = [];
     }
 }
