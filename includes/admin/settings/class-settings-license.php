@@ -15,11 +15,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'Give_Settings_License' ) ) :
 
-	/**
-	 * Give_Settings_License.
-	 *
-	 * @sine 1.8
-	 */
+    /**
+     * Give_Settings_License.
+     *
+     * @unreleased added legacy license page notice
+     *
+     * @sine 1.8
+     */
 	class Give_Settings_License extends Give_Settings_Page {
 		protected $enable_save = false;
 
