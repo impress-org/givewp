@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\Framework\Http\Exceptions;
+namespace Give\Framework\Http\Response\Exceptions;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 
