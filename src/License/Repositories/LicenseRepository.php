@@ -71,19 +71,15 @@ class LicenseRepository
     }
 
     /**
-     * Checks if we have any active licenses.
+     * Checks if we have any active licenses, including Harbor unified licenses.
      *
+     * @unreleased add support for Harbor unified licenses
      * @since 4.3.0
      */
     public function hasActiveLicenses(): bool
     {
-        if (!$this->hasStoredLicenses()) {
-            return false;
-        }
-
-        $activeLicenses = $this->getActiveLicenses();
-
-        return !empty($activeLicenses);
+        return !empty($this->getActiveLicenses())
+            || lw_harbor_is_product_license_active('give');
     }
 
     /**

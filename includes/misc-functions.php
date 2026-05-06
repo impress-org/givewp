@@ -2428,6 +2428,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
+ * @unreleased add support for Harbor unified licenses
  * @since 4.8.0 Update active license date after license refresh when active license is found
  * @since 4.3.0 updated to store platform fee percentage
  * @since 2.27.0 delete update_plugins transient instead of invalidate it
@@ -2448,19 +2449,29 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 	$license_keys = $give_licenses ? implode( ',', array_keys( $give_licenses ) ) : '';
 
-	$unlicensed_give_addon = $give_addons
+	// Exclude addons already licensed via Harbor from the unlicensed list sent to the legacy API.
+	$legacy_unlicensed_addons = array_filter( $give_addons, static function ( $plugin ) {
+		return ! $plugin['License'];
+	} );
+
+	$unlicensed_give_addon = $legacy_unlicensed_addons
 		? array_values(
 			array_diff(
 				array_map(
 					function ( $plugin_name ) {
 						return trim( str_replace( 'Give - ', '', $plugin_name ) );
 					},
-					wp_list_pluck( $give_addons, 'Name', true )
+					wp_list_pluck( $legacy_unlicensed_addons, 'Name', true )
 				),
 				wp_list_pluck( $give_licenses, 'item_name', true )
 			)
 		)
 		: [];
+
+	// Nothing for the legacy API to check.
+	if ( empty( $give_licenses ) && empty( $unlicensed_give_addon ) ) {
+		return [];
+	}
 
 	$tmp = Give_License::request_license_api(
 		[
@@ -2591,6 +2602,11 @@ function give_check_addon_updates( $_transient_data ) {
 
 	$update_plugins = get_option( 'give_get_versions', [] );
 	$check_licenses = get_option( 'give_licenses', [] );
+
+	// Skip legacy update checks when Harbor is managing licensing and no legacy licenses exist.
+	if ( empty( $check_licenses ) && lw_harbor_is_product_license_active( 'give' ) ) {
+		return $_transient_data;
+	}
 
 	if ( ! $update_plugins ) {
 		$data = give_refresh_licenses( false );
