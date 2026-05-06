@@ -35,10 +35,10 @@ class HarborServiceProvider implements ServiceProviderContract
      */
     public function boot()
     {
+        // reports legacy licenses to Harbor
         Hooks::addFilter('stellarwp/harbor/legacy_licenses', ReportLegacyLicences::class);
 
-        remove_action('admin_notices', 'give_license_notices', 10);
-
+        // adds a "licensing" submenu to Give
         lw_harbor_register_submenu('edit.php?post_type=give_forms');
     }
 
