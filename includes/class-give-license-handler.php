@@ -578,7 +578,7 @@ if ( ! class_exists('Give_License') ) :
 		 *
 		 * @return array
 		 *
-         * @unreleased add support for Harbor unified licenses
+         * @since 4.15.0 add support for Harbor unified licenses
 		 * @since  2.5.0
 		 * @access public
 		 */

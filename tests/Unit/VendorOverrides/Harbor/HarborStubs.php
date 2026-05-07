@@ -11,14 +11,14 @@ namespace Give\Tests\Unit\VendorOverrides\Harbor;
  * lw_harbor_is_product_license_active() or lw_harbor_is_feature_available(),
  * then call reset() in tearDown.
  *
- * @unreleased
+ * @since 4.15.0
  */
 class HarborStubs
 {
     /**
      * Controls the return value of lw_harbor_is_product_license_active().
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public static bool $productActive = false;
 
@@ -26,7 +26,7 @@ class HarborStubs
      * Controls the return value of lw_harbor_is_feature_available().
      * Add slug strings to make the function return true for those slugs.
      *
-     * @unreleased
+     * @since 4.15.0
      * @var string[]
      */
     public static array $availableFeatures = [];
@@ -34,7 +34,7 @@ class HarborStubs
     /**
      * Resets all stubs to their default (inactive) state.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public static function reset(): void
     {

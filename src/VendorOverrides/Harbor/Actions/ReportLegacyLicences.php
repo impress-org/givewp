@@ -13,17 +13,17 @@ use Give\License\Repositories\LicenseRepository;
  *
  * Hooked into the `stellarwp/harbor/legacy_licenses` filter.
  *
- * @unreleased
+ * @since 4.15.0
  */
 class ReportLegacyLicences
 {
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     private LicenseRepository $licenseRepository;
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function __construct(LicenseRepository $licenseRepository)
     {
@@ -31,7 +31,7 @@ class ReportLegacyLicences
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      * @param array $licenses Existing licenses already added by other plugins.
      * @return array
      */
@@ -77,7 +77,7 @@ class ReportLegacyLicences
     /**
      * Returns entries for premium add-ons that are installed but have no license key in the database.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     private function getUnlicensedPremiumAddons(array $coveredSlugs, string $pageUrl): array
     {

@@ -18,7 +18,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
     /**
      * Give_Settings_License.
      *
-     * @unreleased added legacy license page notice
+     * @since 4.15.0 added legacy license page notice
      * @since 1.8
      */
 	class Give_Settings_License extends Give_Settings_Page {

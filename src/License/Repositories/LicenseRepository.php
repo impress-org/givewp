@@ -73,7 +73,7 @@ class LicenseRepository
     /**
      * Checks if we have any active licenses, including Harbor unified licenses.
      *
-     * @unreleased add support for Harbor unified licenses
+     * @since 4.15.0 add support for Harbor unified licenses
      * @since 4.3.0
      */
     public function hasActiveLicenses(): bool

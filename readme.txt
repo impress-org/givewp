@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.15.0: TBD =
+= 4.15.0: May 11th, 2026 =
 * New: Added compabitility with Liquid Web licensing
 * Tweak: Updated branding references from StellarWP to Nexcess.
 

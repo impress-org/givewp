@@ -12,7 +12,7 @@ use Give\Tests\Unit\License\TestTraits\HasLicenseData;
 use Give\VendorOverrides\Harbor\Actions\ReportLegacyLicences;
 
 /**
- * @unreleased
+ * @since 4.15.0
  * @coversDefaultClass \Give\VendorOverrides\Harbor\Actions\ReportLegacyLicences
  */
 class TestReportLegacyLicences extends TestCase
@@ -23,7 +23,7 @@ class TestReportLegacyLicences extends TestCase
     private ReportLegacyLicences $action;
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function setUp(): void
     {
@@ -33,7 +33,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testReportedLicenseShape(): void
     {
@@ -75,7 +75,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testReturnsEmptyWhenNoLicensesAreStored(): void
     {
@@ -85,7 +85,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testPreservesIncomingLicensesFromFilter(): void
     {
@@ -103,7 +103,7 @@ class TestReportLegacyLicences extends TestCase
      * Each download in a license becomes its own Harbor legacy license entry,
      * with the parent license's key as the credential.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public function testEachDownloadBecomesASeparateHarborEntry(): void
     {
@@ -127,7 +127,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testEachEntryContainsCorrectLicenseKey(): void
     {
@@ -145,7 +145,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testEntryContainsCorrectStatus(): void
     {
@@ -164,7 +164,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testEntryIncludesExpiresAtWhenLicenseHasExpiry(): void
     {
@@ -184,7 +184,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testEntryOmitsExpiresAtWhenLicenseHasNoExpiry(): void
     {
@@ -203,7 +203,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testDownloadsWithoutPluginSlugAreSkipped(): void
     {
@@ -248,7 +248,7 @@ class TestReportLegacyLicences extends TestCase
     /**
      * Multiple stored licenses each expand their own downloads independently.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public function testMultipleLicensesExpandToIndependentEntries(): void
     {
@@ -277,7 +277,7 @@ class TestReportLegacyLicences extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testEntryProductIsAlwaysGive(): void
     {

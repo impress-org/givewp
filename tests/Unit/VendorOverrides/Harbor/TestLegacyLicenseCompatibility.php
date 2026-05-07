@@ -13,7 +13,7 @@ use Give\License\ValueObjects\LicenseOptionKeys;
  * Tests that legacy license functions correctly defer to Harbor when a unified
  * license is active, while continuing to serve users who have legacy licenses.
  *
- * @unreleased
+ * @since 4.15.0
  */
 class TestLegacyLicenseCompatibility extends TestCase
 {
@@ -21,7 +21,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function setUp(): void
     {
@@ -31,7 +31,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function tearDown(): void
     {
@@ -41,7 +41,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     private function setHarborProductActive(bool $active): void
     {
@@ -49,7 +49,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      *
      * @param string[] $slugs Add-on slugs available via Harbor.
      */
@@ -65,7 +65,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * New Harbor customer with no legacy licenses: update check should be skipped.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public function testCheckAddonUpdatesReturnsEarlyWhenHarborActiveAndNoLegacyLicenses(): void
     {
@@ -83,7 +83,7 @@ class TestLegacyLicenseCompatibility extends TestCase
      * Mixed customer: Harbor active but legacy licenses still exist.
      * Update check must continue running for the legacy-licensed add-ons.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public function testCheckAddonUpdatesRunsNormallyWhenLegacyLicensesExist(): void
     {
@@ -119,7 +119,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * New Harbor customer: refresh should be skipped entirely.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public function testRefreshLicensesReturnsEarlyWhenHarborActiveAndNoLegacyLicenses(): void
     {
@@ -143,7 +143,7 @@ class TestLegacyLicenseCompatibility extends TestCase
      * Mixed customer: Harbor active but legacy licenses exist.
      * Refresh must still call the legacy API to update those licenses.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public function testRefreshLicensesCallsApiWhenLegacyLicensesExist(): void
     {
@@ -173,7 +173,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * Add-on covered by Harbor with no legacy license should be reported as licensed.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public function testGetLicenseByPluginDirnameReturnsValidWhenHarborCoversAddon(): void
     {
@@ -188,7 +188,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * Add-on not covered by either legacy or Harbor should be reported as unlicensed.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public function testGetLicenseByPluginDirnameReturnsEmptyWhenNotCovered(): void
     {
@@ -202,7 +202,7 @@ class TestLegacyLicenseCompatibility extends TestCase
     /**
      * Legacy license takes precedence over Harbor stub when both cover the same add-on.
      *
-     * @unreleased
+     * @since 4.15.0
      */
     public function testGetLicenseByPluginDirnamePreservesLegacyLicenseWhenBothExist(): void
     {

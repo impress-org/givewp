@@ -11,12 +11,12 @@ use Give\Vendors\LiquidWeb\Harbor\Config;
 use Give\Vendors\LiquidWeb\Harbor\Harbor;
 
 /**
- * @unreleased
+ * @since 4.15.0
  */
 class HarborServiceProvider implements ServiceProviderContract
 {
     /**
-     * @unreleased
+     * @since 4.15.0
      *
      * @inheritDoc
      */
@@ -29,7 +29,7 @@ class HarborServiceProvider implements ServiceProviderContract
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      *
      * @inheritDoc
      */
