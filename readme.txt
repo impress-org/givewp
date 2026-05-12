@@ -274,7 +274,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 4.15.1: May 12th, 2026 =
-* Tweak: Update Harbor to version 1.1.1
+* Tweak: Moved the Liquid Web menu item to Settings -> Liquid Web Products.
+* Tweak: The Settings -> Liquid Web Products page now requires a opt-in to communicate with external servers.
 
 = 4.15.0: May 11th, 2026 =
 * Feature: Integrate with Nexcess Licensing and Portal.
