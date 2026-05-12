@@ -65,7 +65,7 @@ class FormSettingsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testPrimaryColorStripsXssPayload()
     {
@@ -82,7 +82,7 @@ class FormSettingsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testPrimaryColorPreservesValidHexColor()
     {
@@ -91,7 +91,7 @@ class FormSettingsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testPrimaryColorDefaultsWhenMissing()
     {
@@ -101,7 +101,7 @@ class FormSettingsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testSecondaryColorStripsXssPayload()
     {
@@ -118,7 +118,7 @@ class FormSettingsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testSecondaryColorPreservesValidHexColor()
     {
@@ -127,7 +127,7 @@ class FormSettingsTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testSecondaryColorDefaultsWhenMissing()
     {
