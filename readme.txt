@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 4.15.0: May 11th, 2026 =
-* New: Added compabitility with Liquid Web licensing
+* Feature: Integrate with Nexcess Licensing and Portal.
 * Tweak: Updated branding references from StellarWP to Nexcess.
 
 = 4.14.6: April 22nd, 2026 =
