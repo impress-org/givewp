@@ -311,7 +311,11 @@
         text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
         color: currentColor;
 
-        &::after {
+        > * {
+            color: currentColor;
+        }
+
+        &:not(:empty)::after {
             position: absolute;
             content: '';
             display: block;

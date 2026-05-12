@@ -15,11 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! class_exists( 'Give_Settings_License' ) ) :
 
-	/**
-	 * Give_Settings_License.
-	 *
-	 * @sine 1.8
-	 */
+    /**
+     * Give_Settings_License.
+     *
+     * @since 4.15.0 added legacy license page notice
+     * @since 1.8
+     */
 	class Give_Settings_License extends Give_Settings_Page {
 		protected $enable_save = false;
 
@@ -38,6 +39,8 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 				// Remove default parent form.
 				add_action( 'give-settings_open_form', '__return_empty_string' );
 				add_action( 'give-settings_close_form', '__return_empty_string' );
+
+                lw_harbor_display_legacy_license_page_notice('GiveWP');
 
 				// Refresh licenses when visit license setting page.
 				give_refresh_licenses();
