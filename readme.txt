@@ -276,6 +276,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 4.15.0: May 11th, 2026 =
 * Feature: Integrate with Nexcess Licensing and Portal.
 * Tweak: Updated branding references from StellarWP to Nexcess.
+* Fix: Resolved issue with separator style for title on donation-form thanks message.
 
 = 4.14.6: April 22nd, 2026 =
 * Security: Added additional sanitization to the Donation Form.
