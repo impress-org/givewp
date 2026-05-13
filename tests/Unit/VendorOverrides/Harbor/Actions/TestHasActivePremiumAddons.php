@@ -12,7 +12,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 /**
- * @unreleased
+ * @since 4.15.2
  * @coversDefaultClass \Give\VendorOverrides\Harbor\Actions\HasActivePremiumAddons
  */
 class TestHasActivePremiumAddons extends TestCase
@@ -24,7 +24,7 @@ class TestHasActivePremiumAddons extends TestCase
     private HasActivePremiumAddons $action;
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     public function setUp(): void
     {
@@ -37,7 +37,7 @@ class TestHasActivePremiumAddons extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     public function tearDown(): void
     {
@@ -47,7 +47,7 @@ class TestHasActivePremiumAddons extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     public function testReturnsTrueWhenOtherBrandsAlreadyHavePremiumPresence(): void
     {
@@ -55,7 +55,7 @@ class TestHasActivePremiumAddons extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     public function testReturnsFalseWhenNoPremiumAddOnsMatch(): void
     {
@@ -65,7 +65,7 @@ class TestHasActivePremiumAddons extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     public function testReturnsFalseWhenPremiumAddOnExistsButIsInactive(): void
     {
@@ -75,7 +75,7 @@ class TestHasActivePremiumAddons extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     public function testReturnsTrueWhenPremiumAddOnIsActive(): void
     {
@@ -86,7 +86,7 @@ class TestHasActivePremiumAddons extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     private function installPremiumAddonFixture(): void
     {
@@ -99,7 +99,7 @@ class TestHasActivePremiumAddons extends TestCase
      * Bypasses the remote products API by seeding the cached premium add-on slug list directly.
      * The container rebind clears the per-request memoized list inside PremiumAddonsListManager.
      *
-     * @unreleased
+     * @since 4.15.2
      */
     private function registerPremiumSlugs(array $slugs): void
     {
@@ -108,7 +108,7 @@ class TestHasActivePremiumAddons extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     private function writePluginFixture(): void
     {
@@ -138,7 +138,7 @@ PHP;
      * from setUp before anything has been installed, and from tearDown after a test
      * has fully or partially run.
      *
-     * @unreleased
+     * @since 4.15.2
      */
     private function resetState(): void
     {
@@ -154,7 +154,7 @@ PHP;
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     private function removePluginFixture(): void
     {
@@ -179,7 +179,7 @@ PHP;
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     private function requirePluginApi(): void
     {
@@ -189,7 +189,7 @@ PHP;
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     private function pluginDir(): string
     {
@@ -197,7 +197,7 @@ PHP;
     }
 
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     private function pluginFile(): string
     {

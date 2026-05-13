@@ -9,12 +9,12 @@ namespace Give\VendorOverrides\Harbor\Actions;
  *
  * Hooked into the `lw_harbor/premium_plugin_exists` filter.
  *
- * @unreleased
+ * @since 4.15.2
  */
 class HasActivePremiumAddons
 {
     /**
-     * @unreleased
+     * @since 4.15.2
      */
     public function __invoke(bool $otherBrandsExistence): bool
     {

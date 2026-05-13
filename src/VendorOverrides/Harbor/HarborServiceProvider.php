@@ -17,7 +17,7 @@ use Give\Vendors\LiquidWeb\Harbor\Harbor;
 class HarborServiceProvider implements ServiceProviderContract
 {
     /**
-     * @unreleased Register lw_harbor/premium_plugin_exists filter
+     * @since 4.15.2 Register lw_harbor/premium_plugin_exists filter
      * @since 4.15.0
      *
      * @inheritDoc
