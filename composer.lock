@@ -8746,7 +8746,7 @@
     "platform": {
         "ext-json": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "7.4.0"
     },
