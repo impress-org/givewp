@@ -5,6 +5,7 @@ namespace Give\API\REST\V3\Routes\Donors;
 use Exception;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\API\REST\V3\Support\CURIE;
+use Give\API\REST\V3\Support\RouteAccess;
 use Give\Campaigns\Models\Campaign;
 use Give\Donors\DonorStatisticsQuery;
 use Give\Donors\Models\Donor;
@@ -106,6 +107,8 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.15.2 Allow opting in to public access via the
+     *               'givewp_rest_api_v3_donor_statistics_is_public' filter.
      * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.4.0
      *
@@ -115,7 +118,11 @@ class DonorStatisticsController extends WP_REST_Controller
      */
     public function get_item_permissions_check($request): bool
     {
-        return UserPermissions::donors()->canView();
+        if (UserPermissions::donors()->canView()) {
+            return true;
+        }
+
+        return RouteAccess::isPublic(RouteAccess::DONOR_STATISTICS, $request);
     }
 
     /**

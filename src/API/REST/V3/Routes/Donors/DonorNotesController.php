@@ -6,6 +6,7 @@ use Exception;
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\API\REST\V3\Support\Headers;
 use Give\API\REST\V3\Support\Item;
+use Give\API\REST\V3\Support\RouteAccess;
 use Give\Donors\Models\Donor;
 use Give\Donors\Models\DonorNote;
 use Give\Donors\ValueObjects\DonorNoteType;
@@ -257,12 +258,18 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.15.2 Allow opting in to public access via the
+     *               'givewp_rest_api_v3_donor_notes_is_public' filter.
      * @since 4.14.0 update permission capability to use facade
      * @since 4.4.0
      */
     public function get_items_permissions_check($request): bool
     {
-        return UserPermissions::donors()->canView();
+        if (UserPermissions::donors()->canView()) {
+            return true;
+        }
+
+        return RouteAccess::isPublic(RouteAccess::DONOR_NOTES, $request);
     }
 
     /**
@@ -275,12 +282,18 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.15.2 Allow opting in to public access via the
+     *               'givewp_rest_api_v3_donor_notes_is_public' filter.
      * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.4.0
      */
     public function get_item_permissions_check($request): bool
     {
-        return UserPermissions::donors()->canView();
+        if (UserPermissions::donors()->canView()) {
+            return true;
+        }
+
+        return RouteAccess::isPublic(RouteAccess::DONOR_NOTES, $request);
     }
 
     /**

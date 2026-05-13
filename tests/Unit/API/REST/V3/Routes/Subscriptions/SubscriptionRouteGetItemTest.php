@@ -96,7 +96,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $response = $this->dispatchRequest($request);
 
@@ -118,7 +118,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $response = $this->dispatchRequest($request);
 
@@ -145,7 +145,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         ]);
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $response = $this->dispatchRequest($request);
 
@@ -168,7 +168,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $response = $this->dispatchRequest($request);
 
@@ -255,7 +255,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     public function testGetSubscriptionShouldReturn404ErrorWhenSubscriptionNotFound()
     {
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/999';
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $response = $this->dispatchRequest($request);
 
@@ -274,7 +274,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $subscription = $this->createSubscriptionWithAnonymousDonor();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(
             [
                 'anonymousDonors' => 'redact',

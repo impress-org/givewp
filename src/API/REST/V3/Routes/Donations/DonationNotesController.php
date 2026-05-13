@@ -5,6 +5,7 @@ namespace Give\API\REST\V3\Routes\Donations;
 use Exception;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Support\Item;
+use Give\API\REST\V3\Support\RouteAccess;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationNoteType;
@@ -279,12 +280,18 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.15.2 Allow opting in to public access via the
+     *               'givewp_rest_api_v3_donation_notes_is_public' filter.
      * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function get_items_permissions_check($request): bool
     {
-        return UserPermissions::donations()->canView();
+        if (UserPermissions::donations()->canView()) {
+            return true;
+        }
+
+        return RouteAccess::isPublic(RouteAccess::DONATION_NOTES, $request);
     }
 
     /**
@@ -297,12 +304,18 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.15.2 Allow opting in to public access via the
+     *               'givewp_rest_api_v3_donation_notes_is_public' filter.
      * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function get_item_permissions_check($request): bool
     {
-        return UserPermissions::donations()->canView();
+        if (UserPermissions::donations()->canView()) {
+            return true;
+        }
+
+        return RouteAccess::isPublic(RouteAccess::DONATION_NOTES, $request);
     }
 
     /**

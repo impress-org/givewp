@@ -3,6 +3,7 @@
 namespace Give\API\REST\V3\Routes\Subscriptions\Permissions;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
+use Give\API\REST\V3\Support\RouteAccess;
 use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
@@ -53,6 +54,9 @@ class SubscriptionPermissions
     }
 
     /**
+     * @since 4.15.2 Require authentication by default. Use the
+     *               'givewp_rest_api_v3_subscriptions_is_public' filter to make
+     *               subscription GET endpoints public.
      * @since 4.14.0 updated to use canView method
      * @since 4.8.0
      *
@@ -63,6 +67,14 @@ class SubscriptionPermissions
     public static function validationForGetMethods(WP_REST_Request $request)
     {
         $isAdmin = self::canView();
+
+        if ( ! $isAdmin && ! RouteAccess::isPublic(RouteAccess::SUBSCRIPTIONS, $request)) {
+            return new WP_Error(
+                'rest_forbidden',
+                __('You do not have permission to view subscriptions.', 'give'),
+                ['status' => self::authorizationStatusCode()]
+            );
+        }
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         if ( ! $isAdmin && $includeSensitiveData) {

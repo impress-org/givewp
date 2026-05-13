@@ -3,6 +3,7 @@
 namespace Give\API\REST\V3\Routes\Donors\Permissions;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorAnonymousMode;
+use Give\API\REST\V3\Support\RouteAccess;
 use Give\Donors\Models\Donor;
 use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
@@ -64,6 +65,9 @@ class DonorPermissions
     }
 
     /**
+     * @since 4.15.2 Require authentication by default. Use the
+     *               'givewp_rest_api_v3_donors_is_public' filter to make donor
+     *               GET endpoints public.
      * @since 4.14.0
      *
      * @param WP_REST_Request $request
@@ -75,6 +79,14 @@ class DonorPermissions
         $isAdmin = self::canView();
         $donorId = $request->get_param('id');
         $isOwner = $donorId ? self::isOwner($donorId) : false;
+
+        if (!$isAdmin && !$isOwner && !RouteAccess::isPublic(RouteAccess::DONORS, $request)) {
+            return new WP_Error(
+                'rest_forbidden',
+                __('You do not have permission to view donors.', 'give'),
+                ['status' => self::authorizationStatusCode()]
+            );
+        }
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         if (!$isAdmin && !$isOwner && $includeSensitiveData) {

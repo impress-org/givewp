@@ -10,6 +10,7 @@ use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationAnonymousMode;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\API\REST\V3\Support\CURIE;
 use Give\API\REST\V3\Support\Item;
+use Give\API\REST\V3\Support\RouteAccess;
 use Give\API\REST\V3\Support\Schema\SchemaTypes;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMode;
@@ -722,6 +723,9 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.15.2 Require authentication by default. Use the
+     *               'givewp_rest_api_v3_donations_is_public' filter to make donation
+     *               GET endpoints public.
      * @since 4.14.0 update method name to validationForGetMethods, replace logic with UserPermissions facade and add canViewDonations check
      * @since 4.6.0
      */
@@ -730,6 +734,14 @@ class DonationController extends WP_REST_Controller
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         $includeAnonymousDonations = $request->get_param('anonymousDonations');
         $canViewDonations = UserPermissions::donations()->canView();
+
+        if (!$canViewDonations && !RouteAccess::isPublic(RouteAccess::DONATIONS, $request)) {
+            return new WP_Error(
+                'rest_forbidden',
+                __('You do not have permission to view donations.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
 
         if ($includeSensitiveData && !$canViewDonations) {
             return new WP_Error(

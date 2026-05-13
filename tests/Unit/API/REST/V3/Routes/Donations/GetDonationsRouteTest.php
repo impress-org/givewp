@@ -114,7 +114,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation = $this->createDonation1();
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $response = $this->dispatchRequest($request);
 
@@ -214,7 +214,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = $this->createDonation2();
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $request->set_query_params(
             [
@@ -235,7 +235,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $this->assertEquals(2, $headers['X-WP-Total']);
         $this->assertEquals(2, $headers['X-WP-TotalPages']);
 
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(
             [
                 'page' => 2,
@@ -270,7 +270,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = $this->createDonation2($campaign->id);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(
             [
                 'campaignId' => $campaign->id,
@@ -303,7 +303,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = $this->createDonation2(0, true);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         $response = $this->dispatchRequest($request);
 
@@ -390,7 +390,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation2 = $this->createDonation2(0, true);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations';
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
         $request->set_query_params(
             [
                 'anonymousDonations' => 'redact',
@@ -450,7 +450,7 @@ class GetDonationsRouteTest extends RestApiTestCase
         $donation3 = $this->createDonation3($campaign2->id);
 
         $route = '/' . DonorRoute::NAMESPACE . '/donations';
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
 
         /**
          * Ascendant Direction
