@@ -16,7 +16,7 @@ class HasActivePremiumAddons
     /**
      * @unreleased
      */
-    public function __invoke(?bool $otherBrandsExistence): bool
+    public function __invoke(bool $otherBrandsExistence): bool
     {
         if ($otherBrandsExistence) {
             return true;
