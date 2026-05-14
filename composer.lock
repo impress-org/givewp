@@ -829,12 +829,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/harbor.git",
-                "reference": "c9519c36168f40aebb4210b033235eceda3e6366"
+                "reference": "f22783d0d79597d5b1acf6cce73e6f3ddb701334"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/c9519c36168f40aebb4210b033235eceda3e6366",
-                "reference": "c9519c36168f40aebb4210b033235eceda3e6366",
+                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/f22783d0d79597d5b1acf6cce73e6f3ddb701334",
+                "reference": "f22783d0d79597d5b1acf6cce73e6f3ddb701334",
                 "shasum": ""
             },
             "require": {
@@ -891,7 +891,7 @@
                 "issues": "https://github.com/stellarwp/harbor/issues",
                 "source": "https://github.com/stellarwp/harbor/tree/v1.2.0"
             },
-            "time": "2026-05-13T22:44:25+00:00"
+            "time": "2026-05-14T00:04:41+00:00"
         },
         {
             "name": "stellarwp/licensing-api-client",
