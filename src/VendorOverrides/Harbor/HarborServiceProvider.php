@@ -6,6 +6,7 @@ namespace Give\VendorOverrides\Harbor;
 
 use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderContract;
+use Give\VendorOverrides\Harbor\Actions\HasActivePremiumAddons;
 use Give\VendorOverrides\Harbor\Actions\ReportLegacyLicences;
 use Give\Vendors\LiquidWeb\Harbor\Config;
 use Give\Vendors\LiquidWeb\Harbor\Harbor;
@@ -16,6 +17,7 @@ use Give\Vendors\LiquidWeb\Harbor\Harbor;
 class HarborServiceProvider implements ServiceProviderContract
 {
     /**
+     * @since 4.15.2 Register lw_harbor/premium_plugin_exists filter
      * @since 4.15.0
      *
      * @inheritDoc
@@ -24,6 +26,9 @@ class HarborServiceProvider implements ServiceProviderContract
     {
         Config::set_plugin_basename(GIVE_PLUGIN_BASENAME);
         Config::set_container(give()->getContainer());
+
+        // reports whether any GiveWP premium add-on is active to Harbor
+        Hooks::addFilter('lw_harbor/premium_plugin_exists', HasActivePremiumAddons::class);
 
         Harbor::init();
     }

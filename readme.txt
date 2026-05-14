@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 4.15.1
+Stable tag: 4.15.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.15.2: May 13th, 2026 =
+* Tweak: Update Harbor to 1.2.0, removing the Liquid Web Products page when there are no premium plugins present.
+
 = 4.15.1: May 12th, 2026 =
 * Tweak: Moved the Liquid Web menu item to Settings -> Liquid Web Products.
 * Tweak: The Settings -> Liquid Web Products page now requires a opt-in to communicate with external servers.
