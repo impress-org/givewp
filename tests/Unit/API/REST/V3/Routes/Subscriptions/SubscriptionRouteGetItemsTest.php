@@ -102,7 +102,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -129,7 +129,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -225,7 +225,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $subscription2 = $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $response = $this->dispatchRequest($request);
 
         $status = $response->get_status();
@@ -311,7 +311,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $subscription2 = $this->createSubscriptionWithAnonymousDonor('live', 'active', 200);
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
                 'anonymousDonors' => 'redact',
@@ -354,7 +354,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $subscription2 = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $request->set_query_params(
             [
@@ -413,7 +413,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $donor2 = $subscription2->donor;
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
                 'donorId' => $donor1->id,
@@ -444,7 +444,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $subscription2 = $this->createSubscription('live', SubscriptionStatus::CANCELLED);
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
                 'status' => ['active'],
@@ -475,7 +475,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $subscription2 = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
                 'mode' => 'test',
@@ -512,7 +512,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         $subscription2 = $this->createSubscriptionWithCampaignId($campaign2->id);
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
         $request->set_query_params(
             [
                 'campaignId' => $campaign1->id,

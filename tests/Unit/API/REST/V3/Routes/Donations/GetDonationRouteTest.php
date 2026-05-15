@@ -102,7 +102,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -125,7 +125,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => false]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -225,7 +225,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -299,7 +299,7 @@ class GetDonationRouteTest extends RestApiTestCase
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE(), 'anonymous' => true]);
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $request->set_query_params(
             [

@@ -83,7 +83,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -106,7 +106,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -129,7 +129,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -154,7 +154,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -179,7 +179,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:statistics'], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:statistics']);
 
         $response = $this->dispatchRequest($request);
 
@@ -230,7 +230,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = $this->createDonorWithSubscription();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:subscriptions'], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, ['_embed' => 'givewp:subscriptions']);
 
         $response = $this->dispatchRequest($request);
 
@@ -255,7 +255,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
@@ -278,7 +278,7 @@ class DonorRouteGetTest extends RestApiTestCase
         $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
-        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
 
         $response = $this->dispatchRequest($request);
 
