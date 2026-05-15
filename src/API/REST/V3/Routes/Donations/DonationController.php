@@ -723,9 +723,9 @@ class DonationController extends WP_REST_Controller
     }
 
     /**
-     * @since 4.15.2 Require authentication by default. Use the
-     *               'givewp_rest_api_v3_donations_is_public' filter to make donation
-     *               GET endpoints public.
+     * @since 4.15.2 Public by default. Use the
+     *               'givewp_rest_api_v3_donations_is_private' filter to require
+     *               authentication for donation GET endpoints.
      * @since 4.14.0 update method name to validationForGetMethods, replace logic with UserPermissions facade and add canViewDonations check
      * @since 4.6.0
      */
@@ -735,7 +735,7 @@ class DonationController extends WP_REST_Controller
         $includeAnonymousDonations = $request->get_param('anonymousDonations');
         $canViewDonations = UserPermissions::donations()->canView();
 
-        if (!$canViewDonations && !RouteAccess::isPublic(RouteAccess::DONATIONS, $request)) {
+        if (!$canViewDonations && RouteAccess::isPrivate(RouteAccess::DONATIONS, $request)) {
             return new WP_Error(
                 'rest_forbidden',
                 __('You do not have permission to view donations.', 'give'),

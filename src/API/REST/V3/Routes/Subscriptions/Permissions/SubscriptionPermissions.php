@@ -54,9 +54,9 @@ class SubscriptionPermissions
     }
 
     /**
-     * @since 4.15.2 Require authentication by default. Use the
-     *               'givewp_rest_api_v3_subscriptions_is_public' filter to make
-     *               subscription GET endpoints public.
+     * @since 4.15.2 Public by default. Use the
+     *               'givewp_rest_api_v3_subscriptions_is_private' filter to
+     *               require authentication for subscription GET endpoints.
      * @since 4.14.0 updated to use canView method
      * @since 4.8.0
      *
@@ -68,7 +68,7 @@ class SubscriptionPermissions
     {
         $isAdmin = self::canView();
 
-        if ( ! $isAdmin && ! RouteAccess::isPublic(RouteAccess::SUBSCRIPTIONS, $request)) {
+        if ( ! $isAdmin && RouteAccess::isPrivate(RouteAccess::SUBSCRIPTIONS, $request)) {
             return new WP_Error(
                 'rest_forbidden',
                 __('You do not have permission to view subscriptions.', 'give'),

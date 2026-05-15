@@ -107,8 +107,8 @@ class DonorStatisticsController extends WP_REST_Controller
     }
 
     /**
-     * @since 4.15.2 Allow opting in to public access via the
-     *               'givewp_rest_api_v3_donor_statistics_is_public' filter.
+     * @since 4.15.2 Public by default. Allow opting in to authentication via the
+     *               'givewp_rest_api_v3_donor_statistics_is_private' filter.
      * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.4.0
      *
@@ -122,7 +122,7 @@ class DonorStatisticsController extends WP_REST_Controller
             return true;
         }
 
-        return RouteAccess::isPublic(RouteAccess::DONOR_STATISTICS, $request);
+        return !RouteAccess::isPrivate(RouteAccess::DONOR_STATISTICS, $request);
     }
 
     /**

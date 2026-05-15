@@ -65,9 +65,9 @@ class DonorPermissions
     }
 
     /**
-     * @since 4.15.2 Require authentication by default. Use the
-     *               'givewp_rest_api_v3_donors_is_public' filter to make donor
-     *               GET endpoints public.
+     * @since 4.15.2 Public by default. Use the
+     *               'givewp_rest_api_v3_donors_is_private' filter to require
+     *               authentication for donor GET endpoints.
      * @since 4.14.0
      *
      * @param WP_REST_Request $request
@@ -80,7 +80,7 @@ class DonorPermissions
         $donorId = $request->get_param('id');
         $isOwner = $donorId ? self::isOwner($donorId) : false;
 
-        if (!$isAdmin && !$isOwner && !RouteAccess::isPublic(RouteAccess::DONORS, $request)) {
+        if (!$isAdmin && !$isOwner && RouteAccess::isPrivate(RouteAccess::DONORS, $request)) {
             return new WP_Error(
                 'rest_forbidden',
                 __('You do not have permission to view donors.', 'give'),

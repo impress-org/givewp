@@ -18,10 +18,10 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
- * Covers the SVUL-81 vulnerability: unauthenticated requests to the
- * givewp/v3 namespace must be rejected for donor, donation, subscription,
- * note, and statistics endpoints unless the corresponding
- * 'givewp_rest_api_v3_{slug}_is_public' filter opts the route in.
+ * Covers SVUL-81: givewp/v3 donor, donation, subscription, note, and
+ * statistics endpoints are public by default. Site owners can opt a route
+ * into requiring authentication via the corresponding
+ * 'givewp_rest_api_v3_{slug}_is_private' filter.
  *
  * @since 4.15.2
  */
@@ -42,7 +42,7 @@ class RouteAccessTest extends RestApiTestCase
     public function tearDown(): void
     {
         foreach (self::SLUGS as $slug) {
-            remove_all_filters("givewp_rest_api_v3_{$slug}_is_public");
+            remove_all_filters("givewp_rest_api_v3_{$slug}_is_private");
         }
         parent::tearDown();
     }
@@ -72,9 +72,26 @@ class RouteAccessTest extends RestApiTestCase
      *
      * @dataProvider routeProvider
      */
-    public function testAnonymousRequestsAreRejected(string $filterSlug, bool $isSingle)
+    public function testAnonymousRequestsAreAllowedByDefault(string $filterSlug, bool $isSingle)
     {
         $url = $this->buildRoute($filterSlug, $isSingle);
+
+        $request = $this->createRequest(WP_REST_Server::READABLE, $url);
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(200, $response->get_status());
+    }
+
+    /**
+     * @since 4.15.2
+     *
+     * @dataProvider routeProvider
+     */
+    public function testFilterRestrictsAnonymousAccess(string $filterSlug, bool $isSingle)
+    {
+        $url = $this->buildRoute($filterSlug, $isSingle);
+
+        add_filter("givewp_rest_api_v3_{$filterSlug}_is_private", '__return_true');
 
         $request = $this->createRequest(WP_REST_Server::READABLE, $url);
         $response = $this->dispatchRequest($request);
@@ -87,26 +104,11 @@ class RouteAccessTest extends RestApiTestCase
      *
      * @dataProvider routeProvider
      */
-    public function testFilterAllowsAnonymousAccess(string $filterSlug, bool $isSingle)
+    public function testAdministratorCanAccessEvenWhenRoutePrivate(string $filterSlug, bool $isSingle)
     {
         $url = $this->buildRoute($filterSlug, $isSingle);
 
-        add_filter("givewp_rest_api_v3_{$filterSlug}_is_public", '__return_true');
-
-        $request = $this->createRequest(WP_REST_Server::READABLE, $url);
-        $response = $this->dispatchRequest($request);
-
-        $this->assertEquals(200, $response->get_status());
-    }
-
-    /**
-     * @since 4.15.2
-     *
-     * @dataProvider routeProvider
-     */
-    public function testAdministratorCanAccess(string $filterSlug, bool $isSingle)
-    {
-        $url = $this->buildRoute($filterSlug, $isSingle);
+        add_filter("givewp_rest_api_v3_{$filterSlug}_is_private", '__return_true');
 
         $request = $this->createRequest(WP_REST_Server::READABLE, $url, [], 'administrator');
         $response = $this->dispatchRequest($request);
@@ -115,22 +117,23 @@ class RouteAccessTest extends RestApiTestCase
     }
 
     /**
-     * Each filter is independent: flipping one does not open any others.
+     * Each filter is independent: opting one route into private does not
+     * restrict any others.
      *
      * @since 4.15.2
      */
     public function testEnablingOneFilterDoesNotAffectOtherRoutes()
     {
-        $openedUrl = $this->buildRoute(RouteAccess::DONORS, false);
-        $closedUrl = $this->buildRoute(RouteAccess::DONATIONS, false);
+        $restrictedUrl = $this->buildRoute(RouteAccess::DONORS, false);
+        $openUrl = $this->buildRoute(RouteAccess::DONATIONS, false);
 
-        add_filter('givewp_rest_api_v3_donors_is_public', '__return_true');
+        add_filter('givewp_rest_api_v3_donors_is_private', '__return_true');
 
-        $openedResponse = $this->dispatchRequest($this->createRequest(WP_REST_Server::READABLE, $openedUrl));
-        $closedResponse = $this->dispatchRequest($this->createRequest(WP_REST_Server::READABLE, $closedUrl));
+        $restrictedResponse = $this->dispatchRequest($this->createRequest(WP_REST_Server::READABLE, $restrictedUrl));
+        $openResponse = $this->dispatchRequest($this->createRequest(WP_REST_Server::READABLE, $openUrl));
 
-        $this->assertEquals(200, $openedResponse->get_status());
-        $this->assertEquals(401, $closedResponse->get_status());
+        $this->assertEquals(401, $restrictedResponse->get_status());
+        $this->assertEquals(200, $openResponse->get_status());
     }
 
     /**

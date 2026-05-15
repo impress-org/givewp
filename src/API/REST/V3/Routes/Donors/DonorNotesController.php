@@ -258,8 +258,8 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @since 4.15.2 Allow opting in to public access via the
-     *               'givewp_rest_api_v3_donor_notes_is_public' filter.
+     * @since 4.15.2 Public by default. Allow opting in to authentication via the
+     *               'givewp_rest_api_v3_donor_notes_is_private' filter.
      * @since 4.14.0 update permission capability to use facade
      * @since 4.4.0
      */
@@ -269,7 +269,7 @@ class DonorNotesController extends WP_REST_Controller
             return true;
         }
 
-        return RouteAccess::isPublic(RouteAccess::DONOR_NOTES, $request);
+        return !RouteAccess::isPrivate(RouteAccess::DONOR_NOTES, $request);
     }
 
     /**
@@ -282,8 +282,8 @@ class DonorNotesController extends WP_REST_Controller
     }
 
     /**
-     * @since 4.15.2 Allow opting in to public access via the
-     *               'givewp_rest_api_v3_donor_notes_is_public' filter.
+     * @since 4.15.2 Public by default. Allow opting in to authentication via the
+     *               'givewp_rest_api_v3_donor_notes_is_private' filter.
      * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.4.0
      */
@@ -293,7 +293,7 @@ class DonorNotesController extends WP_REST_Controller
             return true;
         }
 
-        return RouteAccess::isPublic(RouteAccess::DONOR_NOTES, $request);
+        return !RouteAccess::isPrivate(RouteAccess::DONOR_NOTES, $request);
     }
 
     /**
