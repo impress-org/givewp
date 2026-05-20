@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 4.15.3: May 20th, 2026 =
-* Tweak: Update Harbor to 1.3.0, adding a welcome screen to guide first-time license activation.
+* Tweak: Update modules to enable compatibility with premium upgrades.
 
 = 4.15.2: May 13th, 2026 =
 * Tweak: Update Harbor to 1.2.0, removing the Liquid Web Products page when there are no premium plugins present.
