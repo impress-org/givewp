@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.15.3: May 20th, 2026 =
+= 4.15.3: May 25th, 2026 =
 * Tweak: Update modules to enable compatibility with premium upgrades.
 
 = 4.15.2: May 13th, 2026 =
