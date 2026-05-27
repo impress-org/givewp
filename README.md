@@ -24,27 +24,36 @@ Many of our add-ons are in public repositories, however, the majority are privat
 
 If you're looking to contribute or actively develop on GiveWP, welcome! We're glad you're here. Please ⭐️ this repository and fork it to begin local development.
 
-Most of us are using [Local by Flywheel](https://localbyflywheel.com/) to develop on WordPress, which makes set up quick and easy. If you prefer [Docker](https://www.docker.com/), [VVV](https://github.com/Varying-Vagrant-Vagrants/VVV), or another flavor of local development that's cool too!
-
 ## ✅ Prerequisites
-* [Node.js](https://nodejs.org/en/) as JavaScript engine
+* [Node.js](https://nodejs.org/en/) (v20+) as JavaScript engine
 * [NPM](https://docs.npmjs.com/) npm command globally available in CLI
 * [Composer](https://getcomposer.org/) composer command globally available in CLI
+* [Docker](https://www.docker.com/) running locally (for the Docker-based quick start)
 
-## 💻 Local Development
+## 🐳 Quick Start (Docker)
 
-To get started developing on the GiveWP platform you will need to perform the following steps:
+The fastest way to get up and running is with [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/), which spins up a local WordPress environment using Docker.
 
-1. Create a new WordPress site with `give.test` as the URL
-2. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
-3. Fork this repository from GitHub and then clone that into your plugins directory in a new `give` directory
-4. Run `composer install` to set up dependencies
-5. Run `npm install` to get the necessary npm packages
-6. Run `npm run dev` to build the initial scripts & styles
-7. Activate the plugin in WordPress
+1. Fork this repository from GitHub and clone it anywhere on your machine
+2. Make sure Docker is running
+3. From the plugin root, run:
 
+```bash
+composer install && npm install && npm run build && npm run env:start
+```
 
-That's it. You're now ready to start development.
+That's it. WordPress will be available at the URL shown in the terminal output.
+
+## 💻 Local Development (existing WordPress install)
+
+To develop against an existing local WordPress install:
+
+1. `cd` into your local plugins directory: `/path/to/wp-content/plugins/`
+2. Fork this repository from GitHub and clone it into a new `give` directory
+3. Run `composer install` to set up dependencies
+4. Run `npm install` to get the necessary npm packages
+5. Run `npm run dev` to build the initial scripts & styles
+6. Activate the plugin in WordPress
 
 **Available commands**
 
