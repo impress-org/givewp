@@ -85,3 +85,8 @@ docker_tag
 output.log
 docker-compose.yml
 wp-textdomain.js
+
+/.dependabot.yml
+/LICENSE
+/wpml-config.xml
+
