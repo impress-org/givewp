@@ -86,6 +86,7 @@ trait StripeWebhookListenerRepository
      *
      * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the invoice from the correct account, not the platform account.
      *
+     * @unreleased Added support for using a secret key when retrieving invoices for non-default accounts
      * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      *
      * @param string $invoiceId The Stripe invoice ID
@@ -102,6 +103,11 @@ trait StripeWebhookListenerRepository
                 $connectedAccountId = give_stripe_get_connected_account_id($formId);
                 if (!empty($connectedAccountId)) {
                     $options = ['stripe_account' => $connectedAccountId];
+                }
+
+                $secretKey = give_stripe_get_secret_key($formId);
+                if (!empty($secretKey)) {
+                    $options['api_key'] = $secretKey;
                 }
             }
 
