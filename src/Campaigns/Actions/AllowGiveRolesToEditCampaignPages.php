@@ -30,7 +30,7 @@ class AllowGiveRolesToEditCampaignPages
      *
      * Hooked to 'map_meta_cap' filter.
      *
-     * @unreleased Handle null $cap gracefully for better compatibility.
+     * @since 4.15.3 Handle null $cap gracefully for better compatibility.
      * @since 4.14.0
      */
     public function mapMetaCap(array $caps, ?string $cap, int $userId, array $args): array
