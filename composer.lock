@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9c5538ff55e0afff337cad772b85810",
+    "content-hash": "e6f529331a0ff4257f85f367f12859ad",
     "packages": [
         {
             "name": "composer/installers",
@@ -825,16 +825,16 @@
         },
         {
             "name": "stellarwp/harbor",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/harbor.git",
-                "reference": "97c3a17758b03f90980c34c661a7dd119c6c307f"
+                "reference": "f22783d0d79597d5b1acf6cce73e6f3ddb701334"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/97c3a17758b03f90980c34c661a7dd119c6c307f",
-                "reference": "97c3a17758b03f90980c34c661a7dd119c6c307f",
+                "url": "https://api.github.com/repos/stellarwp/harbor/zipball/f22783d0d79597d5b1acf6cce73e6f3ddb701334",
+                "reference": "f22783d0d79597d5b1acf6cce73e6f3ddb701334",
                 "shasum": ""
             },
             "require": {
@@ -889,9 +889,9 @@
             "description": "A library that integrates a WordPress product with the Liquid Web licensing system.",
             "support": {
                 "issues": "https://github.com/stellarwp/harbor/issues",
-                "source": "https://github.com/stellarwp/harbor/tree/v1.1.0"
+                "source": "https://github.com/stellarwp/harbor/tree/v1.2.0"
             },
-            "time": "2026-05-12T19:52:22+00:00"
+            "time": "2026-05-14T00:04:41+00:00"
         },
         {
             "name": "stellarwp/licensing-api-client",
@@ -8746,9 +8746,9 @@
     "platform": {
         "ext-json": "*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "7.4.0"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
