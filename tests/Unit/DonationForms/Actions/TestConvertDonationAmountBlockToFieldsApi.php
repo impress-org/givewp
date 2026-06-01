@@ -6,8 +6,11 @@ use Give\DonationForms\Actions\ConvertDonationAmountBlockToFieldsApi;
 use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
 use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 
+/**
+ * @unreleased
+ * @covers Give\DonationForms\Actions\ConvertDonationAmountBlockToFieldsApi
+ */
 final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
 {
     /**
@@ -33,6 +36,12 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
         $this->assertSame($result['checked'], 10.0);
     }
 
+    /**
+     * Test that when no checked option exists, the checked value returned 
+     * is null.
+     *
+     * @unreleased
+     */
     public function testReturnsCheckedNullWhenNoCheckedOptionExists(): void
     {
         $result = $this->_prepareLevelsArray(
@@ -53,7 +62,11 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
         $this->assertSame($result['checked'], null);
     }
 
-
+    /**
+     * Test that the checked value exists in the level array.
+     *
+     * @unreleased
+     */
     public function testCheckedValueExistsInTheLevelArray(): void
     {
      
@@ -77,6 +90,11 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
         }
     }
 
+    /**
+     * Test that the label is included when description is enabled.
+     *
+     * @unreleased
+     */
     public function testIncludesLabelWhenDescriptionIsEnabled(): void {
         $result = $this->_prepareLevelsArray(
             [
@@ -101,6 +119,11 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
         }
     }
 
+    /**
+     * Test that the label is omitted when description is disabled.
+     *
+     * @unreleased
+     */
     public function testOmitsLabelWhenDescriptionIsDisabled(): void {
         $result = $this->_prepareLevelsArray(
             [
