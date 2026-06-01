@@ -176,9 +176,10 @@ class ConvertDonationAmountBlockToFieldsApi
     /**
      * Prepares the options array to be used in the field.
      *
+     * @unreleased Add per-level "checked" flag.
      * @since 3.12.0
      *
-     * @return array ['options' => ['label' => string, 'value' => string][], 'checked' => string]
+     * @return array ['levels' => ['label' => string, 'value' => string, 'checked' => bool][], 'checked' => string|null]
      */
     private function prepareLevelsArray(DonationAmountBlockModel $block): array
     {
@@ -194,6 +195,7 @@ class ConvertDonationAmountBlockToFieldsApi
                         return [
                             'value' => $item['value'] ?? '',
                             'label' => $block->isDescriptionEnabled() ? $item['label'] : '',
+                            'checked' => isset($item['checked']) && $item['checked'],
                         ];
                     },
                     $block->getLevels()
