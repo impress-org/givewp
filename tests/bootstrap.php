@@ -36,6 +36,10 @@ TestHooks::addFilter('setup_theme', static function () {
     give()->install();
 });
 
+// Eagerly declare Harbor global function stubs so they win Harbor's
+// function_exists guard in vendor-prefixed/stellarwp/harbor/src/Harbor/global-functions.php.
+require_once __DIR__ . '/Unit/VendorOverrides/Harbor/harbor-stub-functions.php';
+
 // pull in WP bootstrap file which looks for WP_TESTS_CONFIG_FILE_PATH defined above
 require_once $currentTestEnvironment->bootstrap();
 

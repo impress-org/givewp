@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 4.14.6
+Stable tag: 4.15.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -150,7 +150,7 @@ Are you a developer? GiveWP is built with best practices and easy to extend and 
 
 === 💚 About the GiveWP Team ===
 
-GiveWP is part of StellarWP, a Liquid Web Family Brand. Our donation plugin is backed by a growing team of WordPress developers, support engineers, customer success managers, and marketing professionals who’ve worked with WordPress and nonprofits since 2009. This means GiveWP is made with best practices in mind; extremely extensible and customizable, stable, and reliable. We’ll be here in years to come for you and your nonprofit organization.
+The most downloaded fundraising plugin on WordPress, Give has helped users raise over $350 million since 2009. Behind it is a professional team of WordPress developers who know what serious fundraising operations need: flexible tools, rock-solid reliability, and software that grows with your mission. As part of Nexcess’s software offerings, Give is backed by decades of experience building and hosting WordPress solutions.
 
 === 📧 Connect with GiveWP ===
 
@@ -273,6 +273,22 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.15.3: May 28th, 2026 =
+* Fix: Resolved a user role permission conflict with The Events Calendar Pro
+* Fix: Resolved an issue when using multiple Stripe accounts, recurring donations, and webhook API 2026-02-25.clover
+
+= 4.15.2: May 13th, 2026 =
+* Tweak: Update Harbor to 1.2.0, removing the Liquid Web Products page when there are no premium plugins present.
+
+= 4.15.1: May 12th, 2026 =
+* Tweak: Moved the Liquid Web menu item to Settings -> Liquid Web Products.
+* Tweak: The Settings -> Liquid Web Products page now requires a opt-in to communicate with external servers.
+
+= 4.15.0: May 11th, 2026 =
+* Feature: Integrate with Nexcess Licensing and Portal.
+* Tweak: Updated branding references from StellarWP to Nexcess.
+* Fix: Resolved issue with separator style for title on donation-form thanks message.
+
 = 4.14.6: April 22nd, 2026 =
 * Security: Added additional sanitization to the Donation Form.
 * Security: Added additional access control checks to the REST API.
