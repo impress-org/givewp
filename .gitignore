@@ -5,6 +5,11 @@
 # Bin files
 /bin/*
 !/bin/strauss-installar.sh
+!/bin/release-utils.php
+!/bin/update-versions.php
+!/bin/replace-since-tags.php
+!/bin/write-changelog.sh
+!/bin/release-prep.sh
 
 # Numerous always-ignore extensions
 .diff
