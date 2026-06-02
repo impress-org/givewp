@@ -60,10 +60,10 @@
             "@strauss"
         ],
         "copy-fonts": "rm -rf vendor/tecnickcom/tcpdf/fonts/* && cp assets/src/tcpdf-fonts/* vendor/tecnickcom/tcpdf/fonts/",
+        "changelog:add": "npx --no-install changelogger add --auto-filename",
+        "changelog:write": "bin/write-changelog.sh",
         "release:bump-versions": "@php bin/update-versions.php",
         "release:replace-since-tags": "@php bin/replace-since-tags.php",
-        "release:changelog-add": "npx --no-install changelogger add",
-        "release:write-changelog": "bin/write-changelog.sh",
         "release:prep": "bin/release-prep.sh",
         "release:test": "npx --no-install bats tests/bats",
         "pup": [
