@@ -34,13 +34,23 @@ teardown() {
     assert_output --partial "is not installed"
 }
 
-@test "dry-run renders the new version into both changelog files" {
+@test "dry-run renders the new version into both changelog files (legacy format)" {
     run "$BIN_DIR/write-changelog.sh" 9.9.9 --dry-run
     assert_success
-    assert_output --partial "= [9.9.9]"
+    # Legacy GiveWP format from bin/lib/changelog-strategy.js: "= <version>: <date> ="
+    # and "* <Label>: <entry>" (not the changelogger-native "= [..]" / "* X - ").
+    assert_output --partial "= 9.9.9:"
+    assert_output --partial "* Fix: Bats temporary test entry"
+    refute_output --partial "= [9.9.9]"
+    refute_output --partial "* Fix - "
     assert_output --partial "readme.txt"
     assert_output --partial "changelog.txt"
-    assert_output --partial "Bats temporary test entry"
+}
+
+@test "formats the release date with an ordinal day (legacy style)" {
+    run "$BIN_DIR/write-changelog.sh" 9.9.9 --dry-run --date 2026-07-15
+    assert_success
+    assert_output --partial "= 9.9.9: July 15th, 2026 ="
 }
 
 @test "dry-run does not modify the real changelog files" {
@@ -48,5 +58,5 @@ teardown() {
     assert_success
 
     run cat "$REPO_ROOT/readme.txt"
-    refute_output --partial "= [9.9.9]"
+    refute_output --partial "= 9.9.9:"
 }

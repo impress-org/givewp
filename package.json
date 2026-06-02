@@ -37,11 +37,11 @@
         "files": [
             {
                 "path": "readme.txt",
-                "strategy": "stellarwp-readme"
+                "strategy": "bin/lib/changelog-strategy.js"
             },
             {
                 "path": "changelog.txt",
-                "strategy": "stellarwp-readme"
+                "strategy": "bin/lib/changelog-strategy.js"
             }
         ]
     },

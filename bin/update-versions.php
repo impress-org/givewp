@@ -13,7 +13,7 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/release-utils.php';
+require __DIR__ . '/lib/release-utils.php';
 
 [$version, $dryRun] = release_parse_args(
     $argv,

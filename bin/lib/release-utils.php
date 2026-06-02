@@ -6,11 +6,11 @@
 declare(strict_types=1);
 
 /**
- * Absolute path to the project root (the directory containing bin/).
+ * Absolute path to the project root (this file lives in bin/lib/).
  */
 function release_project_root(): string
 {
-    return dirname(__DIR__);
+    return dirname(__DIR__, 2);
 }
 
 /**

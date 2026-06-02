@@ -26,8 +26,9 @@ make_sandbox() {
     mkdir -p "$SANDBOX/bin"
     cp "$BIN_DIR/$script" "$SANDBOX/bin/$script"
     # PHP scripts require this shared helper relative to their own location.
-    if [ -f "$BIN_DIR/release-utils.php" ]; then
-        cp "$BIN_DIR/release-utils.php" "$SANDBOX/bin/release-utils.php"
+    if [ -f "$BIN_DIR/lib/release-utils.php" ]; then
+        mkdir -p "$SANDBOX/bin/lib"
+        cp "$BIN_DIR/lib/release-utils.php" "$SANDBOX/bin/lib/release-utils.php"
     fi
 }
 
