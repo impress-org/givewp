@@ -269,6 +269,7 @@ class WebhookEvents
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.
@@ -278,10 +279,18 @@ class WebhookEvents
         string $message = '',
         bool $setSubscriptionActive = true,
         bool $setDonationComplete = true,
-        string $gatewaySubscriptionId = ''
+        string $gatewaySubscriptionId = '',
+        int $donationId = 0
     ): int {
         $hook = sprintf('givewp_%s_webhook_event_subscription_first_donation', $this->gatewayId);
-        $args = [$gatewayTransactionId, $message, $setSubscriptionActive, $setDonationComplete, $gatewaySubscriptionId];
+        $args = [
+            $gatewayTransactionId,
+            $message,
+            $setSubscriptionActive,
+            $setDonationComplete,
+            $gatewaySubscriptionId,
+            $donationId,
+        ];
         $group = $this->getGroup();
 
         return AsBackgroundJobs::enqueueAsyncAction($hook, $args, $group);
