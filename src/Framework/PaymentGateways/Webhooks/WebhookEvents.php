@@ -25,93 +25,178 @@ class WebhookEvents
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationAbandoned(
         string $gatewayTransactionId,
         string $message = '',
-        $skipRecurringDonations = false
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
     ) {
-        $this->setDonationStatus(DonationStatus::ABANDONED(), $gatewayTransactionId, $message, $skipRecurringDonations);
+        $this->setDonationStatus(
+            DonationStatus::ABANDONED(),
+            $gatewayTransactionId,
+            $message,
+            $skipRecurringDonations,
+            $donationId
+        );
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationCancelled(
         string $gatewayTransactionId,
         string $message = '',
-        $skipRecurringDonations = false
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
     ) {
-        $this->setDonationStatus(DonationStatus::CANCELLED(), $gatewayTransactionId, $message, $skipRecurringDonations);
+        $this->setDonationStatus(
+            DonationStatus::CANCELLED(),
+            $gatewayTransactionId,
+            $message,
+            $skipRecurringDonations,
+            $donationId
+        );
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationCompleted(
         string $gatewayTransactionId,
         string $message = '',
-        $skipRecurringDonations = false
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
     ) {
-        $this->setDonationStatus(DonationStatus::COMPLETE(), $gatewayTransactionId, $message, $skipRecurringDonations);
+        $this->setDonationStatus(
+            DonationStatus::COMPLETE(),
+            $gatewayTransactionId,
+            $message,
+            $skipRecurringDonations,
+            $donationId
+        );
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
-    public function donationFailed(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    public function donationFailed(
+        string $gatewayTransactionId,
+        string $message = '',
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
+    )
     {
-        $this->setDonationStatus(DonationStatus::FAILED(), $gatewayTransactionId, $message, $skipRecurringDonations);
+        $this->setDonationStatus(
+            DonationStatus::FAILED(),
+            $gatewayTransactionId,
+            $message,
+            $skipRecurringDonations,
+            $donationId
+        );
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
-    public function donationPending(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    public function donationPending(
+        string $gatewayTransactionId,
+        string $message = '',
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
+    )
     {
-        $this->setDonationStatus(DonationStatus::PENDING(), $gatewayTransactionId, $message, $skipRecurringDonations);
+        $this->setDonationStatus(
+            DonationStatus::PENDING(),
+            $gatewayTransactionId,
+            $message,
+            $skipRecurringDonations,
+            $donationId
+        );
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationPreapproval(
         string $gatewayTransactionId,
         string $message = '',
-        $skipRecurringDonations = false
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
     ) {
-        $this->setDonationStatus(DonationStatus::PREAPPROVAL(), $gatewayTransactionId, $message,
-            $skipRecurringDonations);
+        $this->setDonationStatus(
+            DonationStatus::PREAPPROVAL(),
+            $gatewayTransactionId,
+            $message,
+            $skipRecurringDonations,
+            $donationId
+        );
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationProcessing(
         string $gatewayTransactionId,
         string $message = '',
-        $skipRecurringDonations = false
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
+    ) {
+        $this->setDonationStatus(
+            DonationStatus::PROCESSING(),
+            $gatewayTransactionId,
+            $message,
+            $skipRecurringDonations,
+            $donationId
+        );
+    }
+
+    /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.5.0
+     */
+    public function donationRefunded(
+        string $gatewayTransactionId,
+        string $message = '',
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
     )
     {
-        $this->setDonationStatus(DonationStatus::PROCESSING(), $gatewayTransactionId, $message,
-            $skipRecurringDonations);
+        $this->setDonationStatus(
+            DonationStatus::REFUNDED(),
+            $gatewayTransactionId,
+            $message,
+            $skipRecurringDonations,
+            $donationId
+        );
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
-    public function donationRefunded(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
+    public function donationRevoked(
+        string $gatewayTransactionId,
+        string $message = '',
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
+    )
     {
-        $this->setDonationStatus(DonationStatus::REFUNDED(), $gatewayTransactionId, $message, $skipRecurringDonations);
-    }
-
-    /**
-     * @since 4.5.0
-     */
-    public function donationRevoked(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
-    {
-        $this->setDonationStatus(DonationStatus::REVOKED(), $gatewayTransactionId, $message, $skipRecurringDonations);
+        $this->setDonationStatus(
+            DonationStatus::REVOKED(),
+            $gatewayTransactionId,
+            $message,
+            $skipRecurringDonations,
+            $donationId
+        );
     }
 
     /**
@@ -220,6 +305,7 @@ class WebhookEvents
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.
@@ -228,10 +314,11 @@ class WebhookEvents
         DonationStatus $status,
         string $gatewayTransactionId,
         string $message = '',
-        $skipRecurringDonations = false
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
     ): int {
         $hook = sprintf('givewp_%s_webhook_event_donation_status_%s', $this->gatewayId, $status->getValue());
-        $args = [$gatewayTransactionId, $message, $skipRecurringDonations];
+        $args = [$gatewayTransactionId, $message, $skipRecurringDonations, $donationId];
         $group = $this->getGroup();
 
         return AsBackgroundJobs::enqueueAsyncAction($hook, $args, $group);

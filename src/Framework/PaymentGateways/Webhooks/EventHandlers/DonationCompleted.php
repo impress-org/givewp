@@ -3,6 +3,7 @@
 namespace Give\Framework\PaymentGateways\Webhooks\EventHandlers;
 
 use Exception;
+use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonationStatus;
 
@@ -12,12 +13,26 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonation
 class DonationCompleted
 {
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 3.6.0
      * @throws Exception
      */
-    public function __invoke(string $gatewayTransactionId, string $message = '', $skipRecurringDonations = false)
-    {
-        $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+    public function __invoke(
+        string $gatewayTransactionId,
+        string $message = '',
+        bool $skipRecurringDonations = false,
+        int $donationId = 0
+    ) {
+        if ($donationId > 0) {
+            $donation = Donation::find($donationId);
+
+            if ($donation) {
+                $donation->gatewayTransactionId = $gatewayTransactionId;
+                $donation->save();
+            }
+        } else {
+            $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+        }
 
         if ( ! $donation || $donation->status->isComplete()) {
             return;
