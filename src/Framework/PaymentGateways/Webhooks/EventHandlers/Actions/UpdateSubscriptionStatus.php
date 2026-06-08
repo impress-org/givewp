@@ -5,6 +5,7 @@ namespace Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions;
 use Exception;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 use Give\Subscriptions\Models\Subscription;
+use Give\Subscriptions\Models\SubscriptionNote;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
@@ -13,6 +14,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class UpdateSubscriptionStatus
 {
     /**
+     * @unreleased Add note to subscription
      * @since 3.6.0
      *
      * @throws Exception
@@ -28,6 +30,15 @@ class UpdateSubscriptionStatus
         if (empty($message)) {
             $message = $this->getMessageFromStatus($status);
         }
+
+        SubscriptionNote::create([
+            'subscriptionId' => $subscription->id,
+            'content' => $message . ' ' . sprintf(
+                    __('%s subscription ID: %s', 'give'),
+                    $subscription->initialDonation()->gateway()->getName(),
+                    $subscription->gatewaySubscriptionId
+                ),
+        ]);
 
         PaymentGatewayLog::info(
             $message . ' ' . sprintf('Subscription ID: %s.', $subscription->id),
