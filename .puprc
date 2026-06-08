@@ -14,6 +14,19 @@
         "npm run dev"
     ],
     "zip_use_default_ignore": true,
+    "checks": {
+        "tbd": {
+            "dirs": [
+                "src",
+                "includes",
+                "blocks",
+                "templates",
+                "assets/src",
+                "tests"
+            ],
+            "skip_directories": "bin|build|vendor|node_modules|.git|.github|bats"
+        }
+    },
     "paths": {
         "versions": [
             {

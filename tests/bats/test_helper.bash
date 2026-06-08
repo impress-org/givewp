@@ -14,8 +14,8 @@ export BATS_LIB_PATH="$REPO_ROOT/node_modules:${BATS_LIB_PATH:-}"
 bats_load_library bats-support
 bats_load_library bats-assert
 
-# Create an isolated copy of a bin script so the PHP scripts (which resolve the
-# project root from their own location) operate on fixtures instead of the repo.
+# Create an isolated copy of a bin script so scripts that resolve the project
+# root from their own location operate on fixtures instead of the repo.
 #
 #   make_sandbox <script-name>
 #
@@ -25,11 +25,6 @@ make_sandbox() {
     SANDBOX="$(mktemp -d)"
     mkdir -p "$SANDBOX/bin"
     cp "$BIN_DIR/$script" "$SANDBOX/bin/$script"
-    # PHP scripts require this shared helper relative to their own location.
-    if [ -f "$BIN_DIR/lib/release-utils.php" ]; then
-        mkdir -p "$SANDBOX/bin/lib"
-        cp "$BIN_DIR/lib/release-utils.php" "$SANDBOX/bin/lib/release-utils.php"
-    fi
 }
 
 cleanup_sandbox() {
