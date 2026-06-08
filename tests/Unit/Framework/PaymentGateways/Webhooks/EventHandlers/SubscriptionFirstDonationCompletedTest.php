@@ -69,4 +69,68 @@ class SubscriptionFirstDonationCompletedTest extends TestCase
         $this->assertTrue($subscription->status->isPending());
         $this->assertTrue($donation->status->isComplete());
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldUpdateDonationAndSubscriptionStatusesWhenDonationIdIsProvided()
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        $donation = $subscription->initialDonation();
+
+        $subscription->status = SubscriptionStatus::PENDING();
+        $subscription->save();
+
+        $donation->status = DonationStatus::PENDING();
+        $donation->gatewayTransactionId = null;
+        $donation->save();
+
+        give(SubscriptionFirstDonationCompleted::class)(
+            'gateway-transaction-id',
+            '',
+            true,
+            true,
+            'gateway-subscription-id',
+            $donation->id
+        );
+
+        $subscription = Subscription::find($subscription->id);
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isComplete());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+        $this->assertTrue($subscription->status->isActive());
+        $this->assertSame('gateway-subscription-id', $subscription->gatewaySubscriptionId);
+    }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldBindTransactionIdToExistingDonationWhenDonationIdIsProvided()
+    {
+        $subscription = Subscription::factory()->createWithDonation();
+        $donation = $subscription->initialDonation();
+
+        $donation->status = DonationStatus::PENDING();
+        $donation->gatewayTransactionId = null;
+        $donation->save();
+
+        give(SubscriptionFirstDonationCompleted::class)(
+            'gateway-transaction-id',
+            '',
+            false,
+            true,
+            '',
+            $donation->id
+        );
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+        $this->assertTrue($donation->status->isComplete());
+    }
 }

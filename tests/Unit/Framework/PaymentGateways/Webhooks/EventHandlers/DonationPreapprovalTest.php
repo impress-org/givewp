@@ -56,4 +56,25 @@ class DonationPreapprovalTest extends TestCase
 
         $this->assertNotTrue($donation->status->isPreapproval());
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldSetStatusToPreapprovalAndBindTransactionIdWhenDonationIdIsProvided()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => null,
+            'status' => DonationStatus::PROCESSING(),
+        ]);
+
+        give(DonationPreapproval::class)('gateway-transaction-id', '', false, $donation->id);
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isPreapproval());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+    }
 }

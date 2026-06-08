@@ -56,4 +56,25 @@ class DonationAbandonedTest extends TestCase
 
         $this->assertNotTrue($donation->status->isAbandoned());
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldSetStatusToAbandonedAndBindTransactionIdWhenDonationIdIsProvided()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => null,
+            'status' => DonationStatus::PENDING(),
+        ]);
+
+        give(DonationAbandoned::class)('gateway-transaction-id', '', false, $donation->id);
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isAbandoned());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+    }
 }
