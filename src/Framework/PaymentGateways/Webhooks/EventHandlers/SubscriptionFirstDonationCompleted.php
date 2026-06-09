@@ -33,7 +33,7 @@ class SubscriptionFirstDonationCompleted
         if ($donationId > 0) {
             $donation = Donation::find($donationId);
 
-            if ($donation) {
+            if ($donation && $donation->subscription) {
                 $donation->gatewayTransactionId = $gatewayTransactionId;
                 $donation->save();
 
