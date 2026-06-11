@@ -14,8 +14,11 @@
  * Enabled & disable notification
  *
  * @since 2.0
+ * @since TBD Add nonce verification.
  */
 function give_set_notification_status_handler() {
+	check_ajax_referer( 'give_set_notification_status', '_ajax_nonce' );
+
 	// Is user have permission to edit give setting.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		return;
