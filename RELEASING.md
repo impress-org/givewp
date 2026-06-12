@@ -28,16 +28,22 @@ Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branc
 
    Options: `--date <date>` sets the changelog date (defaults to today); `--dry-run` previews without writing.
 
-4. Review the diff carefully — version strings, replaced TBD tags, and the new changelog entry.
-5. Validate `readme.txt` with the [WordPress readme validator](https://wordpress.org/plugins/developers/readme-validator/) and preview it on [WPReadme.com](https://wpreadme.com/).
-6. Run the test suite (`composer test`) and let CI pass on the release branch.
-7. Open a PR for the release branch against `master` and get it reviewed.
+4. Check the plugin requirements — `release:prep` does **not** update these:
+   * `Requires at least:` and `Requires PHP:` in the `give.php` plugin header
+   * `Requires at least:`, `Tested up to:`, and `Requires PHP:` in `readme.txt` (especially `Tested up to:` when a new WordPress version has shipped)
+   * The `= Minimum Requirements =` section in `readme.txt`
+5. Review the diff carefully — version strings, replaced TBD tags, and the new changelog entry.
+6. Validate `readme.txt` with the [WordPress readme validator](https://wordpress.org/plugins/developers/readme-validator/) and preview it on [WPReadme.com](https://wpreadme.com/).
+7. Run the test suite (`composer test`) and let CI pass on the release branch.
+8. Build a release candidate ZIP for QA by running the [Generate Plugin Zip](.github/workflows/generate-zip.yml) GitHub Action against the release branch. Attach the ZIP to the release ticket and wait for QA approval.
+9. Open a PR for the release branch against `master` and get it reviewed.
 
 ## Publishing
 
 1. Merge the release branch into `master`.
-2. Manually merge the release branch back into `develop` — this keeps `develop` in sync with the version bumps, compiled changelog, and replaced TBD tags from the release.
+2. Manually merge the release branch back into `develop` — this keeps `develop` in sync with the version bumps, compiled changelog, and replaced TBD tags from the release. If there are merge conflicts, resolve them and send a fresh release candidate back through QA.
 3. Draft a new GitHub release using the version as the tag and title, with the target branch set to `master`. Generate release notes, double-check everything, and publish.
+4. Monitor the release GitHub Action and the Slack notifications — publishing the release kicks off the deploy to WordPress.org and pushes the pot file to the [translations server](https://translations.stellarwp.com/).
 
 ## Hotfixes
 
