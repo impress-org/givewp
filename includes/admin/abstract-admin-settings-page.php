@@ -213,7 +213,7 @@ if ( ! class_exists( 'Give_Settings_Page' ) ) :
 					continue;
 				}
 
-				$section_list[] = '<li><a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) ) . '" class="' . ( $current_section === $id ? 'current' : '' ) . '">' . $label . '</a>';
+				$section_list[] = '<li><a href="' . esc_url( admin_url( 'edit.php?post_type=give_forms&page=' . $this->current_setting_page . '&tab=' . $this->id . '&section=' . sanitize_title( $id ) ) ) . '" class="' . esc_attr( $current_section === $id ? 'current' : '' ) . '">' . $label . '</a>';
 			}
 
 			echo wp_kses_post(
