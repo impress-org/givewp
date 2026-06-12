@@ -1,0 +1,46 @@
+{
+    "repo": "impress-org/give",
+    "zip_name": "give",
+    "build": [
+        "composer install --no-dev --prefer-dist --no-progress --optimize-autoloader",
+        "composer run copy-fonts",
+        "npm ci --prefer-offline --no-audit --no-fund",
+        "npm run build"
+    ],
+    "build_dev": [
+        "composer install --prefer-dist --no-progress",
+        "composer run copy-fonts",
+        "npm ci --prefer-offline --no-audit --no-fund",
+        "npm run dev"
+    ],
+    "zip_use_default_ignore": true,
+    "checks": {
+        "tbd": {
+            "dirs": [
+                "src",
+                "includes",
+                "blocks",
+                "templates",
+                "assets/src",
+                "tests"
+            ],
+            "skip_directories": "bin|build|vendor|node_modules|.git|.github|bats"
+        }
+    },
+    "paths": {
+        "versions": [
+            {
+                "file": "give.php",
+                "regex": "(define\\('GIVE_VERSION', ')([^']+)"
+            },
+            {
+                "file": "give.php",
+                "regex": "(Version: )(.+)"
+            },
+            {
+                "file": "readme.txt",
+                "regex": "(Stable tag: )(.+)"
+            }
+        ]
+    }
+}
