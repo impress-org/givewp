@@ -31,12 +31,12 @@ Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branc
 4. Review the diff carefully — version strings, replaced TBD tags, and the new changelog entry.
 5. Validate `readme.txt` with the [WordPress readme validator](https://wordpress.org/plugins/developers/readme-validator/) and preview it on [WPReadme.com](https://wpreadme.com/).
 6. Run the test suite (`composer test`) and let CI pass on the release branch.
-7. Open a PR for the release branch, get it reviewed, and merge.
+7. Open a PR for the release branch against `master` and get it reviewed.
 
 ## Publishing
 
-1. Merge to `master`.
-2. Merge the release branch back into `develop` as well — this keeps `develop` in sync with the version bumps, compiled changelog, and replaced TBD tags from the release.
+1. Merge the release branch into `master`.
+2. Manually merge the release branch back into `develop` — this keeps `develop` in sync with the version bumps, compiled changelog, and replaced TBD tags from the release.
 3. Draft a new GitHub release using the version as the tag and title, with the target branch set to `master`. Generate release notes, double-check everything, and publish.
 
 ## Hotfixes
