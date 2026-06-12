@@ -14,7 +14,7 @@
  * Enabled & disable notification
  *
  * @since 2.0
- * @since TBD Add nonce verification.
+ * @since 4.15.4 Add nonce verification.
  */
 function give_set_notification_status_handler() {
 	check_ajax_referer( 'give_set_notification_status', '_ajax_nonce' );

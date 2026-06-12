@@ -264,7 +264,7 @@ class Give_Scripts {
 	 * Localize admin scripts.
      *
      * @since 2.25.3 Add nonce for payment note AJAX requests.
-     * @since TBD   Add nonce for give_set_notification_status AJAX request.
+     * @since 4.15.4   Add nonce for give_set_notification_status AJAX request.
 	 */
 	public function admin_localize_scripts() {
 
