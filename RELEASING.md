@@ -11,8 +11,10 @@ Releases are prepared continuously as features and fixes are merged:
 
 ## Preparing a release
 
+Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branching-model/) pattern: features and fixes land in `develop`, and releases are cut from there.
+
 1. Make sure everything intended for the release is merged into `develop` and CI is green.
-2. Create a release branch (`release/x.y.z`).
+2. Create a release branch off `develop` (`release/x.y.z`).
 3. Run the release prep command with the new version number:
 
    ```bash
@@ -34,7 +36,12 @@ Releases are prepared continuously as features and fixes are merged:
 ## Publishing
 
 1. Merge to `master`.
-2. Draft a new GitHub release using the version as the tag and title, with the target branch set to `master`. Generate release notes, double-check everything, and publish.
+2. Merge the release branch back into `develop` as well — this keeps `develop` in sync with the version bumps, compiled changelog, and replaced TBD tags from the release.
+3. Draft a new GitHub release using the version as the tag and title, with the target branch set to `master`. Generate release notes, double-check everything, and publish.
+
+## Hotfixes
+
+For urgent fixes that can't wait for the normal release cycle, branch off `master` instead of `develop` (`hotfix/x.y.z`). The rest of the process is the same — run `composer run release:prep`, review, merge to `master`, and publish. Afterwards, merge `master` back into `develop` so the fix isn't lost in the next release.
 
 ## Post-release verification
 
