@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 4.15.4: Jun 15th, 2026 =
-* Fix: Added additional protection to the email notification settings.
+* Security: Added additional protection to the email notification settings.
 
 = 4.15.3: May 28th, 2026 =
 * Fix: Resolved a user role permission conflict with The Events Calendar Pro
