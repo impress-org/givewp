@@ -89,6 +89,8 @@ jQuery(document).ready(function ($) {
 
     /**
      * Enabled & disable email notification event.
+     *
+     * @since 4.15.4 Add _ajax_nonce to AJAX request data.
      */
     $('.give-email-notification-status', 'table.giveemailnotifications').on('click', function () {
         const $this = $(this),
@@ -110,6 +112,7 @@ jQuery(document).ready(function ($) {
                 action: 'give_set_notification_status',
                 status: set_notification_status,
                 notification_id: notification_id,
+                _ajax_nonce: give_vars.give_set_notification_status_nonce,
             },
             beforeSend: function () {
                 $this.hide();
