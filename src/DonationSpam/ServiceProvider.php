@@ -2,8 +2,8 @@
 
 namespace Give\DonationSpam;
 
-use Give\DonationSpam\Akismet\Actions\ValidateDonation;
-use Give\DonationSpam\Exceptions\SpamDonationException;
+use Give\DonationSpam\Akismet\Actions\ValidateDonationOnFinalSubmission;
+use Give\Helpers\Hooks;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 
 /**
@@ -29,42 +29,20 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD only check the final submission so Akismet isn't called on every step (which looks like a spam flood)
+     * @since TBD register an invokable action that gates the Akismet check to the final submission
      * @since 3.22.0 updated Akismet validation to use new givewp_donation_form_fields_validated action
      * @since 3.15.0
      *
      * @inheritDoc
-     *
-     * @throws SpamDonationException
      */
     public function boot(): void
     {
-        if ($this->isAkismetEnabledAndConfigured()) {
-            add_action('givewp_donation_form_fields_validated', static function (array $data, bool $isFinalSubmission = true) {
-                if (!$isFinalSubmission) {
-                    return;
-                }
-
-                give(ValidateDonation::class)(
-                    $data['email'] ?? '',
-                    $data['comment'] ?? '',
-                    $data['firstName'] ?? '',
-                    $data['lastName'] ?? ''
-                );
-            }, 10, 2);
-        }
-    }
-
-    /**
-     * @since 3.15.0
-     * @return bool
-     */
-    public function isAkismetEnabledAndConfigured(): bool
-    {
-        return
-            give_check_akismet_key()
-            && give_is_setting_enabled(
-                give_get_option('akismet_spam_protection', 'enabled')
-            );
+        Hooks::addAction(
+            'givewp_donation_form_fields_validated',
+            ValidateDonationOnFinalSubmission::class,
+            '__invoke',
+            10,
+            2
+        );
     }
 }
