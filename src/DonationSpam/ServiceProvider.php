@@ -29,6 +29,10 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD only check the final submission, when all donation data is available. Per-step
+     *               validations exist for field-level UX feedback and are not spam-relevant;
+     *               checking on every step makes Akismet treat the repeated requests from one IP as
+     *               the start of a new (potentially fraudulent) donation flood.
      * @since 3.22.0 updated Akismet validation to use new givewp_donation_form_fields_validated action
      * @since 3.15.0
      *
@@ -39,14 +43,18 @@ class ServiceProvider implements ServiceProviderInterface
     public function boot(): void
     {
         if ($this->isAkismetEnabledAndConfigured()) {
-            add_action('givewp_donation_form_fields_validated', static function (array $data) {
+            add_action('givewp_donation_form_fields_validated', static function (array $data, bool $isFinalSubmission = true) {
+                if (!$isFinalSubmission) {
+                    return;
+                }
+
                 give(ValidateDonation::class)(
                     $data['email'] ?? '',
                     $data['comment'] ?? '',
                     $data['firstName'] ?? '',
                     $data['lastName'] ?? ''
                 );
-            });
+            }, 10, 2);
         }
     }
 
