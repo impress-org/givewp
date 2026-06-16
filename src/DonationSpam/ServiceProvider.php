@@ -29,10 +29,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD only check the final submission, when all donation data is available. Per-step
-     *               validations exist for field-level UX feedback and are not spam-relevant;
-     *               checking on every step makes Akismet treat the repeated requests from one IP as
-     *               the start of a new (potentially fraudulent) donation flood.
+     * @since TBD only check the final submission so Akismet isn't called on every step (which looks like a spam flood)
      * @since 3.22.0 updated Akismet validation to use new givewp_donation_form_fields_validated action
      * @since 3.15.0
      *

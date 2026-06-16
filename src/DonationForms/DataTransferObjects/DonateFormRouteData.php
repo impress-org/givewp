@@ -91,14 +91,11 @@ class DonateFormRouteData implements Arrayable
         $validatedValues = $validator->validated();
 
         /**
-         * @since TBD pass $isFinalSubmission = true — this is the final donation submission, when
-         *               all collected data is available (see ValidationRouteData::validate() for the
-         *               per-step, in-progress validations).
+         * @since TBD added $isFinalSubmission (true here: the final donation submission)
          * @since 3.22.0
          *
          * @param array $data              validated values in key value pairs
-         * @param bool  $isFinalSubmission whether this is the final donation submission (vs. an
-         *                                 in-progress, per-step validation)
+         * @param bool  $isFinalSubmission whether this is the final donation submission
          */
         do_action('givewp_donation_form_fields_validated', $validatedValues, true);
 
