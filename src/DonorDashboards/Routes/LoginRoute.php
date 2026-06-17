@@ -100,6 +100,11 @@ class LoginRoute implements RestRoute
 
             $isLockout = ! in_array($user->get_error_code(), $coreAuthErrorCodes, true);
 
+            // Note: the logical result is returned in the body `status` field and
+            // the HTTP status is left at 200, matching the endpoint's original
+            // contract. The Donor Dashboard front-end reads the result from the
+            // body; returning a non-2xx HTTP status would make its Axios request
+            // reject and leave the form stuck in a loading state.
             if ($isLockout) {
                 $lockoutMessage = wp_strip_all_tags($user->get_error_message());
 
@@ -112,8 +117,7 @@ class LoginRoute implements RestRoute
                                 ? $lockoutMessage
                                 : __('Too many failed login attempts. Please try again later.', 'give'),
                         ],
-                    ],
-                    429
+                    ]
                 );
             }
 
@@ -124,8 +128,7 @@ class LoginRoute implements RestRoute
                     'body_response' => [
                         'message' => __('The provided credentials are invalid.', 'give'),
                     ],
-                ],
-                401
+                ]
             );
         }
 
