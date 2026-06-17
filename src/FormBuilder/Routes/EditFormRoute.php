@@ -11,6 +11,7 @@ use Give\Helpers\Form\Utils;
 class EditFormRoute
 {
     /**
+     * @since TBD Add is_numeric() guard to prevent fatal TypeError when post ID is non-numeric (e.g. Contact Form 7 hex IDs).
      * @since 3.22.0 Add locale support
      * @since 3.0.3 Use isV3Form() method instead of 'post_content' to check if the form is built with Visual Builder
      * @since 3.0.0
