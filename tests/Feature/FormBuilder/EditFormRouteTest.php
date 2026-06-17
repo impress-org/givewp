@@ -10,7 +10,7 @@ use Give\Tests\TestCase;
  *
  * @see https://github.com/impress-org/givewp/issues/8229
  *
- * @since 4.15.0
+ * @since TBD
  */
 class EditFormRouteTest extends TestCase
 {
@@ -22,7 +22,7 @@ class EditFormRouteTest extends TestCase
      * of type int|float, string given" on PHP 8.x, crashing every admin page that
      * CF7 or similar plugins opened with a hex post ID in the query string.
      *
-     * @since 4.15.0
+     * @since TBD
      *
      * @return void
      */
@@ -48,7 +48,7 @@ class EditFormRouteTest extends TestCase
      * Confirm that the route also handles an array post ID gracefully (the bulk
      * action case that the original is_array() guard was written for).
      *
-     * @since 4.15.0
+     * @since TBD
      *
      * @return void
      */
