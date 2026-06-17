@@ -1,5 +1,6 @@
 == Changelog ==
 = TBD: DATE TBD =
+* Security: Resolved an issue where the Donor Dashboard login endpoint bypassed brute-force protection plugins and allowed username enumeration through distinct error responses
 * Tweak: Updated branding references from StellarWP to Nexcess.
 
 = 3.22.2: March 19th, 2025 =
