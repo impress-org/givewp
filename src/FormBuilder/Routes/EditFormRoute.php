@@ -23,8 +23,8 @@ class EditFormRoute
             $locale = $_GET['locale'] ?? '';
             // This conditional will be also triggered by WP edit bulk action
             // WP sends an array of IDs so if that is the case here, we can skip this
-            if ( ! is_array($_GET['post'])) {
-                $post = get_post(abs($_GET['post']));
+            if ( ! is_array($_GET['post']) && is_numeric($_GET['post'])) {
+                $post = get_post(abs((int) $_GET['post']));
                 if ('give_forms' === $post->post_type && Utils::isV3Form($post->ID)) {
                     wp_redirect(FormBuilderRouteBuilder::makeEditFormRoute($post->ID, $locale)->getUrl());
                     exit();
