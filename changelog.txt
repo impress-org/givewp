@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 4.15.5: =
+* Security: Improved the security of the Donor Dashboard login process.
+
 = 4.15.4: Jun 15th, 2026 =
 * Security: Added additional protection to the email notification settings.
 

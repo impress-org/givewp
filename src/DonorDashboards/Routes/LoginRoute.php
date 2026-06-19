@@ -59,7 +59,7 @@ class LoginRoute implements RestRoute
      * a protection plugin is surfaced as a 429 with that plugin's message so a
      * rate-limited user understands why the login was refused.
      *
-     * @since TBD Route through wp_signon() and return a generic failure
+     * @since 4.15.5 Route through wp_signon() and return a generic failure
      *            response to prevent brute-force-protection bypass (CWE-307)
      *            and user enumeration (CWE-204); surface lockout messages as 429.
      * @since 2.10.0

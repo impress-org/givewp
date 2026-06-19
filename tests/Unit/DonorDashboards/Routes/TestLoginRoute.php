@@ -12,7 +12,7 @@ use WP_REST_Request;
  * These cover the brute-force-bypass (CWE-307) and user-enumeration (CWE-204)
  * hardening of /give-api/v2/donor-dashboard/login.
  *
- * @since TBD
+ * @since 4.15.5
  *
  * @coversDefaultClass \Give\DonorDashboards\Routes\LoginRoute
  */
@@ -33,7 +33,7 @@ class TestLoginRoute extends RestApiTestCase
     const KNOWN_PASSWORD = 'correct horse battery staple';
 
     /**
-     * @since TBD
+     * @since 4.15.5
      *
      * @return int The created user's ID.
      */
@@ -48,7 +48,7 @@ class TestLoginRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.15.5
      */
     private function login(string $login, string $password)
     {
@@ -63,7 +63,7 @@ class TestLoginRoute extends RestApiTestCase
      * Valid credentials must still authenticate successfully. This guards the
      * fix against breaking the happy path.
      *
-     * @since TBD
+     * @since 4.15.5
      */
     public function testValidCredentialsLogInSuccessfully()
     {
@@ -83,7 +83,7 @@ class TestLoginRoute extends RestApiTestCase
      * Vulnerable behavior: the endpoint calls wp_check_password() directly and
      * never fires wp_login_failed, so failures are invisible to those plugins.
      *
-     * @since TBD
+     * @since 4.15.5
      */
     public function testFailedLoginFiresWpLoginFailedAction()
     {
@@ -109,7 +109,7 @@ class TestLoginRoute extends RestApiTestCase
      *
      * Vulnerable behavior: wp_check_password() never invokes `authenticate`.
      *
-     * @since TBD
+     * @since 4.15.5
      */
     public function testFailedLoginRunsThroughAuthenticateFilter()
     {
@@ -134,7 +134,7 @@ class TestLoginRoute extends RestApiTestCase
      * A filter-based lockout plugin must be able to block the login by short
      * circuiting the `authenticate` filter with a WP_Error.
      *
-     * @since TBD
+     * @since 4.15.5
      */
     public function testAuthenticateFilterCanBlockLogin()
     {
@@ -165,7 +165,7 @@ class TestLoginRoute extends RestApiTestCase
      * authentication error codes, so this works for any protection plugin
      * regardless of whether one is actually installed.
      *
-     * @since TBD
+     * @since 4.15.5
      */
     public function testLockoutSurfacesPluginMessage()
     {
@@ -191,7 +191,7 @@ class TestLoginRoute extends RestApiTestCase
      * surface the underlying WP_Error message, since those messages differ per
      * case and would reintroduce user enumeration (CWE-204).
      *
-     * @since TBD
+     * @since 4.15.5
      */
     public function testCoreAuthErrorsStayGeneric()
     {
@@ -216,7 +216,7 @@ class TestLoginRoute extends RestApiTestCase
      * Vulnerable behavior: distinct 'unidentified_login' vs 'incorrect_password'
      * responses reveal whether an account exists.
      *
-     * @since TBD
+     * @since 4.15.5
      */
     public function testFailureResponsesDoNotRevealAccountExistence()
     {
@@ -241,7 +241,7 @@ class TestLoginRoute extends RestApiTestCase
      * The failure message must not echo back the submitted login value, which
      * is both an enumeration aid and a reflected-input smell.
      *
-     * @since TBD
+     * @since 4.15.5
      */
     public function testFailureMessageDoesNotEchoSubmittedLogin()
     {
