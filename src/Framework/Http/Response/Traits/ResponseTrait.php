@@ -3,7 +3,7 @@
 namespace Give\Framework\Http\Response\Traits;
 
 use Exception;
-use Give\Framework\Http\Exceptions\HttpResponseException;
+use Give\Framework\Http\Response\Exceptions\HttpResponseException;
 use Give\Vendors\Symfony\Component\HttpFoundation\Cookie;
 use Give\Vendors\Symfony\Component\HttpFoundation\HeaderBag;
 

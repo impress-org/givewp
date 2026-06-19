@@ -1,241 +1,61 @@
-# GiveWP Release Process
+# Releasing GiveWP
 
-This document outlines the complete process for releasing new versions of GiveWP.
+This document outlines the process for releasing new versions of GiveWP.
 
-## Table of Contents
+## During development
 
-- [Pre-Release Preparation](#pre-release-preparation)
-- [Version Update Checklist](#version-update-checklist)
-- [Testing & Quality Assurance](#testing--quality-assurance)
-- [Release Execution](#release-execution)
-- [Post-Release Verification](#post-release-verification)
-- [Release Types](#release-types)
+Releases are prepared continuously as features and fixes are merged:
 
-## Pre-Release Preparation
+* **Changelog entries** — every PR adds an entry with `composer run changelog:add`, which drops a YAML file into `./changelog`. These are compiled into `readme.txt` and `changelog.txt` at release time.  WordPress [recommends](https://developer.wordpress.org/plugins/wordpress-org/how-your-readme-txt-works/#file-size) keeping the latest version's changelog in `readme.txt` and the full history in `changelog.txt`. For Give, this means we reset the `readme.txt` changelog during major version releases.
+* **Docblocks** — new or changed code uses `@since TBD`, which is replaced with the real version number at release time.
 
-### 1. Release Planning
-- [ ] Determine release type (major, minor, patch)
-- [ ] Review all merged PRs since last release
-- [ ] Ensure all intended features/fixes are merged
-- [ ] Verify no critical issues are pending
-- [ ] Coordinate with team on release timing
+## Preparing a release
 
-### 2. Code Freeze
-- [ ] Announce code freeze to development team
-- [ ] Create release branch if needed (`release/x.x.x`)
-- [ ] Ensure all CI/CD checks are passing
+Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branching-model/) pattern: features and fixes land in `develop`, and releases are cut from there.
 
-### 3. Documentation Review
-- [ ] Review and update user-facing documentation
-- [ ] Verify developer documentation is current
-- [ ] Check that all new features have proper documentation
+1. Make sure everything intended for the release is merged into `develop` and CI is green.
+2. Create a release branch off `develop` (`release/x.y.z`).
+3. Run the release prep command with the new version number:
 
-## Version Update Checklist
+   ```bash
+   composer run release:prep 4.16.0
+   ```
 
-### 1. Update Version Numbers
-- [ ] Update `* Version:` in the plugin header (`give.php`)
-- [ ] Update main plugin constant version (`GIVE_VERSION` in `give.php`)
-- [ ] Update `Stable tag:` in `readme.txt`
+   This runs the full version-bump pipeline:
+   1. Updates all version strings — `GIVE_VERSION` and the `Version:` plugin header in `give.php`, and `Stable tag:` in `readme.txt`
+   2. Replaces all `@since TBD` / `@deprecated TBD` placeholders with the new version
+   3. Compiles the pending entries in `./changelog` into the `readme.txt` and `changelog.txt` changelog
 
-### 2. Update Dependencies (if applicable)
-- [ ] Update minimum GiveWP version for add-ons (`GIVE_RECURRING_MIN_GIVE_VERSION`, etc.)
-- [ ] Update `Requires Give:` in `readme.txt` for add-ons
+   Options: `--date <date>` sets the changelog date (defaults to today); `--dry-run` previews without writing.
 
-### 3. Update Plugin Requirements (optional)
-**Main plugin file (`give.php`):**
-- [ ] `Requires at least:` (WordPress version)
-- [ ] `Requires PHP:` (PHP version)
+4. Check the plugin requirements — `release:prep` does **not** update these:
+   * `Requires at least:` and `Requires PHP:` in the `give.php` plugin header
+   * `Requires at least:`, `Tested up to:`, and `Requires PHP:` in `readme.txt` (especially `Tested up to:` when a new WordPress version has shipped)
+   * The `= Minimum Requirements =` section in `readme.txt`
+5. Review the diff carefully — version strings, replaced TBD tags, and the new changelog entry.
+6. Validate `readme.txt` with the [WordPress readme validator](https://wordpress.org/plugins/developers/readme-validator/) and preview it on [WPReadme.com](https://wpreadme.com/).
+7. Run the test suite (`composer test`) and let CI pass on the release branch.
+8. Build a release candidate ZIP for QA by running the [Generate Plugin Zip](.github/workflows/generate-zip.yml) GitHub Action against the release branch. Attach the ZIP to the release ticket and wait for QA approval.
+9. Open a PR for the release branch against `master` and get it reviewed.
 
-**Readme file (`readme.txt`):**
-- [ ] `Requires at least:` (WordPress version)
-- [ ] `Tested up to:` (WordPress version)
-- [ ] `Requires PHP:` (PHP version)
-- [ ] `= Minimum Requirements =` section
+## Publishing
 
-### 4. Code Documentation Updates
-- [ ] Find and replace all `@unreleased` tags with `@since {version}`
-  ```bash
-  # Example command to find @unreleased tags
-  grep -r "@unreleased" src/ includes/ --include="*.php"
+1. Merge the release branch into `master`.
+2. Manually merge the release branch back into `develop` — this keeps `develop` in sync with the version bumps, compiled changelog, and replaced TBD tags from the release. If there are merge conflicts, resolve them and send a fresh release candidate back through QA.
+3. Draft a new GitHub release using the version as the tag and title, with the target branch set to `master`. Generate release notes, double-check everything, and publish.
+4. Monitor the release GitHub Action and the Slack notifications — publishing the release kicks off the deploy to WordPress.org and pushes the pot file to the [translations server](https://translations.stellarwp.com/).
 
-  # Replace with appropriate @since version
-  find . -name "*.php" -exec sed -i 's/@unreleased/@since 4.3.2/g' {} \;
-  ```
+## Hotfixes
 
-### 5. Changelog Updates
-- [ ] Add new version entry to `readme.txt` changelog
-- [ ] Update `CHANGELOG.md` if maintained separately
-- [ ] Follow consistent changelog format:
+For urgent fixes that can't wait for the normal release cycle, branch off `master` instead of `develop` (`hotfix/x.y.z`). The rest of the process is the same — run `composer run release:prep`, review, merge to `master`, and publish. Afterwards, merge `master` back into `develop` so the fix isn't lost in the next release.
 
-```markdown
-= 4.3.2: June 3rd, 2025 =
-* New: Added new functionality that does...
-* Enhancement: Updated existing feature for...
-* Change: Existing functionality is now...
-* Security: Added additional security measures for...
-* Fix: Resolved an issue where...
-```
+## Post-release verification
 
-## Testing & Quality Assurance
+* Verify the new version is available on WordPress.org and installs cleanly.
+* Confirm automatic updates work from the previous version.
+* Monitor the [support forums](https://wordpress.org/support/plugin/give) and error tracking for new issues over the next 24–48 hours.
 
-### 1. Automated Testing
-- [ ] Run full PHPUnit test suite: `composer test`
-- [ ] Run PHPStan static analysis: `composer phpstan`
-- [ ] Verify all GitHub Actions/CI checks pass
-- [ ] Run WordPress coding standards: `composer phpcs`
+## Notes
 
-### 2. Manual Testing
-- [ ] Test core donation functionality
-- [ ] Verify payment gateways (Stripe, PayPal, etc.)
-- [ ] Test form builder functionality
-- [ ] Verify admin dashboard features
-- [ ] Test donor dashboard functionality
-- [ ] Check email notifications
-- [ ] Verify reporting features
-- [ ] Test with different WordPress versions
-- [ ] Test with different PHP versions (if applicable)
-
-### 3. Compatibility Testing
-- [ ] Test with popular themes
-- [ ] Test with common plugins
-- [ ] Verify multisite compatibility
-- [ ] Test database migrations (if any)
-
-### 4. Performance Testing
-- [ ] Check for memory leaks
-- [ ] Verify query performance
-- [ ] Test with large datasets
-- [ ] Check frontend load times
-
-## Release Execution
-
-### 1. Final Pre-Release Checks
-- [ ] Verify all version numbers are correct
-- [ ] Validate `readme.txt` using [WordPress Validator](https://wordpress.org/plugins/developers/readme-validator/)
-- [ ] Preview `readme.txt` using [WPReadme.com](https://wpreadme.com/)
-- [ ] Ensure changelog is complete and accurate
-- [ ] Verify no debug code or console.log statements remain
-
-### 2. Build Process
-- [ ] Run production build: `npm run build`
-- [ ] Verify built assets are included
-- [ ] Check that `.distignore` excludes development files
-- [ ] Create release package/zip if needed
-
-### 3. Version Control
-- [ ] Commit all version updates
-- [ ] Create and push version tag: `git tag v4.3.2 && git push origin v4.3.2`
-- [ ] Merge release branch to main (if using release branches)
-
-### 4. WordPress.org Release
-- [ ] Draft new release using [version] as tag & title, making sure target branch is set to Master. Double check everything, then generate release notes & publish release.
-
-## Post-Release Verification
-
-### 1. Immediate Verification (within 1 hour)
-- [ ] Verify plugin is available on WordPress.org
-- [ ] Test installation from WordPress.org
-- [ ] Check automatic updates work correctly
-- [ ] Monitor for immediate bug reports
-
-### 2. Short-term Monitoring (24-48 hours)
-- [ ] Monitor support forums for issues
-- [ ] Check error tracking services for new errors
-- [ ] Review download statistics
-- [ ] Monitor social media/community feedback
-- [ ] Watch for compatibility reports
-
-## Release Types
-
-### Major Release (x.0.0)
-- Breaking changes or significant new features
-- Requires extensive testing and documentation updates
-- May require user migration guides
-- Consider beta/RC releases
-
-### Minor Release (x.y.0)
-- New features and enhancements
-- Backward compatible
-- Standard testing procedures
-- Update feature documentation
-
-### Patch Release (x.y.z)
-- Bug fixes and security updates
-- No new features
-- Expedited testing for critical fixes
-- Focus on regression testing
-
-## Automation Tools
-
-### Available Scripts
-```bash
-# Run all tests
-composer test
-
-# Check coding standards
-composer phpcs
-
-# Fix coding standards
-composer phpcbf
-
-# Run static analysis
-composer phpstan
-
-# Build assets
-npm run build
-
-# Development build with watch
-npm run dev
-```
-
-### GitHub Actions
-- Automated testing on PR and push
-- Code quality checks
-- WordPress compatibility matrix testing
-- Security scanning
-
-## Team Responsibilities
-
-### Release Manager
-- Coordinates release timeline
-- Performs version updates
-- Manages release communication
-- Oversees testing process
-
-### Development Team
-- Code review and approval
-- Feature completion verification
-- Documentation updates
-- Technical testing
-
-### QA Team
-- Manual testing execution
-- Compatibility verification
-- User acceptance testing
-- Bug reproduction and verification
-
-### Support Team
-- Release communication preparation
-- Support documentation updates
-- Community notification
-- Post-release monitoring
-
----
-
-## Quick Checklist Summary
-
-For a quick release checklist, follow these essential steps:
-
-1. **Update versions** in `give.php` and `readme.txt`
-2. **Replace @unreleased** tags with `@since {version}`
-3. **Add changelog** entry to `readme.txt`
-4. **Run tests** and ensure they pass
-5. **Validate readme.txt** using WordPress validator
-6. **Create git tag** and push to repository
-7. **Release to WordPress.org**
-8. **Monitor** for issues post-release
-
----
-
-*Last updated: June 10, 2025*
-*For questions about the release process, contact the development team.*
+* The release tooling lives in `bin/` and is built on [stellarwp/pup](https://github.com/stellarwp/pup) and [@stellarwp/changelogger](https://github.com/stellarwp/changelogger). Its own tests can be run with `composer run release:test`.
+* Patch releases follow the same process — the only difference is scope and testing focus (regressions around the fix).
