@@ -11,6 +11,7 @@ use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
 use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\ValueObjects\DonationFormErrorTypes;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
@@ -70,17 +71,17 @@ class DonateRoute
             $this->donateController->donate($data, $data->getGateway());
         } catch (DonationFormFieldErrorsException $exception) {
             $type = DonationFormErrorTypes::VALIDATION;
-            $this->logError($type, $exception->getMessage(), $formData);
+            $this->logError($type, $exception, $formData);
             $this->sendJsonError($type, $exception->getError());
         } catch (PaymentGatewayException $exception) {
             $type = DonationFormErrorTypes::GATEWAY;
-            $this->logError($type, $exception->getMessage(), $formData);
+            $this->logError($type, $exception, $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         } catch (DonationFormForbidden $exception) {
             wp_die($exception->getMessage(), 403);
         } catch (Exception $exception) {
             $type = DonationFormErrorTypes::UNKNOWN;
-            $this->logError($type, $exception->getMessage(), $formData);
+            $this->logError($type, $exception, $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         }
 
@@ -92,16 +93,23 @@ class DonateRoute
      */
     private function logError(
         string $type,
-        string $exceptionMessage,
+        Exception $exception,
         DonateFormRouteData $formData
     ) {
+        $context = [
+            'error_type' => $type,
+            'exceptionMessage' => $exception->getMessage(),
+            'formData' => $formData->toArray(),
+        ];
+
+        if ($exception instanceof DatabaseQueryException) {
+            $context['query'] = $exception->getQuery();
+            $context['queryErrors'] = $exception->getQueryErrors();
+        }
+
         Log::error(
             "Donation Route Error: $type",
-            [
-                'error_type' => $type,
-                'exceptionMessage' => $exceptionMessage,
-                'formData' => $formData->toArray(),
-            ]
+            $context
         );
     }
 
