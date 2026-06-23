@@ -58,7 +58,7 @@ class DonationAbandonedTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.16.0
      *
      * @throws Exception
      */
