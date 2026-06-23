@@ -29,7 +29,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD register an invokable action that gates the Akismet check to the final submission
+     * @since 4.16.0 register an invokable action that gates the Akismet check to the final submission
      * @since 3.22.0 updated Akismet validation to use new givewp_donation_form_fields_validated action
      * @since 3.15.0
      *

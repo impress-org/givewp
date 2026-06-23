@@ -8,7 +8,7 @@ use Give\DonationSpam\Exceptions\SpamDonationException;
  * Handles the givewp_donation_form_fields_validated action by running the Akismet spam check, but
  * only for the final submission so Akismet isn't called on every step (which looks like a spam flood).
  *
- * @since TBD
+ * @since 4.16.0
  */
 class ValidateDonationOnFinalSubmission
 {
@@ -18,7 +18,7 @@ class ValidateDonationOnFinalSubmission
     protected $validateDonation;
 
     /**
-     * @since TBD
+     * @since 4.16.0
      */
     public function __construct(ValidateDonation $validateDonation)
     {
@@ -29,7 +29,7 @@ class ValidateDonationOnFinalSubmission
      * The Akismet enabled/configured check lives here rather than on boot so it only runs when a
      * donation is actually validated, not on every request.
      *
-     * @since TBD
+     * @since 4.16.0
      *
      * @throws SpamDonationException
      */
@@ -48,7 +48,7 @@ class ValidateDonationOnFinalSubmission
     }
 
     /**
-     * @since TBD
+     * @since 4.16.0
      */
     protected function isAkismetEnabledAndConfigured(): bool
     {

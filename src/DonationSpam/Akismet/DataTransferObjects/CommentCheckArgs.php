@@ -21,7 +21,7 @@ class CommentCheckArgs
     public $comment_author_email;
 
     /**
-     * @since TBD handle undefined server variables gracefully
+     * @since 4.16.0 handle undefined server variables gracefully
      * @since 3.22.0 updated params to receive
      * @since 3.15.0
      */

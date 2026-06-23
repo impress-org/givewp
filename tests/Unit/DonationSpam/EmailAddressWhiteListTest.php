@@ -29,7 +29,7 @@ final class EmailAddressWhiteListTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.0
      */
     public function testValidatesWhitelistedEmailAddressIgnoringCaseAndWhitespace()
     {

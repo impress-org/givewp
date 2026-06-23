@@ -7,7 +7,7 @@ use Give\DonationSpam\Akismet\Actions\ValidateDonationOnFinalSubmission;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.16.0
  */
 final class ValidateDonationOnFinalSubmissionTest extends TestCase
 {
@@ -16,7 +16,7 @@ final class ValidateDonationOnFinalSubmissionTest extends TestCase
      * every step makes Akismet treat the repeated requests from one IP as the start of a new
      * donation flood, so the check must be skipped for in-progress (non-final) validations.
      *
-     * @since TBD
+     * @since 4.16.0
      */
     public function testDoesNotRunAkismetCheckForInProgressValidation(): void
     {
@@ -34,7 +34,7 @@ final class ValidateDonationOnFinalSubmissionTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.0
      */
     public function testRunsAkismetCheckForFinalSubmission(): void
     {
@@ -59,7 +59,7 @@ final class ValidateDonationOnFinalSubmissionTest extends TestCase
      * Guards the fail-safe default: any caller that fires the action without the flag (e.g. legacy
      * integrations) is treated as a final submission and is still checked for spam.
      *
-     * @since TBD
+     * @since 4.16.0
      */
     public function testDefaultsToFinalSubmissionWhenFlagOmitted(): void
     {
@@ -77,7 +77,7 @@ final class ValidateDonationOnFinalSubmissionTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.0
      */
     public function testDoesNotRunAkismetCheckWhenNotEnabledAndConfigured(): void
     {
@@ -98,7 +98,7 @@ final class ValidateDonationOnFinalSubmissionTest extends TestCase
      * Builds the action with a stubbed Akismet enabled/configured check, so the spam check can be
      * exercised without requiring the Akismet plugin/key to be configured in the test environment.
      *
-     * @since TBD
+     * @since 4.16.0
      */
     private function makeAction(ValidateDonation $validateDonation, bool $enabledAndConfigured = true): ValidateDonationOnFinalSubmission
     {

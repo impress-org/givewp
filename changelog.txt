@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 4.16.0: June 23rd, 2026 =
+* Feature: Added an optional donation ID parameter to gateway webhook event handlers, allowing gateways to locate donations when the transaction ID is only available in the webhook payload.
+* Fix: Resolved an issue where multi-step donation forms could be incorrectly rejected as spam because Akismet was checked on every form step; the spam check now runs once on final submission.
+
 = 4.15.5: June 22nd, 2026 =
 * Security: Improved the security of the Donor Dashboard login process.
 

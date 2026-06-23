@@ -91,7 +91,7 @@ class DonateFormRouteData implements Arrayable
         $validatedValues = $validator->validated();
 
         /**
-         * @since TBD added $isFinalSubmission (true here: the final donation submission)
+         * @since 4.16.0 added $isFinalSubmission (true here: the final donation submission)
          * @since 3.22.0
          *
          * @param array $data              validated values in key value pairs
