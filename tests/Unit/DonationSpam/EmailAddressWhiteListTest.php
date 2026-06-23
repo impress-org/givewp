@@ -27,4 +27,14 @@ final class EmailAddressWhiteListTest extends TestCase
         $validator = new EmailAddressWhiteList(['admin@wordpress.test']);
         $this->assertFalse($validator->validate('subscriber@wordpress.test'));
     }
+
+    /**
+     * @since TBD
+     */
+    public function testValidatesWhitelistedEmailAddressIgnoringCaseAndWhitespace()
+    {
+        $validator = new EmailAddressWhiteList([' Admin@WordPress.test ']);
+        $this->assertTrue($validator->validate('admin@wordpress.test'));
+        $this->assertTrue($validator->validate('  ADMIN@wordpress.TEST'));
+    }
 }

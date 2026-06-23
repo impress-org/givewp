@@ -76,12 +76,14 @@ class ValidationRouteData implements Arrayable
 
         $validatedValues = $validator->validated();
 
-       /**
+        /**
+         * @since TBD added $isFinalSubmission (false here: per-step validation, not the final submission)
          * @since 3.22.0
-         /**
-         * @param array $validatedValues validated values in key value pairs
+         *
+         * @param array $validatedValues   validated values in key value pairs
+         * @param bool  $isFinalSubmission whether this is the final donation submission
          */
-        do_action('givewp_donation_form_fields_validated', $validatedValues);
+        do_action('givewp_donation_form_fields_validated', $validatedValues, false);
 
         return new JsonResponse(['valid' => true]);
     }
