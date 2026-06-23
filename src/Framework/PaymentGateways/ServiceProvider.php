@@ -49,6 +49,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     private function addDonationStatusEventHandlers(string $gatewayId)
@@ -57,7 +58,10 @@ class ServiceProvider implements ServiceProviderInterface
             if ($eventHandlerClass = (new GetEventHandlerClassByDonationStatus())($status)) {
                 Hooks::addAction(
                     sprintf('givewp_%s_webhook_event_donation_status_%s', $gatewayId, $status->getValue()),
-                    $eventHandlerClass, '__invoke', 10, 3
+                    $eventHandlerClass,
+                    '__invoke',
+                    10,
+                    4
                 );
             }
         }
@@ -80,13 +84,17 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     private function addSubscriptionFirstDonationEventHandler(string $gatewayId)
     {
         Hooks::addAction(
             sprintf('givewp_%s_webhook_event_subscription_first_donation', $gatewayId),
-            SubscriptionFirstDonationCompleted::class, '__invoke', 10, 5
+            SubscriptionFirstDonationCompleted::class,
+            '__invoke',
+            10,
+            6
         );
     }
 

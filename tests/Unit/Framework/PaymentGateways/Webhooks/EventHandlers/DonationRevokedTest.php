@@ -56,4 +56,25 @@ class DonationRevokedTest extends TestCase
 
         $this->assertNotTrue($donation->status->isRevoked());
     }
+
+    /**
+     * @unreleased
+     *
+     * @throws Exception
+     */
+    public function testShouldSetStatusToRevokedAndBindTransactionIdWhenDonationIdIsProvided()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => null,
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        give(DonationRevoked::class)('gateway-transaction-id', '', false, $donation->id);
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isRevoked());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+    }
 }
