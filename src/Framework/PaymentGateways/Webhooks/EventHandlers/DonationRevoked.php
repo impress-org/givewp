@@ -13,7 +13,7 @@ use Give\Framework\PaymentGateways\Webhooks\EventHandlers\Actions\UpdateDonation
 class DonationRevoked
 {
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 3.6.0
      * @throws Exception
      */

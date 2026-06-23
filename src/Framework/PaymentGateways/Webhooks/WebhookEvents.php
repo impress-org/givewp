@@ -25,7 +25,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationAbandoned(
@@ -44,7 +44,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationCancelled(
@@ -63,7 +63,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationCompleted(
@@ -82,7 +82,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationFailed(
@@ -102,7 +102,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationPending(
@@ -122,7 +122,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationPreapproval(
@@ -141,7 +141,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationProcessing(
@@ -160,7 +160,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationRefunded(
@@ -180,7 +180,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     public function donationRevoked(
@@ -269,7 +269,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.
@@ -314,7 +314,7 @@ class WebhookEvents
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      *
      * @return int The webhook event ID. Zero if there was an error setting the event.

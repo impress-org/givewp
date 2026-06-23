@@ -5,7 +5,7 @@ namespace Give\Framework\PaymentGateways\Actions;
 class GenerateGatewayRouteUrl
 {
     /**
-     * @unreleased Add GIVEWP_GATEWAY_ROUTE_BASE_URL constant
+     * @since 4.16.0 Add GIVEWP_GATEWAY_ROUTE_BASE_URL constant
      * @since      2.19.0 remove $donationId param in favor of args
      * @since      2.18.0
      *

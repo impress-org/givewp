@@ -49,7 +49,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     private function addDonationStatusEventHandlers(string $gatewayId)
@@ -84,7 +84,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @unreleased Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0
      */
     private function addSubscriptionFirstDonationEventHandler(string $gatewayId)

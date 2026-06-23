@@ -14,7 +14,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class UpdateSubscriptionStatus
 {
     /**
-     * @unreleased Add note to subscription
+     * @since 4.16.0 Add note to subscription
      * @since 3.6.0
      *
      * @throws Exception
