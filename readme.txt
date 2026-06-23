@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.16.0: June 23rd, 2026 =
+= 4.16.0: June 24th, 2026 =
 * Feature: Added an optional donation ID parameter to gateway webhook event handlers, allowing gateways to locate donations when the transaction ID is only available in the webhook payload.
 * Fix: Resolved an issue where multi-step donation forms could be incorrectly rejected as spam because Akismet was checked on every form step; the spam check now runs once on final submission.
 
