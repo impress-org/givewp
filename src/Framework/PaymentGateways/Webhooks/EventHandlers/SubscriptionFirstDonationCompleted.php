@@ -3,6 +3,7 @@
 namespace Give\Framework\PaymentGateways\Webhooks\EventHandlers;
 
 use Exception;
+use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
@@ -16,6 +17,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFirstDonationCompleted
 {
     /**
+     * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0 Add $setDonationComplete and $gatewaySubscriptionId parameters
      * @since 3.6.0
      */
@@ -24,15 +26,30 @@ class SubscriptionFirstDonationCompleted
         string $message = '',
         bool $setSubscriptionActive = true,
         bool $setDonationComplete = true,
-        string $gatewaySubscriptionId = ''
+        string $gatewaySubscriptionId = '',
+        int $donationId = 0
     )
     {
-        $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+        if ($donationId > 0) {
+            $donation = Donation::find($donationId);
 
-        if (! $donation && ! empty($gatewaySubscriptionId) && $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId)) {
-            $donation = $subscription->initialDonation();
-            $donation->gatewayTransactionId = $gatewayTransactionId;
-            $donation->save();
+            if ($donation && $donation->subscription) {
+                $donation->gatewayTransactionId = $gatewayTransactionId;
+                $donation->save();
+
+                if ( ! empty($gatewaySubscriptionId) && empty($donation->subscription->gatewaySubscriptionId)) {
+                    $donation->subscription->gatewaySubscriptionId = $gatewaySubscriptionId;
+                    $donation->subscription->save();
+                }
+            }
+        } else {
+            $donation = give()->donations->getByGatewayTransactionId($gatewayTransactionId);
+
+            if (! $donation && ! empty($gatewaySubscriptionId) && $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId)) {
+                $donation = $subscription->initialDonation();
+                $donation->gatewayTransactionId = $gatewayTransactionId;
+                $donation->save();
+            }
         }
 
         if ( ! $donation || ! $donation->type->isSubscription() || $donation->id !== $donation->subscription->initialDonation()->id) {

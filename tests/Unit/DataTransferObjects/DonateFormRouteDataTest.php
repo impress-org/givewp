@@ -99,6 +99,70 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
+     * The final submission route fires givewp_donation_form_fields_validated as a final submission,
+     * which is the single point where spam-protection listeners should run the Akismet check (all
+     * donation data is available and the donation is about to be processed).
+     *
+     * @since 4.16.0
+     */
+    public function testValidatedFiresFieldsValidatedActionAsFinalSubmission()
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [TestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return TestGateway::id();
+        });
+
+        add_filter("givewp_donation_forms_honeypot_enabled", "__return_false");
+
+        $isFinalSubmission = null;
+        add_action(
+            'givewp_donation_form_fields_validated',
+            static function ($values, $isFinal = true) use (&$isFinalSubmission) {
+                $isFinalSubmission = $isFinal;
+            },
+            10,
+            2
+        );
+
+        $data = new DonateControllerData();
+        $data->gatewayId = TestGateway::id();
+        $data->amount = 100;
+        $data->currency = "USD";
+        $data->firstName = "Bill";
+        $data->lastName = "Murray";
+        $data->email = "billmurray@givewp.com";
+        $data->formId = $form->id;
+        $data->formTitle = $form->title;
+        $data->company = null;
+        $data->wpUserId = 0;
+        $data->honorific = null;
+        $data->donationType = DonationType::SINGLE();
+        $data->subscriptionFrequency = null;
+        $data->subscriptionPeriod = null;
+        $data->subscriptionInstallments = null;
+        $data->country = null;
+        $data->address1 = null;
+        $data->address2 = null;
+        $data->city = null;
+        $data->state = null;
+        $data->zip = null;
+
+        $request = array_merge(get_object_vars($data), [
+            'donationType' => $data->donationType->getValue(),
+        ]);
+
+        DonateFormRouteData::fromRequest($request)->validated();
+
+        $this->assertTrue($isFinalSubmission);
+    }
+
+    /**
      * @since 3.17.0 updated to ignore honeypot field
      * @since 3.0.0
      */

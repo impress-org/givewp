@@ -21,6 +21,7 @@ class CommentCheckArgs
     public $comment_author_email;
 
     /**
+     * @since 4.16.0 handle undefined server variables gracefully
      * @since 3.22.0 updated params to receive
      * @since 3.15.0
      */
@@ -37,9 +38,9 @@ class CommentCheckArgs
         $self->blog_lang = get_locale();
         $self->blog_charset = get_option('blog_charset');
 
-        $self->user_ip = @$_SERVER['REMOTE_ADDR'];
-        $self->user_agent = @$_SERVER['HTTP_USER_AGENT'];
-        $self->referrer = @$_SERVER['HTTP_REFERER'];
+        $self->user_ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        $self->user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        $self->referrer = $_SERVER['HTTP_REFERER'] ?? '';
 
         // Append additional server variables.
         foreach ( $_SERVER as $key => $value ) {

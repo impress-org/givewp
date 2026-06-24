@@ -56,4 +56,25 @@ class DonationProcessingTest extends TestCase
 
         $this->assertNotTrue($donation->status->isProcessing());
     }
+
+    /**
+     * @since 4.16.0
+     *
+     * @throws Exception
+     */
+    public function testShouldSetStatusToProcessingAndBindTransactionIdWhenDonationIdIsProvided()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => null,
+            'status' => DonationStatus::PENDING(),
+        ]);
+
+        give(DonationProcessing::class)('gateway-transaction-id', '', false, $donation->id);
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isProcessing());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+    }
 }

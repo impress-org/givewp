@@ -56,4 +56,25 @@ class DonationCancelledTest extends TestCase
 
         $this->assertNotTrue($donation->status->isCancelled());
     }
+
+    /**
+     * @since 4.16.0
+     *
+     * @throws Exception
+     */
+    public function testShouldSetStatusToCancelledAndBindTransactionIdWhenDonationIdIsProvided()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => null,
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        give(DonationCancelled::class)('gateway-transaction-id', '', false, $donation->id);
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isCancelled());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+    }
 }
