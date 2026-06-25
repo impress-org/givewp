@@ -75,10 +75,8 @@ class CampaignCommentsShortcode
             'comments_per_page'=> 3,
         ], $atts, 'givewp_campaign_comments');
 
-        $blockId = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $atts['block_id']);
-
         return [
-            'blockId'         => $blockId,
+            'blockId'         => sanitize_key((string) $atts['block_id']),
             'campaignId'      => (int) $atts['campaign_id'],
             'title'           => (string) $atts['title'],
             'showAnonymous'   => filter_var($atts['show_anonymous'], FILTER_VALIDATE_BOOLEAN),

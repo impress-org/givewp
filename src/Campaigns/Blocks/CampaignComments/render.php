@@ -15,6 +15,4 @@ if (!isset($attributes['campaignId'])
     return;
 }
 
-$secondaryColor = esc_attr($campaign->secondaryColor ?? '#27ae60');
-
-echo (new BlockRenderController())->render($attributes, $secondaryColor);
+echo (new BlockRenderController())->render($attributes, $campaign->secondaryColor ?? '#27ae60');
