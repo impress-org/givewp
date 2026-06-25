@@ -21,7 +21,7 @@ class DuplicateTabException extends Exception implements LoggableException
      * @param int            $code
      * @param Exception|null $previous
      */
-    public function __construct($code = 0, Exception $previous = null)
+    public function __construct($code = 0, ?Exception $previous = null)
     {
         parent::__construct(
             __('A tab can only be added once. Make sure there are not id conflicts.', 'give'),

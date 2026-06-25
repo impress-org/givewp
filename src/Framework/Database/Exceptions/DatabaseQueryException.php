@@ -35,7 +35,7 @@ class DatabaseQueryException extends Exception
         array $queryErrors,
         string $message = 'Database Query',
         $code = 0,
-        Throwable $previous = null
+        ?Throwable $previous = null
     ) {
         $this->query = $query;
         $this->queryErrors = $queryErrors;
