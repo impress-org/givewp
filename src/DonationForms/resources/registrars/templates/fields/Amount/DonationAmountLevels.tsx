@@ -9,7 +9,7 @@ type DonationAmountLevelsProps = {
     name: string;
     currency: string;
     levels: Level[];
-    onLevelClick?: (amount: number) => void;
+    onLevelClick?: (amount: number, index: number) => void;
 };
 
 type GroupedLevels = {
@@ -102,7 +102,7 @@ export default function DonationAmountLevels({name, currency, levels, onLevelCli
                             aria-checked={selected}
                             onClick={() => {
                                 setSelectedIndex(index);
-                                onLevelClick(level.value);
+                                onLevelClick(level.value, index);
                             }}
                             key={index}
                         >

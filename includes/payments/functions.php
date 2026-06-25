@@ -1580,6 +1580,16 @@ function give_get_donation_form_title( $donation_id, $args = [] ) {
         $payment_currency = give_get_payment_currency_code($donation_id); // donation currency
         $options = give()->form_meta->get_meta($form_id, '_give_donation_levels', true) ?? [];
         $donation = Donation::find($donation_id);
+        $price_id = give_get_meta( $donation_id, '_give_payment_price_id', true );
+
+        if ( $price_id !== '' && $price_id !== 'custom' && ! is_null( $price_id ) ) {
+            foreach ( $options as $option ) {
+                if ( isset( $option['_give_id']['level_id'] ) && (string) $option['_give_id']['level_id'] === (string) $price_id ) {
+                    $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                    return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+                }
+            }
+        }
 
         // Different currencies - use exchange rate from currency switcher
         $exchange_rate = give_get_meta($donation_id, '_give_cs_exchange_rate', true);

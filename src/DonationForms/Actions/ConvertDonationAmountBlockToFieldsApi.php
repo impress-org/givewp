@@ -64,6 +64,7 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->rules(...$amountRules);
 
             $priceOptions = $block->getPriceOption();
+            $defaultLevelId = '';
             if ($priceOptions === 'multi') {
                 ['levels' => $levels, 'checked' => $checked] = $this->prepareLevelsArray($block);
 
@@ -71,11 +72,22 @@ class ConvertDonationAmountBlockToFieldsApi
                     ->allowLevels()
                     ->levels(...$levels)
                     ->defaultValue($checked);
+
+                foreach ($levels as $index => $level) {
+                    if ($level['checked']) {
+                        $defaultLevelId = (string)$index;
+                        break;
+                    }
+                }
             } else {
                 $amountNode
                     ->fixedAmountValue($block->getSetPrice())
                     ->defaultValue($block->getSetPrice());
             }
+
+            /** @var Hidden $levelIdNode */
+            $levelIdNode = $group->getNodeByName('levelId');
+            $levelIdNode->defaultValue($defaultLevelId);
 
             /** @var Hidden $currencyNode */
             $currencyNode = $group->getNodeByName('currency');
