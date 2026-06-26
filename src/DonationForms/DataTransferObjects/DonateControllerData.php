@@ -128,6 +128,10 @@ class DonateControllerData
      * @var string|null
      */
     public $comment;
+    /**
+     * @var string|null
+     */
+    public $levelId;
 
     /**
      * @since 3.9.0 Added phone property
@@ -155,6 +159,7 @@ class DonateControllerData
             'comment' => $this->comment,
             'type' => DonationType::SINGLE(),
             'billingAddress' => $this->getBillingAddress(),
+            'levelId' => $this->levelId,
         ]);
     }
 
@@ -183,6 +188,7 @@ class DonateControllerData
             'type' => DonationType::SUBSCRIPTION(),
             'subscriptionId' => $subscriptionId,
             'billingAddress' => $this->getBillingAddress(),
+            'levelId' => $this->levelId,
         ]);
     }
 
