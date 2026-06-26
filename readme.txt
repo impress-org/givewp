@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.16.1: June 26th, 2026 =
+= 4.16.1: June 29th, 2026 =
 * Security: Standardized email access confirmation AJAX responses to prevent distinguishable server responses.
 * Security: Added additional escaping and sanitization to the Campaign Comments block and shortcode attributes (CVE-2026-13246).
 
