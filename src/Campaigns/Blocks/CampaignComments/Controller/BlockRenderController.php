@@ -10,7 +10,7 @@ use Give\Campaigns\Blocks\CampaignComments\DataTransferObjects\BlockAttributes;
 class BlockRenderController
 {
     /**
-     * @since TBD escape attribute values in block markup
+     * @since 4.16.1 escape attribute values in block markup
      * @since 4.0.0
      */
     public function render(array $attributes, string $secondaryColor): string

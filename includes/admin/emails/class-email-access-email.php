@@ -257,7 +257,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @param int    $donor_id Donor ID.
 		 * @param string $email    Donor Email.
 		 *
-		 * @since TBD Return false instead of wp_die when donor is not found.
+		 * @since 4.16.1 Return false instead of wp_die when donor is not found.
 		 * @since  2.0
 		 * @access public
 		 *

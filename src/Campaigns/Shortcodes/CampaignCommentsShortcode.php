@@ -57,7 +57,7 @@ class CampaignCommentsShortcode
     }
 
     /**
-     * @since TBD sanitize block_id from shortcode attributes
+     * @since 4.16.1 sanitize block_id from shortcode attributes
      * @since 4.5.0
      */
     private function parseAttributes($atts): array

@@ -672,7 +672,7 @@ add_action( 'wp_ajax_give_check_for_form_price_variations_html', 'give_check_for
 /**
  * Send Confirmation Email For Complete Donation History Access.
  *
- * @since TBD Always return a uniform success response regardless of donor existence or throttle state.
+ * @since 4.16.1 Always return a uniform success response regardless of donor existence or throttle state.
  * @since 1.8.17
  *
  * @return bool
