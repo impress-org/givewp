@@ -1,0 +1,5 @@
+significance: patch
+type: security
+entry: Added additional escaping and sanitization to the Campaign Comments block
+  and shortcode attributes
+timestamp: 2026-06-26T14:24:34.750Z

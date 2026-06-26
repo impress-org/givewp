@@ -57,6 +57,7 @@ class CampaignCommentsShortcode
     }
 
     /**
+     * @since TBD sanitize block_id from shortcode attributes
      * @since 4.5.0
      */
     private function parseAttributes($atts): array
@@ -75,7 +76,7 @@ class CampaignCommentsShortcode
         ], $atts, 'givewp_campaign_comments');
 
         return [
-            'blockId'         => (string) $atts['block_id'],
+            'blockId'         => sanitize_key((string) $atts['block_id']),
             'campaignId'      => (int) $atts['campaign_id'],
             'title'           => (string) $atts['title'],
             'showAnonymous'   => filter_var($atts['show_anonymous'], FILTER_VALIDATE_BOOLEAN),
