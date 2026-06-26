@@ -1,0 +1,5 @@
+significance: patch
+type: security
+entry: Standardized email access confirmation AJAX responses to prevent
+  distinguishable server responses.
+timestamp: 2026-06-26T14:30:54.022Z
