@@ -275,7 +275,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 = 4.16.1: June 26th, 2026 =
 * Security: Standardized email access confirmation AJAX responses to prevent distinguishable server responses.
-* Security: Added additional escaping and sanitization to the Campaign Comments block and shortcode attributes.
+* Security: Added additional escaping and sanitization to the Campaign Comments block and shortcode attributes (CVE-2026-13246).
 
 = 4.16.0: June 24th, 2026 =
 * Feature: Added an optional donation ID parameter to gateway webhook event handlers, allowing gateways to locate donations when the transaction ID is only available in the webhook payload.
