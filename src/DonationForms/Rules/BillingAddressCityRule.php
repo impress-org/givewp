@@ -21,7 +21,7 @@ class BillingAddressCityRule implements ValidationRule
     /**
      * @since 3.0.0
      */
-    public static function fromString(string $options = null): ValidationRule
+    public static function fromString(?string $options = null): ValidationRule
     {
         return new self();
     }
