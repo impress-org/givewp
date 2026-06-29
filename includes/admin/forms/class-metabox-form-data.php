@@ -1095,6 +1095,8 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Save form template setting handler
 	 *
+	 * @since TBD Normalize file field values as URLs when saving form template settings.
+	 *
 	 * @param string $meta_key
 	 * @param string $new_template
 	 * @param int    $formID
@@ -1143,6 +1145,10 @@ class Give_MetaBox_Form_Data {
 
 					case 'donation_limit':
 						$value = $options[ $group->id ][ $field->id ];
+						break;
+
+					case 'file':
+						$value = esc_url_raw( $options[ $group->id ][ $field->id ] );
 						break;
 
 					case 'group':

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @since TBD Escape introduction image URL when rendering the template.
+ */
+
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 $formInfo = get_post(FrontendFormTemplateUtils::getFormId());
@@ -30,8 +34,7 @@ $image = $formTemplate->getFormFeaturedImage($formInfo->ID);
     <?php
     if ( ! empty($image)) : ?>
         <div class="image">
-            <img src="<?php
-            echo $image; ?>" />
+            <img src="<?php echo esc_url( $image ); ?>" />
         </div>
     <?php
     endif; ?>
