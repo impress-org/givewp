@@ -257,6 +257,7 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		 * @param int    $donor_id Donor ID.
 		 * @param string $email    Donor Email.
 		 *
+		 * @since 4.16.1 Return false instead of wp_die when donor is not found.
 		 * @since  2.0
 		 * @access public
 		 *
@@ -265,14 +266,8 @@ if ( ! class_exists( 'Give_Email_Access_Email' ) ) :
 		public function setup_email_notification( $donor_id, $email ) {
 			$donor = Give()->donors->get_donor_by( 'email', $email );
 
-			if ( ! $donor->id ) {
-				wp_die(
-					esc_html__( 'Cheatin&#8217; uh?', 'give' ),
-					esc_html__( 'Error', 'give' ),
-					array(
-						'response' => 400,
-					)
-				);
+			if ( ! is_object( $donor ) || ! $donor->id ) {
+				return false;
 			}
 
 			$this->recipient_email = $email;
