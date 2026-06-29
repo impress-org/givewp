@@ -188,7 +188,7 @@ class ConvertDonationAmountBlockToFieldsApi
     /**
      * Prepares the options array to be used in the field.
      *
-     * @unreleased Add per-level "checked" flag.
+     * @since TBD Add per-level "checked" flag.
      * @since 3.12.0
      *
      * @return array ['levels' => ['label' => string, 'value' => string, 'checked' => bool][], 'checked' => string|null]
