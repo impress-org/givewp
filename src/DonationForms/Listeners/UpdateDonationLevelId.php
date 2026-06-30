@@ -15,6 +15,7 @@ class UpdateDonationLevelId
      * this will update the donation level ID meta with the level array key,
      * which is used in the donation details screen.
      *
+     * @since TBD Add guard clause to prevent updating the levelId if it is already set.
      * @since 3.0.0
      *
      * @throws NameCollisionException|Exception

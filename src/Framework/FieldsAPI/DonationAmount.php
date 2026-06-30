@@ -20,6 +20,9 @@ class DonationAmount extends Group
     public $subscriptionDetailsAreFixed = false;
 
     /**
+     * @since TBD Add levelId hidden field to donation amount group.
+     * @since 3.0.0
+     * 
      * @throws NameCollisionException
      * @throws EmptyNameException
      */

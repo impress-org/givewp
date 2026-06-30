@@ -28,7 +28,8 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
-     * @since 4.10.0: Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
+     * @since TBD Set default value for the levelId hidden field.
+     * @since 4.10.0 Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
      * @since 3.0.0
      *
      * @throws EmptyNameException
