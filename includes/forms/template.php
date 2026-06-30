@@ -2021,7 +2021,7 @@ add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 
 /**
  * Give Donation form submit button.
  *
- * @since TBD Escape submit button label in form markup.
+ * @since 4.16.2 Escape submit button label in form markup.
  * @since  1.8.8
  *
  * @param int   $form_id The form ID.

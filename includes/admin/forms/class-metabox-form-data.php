@@ -1095,7 +1095,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Save form template setting handler
 	 *
-	 * @since TBD Normalize file field values as URLs when saving form template settings.
+	 * @since 4.16.2 Normalize file field values as URLs when saving form template settings.
 	 *
 	 * @param string $meta_key
 	 * @param string $new_template
