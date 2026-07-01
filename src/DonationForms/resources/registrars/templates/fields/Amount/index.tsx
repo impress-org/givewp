@@ -45,6 +45,13 @@ export default function Amount({
                 currencySwitcherSettings
             );
             setValue(name, defaultAmount);
+
+            const defaultIndex = levels.findIndex((level) => level.value === defaultAmount);
+            if (defaultIndex !== -1) {
+                setValue('levelId', defaultIndex.toString());
+            } else if (allowCustomAmount) {
+                setValue('levelId', 'custom');
+            }
         }
     }, []);
 
@@ -89,9 +96,10 @@ export default function Amount({
                     name={name}
                     currency={currency}
                     levels={getAmountLevels()}
-                    onLevelClick={(levelAmount) => {
+                    onLevelClick={(levelAmount, index) => {
                         resetCustomAmount();
                         setValue(name, levelAmount);
+                        setValue('levelId', index.toString());
                     }}
                 />
             )}
@@ -105,6 +113,7 @@ export default function Amount({
                     onValueChange={(value) => {
                         setCustomAmountValue(value);
                         setValue(name, Number(value) ?? null);
+                        setValue('levelId', 'custom');
                     }}
                 />
             )}
