@@ -130,7 +130,7 @@ trait CheckoutModal
                                 '<input type="submit" class="%1$s" id="%2$s" value="%3$s" data-before-validation-label="%3$s" name="%4$s" data-is_legacy_form="%5$s" disabled/>',
                                 FormUtils::isLegacyForm() ? 'give-btn give-stripe-checkout-modal-donate-button' : 'give-btn give-stripe-checkout-modal-sequoia-donate-button',
                                 "give-stripe-checkout-modal-donate-button-{$idPrefix}",
-                                esc_attr( $display_label ),
+                                esc_attr($display_label),
                                 'give_stripe_modal_donate',
                                 FormUtils::isLegacyForm()
                             );
