@@ -70,6 +70,74 @@ class Test_Gateways extends Give_Unit_Test_Case {
     }
 
     /**
+     * A request-supplied gateways array must never enable a gateway the admin disabled.
+     *
+     * @since TBD
+     */
+    public function test_enabled_gateways_ignore_post_request_override()
+    {
+        // paypal is available but disabled by default.
+        $this->assertArrayNotHasKey('paypal', give_get_enabled_payment_gateways());
+
+        $_POST['gateways']['paypal']    = 1;
+        $_POST['gateways_v3']['paypal'] = 1;
+
+        $enabled = give_get_enabled_payment_gateways();
+
+        unset($_POST['gateways'], $_POST['gateways_v3']);
+
+        $this->assertArrayNotHasKey('paypal', $enabled);
+    }
+
+    /**
+     * give_is_gateway_active() must not be fooled by a request-supplied gateways array.
+     *
+     * @since TBD
+     */
+    public function test_is_gateway_active_ignores_post_request_override()
+    {
+        $_POST['gateways']['paypal'] = 1;
+
+        $active = give_is_gateway_active('paypal');
+
+        unset($_POST['gateways']);
+
+        $this->assertFalse($active);
+    }
+
+    /**
+     * Gateway display order must come from saved settings, not a request-supplied array.
+     *
+     * @since TBD
+     */
+    public function test_ordered_gateways_ignore_post_request_override()
+    {
+        $give_options = give_get_settings();
+
+        // Saved order: manual, then paypal.
+        give_update_option('gateways', ['manual' => 1, 'paypal' => 1]);
+
+        $gateways = [
+            'paypal' => ['admin_label' => 'PayPal Standard'],
+            'manual' => ['admin_label' => 'Test Donation'],
+        ];
+
+        // Attacker POST tries the opposite order.
+        $_POST['gateways'] = ['paypal' => 1, 'manual' => 1];
+
+        $orderedKeys = array_keys(give_get_ordered_payment_gateways($gateways, 2));
+
+        unset($_POST['gateways']);
+        update_option('give_settings', $give_options);
+
+        /*
+         * Order reflects the saved option (reversed internally, manual pulled to front),
+         * and is unaffected by the POST payload.
+         */
+        $this->assertSame(['manual', 'paypal'], $orderedKeys);
+    }
+
+    /**
      * Test give_get_default_gateway.
      */
     public function test_default_gateway()
