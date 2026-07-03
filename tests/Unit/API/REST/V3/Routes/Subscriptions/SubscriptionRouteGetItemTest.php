@@ -301,6 +301,58 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     }
 
     /**
+     * The single-subscription endpoint must hide anonymous donors by default (anonymousDonors=exclude),
+     * matching the collection endpoint and DonorController::get_item(). Regression for the
+     * unauthenticated recurring-donor disclosure (Sanjorn Keeratirungsan).
+     *
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testGetSubscriptionShouldReturn404ForAnonymousDonorWhenExcluded()
+    {
+        $subscription = $this->createSubscriptionWithAnonymousDonor();
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(404, $response->get_status());
+    }
+
+    /**
+     * An administrator explicitly requesting anonymous donors (anonymousDonors=include) must still
+     * receive the subscription — the 404 guard applies only to the excluded (default) mode.
+     *
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testGetSubscriptionShouldReturnAnonymousDonorWhenIncludedAsAdmin()
+    {
+        $subscription = $this->createSubscriptionWithAnonymousDonor();
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request->set_query_params(
+            [
+                'anonymousDonors' => 'include',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($subscription->id, $data['id']);
+        $this->assertEquals($subscription->donorId, $data['donorId']);
+    }
+
+    /**
      * @since 4.8.0
      *
      * @throws Exception
