@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Improved escaping of donation form template output.
+timestamp: 2026-07-01T22:16:33.529Z

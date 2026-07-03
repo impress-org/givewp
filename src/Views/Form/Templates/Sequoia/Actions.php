@@ -223,6 +223,7 @@ class Actions
     /**
      * Add checkout button
      *
+     * @since TBD Escaped the checkout button label in the Sequoia template.
      * @since 2.7.0
      */
     public function getCheckoutButton()
@@ -237,7 +238,7 @@ class Actions
 		    <input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="%1$s" data-before-validation-label="Donate Now">
 				<span class="give-loading-animation"></span>
 		  </div>',
-            $label
+            esc_attr($label)
         );
     }
 

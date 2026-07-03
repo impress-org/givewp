@@ -5,6 +5,8 @@ use Give\DonationForms\DonationQuery;
 
 /**
  * This template is used to display the goal with [give_goal]
+ *
+ * @since TBD Escaped the goal color when rendering the progress bar.
  */
 
 /**
@@ -257,7 +259,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
         ?>
         <div class="progress-bar">
             <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<?php echo esc_attr( $progress_bar_value ); ?>">
-                <span style="<?php echo $style; ?>"></span>
+                <span style="<?php echo esc_attr( $style ); ?>"></span>
             </div>
         </div>
     <?php endif; ?>
