@@ -14,7 +14,7 @@ trait CheckoutModal
      * @param int   $formId Donation Form ID.
      * @param array $args   Donation Form Arguments.
      *
-     * @since TBD Escaped the submit button label in the Stripe checkout modal.
+     * @since 4.16.3 Escaped the submit button label in the Stripe checkout modal.
      * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::showCheckoutModal implementation of the Stripe Checkout Gateway.
      *
      * @return string

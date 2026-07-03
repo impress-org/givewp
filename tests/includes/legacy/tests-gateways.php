@@ -72,7 +72,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
     /**
      * A request-supplied gateways array must never enable a gateway the admin disabled.
      *
-     * @since TBD
+     * @since 4.16.3
      */
     public function test_enabled_gateways_ignore_post_request_override()
     {
@@ -92,7 +92,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
     /**
      * The v3 gateway settings must ignore a request-supplied gateways_v3 array.
      *
-     * @since TBD
+     * @since 4.16.3
      */
     public function test_enabled_gateways_ignore_post_request_override_v3()
     {
@@ -111,7 +111,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
     /**
      * give_is_gateway_active() must not be fooled by a request-supplied gateways array.
      *
-     * @since TBD
+     * @since 4.16.3
      */
     public function test_is_gateway_active_ignores_post_request_override()
     {
@@ -127,7 +127,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
     /**
      * give_is_gateway_active() must ignore a request-supplied gateways_v3 array for v3 forms.
      *
-     * @since TBD
+     * @since 4.16.3
      */
     public function test_is_gateway_active_ignores_post_request_override_v3()
     {
@@ -143,7 +143,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
     /**
      * Gateway display order must come from saved settings, not a request-supplied array.
      *
-     * @since TBD
+     * @since 4.16.3
      */
     public function test_ordered_gateways_ignore_post_request_override()
     {
@@ -175,7 +175,7 @@ class Test_Gateways extends Give_Unit_Test_Case {
     /**
      * v3 gateway display order must come from saved settings, not a request-supplied array.
      *
-     * @since TBD
+     * @since 4.16.3
      */
     public function test_ordered_gateways_ignore_post_request_override_v3()
     {

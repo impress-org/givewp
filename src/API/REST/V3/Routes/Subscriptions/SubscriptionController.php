@@ -236,7 +236,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Get a subscription.
      *
-     * @since TBD Return 404 for anonymous donors unless explicitly included.
+     * @since 4.16.3 Return 404 for anonymous donors unless explicitly included.
      * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.

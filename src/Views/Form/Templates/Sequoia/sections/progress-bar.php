@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD Escaped the goal color when rendering the progress bar.
+ * @since 4.16.3 Escaped the goal color when rendering the progress bar.
  *
  * @var int $formId
  */

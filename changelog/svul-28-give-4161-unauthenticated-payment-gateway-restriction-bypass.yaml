@@ -1,5 +1,0 @@
-significance: patch
-type: security
-entry: Added additional validation to ensure donation gateway selection respects
-  the enabled payment gateway settings.
-timestamp: 2026-07-01T21:48:54.163Z

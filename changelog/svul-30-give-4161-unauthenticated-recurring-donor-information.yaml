@@ -1,4 +1,0 @@
-significance: patch
-type: security
-entry: Improved the security of the recurring donation REST API.
-timestamp: 2026-07-02T01:15:43.791Z

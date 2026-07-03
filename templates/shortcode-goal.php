@@ -6,7 +6,7 @@ use Give\DonationForms\DonationQuery;
 /**
  * This template is used to display the goal with [give_goal]
  *
- * @since TBD Escaped the goal color when rendering the progress bar.
+ * @since 4.16.3 Escaped the goal color when rendering the progress bar.
  */
 
 /**

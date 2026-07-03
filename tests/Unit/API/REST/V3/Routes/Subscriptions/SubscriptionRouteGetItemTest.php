@@ -305,7 +305,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
      * matching the collection endpoint and DonorController::get_item(). Regression for the
      * unauthenticated recurring-donor disclosure (Sanjorn Keeratirungsan).
      *
-     * @since TBD
+     * @since 4.16.3
      *
      * @throws Exception
      */
@@ -325,7 +325,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
      * An administrator explicitly requesting anonymous donors (anonymousDonors=include) must still
      * receive the subscription — the 404 guard applies only to the excluded (default) mode.
      *
-     * @since TBD
+     * @since 4.16.3
      *
      * @throws Exception
      */

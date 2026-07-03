@@ -223,7 +223,7 @@ class Actions
     /**
      * Add checkout button
      *
-     * @since TBD Escaped the checkout button label in the Sequoia template.
+     * @since 4.16.3 Escaped the checkout button label in the Sequoia template.
      * @since 2.7.0
      */
     public function getCheckoutButton()
