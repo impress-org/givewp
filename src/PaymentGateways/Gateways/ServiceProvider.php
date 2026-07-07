@@ -20,6 +20,8 @@ use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePayme
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\ChargeRefunded;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionCreated;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionDeleted;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionResumed;
+use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\CustomerSubscriptionUpdated;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentFailed;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\InvoicePaymentSucceeded;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Webhooks\Listeners\PaymentIntentPaymentFailed;
@@ -115,6 +117,16 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction(
             'give_recurring_stripe_processing_customer_subscription_deleted',
             CustomerSubscriptionDeleted::class
+        );
+
+        Hooks::addAction(
+            'give_recurring_stripe_processing_customer_subscription_updated',
+            CustomerSubscriptionUpdated::class
+        );
+
+        Hooks::addAction(
+            'give_stripe_event_customer.subscription.resumed',
+            CustomerSubscriptionResumed::class
         );
     }
 
