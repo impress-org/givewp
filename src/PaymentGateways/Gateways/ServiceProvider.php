@@ -125,7 +125,7 @@ class ServiceProvider implements ServiceProviderInterface
         );
 
         Hooks::addAction(
-            'give_stripe_event_customer.subscription.resumed',
+            'give_recurring_stripe_processing_customer_subscription_resumed',
             CustomerSubscriptionResumed::class
         );
     }
