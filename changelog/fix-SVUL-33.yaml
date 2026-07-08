@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Added additional escaping to donor information displayed in the admin.
+timestamp: 2026-07-08T14:07:58.990Z

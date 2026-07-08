@@ -506,7 +506,7 @@ function give_donor_view( $donor ) {
 
                                 <span class="donor-user-id info-item editable">
 									<?php
-                                    echo $donor_phone_number; ?>
+                                    echo esc_html( $donor_phone_number ); ?>
 								</span>
                             </td>
                         </tr>
@@ -519,11 +519,11 @@ function give_donor_view( $donor ) {
 							</th>
 							<td>
 								<span class="donor-user-id info-item edit-item">
-									<input name="give_donor_company" value="<?php echo $donor_company; ?>" type="text">
+									<input name="give_donor_company" value="<?php echo esc_attr( $donor_company ); ?>" type="text">
 								</span>
 
 								<span class="donor-user-id info-item editable">
-									<?php echo $donor_company; ?>
+									<?php echo esc_html( $donor_company ); ?>
 								</span>
 							</td>
 						</tr>
