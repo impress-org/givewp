@@ -969,6 +969,8 @@ add_action( 'wp_ajax_give_subscription_import', 'give_subscription_import_callba
  */
 
 function give_core_settings_import_callback() {
+	check_ajax_referer( 'give_core_settings_import' );
+
 	// Bailout.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();

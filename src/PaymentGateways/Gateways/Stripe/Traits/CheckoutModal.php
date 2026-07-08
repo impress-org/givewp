@@ -14,6 +14,7 @@ trait CheckoutModal
      * @param int   $formId Donation Form ID.
      * @param array $args   Donation Form Arguments.
      *
+     * @since 4.16.3 Escaped the submit button label in the Stripe checkout modal.
      * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::showCheckoutModal implementation of the Stripe Checkout Gateway.
      *
      * @return string
@@ -129,7 +130,7 @@ trait CheckoutModal
                                 '<input type="submit" class="%1$s" id="%2$s" value="%3$s" data-before-validation-label="%3$s" name="%4$s" data-is_legacy_form="%5$s" disabled/>',
                                 FormUtils::isLegacyForm() ? 'give-btn give-stripe-checkout-modal-donate-button' : 'give-btn give-stripe-checkout-modal-sequoia-donate-button',
                                 "give-stripe-checkout-modal-donate-button-{$idPrefix}",
-                                $display_label,
+                                esc_attr($display_label),
                                 'give_stripe_modal_donate',
                                 FormUtils::isLegacyForm()
                             );

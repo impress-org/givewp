@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 4.16.2
+Stable tag: 4.16.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.16.3: July 6th, 2026 =
+* Security: Added additional validation to ensure donation gateway selection respects the enabled payment gateway settings.
+* Security: Improved escaping of donation form template output.
+* Security: Improved the security of the recurring donation REST API.
+
 = 4.16.2: July 1st, 2026 =
 * Security: Added additional escaping and sanitization to the Sequoia (Multi-Step Form) template settings and donation form markup (CVE-2026-13704).
 

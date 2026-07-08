@@ -4,6 +4,6 @@
     <?php if (!empty($headerBackgroundColor)) : ?>
     --give-header-background-color--for-rgb: <?= hexdec(substr($headerBackgroundColor, 1, 2)) ?>, <?= hexdec(substr($headerBackgroundColor, 3, 2)) ?>, <?= hexdec(substr($headerBackgroundColor, 5, 2)) ?>;
     <?php endif; ?>
-    --give-header-stats-progressbar-color: <?= $statsProgressBarColor ?>;
+    --give-header-stats-progressbar-color: <?= sanitize_hex_color($statsProgressBarColor) ?? '' ?>;
     --give-primary-font: '<?= $primaryFont; ?>';
 }
