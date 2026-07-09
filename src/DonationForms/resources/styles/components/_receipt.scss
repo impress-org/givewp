@@ -318,6 +318,10 @@
     &-heading {
         margin-block-end: 1rem;
 
+        > br {
+            display: none;
+        }
+
         &::after {
             position: absolute;
             content: '';
