@@ -245,8 +245,8 @@ class Actions
     /**
      * Add wrapper and introduction text to payment information section
      *
-     * @since 2.7.0
      * @since TBD Escaped the headline output.
+     * @since 2.7.0
      *
      * @param int $formId
      */
@@ -281,8 +281,8 @@ class Actions
     /**
      * Start choose amount section
      *
-     * @since 2.7.0
      * @since TBD Escaped the donate button label output.
+     * @since 2.7.0
      */
     public function getStartWrapperHTMLForAmountSection()
     {
@@ -317,8 +317,8 @@ class Actions
     /**
      * Close choose amount section
      *
-     * @since 2.7.0
      * @since TBD Escaped the continue button label output.
+     * @since 2.7.0
      */
     public function getCloseWrapperHTMLForAmountSection()
     {

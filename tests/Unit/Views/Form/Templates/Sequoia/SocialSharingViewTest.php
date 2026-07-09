@@ -4,8 +4,14 @@ namespace Give\Tests\Unit\Views\Form\Templates\Sequoia;
 
 use Give\Tests\TestCase;
 
+/**
+ * @since TBD
+ */
 final class SocialSharingViewTest extends TestCase
 {
+    /**
+     * @since TBD
+     */
     public function testTwitterMessageIsEmittedInAnEscapedSingleQuotedStringNotATemplateLiteral(): void
     {
         // Input containing characters that are significant in JS string / HTML attribute contexts.
@@ -24,6 +30,8 @@ final class SocialSharingViewTest extends TestCase
      * Render the Sequoia social-sharing view with the given twitter message.
      * The view reads $options from local scope, so it is required under output
      * buffering with a crafted array.
+     *
+     * @since TBD
      */
     private function renderView(string $twitterMessage): string
     {
