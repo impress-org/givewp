@@ -772,7 +772,7 @@ function give_get_receipt() {
 		give_die();
 	}
 
-	$atts = (array) json_decode( $get_data['shortcode_atts'] );
+	$atts = (array) json_decode( sanitize_text_field( $get_data['shortcode_atts'] ) );
 	$data = give_receipt_shortcode( $atts );
 
 	wp_send_json( $data );
