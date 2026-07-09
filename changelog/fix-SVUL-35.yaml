@@ -1,4 +1,4 @@
 significance: patch
 type: security
-entry: Added additional escaping to the Sequoia (Multi-Step Form) template output.
+entry: Added additional escaping to the Sequoia (Multi-Step Form) template output. (CVE-2026-14987)
 timestamp: 2026-07-08T18:53:52.729Z

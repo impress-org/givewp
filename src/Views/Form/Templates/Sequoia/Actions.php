@@ -246,6 +246,7 @@ class Actions
      * Add wrapper and introduction text to payment information section
      *
      * @since 2.7.0
+     * @since TBD Escaped the headline output.
      *
      * @param int $formId
      */
@@ -262,7 +263,7 @@ class Actions
 
         printf(
             '<div class="give-section payment"><div class="heading">%1$s</div><div class="subheading">%2$s</div>',
-            $headline,
+            esc_html($headline),
             $description
         );
     }
@@ -281,6 +282,7 @@ class Actions
      * Start choose amount section
      *
      * @since 2.7.0
+     * @since TBD Escaped the donate button label output.
      */
     public function getStartWrapperHTMLForAmountSection()
     {
@@ -298,7 +300,7 @@ class Actions
         $arrow = is_rtl() ? 'left' : 'right';
         printf(
             '<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
-            $label,
+            esc_html($label),
             $arrow
         );
 
@@ -316,6 +318,7 @@ class Actions
      * Close choose amount section
      *
      * @since 2.7.0
+     * @since TBD Escaped the continue button label output.
      */
     public function getCloseWrapperHTMLForAmountSection()
     {
@@ -327,7 +330,7 @@ class Actions
 
         printf(
             '<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
-            $label,
+            esc_html($label),
             $arrow
         );
     }
