@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * @since TBD Escaped the introduction headline output.
  * @since 4.16.2 Escape introduction image URL when rendering the template.
  */
 
@@ -20,7 +21,7 @@ $image = $formTemplate->getFormFeaturedImage($formInfo->ID);
 <div class="give-section introduction">
     <h2 class="headline">
         <?php
-        echo $headline; ?>
+        echo esc_html($headline); ?>
     </h2>
     <?php
     if ( ! empty($description)) : ?>
