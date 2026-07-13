@@ -308,7 +308,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
- * @since TBD Escaped the donor company and phone output.
+ * @since 4.16.4 Escaped the donor company and phone output.
  * @since 3.7.0 Add "phone" field
  * @since  1.0
  *

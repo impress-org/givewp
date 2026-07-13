@@ -126,7 +126,7 @@ class IntlTelInput
     }
 
     /**
-     * @since TBD Escaped the value attribute output.
+     * @since 4.16.4 Escaped the value attribute output.
      * @since 3.9.0
      */
     public static function getHtmlInput(string $value, string $id, string $class = '', string $name = ''): string

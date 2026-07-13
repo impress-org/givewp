@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @since TBD Escaped the introduction headline output.
+ * @since 4.16.4 Escaped the introduction headline output.
  * @since 4.16.2 Escape introduction image URL when rendering the template.
  */
 

@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 4.16.4: July 14th, 2026 =
+* Security: Added additional validation to the core settings importer.
+* Security: Added additional escaping to donor information displayed in the admin.
+* Security: Added additional escaping to the Sequoia (Multi-Step Form) template output. (CVE-2026-14987)
+
 = 4.16.3: July 6th, 2026 =
 * Security: Added additional validation to ensure donation gateway selection respects the enabled payment gateway settings.
 * Security: Improved escaping of donation form template output.

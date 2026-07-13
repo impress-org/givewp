@@ -8,7 +8,7 @@ use WP_User;
 /**
  * Covers nonce validation in the give_core_settings_import AJAX handler.
  *
- * @since TBD
+ * @since 4.16.4
  *
  * @covers ::give_core_settings_import_callback
  */
@@ -18,7 +18,7 @@ final class CoreSettingsImportNonceTest extends WP_Ajax_UnitTestCase
      * Guarantee the handler is registered even when the admin bootstrap did not
      * run in the test environment.
      *
-     * @since TBD
+     * @since 4.16.4
      */
     public function setUp(): void
     {
@@ -32,7 +32,7 @@ final class CoreSettingsImportNonceTest extends WP_Ajax_UnitTestCase
     /**
      * Verifies that requests without a valid nonce are rejected before any option write.
      *
-     * @since TBD
+     * @since 4.16.4
      */
     public function testRejectsRequestWithoutValidNonce(): void
     {
@@ -65,7 +65,7 @@ final class CoreSettingsImportNonceTest extends WP_Ajax_UnitTestCase
     /**
      * Verifies that a request with a valid nonce is still processed.
      *
-     * @since TBD
+     * @since 4.16.4
      */
     public function testAcceptsRequestWithValidNonce(): void
     {
@@ -92,7 +92,7 @@ final class CoreSettingsImportNonceTest extends WP_Ajax_UnitTestCase
      * Logs in as an administrator carrying the give_core_settings capability,
      * independent of whether the role was seeded with GiveWP caps in this env.
      *
-     * @since TBD
+     * @since 4.16.4
      */
     private function loginAsGiveAdmin(): void
     {
