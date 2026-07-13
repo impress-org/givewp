@@ -126,6 +126,7 @@ class IntlTelInput
     }
 
     /**
+     * @since TBD Escaped the value attribute output.
      * @since 3.9.0
      */
     public static function getHtmlInput(string $value, string $id, string $class = '', string $name = ''): string
@@ -148,7 +149,7 @@ class IntlTelInput
         echo $id . '--intl_tel_input'; ?>" class="<?php
         echo $class; ?>" name="<?php
         echo $name; ?>" value="<?php
-        echo $value; ?>" type='text'>
+        echo esc_attr($value); ?>" type='text'>
 
         <span id="<?php
         echo $id . '--error-msg'; ?>" class="give-intl-tel-input-hide" style="color:red;"></span>
