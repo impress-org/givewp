@@ -37,8 +37,8 @@ if (isset($options['thank-you']['sharing']) && $options['thank-you']['sharing'] 
                     url = window.Give.fn.removeURLParameter(url, 'payment-confirmation');
                     url = window.Give.fn.removeURLParameter(url, 'payment-id');
                     }
-                    const text = `<?php
-                echo $options['thank-you']['twitter_message']; ?>`;
+                    const text = '<?php
+                    echo esc_js($options['thank-you']['twitter_message']); ?>';
                     // Open new window with prompt for Twitter sharing
                     window.Give.share.fn.twitter(url, text);
                     return false;
