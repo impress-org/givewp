@@ -119,13 +119,15 @@ class StripePaymentElementGatewayTest extends TestCase
             ->method('refundStripePayment')
             ->willReturn($mockRefund);
 
+        $noteCountBeforeRefund = Donation::find($donation->id)->notes()->count();
+
         $mockGateway->refundDonation($donation);
 
         $donation = Donation::find($donation->id);
         $notes = $donation->notes()->getAll();
 
-        $this->assertCount(1, $notes);
-        $this->assertStringContainsString('Donation refunded in Stripe', $notes[0]->content);
+        $this->assertCount($noteCountBeforeRefund + 1, $notes);
+        $this->assertStringContainsString('Donation refunded in Stripe', $notes[count($notes) - 1]->content);
     }
 
     /**
@@ -146,6 +148,8 @@ class StripePaymentElementGatewayTest extends TestCase
             ->method('refundStripePayment')
             ->willThrowException(new Exception('Stripe API error'));
 
+        $noteCountBeforeRefund = Donation::find($donation->id)->notes()->count();
+
         try {
             $mockGateway->refundDonation($donation);
         } catch (PaymentGatewayException $e) {
@@ -155,8 +159,8 @@ class StripePaymentElementGatewayTest extends TestCase
         $donation = Donation::find($donation->id);
         $notes = $donation->notes()->getAll();
 
-        $this->assertCount(1, $notes);
-        $this->assertStringContainsString('NOT refunded', $notes[0]->content);
+        $this->assertCount($noteCountBeforeRefund + 1, $notes);
+        $this->assertStringContainsString('NOT refunded', $notes[count($notes) - 1]->content);
     }
 
     /**
