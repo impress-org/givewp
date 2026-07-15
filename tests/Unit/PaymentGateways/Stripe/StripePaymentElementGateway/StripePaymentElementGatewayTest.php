@@ -127,7 +127,7 @@ class StripePaymentElementGatewayTest extends TestCase
         $notes = $donation->notes()->getAll();
 
         $this->assertCount($noteCountBeforeRefund + 1, $notes);
-        $this->assertStringContainsString('Donation refunded in Stripe', $notes[count($notes) - 1]->content);
+        $this->assertStringContainsString('Donation refunded in Stripe', $notes[0]->content);
     }
 
     /**
@@ -160,7 +160,7 @@ class StripePaymentElementGatewayTest extends TestCase
         $notes = $donation->notes()->getAll();
 
         $this->assertCount($noteCountBeforeRefund + 1, $notes);
-        $this->assertStringContainsString('NOT refunded', $notes[count($notes) - 1]->content);
+        $this->assertStringContainsString('NOT refunded', $notes[0]->content);
     }
 
     /**
