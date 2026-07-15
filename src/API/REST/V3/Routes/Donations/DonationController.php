@@ -410,7 +410,12 @@ class DonationController extends WP_REST_Controller
                 $handler->handle($donation);
             }
 
-            $response = $this->prepare_item_for_response($donation->toArray(), $request);
+            $item = (new DonationViewModel($donation))
+                ->includeSensitiveData(true)
+                ->anonymousMode(new DonationAnonymousMode('include'))
+                ->exports();
+
+            $response = $this->prepare_item_for_response($item, $request);
 
             return rest_ensure_response($response);
         } catch (\Exception $exception) {
