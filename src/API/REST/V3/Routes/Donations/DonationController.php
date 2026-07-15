@@ -414,7 +414,11 @@ class DonationController extends WP_REST_Controller
 
             return rest_ensure_response($response);
         } catch (\Exception $exception) {
-            return new WP_REST_Response(__('Failed to refund donation', 'give'), 500);
+            return new WP_REST_Response([
+                'message' => __('Failed to refund donation', 'give'),
+                'error' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+            ], 500);
         }
     }
 
