@@ -37,12 +37,13 @@ trait StripePaymentElementRepository
      * @since 4.7.0
      *
      * @param Donation $donation
-     * @param string   $stripeConnectAccountId
      *
      * @throws ApiErrorException
      */
-    protected function refundStripePayment(Donation $donation, string $stripeConnectAccountId): Refund
+    protected function refundStripePayment(Donation $donation): Refund
     {
+        $stripeConnectAccountId = give_stripe_get_connected_account_id($donation->formId);
+
         $options = [];
         if ($stripeConnectAccountId !== '') {
             $options['stripe_account'] = $stripeConnectAccountId;

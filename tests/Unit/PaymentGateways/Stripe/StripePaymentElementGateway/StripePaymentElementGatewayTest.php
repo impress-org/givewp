@@ -66,7 +66,7 @@ class StripePaymentElementGatewayTest extends TestCase
         /** @var MockObject $mockGateway */
         $mockGateway->expects($this->once())
             ->method('refundStripePayment')
-            ->with($donation, $this->anything())
+            ->with($donation)
             ->willReturn($mockRefund);
 
         $result = $mockGateway->refundDonation($donation);
