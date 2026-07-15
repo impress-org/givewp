@@ -165,6 +165,19 @@ class DonationController extends WP_REST_Controller
                         'type' => 'integer',
                         'required' => true,
                     ],
+                    'includeSensitiveData' => [
+                        'type' => 'boolean',
+                        'default' => false,
+                    ],
+                    'anonymousDonations' => [
+                        'type' => 'string',
+                        'default' => 'exclude',
+                        'enum' => [
+                            'exclude',
+                            'include',
+                            'redact',
+                        ],
+                    ],
                 ],
             ],
             'schema' => [$this, 'get_public_item_schema'],
@@ -410,9 +423,12 @@ class DonationController extends WP_REST_Controller
                 $handler->handle($donation);
             }
 
+            $includeSensitiveData = $request->get_param('includeSensitiveData');
+            $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+
             $item = (new DonationViewModel($donation))
-                ->includeSensitiveData(true)
-                ->anonymousMode(new DonationAnonymousMode('include'))
+                ->includeSensitiveData($includeSensitiveData)
+                ->anonymousMode($donationAnonymousMode)
                 ->exports();
 
             $response = $this->prepare_item_for_response($item, $request);
