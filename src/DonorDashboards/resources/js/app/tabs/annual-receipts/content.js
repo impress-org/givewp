@@ -1,4 +1,4 @@
-import {Fragment, useEffect} from 'react';
+import { Fragment, useEffect } from '@wordpress/element';
 
 import {__} from '@wordpress/i18n';
 

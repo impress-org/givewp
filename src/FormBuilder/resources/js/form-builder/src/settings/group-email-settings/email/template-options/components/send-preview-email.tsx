@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {Button, TextControl} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';

@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import { useContext, useState } from '@wordpress/element';
 import {Button, Modal} from '@wordpress/components';
 import {ShepherdTourContext} from 'react-shepherd';
 import {__} from '@wordpress/i18n';

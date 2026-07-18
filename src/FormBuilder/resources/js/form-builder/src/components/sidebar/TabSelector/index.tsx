@@ -1,5 +1,4 @@
 import {Button, Path, SVG} from '@wordpress/components';
-import React from 'react';
 
 type TabSelector = {
     close: () => void;

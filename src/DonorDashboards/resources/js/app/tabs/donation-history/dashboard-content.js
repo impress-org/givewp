@@ -1,4 +1,4 @@
-import {Fragment} from 'react';
+import { Fragment } from '@wordpress/element';
 
 import DonationTable from '../../components/donation-table';
 import Heading from '../../components/heading';

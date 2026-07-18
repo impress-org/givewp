@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, createRef, Fragment } from 'react';
+import { useEffect, createRef, Fragment } from '@wordpress/element';
 import './style.scss';
 
 const List = ( { title, onScrollEnd, children } ) => {

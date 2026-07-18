@@ -2,7 +2,7 @@ import {getAvailableFormCategories, getInitialFormCategories} from "./windowData
 import {buildTermsTree} from "./utils/terms";
 import {CheckboxControl} from "@wordpress/components";
 import {decodeEntities} from "@wordpress/html-entities";
-import {useMemo} from "react";
+import { useMemo } from '@wordpress/element';
 
 /**
  * @since 3.16.0

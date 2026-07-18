@@ -1,6 +1,5 @@
 import {__} from '@wordpress/i18n';
 import Chart from 'react-apexcharts';
-import React from 'react';
 
 import styles from './styles.module.scss';
 import {amountFormatter, getCampaignOptionsWindowData} from '@givewp/campaigns/utils';

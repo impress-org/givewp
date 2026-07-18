@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import { useContext } from '@wordpress/element';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {__, sprintf} from '@wordpress/i18n';
 import RowAction from '@givewp/components/ListTable/RowAction';

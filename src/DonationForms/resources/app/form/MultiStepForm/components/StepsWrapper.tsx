@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import PreviousButton from '@givewp/forms/app/form/MultiStepForm/components/PreviousButton';
 import {__, sprintf} from '@wordpress/i18n';
 import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepForm/store';

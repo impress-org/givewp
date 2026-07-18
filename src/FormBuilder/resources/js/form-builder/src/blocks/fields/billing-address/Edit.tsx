@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls, RichText} from '@wordpress/block-editor';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 
 const CountrySelect = ({countryList, countryLabel}) => {
     const [selectedCountry, setSelectedCountry] = useState(countryList[0] ?? '');

@@ -1,5 +1,5 @@
 import { useStoreValue } from '../store';
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from '@wordpress/element';
 import axios from 'axios';
 import { setGiveStatus, setPageLoaded } from '../store/actions';
 import { getSampleData } from './sample';

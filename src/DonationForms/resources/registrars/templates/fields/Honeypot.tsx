@@ -1,5 +1,5 @@
 import {FieldHasDescriptionProps} from '@givewp/forms/propTypes';
-import {useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 
 /**

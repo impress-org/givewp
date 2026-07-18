@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import CurrencyInput from 'react-currency-input-field';
 import {CurrencyInputOnChangeValues} from 'react-currency-input-field/dist/components/CurrencyInputProps';
 
-import {useEffect, useRef} from "react";
+import { useEffect, useRef } from '@wordpress/element';
 /**
  * @since 3.0.0
  */

@@ -4,7 +4,7 @@ import {format, parse} from 'date-fns';
 import {DateProps} from '@givewp/forms/propTypes';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../styles.module.scss';
-import {useEffect, useRef} from "react";
+import { useEffect, useRef } from '@wordpress/element';
 
 /**
  * @since 4.3.2 manually focus the visible input when error is present.

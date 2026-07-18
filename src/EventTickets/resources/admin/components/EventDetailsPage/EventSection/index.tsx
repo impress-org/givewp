@@ -1,6 +1,6 @@
 import {__, _x} from '@wordpress/i18n';
 import {format} from 'date-fns';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import EventFormModal from '../../EventFormModal';
 import locale from '../../../../date-fns-locale';
 import SectionTable from '../SectionTable';

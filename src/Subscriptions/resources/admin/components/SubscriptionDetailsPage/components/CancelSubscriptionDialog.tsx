@@ -1,7 +1,7 @@
 import ConfirmationDialog from "@givewp/components/AdminDetailsPage/ConfirmationDialog";
 import { __ } from "@wordpress/i18n";
 import styles from "../SubscriptionDetailsPage.module.scss";
-import { useState } from "react";
+import { useState } from '@wordpress/element';
 import { Subscription } from '@givewp/subscriptions/admin/components/types';
 import useSubscriptionCancel from "@givewp/subscriptions/hooks/useSubscriptionCancel";
 import { getSubscriptionOptionsWindowData } from "@givewp/subscriptions/utils";

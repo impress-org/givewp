@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import { useState } from '@wordpress/element';
 import styles from './style.module.scss';
 import {__} from '@wordpress/i18n';
 import {RecommendedProductData, useRecommendations} from '@givewp/promotions/hooks/useRecommendations';

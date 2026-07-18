@@ -1,6 +1,6 @@
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from '@wordpress/element';
 
 import StripeCardControl from './stripe-card-control';
 

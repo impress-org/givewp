@@ -1,0 +1,4 @@
+significance: minor
+type: dev
+entry: Enforced the `@wordpress/element` import standard for React runtime APIs via ESLint. Added `.eslintrc.js`, `.eslintignore`, and `lint:js` / `lint:js:fix` npm scripts. Migrated 271 files to import hooks, components, and shared types from `@wordpress/element`, keeping `import type` for React types that `@wordpress/element` does not re-export.
+timestamp: 2026-07-19T00:00:00.000Z

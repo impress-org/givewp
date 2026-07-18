@@ -1,7 +1,7 @@
 import apiFetch from '@wordpress/api-fetch';
 import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { useState } from 'react';
+import { useState } from '@wordpress/element';
 import { Subscription } from '../admin/components/types';
 
 /**

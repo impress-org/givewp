@@ -1,5 +1,5 @@
 import getWindowData from '../../index';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 
 export function useDismiss() {
     const [showBanner, setShowBanner] = useState<boolean>(true);

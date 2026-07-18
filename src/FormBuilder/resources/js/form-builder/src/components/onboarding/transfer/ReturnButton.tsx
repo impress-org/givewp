@@ -1,4 +1,5 @@
-import {useState, useEffect, CSSProperties} from 'react';
+import { useState, useEffect } from '@wordpress/element';
+import type { CSSProperties } from 'react';
 import {__} from '@wordpress/i18n';
 import {ArrowUpLeft, ExitIcon} from '@givewp/components/AdminUI/Icons'
 

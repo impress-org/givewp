@@ -1,5 +1,5 @@
 // Dependencies
-import {Fragment, useState} from 'react';
+import { Fragment, useState } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {getWindowData} from '../../utils';
 

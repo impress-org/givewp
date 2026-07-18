@@ -6,7 +6,7 @@ import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { addQueryArgs } from '@wordpress/url';
 import cx from 'classnames';
-import { useState } from 'react';
+import { useState } from '@wordpress/element';
 import useSWR from 'swr';
 import Spinner from '../Spinner';
 import { ConfirmationDialogIcon, DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon } from './Icons';

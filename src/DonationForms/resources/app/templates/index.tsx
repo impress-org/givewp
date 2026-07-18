@@ -1,5 +1,5 @@
 import type {FC, ReactNode} from 'react';
-import {useMemo} from 'react';
+import { useMemo } from '@wordpress/element';
 import {Element, Field, Group} from '@givewp/forms/types';
 
 /**

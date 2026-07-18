@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
 
 export const useResetPage = (data, page, setPage, filters) => {
     //if we're displaying a non-existent page (like after deleting an item), go to the last available page

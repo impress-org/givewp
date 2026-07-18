@@ -3,7 +3,7 @@ import MobileLayout from '../mobile-layout';
 import Auth from '../auth';
 import {useWindowSize, useAccentColor} from '../../hooks';
 import {createGlobalStyle} from 'styled-components';
-import {Fragment} from 'react';
+import { Fragment } from '@wordpress/element';
 
 const App = () => {
     const {width} = useWindowSize();

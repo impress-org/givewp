@@ -2,7 +2,7 @@ import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/Donat
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 import type { GoalType } from '@givewp/forms/propTypes';
 import type { Form as DonationForm } from '@givewp/forms/types';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from '@wordpress/element';
 import { withTemplateWrapper } from '../templates';
 
 const formTemplates = window.givewp.form.templates;

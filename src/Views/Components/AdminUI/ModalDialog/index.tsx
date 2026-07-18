@@ -1,4 +1,5 @@
-import {MouseEventHandler, useCallback, useEffect} from 'react';
+import { useCallback, useEffect } from '@wordpress/element';
+import type { MouseEventHandler } from 'react';
 import {createPortal} from 'react-dom';
 import {__} from '@wordpress/i18n';
 import {ExitIcon} from '@givewp/components/AdminUI/Icons';

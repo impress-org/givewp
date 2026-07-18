@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import {InspectorControls} from '@wordpress/block-editor';
 import {noop} from 'lodash';
 import {BlockEditProps} from '@wordpress/blocks';
-import {FocusEventHandler, PropsWithChildren} from 'react';
+import type { FocusEventHandler, PropsWithChildren } from 'react';
 import Label from '@givewp/form-builder/blocks/fields/settings/Label';
 import Placeholder from '@givewp/form-builder/blocks/fields/settings/Placeholder';
 import Required from '@givewp/form-builder/blocks/fields/settings/Required';

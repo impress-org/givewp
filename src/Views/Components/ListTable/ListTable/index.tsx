@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import {__, _n, sprintf} from '@wordpress/i18n';
 import cx from 'classnames';
 import styles from './ListTable.module.scss';

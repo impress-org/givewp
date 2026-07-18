@@ -1,6 +1,6 @@
 import useSetPreviousStep from '@givewp/forms/app/form/MultiStepForm/hooks/useSetPreviousStep';
 import {useDonationFormMultiStepState} from '@givewp/forms/app/form/MultiStepForm/store';
-import {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
 /**
  * @since 3.0.0

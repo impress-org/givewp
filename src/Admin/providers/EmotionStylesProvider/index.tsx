@@ -1,4 +1,5 @@
-import {useMemo, useRef, useState, useEffect, ReactNode} from 'react';
+import { useMemo, useRef, useState, useEffect } from '@wordpress/element';
+import type { ReactNode } from 'react';
 import {CacheProvider} from '@emotion/react';
 import createCache from '@emotion/cache';
 

@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import { useRef, useState } from '@wordpress/element';
 import './styles.scss';
 import getWindowData from '../../../index';
 

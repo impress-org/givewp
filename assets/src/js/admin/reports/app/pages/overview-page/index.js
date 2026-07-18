@@ -4,7 +4,7 @@
 
 // Vendor dependencies
 import { __ } from '@wordpress/i18n';
-import { Fragment } from 'react';
+import { Fragment } from '@wordpress/element';
 
 // Store-related dependencies
 import { useStoreValue } from '../../../store';

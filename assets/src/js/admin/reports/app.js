@@ -2,7 +2,6 @@
 
 // Vendor dependencies
 import { HashRouter as Router } from 'react-router-dom';
-import React from 'react';
 import {createRoot} from 'react-dom/client';
 
 // Reports app

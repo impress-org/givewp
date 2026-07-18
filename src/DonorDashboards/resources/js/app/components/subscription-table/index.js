@@ -1,4 +1,4 @@
-import {Fragment, useState} from 'react';
+import { Fragment, useState } from '@wordpress/element';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {__} from '@wordpress/i18n';
 

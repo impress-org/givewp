@@ -1,4 +1,4 @@
-import {createRoot} from '@wordpress/element';
+import {createRoot} from 'react-dom/client';
 import getDefaultValuesFromSections from './utilities/getDefaultValuesFromSections';
 import Form from './form/Form';
 import {DonationFormStateProvider} from './store';
@@ -13,7 +13,7 @@ import MultiStepForm from '@givewp/forms/app/form/MultiStepForm';
 import getDonationFormNodeSettings from '@givewp/forms/app/utilities/getDonationFormNodeSettings';
 import {DonationFormSettingsProvider} from '@givewp/forms/app/store/form-settings';
 import useDonationFormPubSub from '@givewp/forms/app/utilities/useDonationFormPubSub';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import type {Form as DonationForm} from '@givewp/forms/types';
 
 const formTemplates = window.givewp.form.templates;

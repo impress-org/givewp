@@ -1,5 +1,6 @@
 import {CurrencySwitcherSetting} from '@givewp/forms/types';
-import {ChangeEvent, useMemo} from 'react';
+import { useMemo } from '@wordpress/element';
+import type { ChangeEvent } from 'react';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 
 /**

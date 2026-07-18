@@ -1,4 +1,5 @@
-import {createContext, ReactNode, useContext} from 'react';
+import { createContext, useContext } from '@wordpress/element';
+import type { ReactNode } from 'react';
 import {CurrencySwitcherSetting} from '@givewp/forms/types';
 
 const StoreContext = createContext(null);
