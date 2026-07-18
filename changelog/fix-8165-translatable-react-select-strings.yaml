@@ -1,0 +1,4 @@
+significance: patch
+type: fixed
+entry: Made the Loading and No options strings translatable in the async Campaign filter dropdowns on the Donations and Donors admin list tables.
+timestamp: 2026-07-19T00:00:00.000Z
