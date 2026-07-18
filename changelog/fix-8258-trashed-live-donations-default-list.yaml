@@ -1,0 +1,4 @@
+significance: patch
+type: fixed
+entry: Fixed an issue where trashed live donations remained in the default Donations list because the live-mode conditions were not grouped.
+timestamp: 2026-07-18T00:00:00.000Z

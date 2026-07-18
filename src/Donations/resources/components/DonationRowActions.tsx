@@ -5,12 +5,15 @@ import RowAction from '@givewp/components/ListTable/RowAction';
 import { useSWRConfig } from 'swr';
 
 /**
+ * @unreleased Consider the row status so already-trashed donations show Restore/Delete.
  * @since 4.12.0 Revert delete action to use Donation Actions API and add trash and restore actions.
  * @since 4.6.0 Soft delete donations with Donation v3 API.
  */
 export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters, listTableApi}) => {
     const showConfirmModal = useContext(ShowConfirmModalContext);
     const {mutate} = useSWRConfig();
+
+    const isTrashed = item?.status?.includes('trash') || parameters?.status?.includes('trash');
 
     const fetchAndUpdateErrors = async (parameters, endpoint, id, method) => {
         const response = await listTableApi.fetchWithArgs(endpoint, {ids: [id]}, method);
@@ -41,7 +44,7 @@ export const DonationRowActions = ({item, removeRow, setUpdateErrors, parameters
 
     return (
         <>
-            {parameters?.status?.includes('trash') ? (
+            {isTrashed ? (
                 <>
                     <RowAction
                         onClick={confirmRestoreModal}
