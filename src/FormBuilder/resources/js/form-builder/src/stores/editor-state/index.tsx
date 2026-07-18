@@ -1,4 +1,5 @@
-import {createContext, ReactNode, useContext, useReducer} from 'react';
+import { createContext, useContext, useReducer } from '@wordpress/element';
+import type { ReactNode } from 'react';
 import editorStateReducer, {setEditorMode} from './reducer';
 
 export interface EditorState {

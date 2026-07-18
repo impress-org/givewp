@@ -6,7 +6,7 @@ import {InspectorControls} from '@wordpress/block-editor';
 import IntlTelInput from 'intl-tel-input/react';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
-import {useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
 
 /**
  * @since 3.9.0

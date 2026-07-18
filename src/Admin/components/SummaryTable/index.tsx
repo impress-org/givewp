@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ReactNode } from 'react';
 import classnames from 'classnames';
 import Spinner from '@givewp/src/Admin/components/Spinner';
 import styles from './styles.module.scss';
@@ -9,7 +9,7 @@ import styles from './styles.module.scss';
  */
 export type SummaryItem = {
   label: string;
-  value: string | React.ReactNode;
+  value: string | ReactNode;
   isPill?: boolean;
 };
 

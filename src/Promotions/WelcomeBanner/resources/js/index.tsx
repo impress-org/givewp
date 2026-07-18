@@ -1,5 +1,5 @@
 import App from './app/app';
-import {StrictMode} from 'react';
+import { StrictMode } from '@wordpress/element';
 import {createRoot} from 'react-dom/client';
 
 type windowData = {

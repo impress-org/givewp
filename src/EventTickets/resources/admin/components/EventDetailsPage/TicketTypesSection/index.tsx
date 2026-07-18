@@ -1,7 +1,7 @@
 import {__, sprintf} from '@wordpress/i18n';
 import styles from './TicketTypesSection.module.scss';
 import SectionTable from '../SectionTable';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import TicketTypeFormModal from '../../TicketTypeFormModal';
 import {TicketTypeFormContext} from '../../TicketTypeFormModal/ticketTypeFormContext';
 import {TicketTypesRowActions} from './TicketTypesRowActions';

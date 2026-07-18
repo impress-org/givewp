@@ -3,7 +3,6 @@
 // Vendor dependencies
 import {HashRouter as Router} from 'react-router-dom';
 import {createRoot} from 'react-dom/client';
-import React from 'react';
 import {Provider} from 'react-redux';
 
 import {library} from '@fortawesome/fontawesome-svg-core';

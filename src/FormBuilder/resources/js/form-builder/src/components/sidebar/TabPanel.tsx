@@ -69,7 +69,7 @@ export default function TabPanel({
         if (!newSelectedTab) {
             setSelected(initialTabName || (tabs.length > 0 ? tabs[0].name : null));
         }
-    }, [tabs]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [tabs]);
 
     return (
         <div className={className}>

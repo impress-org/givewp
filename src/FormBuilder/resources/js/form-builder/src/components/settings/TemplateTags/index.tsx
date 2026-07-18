@@ -1,4 +1,5 @@
-import { Ref, useState } from "react";
+import { useState } from '@wordpress/element';
+import type { Ref } from 'react';
 import { useCopyToClipboard } from "@wordpress/compose";
 import { __ } from "@wordpress/i18n";
 import { copy as copyIcon } from "@wordpress/icons";

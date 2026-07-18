@@ -1,11 +1,11 @@
-import React from 'react';
+import type { ReactNode } from 'react';
 import styles from './styles.module.scss';
 
 /**
  * @since 4.4.0
  */
 type HeaderProps = {
-    children?: React.ReactNode;
+    children?: ReactNode;
     title: string;
     subtitle?: string;
     href?: string;
@@ -40,13 +40,13 @@ export default function Header({title, subtitle, href, actionText, actionOnClick
 /**
  * @since 4.4.0
  */
-export function HeaderText({children}: {children: React.ReactNode}) {
+export function HeaderText({children}: {children: ReactNode}) {
     return <h2 className={styles.headerText}>{children}</h2>;
 }
 
 /**
  * @since 4.4.0
  */
-export function SubHeaderText({children}: {children: React.ReactNode}) {
+export function SubHeaderText({children}: {children: ReactNode}) {
     return <p className={styles.subHeaderText}>{children}</p>;
 }

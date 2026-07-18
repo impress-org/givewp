@@ -2,7 +2,7 @@
  * External Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from '@wordpress/element';
 import IntlTelInput from 'intl-tel-input/react';
 import 'intl-tel-input/build/css/intlTelInput.css';
 

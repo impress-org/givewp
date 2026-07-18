@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 
 const useToggleState = (initialState = false) => {
     const [state, update] = useState(initialState);

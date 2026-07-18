@@ -1,4 +1,4 @@
-import {createContext, useRef, useState, forwardRef, useImperativeHandle} from 'react';
+import { createContext, useRef, useState, forwardRef, useImperativeHandle } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {A11yDialog} from 'react-a11y-dialog';
 import A11yDialogInstance from 'a11y-dialog';

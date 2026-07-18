@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import AceEditor from 'react-ace';
 import debounce from 'lodash.debounce';
 import {__} from '@wordpress/i18n';

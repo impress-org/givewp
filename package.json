@@ -8,6 +8,8 @@
         "watch": "wp-scripts start",
         "env": "wp-env",
         "env:start": "wp-env start --auto-port",
+        "lint:js": "wp-scripts lint-js",
+        "lint:js:fix": "wp-scripts lint-js --fix",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip"
     },
@@ -64,6 +66,8 @@
         "@types/react-dom": "^18.0.11",
         "@types/wordpress__blocks": "^12.5.0",
         "@types/wordpress__components": "^23.0.1",
+        "@typescript-eslint/eslint-plugin": "^6.21.0",
+        "@typescript-eslint/parser": "^6.21.0",
         "@wordpress/env": "^11.4.0",
         "@wordpress/scripts": "^26.19.0",
         "bats": "^1.13.0",

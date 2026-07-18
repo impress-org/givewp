@@ -1,4 +1,4 @@
-import {Fragment, useMemo, useRef, useState} from 'react';
+import { Fragment, useMemo, useRef, useState } from '@wordpress/element';
 import FieldRow from '../field-row';
 import Button from '../button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

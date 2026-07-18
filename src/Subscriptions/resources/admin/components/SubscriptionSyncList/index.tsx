@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from '@wordpress/element';
 import { __ } from "@wordpress/i18n";
 import classnames from 'classnames';
 import SyncDetails,{ SyncPaymentDetails } from "./Details";

@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {useRef, useState} from 'react';
+import { useRef, useState } from '@wordpress/element';
 import {close} from '@wordpress/icons';
 import {Button, DatePicker, DateTimePicker, PanelRow, Popover, TextControl} from '@wordpress/components';
 

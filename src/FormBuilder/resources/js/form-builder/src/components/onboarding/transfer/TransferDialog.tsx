@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';
 import {Interweave} from 'interweave';

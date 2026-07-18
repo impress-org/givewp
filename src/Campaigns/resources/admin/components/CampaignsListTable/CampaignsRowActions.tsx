@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import { useContext } from '@wordpress/element';
 import {useSWRConfig} from 'swr';
 import {__, sprintf} from '@wordpress/i18n';
 import RowAction from '@givewp/components/ListTable/RowAction';

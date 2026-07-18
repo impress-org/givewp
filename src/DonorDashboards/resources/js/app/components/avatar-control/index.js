@@ -1,4 +1,4 @@
-import {useCallback, useState, useEffect} from 'react';
+import { useCallback, useState, useEffect } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {useDropzone} from 'react-dropzone';
 

@@ -1,5 +1,5 @@
 // Import vendor dependencies
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer } from '@wordpress/element';
 
 /**
  * Using existing React Hooks as a lightweight solution for Redux-like state management.

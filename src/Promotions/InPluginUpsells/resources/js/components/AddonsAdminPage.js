@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react';
+import { useMemo, useState } from '@wordpress/element';
 import {Tab, TabList, TabPanel, Tabs} from 'react-aria-components';
 import {__, sprintf} from '@wordpress/i18n';
 

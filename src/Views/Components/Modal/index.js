@@ -1,4 +1,4 @@
-import {useEffect, useCallback} from 'react';
+import { useEffect, useCallback } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import LoadingOverlay from '@givewp/components/LoadingOverlay';

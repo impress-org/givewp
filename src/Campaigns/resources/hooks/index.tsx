@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {getCampaignOptionsWindowData, handleTooltipDismiss} from '@givewp/campaigns/utils';
 
 type NoticeId = 'givewp_campaign_form_notice' | 'givewp_campaign_settings_notice' | 'givewp_campaign_listtable_notice';

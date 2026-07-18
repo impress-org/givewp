@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
 import {useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {__} from '@wordpress/i18n';

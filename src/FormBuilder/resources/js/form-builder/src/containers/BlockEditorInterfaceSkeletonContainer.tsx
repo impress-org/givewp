@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {InterfaceSkeleton} from '@wordpress/interface';
 import useToggleState from '../hooks/useToggleState';
 

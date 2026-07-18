@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import classNames from 'classnames';
 import {Button, Card, Label, Modal, Notice, Pagination, Spinner, Table} from '@givewp/components';
 import API, {getEndpoint, useMigrationFetcher} from './api';

@@ -12,7 +12,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import EmailControls from './email-controls';
 import AddressControls from './address-controls';
 
-import {Fragment, useState, useEffect} from 'react';
+import { Fragment, useState, useEffect } from '@wordpress/element';
 import {useSelector} from 'react-redux';
 import {__} from '@wordpress/i18n';
 

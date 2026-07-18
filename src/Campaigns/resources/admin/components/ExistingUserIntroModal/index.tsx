@@ -1,5 +1,5 @@
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {DismissIcon, StarIcon} from './icons';
 import {getGiveCampaignsListTableWindowData} from '@givewp/campaigns/admin/components/CampaignsListTable';
 import {__} from '@wordpress/i18n';

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { createInterpolateElement } from "@wordpress/element";
 import { Button, PanelRow } from "@wordpress/components";
 import { __ } from "@wordpress/i18n";

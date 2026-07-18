@@ -1,5 +1,5 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {Fragment} from 'react';
+import { Fragment } from '@wordpress/element';
 import {Interweave} from 'interweave';
 
 import './style.scss';

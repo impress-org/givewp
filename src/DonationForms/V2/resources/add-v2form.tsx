@@ -1,4 +1,4 @@
-import {StrictMode} from 'react';
+import { StrictMode } from '@wordpress/element';
 import {createRoot} from 'react-dom/client';
 import './colors.scss';
 import AddForm from './components/Onboarding/Components/AddForm';

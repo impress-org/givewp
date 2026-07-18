@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import cx from 'classnames';
 import {__} from '@wordpress/i18n';
 import {GiveIcon} from '@givewp/components';

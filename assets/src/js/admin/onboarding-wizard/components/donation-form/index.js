@@ -1,5 +1,5 @@
 // Import vendor dependencies
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
 

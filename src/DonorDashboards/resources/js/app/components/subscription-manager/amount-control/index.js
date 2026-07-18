@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from '@wordpress/element';
 import CurrencyInput, {formatValue} from 'react-currency-input-field';
 import {__, sprintf} from '@wordpress/i18n';
 

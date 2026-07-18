@@ -1,4 +1,3 @@
-import React from 'react';
 import {__} from '@wordpress/i18n';
 import StatWidget from '@givewp/src/Admin/components/StatWidget';
 import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';

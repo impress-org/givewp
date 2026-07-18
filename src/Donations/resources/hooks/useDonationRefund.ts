@@ -1,7 +1,7 @@
 import apiFetch from '@wordpress/api-fetch';
 import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from '@wordpress/element';
 import { Donation } from '../admin/components/types';
 import { getDonationOptionsWindowData } from '../utils';
 

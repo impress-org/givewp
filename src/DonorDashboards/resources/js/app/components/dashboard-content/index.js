@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from '@wordpress/element';
 import {useSelector} from 'react-redux';
 
 import './style.scss';
