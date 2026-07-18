@@ -970,6 +970,15 @@ function give_is_add_new_form_page() {
  * @since 1.8.8
  */
 function give_get_meta( $id, $meta_key = '', $single = false, $default = false, $meta_type = '' ) {
+	// Route give_forms post meta to the custom formmeta table when the
+	// v20 upgrade has run, so reads and writes stay on the same table.
+	if ( '' === $meta_type
+		&& 'give_forms' === get_post_type( $id )
+		&& give_has_upgrade_completed( 'v20_move_metadata_into_new_table' )
+	) {
+		$meta_type = 'form';
+	}
+
 	switch ( $meta_type ) {
 		case 'donation':
 			$meta_value = Give()->payment_meta->get_meta( $id, $meta_key, $single );
@@ -1014,6 +1023,16 @@ function give_get_meta( $id, $meta_key = '', $single = false, $default = false, 
  * @since 1.8.8
  */
 function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '', $meta_type = '' ) {
+	// Route give_forms post meta to the custom formmeta table when the
+	// v20 upgrade has run, so writes do not split between wp_postmeta
+	// and wp_give_formmeta and the row count for stat keys stays at 1.
+	if ( '' === $meta_type
+		&& 'give_forms' === get_post_type( $id )
+		&& give_has_upgrade_completed( 'v20_move_metadata_into_new_table' )
+	) {
+		$meta_type = 'form';
+	}
+
 	switch ( $meta_type ) {
 		case 'donation':
 			$status = Give()->payment_meta->update_meta( $id, $meta_key, $meta_value, $prev_value );
@@ -1051,6 +1070,15 @@ function give_update_meta( $id, $meta_key, $meta_value, $prev_value = '', $meta_
  * @since 1.8.8
  */
 function give_delete_meta( $id, $meta_key, $meta_value = '', $meta_type = '' ) {
+	// Route give_forms post meta deletes to the custom formmeta table when
+	// the v20 upgrade has run, so reads and writes stay on the same table.
+	if ( '' === $meta_type
+		&& 'give_forms' === get_post_type( $id )
+		&& give_has_upgrade_completed( 'v20_move_metadata_into_new_table' )
+	) {
+		$meta_type = 'form';
+	}
+
 	switch ( $meta_type ) {
 		case 'donation':
 			$status = Give()->payment_meta->delete_meta( $id, $meta_key, $meta_value );
