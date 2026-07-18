@@ -30,6 +30,7 @@ use Give\DonationForms\FormDesigns\MultiStepFormDesign\MultiStepFormDesign;
 use Give\DonationForms\FormDesigns\TwoPanelStepsFormLayout\TwoPanelStepsFormLayout;
 use Give\DonationForms\FormPage\TemplateHandler;
 use Give\DonationForms\Migrations\CleanMultipleSlashesOnDB;
+use Give\DonationForms\Migrations\FormStatMetaDedupeAndIndex;
 use Give\DonationForms\Migrations\RemoveDuplicateMeta;
 use Give\DonationForms\Migrations\UpdateDonationLevelsSchema;
 use Give\DonationForms\Repositories\DonationFormRepository;
@@ -100,6 +101,7 @@ class ServiceProvider implements ServiceProviderInterface
             CleanMultipleSlashesOnDB::class,
             RemoveDuplicateMeta::class,
             UpdateDonationLevelsSchema::class,
+            FormStatMetaDedupeAndIndex::class,
         ]);
 
         /**

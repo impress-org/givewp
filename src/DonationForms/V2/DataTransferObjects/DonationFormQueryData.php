@@ -11,6 +11,7 @@ use Give\DonationForms\V2\Properties\DonationFormLevel;
 use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys as LegacyDonationFormMetaKeys;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
@@ -96,9 +97,16 @@ final class DonationFormQueryData
         $self->goalOption = ($object->{LegacyDonationFormMetaKeys::GOAL_OPTION()->getKeyAsCamelCase()} === 'enabled');
         $self->createdAt = Temporal::toDateTime($object->createdAt);
         $self->updatedAt = Temporal::toDateTime($object->updatedAt);
-        $self->totalAmountDonated = Money::fromDecimal($object->{LegacyDonationFormMetaKeys::FORM_EARNINGS()->getKeyAsCamelCase()},
-            give_get_currency());
-        $self->totalNumberOfDonations = (int)$object->{LegacyDonationFormMetaKeys::FORM_SALES()->getKeyAsCamelCase()};
+        $formEarnings = $object->{LegacyDonationFormMetaKeys::FORM_EARNINGS()->getKeyAsCamelCase()};
+        $formSales = $object->{LegacyDonationFormMetaKeys::FORM_SALES()->getKeyAsCamelCase()};
+
+        // Coerce to safe values when the attachMeta join did not return a row
+        // (e.g. the stat key is mirrored in wp_postmeta only).
+        $self->totalAmountDonated = Money::fromDecimal(
+            null === $formEarnings ? 0 : $formEarnings,
+            give_get_currency()
+        );
+        $self->totalNumberOfDonations = (int)(null === $formSales ? 0 : $formSales);
         $self->status = new DonationFormStatus($object->status);
         $self->goalSettings = $self->getGoalSettings($object);
         $self->usesFormBuilder = (bool)$object->settings;
@@ -168,18 +176,30 @@ final class DonationFormQueryData
             // uses campaign goal settings
             if ($settings->goalSource->isCampaign()) {
                 $campaign = Campaign::findByFormId($queryObject->id);
-                $this->campaignId = $campaign->id;
 
-                return GoalSettings::fromArray([
-                    'goalSource' => $settings->goalSource->getValue(),
-                    'enableDonationGoal' => $settings->enableDonationGoal,
-                    'goalType' => $this->convertGoalType($campaign->goalType->getValue()),
-                    'goalAmount' => $campaign->goal,
-                ]);
+                if ($campaign) {
+                    $this->campaignId = $campaign->id;
+
+                    return GoalSettings::fromArray([
+                        'goalSource' => $settings->goalSource->getValue(),
+                        'enableDonationGoal' => $settings->enableDonationGoal,
+                        'goalType' => $this->convertGoalType($campaign->goalType->getValue()),
+                        'goalAmount' => $campaign->goal,
+                    ]);
+                }
+
+                // No campaign relation for this form yet; fall through and
+                // use the form-level goal settings instead of "campaign with
+                // a null target" so the list row does not fatal and the UI
+                // does not render an empty goal.
             }
 
+            $goalSource = $settings->goalSource->isCampaign()
+                ? new GoalSource(GoalSource::FORM)
+                : $settings->goalSource;
+
             return GoalSettings::fromArray([
-                'goalSource' => $settings->goalSource->getValue(),
+                'goalSource' => $goalSource->getValue(),
                 'enableDonationGoal' => $settings->enableDonationGoal,
                 'goalType' => $settings->goalType,
                 'goalAmount' => $settings->goalAmount,
