@@ -23,7 +23,7 @@ class HoneyPotRule implements ValidationRule
     /**
      * @since 3.16.2
      */
-    public static function fromString(string $options = null): ValidationRule
+    public static function fromString(?string $options = null): ValidationRule
     {
         return new self();
     }
