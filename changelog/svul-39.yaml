@@ -1,0 +1,5 @@
+significance: patch
+type: security
+entry: Improved authorization in public endpoints /donors and /donations to
+  improve security.
+timestamp: 2026-07-21T13:49:26.115Z
