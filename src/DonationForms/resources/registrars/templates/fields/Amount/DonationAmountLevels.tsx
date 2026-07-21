@@ -22,7 +22,7 @@ type Level = {label: string | null; value: number; checked?: boolean};
 /**
  * Prefer the level marked as checked in the form builder when amounts are duplicated.
  *
- * @since TBD
+ * @since 4.16.5
  */
 function getSelectedLevelIndex(levels: Level[], amount: unknown): number {
     const checkedIndex = levels.findIndex((level) => level.checked);
@@ -43,7 +43,7 @@ function getSelectedLevelIndex(levels: Level[], amount: unknown): number {
 }
 
 /**
- * @since TBD Track the selected level by index to support duplicate amounts.
+ * @since 4.16.5 Track the selected level by index to support duplicate amounts.
  * @since 4.3.0 Add proper roles and ARIA attributes
  * @since 3.12.0 add level descriptions.
  * @since 3.0.0
