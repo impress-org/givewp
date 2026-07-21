@@ -128,8 +128,13 @@ class DonateControllerData
      * @var string|null
      */
     public $comment;
+    /**
+     * @var string|null
+     */
+    public $levelId;
 
     /**
+     * @since TBD Added levelId property
      * @since 3.9.0 Added phone property
      * @since 3.2.0 added honorific property
      * @since 3.0.0
@@ -155,6 +160,7 @@ class DonateControllerData
             'comment' => $this->comment,
             'type' => DonationType::SINGLE(),
             'billingAddress' => $this->getBillingAddress(),
+            'levelId' => $this->levelId,
         ]);
     }
 
@@ -183,6 +189,7 @@ class DonateControllerData
             'type' => DonationType::SUBSCRIPTION(),
             'subscriptionId' => $subscriptionId,
             'billingAddress' => $this->getBillingAddress(),
+            'levelId' => $this->levelId,
         ]);
     }
 
