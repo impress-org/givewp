@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 4.16.4
+Stable tag: 4.16.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
