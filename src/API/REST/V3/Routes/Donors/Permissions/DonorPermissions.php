@@ -76,6 +76,14 @@ class DonorPermissions
         $donorId = $request->get_param('id');
         $isOwner = $donorId ? self::isOwner($donorId) : false;
 
+        if (!$isAdmin && !$isOwner) {
+            return new WP_Error(
+                'rest_forbidden',
+                __('You do not have permission to view donors.', 'give'),
+                ['status' => self::authorizationStatusCode()]
+            );
+        }
+
         $includeSensitiveData = $request->get_param('includeSensitiveData');
         if (!$isAdmin && !$isOwner && $includeSensitiveData) {
             return new WP_Error(

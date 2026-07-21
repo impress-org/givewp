@@ -756,6 +756,14 @@ class DonationController extends WP_REST_Controller
         $includeAnonymousDonations = $request->get_param('anonymousDonations');
         $canViewDonations = UserPermissions::donations()->canView();
 
+        if (!$canViewDonations) {
+            return new WP_Error(
+                'rest_forbidden',
+                __('You do not have permission to view donations.', 'give'),
+                ['status' => $this->authorizationStatusCode()]
+            );
+        }
+
         if ($includeSensitiveData && !$canViewDonations) {
             return new WP_Error(
                 'rest_forbidden',
