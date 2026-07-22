@@ -168,7 +168,7 @@ $borderColor: #9A9A9A;
 
         &--selected {
             background-color: var(--givewp-primary-color);
-            border: none;
+            border: 1px solid var(--givewp-primary-color);
             color: #fff;
 
             &:focus{

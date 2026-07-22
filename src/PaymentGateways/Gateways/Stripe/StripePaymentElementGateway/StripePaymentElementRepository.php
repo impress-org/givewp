@@ -35,13 +35,24 @@ trait StripePaymentElementRepository
 
     /**
      * @since 4.7.0
+     *
+     * @param Donation $donation
+     *
      * @throws ApiErrorException
      */
     protected function refundStripePayment(Donation $donation): Refund
     {
-        return Refund::create([
-            'payment_intent' => $donation->gatewayTransactionId,
-        ]);
+        $stripeConnectAccountId = give_stripe_get_connected_account_id($donation->formId);
+
+        $options = [];
+        if ($stripeConnectAccountId !== '') {
+            $options['stripe_account'] = $stripeConnectAccountId;
+        }
+
+        return Refund::create(
+            ['payment_intent' => $donation->gatewayTransactionId],
+            $options
+        );
     }
 
     /**

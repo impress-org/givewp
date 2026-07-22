@@ -28,7 +28,8 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
-     * @since 4.10.0: Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
+     * @since 4.16.5 Set default value for the levelId hidden field.
+     * @since 4.10.0 Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
      * @since 3.0.0
      *
      * @throws EmptyNameException
@@ -64,6 +65,7 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->rules(...$amountRules);
 
             $priceOptions = $block->getPriceOption();
+            $defaultLevelId = '';
             if ($priceOptions === 'multi') {
                 ['levels' => $levels, 'checked' => $checked] = $this->prepareLevelsArray($block);
 
@@ -71,11 +73,22 @@ class ConvertDonationAmountBlockToFieldsApi
                     ->allowLevels()
                     ->levels(...$levels)
                     ->defaultValue($checked);
+
+                foreach ($levels as $index => $level) {
+                    if ($level['checked']) {
+                        $defaultLevelId = (string)$index;
+                        break;
+                    }
+                }
             } else {
                 $amountNode
                     ->fixedAmountValue($block->getSetPrice())
                     ->defaultValue($block->getSetPrice());
             }
+
+            /** @var Hidden $levelIdNode */
+            $levelIdNode = $group->getNodeByName('levelId');
+            $levelIdNode->defaultValue($defaultLevelId);
 
             /** @var Hidden $currencyNode */
             $currencyNode = $group->getNodeByName('currency');
@@ -176,9 +189,10 @@ class ConvertDonationAmountBlockToFieldsApi
     /**
      * Prepares the options array to be used in the field.
      *
+     * @since 4.16.5 Add per-level "checked" flag.
      * @since 3.12.0
      *
-     * @return array ['options' => ['label' => string, 'value' => string][], 'checked' => string]
+     * @return array ['levels' => ['label' => string, 'value' => string, 'checked' => bool][], 'checked' => string|null]
      */
     private function prepareLevelsArray(DonationAmountBlockModel $block): array
     {
@@ -194,6 +208,7 @@ class ConvertDonationAmountBlockToFieldsApi
                         return [
                             'value' => $item['value'] ?? '',
                             'label' => $block->isDescriptionEnabled() ? $item['label'] : '',
+                            'checked' => isset($item['checked']) && $item['checked'],
                         ];
                     },
                     $block->getLevels()

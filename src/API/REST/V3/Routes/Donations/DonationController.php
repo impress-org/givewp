@@ -165,6 +165,19 @@ class DonationController extends WP_REST_Controller
                         'type' => 'integer',
                         'required' => true,
                     ],
+                    'includeSensitiveData' => [
+                        'type' => 'boolean',
+                        'default' => false,
+                    ],
+                    'anonymousDonations' => [
+                        'type' => 'string',
+                        'default' => 'exclude',
+                        'enum' => [
+                            'exclude',
+                            'include',
+                            'redact',
+                        ],
+                    ],
                 ],
             ],
             'schema' => [$this, 'get_public_item_schema'],
@@ -410,11 +423,23 @@ class DonationController extends WP_REST_Controller
                 $handler->handle($donation);
             }
 
-            $response = $this->prepare_item_for_response($donation->toArray(), $request);
+            $includeSensitiveData = $request->get_param('includeSensitiveData');
+            $donationAnonymousMode = new DonationAnonymousMode($request->get_param('anonymousDonations'));
+
+            $item = (new DonationViewModel($donation))
+                ->includeSensitiveData($includeSensitiveData)
+                ->anonymousMode($donationAnonymousMode)
+                ->exports();
+
+            $response = $this->prepare_item_for_response($item, $request);
 
             return rest_ensure_response($response);
         } catch (\Exception $exception) {
-            return new WP_REST_Response(__('Failed to refund donation', 'give'), 500);
+            return new WP_REST_Response([
+                'message' => __('Failed to refund donation', 'give'),
+                'error' => $exception->getMessage(),
+                'code' => $exception->getCode(),
+            ], 500);
         }
     }
 

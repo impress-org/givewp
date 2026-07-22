@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 4.16.4
+Stable tag: 4.16.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.16.5: July 22nd, 2026 =
+* Fix: Resolved an issue where selecting a donation amount level would also select other levels with the same value.
+* Fix: Resolved an issue where extra separators could render in the donation confirmation page header when line breaks were present in the header text.
+* Fix: Resolved an issue where refunding a donation made with a per-form Stripe account would fail because the refund request used the default account instead of the form-specific account.
+
 = 4.16.4: July 14th, 2026 =
 * Security: Added additional validation to the core settings importer.
 * Security: Added additional escaping to donor information displayed in the admin.

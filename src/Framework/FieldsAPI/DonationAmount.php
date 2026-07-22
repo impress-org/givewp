@@ -20,6 +20,9 @@ class DonationAmount extends Group
     public $subscriptionDetailsAreFixed = false;
 
     /**
+     * @since 4.16.5 Add levelId hidden field to donation amount group.
+     * @since 3.0.0
+     * 
      * @throws NameCollisionException
      * @throws EmptyNameException
      */
@@ -28,7 +31,8 @@ class DonationAmount extends Group
         return parent::make($name)
             ->append(
                 Amount::make('amount'),
-                Hidden::make('currency')
+                Hidden::make('currency'),
+                Hidden::make('levelId')
             );
     }
 
