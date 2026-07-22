@@ -169,13 +169,7 @@ function give_get_license_info_handler() {
 		);
 
 	} elseif ( 0 === stripos( $license_key, 'LWSW-' ) ) {
-		$license_manager_url = function_exists( 'lw_harbor_get_license_page_url' )
-			? lw_harbor_get_license_page_url()
-			: '';
-
-		if ( empty( $license_manager_url ) ) {
-			$license_manager_url = admin_url( 'options-general.php?page=lw-software-manager' );
-		}
+		$license_manager_url = lw_harbor_get_license_page_url();
 
 		wp_send_json_error(
 			[
