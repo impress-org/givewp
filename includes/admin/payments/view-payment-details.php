@@ -52,7 +52,7 @@ if ( empty( $payment_exists ) ) {
 $number       = $payment->number;
 $payment_meta = $payment->get_meta();
 
-$company_name   = ! empty( $payment_meta['_give_donation_company'] ) ? esc_attr( $payment_meta['_give_donation_company'] ) : '';
+$company_name   = ! empty( $payment_meta['_give_donation_company'] ) ? esc_html( $payment_meta['_give_donation_company'] ) : '';
 $transaction_id = esc_attr( $payment->transaction_id );
 $user_id        = $payment->user_id;
 $donor_id       = $payment->customer_id;
@@ -64,8 +64,10 @@ $gateway        = $payment->gateway;
 $currency_code  = $payment->currency;
 $payment_mode   = $payment->mode;
 $base_url       = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' );
-$donation_phone_number = Donation::find($payment_id)->phone;
-$donor_phone_number = Donor::find($donor_id)->phone;
+$donation_model = Donation::find( $payment_id );
+$donor_model    = Donor::find( $donor_id );
+$donation_phone_number = $donation_model ? $donation_model->phone : '';
+$donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 ?>
 <div class="wrap give-wrap">
@@ -647,15 +649,15 @@ $donor_phone_number = Donor::find($donor_id)->phone;
 											<p>
 												<strong><?php esc_html_e( 'Donor Email:', 'give' ); ?></strong><br>
 												<?php
-												// Show Donor donation email first and Primary email on parenthesis if not match both email.
-												echo ( empty( $donor->email ) || hash_equals( $donor->email, $payment->email ) )
-													? $payment->email
-													: sprintf(
-														'%1$s (<a href="%2$s" target="_blank">%3$s</a>)',
-														$payment->email,
-														esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}" ) ),
-														$donor->email
-													);
+											// Show Donor donation email first and Primary email on parenthesis if not match both email.
+											echo ( empty( $donor->email ) || hash_equals( $donor->email, $payment->email ) )
+												? esc_html( $payment->email )
+												: sprintf(
+													'%1$s (<a href="%2$s" target="_blank">%3$s</a>)',
+													esc_html( $payment->email ),
+													esc_url( admin_url( "edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}" ) ),
+													esc_html( $donor->email )
+												);
 												?>
 											</p>
                                             <p>
@@ -668,12 +670,12 @@ $donor_phone_number = Donor::find($donor_id)->phone;
                                                     // Show Donor donation phone first and Primary phone on parenthesis if not match both phone.
                                                     echo (empty($donor_phone_number) ||
                                                           hash_equals($donor_phone_number, $donation_phone_number))
-                                                        ? $donation_phone_number :
+                                                        ? esc_html($donation_phone_number) :
                                                         sprintf(
                                                             '%1$s (<a href="%2$s" target="_blank">%3$s</a>)',
-                                                            $donation_phone_number,
+                                                            esc_html($donation_phone_number),
                                                             esc_url(admin_url("edit.php?post_type=give_forms&page=give-donors&view=overview&id={$donor_id}")),
-                                                            $donor_phone_number
+                                                            esc_html($donor_phone_number)
                                                         );
                                                 }
                                                 ?>
