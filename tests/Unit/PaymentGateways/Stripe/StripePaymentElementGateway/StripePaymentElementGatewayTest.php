@@ -19,7 +19,7 @@ class StripePaymentElementGatewayTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testRefundDonationShouldCallSetUpStripeAppInfo()
     {
@@ -49,7 +49,7 @@ class StripePaymentElementGatewayTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testRefundDonationShouldCallRefundStripePayment()
     {
@@ -75,7 +75,7 @@ class StripePaymentElementGatewayTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testRefundDonationShouldThrowExceptionWhenStripeApiFails()
     {
@@ -99,7 +99,7 @@ class StripePaymentElementGatewayTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testRefundDonationShouldCreateDonationNoteOnSuccess()
     {
@@ -131,7 +131,7 @@ class StripePaymentElementGatewayTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testRefundDonationShouldCreateDonationNoteOnFailure()
     {
@@ -164,7 +164,7 @@ class StripePaymentElementGatewayTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     protected function getMockGateway(array $methods = []): MockObject
     {

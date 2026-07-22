@@ -13,12 +13,12 @@ use Give\Tests\TestCase;
 /**
  * @covers \Give\DonationForms\Listeners\UpdateDonationLevelId
  *
- * @since TBD
+ * @since 4.16.5
  */
 class TestUpdateDonationLevelId extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testUpdatesLevelIdWhenEmpty()
     {
@@ -67,7 +67,7 @@ class TestUpdateDonationLevelId extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testDoesNotOverwriteCorrectLevelIdWhenDuplicateAmountExists()
     {
