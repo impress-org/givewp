@@ -830,7 +830,7 @@ function give_donor_view( $donor ) {
 				<?php foreach ( $donor->emails as $key => $email ) : ?>
 					<tr data-key="<?php echo $key; ?>">
 						<td>
-							<?php echo $email; ?>
+							<?php echo esc_html( $email ); ?>
 							<?php if ( 'primary' === $key ) : ?>
 								<span class="dashicons dashicons-star-filled primary-email-icon"></span>
 							<?php endif; ?>
