@@ -175,7 +175,7 @@ function give_get_license_info_handler() {
 			[
 				'errorMsg' => sprintf(
 					/* translators: %s: URL to the Liquid Web License Manager page */
-					__( 'This is a Liquid Web Unified License. To activate it, enter your license in the <a href="%s" target="_blank">Liquid Web License Manager</a> instead.', 'give' ),
+					__( 'This is a unified license key. To activate it, enter your license in the <a href="%s" target="_blank">Liquid Web License Manager</a> instead.', 'give' ),
 					esc_url( $license_manager_url )
 				),
 			]
