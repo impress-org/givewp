@@ -144,6 +144,7 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
+ * @since TBD Redirect Liquid Web unified license keys (LWSW-) to the Liquid Web License Manager.
  * @since 2.5.0
  */
 function give_get_license_info_handler() {
@@ -164,6 +165,19 @@ function give_get_license_info_handler() {
 		wp_send_json_error(
 			[
 				'errorMsg' => __( 'You entered an invalid key. Confirm your license key on your GiveWP dashboard and try again.', 'give' ),
+			]
+		);
+
+	} elseif ( 0 === stripos( $license_key, 'LWSW-' ) ) {
+		$license_manager_url = lw_harbor_get_license_page_url();
+
+		wp_send_json_error(
+			[
+				'errorMsg' => sprintf(
+					/* translators: %s: URL to the Liquid Web License Manager page */
+					__( 'This is a unified license key. To activate it, enter your license in the <a href="%s" target="_blank">Liquid Web License Manager</a> instead.', 'give' ),
+					esc_url( $license_manager_url )
+				),
 			]
 		);
 
