@@ -75,9 +75,8 @@ final class AddonUploadActivateTest extends TestCase
 
 		unset(
 			$_FILES['file'],
-			$_POST['_give_upload_addon'],
-			$_POST['plugin'],
-			$_POST['_wpnonce']
+			$_REQUEST['_wpnonce'],
+			$_POST['plugin']
 		);
 
 		wp_clean_plugins_cache( true );
@@ -122,7 +121,7 @@ final class AddonUploadActivateTest extends TestCase
 			'error'    => UPLOAD_ERR_OK,
 			'size'     => filesize( $temp_file ),
 		];
-		$_POST['_give_upload_addon'] = wp_create_nonce( 'give-upload-addon' );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( 'give-upload-addon' );
 
 		$response = $this->invokeAndCatchWpDie( function () {
 			give_upload_addon_handler();
@@ -182,7 +181,7 @@ final class AddonUploadActivateTest extends TestCase
 			'error'    => UPLOAD_ERR_OK,
 			'size'     => filesize( $zip_path ),
 		];
-		$_POST['_give_upload_addon'] = wp_create_nonce( 'give-upload-addon' );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( 'give-upload-addon' );
 
 		add_filter( 'filesystem_method', fn() => 'direct' );
 
@@ -230,7 +229,7 @@ final class AddonUploadActivateTest extends TestCase
 			'error'    => UPLOAD_ERR_OK,
 			'size'     => filesize( $zip_path ),
 		];
-		$_POST['_give_upload_addon'] = wp_create_nonce( 'give-upload-addon' );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( 'give-upload-addon' );
 
 		add_filter( 'filesystem_method', fn() => 'direct' );
 
@@ -270,7 +269,7 @@ final class AddonUploadActivateTest extends TestCase
 		wp_set_current_user( $subscriber_id );
 
 		$_POST['plugin']   = 'some-plugin/some-plugin.php';
-		$_POST['_wpnonce'] = wp_create_nonce( 'give_activate-some-plugin/some-plugin.php' );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( 'give_activate-some-plugin/some-plugin.php' );
 
 		give_activate_addon_handler();
 
@@ -289,7 +288,7 @@ final class AddonUploadActivateTest extends TestCase
 		$this->setAdminUser();
 
 		$_POST['plugin']   = '';
-		$_POST['_wpnonce'] = wp_create_nonce( 'give_activate-' );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( 'give_activate-' );
 
 		$response = $this->invokeAndCatchWpDie( function () {
 			give_activate_addon_handler();
@@ -308,7 +307,7 @@ final class AddonUploadActivateTest extends TestCase
 
 		$slug = 'nonexistent-addon';
 		$_POST['plugin']   = "{$slug}/{$slug}.php";
-		$_POST['_wpnonce'] = wp_create_nonce( "give_activate-{$slug}/{$slug}.php" );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( "give_activate-{$slug}/{$slug}.php" );
 
 		$response = $this->invokeAndCatchWpDie( function () {
 			give_activate_addon_handler();
@@ -330,7 +329,7 @@ final class AddonUploadActivateTest extends TestCase
 		$this->createTestPluginInPluginsDir( $slug, '' );
 
 		$_POST['plugin']   = "{$slug}/{$slug}.php";
-		$_POST['_wpnonce'] = wp_create_nonce( "give_activate-{$slug}/{$slug}.php" );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( "give_activate-{$slug}/{$slug}.php" );
 
 		$response = $this->invokeAndCatchWpDie( function () {
 			give_activate_addon_handler();
@@ -353,7 +352,7 @@ final class AddonUploadActivateTest extends TestCase
 		$plugin_path = "{$slug}/{$slug}.php";
 
 		$_POST['plugin']   = $plugin_path;
-		$_POST['_wpnonce'] = wp_create_nonce( "give_activate-{$plugin_path}" );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( "give_activate-{$plugin_path}" );
 
 		$response = $this->invokeAndCatchWpDie( function () {
 			give_activate_addon_handler();
@@ -468,7 +467,7 @@ final class AddonUploadActivateTest extends TestCase
 			'error'    => UPLOAD_ERR_OK,
 			'size'     => filesize( $temp_file ),
 		];
-		$_POST['_give_upload_addon'] = wp_create_nonce( 'give-upload-addon' );
+		$_REQUEST['_wpnonce'] = wp_create_nonce( 'give-upload-addon' );
 	}
 
 	/**
