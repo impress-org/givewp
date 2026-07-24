@@ -9,6 +9,7 @@ use Give\Helpers\EnqueueScript;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\Helpers\FormatList;
 use Give\Onboarding\Helpers\LocationList;
+use Give\Onboarding\LicenseData;
 use Give\Onboarding\LocaleCollection;
 use Give\Onboarding\SettingsRepository;
 use Give\Onboarding\SettingsRepositoryFactory;
@@ -172,6 +173,11 @@ class Page
             'websiteUrl' => get_bloginfo('url'),
             'websiteName' => get_bloginfo('sitename'),
             'addons' => $this->onboardingSettingsRepository->get('addons') ?: [],
+            // Empty when the loaded Harbor cannot build a URL or the site is already
+            // activated; the intro screen hides the Activate button in that case.
+            'activationUrl' => give(LicenseData::class)->getActivationUrl(
+                admin_url('edit.php?post_type=give_forms&page=give-setup')
+            ),
         ];
 
         EnqueueScript::make(

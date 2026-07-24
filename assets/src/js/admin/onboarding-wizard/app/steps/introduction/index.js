@@ -14,6 +14,7 @@ import {generateFormPreviewWithOnboardingAPI} from '../../../utils';
 import Card from '../../../components/card';
 import GiveLogo from '../../../components/give-logo';
 import ContinueButton from '../../../components/continue-button';
+import ActivateLicenseLink from '../../../components/activate-license-link';
 import DismissLink from '../../../components/dismiss-link';
 
 const Introduction = () => {
@@ -44,6 +45,7 @@ const Introduction = () => {
                         label={__('Start Setup', 'give')}
                         testId="intro-continue-button"
                     />
+                    <ActivateLicenseLink />
                 </div>
             </Card>
             <DismissLink />
