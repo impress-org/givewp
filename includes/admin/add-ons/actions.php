@@ -55,11 +55,11 @@ function give_upload_addon_handler() {
 		wp_send_json_error( [ 'errorMsg' => __( 'Uploaded add-ons must be (zipped) ZIP files. Upload a valid add-on ZIP.', 'give' ) ] );
 	}
 
-	$give_addons_list   = give_get_plugins();
+	$pre_addons_list    = give_get_plugins();
 	$is_addon_installed = [];
 
-	if ( ! empty( $give_addons_list ) ) {
-		foreach ( $give_addons_list as $addon => $give_addon ) {
+	if ( ! empty( $pre_addons_list ) ) {
+		foreach ( $pre_addons_list as $addon => $give_addon ) {
 			if ( false !== stripos( $addon, $filename ) ) {
 				$is_addon_installed = $give_addon;
 			}
@@ -115,16 +115,37 @@ function give_upload_addon_handler() {
 	// Delete cache and get current installed addon plugin path.
 	wp_clean_plugins_cache( true );
 
-	$give_addons_list = give_get_plugins();
-	$installed_addon  = [];
+	$post_addons_list = give_get_plugins();
+	$new_plugins      = array_diff_key( $post_addons_list, $pre_addons_list );
 
-	if ( ! empty( $give_addons_list ) ) {
-		foreach ( $give_addons_list as $addon => $give_addon ) {
+	$installed_addon = [];
+
+	if ( ! empty( $new_plugins ) ) {
+		$new_plugin_path           = array_key_first( $new_plugins );
+		$installed_addon           = $new_plugins[ $new_plugin_path ];
+		$installed_addon['path']   = $new_plugin_path;
+	}
+
+	// Fallback: if diff fails, try filename-based matching.
+	if ( empty( $installed_addon ) && ! empty( $post_addons_list ) ) {
+		foreach ( $post_addons_list as $addon => $give_addon ) {
 			if ( false !== stripos( $addon, $filename ) ) {
 				$installed_addon         = $give_addon;
 				$installed_addon['path'] = $addon;
 			}
 		}
+	}
+
+	if ( empty( $installed_addon ) ) {
+		wp_send_json_error(
+			[
+				'errorMsg' => sprintf(
+					/* translators: %1$s: URL to the plugins page */
+					__( 'The add-on was uploaded but GiveWP could not detect it. Please <a href="%1$s">visit the plugins page</a> to activate it manually.', 'give' ),
+					admin_url( 'plugins.php' )
+				),
+			]
+		);
 	}
 
 	wp_send_json_success(
@@ -325,6 +346,42 @@ function give_activate_addon_handler() {
 	// check user permission.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();
+	}
+
+	if ( empty( $plugin_path ) ) {
+		wp_send_json_error(
+			[
+				'errorMsg' => __( 'No plugin path was provided. The uploaded plugin may not have been detected correctly.', 'give' ),
+			]
+		);
+	}
+
+	$plugin_file = WP_PLUGIN_DIR . '/' . $plugin_path;
+
+	if ( ! file_exists( $plugin_file ) ) {
+		wp_send_json_error(
+			[
+				'errorMsg' => sprintf(
+					/* translators: %1$s: plugin file path */
+					__( 'The plugin file "%1$s" could not be found. The add-on may not have been extracted correctly.', 'give' ),
+					esc_html( $plugin_path )
+				),
+			]
+		);
+	}
+
+	$plugin_data = get_plugin_data( $plugin_file );
+
+	if ( empty( $plugin_data['Name'] ) ) {
+		wp_send_json_error(
+			[
+				'errorMsg' => sprintf(
+					/* translators: %1$s: plugin file path */
+					__( 'The plugin "%1$s" does not have a valid plugin header. The add-on may be corrupted or incompatible.', 'give' ),
+					esc_html( $plugin_path )
+				),
+			]
+		);
 	}
 
 	$status = activate_plugin( $plugin_path );
