@@ -25,7 +25,7 @@ class SubscriptionProcessing implements GatewayCommand
      */
     public function __construct(
         string $gatewaySubscriptionId,
-        string $gatewayTransactionId = null
+        ?string $gatewayTransactionId = null
     ) {
         $this->gatewayTransactionId = $gatewayTransactionId;
         $this->gatewaySubscriptionId = $gatewaySubscriptionId;
