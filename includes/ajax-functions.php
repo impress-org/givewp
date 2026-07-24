@@ -729,13 +729,13 @@ add_action( 'wp_ajax_nopriv_give_confirm_email_for_donations_access', 'give_conf
  */
 function give_get_receipt() {
 
-	$get_data = give_clean( filter_input_array( INPUT_GET ) );
+	$get_data = filter_input_array( INPUT_GET );
 
 	if ( ! isset( $get_data['shortcode_atts'] ) ) {
 		give_die();
 	}
 
-	$atts = (array) json_decode( $get_data['shortcode_atts'] );
+	$atts = (array) json_decode( sanitize_text_field( $get_data['shortcode_atts'] ) );
 	$data = give_receipt_shortcode( $atts );
 
 	wp_send_json( $data );
