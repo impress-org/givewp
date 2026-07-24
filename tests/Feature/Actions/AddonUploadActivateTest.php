@@ -539,6 +539,11 @@ final class AddonUploadActivateTest extends TestCase
 				$this->fail( "Handler output is not valid JSON: \"{$output}\"" );
 			}
 
+			// Drain outer output buffer so PHPUnit does not flag output.
+			while ( ob_get_level() > 0 ) {
+				ob_end_clean();
+			}
+
 			return $response;
 		}
 	}
