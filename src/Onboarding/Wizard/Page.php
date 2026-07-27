@@ -71,6 +71,20 @@ class Page
     }
 
     /**
+     * The wizard's own admin URL.
+     *
+     * Used as the address the Liquid Web portal returns a user to after they
+     * activate, so they come back to the wizard they left rather than to
+     * another screen. Derived from the page slug so the two cannot drift apart.
+     *
+     * @since TBD
+     */
+    public function getReturnUrl(): string
+    {
+        return add_query_arg('page', $this->slug, admin_url());
+    }
+
+    /**
      * Conditionally renders Onboarding Wizard
      *
      * If the current page query matches the onboarding wizard's slug, method renders the onboarding wizard.
@@ -175,9 +189,7 @@ class Page
             'addons' => $this->onboardingSettingsRepository->get('addons') ?: [],
             // Empty when the loaded Harbor cannot build a URL or the site is already
             // activated; the intro screen hides the Activate button in that case.
-            'activationUrl' => give(LicenseData::class)->getActivationUrl(
-                admin_url('edit.php?post_type=give_forms&page=give-setup')
-            ),
+            'activationUrl' => give(LicenseData::class)->getActivationUrl($this->getReturnUrl()),
         ];
 
         EnqueueScript::make(
