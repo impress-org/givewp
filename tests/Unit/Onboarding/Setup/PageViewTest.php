@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\Onboarding\Setup;
 
+use Faker\Factory;
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\Onboarding\FormRepository;
 use Give\Onboarding\LicenseData;
@@ -57,13 +58,15 @@ final class PageViewTest extends TestCase
      */
     public function testLicenseStepUrlUsesTheManagerOnceActivated(): void
     {
+        $managementUrl = Factory::create()->url();
+
         $this->bindLicenseData([
             'isActivated' => true,
-            'getManagementUrl' => 'https://example.test/wp-admin/manage',
+            'getManagementUrl' => $managementUrl,
         ]);
 
         $this->assertSame(
-            'https://example.test/wp-admin/manage',
+            $managementUrl,
             $this->makePageView()->licenseStepUrl()
         );
     }
@@ -73,13 +76,15 @@ final class PageViewTest extends TestCase
      */
     public function testLicenseStepUrlPointsToActivationWhenNotActivated(): void
     {
+        $activationUrl = Factory::create()->url();
+
         $this->bindLicenseData([
             'isActivated' => false,
-            'buildActivationUrl' => 'https://portal.example.test/activate',
+            'buildActivationUrl' => $activationUrl,
         ]);
 
         $this->assertSame(
-            'https://portal.example.test/activate',
+            $activationUrl,
             $this->makePageView()->licenseStepUrl()
         );
     }

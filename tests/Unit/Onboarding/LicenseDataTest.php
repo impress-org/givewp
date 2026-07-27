@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Give\Tests\Unit\Onboarding;
 
+use Faker\Factory;
 use Give\Onboarding\LicenseData;
 use Give\Tests\TestCase;
 
@@ -23,6 +24,8 @@ final class LicenseDataTest extends TestCase
      */
     public function testGetActivationUrlIsEmptyWhenHarborCannotBuildOne(): void
     {
+        $faker = Factory::create();
+
         $licenseData = $this->getMockBuilder(LicenseData::class)
             ->onlyMethods(['canBuildActivationUrl', 'isActivated', 'buildActivationUrl'])
             ->getMock();
@@ -30,7 +33,7 @@ final class LicenseDataTest extends TestCase
         $licenseData->method('canBuildActivationUrl')->willReturn(false);
         $licenseData->expects($this->never())->method('buildActivationUrl');
 
-        $this->assertSame('', $licenseData->getActivationUrl('https://example.test/return'));
+        $this->assertSame('', $licenseData->getActivationUrl($faker->url()));
     }
 
     /**
@@ -38,6 +41,8 @@ final class LicenseDataTest extends TestCase
      */
     public function testGetActivationUrlIsEmptyWhenAlreadyActivated(): void
     {
+        $faker = Factory::create();
+
         $licenseData = $this->getMockBuilder(LicenseData::class)
             ->onlyMethods(['canBuildActivationUrl', 'isActivated', 'buildActivationUrl'])
             ->getMock();
@@ -46,7 +51,7 @@ final class LicenseDataTest extends TestCase
         $licenseData->method('isActivated')->willReturn(true);
         $licenseData->expects($this->never())->method('buildActivationUrl');
 
-        $this->assertSame('', $licenseData->getActivationUrl('https://example.test/return'));
+        $this->assertSame('', $licenseData->getActivationUrl($faker->url()));
     }
 
     /**
@@ -54,8 +59,10 @@ final class LicenseDataTest extends TestCase
      */
     public function testGetActivationUrlReturnsBuiltUrlWhenActionableAndNotActivated(): void
     {
-        $returnUrl = 'https://example.test/return';
-        $expectedUrl = 'https://portal.example.test/activate';
+        $faker = Factory::create();
+
+        $returnUrl = $faker->url();
+        $expectedUrl = $faker->url();
 
         $licenseData = $this->getMockBuilder(LicenseData::class)
             ->onlyMethods(['canBuildActivationUrl', 'isActivated', 'buildActivationUrl'])
