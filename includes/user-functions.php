@@ -220,6 +220,7 @@ function give_get_donation_stats_by_user( $user = '' ) {
 
 	if ( $donor ) {
 		$donor                = new Give_Donor( $donor->id );
+        $stats['donations_count'] = count( explode( ',', $donor->payment_ids ) );
 		$stats['purchases']   = absint( $donor->purchase_count );
 		$stats['total_spent'] = give_maybe_sanitize_amount( $donor->get_total_donation_amount() );
 	}
@@ -261,7 +262,7 @@ function give_count_donations_of_donor( $user = null ) {
 
 	$stats = ! empty( $user ) ? give_get_donation_stats_by_user( $user ) : false;
 
-	return isset( $stats['purchases'] ) ? $stats['purchases'] : 0;
+	return isset( $stats['donations_count'] ) ? $stats['donations_count'] : 0;
 }
 
 /**
