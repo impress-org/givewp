@@ -9,6 +9,7 @@ use Give\DonationForms\DataTransferObjects\ValidationRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
 use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\ValueObjects\DonationFormErrorTypes;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Log\Log;
 use WP_Error;
@@ -41,13 +42,13 @@ class ValidationRoute
             $this->handleResponse($response);
         } catch (DonationFormFieldErrorsException $exception) {
             $type = DonationFormErrorTypes::VALIDATION;
-            $this->logError($type, $exception->getMessage(), $formData);
+            $this->logError($type, $exception, $formData);
             $this->sendJsonError($type, $exception->getError());
         } catch (DonationFormForbidden $exception) {
             wp_die($exception->getMessage(), 403);
         } catch (Exception $exception) {
             $type = DonationFormErrorTypes::UNKNOWN;
-            $this->logError($type, $exception->getMessage(), $formData);
+            $this->logError($type, $exception, $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         }
 
@@ -59,16 +60,23 @@ class ValidationRoute
      */
     private function logError(
         string $type,
-        string $exceptionMessage,
+        Exception $exception,
         ValidationRouteData $formData
     ) {
+        $context = [
+            'error_type' => $type,
+            'exceptionMessage' => $exception->getMessage(),
+            'formData' => $formData->toArray(),
+        ];
+
+        if ($exception instanceof DatabaseQueryException) {
+            $context['query'] = $exception->getQuery();
+            $context['queryErrors'] = $exception->getQueryErrors();
+        }
+
         Log::error(
             "Donation Route Error: $type",
-            [
-                'error_type' => $type,
-                'exceptionMessage' => $exceptionMessage,
-                'formData' => $formData->toArray(),
-            ]
+            $context
         );
     }
 
