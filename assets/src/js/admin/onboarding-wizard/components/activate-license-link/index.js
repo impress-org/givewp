@@ -26,7 +26,7 @@ const ActivateLicenseLink = () => {
 			href={ activationUrl }
 			data-givewp-test="activate-license-link"
 		>
-			{ __( 'Activate your license', 'give' ) }
+			{ __( 'Activate license for your add-ons', 'give' ) }
 		</a>
 	);
 };

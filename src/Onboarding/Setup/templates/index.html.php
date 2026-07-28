@@ -49,7 +49,7 @@
             'section',
             [
                 'class' => $this->isLicenseActivated() ? '' : 'current-step',
-                'title' => sprintf('%s %d: %s', __('Step', 'give'), ++$step, __('Activate your license', 'give')),
+                'title' => sprintf('%s %d: %s', __('Step', 'give'), ++$step, __('Activate license for your add-ons', 'give')),
                 'badge' => ($this->isLicenseActivated()
                     ? $this->render_template('badge', [
                         'class' => 'completed',
@@ -68,7 +68,7 @@
                     'target' => '',
                 ]),
                 'contents' => $this->render_template('sub-header', [
-                    'text' => esc_html__('Unlock updates and support for your Liquid Web products.', 'give'),
+                    'text' => esc_html__('Unlock updates and support for the premium add-ons you\'re using with GiveWP.', 'give'),
                 ]),
             ]
         );
