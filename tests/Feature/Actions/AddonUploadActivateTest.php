@@ -626,7 +626,7 @@ final class AddonUploadActivateTest extends TestCase
         } else {
             file_put_contents(
                 "{$dir}/{$slug}.php",
-                "<?php\n/**\n * Plugin Name: {$name}\n * Version: 1.0.0\n */"
+                "<?php\n/**\n * Plugin Name: {$name}\n * Plugin URI: https://givewp.com\n * Version: 1.0.0\n */"
             );
         }
 
@@ -651,7 +651,7 @@ final class AddonUploadActivateTest extends TestCase
 
         file_put_contents(
             $tmp_dir . '/' . $pluginSlug . '/' . $pluginSlug . '.php',
-            "<?php\n/**\n * Plugin Name: {$pluginName}\n * Version: 1.0.0\n */"
+            "<?php\n/**\n * Plugin Name: {$pluginName}\n * Plugin URI: https://givewp.com\n * Version: 1.0.0\n */"
         );
 
         $zip_file = sys_get_temp_dir() . '/give-test-' . ($zipFilename ?? "{$pluginSlug}.zip");
