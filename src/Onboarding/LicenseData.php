@@ -100,6 +100,10 @@ class LicenseData
      * stored license already covers GiveWP the URL is scoped to the product and
      * tier so the portal pre-selects the right subscription.
      *
+     * Harbor returns null when it has no URL to give; that is folded into the
+     * empty string this returns, because both mean the same thing here — there
+     * is nothing to link to.
+     *
      * @since TBD
      */
     public function buildActivationUrl(string $returnUrl): string
@@ -116,14 +120,14 @@ class LicenseData
         $entitlement = $this->getLicensedEntry();
 
         if (!$entitlement instanceof Product_Entry) {
-            return lw_harbor_get_activation_base_url($returnUrl);
+            return lw_harbor_get_activation_base_url($returnUrl) ?? '';
         }
 
         return lw_harbor_get_product_activation_url(
             $entitlement->get_product_slug(),
             $entitlement->get_tier(),
             $returnUrl
-        );
+        ) ?? '';
     }
 
     /**
