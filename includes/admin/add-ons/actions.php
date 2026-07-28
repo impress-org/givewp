@@ -106,17 +106,6 @@ function give_upload_addon_handler() {
 		$installed_addon['path'] = $new_plugin_path;
 	}
 
-	// If diff found nothing, this was an update — locate by ZIP folder name.
-	if ( empty( $installed_addon ) && ! empty( $zip_folder ) && ! empty( $post_addons_list ) ) {
-		foreach ( $post_addons_list as $addon_path => $addon_data ) {
-			if ( strpos( $addon_path, $zip_folder . '/' ) === 0 ) {
-				$installed_addon         = $addon_data;
-				$installed_addon['path'] = $addon_path;
-				break;
-			}
-		}
-	}
-
 	if ( empty( $installed_addon ) ) {
 		wp_send_json_error(
 			[
