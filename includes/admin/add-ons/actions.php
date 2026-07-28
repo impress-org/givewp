@@ -28,6 +28,10 @@ function give_upload_addon_handler() {
 		wp_send_json_error( [ 'errorMsg' => __( 'No file was uploaded.', 'give' ) ] );
 	}
 
+	if ( UPLOAD_ERR_OK !== $_FILES['file']['error'] ) {
+		wp_send_json_error( [ 'errorMsg' => __( 'The file upload failed. Please try again.', 'give' ) ] );
+	}
+
 	check_admin_referer( 'give-upload-addon' );
 
 	if ( ! current_user_can( 'upload_plugins' ) ) {
