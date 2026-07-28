@@ -515,6 +515,96 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testGetZipPluginFolderReturnsFolderForSingleTopLevel(): void
+    {
+        if (!class_exists('ZipArchive')) {
+            $this->markTestSkipped('ZipArchive extension is required for this test.');
+        }
+
+        $zip_path = $this->createTestPluginZip('give-addon-slug', 'Test Addon');
+
+        $result = give_get_zip_plugin_folder($zip_path);
+
+        $this->assertSame('give-addon-slug', $result);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetZipPluginFolderReturnsEmptyForMultipleTopLevels(): void
+    {
+        if (!class_exists('ZipArchive')) {
+            $this->markTestSkipped('ZipArchive extension is required for this test.');
+        }
+
+        $zip_path = $this->createMultiFolderZip('multi-folder-test.zip');
+
+        $result = give_get_zip_plugin_folder($zip_path);
+
+        $this->assertSame('', $result);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetZipPluginFolderSkipsMacosxFolder(): void
+    {
+        if (!class_exists('ZipArchive')) {
+            $this->markTestSkipped('ZipArchive extension is required for this test.');
+        }
+
+        $zip_path = $this->createZipWithMacosxAndRealFolder('give-real-addon', 'test-macosx.zip');
+
+        $result = give_get_zip_plugin_folder($zip_path);
+
+        $this->assertSame('give-real-addon', $result);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetZipPluginFolderReturnsEmptyForMacosxOnly(): void
+    {
+        if (!class_exists('ZipArchive')) {
+            $this->markTestSkipped('ZipArchive extension is required for this test.');
+        }
+
+        $zip_path = $this->createMacosxOnlyZip('macosx-only.zip');
+
+        $result = give_get_zip_plugin_folder($zip_path);
+
+        $this->assertSame('', $result);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetZipPluginFolderReturnsEmptyForCorruptZip(): void
+    {
+        if (!class_exists('ZipArchive')) {
+            $this->markTestSkipped('ZipArchive extension is required for this test.');
+        }
+
+        $corrupt_path = $this->createTempFile('corrupt.zip', 'this is not a valid zip file');
+
+        $result = give_get_zip_plugin_folder($corrupt_path);
+
+        $this->assertSame('', $result);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGetZipPluginFolderReturnsEmptyForNonexistentFile(): void
+    {
+        $result = give_get_zip_plugin_folder(sys_get_temp_dir() . '/definitely-does-not-exist-' . uniqid() . '.zip');
+
+        $this->assertSame('', $result);
+    }
+
+    /**
      * Creates a test plugin directory inside WP_PLUGIN_DIR.
      *
      * @since TBD
@@ -605,6 +695,104 @@ final class AddonUploadActivateTest extends TestCase
         $zip = new ZipArchive();
         $zip->open($zip_file, ZipArchive::CREATE | ZipArchive::OVERWRITE);
         $zip->addFile($tmp_dir . '/random-folder/readme.txt', 'random-folder/readme.txt');
+        $zip->close();
+
+        return $zip_file;
+    }
+
+    /**
+     * Creates a ZIP file with multiple top-level directories (ambiguous structure).
+     *
+     * @since TBD
+     */
+    private function createMultiFolderZip(string $zipFilename): string
+    {
+        $tmp_dir = sys_get_temp_dir() . '/give-test-multifolder-' . uniqid();
+        wp_mkdir_p($tmp_dir . '/folder-a');
+        wp_mkdir_p($tmp_dir . '/folder-b');
+        $this->createdDirs[] = $tmp_dir;
+
+        file_put_contents($tmp_dir . '/folder-a/plugin.php', "<?php\n/**\n * Plugin Name: Plugin A\n */");
+        file_put_contents($tmp_dir . '/folder-b/plugin.php', "<?php\n/**\n * Plugin Name: Plugin B\n */");
+
+        $zip_file = sys_get_temp_dir() . '/give-test-' . $zipFilename;
+        $this->createdFiles[] = $zip_file;
+
+        if (file_exists($zip_file)) {
+            @unlink($zip_file);
+        }
+
+        $zip = new ZipArchive();
+        $zip->open($zip_file, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        $zip->addFile($tmp_dir . '/folder-a/plugin.php', 'folder-a/plugin.php');
+        $zip->addFile($tmp_dir . '/folder-b/plugin.php', 'folder-b/plugin.php');
+        $zip->close();
+
+        return $zip_file;
+    }
+
+    /**
+     * Creates a ZIP file with both a __MACOSX folder and a real plugin folder.
+     *
+     * @since TBD
+     */
+    private function createZipWithMacosxAndRealFolder(string $realFolder, string $zipFilename): string
+    {
+        $tmp_dir = sys_get_temp_dir() . '/give-test-macosx-real-' . uniqid();
+        wp_mkdir_p($tmp_dir . '/__MACOSX');
+        wp_mkdir_p($tmp_dir . '/' . $realFolder);
+        $this->createdDirs[] = $tmp_dir;
+
+        file_put_contents($tmp_dir . '/__MACOSX/._index.php', 'macosx junk');
+        file_put_contents(
+            $tmp_dir . '/' . $realFolder . '/' . $realFolder . '.php',
+            "<?php\n/**\n * Plugin Name: Real Addon\n */"
+        );
+
+        $zip_file = sys_get_temp_dir() . '/give-test-' . $zipFilename;
+        $this->createdFiles[] = $zip_file;
+
+        if (file_exists($zip_file)) {
+            @unlink($zip_file);
+        }
+
+        $zip = new ZipArchive();
+        $zip->open($zip_file, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        $zip->addFile($tmp_dir . '/__MACOSX/._index.php', '__MACOSX/._index.php');
+        $zip->addFile(
+            $tmp_dir . '/' . $realFolder . '/' . $realFolder . '.php',
+            "{$realFolder}/{$realFolder}.php"
+        );
+        $zip->close();
+
+        return $zip_file;
+    }
+
+    /**
+     * Creates a ZIP with only a __MACOSX folder and root-level files — no real plugin folder.
+     *
+     * @since TBD
+     */
+    private function createMacosxOnlyZip(string $zipFilename): string
+    {
+        $tmp_dir = sys_get_temp_dir() . '/give-test-macosx-only-' . uniqid();
+        wp_mkdir_p($tmp_dir . '/__MACOSX');
+        $this->createdDirs[] = $tmp_dir;
+
+        file_put_contents($tmp_dir . '/__MACOSX/._readme.txt', 'macosx junk');
+        file_put_contents($tmp_dir . '/readme.txt', 'Root-level readme.');
+
+        $zip_file = sys_get_temp_dir() . '/give-test-' . $zipFilename;
+        $this->createdFiles[] = $zip_file;
+
+        if (file_exists($zip_file)) {
+            @unlink($zip_file);
+        }
+
+        $zip = new ZipArchive();
+        $zip->open($zip_file, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+        $zip->addFile($tmp_dir . '/__MACOSX/._readme.txt', '__MACOSX/._readme.txt');
+        $zip->addFile($tmp_dir . '/readme.txt', 'readme.txt');
         $zip->close();
 
         return $zip_file;
