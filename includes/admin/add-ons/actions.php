@@ -19,9 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Note: only for internal use
  *
- * @since 2.5.0
  * @since TBD Use Plugin_Upgrader to install/update the add-on, replacing unreliable
  *            filename-based pre-existing checks and post-install detection.
+ * @since 2.5.0
  */
 function give_upload_addon_handler() {
 	if ( ! isset( $_FILES['file']['name'] ) ) {
@@ -367,9 +367,9 @@ add_action( 'wp_ajax_give_get_license_info', 'give_get_license_info_handler' );
  *
  * Note: only for internal use
  *
- * @since 2.5.0
  * @since TBD Guard against empty or invalid plugin paths that previously bypassed
  *            the nonce and capability checks.
+ * @since 2.5.0
  */
 function give_activate_addon_handler() {
 	$plugin_path = give_clean( $_POST['plugin'] );
