@@ -1,3 +1,0 @@
-significance: patch
-type: fixed
-entry: "Resolved an issue where uploading a ZIP add-on with a folder name that differs from the ZIP filename (e.g. give-recurring-donations-2.19.0.zip containing the folder give-recurring/) would fail to detect the plugin after extraction."
