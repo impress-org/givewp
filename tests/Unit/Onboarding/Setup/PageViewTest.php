@@ -32,13 +32,35 @@ final class PageViewTest extends TestCase
     /**
      * @since TBD
      */
-    public function testLicenseStepAvailabilityFollowsLicenseData(): void
+    public function testLicenseStepIsShownOnlyWithPremiumAddonsAndACapableHarbor(): void
     {
-        $this->bindLicenseData(['canBuildActivationUrl' => true]);
-        $this->assertTrue($this->makePageView()->isLicenseStepAvailable());
+        $this->bindLicenseData([
+            'hasActivePremiumAddons' => true,
+            'canBuildActivationUrl' => true,
+        ]);
+        $this->assertTrue($this->makePageView()->shouldShowLicenseStep());
 
-        $this->bindLicenseData(['canBuildActivationUrl' => false]);
-        $this->assertFalse($this->makePageView()->isLicenseStepAvailable());
+        $this->bindLicenseData([
+            'hasActivePremiumAddons' => true,
+            'canBuildActivationUrl' => false,
+        ]);
+        $this->assertFalse($this->makePageView()->shouldShowLicenseStep());
+    }
+
+    /**
+     * GiveWP is free, so a site running no premium add-on must not be shown a
+     * license step — even when Harbor is perfectly able to build the URL.
+     *
+     * @since TBD
+     */
+    public function testLicenseStepIsHiddenWithoutActivePremiumAddons(): void
+    {
+        $this->bindLicenseData([
+            'hasActivePremiumAddons' => false,
+            'canBuildActivationUrl' => true,
+        ]);
+
+        $this->assertFalse($this->makePageView()->shouldShowLicenseStep());
     }
 
     /**

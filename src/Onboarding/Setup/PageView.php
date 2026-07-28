@@ -156,14 +156,19 @@ class PageView
     }
 
     /**
-     * Whether to show the unified Liquid Web license step — i.e. the loaded Harbor
-     * is new enough to build an activation URL. Omitted entirely otherwise.
+     * Whether to show the unified Liquid Web license step. It earns its place only
+     * on a site running a premium add-on a license would unlock, and only when the
+     * loaded Harbor is new enough to build an activation URL. Omitted entirely
+     * otherwise, so setup never reads as though a license were a prerequisite.
      *
      * @since TBD
      */
-    public function isLicenseStepAvailable(): bool
+    public function shouldShowLicenseStep(): bool
     {
-        return give(LicenseData::class)->canBuildActivationUrl();
+        $licenseData = give(LicenseData::class);
+
+        return $licenseData->hasActivePremiumAddons()
+            && $licenseData->canBuildActivationUrl();
     }
 
     /**

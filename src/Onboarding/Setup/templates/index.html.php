@@ -44,7 +44,7 @@
 
     <!-- License activation (unified Liquid Web) -->
     <?php
-    if ($this->isLicenseStepAvailable()) {
+    if ($this->shouldShowLicenseStep()) {
         echo $this->render_template(
             'section',
             [

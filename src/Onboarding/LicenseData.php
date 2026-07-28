@@ -43,16 +43,47 @@ class LicenseData
     }
 
     /**
+     * Whether this site runs any active GiveWP premium add-on.
+     *
+     * GiveWP is free, and a license only unlocks premium add-ons and their updates.
+     * A site running none of them has nothing to activate, so putting activation UI
+     * in front of that user would imply a license is needed to fundraise at all.
+     * Onboarding asks this first and stays silent when the answer is no.
+     *
+     * @since TBD
+     */
+    public function hasActivePremiumAddons(): bool
+    {
+        // give_get_plugins() leans on get_plugins(), which only ships with the admin.
+        if (!function_exists('get_plugins')) {
+            include_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        foreach (give_get_plugins(['only_premium_add_ons' => true]) as $addon) {
+            if ($addon['Status'] === 'active') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Get the URL that sends a user to the portal to activate a license, for
      * callers that only want one while the user still has something to do.
      *
-     * Empty when there is nothing to be done: the loaded Harbor predates the API,
-     * or the site already holds a valid activated license.
+     * Empty when there is nothing to be done: this site runs no premium add-on a
+     * license would unlock, the loaded Harbor predates the API, or the site already
+     * holds a valid activated license.
      *
      * @since TBD
      */
     public function getActivationUrl(string $returnUrl): string
     {
+        if (!$this->hasActivePremiumAddons()) {
+            return '';
+        }
+
         if (!$this->canBuildActivationUrl()) {
             return '';
         }
