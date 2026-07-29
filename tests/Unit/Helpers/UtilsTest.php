@@ -82,6 +82,58 @@ class UtilsTest extends TestCase
     }
 
     /**
+     * Serialized objects must never be returned, not even as __PHP_Incomplete_Class instances,
+     * because PHP writes the original class bytes back when they are serialized again —
+     * which would re-arm the payload for the next unrestricted unserialize() call.
+     *
+     * @since TBD
+     */
+    public function testSafeUnserializeNeverReturnsObjects()
+    {
+        $objectPayload = serialize((object)['name' => 'James']);
+        $this->assertSame($objectPayload, Utils::safeUnserialize($objectPayload));
+        $this->assertSame($objectPayload, Utils::maybeSafeUnserialize($objectPayload));
+
+        // Objects nested inside arrays are also neutralized.
+        $nestedPayload = serialize(['name' => 'James', 'object' => (object)['name' => 'James']]);
+        $this->assertSame($nestedPayload, Utils::safeUnserialize($nestedPayload));
+        $this->assertSame($nestedPayload, Utils::maybeSafeUnserialize($nestedPayload));
+    }
+
+    /**
+     * Legitimate serialized data (arrays, strings, numbers, booleans, null) must keep
+     * being unserialized normally.
+     *
+     * @since TBD
+     */
+    public function testSafeUnserializeStillUnserializesNonObjectData()
+    {
+        $this->assertSame(['hello', 'world'], Utils::safeUnserialize(serialize(['hello', 'world'])));
+        $this->assertSame(['name' => 'James'], Utils::safeUnserialize(serialize(['name' => 'James'])));
+        $this->assertSame('bar', Utils::safeUnserialize(serialize('bar')));
+        $this->assertSame(42, Utils::safeUnserialize(serialize(42)));
+        $this->assertSame(3.14, Utils::safeUnserialize(serialize(3.14)));
+        $this->assertTrue(Utils::safeUnserialize(serialize(true)));
+        $this->assertNull(Utils::safeUnserialize(serialize(null)));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testContainsPhpIncompleteClass()
+    {
+        $incompleteClass = unserialize(serialize((object)['name' => 'James']), ['allowed_classes' => false]);
+
+        $this->assertTrue(Utils::containsPhpIncompleteClass($incompleteClass));
+        $this->assertTrue(Utils::containsPhpIncompleteClass(['name' => 'James', 'object' => $incompleteClass]));
+        $this->assertTrue(Utils::containsPhpIncompleteClass(['nested' => ['deep' => $incompleteClass]]));
+        $this->assertFalse(Utils::containsPhpIncompleteClass(['hello', 'world']));
+        $this->assertFalse(Utils::containsPhpIncompleteClass('bar'));
+        $this->assertFalse(Utils::containsPhpIncompleteClass(false));
+        $this->assertFalse(Utils::containsPhpIncompleteClass(null));
+    }
+
+    /**
      * @since 3.20.0 Test encoded strings and strings with special characters
      * @since 3.19.3 Test all types of serialized data
      * @since 3.17.2
