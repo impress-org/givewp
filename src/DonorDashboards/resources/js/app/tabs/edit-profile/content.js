@@ -95,10 +95,15 @@ const Content = () => {
     ];
 
     const [newPassword, setNewPassword] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [passwordUpdated, setPasswordUpdated] = useState(false);
     const handlePasswordUpdate = async () => {
-        updatePasswordWithAPI(newPassword)
-        setNewPassword('');
+        if (!newPassword) {
+            setPasswordError(__('Please enter a new password.', 'give'));
+            return;
+        }
+        setPasswordError('');
+        updatePasswordWithAPI(newPassword);
         setPasswordUpdated(true);
     };
 
@@ -216,9 +221,17 @@ const Content = () => {
                 type="password"
                 label={__('New Password', 'give')}
                 value={newPassword}
-                onChange={(value) => setNewPassword(value)}
+                onChange={(value) => {
+                    setNewPassword(value);
+                    setPasswordError('');
+                }}
             />
-            <Button onClick={() => handlePasswordUpdate()}>
+            {passwordError && (
+                <div className="give-donor-dashboard__password-error-message">
+                    {passwordError}
+                </div>
+            )}
+            <Button onClick={() => handlePasswordUpdate()} disabled={!newPassword}>
                 {passwordUpdated ? (
                     <Fragment>
                         {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
