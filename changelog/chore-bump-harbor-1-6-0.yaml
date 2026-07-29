@@ -1,6 +1,4 @@
 significance: patch
 type: tweak
-entry: Updated Harbor to 1.6.0, split the products list into Installed and
-  Available Features, added an Activate link to the product header, and improved
-  license handling on staging and preview sites.
+entry: Improved the unified licensing page experience.
 timestamp: 2026-07-29T13:21:41.668Z
