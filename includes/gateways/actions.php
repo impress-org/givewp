@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Give\Helpers\Form\Utils as FormUtils;
+
 /**
  * Processes gateway select on checkout. Only for users without ajax / javascript
  *
@@ -75,6 +77,7 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
  *
  * Use give_donation_form_nonce() js fn to create nonce.
  *
+ * @since TBD Bail early for Visual Form Builder (v3) forms which use route signatures.
  * @since 2.0
  *
  * @return void
@@ -84,6 +87,11 @@ function give_donation_form_nonce() {
 
 		// Get donation form id.
 		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
+
+		// Visual Form Builder (v3) forms use route signatures instead of the legacy nonce endpoint.
+		if ( FormUtils::isV3Form( $form_id ) ) {
+			wp_send_json_error( [ 'error' => 'give_unsupported_form_version' ], 400 );
+		}
 
 		// Send nonce json data.
 		wp_send_json_success( wp_create_nonce( "give_donation_form_nonce_{$form_id}" ) );
