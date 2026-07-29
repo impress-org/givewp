@@ -68,7 +68,7 @@
                     'target' => '',
                 ]),
                 'contents' => $this->render_template('sub-header', [
-                    'text' => esc_html__('Unlock updates and support for the premium add-ons you\'re using with GiveWP.', 'give'),
+                    'text' => esc_html__('Receive updates and support for the premium add-ons you\'re using with GiveWP.', 'give'),
                 ]),
             ]
         );
