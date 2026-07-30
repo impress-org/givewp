@@ -42,39 +42,6 @@
 
     <?php $step = 0; ?>
 
-    <!-- License activation (unified Liquid Web) -->
-    <?php
-    if ($this->shouldShowLicenseStep()) {
-        echo $this->render_template(
-            'section',
-            [
-                'class' => $this->isLicenseActivated() ? '' : 'current-step',
-                'title' => sprintf('%s %d: %s', __('Step', 'give'), ++$step, __('Activate license for your add-ons', 'give')),
-                'badge' => ($this->isLicenseActivated()
-                    ? $this->render_template('badge', [
-                        'class' => 'completed',
-                        'text' => esc_html__('Completed', 'give'),
-                    ])
-                    : $this->render_template('badge', [
-                        'class' => 'not-completed',
-                        'text' => esc_html__('Not Completed', 'give'),
-                    ])
-                ),
-                'button' => $this->render_template('action-button', [
-                    'href' => esc_url($this->licenseStepUrl()),
-                    'text' => $this->isLicenseActivated()
-                        ? esc_html__('Manage license', 'give')
-                        : esc_html__('Activate license', 'give'),
-                    'target' => '',
-                ]),
-                'contents' => $this->render_template('sub-header', [
-                    'text' => esc_html__('Receive updates and support for the premium add-ons you\'re using with GiveWP.', 'give'),
-                ]),
-            ]
-        );
-    }
-    ?>
-
     <!-- Configuration -->
     <?php
     if ($this->isFormConfigured()) {
@@ -429,6 +396,39 @@
             ],
         ]
     );
+    ?>
+
+    <!-- License activation (unified Liquid Web) -->
+    <?php
+    if ($this->shouldShowLicenseStep()) {
+        echo $this->render_template(
+            'section',
+            [
+                'class' => '',
+                'title' => sprintf('%s %d: %s', __('Step', 'give'), ++$step, __('Activate license for your add-ons', 'give')),
+                'badge' => ($this->isLicenseActivated()
+                    ? $this->render_template('badge', [
+                        'class' => 'completed',
+                        'text' => esc_html__('Completed', 'give'),
+                    ])
+                    : $this->render_template('badge', [
+                        'class' => 'not-completed',
+                        'text' => esc_html__('Not Completed', 'give'),
+                    ])
+                ),
+                'button' => $this->render_template('action-button', [
+                    'href' => esc_url($this->licenseStepUrl()),
+                    'text' => $this->isLicenseActivated()
+                        ? esc_html__('Manage license', 'give')
+                        : esc_html__('Activate license', 'give'),
+                    'target' => '',
+                ]),
+                'contents' => $this->render_template('sub-header', [
+                    'text' => esc_html__('Receive updates and support for the premium add-ons you\'re using with GiveWP.', 'give'),
+                ]),
+            ]
+        );
+    }
     ?>
 
     <?php
