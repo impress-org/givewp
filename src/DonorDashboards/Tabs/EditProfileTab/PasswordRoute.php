@@ -62,10 +62,7 @@ class PasswordRoute extends RouteAbstract
             );
         }
 
-        wp_update_user([
-            'ID' => wp_get_current_user()->ID,
-            'user_pass' => $newPassword,
-        ]);
+        wp_set_password($newPassword, wp_get_current_user()->ID);
 
         return [
             'success' => true,
