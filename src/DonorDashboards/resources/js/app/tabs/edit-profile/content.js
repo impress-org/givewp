@@ -97,7 +97,7 @@ const Content = () => {
     const [newPassword, setNewPassword] = useState('');
     const [passwordUpdated, setPasswordUpdated] = useState(false);
     const handlePasswordUpdate = async () => {
-        if (!newPassword) {
+        if (!newPassword.trim()) {
             return;
         }
         updatePasswordWithAPI(newPassword);
