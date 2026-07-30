@@ -221,7 +221,7 @@ const Content = () => {
                 value={newPassword}
                 onChange={(value) => setNewPassword(value)}
             />
-            <Button onClick={() => handlePasswordUpdate()} disabled={!newPassword}>
+            <Button onClick={() => handlePasswordUpdate()} disabled={!newPassword.trim()}>
                 {passwordUpdated ? (
                     <Fragment>
                         {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />
