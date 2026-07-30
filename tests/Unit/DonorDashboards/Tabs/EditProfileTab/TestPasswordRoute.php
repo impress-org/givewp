@@ -32,9 +32,11 @@ class TestPasswordRoute extends RestApiTestCase
     {
         parent::setUp();
 
+        $uniqueId = uniqid('', true);
+
         $this->userId = wp_insert_user([
-            'user_login' => 'givewp_test_donor',
-            'user_email' => 'givewp_test_donor@example.test',
+            'user_login' => "givewp_test_donor_{$uniqueId}",
+            'user_email' => "givewp_test_donor_{$uniqueId}@example.test",
             'user_pass' => 'original-password',
             'role' => 'subscriber',
         ]);
