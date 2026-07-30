@@ -32,6 +32,21 @@ class TestLoginRoute extends RestApiTestCase
     /** @var string */
     const KNOWN_PASSWORD = 'correct horse battery staple';
 
+    /** @var int */
+    private $userId;
+
+    /**
+     * @since TBD
+     */
+    public function tearDown(): void
+    {
+        if ($this->userId > 0 && get_user_by('id', $this->userId)) {
+            wp_delete_user($this->userId);
+        }
+
+        parent::tearDown();
+    }
+
     /**
      * @since 4.15.5
      *
@@ -39,12 +54,14 @@ class TestLoginRoute extends RestApiTestCase
      */
     private function createKnownUser(): int
     {
-        return wp_insert_user([
+        $this->userId = wp_insert_user([
             'user_login' => self::KNOWN_USERNAME,
             'user_email' => self::KNOWN_EMAIL,
             'user_pass' => self::KNOWN_PASSWORD,
             'role' => 'subscriber',
         ]);
+
+        return $this->userId;
     }
 
     /**

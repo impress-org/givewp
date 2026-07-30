@@ -49,6 +49,18 @@ class TestPasswordRoute extends RestApiTestCase
     /**
      * @since TBD
      */
+    public function tearDown(): void
+    {
+        if ($this->userId > 0 && get_user_by('id', $this->userId)) {
+            wp_delete_user($this->userId);
+        }
+
+        parent::tearDown();
+    }
+
+    /**
+     * @since TBD
+     */
     public function testEmptyPasswordReturnsError()
     {
         $request = new WP_REST_Request('POST', self::ROUTE);
