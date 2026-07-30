@@ -2,10 +2,6 @@
 
 namespace Give\Onboarding;
 
-use Give\Vendors\LiquidWeb\Harbor\Licensing\Product_Collection;
-use Give\Vendors\LiquidWeb\Harbor\Licensing\Repositories\License_Repository;
-use Give\Vendors\LiquidWeb\Harbor\Licensing\Results\Product_Entry;
-
 /**
  * Answers the licensing questions GiveWP's onboarding UI asks: whether this site
  * has activated GiveWP, and where to send a user who still has something to do
@@ -38,8 +34,7 @@ class LicenseData
      */
     public function canBuildActivationUrl(): bool
     {
-        return function_exists('lw_harbor_get_activation_base_url')
-            && function_exists('lw_harbor_get_product_activation_url');
+        return function_exists('lw_harbor_get_product_activation_url');
     }
 
     /**
@@ -96,9 +91,12 @@ class LicenseData
     }
 
     /**
-     * Build the activation URL whatever this site's activation state. When the
-     * stored license already covers GiveWP the URL is scoped to the product and
-     * tier so the portal pre-selects the right subscription.
+     * Build the activation URL whatever this site's activation state. The URL is
+     * scoped to the tier when Harbor names one, so the portal pre-selects the
+     * right subscription. When it cannot — the key does not cover GiveWP, or
+     * covers it at several tiers — the tier is null and the portal shows its own
+     * picker, still limited to this domain. That is the right screen for a
+     * genuine choice, and better than guessing on the user's behalf.
      *
      * Harbor returns null when it has no URL to give; that is folded into the
      * empty string this returns, because both mean the same thing here — there
@@ -110,24 +108,15 @@ class LicenseData
     {
         // Guarded inline (not only via canBuildActivationUrl()) so static analysis
         // can see the functions are called only when they exist.
-        if (
-            !function_exists('lw_harbor_get_activation_base_url')
-            || !function_exists('lw_harbor_get_product_activation_url')
-        ) {
+        if (!function_exists('lw_harbor_get_product_activation_url')) {
             return '';
         }
 
-        $entitlement = $this->getLicensedEntry();
+        $tier = function_exists('lw_harbor_get_product_tier')
+            ? lw_harbor_get_product_tier(self::PRODUCT_SLUG)
+            : null;
 
-        if (!$entitlement instanceof Product_Entry) {
-            return lw_harbor_get_activation_base_url($returnUrl) ?? '';
-        }
-
-        return lw_harbor_get_product_activation_url(
-            $entitlement->get_product_slug(),
-            $entitlement->get_tier(),
-            $returnUrl
-        ) ?? '';
+        return lw_harbor_get_product_activation_url(self::PRODUCT_SLUG, $tier, $returnUrl) ?? '';
     }
 
     /**
@@ -155,52 +144,7 @@ class LicenseData
      */
     public function isActivated(): bool
     {
-        $products = $this->getProducts();
-
-        if (!$products instanceof Product_Collection) {
-            return false;
-        }
-
-        $entry = $products->get_activated_entry(self::PRODUCT_SLUG);
-
-        return $entry instanceof Product_Entry && $entry->is_valid();
-    }
-
-    /**
-     * Get the licensed entry for GiveWP, whatever its activation state. Used to
-     * scope the activation URL: the tier is known as soon as the key covers the
-     * product, well before activation, so this deliberately does not filter on it.
-     *
-     * @since TBD
-     */
-    protected function getLicensedEntry(): ?Product_Entry
-    {
-        $products = $this->getProducts();
-
-        if (!$products instanceof Product_Collection) {
-            return null;
-        }
-
-        $entries = $products->get_all_by_slug(self::PRODUCT_SLUG);
-
-        return $entries ? reset($entries) : null;
-    }
-
-    /**
-     * Get the licensed products Harbor holds for this site. Harbor returns a
-     * WP_Error when its last fetch failed and null when it has never fetched; both
-     * are flattened to null here and read by callers as "no license".
-     *
-     * @since TBD
-     */
-    protected function getProducts(): ?Product_Collection
-    {
-        if (!class_exists(License_Repository::class)) {
-            return null;
-        }
-
-        $products = give(License_Repository::class)->get_products();
-
-        return $products instanceof Product_Collection ? $products : null;
+        return function_exists('lw_harbor_is_product_license_active')
+            && lw_harbor_is_product_license_active(self::PRODUCT_SLUG);
     }
 }
