@@ -40,6 +40,8 @@
     do_action('give_setup_page_before_sections');
     ?>
 
+    <?php $step = 0; ?>
+
     <!-- Configuration -->
     <?php
     if ($this->isFormConfigured()) {
@@ -54,7 +56,7 @@
         'section',
         [
             'class' => !$this->isFormConfigured() ? 'current-step' : '',
-            'title' => sprintf('%s 1: %s', __('Step', 'give'), __('Create your first campaign', 'give')),
+            'title' => sprintf('%s %d: %s', __('Step', 'give'), ++$step, __('Create your first campaign', 'give')),
             'badge' => ($this->isFormConfigured()
                 ? $this->render_template('badge', [
                     'class' => 'completed',
@@ -87,7 +89,7 @@
         'section',
         [
             'class' => ($this->isFormConfigured() && !($this->isStripeSetup() || $this->isPayPalSetup())) ? 'current-step' : '',
-            'title' => sprintf('%s 2: %s', __('Step', 'give'), __('Connect a payment gateway', 'give')),
+            'title' => sprintf('%s %d: %s', __('Step', 'give'), ++$step, __('Connect a payment gateway', 'give')),
             'badge' => (($this->isStripeSetup() || $this->isPayPalSetup())
                 ? $this->render_template('badge', [
                     'class' => 'completed',
@@ -211,7 +213,7 @@
     echo $this->render_template(
         'section',
         [
-            'title' => sprintf('%s 3: %s', __('Step', 'give'), __('Get more from your fundraising campaign with add-ons', 'give')),
+            'title' => sprintf('%s %d: %s', __('Step', 'give'), ++$step, __('Get more from your fundraising campaign with add-ons', 'give')),
             'badge' => $this->render_template('badge', [
                 'class' => 'optional',
                 'text' => esc_html__('Optional', 'give'),
@@ -394,6 +396,39 @@
             ],
         ]
     );
+    ?>
+
+    <!-- License activation (unified Liquid Web) -->
+    <?php
+    if ($this->shouldShowLicenseStep()) {
+        echo $this->render_template(
+            'section',
+            [
+                'class' => '',
+                'title' => sprintf('%s %d: %s', __('Step', 'give'), ++$step, __('Activate license for your add-ons', 'give')),
+                'badge' => ($this->isLicenseActivated()
+                    ? $this->render_template('badge', [
+                        'class' => 'completed',
+                        'text' => esc_html__('Completed', 'give'),
+                    ])
+                    : $this->render_template('badge', [
+                        'class' => 'not-completed',
+                        'text' => esc_html__('Not Completed', 'give'),
+                    ])
+                ),
+                'button' => $this->render_template('action-button', [
+                    'href' => esc_url($this->licenseStepUrl()),
+                    'text' => $this->isLicenseActivated()
+                        ? esc_html__('Manage license', 'give')
+                        : esc_html__('Activate license', 'give'),
+                    'target' => '',
+                ]),
+                'contents' => $this->render_template('sub-header', [
+                    'text' => esc_html__('Receive updates and support for the premium add-ons you\'re using with GiveWP.', 'give'),
+                ]),
+            ]
+        );
+    }
     ?>
 
     <?php

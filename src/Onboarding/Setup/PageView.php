@@ -13,6 +13,7 @@ defined('ABSPATH') || exit;
 use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\Helpers\Gateways\Stripe;
 use Give\Onboarding\FormRepository;
+use Give\Onboarding\LicenseData;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 
 /**
@@ -152,5 +153,46 @@ class PageView
             ],
             esc_url_raw($this->connectClient->getApiUrl('stripe/connect.php'))
         );
+    }
+
+    /**
+     * Whether to show the unified Liquid Web license step. It earns its place only
+     * on a site running a premium add-on a license would unlock, and only when the
+     * loaded Harbor is new enough to build an activation URL. Omitted entirely
+     * otherwise, so setup never reads as though a license were a prerequisite.
+     *
+     * @since TBD
+     */
+    public function shouldShowLicenseStep(): bool
+    {
+        $licenseData = give(LicenseData::class);
+
+        return $licenseData->hasActivePremiumAddons()
+            && $licenseData->canBuildActivationUrl();
+    }
+
+    /**
+     * Whether this site already holds a valid, activated Liquid Web license.
+     *
+     * @since TBD
+     */
+    public function isLicenseActivated(): bool
+    {
+        return give(LicenseData::class)->isActivated();
+    }
+
+    /**
+     * The destination for the license step's button: the in-WP license manager
+     * once activated, otherwise the portal to activate (returning here afterwards).
+     *
+     * @since TBD
+     */
+    public function licenseStepUrl(): string
+    {
+        $licenseData = give(LicenseData::class);
+
+        return $licenseData->isActivated()
+            ? $licenseData->getManagementUrl()
+            : $licenseData->buildActivationUrl(menu_page_url('give-setup', false));
     }
 }

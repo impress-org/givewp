@@ -1,0 +1,20 @@
+.give-obw-activate-license-link {
+	font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+	color: #4fa651;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 22px;
+	margin-top: 24px;
+	padding: 6px;
+	border-radius: 3px;
+
+	&:hover,
+	&:focus {
+		color: #4fa651;
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 2px #7ec980, 0 0 0 3px #4fa651;
+		outline: none;
+	}
+}
