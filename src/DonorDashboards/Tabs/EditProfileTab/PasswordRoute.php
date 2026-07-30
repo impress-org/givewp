@@ -2,8 +2,7 @@
 
 namespace Give\DonorDashboards\Tabs\EditProfileTab;
 
-use Give\DonorDashboards\Helpers\SanitizeProfileData as SanitizeHelper;
-use Give\DonorDashboards\Profile as Profile;
+use Give\Donors\Models\Donor;
 use Give\DonorDashboards\Tabs\Contracts\Route as RouteAbstract;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -62,7 +61,23 @@ class PasswordRoute extends RouteAbstract
             );
         }
 
-        wp_set_password($newPassword, wp_get_current_user()->ID);
+        $donorId = give()->donorDashboard->getId();
+
+        $donor = Donor::find($donorId);
+
+        if ( ! $donor || empty($donor->userId)) {
+            return new WP_REST_Response(
+                [
+                    'status' => 400,
+                    'response' => 'no_user_account',
+                    'body_response' => [
+                        'message' => esc_html__('Unable to update password. Contact a site administrator.', 'give'),
+                    ],
+                ]
+            );
+        }
+
+        wp_set_password($newPassword, $donor->userId);
 
         return [
             'success' => true,
