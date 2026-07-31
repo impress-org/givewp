@@ -29,10 +29,12 @@ class CustomerSubscriptionUpdated
      *
      * @since TBD
      *
+     * @param Event $event
+     *
      * @return void
      * @throws Exception
      */
-    public function __invoke(Event $event)
+    public function __invoke($event)
     {
         try {
             if ($this->processEvent($event)) {
