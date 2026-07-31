@@ -80,6 +80,78 @@ class LegacyDonationProcessorBailTest extends TestCase
     /**
      * @since TBD
      */
+    public function testProcessDonationBailsEarlyForInvalidFormId()
+    {
+        $invalidFormId = 999999;
+
+        $proceeded = false;
+        add_action('give_pre_process_donation', static function () use (&$proceeded) {
+            $proceeded = true;
+        });
+
+        $_POST = [
+            'give-form-id'     => $invalidFormId,
+            'give-form-hash'   => wp_create_nonce("give_donation_form_nonce_{$invalidFormId}"),
+            'give-current-url' => home_url('/'),
+            'give_ajax'        => 'true',
+        ];
+
+        ob_start();
+        try {
+            give_process_donation_form();
+        } catch (\WPDieException $e) {
+            // wp_die() is converted to an exception in the test environment.
+        }
+        $output = (string) ob_get_clean();
+
+        $this->assertStringContainsString('give_invalid_donation_form', $output);
+        $this->assertFalse($proceeded, 'The donation flow must not proceed for an invalid form ID.');
+    }
+
+    /**
+     * Draft give_forms posts remain valid for legacy donation processing.
+     *
+     * @since TBD
+     */
+    public function testProcessDonationDoesNotBailForDraftV2Forms()
+    {
+        $formId = wp_insert_post([
+            'post_type'   => 'give_forms',
+            'post_status' => 'draft',
+            'post_title'  => 'Draft V2 Form',
+        ]);
+        $this->assertFalse(FormUtils::isV3Form($formId));
+
+        $proceeded = false;
+        add_action('give_pre_process_donation', static function () use (&$proceeded) {
+            $proceeded = true;
+            throw new \Exception('stop-after-guard');
+        });
+
+        $_POST = [
+            'give-form-id'     => $formId,
+            'give-form-hash'   => wp_create_nonce("give_donation_form_nonce_{$formId}"),
+            'give-current-url' => home_url('/'),
+            'give_ajax'        => 'true',
+        ];
+
+        ob_start();
+        try {
+            give_process_donation_form();
+        } catch (\Exception $e) {
+            // Expected: the flow was intentionally stopped right after the guard.
+        } catch (\WPDieException $e) {
+            // wp_die() is converted to an exception in the test environment.
+        }
+        $output = (string) ob_get_clean();
+
+        $this->assertStringNotContainsString('give_invalid_donation_form', $output);
+        $this->assertTrue($proceeded, 'Draft v2 forms must still pass the form ID guard.');
+    }
+
+    /**
+     * @since TBD
+     */
     public function testProcessDonationBailsEarlyForV3Forms()
     {
         $formId = $this->createV3Form();
@@ -144,6 +216,50 @@ class LegacyDonationProcessorBailTest extends TestCase
 
         $this->assertStringNotContainsString('give_unsupported_form_version', $output);
         $this->assertTrue($proceeded, 'The donation flow must proceed past the guard for v2 forms.');
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDonationFormNonceRejectsInvalidFormId()
+    {
+        if ( ! defined('DOING_AJAX')) {
+            define('DOING_AJAX', true);
+        }
+
+        $_POST = ['give_form_id' => 999999];
+
+        ob_start();
+        try {
+            give_donation_form_nonce();
+        } catch (\WPDieException $e) {
+            // wp_send_json_*() is converted to an exception in the test environment.
+        }
+        $output = (string) ob_get_clean();
+
+        $this->assertStringContainsString('give_invalid_donation_form', $output);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDonationFormResetAllNonceRejectsInvalidFormId()
+    {
+        if ( ! defined('DOING_AJAX')) {
+            define('DOING_AJAX', true);
+        }
+
+        $_POST = ['give_form_id' => 999999];
+
+        ob_start();
+        try {
+            give_donation_form_reset_all_nonce();
+        } catch (\WPDieException $e) {
+            // wp_send_json_*() is converted to an exception in the test environment.
+        }
+        $output = (string) ob_get_clean();
+
+        $this->assertStringContainsString('give_invalid_donation_form', $output);
     }
 
     /**

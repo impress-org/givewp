@@ -10,6 +10,7 @@
  */
 
 use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
 use Give\Helpers\Utils;
 
 // Exit if accessed directly.
@@ -23,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
- * @since TBD Bail early when a Visual Form Builder (v3) form is submitted.
+ * @since TBD Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
  * @since 3.16.1 Use give_maybe_safe_unserialize() on $user_info data
  * @since  1.0
  *
@@ -54,9 +55,29 @@ function give_process_donation_form() {
 		}
 	}
 
+	$form_id = isset( $post_data['give-form-id'] ) ? absint( $post_data['give-form-id'] ) : 0;
+
+	if ( ! ShortcodeUtils::isValidForm( $form_id ) ) {
+		give_set_error(
+			'give_invalid_donation_form',
+			__( 'The donation form ID is invalid. Please reload the page and try again.', 'give' )
+		);
+
+		if ( $is_ajax ) {
+			/** This action is documented in this file (see give_ajax_donation_errors above). */
+			do_action( 'give_ajax_donation_errors' );
+			give_die();
+			return;
+		}
+
+		give_send_back_to_checkout();
+
+		return false;
+	}
+
 	// Visual Form Builder (v3) forms are processed through the givewp-donate route,
 	// so bail out when the legacy donation processor receives one.
-	if ( ! empty( $post_data['give-form-id'] ) && FormUtils::isV3Form( (int) $post_data['give-form-id'] ) ) {
+	if ( FormUtils::isV3Form( $form_id ) ) {
 		give_set_error(
 			'give_unsupported_form_version',
 			__( 'This donation form cannot be processed through this endpoint. Please reload the page and try again.', 'give' )
