@@ -154,6 +154,69 @@ class Tests_Donors_DB extends TestCase {
 	}
 
 	/**
+	 * get_donor_by_token() must return the matching donor for a real, scalar verify_key.
+	 *
+	 * @since TBD
+	 *
+	 * @covers Give_DB_Donors::get_donor_by_token
+	 */
+	public function test_get_donor_by_token_returns_donor_for_valid_token() {
+
+		$donor = Give()->donors->get_donor_by( 'email', 'testadmin@domain.com' );
+		Give()->donors->update( $donor->id, [ 'verify_key' => 'a-real-verify-key' ] );
+
+		$result = Give()->donors->get_donor_by_token( 'a-real-verify-key' );
+
+		$this->assertIsObject( $result );
+		$this->assertEquals( $donor->id, $result->id );
+
+	}
+
+	/**
+	 * get_donor_by_token() must not accept a non-string (e.g. array) token.
+	 *
+	 * @since TBD
+	 *
+	 * @covers Give_DB_Donors::get_donor_by_token
+	 */
+	public function test_get_donor_by_token_rejects_array_token() {
+
+		// The donor created in setUp() still has its default verify_key = ''.
+		$result = Give()->donors->get_donor_by_token( [ 0 => [ 1 ] ] );
+
+		$this->assertNull( $result );
+
+	}
+
+	/**
+	 * @since TBD
+	 *
+	 * @covers Give_DB_Donors::get_donor_by_token
+	 */
+	public function test_get_donor_by_token_rejects_empty_string_token() {
+
+		$result = Give()->donors->get_donor_by_token( '' );
+
+		$this->assertNull( $result );
+
+	}
+
+	/**
+	 * A well-formed but non-existent token must simply match nothing.
+	 *
+	 * @since TBD
+	 *
+	 * @covers Give_DB_Donors::get_donor_by_token
+	 */
+	public function test_get_donor_by_token_returns_null_for_unknown_token() {
+
+		$result = Give()->donors->get_donor_by_token( 'this-token-does-not-exist' );
+
+		$this->assertNull( $result );
+
+	}
+
+	/**
 	 * Test Get Column By.
 	 */
 	public function test_get_column_by() {

@@ -404,6 +404,48 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * A logged-out visitor presenting a real, scalar verify_key token (the legitimate
+	 * "view my receipt via e-mail link" flow) must still be granted access to their own receipt.
+	 *
+	 * @since TBD
+	 * @cover give_can_view_receipt()
+	 */
+	public function test_give_can_view_receipt_grants_access_for_valid_scalar_token() {
+		wp_set_current_user( 0 );
+		give_update_option( 'email_access', 'enabled' );
+
+		$payment_id = Give_Helper_Payment::create_simple_guest_payment();
+		$donor      = Give()->donors->get_donor_by( 'email', 'guest@example.org' );
+		Give()->donors->update( $donor->id, [ 'verify_key' => 'a-real-verify-key' ] );
+
+		$_COOKIE['give_nl'] = 'a-real-verify-key';
+
+		$this->assertTrue( give_can_view_receipt( $payment_id ) );
+
+		unset( $_COOKIE['give_nl'] );
+	}
+
+	/**
+	 * A logged-out visitor presenting an array-shaped `give_nl` cookie must never be
+	 * authenticated as any donor.
+	 *
+	 * @since TBD
+	 * @cover give_can_view_receipt()
+	 */
+	public function test_give_can_view_receipt_denies_array_shaped_token() {
+		wp_set_current_user( 0 );
+		give_update_option( 'email_access', 'enabled' );
+
+		$payment_id = Give_Helper_Payment::create_simple_guest_payment();
+
+		$_COOKIE['give_nl'] = [ 0 => [ 1 ] ];
+
+		$this->assertFalse( give_can_view_receipt( $payment_id ) );
+
+		unset( $_COOKIE['give_nl'] );
+	}
+
+	/**
 	 * Check if the give_verify_minimum_price() returns verified status.
 	 * Function handles verification of either maximum or minimum status, so test for both.
 	 *
