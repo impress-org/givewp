@@ -47,7 +47,7 @@ class FormPreview
      *
      * If the current page query matches the form preview's slug, method renders the form preview.
      *
-     * @since 4.16.6 add user capability check
+     * @since TBD add user capability check
      * @since 2.8.0
      **/
     public function setup_form_preview()
