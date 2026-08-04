@@ -127,6 +127,7 @@ function give_get_admin_page_menu_title() {
 /**
  * Store recently activated Give's addons to wp options.
  *
+ * @since 2.1.0
  * @since TBD Fall back to the plugin file passed by the `activated_plugin`
  *            action so add-ons activated outside of plugins.php (REST, WP-CLI,
  *            programmatic `activate_plugin()`, etc.) are recorded too.
