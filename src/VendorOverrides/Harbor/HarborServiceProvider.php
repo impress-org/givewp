@@ -46,20 +46,23 @@ class HarborServiceProvider implements ServiceProviderContract
         // adds a "licensing" submenu to Give
         lw_harbor_register_submenu('edit.php?post_type=give_forms');
 
-        // Fixes Activation banner doesn't appear when the Give Addon is activated from Harbor.
-        add_action( 'rest_api_init', array($this, 'load_plugin_file'));
+        // Fixes Activation banner doesn't appear when a Give Addon is activated from Harbor.
+        add_action('rest_api_init', array($this, 'loadGivePluginFile'));
     }
 
     /**
-     * Load the plugin file.
+     * Load the plugin file so that activation banner appears when
+     * a Give Addon is activated from Harbor.
      *
      * @since TBD
+     *
+     * @return void
      */
-    public function load_plugin_file() {
+    public function loadGivePluginFile()
+    {
         $file = GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
-        if ( file_exists( $file ) ) {
-            require_once $file;
+        if (file_exists($file)) {
+            include_once $file;
         }
     }
-
 }
