@@ -45,6 +45,13 @@ class HarborServiceProvider implements ServiceProviderContract
 
         // adds a "licensing" submenu to Give
         lw_harbor_register_submenu('edit.php?post_type=give_forms');
+
+        add_action( 'rest_api_init', function() {
+            $file = GIVE_PLUGIN_DIR . 'includes/admin/plugins.php';
+            if ( file_exists( $file ) ) {
+                require_once $file;
+            }
+        });
     }
 
 }

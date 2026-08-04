@@ -127,13 +127,18 @@ function give_get_admin_page_menu_title() {
 /**
  * Store recently activated Give's addons to wp options.
  *
- * @since 2.1.0
+ * @since TBD Fall back to the plugin file passed by the `activated_plugin`
+ *            action so add-ons activated outside of plugins.php (REST, WP-CLI,
+ *            programmatic `activate_plugin()`, etc.) are recorded too.
+ *
+ * @param string $activated_plugin Plugin file passed by the `activated_plugin` action.
  */
-function give_recently_activated_addons() {
+function give_recently_activated_addons( $activated_plugin = '' ) {
+	$plugins = array_values( array_unique( $activated_plugin ) );
+
 	// Check if action is set.
 	if ( isset( $_REQUEST['action'] ) ) {
 		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
-		$plugins       = [];
 
 		switch ( $plugin_action ) {
 			case 'activate': // Single add-on activation.
@@ -143,22 +148,31 @@ function give_recently_activated_addons() {
 				$plugins = $_REQUEST['checked'];
 				break;
 		}
+	}
 
-		if ( ! empty( $plugins ) ) {
+	/**
+	 * Activations that do not come from the plugins.php form (Harbor's feature manager,
+	 * WP-CLI, plugin dependencies, any direct `activate_plugin()` call) have no matching
+	 * request parameters, so use the plugin file the action itself provides.
+	 */
+	if ( empty( $plugins ) && ! empty( $activated_plugin ) ) {
+		$plugins[] = $activated_plugin;
+	}
 
-			$give_addons = give_get_recently_activated_addons();
+	if ( ! empty( $plugins ) ) {
 
-			foreach ( $plugins as $plugin ) {
-				// Get plugins which has 'Give-' as prefix.
-				if ( stripos( $plugin, 'Give-' ) !== false ) {
-					$give_addons[] = $plugin;
-				}
+		$give_addons = give_get_recently_activated_addons();
+
+		foreach ( $plugins as $plugin ) {
+			// Get plugins which has 'Give-' as prefix.
+			if ( stripos( $plugin, 'Give-' ) !== false ) {
+				$give_addons[] = $plugin;
 			}
+		}
 
-			if ( ! empty( $give_addons ) ) {
-				// Update the Give's activated add-ons.
-				update_option( 'give_recently_activated_addons', $give_addons, false );
-			}
+		if ( ! empty( $give_addons ) ) {
+			// Update the Give's activated add-ons.
+			update_option( 'give_recently_activated_addons', $give_addons, false );
 		}
 	}
 }
