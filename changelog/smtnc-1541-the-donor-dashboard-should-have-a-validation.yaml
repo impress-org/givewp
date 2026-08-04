@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Added validation to prevent empty password updates in the Donor Dashboard.
+timestamp: 2026-07-29T00:02:59.954Z
