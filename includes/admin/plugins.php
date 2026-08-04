@@ -134,7 +134,7 @@ function give_get_admin_page_menu_title() {
  * @param string $activated_plugin Plugin file passed by the `activated_plugin` action.
  */
 function give_recently_activated_addons( $activated_plugin = '' ) {
-	$plugins = array_values( array_unique( $activated_plugin ) );
+	$plugins = [];
 
 	// Check if action is set.
 	if ( isset( $_REQUEST['action'] ) ) {
