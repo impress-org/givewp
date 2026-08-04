@@ -1,0 +1,6 @@
+significance: patch
+type: security
+entry: Added nonce verification to the front-end registration handler and
+  restricted automatic donor account linking to the verified donation checkout
+  flow.
+timestamp: 2026-08-04T17:41:52.647Z

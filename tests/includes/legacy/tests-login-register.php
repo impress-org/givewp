@@ -169,6 +169,61 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * A missing registration nonce must be silently denied, same as a missing login/logout one.
+	 *
+	 * @since TBD
+	 */
+	public function test_process_register_form_denies_missing_nonce() {
+
+		$_POST['give_register_submit'] = 1;
+		$_POST['give_user_pass']       = 'password';
+		$_POST['give_user_pass2']      = 'password';
+
+		$result = give_process_register_form(
+			array(
+				'give_register_submit' => 1,
+				'give_user_login'      => 'no_nonce_user',
+				'give_user_email'      => 'no_nonce_user@example.org',
+			)
+		);
+
+		$this->assertFalse( $result );
+		$this->assertEmpty( give_get_errors() );
+
+		$user = new WP_User( 0, 'no_nonce_user' );
+		$this->assertEmpty( (array) $user->data );
+
+	}
+
+	/**
+	 * An invalid registration nonce must be denied the same way as a missing one.
+	 *
+	 * @since TBD
+	 */
+	public function test_process_register_form_denies_invalid_nonce() {
+
+		$_POST['give_register_submit'] = 1;
+		$_POST['give_user_pass']       = 'password';
+		$_POST['give_user_pass2']      = 'password';
+
+		$result = give_process_register_form(
+			array(
+				'give_register_submit' => 1,
+				'give_register_nonce'  => 'not-a-real-nonce',
+				'give_user_login'      => 'bad_nonce_user',
+				'give_user_email'      => 'bad_nonce_user@example.org',
+			)
+		);
+
+		$this->assertFalse( $result );
+		$this->assertEmpty( give_get_errors() );
+
+		$user = new WP_User( 0, 'bad_nonce_user' );
+		$this->assertEmpty( (array) $user->data );
+
+	}
+
+	/**
 	 * Test that 'empty' errors are displayed when certain fields are empty.
 	 *
 	 * @since 1.3.2
@@ -182,6 +237,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		give_process_register_form(
 			array(
 				'give_register_submit' => 1,
+				'give_register_nonce'  => wp_create_nonce( 'give-register-nonce' ),
 				'give_user_login'      => '',
 				'give_user_email'      => '',
 			)
@@ -212,6 +268,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		give_process_register_form(
 			array(
 				'give_register_submit' => 1,
+				'give_register_nonce'  => wp_create_nonce( 'give-register-nonce' ),
 				'give_user_login'      => 'admin',
 				'give_user_email'      => null,
 			)
@@ -236,6 +293,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		give_process_register_form(
 			array(
 				'give_register_submit' => 1,
+				'give_register_nonce'  => wp_create_nonce( 'give-register-nonce' ),
 				'give_user_login'      => 'admin#!@*&',
 				'give_user_email'      => null,
 			)
@@ -260,6 +318,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 		give_process_register_form(
 			array(
 				'give_register_submit' => 1,
+				'give_register_nonce'  => wp_create_nonce( 'give-register-nonce' ),
 				'give_user_login'      => 'random_username',
 				'give_user_email'      => 'admin@example.org',
 				'give_payment_email'   => 'someotheradminexample.org',
@@ -291,6 +350,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 
 		$args = array(
 			'give_register_submit' => 1,
+			'give_register_nonce'  => wp_create_nonce( 'give-register-nonce' ),
 			'give_user_login'      => 'random_username',
 			'give_user_email'      => 'random_username@example.org',
 			'give_payment_email'   => 'random_username@example.org',
