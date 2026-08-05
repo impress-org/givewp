@@ -1,4 +1,4 @@
-significance: minor
+significance: patch
 type: fix
 entry: Activation banner for addons doesn't show when addons are activated from
   the Unified License Manager
