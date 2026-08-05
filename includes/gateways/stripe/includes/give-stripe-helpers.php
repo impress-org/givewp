@@ -10,8 +10,7 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
-use Give\Campaigns\Models\Campaign;
-use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Campaigns\Actions\GetCampaignName;
 use Give\License\Repositories\LicenseRepository;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
@@ -1141,7 +1140,6 @@ function give_stripe_prepare_metadata( $donation_id, $donation_data = [] ) {
 /**
  * Resolve the campaign name for Stripe metadata.
  *
- * Prefers the Campaign title when available, falling back to the donation form title.
  * The value is truncated because Stripe rejects metadata values longer than 500 characters.
  *
  * @since TBD
@@ -1152,18 +1150,7 @@ function give_stripe_prepare_metadata( $donation_id, $donation_data = [] ) {
  * @return string
  */
 function give_stripe_get_metadata_campaign_name( $donation_id, $form_id ) {
-	$campaign_id = absint( give_get_meta( $donation_id, DonationMetaKeys::CAMPAIGN_ID, true ) );
-	$campaign    = $campaign_id ? Campaign::find( $campaign_id ) : null;
-
-	if ( ! $campaign && $form_id ) {
-		$campaign = Campaign::findByFormId( (int) $form_id );
-	}
-
-	if ( $campaign && ! empty( $campaign->title ) ) {
-		$campaign_name = $campaign->title;
-	} else {
-		$campaign_name = $form_id ? get_the_title( $form_id ) : '';
-	}
+	$campaign_name = give( GetCampaignName::class )( (int) $donation_id, (int) $form_id );
 
 	// Strip the number of characters below 450 when passed to metadata.
 	if ( mb_strlen( $campaign_name ) > 450 ) {
