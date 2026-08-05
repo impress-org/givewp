@@ -1041,6 +1041,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
+ * @since TBD Escaped the donor name output in the donor notes header.
  * @since 4.6.0 Escape donor note
  * @since  1.0
  *
@@ -1060,7 +1061,7 @@ function give_donor_notes_view( $donor ) {
 
 	<div id="donor-notes-wrapper">
 		<div class="donor-notes-header">
-			<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo $donor->name; ?></span>
+			<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo esc_html( $donor->name ); ?></span>
 		</div>
 		<h3><?php _e( 'Notes', 'give' ); ?></h3>
 
@@ -1116,6 +1117,7 @@ function give_donor_notes_view( $donor ) {
 /**
  * The donor delete view.
  *
+ * @since TBD Escaped the donor name output in the delete donor view.
  * @since  1.0
  *
  * @param  object $donor The donor object being displayed.
@@ -1142,7 +1144,7 @@ function give_donor_delete_view( $donor ) {
 			  action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor->id ); ?>">
 
 			<div class="donor-notes-header">
-				<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo $donor->name; ?></span>
+				<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo esc_html( $donor->name ); ?></span>
 			</div>
 
 

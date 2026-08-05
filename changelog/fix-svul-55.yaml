@@ -1,0 +1,5 @@
+significance: patch
+type: security
+entry: Added additional escaping and validation to legacy donor admin screens
+  and the donors REST API.
+timestamp: 2026-07-29T20:42:33.181Z
