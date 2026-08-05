@@ -1,0 +1,5 @@
+significance: patch
+type: security
+entry: Added a capability check to the onboarding form preview screen to prevent
+  unauthorized access.
+timestamp: 2026-08-03T21:14:09.449Z
