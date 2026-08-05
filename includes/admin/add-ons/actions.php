@@ -88,10 +88,13 @@ function give_upload_addon_handler() {
 
 	$buffer_level = ob_get_level();
 
-	$result = $upgrader->install( $_FILES['file']['tmp_name'], [ 'overwrite_package' => true ] );
+	$result = $upgrader->install( $_FILES['file']['tmp_name'] );
 
 	while ( ob_get_level() > $buffer_level ) {
-		ob_end_clean();
+		// A non-removable buffer, such as zlib, would loop until the request times out.
+		if ( ! @ob_end_clean() ) {
+			break;
+		}
 	}
 
 	if ( is_wp_error( $result ) ) {

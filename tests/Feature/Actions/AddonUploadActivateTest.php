@@ -232,13 +232,13 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * Verifies that re-uploading an add-on (update path) succeeds even when
-     * the ZIP folder name and filename differ. This exercises the fallback
-     * detection that locates the plugin by ZIP folder name.
+     * Verifies that re-uploading an installed add-on is reported as already installed
+     * even when the ZIP filename differs from the folder name inside it, since the
+     * detection matches on the ZIP folder name rather than the filename.
      *
      * @since TBD
      */
-    public function testUploadHandlerUpdatesExistingPlugin(): void
+    public function testUploadHandlerDetectsAlreadyInstalledPluginWithRenamedZip(): void
     {
         if (!class_exists('ZipArchive')) {
             $this->markTestSkipped('ZipArchive extension is required for this test.');
@@ -246,24 +246,11 @@ final class AddonUploadActivateTest extends TestCase
 
         $this->setAdminAndAddUploaderCap();
 
-        // Pre-create the plugin that will be "updated."
-        $slug       = 'give-recurring';
-        $plugin_dir = WP_PLUGIN_DIR . "/{$slug}";
-        wp_mkdir_p($plugin_dir);
-        $this->createdDirs[]     = $plugin_dir;
-        $this->testPluginSlugs[] = $slug;
+        $slug = 'give-recurring';
+        $this->createTestPluginInPluginsDir($slug, 'Give Recurring Donations');
 
-        $plugin_file = "{$plugin_dir}/{$slug}.php";
-        file_put_contents(
-            $plugin_file,
-            "<?php\n/**\n * Plugin Name: Give Recurring Donations\n * Version: 1.0.0\n */"
-        );
-
-        wp_clean_plugins_cache(true);
-
-        // The ZIP has the internal folder "give-recurring" but the filename is
-        // "give-recurring-donations-2.0.0.zip" — the mismatch that triggers
-        // the update-path fallback.
+        // The ZIP holds the folder "give-recurring" while the filename says
+        // "give-recurring-donations-2.0.0.zip".
         $zip_filename = 'give-recurring-donations-2.0.0.zip';
         $zip_path     = $this->createTestPluginZip($slug, 'Give Recurring Donations', $zip_filename);
 
@@ -282,14 +269,9 @@ final class AddonUploadActivateTest extends TestCase
             give_upload_addon_handler();
         });
 
-        $this->assertTrue(
-            $response['success'],
-            isset($response['data']['errorMsg'])
-                ? 'Update failed: ' . $response['data']['errorMsg']
-                : 'Handler did not succeed'
-        );
-        $this->assertEquals("{$slug}/{$slug}.php", $response['data']['pluginPath']);
-        $this->assertEquals('Give Recurring Donations', $response['data']['pluginName']);
+        $this->assertFalse($response['success']);
+        $this->assertStringContainsString('already installed', $response['data']['errorMsg']);
+        $this->assertEquals("{$slug}/{$slug}.php", $response['data']['pluginInfo']['Path']);
     }
 
     /**
