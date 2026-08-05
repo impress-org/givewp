@@ -926,6 +926,7 @@ function give_donation_form_validate_logged_in_user() {
  * Donate Form Validate New User
  *
  * @access private
+ * @since TBD Flag data as coming from the checkout registration flow.
  * @since  1.0
  *
  * @return array
@@ -986,6 +987,9 @@ function give_donation_form_validate_new_user() {
 	if ( give_validate_user_email( $user_data['give_email'], $registering_new_user ) ) {
 		$valid_user_data['user_email'] = $user_data['give_email'];
 	}
+
+	// Mark this data as coming from the nonce-verified checkout flow.
+	$valid_user_data['give_donation_checkout_registration'] = true;
 
 	return $valid_user_data;
 }
