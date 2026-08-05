@@ -1,5 +1,9 @@
 <?php
 
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
+use Give\DonationForms\Models\DonationForm;
+use Give\Donations\Models\Donation;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -299,5 +303,54 @@ class Tests_Give_Stripe_Helpers extends TestCase {
 		 */
 		$is_valid = give_stripe_is_source_type( 'pm_xxxxxx', 'src' );
 		$this->assertFalse( $is_valid );
+	}
+
+	/**
+	 * @since TBD
+	 */
+	public function testMetadataShouldIncludeCampaignName() {
+		$campaign = Campaign::factory()->create( [ 'title' => 'Save The Whales' ] );
+		$donation = Donation::factory()->create( [ 'formId' => $campaign->defaultFormId ] );
+
+		$metadata = give_stripe_prepare_metadata( $donation->id );
+
+		$this->assertSame( 'Save The Whales', $metadata['Campaign Name'] );
+	}
+
+	/**
+	 * Stripe rejects metadata values longer than 500 characters.
+	 *
+	 * @since TBD
+	 */
+	public function testMetadataCampaignNameShouldBeTruncated() {
+		$campaign = Campaign::factory()->create( [ 'title' => str_repeat( 'a', 600 ) ] );
+		$donation = Donation::factory()->create( [ 'formId' => $campaign->defaultFormId ] );
+
+		$metadata = give_stripe_prepare_metadata( $donation->id );
+
+		$this->assertSame( str_repeat( 'a', 450 ) . '...', $metadata['Campaign Name'] );
+		$this->assertLessThanOrEqual( 500, mb_strlen( $metadata['Campaign Name'] ) );
+	}
+
+	/**
+	 * @since TBD
+	 */
+	public function testMetadataShouldNotIncludeEmptyCampaignName() {
+		$campaign = Campaign::factory()->create();
+		$donation = Donation::factory()->create( [ 'formId' => $campaign->defaultFormId ] );
+
+		$campaign->title = '';
+		give( CampaignRepository::class )->update( $campaign );
+
+		wp_update_post(
+			[
+				'ID'         => $campaign->defaultFormId,
+				'post_title' => '',
+			]
+		);
+
+		$metadata = give_stripe_prepare_metadata( $donation->id );
+
+		$this->assertArrayNotHasKey( 'Campaign Name', $metadata );
 	}
 }
