@@ -31,7 +31,7 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * @since TBD
+	 * @since 4.16.6
 	 *
 	 * @return Give_Email_Notification
 	 */
@@ -53,7 +53,7 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 	 * never reaches give_get_preview_email_header() without the same capability + nonce that
 	 * gate the normal preview_email() flow.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 * @cover Give_Email_Notifications::email_preview_header
 	 */
 	public function test_email_preview_header_denies_direct_dispatch_without_preview_email_action() {
@@ -77,7 +77,7 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 	 * The legitimate admin preview flow (?give_action=preview_email, with the matching
 	 * capability) must still render the header.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 * @cover Give_Email_Notifications::email_preview_header
 	 */
 	public function test_email_preview_header_renders_for_legitimate_preview_request() {
@@ -112,7 +112,7 @@ class Tests_Email_Notification_Filters extends Give_Unit_Test_Case {
 	 * Even with the legitimate ?give_action=preview_email value present, a visitor without the
 	 * manage_give_settings capability must not see the header (can_preview_email() checks both).
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 * @cover Give_Email_Notifications::email_preview_header
 	 */
 	public function test_email_preview_header_denies_visitor_without_capability() {

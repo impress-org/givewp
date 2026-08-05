@@ -694,7 +694,7 @@ if ( ! function_exists( 'array_column' ) ) {
  *
  * @return bool Whether the receipt is visible or not.
 
- * @since TBD Require the give_nl cookie to be a scalar string before using it as a donor lookup token.
+ * @since 4.16.6 Require the give_nl cookie to be a scalar string before using it as a donor lookup token.
  * @since 1.3.2
  */
 function give_can_view_receipt( $donation_id ) {

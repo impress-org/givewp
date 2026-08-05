@@ -1041,7 +1041,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
- * @since TBD Escaped the donor name output in the donor notes header.
+ * @since 4.16.6 Escaped the donor name output in the donor notes header.
  * @since 4.6.0 Escape donor note
  * @since  1.0
  *
@@ -1117,7 +1117,7 @@ function give_donor_notes_view( $donor ) {
 /**
  * The donor delete view.
  *
- * @since TBD Escaped the donor name output in the delete donor view.
+ * @since 4.16.6 Escaped the donor name output in the delete donor view.
  * @since  1.0
  *
  * @param  object $donor The donor object being displayed.

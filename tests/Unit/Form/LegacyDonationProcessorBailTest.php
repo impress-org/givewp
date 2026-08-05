@@ -12,7 +12,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * forms. Visual Form Builder (v3) forms are processed through the givewp-donate route,
  * so the legacy endpoint must bail early for them.
  *
- * @since TBD
+ * @since 4.16.6
  */
 class LegacyDonationProcessorBailTest extends TestCase
 {
@@ -21,7 +21,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     /**
      * Prevent give_die() from stopping the tests (same pattern used by the legacy suite).
      *
-     * @since TBD
+     * @since 4.16.6
      */
     public function setUp(): void
     {
@@ -42,7 +42,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function tearDown(): void
     {
@@ -56,7 +56,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     /**
      * Option-based (v2) forms do not have the formBuilderSettings meta.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function createV2Form(): int
     {
@@ -70,7 +70,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     /**
      * The DonationForm model factory creates Visual Form Builder (v3) forms.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function createV3Form(): int
     {
@@ -78,7 +78,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testProcessDonationBailsEarlyForInvalidFormId()
     {
@@ -111,7 +111,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     /**
      * Draft give_forms posts remain valid for legacy donation processing.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     public function testProcessDonationDoesNotBailForDraftV2Forms()
     {
@@ -150,7 +150,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testProcessDonationBailsEarlyForV3Forms()
     {
@@ -182,7 +182,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testProcessDonationDoesNotBailForV2Forms()
     {
@@ -219,7 +219,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testDonationFormNonceRejectsInvalidFormId()
     {
@@ -241,7 +241,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testDonationFormResetAllNonceRejectsInvalidFormId()
     {
@@ -263,7 +263,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testDonationFormNonceRejectsV3Forms()
     {
@@ -288,7 +288,7 @@ class LegacyDonationProcessorBailTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testDonationFormNonceStillWorksForV2Forms()
     {

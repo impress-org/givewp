@@ -1,5 +1,0 @@
-significance: patch
-type: security
-entry: Strengthened validation of the donor email-access token and the donation
-  receipt email preview.
-timestamp: 2026-08-03T19:09:20.704Z

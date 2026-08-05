@@ -488,7 +488,7 @@ class Give_DB_Donors extends Give_DB {
 	 * Note: This function is for internal purposes only. Don't use this function as it will be deprecated soon.
 	 *
 	 * @param int $id Email Access Token ID.
-	 * @since TBD Require a non-empty, scalar string token before querying.
+	 * @since 4.16.6 Require a non-empty, scalar string token before querying.
 	 * @since 2.3.1
 	 *
 	 * @return object

@@ -407,7 +407,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	 * A logged-out visitor presenting a real, scalar verify_key token (the legitimate
 	 * "view my receipt via e-mail link" flow) must still be granted access to their own receipt.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 * @cover give_can_view_receipt()
 	 */
 	public function test_give_can_view_receipt_grants_access_for_valid_scalar_token() {
@@ -429,7 +429,7 @@ class Tests_MISC_Functions extends Give_Unit_Test_Case {
 	 * A logged-out visitor presenting an array-shaped `give_nl` cookie must never be
 	 * authenticated as any donor.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 * @cover give_can_view_receipt()
 	 */
 	public function test_give_can_view_receipt_denies_array_shaped_token() {

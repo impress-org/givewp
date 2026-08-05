@@ -314,7 +314,7 @@ class Give_Email_Notifications {
 	 * Add header to donation receipt email preview
 	 *
 	 * @since   2.0
-	 * @since TBD Re-check capability/nonce here, since this callback is also reachable via a direct action dispatch that bypasses the check normally done in preview_email().
+	 * @since 4.16.6 Re-check capability/nonce here, since this callback is also reachable via a direct action dispatch that bypasses the check normally done in preview_email().
 	 * @access  public
 	 *
 	 * @param Give_Email_Notification $email

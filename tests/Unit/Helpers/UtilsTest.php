@@ -86,7 +86,7 @@ class UtilsTest extends TestCase
      * because PHP writes the original class bytes back when they are serialized again —
      * which would re-arm the payload for the next unrestricted unserialize() call.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     public function testSafeUnserializeNeverReturnsObjects()
     {
@@ -104,7 +104,7 @@ class UtilsTest extends TestCase
      * Legitimate serialized data (arrays, strings, numbers, booleans, null) must keep
      * being unserialized normally.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     public function testSafeUnserializeStillUnserializesNonObjectData()
     {
@@ -118,7 +118,7 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testContainsPhpIncompleteClass()
     {

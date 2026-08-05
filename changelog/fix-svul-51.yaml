@@ -1,5 +1,0 @@
-significance: patch
-type: security
-entry: Added additional validation when handling serialized data during the
-  donation process.
-timestamp: 2026-07-29T01:09:54.284Z

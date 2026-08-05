@@ -223,7 +223,7 @@ class Utils
          * unserialize() call (e.g. the donation session storage). In that case, we return
          * the data as a plain string instead, keeping it inert.
          *
-         * @since TBD
+         * @since 4.16.6
          */
         if (self::containsPhpIncompleteClass($unserializedData)) {
             return $data;
@@ -242,7 +242,7 @@ class Utils
      * Recursively checks if the given data contains any __PHP_Incomplete_Class instance,
      * which is what unserialize() produces for classes not present in allowed_classes.
      *
-     * @since TBD
+     * @since 4.16.6
      *
      * @param mixed $data Data to check, can be any type.
      *

@@ -98,7 +98,7 @@ add_action( 'init', 'give_post_actions' );
  * @param  int   $user_id   User ID.
  * @param  array $user_data User Data.
  *
- * @since TBD Only auto-link when registered via the donation-checkout flow.
+ * @since 4.16.6 Only auto-link when registered via the donation-checkout flow.
  * @since  1.7
  *
  * @return void

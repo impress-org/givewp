@@ -78,7 +78,7 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
  *
  * Use give_donation_form_nonce() js fn to create nonce.
  *
- * @since TBD Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
+ * @since 4.16.6 Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
  * @since 2.0
  *
  * @return void
@@ -111,7 +111,7 @@ add_action( 'wp_ajax_nopriv_give_donation_form_nonce', 'give_donation_form_nonce
  * Create all nonce of donation form using Ajax call.
  * Note: only for internal use
  *
- * @since TBD Bail early when the form ID is not a give_forms post.
+ * @since 4.16.6 Bail early when the form ID is not a give_forms post.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  *

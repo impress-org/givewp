@@ -36,7 +36,7 @@ class TestLoginRoute extends RestApiTestCase
     private $knownEmail;
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function tearDown(): void
     {
@@ -48,7 +48,7 @@ class TestLoginRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD Add unique-id suffix to avoid cross-test collisions from TRUNCATE-implicit-commit leakage.
+     * @since 4.16.6 Add unique-id suffix to avoid cross-test collisions from TRUNCATE-implicit-commit leakage.
      * @since 4.15.5
      *
      * @return int The created user's ID.

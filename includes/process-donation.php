@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
- * @since TBD Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
+ * @since 4.16.6 Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
  * @since 3.16.1 Use give_maybe_safe_unserialize() on $user_info data
  * @since  1.0
  *
@@ -926,7 +926,7 @@ function give_donation_form_validate_logged_in_user() {
  * Donate Form Validate New User
  *
  * @access private
- * @since TBD Flag data as coming from the checkout registration flow.
+ * @since 4.16.6 Flag data as coming from the checkout registration flow.
  * @since  1.0
  *
  * @return array

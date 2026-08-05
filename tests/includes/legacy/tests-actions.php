@@ -20,7 +20,7 @@ class Tests_Actions extends Give_Unit_Test_Case {
 	/**
 	 * A standalone registration must not auto-link an unclaimed donor.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 */
 	public function test_connect_donor_to_wpuser_does_not_link_without_checkout_flag() {
 
@@ -49,7 +49,7 @@ class Tests_Actions extends Give_Unit_Test_Case {
 	/**
 	 * The checkout-flow flag must still allow the auto-link.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 */
 	public function test_connect_donor_to_wpuser_links_with_checkout_flag() {
 
@@ -79,7 +79,7 @@ class Tests_Actions extends Give_Unit_Test_Case {
 	/**
 	 * An already-linked donor must never be reassigned, even with the checkout flag present.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 */
 	public function test_connect_donor_to_wpuser_does_not_relink_already_claimed_donor() {
 

@@ -171,7 +171,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	/**
 	 * A missing registration nonce must be silently denied, same as a missing login/logout one.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 */
 	public function test_process_register_form_denies_missing_nonce() {
 
@@ -198,7 +198,7 @@ class Tests_Login_Register extends Give_Unit_Test_Case {
 	/**
 	 * An invalid registration nonce must be denied the same way as a missing one.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 */
 	public function test_process_register_form_denies_invalid_nonce() {
 

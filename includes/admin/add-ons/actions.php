@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Note: only for internal use
  *
- * @since TBD Use Plugin_Upgrader to install/update the add-on, replacing unreliable
+ * @since 4.16.6 Use Plugin_Upgrader to install/update the add-on, replacing unreliable
  *            filename-based pre-existing checks and post-install detection.
  * @since 2.5.0
  */
@@ -138,7 +138,7 @@ function give_upload_addon_handler() {
  * Returns the single top-level directory name inside the ZIP (e.g. "give-recurring").
  * Returns an empty string if the ZIP can't be read or contains multiple top-level items.
  *
- * @since TBD
+ * @since 4.16.6
  *
  * @param string $zip_file Absolute path to the ZIP file.
  *
@@ -189,7 +189,7 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Redirect Liquid Web unified license keys (LWSW-) to the Liquid Web License Manager.
+ * @since 4.16.6 Redirect Liquid Web unified license keys (LWSW-) to the Liquid Web License Manager.
  * @since 2.5.0
  */
 function give_get_license_info_handler() {
@@ -374,7 +374,7 @@ add_action( 'wp_ajax_give_get_license_info', 'give_get_license_info_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Guard against empty or invalid plugin paths that previously bypassed
+ * @since 4.16.6 Guard against empty or invalid plugin paths that previously bypassed
  *            the nonce and capability checks.
  * @since 2.5.0
  */

@@ -156,7 +156,7 @@ class Tests_Donors_DB extends TestCase {
 	/**
 	 * get_donor_by_token() must return the matching donor for a real, scalar verify_key.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 *
 	 * @covers Give_DB_Donors::get_donor_by_token
 	 */
@@ -175,7 +175,7 @@ class Tests_Donors_DB extends TestCase {
 	/**
 	 * get_donor_by_token() must not accept a non-string (e.g. array) token.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 *
 	 * @covers Give_DB_Donors::get_donor_by_token
 	 */
@@ -189,7 +189,7 @@ class Tests_Donors_DB extends TestCase {
 	}
 
 	/**
-	 * @since TBD
+	 * @since 4.16.6
 	 *
 	 * @covers Give_DB_Donors::get_donor_by_token
 	 */
@@ -204,7 +204,7 @@ class Tests_Donors_DB extends TestCase {
 	/**
 	 * A well-formed but non-existent token must simply match nothing.
 	 *
-	 * @since TBD
+	 * @since 4.16.6
 	 *
 	 * @covers Give_DB_Donors::get_donor_by_token
 	 */
