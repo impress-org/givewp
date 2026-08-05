@@ -86,14 +86,27 @@ function give_upload_addon_handler() {
 	$skin     = new Automatic_Upgrader_Skin();
 	$upgrader = new Plugin_Upgrader( $skin );
 
-	$result = $upgrader->install( $_FILES['file']['tmp_name'], [ 'clear_destination' => true ] );
+	$buffer_level = ob_get_level();
+
+	$result = $upgrader->install( $_FILES['file']['tmp_name'] );
+
+	while ( ob_get_level() > $buffer_level ) {
+		// A non-removable buffer, such as zlib, would loop until the request times out.
+		if ( ! @ob_end_clean() ) {
+			break;
+		}
+	}
 
 	if ( is_wp_error( $result ) ) {
 		wp_send_json_error( [ 'errorMsg' => $result->get_error_message() ] );
 	}
 
 	if ( ! $result ) {
-		wp_send_json_error( [ 'errorMsg' => __( 'The add-on could not be installed. Please try again or upload it manually.', 'give' ) ] );
+		$error_message = is_wp_error( $skin->result )
+			? $skin->result->get_error_message()
+			: __( 'The add-on could not be installed. Please try again or upload it manually.', 'give' );
+
+		wp_send_json_error( [ 'errorMsg' => $error_message ] );
 	}
 
 	// Refresh the plugin cache and find the newly installed or updated plugin.
