@@ -380,7 +380,8 @@ final class AddonUploadActivateTest extends TestCase
             give_activate_addon_handler();
             $this->fail('Expected wp_die via give_die() was not triggered.');
         } catch (WPDieException $e) {
-            $this->assertNotEmpty($e->getMessage());
+            // give_die() dies without a message, so assert the activation was blocked instead.
+            $this->assertNotContains('some-plugin/some-plugin.php', (array)get_option('active_plugins'));
         }
     }
 
@@ -510,7 +511,9 @@ final class AddonUploadActivateTest extends TestCase
             give_activate_addon_handler();
             $this->fail('Expected wp_die from check_admin_referer was not triggered.');
         } catch (WPDieException $e) {
-            $this->assertStringContainsString('nonce', $e->getMessage());
+            // check_admin_referer() fails through wp_nonce_ays(), which uses a WP core string.
+            $this->assertStringContainsString(__('The link you followed has expired.'), $e->getMessage());
+            $this->assertNotContains("{$slug}/{$slug}.php", (array)get_option('active_plugins'));
         }
     }
 
