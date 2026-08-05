@@ -477,7 +477,7 @@ class DonationRepository
         }
 
         if ($donation->feeAmountRecovered !== null) {
-            $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = $donation->feeAmountRecovered->formatToDecimal();
+            $meta[DonationMetaKeys::FEE_AMOUNT_RECOVERED] = give_sanitize_amount_for_db($donation->feeAmountRecovered->formatToDecimal());
         }
 
         if ($donation->billingAddress !== null) {
