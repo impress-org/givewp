@@ -324,7 +324,8 @@ final class AddonUploadActivateTest extends TestCase
         });
 
         $this->assertFalse($response['success']);
-        $this->assertStringContainsString('could not detect', $response['data']['errorMsg']);
+        
+        $this->assertStringContainsString(__('The package could not be installed.'), $response['data']['errorMsg']);
     }
 
     /**
