@@ -274,7 +274,6 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 4.16.6: August 6th, 2026 =
-* Tweak: Warn users away from entering LW unified keys on Give license page
 * Tweak: Improved the unified licensing page experience.
 * Security: Added additional validation when handling serialized data during the donation process.
 * Security: Added additional escaping and validation to legacy donor admin screens and the donors REST API.
