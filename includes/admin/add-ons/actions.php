@@ -202,7 +202,6 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
- * @since 4.16.6 Redirect Liquid Web unified license keys (LWSW-) to the Liquid Web License Manager.
  * @since 2.5.0
  */
 function give_get_license_info_handler() {
