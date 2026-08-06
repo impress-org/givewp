@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\PaymentGateways\Gateways\Stripe\Actions;
 
-use Give\PaymentGateways\Gateways\Stripe\Actions\AddExtraMetadataToTransaction;
+use Give\PaymentGateways\Gateways\Stripe\Actions\AddExtraMetadataToPaymentIntent;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Donations\Models\Donation;
@@ -12,7 +12,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 /**
  * @since TBD
  */
-class AddExtraMetadataToTransactionTest extends TestCase
+class AddExtraMetadataToPaymentIntentTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -24,7 +24,7 @@ class AddExtraMetadataToTransactionTest extends TestCase
         $campaign = Campaign::factory()->create(['title' => 'Save The Whales']);
         $donation = Donation::factory()->create(['formId' => $campaign->defaultFormId]);
 
-        $metadata = (new AddExtraMetadataToTransaction())([], $donation->id);
+        $metadata = (new AddExtraMetadataToPaymentIntent())([], $donation->id);
 
         $this->assertSame('Save The Whales', $metadata['Campaign Name']);
     }
@@ -37,11 +37,11 @@ class AddExtraMetadataToTransactionTest extends TestCase
         $campaign = Campaign::factory()->create(['title' => str_repeat('a', 600)]);
         $donation = Donation::factory()->create(['formId' => $campaign->defaultFormId]);
 
-        $metadata = (new AddExtraMetadataToTransaction())([], $donation->id);
+        $metadata = (new AddExtraMetadataToPaymentIntent())([], $donation->id);
 
         $this->assertSame(str_repeat('a', 497) . '...', $metadata['Campaign Name']);
         $this->assertSame(
-            AddExtraMetadataToTransaction::MAX_LENGTH,
+            AddExtraMetadataToPaymentIntent::MAX_LENGTH,
             mb_strlen($metadata['Campaign Name'])
         );
     }
@@ -57,7 +57,7 @@ class AddExtraMetadataToTransactionTest extends TestCase
         $campaign->title = '';
         give(CampaignRepository::class)->update($campaign);
 
-        $metadata = (new AddExtraMetadataToTransaction())([], $donation->id);
+        $metadata = (new AddExtraMetadataToPaymentIntent())([], $donation->id);
 
         $this->assertArrayNotHasKey('Campaign Name', $metadata);
     }
@@ -71,7 +71,7 @@ class AddExtraMetadataToTransactionTest extends TestCase
 
         $this->assertSame(
             $metadata,
-            (new AddExtraMetadataToTransaction())($metadata, 999999)
+            (new AddExtraMetadataToPaymentIntent())($metadata, 999999)
         );
     }
 }

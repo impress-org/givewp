@@ -9,7 +9,7 @@ use Give\Donations\Models\Donation;
  *
  * @since TBD
  */
-class AddExtraMetadataToTransaction
+class AddExtraMetadataToPaymentIntent
 {
     /**
      * Stripe rejects metadata values longer than 500 characters.
