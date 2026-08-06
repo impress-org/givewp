@@ -10,7 +10,6 @@
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  */
 
-use Give\Campaigns\Actions\GetCampaignName;
 use Give\License\Repositories\LicenseRepository;
 use Give\PaymentGateways\Exceptions\InvalidPropertyName;
 use Give\PaymentGateways\Stripe\Repositories\Settings;
@@ -1075,13 +1074,11 @@ function give_stripe_get_checkout_type() {
 /**
  * This function will prepare metadata to send to Stripe.
  *
- * @since TBD Added Campaign Name to Stripe metadata.
- * @since 2.5.5
- *
- * @access public
- *
  * @param int   $donation_id   Donation ID.
  * @param array $donation_data Donation Data.
+ *
+ * @since  2.5.5
+ * @access public
  *
  * @return array
  */
@@ -1095,20 +1092,12 @@ function give_stripe_prepare_metadata( $donation_id, $donation_data = [] ) {
 	$form_id = give_get_payment_form_id( $donation_id );
 	$email   = give_get_payment_user_email( $donation_id );
 
-	$metadata = [
-		'Email'            => $email,
-		'Donation Post ID' => $donation_id,
-	];
-
-	// Only pass the campaign name when it could be resolved, to avoid sending an empty metadata entry.
-	$campaign_name = give_stripe_get_metadata_campaign_name( $donation_id, $form_id );
-	if ( ! empty( $campaign_name ) ) {
-		$metadata['Campaign Name'] = $campaign_name;
-	}
-
 	$args = apply_filters(
 		'give_stripe_prepare_metadata',
-		$metadata,
+		[
+			'Email'            => $email,
+			'Donation Post ID' => $donation_id,
+		],
 		$donation_id,
 		$donation_data
 	);
@@ -1136,30 +1125,6 @@ function give_stripe_prepare_metadata( $donation_id, $donation_data = [] ) {
 
 	return $args;
 }
-
-/**
- * Resolve the campaign name for Stripe metadata.
- *
- * The value is truncated because Stripe rejects metadata values longer than 500 characters.
- *
- * @since TBD
- *
- * @param int $donation_id Donation ID.
- * @param int $form_id     Form ID.
- *
- * @return string
- */
-function give_stripe_get_metadata_campaign_name( $donation_id, $form_id ) {
-	$campaign_name = give( GetCampaignName::class )( (int) $donation_id, (int) $form_id );
-
-	// Strip the number of characters below 450 when passed to metadata.
-	if ( mb_strlen( $campaign_name ) > 450 ) {
-		$campaign_name = mb_substr( $campaign_name, 0, 450 ) . '...';
-	}
-
-	return $campaign_name;
-}
-
 /**
  * This helper function is used to determine whether the screen is update payment method screen or not.
  *
