@@ -65,6 +65,7 @@ Give()->notices->render_frontend_notices( 0 ); ?>
 			<input type="hidden" name="give_honeypot" value="" />
 			<input type="hidden" name="give_action" value="user_register" />
 			<input type="hidden" name="give_redirect" value="<?php echo esc_url( $give_register_redirect ); ?>" />
+			<input type="hidden" name="give_register_nonce" value="<?php echo wp_create_nonce( 'give-register-nonce' ); ?>" />
 		</div>
 
 		<div class="form-row">

@@ -19,19 +19,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Note: only for internal use
  *
+ * @since 4.16.6 Use Plugin_Upgrader to install/update the add-on, replacing unreliable
+ *            filename-based pre-existing checks and post-install detection.
  * @since 2.5.0
  */
 function give_upload_addon_handler() {
-	/* @var WP_Filesystem_Direct $wp_filesystem */
-	global $wp_filesystem;
+	if ( ! isset( $_FILES['file']['name'] ) ) {
+		wp_send_json_error( [ 'errorMsg' => __( 'No file was uploaded.', 'give' ) ] );
+	}
+
+	if ( UPLOAD_ERR_OK !== $_FILES['file']['error'] ) {
+		wp_send_json_error( [ 'errorMsg' => __( 'The file upload failed. Please try again.', 'give' ) ] );
+	}
 
 	check_admin_referer( 'give-upload-addon' );
 
-	// Remove version from file name.
-	$filename = preg_replace( [ '/\(\d\).zip/', '/(.\d).*[\(\d\)]/' ], '', $_FILES['file']['name'] );
-	$filename = basename( trim( $filename ), '.zip' );
-
-	// Bailout if user does not has permission.
 	if ( ! current_user_can( 'upload_plugins' ) ) {
 		wp_send_json_error( [ 'errorMsg' => __( 'The current user does not have permission to upload plugins on this site.', 'give' ) ] );
 	}
@@ -43,7 +45,7 @@ function give_upload_addon_handler() {
 			[
 				'errorMsg' => sprintf(
 					__( 'In order to upload add-ons here, GiveWP needs direct access to the file system. Please <a href="%1$s" target="_blank">visit the main plugin page</a> to manually upload the add-on.', 'give' ),
-					admin_url( 'plugin-install.php?tab=upload' )
+					esc_url( admin_url( 'plugin-install.php?tab=upload' ) )
 				),
 			]
 		);
@@ -55,76 +57,82 @@ function give_upload_addon_handler() {
 		wp_send_json_error( [ 'errorMsg' => __( 'Uploaded add-ons must be (zipped) ZIP files. Upload a valid add-on ZIP.', 'give' ) ] );
 	}
 
-	$give_addons_list   = give_get_plugins();
-	$is_addon_installed = [];
+	// Snapshot existing Give add-ons for diff after installation.
+	$pre_addons_list = give_get_plugins( [ 'only_add_on' => true ] );
 
-	if ( ! empty( $give_addons_list ) ) {
-		foreach ( $give_addons_list as $addon => $give_addon ) {
-			if ( false !== stripos( $addon, $filename ) ) {
-				$is_addon_installed = $give_addon;
+	// Detect the plugin folder name from the ZIP to check for an existing installation.
+	$zip_folder = give_get_zip_plugin_folder( $_FILES['file']['tmp_name'] );
+
+	if ( ! empty( $zip_folder ) && ! empty( $pre_addons_list ) ) {
+		foreach ( $pre_addons_list as $addon_path => $addon_data ) {
+			if ( strpos( $addon_path, $zip_folder . '/' ) === 0 ) {
+				wp_send_json_error(
+					[
+						'errorMsg'   => __( 'This add-on is already installed.', 'give' ),
+						'pluginInfo' => $addon_data,
+					]
+				);
 			}
 		}
 	}
 
-	// Bailout  if addon already installed
-	if ( ! empty( $is_addon_installed ) ) {
-		wp_send_json_error(
-			[
-				'errorMsg'   => __( 'This add-on is already installed.', 'give' ),
-				'pluginInfo' => $is_addon_installed,
-			]
-		);
+	// Install the plugin using the WordPress upgrader.
+	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader-skin.php';
+	require_once ABSPATH . 'wp-admin/includes/class-automatic-upgrader-skin.php';
+	require_once ABSPATH . 'wp-admin/includes/class-plugin-upgrader.php';
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+	$skin     = new Automatic_Upgrader_Skin();
+	$upgrader = new Plugin_Upgrader( $skin );
+
+	$buffer_level = ob_get_level();
+
+	$result = $upgrader->install( $_FILES['file']['tmp_name'] );
+
+	while ( ob_get_level() > $buffer_level ) {
+		// A non-removable buffer, such as zlib, would loop until the request times out.
+		if ( ! @ob_end_clean() ) {
+			break;
+		}
 	}
 
-	$upload_status = wp_handle_upload( $_FILES['file'], [ 'test_form' => false ] );
-
-	// Bailout if has any upload error
-	if ( empty( $upload_status['file'] ) ) {
-		wp_send_json_error( $upload_status );
+	if ( is_wp_error( $result ) ) {
+		wp_send_json_error( [ 'errorMsg' => $result->get_error_message() ] );
 	}
 
-	// @todo: check how WordPress verify plugin files before uploading to plugin directory
+	if ( ! $result ) {
+		$error_message = is_wp_error( $skin->result )
+			? $skin->result->get_error_message()
+			: __( 'The add-on could not be installed. Please try again or upload it manually.', 'give' );
 
-	/* you can safely run request_filesystem_credentials() without any issues and don't need to worry about passing in a URL */
-	$creds = request_filesystem_credentials( site_url() . '/wp-admin/', '', false, false, [] );
-
-	/* initialize the API */
-	if ( ! WP_Filesystem( $creds ) ) {
-		/* any problems and we exit */
-		wp_send_json_error(
-			[
-				'errorMsg' => __( 'The file system did not load correctly. This is usually a permissions issue on your server, and not something that GiveWP has control over. Try uploading the ZIP like a regular plugin.', 'give' ),
-			]
-		);
+		wp_send_json_error( [ 'errorMsg' => $error_message ] );
 	}
 
-	$unzip_status = unzip_file( $upload_status['file'], $wp_filesystem->wp_plugins_dir() );
-
-	// Remove file.
-	@unlink( $upload_status['file'] );
-
-	// Bailout if not able to unzip file successfully
-	if ( is_wp_error( $unzip_status ) ) {
-		wp_send_json_error(
-			[
-				'errorMsg' => $unzip_status,
-			]
-		);
-	}
-
-	// Delete cache and get current installed addon plugin path.
+	// Refresh the plugin cache and find the newly installed or updated plugin.
 	wp_clean_plugins_cache( true );
 
-	$give_addons_list = give_get_plugins();
-	$installed_addon  = [];
+	$post_addons_list = give_get_plugins( [ 'only_add_on' => true ] );
+	$new_plugins      = array_diff_key( $post_addons_list, $pre_addons_list );
 
-	if ( ! empty( $give_addons_list ) ) {
-		foreach ( $give_addons_list as $addon => $give_addon ) {
-			if ( false !== stripos( $addon, $filename ) ) {
-				$installed_addon         = $give_addon;
-				$installed_addon['path'] = $addon;
-			}
-		}
+	$installed_addon = [];
+
+	if ( ! empty( $new_plugins ) ) {
+		$new_plugin_path         = array_key_first( $new_plugins );
+		$installed_addon         = $new_plugins[ $new_plugin_path ];
+		$installed_addon['path'] = $new_plugin_path;
+	}
+
+	if ( empty( $installed_addon ) ) {
+		wp_send_json_error(
+			[
+				'errorMsg' => sprintf(
+					/* translators: %1$s: URL to the plugins page */
+					__( 'The add-on was uploaded but GiveWP could not detect it. Please <a href="%1$s">visit the plugins page</a> to activate it manually.', 'give' ),
+					esc_url( admin_url( 'plugins.php' ) )
+				),
+			]
+		);
 	}
 
 	wp_send_json_success(
@@ -135,6 +143,56 @@ function give_upload_addon_handler() {
 			'licenseSectionHtml' => Give_License::render_licenses_list(),
 		]
 	);
+}
+
+/**
+ * Reads the top-level directory name from a plugin ZIP file.
+ *
+ * Returns the single top-level directory name inside the ZIP (e.g. "give-recurring").
+ * Returns an empty string if the ZIP can't be read or contains multiple top-level items.
+ *
+ * @since 4.16.6
+ *
+ * @param string $zip_file Absolute path to the ZIP file.
+ *
+ * @return string Plugin folder name, or empty string on failure.
+ */
+function give_get_zip_plugin_folder( $zip_file ) {
+	if ( ! file_exists( $zip_file ) || ! class_exists( 'ZipArchive' ) ) {
+		return '';
+	}
+
+	$zip = new ZipArchive();
+
+	if ( true !== $zip->open( $zip_file ) ) {
+		return '';
+	}
+
+	$folder = '';
+
+	for ( $i = 0; $i < $zip->numFiles; $i++ ) {
+		$entry = $zip->getNameIndex( $i );
+		$parts = explode( '/', $entry );
+
+		// Skip macOS metadata folders.
+		if ( isset( $parts[0] ) && '__MACOSX' === $parts[0] ) {
+			continue;
+		}
+
+		if ( count( $parts ) > 1 && '' !== $parts[0] ) {
+			if ( '' === $folder ) {
+				$folder = $parts[0];
+			} elseif ( $folder !== $parts[0] ) {
+				// Multiple top-level directories — ambiguous.
+				$folder = '';
+				break;
+			}
+		}
+	}
+
+	$zip->close();
+
+	return $folder;
 }
 
 add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
@@ -315,6 +373,8 @@ add_action( 'wp_ajax_give_get_license_info', 'give_get_license_info_handler' );
  *
  * Note: only for internal use
  *
+ * @since 4.16.6 Guard against empty or invalid plugin paths that previously bypassed
+ *            the nonce and capability checks.
  * @since 2.5.0
  */
 function give_activate_addon_handler() {
@@ -325,6 +385,42 @@ function give_activate_addon_handler() {
 	// check user permission.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();
+	}
+
+	if ( empty( $plugin_path ) ) {
+		wp_send_json_error(
+			[
+				'errorMsg' => __( 'No plugin path was provided. The uploaded plugin may not have been detected correctly.', 'give' ),
+			]
+		);
+	}
+
+	$plugin_file = WP_PLUGIN_DIR . '/' . $plugin_path;
+
+	if ( ! file_exists( $plugin_file ) ) {
+		wp_send_json_error(
+			[
+				'errorMsg' => sprintf(
+					/* translators: %1$s: plugin file path */
+					__( 'The plugin file "%1$s" could not be found. The add-on may not have been extracted correctly.', 'give' ),
+					esc_html( $plugin_path )
+				),
+			]
+		);
+	}
+
+	$plugin_data = get_plugin_data( $plugin_file );
+
+	if ( empty( $plugin_data['Name'] ) ) {
+		wp_send_json_error(
+			[
+				'errorMsg' => sprintf(
+					/* translators: %1$s: plugin file path */
+					__( 'The plugin "%1$s" does not have a valid plugin header. The add-on may be corrupted or incompatible.', 'give' ),
+					esc_html( $plugin_path )
+				),
+			]
+		);
 	}
 
 	$status = activate_plugin( $plugin_path );
