@@ -5,7 +5,7 @@ import {__} from '@wordpress/i18n';
 import CampaignComments from './shared/components/CampaignComments';
 import useCampaign from '../../shared/hooks/useCampaign';
 import CampaignSelector from '../../shared/components/CampaignSelector';
-import {useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
 import {Attributes} from './types';
 
 export default function Edit({attributes, setAttributes, clientId}: BlockEditProps<Attributes>) {

@@ -1,6 +1,6 @@
 // Dependencies
 import ChartJS from 'chart.js';
-import { useEffect, useState, createRef, Fragment } from 'react';
+import { useEffect, useState, createRef, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import './style.scss';
 

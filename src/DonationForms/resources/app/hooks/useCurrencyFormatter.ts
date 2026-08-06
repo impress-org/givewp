@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import { useMemo } from '@wordpress/element';
 import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 
 /**

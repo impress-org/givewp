@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import {BlockEditProps} from '@wordpress/blocks';
 
 const LineItem = ({label}: {label: string | ReactNode}) => {

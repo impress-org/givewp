@@ -1,0 +1,7 @@
+# Mirrors the @wordpress/scripts default ignore set plus generated assets.
+# @unreleased
+build
+node_modules
+vendor
+assets/build
+dist

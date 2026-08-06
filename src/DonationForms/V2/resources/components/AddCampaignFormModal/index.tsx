@@ -1,7 +1,7 @@
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
 import styles from './AddCampaignFormModal.module.scss';
 import {__} from '@wordpress/i18n';
-import {useRef, useState} from 'react';
+import { useRef, useState } from '@wordpress/element';
 
 export type EditorTypeOptionProps = {
     editorType: string;

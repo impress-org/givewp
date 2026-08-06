@@ -1,4 +1,5 @@
-import {createContext, ReactNode, useContext, useReducer} from 'react';
+import { createContext, useContext, useReducer } from '@wordpress/element';
+import type { ReactNode } from 'react';
 import formSettingsReducer, {setFormBlocks, setFormSettings, setTransferState} from './reducer';
 import {FormState} from '@givewp/form-builder/types';
 

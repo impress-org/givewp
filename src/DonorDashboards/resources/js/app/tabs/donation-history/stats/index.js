@@ -4,7 +4,7 @@ import {useAccentColor} from '../../../hooks';
 import {__} from '@wordpress/i18n';
 
 import './style.scss';
-import {Fragment} from 'react';
+import { Fragment } from '@wordpress/element';
 
 const Stats = () => {
     const accentColor = useAccentColor();

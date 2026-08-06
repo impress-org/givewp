@@ -4,7 +4,7 @@ import styles from './TicketTypeFormModal.module.scss';
 import FormModal from '../FormModal';
 import {useTicketTypeForm} from './ticketTypeFormContext';
 import {Inputs, TicketModalProps} from './types';
-import {useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
 import EventTicketsApi from '../api';
 import CurrencyInput from 'react-currency-input-field';
 import parseValueFromLocale from './parseValueFromLocale';

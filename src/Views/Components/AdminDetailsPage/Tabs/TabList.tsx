@@ -1,7 +1,7 @@
 import { Tab, TabList as ReactAriaTabList, TabsContext } from 'react-aria-components';
 import { Tab as TabType } from '../types';
 import styles from '../AdminDetailsPage.module.scss';
-import { useContext } from 'react';
+import { useContext } from '@wordpress/element';
 import { useTriggerResize } from '../../hooks';
 
 /**

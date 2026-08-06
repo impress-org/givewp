@@ -1,5 +1,5 @@
+import { Children } from '@wordpress/element';
 // Import vendor dependencies
-import React from 'react';
 import PropTypes from 'prop-types';
 
 // Import components
@@ -28,7 +28,7 @@ StepNavigation.propTypes = {
         const prop = props[propName];
 
         let error = null;
-        React.Children.forEach(prop, function (child) {
+        Children.forEach(prop, function (child) {
             if (child.type !== Step) {
                 error = new Error('`' + componentName + '` children should be of type `Step`.');
             }

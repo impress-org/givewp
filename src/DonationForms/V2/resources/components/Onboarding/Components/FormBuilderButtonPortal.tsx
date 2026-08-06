@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
 import {createPortal} from 'react-dom';
 import {FeatureNoticeDialog} from '../Dialogs';
 import styles from '../style.module.scss';

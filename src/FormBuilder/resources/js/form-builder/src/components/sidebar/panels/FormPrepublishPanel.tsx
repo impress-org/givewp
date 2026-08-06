@@ -1,4 +1,5 @@
-import {createRef, MouseEventHandler, RefObject, useState} from 'react';
+import { createRef, RefObject, useState } from '@wordpress/element';
+import type { MouseEventHandler } from 'react';
 import {createPortal} from 'react-dom';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';

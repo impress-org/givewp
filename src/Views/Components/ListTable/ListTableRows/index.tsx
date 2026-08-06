@@ -1,7 +1,7 @@
 import styles from './ListTableRows.module.scss';
 import {__} from '@wordpress/i18n';
 import cx from 'classnames';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import TableCell from '../TableCell';
 import {BulkActionCheckbox} from '@givewp/components/ListTable/BulkActions/BulkActionCheckbox';
 import InterweaveSSR from '@givewp/components/ListTable/InterweaveSSR';

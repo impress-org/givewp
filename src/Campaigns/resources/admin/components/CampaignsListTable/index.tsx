@@ -6,7 +6,7 @@ import {CampaignsRowActions} from './CampaignsRowActions';
 import styles from './CampaignsListTable.module.scss';
 import {GiveCampaignsListTable} from './types';
 import CreateCampaignModal from '../CreateCampaignModal';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import MergeCampaignModal from '../MergeCampaign/Modal';
 import ExistingUserIntroModal from '@givewp/campaigns/admin/components/ExistingUserIntroModal';
 import {getCampaignOptionsWindowData} from '@givewp/campaigns/utils';

@@ -5,7 +5,7 @@ import getWindowData from '../utilities/getWindowData';
 import {useDonationFormState} from '../store';
 import {Section} from '@givewp/forms/types';
 import {withTemplateWrapper} from '../templates';
-import {useCallback} from 'react';
+import { useCallback } from '@wordpress/element';
 import FormSection from './Section';
 
 import {ObjectSchema} from 'joi';

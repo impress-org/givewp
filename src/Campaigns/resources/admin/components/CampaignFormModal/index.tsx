@@ -4,7 +4,7 @@ import styles from './CampaignFormModal.module.scss';
 import FormModal from '../FormModal';
 import CampaignsApi from '../api';
 import {CampaignFormInputs, CampaignModalProps, GoalTypeOption as GoalTypeOptionType} from './types';
-import {useRef, useState} from 'react';
+import { useRef, useState } from '@wordpress/element';
 import {Currency, Upload} from '../Inputs';
 import {
     AmountFromSubscriptionsIcon,

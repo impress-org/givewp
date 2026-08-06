@@ -1,4 +1,4 @@
-import {Fragment} from 'react';
+import { Fragment } from '@wordpress/element';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 const SubscriptionReceipt = ({subscription}) => {

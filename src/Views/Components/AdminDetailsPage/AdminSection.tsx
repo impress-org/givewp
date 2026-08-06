@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 /**
  * Internal Dependencies

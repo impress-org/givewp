@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import type { ComponentType, FC, ReactNode } from 'react';
 
 /**
  * Interface for controlling UI element visibility
@@ -59,27 +59,27 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
     /**
      * Custom title for the page header (defaults to entity.name)
      */
-    pageTitle?: string | React.ReactNode;
+    pageTitle?: string | ReactNode;
 
     /**
      * Component to display the status badge
      */
-    StatusBadge?: React.ComponentType;
+    StatusBadge?: ComponentType;
 
     /**
      * Component to display the primary action button
      */
-    PrimaryActionButton?: React.ComponentType<{ isSaving: boolean, formState: any, className: string }>;
+    PrimaryActionButton?: ComponentType<{ isSaving: boolean, formState: any, className: string }>;
 
     /**
      * Component to display the secondary action button
      */
-    SecondaryActionButton?: React.ComponentType<{ className: string }>;
+    SecondaryActionButton?: ComponentType<{ className: string }>;
 
     /**
      * Component to display the context menu items
      */
-    ContextMenuItems?: React.ComponentType<{ className: string }>;
+    ContextMenuItems?: ComponentType<{ className: string }>;
 
     /**
      * Tabs definition for the object
@@ -89,7 +89,7 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
     /**
      * Component to display the children
      */
-    children?: React.ReactNode;
+    children?: ReactNode;
 }
 
 /**

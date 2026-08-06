@@ -1,4 +1,4 @@
-import {useState, useCallback} from 'react';
+import { useState, useCallback } from '@wordpress/element';
 
 /**
  * Handles making a request to add a user to the Free Addon email subscription. It returns whether the request worked,

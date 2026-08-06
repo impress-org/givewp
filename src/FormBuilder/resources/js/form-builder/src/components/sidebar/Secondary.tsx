@@ -29,7 +29,6 @@ const Sidebar = ({selected}: PropTypes) => {
 
     const PanelContent = panels[selected];
 
-    /* eslint-disable react/jsx-pascal-case */
     return (
         <div
             id="sidebar-secondary"

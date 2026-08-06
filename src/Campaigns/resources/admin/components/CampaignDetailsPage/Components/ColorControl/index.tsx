@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import {useCallback, useState} from 'react';
+import { useCallback, useState } from '@wordpress/element';
 import {Controller, useFormContext} from 'react-hook-form';
 
 /**

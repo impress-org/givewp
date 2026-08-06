@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * @since 4.8.0

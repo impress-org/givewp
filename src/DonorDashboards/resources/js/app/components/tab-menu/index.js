@@ -1,5 +1,5 @@
 // Store dependencies
-import {useState, Fragment} from 'react';
+import { useState, Fragment } from '@wordpress/element';
 import {useSelector} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {__} from '@wordpress/i18n';

@@ -1,4 +1,5 @@
-import {createContext, ReactElement, ReactNode, useContext} from 'react';
+import { createContext, useContext } from '@wordpress/element';
+import type { ReactElement, ReactNode } from 'react';
 import {useImmerReducer} from 'use-immer';
 import reducer from './reducer';
 

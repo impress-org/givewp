@@ -1,6 +1,6 @@
 // Dependencies
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState } from '@wordpress/element';
 
 // Utilities
 import { getColor } from './utils';

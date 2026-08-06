@@ -1,7 +1,7 @@
 import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import {__, sprintf} from '@wordpress/i18n';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import {useFormContext, useFormState} from 'react-hook-form';
 import styles from '../styles.module.scss';
 import {StatesConfig, getStatesForCountry} from './addressUtils';

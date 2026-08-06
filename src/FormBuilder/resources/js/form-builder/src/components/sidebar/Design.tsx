@@ -1,6 +1,6 @@
 import {__} from '@wordpress/i18n';
 import FormDesignSettings, {DesignSettings} from '@givewp/form-builder/settings/design';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {TabSelector} from '@givewp/form-builder/components/sidebar/TabSelector';
 
 type designTabState = DesignSettings.General | DesignSettings.Styles;

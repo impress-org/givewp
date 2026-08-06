@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {useImperativeHandle} from 'react';
+import { useImperativeHandle } from '@wordpress/element';
 import {CreditCard, PaymentForm} from 'react-square-web-payments-sdk';
 
 import './style.scss';

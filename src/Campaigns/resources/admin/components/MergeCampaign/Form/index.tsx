@@ -3,7 +3,7 @@ import {__} from '@wordpress/i18n';
 import styles from './Form.module.scss';
 import FormModal from '../../FormModal';
 import {MergeCampaignFormInputs, MergeCampaignFormProps} from './types';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import {addQueryArgs} from '@wordpress/url';
 import {getGiveCampaignsListTableWindowData} from '../../CampaignsListTable';

@@ -11,7 +11,7 @@ import {FieldSettings} from './types';
 import {AfterDisplaySettingsSlot, AfterFieldSettingsSlot, DisplaySettingsSlot, FieldSettingsSlot} from './slots';
 import {createHigherOrderComponent} from '@wordpress/compose';
 import {GiveWPSupports} from '@givewp/form-builder/supports/types';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import MetaKeyTextControl, {slugifyMeta} from '@givewp/form-builder/supports/field-settings/MetaKeyTextControl';
 
 /**

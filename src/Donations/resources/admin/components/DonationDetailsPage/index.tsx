@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import { useState } from 'react';
+import { useState } from '@wordpress/element';
 import cx from 'classnames';
 
 /**

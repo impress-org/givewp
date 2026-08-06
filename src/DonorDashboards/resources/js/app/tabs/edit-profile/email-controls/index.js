@@ -1,4 +1,4 @@
-import {Fragment} from 'react';
+import { Fragment } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 
 import TextControl from '../../../components/text-control';

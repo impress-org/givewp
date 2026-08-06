@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import { useMemo } from '@wordpress/element';
 import {useFormContext} from 'react-hook-form';
 import {FieldCondition} from '@givewp/forms/types';
 import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOperatorFunctions';

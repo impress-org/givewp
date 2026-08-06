@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment } from '@wordpress/element';
 import ExportCSV from '../export-csv';
 
 import './style.scss';

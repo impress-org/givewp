@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
 import ReactSelect from 'react-select';

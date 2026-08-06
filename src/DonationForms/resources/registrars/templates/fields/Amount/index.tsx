@@ -1,7 +1,7 @@
 import {useCallback} from '@wordpress/element';
 import type {AmountProps} from '@givewp/forms/propTypes';
 import CustomAmount from './CustomAmount';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import {getAmountLevelsWithCurrencySettings, getDefaultAmountWithCurrencySettings} from './withCurrencySettings';
 import DonationAmountCurrency from './DonationAmountCurrency';
 import DonationAmountLevels from './DonationAmountLevels';

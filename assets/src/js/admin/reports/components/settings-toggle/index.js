@@ -4,7 +4,7 @@ import Toggle from '../toggle';
 import { toggleSettingsPanel, setCurrency, toggleTestMode } from '../../store/actions';
 import { useStoreValue } from '../../store';
 import './style.scss';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 // Utils

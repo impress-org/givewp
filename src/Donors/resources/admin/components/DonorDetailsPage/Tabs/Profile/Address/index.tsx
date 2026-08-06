@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {useFormContext, useFormState} from 'react-hook-form';
 
 /**

@@ -1,6 +1,6 @@
 import {FormProvider, useForm, useFormState} from 'react-hook-form';
 import {joiResolver} from '@hookform/resolvers/joi';
-import {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
 import handleSubmitRequest from '@givewp/forms/app/utilities/handleFormSubmitRequest';
 import {useDonationFormState} from '@givewp/forms/app/store';

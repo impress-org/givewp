@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ReactNode } from 'react';
 import { __ } from '@wordpress/i18n';
 import classnames from 'classnames';
 import EventLabel from './EventsLabel';
@@ -78,9 +78,9 @@ export default function DonationBreakdown({ donation }: { donation: Donation }) 
  * @since 4.6.0
  */
 type RowProps = {
-  label?: React.ReactNode;
-  value?: React.ReactNode;
-  children?: React.ReactNode;
+  label?: ReactNode;
+  value?: ReactNode;
+  children?: ReactNode;
   className?: string;
 };
 

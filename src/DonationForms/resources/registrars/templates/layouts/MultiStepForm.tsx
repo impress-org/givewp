@@ -1,5 +1,5 @@
 import {FormProps} from '@givewp/forms/propTypes';
-import {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
 interface Props extends FormProps {
     previousButton: ReactNode;

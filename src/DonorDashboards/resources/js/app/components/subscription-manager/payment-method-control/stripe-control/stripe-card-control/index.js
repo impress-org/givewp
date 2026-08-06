@@ -1,5 +1,5 @@
 import {CardElement, useStripe} from '@stripe/react-stripe-js';
-import {useState, useImperativeHandle} from 'react';
+import { useState, useImperativeHandle } from '@wordpress/element';
 import './style.scss';
 
 const CardControl = ({label, forwardedRef}) => {

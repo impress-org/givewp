@@ -1,6 +1,6 @@
 import {Button} from '@wordpress/components';
 import {__} from '@wordpress/i18n';
-import {SVGProps} from 'react';
+import type { SVGProps } from 'react';
 
 const AddButton = (props) => {
     return (

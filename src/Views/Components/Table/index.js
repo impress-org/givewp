@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {LoadingOverlay, Spinner} from '@givewp/components';

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import type { PressEvent } from 'react-aria-components';
 import { TabsContext, LinkContext, Tabs } from 'react-aria-components';
 import { Tab } from '../types';

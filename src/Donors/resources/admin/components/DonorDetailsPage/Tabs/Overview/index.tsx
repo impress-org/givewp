@@ -1,4 +1,3 @@
-import React from 'react';
 import DonorTransactions from './DonorTransactions';
 import DonorSummary from './DonorSummary';
 import DonorStats from './DonorStats';

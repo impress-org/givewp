@@ -1,4 +1,5 @@
-import {createContext, ReactNode, useContext, useReducer} from 'react';
+import { createContext, useContext, useReducer } from '@wordpress/element';
+import type { ReactNode } from 'react';
 import reducer from './reducer';
 import {StepObject} from '@givewp/forms/app/form/MultiStepForm/types';
 

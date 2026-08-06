@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {useSWRConfig} from 'swr';
 import RowAction from '@givewp/components/ListTable/RowAction';
 import ListTableApi from '@givewp/components/ListTable/api';
-import {useContext} from 'react';
+import { useContext } from '@wordpress/element';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import './style.scss';

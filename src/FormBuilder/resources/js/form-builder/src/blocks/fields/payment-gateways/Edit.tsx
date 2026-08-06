@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import {BlockEditProps} from '@wordpress/blocks';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {applyFilters} from '@wordpress/hooks';

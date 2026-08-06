@@ -1,4 +1,4 @@
-import { createRef, useEffect, useLayoutEffect, useState, Fragment } from 'react';
+import { createRef, useEffect, useLayoutEffect, useState, Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 
 //Import ChartJS dependencies

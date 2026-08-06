@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import { useEffect } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {setFormSettings, useFormState} from '@givewp/form-builder/stores/form-state';

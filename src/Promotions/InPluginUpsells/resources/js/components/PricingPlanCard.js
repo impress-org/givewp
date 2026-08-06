@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import { useMemo } from '@wordpress/element';
 import {kebabCase} from 'lodash';
 import {Button} from './Button';
 import {Card} from './Card';

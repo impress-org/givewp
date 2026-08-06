@@ -3,7 +3,7 @@ import {store as blockEditorStore} from '@wordpress/block-editor';
 import {__} from '@wordpress/i18n';
 // @ts-ignore
 import {SearchControl} from '@wordpress/components';
-import {Fragment, useState} from 'react';
+import { Fragment, useState } from '@wordpress/element';
 import {BlockInstance} from '@wordpress/blocks';
 import {FieldBlock} from '@givewp/form-builder/types';
 import BlockTypesList from '@givewp/form-builder/components/forks/BlockTypesList';

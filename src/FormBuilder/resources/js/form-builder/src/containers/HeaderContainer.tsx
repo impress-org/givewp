@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {CodeIcon, GiveIcon} from '../components/icons';
 import {drawerRight, external, moreVertical} from '@wordpress/icons';
 import {setFormSettings, setTransferState, useFormState, useFormStateDispatch} from '../stores/form-state';

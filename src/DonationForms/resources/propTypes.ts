@@ -1,6 +1,6 @@
 import {Element, Field, Gateway, Group, ReceiptDetail, Section as SectionType, SelectOption} from '@givewp/forms/types';
 import {FieldErrors, UseFormRegisterReturn} from 'react-hook-form';
-import {FC, FormHTMLAttributes, ReactNode} from 'react';
+import type { FC, FormHTMLAttributes, ReactNode } from 'react';
 
 export interface FieldProps extends Field {
     inputProps: UseFormRegisterReturn;

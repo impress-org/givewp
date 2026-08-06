@@ -1,5 +1,5 @@
 // Vendor dependencies
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 // react-dates dependencies

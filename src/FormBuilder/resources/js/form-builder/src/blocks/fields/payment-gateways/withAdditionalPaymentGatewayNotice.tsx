@@ -3,7 +3,7 @@ import {PanelRow} from "@wordpress/components";
 import InspectorNotice from "@givewp/form-builder/components/settings/InspectorNotice";
 import {__} from "@wordpress/i18n";
 import {InspectorControls} from "@wordpress/block-editor";
-import {useState} from "react";
+import { useState } from '@wordpress/element';
 
 declare const window: {
     additionalPaymentGatewaysNotificationData: {

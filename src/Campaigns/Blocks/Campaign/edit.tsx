@@ -1,5 +1,6 @@
 import {__} from '@wordpress/i18n';
-import React, {CSSProperties, useState} from 'react';
+import { useState } from '@wordpress/element';
+import type { CSSProperties } from 'react';
 import {InspectorControls, useBlockProps} from '@wordpress/block-editor';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, ToggleControl} from '@wordpress/components';

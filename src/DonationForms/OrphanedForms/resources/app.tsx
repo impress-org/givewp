@@ -1,5 +1,5 @@
 import {__, _x} from '@wordpress/i18n';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import {Button, Card, Modal, Notice, Pagination as ListTablePagination, Spinner, Table} from '@givewp/components';
 import {useForms} from '../../resources/utils';

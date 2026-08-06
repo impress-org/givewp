@@ -1,4 +1,3 @@
-import React from 'react';
 
 import AuthorizeControl from './authorize-control';
 import SquareControl from './square-control';
