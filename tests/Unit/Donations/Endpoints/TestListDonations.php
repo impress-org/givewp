@@ -8,6 +8,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Subscriptions\Models\Subscription;
@@ -332,6 +333,40 @@ class TestListDonations extends TestCase
         }
 
         return Subscription::factory()->createWithDonation([], $donationData);
+    }
+
+    /**
+     * @unreleased
+     */
+    public function testShouldExcludeTrashedLiveDonationsFromDefaultList()
+    {
+        $campaign = Campaign::factory()->create();
+
+        $activeDonation = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::LIVE(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        $trashedDonation = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::LIVE(),
+            'status' => DonationStatus::TRASH(),
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', false);
+
+        $listDonations = give(ListDonations::class);
+        $response = $listDonations->handleRequest($mockRequest);
+
+        $returnedIds = wp_list_pluck($response->data['items'], 'id');
+
+        $this->assertEquals(1, $response->data['totalItems']);
+        $this->assertContains($activeDonation->id, $returnedIds);
+        $this->assertNotContains($trashedDonation->id, $returnedIds);
     }
 
     /**
