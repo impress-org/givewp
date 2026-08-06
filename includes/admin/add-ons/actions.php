@@ -226,19 +226,6 @@ function give_get_license_info_handler() {
 			]
 		);
 
-	} elseif ( 0 === stripos( $license_key, 'LWSW-' ) ) {
-		$license_manager_url = lw_harbor_get_license_page_url();
-
-		wp_send_json_error(
-			[
-				'errorMsg' => sprintf(
-					/* translators: %s: URL to the Liquid Web License Manager page */
-					__( 'This is a Liquid Web Unified License. To activate it, enter your license in the <a href="%s" target="_blank">Liquid Web License Manager</a> instead.', 'give' ),
-					esc_url( $license_manager_url )
-				),
-			]
-		);
-
 	} elseif (
 		! $is_reactivating_license
 		&& array_key_exists( $license_key, $licenses )
