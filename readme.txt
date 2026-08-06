@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.16.6: August 5th, 2026 =
+= 4.16.6: August 6th, 2026 =
 * Tweak: Warn users away from entering LW unified keys on Give license page
 * Tweak: Improved the unified licensing page experience.
 * Security: Added additional validation when handling serialized data during the donation process.
