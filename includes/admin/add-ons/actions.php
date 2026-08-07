@@ -9,6 +9,8 @@
  * @since       2.5.0
  */
 
+use Give\VendorOverrides\Harbor\Actions\HarborPremiumPluginsExist;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -189,7 +191,7 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Redirect Liquid Web unified license keys (LWSW-) to the Liquid Web License Manager.
+ * @since TBD Redirect unified license keys (LWSW-) to the Unified License Manager, when it is available.
  * @since 2.5.0
  */
 function give_get_license_info_handler() {
@@ -214,15 +216,20 @@ function give_get_license_info_handler() {
 		);
 
 	} elseif ( 0 === stripos( $license_key, 'LWSW-' ) ) {
-		$license_manager_url = lw_harbor_get_license_page_url();
+		// The Unified License Manager is only available once a premium add-on is installed and active.
+		$has_premium_plugin = give( HarborPremiumPluginsExist::class )();
+
+		$error_message = $has_premium_plugin
+			? sprintf(
+				/* translators: %s: URL to the Unified License Manager page */
+				__( 'This is a unified license key. To activate it, enter your license in the <a href="%s" target="_blank">Unified License Manager</a> instead.', 'give' ),
+				esc_url( lw_harbor_get_license_page_url() )
+			)
+			: __( 'This is a unified license key. It can be added from the Unified License Manager, which appears under GiveWP &gt; Licensing once an add-on is installed.', 'give' );
 
 		wp_send_json_error(
 			[
-				'errorMsg' => sprintf(
-					/* translators: %s: URL to the Liquid Web License Manager page */
-					__( 'This is a unified license key. To activate it, enter your license in the <a href="%s" target="_blank">Unified License Manager</a> instead.', 'give' ),
-					esc_url( $license_manager_url )
-				),
+				'errorMsg' => $error_message,
 			]
 		);
 
