@@ -2,12 +2,12 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalStandard\Controllers;
 
+use Give\Donations\Models\Donation;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
 use Give\ValueObjects\Money;
-use Give_Payment;
 
 /**
  * This class use to handle PayPal ipn.
@@ -236,10 +236,25 @@ class PayPalStandardWebhook
     private function verifyPaymentAmount(array $eventData, $donationId)
     {
         try {
-            $donation = new Give_Payment($donationId);
+            $donation = Donation::find($donationId);
+
+            if ( ! $donation) {
+                Log::error(
+                    'PayPal Standard IPN Error',
+                    [
+                        'Message' => sprintf(
+                            'Donation #%d not found.',
+                            $donationId
+                        ),
+                        'Event Data' => $eventData,
+                    ]
+                );
+
+                return false;
+            }
 
             $currency = strtoupper(trim((string) ($eventData['mc_currency'] ?? '')));
-            $donationCurrency = strtoupper(trim($donation->currency));
+            $donationCurrency = strtoupper(trim($donation->amount->getCurrency()->getValue()));
 
             if ($currency !== $donationCurrency) {
                 Log::error(
@@ -259,9 +274,8 @@ class PayPalStandardWebhook
             }
 
             $ipnAmount = Money::of((float) ($eventData['mc_gross'] ?? 0), $currency);
-            $donationAmount = Money::of((float) $donation->total, $currency);
 
-            if ($ipnAmount->getMinorAmount() !== $donationAmount->getMinorAmount()) {
+            if ($ipnAmount->getMinorAmount() !== $donation->intendedAmount()->getMinorAmount()) {
                 Log::error(
                     'PayPal Standard IPN Error',
                     [
@@ -270,7 +284,7 @@ class PayPalStandardWebhook
                             $eventData['mc_gross'] ?? '0',
                             $currency,
                             $donationId,
-                            $donation->total,
+                            $donation->intendedAmount()->formatToDecimal(),
                             $donationCurrency
                         ),
                         'Event Data' => $eventData,
@@ -305,7 +319,9 @@ class PayPalStandardWebhook
             return true;
         }
 
-        $storedTxnId = trim((string) give_get_meta($donationId, '_give_payment_transaction_id', true));
+        $donation = Donation::find($donationId);
+        $storedTxnId = $donation ? trim((string) $donation->gatewayTransactionId) : '';
+
         if ($storedTxnId === '') {
             Log::error(
                 'PayPal Standard IPN Error',

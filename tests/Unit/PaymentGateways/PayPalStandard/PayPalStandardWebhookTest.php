@@ -2,6 +2,8 @@
 
 namespace Give\Tests\Unit\PaymentGateways\PayPalStandard;
 
+use Give\DonationForms\Models\DonationForm;
+use Give\Donations\Models\Donation;
 use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebhook;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
 use Give\Tests\TestCase;
@@ -21,9 +23,9 @@ class PayPalStandardWebhookTest extends TestCase
     private $webhook;
 
     /**
-     * @var int
+     * @var Donation
      */
-    private $donationId;
+    private $donation;
 
     /**
      * @var int
@@ -36,33 +38,16 @@ class PayPalStandardWebhookTest extends TestCase
 
         give_update_option('paypal_email', 'merchant@testsite.com');
 
-        $this->formId = wp_insert_post([
-            'post_title'  => 'Test Donation Form',
-            'post_type'   => 'give_forms',
-            'post_status' => 'publish',
-        ]);
+        $donationForm = DonationForm::factory()->create();
+        $this->formId = $donationForm->id;
 
-        $this->donationId = give_insert_payment([
-            'price'           => '10.00',
-            'give_form_title' => 'Test Donation Form',
-            'give_form_id'    => $this->formId,
-            'give_price_id'   => 0,
-            'date'            => current_time('mysql'),
-            'user_email'      => 'donor@testsite.com',
-            'purchase_key'    => 'test-' . wp_generate_password(12, false),
-            'currency'        => 'USD',
-            'user_info'       => [
-                'id'         => 0,
-                'email'      => 'donor@testsite.com',
-                'first_name' => 'Test',
-                'last_name'  => 'Donor',
-                'address'    => [],
-            ],
-            'status'          => 'pending',
-            'gateway'         => 'paypal',
+        $this->donation = Donation::factory()->create([
+            'formId'               => $this->formId,
+            'gatewayId'            => 'paypal',
+            'status'               => 'pending',
+            'amount'               => money(1000, 'USD'),
+            'gatewayTransactionId' => 'LEGITIMATE-PARENT-TXN',
         ]);
-
-        give_update_meta($this->donationId, '_give_payment_transaction_id', 'LEGITIMATE-PARENT-TXN');
 
         $webhookValidator = new WebhookValidator();
         $this->webhook    = new PayPalStandardWebhook($webhookValidator);
@@ -71,7 +56,6 @@ class PayPalStandardWebhookTest extends TestCase
     public function tearDown(): void
     {
         wp_delete_post($this->formId, true);
-        wp_delete_post($this->donationId, true);
 
         parent::tearDown();
     }
@@ -188,7 +172,7 @@ class PayPalStandardWebhookTest extends TestCase
         $result = $this->invokePrivateMethod('verifyPaymentAmount', [
             'mc_gross'    => '10.00',
             'mc_currency' => 'USD',
-        ], $this->donationId);
+        ], $this->donation->id);
 
         $this->assertTrue($result);
     }
@@ -201,7 +185,7 @@ class PayPalStandardWebhookTest extends TestCase
         $result = $this->invokePrivateMethod('verifyPaymentAmount', [
             'mc_gross'    => '0.01',
             'mc_currency' => 'USD',
-        ], $this->donationId);
+        ], $this->donation->id);
 
         $this->assertFalse($result);
     }
@@ -214,7 +198,7 @@ class PayPalStandardWebhookTest extends TestCase
         $result = $this->invokePrivateMethod('verifyPaymentAmount', [
             'mc_gross'    => '10.00',
             'mc_currency' => 'EUR',
-        ], $this->donationId);
+        ], $this->donation->id);
 
         $this->assertFalse($result);
     }
@@ -227,7 +211,7 @@ class PayPalStandardWebhookTest extends TestCase
         $result = $this->invokePrivateMethod('verifyPaymentAmount', [
             'mc_gross'    => '0',
             'mc_currency' => 'USD',
-        ], $this->donationId);
+        ], $this->donation->id);
 
         $this->assertFalse($result);
     }
@@ -243,7 +227,7 @@ class PayPalStandardWebhookTest extends TestCase
     {
         $result = $this->invokePrivateMethod('verifyParentTransactionId', [
             'parent_txn_id' => 'LEGITIMATE-PARENT-TXN',
-        ], $this->donationId);
+        ], $this->donation->id);
 
         $this->assertTrue($result);
     }
@@ -255,7 +239,7 @@ class PayPalStandardWebhookTest extends TestCase
     {
         $result = $this->invokePrivateMethod('verifyParentTransactionId', [
             'parent_txn_id' => 'ATTACKER-TXN',
-        ], $this->donationId);
+        ], $this->donation->id);
 
         $this->assertFalse($result);
     }
@@ -265,7 +249,7 @@ class PayPalStandardWebhookTest extends TestCase
      */
     public function testMissingParentTransactionIdInEventDataPasses(): void
     {
-        $result = $this->invokePrivateMethod('verifyParentTransactionId', [], $this->donationId);
+        $result = $this->invokePrivateMethod('verifyParentTransactionId', [], $this->donation->id);
 
         $this->assertTrue($result);
     }
@@ -275,11 +259,13 @@ class PayPalStandardWebhookTest extends TestCase
      */
     public function testParentTxnIdPresentButNoStoredTransactionIdIsRejected(): void
     {
-        give_update_meta($this->donationId, '_give_payment_transaction_id', '');
+        $donation = Donation::find($this->donation->id);
+        $donation->gatewayTransactionId = '';
+        $donation->save();
 
         $result = $this->invokePrivateMethod('verifyParentTransactionId', [
             'parent_txn_id' => 'ANY-TXN',
-        ], $this->donationId);
+        ], $this->donation->id);
 
         $this->assertFalse($result);
     }
@@ -298,7 +284,7 @@ class PayPalStandardWebhookTest extends TestCase
             'receiver_email' => 'merchant@testsite.com',
             'mc_gross'       => '10.00',
             'mc_currency'    => 'USD',
-        ], $this->donationId, 'web_accept');
+        ], $this->donation->id, 'web_accept');
 
         $this->assertTrue($result);
     }
@@ -313,7 +299,7 @@ class PayPalStandardWebhookTest extends TestCase
             'receiver_email' => 'attacker@evil.com',
             'mc_gross'       => '10.00',
             'mc_currency'    => 'USD',
-        ], $this->donationId, 'web_accept');
+        ], $this->donation->id, 'web_accept');
 
         $this->assertFalse($result);
     }
@@ -328,7 +314,7 @@ class PayPalStandardWebhookTest extends TestCase
             'receiver_email' => 'merchant@testsite.com',
             'mc_gross'       => '0.01',
             'mc_currency'    => 'USD',
-        ], $this->donationId, 'web_accept');
+        ], $this->donation->id, 'web_accept');
 
         $this->assertFalse($result);
     }
@@ -342,7 +328,7 @@ class PayPalStandardWebhookTest extends TestCase
             'payment_status' => 'Refunded',
             'receiver_email' => 'merchant@testsite.com',
             'parent_txn_id'  => 'LEGITIMATE-PARENT-TXN',
-        ], $this->donationId, 'web_accept');
+        ], $this->donation->id, 'web_accept');
 
         $this->assertTrue($result);
     }
@@ -356,7 +342,7 @@ class PayPalStandardWebhookTest extends TestCase
             'payment_status' => 'Refunded',
             'receiver_email' => 'merchant@testsite.com',
             'parent_txn_id'  => 'ATTACKER-TXN',
-        ], $this->donationId, 'web_accept');
+        ], $this->donation->id, 'web_accept');
 
         $this->assertFalse($result);
     }
@@ -371,7 +357,7 @@ class PayPalStandardWebhookTest extends TestCase
             'receiver_email' => 'merchant@testsite.com',
             'mc_gross'       => '10.00',
             'mc_currency'    => 'USD',
-        ], $this->donationId, 'web_accept');
+        ], $this->donation->id, 'web_accept');
 
         $this->assertTrue($result);
     }
