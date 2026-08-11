@@ -9,7 +9,7 @@
  * @since       2.5.0
  */
 
-use Give\VendorOverrides\Harbor\Actions\HarborPremiumPluginsExist;
+use Give\VendorOverrides\Harbor\Actions\HarborHasLoaded;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -172,9 +172,9 @@ function give_get_license_info_handler() {
 
 	} elseif ( 0 === stripos( $license_key, 'LWSW-' ) ) {
 		// The Unified License Manager is only available once a premium add-on is installed and active.
-		$has_premium_plugin = give( HarborPremiumPluginsExist::class )();
+		$harborHasLoaded = give( HarborHasLoaded::class )();
 
-		$error_message = $has_premium_plugin
+		$error_message = $harborHasLoaded
 			? sprintf(
 				/* translators: %s: URL to the Unified License Manager page */
 				__( 'This is a unified license key. To activate it, enter your license in the <a href="%s" target="_blank">Unified License Manager</a> instead.', 'give' ),
