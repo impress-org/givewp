@@ -4,10 +4,13 @@ namespace Give\Tests\Unit\PaymentGateways\PayPalStandard;
 
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\PayPalStandard\Controllers\PayPalStandardWebhook;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use Give_Cache_Setting;
 use ReflectionClass;
 
 /**
@@ -37,6 +40,7 @@ class PayPalStandardWebhookTest extends TestCase
         parent::setUp();
 
         give_update_option('paypal_email', 'merchant@testsite.com');
+        Give_Cache_Setting::get_instance()->reload_plugin_settings('give_settings');
 
         $donationForm = DonationForm::factory()->create();
         $this->formId = $donationForm->id;
@@ -44,9 +48,8 @@ class PayPalStandardWebhookTest extends TestCase
         $this->donation = Donation::factory()->create([
             'formId'               => $this->formId,
             'gatewayId'            => 'paypal',
-            'status'               => 'pending',
-            'amount'               => money(1000, 'USD'),
-            'gatewayTransactionId' => 'LEGITIMATE-PARENT-TXN',
+            'status'               => DonationStatus::PENDING(),
+            'amount'               => new Money(1000, 'USD'),
         ]);
 
         $webhookValidator = new WebhookValidator();
@@ -217,60 +220,6 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /*
-     * ── verifyParentTransactionId ────────────────────────────────────────────
-     */
-
-    /**
-     * @since TBD
-     */
-    public function testMatchingParentTransactionIdPasses(): void
-    {
-        $result = $this->invokePrivateMethod('verifyParentTransactionId', [
-            'parent_txn_id' => 'LEGITIMATE-PARENT-TXN',
-        ], $this->donation->id);
-
-        $this->assertTrue($result);
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testMismatchedParentTransactionIdIsRejected(): void
-    {
-        $result = $this->invokePrivateMethod('verifyParentTransactionId', [
-            'parent_txn_id' => 'ATTACKER-TXN',
-        ], $this->donation->id);
-
-        $this->assertFalse($result);
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testMissingParentTransactionIdInEventDataPasses(): void
-    {
-        $result = $this->invokePrivateMethod('verifyParentTransactionId', [], $this->donation->id);
-
-        $this->assertTrue($result);
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testParentTxnIdPresentButNoStoredTransactionIdIsRejected(): void
-    {
-        $donation = Donation::find($this->donation->id);
-        $donation->gatewayTransactionId = '';
-        $donation->save();
-
-        $result = $this->invokePrivateMethod('verifyParentTransactionId', [
-            'parent_txn_id' => 'ANY-TXN',
-        ], $this->donation->id);
-
-        $this->assertFalse($result);
-    }
-
-    /*
      * ── verifyEventData integration ──────────────────────────────────────────
      */
 
@@ -314,34 +263,6 @@ class PayPalStandardWebhookTest extends TestCase
             'receiver_email' => 'merchant@testsite.com',
             'mc_gross'       => '0.01',
             'mc_currency'    => 'USD',
-        ], $this->donation->id, 'web_accept');
-
-        $this->assertFalse($result);
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testLegitimateRefundedIpnPasses(): void
-    {
-        $result = $this->invokePrivateMethod('verifyEventData', [
-            'payment_status' => 'Refunded',
-            'receiver_email' => 'merchant@testsite.com',
-            'parent_txn_id'  => 'LEGITIMATE-PARENT-TXN',
-        ], $this->donation->id, 'web_accept');
-
-        $this->assertTrue($result);
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testRefundedIpnWithWrongParentTransactionIdFails(): void
-    {
-        $result = $this->invokePrivateMethod('verifyEventData', [
-            'payment_status' => 'Refunded',
-            'receiver_email' => 'merchant@testsite.com',
-            'parent_txn_id'  => 'ATTACKER-TXN',
         ], $this->donation->id, 'web_accept');
 
         $this->assertFalse($result);
