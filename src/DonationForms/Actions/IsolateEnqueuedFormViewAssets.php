@@ -21,7 +21,7 @@ class IsolateEnqueuedFormViewAssets
     /**
      * @since TBD
      */
-    public function __invoke()
+    public function __invoke(): void
     {
         $this->pinQueue(wp_scripts(), 'print_scripts_array', 'scripts');
         $this->pinQueue(wp_styles(), 'print_styles_array', 'styles');
@@ -34,7 +34,7 @@ class IsolateEnqueuedFormViewAssets
      * @param string          $filter       Print-time filter the queue is constrained through.
      * @param string          $type         Either "scripts" or "styles".
      */
-    private function pinQueue(WP_Dependencies $dependencies, string $filter, string $type)
+    private function pinQueue(WP_Dependencies $dependencies, string $filter, string $type): void
     {
         $allowedHandles = $this->expandDependencies($dependencies, $dependencies->queue);
 
