@@ -3,11 +3,11 @@
 namespace Give\PaymentGateways\Gateways\PayPalStandard\Controllers;
 
 use Give\Donations\Models\Donation;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookValidator;
-use Give\ValueObjects\Money;
 
 /**
  * This class use to handle PayPal ipn.
@@ -254,7 +254,7 @@ class PayPalStandardWebhook
             }
 
             $currency = strtoupper(trim((string) ($eventData['mc_currency'] ?? '')));
-            $donationCurrency = strtoupper(trim($donation->amount->getCurrency()->getValue()));
+            $donationCurrency = strtoupper(trim($donation->amount->getCurrency()->getCode()));
 
             if ($currency !== $donationCurrency) {
                 Log::error(
@@ -273,9 +273,9 @@ class PayPalStandardWebhook
                 return false;
             }
 
-            $ipnAmount = Money::of((float) ($eventData['mc_gross'] ?? 0), $currency);
+            $ipnAmount = Money::fromDecimal((float)($eventData['mc_gross'] ?? 0), $currency);
 
-            if ($ipnAmount->getMinorAmount() !== $donation->intendedAmount()->getMinorAmount()) {
+            if ( ! $ipnAmount->equals($donation->intendedAmount())) {
                 Log::error(
                     'PayPal Standard IPN Error',
                     [
