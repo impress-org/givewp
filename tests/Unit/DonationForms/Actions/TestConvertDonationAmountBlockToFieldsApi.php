@@ -8,13 +8,13 @@ use Give\Framework\Blocks\BlockModel;
 use Give\Tests\TestCase;
 
 /**
- * @since TBD
+ * @since 4.16.5
  * @covers Give\DonationForms\Actions\ConvertDonationAmountBlockToFieldsApi
  */
 final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testReturnsCheckedLevelValueAsTopLevelChecked(): void
     {
@@ -40,7 +40,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
      * Test that when no checked option exists, the checked value returned 
      * is null.
      *
-     * @since TBD
+     * @since 4.16.5
      */
     public function testReturnsCheckedNullWhenNoCheckedOptionExists(): void
     {
@@ -65,7 +65,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     /**
      * Test that the checked value exists in the level array.
      *
-     * @since TBD
+     * @since 4.16.5
      */
     public function testCheckedValueExistsInTheLevelArray(): void
     {
@@ -93,7 +93,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     /**
      * Test that the label is included when description is enabled.
      *
-     * @since TBD
+     * @since 4.16.5
      */
     public function testIncludesLabelWhenDescriptionIsEnabled(): void {
         $result = $this->_prepareLevelsArray(
@@ -122,7 +122,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     /**
      * Test that the label is omitted when description is disabled.
      *
-     * @since TBD
+     * @since 4.16.5
      */
     public function testOmitsLabelWhenDescriptionIsDisabled(): void {
         $result = $this->_prepareLevelsArray(
@@ -153,7 +153,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
      * Invokes the private prepareLevelsArray() method against a donation amount block
      * built from the given levels.
      *
-     * @since TBD
+     * @since 4.16.5
      */
     private function _prepareLevelsArray(array $levels, bool $descriptionEnabled = false): array
     {

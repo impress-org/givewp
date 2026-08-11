@@ -28,7 +28,7 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
-     * @since TBD Set default value for the levelId hidden field.
+     * @since 4.16.5 Set default value for the levelId hidden field.
      * @since 4.10.0 Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
      * @since 3.0.0
      *
@@ -189,7 +189,7 @@ class ConvertDonationAmountBlockToFieldsApi
     /**
      * Prepares the options array to be used in the field.
      *
-     * @since TBD Add per-level "checked" flag.
+     * @since 4.16.5 Add per-level "checked" flag.
      * @since 3.12.0
      *
      * @return array ['levels' => ['label' => string, 'value' => string, 'checked' => bool][], 'checked' => string|null]

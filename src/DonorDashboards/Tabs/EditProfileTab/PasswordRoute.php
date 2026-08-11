@@ -2,10 +2,10 @@
 
 namespace Give\DonorDashboards\Tabs\EditProfileTab;
 
-use Give\DonorDashboards\Helpers\SanitizeProfileData as SanitizeHelper;
-use Give\DonorDashboards\Profile as Profile;
+use Give\Donors\Models\Donor;
 use Give\DonorDashboards\Tabs\Contracts\Route as RouteAbstract;
 use WP_REST_Request;
+use WP_REST_Response;
 
 /**
  * @since 2.10.0
@@ -38,19 +38,46 @@ class PasswordRoute extends RouteAbstract
     /**
      * Handles password update.
      *
+     * @since 4.16.6 added password validation
      * @since 3.3.0
      *
      * @param WP_REST_Request $request
      *
-     * @return array
-     *
+     * @return array|WP_REST_Response
      */
     public function handleRequest(WP_REST_Request $request)
     {
-        wp_update_user([
-            'ID' => wp_get_current_user()->ID,
-            'user_pass' => $request->get_param('newPassword'),
-        ]);
+        $newPassword = trim($request->get_param('newPassword'));
+
+        if (empty($newPassword)) {
+            return new WP_REST_Response(
+                [
+                    'status' => 400,
+                    'response' => 'invalid_password',
+                    'body_response' => [
+                        'message' => esc_html__('Please enter a valid password.', 'give'),
+                    ],
+                ]
+            );
+        }
+
+        $donorId = give()->donorDashboard->getId();
+
+        $donor = Donor::find($donorId);
+
+        if ( ! $donor || empty($donor->userId)) {
+            return new WP_REST_Response(
+                [
+                    'status' => 400,
+                    'response' => 'no_user_account',
+                    'body_response' => [
+                        'message' => esc_html__('Unable to update password. Contact a site administrator.', 'give'),
+                    ],
+                ]
+            );
+        }
+
+        wp_set_password($newPassword, $donor->userId);
 
         return [
             'success' => true,

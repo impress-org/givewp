@@ -693,6 +693,8 @@ if ( ! function_exists( 'array_column' ) ) {
  * @param int $donation_id Donation ID.
  *
  * @return bool Whether the receipt is visible or not.
+
+ * @since 4.16.6 Require the give_nl cookie to be a scalar string before using it as a donor lookup token.
  * @since 1.3.2
  */
 function give_can_view_receipt( $donation_id ) {
@@ -745,7 +747,11 @@ function give_can_view_receipt( $donation_id ) {
 
 		// Check whether it is receipt access session?
 		$receipt_session    = give_get_receipt_session();
-		$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
+		// The give_nl cookie must be a scalar string token; give_clean() does not coerce arrays
+		// to a string, so require is_string() explicitly before treating it as a token.
+		$email_access_token = ! empty( $_COOKIE['give_nl'] ) && is_string( $_COOKIE['give_nl'] )
+			? give_clean( $_COOKIE['give_nl'] )
+			: false;
 
 		if (
 			! empty( $receipt_session ) ||

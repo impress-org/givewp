@@ -3,9 +3,9 @@ Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
-Tested up to: 7.0
+Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 4.16.4
+Stable tag: 4.16.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,24 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.16.6: August 6th, 2026 =
+* Tweak: Improved the unified licensing page experience.
+* Security: Added additional validation when handling serialized data during the donation process.
+* Security: Added additional escaping and validation to legacy donor admin screens and the donors REST API.
+* Security: Strengthened validation of the donor email-access token and the donation receipt email preview.
+* Security: Added a capability check to the onboarding form preview screen to prevent unauthorized access.
+* Security: Added nonce verification to the front-end registration handler and restricted automatic donor account linking to the verified donation checkout flow.
+* Fix: Added validation to prevent empty password updates in the Donor Dashboard.
+* Fix: Resolved an issue where uploading a ZIP add-on with a folder name that differs from the ZIP filename (e.g. give-recurring-donations-2.19.0.zip containing the folder give-recurring/) would fail to detect the plugin after extraction.
+
+= 4.16.5.1: July 27th, 2026 =
+* Security: Strengthened security on legacy donors listing and donation details pages.
+
+= 4.16.5: July 22nd, 2026 =
+* Fix: Resolved an issue where selecting a donation amount level would also select other levels with the same value.
+* Fix: Resolved an issue where extra separators could render in the donation confirmation page header when line breaks were present in the header text.
+* Fix: Resolved an issue where refunding a donation made with a per-form Stripe account would fail because the refund request used the default account instead of the form-specific account.
+
 = 4.16.4: July 14th, 2026 =
 * Security: Added additional validation to the core settings importer.
 * Security: Added additional escaping to donor information displayed in the admin.
