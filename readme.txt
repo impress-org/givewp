@@ -274,7 +274,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 = 4.16.6.1: August 12th, 2026 =
-* Security: Added validation to PayPal Standard IPN (Instant Payment Notification) handling to verify the merchant email, payment amount/currency, and parent transaction ID before updating a donation's status.
+* Security: Added additional validation to PayPal Standard IPN.
 
 = 4.16.6: August 6th, 2026 =
 * Tweak: Improved the unified licensing page experience.
