@@ -1,0 +1,6 @@
+significance: patch
+type: security
+entry: Added validation to PayPal Standard IPN (Instant Payment Notification)
+  handling to verify the merchant email, payment amount/currency, and parent
+  transaction ID before updating a donation's status.
+timestamp: 2026-08-12T12:12:07.895Z
