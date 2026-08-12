@@ -32,7 +32,7 @@ class PayPalStandardWebhook
      *
      * @since 2.19.0
      * @since 2.19.3 Respond with 200 http status to ipn.
-     * @since TBD Add IPN event-data validation before processing.
+     * @since 4.16.6.1 Add IPN event-data validation before processing.
      */
     public function handle()
     {
@@ -167,7 +167,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     private function verifyEventData(array $eventData, int $donationId, $txnType): bool
     {
@@ -193,7 +193,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     private function verifyReceiverEmail(array $eventData)
     {
@@ -231,7 +231,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     private function verifyPaymentAmount(array $eventData, $donationId)
     {
@@ -310,7 +310,7 @@ class PayPalStandardWebhook
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     private function verifyParentTransactionId(array $eventData, $donationId)
     {

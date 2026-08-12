@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 4.16.6.1: August 12th, 2026 =
+* Security: Added validation to PayPal Standard IPN (Instant Payment Notification) handling to verify the merchant email, payment amount/currency, and parent transaction ID before updating a donation's status.
+
 = 4.16.6: August 6th, 2026 =
 * Tweak: Improved the unified licensing page experience.
 * Security: Added additional validation when handling serialized data during the donation process.

@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 4.16.6
+Stable tag: 4.16.6.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.16.6.1: August 12th, 2026 =
+* Security: Added validation to PayPal Standard IPN (Instant Payment Notification) handling to verify the merchant email, payment amount/currency, and parent transaction ID before updating a donation's status.
+
 = 4.16.6: August 6th, 2026 =
 * Tweak: Improved the unified licensing page experience.
 * Security: Added additional validation when handling serialized data during the donation process.

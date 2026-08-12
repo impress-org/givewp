@@ -14,7 +14,7 @@ use Give_Cache_Setting;
 use ReflectionClass;
 
 /**
- * @since TBD Add tests for PayPal Standard IPN event-data validation.
+ * @since 4.16.6.1 Add tests for PayPal Standard IPN event-data validation.
  */
 class PayPalStandardWebhookTest extends TestCase
 {
@@ -80,7 +80,7 @@ class PayPalStandardWebhookTest extends TestCase
      */
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testReceiverEmailMatchesSiteEmail(): void
     {
@@ -92,7 +92,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testBusinessEmailMatchesSiteEmail(): void
     {
@@ -104,7 +104,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testCaseInsensitiveReceiverEmailMatch(): void
     {
@@ -116,7 +116,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testMismatchedReceiverEmailIsRejected(): void
     {
@@ -128,7 +128,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testMismatchedBusinessEmailIsRejected(): void
     {
@@ -140,7 +140,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testEmptySitePaypalEmailPasses(): void
     {
@@ -154,7 +154,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testMissingBothReceiverAndBusinessEmailPasses(): void
     {
@@ -168,7 +168,7 @@ class PayPalStandardWebhookTest extends TestCase
      */
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testMatchingAmountAndCurrencyPasses(): void
     {
@@ -181,7 +181,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testMismatchedAmountIsRejected(): void
     {
@@ -194,7 +194,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testMismatchedCurrencyIsRejected(): void
     {
@@ -207,7 +207,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testZeroAmountDoesNotMatch(): void
     {
@@ -224,7 +224,7 @@ class PayPalStandardWebhookTest extends TestCase
      */
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testLegitimateCompletedIpnPassesAllChecks(): void
     {
@@ -239,7 +239,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testCompletedIpnWithWrongReceiverEmailFails(): void
     {
@@ -254,7 +254,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testCompletedIpnWithWrongAmountFails(): void
     {
@@ -269,7 +269,7 @@ class PayPalStandardWebhookTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6.1
      */
     public function testPendingIpnWithCorrectAmountPasses(): void
     {
