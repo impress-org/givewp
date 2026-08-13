@@ -4,36 +4,46 @@ namespace Give\Tests\Unit\DonationForms\Actions;
 
 use Give\DonationForms\Actions\IsolateEnqueuedFormViewAssets;
 use Give\Tests\TestCase;
-use WP_Scripts;
-use WP_Styles;
 
 final class TestIsolateEnqueuedFormViewAssets extends TestCase
 {
     /**
-     * @var WP_Scripts
+     * @var string[]
      */
-    private $originalScripts;
+    private $originalScriptQueue = [];
 
     /**
-     * @var WP_Styles
+     * @var string[]
      */
-    private $originalStyles;
+    private $originalStyleQueue = [];
 
     /**
-     * Registrations survive WP_Dependencies::reset(), and a re-registered handle keeps its original
-     * dependencies, so each test needs its own queues.
+     * Constructing WP_Styles fires wp_default_styles, which reaches wp_is_block_theme() before the
+     * test suite has registered the theme directory. Warming the globals up front keeps that notice
+     * out of the incorrect-usage assertions the individual tests run.
      *
+     * @since TBD
+     */
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        wp_scripts();
+        wp_styles();
+    }
+
+    /**
      * @since TBD
      */
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->originalScripts = $GLOBALS['wp_scripts'] ?? null;
-        $this->originalStyles = $GLOBALS['wp_styles'] ?? null;
+        $this->originalScriptQueue = wp_scripts()->queue;
+        $this->originalStyleQueue = wp_styles()->queue;
 
-        $GLOBALS['wp_scripts'] = new WP_Scripts();
-        $GLOBALS['wp_styles'] = new WP_Styles();
+        wp_scripts()->queue = [];
+        wp_styles()->queue = [];
     }
 
     /**
@@ -41,8 +51,8 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
      */
     public function tearDown(): void
     {
-        $GLOBALS['wp_scripts'] = $this->originalScripts;
-        $GLOBALS['wp_styles'] = $this->originalStyles;
+        wp_scripts()->queue = $this->originalScriptQueue;
+        wp_styles()->queue = $this->originalStyleQueue;
 
         remove_all_filters('print_scripts_array');
         remove_all_filters('print_styles_array');
@@ -56,26 +66,29 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
      */
     public function testShouldKeepScriptsEnqueuedBeforeTheQueueIsPinned()
     {
-        wp_enqueue_script('givewp-test-form-app', 'https://example.test/form-app.js', [], '1.0', true);
+        wp_enqueue_script('givewp-keep-form-app', 'https://example.test/form-app.js', [], '1.0', true);
 
         (new IsolateEnqueuedFormViewAssets())();
 
         $this->assertSame(
-            ['givewp-test-form-app'],
-            apply_filters('print_scripts_array', ['givewp-test-form-app'])
+            ['givewp-keep-form-app'],
+            apply_filters('print_scripts_array', ['givewp-keep-form-app'])
         );
     }
 
     /**
+     * Registrations survive between tests, and a re-registered handle keeps the dependencies it was
+     * first registered with, so each test needs handles of its own.
+     *
      * @since TBD
      */
     public function testShouldKeepDependenciesOfScriptsEnqueuedBeforeTheQueueIsPinned()
     {
-        wp_register_script('givewp-test-registrars', 'https://example.test/registrars.js', [], '1.0', true);
+        wp_register_script('givewp-deps-registrars', 'https://example.test/registrars.js', [], '1.0', true);
         wp_enqueue_script(
-            'givewp-test-form-app',
+            'givewp-deps-form-app',
             'https://example.test/form-app.js',
-            ['givewp-test-registrars'],
+            ['givewp-deps-registrars'],
             '1.0',
             true
         );
@@ -83,8 +96,8 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
         (new IsolateEnqueuedFormViewAssets())();
 
         $this->assertSame(
-            ['givewp-test-registrars', 'givewp-test-form-app'],
-            apply_filters('print_scripts_array', ['givewp-test-registrars', 'givewp-test-form-app'])
+            ['givewp-deps-registrars', 'givewp-deps-form-app'],
+            apply_filters('print_scripts_array', ['givewp-deps-registrars', 'givewp-deps-form-app'])
         );
     }
 
@@ -95,15 +108,15 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
      */
     public function testShouldDropScriptsEnqueuedAfterTheQueueIsPinned()
     {
-        wp_enqueue_script('givewp-test-form-app', 'https://example.test/form-app.js', [], '1.0', true);
+        wp_enqueue_script('givewp-drop-form-app', 'https://example.test/form-app.js', [], '1.0', true);
 
         (new IsolateEnqueuedFormViewAssets())();
 
-        wp_enqueue_script('third-party-test-script', 'https://example.test/third-party.js', [], '1.0', true);
+        wp_enqueue_script('third-party-drop-script', 'https://example.test/third-party.js', [], '1.0', true);
 
         $this->assertSame(
-            ['givewp-test-form-app'],
-            apply_filters('print_scripts_array', ['givewp-test-form-app', 'third-party-test-script'])
+            ['givewp-drop-form-app'],
+            apply_filters('print_scripts_array', ['givewp-drop-form-app', 'third-party-drop-script'])
         );
     }
 
@@ -112,15 +125,15 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
      */
     public function testShouldDropStylesEnqueuedAfterTheQueueIsPinned()
     {
-        wp_enqueue_style('givewp-test-form-styles', 'https://example.test/form.css', [], '1.0');
+        wp_enqueue_style('givewp-drop-form-styles', 'https://example.test/form.css', [], '1.0');
 
         (new IsolateEnqueuedFormViewAssets())();
 
-        wp_enqueue_style('third-party-test-style', 'https://example.test/third-party.css', [], '1.0');
+        wp_enqueue_style('third-party-drop-style', 'https://example.test/third-party.css', [], '1.0');
 
         $this->assertSame(
-            ['givewp-test-form-styles'],
-            apply_filters('print_styles_array', ['givewp-test-form-styles', 'third-party-test-style'])
+            ['givewp-drop-form-styles'],
+            apply_filters('print_styles_array', ['givewp-drop-form-styles', 'third-party-drop-style'])
         );
     }
 
@@ -129,13 +142,13 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
      */
     public function testShouldAllowHandlesAddedThroughTheFilter()
     {
-        wp_enqueue_script('givewp-test-form-app', 'https://example.test/form-app.js', [], '1.0', true);
+        wp_enqueue_script('givewp-filter-form-app', 'https://example.test/form-app.js', [], '1.0', true);
 
         add_filter(
             'givewp_donation_form_view_allowed_asset_handles',
             static function (array $handles, string $type): array {
                 if ('scripts' === $type) {
-                    $handles[] = 'third-party-test-script';
+                    $handles[] = 'third-party-filter-script';
                 }
 
                 return $handles;
@@ -147,8 +160,8 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
         (new IsolateEnqueuedFormViewAssets())();
 
         $this->assertSame(
-            ['givewp-test-form-app', 'third-party-test-script'],
-            apply_filters('print_scripts_array', ['givewp-test-form-app', 'third-party-test-script'])
+            ['givewp-filter-form-app', 'third-party-filter-script'],
+            apply_filters('print_scripts_array', ['givewp-filter-form-app', 'third-party-filter-script'])
         );
     }
 }
