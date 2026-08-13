@@ -1,5 +1,4 @@
 significance: patch
 type: security
-entry: Hardened donor-account authentication to prevent unauthorized access to
-  donor account features.
+entry: Hardened donor-account email access authentication.
 timestamp: 2026-08-13T16:58:08.777Z
