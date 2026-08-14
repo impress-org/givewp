@@ -125,6 +125,7 @@ jQuery( document ).ready( function( $ ) {
 			give_user_login: this_form.find( '[name=give_user_login]' ).val(),
 			give_user_pass: this_form.find( '[name=give_user_pass]' ).val(),
 			give_form_id: this_form.find( '[name=give-form-id]' ).val(),
+			give_login_nonce: this_form.find( '[name=give_login_nonce]' ).val(),
 		};
 
 		$.post( Give.fn.getGlobalVar( 'ajaxurl' ), data, function( response ) {
