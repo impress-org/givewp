@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components';
 import GeneralTab from './General';

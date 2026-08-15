@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import { useEffect, useRef } from '@wordpress/element';
 import debounce from 'lodash.debounce';
 
 export default function useDebounce(callback) {

@@ -1,5 +1,5 @@
 import {PhoneProps} from '@givewp/forms/propTypes';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import IntlTelInput from 'intl-tel-input/react';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import InputMask from 'react-input-mask';

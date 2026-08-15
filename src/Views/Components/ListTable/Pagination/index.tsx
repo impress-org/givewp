@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import styles from './Pagination.module.scss';
 import cx from 'classnames';
 import {__, sprintf} from '@wordpress/i18n';

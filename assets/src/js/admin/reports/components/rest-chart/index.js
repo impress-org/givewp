@@ -1,5 +1,5 @@
 // Vendor dependencies
-import { Fragment } from 'react';
+import { Fragment } from '@wordpress/element';
 import PropTypes from 'prop-types';
 
 // Store-related dependencies

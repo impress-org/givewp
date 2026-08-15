@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import { useRef } from '@wordpress/element';
 import cx from 'classnames';
 
 import GreenButton from '@givewp/promotions/components/GreenButton';

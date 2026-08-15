@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import styles from './CreateEventModal.module.scss';
 import EventFormModal from '../EventFormModal';

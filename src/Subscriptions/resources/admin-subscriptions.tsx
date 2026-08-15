@@ -1,4 +1,4 @@
-import {StrictMode} from 'react';
+import { StrictMode } from '@wordpress/element';
 import {createRoot} from 'react-dom/client';
 import SubscriptionsListTable from './components/SubscriptionsListTable';
 

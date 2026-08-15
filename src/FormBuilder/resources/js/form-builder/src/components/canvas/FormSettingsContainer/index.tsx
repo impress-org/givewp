@@ -1,4 +1,5 @@
-import {createContext, Dispatch, useContext, useReducer} from 'react';
+import { createContext, useContext, useReducer } from '@wordpress/element';
+import type { Dispatch } from 'react';
 import {
     Action,
     formSettingsReducer,

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import styles from './styles.module.scss';
 import { FilterByProps } from './types';

@@ -2,7 +2,7 @@
  * External Dependencies
  */
 import {__} from '@wordpress/i18n';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {useFormContext} from 'react-hook-form';
 
 /**

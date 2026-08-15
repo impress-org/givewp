@@ -1,4 +1,3 @@
-import React from 'react';
 import {__} from '@wordpress/i18n';
 import classnames from 'classnames';
 import Header from '@givewp/src/Admin/components/Header';

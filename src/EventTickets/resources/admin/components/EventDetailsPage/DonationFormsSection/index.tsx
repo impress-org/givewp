@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import styles from './DonationFormsSection.module.scss';
 import SectionTable from '../SectionTable';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 
 /**
  * Displays a blank slate for the Donation Forms table.

@@ -1,4 +1,5 @@
-import {MouseEventHandler, useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
+import type { MouseEventHandler } from 'react';
 import cx from 'classnames';
 import {__} from '@wordpress/i18n';
 import {ExitIcon, CheckCircle, AlertTriangle} from '@givewp/components/AdminUI/Icons';

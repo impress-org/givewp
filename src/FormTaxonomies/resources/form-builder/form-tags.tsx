@@ -3,7 +3,7 @@ import {debounce} from "@wordpress/compose";
 import apiFetch from '@wordpress/api-fetch';
 import {FormTokenField} from "@wordpress/components";
 import {getInitialFormTags} from "./windowData";
-import {useState} from "react";
+import { useState } from '@wordpress/element';
 
 /**
  * @since 3.16.0

@@ -1,4 +1,5 @@
-import {FC, useState} from 'react';
+import { useState } from '@wordpress/element';
+import type { FC } from 'react';
 import {__} from '@wordpress/i18n';
 import type {FieldProps} from '@givewp/forms/propTypes';
 import {GroupProps} from '@givewp/forms/propTypes';

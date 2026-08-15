@@ -1,4 +1,3 @@
-import React from 'react';
 import OverviewPanel from '@givewp/src/Admin/components/OverviewPanel';
 import { DonorNotes } from '@givewp/src/Admin/components/PrivateNotes';
 

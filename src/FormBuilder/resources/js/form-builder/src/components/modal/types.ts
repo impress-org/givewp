@@ -1,11 +1,5 @@
-import {
-    ComponentType,
-    HTMLProps,
-    ReactNode,
-    KeyboardEventHandler,
-    MouseEventHandler,
-    FocusEventHandler
-} from 'react';
+import { ComponentType } from '@wordpress/element';
+import type { HTMLProps, ReactNode, KeyboardEventHandler, MouseEventHandler, FocusEventHandler } from 'react';
 
 interface GutenbergModalProps extends HTMLProps<HTMLDivElement> {
     /**

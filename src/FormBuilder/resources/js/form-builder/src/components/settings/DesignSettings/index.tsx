@@ -1,4 +1,4 @@
-import {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import {SettingsIcon} from '@givewp/form-builder/components/icons';
 
 type DesignSettings = {

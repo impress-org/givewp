@@ -1,4 +1,4 @@
-import {useRef, useEffect, useCallback} from 'react';
+import { useRef, useEffect, useCallback } from '@wordpress/element';
 
 // SWR middleware for keeping the data even if key changes.
 export default function lagData(useSWRNext) {

@@ -1,6 +1,6 @@
 import {FileProps} from '@givewp/forms/propTypes';
 import {__, sprintf} from '@wordpress/i18n';
-import {useEffect, useRef} from "react";
+import { useEffect, useRef } from '@wordpress/element';
 
 /**
  * @since 4.3.2 manually focus the visible input when error is present.

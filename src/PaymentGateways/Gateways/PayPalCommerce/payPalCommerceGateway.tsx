@@ -9,7 +9,7 @@ import {
     usePayPalScriptReducer,
 } from '@paypal/react-paypal-js';
 import {__} from '@wordpress/i18n';
-import {useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
 import {PayPalCommerceGateway, PayPalSubscriber} from './types';
 import handleValidationRequest from '@givewp/forms/app/utilities/handleValidationRequest';
 import createOrder from './resources/js/createOrder';

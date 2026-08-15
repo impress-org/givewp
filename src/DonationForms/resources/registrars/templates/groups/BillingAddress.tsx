@@ -1,5 +1,6 @@
 import type {BillingAddressProps} from '@givewp/forms/propTypes';
-import {FC, useEffect, useState} from 'react';
+import { useEffect, useState } from '@wordpress/element';
+import type { FC } from 'react';
 import {__} from '@wordpress/i18n';
 import {ErrorMessage} from '@hookform/error-message';
 import {useCallback} from '@wordpress/element';

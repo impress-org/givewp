@@ -5,7 +5,7 @@ import {getWindowData} from '@givewp/form-builder/common';
 import {cleanForSlug, safeDecodeURIComponent} from '@wordpress/url';
 import {__} from '@wordpress/i18n';
 
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from '@wordpress/element';
 
 const {
     formPage: {isEnabled, rewriteSlug, baseUrl},

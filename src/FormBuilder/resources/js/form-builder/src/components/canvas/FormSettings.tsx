@@ -1,4 +1,4 @@
-import React from "react";
+import type { FC } from 'react';
 import FormSettingsContainer from "@givewp/form-builder/components/canvas/FormSettingsContainer";
 import FormGeneralSettingsGroup from "@givewp/form-builder/settings/group-general";
 import FormDonationConfirmationSettingsGroup from "@givewp/form-builder/settings/group-donation-confirmation";
@@ -91,7 +91,7 @@ function isValidRoute(route: Route) {
 export type Route = {
     name: string;
     path: string;
-    element?: React.FC<{settings: any; setSettings: any}>;
+    element?: FC<{settings: any; setSettings: any}>;
     childRoutes?: Route[];
     showWhen?: ({item, settings}) => boolean;
 };

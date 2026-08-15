@@ -1,11 +1,11 @@
-import React from 'react';
+import type { ReactNode } from 'react';
 import styles from './styles.module.scss';
 
 /**
  * @since 4.5.0
  */
 interface OverviewPanelProps {
-    children: React.ReactNode;
+    children: ReactNode;
     className?: string;
 }
 

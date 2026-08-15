@@ -1,5 +1,5 @@
 import {__, sprintf} from '@wordpress/i18n';
-import {useContext, useEffect, useState} from 'react';
+import { useContext, useEffect, useState } from '@wordpress/element';
 import {CheckboxContext} from '@givewp/components/ListTable/ListTablePage';
 import styles from './BulkActionCheckbox.module.scss';
 

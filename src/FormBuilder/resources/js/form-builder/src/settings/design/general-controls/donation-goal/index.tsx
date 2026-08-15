@@ -1,4 +1,5 @@
-import React, {CSSProperties, useState} from 'react';
+import { useState } from '@wordpress/element';
+import type { CSSProperties } from 'react';
 import {
     __experimentalNumberControl as NumberControl,
     Icon,

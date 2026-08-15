@@ -1,4 +1,5 @@
-import {forwardRef, MouseEventHandler, ReactNode} from 'react';
+import { forwardRef } from '@wordpress/element';
+import type { MouseEventHandler, ReactNode } from 'react';
 import cx from 'classnames';
 import './style.scss';
 

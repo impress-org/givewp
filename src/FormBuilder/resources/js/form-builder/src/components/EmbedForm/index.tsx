@@ -1,4 +1,5 @@
-import {MouseEventHandler, useCallback, useEffect, useRef, useState} from 'react';
+import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
+import type { MouseEventHandler } from 'react';
 import cx from 'classnames';
 import {createPortal} from 'react-dom';
 import {useDispatch, useSelect} from '@wordpress/data';

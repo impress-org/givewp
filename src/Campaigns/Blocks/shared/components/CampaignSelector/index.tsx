@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import { useEffect } from '@wordpress/element';
 import Inspector from './Inspector';
 import useCampaigns from '../../hooks/useCampaigns';
 import Selector from './Selector';

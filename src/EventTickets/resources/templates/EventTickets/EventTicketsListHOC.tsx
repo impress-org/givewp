@@ -1,5 +1,5 @@
 import {__} from '@wordpress/i18n';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import EventTicketsList from '../../components/EventTicketsList';
 import {EventTicketsListHOCProps, OnSelectTicketProps} from './types';
 

@@ -1,4 +1,5 @@
-import {ChangeEventHandler, forwardRef} from 'react';
+import { forwardRef } from '@wordpress/element';
+import type { ChangeEventHandler } from 'react';
 
 import './style.scss';
 

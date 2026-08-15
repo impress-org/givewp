@@ -8,7 +8,7 @@ import { DonationRowActions } from "@givewp/donations/components/DonationRowActi
 import BlankSlate from "@givewp/components/ListTable/BlankSlate";
 import apiSettings from './apiSettings';
 import AddRenewalDialog from "./AddRenewalModal";
-import { useState, useRef } from "react";
+import { useState, useRef } from '@wordpress/element';
 import { useDispatch } from "@wordpress/data";
 import { store as coreStore } from "@wordpress/core-data";
 

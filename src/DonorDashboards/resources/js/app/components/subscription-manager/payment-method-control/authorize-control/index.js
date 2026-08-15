@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {useImperativeHandle, useState} from 'react';
+import { useImperativeHandle, useState } from '@wordpress/element';
 import {PaymentInputsWrapper, usePaymentInputs} from 'react-payment-inputs';
 import images from 'react-payment-inputs/images';
 import {useAccentColor} from '../../../../hooks';

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import {TextareaHTMLAttributes} from 'react';
+import type { TextareaHTMLAttributes } from 'react';
 import {Controller, useFormContext} from 'react-hook-form';
 
 /**

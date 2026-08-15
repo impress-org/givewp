@@ -2,7 +2,7 @@ import {__} from '@wordpress/i18n';
 import {BlockEditProps} from '@wordpress/blocks';
 import {PanelBody, PanelRow, SelectControl, TextControl, ToggleControl} from '@wordpress/components';
 import {InspectorControls} from '@wordpress/block-editor';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {OptionsPanel} from '@givewp/form-builder-library';
 import type {OptionProps} from '@givewp/form-builder-library/build/OptionsPanel/types';
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';

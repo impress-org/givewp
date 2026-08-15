@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import { useContext } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {ExitIcon, StarsIcon} from '@givewp/components/AdminUI/Icons';
 import {OnboardingContext} from '../index';

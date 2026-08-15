@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import {createInterpolateElement} from '@wordpress/element';
 import {getWindowData} from '../../utils';

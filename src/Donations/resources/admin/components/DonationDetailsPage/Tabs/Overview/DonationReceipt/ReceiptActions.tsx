@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from '@wordpress/element';
 import useResendReceipt from '../../../../../../hooks/useResendReceipt';
 import ConfirmationDialog from '@givewp/components/AdminDetailsPage/ConfirmationDialog';
 import styles from "./styles.module.scss";

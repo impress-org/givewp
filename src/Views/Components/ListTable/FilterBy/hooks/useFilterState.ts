@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo } from '@wordpress/element';
 import { FilterByGroupedOptions } from '../types';
 
 /**

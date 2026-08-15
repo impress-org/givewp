@@ -1,6 +1,6 @@
 import {createPortal} from 'react-dom';
 import {createRoot} from 'react-dom/client';
-import {useEffect, useRef} from 'react';
+import { useEffect, useRef } from '@wordpress/element';
 
 import './styles.scss';
 

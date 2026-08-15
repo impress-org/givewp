@@ -15,7 +15,7 @@ import RecurringDonationsPromo from '@givewp/form-builder/promos/recurring-donat
 import {getFormBuilderWindowData} from '@givewp/form-builder/common/getWindowData';
 import {useCallback} from '@wordpress/element';
 import type {OptionProps} from '@givewp/form-builder-library/build/OptionsPanel/types';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from '@wordpress/element';
 import {DonationAmountAttributes} from '@givewp/form-builder/blocks/fields/amount/types';
 import {subscriptionPeriod} from '@givewp/forms/registrars/templates/groups/DonationAmount/subscriptionPeriod';
 import {OptionsPanel} from '@givewp/form-builder-library';

@@ -1,4 +1,3 @@
-import React from 'react';
 import FeedbackIcon from './FeedbackIcon';
 
 const FeedbackButton = (props) => {

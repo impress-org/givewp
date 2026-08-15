@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './styles.module.scss'; // adjust path as needed
 import type {EventTicket} from '@givewp/donations/admin/components/types';
 

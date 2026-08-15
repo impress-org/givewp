@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from '@wordpress/element';
 
 export function useTriggerResize(listener) {
     useEffect(() => {

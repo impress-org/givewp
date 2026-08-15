@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react';
+import { useCallback, useState } from '@wordpress/element';
 import dismissRecommendation from '@givewp/promotions/requests/dismissRecommendation';
 
 type EnumValues =

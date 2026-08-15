@@ -1,5 +1,5 @@
+import { Children, useRef, useEffect } from '@wordpress/element';
 // Import vendor dependencies
-import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // Import store dependencies
@@ -53,7 +53,7 @@ Wizard.propTypes = {
 		const prop = props[ propName ];
 
 		let error = null;
-		React.Children.forEach( prop, function( child ) {
+		Children.forEach( prop, function( child ) {
 			if ( child.type !== Step ) {
 				error = new Error( '`' + componentName + '` children should be of type `Step`.' );
 			}

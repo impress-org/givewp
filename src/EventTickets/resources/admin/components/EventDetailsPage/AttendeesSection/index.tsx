@@ -1,7 +1,7 @@
 import {__, _x} from '@wordpress/i18n';
 import styles from './AttendeesSection.module.scss';
 import {GiveEventTicketsDetails} from '../types';
-import {useState} from 'react';
+import { useState } from '@wordpress/element';
 import SectionTable from '../SectionTable';
 import locale from '../../../../date-fns-locale';
 import {format} from 'date-fns';

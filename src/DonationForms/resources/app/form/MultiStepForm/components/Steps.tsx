@@ -3,7 +3,7 @@ import {useDonationFormMultiStepState} from "@givewp/forms/app/form/MultiStepFor
 import usePrevious from "@givewp/forms/app/form/MultiStepForm/hooks/usePreviousValue";
 import classNames from "classnames";
 import StepsWrapper from "@givewp/forms/app/form/MultiStepForm/components/StepsWrapper";
-import { useEffect } from "react";
+import { useEffect } from '@wordpress/element';
 
 /**
  * @since 3.0.0

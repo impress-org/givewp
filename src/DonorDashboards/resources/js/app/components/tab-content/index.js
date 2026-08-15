@@ -1,6 +1,6 @@
 import {useLocation} from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import {Fragment} from 'react';
+import { Fragment } from '@wordpress/element';
 import Heading from '../heading';
 import {__} from '@wordpress/i18n';
 

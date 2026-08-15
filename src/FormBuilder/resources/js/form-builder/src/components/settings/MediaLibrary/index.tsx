@@ -3,7 +3,6 @@
  * @link https://wordpress.stackexchange.com/a/382291
  */
 
-import React from 'react';
 import _ from 'lodash';
 import {BaseControl, Button} from '@wordpress/components';
 import {__} from '@wordpress/i18n';

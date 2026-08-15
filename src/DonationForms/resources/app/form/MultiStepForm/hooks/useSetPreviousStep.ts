@@ -1,6 +1,6 @@
 import {useDonationFormMultiStepStateDispatch} from '@givewp/forms/app/form/MultiStepForm/store';
 import {setCurrentStep} from '@givewp/forms/app/form/MultiStepForm/store/reducer';
-import {useCallback} from 'react';
+import { useCallback } from '@wordpress/element';
 
 /**
  * @since 3.0.0

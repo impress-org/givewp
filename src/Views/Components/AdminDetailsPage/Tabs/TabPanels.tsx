@@ -3,7 +3,7 @@ import { TabPanel, TabsContext } from 'react-aria-components';
 import { Tab as TabType } from '../types';
 import ErrorBoundary from '../ErrorBoundary';
 import styles from '../AdminDetailsPage.module.scss';
-import { useContext } from 'react';
+import { useContext } from '@wordpress/element';
 
 /**
  * @since 4.4.0

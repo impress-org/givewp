@@ -1,5 +1,5 @@
 import {useLocation, Link} from 'react-router-dom';
-import {Fragment} from 'react';
+import { Fragment } from '@wordpress/element';
 
 import {__} from '@wordpress/i18n';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import GeneralControls from '@givewp/form-builder/settings/design/general-controls';
 import StyleControls from '@givewp/form-builder/settings/design/style-controls';
 
