@@ -1,0 +1,5 @@
+significance: patch
+type: feature
+entry: Added a WordPress admin notice prompting site administrators to update
+  WordPress when their install is out of date.
+timestamp: 2026-08-18T14:11:55.371Z

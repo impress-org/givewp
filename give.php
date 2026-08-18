@@ -193,6 +193,7 @@ final class Give
     private $container;
 
     /**
+     * @since TBD added Core Update Notice service provider
      * @since 3.17.0 added Settings service provider
      * @since      2.25.0 added HttpServiceProvider
      * @since      2.19.6 added Donors, Donations, and Subscriptions
@@ -256,6 +257,7 @@ final class Give
         Give\ThirdPartySupport\Elementor\ServiceProvider::class,
         Give\MCP\ServiceProvider::class,
         Give\VendorOverrides\Harbor\HarborServiceProvider::class,
+        Give\VendorOverrides\CoreUpdateNotice\CoreUpdateNoticeServiceProvider::class,
     ];
 
     /**

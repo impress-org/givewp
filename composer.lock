@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b75550006f5bc80dbe46d39f13664bf0",
+    "content-hash": "84319914fed42bd796e3e54086c35f12",
     "packages": [
         {
             "name": "composer/installers",
@@ -772,6 +772,75 @@
                 "source": "https://github.com/stellarwp/container-contract/tree/1.0.4"
             },
             "time": "2022-12-20T21:29:17+00:00"
+        },
+        {
+            "name": "stellarwp/core-update-notice",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:stellarwp/core-update-notice.git",
+                "reference": "c3c243e3fc3e5318b7209314c875f15f10339dfd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stellarwp/core-update-notice/zipball/c3c243e3fc3e5318b7209314c875f15f10339dfd",
+                "reference": "c3c243e3fc3e5318b7209314c875f15f10339dfd",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "stellarwp/container-contract": "^1.1"
+            },
+            "require-dev": {
+                "brain/monkey": "^2.6",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^2.2",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.9",
+                "szepeviktor/phpstan-wordpress": "^2.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "StellarWP\\CoreUpdateNotice\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "StellarWP\\CoreUpdateNotice\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit"
+                ],
+                "phpstan": [
+                    "phpstan analyse --memory-limit=512M"
+                ],
+                "phpcs": [
+                    "phpcs"
+                ],
+                "phpcbf": [
+                    "phpcbf"
+                ],
+                "check": [
+                    "@phpcs",
+                    "@phpstan",
+                    "@test"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "StellarWP",
+                    "email": "dev@stellarwp.com"
+                }
+            ],
+            "description": "A WordPress admin notice prompting site administrators to update WordPress, with a dismissal flag shared across the plugins that display it.",
+            "time": "2026-08-18T06:42:06+00:00"
         },
         {
             "name": "stellarwp/field-conditions",
@@ -8736,9 +8805,17 @@
             "time": "2025-02-09T18:58:54+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "stellarwp/container-contract",
+            "version": "1.0.4.0",
+            "alias": "1.1.0",
+            "alias_normalized": "1.1.0.0"
+        }
+    ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "stellarwp/core-update-notice": 20,
         "wordpress/wordpress": 20
     },
     "prefer-stable": false,
