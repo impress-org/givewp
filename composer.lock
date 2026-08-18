@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7da5f499e25b24e3e6154d5b6df3f344",
+    "content-hash": "79843faac335a960ca5e23c2f6e3b16b",
     "packages": [
         {
             "name": "composer/installers",
@@ -778,18 +778,17 @@
             "version": "dev-main",
             "source": {
                 "type": "git",
-                "url": "git@github.com:stellarwp/core-update-notice.git",
-                "reference": "c3c243e3fc3e5318b7209314c875f15f10339dfd"
+                "url": "https://github.com/stellarwp/core-update-notice.git",
+                "reference": "4b2177c542a22ad7e37b90bf822a2265b75cac98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/core-update-notice/zipball/c3c243e3fc3e5318b7209314c875f15f10339dfd",
-                "reference": "c3c243e3fc3e5318b7209314c875f15f10339dfd",
+                "url": "https://api.github.com/repos/stellarwp/core-update-notice/zipball/4b2177c542a22ad7e37b90bf822a2265b75cac98",
+                "reference": "4b2177c542a22ad7e37b90bf822a2265b75cac98",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.4 || ^8.0",
-                "stellarwp/container-contract": "^1.1"
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
                 "brain/monkey": "^2.6",
@@ -797,6 +796,7 @@
                 "phpstan/phpstan": "^2.2",
                 "phpunit/phpunit": "^9.5",
                 "squizlabs/php_codesniffer": "^3.9",
+                "stellarwp/nexcess-coding-standards": "^2.0",
                 "szepeviktor/phpstan-wordpress": "^2.0"
             },
             "default-branch": true,
@@ -839,8 +839,12 @@
                     "email": "dev@stellarwp.com"
                 }
             ],
-            "description": "A WordPress admin notice prompting site administrators to update WordPress, with a dismissal flag shared across the plugins that display it.",
-            "time": "2026-08-18T06:42:06+00:00"
+            "description": "A WordPress core update notice scoped to consuming plugins' admin pages, with dismissal shared across plugins.",
+            "support": {
+                "source": "https://github.com/stellarwp/core-update-notice/tree/1.0.0",
+                "issues": "https://github.com/stellarwp/core-update-notice/issues"
+            },
+            "time": "2026-08-18T17:56:47+00:00"
         },
         {
             "name": "stellarwp/field-conditions",
@@ -8805,14 +8809,7 @@
             "time": "2025-02-09T18:58:54+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "stellarwp/container-contract",
-            "version": "1.0.4.0",
-            "alias": "1.1.0",
-            "alias_normalized": "1.1.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "stellarwp/core-update-notice": 20,

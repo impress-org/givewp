@@ -21,8 +21,7 @@
         "stellarwp/arrays": "^1.3",
         "moneyphp/money": "^3.3.3",
         "stellarwp/harbor": "^1.6",
-        "stellarwp/core-update-notice": "dev-main",
-        "stellarwp/container-contract": "1.0.4 as 1.1.0"
+        "stellarwp/core-update-notice": "dev-main"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -141,7 +140,7 @@
         },
         {
             "type": "vcs",
-            "url": "git@github.com:stellarwp/core-update-notice.git"
+            "url": "https://github.com/stellarwp/core-update-notice.git"
         }
     ]
 }
