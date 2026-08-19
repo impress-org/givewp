@@ -273,7 +273,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
-= 4.16.7: August 19th, 2026 =
+= 4.16.7: August 20th, 2026 =
 * Security: Hardened donor-account email access authentication.
 * Security: Improved validation of the checkout login form.
 * Fix: Resolved an issue where paused or failing Stripe Payment Element subscriptions remained stuck when the donor updated their payment method or the subscription was resumed in Stripe.
