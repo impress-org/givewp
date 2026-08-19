@@ -21,6 +21,6 @@ alwaysApply: false
 
 When needing to add a package version number inside a DocBlock, please use it as such:
 
-- `@unreleased`
+- `@since TBD`
 
-The `@unreleased` tag will be automatically replaced with the correct `@since` tag with the package version number the next time a new version of that package is released.
+The `@since TBD` tag will be automatically replaced with the correct `@since` tag with the package version number the next time a new version of that package is released.
