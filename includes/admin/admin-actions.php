@@ -697,6 +697,7 @@ function give_maybe_safe_unserialize($data)
  * Load donation import ajax callback
  * Fire when importing from CSV start
  *
+ * @since 4.11.0 Updated error handling to display errors in the import page.
  * @since 3.5.0 Extract safe unserialize logic to a function and use it in other places.
  * @since 2.25.3 Append nonce to response url.
  * @since  1.8.13
@@ -762,12 +763,18 @@ function give_donation_import_callback() {
 	remove_action( 'give_insert_user', 'give_new_user_notification', 10 );
 	remove_action( 'give_insert_payment', 'give_payment_save_page_data' );
 
-	$current_key = $start;
-	foreach ( $raw_data as $row_data ) {
-		$import_setting['donation_key'] = $current_key;
-		give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
-		$current_key ++;
-	}
+    $current_key = $start;
+    foreach ( $raw_data as $row_data ) {
+        $import_setting['donation_key'] = $current_key;
+        $result = give_save_import_donation_to_db( $raw_key, $row_data, $main_key, $import_setting );
+        if ( is_string( $result ) && ! empty( $result ) ) {
+            if ( empty( $json_data['errors'] ) ) {
+                $json_data['errors'] = [];
+            }
+            $json_data['errors'][] = sprintf( __( 'Row %1$d: %2$s', 'give' ), $current_key, $result );
+        }
+        $current_key ++;
+    }
 
 	// Check if function exists or not.
 	if ( function_exists( 'give_payment_save_page_data' ) ) {
@@ -834,6 +841,127 @@ function give_donation_import_callback() {
 add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
 
 /**
+ * Load subscription import ajax callback
+ *
+ * @since 4.11.0
+ */
+function give_subscription_import_callback() {
+
+    check_ajax_referer('give_subscription_import');
+
+    if ( ! current_user_can( 'manage_give_settings' ) ) {
+        give_die();
+    }
+
+    // Disable Give cache
+    Give_Cache::get_instance()->disable();
+
+    $import_setting = [];
+    $fields         = isset( $_POST['fields'] ) ? $_POST['fields'] : null;
+
+    parse_str( $fields, $output );
+
+    $import_setting['mode']        = $output['mode'];
+    $import_setting['create_user'] = isset($output['create_user']) ? $output['create_user'] : '0';
+    $import_setting['delimiter']   = $output['delimiter'];
+    $import_setting['csv']         = $output['csv'];
+    $import_setting['delete_csv']  = $output['delete_csv'];
+    $import_setting['dry_run']     = $output['dry_run'];
+
+    $main_key = give_maybe_safe_unserialize($output['main_key']);
+
+    $current    = absint( $_REQUEST['current'] );
+    $total_ajax = absint( $_REQUEST['total_ajax'] );
+    $start      = absint( $_REQUEST['start'] );
+    $end        = absint( $_REQUEST['end'] );
+    $next       = absint( $_REQUEST['next'] );
+    $total      = absint( $_REQUEST['total'] );
+    $per_page   = absint( $_REQUEST['per_page'] );
+    $delimiter  = empty( $output['delimiter'] ) ? ',' : $output['delimiter'];
+
+    // Ensure importer class is loaded for admin-ajax context
+    if ( ! class_exists( 'Give_Import_Subscriptions' ) ) {
+        require_once GIVE_PLUGIN_DIR . 'includes/admin/tools/import/class-give-import-subscriptions.php';
+    }
+
+    $importer = \Give_Import_Subscriptions::get_instance();
+
+    // Processing
+    $raw_data                  = $importer->get_subscription_data_from_csv( $output['csv'], $start, $end, $delimiter );
+    $raw_key = give_maybe_safe_unserialize($output['mapto']);
+    $import_setting['raw_key'] = $raw_key;
+
+    $current_key = $start;
+    foreach ( $raw_data as $row_data ) {
+        $import_setting['row_key'] = $current_key;
+        $result = $importer->import_row( $raw_key, $row_data, $main_key, $import_setting );
+        if ( is_string( $result ) && ! empty( $result ) ) {
+            if ( empty( $json_data['errors'] ) ) {
+                $json_data['errors'] = [];
+            }
+            $json_data['errors'][] = sprintf( __( 'Row %1$d: %2$s', 'give' ), $current_key, $result );
+        }
+        $current_key ++;
+    }
+
+    if ( $next == false ) {
+        $json_data = [
+            'success' => true,
+            'message' => __( 'All subscriptions uploaded successfully!', 'give' ),
+        ];
+    } else {
+        $index_start = $start;
+        $index_end   = $end;
+        $last        = false;
+        $next        = true;
+        if ( $next ) {
+            $index_start = $index_start + $per_page;
+            $index_end   = $per_page + ( $index_start - 1 );
+        }
+        if ( $index_end >= $total ) {
+            $index_end = $total;
+            $last      = true;
+        }
+        $json_data = [
+            'raw_data' => $raw_data,
+            'raw_key'  => $raw_key,
+            'next'     => $next,
+            'start'    => $index_start,
+            'end'      => $index_end,
+            'last'     => $last,
+        ];
+    }
+
+    $url              = give_import_page_url(
+        [
+            'step'          => '4',
+            'importer-type' => 'import_subscriptions',
+            'csv'           => $output['csv'],
+            'total'         => $total,
+            'delete_csv'    => $import_setting['delete_csv'],
+            'success'       => ( isset( $json_data['success'] ) ? $json_data['success'] : '' ),
+            'dry_run'       => $output['dry_run'],
+            '_wpnonce'      => wp_create_nonce( 'give_subscription_import_success' ),
+        ]
+    );
+    $json_data['url'] = $url;
+
+    $current ++;
+    $json_data['current'] = $current;
+
+    $percentage              = ( 100 / ( $total_ajax + 1 ) ) * $current;
+    $json_data['percentage'] = $percentage;
+
+    // Enable Give cache
+    Give_Cache::get_instance()->enable();
+
+    $json_data = apply_filters( 'give_import_ajax_responces', $json_data, $fields );
+    wp_die( json_encode( $json_data ) );
+}
+
+add_action( 'wp_ajax_give_subscription_import', 'give_subscription_import_callback' );
+
+/**
  * Load core settings import ajax callback
  * Fire when importing from JSON start
  *
@@ -841,6 +969,8 @@ add_action( 'wp_ajax_give_donation_import', 'give_donation_import_callback' );
  */
 
 function give_core_settings_import_callback() {
+	check_ajax_referer( 'give_core_settings_import' );
+
 	// Bailout.
 	if ( ! current_user_can( 'manage_give_settings' ) ) {
 		give_die();
@@ -1023,6 +1153,62 @@ function give_get_user_roles() {
 	return $user_roles;
 }
 
+
+/**
+ * Get user roles that are safe for donor registration.
+ *
+ * This excludes privileged roles like administrator, editor, give_accountant, etc.
+ * to prevent security issues if the default donor role setting is misconfigured.
+ * Only basic subscriber-level roles should be available for donor registration.
+ *
+ * @since 4.14.0
+ * @return array
+ */
+function give_get_donor_safe_user_roles() {
+	$user_roles = [];
+
+	// Capabilities that indicate a privileged role - exclude these
+	$privileged_caps = [
+		// WordPress privileged caps
+		'manage_options',
+		'edit_users',
+		'delete_users',
+		'create_users',
+		'edit_others_posts',
+		'delete_others_posts',
+		'edit_pages',
+		'edit_others_pages',
+		'publish_pages',
+		'delete_pages',
+		'edit_posts',
+		// GiveWP privileged caps - access to sensitive donor/payment data
+		'view_give_reports',
+		'export_give_reports',
+		'manage_give_settings',
+		'view_give_sensitive_data',
+		'edit_give_payments',
+		'edit_give_forms',
+	];
+
+	foreach ( get_editable_roles() as $role_name => $role_info ) {
+		$is_privileged = false;
+
+		// Check if role has any privileged capabilities
+		foreach ( $privileged_caps as $cap ) {
+			if ( ! empty( $role_info['capabilities'][ $cap ] ) ) {
+				$is_privileged = true;
+				break;
+			}
+		}
+
+		// Only include non-privileged roles
+		if ( ! $is_privileged ) {
+			$user_roles[ $role_name ] = $role_info['name'];
+		}
+	}
+
+	return $user_roles;
+}
 
 /**
  * Ajax handle for donor address.
@@ -1371,130 +1557,6 @@ function give_cache_flush() {
 }
 
 add_action( 'wp_ajax_give_cache_flush', 'give_cache_flush', 10, 0 );
-
-/**
- * Admin notices for errors
- * note: only for internal use
- *
- * @access public
- * @since  2.5.0
- * @return void
- */
-function give_license_notices() {
-
-	if ( ! current_user_can( 'manage_give_settings' ) ) {
-		return;
-	}
-
-	// Do not show licenses notices on license tab.
-	if ( Give_Admin_Settings::is_setting_page( 'licenses' ) ) {
-		return;
-	}
-
-	$give_plugins          = give_get_plugins( [ 'only_premium_add_ons' => true ] );
-	$give_licenses         = get_option( 'give_licenses', [] );
-	$notice_data           = [];
-	$license_data          = [];
-	$invalid_license_count = 0;
-	$addons_with_license   = [];
-
-	// Loop through Give licenses to find license status.
-	foreach ( $give_licenses as $key => $give_license ) {
-		if ( empty( $license_data[ $give_license['license'] ] ) ) {
-			$license_data[ $give_license['license'] ] = [
-				'count'   => 0,
-				'add-ons' => [],
-			];
-		}
-
-		// Setup data for all access pass.
-		if ( $give_license['is_all_access_pass'] ) {
-			$addons_list = wp_list_pluck( $give_license['download'], 'plugin_slug' );
-			foreach ( $addons_list as $item ) {
-				$license_data[ $give_license['license'] ]['add-ons'][] = $addons_with_license[] = $item;
-			}
-		} else {
-			$license_data[ $give_license['license'] ]['add-ons'][] = $addons_with_license[] = $give_license['plugin_slug'];
-		}
-
-		$license_data[ $give_license['license'] ]['count'] += 1;
-	}
-
-	// Set data for inactive add-ons.
-	$inactive_addons = array_diff( wp_list_pluck( $give_plugins, 'Dir' ), $addons_with_license );
-
-	$license_data['inactive'] = [
-		'count'   => count( $inactive_addons ),
-		'add-ons' => array_values( $inactive_addons ),
-	];
-
-	// Unset active license add-ons as not required.
-	unset( $license_data['valid'] );
-
-	// Combine site inactive with inactive and unset site_inactive because already merged information with inactive
-	if ( ! empty( $license_data['site_inactive'] ) ) {
-		$license_data['inactive']['count']   += $license_data['site_inactive']['count'];
-		$license_data['inactive']['add-ons'] += $license_data['site_inactive']['add-ons'];
-
-		unset( $license_data['site_inactive'] );
-	}
-
-	// Loop through license data.
-	foreach ( $license_data as $key => $license ) {
-		if ( ! $license['count'] ) {
-			continue;
-		}
-
-		$notice_data[ $key ] = sprintf(
-			'%1$s %2$s',
-			$license['count'],
-			$key
-		);
-
-		// This will contain sum of count expect license with valid status.
-		$invalid_license_count += $license['count'];
-	}
-
-	// Prepare license notice description.
-	$prepared_notice_status = implode( ' , ', $notice_data );
-	$prepared_notice_status = 2 <= count( $notice_data )
-		? substr_replace( $prepared_notice_status, 'and', strrpos( $prepared_notice_status, ',' ), 1 )
-		: $prepared_notice_status;
-
-	$notice_description = sprintf(
-		_n(
-			'Your GiveWP add-on is not receiving critical updates and new features because you have %1$s license key. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
-			'Your GiveWP add-ons are not receiving critical updates and new features because you have %1$s license keys. Please <a href="%2$s" title="%3$s">activate your license</a> to receive updates and <a href="%4$s" target="_blank" title="%5$s">priority support</a>',
-			$invalid_license_count,
-			'give'
-		),
-		$prepared_notice_status,
-		admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=licenses' ),
-		__( 'Activate License', 'give' ),
-		esc_url( 'http://docs.givewp.com/pb-priority-support' ),
-		__( 'Priority Support', 'give' )
-	);
-
-	// Check by add-on if any give add-on activated without license.
-	// Do not show this notice if add-on activated with in 3 days.
-	$is_required_days_past = current_time( 'timestamp' ) > ( Give_Cache_Setting::get_option( 'give_addon_last_activated' ) + ( 3 * DAY_IN_SECONDS ) );
-
-	// Default license notice arguments.
-	$license_notice_args = [
-		'id'               => 'give-invalid-expired-license',
-		'type'             => 'error',
-		'description'      => $notice_description,
-		'dismissible_type' => 'user',
-		'dismiss_interval' => 'shortly',
-	];
-
-	// Register Notices.
-	if ( $invalid_license_count && $is_required_days_past ) {
-		Give()->notices->register_notice( $license_notice_args );
-	}
-}
-
-add_action( 'admin_notices', 'give_license_notices' );
 
 
 /**

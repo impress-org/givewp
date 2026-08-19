@@ -8,12 +8,14 @@ use Give\Donors\Models\Donor;
 use Give\Framework\ListTable\ModelColumn;
 
 /**
+ * @since 4.12.0 add sort column
  * @since 2.24.0
  *
  * @extends ModelColumn<Donor>
  */
 class DonationRevenueColumn extends ModelColumn
 {
+    protected $sortColumn = 'CAST(totalAmountDonated AS DECIMAL)';
 
     /**
      * @since 2.24.0

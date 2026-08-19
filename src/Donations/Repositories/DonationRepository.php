@@ -391,6 +391,43 @@ class DonationRepository
     }
 
     /**
+     * @since 4.12.0
+     *
+     * @throws Exception
+     */
+    public function unTrash(Donation $donation): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_donation_untrashing', $donation);
+
+        try {
+            $previousStatus = give()->payment_meta->get_meta($donation->id, '_wp_trash_meta_status', true);
+
+            // If no previous status was saved, default to 'publish' (completed)
+            if (empty($previousStatus)) {
+                $previousStatus = DonationStatus::COMPLETE;
+            }
+
+            DB::table('posts')
+                ->where('id', $donation->id)
+                ->update(['post_status' => $previousStatus]);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed untrashing a donation', compact('donation'));
+
+            throw new $exception('Failed untrashing a donation');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_donation_untrashed', $donation);
+
+        return true;
+    }
+
+    /**
      * @since 4.8.1 Consolidated campaignId assignment logic from insert method to eliminate duplication and ensure donation model is updated.
      * @since 4.0.0 added campaignId
      * @since 3.9.0 Added meta for phone property

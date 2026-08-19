@@ -79,42 +79,43 @@ class Give_Donor_Wall {
 	}
 
 
-	/**
-	 * Displays donors in a grid layout.
-	 *
+    /**
+     * Displays donors in a grid layout.
+     *
+     * @since 4.13.2 add strip_shortcodes to the html output
      * @since 4.3.1 remove redundant _give_redirect_form_id() function.
      * @since 3.7.0 Sanitize attributes
      * @since 2.27.0 Moved AJAX nonce verification to ajax_handler method.
-	 * @since  2.2.0
-	 *
-	 * @param array $atts                {
-	 *                                   Optional. Attributes of the donor wall shortcode.
-	 *
-	 * @type int    $donors_per_page     Number of donors per page. Default '20'.
-	 * @type int    $form_id             The donation form to filter donors by. Default is all forms (no filter).
-	 * @type bool   $paged               Whether to paginate donors. Default 'true'.
-	 * @type string $ids                 A comma-separated list of donor IDs to display. Default empty.
-	 * @type string $columns             Maximum columns to display. Default 'best-fit'.
-	 *                                   Accepts 'best-fit', '1', '2', '3', '4'.
-	 * @type bool   $show_avatar         Whether to display the donor's gravatar image if available. Default 'true'.
-	 * @type bool   $show_name           Whether to display the donor's full name, first and last. Default 'true'.
-	 * @type bool   $show_company_name   Whether to display the donor's company name. Default 'false'.
-	 * @type bool   $show_total          Whether to display the donor's donation amount. Default 'true'.
-	 * @type bool   $show_comments       Whether to display the donor's comment if they left one. Default 'true'.
-	 * @type int    $comment_length      The number of words to display for the comments before a "Read more" field
-	 * @type int    $only_comments       Whether to display the donors only with comment. Default 'false'.
+     * @since  2.2.0
+     *
+     * @param array $atts                {
+     *                                   Optional. Attributes of the donor wall shortcode.
+     *
+     * @type int    $donors_per_page     Number of donors per page. Default '20'.
+     * @type int    $form_id             The donation form to filter donors by. Default is all forms (no filter).
+     * @type bool   $paged               Whether to paginate donors. Default 'true'.
+     * @type string $ids                 A comma-separated list of donor IDs to display. Default empty.
+     * @type string $columns             Maximum columns to display. Default 'best-fit'.
+     *                                   Accepts 'best-fit', '1', '2', '3', '4'.
+     * @type bool   $show_avatar         Whether to display the donor's gravatar image if available. Default 'true'.
+     * @type bool   $show_name           Whether to display the donor's full name, first and last. Default 'true'.
+     * @type bool   $show_company_name   Whether to display the donor's company name. Default 'false'.
+     * @type bool   $show_total          Whether to display the donor's donation amount. Default 'true'.
+     * @type bool   $show_comments       Whether to display the donor's comment if they left one. Default 'true'.
+     * @type int    $comment_length      The number of words to display for the comments before a "Read more" field
+     * @type int    $only_comments       Whether to display the donors only with comment. Default 'false'.
      * @type bool   $show_time Whether to display date of the last donation. Default 'true'.
-	 *
-	 * @type string $readmore_text       Link label for modal in which donor can read full comment.
-	 * @type string $loadmore_text       Button label which will load more donor comments.
-	 * @type int    $avatar_size         Avatar image size in pixels without the "px". Default "75"
-	 * @type string $orderby             The order in which you want the donations to appear.
-	 *                                   Currently we are using this attribute internally and, it will sort donations by created date.
-	 * @type string $order               The order in which you want the donors to appear. Accepts "ASC". "DESC".
-	 *
-	 * }
-	 * @return string|bool The markup of the form grid or false.
-	 */
+     *
+     * @type string $readmore_text       Link label for modal in which donor can read full comment.
+     * @type string $loadmore_text       Button label which will load more donor comments.
+     * @type int    $avatar_size         Avatar image size in pixels without the "px". Default "75"
+     * @type string $orderby             The order in which you want the donations to appear.
+     *                                   Currently we are using this attribute internally and, it will sort donations by created date.
+     * @type string $order               The order in which you want the donors to appear. Accepts "ASC". "DESC".
+     *
+     * }
+     * @return string|bool The markup of the form grid or false.
+     */
 	public function render_shortcode( $atts ) {
         $atts = give_clean($atts);
 
@@ -145,8 +146,11 @@ class Give_Donor_Wall {
 
 			$html = ob_get_clean();
 
-			// Return only donor html.
-			if (
+            // Strip shortcodes to prevent execution of user-supplied shortcode syntax.
+            $html = strip_shortcodes($html);
+
+            // Return only donor html.
+            if (
 				isset( $atts['only_donor_html'] )
 				&& wp_doing_ajax()
 				&& $atts['only_donor_html']

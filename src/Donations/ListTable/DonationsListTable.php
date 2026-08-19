@@ -30,6 +30,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
+     * @since 4.10.0 Updated columns order
      * @since 4.8.0 Added Subscription Donation Type column
      * @since 2.24.0
      *
@@ -41,10 +42,10 @@ class DonationsListTable extends ListTable
             new IdColumn(),
             new AmountColumn(),
             new PaymentTypeColumn(),
-            new CreatedAtColumn(),
             new DonorColumn(),
             new CampaignColumn(),
             new GatewayColumn(),
+            new CreatedAtColumn(),
             new StatusColumn(),
             new SubscriptionDonationTypeColumn(),
         ];

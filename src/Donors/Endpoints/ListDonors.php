@@ -2,6 +2,7 @@
 
 namespace Give\Donors\Endpoints;
 
+use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\ListTable\DonorsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -27,6 +28,8 @@ class ListDonors extends Endpoint
 
     /**
      * @inheritDoc
+     *
+     * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
     {
@@ -64,9 +67,9 @@ class ListDonors extends Endpoint
                     'start' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
-                    'form' => [
+                    'campaignId' => [
                         'type' => 'integer',
                         'required' => false,
                         'default' => 0
@@ -74,7 +77,7 @@ class ListDonors extends Endpoint
                     'end' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'sortColumn' => [
                         'type' => 'string',
@@ -200,7 +203,7 @@ class ListDonors extends Endpoint
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
-        $form = $this->request->get_param('form');
+        $campaignId = $this->request->get_param('campaignId');
 
         if ($search) {
             if (ctype_digit($search)) {
@@ -213,26 +216,26 @@ class ListDonors extends Endpoint
 
         if ($start && $end) {
             $query->whereBetween('date_created', $start, $end);
-        } else if ($start) {
+        } elseif ($start) {
             $query->where('date_created', $start, '>=');
-        } else if ($end) {
+        } elseif ($end) {
             $query->where('date_created', $end, '<=');
         }
 
-        if ($form) {
+        if ($campaignId) {
             $query
-                ->whereIn('id', static function (QueryBuilder $builder) use ($form) {
+                ->whereIn('id', static function (QueryBuilder $builder) use ($campaignId) {
                     $builder
                         ->from('give_donationmeta')
                         ->distinct()
                         ->select('meta_value')
                         ->where('meta_key', '_give_payment_donor_id')
-                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($campaignId) {
                             $builder
                                 ->from('give_donationmeta')
                                 ->select('donation_id')
-                                ->where('meta_key', '_give_payment_form_id')
-                                ->where('meta_value', $form);
+                                ->where('meta_key', DonationMetaKeys::CAMPAIGN_ID)
+                                ->where('meta_value', $campaignId);
                         });
                 });
         }

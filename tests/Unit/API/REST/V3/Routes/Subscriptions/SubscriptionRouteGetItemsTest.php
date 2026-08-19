@@ -9,6 +9,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
+use Give\Framework\Support\Facades\Str;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -29,6 +30,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
+     * @since 4.10.0 added campaignId
      * @since 4.8.0
      */
     public function testGetSubscriptionsShouldReturnAllViewModelProperties()
@@ -88,6 +90,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
                 ]
             ),
             'projectedAnnualRevenue' => $subscription->projectedAnnualRevenue()->toArray(),
+            'campaignId' => $subscription->campaign ? $subscription->campaign->id : null,
         ], $data[0]);
     }
 
@@ -114,6 +117,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.14.0 subscriptionUrl should not be included in gateway details when sensitive data is not included, lastName should return only the first letter when sensitive data is not included
      * @since 4.8.0
      *
      * @throws Exception
@@ -122,7 +126,7 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
     {
         DB::query("DELETE FROM " . DB::prefix('give_subscriptions'));
 
-        $this->createSubscription();
+        $subscription = $this->createSubscription();
 
         $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
@@ -139,10 +143,13 @@ class SubscriptionRouteGetItemsTest extends RestApiTestCase
         ];
 
         $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
 
-        foreach ($sensitiveProperties as $property) {
-            $this->assertEmpty($data[0][$property]);
-        }
+        // gateway details should not include subscriptionUrl when sensitive data is not included
+        $this->assertNotContains('subscriptionUrl', $data[0]['gateway']);
+
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(Str::substr($subscription->donor()->get()->lastName, 0, 1), $data[0]['lastName']);
     }
 
     /**

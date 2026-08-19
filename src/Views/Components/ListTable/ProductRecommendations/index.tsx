@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import styles from './style.module.scss';
 import {__} from '@wordpress/i18n';
-import {createInterpolateElement} from '@wordpress/element';
 import {RecommendedProductData, useRecommendations} from '@givewp/promotions/hooks/useRecommendations';
 
 interface ProductRecommendationsProps {
@@ -47,6 +46,7 @@ interface RotatingMessageProps {
 }
 
 /**
+ * @since 4.10.0 Refactor html structure to use a single p tag with a span and a link.
  * @since 2.27.1
  */
 function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: RotatingMessageProps) {
@@ -55,19 +55,19 @@ function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: Rot
     const visibleColumns = columns?.filter((column) => column.visible || column.visible === undefined);
 
     return (
-        <tr>
+        <tr className={styles.productRecommendationRow}>
             <td colSpan={visibleColumns.length + 1}>
                 <div className={styles.productRecommendation}>
-                    <div className={styles.container}>
-                            <img src={`${pluginUrl}build/assets/dist/images/list-table/light-bulb-icon.svg`} />
+                    <img src={`${pluginUrl}build/assets/dist/images/list-table/light-bulb-icon.svg`} />
 
-                            <TranslatedMessage message={message} />
-
+                    <p className={styles.message}>
+                        <strong>{__('PRO TIP: ', 'give')}</strong>
+                        <span>{message}</span>
                         <a target="_blank" href={documentationPage}>
                             {innerHtml}
                             <img src={`${pluginUrl}build/assets/dist/images/list-table/external-link-icon.svg`} />
                         </a>
-                    </div>
+                    </p>
 
                     <button onClick={closeMessage}>
                         <img src={`${pluginUrl}build/assets/dist/images/list-table/circular-exit-icon.svg`} />
@@ -76,19 +76,4 @@ function RotatingMessage({selectedOption, closeMessage, pluginUrl, columns}: Rot
             </td>
         </tr>
     );
-}
-
-type TranslatedMessageProps = {message: string};
-
-/**
- * @since 2.27.1
- */
-function TranslatedMessage({message}: TranslatedMessageProps) {
-
-    const translatedString = createInterpolateElement(__('<strong>PRO TIP: </strong> <message />', 'give'), {
-        strong: <strong />,
-        message: <p className={styles.message}>{message}</p>,
-    });
-
-    return translatedString;
 }

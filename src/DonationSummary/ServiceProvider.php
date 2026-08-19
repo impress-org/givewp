@@ -35,7 +35,5 @@ class ServiceProvider implements \Give\ServiceProviders\ServiceProvider
                 }
             });
         }
-
-        Hooks::addAction('wp_enqueue_scripts', Assets::class, 'loadFrontendAssets');
     }
 }

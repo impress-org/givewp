@@ -121,6 +121,19 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.11.0
+     *
+     * @param int $campaignId
+     *
+     * @return ModelQueryBuilder<Subscription>
+     */
+    public function queryByCampaignId(int $campaignId): ModelQueryBuilder
+    {
+        return $this->prepareQuery()
+            ->where('campaign_id', $campaignId);
+    }
+
+    /**
      * @deprecated Use give()->subscriptions->notes()->queryBySubscriptionId()->getAll() instead.
      * @since 2.19.6
      *
@@ -148,6 +161,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.11.0 add campaign_id column to insert
      * @since 2.24.0 add payment_mode column to insert
      * @since 2.21.0 replace actions with givewp_subscription_creating and givewp_subscription_created
      * @since 2.19.6
@@ -161,6 +175,12 @@ class SubscriptionRepository
 
         if ($subscription->renewsAt === null) {
             $subscription->bumpRenewalDate();
+        }
+
+        // If the subscription is not associated with a campaign, try to find the campaign ID by the form ID
+        if (!$subscription->campaignId) {
+            $campaign = give()->campaigns->getByFormId($subscription->donationFormId);
+            $subscription->campaignId = $campaign ? $campaign->id : null;
         }
 
         Hooks::doAction('givewp_subscription_creating', $subscription);
@@ -185,6 +205,7 @@ class SubscriptionRepository
                 'bill_times' => $subscription->installments,
                 'transaction_id' => $subscription->transactionId ?? '',
                 'product_id' => $subscription->donationFormId,
+                'campaign_id' => $subscription->campaignId,
                 'payment_mode' => $subscription->mode->getValue(),
             ]);
         } catch (Exception $exception) {
@@ -206,6 +227,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.11.0 add campaign_id column to update
      * @since 3.17.0 add expiration column to update
      * @since 2.24.0 add payment_mode column to update
      * @since 2.21.0 replace actions with givewp_subscription_updating and givewp_subscription_updated
@@ -243,6 +265,7 @@ class SubscriptionRepository
                     'bill_times' => $subscription->installments,
                     'transaction_id' => $subscription->transactionId ?? '',
                     'product_id' => $subscription->donationFormId,
+                    'campaign_id' => $subscription->campaignId,
                     'payment_mode' => $subscription->mode->getValue(),
                 ]);
         } catch (Exception $exception) {
@@ -327,6 +350,43 @@ class SubscriptionRepository
         DB::query('COMMIT');
 
         Hooks::doAction('givewp_subscription_trashed', $subscription);
+
+        return true;
+    }
+
+    /**
+     * @since 4.12.0
+     *
+     * @throws Exception
+     */
+    public function unTrash(Subscription $subscription): bool
+    {
+        DB::query('START TRANSACTION');
+
+        Hooks::doAction('givewp_subscription_untrashing', $subscription);
+
+        try {
+            $previousStatus = give()->subscription_meta->get_meta($subscription->id, '_wp_trash_meta_status', true);
+
+            // If no previous status was saved, default to 'active'
+            if (empty($previousStatus)) {
+                $previousStatus = SubscriptionStatus::ACTIVE;
+            }
+
+            DB::table('give_subscriptions')
+                ->where('id', $subscription->id)
+                ->update(['status' => $previousStatus]);
+        } catch (Exception $exception) {
+            DB::query('ROLLBACK');
+
+            Log::error('Failed untrashing a subscription', compact('subscription'));
+
+            throw new $exception('Failed untrashing a subscription');
+        }
+
+        DB::query('COMMIT');
+
+        Hooks::doAction('givewp_subscription_untrashed', $subscription);
 
         return true;
     }
@@ -433,6 +493,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.11.0 add campaignId to renewal
      * @since 4.8.1 Remove campaignId from the attributes array since it is auto-generated based on the subscription's form.
      * @since 4.8.0 Add campaignId support.
      * @since 3.20.0
@@ -466,6 +527,7 @@ class SubscriptionRepository
                 'formTitle' => $initialDonation->formTitle,
                 'mode' => $subscription->mode->isLive() ? DonationMode::LIVE() : DonationMode::TEST(),
                 'donorIp' => $initialDonation->donorIp,
+                'campaignId' => $subscription->campaignId,
             ], $attributes)
         );
 
@@ -494,6 +556,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since 4.11.0 add campaign_id column to select
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Subscription>
@@ -517,7 +580,8 @@ class SubscriptionRepository
                 ['recurring_fee_amount', 'feeAmount'],
                 'status',
                 ['profile_id', 'gatewaySubscriptionId'],
-                ['product_id', 'donationFormId']
+                ['product_id', 'donationFormId'],
+                ['campaign_id', 'campaignId']
             )
             ->attachMeta(
                 'give_donationmeta',

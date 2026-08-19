@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @since 4.16.4 Escaped the introduction headline output.
+ * @since 4.16.2 Escape introduction image URL when rendering the template.
+ */
+
 use Give\Helpers\Form\Template\Utils\Frontend as FrontendFormTemplateUtils;
 
 $formInfo = get_post(FrontendFormTemplateUtils::getFormId());
@@ -16,7 +21,7 @@ $image = $formTemplate->getFormFeaturedImage($formInfo->ID);
 <div class="give-section introduction">
     <h2 class="headline">
         <?php
-        echo $headline; ?>
+        echo esc_html($headline); ?>
     </h2>
     <?php
     if ( ! empty($description)) : ?>
@@ -30,8 +35,7 @@ $image = $formTemplate->getFormFeaturedImage($formInfo->ID);
     <?php
     if ( ! empty($image)) : ?>
         <div class="image">
-            <img src="<?php
-            echo $image; ?>" />
+            <img src="<?php echo esc_url( $image ); ?>" />
         </div>
     <?php
     endif; ?>

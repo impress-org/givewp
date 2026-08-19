@@ -56,4 +56,25 @@ class DonationRefundedTest extends TestCase
 
         $this->assertNotTrue($donation->status->isRefunded());
     }
+
+    /**
+     * @since 4.16.0
+     *
+     * @throws Exception
+     */
+    public function testShouldSetStatusToRefundedAndBindTransactionIdWhenDonationIdIsProvided()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => null,
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        give(DonationRefunded::class)('gateway-transaction-id', '', false, $donation->id);
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isRefunded());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+    }
 }

@@ -36,6 +36,7 @@ class DonorTypeColumn extends ModelColumn
     }
 
     /**
+     * @since 4.10.0 Removed icon
      * @since 2.24.0
      *
      * @inheritDoc
@@ -46,26 +47,11 @@ class DonorTypeColumn extends ModelColumn
     {
         $donorType = give()->donors->getDonorType($model->id);
 
-        $template = '
-            <div class="badge">
-                <img role="img" aria-labelledby="badgeId-%1$d" class="icon icon--%2$s" src="%3$s" alt="%4$s" />
-                <p id="badgeId-%1$d" class="badge__label">%5$s</p>
-            </div>
-        ';
-
-        $icons = [
-            DonorType::NEW => 'new-donor-icon.svg',
-            DonorType::SUBSCRIBER => 'recurring-donation-icon.svg',
-            DonorType::REPEAT => 'repeat-donor-icon.svg',
-            DonorType::SINGLE => 'onetime-donation-icon.svg',
-        ];
+        $template = '<div class="badge badge--%1$s"><p>%2$s</p></div>';
 
         return sprintf(
             $template,
-            $model->id,
             $donorType->getValue(),
-            GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/' . $icons[$donorType->getValue()],
-            sprintf( __('%s icon', 'give'), $donorType->label()),
             $donorType->label()
         );
     }

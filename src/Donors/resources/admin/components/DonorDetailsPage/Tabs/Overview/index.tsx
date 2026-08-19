@@ -5,9 +5,11 @@ import DonorStats from './DonorStats';
 import DonorContributions from './DonorContributions';
 import DonorPrivateNotes from './DonorPrivateNotes';
 import NotificationPlaceholder from '@givewp/components/AdminDetailsPage/Notifications';
+import {OverviewSidebarSlot} from '../../slots';
 import styles from './styles.module.scss';
 
 /**
+ * @since 4.10.0 added sidebar slot
  * @since 4.5.0
  */
 export default function DonorDetailsPageOverviewTab() {
@@ -22,10 +24,11 @@ export default function DonorDetailsPageOverviewTab() {
                 <DonorContributions donorId={donorId} />
                 <DonorTransactions donorId={donorId} />
                 <DonorPrivateNotes donorId={donorId} />
-             </div>
+            </div>
 
             <div className={styles.right}>
                 <DonorSummary donorId={donorId} />
+                <OverviewSidebarSlot />
             </div>
 
             <NotificationPlaceholder type="snackbar" />

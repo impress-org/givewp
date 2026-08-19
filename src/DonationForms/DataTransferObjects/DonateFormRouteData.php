@@ -7,6 +7,7 @@ use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
 use Give\Framework\FieldsAPI\Exceptions\NameCollisionException;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\Support\Contracts\Arrayable;
 use WP_Error;
 
@@ -90,11 +91,13 @@ class DonateFormRouteData implements Arrayable
         $validatedValues = $validator->validated();
 
         /**
+         * @since 4.16.0 added $isFinalSubmission (true here: the final donation submission)
          * @since 3.22.0
          *
-         * @param array $data validated values in key value pairs
+         * @param array $data              validated values in key value pairs
+         * @param bool  $isFinalSubmission whether this is the final donation submission
          */
-        do_action('givewp_donation_form_fields_validated', $validatedValues);
+        do_action('givewp_donation_form_fields_validated', $validatedValues, true);
 
         foreach ($validatedValues as $fieldId => $value) {
             $validData->{$fieldId} = $value;
@@ -148,6 +151,7 @@ class DonateFormRouteData implements Arrayable
     }
 
     /**
+     * @since 4.14.0.0 update permission capability to use facade
      * @since 3.14.0
      */
     private function isValidForm(DonationForm $form): bool
@@ -156,7 +160,7 @@ class DonateFormRouteData implements Arrayable
             return false;
         }
 
-        if (!$form->status->isPublished() && !current_user_can('edit_give_forms')) {
+        if (!$form->status->isPublished() && !UserPermissions::donationForms()->canEdit()) {
             return false;
         }
 

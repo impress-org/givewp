@@ -23,6 +23,7 @@ jobs:
                     php-version: 7.4
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
+                    github-token: '' # TODO: Remove temporary fix for Composer authentication issue caused by GitHub switching to a ghs_APPID_JWT format that Composer does not support. See https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/
 
             -   name: Install composer dependencies
                 uses: php-actions/composer@v5

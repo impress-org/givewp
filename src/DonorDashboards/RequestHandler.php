@@ -4,6 +4,7 @@ namespace Give\DonorDashboards;
 
 use _WP_Dependency;
 use Give\DonorDashboards\Admin\Settings;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Query;
 
 /**
@@ -37,7 +38,7 @@ class RequestHandler
      */
     public function parseRequest($query)
     {
-        if (is_admin() && current_user_can('manage_options') && ! wp_doing_ajax() && array_key_exists(
+        if (is_admin() && UserPermissions::settings()->canManage() && ! wp_doing_ajax() && array_key_exists(
                 'give-generate-donor-dashboard-page',
                 $query->query_vars
             )) {

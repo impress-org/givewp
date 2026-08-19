@@ -8,6 +8,7 @@ use Give\FormMigration\Commands\TransferCommand;
 use Give\FormMigration\Controllers\MigrationController;
 use Give\FormMigration\Controllers\TransferController;
 use Give\FormMigration\DataTransferObjects\TransferOptions;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\ServiceProviders\ServiceProvider as ServiceProviderInterface;
 use WP_CLI;
 use WP_REST_Request;
@@ -83,7 +84,7 @@ class ServiceProvider implements ServiceProviderInterface
                     );
                 },
                 'permission_callback' => function () {
-                    return current_user_can('manage_options');
+                    return UserPermissions::donationForms()->canEdit();
                 },
                 'args'                => [
                     'id' => [
@@ -104,7 +105,7 @@ class ServiceProvider implements ServiceProviderInterface
                     );
                 },
                 'permission_callback' => function () {
-                    return current_user_can('manage_options');
+                    return UserPermissions::donationForms()->canEdit();
                 },
                 'args'                => [
                     'formId'    => [

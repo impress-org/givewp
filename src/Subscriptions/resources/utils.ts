@@ -10,13 +10,15 @@ declare const window: {
 } & Window;
 
 /**
+ * @since 4.11.0 added refreshSubscriptionInBackground to the save method
  * @since 4.8.0
  */
 export function useSubscriptionEntityRecord(subscriptionId?: number) {
     const urlParams = new URLSearchParams(window.location.search);
+    const refreshSubscriptionInBackground = useRefreshSubscriptionInBackground();
 
     const {
-        record: subscription,
+        record,
         hasResolved,
         isResolving,
         save,
@@ -29,10 +31,18 @@ export function useSubscriptionEntityRecord(subscriptionId?: number) {
         edit: (data: Subscription | Partial<Subscription>) => void;
     } = useEntityRecord('givewp', 'subscription', subscriptionId ?? urlParams.get('id'));
 
-    return {record: subscription, hasResolved, isResolving, save, edit};
+    const saveAndRefresh = async () => {
+        const response = await save();
+        await refreshSubscriptionInBackground(response?.id);
+
+        return response;
+    }
+
+    return {record, hasResolved, isResolving, save: saveAndRefresh, edit};
 }
 
 /**
+ * @since 4.11.0 added _embed=true to the request
  * @since 4.8.0
  */
 export function useRefreshSubscriptionInBackground() {
@@ -43,7 +53,7 @@ export function useRefreshSubscriptionInBackground() {
 
         try {
             const latestSubscriptionData = await apiFetch({
-                path: `/givewp/v3/subscriptions/${subscriptionId}`,
+                path: `/givewp/v3/subscriptions/${subscriptionId}?_embed=true`,
             });
 
             receiveEntityRecords('givewp', 'subscription', latestSubscriptionData, undefined, false);

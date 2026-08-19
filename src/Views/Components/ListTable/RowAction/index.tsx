@@ -10,10 +10,15 @@ export default function RowAction({
     disabled = false,
     highlight = false,
     href = '',
+    ariaLabel = '',
 }) {
     if (href) {
         return (
-            <a href={href} className={cx(styles.action, {[styles.delete]: highlight}, className)}>
+            <a
+                href={href}
+                className={cx(styles.action, {[styles.delete]: highlight}, className)}
+                aria-label={ariaLabel || displayText}
+            >
                 {displayText} {hiddenText && <span className="give-visually-hidden">{hiddenText}</span>}
             </a>
         );
@@ -30,6 +35,7 @@ export default function RowAction({
             data-actionid={actionId}
             className={cx(styles.action, {[styles.delete]: highlight}, className)}
             disabled={disabled}
+            aria-label={ariaLabel || displayText}
         >
             {displayText} {hiddenText && <span className="give-visually-hidden">{hiddenText}</span>}
         </button>

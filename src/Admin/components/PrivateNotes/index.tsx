@@ -1,16 +1,16 @@
-import {__} from '@wordpress/i18n';
-import {addQueryArgs} from '@wordpress/url';
-import useSWR from 'swr';
-import {useState} from 'react';
-import apiFetch from '@wordpress/api-fetch';
-import {useDispatch} from '@wordpress/data';
-import {ConfirmationDialogIcon, DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon} from './Icons';
-import Spinner from '../Spinner';
+import { formatTimestamp } from '@givewp/admin/common';
+import { Header } from '@givewp/admin/components';
 import ModalDialog from '@givewp/components/AdminUI/ModalDialog';
-import style from './style.module.scss';
+import apiFetch from '@wordpress/api-fetch';
+import { useDispatch } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
+import { addQueryArgs } from '@wordpress/url';
 import cx from 'classnames';
-import {formatTimestamp} from '@givewp/src/Admin/utils';
-import Header from '@givewp/src/Admin/components/Header';
+import { useState } from 'react';
+import useSWR from 'swr';
+import Spinner from '../Spinner';
+import { ConfirmationDialogIcon, DeleteIcon, DotsMenuIcon, EditIcon, NotesIcon } from './Icons';
+import style from './style.module.scss';
 
 /**
  * @since 4.5.0
@@ -19,9 +19,7 @@ type DonorNote = {
     id: number;
     donorId: number;
     content: string;
-    createdAt: {
-        date: string;
-    };
+    createdAt: string;
 }
 
 /**
@@ -107,7 +105,7 @@ function PrivateNotes({endpoint}: {endpoint: string}) {
         const tempNote = {
             id: tempId,
             content: state.note,
-            createdAt: {date: new Date().toISOString()}
+            createdAt: new Date().toISOString()
         };
 
         // Add temporary note to the UI state.
@@ -359,7 +357,7 @@ const Note = ({note, onDelete, onEdit, isLoading}) => {
                                             </button>
                                         </div>
                                         <div className={style.date}>
-                                            {formatTimestamp(note.createdAt.date)}
+                                            {formatTimestamp(note.createdAt)}
                                         </div>
                                     </>
                                 )}
@@ -425,4 +423,3 @@ function ConfirmationDialog({
         </ModalDialog>
     );
 }
-

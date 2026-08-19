@@ -45,6 +45,7 @@ class Give_Subscriptions_DB extends Give_DB
      *
      * @access  public
      *
+     * @since 4.11.0 add campaign_id column
      * @since 2.24.0 add payment_mode column
      * @since   1.0
      */
@@ -68,6 +69,7 @@ class Give_Subscriptions_DB extends Give_DB
             'status' => '%s',
             'notes' => '%s',
             'profile_id' => '%s',
+            'campaign_id' => '%d',
         ];
     }
 
@@ -76,6 +78,8 @@ class Give_Subscriptions_DB extends Give_DB
      * Get default column values
      *
      * @access  public
+     *
+     * @since 4.11.0 add campaign_id column
      * @since   1.0
      */
     public function get_column_defaults()
@@ -96,6 +100,7 @@ class Give_Subscriptions_DB extends Give_DB
             'status' => '',
             'notes' => '',
             'profile_id' => '',
+            'campaign_id' => 0,
         ];
     }
 

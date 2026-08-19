@@ -42,11 +42,6 @@ export interface AdminDetailsPageProps<T extends Record<string, any>> {
     };
 
     /**
-     * Function to reset the form
-     */
-    resetForm?: (reset: () => void) => void;
-
-    /**
      * Function to determine if the form should be saved
      */
     shouldSaveForm?: (isDirty: boolean, data: T) => boolean;

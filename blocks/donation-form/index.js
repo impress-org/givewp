@@ -16,6 +16,7 @@ import Edit from '@givewp/src/DonationForms/Blocks/DonationFormBlock/resources/e
  */
 
 export default registerBlockType('give/donation-form', {
+    apiVersion: 3,
     title: __('Donation Form', 'give'),
     description: __(
         "The GiveWP Donation Form block inserts an existing donation form into the page. Each donation form's presentation can be customized below.",

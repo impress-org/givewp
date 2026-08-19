@@ -10,6 +10,7 @@ use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\Unit\API\REST\V3\Routes\Donations\ThrowingTestGateway;
 
 /**
  * @since 4.6.0
@@ -352,7 +353,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $this->assertNull($data['honorific']);
     }
 
-        /**
+    /**
      * @since 4.6.0
      */
     public function testRefundDonationShouldRefundDonationSuccessfully()
@@ -379,6 +380,17 @@ class DonationRouteUpdateTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertTrue($data['status']->isRefunded());
+
+        // Verify DonationViewModel shape (regression: switching back to toArray() would miss these keys)
+        $this->assertArrayHasKey('customFields', $data);
+        $this->assertArrayHasKey('eventTicketsAmount', $data);
+        $this->assertArrayHasKey('eventTickets', $data);
+        $this->assertArrayHasKey('gateway', $data);
+
+        // Verify base donation properties are still present
+        $this->assertArrayHasKey('id', $data);
+        $this->assertArrayHasKey('formId', $data);
+        $this->assertArrayHasKey('gatewayId', $data);
     }
 
     /**
@@ -421,5 +433,66 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $status = $response->get_status();
 
         $this->assertEquals(403, $status);
+    }
+
+    /**
+     * @since 4.16.5
+     */
+    public function testRefundDonationShouldReturnStructuredErrorOnFailure()
+    {
+        /** @var PaymentGatewayRegister $registrar */
+        $registrar = give(PaymentGatewayRegister::class);
+        if (!$registrar->hasPaymentGateway(ThrowingTestGateway::id())) {
+            $registrar->registerGateway(ThrowingTestGateway::class);
+        }
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayId' => ThrowingTestGateway::id(),
+            'status' => DonationStatus::COMPLETE()
+        ]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id . '/refund';
+        $request = $this->createRequest('POST', $route, [], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(500, $response->get_status());
+
+        $data = $response->get_data();
+        $this->assertIsArray($data);
+        $this->assertArrayHasKey('message', $data);
+        $this->assertArrayHasKey('error', $data);
+        $this->assertArrayHasKey('code', $data);
+    }
+
+    /**
+     * @since 4.16.5
+     */
+    public function testRefundDonationErrorShouldContainExceptionDetails()
+    {
+        /** @var PaymentGatewayRegister $registrar */
+        $registrar = give(PaymentGatewayRegister::class);
+        if (!$registrar->hasPaymentGateway(ThrowingTestGateway::id())) {
+            $registrar->registerGateway(ThrowingTestGateway::class);
+        }
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayId' => ThrowingTestGateway::id(),
+            'status' => DonationStatus::COMPLETE()
+        ]);
+
+        $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id . '/refund';
+        $request = $this->createRequest('POST', $route, [], 'administrator');
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(500, $response->get_status());
+
+        $data = $response->get_data();
+        $this->assertEquals('Failed to refund donation', $data['message']);
+        $this->assertEquals('Simulated refund error', $data['error']);
+        $this->assertEquals(42, $data['code']);
     }
 }

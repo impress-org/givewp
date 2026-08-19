@@ -56,10 +56,13 @@ class SummaryView
     }
 
     /**
+     * @since 4.14.0 load frontend assets
      * @since 2.17.0
      */
     public function render()
     {
+        give(Assets::class)->loadFrontendAssets();
+
         do_action( 'give_donation_summary_top' );
         include 'resources/views/summary.php';
         do_action( 'give_donation_summary_bottom' );

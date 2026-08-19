@@ -16,6 +16,7 @@ import edit from './edit';
  */
 
 export default registerBlockType('give/donor-dashboard', {
+    apiVersion: 3,
     title: __('Donor Dashboard', 'give'),
     description: __(
         'The Donor Dashboard block allows donors to modify and review their donor information from the front-end.',

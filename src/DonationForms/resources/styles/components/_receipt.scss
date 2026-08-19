@@ -302,16 +302,27 @@
       }
     }
 
-    &-heading {
+    &-heading, &-heading * {
         position: relative;
-        margin-block-end: 1rem;
         font-size: 1.75rem;
         font-weight: 600;
         line-height: 1.2;
         text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
         color: currentColor;
 
-        &::after {
+        > * {
+            color: currentColor;
+        }
+    }
+
+    &-heading {
+        margin-block-end: 1rem;
+
+        > br {
+            display: none;
+        }
+
+        &:not(:empty)::after {
             position: absolute;
             content: '';
             display: block;
@@ -325,7 +336,7 @@
         }
     }
 
-    &-description {
+    &-description, &-description * {
         font-size:1.125rem;
         line-height: 1.45;
         margin: 0 auto;

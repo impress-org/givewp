@@ -8,7 +8,8 @@
 
 namespace Give\Onboarding\Setup;
 
-use Give\DonationForms\V2\DonationFormsAdminPage;
+use Give\Campaigns\CampaignsAdminPage;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 defined('ABSPATH') || exit;
 
@@ -26,6 +27,7 @@ class Page
     /**
      * Dismiss the Setup Page.
      *
+     * @since 4.10.0 redirect to campaigns page
      * @since 2.8.0
      */
     public function dismissSetupPage()
@@ -33,7 +35,7 @@ class Page
         if (wp_verify_nonce($_GET['_wpnonce'], 'dismiss_setup_page')) {
             give_update_option('setup_page_enabled', self::DISABLED);
 
-            wp_redirect(DonationFormsAdminPage::getUrl());
+            wp_redirect(CampaignsAdminPage::getUrl());
             exit;
         }
     }
@@ -53,6 +55,7 @@ class Page
     /**
      * Add Setup submenu page to admin menu
      *
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.8.0
      */
     public function add_page()
@@ -61,7 +64,7 @@ class Page
             'edit.php?post_type=give_forms',
             esc_html__('Set up GiveWP', 'give'),
             esc_html__('Setup', 'give'),
-            'manage_give_settings',
+            UserPermissions::settings()->manageCap(),
             'give-setup',
             [$this, 'render_page']
         );

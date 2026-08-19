@@ -2,19 +2,23 @@
 
 .interweave {
     .statusBadge {
-        display: flex;
-        justify-content: center;
+        --color: var(--givewp-shades-white);
+        --bg-color: var(--givewp-shades-black);
+
         align-items: center;
-        width: fit-content;
-        height: safe-rem(1.375);
-        padding: 0.125rem 0.75rem 0.125rem 0.75rem;
-        background-color: black;
-        color: #fff;
-        border-radius: safe-rem(1);
-        letter-spacing: 0.04rem;
-        transform: translateY(0.075rem);
+        background-color: var(--bg-color);
+        border-radius: 0.75rem;
+        color: var(--color);
         column-gap: safe-rem(1);
+        display: inline-flex;
+        font-size: 0.75rem;
+        font-weight: 600;
+        justify-content: center;
+        line-height: 1.5;
+        padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
         text-transform: capitalize;
+        transform: translateY(0.075rem);
+        width: fit-content;
 
         div,
         p {
@@ -25,28 +29,32 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
+        p {
+            margin: 0;
+        }
+
         &--completed,
         &--complete {
-            background: var(--givewp-emerald-100);
-            color: var(--givewp-emerald-900);
+            --bg-color: var(--givewp-emerald-100);
+            --color: var(--givewp-emerald-900);
         }
 
         &--active,
         &--publish,
         &--published {
-            background: var(--givewp-green-100);
-            color: var(--givewp-green-900);
+            --bg-color: var(--givewp-green-100);
+            --color: var(--givewp-green-900);
         }
 
         &--archived,
         &--inactive {
-            background: var(--givewp-grey-100);
-            color: var(--givewp-grey-900);
+            --bg-color: var(--givewp-grey-100);
+            --color: var(--givewp-grey-900);
         }
 
         &--failing {
-            background: var(--givewp-yellow-100);
-            color: var(--givewp-yellow-900);
+            --bg-color: var(--givewp-yellow-100);
+            --color: var(--givewp-yellow-900);
         }
 
         &--failed,
@@ -54,35 +62,47 @@
         &--abandoned,
         &--cancelled,
         &--expired {
-            background: var(--givewp-red-100);
-            color: var(--givewp-red-900);
+            --bg-color: var(--givewp-red-100);
+            --color: var(--givewp-red-900);
         }
 
         &--draft {
-            background: var(--givewp-orange-100);
-            color: var(--givewp-orange-900);
+            --bg-color: var(--givewp-orange-100);
+            --color: var(--givewp-orange-900);
         }
 
         &--pending,
         &--processing {
-            background: var(--givewp-blue-100);
-            color: var(--givewp-blue-900);
+            --bg-color: var(--givewp-blue-100);
+            --color: var(--givewp-blue-900);
         }
 
         &--upgraded {
-            background: var(--givewp-purple-50);
-            color: var(--givewp-purple-900);
+            --bg-color: var(--givewp-purple-50);
+            --color: var(--givewp-purple-900);
         }
 
         &--refunded {
-            background: var(--givewp-blue-700);
-            color: var(--givewp-blue-25);
+            --bg-color: var(--givewp-blue-700);
+            --color: var(--givewp-blue-25);
+        }
+
+        &--give_subscription {
+            --bg-color: var(--givewp-green-700);
+            --color: var(--givewp-green-25);
+        }
+
+        &--trash,
+        &--trashed {
+            --bg-color: var(--givewp-red-700);
+            --color: var(--givewp-red-25);
         }
     }
 
     .subscriptionStatus {
         display: flex;
         gap: 10px;
+        justify-content: center;
 
         &__container {
             position: relative;
@@ -149,7 +169,7 @@
         visibility: visible;
     }
 
-    .subscriptionDonationTypeBadge {
+    .badge {
         --border-width: 1px;
         --padding-x: calc(var(--givewp-spacing-3) - var(--border-width));
         --padding-y: calc(var(--givewp-spacing-1) - var(--border-width));
@@ -172,145 +192,27 @@
         }
     }
 
-    .badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-        inline-size: -moz-fit-content;
-        max-inline-size: fit-content;
-        block-size: 2rem;
-        margin: 0;
-        padding: 0;
-        background-color: white;
-        font-family: Open Sans;
-        border: 0;
-        border-radius: safe-rem(0.1875);
-        box-shadow: inset 0 0 0 1px rgba(203, 203, 203, 1);
-        overflow: hidden;
-
-        & > * {
-            flex: 0 0 auto;
-        }
-
-        .icon {
-            display: inline;
-            min-width: 1.75rem;
-            max-width: 1.75rem;
-            border-top-left-radius: 0.1875rem;
-            border-bottom-left-radius: 0.1875rem;
-            font-size: 1.125rem;
-            font-weight: 700;
-            letter-spacing: 0;
-            color: #555555;
-            box-sizing: content-box !important;
-            overflow: hidden;
-
-            &--onetime,
-            &--single {
-                background: #556e79;
-                block-size: 1.125rem;
-                inline-size: 1.375rem;
-                padding-block: 0.575rem;
-                padding-inline: 0.3rem;
-                transform: translateY(2px);
-            }
-
-            &--recurring,
-            &--subscription,
-            &--subscriber {
-                background: linear-gradient(225.34deg, #59ad70 0%, #2ebbbb 101.17%);
-                block-size: 1.125rem;
-                inline-size: 1.375rem;
-                padding-block: 0.4375rem;
-                padding-inline: 0.3125rem;
-            }
-
-            &--repeat {
-                background: #f49420;
-                block-size: 1.125rem;
-                inline-size: 1.375rem;
-                padding-block: 0.4375rem;
-                padding-inline: 0.2025rem;
-                border-left: 4px solid #f49420;
-            }
-
-            &--new {
-                background: #000000;
-                block-size: 1.125rem;
-                inline-size: 1.375rem;
-                padding-block: 0.4375rem;
-                padding-inline: 0.2125rem;
-                padding: 16px 0 0 8px;
-            }
-        }
-
-        &__label {
-            flex-basis: fit-content;
-            margin: 0;
-            padding: safe-rem(0.6125) safe-rem(0.65);
-            color: #555555;
-            font-size: safe-rem(0.75);
-            font-weight: 400;
-            text-align: center;
-            text-transform: uppercase;
-            cursor: default;
-        }
-
-        .star {
-            display: inline;
-            color: rgba(255, 215, 0, 1);
-            position: absolute;
-            z-index: 2;
-            top: safe-rem(-0.5);
-            right: safe-rem(-0.5);
-        }
-    }
-
     .donorInformation {
         position: relative;
         display: flex;
-        flex-flow: column wrap;
-        align-content: flex-start;
-        justify-content: center;
-        column-gap: safe-rem(0.6125);
-        row-gap: safe-rem(0.25);
-        height: safe-rem(4);
-        width: 100%;
+        flex-flow: column;
+        gap: var(--givewp-spacing-1);
 
         & > a {
-            color: #0878b0;
-            font-size: 1.125rem;
-            font-weight: 700;
+            color: #2271b1;
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
         }
 
         &__email {
+            font-size: 0.875rem;
+            line-height: 1.43;
+            max-width: calc(100% - 4rem);
             min-width: 0;
             overflow: hidden;
-        }
-
-        &__gravatar {
-            border-radius: 9999px;
-            width: safe-rem(4);
-            height: safe-rem(4);
-        }
-
-        &__name {
-            display: inline;
-            inline-size: -webkit-fit-content;
-            inline-size: -moz-fit-content;
-            inline-size: fit-content;
-            font-size: safe-rem(1.125);
-            text-decoration: none;
-        }
-
-        &__email {
-            font-style: normal;
-            font-weight: 400;
-            line-height: 150%;
-            max-width: calc(100% - 4rem);
-            white-space: nowrap;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
@@ -381,75 +283,29 @@
     }
 
     .amount {
-        font-size: safe-rem(1.125);
-        font-weight: 700;
-        color: #69b868;
+        color: var(--givewp-neutral-700);
+        font-size: 1rem;
+        font-weight: 500;
     }
 }
 
 .idBadge {
-    display: inline-flex;
-    flex-shrink: 0;
-    flex-grow: 0;
     align-items: center;
-    background-color: #f3f2ec;
-    border: safe-rem(0.0625) solid #e0dfd9;
-    border-radius: 9999px;
-    color: #5f5f5f;
-    padding-block: 0.1em;
-    padding-inline: 0.5em;
+    background-color: var(--givewp-neutral-50);
+    border-radius: var(--givewp-rounded-8);
+    border: 1px solid var(--givewp-neutral-200);
+    color: var(--givewp-neutral-700);
+    display: inline-flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25rem;
+    padding: calc(0.5 * var(--givewp-spacing-1)) var(--givewp-spacing-2);
     text-align: center;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
     width: fit-content;
-}
 
-.idBadge::before {
-    content: '#';
-    font-size: 0.615em;
-    padding-inline-end: 0.25em;
-}
-
-.list-table-page-container--new-design {
-    .interweave {
-        .campaignLink {
-            font-weight: 600;
-        }
-
-        .statusBadge {
-            border-radius: 0.75rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            height: auto;
-            letter-spacing: 0;
-            line-height: 1.5;
-            padding: var(--givewp-spacing-1) var(--givewp-spacing-3);
-
-            p {
-                margin: 0;
-            }
-        }
-
-        .amount {
-            color: var(--givewp-neutral-700);
-            font-size: 1rem;
-            font-weight: 500;
-        }
-    }
-
-    .idBadge {
-        background-color: var(--givewp-neutral-50);
-        border-radius: 0.5rem;
-        border: 1px solid var(--givewp-neutral-200);
-        color: var(--givewp-neutral-700);
-        font-size: 0.8125rem;
-        font-weight: 600;
-        line-height: normal;
-        padding: 0.1875rem 0.5rem;
-
-        &::before {
-            font-size: 0.5rem;
-            padding: 0;
-        }
+    &::before {
+        content: '#';
     }
 }

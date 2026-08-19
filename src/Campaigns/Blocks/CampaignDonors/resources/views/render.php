@@ -32,7 +32,7 @@ $blockInlineStyles = sprintf(
         if ($attributes['showButton'] && ! empty($donors)) : ?>
             <div class="givewp-campaign-donors-block__donate-button">
                 <?php
-                echo give(RenderDonateButton::class)($campaign, $attributes, $donateButtonText);
+                echo wp_kses_post(give(RenderDonateButton::class)($campaign, $attributes, $donateButtonText));
                 ?>
             </div>
         <?php
@@ -56,8 +56,12 @@ $blockInlineStyles = sprintf(
             </p>
 
             <div class="givewp-campaign-donors-block__empty-icon">
-                <?php
-                echo file_get_contents(dirname(__DIR__) . '/icons/empty-state.svg'); ?>
+                <img
+                    src="<?php
+                    echo esc_url(plugin_dir_url(__DIR__) . 'icons/empty-state.svg'); ?>"
+                    alt="<?php
+                    esc_attr_e('Empty state icon', 'give'); ?>"
+                />
             </div>
 
             <?php
@@ -66,7 +70,7 @@ $blockInlineStyles = sprintf(
                     <?php
                     $firstDonationButtonText = __('Be the first donor', 'give');
 
-                    echo give(RenderDonateButton::class)($campaign, $attributes, $firstDonationButtonText);
+                    echo wp_kses_post(give(RenderDonateButton::class)($campaign, $attributes, $firstDonationButtonText));
                     ?>
                 </div>
             <?php
@@ -83,24 +87,28 @@ $blockInlineStyles = sprintf(
                         <div class="givewp-campaign-donors-block__donor-avatar">
                             <img
                                 src="<?php
-                                echo get_avatar_url($donor->id, ['size' => 64]); ?>"
+                                echo esc_url($donor->avatarUrl); ?>"
                                 alt="<?php
-                                _e('Donor avatar', 'give'); ?>"
+                                esc_attr_e('Donor avatar', 'give'); ?>"
                             />
                         </div>
                     <?php
                     endif; ?>
 
                     <div class="givewp-campaign-donors-block__donor-info">
-                                    <span class="givewp-campaign-donors-block__donor-name"><?php
-                                        echo esc_html(!$donor->isAnonymous ? $donor->name : __('Anonymous', 'give')); ?></span>
+                        <span class="givewp-campaign-donors-block__donor-name"><?php
+                            echo esc_html(!$donor->isAnonymous ? strip_shortcodes($donor->name) : __('Anonymous', 'give')); ?></span>
 
                         <?php
                         if ($sortBy === 'top-donors' && $key < 3) : ?>
                             <span class="givewp-campaign-donors-block__donor-ribbon" data-position="<?php
                             echo esc_attr($key + 1); ?>">
-                               <?php
-                               echo file_get_contents(dirname(__DIR__) . '/icons/ribbon.svg'); ?>
+                                <img
+                                    src="<?php
+                                    echo esc_url(plugin_dir_url(__DIR__) . 'icons/ribbon.svg'); ?>"
+                                    alt="<?php
+                                    esc_attr_e('Ribbon', 'give'); ?>"
+                                />
                             </span>
                         <?php
                         endif; ?>
@@ -110,7 +118,8 @@ $blockInlineStyles = sprintf(
                             <span class="givewp-campaign-donors-block__donor-date"><?php
                                 echo esc_html(
                                     sprintf(
-                                        _x('%s ago', 'human-readable time difference', 'give'),
+                                        /* translators: %s: human-readable time difference */
+                                        esc_html_x('%s ago', 'human-readable time difference', 'give'),
                                         $donor->date
                                     )
                                 ); ?></span>

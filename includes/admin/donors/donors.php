@@ -9,6 +9,7 @@
  * @since       1.0
  */
 
+use Give\Donors\DonorsAdminPage;
 use Give\Donors\Models\Donor;
 use Give\Helpers\IntlTelInput;
 
@@ -111,10 +112,15 @@ function give_get_format_address( $address, $address_args = array() ) {
  *
  * Renders the donors page contents.
  *
+ * @since 4.13.1 add early return if showing new details page
  * @since  1.0
  * @return void
  */
 function give_donors_page() {
+    if (DonorsAdminPage::isShowingNewDetailsPage()) {
+        return;
+    }
+
 	$default_views  = give_donor_views();
 	$requested_view = isset( $_GET['view'] ) ? sanitize_text_field( $_GET['view'] ) : 'donors';
 	if ( array_key_exists( $requested_view, $default_views ) && function_exists( $default_views[ $requested_view ] ) ) {
@@ -302,6 +308,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
+ * @since 4.16.4 Escaped the donor company and phone output.
  * @since 3.7.0 Add "phone" field
  * @since  1.0
  *
@@ -500,7 +507,7 @@ function give_donor_view( $donor ) {
 
                                 <span class="donor-user-id info-item editable">
 									<?php
-                                    echo $donor_phone_number; ?>
+                                    echo esc_html( $donor_phone_number ); ?>
 								</span>
                             </td>
                         </tr>
@@ -513,11 +520,11 @@ function give_donor_view( $donor ) {
 							</th>
 							<td>
 								<span class="donor-user-id info-item edit-item">
-									<input name="give_donor_company" value="<?php echo $donor_company; ?>" type="text">
+									<input name="give_donor_company" value="<?php echo esc_attr( $donor_company ); ?>" type="text">
 								</span>
 
 								<span class="donor-user-id info-item editable">
-									<?php echo $donor_company; ?>
+									<?php echo esc_html( $donor_company ); ?>
 								</span>
 							</td>
 						</tr>
@@ -823,7 +830,7 @@ function give_donor_view( $donor ) {
 				<?php foreach ( $donor->emails as $key => $email ) : ?>
 					<tr data-key="<?php echo $key; ?>">
 						<td>
-							<?php echo $email; ?>
+							<?php echo esc_html( $email ); ?>
 							<?php if ( 'primary' === $key ) : ?>
 								<span class="dashicons dashicons-star-filled primary-email-icon"></span>
 							<?php endif; ?>
@@ -1034,6 +1041,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
+ * @since 4.16.6 Escaped the donor name output in the donor notes header.
  * @since 4.6.0 Escape donor note
  * @since  1.0
  *
@@ -1053,7 +1061,7 @@ function give_donor_notes_view( $donor ) {
 
 	<div id="donor-notes-wrapper">
 		<div class="donor-notes-header">
-			<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo $donor->name; ?></span>
+			<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo esc_html( $donor->name ); ?></span>
 		</div>
 		<h3><?php _e( 'Notes', 'give' ); ?></h3>
 
@@ -1109,6 +1117,7 @@ function give_donor_notes_view( $donor ) {
 /**
  * The donor delete view.
  *
+ * @since 4.16.6 Escaped the donor name output in the delete donor view.
  * @since  1.0
  *
  * @param  object $donor The donor object being displayed.
@@ -1135,7 +1144,7 @@ function give_donor_delete_view( $donor ) {
 			  action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=delete&id=' . $donor->id ); ?>">
 
 			<div class="donor-notes-header">
-				<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo $donor->name; ?></span>
+				<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo esc_html( $donor->name ); ?></span>
 			</div>
 
 

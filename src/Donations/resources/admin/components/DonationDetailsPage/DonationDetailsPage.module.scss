@@ -33,6 +33,16 @@
         --statusBadgeTextColor: var(--givewp-red-900);
     }
 
+    &.statusBadge--give_subscription {
+        --statusBadgeBgColor: var(--givewp-green-700);
+        --statusBadgeTextColor: var(--givewp-green-25);
+    }
+
+    &.statusBadge--trash {
+        --statusBadgeBgColor: var(--givewp-red-700);
+        --statusBadgeTextColor: var(--givewp-red-25);
+    }
+
     &.testBadge {
         --statusBadgeBgColor: var(--givewp-orange-400);
         --statusBadgeTextColor: var(--givewp-shades-white);
@@ -40,7 +50,7 @@
 }
 
 .archive {
-    --contextMenuItemColor: var(--givewp-red-600);
+    --contextMenuItemColor: var(--givewp-red-500);
 }
 
 .sectionFieldInputWrapper {

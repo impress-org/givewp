@@ -36,6 +36,7 @@ class SubscriptionDonationTypeColumn extends ModelColumn
     }
 
     /**
+     * @since 4.10.0 Updated badge classname
      * @since 4.8.0
      *
      * @inheritDoc
@@ -63,9 +64,9 @@ class SubscriptionDonationTypeColumn extends ModelColumn
 
 
         return sprintf(
-            '<div class="subscriptionDonationTypeBadge subscriptionDonationTypeBadge--%1$s"><p>%2$s</p></div>',
+            '<div class="badge badge--%1$s"><p>%2$s</p></div>',
             $donationType['class'],
             $donationType['label']
-            );
+        );
     }
 }

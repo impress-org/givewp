@@ -11,6 +11,7 @@
 
 // Exit if accessed directly.
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Creates the admin submenu pages under the Give menu and assigns their
  * links to global variables
  *
+ * @since 4.14.0 update permission capability to use facade
  * @since 1.0
  *
  * @global $give_settings_page
@@ -39,7 +41,7 @@ function give_add_donations_subpage() {
     	'edit.php?post_type=give_forms',
     	$give_payment->labels->name,
     	$give_payment->labels->menu_name,
-    	'edit_give_payments',
+        UserPermissions::donations()->viewCap(),
     	'give-payment-history',
     	'give_payment_history_page'
     );
@@ -54,7 +56,7 @@ function give_add_donors_subpage() {
         'edit.php?post_type=give_forms',
         esc_html__('Donors', 'give'),
         esc_html__('Donors', 'give'),
-        'view_give_reports',
+        UserPermissions::donors()->viewCap(),
         'give-donors',
         'give_donors_page'
     );
@@ -71,7 +73,7 @@ function give_add_settings_subpage()
         'edit.php?post_type=give_forms',
         esc_html__('GiveWP Settings', 'give'),
         apply_filters('givewp_settings_menu_title_give-settings',esc_html__('Settings', 'give')),
-        'manage_give_settings',
+        UserPermissions::settings()->manageCap(),
         'give-settings',
         [
             Give()->give_settings,
@@ -90,7 +92,7 @@ function give_add_tools_subpage()
         'edit.php?post_type=give_forms',
         esc_html__('GiveWP Tools', 'give'),
         esc_html__('Tools', 'give'),
-        'manage_give_settings',
+        UserPermissions::settings()->manageCap(),
         'give-tools',
         [
             Give()->give_settings,

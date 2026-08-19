@@ -4,6 +4,7 @@ namespace Give\EventTickets\Routes;
 
 use Give\API\RestRoute;
 use Give\Framework\Models\Model;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -18,6 +19,7 @@ class GetEvents implements RestRoute
     /**
      * @inheritDoc
      *
+     * @since 4.14.0 update permission capability to use facade
      * @since 3.20.0 Set the permission callback to "read".
      * @since 3.6.0
      */
@@ -31,7 +33,7 @@ class GetEvents implements RestRoute
                     'methods' => 'GET',
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('edit_give_forms');
+                        return UserPermissions::events()->canView();
                     },
                 ],
                 'args' => [

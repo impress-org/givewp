@@ -1,26 +1,20 @@
-import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
-import {__} from '@wordpress/i18n';
-import {Interweave} from 'interweave';
-import {useFormContext, useFormState} from 'react-hook-form';
+import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
+import { __ } from '@wordpress/i18n';
+import { Interweave } from 'interweave';
 import BlankSlate from './BlankSlate';
 import styles from './styles.module.scss';
-
-interface CustomField {
-    label: string;
-    value: string;
-}
+import { useDonorEntityRecord } from '@givewp/donors/utils';
 
 /**
  * @since 4.9.0 Add error prop to all AdminSectionField components
  */
 export default function CustomFields() {
-    const {getValues} = useFormContext();
-    const {errors} = useFormState();
-    const customFields: CustomField[] = getValues('customFields') || [];
+    const { record: donor } = useDonorEntityRecord();
+    const customFields = donor?.customFields || [];
 
     return (
         <AdminSection title={__('Custom Fields', 'give')} description={__('Custom fields filled by the donor', 'give')}>
-            <AdminSectionField error={errors.customFields?.message as string}>
+            <AdminSectionField>
                 {!customFields.length ? (
                     <BlankSlate />
                 ) : (

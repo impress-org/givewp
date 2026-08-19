@@ -58,6 +58,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
         /**
          * Get settings array.
          *
+         * @since 4.14.0 update donor default user role to use give_get_donor_safe_user_roles
          * @since 4.1.0 Added Donation Forms section
          * @since  1.8
          * @return array
@@ -123,7 +124,7 @@ if ( ! class_exists( 'Give_Settings_Advanced' ) ) :
                             'id' => 'donor_default_user_role',
                             'type' => 'select',
                             'default' => 'give_donor',
-                            'options' => give_get_user_roles(),
+                            'options' => give_get_donor_safe_user_roles(),
                         ],
                         [
                             /* translators: %s: the_content */

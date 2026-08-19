@@ -1,5 +1,7 @@
 <?php
 
+use Give\Framework\Permissions\Facades\UserPermissions;
+
 /**
  * Class Give_Updates
  *
@@ -238,6 +240,7 @@ class Give_Updates {
 	/**
 	 * Register updates menu
 	 *
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.9.0 rename function - PHP 8 compatibility
 	 * @since  1.8.12
 	 * @access public
@@ -279,7 +282,7 @@ class Give_Updates {
 					$this->get_total_update_count(),
 				$is_update ? '%' : ''
 			),
-			'manage_give_settings',
+			UserPermissions::settings()->manageCap(),
 			'give-updates',
 			[ $this, 'render_page' ]
 		);

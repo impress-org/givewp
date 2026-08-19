@@ -6,8 +6,10 @@ use Give\Campaigns\CampaignsAdminPage;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
+use Give\FormMigration\Actions\GetMigratedFormId;
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Language;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Post;
 use WP_REST_Request;
 
@@ -59,6 +61,7 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.0.0 set submenu parent to empty string to hide "all forms" from admin menu
      */
     public function register()
@@ -68,7 +71,7 @@ class DonationFormsAdminPage
             '',
             esc_html__('Donation Forms', 'give'),
             esc_html__('All Forms', 'give'),
-            'edit_give_forms',
+            UserPermissions::donationForms()->viewCap(),
             'give-forms',
             [$this, 'render'],
             // Do not change the submenu position unless you have a strong reason.
@@ -166,6 +169,36 @@ class DonationFormsAdminPage
         if ($this->isShowingEditV2FormPage()) {
             $formId = (int)$_GET['post'];
             $campaign = Campaign::findByFormId($formId);
+            $isMigrated = _give_is_form_migrated($formId);
+
+            $campaignUrl = $campaign
+                ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id)
+                : '';
+
+            /**
+             * Filters the campaign URL displayed on the v2 form edit screen.
+             * Allows add-ons (e.g., P2P) to provide their own campaign URL.
+             *
+             * @since 4.14.2
+             *
+             * @param string $campaignUrl The campaign admin URL, or empty string if not found.
+             * @param int    $formId      The donation form ID being edited.
+             */
+            $campaignUrl = apply_filters('givewp_form_builder_campaign_url', $campaignUrl, $formId);
+
+            $migratedFormUrl = '';
+            if ($isMigrated) {
+                $v3FormId = (new GetMigratedFormId)($formId);
+                if ($v3FormId) {
+                    $migratedFormUrl = add_query_arg([
+                        'post_type' => 'give_forms',
+                        'page' => 'givewp-form-builder',
+                        'donationFormID' => $v3FormId,
+                        'showTransfer' => '1',
+                    ], admin_url('edit.php'));
+                }
+            }
+
             EnqueueScript::make('give-edit-v2form', 'build/assets/dist/js/give-edit-v2form.js')
                 ->loadInFooter()
                 ->registerTranslations()
@@ -174,8 +207,9 @@ class DonationFormsAdminPage
                     'supportedGateways' => $this->getSupportedGateways(),
                     'migrationApiRoot' => $this->migrationApiRoot,
                     'apiNonce' => $this->apiNonce,
-                    'isMigrated' => _give_is_form_migrated($formId),
-                    'campaignUrl' => $campaign ? admin_url('edit.php?post_type=give_forms&page=give-campaigns&id=' . $campaign->id) : '',
+                    'isMigrated' => $isMigrated,
+                    'migratedFormUrl' => $migratedFormUrl,
+                    'campaignUrl' => $campaignUrl,
                 ])
                 ->enqueue();
 

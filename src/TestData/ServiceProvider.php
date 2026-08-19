@@ -2,7 +2,6 @@
 
 namespace Give\TestData;
 
-use Composer\InstalledVersions;
 use Faker\Factory as FakerFactory;
 use Faker\Generator as FakerGenerator;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
@@ -103,12 +102,13 @@ class ServiceProvider implements GiveServiceProvider
      *
      * @see https://getcomposer.org/doc/07-runtime.md#installed-versions
      *
+     * @since 4.11.0 use class_exists instead of InstalledVersions::isInstalled to avoid conflicts with other plugins using composer
      * @since 3.17.2
      *
      * @return bool
      */
     private function isFakerInstalled(): bool
     {
-        return InstalledVersions::isInstalled('fakerphp/faker');
+        return class_exists(\Faker\Factory::class) && class_exists(\Faker\Generator::class);
     }
 }

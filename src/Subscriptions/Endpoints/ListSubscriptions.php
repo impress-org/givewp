@@ -3,10 +3,12 @@
 namespace Give\Subscriptions\Endpoints;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
 use Give\Subscriptions\ValueObjects\SubscriptionMode;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -29,6 +31,8 @@ class ListSubscriptions extends Endpoint
 
     /**
      * @inheritDoc
+     *
+     * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
     {
@@ -66,9 +70,9 @@ class ListSubscriptions extends Endpoint
                     'start' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
-                    'form' => [
+                    'campaignId' => [
                         'type' => 'integer',
                         'required' => false,
                         'default' => 0
@@ -76,7 +80,7 @@ class ListSubscriptions extends Endpoint
                     'end' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'sortColumn' => [
                         'type' => 'string',
@@ -109,6 +113,15 @@ class ListSubscriptions extends Endpoint
                             'model',
                             'columns',
                         ],
+                    ],
+                    'status' => [
+                        'type' => 'array',
+                        'required' => false,
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => array_values(SubscriptionStatus::toArray()),
+                        ],
+                        'description' => 'Filter subscriptions by status. Accepts comma-separated list of SubscriptionStatus values (e.g., "active,expired,pending"). If not provided, excludes trash subscriptions by default.'
                     ],
                 ],
             ]
@@ -148,6 +161,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
+     * @since 4.12.0 add sort by donor name
      * @since 2.24.0
      *
      * @return array
@@ -160,6 +174,18 @@ class ListSubscriptions extends Endpoint
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
         $query = give()->subscriptions->prepareQuery();
+
+        if ('donorName' === $sortColumns[0]) {
+            $query->attachMeta(
+                'give_donormeta',
+                'customer_id',
+                'donor_id',
+                [DonorMetaKeys::FIRST_NAME, 'firstName'],
+                [DonorMetaKeys::LAST_NAME, 'lastName']
+            );
+            $sortColumns = ['firstName', 'lastName'];
+        }
+
         $query = $this->getWhereConditions($query);
 
         foreach ($sortColumns as $sortColumn) {
@@ -192,6 +218,8 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
+     * @since 4.12.0 Add "status" where condition
+     * @since 4.11.0 fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model
      * @since 2.21.0
      *
@@ -204,42 +232,56 @@ class ListSubscriptions extends Endpoint
         $search = $this->request->get_param('search');
         $start = $this->request->get_param('start');
         $end = $this->request->get_param('end');
-        $form = $this->request->get_param('form');
+        $campaignId = $this->request->get_param('campaignId');
         $testMode = $this->request->get_param('testMode');
+        $status = $this->request->get_param('status');
 
-        $hasWhereConditions = $search || $start || $end || $form;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $status;
+
+        if (!empty($status)) {
+            $query->whereIn('status', $status);
+        } else {
+            // Default behavior: exclude trashed subscriptions
+            $query->where('status', SubscriptionStatus::TRASHED, '<>');
+        }
 
         if ($search) {
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } else {
-                $query->whereLike('name', $search);
-                $query->orWhereLike('email', $search);
+                $query->whereIn('customer_id', static function (QueryBuilder $builder) use ($search) {
+                    $builder
+                        ->from('give_donors')
+                        ->distinct()
+                        ->select('id')
+                        ->whereLike('name', $search)
+                        ->orWhereLike('email', $search);
+                });
             }
         }
 
         if ($start && $end) {
-            $query->whereBetween('date_created', $start, $end);
-        } else if ($start) {
-            $query->where('date_created', $start, '>=');
-        } else if ($end) {
-            $query->where('date_created', $end, '<=');
+            $query->whereBetween('created', $start, $end);
+        } elseif ($start) {
+            $query->where('created', $start, '>=');
+        } elseif ($end) {
+            $query->where('created', $end, '<=');
         }
 
-        if ($form) {
+        if ($campaignId) {
             $query
-                ->whereIn('id', static function (QueryBuilder $builder) use ($form) {
+                ->whereIn('id', static function (QueryBuilder $builder) use ($campaignId) {
                     $builder
                         ->from('give_donationmeta')
                         ->distinct()
                         ->select('meta_value')
                         ->where('meta_key', DonationMetaKeys::SUBSCRIPTION_ID)
-                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($form) {
+                        ->whereIn('donation_id', static function (QueryBuilder $builder) use ($campaignId) {
                             $builder
                                 ->from('give_donationmeta')
                                 ->select('donation_id')
-                                ->where('meta_key', DonationMetaKeys::FORM_ID)
-                                ->where('meta_value', $form);
+                                ->where('meta_key', DonationMetaKeys::CAMPAIGN_ID)
+                                ->where('meta_value', $campaignId);
                         });
                 });
         }

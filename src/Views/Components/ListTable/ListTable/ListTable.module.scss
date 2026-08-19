@@ -1,34 +1,39 @@
-.initialLoad {
-    inline-size: 100%;
+.loadingContainer {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    height: 20rem;
 
-    & > * {
+    .loadingContainerContent {
         display: flex;
-        flex-direction: column;
+        background-color: #fff;
+        padding: var(--givewp-spacing-6);
+        border-radius: var(--givewp-spacing-2);
+        margin-bottom: var(--givewp-spacing-4);
         align-items: center;
-        justify-content: space-evenly;
-        inline-size: 26em;
-        block-size: 20em;
+        flex-direction: column;
+    }
+
+    .loadingContainerContentText {
+        padding: var(--givewp-spacing-4);
+        font-size: 1rem;
     }
 }
 
 .tableGroup {
     background-color: #fff;
-    border: 0.0625em solid #ddd;
-    border-radius: 0.3125em;
+    border: 1px solid var(--givewp-neutral-50);
+    border-radius: 4px;
     overflow: auto;
     position: relative;
     max-inline-size: 100%;
-    box-shadow: 0 0 0.5625em rgb(68 68 68 / 0.05);
 }
 
 .table {
-    border-radius: inherit;
     border-spacing: 0;
-    inline-size: 100%;
     font-size: 1em;
+    inline-size: 100%;
+    overflow: hidden;
 }
 
 /* Visually hidden class omitting position: absolute since that breaks the table
@@ -45,13 +50,16 @@
 }
 
 .tableColumnHeader {
-    vertical-align: middle;
-    border-bottom: 0.0625em solid #ddd;
-    color: #0878b0;
-    font-weight: 700;
-    padding: 1em;
-    inline-size: 8rem;
+    background-color: var(--givewp-neutral-25);
+    border-bottom: 1px solid var(--givewp-neutral-50);
+    color: var(--givewp-neutral-900);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    padding-block: var(--givewp-spacing-4);
+    padding-inline: var(--givewp-spacing-3);
     text-align: start;
+    vertical-align: middle;
 
     &.start {
         text-align: start;
@@ -64,10 +72,14 @@
     &.end {
         text-align: end;
     }
-}
 
-.testMode {
-    border-bottom: 2px solid #f49420;
+    &:first-child {
+        padding-inline-start: var(--givewp-spacing-4);
+    }
+
+    &:last-child {
+        padding-inline-end: var(--givewp-spacing-4);
+    }
 }
 
 .tableContent {
@@ -75,12 +87,8 @@
 }
 
 .selectAll {
-    inline-size: 1rem;
+    width: 3.5rem;
     padding-right: 0;
-
-    input[type="checkbox"] {
-        transform: translateX(-2px);
-    }
 }
 
 #updateError {
@@ -170,75 +178,37 @@
 }
 
 .id {
-    inline-size: 2.5rem;
+    inline-size: 8rem;
 }
 
-.donationForms .goal {
-    inline-size: 9.5rem;
-}
-
-.donationForms .donationCount {
-    inline-size: 6.5rem;
-}
-
-.donationForms .donationRevenue {
-    inline-size: 5rem;
-}
-
-.donationForms .shortcode {
-    inline-size: 9rem;
-}
-
-.donations .amount {
-    inline-size: 5.5rem;
-}
-
-.donations .status {
-    inline-size: 6rem;
-}
-
-.donations .subscriptionDonationType {
-    inline-size: 6rem;
-}
-
-.donors .donorInformation {
-    inline-size: 10rem;
-}
-
-.donors .donationRevenue {
-    inline-size: 6.5rem;
-}
-
-.donors .donationCount {
-    inline-size: 6.5rem;
-}
-
-.donors .dateCreated {
-    inline-size: 6.5rem;
-}
-
-.donors .donorType {
-    inline-size: 6.5rem;
-}
-
-.subscriptions .amount {
-    inline-size: 6rem;
-}
-
-.subscriptions .donor {
-    inline-size: 6.5rem;
-}
-
-.subscriptions .form {
-    inline-size: 6.5rem;
-}
-
-.subscriptions .billingPeriod {
-    inline-size: 6.5rem;
-}
-
+.campaigns .status,
+.donationForms .status,
+.donations .paymentType,
+.donations .status,
+.donations .subscriptionDonationType,
+.donors .donorType,
 .subscriptions .status {
-    inline-size: 6.5rem;
+    text-align: center;
+
+    > button {
+        margin-inline: auto;
+    }
+}
+
+.campaigns .donationsCount,
+.campaigns .revenue,
+.donationForms .donationCount,
+.donationForms .donationRevenue,
+.donations .amount,
+.donors .donationCount,
+.donors .donationRevenue,
+.donors .latestDonation,
+.subscriptions .amount {
+    text-align: right;
+
+    > button {
+        margin-left: auto;
+    }
 }
 
 @keyframes appear {
@@ -247,36 +217,5 @@
     }
     100% {
         opacity: 1;
-    }
-}
-
-:global(.list-table-page-container--new-design) {
-    .table {
-        border-radius: 4px;
-        border: 1px solid var(--givewp-neutral-50);
-        overflow: hidden;
-    }
-
-    .tableGroup {
-        box-shadow: none;
-    }
-
-    .tableColumnHeader {
-        background-color: var(--givewp-neutral-25);
-        border-bottom: 1px solid var(--givewp-neutral-50);
-        color: var(--givewp-neutral-900);
-        font-weight: 600;
-        font-size: 1rem;
-        line-height: 1.5;
-        padding-block: var(--givewp-spacing-4);
-        padding-inline: var(--givewp-spacing-2);
-
-        &:first-child {
-            padding-inline-start: var(--givewp-spacing-6);
-        }
-
-        &:last-child {
-            padding-inline-end: var(--givewp-spacing-6);
-        }
     }
 }

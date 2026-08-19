@@ -2,7 +2,6 @@
 
 namespace Give\PaymentGateways\PayPalCommerce;
 
-use Give\Framework\Http\ConnectServer\Client\ConnectClient;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
 use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\ProcessorResponseError;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
@@ -51,7 +50,7 @@ class AjaxRequestHandler
     /**
      * @since 2.9.0
      *
-     * @var ConnectClient
+     * @var RefreshToken
      */
     private $refreshToken;
 
@@ -157,12 +156,18 @@ class AjaxRequestHandler
         $country = sanitize_text_field(wp_unslash($_GET['countryCode']));
         $accountType = sanitize_text_field(wp_unslash($_GET['accountType']));
         $mode = sanitize_text_field(wp_unslash($_GET['mode']));
+
+        // Generate a unique state token for CSRF protection on PayPal callback.
+        $stateToken = wp_generate_password(32, false);
+        set_transient('give_paypal_onboarding_state_' . $mode, $stateToken, HOUR_IN_SECONDS);
+
         $redirectUrl = add_query_arg(
             [
                 'tab' => 'gateways',
                 'section' => 'paypal',
                 'group' => 'paypal-commerce',
                 'mode' => $mode,
+                'give_paypal_state' => $stateToken,
             ],
             admin_url('edit.php?post_type=give_forms&page=give-settings')
         );
@@ -258,7 +263,8 @@ class AjaxRequestHandler
     }
 
     /**
-     * @since 4.2.1 only filter amount for v2 forms
+     * @since 4.14.4 Validate donation amount before creating or updating an order.
+	 * @since 4.2.1 Only filter amount for v2 forms.
      * @since 3.4.2
      */
     private function getOrderData(): array
@@ -283,6 +289,8 @@ class AjaxRequestHandler
                 '0.00';
         }
 
+        $this->validateDonationAmount($amount, $formId);
+
         return [
             'formId' => $formId,
             'formTitle' => give_payment_gateway_item_title(['post_data' => $postData], 127),
@@ -301,6 +309,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment capture error on frontend.
      *
+	 * @since 4.14.4 Validate donation amount before approving an order.
      * @since 3.2.0 Discover error by checking capture status.
      * @since 2.9.0
      */
@@ -313,7 +322,9 @@ class AjaxRequestHandler
 
         try {
             if ($updateAmount) {
-                give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
+                $orderData = $this->getOrderData();
+                $this->validateOrderAmountNotDecreased($orderId, $orderData['donationAmount']);
+                give(PayPalOrder::class)->updateOrderAmount($orderId, $orderData);
             }
 
             $result = give(PayPalOrder::class)->approveOrder($orderId);
@@ -327,6 +338,7 @@ class AjaxRequestHandler
     }
 
     /**
+     * @since 4.14.4 Validate donation amount before updating an order amount.
      * @since 3.4.2
      */
     public function updateOrderAmount()
@@ -336,7 +348,9 @@ class AjaxRequestHandler
         $orderId = give_clean($_GET['order']);
 
         try {
-            give(PayPalOrder::class)->updateOrderAmount($orderId, $this->getOrderData());
+            $orderData = $this->getOrderData();
+            $this->validateOrderAmountNotDecreased($orderId, $orderData['donationAmount']);
+            give(PayPalOrder::class)->updateOrderAmount($orderId, $orderData);
 
             wp_send_json_success(['order' => $orderId,]);
         } catch (\Exception $ex) {
@@ -406,6 +420,56 @@ class AjaxRequestHandler
 
         if (! $formId || ! give_verify_donation_form_nonce(give_clean($_POST['give-form-hash']), $formId)) {
             wp_die();
+        }
+    }
+
+    /**
+     * Validate the donation amount against the form's configured maximum and that it is positive.
+     *
+     * @since 4.14.4
+     *
+     * @param float|string $amount
+     * @param int $formId
+     */
+    private function validateDonationAmount($amount, int $formId): void
+    {
+        $amount = (float)$amount;
+
+        if ($amount <= 0) {
+            wp_send_json_error(['error' => __('Invalid donation amount.', 'give')]);
+        }
+
+        $maxAmount = (float)give_get_form_maximum_price($formId);
+        if ($maxAmount > 0 && $amount > $maxAmount) {
+            wp_send_json_error([
+                'error' => sprintf(
+                    /* translators: %s: maximum donation amount */
+                    __('Donation amount must not exceed %s.', 'give'),
+                    give_currency_filter(give_format_amount($maxAmount, ['sanitize' => false]))
+                ),
+            ]);
+        }
+    }
+
+    /**
+     * Validate that the new donation amount is not less than the original PayPal order amount.
+     *
+     * @since 4.14.4
+     *
+     * @param string $orderId
+     * @param float|string $newAmount
+     */
+    private function validateOrderAmountNotDecreased(string $orderId, $newAmount): void
+    {
+        $newAmount = (float)$newAmount;
+
+        $currentOrder = give(PayPalOrder::class)->getApprovedOrder($orderId);
+        $currentAmount = (float)$currentOrder->purchase_units[0]->amount->value;
+
+        if ($newAmount < $currentAmount) {
+            wp_send_json_error([
+                'error' => __('Donation amount cannot be decreased.', 'give'),
+            ]);
         }
     }
 

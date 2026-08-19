@@ -39,6 +39,10 @@ class RegisterCampaignBlocks
      */
     public function loadBlockEditorAssets(): void
     {
+        if (!is_admin()) {
+            return;
+        }
+
         give(LoadCampaignAdminOptions::class)();
 
         $handleName = 'givewp-campaign-blocks';

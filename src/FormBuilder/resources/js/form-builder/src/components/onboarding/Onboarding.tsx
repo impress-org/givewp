@@ -25,6 +25,7 @@ declare global {
             migrationActionUrl: string;
             transferActionUrl: string;
             showUpgradeDialog: boolean;
+            showTransferModal: boolean;
             transferShowNotice: boolean;
             isMigratedForm: boolean;
             isTransferredForm: boolean;

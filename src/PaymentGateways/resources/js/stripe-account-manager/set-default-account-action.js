@@ -4,9 +4,10 @@
  * This will be used to set any non-default Stripe account from the list
  * to set that particular Stripe account as default.
  *
+ * @since 4.14.2 import sprintf from @wordpress/i18n
  * @since 2.13.0
  */
-import { __ } from '@wordpress/i18n'
+import { __, sprintf } from '@wordpress/i18n'
 
 window.addEventListener('DOMContentLoaded', function () {
     const setStripeDefaults = Array.from(document.querySelectorAll('.give-stripe-account-set-default'));

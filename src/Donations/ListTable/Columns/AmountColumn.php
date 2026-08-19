@@ -15,6 +15,8 @@ use Give\Framework\ListTable\ModelColumn;
 class AmountColumn extends ModelColumn
 {
 
+    protected $sortColumn = 'COALESCE(CAST(amount AS DECIMAL) / COALESCE(CAST(exchangeRate AS DECIMAL), 1), 0)';
+    
     /**
      * @since 2.24.0
      *

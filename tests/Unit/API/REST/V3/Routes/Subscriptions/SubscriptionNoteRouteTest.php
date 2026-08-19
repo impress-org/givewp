@@ -278,6 +278,7 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.14.0 Update createdAt type assertion to accept array ['string', 'null']
      * @since 4.8.0
      */
     public function testGetItemSchema()
@@ -303,7 +304,10 @@ class SubscriptionNoteRouteTest extends RestApiTestCase
         $this->assertEquals('string', $properties['content']['type']);
         $this->assertEquals('integer', $properties['subscriptionId']['type']);
         $this->assertEquals('string', $properties['type']['type']);
-        $this->assertEquals('string', $properties['createdAt']['type']);
+        // createdAt can be string or null
+        $this->assertIsArray($properties['createdAt']['type']);
+        $this->assertContains('string', $properties['createdAt']['type']);
+        $this->assertContains('null', $properties['createdAt']['type']);
     }
 
     /**

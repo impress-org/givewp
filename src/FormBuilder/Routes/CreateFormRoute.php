@@ -17,6 +17,7 @@ use Give\Helpers\Language;
 class CreateFormRoute
 {
     /**
+     * @since 4.14.2 update default form title
      * @since 3.22.0 Add locale support
      * @since 3.1.0 updated default form blocks to be generated from block models instead of json
      * @since 3.0.0
@@ -40,7 +41,7 @@ class CreateFormRoute
                 Language::switchToLocale($locale);
 
                 $form = new DonationForm([
-                    'title' => __('GiveWP Donation Form', 'give'),
+                    'title' => __('Donation Form', 'give'),
                     'status' => DonationFormStatus::DRAFT(),
                     'settings' => FormSettings::fromArray([
                         'enableDonationGoal' => true,

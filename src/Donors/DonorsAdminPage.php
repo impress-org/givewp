@@ -5,10 +5,12 @@ namespace Give\Donors;
 use Give\Donors\Actions\LoadDonorDetailsAssets;
 use Give\Donors\Actions\LoadDonorsListTableAssets;
 use Give\Donors\Models\Donor;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 class DonorsAdminPage
 {
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.20.0
      */
     public function registerMenuItem()
@@ -22,7 +24,7 @@ class DonorsAdminPage
             'edit.php?post_type=give_forms',
             esc_html__('Donors', 'give'),
             esc_html__('Donors', 'give'),
-            'edit_give_forms',
+            UserPermissions::donors()->viewCap(),
             'give-donors',
             [$this, 'render']
         );
@@ -39,7 +41,7 @@ class DonorsAdminPage
         if (self::isShowingDetailsPage()) {
             $donor = Donor::find(absint($_GET['id']));
 
-            if ( ! $donor) {
+            if (! $donor) {
                 wp_die(__('Donor not found', 'give'), 404);
             }
 
@@ -99,6 +101,14 @@ class DonorsAdminPage
     public static function isShowingDetailsPage(): bool
     {
         return isset($_GET['id'], $_GET['page']) && 'give-donors' === $_GET['page'];
+    }
+
+    /**
+     * @since 4.13.1
+     */
+    public static function isShowingNewDetailsPage(): bool
+    {
+        return self::isShowingDetailsPage() && isset($_GET['view']) && $_GET['view'] === 'overview';
     }
 
     /**

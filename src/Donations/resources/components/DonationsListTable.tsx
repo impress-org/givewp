@@ -10,6 +10,8 @@ import {Interweave} from 'interweave';
 import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
+import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
+import filterByOptions from '../constants/filterByOptions';
 
 declare global {
     interface Window {
@@ -21,9 +23,11 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
+            recurringDonationsEnabled: boolean;
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
             addonsBulkActions: Array<BulkActionsConfig>;
+            donationStatuses: {[statusCode: string]: string};
         };
     }
 }
@@ -33,10 +37,9 @@ const API = new ListTableApi(window.GiveDonations);
 const filters: Array<FilterConfig> = [
     {
         name: 'campaignId',
-        type: 'formselect',
+        type: 'campaignselect',
         text: __('Select Campaign', 'give'),
         ariaLabel: __('filter donations by campaign', 'give'),
-        options: window.GiveDonations.campaigns,
     },
     {
         name: 'search',
@@ -55,6 +58,11 @@ const filters: Array<FilterConfig> = [
         name: 'donor',
         type: 'hidden',
     },
+    {
+        name: 'filterBy',
+        type: 'filterby',
+        groupedOptions: filterByOptions,
+    },
 ];
 
 const bulkActions: Array<BulkActionsConfig> = [
@@ -62,13 +70,64 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
+        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
             return response;
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Are you sure you want to delete the following donations?', 'give')}</p>
+                <p>{__('Really delete the following donations?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Trash', 'give'),
+        value: 'trash',
+        type: 'warning',
+        isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want add to trash the following donations?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Restore', 'give'),
+        value: 'restore',
+        type: 'normal',
+        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/untrash', {ids: selected.join(',')}, 'POST');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want remove from trash the following donations?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
@@ -99,6 +158,7 @@ const bulkActions: Array<BulkActionsConfig> = [
             return {
                 label,
                 value,
+                isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
                 action: async (selected) =>
                     await API.fetchWithArgs(
                         '/setStatus',
@@ -204,6 +264,39 @@ const rotatingRecommendation = (
     />
 );
 
+/**
+ * Configuration for the statistic tiles rendered above the ListTable.
+ *
+ * IMPORTANT: Object keys MUST MATCH the keys returned by the API's `stats` payload.
+ * For example, if the API returns:
+ *
+ *   data.stats = {
+ *     donationsCount: number;
+ *     oneTimeDonationsCount: number;
+ *     recurringDonationsCount: number;
+ *   }
+ *
+ * then this config must use those same keys: "donationsCount", "oneTimeDonationsCount", "recurringDonationsCount".
+ * Missing or mismatched keys will result in empty/undefined values in the UI.
+ *
+ * @since 4.10.0
+ */
+const statsConfig: Record<string, StatConfig> = {
+    donationsCount: { label: __('Total Donations', 'give')},
+    oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
+    recurringDonationsCount: {
+        label: __('Recurring Donations', 'give'),
+        upgrade: !window.GiveDonations.recurringDonationsEnabled && {
+            href: 'https://docs.givewp.com/recurring-stat',
+            tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
+        }
+    },
+};
+
+/**
+ * @since 4.10.0 Update button class names and add aria attributes.
+ * @since 2.24.0
+ */
 export default function DonationsListTable() {
     return (
         <ListTablePage
@@ -217,26 +310,37 @@ export default function DonationsListTable() {
             paymentMode={!!window.GiveDonations.paymentMode}
             listTableBlankSlate={ListTableBlankSlate}
             productRecommendation={rotatingRecommendation}
+            statsConfig={statsConfig}
         >
+            <button
+                className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
+                onClick={showLegacyDonations}
+                aria-label={__('Switch to the legacy donations table view', 'give')}
+            >
+                {__('Switch to Legacy View', 'give')}
+            </button>
             {window.GiveDonations.manualDonations ? (
                 <a
-                    className={tableStyles.addFormButton}
+                    className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
                     href={`${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-manual-donation`}
+                    aria-label={__('Create a new donation record', 'give')}
                 >
-                    {__('New Donation', 'give')}
+                    {__('New donation', 'give')}
                 </a>
             ) : (
                 <a
-                    className={styles.manualDonationsNotice}
+                    className={`button button-tertiary ${tableStyles.secondaryActionButton} ${styles.manualDonationsNotice}`}
                     href={'https://docs.givewp.com/enterdonation'}
                     target={'_blank'}
+                    aria-label={__('Learn about Manual Donations add-on (opens in new tab)', 'give')}
+                    aria-describedby="manual-donations-tooltip"
                 >
                     <span className={styles.manualDonationsAddOn}>{__('ADD-ON', 'give')}</span>
-                    {__('Enter Donations', 'give')}
-                    <span className={styles.manualDonationsMessage}>
+                    {__('Enter donations', 'give')}
+                    <span id="manual-donations-tooltip" className={styles.manualDonationsMessage}>
                         <img
                             src={`${window.GiveDonations.pluginUrl}build/assets/dist/images/admin/triangle-tip.svg`}
-                            alt={'manual donations'}
+                            alt={__('Information', 'give')}
                         />{' '}
                         {__(
                             'Need to add in a record for a donation received elsewhere, or reconcile with the payment gateway? Add donation records with the Manual Donations add-on!',
@@ -246,14 +350,12 @@ export default function DonationsListTable() {
                 </a>
             )}
             <a
-                className={tableStyles.addFormButton}
+                className={`button button-primary ${tableStyles.primaryActionButton}`}
                 href={` ${window.GiveDonations.adminUrl}edit.php?post_type=give_forms&page=give-tools&tab=import&importer-type=import_donations`}
+                aria-label={__('Import donations from external source', 'give')}
             >
-                {__('Import Donations', 'give')}
+                {__('Import donations', 'give')}
             </a>
-            <button className={tableStyles.addFormButton} onClick={showLegacyDonations}>
-                {__('Switch to Legacy View', 'give')}
-            </button>
         </ListTablePage>
     );
 }

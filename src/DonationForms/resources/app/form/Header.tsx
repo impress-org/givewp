@@ -1,9 +1,9 @@
-import {useCallback} from 'react';
-import {withTemplateWrapper} from '../templates';
-import type {GoalType} from '@givewp/forms/propTypes';
-import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
 import DonationFormErrorBoundary from '@givewp/forms/app/errors/boundaries/DonationFormErrorBoundary';
-import type {Form as DonationForm} from '@givewp/forms/types';
+import amountFormatter from '@givewp/forms/app/utilities/amountFormatter';
+import type { GoalType } from '@givewp/forms/propTypes';
+import type { Form as DonationForm } from '@givewp/forms/types';
+import { useCallback, useMemo } from 'react';
+import { withTemplateWrapper } from '../templates';
 
 const formTemplates = window.givewp.form.templates;
 
@@ -15,12 +15,32 @@ const GoalTemplate = withTemplateWrapper(formTemplates.layouts.goal);
 const HeaderImageTemplate = withTemplateWrapper(formTemplates.layouts.headerImage);
 
 /**
+ * @since 4.14.0.0 Make the goal currency use the base currency always
  * @since 3.0.0
  */
 export default function Header({form}: {form: DonationForm}) {
+
+    // Get the base currency for goal formatting
+    // The goal progress bar should always use the form's base currency, not the selected currency
+    // This matches the behavior of legacy forms where only donation amounts are converted
+    const goalCurrency = useMemo(() => {
+        // If currency switcher is enabled, find the base currency (exchangeRate === 0)
+        if (form.currencySwitcherSettings && form.currencySwitcherSettings.length > 0) {
+            const baseCurrencySetting = form.currencySwitcherSettings.find(
+                (setting) => setting.exchangeRate === 0
+            );
+            if (baseCurrencySetting) {
+                return baseCurrencySetting.id;
+            }
+        }
+        // Fallback to form's default currency
+        return form.currency;
+    }, [form.currencySwitcherSettings, form.currency]);
+
     const formatGoalAmount = useCallback((amount: number) => {
-        return amountFormatter(form.currency).format(amount);
-    }, []);
+        // Use the base currency for goal amounts, not the selected currency
+        return amountFormatter(goalCurrency).format(amount);
+    }, [goalCurrency]);
 
     return (
         <DonationFormErrorBoundary>
@@ -43,7 +63,7 @@ export default function Header({form}: {form: DonationForm}) {
                 Goal={() =>
                     form.goal?.show && (
                         <GoalTemplate
-                            currency={form.currency}
+                            currency={goalCurrency}
                             type={form.goal.type as GoalType}
                             goalLabel={form.goal.label}
                             progressPercentage={Math.round((form.goal.currentAmount / form.goal.targetAmount) * 100)}

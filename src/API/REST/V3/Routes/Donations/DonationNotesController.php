@@ -4,9 +4,11 @@ namespace Give\API\REST\V3\Routes\Donations;
 
 use Exception;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
+use Give\API\REST\V3\Support\Item;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
 use Give\Donations\ValueObjects\DonationNoteType;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Request;
@@ -277,46 +279,52 @@ class DonationNotesController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function get_items_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::donations()->canView();
     }
 
     /**
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function create_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::donations()->canCreate();
     }
 
     /**
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function get_item_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::donations()->canView();
     }
 
     /**
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function update_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::donations()->canEdit();
     }
 
     /**
+     * @since 4.14.0 replace logic with UserPermissions facade
      * @since 4.6.0
      */
     public function delete_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::donations()->canDelete();
     }
 
     /**
+     * @since 4.14.0 Format dates as strings using Item::formatDatesForResponse
      * @since 4.7.0 Add support for adding custom fields to the response
      * @since 4.6.0
      */
@@ -334,7 +342,8 @@ class DonationNotesController extends WP_REST_Controller
             'self' => ['href' => $self_url],
         ];
 
-        $response = new WP_REST_Response($note->toArray());
+        $item = $note->toArray();
+        $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt', 'updatedAt']));
         $response->add_links($links);
         $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
@@ -361,6 +370,8 @@ class DonationNotesController extends WP_REST_Controller
     /**
      * Get the donation note schema, conforming to JSON Schema.
      *
+     * @since 4.14.0 Add date format examples
+     * @since 4.13.0 add schema description
      * @since 4.9.0 Set proper JSON Schema version
      * @since 4.7.0 Change title to givewp/donation-note and add custom fields schema
      * @since 4.6.0
@@ -372,6 +383,7 @@ class DonationNotesController extends WP_REST_Controller
         $schema = [
             '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/donation-note',
+            'description' => esc_html__('Donation Note routes for CRUD operations', 'give'),
             'type' => 'object',
             'properties' => [
                 'id' => [
@@ -398,42 +410,31 @@ class DonationNotesController extends WP_REST_Controller
                     'default' => 'admin',
                 ],
                 'createdAt' => [
-                    'description' => __('The date the note was created.', 'give'),
-                    'type' => 'string',
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('The date the note was created in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'type' => ['string', 'null'],
                     'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
                     'readonly' => true,
                 ],
                 'updatedAt' => [
-                    'description' => __('The date the note was last updated.', 'give'),
-                    'type' => 'string',
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('The date the note was last updated in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'type' => ['string', 'null'],
                     'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
                     'readonly' => true,
                 ],
             ],
         ];
 
         return $this->add_additional_fields_schema($schema);
-    }
-
-    /**
-     * Get the donation note schema for public display.
-     *
-     * @since 4.6.0
-     *
-     * @return array
-     */
-    public function get_public_item_schema(): array
-    {
-        $schema = $this->get_item_schema();
-
-        // Add additional properties for public display
-        $schema['properties']['_links'] = [
-            'description' => __('HATEOAS links for the note.', 'give'),
-            'type' => 'object',
-            'readonly' => true,
-        ];
-
-        return $schema;
     }
 
     /**

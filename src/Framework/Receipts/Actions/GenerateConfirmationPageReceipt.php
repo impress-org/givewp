@@ -86,6 +86,10 @@ class GenerateConfirmationPageReceipt
                 $value = null;
             }
 
+            if (is_null($value)) {
+                continue;
+            }
+
             $value = apply_filters(
                 sprintf("givewp_donation_confirmation_page_field_value_for_%s", $field->getName()),
                 $value,

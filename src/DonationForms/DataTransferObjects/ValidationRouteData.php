@@ -11,6 +11,7 @@ use Give\Framework\FieldsAPI\Field;
 use Give\Framework\FieldsAPI\SecurityChallenge;
 use Give\Framework\Http\Response\Types\JsonResponse;
 use Give\Framework\Support\Contracts\Arrayable;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 
 /**
@@ -75,12 +76,14 @@ class ValidationRouteData implements Arrayable
 
         $validatedValues = $validator->validated();
 
-       /**
+        /**
+         * @since 4.16.0 added $isFinalSubmission (false here: per-step validation, not the final submission)
          * @since 3.22.0
-         /**
-         * @param array $validatedValues validated values in key value pairs
+         *
+         * @param array $validatedValues   validated values in key value pairs
+         * @param bool  $isFinalSubmission whether this is the final donation submission
          */
-        do_action('givewp_donation_form_fields_validated', $validatedValues);
+        do_action('givewp_donation_form_fields_validated', $validatedValues, false);
 
         return new JsonResponse(['valid' => true]);
     }
@@ -116,6 +119,7 @@ class ValidationRouteData implements Arrayable
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 3.22.0
      */
     private function isValidForm(DonationForm $form): bool
@@ -124,7 +128,7 @@ class ValidationRouteData implements Arrayable
             return false;
         }
 
-        if (!$form->status->isPublished() && !current_user_can('edit_give_forms')) {
+        if (!$form->status->isPublished() && !UserPermissions::donationForms()->canEdit()) {
             return false;
         }
 

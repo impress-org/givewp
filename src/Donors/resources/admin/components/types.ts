@@ -1,14 +1,11 @@
 /**
+ * @since 4.14.0 Format dates as strings using formatTimestamp
  * @since 4.4.0
  */
 export type Donor = {
   id: number;
   userId?: number;
-  createdAt: {
-    date: string;
-    timezone: string;
-    timezoneType: number;
-  };
+  createdAt: string;
   name: string;
   prefix: string;
   firstName: string;
@@ -23,12 +20,21 @@ export type Donor = {
   totalNumberOfDonations: number;
   wpUserPermalink: string;
   status: DonorStatus;
+  customFields: CustomField[];
 };
 
 /**
  * @since 4.4.0
  */
 export type DonorStatus = 'current' | 'prospective' | 'retained' | 'lapsed' | 'new' | 'recaptured' | 'recurring';
+
+/**
+ * @since 4.10.0
+ */
+export type CustomField = {
+    label: string;
+    value: string;
+};
 
 /**
  * @since 4.4.0

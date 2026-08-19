@@ -4,8 +4,11 @@ namespace Unit\API\REST\V3\Routes\Subscriptions;
 
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\Campaigns\Models\Campaign;
+use Give\DonationForms\Models\DonationForm;
 use Give\Donors\Models\Donor;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
+use Give\Framework\Support\Facades\Str;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\Gateways\TestGateway\TestGateway;
 use Give\Subscriptions\Models\Subscription;
@@ -26,6 +29,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
+     * @since 4.10.0 added campaignId
      * @since 4.8.0
      */
     public function testGetSubscriptionShouldReturnAllViewModelProperties()
@@ -80,6 +84,7 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
                 ]
             ),
             'projectedAnnualRevenue' => $subscription->projectedAnnualRevenue()->toArray(),
+            'campaignId' => $subscription->campaign ? $subscription->campaign->id : null,
         ], $data);
     }
 
@@ -127,7 +132,33 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         $this->assertArrayHasKey('givewp:donor', $data['_links']);
     }
 
+
     /**
+     * @since 4.10.0
+     */
+    public function testGetSubscriptionShouldReturnLinksForAllRelationships()
+    {
+        $campaign = Campaign::factory()->create();
+
+        $subscription = Subscription::factory()->create([
+            'donationFormId' => $campaign->defaultFormId,
+        ]);
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $data = $this->responseToData($response, true);
+
+        $this->assertArrayHasKey('givewp:donations', $data['_links']);
+        $this->assertArrayHasKey('givewp:donor', $data['_links']);
+        $this->assertArrayHasKey('givewp:form', $data['_links']);
+        $this->assertArrayHasKey('givewp:campaign', $data['_links']);
+    }
+
+    /**
+     * @since 4.14.0 subscriptionUrl should not be included in gateway details when sensitive data is not included, lastName should return only the first letter when sensitive data is not included
      * @since 4.8.0
      *
      * @throws Exception
@@ -151,10 +182,13 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         ];
 
         $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data, $sensitiveProperties));
 
-        foreach ($sensitiveProperties as $property) {
-            $this->assertEmpty($data[$property]);
-        }
+        // gateway details should not include subscriptionUrl when sensitive data is not included
+        $this->assertNotContains('subscriptionUrl', $data['gateway']);
+
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(Str::substr($subscription->donor()->get()->lastName, 0, 1), $data['lastName']);
     }
 
     /**
@@ -264,6 +298,58 @@ class SubscriptionRouteGetItemTest extends RestApiTestCase
         foreach ($anonymousDataRedacted as $property) {
             $this->assertEquals(__('anonymous', 'give'), $data[$property]);
         }
+    }
+
+    /**
+     * The single-subscription endpoint must hide anonymous donors by default (anonymousDonors=exclude),
+     * matching the collection endpoint and DonorController::get_item(). Regression for the
+     * unauthenticated recurring-donor disclosure (Sanjorn Keeratirungsan).
+     *
+     * @since 4.16.3
+     *
+     * @throws Exception
+     */
+    public function testGetSubscriptionShouldReturn404ForAnonymousDonorWhenExcluded()
+    {
+        $subscription = $this->createSubscriptionWithAnonymousDonor();
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(404, $response->get_status());
+    }
+
+    /**
+     * An administrator explicitly requesting anonymous donors (anonymousDonors=include) must still
+     * receive the subscription — the 404 guard applies only to the excluded (default) mode.
+     *
+     * @since 4.16.3
+     *
+     * @throws Exception
+     */
+    public function testGetSubscriptionShouldReturnAnonymousDonorWhenIncludedAsAdmin()
+    {
+        $subscription = $this->createSubscriptionWithAnonymousDonor();
+
+        $route = '/' . SubscriptionRoute::NAMESPACE . '/' . SubscriptionRoute::BASE . '/' . $subscription->id;
+        $request = $this->createRequest(WP_REST_Server::READABLE, $route, [], 'administrator');
+        $request->set_query_params(
+            [
+                'anonymousDonors' => 'include',
+            ]
+        );
+
+        $response = $this->dispatchRequest($request);
+
+        $status = $response->get_status();
+        $dataJson = json_encode($response->get_data());
+        $data = json_decode($dataJson, true);
+
+        $this->assertEquals(200, $status);
+        $this->assertEquals($subscription->id, $data['id']);
+        $this->assertEquals($subscription->donorId, $data['donorId']);
     }
 
     /**

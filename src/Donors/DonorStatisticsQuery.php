@@ -173,6 +173,7 @@ class DonorStatisticsQuery extends QueryBuilder
     }
 
     /**
+     * @since 4.10.0 Updated return value
      * @since 4.4.0
      */
     public function getDonorType()
@@ -184,18 +185,7 @@ class DonorStatisticsQuery extends QueryBuilder
             return null;
         }
 
-        switch ($donorType->getValue()) {
-            case DonorType::NEW:
-                return __('No Donations', 'give');
-            case DonorType::SUBSCRIBER:
-                return __('Subscriber', 'give');
-            case DonorType::REPEAT:
-                return __('Repeat', 'give');
-            case DonorType::SINGLE:
-                return __('One-time', 'give');
-            default:
-                return $donorType->label();
-        }
+        return $donorType->label();
     }
 
     /**

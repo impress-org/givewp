@@ -25,9 +25,10 @@ use Give_License;
 class FormBuilderViewModel
 {
     /**
-     * @since 3.12.0  Add goalProgressOptions key to the returned array
+     * @since 4.14.0 Add countries key to the returned array
+     * @since 3.12.0 Add goalProgressOptions key to the returned array
      * @since 3.9.0 Add support to intlTelInputSettings key in the returned array
-     * @since      3.7.0 Add support to isExcerptEnabled key in the returned array
+     * @since 3.7.0 Add support to isExcerptEnabled key in the returned array
      * @since 3.2.0 Add nameTitlePrefixes key to the returned array
      * @since 3.0.0
      */
@@ -91,6 +92,7 @@ class FormBuilderViewModel
             'intlTelInputSettings' => IntlTelInput::getSettings(),
             'campaignColors' => $this->getCampaignColors($donationFormId),
             'showFormGoalNotice' => !get_user_meta(get_current_user_id(), 'givewp_campaign_form_goal_notice', true),
+            'countries' => give_get_country_list(),
         ];
     }
 

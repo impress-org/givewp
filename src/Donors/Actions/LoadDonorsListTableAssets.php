@@ -14,6 +14,7 @@ use Give\Helpers\Utils;
 class LoadDonorsListTableAssets
 {
     /**
+     * @since 4.11.0 add recurringDonations check to the localize script
      * @since 2.27.1 Pass dismissed recommendations to the localize script
      * @since 2.20.0
      */
@@ -38,6 +39,7 @@ class LoadDonorsListTableAssets
             'adminUrl' => admin_url(),
             'pluginUrl' => GIVE_PLUGIN_URL,
             'dismissedRecommendations' => $this->getDismissedRecommendations(),
+            'recurringDonationsEnabled' => Utils::isPluginActive('give-recurring/give-recurring.php'),
         ]);
 
         wp_enqueue_script($handleName);

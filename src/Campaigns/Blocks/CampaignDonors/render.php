@@ -6,6 +6,7 @@ use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 
 /**
  * @since 4.2.0 remove SQL casting
@@ -33,6 +34,7 @@ $query = (new CampaignDonationQuery($campaign))
     ->joinDonationMeta(DonationMetaKeys::FIRST_NAME, 'donorName')
     ->joinDonationMeta(DonationMetaKeys::ANONYMOUS, 'anonymousMeta')
     ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors')
+    ->leftJoin('give_donormeta', 'donorIdMeta.meta_value', 'donorMeta.donor_id', 'donorMeta')
     ->limit($attributes['donorsPerPage'] ?? 5);
 
 if ($sortBy === 'top-donors') {
@@ -40,8 +42,11 @@ if ($sortBy === 'top-donors') {
         'donorIdMeta.meta_value as id',
         'SUM(amountMeta.meta_value - IFNULL(feeAmountRecovered.meta_value, 0)) AS amount',
         'MAX(donorName.meta_value) AS name',
-        'anonymousMeta.meta_value as isAnonymous'
+        'anonymousMeta.meta_value as isAnonymous',
+        'donors.email as email',
+        'donorMeta.meta_value as avatarId'
     )
+        ->where('donorMeta.meta_key', DonorMetaKeys::AVATAR_ID)
         ->groupBy('donorIdMeta.meta_value')
         ->orderBy('amount', 'DESC');
 } else {
@@ -53,8 +58,11 @@ if ($sortBy === 'top-donors') {
             'donation.post_date as date',
             'amountMeta.meta_value - IFNULL(feeAmountRecovered.meta_value, 0) as amount',
             'donorName.meta_value as name',
-            'anonymousMeta.meta_value as isAnonymous'
+            'anonymousMeta.meta_value as isAnonymous',
+            'donors.email as email',
+            'donorMeta.meta_value as avatarId'
         )
+        ->where('donorMeta.meta_key', DonorMetaKeys::AVATAR_ID)
         ->orderBy('donation.ID', 'DESC');
 }
 

@@ -3,8 +3,6 @@
  */
 import {CurrencyControl} from '@givewp/form-builder-library';
 import {CurrencyCode} from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
-import cx from 'classnames';
-import {useEffect} from 'react';
 
 /**
  * WordPress dependencies
@@ -16,15 +14,20 @@ import {useFormContext, useFormState} from 'react-hook-form';
  * Internal dependencies
  */
 import AdminSection, {AdminSectionField} from '@givewp/components/AdminDetailsPage/AdminSection';
-import {formatDateTimeLocal} from '@givewp/components/AdminDetailsPage/utils';
+
 import {getDonationOptionsWindowData} from '@givewp/donations/utils';
 import styles from '../styles.module.scss';
+import StatusField from '@givewp/admin/fields/Status';
+import CampaignFormField from '@givewp/admin/fields/CampaignFormGroup';
 // TODO: Move to shared components
 import PhoneInput from '@givewp/donors/admin/components/Inputs/Phone';
+import {DateTimeLocalField} from '@givewp/admin/fields';
 
-const {donationStatuses, campaignsWithForms, intlTelInputSettings} = getDonationOptionsWindowData();
+const {donationStatuses, intlTelInputSettings} = getDonationOptionsWindowData();
 
 /**
+ * @since 4.11.0 Extract Campaign and Form fields to shared components
+ * @since 4.10.0 replace Status field with admin Status component
  * @since 4.9.0 Add error prop to all AdminSectionField components
  * @since 4.6.0
  */
@@ -32,23 +35,6 @@ export default function DonationDetails() {
     const {getValues, setValue, register, watch, setError} = useFormContext();
     const {errors} = useFormState();
     const amount = getValues('amount');
-    const campaignId = watch('campaignId');
-    const formId = watch('formId');
-    const status = watch('status');
-    const createdAt = watch('createdAt');
-
-    useEffect(() => {
-        if (!campaignId) {
-            return;
-        }
-
-        const campaignFormIds = Object.keys(campaignsWithForms[campaignId]?.forms).map(Number);
-        if (!campaignFormIds.includes(formId)) {
-            setValue('formId', campaignsWithForms[campaignId]?.defaultFormId, {shouldDirty: true});
-        }
-    }, [campaignId]);
-
-    const campaignForms = campaignsWithForms[campaignId]?.forms;
 
     return (
         <AdminSection
@@ -70,7 +56,7 @@ export default function DonationDetails() {
                                 setValue(
                                     'amount',
                                     {
-                                        amount: Number(value ?? 0),
+                                        value: Number(value ?? 0),
                                         currency: amount.currency,
                                     },
                                     {shouldDirty: true}
@@ -79,66 +65,16 @@ export default function DonationDetails() {
                         />
                     </AdminSectionField>
                     <AdminSectionField error={errors.status?.message as string}>
-                        <label htmlFor="status">{__('Status', 'give')}</label>
-                        <div className={cx(styles.statusSelect, styles[`statusSelect--${status}`])}>
-                            <select id="status" className={styles.statusSelectInput} {...register('status')}>
-                                {donationStatuses &&
-                                    Object.entries(donationStatuses).map(([value, label]) => (
-                                        <option key={value} value={value}>
-                                            {label as string}
-                                        </option>
-                                    ))}
-                            </select>
-                        </div>
+                        <StatusField statusOptions={donationStatuses} />
                     </AdminSectionField>
                 </div>
 
-                <AdminSectionField error={errors.createdAt?.message as string}>
-                    <label htmlFor="date">{__('Donation date and time', 'give')}</label>
-                    <input
-                        type="datetime-local"
-                        id="date"
-                        value={formatDateTimeLocal(createdAt?.date)}
-                        onChange={(e) => {
-                            setValue(
-                                'createdAt',
-                                {
-                                    date: formatDateTimeLocal(e.target.value),
-                                    timezone: createdAt?.timezone,
-                                    timezone_type: createdAt?.timezone_type,
-                                },
-                                {shouldDirty: true}
-                            );
-                        }}
-                    />
-                </AdminSectionField>
+                <DateTimeLocalField name="createdAt" label={__('Donation date and time', 'give')} />
 
-                <div className={styles.formRow}>
-                    <AdminSectionField error={errors.campaignId?.message as string}>
-                        <label htmlFor="campaignId">{__('Campaign', 'give')}</label>
-                        <select id="campaignId" {...register('campaignId', {valueAsNumber: true})}>
-                            {campaignsWithForms &&
-                                Object.entries(campaignsWithForms).map(([campaignId, campaign]) => (
-                                    <option key={campaignId} value={campaignId}>
-                                        {campaign?.title}
-                                    </option>
-                                ))}
-                        </select>
-                    </AdminSectionField>
-                    <AdminSectionField error={errors.formId?.message as string}>
-                        <label htmlFor="formId">{__('Form', 'give')}</label>
-                        <select id="formId" {...register('formId', {valueAsNumber: true})}>
-                            {campaignForms &&
-                                Object.entries(campaignForms).map(([formId, formTitle]) => (
-                                    <option key={formId} value={formId}>
-                                        {formTitle}
-                                    </option>
-                                ))}
-                        </select>
-                    </AdminSectionField>
-                </div>
-
-                {/* TODO: Add Fund field */}
+                <CampaignFormField
+                    campaignIdFieldName="campaignId"
+                    formIdFieldName="formId"
+                />
 
                 <AdminSectionField error={errors.comment?.message as string}>
                     <label htmlFor="comment">{__('Donor comment', 'give')}</label>
