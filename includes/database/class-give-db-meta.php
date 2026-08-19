@@ -122,46 +122,6 @@ class Give_DB_Meta extends Give_DB {
 		}
 	}
 
-
-	/**
-	 * Temporarily re-assert the meta table name in the global $wpdb object.
-	 *
-	 * Other plugins can overwrite the global meta table property. For example, both GiveWP and
-	 * Charitable register a "donor" meta type, and Charitable re-assigns $wpdb->donormeta to its
-	 * own table after GiveWP loads. Point the global at GiveWP's own table before each metadata
-	 * operation so data is always written to and read from GiveWP's table, then restore the
-	 * previous value afterwards so other plugins are unaffected.
-	 *
-	 * @since TBD
-	 *
-	 * @return string The previous meta table name to restore.
-	 */
-	private function setMetaTableName() {
-		global $wpdb;
-
-		$metaTableProperty = $this->meta_type . 'meta';
-		$previousMetaTableName = $wpdb->{$metaTableProperty};
-
-		$wpdb->{$metaTableProperty} = $this->table_name;
-
-		return $previousMetaTableName;
-	}
-
-	/**
-	 * Restore a previously saved meta table name.
-	 *
-	 * @since TBD
-	 *
-	 * @param string $metaTableName The meta table name to restore.
-	 *
-	 * @return void
-	 */
-	private function restoreMetaTableName( $metaTableName ) {
-		global $wpdb;
-
-		$wpdb->{$this->meta_type . 'meta'} = $metaTableName;
-	}
-
 	/**
 	 * Retrieve payment meta field for a payment.
 	 *
@@ -649,4 +609,44 @@ class Give_DB_Meta extends Give_DB {
 
 		return $status;
 	}
+
+	/**
+	 * Temporarily re-assert the meta table name in the global $wpdb object.
+	 *
+	 * Other plugins can overwrite the global meta table property. For example, both GiveWP and
+	 * Charitable register a "donor" meta type, and Charitable re-assigns $wpdb->donormeta to its
+	 * own table after GiveWP loads. Point the global at GiveWP's own table before each metadata
+	 * operation so data is always written to and read from GiveWP's table, then restore the
+	 * previous value afterwards so other plugins are unaffected.
+	 *
+	 * @since TBD
+	 *
+	 * @return string The previous meta table name to restore.
+	 */
+	private function setMetaTableName() {
+		global $wpdb;
+
+		$metaTableProperty = $this->meta_type . 'meta';
+		$previousMetaTableName = $wpdb->{$metaTableProperty};
+
+		$wpdb->{$metaTableProperty} = $this->table_name;
+
+		return $previousMetaTableName;
+	}
+
+	/**
+	 * Restore a previously saved meta table name.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $metaTableName The meta table name to restore.
+	 *
+	 * @return void
+	 */
+	private function restoreMetaTableName( $metaTableName ) {
+		global $wpdb;
+
+		$wpdb->{$this->meta_type . 'meta'} = $metaTableName;
+	}
+
 }
