@@ -27,7 +27,7 @@ class App
     }
 
     /**
-     * @since TBD Only pass string tokens to urlencode().
+     * @since 4.16.7 Only pass string tokens to urlencode().
      * @since 3.6.0 Escape attributes
      *
      * @param array $attributes

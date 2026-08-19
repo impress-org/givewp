@@ -14,7 +14,7 @@ namespace Give\VendorOverrides\Harbor\Actions;
 class HarborHasLoaded
 {
     /**
-     * @unreleased
+     * @since 4.16.7
      *
      * Safe to call on or after `plugins_loaded`. Harbor fires `lw_harbor/loaded`
      * during its init (Give boots Harbor from `plugins_loaded`), and only when

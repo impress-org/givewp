@@ -10,14 +10,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.16.7
  */
 class AddExtraMetadataToPaymentIntentTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function testShouldAddCampaignNameToMetadata()
     {
@@ -30,7 +30,7 @@ class AddExtraMetadataToPaymentIntentTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function testShouldTruncateCampaignNameExceedingStripeMaxLength()
     {
@@ -47,7 +47,7 @@ class AddExtraMetadataToPaymentIntentTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function testShouldNotAddCampaignNameWhenCampaignTitleIsEmpty()
     {
@@ -63,7 +63,7 @@ class AddExtraMetadataToPaymentIntentTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function testShouldReturnMetadataUnchangedWhenDonationDoesNotExist()
     {

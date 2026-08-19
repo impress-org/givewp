@@ -324,7 +324,7 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
  * Process the checkout login form
  *
  * @access private
- * @since  TBD Require a valid nonce before processing the login form.
+ * @since  4.16.7 Require a valid nonce before processing the login form.
  * @since  1.0
  *
  * @return void
@@ -1011,7 +1011,7 @@ function give_donation_form_validate_new_user() {
  * Donation Form Validate User Login
  *
  * @access private
- * @since  TBD Authenticate via wp_authenticate() and return a single generic error.
+ * @since  4.16.7 Authenticate via wp_authenticate() and return a single generic error.
  * @since  1.0
  *
  * @return array

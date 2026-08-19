@@ -214,7 +214,7 @@ class Give_Email_Access {
 	/**
 	 * This function is used to fetch the token value from query string or cookies based on availability.
 	 *
-	 * @since  TBD Return an empty string for non-string token values.
+	 * @since  4.16.7 Return an empty string for non-string token values.
 	 * @since  2.4.1
 	 * @access public
 	 *
@@ -271,7 +271,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid token?
 	 *
-	 * @since  TBD Only accept non-empty string tokens.
+	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -351,7 +351,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid verify key?
 	 *
-	 * @since  TBD Only accept non-empty string tokens.
+	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
 	 *

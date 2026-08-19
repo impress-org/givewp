@@ -29,7 +29,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Test that the login form requires a username.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_validate_user_login_empty_username() {
 
@@ -50,7 +50,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Test that the login form requires a password.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_validate_user_login_empty_password() {
 
@@ -71,7 +71,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Test that an unknown login produces a generic invalid-credentials error.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_validate_user_login_unknown_user() {
 
@@ -93,7 +93,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	 * Test that a wrong password for an existing user produces the same generic
 	 * invalid-credentials error as an unknown user.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_validate_user_login_same_error_for_unknown_user_and_wrong_password() {
 
@@ -126,7 +126,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Test that correct credentials return the matching user data.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_validate_user_login_correct_credentials() {
 
@@ -148,7 +148,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	/**
 	 * Test that correct credentials work when the login is an email address.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_validate_user_login_correct_credentials_by_email() {
 
@@ -204,7 +204,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	 * Test that processing the login form without a nonce is denied and the
 	 * user is not logged in.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_process_form_login_denies_missing_nonce() {
 
@@ -225,7 +225,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	 * Test that processing the login form with an invalid nonce is denied and
 	 * the user is not logged in.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_process_form_login_denies_invalid_nonce() {
 
@@ -247,7 +247,7 @@ class Tests_Process_Donation extends Give_Unit_Test_Case {
 	 * Test that processing the login form with a valid nonce and correct
 	 * credentials logs the user in.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_process_form_login_valid_nonce_correct_credentials() {
 

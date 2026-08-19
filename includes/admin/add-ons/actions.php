@@ -204,7 +204,7 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Redirect unified license keys (LWSW-) to the Unified License Manager, when it is available.
+ * @since 4.16.7 Redirect unified license keys (LWSW-) to the Unified License Manager, when it is available.
  * @since 2.5.0
  */
 function give_get_license_info_handler() {

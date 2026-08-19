@@ -1,5 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved an issue where editing a page could exhaust the PHP call stack
-  when a theme or plugin filtered post metadata.
-timestamp: 2026-08-11T05:17:04.421Z

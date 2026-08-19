@@ -7,7 +7,7 @@ use Give\Donations\Models\Donation;
 /**
  * Adds extra metadata to the transaction sent to Stripe.
  *
- * @since TBD
+ * @since 4.16.7
  */
 class AddExtraMetadataToPaymentIntent
 {
@@ -17,7 +17,7 @@ class AddExtraMetadataToPaymentIntent
     const MAX_LENGTH = 500;
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function __invoke(array $metadata, int $donationId): array
     {

@@ -82,7 +82,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     private function addStripeTransactionMetadata()
     {

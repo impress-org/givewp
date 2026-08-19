@@ -23,7 +23,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * A crafted give_nl[]= parameter arrives as an array; get_token() must coerce it to an empty string.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_get_token_coerces_array_input_to_empty_string() {
 
@@ -36,7 +36,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * A missing token must return an empty string.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_get_token_returns_empty_string_when_token_is_missing() {
 
@@ -47,7 +47,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * is_valid_token() must reject an array token (give_nl[]=) without querying the database.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_is_valid_token_rejects_array_token() {
 
@@ -59,7 +59,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * is_valid_token() must reject an empty string token (give_nl=).
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_is_valid_token_rejects_empty_string_token() {
 
@@ -70,7 +70,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * is_valid_token() must still accept a real, non-empty string token.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_is_valid_token_accepts_valid_token() {
 
@@ -92,7 +92,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * is_valid_verify_key() must reject an array token (give_nl[]=).
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_is_valid_verify_key_rejects_array_token() {
 
@@ -104,7 +104,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * is_valid_verify_key() must reject an empty string token (give_nl=).
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_is_valid_verify_key_rejects_empty_string_token() {
 
@@ -115,7 +115,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * is_valid_verify_key() must still accept and consume a real, non-empty string key.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_is_valid_verify_key_accepts_valid_key() {
 
@@ -142,7 +142,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * The donor-dashboard permission callback must deny a crafted give_nl[]= array token.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_is_donor_logged_in_rejects_array_token() {
 
@@ -157,7 +157,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * The donor-dashboard permission callback must deny an empty give_nl= token.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_is_donor_logged_in_rejects_empty_string_token() {
 
@@ -172,7 +172,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	/**
 	 * The donor-dashboard permission callback must still grant access to a real token.
 	 *
-	 * @since TBD
+	 * @since 4.16.7
 	 */
 	public function test_is_donor_logged_in_accepts_valid_token() {
 
