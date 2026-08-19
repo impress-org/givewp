@@ -3,9 +3,17 @@
 namespace Give\Tests\Unit\DonationForms\Actions;
 
 use Give\DonationForms\Actions\ConvertDonationAmountBlockToFieldsApi;
+use Give\DonationForms\Rules\Max;
+use Give\DonationForms\Rules\Min;
 use Give\FormBuilder\BlockModels\DonationAmountBlockModel;
 use Give\Framework\Blocks\BlockModel;
+use Give\Framework\FieldsAPI\Actions\CreateValidatorFromForm;
+use Give\Framework\FieldsAPI\Amount;
+use Give\Framework\FieldsAPI\DonationAmount;
+use Give\Framework\FieldsAPI\Form;
+use Give\Framework\FieldsAPI\Section;
 use Give\Tests\TestCase;
+use Give\Vendors\StellarWP\Validation\Validator;
 
 /**
  * @since 4.16.5
@@ -148,6 +156,212 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
         }
     }
 
+
+    /**
+     * @since TBD
+     */
+    public function testValidatesADonationLevelBelowTheCustomAmountMinimum(): void
+    {
+        $validator = $this->_validator(
+            [
+                'priceOption' => 'multi',
+                'levels' => [['value' => 10], ['value' => 25], ['value' => 500, 'checked' => true]],
+                'customAmount' => true,
+                'customAmountMin' => 500,
+            ],
+            10
+        );
+
+        $this->assertTrue($validator->passes(), print_r($validator->errors(), true));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testRejectsACustomAmountBelowTheCustomAmountMinimum(): void
+    {
+        $validator = $this->_validator(
+            [
+                'priceOption' => 'multi',
+                'levels' => [['value' => 10], ['value' => 25], ['value' => 500, 'checked' => true]],
+                'customAmount' => true,
+                'customAmountMin' => 500,
+            ],
+            11
+        );
+
+        $this->assertTrue($validator->fails());
+        $this->assertArrayHasKey('amount', $validator->errors());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testValidatesADonationLevelAboveTheCustomAmountMaximum(): void
+    {
+        $validator = $this->_validator(
+            [
+                'priceOption' => 'multi',
+                'levels' => [['value' => 10, 'checked' => true], ['value' => 250]],
+                'customAmount' => true,
+                'customAmountMin' => 1,
+                'customAmountMax' => 100,
+            ],
+            250
+        );
+
+        $this->assertTrue($validator->passes(), print_r($validator->errors(), true));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testRejectsACustomAmountAboveTheCustomAmountMaximum(): void
+    {
+        $validator = $this->_validator(
+            [
+                'priceOption' => 'multi',
+                'levels' => [['value' => 10, 'checked' => true], ['value' => 250]],
+                'customAmount' => true,
+                'customAmountMin' => 1,
+                'customAmountMax' => 100,
+            ],
+            251
+        );
+
+        $this->assertTrue($validator->fails());
+        $this->assertArrayHasKey('amount', $validator->errors());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testExemptsDonationLevelsFromTheCustomAmountRange(): void
+    {
+        $amountNode = $this->_amountNode(
+            [
+                'priceOption' => 'multi',
+                'levels' => [
+                    ['value' => 10],
+                    ['value' => 25],
+                    ['value' => 500, 'checked' => true],
+                ],
+                'customAmount' => true,
+                'customAmountMin' => 500,
+                'customAmountMax' => 1000,
+            ]
+        );
+
+        /** @var Min $min */
+        $min = $amountNode->getValidationRules()->getRule('min');
+        /** @var Max $max */
+        $max = $amountNode->getValidationRules()->getRule('max');
+
+        $this->assertSame([10.0, 25.0, 500.0], $min->getExemptAmounts());
+        $this->assertSame([10.0, 25.0, 500.0], $max->getExemptAmounts());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testExemptsTheSetPriceFromTheCustomAmountRange(): void
+    {
+        $amountNode = $this->_amountNode(
+            [
+                'priceOption' => 'set',
+                'setPrice' => 25,
+                'levels' => [],
+                'customAmount' => true,
+                'customAmountMin' => 500,
+            ]
+        );
+
+        /** @var Min $min */
+        $min = $amountNode->getValidationRules()->getRule('min');
+
+        $this->assertSame([25.0], $min->getExemptAmounts());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testLevelsWithoutAValueAreNotExempt(): void
+    {
+        $amountNode = $this->_amountNode(
+            [
+                'priceOption' => 'multi',
+                'levels' => [
+                    ['value' => 10],
+                    ['value' => ''],
+                    ['value' => 500, 'checked' => true],
+                ],
+                'customAmount' => true,
+                'customAmountMin' => 500,
+            ]
+        );
+
+        /** @var Min $min */
+        $min = $amountNode->getValidationRules()->getRule('min');
+
+        $this->assertSame([10.0, 500.0], $min->getExemptAmounts());
+    }
+
+    /**
+     * Validates the given amount against the donation amount group built from the given block attributes.
+     *
+     * @since TBD
+     */
+    private function _validator(array $attributes, float $amount): Validator
+    {
+        $form = new Form('Test Form');
+        $form->append((new Section('Test Section'))->append($this->_donationAmountGroup($attributes)));
+
+        return (new CreateValidatorFromForm())(
+            $form,
+            [
+                'amount' => $amount,
+                'currency' => 'USD',
+                'levelId' => 'custom',
+                'donationType' => 'single',
+            ]
+        );
+    }
+
+    /**
+     * Builds the donation amount group from the given block attributes and returns its amount field.
+     *
+     * @since TBD
+     */
+    private function _amountNode(array $attributes): Amount
+    {
+        /** @var Amount $amountNode */
+        $amountNode = $this->_donationAmountGroup($attributes)->getNodeByName('amount');
+
+        return $amountNode;
+    }
+
+    /**
+     * @since TBD
+     */
+    private function _donationAmountGroup(array $attributes): DonationAmount
+    {
+        $block = new DonationAmountBlockModel(
+            BlockModel::make(
+                [
+                    'name' => 'givewp/donation-amount',
+                    'attributes' => array_merge(
+                        [
+                            'label' => 'Donation Amount',
+                            'descriptionsEnabled' => false,
+                        ],
+                        $attributes
+                    ),
+                ]
+            )
+        );
+
+        return (new ConvertDonationAmountBlockToFieldsApi())($block, 'USD');
+    }
 
     /**
      * Invokes the private prepareLevelsArray() method against a donation amount block

@@ -1,5 +1,5 @@
 import Joi, {AnySchema, ObjectSchema} from 'joi';
-import {BasicCondition, Field, Form, isField} from '@givewp/forms/types';
+import {AmountField, BasicCondition, Field, Form, isField} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
 import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOperatorFunctions';
 
@@ -36,16 +36,62 @@ export default function getJoiRulesForForm(form: Form): ObjectSchema {
 }
 
 /**
+ * @since TBD Exempt admin-defined amounts from the custom amount minimum and maximum.
  * @since 3.0.0
  */
 function getJoiRulesForField(field: Field): AnySchema {
-    let rules: AnySchema = convertFieldAPIRulesToJoi(field.validationRules);
+    const exemptAmounts = getExemptAmounts(field);
+    const {min, max, ...remainingRules} = field.validationRules;
+    const hasExemptRange = exemptAmounts.length > 0 && (min !== undefined || max !== undefined);
+
+    let rules: AnySchema = convertFieldAPIRulesToJoi(hasExemptRange ? remainingRules : field.validationRules);
+
+    if (hasExemptRange) {
+        rules = rules.custom((value, helpers) => {
+            const amount = Number(value);
+
+            if (exemptAmounts.includes(amount)) {
+                return value;
+            }
+
+            if (min !== undefined && amount < min) {
+                return helpers.error('number.min', {limit: min});
+            }
+
+            if (max !== undefined && amount > max) {
+                return helpers.error('number.max', {limit: max});
+            }
+
+            return value;
+        }, 'custom amount range');
+    }
 
     if (field.label) {
         rules = rules.label(field.label);
     }
 
     return rules;
+}
+
+/**
+ * The amounts the admin configured on the donation amount field. The custom amount minimum and maximum only
+ * constrain what a donor types into the custom amount input, so these are always accepted.
+ *
+ * @since TBD
+ */
+function getExemptAmounts(field: Field): number[] {
+    if (field.type !== 'amount') {
+        return [];
+    }
+
+    const {levels, allowLevels, fixedAmountValue} = field as AmountField;
+
+    // An unset level or fixed amount reads as 0, which must never be exempt from the minimum.
+    if (allowLevels) {
+        return (levels ?? []).map((level) => Number(level.value)).filter((amount) => amount > 0);
+    }
+
+    return fixedAmountValue > 0 ? [Number(fixedAmountValue)] : [];
 }
 
 /**

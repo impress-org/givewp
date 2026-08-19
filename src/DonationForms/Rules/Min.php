@@ -3,12 +3,15 @@ namespace Give\DonationForms\Rules;
 
 
 use Closure;
+use Give\DonationForms\Rules\Concerns\HasExemptAmounts;
 use Give\Vendors\StellarWP\Validation\Config;
 
 use function is_numeric;
 
 class Min extends \Give\Vendors\StellarWP\Validation\Rules\Min
 {
+    use HasExemptAmounts;
+
     /**
      * @since 3.0.0
      */
@@ -28,11 +31,16 @@ class Min extends \Give\Vendors\StellarWP\Validation\Rules\Min
     /**
      * @inheritDoc
      *
+     * @since TBD Skip amounts the admin configured on the form.
      * @since 3.0.0
      **/
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
         $value = $this->sanitize($value);
+
+        if ($this->isExemptAmount($value)) {
+            return;
+        }
 
         if (is_numeric($value)) {
             if ($value < $this->getSize()) {

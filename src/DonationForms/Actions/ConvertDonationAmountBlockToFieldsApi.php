@@ -28,6 +28,7 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
+     * @since TBD Exempt admin-defined amounts from the custom amount minimum and maximum.
      * @since 4.16.5 Set default value for the levelId hidden field.
      * @since 4.10.0 Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
      * @since 3.0.0
@@ -48,12 +49,16 @@ class ConvertDonationAmountBlockToFieldsApi
             }
 
             if ($block->isCustomAmountEnabled()) {
+                $exemptAmounts = $this->getAdminDefinedAmounts($block);
+
                 if ($block->hasAttribute('customAmountMin')) {
-                    $amountRules[] = new Min($block->getAttribute('customAmountMin'));
+                    $amountRules[] = (new Min($block->getAttribute('customAmountMin')))
+                        ->exemptAmounts(...$exemptAmounts);
                 }
 
                 if ($block->hasAttribute('customAmountMax') && $block->getAttribute('customAmountMax') > 0) {
-                    $amountRules[] = new Max($block->getAttribute('customAmountMax'));
+                    $amountRules[] = (new Max($block->getAttribute('customAmountMax')))
+                        ->exemptAmounts(...$exemptAmounts);
                 }
             }
 
@@ -184,6 +189,31 @@ class ConvertDonationAmountBlockToFieldsApi
             ->label(__('Choose your donation frequency', 'give'))
             ->options(...$options)
             ->rules(new SubscriptionPeriodRule());
+    }
+
+    /**
+     * The amounts the admin configured on the block: the donation levels, or the fixed set price. The custom
+     * amount minimum and maximum never apply to these.
+     *
+     * @since TBD
+     *
+     * @return float[]
+     */
+    private function getAdminDefinedAmounts(DonationAmountBlockModel $block): array
+    {
+        $amounts = $block->getPriceOption() === 'multi'
+            ? array_column($this->prepareLevelsArray($block)['levels'], 'value')
+            : [$block->getSetPrice()];
+
+        // An unset level or set price sanitizes to 0, which must never be exempt from the minimum.
+        return array_values(
+            array_filter(
+                array_map('floatval', $amounts),
+                static function (float $amount): bool {
+                    return $amount > 0;
+                }
+            )
+        );
     }
 
     /**
