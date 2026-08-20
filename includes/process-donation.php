@@ -324,15 +324,27 @@ function give_check_logged_in_user_for_existing_email( &$valid_data ) {
  * Process the checkout login form
  *
  * @access private
+ * @since  4.16.7 Require a valid nonce before processing the login form.
  * @since  1.0
  *
  * @return void
  */
 function give_process_form_login() {
 
-	$is_ajax   = ! empty( $_POST['give_ajax'] ) ? give_clean( $_POST['give_ajax'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
-	$referrer  = wp_get_referer();
-	$user_data = give_donation_form_validate_user_login();
+	$is_ajax  = ! empty( $_POST['give_ajax'] ) ? give_clean( $_POST['give_ajax'] ) : 0; // WPCS: input var ok, sanitization ok, CSRF ok.
+	$referrer = wp_get_referer();
+
+	// Default to no user until the login form is validated.
+	$user_data = [
+		'user_id' => - 1,
+	];
+
+	// Require a valid nonce before processing the login form.
+	if ( empty( $_POST['give_login_nonce'] ) || ! wp_verify_nonce( $_POST['give_login_nonce'], 'give-login-nonce' ) ) {
+		give_set_error( 'invalid_nonce', __( 'Your session has expired. Please reload the page and try again.', 'give' ) );
+	} else {
+		$user_data = give_donation_form_validate_user_login();
+	}
 
 	if ( give_get_errors() || $user_data['user_id'] < 1 ) {
 		if ( $is_ajax ) {
@@ -346,6 +358,7 @@ function give_process_form_login() {
 			$message = ob_get_contents();
 			ob_end_clean();
 			wp_send_json_error( $message );
+			return;
 		} else {
 			wp_safe_redirect( $referrer );
 			exit;
@@ -998,6 +1011,7 @@ function give_donation_form_validate_new_user() {
  * Donation Form Validate User Login
  *
  * @access private
+ * @since  4.16.7 Authenticate via wp_authenticate() and return a single generic error.
  * @since  1.0
  *
  * @return array
@@ -1021,59 +1035,53 @@ function give_donation_form_validate_user_login() {
 	}
 
 	$give_user_login = strip_tags( $post_data['give_user_login'] );
-	if ( is_email( $give_user_login ) ) {
-		// Get the user data by email.
-		$user_data = get_user_by( 'email', $give_user_login );
-	} else {
-		// Get the user data by login.
-		$user_data = get_user_by( 'login', $give_user_login );
+
+	// Bailout, if Password is empty.
+	if ( empty( $post_data['give_user_pass'] ) ) {
+		give_set_error( 'password_empty', __( 'Enter a password.', 'give' ) );
+		return $valid_user_data;
 	}
 
-	// Check if user exists.
-	if ( $user_data ) {
+	// Authenticate through WordPress's login machinery so its authentication
+	// hooks, password checks, and failed-login actions all apply.
+	$user_data = wp_authenticate( $give_user_login, $post_data['give_user_pass'] );
 
-		// Get password.
-		$user_pass = ! empty( $post_data['give_user_pass'] ) ? $post_data['give_user_pass'] : false;
+	if ( is_wp_error( $user_data ) ) {
 
-		// Check user_pass.
-		if ( $user_pass ) {
+		$core_auth_error_codes = [
+			'incorrect_password',
+			'invalid_username',
+			'invalid_email',
+			'empty_username',
+			'empty_password',
+		];
 
-			// Check if password is valid.
-			if ( ! wp_check_password( $user_pass, $user_data->user_pass, $user_data->ID ) ) {
-
-				$current_page_url = site_url() . '/' . get_page_uri();
-
-				// Incorrect password.
-				give_set_error(
-					'password_incorrect',
-					sprintf(
-						'%1$s <a href="%2$s">%3$s</a>',
-						__( 'The password you entered is incorrect.', 'give' ),
-						wp_lostpassword_url( $current_page_url ),
-						__( 'Reset Password', 'give' )
-					)
-				);
-
-			} else {
-
-				// Repopulate the valid user data array.
-				$valid_user_data = [
-					'user_id'    => $user_data->ID,
-					'user_login' => $user_data->user_login,
-					'user_email' => $user_data->user_email,
-					'user_first' => $user_data->first_name,
-					'user_last'  => $user_data->last_name,
-					'user_pass'  => $user_pass,
-				];
-			}
+		if ( in_array( $user_data->get_error_code(), $core_auth_error_codes, true ) ) {
+			// A single generic message for an unknown login and a wrong password.
+			$error_message = __( 'The login/password does not match or is incorrect.', 'give' );
 		} else {
-			// Empty password.
-			give_set_error( 'password_empty', __( 'Enter a password.', 'give' ) );
+			// Any other error comes from an authentication hook; surface its message.
+			$error_message = wp_strip_all_tags( $user_data->get_error_message() );
+
+			if ( '' === $error_message ) {
+				$error_message = __( 'The login/password does not match or is incorrect.', 'give' );
+			}
 		}
-	} else {
-		// No username.
-		give_set_error( 'username_incorrect', __( 'The username you entered does not exist.', 'give' ) );
-	} // End if().
+
+		give_set_error( 'invalid_credentials', $error_message );
+
+		return $valid_user_data;
+	}
+
+	// Repopulate the valid user data array.
+	$valid_user_data = [
+		'user_id'    => $user_data->ID,
+		'user_login' => $user_data->user_login,
+		'user_email' => $user_data->user_email,
+		'user_first' => $user_data->first_name,
+		'user_last'  => $user_data->last_name,
+		'user_pass'  => $post_data['give_user_pass'],
+	];
 
 	return $valid_user_data;
 }
