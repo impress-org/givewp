@@ -279,6 +279,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix: Resolved an issue where paused or failing Stripe Payment Element subscriptions remained stuck when the donor updated their payment method or the subscription was resumed in Stripe.
 * Fix: Resolved a conflict where scripts enqueued by other plugins while a donation form was being rendered could stop the form builder design preview and embedded forms from loading.
 * Fix: Resolved an issue where editing a page could exhaust the PHP call stack when a theme or plugin filtered post metadata.
+* Fix: Activation banner for addons doesn't show when addons are activated from the Unified License Manager
 
 = 4.16.6.1: August 12th, 2026 =
 * Security: Added additional validation to PayPal Standard IPN.
