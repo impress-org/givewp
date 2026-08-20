@@ -40,16 +40,20 @@ class ConvertDonationAmountBlockToFieldsApi
     {
         $amountField = DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block, $currency) {
             $amountRules = ['required', 'numeric'];
+            $priceOptions = $block->getPriceOption();
+            ['levels' => $levels, 'checked' => $checked] = $priceOptions === 'multi'
+                ? $this->prepareLevelsArray($block)
+                : ['levels' => [], 'checked' => null];
 
             if (!$block->isCustomAmountEnabled() &&
-                $block->getPriceOption() === 'set') {
+                $priceOptions === 'set') {
                 $size = $block->getSetPrice();
 
                 $amountRules[] = new Size($size);
             }
 
             if ($block->isCustomAmountEnabled()) {
-                $exemptAmounts = $this->getAdminDefinedAmounts($block);
+                $exemptAmounts = $this->getAdminDefinedAmounts($block, $levels);
 
                 if ($block->hasAttribute('customAmountMin')) {
                     $amountRules[] = (new Min($block->getAttribute('customAmountMin')))
@@ -69,11 +73,8 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->allowCustomAmount($block->isCustomAmountEnabled())
                 ->rules(...$amountRules);
 
-            $priceOptions = $block->getPriceOption();
             $defaultLevelId = '';
             if ($priceOptions === 'multi') {
-                ['levels' => $levels, 'checked' => $checked] = $this->prepareLevelsArray($block);
-
                 $amountNode
                     ->allowLevels()
                     ->levels(...$levels)
@@ -197,12 +198,14 @@ class ConvertDonationAmountBlockToFieldsApi
      *
      * @since TBD
      *
+     * @param array $levels Prepared levels, empty unless the price option is 'multi'.
+     *
      * @return float[]
      */
-    private function getAdminDefinedAmounts(DonationAmountBlockModel $block): array
+    private function getAdminDefinedAmounts(DonationAmountBlockModel $block, array $levels): array
     {
         $amounts = $block->getPriceOption() === 'multi'
-            ? array_column($this->prepareLevelsArray($block)['levels'], 'value')
+            ? array_column($levels, 'value')
             : [$block->getSetPrice()];
 
         // An unset level or set price sanitizes to 0, which must never be exempt from the minimum.

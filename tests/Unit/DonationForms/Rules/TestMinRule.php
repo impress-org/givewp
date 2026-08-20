@@ -8,7 +8,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
 
 /**
  * @since TBD
- * @covers \Give\DonationForms\Rules\Min
+ * @covers Give\DonationForms\Rules\Min
  */
 class TestMinRule extends TestCase
 {
@@ -52,6 +52,18 @@ class TestMinRule extends TestCase
 
         self::assertValidationRuleFailed($rule, 11);
         self::assertValidationRuleFailed($rule, 24.99);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testPassesWhenAnExemptAmountIsADecimal(): void
+    {
+        $rule = (new Min(500))->exemptAmounts(10.5, 25.0);
+
+        self::assertValidationRulePassed($rule, '10.50');
+        self::assertValidationRulePassed($rule, 10.5);
+        self::assertValidationRuleFailed($rule, '10.51');
     }
 
     /**

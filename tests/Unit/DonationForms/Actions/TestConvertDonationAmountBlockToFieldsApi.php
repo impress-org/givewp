@@ -191,7 +191,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
         );
 
         $this->assertTrue($validator->fails());
-        $this->assertArrayHasKey('amount', $validator->errors());
+        $this->assertStringContainsString('greater than or equal to 500', $validator->errors()['amount']);
     }
 
     /**
@@ -230,7 +230,26 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
         );
 
         $this->assertTrue($validator->fails());
-        $this->assertArrayHasKey('amount', $validator->errors());
+        $this->assertStringContainsString('less than or equal to 100', $validator->errors()['amount']);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testValidatesTheSetPriceBelowTheCustomAmountMinimum(): void
+    {
+        $validator = $this->_validator(
+            [
+                'priceOption' => 'set',
+                'setPrice' => 25,
+                'levels' => [],
+                'customAmount' => true,
+                'customAmountMin' => 500,
+            ],
+            25
+        );
+
+        $this->assertTrue($validator->passes(), print_r($validator->errors(), true));
     }
 
     /**
@@ -285,7 +304,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     /**
      * @since TBD
      */
-    public function testLevelsWithoutAValueAreNotExempt(): void
+    public function testLevelsWithoutAPositiveValueAreNotExempt(): void
     {
         $amountNode = $this->_amountNode(
             [
@@ -314,7 +333,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     private function _validator(array $attributes, float $amount): Validator
     {
         $form = new Form('Test Form');
-        $form->append((new Section('Test Section'))->append($this->_donationAmountGroup($attributes)));
+        $form->append(Section::make('Test Section')->append($this->_donationAmountGroup($attributes)));
 
         return (new CreateValidatorFromForm())(
             $form,

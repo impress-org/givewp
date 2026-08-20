@@ -8,7 +8,7 @@ use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
 
 /**
  * @since TBD
- * @covers \Give\DonationForms\Rules\Max
+ * @covers Give\DonationForms\Rules\Max
  */
 class TestMaxRule extends TestCase
 {
@@ -57,13 +57,36 @@ class TestMaxRule extends TestCase
      */
     public function testReportsExceedingTheMaximum(): void
     {
+        self::assertSame('{field} must be less than or equal to 100', $this->_failureMessage(new Max(100), 101));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testReportsExceedingTheMaximumLength(): void
+    {
+        self::assertSame(
+            '{field} must be less than or equal to 3 characters',
+            $this->_failureMessage(new Max(3), 'abcd')
+        );
+    }
+
+    /**
+     * Runs the rule against a failing value and returns the message it reported.
+     *
+     * @since TBD
+     *
+     * @param mixed $value
+     */
+    private function _failureMessage(Max $rule, $value): string
+    {
         $error = null;
         $fail = static function ($message) use (&$error) {
             $error = $message;
         };
 
-        (new Max(100))(101, $fail, 'amount', []);
+        $rule($value, $fail, 'amount', []);
 
-        self::assertSame('{field} must be less than or equal to 100', $error);
+        return (string)$error;
     }
 }
