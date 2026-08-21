@@ -29,7 +29,7 @@ class ConvertDonationAmountBlockToFieldsApi
 
     /**
      * @since TBD Exempt admin-defined amounts from the custom amount minimum and maximum, and fall back
-     *            to the lowest admin-defined amount when no custom amount minimum is set.
+     *            to the lowest admin-defined amount when no custom amount minimum applies.
      * @since 4.16.5 Set default value for the levelId hidden field.
      * @since 4.10.0 Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
      * @since 3.0.0
@@ -41,30 +41,23 @@ class ConvertDonationAmountBlockToFieldsApi
     {
         $amountField = DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block, $currency) {
             $amountRules = ['required', 'numeric'];
-            $priceOptions = $block->getPriceOption();
-            ['levels' => $levels, 'checked' => $checked] = $priceOptions === 'multi'
-                ? $this->prepareLevelsArray($block)
-                : ['levels' => [], 'checked' => null];
+            $exemptAmounts = $block->getAdminDefinedAmounts();
 
             if (!$block->isCustomAmountEnabled() &&
-                $priceOptions === 'set') {
+                $block->getPriceOption() === 'set') {
                 $size = $block->getSetPrice();
 
                 $amountRules[] = new Size($size);
-            }
-
-            if ($block->isCustomAmountEnabled()) {
-                $exemptAmounts = $this->getAdminDefinedAmounts($block, $levels);
-                $minimum = $this->getMinimumAmount($block, $exemptAmounts);
+            } else {
+                $minimum = $block->getMinimumAmount();
 
                 if ($minimum !== null) {
                     $amountRules[] = (new Min($minimum))->exemptAmounts(...$exemptAmounts);
                 }
+            }
 
-                if ($block->hasAttribute('customAmountMax') && $block->getAttribute('customAmountMax') > 0) {
-                    $amountRules[] = (new Max($block->getAttribute('customAmountMax')))
-                        ->exemptAmounts(...$exemptAmounts);
-                }
+            if ($block->isCustomAmountEnabled() && $block->getCustomAmountMax() > 0) {
+                $amountRules[] = (new Max($block->getCustomAmountMax()))->exemptAmounts(...$exemptAmounts);
             }
 
             /** @var Amount $amountNode */
@@ -74,8 +67,11 @@ class ConvertDonationAmountBlockToFieldsApi
                 ->allowCustomAmount($block->isCustomAmountEnabled())
                 ->rules(...$amountRules);
 
+            $priceOptions = $block->getPriceOption();
             $defaultLevelId = '';
             if ($priceOptions === 'multi') {
+                ['levels' => $levels, 'checked' => $checked] = $this->prepareLevelsArray($block);
+
                 $amountNode
                     ->allowLevels()
                     ->levels(...$levels)
@@ -191,61 +187,6 @@ class ConvertDonationAmountBlockToFieldsApi
             ->label(__('Choose your donation frequency', 'give'))
             ->options(...$options)
             ->rules(new SubscriptionPeriodRule());
-    }
-
-    /**
-     * The custom amount minimum, falling back to the lowest amount the admin configured. Without that
-     * fallback a form that leaves the minimum empty accepts any amount, which is a donation spam and card
-     * testing vector.
-     *
-     * The Min rule takes an integer size, so a fractional amount truncates down and stays permissive.
-     *
-     * @since TBD
-     *
-     * @param float[] $exemptAmounts
-     *
-     * @return int|null Null when the block defines neither a minimum nor an amount to derive one from.
-     */
-    private function getMinimumAmount(DonationAmountBlockModel $block, array $exemptAmounts): ?int
-    {
-        $customAmountMin = $block->hasAttribute('customAmountMin')
-            ? (int)$block->getAttribute('customAmountMin')
-            : 0;
-
-        if ($customAmountMin > 0) {
-            return $customAmountMin;
-        }
-
-        $lowestAmount = $exemptAmounts ? (int)min($exemptAmounts) : 0;
-
-        return $lowestAmount > 0 ? $lowestAmount : null;
-    }
-
-    /**
-     * The amounts the admin configured on the block: the donation levels, or the fixed set price. The custom
-     * amount minimum and maximum never apply to these.
-     *
-     * @since TBD
-     *
-     * @param array $levels Prepared levels, empty unless the price option is 'multi'.
-     *
-     * @return float[]
-     */
-    private function getAdminDefinedAmounts(DonationAmountBlockModel $block, array $levels): array
-    {
-        $amounts = $block->getPriceOption() === 'multi'
-            ? array_column($levels, 'value')
-            : [$block->getSetPrice()];
-
-        // An unset level or set price sanitizes to 0, which must never be exempt from the minimum.
-        return array_values(
-            array_filter(
-                array_map('floatval', $amounts),
-                static function (float $amount): bool {
-                    return $amount > 0;
-                }
-            )
-        );
     }
 
     /**

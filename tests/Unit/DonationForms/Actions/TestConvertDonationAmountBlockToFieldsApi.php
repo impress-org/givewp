@@ -388,6 +388,45 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     /**
      * @since TBD
      */
+    public function testFallsBackToTheLowestDonationLevelWhenCustomAmountIsDisabled(): void
+    {
+        $attributes = [
+            'priceOption' => 'multi',
+            'levels' => [['value' => 25], ['value' => 10, 'checked' => true]],
+            'customAmount' => false,
+        ];
+
+        /** @var Min $min */
+        $min = $this->_amountNode($attributes)->getValidationRules()->getRule('min');
+
+        $this->assertSame(10, $min->getSize());
+        $this->assertTrue($this->_validator($attributes, 5)->fails());
+        $this->assertTrue($this->_validator($attributes, 10)->passes());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testIgnoresTheCustomAmountMinimumWhenCustomAmountIsDisabled(): void
+    {
+        $amountNode = $this->_amountNode(
+            [
+                'priceOption' => 'multi',
+                'levels' => [['value' => 10, 'checked' => true], ['value' => 25]],
+                'customAmount' => false,
+                'customAmountMin' => 500,
+            ]
+        );
+
+        /** @var Min $min */
+        $min = $amountNode->getValidationRules()->getRule('min');
+
+        $this->assertSame(10, $min->getSize());
+    }
+
+    /**
+     * @since TBD
+     */
     public function testAppliesNoMinimumWhenTheBlockDefinesNoAmounts(): void
     {
         $amountNode = $this->_amountNode(
