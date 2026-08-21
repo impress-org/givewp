@@ -1,0 +1,63 @@
+name: Generate Zip
+
+# Builds the plugin zip with pup, via the shared StellarWP workflow.
+#
+# This replaces generate-zip.yml. Both files can sit side by side during the transition: the packaging
+# bot in stellarwp/jenkins-scripts looks for zip.yml first and only falls back to generate-zip.yml when
+# there isn't one, so adding this file switches the bot over and deleting it switches the bot back.
+#
+# Build steps, ignore rules and the version number all come from .puprc - see the pup docs at
+# https://github.com/stellarwp/pup. Node comes from .nvmrc.
+
+on:
+    workflow_dispatch:
+        inputs:
+            ref:
+                description: 'Git Commit Ref (branch, tag, or hash)'
+                default: 'develop'
+                required: true
+                type: string
+            # Must stay a choice of yes/no rather than a boolean. The shared workflow compares this
+            # against the string 'yes', and the packaging bot only sends yes/no for choice inputs -
+            # declared as a boolean it would send `true`, which reads as a dev build on a release.
+            production:
+                description: 'Is this a production build?'
+                default: 'no'
+                required: false
+                type: choice
+                options:
+                    - 'yes'
+                    - 'no'
+            slack_channel:
+                description: 'Slack channel ID to post to'
+                required: false
+                type: string
+            slack_thread:
+                description: 'Slack thread to post to'
+                required: false
+                type: string
+
+jobs:
+    zip:
+        uses: stellarwp/github-actions/.github/workflows/zip.yml@main
+        with:
+            ref: ${{ inputs.ref }}
+            production: ${{ inputs.production }}
+            # GiveWP supports PHP 7.4 and up, so the vendor directory has to be built on 7.4.
+            php_version: '7.4'
+            slack_channel: ${{ inputs.slack_channel }}
+            slack_thread: ${{ inputs.slack_thread }}
+        secrets:
+            # The shared workflow only uses this to check out this repository, and GITHUB_TOKEN already
+            # covers that - it's minted per run, scoped to this repo, and expires with the job. A bot PAT
+            # is only needed when the checkout has to reach outside the repo, which is why TEC uses one:
+            # its zip workflow also checks out jenkins-scripts and recurses into the common submodule.
+            # Nothing in GiveWP or any of its add-ons does either. If that ever changes for this repo,
+            # swap this line for a real token.
+            GH_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            JENKINS_SECRET: ${{ secrets.SLACK_PACKAGING_SECRET }}
+            S3_BUCKET: ${{ secrets.ZIP_S3_BUCKET }}
+            S3_ACCESS_KEY_ID: ${{ secrets.ZIP_S3_ACCESS_KEY_ID }}
+            S3_SECRET_ACCESS_KEY: ${{ secrets.ZIP_S3_SECRET_ACCESS_KEY }}
+            S3_REGION: ${{ secrets.ZIP_S3_REGION }}
+            S3_ENDPOINT: ${{ secrets.ZIP_S3_ENDPOINT }}
