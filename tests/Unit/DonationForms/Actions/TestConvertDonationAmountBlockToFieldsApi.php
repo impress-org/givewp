@@ -326,6 +326,82 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testFallsBackToTheLowestDonationLevelWhenNoCustomAmountMinimumIsSet(): void
+    {
+        $attributes = [
+            'priceOption' => 'multi',
+            'levels' => [['value' => 25], ['value' => 10, 'checked' => true], ['value' => 500]],
+            'customAmount' => true,
+        ];
+
+        /** @var Min $min */
+        $min = $this->_amountNode($attributes)->getValidationRules()->getRule('min');
+
+        $this->assertSame(10, $min->getSize());
+        $this->assertTrue($this->_validator($attributes, 5)->fails());
+        $this->assertTrue($this->_validator($attributes, 10)->passes());
+        $this->assertTrue($this->_validator($attributes, 15)->passes());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFallsBackToTheLowestDonationLevelWhenTheCustomAmountMinimumIsZero(): void
+    {
+        $amountNode = $this->_amountNode(
+            [
+                'priceOption' => 'multi',
+                'levels' => [['value' => 10, 'checked' => true], ['value' => 25]],
+                'customAmount' => true,
+                'customAmountMin' => 0,
+            ]
+        );
+
+        /** @var Min $min */
+        $min = $amountNode->getValidationRules()->getRule('min');
+
+        $this->assertSame(10, $min->getSize());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFallsBackToTheSetPriceWhenNoCustomAmountMinimumIsSet(): void
+    {
+        $attributes = [
+            'priceOption' => 'set',
+            'setPrice' => 25,
+            'levels' => [],
+            'customAmount' => true,
+        ];
+
+        /** @var Min $min */
+        $min = $this->_amountNode($attributes)->getValidationRules()->getRule('min');
+
+        $this->assertSame(25, $min->getSize());
+        $this->assertTrue($this->_validator($attributes, 5)->fails());
+        $this->assertTrue($this->_validator($attributes, 25)->passes());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAppliesNoMinimumWhenTheBlockDefinesNoAmounts(): void
+    {
+        $amountNode = $this->_amountNode(
+            [
+                'priceOption' => 'multi',
+                'levels' => [],
+                'customAmount' => true,
+            ]
+        );
+
+        $this->assertFalse($amountNode->getValidationRules()->hasRule('min'));
+    }
+
+    /**
      * Validates the given amount against the donation amount group built from the given block attributes.
      *
      * @since TBD

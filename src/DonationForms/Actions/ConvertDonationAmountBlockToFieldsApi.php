@@ -28,7 +28,8 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
-     * @since TBD Exempt admin-defined amounts from the custom amount minimum and maximum.
+     * @since TBD Exempt admin-defined amounts from the custom amount minimum and maximum, and fall back
+     *            to the lowest admin-defined amount when no custom amount minimum is set.
      * @since 4.16.5 Set default value for the levelId hidden field.
      * @since 4.10.0 Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
      * @since 3.0.0
@@ -54,10 +55,10 @@ class ConvertDonationAmountBlockToFieldsApi
 
             if ($block->isCustomAmountEnabled()) {
                 $exemptAmounts = $this->getAdminDefinedAmounts($block, $levels);
+                $minimum = $this->getMinimumAmount($block, $exemptAmounts);
 
-                if ($block->hasAttribute('customAmountMin')) {
-                    $amountRules[] = (new Min($block->getAttribute('customAmountMin')))
-                        ->exemptAmounts(...$exemptAmounts);
+                if ($minimum !== null) {
+                    $amountRules[] = (new Min($minimum))->exemptAmounts(...$exemptAmounts);
                 }
 
                 if ($block->hasAttribute('customAmountMax') && $block->getAttribute('customAmountMax') > 0) {
@@ -190,6 +191,34 @@ class ConvertDonationAmountBlockToFieldsApi
             ->label(__('Choose your donation frequency', 'give'))
             ->options(...$options)
             ->rules(new SubscriptionPeriodRule());
+    }
+
+    /**
+     * The custom amount minimum, falling back to the lowest amount the admin configured. Without that
+     * fallback a form that leaves the minimum empty accepts any amount, which is a donation spam and card
+     * testing vector.
+     *
+     * The Min rule takes an integer size, so a fractional amount truncates down and stays permissive.
+     *
+     * @since TBD
+     *
+     * @param float[] $exemptAmounts
+     *
+     * @return int|null Null when the block defines neither a minimum nor an amount to derive one from.
+     */
+    private function getMinimumAmount(DonationAmountBlockModel $block, array $exemptAmounts): ?int
+    {
+        $customAmountMin = $block->hasAttribute('customAmountMin')
+            ? (int)$block->getAttribute('customAmountMin')
+            : 0;
+
+        if ($customAmountMin > 0) {
+            return $customAmountMin;
+        }
+
+        $lowestAmount = $exemptAmounts ? (int)min($exemptAmounts) : 0;
+
+        return $lowestAmount > 0 ? $lowestAmount : null;
     }
 
     /**

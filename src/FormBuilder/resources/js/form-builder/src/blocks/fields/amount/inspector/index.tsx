@@ -244,7 +244,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             value={customAmountMin}
                             onValueChange={(value) => setAttributes({customAmountMin: value})}
                             help={__(
-                                'The lowest amount a donor can enter in the custom amount field. Donation levels are not affected.',
+                                'The lowest amount a donor can enter in the custom amount field. Donation levels are not affected. Leave empty to use the lowest donation level.',
                                 'give'
                             )}
                         />
