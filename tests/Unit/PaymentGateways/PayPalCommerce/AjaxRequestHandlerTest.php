@@ -230,7 +230,7 @@ class AjaxRequestHandlerTest extends TestCase
 
     /**
      * The amount that reaches PayPal for a v2 form is the post-filter total (fee recovery), and it
-     * keeps the 4.14.4 ceiling even when the raw posted amount is within the form's maximum.
+     * is held to the form's maximum even when the raw posted amount is within it.
      *
      * @since TBD
      */
@@ -334,9 +334,8 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * Option-based (v2) forms still capture through this endpoint, before the donation record
-     * exists. Moving that capture into createPayment() is SVUL-77 phase 2; this test pins the
-     * current behavior and is expected to flip then.
+     * Option-based (v2) forms capture through this endpoint, before the donation record exists;
+     * their scripts call it right after PayPal's onApprove and before the form is submitted.
      *
      * @since TBD
      */
@@ -464,10 +463,12 @@ class AjaxRequestHandlerTest extends TestCase
                 $output = $exception->getMessage();
             }
 
-            // Keep only the first JSON payload. The handlers' catch-all blocks catch the
-            // WPDieException raised by a successful wp_send_json_success() and emit a second,
-            // error payload before the exception escapes; in production wp_die() has already
-            // exited by then.
+            /*
+             * Keep only the first JSON payload. The handlers' catch-all blocks catch the
+             * WPDieException raised by a successful wp_send_json_success() and emit a second,
+             * error payload before the exception escapes; in production wp_die() has already
+             * exited by then.
+             */
             $start = strpos($output, '{"success"');
             $output = false === $start ? $output : substr($output, $start);
 

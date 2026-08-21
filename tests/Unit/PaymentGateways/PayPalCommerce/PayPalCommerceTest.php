@@ -104,7 +104,7 @@ class PayPalCommerceTest extends TestCase
 
     /**
      * An order the v2 ajax endpoint already captured is recorded as-is; nothing is patched or
-     * captured again. Phase 2 of SVUL-77 moves v2 onto the APPROVED path above.
+     * captured again.
      *
      * @since TBD
      */
