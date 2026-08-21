@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Added additional validation to PayPal Donations order requests.
+timestamp: 2026-08-20T13:24:51.040Z
