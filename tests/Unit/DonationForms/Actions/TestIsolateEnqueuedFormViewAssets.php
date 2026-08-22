@@ -22,7 +22,7 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
      * test suite has registered the theme directory. Warming the globals up front keeps that notice
      * out of the incorrect-usage assertions the individual tests run.
      *
-     * @since TBD
+     * @since 4.16.7
      */
     public static function setUpBeforeClass(): void
     {
@@ -33,7 +33,7 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function setUp(): void
     {
@@ -47,7 +47,7 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function tearDown(): void
     {
@@ -62,7 +62,7 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function testShouldKeepScriptsEnqueuedBeforeTheQueueIsPinned()
     {
@@ -80,7 +80,7 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
      * Registrations survive between tests, and a re-registered handle keeps the dependencies it was
      * first registered with, so each test needs handles of its own.
      *
-     * @since TBD
+     * @since 4.16.7
      */
     public function testShouldKeepDependenciesOfScriptsEnqueuedBeforeTheQueueIsPinned()
     {
@@ -104,7 +104,7 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
     /**
      * A third-party plugin enqueueing from wp_print_footer_scripts is what breaks the rendered form.
      *
-     * @since TBD
+     * @since 4.16.7
      */
     public function testShouldDropScriptsEnqueuedAfterTheQueueIsPinned()
     {
@@ -121,7 +121,7 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function testShouldDropStylesEnqueuedAfterTheQueueIsPinned()
     {
@@ -138,7 +138,7 @@ final class TestIsolateEnqueuedFormViewAssets extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function testShouldAllowHandlesAddedThroughTheFilter()
     {

@@ -15,14 +15,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Stripe\Event;
 
 /**
- * @since TBD
+ * @since 4.16.7
  */
 class CustomerSubscriptionResumedTest extends TestCase
 {
     use RefreshDatabase, HasMockStripeAccounts;
 
     /**
-     * @since TBD
+     * @since 4.16.7
      *
      * @throws Exception
      */
@@ -69,7 +69,7 @@ class CustomerSubscriptionResumedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      *
      * @throws Exception
      */
@@ -116,7 +116,7 @@ class CustomerSubscriptionResumedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      *
      * @throws Exception
      */
@@ -163,7 +163,7 @@ class CustomerSubscriptionResumedTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      *
      * @throws Exception
      */

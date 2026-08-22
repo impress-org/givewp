@@ -114,7 +114,7 @@ class AllowGiveRolesToEditCampaignPages
     /**
      * Check if a post is a campaign page (with caching).
      *
-     * @since TBD Read the campaign ID meta directly instead of through get_post_meta().
+     * @since 4.16.7 Read the campaign ID meta directly instead of through get_post_meta().
      * @since 4.14.0
      */
     private function isCampaignPage(int $postId): bool

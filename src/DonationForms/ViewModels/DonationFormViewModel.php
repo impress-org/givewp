@@ -290,7 +290,7 @@ class DonationFormViewModel
      * 6. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
-     * @since TBD Isolate the printed assets from anything enqueued after the form has been prepared
+     * @since 4.16.7 Isolate the printed assets from anything enqueued after the form has been prepared
      * @since 4.14.3 Escape HTML attributes for classNames property
      * @since 3.20.0 Adds class for form design
      * @since 3.11.0 Sanitize customCSS property

@@ -9,6 +9,8 @@
  * @since       2.5.0
  */
 
+use Give\VendorOverrides\Harbor\Actions\HarborHasLoaded;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -202,6 +204,7 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
+ * @since 4.16.7 Redirect unified license keys (LWSW-) to the Unified License Manager, when it is available.
  * @since 2.5.0
  */
 function give_get_license_info_handler() {
@@ -222,6 +225,24 @@ function give_get_license_info_handler() {
 		wp_send_json_error(
 			[
 				'errorMsg' => __( 'You entered an invalid key. Confirm your license key on your GiveWP dashboard and try again.', 'give' ),
+			]
+		);
+
+	} elseif ( 0 === stripos( $license_key, 'LWSW-' ) ) {
+		// The Unified License Manager is only available once a premium add-on is installed and active.
+		$harborHasLoaded = give( HarborHasLoaded::class )();
+
+		$error_message = $harborHasLoaded
+			? sprintf(
+				/* translators: %s: URL to the Unified License Manager page */
+				__( 'This is a unified license key. To activate it, enter your license in the <a href="%s" target="_blank">Unified License Manager</a> instead.', 'give' ),
+				esc_url( lw_harbor_get_license_page_url() )
+			)
+			: __( 'This is a unified license key. It can be added from the Unified License Manager, which appears under GiveWP &gt; Licensing once an add-on is installed.', 'give' );
+
+		wp_send_json_error(
+			[
+				'errorMsg' => $error_message,
 			]
 		);
 

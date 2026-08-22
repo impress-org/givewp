@@ -14,12 +14,12 @@ use WP_Dependencies;
  * enqueuing. Constraining the handles at print time, instead of dequeuing on a hook, keeps the route
  * independent of the priority the other plugin picked.
  *
- * @since TBD
+ * @since 4.16.7
  */
 class IsolateEnqueuedFormViewAssets
 {
     /**
-     * @since TBD
+     * @since 4.16.7
      */
     public function __invoke(): void
     {
@@ -28,7 +28,7 @@ class IsolateEnqueuedFormViewAssets
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      *
      * @param WP_Dependencies $dependencies The queue to pin.
      * @param string          $filter       Print-time filter the queue is constrained through.
@@ -42,7 +42,7 @@ class IsolateEnqueuedFormViewAssets
          * Filters the handles a donation form view route may print. Add a handle here to let an
          * asset enqueued after the form has been prepared through to the rendered form.
          *
-         * @since TBD
+         * @since 4.16.7
          *
          * @param string[] $allowedHandles Handles the route will print.
          * @param string   $type           Either "scripts" or "styles".
@@ -62,7 +62,7 @@ class IsolateEnqueuedFormViewAssets
      * Resolves the given handles together with everything they depend on. Registered dependencies
      * may be cyclic, so handles are only ever visited once.
      *
-     * @since TBD
+     * @since 4.16.7
      *
      * @param WP_Dependencies $dependencies Queue the handles are registered in.
      * @param string[]        $handles      Handles to resolve.

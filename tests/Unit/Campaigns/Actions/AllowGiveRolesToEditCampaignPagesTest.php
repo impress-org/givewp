@@ -334,7 +334,7 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
      * A third-party filter on get_post_metadata that runs a capability check re-enters this action
      * through map_meta_cap. The campaign page lookup must not read its meta through that filter.
      *
-     * @since TBD
+     * @since 4.16.7
      */
     public function testCampaignPageLookupIsUnaffectedByPostMetaFilters(): void
     {
