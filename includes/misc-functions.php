@@ -1906,7 +1906,7 @@ function give_get_active_by_user_meta( $banner_addon_name ) {
 /**
  * Store recently activated Give's addons to wp options.
  *
- * @since TBD Moved from includes/admin/plugins.php so the listener is registered on every
+ * @since 4.16.7.1 Moved from includes/admin/plugins.php so the listener is registered on every
  *            request, and fall back to the plugin file passed by the `activated_plugin`
  *            action so add-ons activated outside of plugins.php (REST, WP-CLI,
  *            programmatic `activate_plugin()`, etc.) are recorded too.
@@ -1964,7 +1964,7 @@ add_action( 'activated_plugin', 'give_recently_activated_addons', 10 );
 /**
  * Get list of add-on last activated.
  *
- * @since TBD Moved from includes/admin/plugins.php.
+ * @since 4.16.7.1 Moved from includes/admin/plugins.php.
  * @since 2.1.3
  *
  * @return mixed|array list of recently activated add-on
