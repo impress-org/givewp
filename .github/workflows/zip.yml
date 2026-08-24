@@ -48,10 +48,8 @@ jobs:
             # pup has no POT generation of its own: `pup i18n` pulls finished translations down from
             # GlotPress, it does not produce the source POT. Generate it here, which the shared workflow
             # runs after `pup build` and before `pup package`, so languages/give.pot ends up in the zip.
+            # WP-CLI is already on the PATH by this point - the shared workflow installs it.
             additional_commands: |
-                curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-                chmod +x wp-cli.phar
-                mv wp-cli.phar /usr/local/bin/wp
                 php -d xdebug.mode=off "$(which wp)" i18n make-pot "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/languages/give.pot" --exclude="$(cat .distignore | tr "\n" "," | sed 's/,$/ /' | tr " " "\n"),src/**/*.js,*.js.map,blocks/**/*.js"
             slack_channel: ${{ inputs.slack_channel }}
             slack_thread: ${{ inputs.slack_thread }}
