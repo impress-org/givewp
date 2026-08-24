@@ -2,7 +2,7 @@ import type {PayPalCommerceGateway} from '../../types';
 import {__} from '@wordpress/i18n';
 
 /**
- * @since TBD Throw an Error carrying the server's message instead of a bare string, so the card
+ * @since 4.16.7.1 Throw an Error carrying the server's message instead of a bare string, so the card
  *            fields error handler and the form can display it.
  * @since 4.0.0
  */

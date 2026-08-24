@@ -267,7 +267,7 @@ class AjaxRequestHandler
     }
 
     /**
-     * @since TBD Validate the request through the form layer before building order data. v3 forms must
+     * @since 4.16.7.1 Validate the request through the form layer before building order data. v3 forms must
      *            also send a total at least as large as the amount the form validated; v2 forms are
      *            checked on the final, post-filter amount.
      * @since 4.14.4 Validate donation amount before creating or updating an order.
@@ -333,7 +333,7 @@ class AjaxRequestHandler
      *
      * @todo: handle payment capture error on frontend.
      *
-     * @since TBD Refuse v3 forms; their capture happens in PayPalCommerce::createPayment(). Validate
+     * @since 4.16.7.1 Refuse v3 forms; their capture happens in PayPalCommerce::createPayment(). Validate
      *            the posted form before every capture, not only when the amount changed.
      * @since 4.14.4 Validate donation amount before approving an order.
      * @since 3.2.0 Discover error by checking capture status.
@@ -366,7 +366,7 @@ class AjaxRequestHandler
     }
 
     /**
-     * @since TBD Refuse v3 forms; PayPalCommerce::createPayment() reconciles their order amount.
+     * @since 4.16.7.1 Refuse v3 forms; PayPalCommerce::createPayment() reconciles their order amount.
      * @since 4.14.4 Validate donation amount before updating an order amount.
      * @since 3.4.2
      */
@@ -458,7 +458,7 @@ class AjaxRequestHandler
      * the rules: amount limits, required fields, and whatever else it validates for this form
      * version; this handler only acts on the verdict.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function validateDonationFormRequest(int $formId, array $request): void
     {
@@ -488,7 +488,7 @@ class AjaxRequestHandler
      * are PayPal-hosted fields (SmartButtons.js strips them before its own validation call for the
      * same reason), so the legacy validator must not require them here.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function skipLegacyCardFieldRequirements(): void
     {
@@ -505,7 +505,7 @@ class AjaxRequestHandler
      * a v2 form has been through the give_donation_total filter (fee recovery), so it is checked
      * again here: positive and within the form's maximum. v3 amounts are validated by the form layer.
      *
-     * @since TBD Applies to v2 forms only.
+     * @since 4.16.7.1 Applies to v2 forms only.
      * @since 4.14.4
      *
      * @param float|string $amount
@@ -535,7 +535,7 @@ class AjaxRequestHandler
      * is reconciled and captured in PayPalCommerce::createPayment(), after the donation exists.
      * Refusing them here keeps these endpoints from capturing outside donation processing.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function rejectV3FormRequest(): void
     {

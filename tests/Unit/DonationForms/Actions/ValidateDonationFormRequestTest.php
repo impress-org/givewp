@@ -14,7 +14,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give_Helper_Form;
 
 /**
- * @since TBD
+ * @since 4.16.7.1
  *
  * @covers \Give\DonationForms\Actions\ValidateDonationFormRequest
  */
@@ -23,7 +23,7 @@ class ValidateDonationFormRequestTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function setUp(): void
     {
@@ -41,7 +41,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function tearDown(): void
     {
@@ -53,7 +53,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testV3FormRequestWithinRulesPasses(): void
     {
@@ -65,7 +65,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testV3FormRequestBelowCustomAmountMinimumIsRejected(): void
     {
@@ -80,7 +80,7 @@ class ValidateDonationFormRequestTest extends TestCase
      * The form id the caller verified wins over whatever the request claims, so a request cannot be
      * validated against a more permissive form than the one it is for.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testV3FormRequestIsValidatedAgainstTheGivenFormNotTheRequestFormId(): void
     {
@@ -96,7 +96,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testV3TrashedFormIsForbidden(): void
     {
@@ -110,7 +110,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testV2FormRequestWithinRulesPasses(): void
     {
@@ -123,7 +123,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testV2FormRequestIsRejectedWhenThePostedFormIdDoesNotMatch(): void
     {
@@ -143,7 +143,7 @@ class ValidateDonationFormRequestTest extends TestCase
      * Add-on rules and the legacy level check hang off give_checkout_error_checks, so the v2 branch
      * has to fire it the way give_process_donation_form() does.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testV2FormRequestFiresCheckoutErrorChecks(): void
     {
@@ -162,7 +162,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testV2FormRequestBelowMinimumIsRejectedAndSessionErrorsAreCleared(): void
     {
@@ -179,7 +179,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function createV3FormWithCustomAmountMinimum(int $minimum): DonationForm
     {
@@ -196,7 +196,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function createV2FormWithCustomAmountMinimum(int $minimum): int
     {
@@ -209,7 +209,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function v3Request(float $amount): array
     {
@@ -225,7 +225,7 @@ class ValidateDonationFormRequestTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function v2Request(int $formId, float $amount): array
     {

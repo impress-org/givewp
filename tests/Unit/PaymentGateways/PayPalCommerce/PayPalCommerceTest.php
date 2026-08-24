@@ -17,7 +17,7 @@ use stdClass;
  * order amount can be trusted nowhere else: the order is re-fetched from PayPal and patched to the
  * validated donation amount before capture.
  *
- * @since TBD
+ * @since 4.16.7.1
  *
  * @covers \Give\PaymentGateways\PayPalCommerce\PayPalCommerce::createPayment
  */
@@ -31,7 +31,7 @@ class PayPalCommerceTest extends TestCase
     private $payPalOrder;
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function setUp(): void
     {
@@ -42,7 +42,7 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function tearDown(): void
     {
@@ -52,7 +52,7 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testApprovedOrderWithDifferentAmountIsPatchedToDonationAmountBeforeCapture(): void
     {
@@ -81,7 +81,7 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testApprovedOrderWithMatchingAmountIsCapturedWithoutPatching(): void
     {
@@ -106,7 +106,7 @@ class PayPalCommerceTest extends TestCase
      * An order the v2 ajax endpoint already captured is recorded as-is; nothing is patched or
      * captured again.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCompletedOrderIsRecordedWithoutCapturingAgain(): void
     {
@@ -125,7 +125,7 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function createDonation(string $amount): Donation
     {
@@ -139,7 +139,7 @@ class PayPalCommerceTest extends TestCase
      * The shape PayPal returns from GET /v2/checkout/orders for an order the donor has approved
      * but nobody has captured.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function approvedOrder(string $amount, string $currency): stdClass
     {
@@ -154,7 +154,7 @@ class PayPalCommerceTest extends TestCase
     /**
      * The shape PayPal returns from POST /v2/checkout/orders/{id}/capture.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function capturedOrder(string $captureId): stdClass
     {

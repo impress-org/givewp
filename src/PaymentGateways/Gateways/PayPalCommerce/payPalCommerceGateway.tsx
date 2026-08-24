@@ -104,7 +104,7 @@ import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesTo
      * request to the form's validation rules before it creates the PayPal order. File fields stay
      * behind: the order endpoints never read them.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     const getFormData = () => {
         const values = getFormValues ? getFormValues() : {};
@@ -275,7 +275,7 @@ import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesTo
     };
 
     /**
-     * @since TBD Hoist getValues so the PayPal callbacks can post the complete form values.
+     * @since 4.16.7.1 Hoist getValues so the PayPal callbacks can post the complete form values.
      */
     const FormFieldsProvider = ({children}) => {
         const formData = window.givewp.form.hooks.useFormData();
@@ -494,7 +494,7 @@ import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesTo
 
         /**
          * Before create payment.
-         * @since TBD Re-enable the submit button when the card fields submission fails.
+         * @since 4.16.7.1 Re-enable the submit button when the card fields submission fails.
          * @since 3.2.0 Handle error response in approveOrderCallback.
          * @param {Object} values
          */

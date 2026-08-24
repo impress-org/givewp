@@ -18,7 +18,7 @@ use WPDieException;
  * anything they refuse must be refused before PayPal is called. PayPalOrder is mocked; a call that
  * reaches it on a rejected request is the failure these tests exist to catch.
  *
- * @since TBD
+ * @since 4.16.7.1
  *
  * @covers \Give\PaymentGateways\PayPalCommerce\AjaxRequestHandler
  */
@@ -32,7 +32,7 @@ class AjaxRequestHandlerTest extends TestCase
     private $payPalOrder;
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function setUp(): void
     {
@@ -61,7 +61,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function tearDown(): void
     {
@@ -76,7 +76,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCreateOrderCreatesPayPalOrderForValidV3Request(): void
     {
@@ -103,7 +103,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCreateOrderRejectsV3AmountBelowFormMinimumBeforeCallingPayPal(): void
     {
@@ -124,7 +124,7 @@ class AjaxRequestHandlerTest extends TestCase
      * The total PayPal charges ("give-amount", fee recovery included) can never be less than the
      * amount the form validated.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCreateOrderRejectsV3TotalBelowValidatedAmount(): void
     {
@@ -145,7 +145,7 @@ class AjaxRequestHandlerTest extends TestCase
      * The form layer only validates fields present in the request, so the handler itself has to
      * insist the validated amount is there at all.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCreateOrderRejectsV3RequestWithoutValidatedAmount(): void
     {
@@ -166,7 +166,7 @@ class AjaxRequestHandlerTest extends TestCase
     /**
      * Posting the complete form values means the honeypot rule runs on this endpoint too.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCreateOrderRejectsV3RequestWithFilledHoneypot(): void
     {
@@ -183,7 +183,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCreateOrderRejectsV2AmountBelowFormMinimumBeforeCallingPayPal(): void
     {
@@ -204,7 +204,7 @@ class AjaxRequestHandlerTest extends TestCase
      * The v2 form posts its PayPal-hosted card inputs (empty on the smart-buttons path); the legacy
      * validator must not require them on this endpoint.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCreateOrderDoesNotRequireLocalCardFieldsForV2Forms(): void
     {
@@ -232,7 +232,7 @@ class AjaxRequestHandlerTest extends TestCase
      * The amount that reaches PayPal for a v2 form is the post-filter total (fee recovery), and it
      * is held to the form's maximum even when the raw posted amount is within it.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCreateOrderRejectsV2FilteredTotalAboveFormMaximum(): void
     {
@@ -260,7 +260,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testCreateOrderRejectsRequestWithInvalidNonce(): void
     {
@@ -277,7 +277,7 @@ class AjaxRequestHandlerTest extends TestCase
     /**
      * v3 forms never call this endpoint; their capture happens in PayPalCommerce::createPayment().
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testApproveOrderRefusesV3FormsWithoutCapturing(): void
     {
@@ -295,7 +295,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testUpdateOrderAmountRefusesV3Forms(): void
     {
@@ -316,7 +316,7 @@ class AjaxRequestHandlerTest extends TestCase
     /**
      * v2 approve requests are validated like create requests, even when the amount did not change.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testApproveOrderRejectsV2AmountBelowFormMinimumBeforeCapturing(): void
     {
@@ -337,7 +337,7 @@ class AjaxRequestHandlerTest extends TestCase
      * Option-based (v2) forms capture through this endpoint, before the donation record exists;
      * their scripts call it right after PayPal's onApprove and before the form is submitted.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     public function testApproveOrderStillCapturesV2Orders(): void
     {
@@ -365,7 +365,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function createV3FormWithCustomAmountMinimum(int $minimum): DonationForm
     {
@@ -382,7 +382,7 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function createV2FormWithCustomAmountMinimum(int $minimum): int
     {
@@ -397,7 +397,7 @@ class AjaxRequestHandlerTest extends TestCase
     /**
      * What the v3 gateway client posts: its own keys plus the complete form values.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function v3Request(DonationForm $form, array $overrides = []): array
     {
@@ -424,7 +424,7 @@ class AjaxRequestHandlerTest extends TestCase
     /**
      * What the v2 gateway client posts: the whole legacy form.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function v2Request(int $formId, array $overrides = []): array
     {
@@ -446,7 +446,7 @@ class AjaxRequestHandlerTest extends TestCase
      * Runs an ajax handler and returns its decoded JSON response. wp_send_json_* ends in wp_die(),
      * which the test die handler turns into a WPDieException.
      *
-     * @since TBD
+     * @since 4.16.7.1
      */
     private function invokeAndCatchWpDie(callable $callable): array
     {

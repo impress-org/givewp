@@ -23,12 +23,12 @@ use WP_Error;
  * add-on rules hooked there apply too. The legacy validator reads $_POST directly, so for v2 forms
  * the request must be the current POST request.
  *
- * @since TBD
+ * @since 4.16.7.1
  */
 class ValidateDonationFormRequest
 {
     /**
-     * @since TBD
+     * @since 4.16.7.1
      *
      * @param int $formId The form the caller already verified. For v3 forms it overrides any formId
      *                    in the request; for v2 forms the request's give-form-id must match it.
@@ -54,7 +54,7 @@ class ValidateDonationFormRequest
      * after the run: before, so an earlier failed attempt in the same session cannot bleed in;
      * after, because the errors now live on the exception.
      *
-     * @since TBD
+     * @since 4.16.7.1
      *
      * @throws DonationFormFieldErrorsException
      */
