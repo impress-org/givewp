@@ -13,6 +13,8 @@ jobs:
         runs-on: ubuntu-latest
         environment: live
         needs: tests
+        permissions:
+            contents: write
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v2
