@@ -2,6 +2,7 @@
 
 namespace Give\Framework\PaymentGateways\Routes;
 
+use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\Shims\Shim;
 
 /**
@@ -19,23 +20,61 @@ class RouteSignature
      * @var string
      */
     public $expiration;
+    /**
+     * Keys of the query args covered by this signature, sorted.
+     *
+     * @since TBD
+     * @var string[]
+     */
+    public $argKeys;
 
     /**
      * @since 2.19.5 replace wp_create_nonce with wp_hash and timestamp expiration
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
+     * @since TBD add $args so the route's own query args are covered
+     *
      * @param  int  $gatewayId
      * @param  string  $gatewayMethod
      * @param  int  $donationId
      * @param  string  $expiration
+     * @param  array  $args  Query args the route carries, which the signature then covers.
      */
-    public function __construct($gatewayId, $gatewayMethod, $donationId, $expiration = null)
+    public function __construct($gatewayId, $gatewayMethod, $donationId, $expiration = null, array $args = [])
     {
+        ksort($args);
+
+        $this->argKeys = array_keys($args);
         $this->expiration = $expiration ?: $this->createExpirationTimestamp();
-        $this->signature = $this->generateSignatureString($gatewayId, $gatewayMethod, $donationId, $this->expiration);
+        $this->signature = $this->generateSignatureString(
+            $gatewayId,
+            $gatewayMethod,
+            $donationId,
+            $this->expiration,
+            $args
+        );
     }
 
+
+    /**
+     * Rebuilds the signature a request claims to carry, from the args that request was signed with.
+     *
+     * Args the gateway appended on the way back are not among them, so they are ignored; one that was
+     * signed and has since been edited or dropped changes the hash.
+     *
+     * @since TBD
+     */
+    public static function fromRouteData(GatewayRouteData $data): self
+    {
+        return new self(
+            $data->gatewayId,
+            $data->gatewayMethod,
+            $data->routeSignatureId,
+            $data->routeSignatureExpiration,
+            array_intersect_key($data->queryParams, array_flip($data->routeSignatureArgKeys))
+        );
+    }
 
     /**
      * @since 2.19.5
@@ -43,12 +82,17 @@ class RouteSignature
      * @param  string  $gatewayId
      * @param  string  $gatewayMethod
      * @param  int  $donationId
+     * @since TBD append the route's query args
+     *
      * @param  string  $expiration
      * @return string
      */
-    private function generateSignatureString($gatewayId, $gatewayMethod, $donationId, $expiration)
+    private function generateSignatureString($gatewayId, $gatewayMethod, $donationId, $expiration, array $args = [])
     {
-        return "$gatewayId@$gatewayMethod:$donationId|$expiration";
+        $signature = "$gatewayId@$gatewayMethod:$donationId|$expiration";
+
+        // A signature made before args were covered has none, and has to keep hashing to what it did then.
+        return $args ? $signature . '|' . http_build_query($args) : $signature;
     }
 
     /**

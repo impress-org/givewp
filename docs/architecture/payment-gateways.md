@@ -164,6 +164,12 @@ Gateway route methods reached by redirect are signed: use `generateSecureGateway
 than `generateGatewayRouteUrl()` for anything that mutates state, and see `supportsMethodRoute()`
 and `callRouteMethod()` for how they dispatch.
 
+The signature covers the args you pass to `generateSecureGatewayRouteUrl()`, so a route method can
+trust the `$queryParams` it declared — the ids it reads to decide which record to act on, and the
+return URLs it redirects to. Editing or dropping one invalidates the signature. Anything the
+processor appends to the return URL on the way back was never signed and is ignored, so read those
+as untrusted input and validate them like any other processor claim.
+
 ## Structure
 
 - `src/Framework/PaymentGateways/` — `PaymentGateway` abstract class, `PaymentGatewayInterface`,
@@ -192,7 +198,8 @@ https://givewp.com/documentation/developers/how-to-build-a-gateway-add-on-for-gi
   just client-side?
 - Does the webhook handler verify merchant identity, amount, currency, and record linkage — not
   just the signature?
-- Are state-changing gateway routes generated with `generateSecureGatewayRouteUrl()`?
+- Are state-changing gateway routes generated with `generateSecureGatewayRouteUrl()`, with every
+  arg the route method reads passed through it rather than appended to the URL separately?
 - Are the `supports*` / `can*` flags accurate?
 - Is anything sensitive being logged? `Log::redact()` strips keys containing `card`, `password`,
   `secret`, `token` (filterable via `give_log_redaction_list`) — but only keys it recognizes.
