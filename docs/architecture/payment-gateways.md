@@ -76,12 +76,27 @@ because it's the part that looks removable:
 > when users opt-in… required fields… the validation rules for it live only on the server.*
 
 Only then does PayPal's SDK invoke its `createOrder` callback. That callback doesn't call PayPal
-directly either — `createOrder.tsx` POSTs the form data to the `give_paypal_commerce_create_order`
-AJAX action, and `AjaxRequestHandler::createOrder()` makes the API call and returns an order id.
-That handler applies its own checks:
+directly either — `createOrder.tsx` POSTs the complete form values plus the gateway's own keys to
+the `give_paypal_commerce_create_order` AJAX action, and `AjaxRequestHandler::createOrder()` makes
+the API call and returns an order id. The card-fields flow (`beforeCreatePayment` →
+`cardFieldsForm.submit()`) reaches the same handler without passing through the `onClick` gate, and
+the action is registered on `wp_ajax_nopriv` behind a page-rendered nonce, so the handler cannot
+rely on anything upstream having validated the request. It does not trust it:
 
 - `validateFrontendRequest()` — form id and donation form nonce
-- `validateDonationAmount()` (4.14.4) — amount is positive and within the form's configured maximum
+- `ValidateDonationFormRequest` (`src/DonationForms/Actions/`) — the posted values are held to the
+  form's own rules through the same validator the validate route uses (v3: the fields-API rules on
+  every posted field — amount minimum/maximum when custom amounts are on, required fields, honeypot;
+  v2: `give_donation_form_validate_fields()` followed by `give_checkout_error_checks`, the same
+  sequence `give_process_donation_form()` runs, which is where the level check and add-on rules
+  hang). The gateway never learns form configuration; it asks the form layer and acts on the
+  verdict. This is the seam to reuse if another gateway ever has to call its processor before the
+  donate route runs.
+- for v3 forms, the total sent to PayPal (`give-amount`, fee recovery included) must be at least
+  the `amount` the form validated; `createPayment()` reconciles the order to the donation before
+  capture, so that is the only bound the handler needs
+- for v2 forms, the final amount after the `give_donation_total` filter is checked again: positive
+  and within the form's configured maximum
 
 The donor then approves the order inside PayPal's UI. **At this point no money has moved.** An
 approved PayPal order is an authorization, not a payment.
@@ -108,14 +123,19 @@ So the client's entire contribution is an order id. Everything that binds that i
 server-side, after validation, with the order re-fetched from PayPal rather than taken on the
 client's word.
 
-The v2/legacy path exposes capture through the `give_paypal_commerce_approve_order` AJAX action
-(`AjaxRequestHandler::approveOrder()`) instead — a client-triggerable capture endpoint, registered
-on both `wp_ajax` and `wp_ajax_nopriv`.
+The v2/legacy path still exposes capture through the `give_paypal_commerce_approve_order` AJAX
+action (`AjaxRequestHandler::approveOrder()`) — a client-triggerable capture endpoint, registered on
+both `wp_ajax` and `wp_ajax_nopriv`, that the v2 scripts (`SmartButtons.js`,
+`AdvancedCardFields.js`) call right after PayPal's `onApprove` and before the form is submitted. So
+on v2, capture happens before the donation record exists and before `give_process_donation` has run.
+`approveOrder()` and `updateOrderAmount()` refuse v3 forms outright, which is what makes the rule
+above hold without exception on v3. For v2 they run the legacy validator
+(`give_donation_form_validate_fields()`, through `ValidateDonationFormRequest`) first, but they still
+capture.
 
-**[Judgement]** Reading that as "legacy, don't copy it" is my inference from the v3 flow moving
-capture server-side, not something the codebase states. The legacy path presumably has its own
-guards; I haven't audited them. Treat the v3 shape as the model for new work, but don't assume the
-v2 path is broken.
+**[Judgement]** `createPayment()` already handles `APPROVED` orders and already receives
+`payPalOrderId` from the legacy processing path, so it is the natural home for v2 capture too. Until
+that moves, treat the v3 shape as the model and the v2 endpoint as legacy.
 
 ### Don't generalize the PayPal shape
 
