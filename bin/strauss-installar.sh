@@ -31,7 +31,7 @@ download_and_install() {
 # Main script execution
 main() {
     local latest_release
-    latest_release="0.29.0" # strauss release version
+    latest_release="0.29.1" # strauss release version
     if is_update_needed "$latest_release"; then
         echo "Updating strauss to $latest_release ..."
         download_and_install "$latest_release"
