@@ -45,6 +45,12 @@ jobs:
             production: ${{ inputs.production }}
             # GiveWP supports PHP 7.4 and up, so the vendor directory has to be built on 7.4.
             php_version: '7.4'
+            # pup has no POT generation of its own: `pup i18n` pulls finished translations down from
+            # GlotPress, it does not produce the source POT. Generate it here, which the shared workflow
+            # runs after `pup build` and before `pup package`, so languages/give.pot ends up in the zip.
+            # WP-CLI is already on the PATH by this point - the shared workflow installs it.
+            additional_commands: |
+                php -d xdebug.mode=off "$(which wp)" i18n make-pot "$GITHUB_WORKSPACE" "$GITHUB_WORKSPACE/languages/give.pot" --exclude="$(cat .distignore | tr "\n" "," | sed 's/,$/ /' | tr " " "\n"),src/**/*.js,*.js.map,blocks/**/*.js"
             slack_channel: ${{ inputs.slack_channel }}
             slack_thread: ${{ inputs.slack_thread }}
         secrets:
