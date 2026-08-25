@@ -17,8 +17,14 @@ jobs:
         name: actionlint
         runs-on: ubuntu-latest
 
+        # The job reads the workflow files and nothing else.
+        permissions:
+            contents: read
+
         steps:
             -   uses: actions/checkout@v7
+                with:
+                    persist-credentials: false
 
             -   name: Run actionlint
                 uses: docker://rhysd/actionlint:1.7.12
