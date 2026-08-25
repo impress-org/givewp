@@ -2,6 +2,7 @@ import {RequestUtils} from '@wordpress/e2e-test-utils-playwright';
 import {STORAGE_STATE_PATH, WP_BASE_URL} from './environment';
 
 const GIVEWP_REST_NAMESPACE = 'givewp/v3';
+const WHERE_TO_POINT_IT = 'Start wp-env, or point the run at the right environment with WP_BASE_URL.';
 
 /**
  * Logs in once as the wp-env admin and writes the session to disk. Every spec reuses that state
@@ -40,14 +41,27 @@ async function globalSetup(): Promise<void> {
  * that has nothing to do with this branch. Fail here instead, where the message can say so.
  */
 async function assertGiveWpIsActive(requestUtils: RequestUtils): Promise<void> {
-    const response = await requestUtils.request.get(`${WP_BASE_URL}/wp-json/`);
-    const namespaces = (await response.json())?.namespaces ?? [];
+    let index;
 
-    if (!namespaces.includes(GIVEWP_REST_NAMESPACE)) {
+    try {
+        /*
+         * `rest()` goes through the REST root discovered during setup rather than assuming
+         * /wp-json/, which a site with a custom prefix or one installed in a subdirectory does not
+         * serve, and it throws on a non-2xx response instead of handing back a body to misread.
+         */
+        index = await requestUtils.rest({path: '/'});
+    } catch (error) {
+        // `rest()` rejects with the parsed error body rather than an Error, so interpolating it directly reads as [object Object].
+        const reason = error instanceof Error ? error.message : JSON.stringify(error);
+
+        throw new Error(`Could not read the REST API index at ${WP_BASE_URL}: ${reason}. ${WHERE_TO_POINT_IT}`);
+    }
+
+    if (!Array.isArray(index?.namespaces) || !index.namespaces.includes(GIVEWP_REST_NAMESPACE)) {
         throw new Error(
             `GiveWP is not active at ${WP_BASE_URL}. The REST API there does not expose ` +
                 `"${GIVEWP_REST_NAMESPACE}", so this is either the wrong site or the plugin failed ` +
-                `to load. Start wp-env, or point the run at the right environment with WP_BASE_URL.`
+                `to load. ${WHERE_TO_POINT_IT}`
         );
     }
 }
