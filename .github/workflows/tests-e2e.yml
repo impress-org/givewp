@@ -1,0 +1,66 @@
+name: E2E Tests
+
+# Playwright browser tests against a wp-env WordPress install. This covers what PHPUnit cannot
+# see: asset enqueuing, the React admin apps mounting, and the v3 REST requests they make.
+
+on:
+    push:
+        branches: [master, develop, epic/**, release/**]
+    pull_request:
+        branches: [master, develop, epic/**, release/**]
+    workflow_dispatch:
+    workflow_call:
+
+jobs:
+    e2e:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   uses: actions/checkout@v4
+
+            # The plugin will not boot without the Strauss-prefixed vendor directory, which is
+            # produced by Composer's post-install-cmd. PHP 7.4 matches the version the release
+            # zip is built on.
+            -   name: Set Up PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: 7.4
+                    coverage: none
+                    github-token: '' # TODO: Remove temporary fix for Composer authentication issue caused by GitHub switching to a ghs_APPID_JWT format that Composer does not support. See https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/
+
+            -   name: Install Composer dependencies
+                run: composer install --no-dev --no-progress --no-interaction
+
+            -   name: Set Up Node
+                uses: actions/setup-node@v4
+                with:
+                    node-version-file: .nvmrc
+                    cache: npm
+
+            -   name: Install Node dependencies
+                run: npm ci
+
+            # The admin screens under test are React apps served from build/, which is gitignored.
+            -   name: Build assets
+                run: npm run build
+
+            -   name: Start WordPress environment
+                run: npx wp-env start
+
+            -   name: Install Playwright browsers
+                run: npx playwright install chromium --with-deps
+
+            -   name: Run E2E tests
+                run: npm run test:e2e
+
+            -   name: Upload artifacts on failure
+                uses: actions/upload-artifact@v4
+                if: failure()
+                with:
+                    name: e2e-artifacts
+                    path: artifacts/
+                    retention-days: 7
+
+            -   name: Stop WordPress environment
+                if: always()
+                run: npx wp-env stop
