@@ -17,7 +17,7 @@ jobs:
             contents: write
         steps:
             -   name: Checkout code
-                uses: actions/checkout@v2
+                uses: actions/checkout@v7
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -36,7 +36,7 @@ jobs:
             -   name: Copy tcpdf fonts to vendor
                 run: sudo COMPOSER_ALLOW_SUPERUSER=1 composer run copy-fonts
 
-            -   uses: actions/setup-node@v4
+            -   uses: actions/setup-node@v7
                 with:
                     node-version: '18'
 

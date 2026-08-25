@@ -8,7 +8,7 @@ jobs:
         runs-on: ubuntu-latest
         environment: live
         steps:
-            -   uses: actions/checkout@master
+            -   uses: actions/checkout@v7
             -   name: WordPress.org plugin asset/readme update
                 uses: 10up/action-wordpress-plugin-asset-update@stable
                 env:
