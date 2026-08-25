@@ -41,6 +41,7 @@ function give_stripe_supported_payment_methods()
 /**
  * This function is used to check whether a payment method supported by Stripe with Give is active or not.
  *
+ * @since TBD Also check the `gateways_v3` option so modern Stripe gateways are recognized.
  * @since 2.5.5
  *
  * @return bool
@@ -48,8 +49,16 @@ function give_stripe_supported_payment_methods()
 function give_stripe_is_any_payment_method_active()
 {
 	$settings             = give_get_settings();
-    $gateways = $settings['gateways'] ?? [];
     $stripePaymentMethods = give_stripe_supported_payment_methods();
+
+    // The modern Stripe gateways (e.g. Stripe Payment Element) are stored in the
+    // `gateways_v3` option, while the legacy gateways live in the `gateways`
+    // setting. Both must be checked, so a site using only a modern Stripe gateway
+    // is still reported as having an active Stripe payment method.
+    $gateways = array_merge(
+        $settings['gateways'] ?? [],
+        (array) give_get_option('gateways_v3', [])
+    );
 
     $active = false;
     foreach (array_keys($gateways) as $gateway) {
