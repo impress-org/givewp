@@ -73,8 +73,40 @@ jobs:
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 run: gh release upload "${{ github.event.release.tag_name }}" "${{ github.workspace }}/give.zip" --clobber
 
+            # The release body is GitHub's generated pull request list. The changelog people actually read
+            # is the readme.txt entry for this version, so lead with that and keep the pull requests after.
+            -   name: Build the release announcement
+                id: announcement
+                env:
+                    REPO: ${{ github.event.repository.name }}
+                    TAG: ${{ github.event.release.tag_name }}
+                    BODY: ${{ github.event.release.body }}
+                    URL: ${{ github.event.release.html_url }}
+                run: |
+                    version="${TAG#v}"
+
+                    # readme.txt entries read "= <version>: <date> =" followed by bullets until the next one.
+                    changelog=$(awk -v header="= $version:" '
+                        index($0, header) == 1 { found = 1; next }
+                        found && /^= / { exit }
+                        found { print }
+                    ' readme.txt)
+
+                    # A random delimiter stops a release body that happens to contain the terminator from
+                    # closing the heredoc early and writing step outputs of its own.
+                    delimiter=$(openssl rand -hex 16)
+
+                    {
+                        echo "text<<${delimiter}"
+                        printf '*%s %s has just been released! 🎉*\n\n%s\n%s\n\n<%s|Link to Release>\n' \
+                            "$REPO" "$version" "$changelog" "$BODY" "$URL"
+                        echo "${delimiter}"
+                    } >> "$GITHUB_OUTPUT"
+
             -   name: Slack Notification
-                uses: someimportantcompany/github-actions-slack-message@v1
+                uses: slackapi/slack-github-action@v4.0.0
                 with:
-                    webhook-url: ${{ secrets.SLACK_ANNOUNCEMENT_WEBHOOK }}
-                    text: "*${{ github.event.repository.name }} ${{ github.event.release.name }} has just been released! 🎉* \n\n Here's what's new: \n\n ${{ github.event.release.body }} \n\n <${{ github.event.release.html_url }}|Link to Release>"
+                    webhook: ${{ secrets.SLACK_ANNOUNCEMENT_WEBHOOK }}
+                    webhook-type: incoming-webhook
+                    payload: |
+                        text: ${{ toJSON(steps.announcement.outputs.text) }}
