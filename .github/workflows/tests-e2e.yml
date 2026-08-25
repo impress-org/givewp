@@ -11,6 +11,9 @@ on:
     workflow_dispatch:
     workflow_call:
 
+permissions:
+    contents: read
+
 jobs:
     e2e:
         runs-on: ubuntu-latest
@@ -60,7 +63,9 @@ jobs:
                 if: failure()
                 with:
                     name: e2e-artifacts
-                    path: artifacts/
+                    # Not all of artifacts/ - that directory also holds the storage state, which
+                    # carries the logged-in admin cookie for the wp-env site.
+                    path: artifacts/test-results/
                     retention-days: 7
 
             -   name: Stop WordPress environment

@@ -78,6 +78,12 @@ WP_BASE_URL=https://give.wpenv.net:9443 npm run test:e2e
   does get `ignoreHTTPSErrors`, would have been fine. `tests/e2e/global-setup.ts` relaxes Node's
   certificate check for local HTTPS runs only; CI talks to wp-env over plain HTTP with verification
   on.
+- A WordPress install answering on the expected port is not necessarily the one under test. If
+  another wp-env environment holds the port, every spec would run green against an unrelated site.
+  `global-setup.ts` checks that the REST API exposes the `givewp/v3` namespace and fails with that
+  explanation if it does not. Seeing that error means `npm run env:start` picked a different port —
+  `env:start` passes `--auto-port` so it can step aside from a busy one — and the run needs
+  `WP_BASE_URL`.
 
 ### Writing tests
 
