@@ -7,8 +7,15 @@ jobs:
         name: Push to trunk
         runs-on: ubuntu-latest
         environment: live
+        # The push to WordPress.org authenticates over SVN, so the workflow token only has to read
+        # this repository. Naming it also stops a permissive repository or organisation default from
+        # handing the job more than that.
+        permissions:
+            contents: read
         steps:
             -   uses: actions/checkout@v7
+                with:
+                    persist-credentials: false
             -   name: WordPress.org plugin asset/readme update
                 uses: 10up/action-wordpress-plugin-asset-update@stable
                 env:

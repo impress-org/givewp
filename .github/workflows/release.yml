@@ -18,6 +18,9 @@ jobs:
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v7
+                with:
+                    # Nothing here pushes over git, and the job goes on to run third-party actions.
+                    persist-credentials: false
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -70,7 +73,10 @@ jobs:
             -   name: Upload release asset
                 env:
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                run: gh release upload "${{ github.event.release.tag_name }}" "${{ github.workspace }}/give.zip" --clobber
+                    # A tag can legally contain $() or backticks, and this job holds contents: write, so
+                    # the tag reaches the shell as data rather than as part of the command.
+                    TAG: ${{ github.event.release.tag_name }}
+                run: gh release upload "$TAG" "${{ github.workspace }}/give.zip" --clobber
 
             # The release body is GitHub's generated pull request list. The changelog people actually read
             # is the readme.txt entry for this version, so lead with that and keep the pull requests after.

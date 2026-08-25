@@ -51,6 +51,9 @@ jobs:
         steps:
             # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
             -   uses: actions/checkout@v7
+                with:
+                    # Nothing here pushes over git, and the job goes on to run third-party actions.
+                    persist-credentials: false
             -   name: Cache dependencies
                 uses: actions/cache@v6
                 with:
