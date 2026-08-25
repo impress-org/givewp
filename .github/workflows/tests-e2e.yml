@@ -11,12 +11,13 @@ on:
     workflow_dispatch:
     workflow_call:
 
-permissions:
-    contents: read
-
 jobs:
     e2e:
         runs-on: ubuntu-latest
+
+        # The job reads the checkout and runs the browser tests, nothing else.
+        permissions:
+            contents: read
 
         steps:
             -   uses: actions/checkout@v7
