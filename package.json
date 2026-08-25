@@ -62,7 +62,7 @@
         }
     ],
     "devDependencies": {
-        "@playwright/test": "^1.61.1",
+        "@playwright/test": "^1.62.1",
         "@stellarwp/changelogger": "^0.10.0",
         "@types/lodash": "^4.14.199",
         "@types/node": "^20.19.43",
@@ -72,7 +72,7 @@
         "@types/wordpress__blocks": "^12.5.0",
         "@types/wordpress__components": "^23.0.1",
         "@wordpress/e2e-test-utils-playwright": "^1.53.0",
-        "@wordpress/env": "^11.4.0",
+        "@wordpress/env": "^11.13.0",
         "@wordpress/scripts": "^26.19.0",
         "bats": "^1.13.0",
         "bats-assert": "^2.2.4",

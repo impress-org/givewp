@@ -16,7 +16,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v7
 
             # The plugin will not boot without the Strauss-prefixed vendor directory, which is
             # produced by Composer's post-install-cmd. PHP 7.4 matches the version the release
@@ -32,7 +32,7 @@ jobs:
                 run: composer install --no-dev --no-progress --no-interaction
 
             -   name: Set Up Node
-                uses: actions/setup-node@v4
+                uses: actions/setup-node@v7
                 with:
                     node-version-file: .nvmrc
                     cache: npm
@@ -54,7 +54,7 @@ jobs:
                 run: npm run test:e2e
 
             -   name: Upload artifacts on failure
-                uses: actions/upload-artifact@v4
+                uses: actions/upload-artifact@v7
                 if: failure()
                 with:
                     name: e2e-artifacts
