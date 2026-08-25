@@ -28,7 +28,7 @@ jobs:
                     github-token: '' # TODO: Remove temporary fix for Composer authentication issue caused by GitHub switching to a ghs_APPID_JWT format that Composer does not support. See https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/
 
             -   name: Install composer dependencies
-                uses: php-actions/composer@v5
+                uses: php-actions/composer@v6
                 with:
                     php_version: 7.4
                     dev: no
