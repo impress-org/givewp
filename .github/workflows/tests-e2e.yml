@@ -17,6 +17,9 @@ jobs:
 
         steps:
             -   uses: actions/checkout@v7
+                with:
+                    # Nothing here pushes over git, and the job goes on to run third-party actions.
+                    persist-credentials: false
 
             # The plugin will not boot without the Strauss-prefixed vendor directory, which is
             # produced by Composer's post-install-cmd. PHP 7.4 matches the version the release
@@ -26,7 +29,6 @@ jobs:
                 with:
                     php-version: 7.4
                     coverage: none
-                    github-token: '' # TODO: Remove temporary fix for Composer authentication issue caused by GitHub switching to a ghs_APPID_JWT format that Composer does not support. See https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/
 
             -   name: Install Composer dependencies
                 run: composer install --no-dev --no-progress --no-interaction
