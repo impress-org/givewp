@@ -8,7 +8,7 @@ use Stripe\Event;
 use Stripe\Subscription as StripeSubscription;
 
 /**
- * @since TBD
+ * @since 4.16.7
  */
 class CustomerSubscriptionUpdated
 {
@@ -27,7 +27,7 @@ class CustomerSubscriptionUpdated
      *
      * @see https://stripe.com/docs/api/events/types#event_types-customer.subscription.updated
      *
-     * @since TBD
+     * @since 4.16.7
      *
      * @param Event $event
      *
@@ -46,7 +46,7 @@ class CustomerSubscriptionUpdated
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7
      * @throws Exception
      */
     public function processEvent(Event $event): bool

@@ -3,6 +3,7 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\ValueObjects\CampaignPageMetaKeys;
+use Give\Framework\Database\DB;
 use WP_User;
 
 /**
@@ -113,6 +114,7 @@ class AllowGiveRolesToEditCampaignPages
     /**
      * Check if a post is a campaign page (with caching).
      *
+     * @since 4.16.7 Read the campaign ID meta directly instead of through get_post_meta().
      * @since 4.14.0
      */
     private function isCampaignPage(int $postId): bool
@@ -124,11 +126,22 @@ class AllowGiveRolesToEditCampaignPages
         $post = get_post($postId);
         if (!$post || $post->post_type !== 'page') {
             self::$campaignPageCache[$postId] = false;
+
             return false;
         }
 
-        $campaignId = get_post_meta($postId, CampaignPageMetaKeys::CAMPAIGN_ID, true);
-        self::$campaignPageCache[$postId] = !empty($campaignId);
+        /*
+         * get_post_meta() fires the get_post_metadata filter, which third parties hook to run
+         * capability checks. Those re-enter this action through map_meta_cap and recurse until
+         * the call stack is exhausted, so read the meta without going through the filter.
+         */
+        $campaignPageMeta = DB::table('postmeta')
+            ->select('meta_value')
+            ->where('post_id', $postId)
+            ->where('meta_key', CampaignPageMetaKeys::CAMPAIGN_ID)
+            ->get();
+
+        self::$campaignPageCache[$postId] = !empty($campaignPageMeta->meta_value);
 
         return self::$campaignPageCache[$postId];
     }

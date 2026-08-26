@@ -12,6 +12,7 @@ use Give\PaymentGateways\Gateways\Offline\Actions\DisableGatewayWhenDisabledPerF
 use Give\PaymentGateways\Gateways\Offline\Actions\EnqueueOfflineFormBuilderScripts;
 use Give\PaymentGateways\Gateways\Offline\Actions\UpdateOfflineMetaFromFormBuilder;
 use Give\PaymentGateways\Gateways\PayPalCommerce\PayPalCommerceGateway;
+use Give\PaymentGateways\Gateways\Stripe\Actions\AddExtraMetadataToPaymentIntent;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\AddStripeAttributesToNewForms;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\Actions\EnqueueStripeFormBuilderScripts;
@@ -76,7 +77,16 @@ class ServiceProvider implements ServiceProviderInterface
         $this->addLegacyStripeAdapter();
         $this->addStripeWebhookListeners();
         $this->addStripeFormBuilderHooks();
+        $this->addStripeTransactionMetadata();
         $this->bootOfflineDonations();
+    }
+
+    /**
+     * @since 4.16.7
+     */
+    private function addStripeTransactionMetadata()
+    {
+        Hooks::addFilter('give_stripe_prepare_metadata', AddExtraMetadataToPaymentIntent::class, '__invoke', 10, 2);
     }
 
     /**

@@ -1,6 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved an issue where paused or failing Stripe Payment Element
-  subscriptions remained stuck when the donor updated their payment method or
-  the subscription was resumed in Stripe.
-timestamp: 2026-07-28T14:24:47.811Z
