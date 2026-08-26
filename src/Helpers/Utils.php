@@ -216,6 +216,19 @@ class Utils
          */
         $unserializedData = @unserialize(trim($data), ['allowed_classes' => false]);
 
+        /**
+         * Never return objects, not even as __PHP_Incomplete_Class instances. When a
+         * __PHP_Incomplete_Class is serialized again, PHP writes the original class bytes
+         * back, so returning it would re-arm the payload for the next unrestricted
+         * unserialize() call (e.g. the donation session storage). In that case, we return
+         * the data as a plain string instead, keeping it inert.
+         *
+         * @since 4.16.6
+         */
+        if (self::containsPhpIncompleteClass($unserializedData)) {
+            return $data;
+        }
+
         /*
          * In case the passed string is not unserializeable, false is returned.
          *
@@ -223,6 +236,33 @@ class Utils
          */
 
         return ! $unserializedData && ! self::containsSerializedDataRegex($data) ? $data : $unserializedData;
+    }
+
+    /**
+     * Recursively checks if the given data contains any __PHP_Incomplete_Class instance,
+     * which is what unserialize() produces for classes not present in allowed_classes.
+     *
+     * @since 4.16.6
+     *
+     * @param mixed $data Data to check, can be any type.
+     *
+     * @return bool True if a __PHP_Incomplete_Class instance is found at any nesting level.
+     */
+    public static function containsPhpIncompleteClass($data): bool
+    {
+        if ($data instanceof \__PHP_Incomplete_Class) {
+            return true;
+        }
+
+        if (is_array($data) || is_object($data)) {
+            foreach ((array)$data as $value) {
+                if (self::containsPhpIncompleteClass($value)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

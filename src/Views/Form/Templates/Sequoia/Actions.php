@@ -223,6 +223,7 @@ class Actions
     /**
      * Add checkout button
      *
+     * @since 4.16.3 Escaped the checkout button label in the Sequoia template.
      * @since 2.7.0
      */
     public function getCheckoutButton()
@@ -237,13 +238,14 @@ class Actions
 		    <input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase" value="%1$s" data-before-validation-label="Donate Now">
 				<span class="give-loading-animation"></span>
 		  </div>',
-            $label
+            esc_attr($label)
         );
     }
 
     /**
      * Add wrapper and introduction text to payment information section
      *
+     * @since 4.16.4 Escaped the headline output.
      * @since 2.7.0
      *
      * @param int $formId
@@ -261,7 +263,7 @@ class Actions
 
         printf(
             '<div class="give-section payment"><div class="heading">%1$s</div><div class="subheading">%2$s</div>',
-            $headline,
+            esc_html($headline),
             $description
         );
     }
@@ -279,6 +281,7 @@ class Actions
     /**
      * Start choose amount section
      *
+     * @since 4.16.4 Escaped the donate button label output.
      * @since 2.7.0
      */
     public function getStartWrapperHTMLForAmountSection()
@@ -297,7 +300,7 @@ class Actions
         $arrow = is_rtl() ? 'left' : 'right';
         printf(
             '<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
-            $label,
+            esc_html($label),
             $arrow
         );
 
@@ -314,6 +317,7 @@ class Actions
     /**
      * Close choose amount section
      *
+     * @since 4.16.4 Escaped the continue button label output.
      * @since 2.7.0
      */
     public function getCloseWrapperHTMLForAmountSection()
@@ -326,7 +330,7 @@ class Actions
 
         printf(
             '<button class="give-btn advance-btn">%1$s<i class="fas fa-chevron-%2$s"></i></button></div>',
-            $label,
+            esc_html($label),
             $arrow
         );
     }

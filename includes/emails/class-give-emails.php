@@ -29,6 +29,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  */
+// __set() accepts any key, so keys without a declared property become dynamic ones. PHP 8.2 deprecates
+// those, and the notice is printed mid-request, which breaks any redirect that follows.
+// PHP 7.4 reads this line as a comment, so it is safe on the minimum supported version.
+#[AllowDynamicProperties]
 class Give_Emails {
 
 	/**

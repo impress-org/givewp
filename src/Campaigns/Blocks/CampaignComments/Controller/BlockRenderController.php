@@ -10,16 +10,18 @@ use Give\Campaigns\Blocks\CampaignComments\DataTransferObjects\BlockAttributes;
 class BlockRenderController
 {
     /**
+     * @since 4.16.1 escape attribute values in block markup
      * @since 4.0.0
      */
     public function render(array $attributes, string $secondaryColor): string
     {
         $blockAttributes = BlockAttributes::fromArray($attributes);
 
-        $encodedAttributes = json_encode($blockAttributes->toArray());
-
-        $blockId = $blockAttributes->blockId;
-
-        return "<div id='givewp-campaign-comments-block-{$blockId}' data-secondary-color='{$secondaryColor}' data-givewp-campaign-comments data-attributes='{$encodedAttributes}'></div>";
+        return sprintf(
+            "<div id='givewp-campaign-comments-block-%s' data-secondary-color='%s' data-givewp-campaign-comments data-attributes='%s'></div>",
+            esc_attr((string) $blockAttributes->blockId),
+            esc_attr($secondaryColor),
+            esc_attr((string) json_encode($blockAttributes->toArray()))
+        );
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Give\PaymentGateways\Gateways\PayPalStandard\Controllers;
 
+use Give\Donations\Models\Donation;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
 use Give\PaymentGateways\Gateways\PayPalStandard\PayPalStandard;
 use Give\PaymentGateways\Gateways\PayPalStandard\Webhooks\WebhookRegister;
@@ -30,6 +32,7 @@ class PayPalStandardWebhook
      *
      * @since 2.19.0
      * @since 2.19.3 Respond with 200 http status to ipn.
+     * @since 4.16.6.1 Add IPN event-data validation before processing.
      */
     public function handle()
     {
@@ -53,6 +56,10 @@ class PayPalStandardWebhook
                     'Event Data' => $eventData,
                 ]
             );
+            exit();
+        }
+
+        if ( ! $this->verifyEventData($eventData, $donationId, $txnType)) {
             exit();
         }
 
@@ -157,5 +164,197 @@ class PayPalStandardWebhook
              */
             do_action('give_paypal_web_accept', $eventData, $donationId);
         }
+    }
+
+    /**
+     * @since 4.16.6.1
+     */
+    private function verifyEventData(array $eventData, int $donationId, $txnType): bool
+    {
+        $paymentStatus = strtolower($eventData['payment_status'] ?? '');
+
+        if ( ! $this->verifyReceiverEmail($eventData)) {
+            return false;
+        }
+
+        if (in_array($paymentStatus, ['completed', 'pending'], true)) {
+            if ( ! $this->verifyPaymentAmount($eventData, $donationId)) {
+                return false;
+            }
+        }
+
+        if (in_array($paymentStatus, ['refunded', 'reversed'], true)) {
+            if ( ! $this->verifyParentTransactionId($eventData, $donationId)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @since 4.16.6.1
+     */
+    private function verifyReceiverEmail(array $eventData)
+    {
+        $sitePaypalEmail = trim((string) give_get_option('paypal_email', ''));
+        if ($sitePaypalEmail === '') {
+            return true;
+        }
+
+        $receiverEmail = strtolower(trim((string) ($eventData['receiver_email'] ?? '')));
+        $business = strtolower(trim((string) ($eventData['business'] ?? '')));
+        $siteEmail = strtolower($sitePaypalEmail);
+
+        if ($receiverEmail === '' && $business === '') {
+            return true;
+        }
+
+        if ($receiverEmail !== $siteEmail && $business !== $siteEmail) {
+            Log::error(
+                'PayPal Standard IPN Error',
+                [
+                    'Message' => sprintf(
+                        'IPN receiver_email (%s) / business (%s) does not match the site PayPal email (%s).',
+                        $eventData['receiver_email'] ?? '(not set)',
+                        $eventData['business'] ?? '(not set)',
+                        $sitePaypalEmail
+                    ),
+                    'Event Data' => $eventData,
+                ]
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @since 4.16.6.1
+     */
+    private function verifyPaymentAmount(array $eventData, $donationId)
+    {
+        try {
+            $donation = Donation::find($donationId);
+
+            if ( ! $donation) {
+                Log::error(
+                    'PayPal Standard IPN Error',
+                    [
+                        'Message' => sprintf(
+                            'Donation #%d not found.',
+                            $donationId
+                        ),
+                        'Event Data' => $eventData,
+                    ]
+                );
+
+                return false;
+            }
+
+            $currency = strtoupper(trim((string) ($eventData['mc_currency'] ?? '')));
+            $donationCurrency = strtoupper(trim($donation->amount->getCurrency()->getCode()));
+
+            if ($currency !== $donationCurrency) {
+                Log::error(
+                    'PayPal Standard IPN Error',
+                    [
+                        'Message' => sprintf(
+                            'IPN currency (%s) does not match donation #%d currency (%s).',
+                            $currency,
+                            $donationId,
+                            $donationCurrency
+                        ),
+                        'Event Data' => $eventData,
+                    ]
+                );
+
+                return false;
+            }
+
+            $ipnAmount = Money::fromDecimal((float)($eventData['mc_gross'] ?? 0), $currency);
+
+            if ( ! $ipnAmount->equals($donation->intendedAmount())) {
+                Log::error(
+                    'PayPal Standard IPN Error',
+                    [
+                        'Message' => sprintf(
+                            'IPN amount (%s %s) does not match donation #%d amount (%s %s).',
+                            $eventData['mc_gross'] ?? '0',
+                            $currency,
+                            $donationId,
+                            $donation->intendedAmount()->formatToDecimal(),
+                            $donationCurrency
+                        ),
+                        'Event Data' => $eventData,
+                    ]
+                );
+
+                return false;
+            }
+        } catch (\Exception $e) {
+            Log::error(
+                'PayPal Standard IPN Error',
+                [
+                    'Message' => 'Failed to compare IPN amount to donation amount.',
+                    'Exception' => $e->getMessage(),
+                    'Event Data' => $eventData,
+                ]
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @since 4.16.6.1
+     */
+    private function verifyParentTransactionId(array $eventData, $donationId)
+    {
+        $parentTxnId = trim((string) ($eventData['parent_txn_id'] ?? ''));
+        if ($parentTxnId === '') {
+            return true;
+        }
+
+        $donation = Donation::find($donationId);
+        $storedTxnId = $donation ? trim((string) $donation->gatewayTransactionId) : '';
+
+        if ($storedTxnId === '') {
+            Log::error(
+                'PayPal Standard IPN Error',
+                [
+                    'Message' => sprintf(
+                        'IPN payment_status is %s but donation #%d has no stored transaction ID — cannot process a refund for a donation that was never completed.',
+                        strtolower($eventData['payment_status'] ?? ''),
+                        $donationId
+                    ),
+                    'Event Data' => $eventData,
+                ]
+            );
+
+            return false;
+        }
+
+        if ($parentTxnId !== $storedTxnId) {
+            Log::error(
+                'PayPal Standard IPN Error',
+                [
+                    'Message' => sprintf(
+                        'IPN parent_txn_id (%s) does not match donation #%d stored transaction ID (%s).',
+                        $parentTxnId,
+                        $donationId,
+                        $storedTxnId
+                    ),
+                    'Event Data' => $eventData,
+                ]
+            );
+
+            return false;
+        }
+
+        return true;
     }
 }

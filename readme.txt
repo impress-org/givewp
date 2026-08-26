@@ -1,11 +1,11 @@
 === GiveWP - Donation Plugin and Fundraising Platform ===
-Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski
+Contributors: givewp, dlocc, webdevmattcrom, ravinderk, mehul0810, kevinwhoffman, jason_the_adams, henryholtgeerts, kbjohnson90, alaca, benmeredithgmailcom, jonwaldstein, joshuadinh, glaubersilvawp, pauloiankoski, filipecouto, waynerocha
 Donate link: https://go.givewp.com/home
 Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 4.15.3
+Stable tag: 4.16.7.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,65 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.16.7.1: August 24th, 2026 =
+* Security: Added additional validation to PayPal Donations order requests.
+
+= 4.16.7: August 20th, 2026 =
+* Security: Hardened donor-account email access authentication.
+* Security: Improved validation of the checkout login form.
+* Fix: Resolved an issue where paused or failing Stripe Payment Element subscriptions remained stuck when the donor updated their payment method or the subscription was resumed in Stripe.
+* Fix: Resolved a conflict where scripts enqueued by other plugins while a donation form was being rendered could stop the form builder design preview and embedded forms from loading.
+* Fix: Resolved an issue where editing a page could exhaust the PHP call stack when a theme or plugin filtered post metadata.
+* Fix: Activation banner for addons doesn't show when addons are activated from the Unified License Manager
+
+= 4.16.6.1: August 12th, 2026 =
+* Security: Added additional validation to PayPal Standard IPN.
+
+= 4.16.6: August 6th, 2026 =
+* Tweak: Improved the unified licensing page experience.
+* Security: Added additional validation when handling serialized data during the donation process.
+* Security: Added additional escaping and validation to legacy donor admin screens and the donors REST API.
+* Security: Strengthened validation of the donor email-access token and the donation receipt email preview.
+* Security: Added a capability check to the onboarding form preview screen to prevent unauthorized access.
+* Security: Added nonce verification to the front-end registration handler and restricted automatic donor account linking to the verified donation checkout flow.
+* Fix: Added validation to prevent empty password updates in the Donor Dashboard.
+* Fix: Resolved an issue where uploading a ZIP add-on with a folder name that differs from the ZIP filename (e.g. give-recurring-donations-2.19.0.zip containing the folder give-recurring/) would fail to detect the plugin after extraction.
+
+= 4.16.5.1: July 27th, 2026 =
+* Security: Strengthened security on legacy donors listing and donation details pages.
+
+= 4.16.5: July 22nd, 2026 =
+* Fix: Resolved an issue where selecting a donation amount level would also select other levels with the same value.
+* Fix: Resolved an issue where extra separators could render in the donation confirmation page header when line breaks were present in the header text.
+* Fix: Resolved an issue where refunding a donation made with a per-form Stripe account would fail because the refund request used the default account instead of the form-specific account.
+
+= 4.16.4: July 14th, 2026 =
+* Security: Added additional validation to the core settings importer.
+* Security: Added additional escaping to donor information displayed in the admin.
+* Security: Added additional escaping to the Sequoia (Multi-Step Form) template output. (CVE-2026-14987)
+
+= 4.16.3: July 6th, 2026 =
+* Security: Added additional validation to ensure donation gateway selection respects the enabled payment gateway settings.
+* Security: Improved escaping of donation form template output.
+* Security: Improved the security of the recurring donation REST API.
+
+= 4.16.2: July 1st, 2026 =
+* Security: Added additional escaping and sanitization to the Sequoia (Multi-Step Form) template settings and donation form markup (CVE-2026-13704).
+
+= 4.16.1: June 29th, 2026 =
+* Security: Standardized email access confirmation AJAX responses to prevent distinguishable server responses.
+* Security: Added additional escaping and sanitization to the Campaign Comments block and shortcode attributes (CVE-2026-13246).
+
+= 4.16.0: June 24th, 2026 =
+* Feature: Added an optional donation ID parameter to gateway webhook event handlers, allowing gateways to locate donations when the transaction ID is only available in the webhook payload.
+* Fix: Resolved an issue where multi-step donation forms could be incorrectly rejected as spam because Akismet was checked on every form step; the spam check now runs once on final submission.
+
+= 4.15.5: June 22nd, 2026 =
+* Security: Improved the security of the Donor Dashboard login process.
+
+= 4.15.4: June 15th, 2026 =
+* Security: Added additional protection to the email notification settings.
+
 = 4.15.3: May 28th, 2026 =
 * Fix: Resolved a user role permission conflict with The Events Calendar Pro
 * Fix: Resolved an issue when using multiple Stripe accounts, recurring donations, and webhook API 2026-02-25.clover

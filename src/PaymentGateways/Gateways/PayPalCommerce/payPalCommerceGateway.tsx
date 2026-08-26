@@ -20,6 +20,7 @@ import type {
     PayPalCardFieldsComponentBasics,
 } from '@paypal/paypal-js';
 import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
+import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
 
 (() => {
     /**
@@ -52,6 +53,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
     let currency;
     let submitButton;
+    let getFormValues;
 
     let payPalCardFieldsForm: PayPalCardFieldsComponent = null;
 
@@ -97,8 +99,18 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         return paypalScriptOptions;
     };
 
+    /**
+     * The complete form values go along with the gateway's own keys so the server can hold the
+     * request to the form's validation rules before it creates the PayPal order. File fields stay
+     * behind: the order endpoints never read them.
+     *
+     * @since 4.16.7.1
+     */
     const getFormData = () => {
-        const formData = new FormData();
+        const values = getFormValues ? getFormValues() : {};
+        const formData = convertValuesToFormData(
+            Object.fromEntries(Object.entries(values).filter(([, value]) => !(value instanceof File)))
+        );
 
         formData.append('give-form-id', payPalDonationsSettings.donationFormId);
         formData.append('give-form-hash', payPalDonationsSettings.donationFormNonce);
@@ -262,9 +274,14 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
         );
     };
 
+    /**
+     * @since 4.16.7.1 Hoist getValues so the PayPal callbacks can post the complete form values.
+     */
     const FormFieldsProvider = ({children}) => {
         const formData = window.givewp.form.hooks.useFormData();
+        const {getValues} = window.givewp.form.hooks.useFormContext();
 
+        getFormValues = getValues;
         amount = formData.amount;
         firstName = formData.firstName;
         lastName = formData.lastName;
@@ -477,6 +494,7 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
 
         /**
          * Before create payment.
+         * @since 4.16.7.1 Re-enable the submit button when the card fields submission fails.
          * @since 3.2.0 Handle error response in approveOrderCallback.
          * @param {Object} values
          */
@@ -508,9 +526,14 @@ import createSubscriptionPlan from './resources/js/createSubscriptionPlan';
             submitButton.textContent = __('Waiting for PayPal...', 'give');
             submitButton.disabled = true;
 
-            await payPalCardFieldsForm.submit();
-
-            submitButton.textContent = submitButtonDefaultText;
+            try {
+                await payPalCardFieldsForm.submit();
+            } catch (error) {
+                submitButton.disabled = false;
+                throw error;
+            } finally {
+                submitButton.textContent = submitButtonDefaultText;
+            }
 
             if (!payPalOrderId) {
                 submitButton.disabled = false;

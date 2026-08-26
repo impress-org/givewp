@@ -40,6 +40,7 @@ function give_on_core_settings_import_start() {
 			url: ajaxurl,
 			data: {
 				action: Give.fn.getGlobalVar( 'core_settings_import' ),
+				_wpnonce: Give.fn.getGlobalVar( 'core_settings_import_nonce' ),
 				fields: $form.serialize(),
 			},
 			dataType: 'json',

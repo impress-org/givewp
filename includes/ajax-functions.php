@@ -672,6 +672,7 @@ add_action( 'wp_ajax_give_check_for_form_price_variations_html', 'give_check_for
 /**
  * Send Confirmation Email For Complete Donation History Access.
  *
+ * @since 4.16.1 Always return a uniform success response regardless of donor existence or throttle state.
  * @since 1.8.17
  *
  * @return bool
@@ -689,67 +690,29 @@ function give_confirm_email_for_donation_access() {
 	}
 
 	$donor = Give()->donors->get_donor_by( 'email', give_clean( $_POST['email'] ) );
-	if ( Give()->email_access->can_send_email( $donor->id ) ) {
-		$return     = [];
-		$email_sent = Give()->email_access->send_email( $donor->id, $donor->email );
-
-		$return['status'] = 'success';
-
-		if ( ! $email_sent ) {
-			$return['status']  = 'error';
-			$return['message'] = Give_Notices::print_frontend_notice(
-				__( 'Unable to send email. Please try again.', 'give' ),
-				false,
-				'error'
-			);
-		}
-
-		/**
-		 * Filter to modify access mail send notice
-		 *
-		 * @since 2.1.3
-		 *
-		 * @param string Send notice message for email access.
-		 *
-		 * @return  string $message Send notice message for email access.
-		 */
-		$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
-
-		$return['message'] = Give_Notices::print_frontend_notice(
-			$message,
-			false,
-			'success'
-		);
-
-	} else {
-		$value            = Give()->email_access->verify_throttle / 60;
-		$return['status'] = 'error';
-
-		/**
-		 * Filter to modify email access exceed notices message.
-		 *
-		 * @since 2.1.3
-		 *
-		 * @param string $message email access exceed notices message
-		 * @param int $value email access exceed times
-		 *
-		 * @return string $message email access exceed notices message
-		 */
-		$message = (string) apply_filters(
-			'give_email_access_requests_exceed_notice',
-			sprintf(
-				__( 'Too many access email requests detected. Please wait %s before requesting a new donation history access link.', 'give' ),
-				sprintf( _n( '%s minute', '%s minutes', $value, 'give' ), $value )
-			),
-			$value
-		);
-
-		$return['message'] = Give_Notices::print_frontend_notice(
-			$message,
-			false,
-			'error'
-		);
+	if ( is_object( $donor ) && Give()->email_access->can_send_email( $donor->id ) ) {
+		Give()->email_access->send_email( $donor->id, $donor->email );
 	}
+
+	$return            = [];
+	$return['status']  = 'success';
+
+	/**
+	 * Filter to modify access mail send notice
+	 *
+	 * @since 2.1.3
+	 *
+	 * @param string Send notice message for email access.
+	 *
+	 * @return  string $message Send notice message for email access.
+	 */
+	$message = (string) apply_filters( 'give_email_access_mail_send_notice', __( 'Please check your email and click on the link to access your complete donation history.', 'give' ) );
+
+	$return['message'] = Give_Notices::print_frontend_notice(
+		$message,
+		false,
+		'success'
+	);
 
 	echo json_encode( $return );
 	give_die();
