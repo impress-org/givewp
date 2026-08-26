@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Added additional hardening for serialized data handling in the donation flow.
+timestamp: 2026-08-26T19:41:25.885Z
