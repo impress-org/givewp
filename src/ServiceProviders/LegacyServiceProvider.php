@@ -9,6 +9,7 @@ use Give\Framework\Permissions\Migrations\FixGiveAccountantCapabilities;
 use Give\Framework\Permissions\Migrations\FixGiveWorkerCapabilities;
 use Give\PaymentGateways\Gateways\Stripe\LegacyStripeAdapter;
 use Give\Route\Form;
+use Give\ServiceProviders\Exceptions\UnknownRequestTypeException;
 
 /**
  * Class LegacyServiceProvider

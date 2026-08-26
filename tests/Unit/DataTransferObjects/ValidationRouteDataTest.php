@@ -61,6 +61,59 @@ class ValidationRouteDataTest extends TestCase
     }
 
     /**
+     * The per-step validation route fires givewp_donation_form_fields_validated as an in-progress
+     * (non-final) validation, so spam-protection listeners can skip it and only check the donation
+     * once on final submission.
+     *
+     * @since 4.16.0
+     *
+     * @throws DonationFormFieldErrorsException
+     */
+    public function testValidateFiresFieldsValidatedActionAsNonFinalSubmission()
+    {
+        /** @var DonationForm $form */
+        $form = DonationForm::factory()->create();
+
+        add_filter('give_get_option_gateways', static function ($gateways) {
+            return array_merge($gateways, [TestGateway::id() => true]);
+        });
+
+        add_filter('give_default_gateway', static function () {
+            return TestGateway::id();
+        });
+
+        $isFinalSubmission = null;
+        add_action(
+            'givewp_donation_form_fields_validated',
+            static function ($values, $isFinal = true) use (&$isFinalSubmission) {
+                $isFinalSubmission = $isFinal;
+            },
+            10,
+            2
+        );
+
+        $request = [
+            'formId' => $form->id,
+            'gatewayId' => TestGateway::id(),
+            'amount' => 100,
+            'currency' => "USD",
+            'firstName' => "Bill",
+            'lastName' => "Murray",
+            'email' => "billmurray@givewp.com",
+            'formTitle' => $form->title,
+            'company' => null,
+            'donationType' => DonationType::SINGLE()->getValue(),
+            'subscriptionFrequency' => null,
+            'subscriptionPeriod' => null,
+            'subscriptionInstallments' => null,
+        ];
+
+        ValidationRouteData::fromRequest($request)->validate();
+
+        $this->assertFalse($isFinalSubmission);
+    }
+
+    /**
      * @since 3.0.0
      * @throws DonationFormFieldErrorsException|Exception
      */

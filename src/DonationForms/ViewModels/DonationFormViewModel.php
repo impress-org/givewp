@@ -7,6 +7,7 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
+use Give\DonationForms\Actions\IsolateEnqueuedFormViewAssets;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
@@ -78,37 +79,43 @@ class DonationFormViewModel
     }
 
     /**
+     * @since 4.14.6 Sanitize output; campaign colors bypass FormSettings::fromArray.
      * @since 4.1.0 Add support for campaign colors
      * @since 3.0.0
      */
     public function primaryColor(): string
     {
+        $color = $this->formSettings->primaryColor ?? '';
+
         if ($this->formSettings->inheritCampaignColors) {
             $campaignColors = $this->getCampaignColors($this->donationFormId);
 
             if ($campaignColors['primaryColor']) {
-                return $campaignColors['primaryColor'];
+                $color = $campaignColors['primaryColor'];
             }
         }
 
-        return $this->formSettings->primaryColor ?? '';
+        return sanitize_hex_color($color) ?? '';
     }
 
     /**
+     * @since 4.14.6 Sanitize output; campaign colors bypass FormSettings::fromArray.
      * @since 4.1.0 Add support for campaign colors
      * @since 3.0.0
      */
     public function secondaryColor(): string
     {
+        $color = $this->formSettings->secondaryColor ?? '';
+
         if ($this->formSettings->inheritCampaignColors) {
             $campaignColors = $this->getCampaignColors($this->donationFormId);
 
             if ($campaignColors['secondaryColor']) {
-                return $campaignColors['secondaryColor'];
+                $color = $campaignColors['secondaryColor'];
             }
         }
 
-        return $this->formSettings->secondaryColor ?? '';
+        return sanitize_hex_color($color) ?? '';
     }
 
     /**
@@ -274,12 +281,16 @@ class DonationFormViewModel
      *  - This ensures template compatability with global WP css variables as needed. Loads before our templates, so they can use things like global font-family, etc.
      * 2. Enqueue our donation form specific scripts & styles.
      *  - We will let WP handle the actual printing depending on how they were enqueued.
-     * 3. Call the specific WP functions wp_print_styles() and wp_print_head_scripts()
+     * 3. Pin the script and style queues to what we enqueued.
+     *  - The print functions below fire actions that other plugins enqueue from, so the queues
+     *    have to be constrained before printing rather than trusted.
+     * 4. Call the specific WP functions wp_print_styles() and wp_print_head_scripts()
      *  - This will only print the styles and scripts that are enqueued within our route - so we don't have to dequeue a bunch of stuff.
-     * 4. Manually echo our window data and root div for our React app to consume
-     * 5. Finally, call the specific WP function wp_print_footer_scripts()
+     * 5. Manually echo our window data and root div for our React app to consume
+     * 6. Finally, call the specific WP function wp_print_footer_scripts()
      *  - This will only print the footer scripts that are enqueued within our route.
      *
+     * @since 4.16.7 Isolate the printed assets from anything enqueued after the form has been prepared
      * @since 4.14.3 Escape HTML attributes for classNames property
      * @since 3.20.0 Adds class for form design
      * @since 3.11.0 Sanitize customCSS property
@@ -293,6 +304,8 @@ class DonationFormViewModel
             $this->donationFormId,
             $this->designId()
         );
+
+        (new IsolateEnqueuedFormViewAssets())();
 
         ob_start();
         wp_print_styles();

@@ -172,6 +172,7 @@ class StripePaymentElementGateway extends PaymentGateway implements PaymentGatew
     public function refundDonation(Donation $donation): PaymentRefunded
     {
         try {
+            $this->setUpStripeAppInfo($donation->formId);
             $refund = $this->refundStripePayment($donation);
 
             if ($refund->status !== 'succeeded') {

@@ -304,14 +304,25 @@
 
     &-heading, &-heading * {
         position: relative;
-        margin-block-end: 1rem;
         font-size: 1.75rem;
         font-weight: 600;
         line-height: 1.2;
         text-shadow: 0 0.07em 0.14em rgba(0, 0, 0, 0.15);
         color: currentColor;
 
-        &::after {
+        > * {
+            color: currentColor;
+        }
+    }
+
+    &-heading {
+        margin-block-end: 1rem;
+
+        > br {
+            display: none;
+        }
+
+        &:not(:empty)::after {
             position: absolute;
             content: '';
             display: block;
@@ -323,10 +334,6 @@
             inset-block-start: calc(100% + 1.25rem);
             transform: translate(-50%);
         }
-    }
-
-    &-heading:has(*) {
-        margin-block-end: 0;
     }
 
     &-description, &-description * {
