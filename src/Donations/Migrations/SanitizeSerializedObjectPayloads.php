@@ -46,7 +46,7 @@ class SanitizeSerializedObjectPayloads extends Migration
             'meta_id',
             'meta_key',
             'meta_value',
-            ['first_name', 'last_name', 'user_title', 'billing_address']
+            ['_give_donor_first_name', '_give_donor_last_name', '_give_donor_title_prefix', '_give_donor_billing_address']
         );
     }
 
@@ -60,7 +60,7 @@ class SanitizeSerializedObjectPayloads extends Migration
             'meta_id',
             'meta_key',
             'meta_value',
-            ['_give_payment_meta']
+            ['_give_payment_meta', '_give_donor_billing_first_name', '_give_donor_billing_last_name']
         );
     }
 

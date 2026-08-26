@@ -1714,10 +1714,17 @@ function give_donation_form_validate_name_fields( $post_data ) {
     }
 
     $is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
-    $is_alpha_last_name  = ( ! empty( $post_data['give_last'] ) && ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
+
+    $lastName = isset( $post_data['give_last'] ) ? $post_data['give_last'] : '';
+    $is_alpha_last_name = ( ! is_email( $lastName ) && ! preg_match( '~[0-9]~', $lastName ) );
+
     $is_alpha_title = ( isset($post_data['give_title']) && ! is_email( $post_data['give_title'] ) && ! preg_match( '~[0-9]~', $post_data['give_title'] ) );
 
-    if (!$is_alpha_first_name || ! $is_alpha_last_name || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title) ) {
+    if ( ! $is_alpha_first_name || ( ! empty( $lastName ) && ! $is_alpha_last_name ) || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title ) ) {
         give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
+    }
+
+    if ( give_is_last_name_required( $formId ) && empty( $lastName ) ) {
+        give_set_error( 'invalid_last_name', esc_html__( 'Please enter your last name.', 'give' ) );
     }
 }

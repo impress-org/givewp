@@ -58,7 +58,7 @@ class SanitizeSerializedObjectPayloadsTest extends TestCase
         $donorId = $this->createDonor();
         DB::table('give_donormeta')->insert([
             'donor_id'   => $donorId,
-            'meta_key'   => 'last_name',
+            'meta_key'   => '_give_donor_last_name',
             'meta_value' => serialize((object)['marker' => 'gadget']),
         ]);
 
@@ -66,7 +66,7 @@ class SanitizeSerializedObjectPayloadsTest extends TestCase
 
         $value = DB::table('give_donormeta')
             ->where('donor_id', $donorId)
-            ->where('meta_key', 'last_name')
+            ->where('meta_key', '_give_donor_last_name')
             ->getAll()[0]->meta_value;
 
         $this->assertSame('', $value);

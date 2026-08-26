@@ -121,7 +121,6 @@ class UtilsTest extends TestCase
         // Re-serialization of false must not produce valid serialized string.
         $result = Utils::safeUnserialize(serialize((object)['evil' => 'payload']));
         $this->assertFalse($result);
-        $this->assertNotEquals(serialize((object)['evil' => 'payload']), $result);
     }
 
     /**
