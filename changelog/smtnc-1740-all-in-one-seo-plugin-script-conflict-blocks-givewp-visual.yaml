@@ -1,6 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved a conflict where scripts enqueued by other plugins while a
-  donation form was being rendered could stop the form builder design preview
-  and embedded forms from loading.
-timestamp: 2026-08-11T06:48:00.849Z

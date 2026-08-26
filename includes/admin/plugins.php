@@ -125,48 +125,6 @@ function give_get_admin_page_menu_title() {
 }
 
 /**
- * Store recently activated Give's addons to wp options.
- *
- * @since 2.1.0
- */
-function give_recently_activated_addons() {
-	// Check if action is set.
-	if ( isset( $_REQUEST['action'] ) ) {
-		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
-		$plugins       = [];
-
-		switch ( $plugin_action ) {
-			case 'activate': // Single add-on activation.
-				$plugins[] = $_REQUEST['plugin'];
-				break;
-			case 'activate-selected': // If multiple add-ons activated.
-				$plugins = $_REQUEST['checked'];
-				break;
-		}
-
-		if ( ! empty( $plugins ) ) {
-
-			$give_addons = give_get_recently_activated_addons();
-
-			foreach ( $plugins as $plugin ) {
-				// Get plugins which has 'Give-' as prefix.
-				if ( stripos( $plugin, 'Give-' ) !== false ) {
-					$give_addons[] = $plugin;
-				}
-			}
-
-			if ( ! empty( $give_addons ) ) {
-				// Update the Give's activated add-ons.
-				update_option( 'give_recently_activated_addons', $give_addons, false );
-			}
-		}
-	}
-}
-
-// Add add-on plugins to wp option table.
-add_action( 'activated_plugin', 'give_recently_activated_addons', 10 );
-
-/**
  * Create new menu in plugin section that include all the add-on
  *
  * @since 2.1.0
@@ -435,17 +393,6 @@ function give_plugin_notice_css() {
 }
 
 add_action( 'admin_head', 'give_plugin_notice_css' );
-
-/**
- * Get list of add-on last activated.
- *
- * @since 2.1.3
- *
- * @return mixed|array list of recently activated add-on
- */
-function give_get_recently_activated_addons() {
-	return get_option( 'give_recently_activated_addons', [] );
-}
 
 /**
  * Renders the Give Deactivation Survey Form.

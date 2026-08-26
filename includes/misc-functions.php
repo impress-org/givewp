@@ -1904,6 +1904,76 @@ function give_get_active_by_user_meta( $banner_addon_name ) {
 }
 
 /**
+ * Store recently activated Give's addons to wp options.
+ *
+ * @since 4.16.7.1 Moved from includes/admin/plugins.php so the listener is registered on every
+ *            request, and fall back to the plugin file passed by the `activated_plugin`
+ *            action so add-ons activated outside of plugins.php (REST, WP-CLI,
+ *            programmatic `activate_plugin()`, etc.) are recorded too.
+ * @since 2.1.0
+ *
+ * @param string $activated_plugin Plugin file passed by the `activated_plugin` action.
+ */
+function give_recently_activated_addons( $activated_plugin = '' ) {
+	$plugins = [];
+
+	// Check if action is set.
+	if ( isset( $_REQUEST['action'] ) ) {
+		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
+
+		switch ( $plugin_action ) {
+			case 'activate': // Single add-on activation.
+				$plugins[] = $_REQUEST['plugin'];
+				break;
+			case 'activate-selected': // If multiple add-ons activated.
+				$plugins = $_REQUEST['checked'];
+				break;
+		}
+	}
+
+	/**
+	 * Activations that do not come from the plugins.php form (Harbor's feature manager,
+	 * WP-CLI, plugin dependencies, any direct `activate_plugin()` call) have no matching
+	 * request parameters, so use the plugin file the action itself provides.
+	 */
+	if ( empty( $plugins ) && ! empty( $activated_plugin ) ) {
+		$plugins[] = $activated_plugin;
+	}
+
+	if ( ! empty( $plugins ) ) {
+
+		$give_addons = give_get_recently_activated_addons();
+
+		foreach ( $plugins as $plugin ) {
+			// Get plugins which has 'Give-' as prefix.
+			if ( stripos( $plugin, 'Give-' ) !== false ) {
+				$give_addons[] = $plugin;
+			}
+		}
+
+		if ( ! empty( $give_addons ) ) {
+			// Update the Give's activated add-ons.
+			update_option( 'give_recently_activated_addons', $give_addons, false );
+		}
+	}
+}
+
+// Add add-on plugins to wp option table.
+add_action( 'activated_plugin', 'give_recently_activated_addons', 10 );
+
+/**
+ * Get list of add-on last activated.
+ *
+ * @since 4.16.7.1 Moved from includes/admin/plugins.php.
+ * @since 2.1.3
+ *
+ * @return mixed|array list of recently activated add-on
+ */
+function give_get_recently_activated_addons() {
+	return get_option( 'give_recently_activated_addons', [] );
+}
+
+/**
  * Get time interval for which nonce is valid
  *
  * @return int

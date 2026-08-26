@@ -1,5 +1,16 @@
 == Changelog ==
 
+= 4.16.7.1: August 24th, 2026 =
+* Security: Added additional validation to PayPal Donations order requests.
+
+= 4.16.7: August 20th, 2026 =
+* Security: Hardened donor-account email access authentication.
+* Security: Improved validation of the checkout login form.
+* Fix: Resolved an issue where paused or failing Stripe Payment Element subscriptions remained stuck when the donor updated their payment method or the subscription was resumed in Stripe.
+* Fix: Resolved a conflict where scripts enqueued by other plugins while a donation form was being rendered could stop the form builder design preview and embedded forms from loading.
+* Fix: Resolved an issue where editing a page could exhaust the PHP call stack when a theme or plugin filtered post metadata.
+* Fix: Activation banner for addons doesn't show when addons are activated from the Unified License Manager
+
 = 4.16.6.1: August 12th, 2026 =
 * Security: Added additional validation to PayPal Standard IPN.
 
