@@ -27,6 +27,7 @@ class App
     }
 
     /**
+     * @since 4.16.7 Only pass string tokens to urlencode().
      * @since 3.6.0 Escape attributes
      *
      * @param array $attributes
@@ -44,7 +45,10 @@ class App
         }
 
         if (isset($_GET['give_nl'])) {
-            $queryArgs['give_nl'] = urlencode(give_clean($_GET['give_nl']));
+            $giveNl = give_clean($_GET['give_nl']);
+            if (is_string($giveNl)) {
+                $queryArgs['give_nl'] = urlencode($giveNl);
+            }
         }
 
         if (isset($_GET['_give_hash'])) {

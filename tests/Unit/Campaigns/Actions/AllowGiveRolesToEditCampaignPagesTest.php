@@ -331,6 +331,50 @@ final class AllowGiveRolesToEditCampaignPagesTest extends TestCase
     }
 
     /**
+     * A third-party filter on get_post_metadata that runs a capability check re-enters this action
+     * through map_meta_cap. The campaign page lookup must not read its meta through that filter.
+     *
+     * @since 4.16.7
+     */
+    public function testCampaignPageLookupIsUnaffectedByPostMetaFilters(): void
+    {
+        $campaign = Campaign::factory()->create();
+        $page = $campaign->page();
+        $userId = self::factory()->user->create(['role' => 'give_worker']);
+
+        add_filter('map_meta_cap', [$this->action, 'mapMetaCap'], 10, 4);
+
+        $depth = 0;
+        $maxDepth = 0;
+        $metaFilter = static function ($value, $objectId, $metaKey) use ($userId, &$depth, &$maxDepth) {
+            if ($metaKey !== CampaignPageMetaKeys::CAMPAIGN_ID) {
+                return $value;
+            }
+
+            $depth++;
+            $maxDepth = max($maxDepth, $depth);
+
+            /* Cap the nesting so a regression fails the assertion instead of exhausting the stack. */
+            if ($depth < 10) {
+                user_can($userId, 'edit_post', $objectId);
+            }
+
+            $depth--;
+
+            return $value;
+        };
+        add_filter('get_post_metadata', $metaFilter, 10, 3);
+
+        $result = $this->action->mapMetaCap(['edit_others_pages'], 'edit_post', $userId, [$page->id]);
+
+        remove_filter('get_post_metadata', $metaFilter, 10);
+        remove_filter('map_meta_cap', [$this->action, 'mapMetaCap'], 10);
+
+        $this->assertSame(0, $maxDepth, 'The campaign ID meta was read through get_post_metadata.');
+        $this->assertEmpty($result);
+    }
+
+    /**
      * @since 4.14.0
      *
      * @dataProvider pageMetaCapabilitiesProvider

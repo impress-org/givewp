@@ -15,6 +15,7 @@ class UpdateDonationLevelId
      * this will update the donation level ID meta with the level array key,
      * which is used in the donation details screen.
      *
+     * @since 4.16.5 Add guard clause to prevent updating the levelId if it is already set.
      * @since 3.0.0
      *
      * @throws NameCollisionException|Exception
@@ -28,9 +29,22 @@ class UpdateDonationLevelId
             return;
         }
 
+        $levels = $amountField->getLevels();
+
+        if ($donation->levelId !== '') {
+            $currentLevelId = (int)$donation->levelId;
+            if (isset($levels[$currentLevelId]) && (float)$levels[$currentLevelId]['value'] === (float)$donation->intendedAmount()->formatToDecimal()) {
+                return;
+            }
+        }
+
+        $levelValues = array_map(static function ($level) {
+            return isset($level['value']) ? (float)$level['value'] : null;
+        }, $levels);
+
         $donationLevel = array_search(
             (float)$donation->intendedAmount()->formatToDecimal(),
-            $amountField->getLevels(),
+            $levelValues,
             true
         );
 

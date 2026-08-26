@@ -189,6 +189,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
+     * @since 4.16.6 Skip readonly schema properties when applying PATCH updates.
      * @since 4.8.0 Update donor name when firstName or lastName is updated
      * @since 4.7.0 Add support for updating custom fields
      * @since 4.4.0
@@ -203,14 +204,24 @@ class DonorController extends WP_REST_Controller
             return new WP_REST_Response(__('Donor not found', 'give'), 404);
         }
 
-        $nonEditableFields = [
-            'id',
-            'userId',
-            'createdAt',
-        ];
+        $nonEditableFields = array_merge(
+            [
+                'id',
+                'userId',
+                'createdAt',
+            ],
+            array_keys(
+                array_filter(
+                    $this->get_item_schema()['properties'] ?? [],
+                    static function (array $property): bool {
+                        return ! empty($property['readonly']);
+                    }
+                )
+            )
+        );
 
         foreach ($request->get_params() as $key => $value) {
-            if (!in_array($key, $nonEditableFields)) {
+            if (! in_array($key, $nonEditableFields, true)) {
                 if ($donor->hasProperty($key)) {
                     if ($key === 'addresses') {
                         $donor->addresses = array_map(function ($address) {

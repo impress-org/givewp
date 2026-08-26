@@ -97,7 +97,10 @@ const Content = () => {
     const [newPassword, setNewPassword] = useState('');
     const [passwordUpdated, setPasswordUpdated] = useState(false);
     const handlePasswordUpdate = async () => {
-        updatePasswordWithAPI(newPassword)
+        if (!newPassword.trim()) {
+            return;
+        }
+        updatePasswordWithAPI(newPassword);
         setNewPassword('');
         setPasswordUpdated(true);
     };
@@ -218,7 +221,7 @@ const Content = () => {
                 value={newPassword}
                 onChange={(value) => setNewPassword(value)}
             />
-            <Button onClick={() => handlePasswordUpdate()}>
+            <Button onClick={() => handlePasswordUpdate()} disabled={!newPassword.trim()}>
                 {passwordUpdated ? (
                     <Fragment>
                         {__('Updated', 'give')} <FontAwesomeIcon icon="check" fixedWidth />

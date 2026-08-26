@@ -8,8 +8,11 @@
 /.phpstan
 /.wordpress-org
 /.cursor
+/.claude
+/docs
 
 /bin
+/changelog
 /tests
 /node_modules
 /assets/src
@@ -72,6 +75,8 @@ phpcs.xml.dist
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
 contributing.md
+AGENTS.md
+CLAUDE.md
 postcss.config.js
 webpack.config.js
 webpack.mix.js
@@ -85,3 +90,8 @@ docker_tag
 output.log
 docker-compose.yml
 wp-textdomain.js
+
+/.dependabot.yml
+/LICENSE
+/wpml-config.xml
+

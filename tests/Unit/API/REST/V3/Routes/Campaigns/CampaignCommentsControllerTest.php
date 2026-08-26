@@ -116,7 +116,7 @@ final class CampaignCommentsControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testUnauthenticatedUserCannotViewCommentsOnDraftCampaign(): void
     {
@@ -132,7 +132,7 @@ final class CampaignCommentsControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testUnauthenticatedUserCannotViewCommentsOnArchivedCampaign(): void
     {
@@ -148,7 +148,7 @@ final class CampaignCommentsControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testAuthenticatedNonAdminCannotViewCommentsOnDraftCampaign(): void
     {
@@ -164,7 +164,7 @@ final class CampaignCommentsControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testAuthenticatedNonAdminCannotViewCommentsOnArchivedCampaign(): void
     {
@@ -180,7 +180,7 @@ final class CampaignCommentsControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testAdminCanViewCommentsOnDraftCampaign(): void
     {
@@ -193,7 +193,7 @@ final class CampaignCommentsControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testAdminCanViewCommentsOnArchivedCampaign(): void
     {
@@ -206,7 +206,7 @@ final class CampaignCommentsControllerTest extends RestApiTestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testAnyoneCanViewCommentsOnActiveCampaign(): void
     {

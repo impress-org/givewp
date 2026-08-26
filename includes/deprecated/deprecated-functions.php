@@ -1239,3 +1239,17 @@ function give_stripe_disconnect_url( $account_id = '', $account_name = '' ) {
 		'https://connect.givewp.com/stripe/connect.php'
     ) );
 }
+
+/**
+ * Admin notices for invalid or expired add-on licenses.
+ *
+ * Replaced by the Harbor unified licensing experience.
+ *
+ * @since      2.5.0
+ * @deprecated 4.15.0
+ *
+ * @return void
+ */
+function give_license_notices() {
+	_give_deprecated_function( __FUNCTION__, '4.15.0' );
+}

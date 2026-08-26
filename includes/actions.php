@@ -98,11 +98,16 @@ add_action( 'init', 'give_post_actions' );
  * @param  int   $user_id   User ID.
  * @param  array $user_data User Data.
  *
+ * @since 4.16.6 Only auto-link when registered via the donation-checkout flow.
  * @since  1.7
  *
  * @return void
  */
 function give_connect_donor_to_wpuser( $user_id, $user_data ) {
+	if ( empty( $user_data['give_donation_checkout_registration'] ) ) {
+		return;
+	}
+
 	/* @var Give_Donor $donor */
 	$donor = new Give_Donor( $user_data['user_email'] );
 

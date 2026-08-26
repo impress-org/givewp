@@ -89,7 +89,7 @@ class DonationFormViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testPrimaryColorAccessorSanitizesMaliciousValue()
     {
@@ -106,7 +106,7 @@ class DonationFormViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testSecondaryColorAccessorSanitizesMaliciousValue()
     {
@@ -123,7 +123,7 @@ class DonationFormViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testPrimaryColorAccessorPreservesValidHex()
     {
@@ -138,7 +138,7 @@ class DonationFormViewModelTest extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.15.0
      */
     public function testSecondaryColorAccessorPreservesValidHex()
     {

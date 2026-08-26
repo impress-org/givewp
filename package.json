@@ -7,6 +7,11 @@
         "build": "wp-scripts build",
         "watch": "wp-scripts start",
         "env": "wp-env",
+        "env:start": "wp-env start --auto-port",
+        "env:stop": "wp-env stop",
+        "test:e2e": "playwright test --project=chromium",
+        "test:e2e:ui": "playwright test --project=chromium --ui",
+        "test:e2e:headed": "playwright test --project=headed",
         "packages-update": "wp-scripts packages-update",
         "plugin-zip": "wp-scripts plugin-zip"
     },
@@ -20,6 +25,31 @@
         "url": "https://github.com/impress-org/give/issues"
     },
     "homepage": "https://github.com/impress-org/give#readme",
+    "changelogger": {
+        "versioning": "stellarwp",
+        "changesDir": "changelog",
+        "ordering": [
+            "type",
+            "content"
+        ],
+        "types": {
+            "feature": "Feature",
+            "enhancement": "Enhancement",
+            "tweak": "Tweak",
+            "fix": "Fix",
+            "security": "Security"
+        },
+        "files": [
+            {
+                "path": "readme.txt",
+                "strategy": "bin/lib/changelog-strategy.js"
+            },
+            {
+                "path": "changelog.txt",
+                "strategy": "bin/lib/changelog-strategy.js"
+            }
+        ]
+    },
     "_zipname": "give",
     "_version_files": [
         {
@@ -32,14 +62,21 @@
         }
     ],
     "devDependencies": {
+        "@playwright/test": "^1.62.1",
+        "@stellarwp/changelogger": "^0.10.0",
         "@types/lodash": "^4.14.199",
+        "@types/node": "^20.19.43",
         "@types/react": "^18.0.38",
         "@types/react-datepicker": "^4.15.0",
         "@types/react-dom": "^18.0.11",
         "@types/wordpress__blocks": "^12.5.0",
         "@types/wordpress__components": "^23.0.1",
-        "@wordpress/env": "^5.10.0",
+        "@wordpress/e2e-test-utils-playwright": "^1.53.0",
+        "@wordpress/env": "^11.13.0",
         "@wordpress/scripts": "^26.19.0",
+        "bats": "^1.13.0",
+        "bats-assert": "^2.2.4",
+        "bats-support": "^0.3.0",
         "copy-webpack-plugin": "^13.0.0",
         "fork-ts-checker-webpack-plugin": "^9.0.2",
         "jest": "^29.6.2",
@@ -163,6 +200,6 @@
         }
     },
     "volta": {
-        "node": "18.20.7"
+        "node": "22.23.2"
     }
 }
