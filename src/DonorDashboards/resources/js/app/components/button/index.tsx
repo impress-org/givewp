@@ -14,7 +14,7 @@ type ButtonProps = {
     disabled?: boolean;
 };
 
-const Button = ({icon, children, onClick, href, type, variant,classnames, ...rest}: ButtonProps) => {
+const Button = ({icon, children, onClick, href, type, variant, disabled, classnames, ...rest}: ButtonProps) => {
     const handleHrefClick = (e) => {
         e.preventDefault();
         window.parent.location = href;
@@ -40,9 +40,11 @@ const Button = ({icon, children, onClick, href, type, variant,classnames, ...res
             className={cx('give-donor-dashboard-button', classnames, {
                 ['give-donor-dashboard-button--primary']: !variant,
                 ['give-donor-dashboard-button--variant']: variant,
+                ['disabled']: disabled,
             })}
             onClick={onClick ? () => onClick() : null}
             type={type}
+            disabled={disabled}
             {...rest}
         >
             <span>{children}</span>
