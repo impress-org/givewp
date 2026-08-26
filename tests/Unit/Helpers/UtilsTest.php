@@ -91,13 +91,36 @@ class UtilsTest extends TestCase
     public function testSafeUnserializeNeverReturnsObjects()
     {
         $objectPayload = serialize((object)['name' => 'James']);
-        $this->assertSame($objectPayload, Utils::safeUnserialize($objectPayload));
-        $this->assertSame($objectPayload, Utils::maybeSafeUnserialize($objectPayload));
+        $this->assertFalse(Utils::safeUnserialize($objectPayload));
+        $this->assertFalse(Utils::maybeSafeUnserialize($objectPayload));
 
         // Objects nested inside arrays are also neutralized.
         $nestedPayload = serialize(['name' => 'James', 'object' => (object)['name' => 'James']]);
-        $this->assertSame($nestedPayload, Utils::safeUnserialize($nestedPayload));
-        $this->assertSame($nestedPayload, Utils::maybeSafeUnserialize($nestedPayload));
+        $this->assertFalse(Utils::safeUnserialize($nestedPayload));
+        $this->assertFalse(Utils::maybeSafeUnserialize($nestedPayload));
+    }
+
+    /**
+     * Regression test for SVUL-82: safeUnserialize must return false for object payloads
+     * to prevent re-serialization and gadget chain exploitation.
+     *
+     * @since 4.16.8
+     */
+    public function testSafeUnserializeReturnsFalseForObjectPayloads()
+    {
+        // Simple object.
+        $this->assertFalse(Utils::safeUnserialize(serialize((object)['test' => 'value'])));
+
+        // Nested object in array.
+        $this->assertFalse(Utils::safeUnserialize(serialize(['data' => (object)['key' => 'val']])));
+
+        // Object with custom class.
+        $this->assertFalse(Utils::safeUnserialize(serialize(new \stdClass())));
+
+        // Re-serialization of false must not produce valid serialized string.
+        $result = Utils::safeUnserialize(serialize((object)['evil' => 'payload']));
+        $this->assertFalse($result);
+        $this->assertNotEquals(serialize((object)['evil' => 'payload']), $result);
     }
 
     /**

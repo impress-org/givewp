@@ -226,7 +226,7 @@ class Utils
          * @since 4.16.6
          */
         if (self::containsPhpIncompleteClass($unserializedData)) {
-            return $data;
+            return false;
         }
 
         /*

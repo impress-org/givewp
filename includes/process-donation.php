@@ -163,6 +163,19 @@ function give_process_donation_form() {
 		'address'    => $user['address'],
 	];
 
+	// Reject serialized data in name fields (SVUL-82).
+	$serialized_keys = array_filter(
+		$user_info,
+		static function ( $value ) {
+			return is_string( $value ) && \Give\Helpers\Utils::isSerialized( $value );
+		}
+	);
+
+	if ( ! empty( $serialized_keys ) ) {
+		give_set_error( 'give_serialized_user_info', esc_html__( 'Name fields cannot contain serialized data.', 'give' ) );
+		return;
+	}
+
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
 	// Donation form ID.
@@ -197,7 +210,7 @@ function give_process_donation_form() {
 	);
 
 	// Setup donation information.
-	$user_info = array_map('\Give\Helpers\Utils::maybeSafeUnserialize', stripslashes_deep( $user_info ));
+	$user_info = stripslashes_deep( $user_info );
 	$donation_data = [
 		'price'        => $price,
 		'purchase_key' => $purchase_key,
