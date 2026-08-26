@@ -9,6 +9,8 @@
  * @since       2.5.0
  */
 
+use Give\VendorOverrides\Harbor\Actions\HarborHasLoaded;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -19,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Note: only for internal use
  *
- * @since TBD Use Plugin_Upgrader to install/update the add-on, replacing unreliable
+ * @since 4.16.6 Use Plugin_Upgrader to install/update the add-on, replacing unreliable
  *            filename-based pre-existing checks and post-install detection.
  * @since 2.5.0
  */
@@ -86,14 +88,27 @@ function give_upload_addon_handler() {
 	$skin     = new Automatic_Upgrader_Skin();
 	$upgrader = new Plugin_Upgrader( $skin );
 
-	$result = $upgrader->install( $_FILES['file']['tmp_name'], [ 'clear_destination' => true ] );
+	$buffer_level = ob_get_level();
+
+	$result = $upgrader->install( $_FILES['file']['tmp_name'] );
+
+	while ( ob_get_level() > $buffer_level ) {
+		// A non-removable buffer, such as zlib, would loop until the request times out.
+		if ( ! @ob_end_clean() ) {
+			break;
+		}
+	}
 
 	if ( is_wp_error( $result ) ) {
 		wp_send_json_error( [ 'errorMsg' => $result->get_error_message() ] );
 	}
 
 	if ( ! $result ) {
-		wp_send_json_error( [ 'errorMsg' => __( 'The add-on could not be installed. Please try again or upload it manually.', 'give' ) ] );
+		$error_message = is_wp_error( $skin->result )
+			? $skin->result->get_error_message()
+			: __( 'The add-on could not be installed. Please try again or upload it manually.', 'give' );
+
+		wp_send_json_error( [ 'errorMsg' => $error_message ] );
 	}
 
 	// Refresh the plugin cache and find the newly installed or updated plugin.
@@ -138,7 +153,7 @@ function give_upload_addon_handler() {
  * Returns the single top-level directory name inside the ZIP (e.g. "give-recurring").
  * Returns an empty string if the ZIP can't be read or contains multiple top-level items.
  *
- * @since TBD
+ * @since 4.16.6
  *
  * @param string $zip_file Absolute path to the ZIP file.
  *
@@ -189,7 +204,7 @@ add_action( 'wp_ajax_give_upload_addon', 'give_upload_addon_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Redirect Liquid Web unified license keys (LWSW-) to the Liquid Web License Manager.
+ * @since 4.16.7 Redirect unified license keys (LWSW-) to the Unified License Manager, when it is available.
  * @since 2.5.0
  */
 function give_get_license_info_handler() {
@@ -214,15 +229,20 @@ function give_get_license_info_handler() {
 		);
 
 	} elseif ( 0 === stripos( $license_key, 'LWSW-' ) ) {
-		$license_manager_url = lw_harbor_get_license_page_url();
+		// The Unified License Manager is only available once a premium add-on is installed and active.
+		$harborHasLoaded = give( HarborHasLoaded::class )();
+
+		$error_message = $harborHasLoaded
+			? sprintf(
+				/* translators: %s: URL to the Unified License Manager page */
+				__( 'This is a unified license key. To activate it, enter your license in the <a href="%s" target="_blank">Unified License Manager</a> instead.', 'give' ),
+				esc_url( lw_harbor_get_license_page_url() )
+			)
+			: __( 'This is a unified license key. It can be added from the Unified License Manager, which appears under GiveWP &gt; Licensing once an add-on is installed.', 'give' );
 
 		wp_send_json_error(
 			[
-				'errorMsg' => sprintf(
-					/* translators: %s: URL to the Liquid Web License Manager page */
-					__( 'This is a unified license key. To activate it, enter your license in the <a href="%s" target="_blank">Unified License Manager</a> instead.', 'give' ),
-					esc_url( $license_manager_url )
-				),
+				'errorMsg' => $error_message,
 			]
 		);
 
@@ -374,7 +394,7 @@ add_action( 'wp_ajax_give_get_license_info', 'give_get_license_info_handler' );
  *
  * Note: only for internal use
  *
- * @since TBD Guard against empty or invalid plugin paths that previously bypassed
+ * @since 4.16.6 Guard against empty or invalid plugin paths that previously bypassed
  *            the nonce and capability checks.
  * @since 2.5.0
  */

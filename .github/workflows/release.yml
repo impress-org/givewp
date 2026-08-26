@@ -13,9 +13,14 @@ jobs:
         runs-on: ubuntu-latest
         environment: live
         needs: tests
+        permissions:
+            contents: write
         steps:
             -   name: Checkout code
-                uses: actions/checkout@v2
+                uses: actions/checkout@v7
+                with:
+                    # Nothing here pushes over git, and the job goes on to run third-party actions.
+                    persist-credentials: false
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -23,10 +28,9 @@ jobs:
                     php-version: 7.4
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
-                    github-token: '' # TODO: Remove temporary fix for Composer authentication issue caused by GitHub switching to a ghs_APPID_JWT format that Composer does not support. See https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/
 
             -   name: Install composer dependencies
-                uses: php-actions/composer@v5
+                uses: php-actions/composer@v6
                 with:
                     php_version: 7.4
                     dev: no
@@ -34,9 +38,9 @@ jobs:
             -   name: Copy tcpdf fonts to vendor
                 run: sudo COMPOSER_ALLOW_SUPERUSER=1 composer run copy-fonts
 
-            -   uses: actions/setup-node@v4
+            -   uses: actions/setup-node@v7
                 with:
-                    node-version: '18'
+                    node-version-file: .nvmrc
 
             -   name: Install npm dependencies & build for translation
                 run: |
@@ -64,18 +68,50 @@ jobs:
                     SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
                     SLUG: give
 
+            # actions/upload-release-asset is archived and unmaintained. The GitHub CLI is preinstalled
+            # on the runner and does the same job against the release this run was triggered by.
             -   name: Upload release asset
-                uses: actions/upload-release-asset@v1
                 env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                with:
-                    upload_url: ${{ github.event.release.upload_url }}
-                    asset_path: ${{github.workspace}}/give.zip
-                    asset_name: give.zip
-                    asset_content_type: application/zip
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    # A tag can legally contain $() or backticks, and this job holds contents: write, so
+                    # the tag reaches the shell as data rather than as part of the command.
+                    TAG: ${{ github.event.release.tag_name }}
+                run: gh release upload "$TAG" "${{ github.workspace }}/give.zip" --clobber
+
+            # The release body is GitHub's generated pull request list. The changelog people actually read
+            # is the readme.txt entry for this version, so lead with that and keep the pull requests after.
+            -   name: Build the release announcement
+                id: announcement
+                env:
+                    REPO: ${{ github.event.repository.name }}
+                    TAG: ${{ github.event.release.tag_name }}
+                    BODY: ${{ github.event.release.body }}
+                    URL: ${{ github.event.release.html_url }}
+                run: |
+                    version="${TAG#v}"
+
+                    # readme.txt entries read "= <version>: <date> =" followed by bullets until the next one.
+                    changelog=$(awk -v header="= $version:" '
+                        index($0, header) == 1 { found = 1; next }
+                        found && /^= / { exit }
+                        found { print }
+                    ' readme.txt)
+
+                    # A random delimiter stops a release body that happens to contain the terminator from
+                    # closing the heredoc early and writing step outputs of its own.
+                    delimiter=$(openssl rand -hex 16)
+
+                    {
+                        echo "text<<${delimiter}"
+                        printf '*%s %s has just been released! 🎉*\n\n%s\n%s\n\n<%s|Link to Release>\n' \
+                            "$REPO" "$version" "$changelog" "$BODY" "$URL"
+                        echo "${delimiter}"
+                    } >> "$GITHUB_OUTPUT"
 
             -   name: Slack Notification
-                uses: someimportantcompany/github-actions-slack-message@v1
+                uses: slackapi/slack-github-action@v4.0.0
                 with:
-                    webhook-url: ${{ secrets.SLACK_ANNOUNCEMENT_WEBHOOK }}
-                    text: "*${{ github.event.repository.name }} ${{ github.event.release.name }} has just been released! 🎉* \n\n Here's what's new: \n\n ${{ github.event.release.body }} \n\n <${{ github.event.release.html_url }}|Link to Release>"
+                    webhook: ${{ secrets.SLACK_ANNOUNCEMENT_WEBHOOK }}
+                    webhook-type: incoming-webhook
+                    payload: |
+                        text: ${{ toJSON(steps.announcement.outputs.text) }}

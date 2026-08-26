@@ -488,12 +488,18 @@ class Give_DB_Donors extends Give_DB {
 	 * Note: This function is for internal purposes only. Don't use this function as it will be deprecated soon.
 	 *
 	 * @param int $id Email Access Token ID.
-	 *
+	 * @since 4.16.6 Require a non-empty, scalar string token before querying.
 	 * @since 2.3.1
 	 *
 	 * @return object
 	 */
 	public function get_donor_by_token( $id ) {
+		// Require a non-empty, scalar string token: every donor row defaults to
+		// verify_key = '' until they request their own access link.
+		if ( ! is_string( $id ) || '' === $id ) {
+			return null;
+		}
+
 		global $wpdb;
 		$row = $wpdb->get_row(
 			$wpdb->prepare( "SELECT * FROM {$wpdb->donors} WHERE verify_key = %s LIMIT 1", $id )

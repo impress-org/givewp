@@ -224,6 +224,7 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
 /**
  * Process Register Form
  *
+ * @since 4.16.6 Require a valid nonce before processing registration.
  * @since 2.0
  *
  * @param array $data Data sent from the register form
@@ -237,6 +238,10 @@ function give_process_register_form( $data ) {
 	}
 
 	if ( empty( $_POST['give_register_submit'] ) ) {
+		return false;
+	}
+
+	if ( empty( $data['give_register_nonce'] ) || ! wp_verify_nonce( $data['give_register_nonce'], 'give-register-nonce' ) ) {
 		return false;
 	}
 

@@ -10,7 +10,7 @@ use ZipArchive;
 /**
  * Tests for add-on ZIP upload and activation AJAX handlers.
  *
- * @since TBD
+ * @since 4.16.6
  *
  * @covers ::give_upload_addon_handler
  * @covers ::give_activate_addon_handler
@@ -30,7 +30,7 @@ final class AddonUploadActivateTest extends TestCase
     private $testPluginSlugs = [];
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function setUp(): void
     {
@@ -51,7 +51,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function tearDown(): void
     {
@@ -91,7 +91,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testUploadHandlerRequiresUploadPluginsCapability(): void
     {
@@ -112,7 +112,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testUploadHandlerRejectsNonZipFile(): void
     {
@@ -141,7 +141,7 @@ final class AddonUploadActivateTest extends TestCase
      * Detects that an add-on is already installed by matching the ZIP's folder
      * name against existing plugins.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     public function testUploadHandlerDetectsAlreadyInstalledPlugin(): void
     {
@@ -178,7 +178,7 @@ final class AddonUploadActivateTest extends TestCase
      * Verifies a new add-on is detected after installation when the ZIP filename
      * differs from the internal folder name.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     public function testUploadHandlerDetectsNewPluginWithRenamedZip(): void
     {
@@ -232,13 +232,13 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * Verifies that re-uploading an add-on (update path) succeeds even when
-     * the ZIP folder name and filename differ. This exercises the fallback
-     * detection that locates the plugin by ZIP folder name.
+     * Verifies that re-uploading an installed add-on is reported as already installed
+     * even when the ZIP filename differs from the folder name inside it, since the
+     * detection matches on the ZIP folder name rather than the filename.
      *
-     * @since TBD
+     * @since 4.16.6
      */
-    public function testUploadHandlerUpdatesExistingPlugin(): void
+    public function testUploadHandlerDetectsAlreadyInstalledPluginWithRenamedZip(): void
     {
         if (!class_exists('ZipArchive')) {
             $this->markTestSkipped('ZipArchive extension is required for this test.');
@@ -246,24 +246,11 @@ final class AddonUploadActivateTest extends TestCase
 
         $this->setAdminAndAddUploaderCap();
 
-        // Pre-create the plugin that will be "updated."
-        $slug       = 'give-recurring';
-        $plugin_dir = WP_PLUGIN_DIR . "/{$slug}";
-        wp_mkdir_p($plugin_dir);
-        $this->createdDirs[]     = $plugin_dir;
-        $this->testPluginSlugs[] = $slug;
+        $slug = 'give-recurring';
+        $this->createTestPluginInPluginsDir($slug, 'Give Recurring Donations');
 
-        $plugin_file = "{$plugin_dir}/{$slug}.php";
-        file_put_contents(
-            $plugin_file,
-            "<?php\n/**\n * Plugin Name: Give Recurring Donations\n * Version: 1.0.0\n */"
-        );
-
-        wp_clean_plugins_cache(true);
-
-        // The ZIP has the internal folder "give-recurring" but the filename is
-        // "give-recurring-donations-2.0.0.zip" — the mismatch that triggers
-        // the update-path fallback.
+        // The ZIP holds the folder "give-recurring" while the filename says
+        // "give-recurring-donations-2.0.0.zip".
         $zip_filename = 'give-recurring-donations-2.0.0.zip';
         $zip_path     = $this->createTestPluginZip($slug, 'Give Recurring Donations', $zip_filename);
 
@@ -282,20 +269,15 @@ final class AddonUploadActivateTest extends TestCase
             give_upload_addon_handler();
         });
 
-        $this->assertTrue(
-            $response['success'],
-            isset($response['data']['errorMsg'])
-                ? 'Update failed: ' . $response['data']['errorMsg']
-                : 'Handler did not succeed'
-        );
-        $this->assertEquals("{$slug}/{$slug}.php", $response['data']['pluginPath']);
-        $this->assertEquals('Give Recurring Donations', $response['data']['pluginName']);
+        $this->assertFalse($response['success']);
+        $this->assertStringContainsString('already installed', $response['data']['errorMsg']);
+        $this->assertEquals("{$slug}/{$slug}.php", $response['data']['pluginInfo']['Path']);
     }
 
     /**
      * Verifies the error message when the ZIP contains no detectable plugin folder.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     public function testUploadHandlerReturnsErrorWhenNoPluginDetected(): void
     {
@@ -324,11 +306,12 @@ final class AddonUploadActivateTest extends TestCase
         });
 
         $this->assertFalse($response['success']);
-        $this->assertStringContainsString('could not detect', $response['data']['errorMsg']);
+        
+        $this->assertStringContainsString(__('The package could not be installed.'), $response['data']['errorMsg']);
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testUploadHandlerRejectsNonDirectFilesystem(): void
     {
@@ -347,7 +330,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testUploadHandlerRejectsMissingFile(): void
     {
@@ -366,7 +349,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testActivateHandlerRejectsNonAdmin(): void
     {
@@ -380,12 +363,13 @@ final class AddonUploadActivateTest extends TestCase
             give_activate_addon_handler();
             $this->fail('Expected wp_die via give_die() was not triggered.');
         } catch (WPDieException $e) {
-            $this->assertNotEmpty($e->getMessage());
+            // give_die() dies without a message, so assert the activation was blocked instead.
+            $this->assertNotContains('some-plugin/some-plugin.php', (array)get_option('active_plugins'));
         }
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testActivateHandlerRejectsEmptyPluginPath(): void
     {
@@ -403,7 +387,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testActivateHandlerRejectsNonexistentPluginFile(): void
     {
@@ -422,7 +406,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testActivateHandlerRejectsInvalidPluginHeader(): void
     {
@@ -443,7 +427,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testActivateHandlerActivatesValidPlugin(): void
     {
@@ -470,7 +454,7 @@ final class AddonUploadActivateTest extends TestCase
      * Verifies the nonce contract: the upload handler returns a nonce that the
      * activate handler accepts.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     public function testNonceContractBetweenUploadAndActivate(): void
     {
@@ -494,7 +478,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testActivateHandlerRejectsWrongNonce(): void
     {
@@ -510,12 +494,14 @@ final class AddonUploadActivateTest extends TestCase
             give_activate_addon_handler();
             $this->fail('Expected wp_die from check_admin_referer was not triggered.');
         } catch (WPDieException $e) {
-            $this->assertStringContainsString('nonce', $e->getMessage());
+            // check_admin_referer() fails through wp_nonce_ays(), which uses a WP core string.
+            $this->assertStringContainsString(__('The link you followed has expired.'), $e->getMessage());
+            $this->assertNotContains("{$slug}/{$slug}.php", (array)get_option('active_plugins'));
         }
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testGetZipPluginFolderReturnsFolderForSingleTopLevel(): void
     {
@@ -531,7 +517,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testGetZipPluginFolderReturnsEmptyForMultipleTopLevels(): void
     {
@@ -547,7 +533,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testGetZipPluginFolderSkipsMacosxFolder(): void
     {
@@ -563,7 +549,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testGetZipPluginFolderReturnsEmptyForMacosxOnly(): void
     {
@@ -579,7 +565,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testGetZipPluginFolderReturnsEmptyForCorruptZip(): void
     {
@@ -595,7 +581,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testGetZipPluginFolderReturnsEmptyForNonexistentFile(): void
     {
@@ -607,7 +593,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a test plugin directory inside WP_PLUGIN_DIR.
      *
-     * @since TBD
+     * @since 4.16.6
      *
      * @param string $slug Plugin directory slug.
      * @param string $name Plugin Name header. Empty string omits the header.
@@ -641,7 +627,7 @@ final class AddonUploadActivateTest extends TestCase
      * The ZIP's internal folder name is $pluginSlug regardless of the outer
      * filename, simulating the renamed-ZIP scenario.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function createTestPluginZip(string $pluginSlug, string $pluginName, ?string $zipFilename = null): string
     {
@@ -675,7 +661,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP that does NOT contain a valid WordPress plugin file.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function createNonPluginZip(string $zipFilename): string
     {
@@ -703,7 +689,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP file with multiple top-level directories (ambiguous structure).
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function createMultiFolderZip(string $zipFilename): string
     {
@@ -734,7 +720,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP file with both a __MACOSX folder and a real plugin folder.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function createZipWithMacosxAndRealFolder(string $realFolder, string $zipFilename): string
     {
@@ -771,7 +757,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP with only a __MACOSX folder and root-level files — no real plugin folder.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function createMacosxOnlyZip(string $zipFilename): string
     {
@@ -801,7 +787,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Sets up $_FILES and nonce for a valid upload request.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function prepareUploadPost(string $filename): void
     {
@@ -820,7 +806,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a temporary file and returns its path.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function createTempFile(string $name, string $content): string
     {
@@ -834,7 +820,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Logs in as admin with upload_plugins and manage_give_settings caps.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function setAdminAndAddUploaderCap(): void
     {
@@ -845,7 +831,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Logs in as admin with manage_give_settings cap.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function setAdminUser(): void
     {
@@ -856,7 +842,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Invokes a callable that triggers wp_die() and returns the parsed JSON response.
      *
-     * @since TBD
+     * @since 4.16.6
      *
      * @param callable $callable The handler invocation.
      *
@@ -894,7 +880,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Recursively removes a directory and all its contents.
      *
-     * @since TBD
+     * @since 4.16.6
      */
     private function recursiveRemoveDir(string $dir): void
     {

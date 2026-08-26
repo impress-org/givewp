@@ -8,7 +8,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Request;
 
 /**
- * @since TBD
+ * @since 4.16.6
  *
  * @coversDefaultClass \Give\DonorDashboards\Tabs\EditProfileTab\PasswordRoute
  */
@@ -26,7 +26,7 @@ class TestPasswordRoute extends RestApiTestCase
     private $donor;
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function setUp(): void
     {
@@ -49,7 +49,7 @@ class TestPasswordRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function tearDown(): void
     {
@@ -61,7 +61,7 @@ class TestPasswordRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testEmptyPasswordReturnsError()
     {
@@ -76,7 +76,7 @@ class TestPasswordRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testWhitespacePasswordReturnsError()
     {
@@ -91,7 +91,7 @@ class TestPasswordRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testValidPasswordReturnsSuccess()
     {
@@ -105,7 +105,7 @@ class TestPasswordRoute extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.6
      */
     public function testValidPasswordUpdatesUserPassword()
     {

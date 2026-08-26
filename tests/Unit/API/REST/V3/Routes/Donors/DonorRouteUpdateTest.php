@@ -4,6 +4,7 @@ namespace Unit\API\REST\V3\Routes\Donors;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\Models\Donor;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -98,6 +99,52 @@ class DonorRouteUpdateTest extends RestApiTestCase
             ? mysql_to_rfc3339($originalCreatedAt->format('c'))
             : $originalCreatedAt;
         $this->assertEquals($expectedCreatedAt, $data['createdAt']);
+    }
+
+    /**
+     * @since 4.16.6
+     */
+    public function testUpdateDonorShouldNotUpdateReadonlySchemaProperties()
+    {
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create([
+            'firstName' => 'Original',
+            'lastName' => 'Donor',
+        ]);
+        $donor->name = 'Original Donor';
+        $donor->totalAmountDonated = new Money(10000, 'USD');
+        $donor->totalNumberOfDonations = 5;
+        $donor->save();
+
+        $originalName = $donor->name;
+        $originalTotalAmountDonated = $donor->totalAmountDonated->toArray();
+        $originalTotalNumberOfDonations = $donor->totalNumberOfDonations;
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = $this->createRequest('PUT', $route, [], 'administrator');
+        $request->set_body_params([
+            'name' => 'Injected Name',
+            'totalAmountDonated' => [
+                'value' => 99999,
+                'valueInMinorUnits' => 9999900,
+                'currency' => 'USD',
+            ],
+            'totalNumberOfDonations' => 999,
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(200, $response->get_status());
+
+        $data = json_decode(json_encode($response->get_data()), true);
+        $this->assertEquals($originalName, $data['name']);
+        $this->assertEquals($originalTotalAmountDonated, $data['totalAmountDonated']);
+        $this->assertEquals($originalTotalNumberOfDonations, $data['totalNumberOfDonations']);
+
+        $updatedDonor = Donor::find($donor->id);
+        $this->assertEquals($originalName, $updatedDonor->name);
+        $this->assertTrue($updatedDonor->totalAmountDonated->equals(new Money(10000, 'USD')));
+        $this->assertEquals($originalTotalNumberOfDonations, $updatedDonor->totalNumberOfDonations);
     }
 
     /**
