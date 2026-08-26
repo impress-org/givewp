@@ -244,7 +244,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             value={customAmountMin}
                             onValueChange={(value) => setAttributes({customAmountMin: value})}
                             help={__(
-                                'The lowest amount a donor can enter in the custom amount field. Donation levels are not affected. Leave empty to use the lowest donation level.',
+                                'The lowest amount a donor can enter in the custom amount field. Donation levels and the set donation amount are not affected. Leave empty to use the lowest of those amounts.',
                                 'give'
                             )}
                         />
@@ -253,7 +253,7 @@ const Inspector = ({attributes, setAttributes}) => {
                             value={customAmountMax}
                             onValueChange={(value) => setAttributes({customAmountMax: value})}
                             help={__(
-                                'The highest amount a donor can enter in the custom amount field. Donation levels are not affected. Leave empty for no maximum amount.',
+                                'The highest amount a donor can enter in the custom amount field. Donation levels and the set donation amount are not affected. Leave empty for no maximum amount.',
                                 'give'
                             )}
                         />
