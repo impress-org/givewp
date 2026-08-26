@@ -214,6 +214,7 @@ class Give_Email_Access {
 	/**
 	 * This function is used to fetch the token value from query string or cookies based on availability.
 	 *
+	 * @since  4.16.7 Return an empty string for non-string token values.
 	 * @since  2.4.1
 	 * @access public
 	 *
@@ -228,7 +229,7 @@ class Give_Email_Access {
 			$token = isset( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : '';
 		}
 
-		return $token;
+		return is_string( $token ) ? $token : '';
 	}
 
 	/**
@@ -270,6 +271,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid token?
 	 *
+	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -280,6 +282,11 @@ class Give_Email_Access {
 	public function is_valid_token( $token ) {
 
 		global $wpdb;
+
+		// A crafted give_nl[]= parameter arrives as an array; reject non-string and empty tokens.
+		if ( ! is_string( $token ) || '' === $token ) {
+			return false;
+		}
 
 		// Make sure token isn't expired.
 		$expires = date( 'Y-m-d H:i:s', time() - $this->token_expiration );
@@ -344,6 +351,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid verify key?
 	 *
+	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -354,6 +362,11 @@ class Give_Email_Access {
 	public function is_valid_verify_key( $token ) {
 		/* @var WPDB $wpdb */
 		global $wpdb;
+
+		// A crafted give_nl[]= parameter arrives as an array; reject non-string and empty tokens.
+		if ( ! is_string( $token ) || '' === $token ) {
+			return false;
+		}
 
 		// See if the verify_key exists.
 		$row = $wpdb->get_row(

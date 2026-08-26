@@ -236,6 +236,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Get a subscription.
      *
+     * @since 4.16.3 Return 404 for anonymous donors unless explicitly included.
      * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -247,13 +248,17 @@ class SubscriptionController extends WP_REST_Controller
     public function get_item($request)
     {
         $subscription = Subscription::find($request->get_param('id'));
+        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
-        if (!$subscription) {
+        // Hide anonymous donors unless explicitly included, matching the collection and donor endpoints.
+        if (
+            !$subscription
+            || ($subscription->donor && $subscription->donor->isAnonymous() && $donorAnonymousMode->isExcluded())
+        ) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
         $item = (new SubscriptionViewModel($subscription))
             ->anonymousMode($donorAnonymousMode)

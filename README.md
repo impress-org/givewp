@@ -80,4 +80,4 @@ Note: We use [@wordpress/scripts](https://developer.wordpress.org/block-editor/r
     ```
 * Commit the `package.lock` file. Read more about why [here](https://docs.npmjs.com/files/package-lock.json).
 * Your editor should recognize the `.eslintrc` and `.editorconfig` files within the Repo's root directory. Please only submit PRs following those coding style rulesets.
-* Read [CONTRIBUTING.md](https://github.com/impress-org/give/blob/master/CONTRIBUTING.md) - it contains more about contributing to GiveWP.
+* Read [CONTRIBUTING.md](CONTRIBUTING.md) - it contains more about contributing to GiveWP.

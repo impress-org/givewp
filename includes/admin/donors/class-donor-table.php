@@ -207,6 +207,10 @@ class Give_Donor_List_Table extends WP_List_Table {
 				$value = date_i18n( give_date_format(), strtotime( $donor['date_created'] ) );
 				break;
 
+			case 'email':
+				$value = esc_html( $donor[ $column_name ] );
+				break;
+
 			default:
 				$value = isset( $donor[ $column_name ] ) ? $donor[ $column_name ] : null;
 				break;
