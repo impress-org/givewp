@@ -160,6 +160,10 @@ function give_do_automatic_upgrades() {
 		case version_compare( $give_version, '2.9.0', '<' ):
 			give_v290_remove_old_export_files();
 			$did_upgrade = true;
+
+		case version_compare( $give_version, '4.16.8', '<' ):
+			give_v4168_cleanup_serialized_payloads();
+			$did_upgrade = true;
 	}
 
 	if ( $did_upgrade || version_compare( $give_version, GIVE_VERSION, '<' ) ) {
@@ -480,6 +484,15 @@ function give_show_upgrade_notices( $give_updates ) {
 			'id'       => 'v270_store_stripe_account_for_donation',
 			'version'  => '2.7.0',
 			'callback' => 'give_v270_store_stripe_account_for_donation_callback',
+		]
+	);
+
+	// v4.16.8 Remove serialized object payloads from meta tables (SVUL-82).
+	$give_updates->register(
+		[
+			'id'       => 'v4168_cleanup_serialized_payloads',
+			'version'  => '4.16.8',
+			'callback' => 'give_v4168_cleanup_serialized_payloads',
 		]
 	);
 }
@@ -3561,4 +3574,108 @@ function give_v270_store_stripe_account_for_donation_callback() {
 function give_v290_remove_old_export_files() {
 	@unlink( WP_CONTENT_DIR . '/uploads/give-payments.csv' );
 	@unlink( WP_CONTENT_DIR . '/uploads/give-donors.csv' );
+}
+
+/**
+ * Remove serialized object payloads from meta tables (SVUL-82).
+ *
+ * Scans wp_usermeta, wp_give_donormeta, wp_give_paymentmeta, and wp_give_sessions
+ * for rows where is_serialized() is true. For each, we unserialize with
+ * allowed_classes=false to strip the object, then re-store the safe value.
+ *
+ * @since 4.16.8
+ */
+function give_v4168_cleanup_serialized_payloads() {
+	global $wpdb;
+
+	$give_updates = Give_Updates::get_instance();
+
+	$tables = [
+		[
+			'table'       => $wpdb->usermeta,
+			'value_col'   => 'meta_value',
+			'key_col'     => 'meta_key',
+			'id_col'      => 'umeta_id',
+			'filter_keys' => [ 'first_name', 'last_name', 'user_title', 'billing_address' ],
+		],
+		[
+			'table'       => $wpdb->prefix . 'give_donormeta',
+			'value_col'   => 'meta_value',
+			'key_col'     => 'meta_key',
+			'id_col'      => 'meta_id',
+			'filter_keys' => [ 'first_name', 'last_name', 'user_title', 'billing_address' ],
+		],
+		[
+			'table'       => $wpdb->prefix . 'give_paymentmeta',
+			'value_col'   => 'meta_value',
+			'key_col'     => 'meta_key',
+			'id_col'      => 'meta_id',
+			'filter_keys' => [ '_give_payment_meta' ],
+		],
+		[
+			'table'       => $wpdb->prefix . 'give_sessions',
+			'value_col'   => 'session_value',
+			'key_col'     => 'session_key',
+			'id_col'      => 'session_id',
+			'filter_keys' => [],  // Scan all columns.
+		],
+	];
+
+	$batch_size = 200;
+
+	foreach ( $tables as $table_config ) {
+		$table       = esc_sql( $table_config['table'] );
+		$value_col   = esc_sql( $table_config['value_col'] );
+		$id_col      = esc_sql( $table_config['id_col'] );
+		$filter_keys = $table_config['filter_keys'];
+
+		$where = " WHERE {$value_col} LIKE 'a:%' OR {$value_col} LIKE 'O:%'";
+
+		if ( ! empty( $filter_keys ) ) {
+			$key_col = esc_sql( $table_config['key_col'] );
+			$placeholders = implode( ',', array_fill( 0, count( $filter_keys ), '%s' ) );
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$where .= $wpdb->prepare( " AND {$key_col} IN ({$placeholders})", $filter_keys );
+		}
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$total = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table} {$where}" );
+
+		if ( 0 === $total ) {
+			continue;
+		}
+
+		$steps = ceil( $total / $batch_size );
+
+		for ( $step = 1; $step <= $steps; $step++ ) {
+			$offset = ( $step - 1 ) * $batch_size;
+
+			// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$rows = $wpdb->get_results(
+				"SELECT {$id_col} AS id, {$value_col} AS val FROM {$table} {$where} ORDER BY {$id_col} ASC LIMIT {$batch_size} OFFSET {$offset}"
+			);
+
+			if ( empty( $rows ) ) {
+				continue;
+			}
+
+			foreach ( $rows as $row ) {
+				$safe = unserialize( $row->val, [ 'allowed_classes' => false ] );
+
+				if ( false === $safe || $safe === $row->val ) {
+					continue;
+				}
+
+				$wpdb->update(
+					$table,
+					[ $value_col => maybe_serialize( $safe ) ],
+					[ $id_col => $row->id ],
+					[ '%s' ],
+					[ '%d' ]
+				);
+			}
+		}
+	}
+
+	give_set_upgrade_complete( 'v4168_cleanup_serialized_payloads' );
 }
