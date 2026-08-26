@@ -14,6 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Give\Helpers\Form\Utils as FormUtils;
+use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
+
 /**
  * Processes gateway select on checkout. Only for users without ajax / javascript
  *
@@ -75,6 +78,7 @@ add_action( 'wp_ajax_nopriv_give_load_gateway', 'give_load_ajax_gateway' );
  *
  * Use give_donation_form_nonce() js fn to create nonce.
  *
+ * @since 4.16.6 Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
  * @since 2.0
  *
  * @return void
@@ -84,6 +88,15 @@ function give_donation_form_nonce() {
 
 		// Get donation form id.
 		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
+
+		if ( ! ShortcodeUtils::isValidForm( $form_id ) ) {
+			wp_send_json_error( [ 'error' => 'give_invalid_donation_form' ], 400 );
+		}
+
+		// Visual Form Builder (v3) forms use route signatures instead of the legacy nonce endpoint.
+		if ( FormUtils::isV3Form( $form_id ) ) {
+			wp_send_json_error( [ 'error' => 'give_unsupported_form_version' ], 400 );
+		}
 
 		// Send nonce json data.
 		wp_send_json_success( wp_create_nonce( "give_donation_form_nonce_{$form_id}" ) );
@@ -98,6 +111,7 @@ add_action( 'wp_ajax_nopriv_give_donation_form_nonce', 'give_donation_form_nonce
  * Create all nonce of donation form using Ajax call.
  * Note: only for internal use
  *
+ * @since 4.16.6 Bail early when the form ID is not a give_forms post.
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.2.0
  *
@@ -108,6 +122,10 @@ function give_donation_form_reset_all_nonce() {
 
 		// Get donation form id.
 		$form_id = is_numeric( $_POST['give_form_id'] ) ? absint( $_POST['give_form_id'] ) : 0;
+
+		if ( ! ShortcodeUtils::isValidForm( $form_id ) ) {
+			wp_send_json_error( [ 'error' => 'give_invalid_donation_form' ], 400 );
+		}
 
 		$data = array(
 			'give_form_hash'               => wp_create_nonce( "give_donation_form_nonce_{$form_id}" ),

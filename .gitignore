@@ -83,3 +83,10 @@ build
 
 # wp-env
 .wp-env.override.json
+
+# Playwright
+artifacts/
+playwright-report/
+
+# Add-on release zips unpacked for e2e runs
+addons/

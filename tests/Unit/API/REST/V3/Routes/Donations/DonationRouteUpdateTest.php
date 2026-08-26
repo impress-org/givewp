@@ -436,7 +436,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testRefundDonationShouldReturnStructuredErrorOnFailure()
     {
@@ -467,7 +467,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.5
      */
     public function testRefundDonationErrorShouldContainExceptionDetails()
     {

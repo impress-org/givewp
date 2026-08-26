@@ -7,7 +7,7 @@ import {isBaseCurrency} from './CurrencySwitcher';
  * @since 3.0.0
  */
 export function getAmountLevelsWithCurrencySettings(
-    levels: {label: string; value: number}[],
+    levels: {label: string; value: number; checked?: boolean}[],
     currency: string,
     currencySettings: CurrencySwitcherSetting[]
 ) {
@@ -26,7 +26,7 @@ export function getAmountLevelsWithCurrencySettings(
 }
 
 export function getDefaultAmountWithCurrencySettings(
-    levels: {label: string; value: number}[],
+    levels: {label: string; value: number; checked?: boolean}[],
     amount: number,
     currency: string,
     currencySettings: CurrencySwitcherSetting[]
