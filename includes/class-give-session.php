@@ -347,7 +347,7 @@ class Give_Session {
 	public function get( $key, $default = false ) {
 		$key = sanitize_key( $key );
 
-		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : $default;
+		return isset( $this->session[ $key ] ) ? unserialize( $this->session[ $key ], [ 'allowed_classes' => false ] ) : $default;
 	}
 
 	/**

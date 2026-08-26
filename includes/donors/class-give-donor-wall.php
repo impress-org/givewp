@@ -415,7 +415,7 @@ class Give_Donor_Wall {
 
 			/* @var stdClass $result */
 			foreach ( $results as $result ) {
-				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = maybe_unserialize( $result->meta_value );
+				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = unserialize( $result->meta_value, [ 'allowed_classes' => false ] );
 
 				// Set donation date.
 				if ( empty( $temp[ $result->{$donation_id_col} ]['donation_date'] ) ) {

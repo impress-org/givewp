@@ -145,7 +145,7 @@ class Give_DB_Sessions extends Give_DB {
 			wp_cache_add( $donor_id, $value, $this->cache_group );
 		}
 
-		return maybe_unserialize( $value );
+		return unserialize( $value, [ 'allowed_classes' => false ] );
 	}
 
 	/**
