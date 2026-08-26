@@ -1677,6 +1677,8 @@ function give_get_login_fields( $form_id ) {
 				</span>
 			</div>
 		</div>
+		<input type="hidden" name="give_login_nonce"
+			   value="<?php echo wp_create_nonce( 'give-login-nonce' ); ?>"/>
 		<?php
 		/**
 		 * Fires while rendering checkout login form, after the fields.
