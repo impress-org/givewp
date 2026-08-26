@@ -1548,6 +1548,7 @@ function give_filter_where_older_than_week( $where = '' ) {
  *                                   enabled. b. separator  = The separator between the Form Title and the Donation
  *                                   Level.
  *
+ * @since 4.16.5 lookup option values by level ID (price_id) first before falling back to amount-based matching
  * @since 4.14.5 add currency compatibility to determine whether the level is same as donation amount
  * @since 3.18.0 check if donation form is V3 form
  * @since 1.5
@@ -1580,6 +1581,16 @@ function give_get_donation_form_title( $donation_id, $args = [] ) {
         $payment_currency = give_get_payment_currency_code($donation_id); // donation currency
         $options = give()->form_meta->get_meta($form_id, '_give_donation_levels', true) ?? [];
         $donation = Donation::find($donation_id);
+        $price_id = give_get_meta( $donation_id, '_give_payment_price_id', true );
+
+        if ( $price_id !== '' && $price_id !== 'custom' && ! is_null( $price_id ) ) {
+            foreach ( $options as $option ) {
+                if ( isset( $option['_give_id']['level_id'] ) && (string) $option['_give_id']['level_id'] === (string) $price_id ) {
+                    $form_title = sprintf('%s %s %s', $form_title, $args['separator'], $option['_give_text']);
+                    return apply_filters('give_get_donation_form_title', $form_title, $donation_id);
+                }
+            }
+        }
 
         // Different currencies - use exchange rate from currency switcher
         $exchange_rate = give_get_meta($donation_id, '_give_cs_exchange_rate', true);

@@ -24,27 +24,50 @@ class TestLoginRoute extends RestApiTestCase
     const ROUTE = '/give-api/v2/donor-dashboard/login';
 
     /** @var string */
-    const KNOWN_USERNAME = 'givewp_donor';
-
-    /** @var string */
-    const KNOWN_EMAIL = 'givewp_donor@example.test';
-
-    /** @var string */
     const KNOWN_PASSWORD = 'correct horse battery staple';
 
+    /** @var int */
+    private $userId;
+
+    /** @var string */
+    private $knownUsername;
+
+    /** @var string */
+    private $knownEmail;
+
     /**
+     * @since 4.16.6
+     */
+    public function tearDown(): void
+    {
+        if ($this->userId > 0 && get_user_by('id', $this->userId)) {
+            wp_delete_user($this->userId);
+        }
+
+        parent::tearDown();
+    }
+
+    /**
+     * @since 4.16.6 Add unique-id suffix to avoid cross-test collisions from TRUNCATE-implicit-commit leakage.
      * @since 4.15.5
      *
      * @return int The created user's ID.
      */
     private function createKnownUser(): int
     {
-        return wp_insert_user([
-            'user_login' => self::KNOWN_USERNAME,
-            'user_email' => self::KNOWN_EMAIL,
+        $uniqueId = uniqid('', true);
+
+        $this->knownUsername = 'givewp_donor_' . $uniqueId;
+        $this->knownEmail = 'givewp_donor_' . $uniqueId . '@example.test';
+
+        $this->userId = wp_insert_user([
+            'user_login' => $this->knownUsername,
+            'user_email' => $this->knownEmail,
             'user_pass' => self::KNOWN_PASSWORD,
             'role' => 'subscriber',
         ]);
+
+        return $this->userId;
     }
 
     /**
@@ -69,7 +92,7 @@ class TestLoginRoute extends RestApiTestCase
     {
         $this->createKnownUser();
 
-        $data = $this->login(self::KNOWN_USERNAME, self::KNOWN_PASSWORD);
+        $data = $this->login($this->knownUsername, self::KNOWN_PASSWORD);
 
         $this->assertSame(200, $data['status']);
         $this->assertSame('login_successful', $data['response']);
@@ -94,7 +117,7 @@ class TestLoginRoute extends RestApiTestCase
             $fired = true;
         });
 
-        $this->login(self::KNOWN_USERNAME, 'wrong-password');
+        $this->login($this->knownUsername, 'wrong-password');
 
         $this->assertTrue(
             $fired,
@@ -122,7 +145,7 @@ class TestLoginRoute extends RestApiTestCase
             return $user;
         }, 5);
 
-        $this->login(self::KNOWN_USERNAME, 'wrong-password');
+        $this->login($this->knownUsername, 'wrong-password');
 
         $this->assertTrue(
             $ran,
@@ -145,7 +168,7 @@ class TestLoginRoute extends RestApiTestCase
             return new \WP_Error('too_many_retries', 'Locked out.');
         }, 30);
 
-        $data = $this->login(self::KNOWN_USERNAME, self::KNOWN_PASSWORD);
+        $data = $this->login($this->knownUsername, self::KNOWN_PASSWORD);
 
         $this->assertNotSame(
             'login_successful',
@@ -175,7 +198,7 @@ class TestLoginRoute extends RestApiTestCase
             return new \WP_Error('lockout_plugin_block', 'Too many failed login attempts. Please try again later.');
         }, 30);
 
-        $data = $this->login(self::KNOWN_USERNAME, 'wrong-password');
+        $data = $this->login($this->knownUsername, 'wrong-password');
 
         $this->assertSame(429, $data['status']);
         $this->assertSame('too_many_attempts', $data['response']);
@@ -197,7 +220,7 @@ class TestLoginRoute extends RestApiTestCase
     {
         $this->createKnownUser();
 
-        $data = $this->login(self::KNOWN_USERNAME, 'wrong-password');
+        $data = $this->login($this->knownUsername, 'wrong-password');
 
         $this->assertSame(401, $data['status']);
         $this->assertSame('login_failed', $data['response']);
@@ -222,7 +245,7 @@ class TestLoginRoute extends RestApiTestCase
     {
         $this->createKnownUser();
 
-        $existingUserWrongPassword = $this->login(self::KNOWN_USERNAME, 'wrong-password');
+        $existingUserWrongPassword = $this->login($this->knownUsername, 'wrong-password');
         $nonExistentUser = $this->login('no-such-user-here', 'wrong-password');
 
         $this->assertSame(

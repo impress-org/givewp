@@ -1,0 +1,32 @@
+name: Lint Workflows
+
+# actionlint checks the workflow files themselves: expression syntax, action input names, job and
+# step references, and shellcheck over every run block. It also knows which actions are pinned to a
+# runtime GitHub no longer supports, so a stale pin surfaces here rather than in a release job.
+
+on:
+    push:
+        branches: [ master, develop ]
+        paths: [ '.github/workflows/**' ]
+    pull_request:
+        paths: [ '.github/workflows/**' ]
+    workflow_dispatch:
+
+jobs:
+    actionlint:
+        name: actionlint
+        runs-on: ubuntu-latest
+
+        # The job reads the workflow files and nothing else.
+        permissions:
+            contents: read
+
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    persist-credentials: false
+
+            -   name: Run actionlint
+                uses: docker://rhysd/actionlint:1.7.12
+                with:
+                    args: -color
