@@ -36,35 +36,11 @@ export default function getJoiRulesForForm(form: Form): ObjectSchema {
 }
 
 /**
- * @since TBD Exempt admin-defined amounts from the custom amount minimum and maximum.
+ * @since TBD collect the amounts exempt from the minimum and maximum
  * @since 3.0.0
  */
 function getJoiRulesForField(field: Field): AnySchema {
-    const exemptAmounts = getExemptAmounts(field);
-    const {min, max, ...remainingRules} = field.validationRules;
-    const hasExemptRange = exemptAmounts.length > 0 && (min !== undefined || max !== undefined);
-
-    let rules: AnySchema = convertFieldAPIRulesToJoi(hasExemptRange ? remainingRules : field.validationRules);
-
-    if (hasExemptRange) {
-        rules = rules.custom((value, helpers) => {
-            const amount = Number(value);
-
-            if (exemptAmounts.includes(amount)) {
-                return value;
-            }
-
-            if (min !== undefined && amount < min) {
-                return helpers.error('number.min', {limit: min});
-            }
-
-            if (max !== undefined && amount > max) {
-                return helpers.error('number.max', {limit: max});
-            }
-
-            return value;
-        }, 'custom amount range');
-    }
+    let rules: AnySchema = convertFieldAPIRulesToJoi(field.validationRules, getExemptAmounts(field));
 
     if (field.label) {
         rules = rules.label(field.label);
@@ -95,11 +71,12 @@ function getExemptAmounts(field: Field): number[] {
 }
 
 /**
+ * @since TBD exempt admin-defined amounts from the minimum and maximum
  * @since 4.13.1 account for custom rules with only excludeUnless property
  * @since 4.13.0 add support for optional false values
  * @since 3.0.0
  */
-function convertFieldAPIRulesToJoi(rules): AnySchema {
+function convertFieldAPIRulesToJoi(rules, exemptAmounts: number[] = []): AnySchema {
     let joiRules;
     const ruleKeys = Object.keys(rules);
 
@@ -138,12 +115,35 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
     }
 
     if (rules.hasOwnProperty('number') || !rules.hasOwnProperty('boolean')) {
-        if (rules.hasOwnProperty('min')) {
-            joiRules = joiRules.min(rules.min);
-        }
+        const hasMin = rules.hasOwnProperty('min');
+        const hasMax = rules.hasOwnProperty('max');
 
-        if (rules.hasOwnProperty('max')) {
-            joiRules = joiRules.max(rules.max);
+        if (exemptAmounts.length > 0 && (hasMin || hasMax)) {
+            joiRules = joiRules.custom((value, helpers) => {
+                const amount = Number(value);
+
+                if (exemptAmounts.includes(amount)) {
+                    return value;
+                }
+
+                if (hasMin && amount < rules.min) {
+                    return helpers.error('number.min', {limit: rules.min});
+                }
+
+                if (hasMax && amount > rules.max) {
+                    return helpers.error('number.max', {limit: rules.max});
+                }
+
+                return value;
+            }, 'exempt amount range');
+        } else {
+            if (hasMin) {
+                joiRules = joiRules.min(rules.min);
+            }
+
+            if (hasMax) {
+                joiRules = joiRules.max(rules.max);
+            }
         }
     }
 
