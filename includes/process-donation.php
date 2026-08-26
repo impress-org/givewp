@@ -922,11 +922,11 @@ function give_donation_form_validate_logged_in_user() {
 					? sanitize_email( $post_data['give_email'] )
 					: $user_data->user_email,
 				'user_first' => ! empty( $post_data['give_first'] )
-					? $post_data['give_first']
-					: $user_data->first_name,
+					? give_clean( $post_data['give_first'] )
+					: give_clean( $user_data->first_name ),
 				'user_last'  => ! empty( $post_data['give_last'] )
-					? $post_data['give_last']
-					: $user_data->last_name,
+					? give_clean( $post_data['give_last'] )
+					: give_clean( $user_data->last_name ),
 			];
 
 			// Validate essential form fields.
@@ -1711,10 +1711,10 @@ function give_donation_form_validate_name_fields( $post_data ) {
     }
 
     $is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
-    $is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
+    $is_alpha_last_name  = ( ! empty( $post_data['give_last'] ) && ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
     $is_alpha_title = ( isset($post_data['give_title']) && ! is_email( $post_data['give_title'] ) && ! preg_match( '~[0-9]~', $post_data['give_title'] ) );
 
-    if (!$is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name) || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title) ) {
+    if (!$is_alpha_first_name || ! $is_alpha_last_name || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title) ) {
         give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
     }
 }

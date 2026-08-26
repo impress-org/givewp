@@ -20,6 +20,10 @@ trait ProviderForwarder
     {
         $provider = isset($this->loadedProviders[$name]) ? $this->loadedProviders[$name] : $this->loadProvider($name);
 
+        if ( ! $provider instanceof Contract\Provider ) {
+            return null;
+        }
+
         return call_user_func_array($this->loadedProviders[$name], $arguments);
     }
 

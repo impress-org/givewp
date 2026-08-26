@@ -241,6 +241,10 @@ function give_process_register_form( $data ) {
 		return false;
 	}
 
+	if ( ! get_option( 'users_can_register' ) ) {
+		return false;
+	}
+
 	if ( empty( $data['give_register_nonce'] ) || ! wp_verify_nonce( $data['give_register_nonce'], 'give-register-nonce' ) ) {
 		return false;
 	}
