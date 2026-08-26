@@ -56,4 +56,25 @@ class DonationFailedTest extends TestCase
 
         $this->assertNotTrue($donation->status->isFailed());
     }
+
+    /**
+     * @since 4.16.0
+     *
+     * @throws Exception
+     */
+    public function testShouldSetStatusToFailedAndBindTransactionIdWhenDonationIdIsProvided()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => null,
+            'status' => DonationStatus::PENDING(),
+        ]);
+
+        give(DonationFailed::class)('gateway-transaction-id', '', false, $donation->id);
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isFailed());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+    }
 }

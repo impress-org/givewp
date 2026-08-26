@@ -56,4 +56,25 @@ class DonationPendingTest extends TestCase
 
         $this->assertNotTrue($donation->status->isPending());
     }
+
+    /**
+     * @since 4.16.0
+     *
+     * @throws Exception
+     */
+    public function testShouldSetStatusToPendingAndBindTransactionIdWhenDonationIdIsProvided()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => null,
+            'status' => DonationStatus::PREAPPROVAL(),
+        ]);
+
+        give(DonationPending::class)('gateway-transaction-id', '', false, $donation->id);
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isPending());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+    }
 }

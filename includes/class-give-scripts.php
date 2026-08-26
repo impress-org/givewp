@@ -395,6 +395,7 @@ class Give_Scripts {
 			'give_subscription_import'          => 'give_subscription_import',
 			'give_subscription_import_nonce'    => wp_create_nonce('give_subscription_import'),
 			'core_settings_import'              => 'give_core_settings_import',
+			'core_settings_import_nonce'        => wp_create_nonce('give_core_settings_import'),
             'give_insert_payment_note_nonce'             => wp_create_nonce('give_insert_payment_note'),
             'give_delete_payment_note_nonce'             => wp_create_nonce('give_delete_payment_note'),
             'give_set_notification_status_nonce'         => wp_create_nonce('give_set_notification_status'),

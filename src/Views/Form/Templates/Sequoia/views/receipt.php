@@ -41,7 +41,7 @@ ob_start();
             else: ?>
                 <?php if (!empty($options['thank-you']['image'])) : ?>
                     <div class="image">
-                        <img src="<?php echo $options['thank-you']['image']; ?>"/>
+                        <img src="<?php echo esc_url($options['thank-you']['image']); ?>"/>
                     </div>
                 <?php else : ?>
                     <div class="checkmark">

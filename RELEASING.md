@@ -6,7 +6,7 @@ This document outlines the process for releasing new versions of GiveWP.
 
 Releases are prepared continuously as features and fixes are merged:
 
-* **Changelog entries** — every PR adds an entry with `composer run changelog:add`, which drops a YAML file into `./changelog`. These are compiled into `readme.txt` at release time.
+* **Changelog entries** — every PR adds an entry with `composer run changelog:add`, which drops a YAML file into `./changelog`. These are compiled into `readme.txt` and `changelog.txt` at release time.  WordPress [recommends](https://developer.wordpress.org/plugins/wordpress-org/how-your-readme-txt-works/#file-size) keeping the latest version's changelog in `readme.txt` and the full history in `changelog.txt`. For Give, this means we reset the `readme.txt` changelog during major version releases.
 * **Docblocks** — new or changed code uses `@since TBD`, which is replaced with the real version number at release time.
 
 ## Preparing a release
@@ -24,7 +24,7 @@ Normal releases follow a [gitflow](https://nvie.com/posts/a-successful-git-branc
    This runs the full version-bump pipeline:
    1. Updates all version strings — `GIVE_VERSION` and the `Version:` plugin header in `give.php`, and `Stable tag:` in `readme.txt`
    2. Replaces all `@since TBD` / `@deprecated TBD` placeholders with the new version
-   3. Compiles the pending entries in `./changelog` into the `readme.txt` changelog
+   3. Compiles the pending entries in `./changelog` into the `readme.txt` and `changelog.txt` changelog
 
    Options: `--date <date>` sets the changelog date (defaults to today); `--dry-run` previews without writing.
 

@@ -129,7 +129,7 @@ export interface DonationAmountProps extends GroupProps {
 }
 
 export interface AmountProps extends FieldProps {
-    levels: {label: string; value: number}[];
+    levels: {label: string; value: number; checked?: boolean}[];
     allowLevels: boolean;
     allowCustomAmount: boolean;
     fixedAmountValue: number;
