@@ -5,12 +5,57 @@ namespace Give\DonationForms\Rules;
 use Closure;
 use Give\DonationForms\Rules\Concerns\HasExemptAmounts;
 use Give\Vendors\StellarWP\Validation\Config;
+use Give\Vendors\StellarWP\Validation\Contracts\ValidatesOnFrontEnd;
+use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 
 use function is_numeric;
 
-class Min extends \Give\Vendors\StellarWP\Validation\Rules\Min
+/**
+ * @since TBD Implement the rule directly instead of extending the vendor rule, whose size is an integer.
+ * @since 3.0.0
+ */
+class Min implements ValidationRule, ValidatesOnFrontEnd
 {
     use HasExemptAmounts;
+
+    /**
+     * @var numeric
+     */
+    protected $size;
+
+    /**
+     * @since TBD
+     *
+     * @param numeric $size
+     */
+    public function __construct($size)
+    {
+        if ($size <= 0) {
+            Config::throwInvalidArgumentException('Min validation rule requires a non-negative value');
+        }
+
+        $this->size = $this->sanitize($size);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function id(): string
+    {
+        return 'min';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function fromString(?string $options = null): ValidationRule
+    {
+        if (!is_numeric($options)) {
+            Config::throwInvalidArgumentException('Min validation rule requires a numeric value');
+        }
+
+        return new self($options);
+    }
 
     /**
      * @since 3.0.0
@@ -18,7 +63,7 @@ class Min extends \Give\Vendors\StellarWP\Validation\Rules\Min
     public function sanitize($value)
     {
         if (is_numeric($value)) {
-            if (strpos($value, '.') !== false) {
+            if (strpos((string)$value, '.') !== false) {
                 return (float)$value;
             }
 
@@ -53,5 +98,41 @@ class Min extends \Give\Vendors\StellarWP\Validation\Rules\Min
         } else {
             Config::throwValidationException("Field value must be a number or string");
         }
+    }
+
+    /**
+     * @since 3.0.0
+     *
+     * @return numeric
+     */
+    public function serializeOption()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @since 3.0.0
+     *
+     * @return numeric
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @since 3.0.0
+     *
+     * @param numeric $size
+     *
+     * @return void
+     */
+    public function size($size)
+    {
+        if ($size <= 0) {
+            Config::throwInvalidArgumentException('Min validation rule requires a non-negative value');
+        }
+
+        $this->size = $this->sanitize($size);
     }
 }

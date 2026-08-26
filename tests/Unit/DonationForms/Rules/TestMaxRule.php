@@ -55,6 +55,27 @@ class TestMaxRule extends TestCase
     /**
      * @since TBD
      */
+    public function testKeepsAFractionalSize(): void
+    {
+        $rule = new Max('10.50');
+
+        self::assertSame(10.5, $rule->getSize());
+        self::assertSame(10.5, $rule->serializeOption());
+        self::assertValidationRulePassed($rule, 10.5);
+        self::assertValidationRuleFailed($rule, 10.75);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testKeepsAWholeSizeAnInteger(): void
+    {
+        self::assertSame(100, (new Max('100'))->serializeOption());
+    }
+
+    /**
+     * @since TBD
+     */
     public function testReportsExceedingTheMaximum(): void
     {
         self::assertSame('{field} must be less than or equal to 100', $this->_failureMessage(new Max(100), 101));

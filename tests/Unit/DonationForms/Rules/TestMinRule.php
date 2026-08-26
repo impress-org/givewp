@@ -69,6 +69,27 @@ class TestMinRule extends TestCase
     /**
      * @since TBD
      */
+    public function testKeepsAFractionalSize(): void
+    {
+        $rule = new Min('10.50');
+
+        self::assertSame(10.5, $rule->getSize());
+        self::assertSame(10.5, $rule->serializeOption());
+        self::assertValidationRuleFailed($rule, 10.25);
+        self::assertValidationRulePassed($rule, 10.5);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testKeepsAWholeSizeAnInteger(): void
+    {
+        self::assertSame(500, (new Min('500'))->serializeOption());
+    }
+
+    /**
+     * @since TBD
+     */
     public function testExemptAmountsDefaultToAnEmptyList(): void
     {
         self::assertSame([], (new Min(500))->getExemptAmounts());

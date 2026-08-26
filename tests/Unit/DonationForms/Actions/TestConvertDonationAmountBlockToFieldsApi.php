@@ -441,6 +441,65 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testKeepsAFractionalCustomAmountMinimum(): void
+    {
+        $attributes = [
+            'priceOption' => 'multi',
+            'levels' => [['value' => 5, 'checked' => true], ['value' => 50]],
+            'customAmount' => true,
+            'customAmountMin' => '10.50',
+        ];
+
+        /** @var Min $min */
+        $min = $this->_amountNode($attributes)->getValidationRules()->getRule('min');
+
+        $this->assertSame(10.5, $min->getSize());
+        $this->assertTrue($this->_validator($attributes, 10.25)->fails());
+        $this->assertTrue($this->_validator($attributes, 10.5)->passes());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testKeepsAFractionalCustomAmountMaximum(): void
+    {
+        $attributes = [
+            'priceOption' => 'multi',
+            'levels' => [['value' => 5, 'checked' => true]],
+            'customAmount' => true,
+            'customAmountMax' => '10.50',
+        ];
+
+        /** @var Max $max */
+        $max = $this->_amountNode($attributes)->getValidationRules()->getRule('max');
+
+        $this->assertSame(10.5, $max->getSize());
+        $this->assertTrue($this->_validator($attributes, 10.5)->passes());
+        $this->assertTrue($this->_validator($attributes, 10.75)->fails());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testKeepsAFractionalLowestDonationLevelAsTheFallbackMinimum(): void
+    {
+        $attributes = [
+            'priceOption' => 'multi',
+            'levels' => [['value' => '10.50', 'checked' => true], ['value' => 25]],
+            'customAmount' => true,
+        ];
+
+        /** @var Min $min */
+        $min = $this->_amountNode($attributes)->getValidationRules()->getRule('min');
+
+        $this->assertSame(10.5, $min->getSize());
+        $this->assertTrue($this->_validator($attributes, 10.25)->fails());
+        $this->assertTrue($this->_validator($attributes, 10.5)->passes());
+    }
+
+    /**
      * Validates the given amount against the donation amount group built from the given block attributes.
      *
      * @since TBD

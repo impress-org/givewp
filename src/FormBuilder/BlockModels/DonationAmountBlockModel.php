@@ -231,9 +231,9 @@ class DonationAmountBlockModel
      *
      * @since TBD
      */
-    public function getCustomAmountMin(): int
+    public function getCustomAmountMin(): float
     {
-        return $this->hasAttribute('customAmountMin') ? (int)$this->getAttribute('customAmountMin') : 0;
+        return $this->hasAttribute('customAmountMin') ? (float)$this->getAttribute('customAmountMin') : 0.0;
     }
 
     /**
@@ -242,9 +242,9 @@ class DonationAmountBlockModel
      *
      * @since TBD
      */
-    public function getCustomAmountMax(): int
+    public function getCustomAmountMax(): float
     {
-        return $this->hasAttribute('customAmountMax') ? (int)$this->getAttribute('customAmountMax') : 0;
+        return $this->hasAttribute('customAmountMax') ? (float)$this->getAttribute('customAmountMax') : 0.0;
     }
 
     /**
@@ -277,21 +277,18 @@ class DonationAmountBlockModel
      * fallback a form that leaves the minimum empty accepts any amount, which is a donation spam and card
      * testing vector.
      *
-     * The Min validation rule takes an integer size, so a fractional amount truncates down and stays
-     * permissive.
-     *
      * @since TBD
      *
-     * @return int|null Null when the block defines neither a minimum nor an amount to derive one from.
+     * @return float|null Null when the block defines neither a minimum nor an amount to derive one from.
      */
-    public function getMinimumAmount(): ?int
+    public function getMinimumAmount(): ?float
     {
         if ($this->isCustomAmountEnabled() && $this->getCustomAmountMin() > 0) {
             return $this->getCustomAmountMin();
         }
 
         $adminDefinedAmounts = $this->getAdminDefinedAmounts();
-        $lowestAmount = $adminDefinedAmounts ? (int)min($adminDefinedAmounts) : 0;
+        $lowestAmount = $adminDefinedAmounts ? min($adminDefinedAmounts) : 0.0;
 
         return $lowestAmount > 0 ? $lowestAmount : null;
     }
