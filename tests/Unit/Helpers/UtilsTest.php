@@ -87,6 +87,7 @@ class UtilsTest extends TestCase
      * which would re-arm the payload for the next unrestricted unserialize() call.
      *
      * @since 4.16.6
+     * @since TBD   Returns false instead of the raw serialized string.
      */
     public function testSafeUnserializeNeverReturnsObjects()
     {
@@ -101,10 +102,10 @@ class UtilsTest extends TestCase
     }
 
     /**
-     * Regression test for SVUL-82: safeUnserialize must return false for object payloads
-     * to prevent re-serialization and gadget chain exploitation.
+     * safeUnserialize must return false for object payloads to prevent
+     * re-serialization and gadget chain exploitation.
      *
-     * @since 4.16.8
+     * @since TBD
      */
     public function testSafeUnserializeReturnsFalseForObjectPayloads()
     {

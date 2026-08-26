@@ -637,15 +637,16 @@ final class Give_Payment {
 		$this->setup_payment( $payment_id );
 	}
 
-	/**
-	 * Create the base of a payment.
-	 *
-	 * @since  1.5
-	 * @access private
-	 *
-	 * @return int|bool False on failure, the payment ID on success.
-	 */
-	private function insert_payment() {
+    /**
+     * Create the base of a payment.
+     *
+     * @since TBD       Sanitize first, last, and title name values before storing donor meta.
+     * @since  1.5
+     * @access private
+     *
+     * @return int|bool False on failure, the payment ID on success.
+     */
+    private function insert_payment() {
 
 		// Construct the payment title.
 		$payment_title = '';
@@ -803,16 +804,17 @@ final class Give_Payment {
 
 	}
 
-	/**
-	 * Save
-	 *
-	 * Once items have been set, an update is needed to save them to the database.
-	 *
-	 * @access public
-	 *
-	 * @return bool  True of the save occurred, false if it failed or wasn't needed
-	 */
-	public function save() {
+    /**
+     * Save
+     *
+     * Once items have been set, an update is needed to save them to the database.
+     *
+     * @since TBD Sanitize first and last name values when saving billing meta.
+     * @access public
+     *
+     * @return bool  True of the save occurred, false if it failed or wasn't needed
+     */
+    public function save() {
 		$saved = false;
 
 		// Must have an ID.

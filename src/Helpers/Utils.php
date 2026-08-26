@@ -199,6 +199,7 @@ class Utils
 
     /**
      * @since 3.17.2
+     * @since TBD Returns false instead of the raw serialized string when an object is detected.
      */
     public static function safeUnserialize($data)
     {

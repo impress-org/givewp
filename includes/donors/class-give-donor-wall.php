@@ -380,7 +380,8 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
-     * @since 2.27.0 Change to read comment from donations meta table
+     * @since TBD       Restrict unserialize to prevent object instantiation.
+     * @since 2.27.0  Change to read comment from donations meta table
      * @since 2.3.0
      *
      * @param  array  $atts

@@ -11,6 +11,8 @@ trait ProviderForwarder
     /**
      * Forward calls to a provider class.
      *
+     * @since TBD Verify the resolved provider implements the Provider contract.
+     *
      * @param string $name
      * @param array  $arguments
      *

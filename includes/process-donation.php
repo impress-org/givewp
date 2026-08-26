@@ -24,8 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
- * @since 4.16.6 Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
- * @since 3.16.1 Use give_maybe_safe_unserialize() on $user_info data
+ * @since TBD     Reject serialized data in name fields before storing donation data.
+ * @since 4.16.6  Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
+ * @since 3.16.1  Use give_maybe_safe_unserialize() on $user_info data
  * @since  1.0
  *
  * @throws ReflectionException Exception Handling.
@@ -163,7 +164,7 @@ function give_process_donation_form() {
 		'address'    => $user['address'],
 	];
 
-	// Reject serialized data in name fields (SVUL-82).
+	// Reject serialized data in name fields.
 	$serialized_keys = array_filter(
 		$user_info,
 		static function ( $value ) {
@@ -887,6 +888,7 @@ function give_require_billing_address( $payment_mode ) {
  * Donation Form Validate Logged In User.
  *
  * @access private
+ * @since  TBD   Sanitize first and last name values when falling back to stored user data.
  * @since  1.0
  *
  * @return array
@@ -1687,9 +1689,10 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
- * @since 3.16.5 Check if "give_title" is set to prevent PHP warnings
- * @since 3.16.4 Add additional validation for company name field
- * @since 3.16.3 Add additional validations for name title prefix field
+ * @since TBD      Validate last name field even when omitted.
+ * @since 3.16.5  Check if "give_title" is set to prevent PHP warnings
+ * @since 3.16.4  Add additional validation for company name field
+ * @since 3.16.3  Add additional validations for name title prefix field
  * @since 2.1
  *
  * @return void
