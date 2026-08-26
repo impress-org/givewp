@@ -1,5 +1,37 @@
 == Changelog ==
 
+= 4.16.7.1: August 24th, 2026 =
+* Security: Added additional validation to PayPal Donations order requests.
+
+= 4.16.7: August 20th, 2026 =
+* Security: Hardened donor-account email access authentication.
+* Security: Improved validation of the checkout login form.
+* Fix: Resolved an issue where paused or failing Stripe Payment Element subscriptions remained stuck when the donor updated their payment method or the subscription was resumed in Stripe.
+* Fix: Resolved a conflict where scripts enqueued by other plugins while a donation form was being rendered could stop the form builder design preview and embedded forms from loading.
+* Fix: Resolved an issue where editing a page could exhaust the PHP call stack when a theme or plugin filtered post metadata.
+* Fix: Activation banner for addons doesn't show when addons are activated from the Unified License Manager
+
+= 4.16.6.1: August 12th, 2026 =
+* Security: Added additional validation to PayPal Standard IPN.
+
+= 4.16.6: August 6th, 2026 =
+* Tweak: Improved the unified licensing page experience.
+* Security: Added additional validation when handling serialized data during the donation process.
+* Security: Added additional escaping and validation to legacy donor admin screens and the donors REST API.
+* Security: Strengthened validation of the donor email-access token and the donation receipt email preview.
+* Security: Added a capability check to the onboarding form preview screen to prevent unauthorized access.
+* Security: Added nonce verification to the front-end registration handler and restricted automatic donor account linking to the verified donation checkout flow.
+* Fix: Added validation to prevent empty password updates in the Donor Dashboard.
+* Fix: Resolved an issue where uploading a ZIP add-on with a folder name that differs from the ZIP filename (e.g. give-recurring-donations-2.19.0.zip containing the folder give-recurring/) would fail to detect the plugin after extraction.
+
+= 4.16.5.1: July 27th, 2026 =
+* Security: Strengthened security on legacy donors listing and donation details pages.
+
+= 4.16.5: July 22nd, 2026 =
+* Fix: Resolved an issue where selecting a donation amount level would also select other levels with the same value.
+* Fix: Resolved an issue where extra separators could render in the donation confirmation page header when line breaks were present in the header text.
+* Fix: Resolved an issue where refunding a donation made with a per-form Stripe account would fail because the refund request used the default account instead of the form-specific account.
+
 = 4.16.4: July 14th, 2026 =
 * Security: Added additional validation to the core settings importer.
 * Security: Added additional escaping to donor information displayed in the admin.

@@ -47,11 +47,12 @@ class FormPreview
      *
      * If the current page query matches the form preview's slug, method renders the form preview.
      *
+     * @since 4.16.6 add user capability check
      * @since 2.8.0
      **/
     public function setup_form_preview()
     {
-        if (empty($_GET['page']) || $this->slug !== $_GET['page']) { // WPCS: CSRF ok, input var ok.
+        if (empty($_GET['page']) || $this->slug !== $_GET['page'] || ! current_user_can('manage_give_settings')) { // WPCS: CSRF ok, input var ok.
             return;
         } else {
             $this->render_page();

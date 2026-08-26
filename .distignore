@@ -8,6 +8,8 @@
 /.phpstan
 /.wordpress-org
 /.cursor
+/.claude
+/docs
 
 /bin
 /changelog
@@ -73,6 +75,8 @@ phpcs.xml.dist
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
 contributing.md
+AGENTS.md
+CLAUDE.md
 postcss.config.js
 webpack.config.js
 webpack.mix.js
