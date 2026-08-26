@@ -5,6 +5,7 @@ namespace Give\EventTickets\Routes;
 use Give\API\RestRoute;
 use Give\EventTickets\Models\EventTicketType;
 use Give\Framework\Exceptions\Primitives\Exception;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -21,6 +22,7 @@ class DeleteEventTicketType implements RestRoute
     /**
      * @inheritDoc
      *
+     * @since 4.14.0 update permission capability to use facade
      * @since 3.20.0 Set the permission callback to "delete_give_payments".
      * @since 3.6.0
      */
@@ -34,7 +36,7 @@ class DeleteEventTicketType implements RestRoute
                     'methods' => WP_REST_Server::DELETABLE,
                     'callback' => [$this, 'handleRequest'],
                     'permission_callback' => function () {
-                        return current_user_can('edit_give_forms');
+                        return UserPermissions::events()->canDelete();
                     },
                 ],
                 'args' => [

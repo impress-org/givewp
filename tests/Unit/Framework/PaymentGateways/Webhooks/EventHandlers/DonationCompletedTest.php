@@ -57,4 +57,26 @@ class DonationCompletedTest extends TestCase
 
         $this->assertNotTrue($donation->status->isComplete());
     }
+
+    /**
+     * @since 4.16.0
+     *
+     * @throws Exception
+     */
+    public function testShouldSetStatusToCompletedAndBindTransactionIdWhenDonationIdIsProvided()
+    {
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'gatewayTransactionId' => null,
+            'status' => DonationStatus::PENDING(),
+        ]);
+
+        give(DonationCompleted::class)('gateway-transaction-id', '', false, $donation->id);
+
+        $donation = Donation::find($donation->id);
+
+        $this->assertTrue($donation->status->isComplete());
+        $this->assertSame('gateway-transaction-id', $donation->gatewayTransactionId);
+    }
+
 }

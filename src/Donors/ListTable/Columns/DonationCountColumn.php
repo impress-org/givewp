@@ -38,6 +38,7 @@ class DonationCountColumn extends ModelColumn
     }
 
     /**
+     * @since 4.12.0 Remove link from donation count column
      * @since 2.24.0
      *
      * @inheritDoc
@@ -48,22 +49,9 @@ class DonationCountColumn extends ModelColumn
     {
         $totalDonations = $model->totalNumberOfDonations;
 
-        $label = $totalDonations > 0
-            ? sprintf(
-                _n(
-                    '%1$s donation',
-                    '%1$s donations',
-                    $totalDonations,
-                    'give'
-                ),
-                $totalDonations
-            ) : __('No donations', 'give');
-
         return sprintf(
-            '<a href="%s" aria-label="%s">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-payment-history&search=$model->email"),
-            __('Visit donation form page', 'give'),
-            $label
+            '<div class="donationCount"><span>%s</span></div>',
+            $totalDonations
         );
     }
 }

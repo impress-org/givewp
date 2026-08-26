@@ -30,6 +30,11 @@
         --statusBadgeTextColor: var(--givewp-green-900);
     }
 
+    &.statusBadge--completed {
+        --statusBadgeBgColor: var(--givewp-emerald-100);
+        --statusBadgeTextColor: var(--givewp-emerald-900);
+    }
+
     &.statusBadge--expired,
     &.statusBadge--cancelled,
     &.statusBadge--failing,

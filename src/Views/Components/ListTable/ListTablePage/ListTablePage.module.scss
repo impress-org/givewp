@@ -66,7 +66,7 @@
     padding: var(--givewp-spacing-7) var(--givewp-spacing-6);
     position: sticky;
     top: 2rem;
-    z-index: 100;
+    z-index: 1000;
 
     & > * {
         flex-shrink: 0;
@@ -346,6 +346,7 @@ ul[role='document'] + .flexRow {
         left: -.55rem;
         display: flex;
         align-items: center;
+        z-index: 2;
 
         svg {
             fill: #3A21D9;

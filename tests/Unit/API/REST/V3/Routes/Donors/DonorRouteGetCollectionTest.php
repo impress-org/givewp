@@ -11,6 +11,7 @@ use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Database\DB;
+use Give\Framework\Support\Facades\Str;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -77,7 +78,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
             'additionalEmails' => $donor->additionalEmails,
             'avatarId' => $donor->avatarId,
             'company' => $donor->company,
-            'addresses' => array_map(fn($address) => $address->toArray(), $donor->addresses),
+            'addresses' => array_map(fn ($address) => $address->toArray(), $donor->addresses),
             'avatarUrl' => null,
             'customFields' => [],
             'wpUserPermalink' => $donor->userId ? get_edit_user_link($donor->userId) : null,
@@ -143,13 +144,14 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.14.0 name and lastName should return only the first letter of the last name when sensitive data is not included
      * @since 4.0.0
      *
      * @throws Exception
      */
     public function testGetDonorsShouldNotIncludeSensitiveData()
     {
-        Donor::factory()->create();
+        $donor = Donor::factory()->create();
 
         $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE;
         $request = new WP_REST_Request(WP_REST_Server::READABLE, $route);
@@ -169,15 +171,17 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
             'email',
             'phone',
             'additionalEmails',
-            'lastName',
             'addresses',
         ];
 
         $this->assertEquals(200, $status);
+        $this->assertEmpty(array_intersect_key($data[0], $sensitiveProperties));
 
-        foreach ($sensitiveProperties as $property) {
-            $this->assertEmpty($data[0][$property]);
-        }
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(Str::substr($donor->lastName, 0, 1), $data[0]['lastName']);
+
+        // name should return the full name and the first letter of the last name
+        $this->assertEquals($donor->firstName . ' ' . Str::substr($donor->lastName, 0, 1), $data[0]['name']);
     }
 
     /**
@@ -577,11 +581,12 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
         ];
 
         foreach ($anonymousDataRedacted as $property) {
-            $this->assertEquals(__('anonymous', 'give'),$data[1][$property]);
+            $this->assertEquals(__('anonymous', 'give'), $data[1][$property]);
         }
     }
 
     /**
+     * @since 4.14.0 Update createdAt comparison to expect string format instead of DateTime object
      * @since 4.0.0
      *
      * @dataProvider sortableColumnsDataProvider
@@ -599,7 +604,6 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
             ]
         );
         wp_set_current_user($newAdminUser);
-
 
         DB::query("DELETE FROM " . DB::prefix('give_donors'));
 
@@ -636,9 +640,21 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donor1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donor3->{$sortableColumn}, $data[2][$sortableColumn]);
+
+        // Format createdAt as string for comparison if it's a DateTime object
+        $expected1 = $sortableColumn === 'createdAt' && $donor1->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor1->{$sortableColumn}->format('c'))
+            : $donor1->{$sortableColumn};
+        $expected2 = $sortableColumn === 'createdAt' && $donor2->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor2->{$sortableColumn}->format('c'))
+            : $donor2->{$sortableColumn};
+        $expected3 = $sortableColumn === 'createdAt' && $donor3->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor3->{$sortableColumn}->format('c'))
+            : $donor3->{$sortableColumn};
+
+        $this->assertEquals($expected1, $data[0][$sortableColumn]);
+        $this->assertEquals($expected2, $data[1][$sortableColumn]);
+        $this->assertEquals($expected3, $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -658,8 +674,17 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donor1->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
+
+        // Format createdAt as string for comparison if it's a DateTime object
+        $expected1 = $sortableColumn === 'createdAt' && $donor1->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor1->{$sortableColumn}->format('c'))
+            : $donor1->{$sortableColumn};
+        $expected2 = $sortableColumn === 'createdAt' && $donor2->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor2->{$sortableColumn}->format('c'))
+            : $donor2->{$sortableColumn};
+
+        $this->assertEquals($expected1, $data[0][$sortableColumn]);
+        $this->assertEquals($expected2, $data[1][$sortableColumn]);
 
         /**
          * Descendant Direction
@@ -681,9 +706,20 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(3, count($data));
-        $this->assertEquals($donor3->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donor2->{$sortableColumn}, $data[1][$sortableColumn]);
-        $this->assertEquals($donor1->{$sortableColumn}, $data[2][$sortableColumn]);
+        // Format createdAt as string for comparison if it's a DateTime object
+        $expected3 = $sortableColumn === 'createdAt' && $donor3->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor3->{$sortableColumn}->format('c'))
+            : $donor3->{$sortableColumn};
+        $expected2 = $sortableColumn === 'createdAt' && $donor2->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor2->{$sortableColumn}->format('c'))
+            : $donor2->{$sortableColumn};
+        $expected1 = $sortableColumn === 'createdAt' && $donor1->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor1->{$sortableColumn}->format('c'))
+            : $donor1->{$sortableColumn};
+
+        $this->assertEquals($expected3, $data[0][$sortableColumn]);
+        $this->assertEquals($expected2, $data[1][$sortableColumn]);
+        $this->assertEquals($expected1, $data[2][$sortableColumn]);
 
         $request->set_query_params(
             [
@@ -703,8 +739,17 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEquals(2, count($data));
-        $this->assertEquals($donor2->{$sortableColumn}, $data[0][$sortableColumn]);
-        $this->assertEquals($donor1->{$sortableColumn}, $data[1][$sortableColumn]);
+
+        // Format createdAt as string for comparison if it's a DateTime object
+        $expected2 = $sortableColumn === 'createdAt' && $donor2->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor2->{$sortableColumn}->format('c'))
+            : $donor2->{$sortableColumn};
+        $expected1 = $sortableColumn === 'createdAt' && $donor1->{$sortableColumn} instanceof \DateTime
+            ? mysql_to_rfc3339($donor1->{$sortableColumn}->format('c'))
+            : $donor1->{$sortableColumn};
+
+        $this->assertEquals($expected2, $data[0][$sortableColumn]);
+        $this->assertEquals($expected1, $data[1][$sortableColumn]);
     }
 
     /**
@@ -724,6 +769,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.13.1 updated amount
      * @since 4.0.0
      *
      * @throws Exception
@@ -741,7 +787,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
         $donor1->firstName = 'A';
         $donor1->lastName = 'A';
         $donor1->name = 'A A';
-        $donor1->totalAmountDonated = new Money(100, 'USD');
+        $donor1->totalAmountDonated = Money::fromDecimal(90.99, 'USD');
         $donor1->totalNumberOfDonations = 1;
         $donor1->save();
 
@@ -755,6 +801,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.13.1 updated amount
      * @since 4.0.0
      *
      * @throws Exception
@@ -772,7 +819,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
         $donor2->firstName = 'B';
         $donor2->lastName = 'B';
         $donor2->name = 'B B';
-        $donor2->totalAmountDonated = new Money(200, 'USD');
+        $donor2->totalAmountDonated = Money::fromDecimal(189.00, 'USD');
         $donor2->totalNumberOfDonations = 2;
         $donor2->save();
 
@@ -786,6 +833,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.13.1 updated amount
      * @since 4.0.0
      *
      * @throws Exception
@@ -803,7 +851,7 @@ class DonorRouteGetCollectionTest extends RestApiTestCase
         $donor3->firstName = 'C';
         $donor3->lastName = 'C';
         $donor3->name = 'C C';
-        $donor3->totalAmountDonated = new Money(300, 'USD');
+        $donor3->totalAmountDonated = Money::fromDecimal(289.00, 'USD');
         $donor3->totalNumberOfDonations = 3;
         $donor3->save();
 

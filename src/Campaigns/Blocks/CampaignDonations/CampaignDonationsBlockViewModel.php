@@ -50,6 +50,7 @@ class CampaignDonationsBlockViewModel
 
 
     /**
+     * @since 4.14.0 add avatar URL to donations data
      * @since 4.0.0
      */
     private function formatDonationsData(array $donations): array
@@ -58,6 +59,13 @@ class CampaignDonationsBlockViewModel
             $entry->date = human_time_diff(strtotime($entry->date));
             $entry->amount = Money::fromDecimal($entry->amount, give_get_currency());
 
+            if ($entry->isAnonymous) {
+                $entry->donorAvatarUrl = get_avatar_url(0, ['size' => 80]);
+            } else {
+                $entry->donorAvatarUrl = (int) $entry->donorAvatarId > 0
+                    ? wp_get_attachment_image_url($entry->donorAvatarId, ['width' => '80', 'height' => '80'])
+                    : get_avatar_url($entry->email, ['size' => 80]);
+            }
             return $entry;
         }, $donations);
     }

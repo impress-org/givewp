@@ -8,6 +8,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
@@ -20,7 +21,7 @@ class TestListDonations extends TestCase
     use RefreshDatabase;
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function setUp(): void
     {
@@ -50,7 +51,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
 
         $listDonations = give(ListDonations::class);
 
@@ -91,46 +92,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @since 4.0.0
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function testShouldFilterInvalidDateArgument_missingMonthDay()
-    {
-        $listDonation = give(ListDonations::class);
-        $key = 'start';
-        $value = '2020';
-
-        $mockRequest = $this->getMockRequest();
-        $mockRequest->set_param($key, $value);
-
-        $response = $listDonation->validateDate($value, $mockRequest, $key);
-        $this->assertFalse($response);
-    }
-
-    /**
-     * @since 4.0.0
-     *
-     * @return void
-     * @throws Exception
-     */
-    public function testShouldFilterInvalidDateArgument_InvalidChar()
-    {
-        $listDonation = give(ListDonations::class);
-        $key = 'start';
-        $value = '2020-mar-02';
-
-        $mockRequest = $this->getMockRequest();
-        $mockRequest->set_param($key, $value);
-
-        $response = $listDonation->validateDate($value, $mockRequest, $key);
-        $this->assertFalse($response);
-    }
-
-
-    /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByDateRange()
     {
@@ -155,7 +117,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
         $mockRequest->set_param('end', '2023-02-28');
 
@@ -168,7 +130,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByStartDateOnly()
     {
@@ -193,7 +155,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
 
         $listDonations = give(ListDonations::class);
@@ -205,7 +167,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByEndDateOnly()
     {
@@ -230,7 +192,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('end', '2023-02-28');
 
         $listDonations = give(ListDonations::class);
@@ -242,7 +204,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByExactDateRange()
     {
@@ -271,7 +233,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
         $mockRequest->set_param('end', '2023-02-28');
 
@@ -284,7 +246,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldReturnEmptyResultsForDateRangeWithNoDonations()
     {
@@ -305,7 +267,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('status', [DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
         $mockRequest->set_param('end', '2023-02-28');
 
@@ -318,7 +280,7 @@ class TestListDonations extends TestCase
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function testShouldFilterDonationsByDateWithMixedDonationTypes()
     {
@@ -343,7 +305,7 @@ class TestListDonations extends TestCase
         $mockRequest->set_param('perPage', 30);
         $mockRequest->set_param('locale', 'en-US');
         $mockRequest->set_param('testMode', true);
-        $mockRequest->set_param('status', 'active');
+        $mockRequest->set_param('status', [DonationStatus::COMPLETE, DonationStatus::PENDING]);
         $mockRequest->set_param('start', '2023-02-01');
         $mockRequest->set_param('end', '2023-02-28');
 
@@ -357,7 +319,7 @@ class TestListDonations extends TestCase
 
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     private function createSubscription(int $campaignId, DateTime $donationDate = null): Subscription
     {

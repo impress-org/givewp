@@ -8,16 +8,65 @@ namespace Give\Tests\Unit\API\REST\V3;
 trait SchemaValidationTrait
 {
     /**
+     * Resolve the effective schema node for validation.
+     * Accepts an OPTIONS response wrapper or a raw schema fragment.
+     * If the schema describes an array of objects, returns the item schema.
+     *
+     * @since 4.13.0
+     */
+    private function resolveSchemaNode(array $schema): array
+    {
+        $node = isset($schema['schema']) ? $schema['schema'] : $schema;
+
+        if (isset($node['type']) && $node['type'] === 'array' && isset($node['items']) && is_array($node['items'])) {
+            $node = $node['items'];
+        }
+
+        return $node;
+    }
+
+    /**
+     * Get properties from the resolved schema node.
+     *
+     * @since 4.13.0
+     */
+    private function getSchemaProperties(array $schema): array
+    {
+        $node = $this->resolveSchemaNode($schema);
+        return $node['properties'] ?? [];
+    }
+
+    /**
+     * Get required properties from the resolved schema node.
+     *
+     * @since 4.13.0
+     */
+    private function getRequiredProperties(array $schema): array
+    {
+        $node = $this->resolveSchemaNode($schema);
+        return $node['required'] ?? [];
+    }
+
+    /**
+     * @since 4.13.0 Validate schema properties for both objects and arrays.
      * @since 4.9.0
      */
     private function validateSchemaProperties($schema, $actualData)
     {
-        if (!isset($schema['schema']['properties'])) {
-            $this->fail('Schema does not contain properties');
+        // If the response is a list (indexed array), validate each item against the same schema
+        if ($this->getActualType($actualData) === 'array') {
+            foreach ($actualData as $item) {
+                $this->validateSchemaProperties($schema, $item);
+            }
+            return;
         }
 
-        $schemaProperties = $schema['schema']['properties'];
-        $requiredProperties = $schema['schema']['required'] ?? [];
+        $schemaProperties = $this->getSchemaProperties($schema);
+        if (empty($schemaProperties)) {
+            $this->fail('Schema does not contain properties for object validation');
+        }
+
+        $requiredProperties = $this->getRequiredProperties($schema);
 
         // Check that all required properties exist
         foreach ($requiredProperties as $requiredProperty) {
@@ -44,11 +93,20 @@ trait SchemaValidationTrait
     }
 
     /**
+     * @since 4.13.0 Validate data types for both objects and arrays, with support for nullable properties.
      * @since 4.9.0
      */
     private function validateDataTypes($schema, $actualData)
     {
-        $schemaProperties = $schema['schema']['properties'];
+        // If the response is a list (indexed array), validate each item against the same schema
+        if ($this->getActualType($actualData) === 'array') {
+            foreach ($actualData as $item) {
+                $this->validateDataTypes($schema, $item);
+            }
+            return;
+        }
+
+        $schemaProperties = $this->getSchemaProperties($schema);
 
         foreach ($actualData as $property => $value) {
             if (!isset($schemaProperties[$property])) {
@@ -77,10 +135,12 @@ trait SchemaValidationTrait
                     "Property '{$property}' type '{$actualType}' should be one of: " . implode(', ', $expectedType)
                 );
             } else {
-                $this->assertEquals(
-                    $expectedType,
-                    $actualType,
-                    "Property '{$property}' type mismatch. Expected: {$expectedType}, Actual: {$actualType}"
+                $isValidType = ($actualType === $expectedType) || ($actualType === 'null' && ($schemaProperties[$property]['nullable'] ?? false));
+
+                $this->assertTrue(
+                    $isValidType,
+                    "Property '{$property}' type mismatch. Expected: {$expectedType}, Actual: {$actualType}" .
+                    ($actualType === 'null' ? " (nullable: " . ($schemaProperties[$property]['nullable'] ?? 'false') . ")" : "")
                 );
             }
         }
@@ -91,7 +151,15 @@ trait SchemaValidationTrait
      */
     private function validateEnumValues($schema, $actualData)
     {
-        $schemaProperties = $schema['schema']['properties'];
+        // If the response is a list (indexed array), validate each item against the same schema
+        if ($this->getActualType($actualData) === 'array') {
+            foreach ($actualData as $item) {
+                $this->validateEnumValues($schema, $item);
+            }
+            return;
+        }
+
+        $schemaProperties = $this->getSchemaProperties($schema);
 
         foreach ($actualData as $property => $value) {
             if (!isset($schemaProperties[$property]['enum'])) {
@@ -166,6 +234,9 @@ trait SchemaValidationTrait
             return 'string';
         }
         if (is_array($value)) {
+            if (empty($value)) {
+                return 'array';
+            }
             // In JSON Schema, associative arrays are objects, indexed arrays are arrays
             return array_keys($value) === range(0, count($value) - 1) ? 'array' : 'object';
         }

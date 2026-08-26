@@ -183,12 +183,14 @@ class Give_Email_Notifications {
 	/**
 	 * Add email notifications
 	 *
+	 * @since 4.14.0 Add failed donation email.
 	 * @since  2.0
 	 * @access private
 	 */
 	private function add_emails_notifications() {
 		$this->emails = array(
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-donation-email.php',
+			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-failed-donation-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-donation-receipt-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-new-offline-donation-email.php',
 			include GIVE_PLUGIN_DIR . 'includes/admin/emails/class-offline-donation-instruction-email.php',
@@ -312,11 +314,16 @@ class Give_Email_Notifications {
 	 * Add header to donation receipt email preview
 	 *
 	 * @since   2.0
+	 * @since 4.16.6 Re-check capability/nonce here, since this callback is also reachable via a direct action dispatch that bypasses the check normally done in preview_email().
 	 * @access  public
 	 *
 	 * @param Give_Email_Notification $email
 	 */
 	public function email_preview_header( $email ) {
+		if ( ! Give_Email_Notification_Util::can_preview_email() ) {
+			return;
+		}
+
 		/**
 		 * Filter the all email preview headers.
 		 *

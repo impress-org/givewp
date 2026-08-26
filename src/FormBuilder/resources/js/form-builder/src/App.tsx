@@ -19,7 +19,7 @@ const initialState = {
     transfer: {
         showNotice: Boolean(window.migrationOnboardingData.transferShowNotice),
         showUpgradeModal: Boolean(window.migrationOnboardingData.showUpgradeDialog),
-        showTransferModal: false,
+        showTransferModal: Boolean(window.migrationOnboardingData.showTransferModal),
         showTooltip: false,
     }
 };

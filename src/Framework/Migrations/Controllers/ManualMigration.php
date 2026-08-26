@@ -7,6 +7,7 @@ use Give\Framework\Migrations\Actions\ClearCompletedUpgrade;
 use Give\Framework\Migrations\Actions\ManuallyRunMigration;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\MigrationsRegister;
+use Give\Framework\Permissions\Facades\UserPermissions;
 
 /**
  * Class ManualMigration
@@ -51,7 +52,7 @@ class ManualMigration
 
         $hasMigration = isset($migrationToRun) || isset($migrationToClear);
 
-        if ($hasMigration && ! current_user_can('manage_options')) {
+        if ($hasMigration && ! UserPermissions::settings()->canManage()) {
             give()->notices->register_notice(
                 [
                     'id' => 'invalid-migration-permissions',

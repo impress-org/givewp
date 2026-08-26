@@ -4,6 +4,7 @@ namespace Give\Donations\Endpoints;
 
 use Exception;
 use Give\Donations\Models\Donation;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -18,7 +19,8 @@ class DonationActions extends Endpoint
     /**
      * @inheritDoc
      *
-     * @unreleased Add force parameter to delete action
+     * @since 4.12.0 Remove force parameter from delete action and add trash and untrash actions
+     * @since 4.10.0 Add force parameter to delete action
      */
     public function registerRoute()
     {
@@ -37,14 +39,11 @@ class DonationActions extends Endpoint
                         'required' => true,
                         'enum' => [
                             'delete',
+                            'trash',
+                            'untrash',
                             'setStatus',
                             'resendEmailReceipt',
                         ],
-                    ],
-                    'force' => [
-                        'type' => 'boolean',
-                        'default' => false,
-                        'description' => 'Whether to permanently delete (force=true) or move to trash (force=false, default).',
                     ],
                     'ids' => [
                         'type' => 'string',
@@ -80,16 +79,17 @@ class DonationActions extends Endpoint
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 2.25.2
      *
      * @inheritDoc
      */
     public function permissionsCheck()
     {
-        if (!current_user_can('edit_give_payments')) {
+        if (!UserPermissions::donations()->canEdit()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You don\'t have permission to edit Donations', 'give'),
+                __('You don\'t have permission to edit Donations', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }
@@ -98,7 +98,8 @@ class DonationActions extends Endpoint
     }
 
     /**
-     * @unreleased Add force parameter to delete action
+     * @since 4.14.0 update permission capability to use facade
+     * @since 4.12.0 Add trash and untrash actions
      * @since 4.3.1 add permissions check for delete
      * @since 2.20.0
      *
@@ -113,35 +114,62 @@ class DonationActions extends Endpoint
 
         switch ($request->get_param('action')) {
             case 'delete':
-                if (!current_user_can('delete_give_payments')) {
+                if (!UserPermissions::donations()->canDelete()) {
                     return new WP_Error(
                         'rest_forbidden',
-                        esc_html__('You don\'t have permission to delete Donations', 'give'),
+                        __('You don\'t have permission to delete Donation', 'give'),
                         ['status' => $this->authorizationStatusCode()]
                     );
                 }
+
                 foreach ($ids as $id) {
+                    $donation = Donation::find($id);
+
+                    if (!$donation) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
                     try {
-                        $donation = Donation::find($id);
+                        $donation->delete();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
+                }
 
-                        if (!$donation) {
-                            return new WP_REST_Response(['message' => __('Donation not found', 'give')], 404);
-                        }
+                break;
 
-                        if ($request->get_param('force')) {
-                            $deleted = $donation->delete(); // Permanently delete the donation
+            case 'trash':
+                foreach ($ids as $id) {
+                    $donation = Donation::find($id);
 
-                            if (!$deleted) {
-                                return new WP_REST_Response(['message' => __('Failed to delete donation', 'give')], 500);
-                            }
-                        } else {
-                            $trashed = $donation->trash(); // Move the donation to trash (soft delete)
+                    if (!$donation) {
+                        $errors[] = $id;
+                        continue;
+                    }
 
-                            if (!$trashed) {
-                                return new WP_REST_Response(['message' => __('Failed to trash donation', 'give')], 500);
-                            }
-                        }
+                    try {
+                        $donation->trash();
+                        $successes[] = $id;
+                    } catch (Exception $e) {
+                        $errors[] = $id;
+                    }
+                }
 
+                break;
+
+            case 'untrash':
+                foreach ($ids as $id) {
+                    $donation = Donation::find($id);
+
+                    if (!$donation) {
+                        $errors[] = $id;
+                        continue;
+                    }
+
+                    try {
+                        $donation->unTrash();
                         $successes[] = $id;
                     } catch (Exception $e) {
                         $errors[] = $id;
@@ -151,10 +179,10 @@ class DonationActions extends Endpoint
                 break;
 
             case 'setStatus':
-                if (!current_user_can('view_give_payments')) {
+                if (!UserPermissions::donations()->canEdit()) {
                     return new WP_Error(
                         'rest_forbidden',
-                        esc_html__('You don\'t have permission to change donation statuses', 'give'),
+                        __('You don\'t have permission to change donation statuses', 'give'),
                         ['status' => $this->authorizationStatusCode()]
                     );
                 }

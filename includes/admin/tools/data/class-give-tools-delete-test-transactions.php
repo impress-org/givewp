@@ -95,7 +95,9 @@ class Give_Tools_Delete_Test_Transactions extends Give_Batch_Export {
 	public function get_percentage_complete() {
 
 		$items = $this->get_stored_data( 'give_temp_delete_test_ids', false );
-		$total = count( $items );
+		$total = is_array( $items )
+			? count( $items )
+			: 0;
 
 		$percentage = 100;
 

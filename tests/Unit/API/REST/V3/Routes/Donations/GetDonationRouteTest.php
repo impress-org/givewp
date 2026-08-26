@@ -6,9 +6,10 @@ use Exception;
 use Give\API\REST\V3\Routes\Donations\ValueObjects\DonationRoute;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationStatus;
+use Give\Framework\Support\Facades\Str;
 use Give\Tests\RestApiTestCase;
-use Give\Tests\TestTraits\RefreshDatabase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
+use Give\Tests\TestTraits\RefreshDatabase;
 use WP_REST_Server;
 
 /**
@@ -20,6 +21,7 @@ class GetDonationRouteTest extends RestApiTestCase
     use HasDefaultWordPressUsers;
 
     /**
+     * @since 4.13.0 updated the date format
      * @since 4.0.0
      */
     public function testGetDonationShouldReturnAllModelProperties()
@@ -47,16 +49,8 @@ class GetDonationRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
 
-        // Verify DateTime object structure for createdAt and updatedAt
-        $this->assertIsArray($data['createdAt']);
-        $this->assertArrayHasKey('date', $data['createdAt']);
-        $this->assertArrayHasKey('timezone', $data['createdAt']);
-        $this->assertArrayHasKey('timezone_type', $data['createdAt']);
-
-        $this->assertIsArray($data['updatedAt']);
-        $this->assertArrayHasKey('date', $data['updatedAt']);
-        $this->assertArrayHasKey('timezone', $data['updatedAt']);
-        $this->assertArrayHasKey('timezone_type', $data['updatedAt']);
+        $this->assertIsString($data['createdAt']);
+        $this->assertIsString($data['updatedAt']);
 
         $this->assertEquals([
             'id' => $donation->id,
@@ -65,8 +59,8 @@ class GetDonationRouteTest extends RestApiTestCase
             'formTitle' => $donation->formTitle,
             'purchaseKey' => $donation->purchaseKey,
             'donorIp' => $donation->donorIp,
-            'createdAt' => $data['createdAt'], // Keep actual DateTime object structure
-            'updatedAt' => $data['updatedAt'], // Keep actual DateTime object structure
+            'createdAt' => $data['createdAt'],
+            'updatedAt' => $data['updatedAt'],
             'status' => $donation->status->getValue(),
             'type' => $donation->type->getValue(),
             'mode' => $donation->mode->getValue(),
@@ -120,6 +114,7 @@ class GetDonationRouteTest extends RestApiTestCase
     }
 
     /**
+     * @since 4.14.0 transactionUrl should not be included in gateway details when sensitive data is not included, lastName should return only the first letter when sensitive data is not included
      * @since 4.0.0
      *
      * @throws Exception
@@ -148,6 +143,12 @@ class GetDonationRouteTest extends RestApiTestCase
 
         $this->assertEquals(200, $status);
         $this->assertEmpty(array_intersect_key($data, $sensitiveData));
+
+        // gateway details should not include transactionUrl when sensitive data is not included
+        $this->assertNotContains('transactionUrl', $data['gateway']);
+
+        // lastName should return only the first letter when sensitive data is not included
+        $this->assertEquals(Str::substr($donation->lastName, 0, 1), $data['lastName']);
     }
 
     /**
@@ -213,7 +214,6 @@ class GetDonationRouteTest extends RestApiTestCase
         $this->assertEquals(403, $status);
     }
 
-
     /**
      * @since 4.0.0
      *
@@ -226,7 +226,6 @@ class GetDonationRouteTest extends RestApiTestCase
 
         $route = '/' . DonationRoute::NAMESPACE . '/donations/' . $donation->id;
         $request = $this->createRequest(WP_REST_Server::READABLE, $route);
-
 
         $response = $this->dispatchRequest($request);
 
@@ -328,7 +327,7 @@ class GetDonationRouteTest extends RestApiTestCase
         foreach ($anonymousDataRedacted as $property) {
             if ($property === 'donorId') {
                 $this->assertEquals(0, $data[$property]);
-            } else if ($property === 'customFields') {
+            } elseif ($property === 'customFields') {
                 $this->assertEquals([], $data[$property]);
             } else {
                 $this->assertEquals(__('anonymous', 'give'), $data[$property]);

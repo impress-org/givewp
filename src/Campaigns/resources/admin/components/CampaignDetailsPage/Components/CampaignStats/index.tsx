@@ -53,7 +53,7 @@ const CampaignStats = () => {
      * the second element in the array is the query for the previous day range
      */
     const [stats, setStats] = useState<CampaignOverViewStat[]>([]);
-    const {campaign} = useCampaignEntityRecord();
+    const {record: campaign} = useCampaignEntityRecord();
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {

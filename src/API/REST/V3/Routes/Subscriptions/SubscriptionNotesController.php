@@ -4,6 +4,8 @@ namespace Give\API\REST\V3\Routes\Subscriptions;
 
 use Exception;
 use Give\API\REST\V3\Routes\Subscriptions\ValueObjects\SubscriptionRoute;
+use Give\API\REST\V3\Support\Item;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Subscriptions\Models\Subscription;
 use Give\Subscriptions\Models\SubscriptionNote;
 use Give\Subscriptions\ValueObjects\SubscriptionNoteType;
@@ -286,46 +288,52 @@ class SubscriptionNotesController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function get_items_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::subscriptions()->canView();
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function create_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::subscriptions()->canCreate();
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function get_item_permissions_check($request): bool
     {
-        return current_user_can('view_give_reports');
+        return UserPermissions::subscriptions()->canView();
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function update_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::subscriptions()->canEdit();
     }
 
     /**
+     * @since 4.14.0 update permission capability to use facade
      * @since 4.8.0
      */
     public function delete_item_permissions_check($request): bool
     {
-        return current_user_can('edit_give_payments');
+        return UserPermissions::subscriptions()->canDelete();
     }
 
     /**
+     * @since 4.14.0 Format dates as strings using Item::formatDatesForResponse
      * @since 4.8.0
      */
     public function prepare_item_for_response($note, $request): WP_REST_Response
@@ -344,7 +352,8 @@ class SubscriptionNotesController extends WP_REST_Controller
             'self' => ['href' => $self_url],
         ];
 
-        $response = new WP_REST_Response($note->toArray());
+        $item = $note->toArray();
+        $response = new WP_REST_Response(Item::formatDatesForResponse($item, ['createdAt', 'updatedAt']));
         $response->add_links($links);
         $response->data = $this->add_additional_fields_to_object($response->data, $request);
 
@@ -371,6 +380,7 @@ class SubscriptionNotesController extends WP_REST_Controller
     /**
      * Get the subscription note schema, conforming to JSON Schema.
      *
+     * @since 4.14.0 Add date format examples
      * @since 4.8.0
      *
      * @return array
@@ -381,6 +391,7 @@ class SubscriptionNotesController extends WP_REST_Controller
             '$schema' => 'http://json-schema.org/draft-04/schema#',
             'title' => 'givewp/subscription-note',
             'type' => 'object',
+            'description' => esc_html__('Subscription Note routes for CRUD operations', 'give'),
             'properties' => [
                 'id' => [
                     'description' => __('Unique identifier for the note.', 'give'),
@@ -405,9 +416,14 @@ class SubscriptionNotesController extends WP_REST_Controller
                     'default' => 'admin',
                 ],
                 'createdAt' => [
-                    'description' => __('The date the note was created.', 'give'),
-                    'type' => 'string',
+                    'description' => sprintf(
+                        /* translators: %s: WordPress documentation URL */
+                        esc_html__('The date the note was created in ISO 8601 format. Follows WordPress REST API date format standards. See %s for more information.', 'give'),
+                        '<a href="https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/#format" target="_blank">WordPress REST API Date and Time</a>'
+                    ),
+                    'type' => ['string', 'null'],
                     'format' => 'date-time',
+                    'example' => '2025-09-02T20:27:02',
                     'readonly' => true,
                 ],
             ],

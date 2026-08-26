@@ -55,10 +55,9 @@
     color: var(--givewp-neutral-900);
     font-size: 1rem;
     font-weight: 600;
-    inline-size: 8rem;
     line-height: 1.5;
     padding-block: var(--givewp-spacing-4);
-    padding-inline: var(--givewp-spacing-2);
+    padding-inline: var(--givewp-spacing-3);
     text-align: start;
     vertical-align: middle;
 
@@ -75,11 +74,11 @@
     }
 
     &:first-child {
-        padding-inline-start: var(--givewp-spacing-6);
+        padding-inline-start: var(--givewp-spacing-4);
     }
 
     &:last-child {
-        padding-inline-end: var(--givewp-spacing-6);
+        padding-inline-end: var(--givewp-spacing-4);
     }
 }
 
@@ -88,12 +87,8 @@
 }
 
 .selectAll {
-    inline-size: 1rem;
+    width: 3.5rem;
     padding-right: 0;
-
-    input[type="checkbox"] {
-        transform: translateX(-2px);
-    }
 }
 
 #updateError {
@@ -183,75 +178,37 @@
 }
 
 .id {
-    inline-size: 2.5rem;
+    inline-size: 8rem;
 }
 
-.donationForms .goal {
-    inline-size: 9.5rem;
-}
-
-.donationForms .donationCount {
-    inline-size: 6.5rem;
-}
-
-.donationForms .donationRevenue {
-    inline-size: 5rem;
-}
-
-.donationForms .shortcode {
-    inline-size: 9rem;
-}
-
-.donations .amount {
-    inline-size: 5.5rem;
-}
-
-.donations .status {
-    inline-size: 6rem;
-}
-
-.donations .subscriptionDonationType {
-    inline-size: 6rem;
-}
-
-.donors .donorInformation {
-    inline-size: 10rem;
-}
-
-.donors .donationRevenue {
-    inline-size: 6.5rem;
-}
-
-.donors .donationCount {
-    inline-size: 6.5rem;
-}
-
-.donors .dateCreated {
-    inline-size: 6.5rem;
-}
-
-.donors .donorType {
-    inline-size: 6.5rem;
-}
-
-.subscriptions .amount {
-    inline-size: 6rem;
-}
-
-.subscriptions .donor {
-    inline-size: 6.5rem;
-}
-
-.subscriptions .form {
-    inline-size: 6.5rem;
-}
-
-.subscriptions .billingPeriod {
-    inline-size: 6.5rem;
-}
-
+.campaigns .status,
+.donationForms .status,
+.donations .paymentType,
+.donations .status,
+.donations .subscriptionDonationType,
+.donors .donorType,
 .subscriptions .status {
-    inline-size: 6.5rem;
+    text-align: center;
+
+    > button {
+        margin-inline: auto;
+    }
+}
+
+.campaigns .donationsCount,
+.campaigns .revenue,
+.donationForms .donationCount,
+.donationForms .donationRevenue,
+.donations .amount,
+.donors .donationCount,
+.donors .donationRevenue,
+.donors .latestDonation,
+.subscriptions .amount {
+    text-align: right;
+
+    > button {
+        margin-left: auto;
+    }
 }
 
 @keyframes appear {

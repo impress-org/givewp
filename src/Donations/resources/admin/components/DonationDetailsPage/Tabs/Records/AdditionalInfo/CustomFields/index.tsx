@@ -1,18 +1,13 @@
 import { __ } from "@wordpress/i18n";
-import { useFormContext } from "react-hook-form";
 import { Interweave } from 'interweave';
 import AdminSection, { AdminSectionField } from '@givewp/components/AdminDetailsPage/AdminSection';
 import BlankSlate from './BlankSlate';
 import styles from './styles.module.scss';
-
-interface CustomField {
-    label: string;
-    value: string;
-}
+import { useDonationEntityRecord } from "@givewp/donations/utils";
 
 export default function CustomFields() {
-    const { getValues } = useFormContext();
-    const customFields: CustomField[] = getValues('customFields') || [];
+    const { record: donation } = useDonationEntityRecord();
+    const customFields = donation?.customFields || [];
 
     return (
         <AdminSection

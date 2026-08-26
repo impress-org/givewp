@@ -2,12 +2,15 @@
 
 .interweave {
     .statusBadge {
+        --color: var(--givewp-shades-white);
+        --bg-color: var(--givewp-shades-black);
+
         align-items: center;
-        background-color: black;
+        background-color: var(--bg-color);
         border-radius: 0.75rem;
-        color: #fff;
+        color: var(--color);
         column-gap: safe-rem(1);
-        display: flex;
+        display: inline-flex;
         font-size: 0.75rem;
         font-weight: 600;
         justify-content: center;
@@ -32,26 +35,26 @@
 
         &--completed,
         &--complete {
-            background: var(--givewp-emerald-100);
-            color: var(--givewp-emerald-900);
+            --bg-color: var(--givewp-emerald-100);
+            --color: var(--givewp-emerald-900);
         }
 
         &--active,
         &--publish,
         &--published {
-            background: var(--givewp-green-100);
-            color: var(--givewp-green-900);
+            --bg-color: var(--givewp-green-100);
+            --color: var(--givewp-green-900);
         }
 
         &--archived,
         &--inactive {
-            background: var(--givewp-grey-100);
-            color: var(--givewp-grey-900);
+            --bg-color: var(--givewp-grey-100);
+            --color: var(--givewp-grey-900);
         }
 
         &--failing {
-            background: var(--givewp-yellow-100);
-            color: var(--givewp-yellow-900);
+            --bg-color: var(--givewp-yellow-100);
+            --color: var(--givewp-yellow-900);
         }
 
         &--failed,
@@ -59,35 +62,47 @@
         &--abandoned,
         &--cancelled,
         &--expired {
-            background: var(--givewp-red-100);
-            color: var(--givewp-red-900);
+            --bg-color: var(--givewp-red-100);
+            --color: var(--givewp-red-900);
         }
 
         &--draft {
-            background: var(--givewp-orange-100);
-            color: var(--givewp-orange-900);
+            --bg-color: var(--givewp-orange-100);
+            --color: var(--givewp-orange-900);
         }
 
         &--pending,
         &--processing {
-            background: var(--givewp-blue-100);
-            color: var(--givewp-blue-900);
+            --bg-color: var(--givewp-blue-100);
+            --color: var(--givewp-blue-900);
         }
 
         &--upgraded {
-            background: var(--givewp-purple-50);
-            color: var(--givewp-purple-900);
+            --bg-color: var(--givewp-purple-50);
+            --color: var(--givewp-purple-900);
         }
 
         &--refunded {
-            background: var(--givewp-blue-700);
-            color: var(--givewp-blue-25);
+            --bg-color: var(--givewp-blue-700);
+            --color: var(--givewp-blue-25);
+        }
+
+        &--give_subscription {
+            --bg-color: var(--givewp-green-700);
+            --color: var(--givewp-green-25);
+        }
+
+        &--trash,
+        &--trashed {
+            --bg-color: var(--givewp-red-700);
+            --color: var(--givewp-red-25);
         }
     }
 
     .subscriptionStatus {
         display: flex;
         gap: 10px;
+        justify-content: center;
 
         &__container {
             position: relative;
@@ -180,47 +195,24 @@
     .donorInformation {
         position: relative;
         display: flex;
-        flex-flow: column wrap;
-        align-content: flex-start;
-        justify-content: center;
-        column-gap: safe-rem(0.6125);
-        row-gap: safe-rem(0.25);
-        height: safe-rem(4);
-        width: 100%;
+        flex-flow: column;
+        gap: var(--givewp-spacing-1);
 
         & > a {
-            color: #0878b0;
-            font-size: 1.125rem;
-            font-weight: 700;
+            color: #2271b1;
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
         }
 
         &__email {
+            font-size: 0.875rem;
+            line-height: 1.43;
+            max-width: calc(100% - 4rem);
             min-width: 0;
             overflow: hidden;
-        }
-
-        &__gravatar {
-            border-radius: 9999px;
-            width: safe-rem(4);
-            height: safe-rem(4);
-        }
-
-        &__name {
-            display: inline;
-            inline-size: -webkit-fit-content;
-            inline-size: -moz-fit-content;
-            inline-size: fit-content;
-            font-size: safe-rem(1.125);
-            text-decoration: none;
-        }
-
-        &__email {
-            font-style: normal;
-            font-weight: 400;
-            line-height: 150%;
-            max-width: calc(100% - 4rem);
-            white-space: nowrap;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
@@ -300,23 +292,20 @@
 .idBadge {
     align-items: center;
     background-color: var(--givewp-neutral-50);
-    border-radius: 0.5rem;
+    border-radius: var(--givewp-rounded-8);
     border: 1px solid var(--givewp-neutral-200);
     color: var(--givewp-neutral-700);
     display: inline-flex;
     flex-grow: 0;
     flex-shrink: 0;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 600;
-    line-height: normal;
-    padding: 0.1875rem 0.5rem;
+    line-height: 1.25rem;
+    padding: calc(0.5 * var(--givewp-spacing-1)) var(--givewp-spacing-2);
     text-align: center;
     width: fit-content;
 
     &::before {
         content: '#';
-        font-size: 0.5rem;
-        padding: 0;
-        width: 0.5rem;
     }
 }

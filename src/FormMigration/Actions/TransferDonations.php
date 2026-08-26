@@ -42,6 +42,11 @@ class TransferDonations
                 ->where('form_id', $this->sourceId)
                 ->update(['form_id' => $destinationId]);
 
+            // Update subscriptions to use v3 form ID
+            DB::table('give_subscriptions')
+                ->where('product_id', $this->sourceId)
+                ->update(['product_id' => $destinationId]);
+
             give_update_meta(
                 $destinationId,
                 '_give_form_sales',

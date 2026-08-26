@@ -107,7 +107,8 @@ $MIN_REM_SIZE: 16px;
         font-weight: 400;
     }
 
-    & > button {
+    & > button,
+    & > .give-card__button {
         background-color: transparent!important;
         padding: 0 !important;
         border: none;

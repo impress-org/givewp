@@ -44,20 +44,25 @@ class Give_DB_Payment_Meta extends Give_DB_Meta {
 	 * Give_DB_Payment_Meta constructor.
 	 *
 	 * @access  public
+	 *
+	 * @since 4.14.0 Remove {$wpdb->paymentmeta} registration in favor of {$wpdb->donationmeta}
 	 * @since   2.0
 	 */
 	public function __construct() {
 		/* @var WPDB $wpdb */
 		global $wpdb;
 
-		// @todo: We leave $wpdb->paymentmeta for backward compatibility, use $wpdb->donationmeta instead. We can remove it after 2.1.3.
-		$wpdb->paymentmeta = $wpdb->donationmeta = $this->table_name = $wpdb->prefix . 'give_donationmeta';
+		// Set donationmeta table name (preferred name to avoid conflicts with other plugins).
+		// Note: We no longer set $wpdb->paymentmeta to prevent conflicts with plugins that also
+		// use paymentmeta. All internal code has been updated to use $wpdb->donationmeta instead.
+		$wpdb->donationmeta = $this->table_name = $wpdb->prefix . 'give_donationmeta';
 		$this->version     = '1.0';
 
-		// Backward compatibility.
+		// Backward compatibility for sites that haven't completed the v2.2.0 upgrade.
 		if ( ! give_has_upgrade_completed( 'v220_rename_donation_meta_type' ) ) {
-			$this->meta_type   = 'payment';
-			$wpdb->paymentmeta = $wpdb->donationmeta = $this->table_name = $wpdb->prefix . 'give_paymentmeta';
+			$this->meta_type = 'payment';
+			$this->table_name = $wpdb->prefix . 'give_paymentmeta';
+			$wpdb->donationmeta = $this->table_name;
 		}
 
 		parent::__construct();

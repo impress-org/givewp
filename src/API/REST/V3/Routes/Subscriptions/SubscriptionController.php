@@ -236,6 +236,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Get a subscription.
      *
+     * @since 4.16.3 Return 404 for anonymous donors unless explicitly included.
      * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -247,13 +248,17 @@ class SubscriptionController extends WP_REST_Controller
     public function get_item($request)
     {
         $subscription = Subscription::find($request->get_param('id'));
+        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
-        if (!$subscription) {
+        // Hide anonymous donors unless explicitly included, matching the collection and donor endpoints.
+        if (
+            !$subscription
+            || ($subscription->donor && $subscription->donor->isAnonymous() && $donorAnonymousMode->isExcluded())
+        ) {
             return new WP_Error('subscription_not_found', __('Subscription not found', 'give'), ['status' => 404]);
         }
 
         $includeSensitiveData = $request->get_param('includeSensitiveData');
-        $donorAnonymousMode = new DonorAnonymousMode($request->get_param('anonymousDonors'));
 
         $item = (new SubscriptionViewModel($subscription))
             ->anonymousMode($donorAnonymousMode)
@@ -312,6 +317,7 @@ class SubscriptionController extends WP_REST_Controller
     /**
      * Update a subscription.
      *
+     * @since 4.11.0 Exclude gatewaySubscriptionId from non-editable fields
      * @since 4.8.0
      *
      * @param WP_REST_Request $request Full data about the request.
@@ -333,7 +339,6 @@ class SubscriptionController extends WP_REST_Controller
             'createdAt',
             'mode',
             'gatewayId',
-            'gatewaySubscriptionId',
         ];
 
         foreach ($request->get_params() as $key => $value) {
@@ -538,6 +543,8 @@ class SubscriptionController extends WP_REST_Controller
     }
 
     /**
+     * @since 4.13.0 added anonymousDonors and includeSensitiveData to embeddable links
+     * @since 4.10.0 added embeddable links for campaign and form
      * @since 4.8.0
      *
      * @param mixed           $item    WordPress representation of the item.
@@ -553,39 +560,60 @@ class SubscriptionController extends WP_REST_Controller
             if ($subscriptionId && $subscription = Subscription::find($subscriptionId)) {
                 $self_url = rest_url(sprintf('%s/%s/%d', $this->namespace, $this->rest_base, $subscription->id));
 
-                $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
-                $donor_url = add_query_arg([
-                    'mode' => $request->get_param('mode'),
-                ], $donor_url);
-
-                $donations_url = rest_url(sprintf('%s/%s', $this->namespace, 'donations'));
-                $donations_url = add_query_arg([
-                    'mode' => $subscription->mode->getValue(),
-                    'subscriptionId' => $subscription->id,
-                ], $donations_url);
-
                 $links = [
-                    'self' => ['href' => $self_url],
-                    CURIE::relationUrl('donor') => [
-                        'href' => $donor_url,
-                        'embeddable' => true,
-                    ],
-                    CURIE::relationUrl('donations') => [
-                        'href' => $donations_url,
-                        'embeddable' => true,
-                    ],
+                    'self' => ['href' => $self_url]
                 ];
 
-                if ($subscription->initialDonation()) {
-                    $campaign_url = rest_url(
-                        sprintf('%s/%s/%d', $this->namespace, 'campaigns', $subscription->initialDonation()->campaignId)
-                    );
+                if (!empty($item['donorId'])) {
+                    $donor_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'donors', $item['donorId']));
+                    $donor_url = add_query_arg([
+                        'mode' => $request->get_param('mode'),
+                        'anonymousDonors' => $request->get_param('anonymousDonors'),
+                        'includeSensitiveData' => $request->get_param('includeSensitiveData'),
+                    ], $donor_url);
+
+                    $links[CURIE::relationUrl('donor')] = [
+                        'href' => $donor_url,
+                        'embeddable' => true,
+                    ];
+                }
+
+                if (!empty($item['donationFormId'])) {
+                    $form_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'forms', $item['donationFormId']));
+                    $form_url = add_query_arg([
+                        'mode' => $subscription->mode->getValue(),
+                    ], $form_url);
+
+                    $links[CURIE::relationUrl('form')] = [
+                        'href' => $form_url,
+                        'embeddable' => true,
+                    ];
+                }
+
+                if (!empty($item['campaignId'])) {
+                    $campaign_url = rest_url(sprintf('%s/%s/%d', $this->namespace, 'campaigns', $item['campaignId']));
+                    $campaign_url = add_query_arg([
+                        'mode' => $subscription->mode->getValue(),
+                    ], $campaign_url);
 
                     $links[CURIE::relationUrl('campaign')] = [
                         'href' => $campaign_url,
                         'embeddable' => true,
                     ];
                 }
+
+                $donations_url = rest_url(sprintf('%s/%s', $this->namespace, 'donations'));
+                $donations_url = add_query_arg([
+                    'mode' => $subscription->mode->getValue(),
+                    'subscriptionId' => $subscription->id,
+                    'anonymousDonations' => $request->get_param('anonymousDonors'),
+                    'includeSensitiveData' => $request->get_param('includeSensitiveData'),
+                ], $donations_url);
+
+                $links[CURIE::relationUrl('donations')] = [
+                    'href' => $donations_url,
+                    'embeddable' => true,
+                ];
             } else {
                 $links = [];
             }

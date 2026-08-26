@@ -1,6 +1,6 @@
 <?php
 
-namespace Give\ServiceProviders;
+namespace Give\ServiceProviders\Exceptions;
 
 use Give\Framework\Exceptions\Primitives\Exception;
 

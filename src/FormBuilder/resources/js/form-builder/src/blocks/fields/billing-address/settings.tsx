@@ -24,6 +24,10 @@ const settings: FieldBlock['settings'] = {
             source: 'attribute',
             default: [{value: 'sample', label: __('A full country list will be displayed here...', 'give')}],
         },
+        defaultCountry: {
+            type: 'string',
+            default: '',
+        },
         countryLabel: {
             type: 'string',
             source: 'attribute',

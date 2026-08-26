@@ -8,6 +8,7 @@ namespace Give\FeatureFlags\OptionBasedFormEditor\Settings;
 class General extends AbstractOptionBasedFormEditorSettings
 {
     /**
+     * @since 4.14.0 Remove auto_format_currency option from the list of disabled options
      * @since 3.18.0
      */
     public function getDisabledOptionIds(): array
@@ -16,7 +17,6 @@ class General extends AbstractOptionBasedFormEditorSettings
             // General Section
             'override_legacy_donation_management_pages',
             // Currency Section
-            'auto_format_currency',
             'currency_position',
             'thousands_separator',
             'decimal_separator',

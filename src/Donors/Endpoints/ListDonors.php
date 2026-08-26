@@ -2,8 +2,8 @@
 
 namespace Give\Donors\Endpoints;
 
-use Give\Donors\ListTable\DonorsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\ListTable\DonorsListTable;
 use Give\Framework\Database\DB;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_REST_Request;
@@ -28,6 +28,8 @@ class ListDonors extends Endpoint
 
     /**
      * @inheritDoc
+     *
+     * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
      */
     public function registerRoute()
     {
@@ -65,7 +67,7 @@ class ListDonors extends Endpoint
                     'start' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'campaignId' => [
                         'type' => 'integer',
@@ -75,7 +77,7 @@ class ListDonors extends Endpoint
                     'end' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'sortColumn' => [
                         'type' => 'string',
@@ -214,9 +216,9 @@ class ListDonors extends Endpoint
 
         if ($start && $end) {
             $query->whereBetween('date_created', $start, $end);
-        } else if ($start) {
+        } elseif ($start) {
             $query->where('date_created', $start, '>=');
-        } else if ($end) {
+        } elseif ($end) {
             $query->where('date_created', $end, '<=');
         }
 

@@ -127,8 +127,8 @@ class CurrencyFacade
 
     /**
      * Retrieves a list for all supported currencies.
-     * 
-     * @unreleased Updated to use GiveCurrencies as the primary source of currencies
+     *
+     * @since 4.10.0 Updated to use GiveCurrencies as the primary source of currencies
      * @since 2.27.3
      */
     private function getCurrenciesList(): Currencies

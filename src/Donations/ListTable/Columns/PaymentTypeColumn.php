@@ -36,7 +36,7 @@ class PaymentTypeColumn extends ModelColumn
     }
 
     /**
-     * @unreleased Removed badge icon
+     * @since 4.10.0 Removed badge icon
      * @since 2.24.0
      *
      * @inheritDoc

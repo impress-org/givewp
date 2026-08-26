@@ -156,7 +156,9 @@ class ListDonationForms extends Endpoint
             ->getAll(ARRAY_A);
 
         if ('model' === $this->request->get_param('return')) {
-            $items = $forms;
+            $items = array_map(function ($form) {
+                return $form->toArray();
+            }, $forms);
         } else {
             $this->listTable->items($forms, $this->request->get_param('locale') ?? '');
             $items = $this->listTable->getItems();

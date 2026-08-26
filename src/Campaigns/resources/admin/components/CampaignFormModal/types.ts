@@ -7,8 +7,6 @@ export interface CampaignModalProps {
         apiRoot: string;
         apiNonce: string;
     };
-    title: string;
-    campaign?: Campaign;
 }
 
 export type CampaignFormInputs = {

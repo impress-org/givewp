@@ -11,6 +11,7 @@ import BlankSlate from '@givewp/components/ListTable/BlankSlate';
 import ProductRecommendations from '@givewp/components/ListTable/ProductRecommendations';
 import {RecommendedProductData} from '@givewp/promotions/hooks/useRecommendations';
 import { StatConfig } from '@givewp/components/ListTable/ListTableStats/ListTableStats';
+import filterByOptions from '../constants/filterByOptions';
 
 declare global {
     interface Window {
@@ -22,10 +23,11 @@ declare global {
             table: {columns: Array<object>};
             paymentMode: boolean;
             manualDonations: boolean;
-            recurringDonations: boolean;
+            recurringDonationsEnabled: boolean;
             pluginUrl: string;
             dismissedRecommendations: Array<string>;
             addonsBulkActions: Array<BulkActionsConfig>;
+            donationStatuses: {[statusCode: string]: string};
         };
     }
 }
@@ -56,6 +58,11 @@ const filters: Array<FilterConfig> = [
         name: 'donor',
         type: 'hidden',
     },
+    {
+        name: 'filterBy',
+        type: 'filterby',
+        groupedOptions: filterByOptions,
+    },
 ];
 
 const bulkActions: Array<BulkActionsConfig> = [
@@ -63,13 +70,64 @@ const bulkActions: Array<BulkActionsConfig> = [
         label: __('Delete', 'give'),
         value: 'delete',
         type: 'danger',
+        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
         action: async (selected) => {
             const response = await API.fetchWithArgs('/delete', {ids: selected.join(',')}, 'DELETE');
             return response;
         },
         confirm: (selected, names) => (
             <>
-                <p>{__('Are you sure you want to delete the following donations?', 'give')}</p>
+                <p>{__('Really delete the following donations?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Trash', 'give'),
+        value: 'trash',
+        type: 'warning',
+        isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/trash', {ids: selected.join(',')}, 'DELETE');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want add to trash the following donations?', 'give')}</p>
+                <ul role="document" tabIndex={0}>
+                    {selected.map((donationId, index) => (
+                        <li key={donationId}>
+                            <IdBadge id={donationId} />{' '}
+                            <span>
+                                {__('from ', 'give')} <Interweave content={names[index]} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </>
+        ),
+    },
+    {
+        label: __('Restore', 'give'),
+        value: 'restore',
+        type: 'normal',
+        isVisible: (data, parameters) => parameters?.status?.includes('trash'),
+        action: async (selected) => {
+            const response = await API.fetchWithArgs('/untrash', {ids: selected.join(',')}, 'POST');
+            return response;
+        },
+        confirm: (selected, names) => (
+            <>
+                <p>{__('Are you sure you want remove from trash the following donations?', 'give')}</p>
                 <ul role="document" tabIndex={0}>
                     {selected.map((donationId, index) => (
                         <li key={donationId}>
@@ -100,6 +158,7 @@ const bulkActions: Array<BulkActionsConfig> = [
             return {
                 label,
                 value,
+                isVisible: (data, parameters) => !parameters?.status?.includes('trash'),
                 action: async (selected) =>
                     await API.fetchWithArgs(
                         '/setStatus',
@@ -220,22 +279,22 @@ const rotatingRecommendation = (
  * then this config must use those same keys: "donationsCount", "oneTimeDonationsCount", "recurringDonationsCount".
  * Missing or mismatched keys will result in empty/undefined values in the UI.
  *
- * @unreleased
+ * @since 4.10.0
  */
 const statsConfig: Record<string, StatConfig> = {
     donationsCount: { label: __('Total Donations', 'give')},
     oneTimeDonationsCount: { label: __('One-Time Donations', 'give')},
     recurringDonationsCount: {
         label: __('Recurring Donations', 'give'),
-        upgrade: !window.GiveDonations.recurringDonations && {
-            href: ' https://docs.givewp.com/recurring-stat',
+        upgrade: !window.GiveDonations.recurringDonationsEnabled && {
+            href: 'https://docs.givewp.com/recurring-stat',
             tooltip: __('Increase your fundraising revenue by over 30% with recurring giving campaigns.', 'give')
         }
     },
 };
 
 /**
- * @unreleased Update button class names and add aria attributes.
+ * @since 4.10.0 Update button class names and add aria attributes.
  * @since 2.24.0
  */
 export default function DonationsListTable() {
@@ -253,6 +312,13 @@ export default function DonationsListTable() {
             productRecommendation={rotatingRecommendation}
             statsConfig={statsConfig}
         >
+            <button
+                className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
+                onClick={showLegacyDonations}
+                aria-label={__('Switch to the legacy donations table view', 'give')}
+            >
+                {__('Switch to Legacy View', 'give')}
+            </button>
             {window.GiveDonations.manualDonations ? (
                 <a
                     className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
@@ -290,13 +356,6 @@ export default function DonationsListTable() {
             >
                 {__('Import donations', 'give')}
             </a>
-            <button
-                className={`button button-tertiary ${tableStyles.secondaryActionButton}`}
-                onClick={showLegacyDonations}
-                aria-label={__('Switch to the legacy donations table view', 'give')}
-            >
-                {__('Switch to Legacy View', 'give')}
-            </button>
         </ListTablePage>
     );
 }

@@ -5,6 +5,7 @@ namespace Give\Donations\Endpoints;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
+use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -33,6 +34,7 @@ class ListDonations extends Endpoint
     protected $listTable;
 
     /**
+     * @since 4.12.0 Updated status parameter to accept multiple comma-separated values
      * @since 4.6.0 add status parameter to filter donations by status
      * @since 3.4.0
      * @access public
@@ -44,6 +46,9 @@ class ListDonations extends Endpoint
 
     /**
      * @inheritDoc
+     *
+     * @since 4.12.0 Add format parameter to start and end dates, replacing custom validation callback
+     * @since 3.4.0
      */
     public function registerRoute()
     {
@@ -82,12 +87,12 @@ class ListDonations extends Endpoint
                     'start' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'end' => [
                         'type' => 'string',
                         'required' => false,
-                        'validate_callback' => [$this, 'validateDate']
+                        'format' => 'date-time'
                     ],
                     'donor' => [
                         'type' => 'string',
@@ -127,14 +132,13 @@ class ListDonations extends Endpoint
                         ],
                     ],
                     'status' => [
-                        'type' => 'string',
+                        'type' => 'array',
                         'required' => false,
-                        'default' => 'active',
-                        'enum' => [
-                            'active',
-                            'trash',
+                        'items' => [
+                            'type' => 'string',
+                            'enum' => array_values(DonationStatus::toArray()),
                         ],
-                        'description' => 'Filter donations by status: active (all except trash), or trash.'
+                        'description' => 'Filter donations by status. Accepts comma-separated list of DonationStatus values (e.g., "pending,publish,trash"). If not provided, excludes trash donations by default.'
                     ],
                 ],
             ]
@@ -231,6 +235,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
      * @since 4.8.0 Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
      * @since 3.4.0 Make this method protected so it can be extended
@@ -256,14 +261,15 @@ class ListDonations extends Endpoint
             DonationMetaKeys::MODE(),
         ];
 
-        $hasWhereConditions = $search || $start || $end || $campaignId || $subscriptionId || $donor;
+        $hasWhereConditions = $search || $start || $end || $campaignId || $subscriptionId || $donor || $status;
 
         $query->where('post_type', 'give_payment');
 
-        if ($status === 'trash') {
-            $query->where('post_status', 'trash');
-        } elseif ($status === 'active') {
-            $query->where('post_status', 'trash', '<>');
+        if (!empty($status)) {
+            $query->whereIn('post_status', $status);
+        } else {
+            // Default behavior: exclude trash donations
+            $query->where('post_status', DonationStatus::TRASH, '<>');
         }
 
         if ($search) {

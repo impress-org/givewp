@@ -3,7 +3,6 @@
 namespace Give\Donations;
 
 use Give\Donations\Actions\LoadDonationAdminOptions;
-use Give\Donations\Actions\RegisterDonationEntity;
 use Give\Donations\CustomFields\Controllers\DonationDetailsController;
 use Give\Donations\LegacyListeners\ClearDonationPostCache;
 use Give\Donations\LegacyListeners\DispatchDonationNoteEmailNotification;
@@ -56,7 +55,6 @@ class ServiceProvider implements ServiceProviderInterface
         $this->bootLegacyListeners();
         $this->registerDonationsAdminPage();
         $this->addCustomFieldsToDonationDetails();
-        $this->registerDonationEntity();
         $this->loadDonationAdminOptions();
 
         give(MigrationsRegister::class)->addMigrations([
@@ -115,16 +113,20 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * Donations Admin page
      *
+     * @since 4.14.0 defer conditionals and DB queries to admin_menu hook.
      * @since 2.20.0
      */
     private function registerDonationsAdminPage()
     {
-        $userId = get_current_user_id();
-        $showLegacy = get_user_meta($userId, '_give_donations_archive_show_legacy', true);
-        // only register new admin page if user hasn't chosen to use the old one
-        if (empty($showLegacy)) {
-            Hooks::addAction('admin_menu', DonationsAdminPage::class, 'registerMenuItem', 20);
-        }
+        add_action('admin_menu', function () {
+            $userId = get_current_user_id();
+            $showLegacy = get_user_meta($userId, '_give_donations_archive_show_legacy', true);
+
+            // only register new admin page if user hasn't chosen to use the old one
+            if (empty($showLegacy)) {
+                give(DonationsAdminPage::class)->registerMenuItem();
+            }
+        }, 20);
     }
 
     /**
@@ -147,14 +149,6 @@ class ServiceProvider implements ServiceProviderInterface
 
             (new UpdateDonorMetaWithLastDonatedCurrency())($donation);
         });
-    }
-
-    /**
-     * @since 4.6.0
-     */
-    private function registerDonationEntity()
-    {
-        Hooks::addAction('init', RegisterDonationEntity::class);
     }
 
     /**

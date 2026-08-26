@@ -29,16 +29,18 @@ class DonorInformationColumn extends ModelColumn
     }
 
     /**
+     * @since 4.12.0 Update column label
      * @since 2.24.0
      *
      * @inheritDoc
      */
     public function getLabel(): string
     {
-        return __('Donor Information', 'give');
+        return __('Name', 'give');
     }
 
     /**
+     * @since 4.12.0 Remove gravatar from donor information column
      * @since 3.20.0 Use email to get avatar URL
      * @since 2.24.0
      *
@@ -50,9 +52,8 @@ class DonorInformationColumn extends ModelColumn
     {
         $template = '
             <div class="donorInformation">
-                <img class="donorInformation__gravatar" src="%s" alt="donor name" loading="lazy" />
                 <a href="%s">%s</a>
-                <address class="donorInformation__email">%s</address>
+                <span class="donorInformation__email">%s</span>
             </div>
         ';
 
@@ -60,7 +61,6 @@ class DonorInformationColumn extends ModelColumn
 
         return sprintf(
             $template,
-            get_avatar_url($model->email, ['size' => 64]),
             $url,
             trim("$model->firstName $model->lastName"),
             $model->email

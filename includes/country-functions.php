@@ -141,6 +141,7 @@ function give_get_country_list() {
 		'CI' => esc_html__( 'Cote d\'Ivoire', 'give' ),
 		'HR' => esc_html__( 'Croatia/Hrvatska', 'give' ),
 		'CU' => esc_html__( 'Cuba', 'give' ),
+        'CW' => esc_html__( 'Curaçao', 'give' ),
 		'CY' => esc_html__( 'Cyprus Island', 'give' ),
 		'CZ' => esc_html__( 'Czech Republic', 'give' ),
 		'DK' => esc_html__( 'Denmark', 'give' ),
@@ -238,8 +239,7 @@ function give_get_country_list() {
 		'NA' => esc_html__( 'Namibia', 'give' ),
 		'NR' => esc_html__( 'Nauru', 'give' ),
 		'NP' => esc_html__( 'Nepal', 'give' ),
-		'NL' => esc_html__( 'Netherlands', 'give' ),
-		'AN' => esc_html__( 'Netherlands Antilles', 'give' ),
+        'NL' => esc_html__('Netherlands', 'give'),
 		'NC' => esc_html__( 'New Caledonia', 'give' ),
 		'NZ' => esc_html__( 'New Zealand', 'give' ),
 		'NI' => esc_html__( 'Nicaragua', 'give' ),
@@ -650,7 +650,6 @@ function give_get_country_locale() {
 			'HU' => [
 				'state' => [
 					'label'  => __( 'County', 'give' ),
-					'hidden' => true,
 				],
 			],
 			'ID' => [

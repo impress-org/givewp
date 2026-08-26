@@ -4,7 +4,6 @@ namespace Give\Donors;
 
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donors\Models\Donor;
-use Give\Framework\Database\DB;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
@@ -137,5 +136,20 @@ class DonorsQuery
     public function getAll(): array
     {
         return $this->query->getAll() ?? [];
+    }
+
+    /**
+     * Clone the query builder.
+     *
+     * @since 4.14.0
+     *
+     * @return self
+     */
+    public function clone(): self
+    {
+        $cloned = new self();
+        $cloned->query = clone $this->query;
+
+        return $cloned;
     }
 }

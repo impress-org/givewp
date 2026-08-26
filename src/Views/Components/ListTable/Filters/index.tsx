@@ -5,7 +5,7 @@ import styles from './styles.module.scss';
 /**
  * Filter type configurations
  *
- * @unreleased
+ * @since 4.10.0
  */
 const filterConfigs = {
     select: {
@@ -31,7 +31,7 @@ const filterConfigs = {
 };
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export const Filter = ({filter, value = null, onChange, debouncedOnChange}) => {
     const config = filterConfigs[filter.type];
@@ -84,6 +84,16 @@ export const getInitialFilterState = (filters) => {
         // otherwise, use the default value for the filter type
         else {
             switch (filter.type) {
+                case 'hidden':
+                    state[filter.name] = filter.options?.[0]?.value ?? '';
+                    break;
+                case 'filterby':
+                    filter.groupedOptions.forEach((group) => {
+                        if (group.defaultValue) {
+                            state[group.id] = [].concat(group.defaultValue);
+                        }
+                    });
+                    break;
                 case 'select':
                     state[filter.name] = filter.options?.[0].value;
                     break;

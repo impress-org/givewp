@@ -1677,6 +1677,8 @@ function give_get_login_fields( $form_id ) {
 				</span>
 			</div>
 		</div>
+		<input type="hidden" name="give_login_nonce"
+			   value="<?php echo wp_create_nonce( 'give-login-nonce' ); ?>"/>
 		<?php
 		/**
 		 * Fires while rendering checkout login form, after the fields.
@@ -2021,11 +2023,13 @@ add_action( 'give_donation_form_after_cc_form', 'give_checkout_submit', 9999, 2 
 /**
  * Give Donation form submit button.
  *
+ * @since 4.16.2 Escape submit button label in form markup.
+ * @since  1.8.8
+ *
  * @param int   $form_id The form ID.
  * @param array $args
  *
  * @return string
- * @since  1.8.8
  */
 function give_get_donation_form_submit_button( $form_id, $args = [] ) {
 
@@ -2036,7 +2040,7 @@ function give_get_donation_form_submit_button( $form_id, $args = [] ) {
 	?>
 	<div class="give-submit-button-wrap give-clearfix">
 		<input type="submit" class="give-submit give-btn" id="give-purchase-button" name="give-purchase"
-			   value="<?php echo $display_label; ?>" data-before-validation-label="<?php echo $display_label; ?>"/>
+			   value="<?php echo esc_attr( $display_label ); ?>" data-before-validation-label="<?php echo esc_attr( $display_label ); ?>"/>
 		<span class="give-loading-animation"></span>
 	</div>
 	<?php

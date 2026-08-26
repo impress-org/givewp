@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {__} from '@wordpress/i18n';
 import {Campaign} from '@givewp/campaigns/admin/components/types';
 import ReactSelect from 'react-select';
+import {EmotionStylesProvider} from '@givewp/admin/providers';
 import {reactSelectStyles, reactSelectThemeStyles} from './reactSelectStyles';
 import logo from './images/givewp-logo.svg';
 
@@ -46,20 +47,22 @@ export default ({campaigns, hasResolved, handleSelect}: CampaignSelectorProps) =
                     {__('Choose a campaign', 'give')}
                 </label>
 
-                <ReactSelect
-                    name="campaignId"
-                    inputId="campaignId"
-                    value={campaign}
-                    //@ts-ignore
-                    onChange={(option) => setSelectedCampaign(option?.value)}
-                    noOptionsMessage={() => <p>{__('No campaigns were found.', 'give')}</p>}
-                    //@ts-ignore
-                    options={campaignOptions}
-                    loadingMessage={() => <>{__('Loading Campaigns...', 'give')}</>}
-                    isLoading={!hasResolved}
-                    theme={reactSelectThemeStyles}
-                    styles={reactSelectStyles}
-                />
+                <EmotionStylesProvider cacheKey="givewp-campaign-selector">
+                    <ReactSelect
+                        name="campaignId"
+                        inputId="campaignId"
+                        value={campaign}
+                        //@ts-ignore
+                        onChange={(option) => setSelectedCampaign(option?.value)}
+                        noOptionsMessage={() => <p>{__('No campaigns were found.', 'give')}</p>}
+                        //@ts-ignore
+                        options={campaignOptions}
+                        loadingMessage={() => <>{__('Loading Campaigns...', 'give')}</>}
+                        isLoading={!hasResolved}
+                        theme={reactSelectThemeStyles}
+                        styles={reactSelectStyles}
+                    />
+                </EmotionStylesProvider>
             </div>
 
             <button

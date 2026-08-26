@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This template is used to display the donation grid with [give_donor_wall]
  */
@@ -35,7 +36,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
 
                     echo "
                             <div class='give-donor-container__image' >
-                                <img class='give-donor-container__image__anonymous' src='$imageUrl' alt='$alt' style='height: {$avatarSize}px;'/>
+                                <img class='give-donor-container__image__anonymous' src='" . esc_url($imageUrl) . "' alt='" . esc_attr($alt) . "' style='" . esc_attr('height: ' . $avatarSize . 'px;') . "'/>
                             </div>
                         ";
                 } elseif (($avatar = $donor->get_meta('_give_donor_avatar_id', true))) {
@@ -45,20 +46,19 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
 
                     echo "
                             <div class='give-donor-container__image' >
-                                <img src='$imageUrl' alt='$alt' style='height: {$avatarSize}px;'/>
+                                <img src='" . esc_url($imageUrl) . "' alt='" . esc_attr($alt) . "' style='" . esc_attr('height: ' . $avatarSize . 'px;') . "'/>
                             </div>
                         ";
-
                 } elseif ($donation['_give_payment_donor_email'] && give_validate_gravatar(
-                        $donation['_give_payment_donor_email']
-                    )) {
+                    $donation['_give_payment_donor_email']
+                )) {
                     // Donor has a valid Gravatar
                     $hash = md5(strtolower(trim($donation['_give_payment_donor_email'])));
 
 
                     echo "
                             <div class='give-donor-container__image' >
-                                <img src='https://gravatar.com/avatar/$hash' alt='$donor->name' style='height: $avatarSize px;'/>
+                                <img src='" . esc_url('https://gravatar.com/avatar/' . $hash) . "' alt='" . esc_attr($donor->name) . "' style='" . esc_attr('height: ' . $avatarSize . 'px;') . "'/>
                             </div>
                         ";
                 } else {
@@ -66,42 +66,43 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
 
                     $initial = esc_html($donation['name_initial']);
                     echo "
-                           <div class='give-donor-container__image' style='height: {$avatarSize}px; width: {$avatarSize}px;'>
+                           <div class='give-donor-container__image' style='" . esc_attr('height: ' . $avatarSize . 'px; width: ' . $avatarSize . 'px;') . "'>
                              <span class='give-donor-container__image__name_initial'>$initial</span>
                            </div>
                         ";
                 }
             }
-                ?>
-                <div class="give-donor-container-variation"
-                     style="
-                            flex-direction: <?php echo $atts['show_avatar'] ? 'column' : 'row'; ?>;
-                            align-items:  <?php echo $atts['show_avatar'] ? 'center' : 'flex-end'; ?>;
-                         ">
-                    <?php if ( $atts['show_name'] ) : ?>
-                        <h3 class="give-donor-container-variation__name">
-                            <?php
-                            // Get donor name based on donation parameter.
-                            $donor_name = ! empty( $donation['_give_anonymous_donation'] )
-                                ? esc_html__( 'Anonymous', 'give' )
-                                : trim( $donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name'] );
-                            ?>
-                            <?php echo esc_html( $donor_name ); ?>
-                        </h3>
-                    <?php endif; ?>
+            ?>
+            <?php
+            $flexDirection = $atts['show_avatar'] ? 'column' : 'row';
+            $alignItems = $atts['show_avatar'] ? 'center' : 'flex-end';
+            ?>
+            <div class="give-donor-container-variation"
+                style="<?php echo esc_attr('flex-direction: ' . $flexDirection . '; align-items: ' . $alignItems . ';'); ?>">
+                <?php if ($atts['show_name']) : ?>
+                    <h3 class="give-donor-container-variation__name">
+                        <?php
+                        // Get donor name based on donation parameter.
+                        $donor_name = ! empty($donation['_give_anonymous_donation'])
+                            ? esc_html__('Anonymous', 'give')
+                            : trim($donation['_give_donor_billing_first_name'] . ' ' . $donation['_give_donor_billing_last_name']);
+                        ?>
+                        <?php echo esc_html($donor_name); ?>
+                    </h3>
+                <?php endif; ?>
 
-                    <?php if ( $atts['show_company_name'] && isset( $donation['_give_donation_company'] ) ) : ?>
-                        <h3 class="give-donor-container-variation__name">
-                            <?php echo esc_html( $donation['_give_donation_company'] ); ?>
-                        </h3>
-                    <?php endif; ?>
+                <?php if ($atts['show_company_name'] && isset($donation['_give_donation_company'])) : ?>
+                    <h3 class="give-donor-container-variation__name">
+                        <?php echo esc_html($donation['_give_donation_company']); ?>
+                    </h3>
+                <?php endif; ?>
 
-                    <?php if ( $atts['show_time'] ) : ?>
-                        <p class="give-donor-container-variation__timestamp">
-                            <?php echo esc_html( give_get_formatted_date( $donation['donation_date'], give_date_format(), 'Y-m-d H:i:s', true ) ); ?>
-                        </p>
-                    <?php endif; ?>
-                </div>
+                <?php if ($atts['show_time']) : ?>
+                    <p class="give-donor-container-variation__timestamp">
+                        <?php echo esc_html(give_get_formatted_date($donation['donation_date'], give_date_format(), 'Y-m-d H:i:s', true)); ?>
+                    </p>
+                <?php endif; ?>
+            </div>
             <?php
             if (
                 $atts['show_comments']
@@ -109,10 +110,10 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                 && absint($atts['comment_length'])
                 && !empty($donation['donor_comment'])
             ) :
-                ?>
+            ?>
                 <div class="give-donor-wrapper">
                     <div class="give-donor-content"
-                         style="border-color: <?php echo !empty($atts['color']) ? esc_attr($atts['color']) : '#219653' ?>">
+                        style="border-color: <?php echo !empty($atts['color']) ? esc_attr($atts['color']) : '#219653' ?>">
                         <?php
                         $comment = esc_html($donation['donor_comment']);
                         $stripped_comment = str_replace(' ', '', $comment);
@@ -124,7 +125,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                         // A truncated excerpt is displayed if the comment is too long.
                         if ($max_chars < $total_chars) {
                             $excerpt = '';
-                            $offset = -($total_chars - $max_chars);
+                            $offset = - ($total_chars - $max_chars);
                             $last_space = strrpos($comment, ' ', $offset);
 
                             if ($last_space) {
@@ -142,9 +143,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                                    </p>";
 
                             echo "<p class='give-donor-content__comment'> $comment </p>";
-
-                        }
-                        else     {
+                        } else {
                             echo "<p class='give-donor-content__comment'>
                                     $comment
                             </p>";
@@ -178,9 +177,9 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                     if ($atts['show_total']) {
                         echo sprintf(
                             '<span class=\'give - donor - details__amount_donated\'>%1$s</span>',
-                                    esc_html__('Amount Donated', 'give')
-                                );
-                            }
+                            esc_html__('Amount Donated', 'give')
+                        );
+                    }
                     ?>
                 </div>
 
@@ -204,10 +203,10 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
             $honoree_full_name =
                 //Determine if a last name is available
                 $donation['_give_tributes_last_name'] ?
-                    //Remove full last name, and add as an initial.
-                    trim($honoree_first_name . " " . strtoupper($honoree_last_name [0]) . ".") :
-                    // Else add period at the end of first name
-                    trim($honoree_first_name) . ".";
+                //Remove full last name, and add as an initial.
+                trim($honoree_first_name . " " . strtoupper($honoree_last_name[0]) . ".") :
+                // Else add period at the end of first name
+                trim($honoree_first_name) . ".";
 
             echo
             "<div class='give-donor-tribute' style='background-color: " . esc_attr($tribute_background_color) . " '>

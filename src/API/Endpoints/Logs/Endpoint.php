@@ -3,12 +3,14 @@
 namespace Give\API\Endpoints\Logs;
 
 use Give\API\RestRoute;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use WP_Error;
 
 /**
  * Class Endpoint
  * @package GiveDivi\Divi\Routes
  *
+ * @since 4.14.0 update permission capability to use facade
  * @since 2.10.0
  */
 abstract class Endpoint implements RestRoute
@@ -25,10 +27,10 @@ abstract class Endpoint implements RestRoute
      */
     public function permissionsCheck()
     {
-        if ( ! current_user_can('manage_options')) {
+        if ( ! UserPermissions::settings()->canManage()) {
             return new WP_Error(
                 'rest_forbidden',
-                esc_html__('You dont have the right permissions to view Logs', 'give'),
+                __('You don\'t have the right permissions to view Logs', 'give'),
                 ['status' => $this->authorizationStatusCode()]
             );
         }

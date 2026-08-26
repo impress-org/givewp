@@ -6,6 +6,7 @@ use Give\Campaigns\CampaignDonationQuery;
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\ValueObjects\DonorMetaKeys;
 
 /**
  * @since 4.2.0 remove SQL casting to decimal
@@ -33,7 +34,9 @@ $query = (new CampaignDonationQuery($campaign))
         'amountMeta.meta_value - IFNULL(feeAmountRecovered.meta_value, 0) as amount',
         'donorName.meta_value as donorName',
         'donation.post_date as date',
-        'anonymousMeta.meta_value as isAnonymous'
+        'anonymousMeta.meta_value as isAnonymous',
+        'donors.email as email',
+        'donorMeta.meta_value as donorAvatarId'
     )
     ->joinDonationMeta(DonationMetaKeys::DONOR_ID, 'donorIdMeta')
     ->joinDonationMeta(DonationMetaKeys::AMOUNT, 'amountMeta')
@@ -41,6 +44,8 @@ $query = (new CampaignDonationQuery($campaign))
     ->joinDonationMeta(DonationMetaKeys::FEE_AMOUNT_RECOVERED, 'feeAmountRecovered')
     ->joinDonationMeta(DonationMetaKeys::ANONYMOUS, 'anonymousMeta')
     ->leftJoin('give_donors', 'donorIdMeta.meta_value', 'donors.id', 'donors')
+    ->leftJoin('give_donormeta', 'donorIdMeta.meta_value', 'donorMeta.donor_id', 'donorMeta')
+    ->where('donorMeta.meta_key', DonorMetaKeys::AVATAR_ID)
     ->orderByRaw($sortBy === 'top-donations' ? 'amountMeta.meta_value DESC' : 'donation.ID DESC')
     ->limit($attributes['donationsPerPage'] ?? 5);
 

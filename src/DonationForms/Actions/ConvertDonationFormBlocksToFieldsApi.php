@@ -316,6 +316,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 4.14.0 Add support for default country value in billing address field
      * @since 3.4.0 updated fields to add optional rules last so they can be dynamically validated.
      * @since 3.0.0
      */
@@ -340,6 +341,7 @@ class ConvertDonationFormBlocksToFieldsApi
                 $group->getNodeByName('country')
                     ->label($block->getAttribute('countryLabel'))
                     ->options(...$countryList)
+                    ->defaultValue($block->getAttribute('defaultCountry'))
                     ->rules('required');
 
                 $group->getNodeByName('address1')
@@ -390,6 +392,7 @@ class ConvertDonationFormBlocksToFieldsApi
     }
 
     /**
+     * @since 4.14.2 add emailTag to field
      * @since 3.4.1 updated to be field specific and prevent overwriting of existing values
      * @since 3.0.0
      */
@@ -416,6 +419,10 @@ class ConvertDonationFormBlocksToFieldsApi
 
         if ($block->hasAttribute('displayInReceipt') && $block->getAttribute('displayInReceipt')) {
             $field->showInReceipt($block->getAttribute('displayInReceipt'));
+        }
+
+        if ($block->hasAttribute('emailTag') && method_exists($field, 'emailTag')) {
+            $field->emailTag($block->getAttribute('emailTag'));
         }
 
         return $field;

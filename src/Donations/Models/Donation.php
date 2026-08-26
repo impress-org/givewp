@@ -183,6 +183,16 @@ class Donation extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @since 4.12.0
+     *
+     * @throws Exception|InvalidArgumentException
+     */
+    public function unTrash(): bool
+    {
+        return give()->donations->unTrash($this);
+    }
+
+    /**
      * @since 2.19.6
      *
      * @return ModelQueryBuilder<Donor>

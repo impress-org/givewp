@@ -6,6 +6,7 @@ use Give\Framework\Database\DB;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\Language;
 use Give\Subscriptions\ListTable\SubscriptionsListTable;
+use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
 /**
  * @since 4.8.0
@@ -13,6 +14,7 @@ use Give\Subscriptions\ListTable\SubscriptionsListTable;
 class LoadSubscriptionsListTableAssets
 {
     /**
+     * @since 4.12.0 Add "subscriptionStatuses" property to the localize script
      * @since 2.27.1 Pass dismissed recommendations to the localize script
      * @since 2.20.0
      */
@@ -37,6 +39,7 @@ class LoadSubscriptionsListTableAssets
             'adminUrl' => admin_url(),
             'paymentMode' => give_is_test_mode(),
             'pluginUrl' => GIVE_PLUGIN_URL,
+            'subscriptionStatuses' => SubscriptionStatus::labels(),
         ]);
 
         wp_enqueue_script($handleName);

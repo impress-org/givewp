@@ -5,6 +5,8 @@ import logo from './givewp-logo.svg';
 import usePostState from "../../hooks/usePostState";
 import {reactSelectStyles, reactSelectThemeStyles} from "./styles/reactSelectStyles";
 import './styles/index.scss';
+import { EmotionStylesProvider } from '@givewp/admin/providers';
+import {useDispatch} from '@wordpress/data';
 
 /**
  * @since 4.3.0
@@ -29,9 +31,6 @@ type EntitySelectorProps = {
     disabled?: boolean;
 };
 
-// @ts-ignore
-const savePost = () => dispatch('core/editor').savePost();
-
 /**
  * @since 4.3.0
  */
@@ -50,6 +49,8 @@ export default function EntitySelector({
     const selectedOption = options.find((opt) => opt.value === selected);
     const {isSaving, isDisabled} = usePostState();
 
+    const {savePost} = useDispatch('core/editor');
+
     return (
         <div className="givewp-entity-selector">
             <img className="givewp-entity-selector__logo" src={logo} alt="givewp-logo" />
@@ -58,20 +59,22 @@ export default function EntitySelector({
                     {label}
                 </label>
 
-                <ReactSelect
-                    name={id}
-                    inputId={id}
-                    value={selectedOption}
-                    //@ts-ignore
-                    onChange={(option) => setSelected(option?.value)}
-                    options={options}
-                    noOptionsMessage={() => <p>{emptyMessage}</p>}
-                    loadingMessage={() => <>{loadingMessage}</>}
-                    isLoading={isLoading}
-                    theme={reactSelectThemeStyles}
-                    styles={reactSelectStyles}
-                    placeholder={isLoading ? loadingMessage : __('Select...', 'give')}
-                />
+                <EmotionStylesProvider cacheKey="givewp-entity-selector">
+                    <ReactSelect
+                        name={id}
+                        inputId={id}
+                        value={selectedOption}
+                        //@ts-ignore
+                        onChange={(option) => setSelected(option?.value)}
+                        options={options}
+                        noOptionsMessage={() => <p>{emptyMessage}</p>}
+                        loadingMessage={() => <>{loadingMessage}</>}
+                        isLoading={isLoading}
+                        theme={reactSelectThemeStyles}
+                        styles={reactSelectStyles}
+                        placeholder={isLoading ? loadingMessage : __('Select...', 'give')}
+                    />
+                </EmotionStylesProvider>
             </div>
 
             <button

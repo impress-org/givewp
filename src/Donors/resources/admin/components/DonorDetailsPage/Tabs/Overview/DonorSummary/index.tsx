@@ -1,9 +1,8 @@
-import {__} from '@wordpress/i18n';
-import {dateI18n} from '@wordpress/date';
-import {amountFormatter, getRelativeTimeString} from '@givewp/src/Admin/utils';
-import {useDonorStatistics} from '@givewp/donors/hooks/useDonorStatistics';
-import {getDonorOptionsWindowData, useDonorEntityRecord} from '@givewp/donors/utils';
-import {Header, OverviewPanel, SummaryTable, type SummaryItem} from '@givewp/admin/components';
+import { amountFormatter, formatTimestamp, getRelativeTimeString } from '@givewp/admin/common';
+import { Header, OverviewPanel, SummaryTable, type SummaryItem } from '@givewp/admin/components';
+import { useDonorStatistics } from '@givewp/donors/hooks/useDonorStatistics';
+import { getDonorOptionsWindowData, useDonorEntityRecord } from '@givewp/donors/utils';
+import { __ } from '@wordpress/i18n';
 import styles from "./styles.module.scss";
 
 /**
@@ -14,6 +13,7 @@ interface SummaryProps {
 }
 
 /**
+ * @since 4.14.0 Format dates as strings using formatTimestamp
  * @since 4.5.0
  */
 export default function Summary({donorId}: SummaryProps) {
@@ -26,7 +26,7 @@ export default function Summary({donorId}: SummaryProps) {
         : [
               {
                   label: __('Donor Since', 'give'),
-                  value: dateI18n('M j, Y', donor?.createdAt.date, undefined),
+                  value: formatTimestamp(donor?.createdAt, false),
               },
               {
                   label: __('Last Contributed', 'give'),
@@ -40,7 +40,7 @@ export default function Summary({donorId}: SummaryProps) {
                       ? (
                           <div className={styles.summaryTableValues}>
                             <p>{amountFormatter(currency).format(parseFloat(stats.donations.first.amount))}</p>
-                            <p>{dateI18n('M j, Y', stats.donations.first.date, undefined)}</p>
+                            <p>{formatTimestamp(stats.donations.first.date, false)}</p>
                           </div>
                         )
                       : __('None', 'give'),

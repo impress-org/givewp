@@ -9,7 +9,7 @@ import {OverviewSidebarSlot} from '../../slots';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased added sidebar slot
+ * @since 4.10.0 added sidebar slot
  * @since 4.5.0
  */
 export default function DonorDetailsPageOverviewTab() {

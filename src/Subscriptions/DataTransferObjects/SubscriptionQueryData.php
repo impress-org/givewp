@@ -13,6 +13,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 /**
  * Class SubscriptionObjectData
  *
+ * @since 4.11.0 add campaign_id prop
  * @since 2.19.6
  */
 final class SubscriptionQueryData
@@ -77,6 +78,10 @@ final class SubscriptionQueryData
      * @var int
      */
     public $donationFormId;
+    /**
+     * @var int
+     */
+    public $campaignId;
 
     /**
      * Convert data from Subscription Object to Subscription Model
@@ -105,6 +110,7 @@ final class SubscriptionQueryData
         $self->gatewayId = $subscriptionQueryObject->gatewayId;
         $self->gatewaySubscriptionId = $subscriptionQueryObject->gatewaySubscriptionId;
         $self->donationFormId = (int)$subscriptionQueryObject->donationFormId;
+        $self->campaignId = (int)$subscriptionQueryObject->campaignId;
 
         return $self;
     }

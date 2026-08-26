@@ -17,7 +17,7 @@ import styles from './styles.module.scss';
 import { CurrencyControl } from '@givewp/form-builder-library';
 import { useFormContext } from 'react-hook-form';
 import { CurrencyCode } from '@givewp/form-builder-library/build/CurrencyControl/CurrencyCode';
-import { formatDateLocal } from '@givewp/components/AdminDetailsPage/utils';
+import { formatToDateLocalInput } from '@givewp/admin/common';
 import { InfoIcon } from '@givewp/components/AdminDetailsPage/Icons';
 
 /**
@@ -49,7 +49,7 @@ export default function AddRenewalDialog({
 
     const [data, setData] = useState<any>({
         amount: amount.value,
-        date: formatDateLocal(new Date().toISOString()),
+        date: formatToDateLocalInput(new Date().toISOString()),
         updateRenewalDate: false,
         transactionId: '',
     });
@@ -90,7 +90,7 @@ export default function AddRenewalDialog({
     const resetData = () => {
         setData({
             amount: amount.value,
-            date: formatDateLocal(new Date().toISOString()),
+            date: formatToDateLocalInput(new Date().toISOString()),
             updateRenewalDate: false,
             transactionId: '',
         });
@@ -110,7 +110,7 @@ export default function AddRenewalDialog({
             await handleConfirm({
                 ...data,
                 amount: {
-                    amount: data.amount,
+                    value: data.amount,
                     currency: amount.currency,
                 },
             });

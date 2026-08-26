@@ -693,6 +693,8 @@ if ( ! function_exists( 'array_column' ) ) {
  * @param int $donation_id Donation ID.
  *
  * @return bool Whether the receipt is visible or not.
+
+ * @since 4.16.6 Require the give_nl cookie to be a scalar string before using it as a donor lookup token.
  * @since 1.3.2
  */
 function give_can_view_receipt( $donation_id ) {
@@ -745,7 +747,11 @@ function give_can_view_receipt( $donation_id ) {
 
 		// Check whether it is receipt access session?
 		$receipt_session    = give_get_receipt_session();
-		$email_access_token = ! empty( $_COOKIE['give_nl'] ) ? give_clean( $_COOKIE['give_nl'] ) : false;
+		// The give_nl cookie must be a scalar string token; give_clean() does not coerce arrays
+		// to a string, so require is_string() explicitly before treating it as a token.
+		$email_access_token = ! empty( $_COOKIE['give_nl'] ) && is_string( $_COOKIE['give_nl'] )
+			? give_clean( $_COOKIE['give_nl'] )
+			: false;
 
 		if (
 			! empty( $receipt_session ) ||
@@ -1898,6 +1904,76 @@ function give_get_active_by_user_meta( $banner_addon_name ) {
 }
 
 /**
+ * Store recently activated Give's addons to wp options.
+ *
+ * @since 4.16.7.1 Moved from includes/admin/plugins.php so the listener is registered on every
+ *            request, and fall back to the plugin file passed by the `activated_plugin`
+ *            action so add-ons activated outside of plugins.php (REST, WP-CLI,
+ *            programmatic `activate_plugin()`, etc.) are recorded too.
+ * @since 2.1.0
+ *
+ * @param string $activated_plugin Plugin file passed by the `activated_plugin` action.
+ */
+function give_recently_activated_addons( $activated_plugin = '' ) {
+	$plugins = [];
+
+	// Check if action is set.
+	if ( isset( $_REQUEST['action'] ) ) {
+		$plugin_action = ( '-1' !== $_REQUEST['action'] ) ? $_REQUEST['action'] : ( isset( $_REQUEST['action2'] ) ? $_REQUEST['action2'] : '' );
+
+		switch ( $plugin_action ) {
+			case 'activate': // Single add-on activation.
+				$plugins[] = $_REQUEST['plugin'];
+				break;
+			case 'activate-selected': // If multiple add-ons activated.
+				$plugins = $_REQUEST['checked'];
+				break;
+		}
+	}
+
+	/**
+	 * Activations that do not come from the plugins.php form (Harbor's feature manager,
+	 * WP-CLI, plugin dependencies, any direct `activate_plugin()` call) have no matching
+	 * request parameters, so use the plugin file the action itself provides.
+	 */
+	if ( empty( $plugins ) && ! empty( $activated_plugin ) ) {
+		$plugins[] = $activated_plugin;
+	}
+
+	if ( ! empty( $plugins ) ) {
+
+		$give_addons = give_get_recently_activated_addons();
+
+		foreach ( $plugins as $plugin ) {
+			// Get plugins which has 'Give-' as prefix.
+			if ( stripos( $plugin, 'Give-' ) !== false ) {
+				$give_addons[] = $plugin;
+			}
+		}
+
+		if ( ! empty( $give_addons ) ) {
+			// Update the Give's activated add-ons.
+			update_option( 'give_recently_activated_addons', $give_addons, false );
+		}
+	}
+}
+
+// Add add-on plugins to wp option table.
+add_action( 'activated_plugin', 'give_recently_activated_addons', 10 );
+
+/**
+ * Get list of add-on last activated.
+ *
+ * @since 4.16.7.1 Moved from includes/admin/plugins.php.
+ * @since 2.1.3
+ *
+ * @return mixed|array list of recently activated add-on
+ */
+function give_get_recently_activated_addons() {
+	return get_option( 'give_recently_activated_addons', [] );
+}
+
+/**
  * Get time interval for which nonce is valid
  *
  * @return int
@@ -2428,6 +2504,7 @@ function give_get_addon_readme_url( $plugin_slug, $by_plugin_name = false ) {
 /**
  * Refresh all givewp license.
  *
+ * @since 4.15.0 add support for Harbor unified licenses
  * @since 4.8.0 Update active license date after license refresh when active license is found
  * @since 4.3.0 updated to store platform fee percentage
  * @since 2.27.0 delete update_plugins transient instead of invalidate it
@@ -2448,19 +2525,29 @@ function give_refresh_licenses( $wp_check_updates = true ) {
 
 	$license_keys = $give_licenses ? implode( ',', array_keys( $give_licenses ) ) : '';
 
-	$unlicensed_give_addon = $give_addons
+	// Exclude addons already licensed via Harbor from the unlicensed list sent to the legacy API.
+	$legacy_unlicensed_addons = array_filter( $give_addons, static function ( $plugin ) {
+		return ! $plugin['License'];
+	} );
+
+	$unlicensed_give_addon = $legacy_unlicensed_addons
 		? array_values(
 			array_diff(
 				array_map(
 					function ( $plugin_name ) {
 						return trim( str_replace( 'Give - ', '', $plugin_name ) );
 					},
-					wp_list_pluck( $give_addons, 'Name', true )
+					wp_list_pluck( $legacy_unlicensed_addons, 'Name', true )
 				),
 				wp_list_pluck( $give_licenses, 'item_name', true )
 			)
 		)
 		: [];
+
+	// Nothing for the legacy API to check.
+	if ( empty( $give_licenses ) && empty( $unlicensed_give_addon ) ) {
+		return [];
+	}
 
 	$tmp = Give_License::request_license_api(
 		[
@@ -2591,6 +2678,11 @@ function give_check_addon_updates( $_transient_data ) {
 
 	$update_plugins = get_option( 'give_get_versions', [] );
 	$check_licenses = get_option( 'give_licenses', [] );
+
+	// Skip legacy update checks when Harbor is managing licensing and no legacy licenses exist.
+	if ( empty( $check_licenses ) && lw_harbor_is_product_license_active( 'give' ) ) {
+		return $_transient_data;
+	}
 
 	if ( ! $update_plugins ) {
 		$data = give_refresh_licenses( false );

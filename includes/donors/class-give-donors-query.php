@@ -561,7 +561,9 @@ class Give_Donors_Query {
 	 *
 	 * @todo   : add phpunit test
 	 *
+	 * @since 4.14.0 Replace {$wpdb->paymentmeta} with {$wpdb->donationmeta}
 	 * @since  2.1.0
+	 *
 	 * @access private
 	 *
 	 * @global wpdb $wpdb
@@ -586,7 +588,7 @@ class Give_Donors_Query {
 			WHERE meta_key=%s
 			AND {$donation_id_col} IN(
 				SELECT {$donation_id_col}
-				FROM {$wpdb->paymentmeta}
+				FROM {$wpdb->donationmeta}
 				WHERE meta_key=%s
 				AND meta_value IN (%s)
 			)

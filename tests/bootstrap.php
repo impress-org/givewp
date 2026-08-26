@@ -25,6 +25,13 @@ if (!defined('GIVE_FEATURE_ENABLE_EVENT_TICKETS')){
     define('GIVE_FEATURE_ENABLE_EVENT_TICKETS', true);
 }
 
+// Without this constant, _give_die_handler() calls die() instead of returning a die
+// handler, which ends the PHPUnit process with exit code 0 and leaves every remaining
+// test unreported. Legacy suites define it individually, so define it once up front.
+if (!defined('GIVE_UNIT_TESTS')) {
+    define('GIVE_UNIT_TESTS', true);
+}
+
 // load GiveWP
 TestHooks::addFilter('muplugins_loaded', static function () {
     require_once __DIR__ . '/../give.php';
@@ -35,6 +42,10 @@ TestHooks::addFilter('setup_theme', static function () {
     echo 'Installing GiveWP.....' . PHP_EOL;
     give()->install();
 });
+
+// Eagerly declare Harbor global function stubs so they win Harbor's
+// function_exists guard in vendor-prefixed/stellarwp/harbor/src/Harbor/global-functions.php.
+require_once __DIR__ . '/Unit/VendorOverrides/Harbor/harbor-stub-functions.php';
 
 // pull in WP bootstrap file which looks for WP_TESTS_CONFIG_FILE_PATH defined above
 require_once $currentTestEnvironment->bootstrap();

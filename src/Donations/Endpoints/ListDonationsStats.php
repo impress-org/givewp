@@ -8,7 +8,7 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 class ListDonationsStats extends Endpoint
 {
@@ -23,7 +23,7 @@ class ListDonationsStats extends Endpoint
     protected $request;
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function registerRoute()
     {
@@ -48,7 +48,7 @@ class ListDonationsStats extends Endpoint
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public function handleRequest(WP_REST_Request $request): WP_REST_Response
     {
@@ -62,7 +62,7 @@ class ListDonationsStats extends Endpoint
     /**
      * Get all donation statistics in a single optimized query
      *
-     * @unreleased
+     * @since 4.10.0
      */
     public function getDonationStatistics(): array
     {

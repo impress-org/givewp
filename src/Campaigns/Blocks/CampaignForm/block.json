@@ -1,16 +1,13 @@
 {
     "$schema": "https://json.schemastore.org/block.json",
-    "apiVersion": 2,
+    "apiVersion": 3,
     "name": "givewp/campaign-form",
     "version": "1.0.0",
     "title": "Campaign Form",
     "category": "give",
     "description": "The GiveWP Campaign Form block inserts an existing campaign form into the page.",
     "supports": {
-        "align": [
-            "wide",
-            "full"
-        ]
+        "align": ["wide", "full"]
     },
     "attributes": {
         "campaignId": {

@@ -7,7 +7,7 @@ import styles from './styles.module.scss';
 import { __ } from '@wordpress/i18n';
 
 /**
- * @unreleased replace inActive with upgrade object.
+ * @since 4.10.0 replace inActive with upgrade object.
  * @since 4.6.0 add href & inActive props to handle Fee Recovery widget.
  * @since 4.4.0
  */
@@ -24,7 +24,7 @@ export type StatWidgetProps = {
 };
 
 /**
- * @unreleased use upgrade object instead of inActive.
+ * @since 4.10.0 use upgrade object instead of inActive.
  * @since 4.6.0 use new props to handle Fee Recovery widget.
  * @since 4.4.0
  */

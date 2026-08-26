@@ -3,7 +3,6 @@
 namespace Give\Campaigns\Actions;
 
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 
 /**
@@ -91,23 +90,67 @@ class RedirectLegacyCreateFormToCreateCampaign
     }
 
     /**
+     * @since 4.14.2 updated logic to search the DB explicitly for P2P campaigns
      * @since 4.0.0
      */
     private function isP2PCampaignFormIdInvalidOrMissing(): bool
     {
-        $form = DB::table('give_campaigns')
-            ->where('form_id', $_GET['donationFormID'])
-            ->where('campaign_type', CampaignType::CORE, '!=')
+        if (!isset($_GET['donationFormID'])) {
+            return true;
+        }
+
+        $formId = absint($_GET['donationFormID']);
+
+        // Check give_campaigns.form_id for P2P campaigns
+        $campaign = DB::table('give_campaigns', 'c')
+            ->select('c.id')
+            ->innerJoin('give_p2p_campaigns', 'c.id', 'p2p.campaign_id', 'p2p')
+            ->where('c.form_id', $formId)
             ->get();
 
-        return ! isset($_GET['donationFormID']) || ! $form;
+        if ($campaign) {
+            return false;
+        }
+
+        // Also check give_campaign_forms junction table for P2P campaigns
+        // (migrated v3 forms are stored in the junction table)
+        $campaignForm = DB::table('give_campaign_forms')
+            ->where('form_id', $formId)
+            ->get();
+
+        if ($campaignForm) {
+            $p2pCampaign = DB::table('give_p2p_campaigns')
+                ->where('campaign_id', $campaignForm->campaign_id)
+                ->get();
+
+            return !$p2pCampaign;
+        }
+
+        return true;
     }
 
     /**
+     * @since 4.14.2 Also check give_campaign_forms junction table for non-core campaigns (e.g., migrated P2P forms).
      * @since 4.0.0
      */
     private function isCampaignFormIdInvalidOrMissing(): bool
     {
-        return ! isset($_GET['donationFormID']) || ! Campaign::findByFormId(absint($_GET['donationFormID']));
+        if (!isset($_GET['donationFormID'])) {
+            return true;
+        }
+
+        $formId = absint($_GET['donationFormID']);
+
+        // Check core campaigns first
+        if (Campaign::findByFormId($formId)) {
+            return false;
+        }
+
+        // Fallback: check give_campaign_forms junction table for non-core campaigns
+        $campaignForm = DB::table('give_campaign_forms')
+            ->where('form_id', $formId)
+            ->get();
+
+        return !$campaignForm;
     }
 }

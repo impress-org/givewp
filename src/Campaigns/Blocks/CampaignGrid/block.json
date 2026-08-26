@@ -1,29 +1,19 @@
 {
     "$schema": "https://json.schemastore.org/block.json",
-    "apiVersion": 2,
+    "apiVersion": 3,
     "name": "givewp/campaign-grid",
     "version": "1.0.0",
     "title": "Campaign Grid",
     "category": "give",
     "description": "Insert an existing campaign into the page.",
     "supports": {
-        "align": [
-            "wide",
-            "full",
-            "left",
-            "center",
-            "right"
-        ]
+        "align": ["wide", "full", "left", "center", "right"]
     },
     "attributes": {
         "layout": {
             "type": "string",
             "default": "full",
-            "enum": [
-                "full",
-                "double",
-                "triple"
-            ]
+            "enum": ["full", "double", "triple"]
         },
         "showImage": {
             "type": "boolean",
@@ -40,17 +30,12 @@
         "sortBy": {
             "type": "string",
             "default": "date",
-            "enum": [
-                "date"
-            ]
+            "enum": ["date", "amount", "donations", "donors"]
         },
         "orderBy": {
             "type": "string",
             "default": "desc",
-            "enum": [
-                "asc",
-                "desc"
-            ]
+            "enum": ["asc", "desc"]
         },
         "filterBy": {
             "type": "array",

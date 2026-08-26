@@ -3,6 +3,7 @@
 namespace Give\Promotions;
 
 use Give\Helpers\Hooks;
+use Give\Promotions\BFCM\BFCM2025;
 use Give\Promotions\Campaigns\CampaignsWelcomeBanner;
 use Give\Promotions\FreeAddonModal\Controllers\CompleteRestApiEndpoint;
 use Give\Promotions\InPluginUpsells\AddonsAdminPage;
@@ -85,6 +86,7 @@ class ServiceProvider implements ServiceProviderContract
         );
 
         Hooks::addAction('admin_init', CampaignsWelcomeBanner::class);
+        Hooks::addAction('admin_init', BFCM2025::class);
     }
 
     /**

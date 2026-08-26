@@ -12,12 +12,12 @@ use Money\Currency;
  * Replaces the generic stellar validation library currency rule to ensure consistency
  * with GiveWP's configured currencies and filters.
  *
- * @unreleased
+ * @since 4.10.0
  */
 class CurrencyRule implements ValidationRule
 {
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public static function id(): string
     {
@@ -25,7 +25,7 @@ class CurrencyRule implements ValidationRule
     }
 
     /**
-     * @unreleased
+     * @since 4.10.0
      */
     public static function fromString(string $options = null): ValidationRule
     {
@@ -37,7 +37,7 @@ class CurrencyRule implements ValidationRule
      * Uses give_get_currencies_list() to get the current supported currencies
      * and provides clear error messages with valid currency options.
      *
-     * @unreleased
+     * @since 4.10.0
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
     {
@@ -64,7 +64,7 @@ class CurrencyRule implements ValidationRule
      * Checks if a currency code is in the correct ISO 4217 format.
      * Valid format: exactly 3 uppercase alphabetic characters (not empty).
      *
-     * @unreleased
+     * @since 4.10.0
      *
      * @param mixed $value The currency code to validate
      * @return bool True if the format is valid, false otherwise

@@ -5,7 +5,7 @@ import { CampaignOption } from './utils';
 import styles from './styles.module.scss';
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 type FilterOption = {
 	value: string;
@@ -13,7 +13,7 @@ type FilterOption = {
 }
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 type CustomFilterProps = {
 	name: string;
@@ -29,14 +29,14 @@ type CustomFilterProps = {
 }
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 export default function CustomFilter(props: CustomFilterProps) {
 	return props.isAsync ? <AsyncFilter {...props} /> : <DefaultFilter {...props} />
 }
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, isSearchable, isSelectable, isClearable}: CustomFilterProps) {
 	const formattedOptions = options?.map(({ value, text }) => ({
@@ -79,7 +79,7 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, 
 }
 
 /**
- * @unreleased
+ * @since 4.10.0
  */
 function AsyncFilter({name, placeholder, onChange, value, isSearchable, isClearable}: CustomFilterProps) {
 	const { loadOptions, mapOptionsForMenu, selectedOption } = useCampaignAsyncSelect(parseInt(value) || null);
