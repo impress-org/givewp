@@ -91,10 +91,10 @@ class LicenseData
     }
 
     /**
-     * Build the activation URL whatever this site's activation state. The URL is
-     * scoped to the tier when Harbor names one, so the portal pre-selects the
-     * right subscription. When it cannot — the key does not cover GiveWP, or
-     * covers it at several tiers — the tier is null and the portal shows its own
+     * Build the activation URL whatever this site's activation state. Harbor
+     * scopes the URL to the tier the license covers GiveWP at, so the portal
+     * pre-selects the right subscription. Where it cannot — the key does not
+     * cover GiveWP, or covers it at several tiers — the portal shows its own
      * picker, still limited to this domain. That is the right screen for a
      * genuine choice, and better than guessing on the user's behalf.
      *
@@ -107,16 +107,12 @@ class LicenseData
     public function buildActivationUrl(string $returnUrl): string
     {
         // Guarded inline (not only via canBuildActivationUrl()) so static analysis
-        // can see the functions are called only when they exist.
+        // can see the function is called only when it exists.
         if (!function_exists('lw_harbor_get_product_activation_url')) {
             return '';
         }
 
-        $tier = function_exists('lw_harbor_get_product_tier')
-            ? lw_harbor_get_product_tier(self::PRODUCT_SLUG)
-            : null;
-
-        return lw_harbor_get_product_activation_url(self::PRODUCT_SLUG, $tier, $returnUrl) ?? '';
+        return lw_harbor_get_product_activation_url(self::PRODUCT_SLUG, $returnUrl) ?? '';
     }
 
     /**
