@@ -111,7 +111,7 @@ class Give_DB_Sessions extends Give_DB {
 	 *
 	 * @todo: add cache logic
 	 *
-	 * @since TBD Restrict unserialize to prevent object instantiation.
+	 * @since 4.16.7.2 Restrict unserialize to prevent object instantiation.
 	 * @param string $donor_id Donor ID.
 	 * @param mixed  $default  Default session value.
 	 *

@@ -198,7 +198,7 @@ class Utils
     }
 
     /**
-     * @since TBD Returns false instead of the raw serialized string when an object is detected
+     * @since 4.16.7.2 Returns false instead of the raw serialized string when an object is detected
      * @since 4.16.6 Returns $data when $unserializedData constins __PHP_Incomplete_Class
      * @since 3.17.2
      */

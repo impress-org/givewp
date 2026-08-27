@@ -8,14 +8,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.16.7.2
  */
 class SanitizeSerializedObjectPayloadsTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public function testRunRemovesObjectPayloadsFromUserMeta()
     {
@@ -33,7 +33,7 @@ class SanitizeSerializedObjectPayloadsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public function testRunKeepsLegitimateSerializedArraysInUserMeta()
     {
@@ -51,7 +51,7 @@ class SanitizeSerializedObjectPayloadsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public function testRunRemovesObjectPayloadsFromDonorMeta()
     {
@@ -73,7 +73,7 @@ class SanitizeSerializedObjectPayloadsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public function testRunRemovesNestedObjectPayloadsFromDonationMeta()
     {
@@ -104,7 +104,7 @@ class SanitizeSerializedObjectPayloadsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public function testRunRemovesObjectPayloadsFromSessions()
     {
@@ -131,7 +131,7 @@ class SanitizeSerializedObjectPayloadsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public function testMigrationIdIsUnique()
     {
@@ -139,7 +139,7 @@ class SanitizeSerializedObjectPayloadsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     private function createDonor(): int
     {
@@ -156,7 +156,7 @@ class SanitizeSerializedObjectPayloadsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     private function createDonation(): int
     {

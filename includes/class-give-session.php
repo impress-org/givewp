@@ -336,7 +336,7 @@ class Give_Session {
 	 *
 	 * Retrieve session variable for a given session key.
 	 *
-	 * @since  TBD    Restrict unserialize to prevent object instantiation.
+	 * @since  4.16.7.2    Restrict unserialize to prevent object instantiation.
 	 * @since  1.0
 	 * @access public
 	 *

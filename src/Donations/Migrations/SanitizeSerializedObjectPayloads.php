@@ -7,12 +7,12 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Helpers\Utils;
 
 /**
- * @since TBD
+ * @since 4.16.7.2
  */
 class SanitizeSerializedObjectPayloads extends Migration
 {
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public function run()
     {
@@ -23,7 +23,7 @@ class SanitizeSerializedObjectPayloads extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     private function sanitizeUserMeta()
     {
@@ -37,7 +37,7 @@ class SanitizeSerializedObjectPayloads extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     private function sanitizeDonorMeta()
     {
@@ -51,7 +51,7 @@ class SanitizeSerializedObjectPayloads extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     private function sanitizeDonationMeta()
     {
@@ -65,7 +65,7 @@ class SanitizeSerializedObjectPayloads extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     private function sanitizeSessions()
     {
@@ -79,7 +79,7 @@ class SanitizeSerializedObjectPayloads extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      *
      * @param string $table
      * @param string $idColumn
@@ -117,7 +117,7 @@ class SanitizeSerializedObjectPayloads extends Migration
      * __PHP_Incomplete_Class instances) with an empty string so the final
      * serialization cannot restore the original class.
      *
-     * @since TBD
+     * @since 4.16.7.2
      *
      * @param mixed $value
      * @return mixed
@@ -146,7 +146,7 @@ class SanitizeSerializedObjectPayloads extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public static function id()
     {
@@ -154,7 +154,7 @@ class SanitizeSerializedObjectPayloads extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public static function title()
     {
@@ -162,7 +162,7 @@ class SanitizeSerializedObjectPayloads extends Migration
     }
 
     /**
-     * @since TBD
+     * @since 4.16.7.2
      */
     public static function timestamp()
     {
