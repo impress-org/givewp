@@ -198,6 +198,8 @@ class Utils
     }
 
     /**
+     * @since 4.16.7.2 Returns false instead of the raw serialized string when an object is detected
+     * @since 4.16.6 Returns $data when $unserializedData constins __PHP_Incomplete_Class
      * @since 3.17.2
      */
     public static function safeUnserialize($data)
@@ -216,17 +218,8 @@ class Utils
          */
         $unserializedData = @unserialize(trim($data), ['allowed_classes' => false]);
 
-        /**
-         * Never return objects, not even as __PHP_Incomplete_Class instances. When a
-         * __PHP_Incomplete_Class is serialized again, PHP writes the original class bytes
-         * back, so returning it would re-arm the payload for the next unrestricted
-         * unserialize() call (e.g. the donation session storage). In that case, we return
-         * the data as a plain string instead, keeping it inert.
-         *
-         * @since 4.16.6
-         */
         if (self::containsPhpIncompleteClass($unserializedData)) {
-            return $data;
+            return false;
         }
 
         /*

@@ -24,8 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles the donation form process.
  *
  * @access private
- * @since 4.16.6 Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
- * @since 3.16.1 Use give_maybe_safe_unserialize() on $user_info data
+ * @since 4.16.7.2     Reject serialized data in name fields before storing donation data.
+ * @since 4.16.6  Bail early when the form ID is not a give_forms post or is a Visual Form Builder (v3) form.
+ * @since 3.16.1  Use give_maybe_safe_unserialize() on $user_info data
  * @since  1.0
  *
  * @throws ReflectionException Exception Handling.
@@ -163,6 +164,19 @@ function give_process_donation_form() {
 		'address'    => $user['address'],
 	];
 
+	// Reject serialized data in name fields.
+	$serialized_keys = array_filter(
+		$user_info,
+		static function ( $value ) {
+			return is_string( $value ) && \Give\Helpers\Utils::isSerialized( $value );
+		}
+	);
+
+	if ( ! empty( $serialized_keys ) ) {
+		give_set_error( 'give_serialized_user_info', esc_html__( 'Name fields cannot contain serialized data.', 'give' ) );
+		return;
+	}
+
 	$auth_key = defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 
 	// Donation form ID.
@@ -197,7 +211,7 @@ function give_process_donation_form() {
 	);
 
 	// Setup donation information.
-	$user_info = array_map('\Give\Helpers\Utils::maybeSafeUnserialize', stripslashes_deep( $user_info ));
+	$user_info = stripslashes_deep( $user_info );
 	$donation_data = [
 		'price'        => $price,
 		'purchase_key' => $purchase_key,
@@ -874,6 +888,7 @@ function give_require_billing_address( $payment_mode ) {
  * Donation Form Validate Logged In User.
  *
  * @access private
+ * @since  4.16.7.2   Sanitize first and last name values when falling back to stored user data.
  * @since  1.0
  *
  * @return array
@@ -909,11 +924,11 @@ function give_donation_form_validate_logged_in_user() {
 					? sanitize_email( $post_data['give_email'] )
 					: $user_data->user_email,
 				'user_first' => ! empty( $post_data['give_first'] )
-					? $post_data['give_first']
-					: $user_data->first_name,
+					? give_clean( $post_data['give_first'] )
+					: give_clean( $user_data->first_name ),
 				'user_last'  => ! empty( $post_data['give_last'] )
-					? $post_data['give_last']
-					: $user_data->last_name,
+					? give_clean( $post_data['give_last'] )
+					: give_clean( $user_data->last_name ),
 			];
 
 			// Validate essential form fields.
@@ -1674,9 +1689,10 @@ function give_validate_required_form_fields( $form_id ) {
  *
  * @param array $post_data List of post data.
  *
- * @since 3.16.5 Check if "give_title" is set to prevent PHP warnings
- * @since 3.16.4 Add additional validation for company name field
- * @since 3.16.3 Add additional validations for name title prefix field
+ * @since 4.16.7.2      Validate last name field even when omitted.
+ * @since 3.16.5  Check if "give_title" is set to prevent PHP warnings
+ * @since 3.16.4  Add additional validation for company name field
+ * @since 3.16.3  Add additional validations for name title prefix field
  * @since 2.1
  *
  * @return void
@@ -1698,10 +1714,17 @@ function give_donation_form_validate_name_fields( $post_data ) {
     }
 
     $is_alpha_first_name = ( ! is_email( $post_data['give_first'] ) && ! preg_match( '~[0-9]~', $post_data['give_first'] ) );
-    $is_alpha_last_name  = ( ! is_email( $post_data['give_last'] ) && ! preg_match( '~[0-9]~', $post_data['give_last'] ) );
+
+    $lastName = isset( $post_data['give_last'] ) ? $post_data['give_last'] : '';
+    $is_alpha_last_name = ( ! is_email( $lastName ) && ! preg_match( '~[0-9]~', $lastName ) );
+
     $is_alpha_title = ( isset($post_data['give_title']) && ! is_email( $post_data['give_title'] ) && ! preg_match( '~[0-9]~', $post_data['give_title'] ) );
 
-    if (!$is_alpha_first_name || ( ! empty( $post_data['give_last'] ) && ! $is_alpha_last_name) || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title) ) {
+    if ( ! $is_alpha_first_name || ( ! empty( $lastName ) && ! $is_alpha_last_name ) || ( ! empty( $post_data['give_title'] ) && ! $is_alpha_title ) ) {
         give_set_error( 'invalid_name', esc_html__( 'The First Name and Last Name fields cannot contain an email address or numbers.', 'give' ) );
+    }
+
+    if ( give_is_last_name_required( $formId ) && empty( $lastName ) ) {
+        give_set_error( 'invalid_last_name', esc_html__( 'Please enter your last name.', 'give' ) );
     }
 }
