@@ -27,7 +27,7 @@ final class LicenseDataTest extends TestCase
         $faker = Factory::create();
 
         $licenseData = $this->getMockBuilder(LicenseData::class)
-            ->onlyMethods(['hasActivePremiumAddons', 'canBuildActivationUrl', 'isActivated', 'buildActivationUrl'])
+            ->onlyMethods(['hasActivePremiumAddons', 'canBuildActivationUrl', 'needsActivation', 'buildActivationUrl'])
             ->getMock();
 
         $licenseData->method('hasActivePremiumAddons')->willReturn(false);
@@ -44,7 +44,7 @@ final class LicenseDataTest extends TestCase
         $faker = Factory::create();
 
         $licenseData = $this->getMockBuilder(LicenseData::class)
-            ->onlyMethods(['hasActivePremiumAddons', 'canBuildActivationUrl', 'isActivated', 'buildActivationUrl'])
+            ->onlyMethods(['hasActivePremiumAddons', 'canBuildActivationUrl', 'needsActivation', 'buildActivationUrl'])
             ->getMock();
 
         $licenseData->method('hasActivePremiumAddons')->willReturn(true);
@@ -57,17 +57,17 @@ final class LicenseDataTest extends TestCase
     /**
      * @since TBD
      */
-    public function testGetActivationUrlIsEmptyWhenAlreadyActivated(): void
+    public function testGetActivationUrlIsEmptyWhenActivationIsNotNeeded(): void
     {
         $faker = Factory::create();
 
         $licenseData = $this->getMockBuilder(LicenseData::class)
-            ->onlyMethods(['hasActivePremiumAddons', 'canBuildActivationUrl', 'isActivated', 'buildActivationUrl'])
+            ->onlyMethods(['hasActivePremiumAddons', 'canBuildActivationUrl', 'needsActivation', 'buildActivationUrl'])
             ->getMock();
 
         $licenseData->method('hasActivePremiumAddons')->willReturn(true);
         $licenseData->method('canBuildActivationUrl')->willReturn(true);
-        $licenseData->method('isActivated')->willReturn(true);
+        $licenseData->method('needsActivation')->willReturn(false);
         $licenseData->expects($this->never())->method('buildActivationUrl');
 
         $this->assertSame('', $licenseData->getActivationUrl($faker->url()));
@@ -76,7 +76,7 @@ final class LicenseDataTest extends TestCase
     /**
      * @since TBD
      */
-    public function testGetActivationUrlReturnsBuiltUrlWhenActionableAndNotActivated(): void
+    public function testGetActivationUrlReturnsBuiltUrlWhenActivationIsNeeded(): void
     {
         $faker = Factory::create();
 
@@ -84,12 +84,12 @@ final class LicenseDataTest extends TestCase
         $expectedUrl = $faker->url();
 
         $licenseData = $this->getMockBuilder(LicenseData::class)
-            ->onlyMethods(['hasActivePremiumAddons', 'canBuildActivationUrl', 'isActivated', 'buildActivationUrl'])
+            ->onlyMethods(['hasActivePremiumAddons', 'canBuildActivationUrl', 'needsActivation', 'buildActivationUrl'])
             ->getMock();
 
         $licenseData->method('hasActivePremiumAddons')->willReturn(true);
         $licenseData->method('canBuildActivationUrl')->willReturn(true);
-        $licenseData->method('isActivated')->willReturn(false);
+        $licenseData->method('needsActivation')->willReturn(true);
         $licenseData->expects($this->once())
             ->method('buildActivationUrl')
             ->with($returnUrl)

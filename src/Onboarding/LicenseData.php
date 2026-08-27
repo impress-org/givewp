@@ -83,7 +83,7 @@ class LicenseData
             return '';
         }
 
-        if ($this->isActivated()) {
+        if (!$this->needsActivation()) {
             return '';
         }
 
@@ -129,6 +129,25 @@ class LicenseData
         }
 
         return lw_harbor_get_license_page_url();
+    }
+
+    /**
+     * Whether the key entitles this site to GiveWP without having activated it
+     * here yet — the one state an activation prompt is for.
+     *
+     * Harbor pairs the entitlement and activation checks so consumers do not
+     * each rewrite the conditional. Asking only whether the license is active
+     * would offer activation to someone with no entitlement, who would then
+     * reach a portal with nothing for them.
+     *
+     * @since TBD
+     *
+     * @return bool True when GiveWP is entitled but not activated here.
+     */
+    public function needsActivation(): bool
+    {
+        return function_exists('lw_harbor_product_needs_activation')
+            && lw_harbor_product_needs_activation(self::PRODUCT_SLUG);
     }
 
     /**
