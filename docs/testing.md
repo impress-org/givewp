@@ -39,8 +39,8 @@ slow test with a worse failure message.
 ### Layout
 
 **One spec file per screen**, named for the screen, holding everything that screen is covered for:
-`donation-forms.spec.ts`, `donor-dashboard.spec.ts`, `form-builder.spec.ts`, `reports.spec.ts`,
-`tools-logs.spec.ts`, `tools-migrations.spec.ts`.
+`campaigns.spec.ts`, `donation-forms.spec.ts`, `donor-dashboard.spec.ts`, `form-builder.spec.ts`,
+`reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
 
 A v3 donation form is two screens, not one: the form builder that edits it in wp-admin and the
 form itself on the front end. They share a subject and nothing else - different apps, different
