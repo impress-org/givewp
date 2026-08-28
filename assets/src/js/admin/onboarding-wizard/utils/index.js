@@ -150,9 +150,12 @@ export const subscribeToNewsletter = (configuration) => {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data),
         })
-        .then(function () {
-            // Set user meta key as subscribed.
-            setUserMetaSubscribed();
+        .then(function (response) {
+            // fetch resolves on 4xx and 5xx, so a rejected subscription would otherwise be recorded as a success.
+            if (response.ok) {
+                // Set user meta key as subscribed.
+                setUserMetaSubscribed();
+            }
         });
 };
 

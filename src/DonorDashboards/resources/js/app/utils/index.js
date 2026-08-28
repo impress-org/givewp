@@ -75,8 +75,11 @@ export const donorDashboardApi = {
 /**
  * Translates a rejected apiFetch request into a message safe to show a donor.
  *
- * Server faults and responses that are not a WordPress REST error fall back to a
- * generic message, so internal failure details are never surfaced.
+ * apiFetch rejects with the parsed REST error body for a response the server actually produced,
+ * and otherwise with a client-side object carrying only a code and a message - offline, or a
+ * response that was not JSON because PHP failed partway through. Only the first kind describes
+ * something a donor can act on, so it is the only kind whose message is shown; everything else,
+ * server faults included, falls back to the generic message.
  *
  * @since TBD
  *
@@ -86,7 +89,7 @@ export const donorDashboardApi = {
 export const getApiErrorMessage = (error) => {
     const status = error && error.data ? error.data.status : null;
 
-    if (!error || !error.message || status >= 500) {
+    if (!status || status >= 500 || !error.message) {
         return __(
             'An error occurred while processing your request.  Please try again later, or contact support if the issue persists.',
             'give'
