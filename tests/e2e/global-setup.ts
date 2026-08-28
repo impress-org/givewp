@@ -23,6 +23,21 @@ async function globalSetup(): Promise<void> {
     await requestUtils.request.get(`${WP_BASE_URL}/wp-admin/`);
 
     await assertGiveWpIsActive(requestUtils);
+    await dismissFormBuilderTours(requestUtils);
+}
+
+/*
+ * The form builder opens a guided tour over itself the first time a user reaches each of its two
+ * editor modes, which on a fresh install is every run and which covers the canvas the builder specs
+ * click into. The tour is the product's, not the suite's, and marking it seen is what the builder
+ * does when a person finishes it.
+ */
+async function dismissFormBuilderTours(requestUtils: RequestUtils): Promise<void> {
+    for (const mode of ['design', 'schema']) {
+        await requestUtils.request.post(`${WP_BASE_URL}/wp-admin/admin-ajax.php`, {
+            form: {action: 'givewp_tour_completed', mode},
+        });
+    }
 }
 
 /*

@@ -68,8 +68,11 @@ test.describe('Campaigns', () => {
 async function createCampaignThroughWizard(page, admin, title: string): Promise<number> {
     await admin.visitAdminPage('edit.php', 'post_type=give_forms&page=give-campaigns');
 
-    // The trigger is an anchor with no href, so it carries no link role to match on.
-    await page.getByText('Create campaign', {exact: true}).click();
+    /*
+     * The trigger is an anchor with no href, so it carries no link role to match on, and a site with
+     * no campaigns yet offers a second one in the list's empty state. Both open the same modal.
+     */
+    await page.getByText('Create campaign', {exact: true}).first().click();
 
     const wizard = page.locator('form.givewp-campaigns__form');
     await wizard.waitFor();
