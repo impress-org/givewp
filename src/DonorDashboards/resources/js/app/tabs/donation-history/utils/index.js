@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {store} from '../store';
 import {setDonations, setQuerying, setError, setCount, setRevenue, setAverage, setCurrency} from '../store/actions';
 import {donorDashboardApi, isLoggedIn} from '../../../utils';
@@ -15,8 +14,7 @@ export const fetchDonationsDataFromAPI = () => {
     if (loggedIn) {
         dispatch(setQuerying(true));
         donorDashboardApi
-            .post('donations', {}, {})
-            .then((response) => response.data)
+            .post('donations')
             // eslint-disable-next-line camelcase
             .then(({status, body_response}) => {
                 if (status === 200) {
@@ -35,9 +33,8 @@ export const fetchDonationsDataFromAPI = () => {
 
                 dispatch(setQuerying(false));
             })
-            .catch(({response}) => {
-                const {status, data} = response;
-                if (status === 403 && data.code === 'rest_cookie_invalid_nonce') {
+            .catch((error) => {
+                if (error && error.code === 'rest_cookie_invalid_nonce') {
                     applicationDispatch(
                         setApplicationError(
                             __(

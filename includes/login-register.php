@@ -224,7 +224,7 @@ function give_log_user_in( $user_id, $user_login, $user_pass ) {
 /**
  * Process Register Form
  *
- * @since 4.16.6 Require a valid nonce before processing registration.
+ * @since 4.16.6  Require a valid nonce before processing registration.
  * @since 2.0
  *
  * @param array $data Data sent from the register form

@@ -70,7 +70,7 @@ const Migrations = () => {
 
         API.post(url, {id: migrationRunModal.id})
            .then((response) => {
-               if (response.data.status) {
+               if (response.status) {
                    closeMigrationRunModal();
                } else {
                    setMigrationRunModal((previousState) => {
@@ -78,7 +78,7 @@ const Migrations = () => {
                            ...previousState,
                            type: 'error',
                            error: true,
-                           errorMessage: response.data.message,
+                           errorMessage: response.message,
                        };
                    });
                }

@@ -380,7 +380,8 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
-     * @since 2.27.0 Change to read comment from donations meta table
+     * @since 4.16.7.2       Restrict unserialize to prevent object instantiation.
+     * @since 2.27.0  Change to read comment from donations meta table
      * @since 2.3.0
      *
      * @param  array  $atts
@@ -415,7 +416,7 @@ class Give_Donor_Wall {
 
 			/* @var stdClass $result */
 			foreach ( $results as $result ) {
-				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = maybe_unserialize( $result->meta_value );
+				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = unserialize( $result->meta_value, [ 'allowed_classes' => false ] );
 
 				// Set donation date.
 				if ( empty( $temp[ $result->{$donation_id_col} ]['donation_date'] ) ) {
