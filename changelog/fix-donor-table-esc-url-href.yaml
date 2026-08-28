@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Added URL escaping to the View Donor link on the Donors list table.
+timestamp: 2026-08-28T18:32:00.000Z
