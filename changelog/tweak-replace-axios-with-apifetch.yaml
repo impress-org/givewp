@@ -1,0 +1,7 @@
+significance: patch
+type: tweak
+entry: Replaced the axios HTTP client with WordPress core's apiFetch in the donor
+  dashboard, reports, onboarding wizard, and the log and migration list tables. This
+  removes axios, and the advisories reported against it, from the plugin's JavaScript
+  dependencies.
+timestamp: 2026-08-28T00:00:00.000Z

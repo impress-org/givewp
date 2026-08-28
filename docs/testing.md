@@ -36,6 +36,27 @@ a spec, but the environment it is designed against is the clean install the work
 Keep the specs thin. A browser test that asserts something a PHPUnit test could have asserted is a
 slow test with a worse failure message.
 
+### Layout
+
+**One spec file per screen**, named for the screen, holding everything that screen is covered for:
+`donor-dashboard.spec.ts`, `reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
+
+New coverage goes in the file for the screen it exercises. Grouping by the kind of assertion
+instead — every screen's mount check in one file, every screen's REST check in another — puts one
+screen's coverage in as many files as there are kinds of assertion, so nothing tells you what a
+screen is actually covered for, and each new kind adds a file that re-lists every screen.
+`test.describe` already groups within a file, which is where that grouping belongs.
+
+`admin-pages.spec.ts` is the deliberate exception. It is a breadth-first smoke suite — each admin
+screen that mounts a React app, one assertion each — and its job is to be pointed at environments
+core does not control, which is what the add-on plan below builds on. Screens with a spec file of
+their own are not repeated in it.
+
+Shared helpers live in `tests/e2e/utils/`. `utils/rest.ts` records the REST calls a page makes and
+asserts it reached the route it owns with nothing failing. Assert on that traffic rather than on
+rendered records: a wrong route, a missing nonce, or a response shape the client no longer unwraps
+all produce a page that builds and mounts cleanly and then shows nothing.
+
 ### CI
 
 `.github/workflows/tests-e2e.yml` installs Composer and npm dependencies, runs `npm run build`,
@@ -157,9 +178,9 @@ installation token with `contents: read` on the add-on repositories is the first
 
 A smoke test that only checks core still works with an add-on active catches most of what breaks: a
 fatal on activation, a JavaScript error that stops a list table mounting, an asset that 404s. The
-existing specs in `tests/e2e/admin-pages.spec.ts` already do all three — pointing them at an
-environment with add-ons loaded is most of the value, before a single add-on-specific spec is
-written.
+existing specs in `tests/e2e/admin-pages.spec.ts` already do all three, which is why that file
+stays breadth-first — pointing it at an environment with add-ons loaded is most of the value,
+before a single add-on-specific spec is written.
 
 ### The other direction
 

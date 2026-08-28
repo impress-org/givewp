@@ -1,5 +1,6 @@
+import apiFetch from '@wordpress/api-fetch';
+import {__} from '@wordpress/i18n';
 import {addTab} from '../store/actions';
-import axios from 'axios';
 
 export const registerTab = (tab) => {
     const {dispatch} = window.giveDonorDashboard.store;
@@ -48,18 +49,52 @@ export const isLoggedIn = () => {
     return Number(getWindowData('id')) !== 0 ? true : false;
 };
 
-export const getAPIRoot = () => {
-    return getWindowData('apiRoot');
+const DONOR_DASHBOARD_NAMESPACE = '/give-api/v2/donor-dashboard/';
+
+/**
+ * Posts to a Donor Dashboard REST route and resolves with the parsed response body.
+ *
+ * FormData is sent as-is so the browser can set its own multipart boundary. Anything
+ * else is sent as JSON.
+ *
+ * @since TBD
+ *
+ * @param {string} endpoint Route relative to the Donor Dashboard namespace.
+ * @param {Object|FormData} data Request payload.
+ * @return {Promise<Object>} Parsed response body.
+ */
+export const donorDashboardApi = {
+    post: (endpoint, data) =>
+        apiFetch({
+            path: DONOR_DASHBOARD_NAMESPACE + endpoint,
+            method: 'POST',
+            ...(data instanceof window.FormData ? {body: data} : {data: data || {}}),
+        }),
 };
 
-export const getAPINonce = () => {
-    return getWindowData('apiNonce');
-};
+/**
+ * Translates a rejected apiFetch request into a message safe to show a donor.
+ *
+ * Server faults and responses that are not a WordPress REST error fall back to a
+ * generic message, so internal failure details are never surfaced.
+ *
+ * @since TBD
+ *
+ * @param {Object} error Rejection value from apiFetch.
+ * @return {string} Message to display.
+ */
+export const getApiErrorMessage = (error) => {
+    const status = error && error.data ? error.data.status : null;
 
-export const donorDashboardApi = axios.create({
-    baseURL: getAPIRoot() + 'give-api/v2/donor-dashboard/',
-    headers: {'X-WP-Nonce': getAPINonce()},
-});
+    if (!error || !error.message || status >= 500) {
+        return __(
+            'An error occurred while processing your request.  Please try again later, or contact support if the issue persists.',
+            'give'
+        );
+    }
+
+    return error.message;
+};
 
 /**
  * Returns string in Kebab Case (ex: kebab-case)

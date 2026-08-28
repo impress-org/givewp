@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {store} from '../store';
 import {donorDashboardApi, isLoggedIn} from '../../../utils';
 import {setSubscriptions, setQuerying, setError} from '../store/actions';
@@ -10,8 +9,7 @@ export const fetchSubscriptionsDataFromAPI = () => {
     if (loggedIn) {
         dispatch(setQuerying(true));
         return donorDashboardApi
-            .post('recurring-donations/subscriptions', {}, {})
-            .then((response) => response.data)
+            .post('recurring-donations/subscriptions')
             .then((data) => {
                 dispatch(setSubscriptions(data.subscriptions));
                 dispatch(setQuerying(false));
