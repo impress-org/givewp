@@ -9,16 +9,6 @@ const WHERE_TO_POINT_IT = 'Start wp-env, or point the run at the right environme
  * through `storageState` in playwright.config.ts, so no test pays for a login round trip.
  */
 async function globalSetup(): Promise<void> {
-    /*
-     * `RequestUtils` builds its own request context and offers no way to pass `ignoreHTTPSErrors`,
-     * so a local TLS proxy with a self-signed certificate fails the login before any spec runs,
-     * while the browser, which does get `ignoreHTTPSErrors`, would have been fine. Match the two
-     * for local runs only. CI talks to wp-env over plain HTTP and keeps verification on.
-     */
-    if (!process.env.CI && WP_BASE_URL.startsWith('https://')) {
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    }
-
     const requestUtils = await RequestUtils.setup({
         baseURL: WP_BASE_URL,
         storageStatePath: STORAGE_STATE_PATH,
