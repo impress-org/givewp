@@ -34,9 +34,22 @@ async function globalSetup(): Promise<void> {
  */
 async function dismissFormBuilderTours(requestUtils: RequestUtils): Promise<void> {
     for (const mode of ['design', 'schema']) {
-        await requestUtils.request.post(`${WP_BASE_URL}/wp-admin/admin-ajax.php`, {
+        const response = await requestUtils.request.post(`${WP_BASE_URL}/wp-admin/admin-ajax.php`, {
             form: {action: 'givewp_tour_completed', mode},
         });
+
+        /*
+         * The handler answers 200 with admin-ajax's bare `0`, so the status is all there is to read.
+         * It is enough: an action that no longer exists answers 400 and one that rejects the mode
+         * answers 500. Failing here says the tour is still armed, which is worth knowing directly
+         * rather than through four builder specs timing out on a canvas behind a modal.
+         */
+        if (!response.ok()) {
+            throw new Error(
+                `Could not mark the form builder's ${mode} tour as seen: admin-ajax answered ` +
+                    `${response.status()}. The builder specs will be blocked by the tour modal.`
+            );
+        }
     }
 }
 
