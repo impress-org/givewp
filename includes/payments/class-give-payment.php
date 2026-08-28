@@ -637,15 +637,16 @@ final class Give_Payment {
 		$this->setup_payment( $payment_id );
 	}
 
-	/**
-	 * Create the base of a payment.
-	 *
-	 * @since  1.5
-	 * @access private
-	 *
-	 * @return int|bool False on failure, the payment ID on success.
-	 */
-	private function insert_payment() {
+    /**
+     * Create the base of a payment.
+     *
+     * @since 4.16.7.2       Sanitize first, last, and title name values before storing donor meta.
+     * @since  1.5
+     * @access private
+     *
+     * @return int|bool False on failure, the payment ID on success.
+     */
+    private function insert_payment() {
 
 		// Construct the payment title.
 		$payment_title = '';
@@ -758,9 +759,9 @@ final class Give_Payment {
 			$donor = apply_filters( 'give_update_donor_information', $donor, $payment_id, $payment_data, $args );
 
 			// Update Donor Meta once donor is created.
-			$donor->update_meta( '_give_donor_first_name', $this->first_name );
-			$donor->update_meta( '_give_donor_last_name', $this->last_name );
-			$donor->update_meta( '_give_donor_title_prefix', $this->title_prefix );
+			$donor->update_meta( '_give_donor_first_name', sanitize_text_field( $this->first_name ) );
+			$donor->update_meta( '_give_donor_last_name', sanitize_text_field( $this->last_name ) );
+			$donor->update_meta( '_give_donor_title_prefix', sanitize_text_field( $this->title_prefix ) );
 
 			$this->customer_id            = $donor->id;
 			$this->pending['customer_id'] = $this->customer_id;
@@ -803,16 +804,17 @@ final class Give_Payment {
 
 	}
 
-	/**
-	 * Save
-	 *
-	 * Once items have been set, an update is needed to save them to the database.
-	 *
-	 * @access public
-	 *
-	 * @return bool  True of the save occurred, false if it failed or wasn't needed
-	 */
-	public function save() {
+    /**
+     * Save
+     *
+     * Once items have been set, an update is needed to save them to the database.
+     *
+     * @since 4.16.7.2 Sanitize first and last name values when saving billing meta.
+     * @access public
+     *
+     * @return bool  True of the save occurred, false if it failed or wasn't needed
+     */
+    public function save() {
 		$saved = false;
 
 		// Must have an ID.
@@ -922,13 +924,13 @@ final class Give_Payment {
 						$this->update_meta( '_give_payment_price_id', $this->price_id );
 						break;
 
-					case 'first_name':
-						$this->update_meta( '_give_donor_billing_first_name', $this->first_name );
-						break;
+				case 'first_name':
+					$this->update_meta( '_give_donor_billing_first_name', sanitize_text_field( $this->first_name ) );
+					break;
 
-					case 'last_name':
-						$this->update_meta( '_give_donor_billing_last_name', $this->last_name );
-						break;
+				case 'last_name':
+					$this->update_meta( '_give_donor_billing_last_name', sanitize_text_field( $this->last_name ) );
+					break;
 
 					case 'currency':
 						$this->update_meta( '_give_payment_currency', $this->currency );
