@@ -63,6 +63,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
+     * @since TBD Read the query args without assuming they are set.
      * @since 3.22.0 Add locale support
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
@@ -73,7 +74,7 @@ class RegisterFormBuilderPageRoute
     {
         $formBuilderViewModel = new FormBuilderViewModel();
 
-        $donationFormId = abs($_GET['donationFormID']);
+        $donationFormId = abs($_GET['donationFormID'] ?? 0);
 
         // validate form exists before proceeding
         // TODO: improve on this validation
@@ -81,7 +82,7 @@ class RegisterFormBuilderPageRoute
             wp_die(__('Donation form does not exist.', 'give'));
         }
 
-        $locale = give_clean($_GET['locale']) ?? '';
+        $locale = give_clean($_GET['locale'] ?? '');
         Language::switchToLocale($locale);
 
         wp_enqueue_style(

@@ -26,6 +26,31 @@ test.describe('Form builder', () => {
         await expect(formTitle(page)).toHaveValue(title, {timeout: BUILDER_TIMEOUT});
     });
 
+    /*
+     * `CreateDefaultCampaignForm` builds the form with `DonationFormStatus::PUBLISHED()` but hands
+     * `FormSettings::fromArray()` a payload with no `formStatus` key, so the settings fall back to
+     * their `draft` default while the post is published. The builder reads the settings, so it
+     * offers "Publish" and "Save as Draft" on a form that is already live and taking donations, and
+     * shows no "View form" link. The first save writes `publish` into the settings and the symptom
+     * never comes back, which is why it only shows on a form nobody has opened yet.
+     *
+     * `createCampaignWithForm` squares the two before every other spec, so this is the one place
+     * the form is looked at as the campaign left it.
+     */
+    test.fixme('shows a campaign form as published without saving it first', async ({page, admin, requestUtils}) => {
+        const campaign = await requestUtils.rest<{defaultFormId: number}>({
+            method: 'POST',
+            path: '/givewp/v3/campaigns',
+            data: {title: `Unsaved campaign form ${Date.now()}`, goal: 1000, goalType: 'amount'},
+        });
+
+        await visitBuilder(page, admin, campaign.defaultFormId);
+        await formTitle(page).waitFor({timeout: BUILDER_TIMEOUT});
+
+        await expect(page.getByRole('button', {name: 'Update'})).toBeVisible();
+        await expect(page.getByRole('button', {name: 'Switch to Draft'})).toBeVisible();
+    });
+
     test('renames the form and the change survives a reload', async ({page, admin, requestUtils}) => {
         const {formId} = await createCampaignWithForm(requestUtils);
         const renamed = 'Renamed by the builder';
