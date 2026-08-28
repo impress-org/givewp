@@ -1,41 +1,21 @@
-import axios from 'axios';
-import {getAPIRoot} from '../../../utils';
+import {donorDashboardApi} from '../../../utils';
 
 export const loginWithAPI = ({login, password}) => {
-    return axios
-        .post(
-            getAPIRoot() + 'give-api/v2/donor-dashboard/login',
-            {
-                login,
-                password,
-            },
-            {}
-        )
-        .then((response) => response.data);
+    return donorDashboardApi.post('login', {
+        login,
+        password,
+    });
 };
 
 export const verifyEmailWithAPI = ({email, recaptcha}) => {
-    return axios
-        .post(
-            getAPIRoot() + 'give-api/v2/donor-dashboard/verify-email',
-            {
-                email,
-                'g-recaptcha-response': recaptcha,
-            },
-            {}
-        )
-        .then((response) => response.data);
+    return donorDashboardApi.post('verify-email', {
+        email,
+        'g-recaptcha-response': recaptcha,
+    });
 };
 
-
 export const resetPasswordWithAPI = (email) => {
-    return axios
-        .post(
-            getAPIRoot() + 'give-api/v2/donor-dashboard/reset-password',
-            {
-                email,
-            },
-            {}
-        )
-        .then((response) => response.data);
+    return donorDashboardApi.post('reset-password', {
+        email,
+    });
 };

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {store} from '../store';
 import {donorDashboardApi, isLoggedIn} from '../../../utils';
 import {setAnnualReceipts, setQuerying, setError} from '../store/actions';
@@ -10,8 +9,7 @@ export const fetchAnnualReceiptsFromAPI = () => {
     if (loggedIn) {
         dispatch(setQuerying(true));
         donorDashboardApi
-            .post('annual-receipts', {}, {})
-            .then((response) => response.data)
+            .post('annual-receipts')
             .then((data) => {
                 const {receipts} = data;
                 dispatch(setAnnualReceipts(receipts));
