@@ -111,6 +111,7 @@ class Give_DB_Sessions extends Give_DB {
 	 *
 	 * @todo: add cache logic
 	 *
+	 * @since 4.16.7.2 Restrict unserialize to prevent object instantiation.
 	 * @param string $donor_id Donor ID.
 	 * @param mixed  $default  Default session value.
 	 *
@@ -145,7 +146,7 @@ class Give_DB_Sessions extends Give_DB {
 			wp_cache_add( $donor_id, $value, $this->cache_group );
 		}
 
-		return maybe_unserialize( $value );
+		return is_serialized( $value ) ? unserialize( $value, [ 'allowed_classes' => false ] ) : $value;
 	}
 
 	/**
