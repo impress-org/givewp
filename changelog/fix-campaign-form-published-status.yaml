@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Fixed a campaign's default donation form appearing unpublished in the form builder,
+  which offered to publish a form that was already live and taking donations.
+timestamp: 2026-08-28T00:00:00.000Z

@@ -74,7 +74,13 @@ class RegisterFormBuilderPageRoute
     {
         $formBuilderViewModel = new FormBuilderViewModel();
 
-        $donationFormId = abs($_GET['donationFormID'] ?? 0);
+        /*
+         * `abs()` raises a TypeError on an array or a non-numeric string, so the id cannot be read
+         * without checking its shape first. `absint()` is what the redirect guarding this route
+         * already uses, and anything it cannot make a number of falls to the check below.
+         */
+        $donationFormIdParam = $_GET['donationFormID'] ?? null;
+        $donationFormId = is_scalar($donationFormIdParam) ? absint($donationFormIdParam) : 0;
 
         // validate form exists before proceeding
         // TODO: improve on this validation

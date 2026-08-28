@@ -27,17 +27,13 @@ test.describe('Form builder', () => {
     });
 
     /*
-     * `CreateDefaultCampaignForm` builds the form with `DonationFormStatus::PUBLISHED()` but hands
-     * `FormSettings::fromArray()` a payload with no `formStatus` key, so the settings fall back to
-     * their `draft` default while the post is published. The builder reads the settings, so it
-     * offers "Publish" and "Save as Draft" on a form that is already live and taking donations, and
-     * shows no "View form" link. The first save writes `publish` into the settings and the symptom
-     * never comes back, which is why it only shows on a form nobody has opened yet.
-     *
-     * `createCampaignWithForm` squares the two before every other spec, so this is the one place
-     * the form is looked at as the campaign left it.
+     * A campaign's default form is created published, and `CreateDefaultCampaignForm` has to say so
+     * in the settings as well as in the form's own status - the builder reads the settings. When the
+     * two disagreed, the builder offered "Publish" and "Save as Draft" on a form that was already
+     * live and taking donations, and the first save was what squared them, so the symptom only ever
+     * showed on a form nobody had opened yet.
      */
-    test.fixme('shows a campaign form as published without saving it first', async ({page, admin, requestUtils}) => {
+    test('shows a campaign form as published without saving it first', async ({page, admin, requestUtils}) => {
         const campaign = await requestUtils.rest<{defaultFormId: number}>({
             method: 'POST',
             path: '/givewp/v3/campaigns',

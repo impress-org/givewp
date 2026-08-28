@@ -1,5 +1,4 @@
 import {expect, RequestUtils} from '@wordpress/e2e-test-utils-playwright';
-import {editForm} from './form';
 
 /**
  * Creates a campaign and returns it with the v3 donation form that came with it.
@@ -21,16 +20,6 @@ export async function createCampaignWithForm(
     });
 
     expect(campaign.defaultFormId, 'Creating a campaign should have created its default donation form').toBeTruthy();
-
-    /*
-     * A campaign's default form is published, but the settings it is created with leave
-     * `formStatus` at its `draft` default. Anything that saves the form afterwards writes that
-     * status back onto the post and takes the form off the front end, so square the two before a
-     * spec touches it.
-     */
-    await editForm(requestUtils, campaign.defaultFormId, (form) => {
-        form.settings.formStatus = 'publish';
-    });
 
     return {title, campaignId: campaign.id, formId: campaign.defaultFormId};
 }
