@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Reset Give_DB_Meta filter callback state on every exit so a metadata filter bailout cannot affect later direct calls.
+timestamp: 2026-08-30T00:00:00.000Z

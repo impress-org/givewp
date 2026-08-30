@@ -41,6 +41,56 @@ class Tests_Donor_Meta extends Give_Unit_Test_Case {
 	}
 
 	/**
+	 * Ensure direct metadata methods clear stale filter callback state.
+	 *
+	 * @since TBD
+	 */
+	function test_direct_metadata_methods_clear_stale_filter_callback_state() {
+		$meta     = Give()->donor_meta;
+		$property = new ReflectionProperty( Give_DB_Meta::class, 'is_filter_callback' );
+		$property->setAccessible( true );
+
+		$property->setValue( $meta, true );
+		$meta->add_meta( 0, 'test_key', '1' );
+		$this->assertFalse( $property->getValue( $meta ) );
+
+		$property->setValue( $meta, true );
+		$meta->update_meta( 0, 'test_key', '2' );
+		$this->assertFalse( $property->getValue( $meta ) );
+
+		$property->setValue( $meta, true );
+		$meta->get_meta( 0, 'test_key', true );
+		$this->assertFalse( $property->getValue( $meta ) );
+
+		$property->setValue( $meta, true );
+		$meta->delete_meta( 0, 'test_key' );
+		$this->assertFalse( $property->getValue( $meta ) );
+	}
+
+	/**
+	 * Ensure metadata filter bailout paths clear callback state.
+	 *
+	 * @since TBD
+	 */
+	function test_filter_bailout_clears_callback_state() {
+		$meta     = Give()->donor_meta;
+		$property = new ReflectionProperty( Give_DB_Meta::class, 'is_filter_callback' );
+		$property->setAccessible( true );
+
+		$meta->__add_meta( false, 0, 'test_key', '1', false );
+		$this->assertFalse( $property->getValue( $meta ) );
+
+		$meta->__get_meta( false, 0, 'test_key', true );
+		$this->assertFalse( $property->getValue( $meta ) );
+
+		$meta->__update_meta( null, 0, 'test_key', '2', '' );
+		$this->assertFalse( $property->getValue( $meta ) );
+
+		$meta->__delete_meta( false, 0, 'test_key', '', '' );
+		$this->assertFalse( $property->getValue( $meta ) );
+	}
+
+	/**
 	 * Test update metadata.
 	 */
 	function test_update_metadata() {
