@@ -10,6 +10,7 @@ GiveWP — a WordPress donation/fundraising plugin. PHP + React, distributed on 
 | Task | Command |
 |:--|:--|
 | Run tests | `composer test` |
+| Run E2E tests | `npm run test:e2e` (needs `npm run env:start`) |
 | Run one test | `composer test -- --filter DonationRepositoryTest` or `--filter ClassName::methodName` |
 | Build assets (dev) | `npm run dev` |
 | Watch assets | `npm run watch` |
@@ -202,4 +203,5 @@ If you change a subsystem's architecture, update its doc in the same PR.
 - [CONTRIBUTING.md](CONTRIBUTING.md) — contribution and PR process
 - [README.md](README.md) — setup and build details
 - [RELEASING.md](RELEASING.md) — the release process
-- [tests/README.md](tests/README.md) — test environment and writing tests
+- [docs/testing.md](docs/testing.md) — the two suites, what each is for, and how to run them
+- [tests/README.md](tests/README.md) — PHPUnit environment and writing tests

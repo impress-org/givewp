@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-// Note: no-unused-vars rule is disabled while axios logic is not enabled
+// Note: no-unused-vars rule is disabled while the currency lookup is not enabled
 
-import axios from 'axios';
+import apiFetch from '@wordpress/api-fetch';
 import {setFetchingStatesList, setStateList} from '../app/store/actions';
 
 export const getWindowData = (value) => {
@@ -22,14 +22,6 @@ export const toKebabCase = (str) => {
         .replace(/([a-z])([A-Z])/g, '$1-$2')
         .replace(/\s+/g, '-')
         .toLowerCase();
-};
-
-export const getAPIRoot = () => {
-    return getWindowData('apiRoot');
-};
-
-export const getAPINonce = () => {
-    return getWindowData('apiNonce');
 };
 
 export const getCountryList = () => {
@@ -120,17 +112,13 @@ export const saveSettingWithOnboardingAPI = (setting, value) => {
     // Note: When the below code is actually implemented, the ${value} should be
     // stringified (using qs library or JSON stringify).
 
-    axios.post(
-        getAPIRoot() + 'give-api/v2/onboarding/settings/' + setting,
-        {
+    apiFetch({
+        path: '/give-api/v2/onboarding/settings/' + setting,
+        method: 'POST',
+        data: {
             value: JSON.stringify(value),
         },
-        {
-            headers: {
-                'X-WP-Nonce': getAPINonce(),
-            },
-        }
-    );
+    });
 
     return {
         setting,
@@ -154,10 +142,21 @@ export const subscribeToNewsletter = (configuration) => {
         fundraising_type: configuration.causeType,
     };
 
-    axios.post('https://connect.givewp.com/activecampaign/subscribe', data).then(function (response) {
-        // Set user meta key as subscribed.
-        setUserMetaSubscribed();
-    });
+    // Sent with fetch rather than apiFetch so the WordPress REST nonce is not
+    // attached to a request leaving the site.
+    window
+        .fetch('https://connect.givewp.com/activecampaign/subscribe', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data),
+        })
+        .then(function (response) {
+            // fetch resolves on 4xx and 5xx, so a rejected subscription would otherwise be recorded as a success.
+            if (response.ok) {
+                // Set user meta key as subscribed.
+                setUserMetaSubscribed();
+            }
+        });
 };
 
 /**
@@ -168,19 +167,15 @@ export const subscribeToNewsletter = (configuration) => {
 export const setUserMetaSubscribed = () => {
     const currentUserId = getWindowData('adminUserID');
 
-    axios.post(
-        getAPIRoot() + 'wp/v2/users/' + currentUserId,
-        {
+    apiFetch({
+        path: '/wp/v2/users/' + currentUserId,
+        method: 'POST',
+        data: {
             meta: {
                 marketing_optin: 'subscribed',
             },
         },
-        {
-            headers: {
-                'X-WP-Nonce': getAPINonce(),
-            },
-        }
-    );
+    });
 };
 
 /**
@@ -192,26 +187,18 @@ export const setUserMetaSubscribed = () => {
  */
 export const fetchStatesListWithOnboardingAPI = (country, dispatch) => {
     dispatch(setFetchingStatesList(true));
-    axios
-        .get(getAPIRoot() + 'give-api/v2/onboarding/location', {
-            params: {
-                countryCode: country,
-            },
-            headers: {
-                'X-WP-Nonce': getAPINonce(),
-            },
-        })
-        .then((response) => response.data)
-        .then((data) => {
-            const stateList = data.states.map((state) => {
-                return {
-                    value: state.value,
-                    label: decodeHTMLEntity(state.label),
-                };
-            });
-            dispatch(setStateList(stateList));
-            dispatch(setFetchingStatesList(false));
+    apiFetch({
+        path: '/give-api/v2/onboarding/location?' + new URLSearchParams({countryCode: country}).toString(),
+    }).then((data) => {
+        const stateList = data.states.map((state) => {
+            return {
+                value: state.value,
+                label: decodeHTMLEntity(state.label),
+            };
         });
+        dispatch(setStateList(stateList));
+        dispatch(setFetchingStatesList(false));
+    });
 };
 
 /**
@@ -219,16 +206,11 @@ export const fetchStatesListWithOnboardingAPI = (country, dispatch) => {
  * @since 2.8.0
  */
 export const generateFormPreviewWithOnboardingAPI = async (dispatch) => {
-    const {data} = await axios.post(
-        getAPIRoot() + 'give-api/v2/onboarding/form',
-        {},
-        {
-            headers: {
-                'X-WP-Nonce': getAPINonce(),
-                'Content-Type': 'application/json',
-            },
-        }
-    );
+    const data = await apiFetch({
+        path: '/give-api/v2/onboarding/form',
+        method: 'POST',
+        data: {},
+    });
 
     return data.formID;
 };
@@ -247,20 +229,4 @@ export const getCurrencyWithOnboardingAPI = (country) => {
     // Logic for connecting to the Onboarding API
     // An object with action: 'get_currency' and country: ${country} is passed to the API
     // A string with currency code for the requested country code is returned
-
-    // axios.get( getAPIRoot() + 'give-api/v2/onboarding/', {
-    // 	params: {
-    // 		action: 'get_currency',
-    // 		country,
-    // 	},
-    // 	headers: {
-    // 		'X-WP-Nonce': getAPINonce(),
-    // 	},
-    // } )
-    // 	.then( function( response ) {
-    // 		// Do something on success
-    // 	} )
-    // 	.catch( function() {
-    // 		// Do something on error
-    // 	} );
 };

@@ -31,26 +31,21 @@ export const updateProfileWithAPI = async ({
      */
     const {dispatch} = store;
     return donorDashboardApi
-        .post(
-            'profile',
-            {
-                data: JSON.stringify({
-                    titlePrefix,
-                    firstName,
-                    lastName,
-                    company,
-                    primaryEmail,
-                    additionalEmails,
-                    primaryAddress,
-                    additionalAddresses,
-                    avatarId,
-                    isAnonymous,
-                }),
-                id,
-            },
-            {}
-        )
-        .then((response) => response.data)
+        .post('profile', {
+            data: JSON.stringify({
+                titlePrefix,
+                firstName,
+                lastName,
+                company,
+                primaryEmail,
+                additionalEmails,
+                primaryAddress,
+                additionalAddresses,
+                avatarId,
+                isAnonymous,
+            }),
+            id,
+        })
         .then((responseData) => {
             /**
              * Once updated, update the store's representation of
@@ -67,24 +62,14 @@ export const uploadAvatarWithAPI = (file) => {
     formData.append('file', file);
 
     // Upload the new file, and return the resolved Promise with new media ID
-    return donorDashboardApi
-        .post('avatar', formData)
-        .then((response) => {
-            return response.data;
-        })
-        .then((responseData) => responseData.id);
+    return donorDashboardApi.post('avatar', formData).then((responseData) => responseData.id);
 };
 
 export const fetchStatesWithAPI = (country) => {
     return donorDashboardApi
-        .post(
-            'location',
-            {
-                countryCode: country,
-            },
-            {}
-        )
-        .then((response) => response.data)
+        .post('location', {
+            countryCode: country,
+        })
         .then((data) => {
             return data.states.map((state) => {
                 return {
