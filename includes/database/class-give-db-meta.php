@@ -125,6 +125,7 @@ class Give_DB_Meta extends Give_DB {
 	/**
 	 * Retrieve payment meta field for a payment.
 	 *
+	 * @since TBD Clear filter callback state before returning from any path.
 	 * @since 3.1.0 Return empty array, when request raw metadata if $single is set to false and metadata does not exist.
 	 * @since   2.0
 	 *
@@ -137,9 +138,11 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	public function get_meta( $id = 0, $meta_key = '', $single = false ) {
 		$previousMetaTableName = $this->setMetaTableName();
+		$is_filter_callback   = $this->is_filter_callback;
+		$this->is_filter_callback = false;
 
 		try {
-			if ( ! $this->is_filter_callback ) {
+			if ( ! $is_filter_callback ) {
 				return get_metadata( $this->meta_type, $id, $meta_key, $single );
 			}
 
@@ -177,6 +180,7 @@ class Give_DB_Meta extends Give_DB {
 	 * For internal use only. Use Give_Payment->add_meta() for public usage.
 	 *
 	 * @access  private
+	 * @since   TBD Clear filter callback state before returning from any path.
 	 * @since   2.0
 	 *
 	 * @param   int    $id         Post Type ID.
@@ -188,9 +192,11 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	public function add_meta( $id, $meta_key, $meta_value, $unique = false ) {
 		$previousMetaTableName = $this->setMetaTableName();
+		$is_filter_callback   = $this->is_filter_callback;
+		$this->is_filter_callback = false;
 
 		try {
-			if ( $this->is_filter_callback ) {
+			if ( $is_filter_callback ) {
 				$id = $this->sanitize_id( $id );
 
 				// Bailout.
@@ -224,6 +230,7 @@ class Give_DB_Meta extends Give_DB {
 	 * If the meta field for the payment does not exist, it will be added.
 	 *
 	 * @access  public
+	 * @since   TBD Clear filter callback state before returning from any path.
 	 * @since   2.0
 	 *
 	 * @param   int    $id         Post Type ID.
@@ -235,9 +242,11 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	public function update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
 		$previousMetaTableName = $this->setMetaTableName();
+		$is_filter_callback   = $this->is_filter_callback;
+		$this->is_filter_callback = false;
 
 		try {
-			if ( $this->is_filter_callback ) {
+			if ( $is_filter_callback ) {
 				$id = $this->sanitize_id( $id );
 
 				// Bailout.
@@ -268,6 +277,7 @@ class Give_DB_Meta extends Give_DB {
 	 * allows removing all metadata matching key, if needed.
 	 *
 	 * @access  public
+	 * @since   TBD Clear filter callback state before returning from any path.
 	 * @since   2.0
 	 *
 	 * @param   int    $id         Post Type ID.
@@ -279,9 +289,11 @@ class Give_DB_Meta extends Give_DB {
 	 */
 	public function delete_meta( $id = 0, $meta_key = '', $meta_value = '', $delete_all = '' ) {
 		$previousMetaTableName = $this->setMetaTableName();
+		$is_filter_callback   = $this->is_filter_callback;
+		$this->is_filter_callback = false;
 
 		try {
-			if ( $this->is_filter_callback ) {
+			if ( $is_filter_callback ) {
 				$id = $this->sanitize_id( $id );
 
 				// Bailout.
@@ -472,6 +484,7 @@ class Give_DB_Meta extends Give_DB {
 	 *
 	 * @since  2.0
 	 * @since 2.9.6 Added a Short circuit check when updating meta.
+	 * @since TBD Clear filter callback state before bailout and short-circuit returns.
 	 *
 	 * @access public
 	 *
@@ -492,6 +505,7 @@ class Give_DB_Meta extends Give_DB {
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
+					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
@@ -506,6 +520,7 @@ class Give_DB_Meta extends Give_DB {
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
+					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
@@ -522,11 +537,13 @@ class Give_DB_Meta extends Give_DB {
 
 				// Short circuit if the meta value has already been updated.
 				if ( null !== $this->check ) {
+					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
+					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
@@ -542,6 +559,7 @@ class Give_DB_Meta extends Give_DB {
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
+					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
