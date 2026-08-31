@@ -111,6 +111,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 
 			$sql        = [];
 			$meta_table = give_v20_bc_table_details( 'form' );
+			$donor_meta_table_name = Give()->donor_meta->table_name;
 
 			foreach ( $step_ids as $type => $ids ) {
 
@@ -124,7 +125,7 @@ class Give_Tools_Reset_Stats extends Give_Batch_Export {
 					case 'customers':
 						// Delete all the Give related donor and its meta.
 						$sql[] = "DELETE FROM {$wpdb->donors}";
-						$sql[] = "DELETE FROM {$wpdb->donormeta}";
+						$sql[] = "DELETE FROM {$donor_meta_table_name}";
 						break;
 					case 'forms':
 						$sql[] = "UPDATE {$meta_table['name']} SET meta_value = 0 WHERE meta_key = '_give_form_sales' AND {$meta_table['column']['id']} IN ($ids)";

@@ -31,5 +31,16 @@ export const WP_BASE_URL = resolveBaseUrl();
  */
 process.env.WP_BASE_URL = WP_BASE_URL;
 
+/*
+ * `RequestUtils` builds its own request context with no way to pass `ignoreHTTPSErrors`, so a local
+ * TLS proxy with a self-signed certificate fails every REST call it makes - in global setup and in
+ * the worker-scoped `requestUtils` fixture alike, which are separate processes. Both load this
+ * module through playwright.config.ts, so relaxing it here covers both. Local runs only; CI talks
+ * to wp-env over plain HTTP and keeps verification on.
+ */
+if (!process.env.CI && WP_BASE_URL.startsWith('https://')) {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
 export const STORAGE_STATE_PATH =
     process.env.STORAGE_STATE_PATH ?? path.join(process.cwd(), 'artifacts/storage-states/admin.json');
