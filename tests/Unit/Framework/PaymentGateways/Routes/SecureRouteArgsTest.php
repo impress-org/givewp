@@ -79,11 +79,28 @@ class SecureRouteArgsTest extends TestCase
     }
 
     /**
+     * A gateway signs the rawurlencoded return URL it was given, but PHP hands the route the decoded
+     * value. The signature has to be made from the value as it comes back, or every genuine return
+     * fails — the PayFast bug.
+     *
+     * @since TBD
+     */
+    public function testAnEncodedReturnUrlValidatesAgainstTheDecodedValueTheRequestCarries()
+    {
+        $decoded = 'https://example.org/thanks/?givewp-event=donation-completed&givewp-receipt-id=abc123';
+
+        $request = $this->request(['givewp-return-url' => rawurlencode($decoded)]);
+        $request['givewp-return-url'] = $decoded;
+
+        $this->assertTrue($this->rebuild($request)->isValid($request['give-route-signature']));
+    }
+
+    /**
      * Builds the request a secure route URL produces, the way generateSecureGatewayRouteUrl does.
      */
     private function request(array $args): array
     {
-        $signature = new RouteSignature('test-gateway', 'secureMethod', 1, null, $args);
+        $signature = new RouteSignature('test-gateway', 'secureMethod', 1, null, RouteSignature::normalizeArgs($args));
 
         return array_merge($args, [
             'give-listener' => 'give-gateway',

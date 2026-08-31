@@ -84,6 +84,23 @@ class RouteSignature
     }
 
     /**
+     * Normalizes args to what the request coming back will carry: PHP urldecodes each query value
+     * once (%XX to its character, + to a space), and GatewayRoute then runs the request through
+     * give_clean(). Signing the raw values instead rejects a genuine return whenever a value
+     * changes shape in transit — a rawurlencoded return URL being the everyday case.
+     *
+     * Only URL generation runs this; values arriving on a request have been through the real thing.
+     *
+     * @since TBD
+     */
+    public static function normalizeArgs(array $args): array
+    {
+        return array_map(static function ($value) {
+            return is_string($value) ? give_clean(urldecode($value)) : $value;
+        }, $args);
+    }
+
+    /**
      * @since 2.19.5
      *
      * @param  string  $gatewayId

@@ -90,18 +90,25 @@ class SecureRouteArgsTest extends TestCase
 
     /**
      * Runs the gateway's real createPayment() and turns the URL it redirects to back into a request.
+     *
+     * The successUrl is shaped like production hands it over: rawurlencoded by
+     * AddRedirectUrlsToGatewayData, carrying the confirmation page's own query args. parse_str
+     * urldecodes the way PHP does for $_GET, and give_clean is what GatewayRoute applies — so the
+     * value comes back decoded, not as it was signed.
      */
     private function returnRequestFor(Donation $donation): array
     {
         $command = (new TestOffsiteGateway())->createPayment($donation, [
-            'successUrl' => home_url('/donation-confirmation/'),
+            'successUrl' => rawurlencode(
+                home_url('/donation-confirmation/?givewp-event=donation-completed&givewp-receipt-id=3e714ece57ed9590ece70ac2c296b6d0')
+            ),
         ]);
 
         $this->assertInstanceOf(RedirectOffsite::class, $command);
 
         parse_str(parse_url($command->redirectUrl, PHP_URL_QUERY), $request);
 
-        return $request;
+        return give_clean($request);
     }
 
     /**

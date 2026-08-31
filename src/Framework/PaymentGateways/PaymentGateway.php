@@ -361,7 +361,13 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function generateSecureGatewayRouteUrl(string $gatewayMethod, int $donationId, array $args = []): string
     {
-        $signature = new RouteSignature(static::id(), $gatewayMethod, $donationId, null, $args);
+        $signature = new RouteSignature(
+            static::id(),
+            $gatewayMethod,
+            $donationId,
+            null,
+            RouteSignature::normalizeArgs($args)
+        );
 
         return (new GenerateGatewayRouteUrl())(
             static::id(),
