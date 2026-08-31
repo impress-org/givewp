@@ -245,7 +245,8 @@ class Give_Donor {
 	 */
 	public function setup_address() {
 		global $wpdb;
-		$meta_type = Give()->donor_meta->meta_type;
+		$meta_type       = Give()->donor_meta->meta_type;
+		$meta_table_name = Give()->donor_meta->table_name;
 
 		$addresses = $this->get_addresses_from_meta_cache();
 
@@ -254,7 +255,7 @@ class Give_Donor {
 			: $wpdb->get_results(
 				$wpdb->prepare(
 					"
-				SELECT meta_key, meta_value FROM {$wpdb->donormeta}
+				SELECT meta_key, meta_value FROM {$meta_table_name}
 				WHERE meta_key
 				LIKE '%s'
 				AND {$meta_type}_id=%d
@@ -1387,6 +1388,7 @@ class Give_Donor {
 		global $wpdb;
 		$meta_key_prefix = "_give_donor_address_{$address_type}_{address_name}";
 		$meta_type       = Give()->donor_meta->meta_type;
+		$meta_table_name = Give()->donor_meta->table_name;
 
 		if ( $is_multi_address ) {
 			if ( is_null( $multi_address_id ) ) {
@@ -1394,7 +1396,7 @@ class Give_Donor {
 				$multi_address_id = $wpdb->get_var(
 					$wpdb->prepare(
 						"
-						SELECT meta_key FROM {$wpdb->donormeta}
+						SELECT meta_key FROM {$meta_table_name}
 						WHERE meta_key
 						LIKE '%s'
 						AND {$meta_type}_id=%d
@@ -1456,13 +1458,14 @@ class Give_Donor {
 			$meta_key_prefix .= "_{$address_count}";
 		}
 
-		$meta_type = Give()->donor_meta->meta_type;
+		$meta_type       = Give()->donor_meta->meta_type;
+		$meta_table_name = Give()->donor_meta->table_name;
 
 		// Process query.
 		$row_affected = $wpdb->query(
 			$wpdb->prepare(
 				"
-				DELETE FROM {$wpdb->donormeta}
+				DELETE FROM {$meta_table_name}
 				WHERE meta_key
 				LIKE '%s'
 				AND {$meta_type}_id=%d
@@ -1510,13 +1513,14 @@ class Give_Donor {
 			$meta_key_prefix .= "_{$address_count}";
 		}
 
-		$meta_type = Give()->donor_meta->meta_type;
+		$meta_type       = Give()->donor_meta->meta_type;
+		$meta_table_name = Give()->donor_meta->table_name;
 
 		// Process query.
 		$row_affected = $wpdb->get_results(
 			$wpdb->prepare(
 				"
-				SELECT meta_key FROM {$wpdb->donormeta}
+				SELECT meta_key FROM {$meta_table_name}
 				WHERE meta_key
 				LIKE '%s'
 				AND {$meta_type}_id=%d

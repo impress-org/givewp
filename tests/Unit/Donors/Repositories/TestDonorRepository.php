@@ -240,4 +240,47 @@ class TestDonorRepository extends TestCase
         $this->assertSame($serializedFirstName, $metaValue);
         $this->assertSame(serialize($serializedFirstName), $metaQuery->meta_value);
     }
+
+    /**
+     * Verifies that donor meta is written to GiveWP's own table even when another plugin
+     * re-assigns the global donor meta table (as Charitable does), and that the global is
+     * restored afterwards so the other plugin is unaffected.
+     *
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testInsertShouldStoreDonorNameInGiveTableWhenDonorMetaTableIsOverwritten(): void
+    {
+        global $wpdb;
+
+        $originalDonorMetaTable = $wpdb->donormeta;
+
+        // Simulate Charitable re-assigning $wpdb->donormeta to its own table.
+        $wpdb->donormeta = $wpdb->prefix . 'charitable_donormeta';
+
+        $donor = new Donor([
+            'name' => 'Bill Murray',
+            'firstName' => 'Bill',
+            'lastName' => 'Murray',
+            'email' => 'billMurray@givewp.com',
+        ]);
+
+        try {
+            (new DonorRepository())->insert($donor);
+
+            // The global must be restored so Charitable is unaffected.
+            $this->assertSame($wpdb->prefix . 'charitable_donormeta', $wpdb->donormeta);
+        } finally {
+            $wpdb->donormeta = $originalDonorMetaTable;
+        }
+
+        $firstName = DB::table('give_donormeta')
+            ->where('donor_id', $donor->id)
+            ->where('meta_key', DonorMetaKeys::FIRST_NAME)
+            ->get();
+
+        $this->assertNotNull($firstName);
+        $this->assertSame('Bill', $firstName->meta_value);
+    }
 }
