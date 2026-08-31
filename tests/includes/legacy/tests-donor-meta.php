@@ -45,7 +45,7 @@ class Tests_Donor_Meta extends Give_Unit_Test_Case {
 	 *
 	 * @since TBD
 	 */
-	function test_direct_metadata_methods_clear_stale_filter_callback_state() {
+	public function test_direct_metadata_methods_clear_stale_filter_callback_state() {
 		$meta     = Give()->donor_meta;
 		$property = new ReflectionProperty( Give_DB_Meta::class, 'is_filter_callback' );
 		$property->setAccessible( true );
@@ -72,7 +72,7 @@ class Tests_Donor_Meta extends Give_Unit_Test_Case {
 	 *
 	 * @since TBD
 	 */
-	function test_filter_bailout_clears_callback_state() {
+	public function test_filter_bailout_clears_callback_state() {
 		$meta     = Give()->donor_meta;
 		$property = new ReflectionProperty( Give_DB_Meta::class, 'is_filter_callback' );
 		$property->setAccessible( true );
