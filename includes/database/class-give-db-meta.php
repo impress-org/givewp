@@ -122,11 +122,9 @@ class Give_DB_Meta extends Give_DB {
 		}
 	}
 
-
 	/**
 	 * Retrieve payment meta field for a payment.
 	 *
-	 * @since TBD Clear filter callback state before returning from any path.
 	 * @since 3.1.0 Return empty array, when request raw metadata if $single is set to false and metadata does not exist.
 	 * @since   2.0
 	 *
@@ -138,33 +136,38 @@ class Give_DB_Meta extends Give_DB {
 	 *                                is true.
 	 */
 	public function get_meta( $id = 0, $meta_key = '', $single = false ) {
-		$is_filter_callback       = $this->is_filter_callback;
-		$this->is_filter_callback = false;
+		$previousMetaTableName = $this->setMetaTableName();
 
-		if ( ! $is_filter_callback ) {
-			return get_metadata( $this->meta_type, $id, $meta_key, $single );
-		}
-
-		$id = $this->sanitize_id( $id );
-
-		// Bailout.
-		if ( ! $this->is_valid_post_type( $id ) ) {
-			return $this->check;
-		}
-
-		if ( $this->raw_result ) {
-			if ( ! ( $value = get_metadata( $this->meta_type, $id, $meta_key, false ) ) ) {
-				$value = $single ? '' : array();
+		try {
+			if ( ! $this->is_filter_callback ) {
+				return get_metadata( $this->meta_type, $id, $meta_key, $single );
 			}
 
-			// Reset flag.
-			$this->raw_result = false;
+			$id = $this->sanitize_id( $id );
 
-		} else {
-			$value = get_metadata( $this->meta_type, $id, $meta_key, $single );
+			// Bailout.
+			if ( ! $this->is_valid_post_type( $id ) ) {
+				return $this->check;
+			}
+
+			if ( $this->raw_result ) {
+				if ( ! ( $value = get_metadata( $this->meta_type, $id, $meta_key, false ) ) ) {
+					$value = $single ? '' : array();
+				}
+
+				// Reset flag.
+				$this->raw_result = false;
+
+			} else {
+				$value = get_metadata( $this->meta_type, $id, $meta_key, $single );
+			}
+
+			$this->is_filter_callback = false;
+
+			return $value;
+		} finally {
+			$this->restoreMetaTableName( $previousMetaTableName );
 		}
-
-		return $value;
 	}
 
 
@@ -174,7 +177,6 @@ class Give_DB_Meta extends Give_DB {
 	 * For internal use only. Use Give_Payment->add_meta() for public usage.
 	 *
 	 * @access  private
-	 * @since   TBD Clear filter callback state before returning from any path.
 	 * @since   2.0
 	 *
 	 * @param   int    $id         Post Type ID.
@@ -185,25 +187,30 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  int|bool                  False for failure. True for success.
 	 */
 	public function add_meta( $id, $meta_key, $meta_value, $unique = false ) {
-		$is_filter_callback       = $this->is_filter_callback;
-		$this->is_filter_callback = false;
+		$previousMetaTableName = $this->setMetaTableName();
 
-		if ( $is_filter_callback ) {
-			$id = $this->sanitize_id( $id );
+		try {
+			if ( $this->is_filter_callback ) {
+				$id = $this->sanitize_id( $id );
 
-			// Bailout.
-			if ( ! $this->is_valid_post_type( $id ) ) {
-				return $this->check;
+				// Bailout.
+				if ( ! $this->is_valid_post_type( $id ) ) {
+					return $this->check;
+				}
 			}
+
+			$meta_id = add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
+
+			if ( $meta_id ) {
+				$this->delete_cache( $id );
+			}
+
+			$this->is_filter_callback = false;
+
+			return $meta_id;
+		} finally {
+			$this->restoreMetaTableName( $previousMetaTableName );
 		}
-
-		$meta_id = add_metadata( $this->meta_type, $id, $meta_key, $meta_value, $unique );
-
-		if ( $meta_id ) {
-			$this->delete_cache( $id );
-		}
-
-		return $meta_id;
 	}
 
 	/**
@@ -217,7 +224,6 @@ class Give_DB_Meta extends Give_DB {
 	 * If the meta field for the payment does not exist, it will be added.
 	 *
 	 * @access  public
-	 * @since   TBD Clear filter callback state before returning from any path.
 	 * @since   2.0
 	 *
 	 * @param   int    $id         Post Type ID.
@@ -228,25 +234,30 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  int|bool                  False on failure, true if success.
 	 */
 	public function update_meta( $id, $meta_key, $meta_value, $prev_value = '' ) {
-		$is_filter_callback       = $this->is_filter_callback;
-		$this->is_filter_callback = false;
+		$previousMetaTableName = $this->setMetaTableName();
 
-		if ( $is_filter_callback ) {
-			$id = $this->sanitize_id( $id );
+		try {
+			if ( $this->is_filter_callback ) {
+				$id = $this->sanitize_id( $id );
 
-			// Bailout.
-			if ( ! $this->is_valid_post_type( $id ) ) {
-				return $this->check;
+				// Bailout.
+				if ( ! $this->is_valid_post_type( $id ) ) {
+					return $this->check;
+				}
 			}
+
+			$meta_id = update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
+
+			if ( $meta_id ) {
+				$this->delete_cache( $id );
+			}
+
+			$this->is_filter_callback = false;
+
+			return $meta_id;
+		} finally {
+			$this->restoreMetaTableName( $previousMetaTableName );
 		}
-
-		$meta_id = update_metadata( $this->meta_type, $id, $meta_key, $meta_value, $prev_value );
-
-		if ( $meta_id ) {
-			$this->delete_cache( $id );
-		}
-
-		return $meta_id;
 	}
 
 	/**
@@ -257,7 +268,6 @@ class Give_DB_Meta extends Give_DB {
 	 * allows removing all metadata matching key, if needed.
 	 *
 	 * @access  public
-	 * @since   TBD Clear filter callback state before returning from any path.
 	 * @since   2.0
 	 *
 	 * @param   int    $id         Post Type ID.
@@ -268,25 +278,30 @@ class Give_DB_Meta extends Give_DB {
 	 * @return  bool                  False for failure. True for success.
 	 */
 	public function delete_meta( $id = 0, $meta_key = '', $meta_value = '', $delete_all = '' ) {
-		$is_filter_callback       = $this->is_filter_callback;
-		$this->is_filter_callback = false;
+		$previousMetaTableName = $this->setMetaTableName();
 
-		if ( $is_filter_callback ) {
-			$id = $this->sanitize_id( $id );
+		try {
+			if ( $this->is_filter_callback ) {
+				$id = $this->sanitize_id( $id );
 
-			// Bailout.
-			if ( ! $this->is_valid_post_type( $id ) ) {
-				return $this->check;
+				// Bailout.
+				if ( ! $this->is_valid_post_type( $id ) ) {
+					return $this->check;
+				}
 			}
+
+			$is_meta_deleted = delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
+
+			if ( $is_meta_deleted ) {
+				$this->delete_cache( $id );
+			}
+
+			$this->is_filter_callback = false;
+
+			return $is_meta_deleted;
+		} finally {
+			$this->restoreMetaTableName( $previousMetaTableName );
 		}
-
-		$is_meta_deleted = delete_metadata( $this->meta_type, $id, $meta_key, $meta_value, $delete_all );
-
-		if ( $is_meta_deleted ) {
-			$this->delete_cache( $id );
-		}
-
-		return $is_meta_deleted;
 	}
 
 	/**
@@ -457,7 +472,6 @@ class Give_DB_Meta extends Give_DB {
 	 *
 	 * @since  2.0
 	 * @since 2.9.6 Added a Short circuit check when updating meta.
-	 * @since TBD Clear filter callback state before bailout and short-circuit returns.
 	 *
 	 * @access public
 	 *
@@ -478,7 +492,6 @@ class Give_DB_Meta extends Give_DB {
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
-					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
@@ -493,7 +506,6 @@ class Give_DB_Meta extends Give_DB {
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
-					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
@@ -510,13 +522,11 @@ class Give_DB_Meta extends Give_DB {
 
 				// Short circuit if the meta value has already been updated.
 				if ( null !== $this->check ) {
-					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
-					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
@@ -532,7 +542,6 @@ class Give_DB_Meta extends Give_DB {
 
 				// Bailout.
 				if ( ! $this->is_valid_post_type( $id ) ) {
-					$this->is_filter_callback = false;
 					return $this->check;
 				}
 
@@ -600,4 +609,44 @@ class Give_DB_Meta extends Give_DB {
 
 		return $status;
 	}
+
+	/**
+	 * Temporarily re-assert the meta table name in the global $wpdb object.
+	 *
+	 * Other plugins can overwrite the global meta table property. For example, both GiveWP and
+	 * Charitable register a "donor" meta type, and Charitable re-assigns $wpdb->donormeta to its
+	 * own table after GiveWP loads. Point the global at GiveWP's own table before each metadata
+	 * operation so data is always written to and read from GiveWP's table, then restore the
+	 * previous value afterwards so other plugins are unaffected.
+	 *
+	 * @since TBD
+	 *
+	 * @return string The previous meta table name to restore.
+	 */
+	private function setMetaTableName() {
+		global $wpdb;
+
+		$metaTableProperty = $this->meta_type . 'meta';
+		$previousMetaTableName = $wpdb->{$metaTableProperty};
+
+		$wpdb->{$metaTableProperty} = $this->table_name;
+
+		return $previousMetaTableName;
+	}
+
+	/**
+	 * Restore a previously saved meta table name.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $metaTableName The meta table name to restore.
+	 *
+	 * @return void
+	 */
+	private function restoreMetaTableName( $metaTableName ) {
+		global $wpdb;
+
+		$wpdb->{$this->meta_type . 'meta'} = $metaTableName;
+	}
+
 }
