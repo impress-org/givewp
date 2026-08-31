@@ -243,14 +243,17 @@ const Inspector = ({attributes, setAttributes}) => {
                             label={__('Minimum', 'give')}
                             value={customAmountMin}
                             onValueChange={(value) => setAttributes({customAmountMin: value})}
-                            help={__('Sets the minimum donation amount for all gateways.', 'give')}
+                            help={__(
+                                'The lowest amount a donor can enter in the custom amount field. Donation levels and the set donation amount are not affected. Leave empty to use the lowest of those amounts.',
+                                'give'
+                            )}
                         />
                         <CurrencyControl
                             label={__('Maximum', 'give')}
                             value={customAmountMax}
                             onValueChange={(value) => setAttributes({customAmountMax: value})}
                             help={__(
-                                'Sets the maximum donation amount for all gateways. Leave empty for no maximum amount.',
+                                'The highest amount a donor can enter in the custom amount field. Donation levels and the set donation amount are not affected. Leave empty for no maximum amount.',
                                 'give'
                             )}
                         />
