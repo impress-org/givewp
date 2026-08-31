@@ -76,8 +76,9 @@ class SecureRouteArgsTest extends TestCase
             'unset-arg' => null,
             'false-arg' => false,
             'empty-array-arg' => [],
+            'hollow-arg' => ['a' => null, 'b' => []],
         ]);
-        unset($request['unset-arg'], $request['false-arg'], $request['empty-array-arg']);
+        unset($request['unset-arg'], $request['false-arg'], $request['empty-array-arg'], $request['hollow-arg']);
 
         $this->assertSame('donation-id', $request['give-route-signature-args']);
         $this->assertTrue($this->rebuild($request)->isValid($request['give-route-signature']));

@@ -39,16 +39,20 @@ class RouteSignature
      * @param  string  $gatewayMethod
      * @param  int  $donationId
      * @param  string  $expiration
-     * @param  array  $args  Query args the route carries, which the signature then covers. Null, false,
-     *                        and empty array values are dropped, matching what the URL can carry.
+     * @param  array  $args  Query args the route carries, which the signature then covers. Values the
+     *                        URL cannot carry — false, and null or empty arrays at any depth — are dropped.
      */
     public function __construct($gatewayId, $gatewayMethod, $donationId, $expiration = null, array $args = [])
     {
-        // add_query_arg leaves null, false, and empty array args off the URL, so signing them would
-        // produce a signature the request coming back could never rebuild.
+        // add_query_arg leaves a false arg off the URL entirely, but only at the top level; a nested
+        // false is serialized as '0' by both query builders and round-trips.
         $args = array_filter($args, static function ($value) {
-            return $value !== null && $value !== false && $value !== [];
+            return $value !== false;
         });
+
+        // Null and empty array values produce no query parameter at any depth, so signing them would
+        // produce a signature the request coming back could never rebuild.
+        $args = self::pruneArgs($args);
 
         ksort($args);
 
@@ -81,6 +85,23 @@ class RouteSignature
             $data->routeSignatureExpiration,
             array_intersect_key($data->queryParams, array_flip($data->routeSignatureArgKeys))
         );
+    }
+
+    /**
+     * Drops null and empty array values at any depth, children first, so a parent left holding
+     * nothing goes with them.
+     *
+     * @since TBD
+     */
+    private static function pruneArgs(array $args): array
+    {
+        $args = array_map(static function ($value) {
+            return is_array($value) ? self::pruneArgs($value) : $value;
+        }, $args);
+
+        return array_filter($args, static function ($value) {
+            return $value !== null && $value !== [];
+        });
     }
 
     /**
