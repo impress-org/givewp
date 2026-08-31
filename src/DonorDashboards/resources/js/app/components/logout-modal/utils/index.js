@@ -1,7 +1,7 @@
 import {donorDashboardApi, getQueryParam} from '../../../utils';
 
 export const logoutWithAPI = () => {
-    return donorDashboardApi.post('logout', {}).then((response) => response.data);
+    return donorDashboardApi.post('logout');
 };
 
 export const getCleanParentHref = () => {

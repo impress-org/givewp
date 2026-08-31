@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 4.16.7.2: August 27th, 2026 =
+* Security: Added additional hardening for serialized data handling in the donation flow.
+
+= 4.16.7.1: August 24th, 2026 =
+* Security: Added additional validation to PayPal Donations order requests.
+
 = 4.16.7: August 20th, 2026 =
 * Security: Hardened donor-account email access authentication.
 * Security: Improved validation of the checkout login form.

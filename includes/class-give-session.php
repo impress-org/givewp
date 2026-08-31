@@ -336,6 +336,7 @@ class Give_Session {
 	 *
 	 * Retrieve session variable for a given session key.
 	 *
+	 * @since  4.16.7.2    Restrict unserialize to prevent object instantiation.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -347,7 +348,13 @@ class Give_Session {
 	public function get( $key, $default = false ) {
 		$key = sanitize_key( $key );
 
-		return isset( $this->session[ $key ] ) ? maybe_unserialize( $this->session[ $key ] ) : $default;
+		if ( ! isset( $this->session[ $key ] ) ) {
+			return $default;
+		}
+
+		$value = $this->session[ $key ];
+
+		return is_serialized( $value ) ? unserialize( $value, [ 'allowed_classes' => false ] ) : $value;
 	}
 
 	/**
