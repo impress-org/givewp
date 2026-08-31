@@ -9,16 +9,6 @@ const WHERE_TO_POINT_IT = 'Start wp-env, or point the run at the right environme
  * through `storageState` in playwright.config.ts, so no test pays for a login round trip.
  */
 async function globalSetup(): Promise<void> {
-    /*
-     * `RequestUtils` builds its own request context and offers no way to pass `ignoreHTTPSErrors`,
-     * so a local TLS proxy with a self-signed certificate fails the login before any spec runs,
-     * while the browser, which does get `ignoreHTTPSErrors`, would have been fine. Match the two
-     * for local runs only. CI talks to wp-env over plain HTTP and keeps verification on.
-     */
-    if (!process.env.CI && WP_BASE_URL.startsWith('https://')) {
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    }
-
     const requestUtils = await RequestUtils.setup({
         baseURL: WP_BASE_URL,
         storageStatePath: STORAGE_STATE_PATH,
@@ -33,6 +23,34 @@ async function globalSetup(): Promise<void> {
     await requestUtils.request.get(`${WP_BASE_URL}/wp-admin/`);
 
     await assertGiveWpIsActive(requestUtils);
+    await dismissFormBuilderTours(requestUtils);
+}
+
+/*
+ * The form builder opens a guided tour over itself the first time a user reaches each of its two
+ * editor modes, which on a fresh install is every run and which covers the canvas the builder specs
+ * click into. The tour is the product's, not the suite's, and marking it seen is what the builder
+ * does when a person finishes it.
+ */
+async function dismissFormBuilderTours(requestUtils: RequestUtils): Promise<void> {
+    for (const mode of ['design', 'schema']) {
+        const response = await requestUtils.request.post(`${WP_BASE_URL}/wp-admin/admin-ajax.php`, {
+            form: {action: 'givewp_tour_completed', mode},
+        });
+
+        /*
+         * The handler answers 200 with admin-ajax's bare `0`, so the status is all there is to read.
+         * It is enough: an action that no longer exists answers 400 and one that rejects the mode
+         * answers 500. Failing here says the tour is still armed, which is worth knowing directly
+         * rather than through four builder specs timing out on a canvas behind a modal.
+         */
+        if (!response.ok()) {
+            throw new Error(
+                `Could not mark the form builder's ${mode} tour as seen: admin-ajax answered ` +
+                    `${response.status()}. The builder specs will be blocked by the tour modal.`
+            );
+        }
+    }
 }
 
 /*

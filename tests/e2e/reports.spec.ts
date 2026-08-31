@@ -13,7 +13,12 @@ test.describe('Reports', () => {
 
         await expect(page.locator('#reports-app')).toBeVisible();
 
-        const reportCalls = await restCallsAfter(calls, '/give-api/v2/reports/income');
+        /*
+         * The trailing `?` matters: `income-breakdown` is a route of its own and its URL contains
+         * this one, so waiting on the bare path can resolve on that call instead and leave the
+         * income call still in flight.
+         */
+        const reportCalls = await restCallsAfter(calls, '/give-api/v2/reports/income?');
 
         expect(failedCalls(reportCalls)).toEqual([]);
 
