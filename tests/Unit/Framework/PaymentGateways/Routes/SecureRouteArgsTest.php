@@ -64,15 +64,20 @@ class SecureRouteArgsTest extends TestCase
     }
 
     /**
-     * add_query_arg leaves null and false args off the URL, so a signature covering them could never be
-     * rebuilt from the request that comes back.
+     * add_query_arg leaves null, false, and empty array args off the URL, so a signature covering them
+     * could never be rebuilt from the request that comes back.
      *
      * @since TBD
      */
     public function testArgsTheUrlCannotCarryAreNotSigned()
     {
-        $request = $this->request(['donation-id' => '1', 'unset-arg' => null, 'false-arg' => false]);
-        unset($request['unset-arg'], $request['false-arg']);
+        $request = $this->request([
+            'donation-id' => '1',
+            'unset-arg' => null,
+            'false-arg' => false,
+            'empty-array-arg' => [],
+        ]);
+        unset($request['unset-arg'], $request['false-arg'], $request['empty-array-arg']);
 
         $this->assertSame('donation-id', $request['give-route-signature-args']);
         $this->assertTrue($this->rebuild($request)->isValid($request['give-route-signature']));

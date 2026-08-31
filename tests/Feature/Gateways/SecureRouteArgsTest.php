@@ -89,6 +89,33 @@ class SecureRouteArgsTest extends TestCase
     }
 
     /**
+     * A gateway arg named after one of the route's own params would be signed, then overwritten on the
+     * URL and excluded from queryParams on the way back — a URL that could never validate. Reserved
+     * names are dropped before signing instead.
+     *
+     * @since TBD
+     */
+    public function testAReservedRouteParamPassedAsAnArgCannotBreakTheUrl()
+    {
+        $donation = Donation::factory()->create(['status' => DonationStatus::PENDING()]);
+
+        $url = (new TestOffsiteGateway())->generateSecureGatewayRouteUrl(
+            'securelyReturnFromOffsiteRedirect',
+            $donation->id,
+            [
+                'givewp-donation-id' => $donation->id,
+                'give-route-signature-id' => 'spoofed',
+            ]
+        );
+
+        parse_str(parse_url($url, PHP_URL_QUERY), $request);
+        $request = give_clean($request);
+
+        $this->assertSame((string)$donation->id, $request['give-route-signature-id']);
+        $this->assertTrue($this->signatureFor($request)->isValid($request['give-route-signature']));
+    }
+
+    /**
      * Runs the gateway's real createPayment() and turns the URL it redirects to back into a request.
      *
      * The successUrl is shaped like production hands it over: rawurlencoded by

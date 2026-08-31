@@ -42,6 +42,23 @@ final class GatewayRouteData
     public $routeSignatureArgKeys = [];
 
     /**
+     * Query args the route framework itself sets. A gateway arg with one of these names would be
+     * overwritten on the URL and excluded from queryParams on the way back, so a signature covering
+     * it could never validate.
+     *
+     * @since TBD
+     */
+    const ROUTE_PARAMS = [
+        'give-listener',
+        'give-gateway-id',
+        'give-gateway-method',
+        'give-route-signature',
+        'give-route-signature-id',
+        'give-route-signature-expiration',
+        'give-route-signature-args',
+    ];
+
+    /**
      * Convert data from request into DTO
      *
      * @since TBD add routeSignatureArgKeys
@@ -64,20 +81,7 @@ final class GatewayRouteData
             ? []
             : explode(',', $request['give-route-signature-args']);
 
-        $self->queryParams = array_filter($request, static function ($param) {
-            return ! in_array(
-                $param,
-                [
-                    'give-listener',
-                    'give-gateway-id',
-                    'give-gateway-method',
-                    'give-route-signature',
-                    'give-route-signature-id',
-                    'give-route-signature-expiration',
-                    'give-route-signature-args',
-                ]
-            );
-        }, ARRAY_FILTER_USE_KEY);
+        $self->queryParams = array_diff_key($request, array_flip(self::ROUTE_PARAMS));
 
         return $self;
     }

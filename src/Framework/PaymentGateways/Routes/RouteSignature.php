@@ -39,15 +39,15 @@ class RouteSignature
      * @param  string  $gatewayMethod
      * @param  int  $donationId
      * @param  string  $expiration
-     * @param  array  $args  Query args the route carries, which the signature then covers. Null and
-     *                        false values are dropped, matching what the URL can carry.
+     * @param  array  $args  Query args the route carries, which the signature then covers. Null, false,
+     *                        and empty array values are dropped, matching what the URL can carry.
      */
     public function __construct($gatewayId, $gatewayMethod, $donationId, $expiration = null, array $args = [])
     {
-        // add_query_arg leaves null and false args off the URL, so signing them would produce a
-        // signature the request coming back could never rebuild.
+        // add_query_arg leaves null, false, and empty array args off the URL, so signing them would
+        // produce a signature the request coming back could never rebuild.
         $args = array_filter($args, static function ($value) {
-            return $value !== null && $value !== false;
+            return $value !== null && $value !== false && $value !== [];
         });
 
         ksort($args);
