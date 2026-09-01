@@ -114,6 +114,7 @@ class GiveWPDonationForm extends HTMLElement {
     embedId: string = '';
     overlay: HTMLElement | null = null;
     initialized: boolean = false;
+    scrollOnInit: boolean = false;
     keydownHandler: ((event: KeyboardEvent) => void) | null = null;
 
     /**
@@ -191,21 +192,39 @@ class GiveWPDonationForm extends HTMLElement {
         this.embedId = `givewp-embed-external-${embedInstance++}`;
 
         const displayStyle = this.getAttribute('display-style') || 'onpage';
-        const src = this.isReceiptReturn() ? this.getReceiptViewUrl() : this.getFormViewUrl(formId);
+        const isReceiptReturn = this.isReceiptReturn();
+        const src = isReceiptReturn ? this.getReceiptViewUrl() : this.getFormViewUrl(formId);
 
         if (displayStyle === 'newTab') {
             this.renderNewTabButton();
         } else if (displayStyle === 'modal') {
             this.renderModalButton(src);
 
-            // A donor returning from an offsite gateway needs their receipt
+            // A donor returning from a gateway redirect needs their receipt
             // without having to find the button again.
-            if (this.isReceiptReturn()) {
+            if (isReceiptReturn) {
                 this.openModal(src);
             }
         } else {
+            this.scrollOnInit = isReceiptReturn;
             this.renderForm(src, this);
         }
+
+        if (isReceiptReturn) {
+            this.consumeReturnParams();
+        }
+    }
+
+    /**
+     * The return params are one-time input; leaving them in the address bar
+     * makes the URL ugly to share and replays the receipt on every reload.
+     */
+    consumeReturnParams() {
+        const url = new URL(window.location.href);
+        ['givewp-event', 'givewp-listener', 'givewp-embed-id', 'givewp-receipt-id'].forEach((param) =>
+            url.searchParams.delete(param)
+        );
+        window.history.replaceState(window.history.state, '', url.toString());
     }
 
     disconnectedCallback() {
@@ -308,6 +327,13 @@ class GiveWPDonationForm extends HTMLElement {
                     window.clearTimeout(timeout);
                     loading.remove();
                     iframe.style.display = '';
+
+                    // A gateway-redirect return lands at the top of the page;
+                    // bring the receipt back into view.
+                    if (this.scrollOnInit) {
+                        this.scrollOnInit = false;
+                        this.scrollIntoView({behavior: 'smooth', block: 'start'});
+                    }
                 },
             },
             iframe
