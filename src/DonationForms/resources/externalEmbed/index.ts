@@ -8,6 +8,14 @@ import {iframeResize} from 'iframe-resizer';
  * custom element, which renders the form in an iframe pointed at the
  * donation-form-view route on the WordPress site.
  *
+ * Display styles mirror the WordPress embeds: `onpage` (default) renders the
+ * form inline, `modal` renders a button that opens the form in an overlay,
+ * `newTab` renders a button that links to the standalone form page.
+ *
+ * Donor-facing text is either visually absent (the loading state is a
+ * spinner) or overridable per attribute, so the WordPress-generated snippet
+ * supplies translated strings.
+ *
  * @since TBD
  */
 
@@ -21,11 +29,89 @@ const LOAD_TIMEOUT_MS = 10000;
  */
 let embedInstance = 0;
 
+const STYLE_ID = 'givewp-embed-styles';
+
+const EMBED_CSS = `
+givewp-donation-form {
+    display: block;
+}
+.givewp-embed__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 20rem;
+}
+.givewp-embed__spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 0, 0, 0.12);
+    border-top-color: rgba(0, 0, 0, 0.55);
+    animation: givewp-embed-spin 0.8s linear infinite;
+}
+@keyframes givewp-embed-spin {
+    to { transform: rotate(360deg); }
+}
+.givewp-embed__button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: 0;
+    border-radius: 4px;
+    background-color: #2d802f;
+    color: #fff;
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+.givewp-embed__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483646;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 2.5rem 1rem;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.givewp-embed__dialog {
+    position: relative;
+    width: 100%;
+    max-width: 34rem;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 1.5rem 1rem 1rem;
+}
+.givewp-embed__close {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    border: 0;
+    background: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+`;
+
+function injectStyles() {
+    if (document.getElementById(STYLE_ID)) {
+        return;
+    }
+
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = EMBED_CSS;
+    document.head.appendChild(style);
+}
+
 class GiveWPDonationForm extends HTMLElement {
     iframe: HTMLIFrameElement | null = null;
     wpOrigin: string = '';
     wpBase: URL | null = null;
     embedId: string = '';
+    overlay: HTMLElement | null = null;
 
     connectedCallback() {
         const formId = this.getAttribute('form-id');
@@ -46,14 +132,34 @@ class GiveWPDonationForm extends HTMLElement {
             return;
         }
 
+        injectStyles();
+
         this.wpBase = wpBase;
         this.wpOrigin = wpBase.origin;
         this.embedId = `givewp-embed-external-${embedInstance++}`;
 
+        const displayStyle = this.getAttribute('display-style') || 'onpage';
         const src = this.isReceiptReturn() ? this.getReceiptViewUrl() : this.getFormViewUrl(formId);
 
-        this.renderIframe(src);
+        if (displayStyle === 'newTab') {
+            this.renderNewTabButton();
+        } else if (displayStyle === 'modal') {
+            this.renderModalButton(src);
+
+            // A donor returning from an offsite gateway needs their receipt
+            // without having to find the button again.
+            if (this.isReceiptReturn()) {
+                this.openModal(src);
+            }
+        } else {
+            this.renderForm(src, this);
+        }
+
         this.listenForMessages();
+    }
+
+    getButtonText(): string {
+        return this.getAttribute('button-text') || 'Donate';
     }
 
     getFormViewUrl(formId: string): string {
@@ -67,6 +173,14 @@ class GiveWPDonationForm extends HTMLElement {
         if (locale) {
             url.searchParams.set('locale', locale);
         }
+
+        return url.toString();
+    }
+
+    getStandaloneFormUrl(): string {
+        const url = new URL(this.wpBase.toString());
+        url.searchParams.set('givewp-route', 'donation-form-view');
+        url.searchParams.set('form-id', this.getAttribute('form-id'));
 
         return url.toString();
     }
@@ -95,9 +209,15 @@ class GiveWPDonationForm extends HTMLElement {
         return url.toString();
     }
 
-    renderIframe(src: string) {
-        const loading = document.createElement('p');
-        loading.textContent = this.getAttribute('loading-text') || 'Loading donation form…';
+    renderForm(src: string, target: HTMLElement) {
+        const loading = document.createElement('div');
+        loading.className = 'givewp-embed__loading';
+        loading.setAttribute('role', 'status');
+        loading.setAttribute('aria-label', this.getAttribute('loading-text') || 'Loading');
+
+        const spinner = document.createElement('span');
+        spinner.className = 'givewp-embed__spinner';
+        loading.appendChild(spinner);
 
         const iframe = document.createElement('iframe');
         iframe.src = src;
@@ -113,7 +233,7 @@ class GiveWPDonationForm extends HTMLElement {
         // failure - the timeout degrades to a plain link to the form.
         const timeout = window.setTimeout(() => this.renderFallbackLink(loading), LOAD_TIMEOUT_MS);
 
-        this.append(loading, iframe);
+        target.append(loading, iframe);
         this.iframe = iframe;
 
         iframeResize(
@@ -132,17 +252,82 @@ class GiveWPDonationForm extends HTMLElement {
 
     renderFallbackLink(loading: HTMLElement) {
         const link = document.createElement('a');
-        const url = new URL(this.wpBase.toString());
-        url.searchParams.set('givewp-route', 'donation-form-view');
-        url.searchParams.set('form-id', this.getAttribute('form-id'));
-        link.href = url.toString();
+        link.href = this.getStandaloneFormUrl();
         link.target = '_blank';
         link.rel = 'noopener';
+        link.className = 'givewp-embed__button';
         link.textContent = this.getAttribute('fallback-text') || 'Open donation form';
 
         loading.replaceWith(link);
         this.iframe?.remove();
         this.iframe = null;
+    }
+
+    renderNewTabButton() {
+        const link = document.createElement('a');
+        link.href = this.getStandaloneFormUrl();
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.className = 'givewp-embed__button';
+        link.textContent = this.getButtonText();
+
+        this.appendChild(link);
+    }
+
+    renderModalButton(src: string) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'givewp-embed__button';
+        button.textContent = this.getButtonText();
+        button.addEventListener('click', () => this.openModal(src));
+
+        this.appendChild(button);
+    }
+
+    openModal(src: string) {
+        if (this.overlay) {
+            this.overlay.style.display = '';
+            return;
+        }
+
+        const overlay = document.createElement('div');
+        overlay.className = 'givewp-embed__overlay';
+
+        const dialog = document.createElement('div');
+        dialog.className = 'givewp-embed__dialog';
+        dialog.setAttribute('role', 'dialog');
+        dialog.setAttribute('aria-modal', 'true');
+        dialog.setAttribute('aria-label', this.getAttribute('form-title') || 'Donation Form');
+
+        const close = document.createElement('button');
+        close.type = 'button';
+        close.className = 'givewp-embed__close';
+        close.setAttribute('aria-label', this.getAttribute('close-text') || 'Close');
+        close.textContent = '×';
+
+        const hide = () => {
+            overlay.style.display = 'none';
+        };
+
+        close.addEventListener('click', hide);
+        overlay.addEventListener('click', (event) => {
+            if (event.target === overlay) {
+                hide();
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && overlay.style.display !== 'none') {
+                hide();
+            }
+        });
+
+        dialog.appendChild(close);
+        overlay.appendChild(dialog);
+        this.appendChild(overlay);
+        this.overlay = overlay;
+
+        // The iframe lives on across open/close so form state survives.
+        this.renderForm(src, dialog);
     }
 
     /**
