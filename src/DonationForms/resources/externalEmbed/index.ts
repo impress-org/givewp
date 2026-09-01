@@ -97,24 +97,33 @@ class GiveWPDonationForm extends HTMLElement {
 
         const iframe = document.createElement('iframe');
         iframe.src = src;
-        iframe.title = this.getAttribute('form-title') || 'Donation form';
+        // Matches the title the WordPress embeds use, so tooling and donors see one name.
+        iframe.title = this.getAttribute('form-title') || 'Donation Form';
         iframe.style.cssText = 'width: 1px; min-width: 100%; border: 0; display: none;';
         iframe.setAttribute('data-givewp-embed', 'true');
         iframe.setAttribute('data-givewp-embed-id', this.embedId);
 
-        // If the iframe never loads (frame-blocking headers, ad blockers,
-        // network failure), degrade to a plain link to the form.
+        // Browsers fire `load` even for error pages, so the signal that the
+        // form is actually running is the iframe-resizer handshake (onInit).
+        // Until it arrives - frame-blocking headers, ad blockers, network
+        // failure - the timeout degrades to a plain link to the form.
         const timeout = window.setTimeout(() => this.renderFallbackLink(loading), LOAD_TIMEOUT_MS);
-
-        iframe.addEventListener('load', () => {
-            window.clearTimeout(timeout);
-            loading.remove();
-            iframe.style.display = '';
-            iframeResize({checkOrigin: [this.wpOrigin], heightCalculationMethod: 'taggedElement'}, iframe);
-        });
 
         this.append(loading, iframe);
         this.iframe = iframe;
+
+        iframeResize(
+            {
+                checkOrigin: [this.wpOrigin],
+                heightCalculationMethod: 'taggedElement',
+                onInit: () => {
+                    window.clearTimeout(timeout);
+                    loading.remove();
+                    iframe.style.display = '';
+                },
+            },
+            iframe
+        );
     }
 
     renderFallbackLink(loading: HTMLElement) {
