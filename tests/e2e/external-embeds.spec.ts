@@ -8,6 +8,7 @@ import {
     waitForForm,
 } from './utils/donation-form';
 import {WP_BASE_URL} from './environment';
+import path from 'path';
 
 /**
  * A v3 donation form embedded on a non-WordPress site via externalFormEmbed.js.
@@ -23,6 +24,15 @@ import {WP_BASE_URL} from './environment';
 const EXTERNAL_ORIGIN = `${new URL(WP_BASE_URL).protocol}//external-site.test`;
 const EXTERNAL_PAGE = `${EXTERNAL_ORIGIN}/donate`;
 
+/*
+ * The script is served from the fixture origin and fulfilled with the local build artifact rather
+ * than fetched from wp-env: the plugin's mount path under wp-content/plugins depends on the
+ * checkout directory name (give locally, givewp in CI), and the script's behavior doesn't - it
+ * only cares about the wp-url attribute.
+ */
+const EXTERNAL_SCRIPT_URL = `${EXTERNAL_ORIGIN}/externalFormEmbed.js`;
+const EXTERNAL_SCRIPT_PATH = path.join(process.cwd(), 'build/externalFormEmbed.js');
+
 function externalPageHtml(formId: number, wpUrl: string = WP_BASE_URL, attributes: string = ''): string {
     return `<!DOCTYPE html>
 <html>
@@ -30,7 +40,7 @@ function externalPageHtml(formId: number, wpUrl: string = WP_BASE_URL, attribute
 <body>
     <h1>Support our cause</h1>
     <givewp-donation-form form-id="${formId}" wp-url="${wpUrl}" ${attributes}></givewp-donation-form>
-    <script src="${WP_BASE_URL}/wp-content/plugins/give/build/externalFormEmbed.js" defer></script>
+    <script src="${EXTERNAL_SCRIPT_URL}" defer></script>
 </body>
 </html>`;
 }
@@ -59,6 +69,9 @@ test.describe('External donation form embeds', () => {
     });
 
     test.beforeEach(async ({page}) => {
+        await page.route(EXTERNAL_SCRIPT_URL, (route) =>
+            route.fulfill({contentType: 'application/javascript', path: EXTERNAL_SCRIPT_PATH})
+        );
         await page.route(`${EXTERNAL_PAGE}*`, (route) =>
             route.fulfill({contentType: 'text/html', body: externalPageHtml(formId)})
         );
