@@ -16,7 +16,9 @@ if ( is_user_logged_in() ) {
 } elseif ( Give()->email_access->token_exists ) {
 	// Email Access Token?
 	$donations = give_get_users_donations( 0, 20, true, 'any' );
-	$donations_count = count( $donations );
+	$user = Give()->email_access->token_email;
+	$donor = Give()->donors->get_donor_by( 'email', $user );
+	$donations_count = ( $donor ) ? count( explode( ',', $donor->payment_ids ) ) : 0;
 
 } elseif (
 	false !== Give()->session->get_session_expiration() ||
