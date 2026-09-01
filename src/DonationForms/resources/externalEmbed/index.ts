@@ -113,6 +113,38 @@ class GiveWPDonationForm extends HTMLElement {
     formId: string = '';
     embedId: string = '';
     overlay: HTMLElement | null = null;
+    initialized: boolean = false;
+    keydownHandler: ((event: KeyboardEvent) => void) | null = null;
+
+    /**
+     * The form app asks the parent page to navigate when it cannot navigate
+     * window.top itself (see navigateTop.ts). Only messages from the
+     * WordPress origin with a valid http(s) URL are honored.
+     */
+    messageHandler = (event: MessageEvent) => {
+        if (event.origin !== this.wpOrigin) {
+            return;
+        }
+
+        if (!event.data || typeof event.data !== 'object' || event.data.type !== 'givewp-navigate') {
+            return;
+        }
+
+        if (event.source !== this.iframe?.contentWindow) {
+            return;
+        }
+
+        let url: URL;
+        try {
+            url = new URL(event.data.url);
+        } catch (e) {
+            return;
+        }
+
+        if (url.protocol === 'http:' || url.protocol === 'https:') {
+            window.location.assign(url.toString());
+        }
+    };
 
     connectedCallback() {
         const formId = this.getAttribute('form-id');
@@ -139,6 +171,18 @@ class GiveWPDonationForm extends HTMLElement {
             return;
         }
 
+        window.addEventListener('message', this.messageHandler);
+        if (this.keydownHandler) {
+            document.addEventListener('keydown', this.keydownHandler);
+        }
+
+        // SPA frameworks detach and reattach elements; the children and state
+        // survive that, so only listeners need re-adding.
+        if (this.initialized) {
+            return;
+        }
+        this.initialized = true;
+
         injectStyles();
 
         this.formId = formId;
@@ -162,8 +206,13 @@ class GiveWPDonationForm extends HTMLElement {
         } else {
             this.renderForm(src, this);
         }
+    }
 
-        this.listenForMessages();
+    disconnectedCallback() {
+        window.removeEventListener('message', this.messageHandler);
+        if (this.keydownHandler) {
+            document.removeEventListener('keydown', this.keydownHandler);
+        }
     }
 
     getButtonText(): string {
@@ -323,11 +372,12 @@ class GiveWPDonationForm extends HTMLElement {
                 hide();
             }
         });
-        document.addEventListener('keydown', (event) => {
+        this.keydownHandler = (event: KeyboardEvent) => {
             if (event.key === 'Escape' && overlay.style.display !== 'none') {
                 hide();
             }
-        });
+        };
+        document.addEventListener('keydown', this.keydownHandler);
 
         dialog.appendChild(close);
         overlay.appendChild(dialog);
@@ -338,37 +388,6 @@ class GiveWPDonationForm extends HTMLElement {
         this.renderForm(src, dialog);
     }
 
-    /**
-     * The form app asks the parent page to navigate when it cannot navigate
-     * window.top itself (see navigateTop.ts). Only messages from the
-     * WordPress origin with a valid http(s) URL are honored.
-     */
-    listenForMessages() {
-        window.addEventListener('message', (event: MessageEvent) => {
-            if (event.origin !== this.wpOrigin) {
-                return;
-            }
-
-            if (!event.data || typeof event.data !== 'object' || event.data.type !== 'givewp-navigate') {
-                return;
-            }
-
-            if (event.source !== this.iframe?.contentWindow) {
-                return;
-            }
-
-            let url: URL;
-            try {
-                url = new URL(event.data.url);
-            } catch (e) {
-                return;
-            }
-
-            if (url.protocol === 'http:' || url.protocol === 'https:') {
-                window.location.assign(url.toString());
-            }
-        });
-    }
 }
 
 if (!customElements.get('givewp-donation-form')) {
