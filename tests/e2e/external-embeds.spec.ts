@@ -23,13 +23,13 @@ import {WP_BASE_URL} from './environment';
 const EXTERNAL_ORIGIN = `${new URL(WP_BASE_URL).protocol}//external-site.test`;
 const EXTERNAL_PAGE = `${EXTERNAL_ORIGIN}/donate`;
 
-function externalPageHtml(formId: number, wpUrl: string = WP_BASE_URL): string {
+function externalPageHtml(formId: number, wpUrl: string = WP_BASE_URL, attributes: string = ''): string {
     return `<!DOCTYPE html>
 <html>
 <head><title>External donation page</title></head>
 <body>
     <h1>Support our cause</h1>
-    <givewp-donation-form form-id="${formId}" wp-url="${wpUrl}"></givewp-donation-form>
+    <givewp-donation-form form-id="${formId}" wp-url="${wpUrl}" ${attributes}></givewp-donation-form>
     <script src="${WP_BASE_URL}/wp-content/plugins/give/build/externalFormEmbed.js" defer></script>
 </body>
 </html>`;
@@ -115,6 +115,26 @@ test.describe('External donation form embeds', () => {
         const iframe = page.locator('givewp-donation-form iframe');
         await expect(iframe).toHaveAttribute('src', /donation-confirmation-receipt-view/);
         await expect(iframe).toHaveAttribute('src', new RegExp(`receipt-id=${receiptId}`));
+    });
+
+    test('opens the form in an overlay with the modal display style', async ({page}) => {
+        await page.route(`${EXTERNAL_PAGE}*`, (route) =>
+            route.fulfill({
+                contentType: 'text/html',
+                body: externalPageHtml(formId, WP_BASE_URL, 'display-style="modal" button-text="Give now"'),
+            })
+        );
+
+        await page.goto(EXTERNAL_PAGE);
+
+        await page.getByRole('button', {name: 'Give now'}).click();
+
+        const form = donationForm(page);
+        await waitForForm(form);
+        await expect(page.locator('.givewp-embed__overlay')).toBeVisible();
+
+        await page.locator('.givewp-embed__close').click();
+        await expect(page.locator('.givewp-embed__overlay')).toBeHidden();
     });
 
     test('degrades to a link when the form cannot load', async ({page}) => {
