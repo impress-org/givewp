@@ -24,6 +24,7 @@ let embedInstance = 0;
 class GiveWPDonationForm extends HTMLElement {
     iframe: HTMLIFrameElement | null = null;
     wpOrigin: string = '';
+    wpBase: URL | null = null;
     embedId: string = '';
 
     connectedCallback() {
@@ -35,15 +36,18 @@ class GiveWPDonationForm extends HTMLElement {
             return;
         }
 
-        let wpOrigin: string;
+        // The full URL, not just the origin: WordPress in a subdirectory
+        // (example.org/blog) serves its routes under that path.
+        let wpBase: URL;
         try {
-            wpOrigin = new URL(wpUrl).origin;
+            wpBase = new URL(wpUrl);
         } catch (e) {
             console.error('givewp-donation-form: wp-url is not a valid URL.', wpUrl);
             return;
         }
 
-        this.wpOrigin = wpOrigin;
+        this.wpBase = wpBase;
+        this.wpOrigin = wpBase.origin;
         this.embedId = `givewp-embed-external-${embedInstance++}`;
 
         const src = this.isReceiptReturn() ? this.getReceiptViewUrl() : this.getFormViewUrl(formId);
@@ -53,7 +57,7 @@ class GiveWPDonationForm extends HTMLElement {
     }
 
     getFormViewUrl(formId: string): string {
-        const url = new URL('/', this.wpOrigin);
+        const url = new URL(this.wpBase.toString());
         url.searchParams.set('givewp-route', 'donation-form-view');
         url.searchParams.set('form-id', formId);
         url.searchParams.set('origin-url', window.location.href);
@@ -84,7 +88,7 @@ class GiveWPDonationForm extends HTMLElement {
 
     getReceiptViewUrl(): string {
         const params = new URLSearchParams(window.location.search);
-        const url = new URL('/', this.wpOrigin);
+        const url = new URL(this.wpBase.toString());
         url.searchParams.set('givewp-route', 'donation-confirmation-receipt-view');
         url.searchParams.set('receipt-id', params.get('givewp-receipt-id'));
 
@@ -128,7 +132,10 @@ class GiveWPDonationForm extends HTMLElement {
 
     renderFallbackLink(loading: HTMLElement) {
         const link = document.createElement('a');
-        link.href = new URL(`/?givewp-route=donation-form-view&form-id=${this.getAttribute('form-id')}`, this.wpOrigin).toString();
+        const url = new URL(this.wpBase.toString());
+        url.searchParams.set('givewp-route', 'donation-form-view');
+        url.searchParams.set('form-id', this.getAttribute('form-id'));
+        link.href = url.toString();
         link.target = '_blank';
         link.rel = 'noopener';
         link.textContent = this.getAttribute('fallback-text') || 'Open donation form';
