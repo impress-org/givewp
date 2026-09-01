@@ -9,7 +9,7 @@ import navigateTop from '@givewp/forms/app/utilities/navigateTop';
 import FieldError from '../layouts/FieldError';
 import styles from '../styles.module.scss';
 
-const {originUrl, isEmbed, embedId} = getCurrentFormUrlData();
+const {originUrl, isEmbed, embedId, isCrossOriginEmbed} = getCurrentFormUrlData();
 
 const getRedirectUrl = (redirectUrl: URL) => {
     const formPageUrl = new URL(originUrl);
@@ -87,8 +87,19 @@ export default function Authentication({
     const [isAuth, setIsAuth] = useState<boolean>(isAuthenticated);
     const [showLogin, setShowLogin] = useState<boolean>(required);
     const toggleShowLogin = () => setShowLogin(!showLogin);
+    /**
+     * @since TBD In cross-origin embeds, use the inline login form instead:
+     * wp-login.php rejects a redirect_to pointing at an external site, which
+     * would strand the donor on the WordPress admin after logging in.
+     */
     const redirectToLoginPage = (e) => {
         e.preventDefault();
+
+        if (isCrossOriginEmbed) {
+            toggleShowLogin();
+            return;
+        }
+
         const loginUrl = getRedirectUrl(new URL(loginRedirectUrl));
         navigateTop(loginUrl);
     };
@@ -169,6 +180,12 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
                         className={styles['authentication__login-form__reset-button']}
                         onClick={(event) => {
                             event.preventDefault();
+
+                            if (isCrossOriginEmbed) {
+                                window.open(lostPasswordUrl, '_blank', 'noopener');
+                                return;
+                            }
+
                             const passwordResetUrl = getRedirectUrl(new URL(lostPasswordUrl));
                             navigateTop(passwordResetUrl);
                         }}
