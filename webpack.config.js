@@ -164,6 +164,7 @@ const entry = {
     donationFormRegistrars: srcPath('DonationForms/resources/registrars/index.ts'),
     donationFormEmbed: srcPath('DonationForms/resources/embed.ts'),
     donationFormEmbedInside: srcPath('DonationForms/resources/embedInside.ts'),
+    externalFormEmbed: srcPath('DonationForms/resources/externalEmbed/index.ts'),
     eventTicketsBlock: srcPath('EventTickets/resources/blocks/index.ts'),
     eventTicketsTemplate: srcPath('EventTickets/resources/templates/index.ts'),
     stripePaymentElementGateway: srcPath(
