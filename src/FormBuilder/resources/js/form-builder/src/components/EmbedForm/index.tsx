@@ -47,7 +47,31 @@ interface StateProps {
  */
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
-    const {formId} = getWindowData();
+    const {formId, homeUrl, externalEmbedScriptUrl, blockData} = getWindowData();
+    const [isExternalEmbedCopied, setIsExternalEmbedCopied] = useState<boolean>(false);
+
+    /**
+     * Login inside a cross-origin embed is unreliable in some browsers, so
+     * warn when this form requires it. Based on the saved block data.
+     *
+     * @since TBD
+     */
+    const hasRequiredLogin = (() => {
+        try {
+            const containsRequiredLogin = (blocks): boolean =>
+                Array.isArray(blocks) &&
+                blocks.some(
+                    (block) =>
+                        (block?.name === 'givewp/login' && block?.attributes?.required) ||
+                        containsRequiredLogin(block?.innerBlocks)
+                );
+
+            return containsRequiredLogin(JSON.parse(blockData));
+        } catch (error) {
+            return false;
+        }
+    })();
+
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const openFormBtnRef = useRef<HTMLInputElement>(null);
     const viewInsertedPageBtnRef = useRef<HTMLButtonElement>(null);
@@ -212,15 +236,15 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     }
 
     /**
-     * Handle copying shortcode to clipboard
+     * @since TBD
      */
-    const handleCopy = async () => {
+    const writeToClipboard = async (text: string) => {
         if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(getShortcode());
+            await navigator.clipboard.writeText(text);
         } else {
             const textArea = document.createElement('textarea');
 
-            textArea.value = getShortcode();
+            textArea.value = text;
             textArea.style.display = 'hidden';
             document.body.appendChild(textArea);
             textArea.focus();
@@ -233,6 +257,15 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 textArea.remove();
             }
         }
+    };
+
+    /**
+     * Handle copying shortcode to clipboard
+     *
+     * @since TBD extracted writeToClipboard
+     */
+    const handleCopy = async () => {
+        await writeToClipboard(getShortcode());
 
         setState(prevState => {
             return {
@@ -250,6 +283,26 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             });
         }, 2000);
     }
+
+    /**
+     * @since TBD
+     */
+    const getExternalEmbedSnippet = () => {
+        return [
+            `<script src="${externalEmbedScriptUrl}" defer></script>`,
+            `<givewp-donation-form form-id="${formId}" wp-url="${homeUrl}"></givewp-donation-form>`,
+        ].join('\n');
+    };
+
+    /**
+     * @since TBD
+     */
+    const handleCopyExternalEmbed = async () => {
+        await writeToClipboard(getExternalEmbedSnippet());
+
+        setIsExternalEmbedCopied(true);
+        setTimeout(() => setIsExternalEmbedCopied(false), 2000);
+    };
 
     /**
      * Handle inserting form into existing post/page
@@ -588,6 +641,34 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                                 `<a href="https://givewp.com/documentation/core/shortcodes/" target="_blank">${__('Learn more', 'give')}</a>`,
                             )}
                         />
+                    </div>
+                </div>
+            </div>
+
+            <div className="give-embed-modal-row">
+                <strong>
+                    {__('Embed on an external website', 'give')}
+                </strong>
+
+                <div className="give-embed-modal-helptext">
+                    {__('Copy and paste this snippet into any non-WordPress website to display this donation form there.', 'give')}
+                </div>
+
+                {hasRequiredLogin && (
+                    <div className="give-embed-modal-helptext">
+                        {__('This form requires donor login, which is unreliable inside embedded forms in some browsers (like Safari). Consider making login optional for external embedding.', 'give')}
+                    </div>
+                )}
+
+                <div className="give-embed-modal-items give-embed-modal-copy">
+                    <div>
+                        <Button
+                            icon={isExternalEmbedCopied ? CheckIcon : CopyIcon}
+                            variant="secondary"
+                            onClick={handleCopyExternalEmbed}
+                        >
+                            {isExternalEmbedCopied ? __('Copied', 'give') : __('Copy Embed Code', 'give')}
+                        </Button>
                     </div>
                 </div>
             </div>
