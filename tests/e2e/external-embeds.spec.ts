@@ -1,0 +1,121 @@
+import {expect, test} from '@wordpress/e2e-test-utils-playwright';
+import {createCampaignWithForm} from './utils/campaign';
+import {
+    donationForm,
+    expectReceipt,
+    fillDonorDetails,
+    payWithTestGateway,
+    waitForForm,
+} from './utils/donation-form';
+import {WP_BASE_URL} from './environment';
+
+/**
+ * A v3 donation form embedded on a non-WordPress site via externalFormEmbed.js.
+ *
+ * There is no second server: navigation to a fictitious external origin is fulfilled with fixture
+ * HTML that loads the real embed script and points at the real wp-env site. The iframe request
+ * then crosses origins for real, which is the whole point - the SecurityError guards, the URL
+ * parameter fallbacks, and the embed script itself only show their behavior cross-origin.
+ */
+
+const EXTERNAL_ORIGIN = 'https://external-site.test';
+const EXTERNAL_PAGE = `${EXTERNAL_ORIGIN}/donate`;
+
+function externalPageHtml(formId: number, wpUrl: string = WP_BASE_URL): string {
+    return `<!DOCTYPE html>
+<html>
+<head><title>External donation page</title></head>
+<body>
+    <h1>Support our cause</h1>
+    <givewp-donation-form form-id="${formId}" wp-url="${wpUrl}"></givewp-donation-form>
+    <script src="${WP_BASE_URL}/wp-content/plugins/give/build/externalFormEmbed.js" defer></script>
+</body>
+</html>`;
+}
+
+// Donors on an external site are never logged into WordPress.
+test.use({storageState: {cookies: [], origins: []}});
+
+test.describe('External donation form embeds', () => {
+    let formId: number;
+
+    test.beforeAll(async ({requestUtils}) => {
+        ({formId} = await createCampaignWithForm(requestUtils));
+    });
+
+    test.beforeEach(async ({page}) => {
+        await page.route(`${EXTERNAL_PAGE}*`, (route) =>
+            route.fulfill({contentType: 'text/html', body: externalPageHtml(formId)})
+        );
+    });
+
+    test('renders the form cross-origin', async ({page}) => {
+        await page.goto(EXTERNAL_PAGE);
+
+        /*
+         * The form app mounting is the regression gate for every cross-origin guard: before them,
+         * reading window.top at module scope threw a SecurityError that killed the whole bundle.
+         */
+        await waitForForm(donationForm(page));
+
+        const iframe = page.locator('givewp-donation-form iframe');
+        await expect(iframe).toHaveAttribute('title', 'Donation Form');
+        await expect(iframe).toHaveAttribute('src', /origin-url=/);
+        await expect(iframe).toHaveAttribute('src', /embed-id=/);
+    });
+
+    test('takes a guest donation through to the receipt', async ({page}) => {
+        await page.goto(EXTERNAL_PAGE);
+
+        const form = donationForm(page);
+        await waitForForm(form);
+
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await fillDonorDetails(form);
+        await form.getByRole('button', {name: 'Continue'}).click();
+
+        await payWithTestGateway(form);
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await expectReceipt(form, '$10.00');
+    });
+
+    test('swaps to the receipt view when an offsite gateway returns', async ({page}) => {
+        /*
+         * Simulates the return leg: WordPress redirects the donor back to the external page with
+         * the RouteListener args. The embed swaps its iframe to the receipt view route; whether a
+         * given receipt id renders content is the server's business, covered elsewhere.
+         */
+        const receiptId = 'a'.repeat(32);
+        const returnParams = new URLSearchParams({
+            'givewp-event': 'donation-completed',
+            'givewp-listener': 'show-donation-confirmation-receipt',
+            'givewp-embed-id': 'givewp-embed-external-0',
+            'givewp-receipt-id': receiptId,
+        });
+
+        await page.goto(`${EXTERNAL_PAGE}?${returnParams}`);
+
+        const iframe = page.locator('givewp-donation-form iframe');
+        await expect(iframe).toHaveAttribute('src', /donation-confirmation-receipt-view/);
+        await expect(iframe).toHaveAttribute('src', new RegExp(`receipt-id=${receiptId}`));
+    });
+
+    test('degrades to a link when the form cannot load', async ({page}) => {
+        await page.route(`${EXTERNAL_PAGE}*`, (route) =>
+            route.fulfill({
+                contentType: 'text/html',
+                // .invalid never resolves, so the iframe never fires load and the timeout runs.
+                body: externalPageHtml(formId, 'https://blackhole.invalid'),
+            })
+        );
+
+        await page.goto(EXTERNAL_PAGE);
+
+        const fallback = page.locator('givewp-donation-form a');
+        await expect(fallback).toHaveText('Open donation form', {timeout: 15_000});
+        await expect(fallback).toHaveAttribute('href', /donation-form-view/);
+        await expect(page.locator('givewp-donation-form iframe')).toHaveCount(0);
+    });
+});
