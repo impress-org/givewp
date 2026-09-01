@@ -273,7 +273,7 @@ if ( $donations ) : ?>
 					'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 					'format'  => '?paged=%#%',
 					'current' => max( 1, get_query_var( 'paged' ) ),
-					'total'   => ceil( $donations_count / 3 ), // 20 items per page
+					'total'   => ceil( $donations_count / 20 ), // 20 items per page
 				)
 			);
 			?>
