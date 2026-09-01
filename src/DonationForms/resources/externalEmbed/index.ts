@@ -110,6 +110,7 @@ class GiveWPDonationForm extends HTMLElement {
     iframe: HTMLIFrameElement | null = null;
     wpOrigin: string = '';
     wpBase: URL | null = null;
+    formId: string = '';
     embedId: string = '';
     overlay: HTMLElement | null = null;
 
@@ -123,7 +124,8 @@ class GiveWPDonationForm extends HTMLElement {
         }
 
         // The full URL, not just the origin: WordPress in a subdirectory
-        // (example.org/blog) serves its routes under that path.
+        // (example.org/blog) serves its routes under that path. Only http(s)
+        // may reach the iframe src.
         let wpBase: URL;
         try {
             wpBase = new URL(wpUrl);
@@ -132,8 +134,14 @@ class GiveWPDonationForm extends HTMLElement {
             return;
         }
 
+        if (wpBase.protocol !== 'http:' && wpBase.protocol !== 'https:') {
+            console.error('givewp-donation-form: wp-url must be an http(s) URL.', wpUrl);
+            return;
+        }
+
         injectStyles();
 
+        this.formId = formId;
         this.wpBase = wpBase;
         this.wpOrigin = wpBase.origin;
         this.embedId = `givewp-embed-external-${embedInstance++}`;
@@ -180,7 +188,7 @@ class GiveWPDonationForm extends HTMLElement {
     getStandaloneFormUrl(): string {
         const url = new URL(this.wpBase.toString());
         url.searchParams.set('givewp-route', 'donation-form-view');
-        url.searchParams.set('form-id', this.getAttribute('form-id'));
+        url.searchParams.set('form-id', this.formId);
 
         return url.toString();
     }
