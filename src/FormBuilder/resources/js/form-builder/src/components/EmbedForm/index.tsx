@@ -4,7 +4,7 @@ import {createPortal} from 'react-dom';
 import {useDispatch, useSelect} from '@wordpress/data';
 import {store} from '@wordpress/core-data';
 import {__, sprintf} from '@wordpress/i18n';
-import {Button, RadioControl, SelectControl, Spinner, TextControl} from '@wordpress/components';
+import {Button, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
 import {external} from '@wordpress/icons';
 import getWindowData from '@givewp/form-builder/common/getWindowData';
 import {CheckIcon} from '@givewp/form-builder/components/icons';
@@ -50,6 +50,14 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const {formId, homeUrl, externalEmbedScriptUrl, blockData, settings, campaignColors} = getWindowData();
     const [isExternalEmbedCopied, setIsExternalEmbedCopied] = useState<boolean>(false);
 
+    const parsedSettings = (() => {
+        try {
+            return JSON.parse(settings);
+        } catch (error) {
+            return {};
+        }
+    })();
+
     /**
      * The external embed script cannot read form settings, so the snippet
      * carries the form's colors as attributes. Campaign colors win when the
@@ -58,18 +66,22 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * @since TBD
      */
     const getEmbedColors = (): {primary: string; secondary: string} => {
-        try {
-            const parsedSettings = JSON.parse(settings);
-            const inherit = parsedSettings.inheritCampaignColors;
+        const inherit = parsedSettings.inheritCampaignColors;
 
-            return {
-                primary: (inherit && campaignColors?.primaryColor) || parsedSettings.primaryColor || '',
-                secondary: (inherit && campaignColors?.secondaryColor) || parsedSettings.secondaryColor || '',
-            };
-        } catch (error) {
-            return {primary: '', secondary: ''};
-        }
+        return {
+            primary: (inherit && campaignColors?.primaryColor) || parsedSettings.primaryColor || '',
+            secondary: (inherit && campaignColors?.secondaryColor) || parsedSettings.secondaryColor || '',
+        };
     };
+
+    /**
+     * The confirmation page redirect sends donors to a page on this
+     * WordPress site after donating - which means leaving the site the form
+     * is embedded on, so the external tab warns about it.
+     *
+     * @since TBD
+     */
+    const hasConfirmationRedirect = !!parsedSettings.enableReceiptConfirmationPage;
 
     /**
      * Login inside a cross-origin embed is unreliable in some browsers, so
@@ -461,6 +473,78 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 </button>
             </div>
 
+            <TabPanel
+                className="give-embed-modal-tabs"
+                tabs={[
+                    {name: 'internal', title: __('This site', 'give')},
+                    {name: 'external', title: __('External website', 'give')},
+                ]}
+            >
+                {(tab) => tab.name === 'external' ? (
+                    <>
+                        <div className="give-embed-modal-row">
+                            <strong>
+                                {__('Embed on an external website', 'give')}
+                            </strong>
+
+                            <div className="give-embed-modal-helptext">
+                                {__('Copy and paste this snippet into any non-WordPress website to display this donation form there.', 'give')}
+                            </div>
+
+                            <SelectControl
+                                label={__('Display style', 'give')}
+                                value={state.selectedStyle}
+                                options={displayStyles}
+                                onChange={value => setState(prevState => {
+                                    return {
+                                        ...prevState,
+                                        selectedStyle: value,
+                                    };
+                                })}
+                                help={getStyleDescription()}
+                            />
+
+                            {isButton && (
+                                <TextControl
+                                    placeholder={__('Donate', 'give')}
+                                    label={__('Button label', 'give')}
+                                    value={state.openFormButton}
+                                    onChange={value => setState(prevState => {
+                                        return {
+                                            ...prevState,
+                                            openFormButton: value,
+                                        };
+                                    })}
+                                />
+                            )}
+
+                            {hasRequiredLogin && (
+                                <div className="give-embed-modal-helptext">
+                                    {__('This form requires donor login, which is unreliable inside embedded forms in some browsers (like Safari). Consider making login optional for external embedding.', 'give')}
+                                </div>
+                            )}
+
+                            {hasConfirmationRedirect && (
+                                <div className="give-embed-modal-helptext">
+                                    {__('This form redirects to a page on your WordPress site after donating, so donors will leave the site the form is embedded on. Consider the inline receipt for external embeds.', 'give')}
+                                </div>
+                            )}
+
+                            <div className="give-embed-modal-items give-embed-modal-copy">
+                                <div>
+                                    <Button
+                                        icon={isExternalEmbedCopied ? CheckIcon : CopyIcon}
+                                        variant="secondary"
+                                        onClick={handleCopyExternalEmbed}
+                                    >
+                                        {isExternalEmbedCopied ? __('Copied', 'give') : __('Copy Embed Code', 'give')}
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <>
             <div className="give-embed-modal-row">
 
                 <strong>
@@ -698,33 +782,9 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 </div>
             </div>
 
-            <div className="give-embed-modal-row">
-                <strong>
-                    {__('Embed on an external website', 'give')}
-                </strong>
-
-                <div className="give-embed-modal-helptext">
-                    {__('Copy and paste this snippet into any non-WordPress website to display this donation form there.', 'give')}
-                </div>
-
-                {hasRequiredLogin && (
-                    <div className="give-embed-modal-helptext">
-                        {__('This form requires donor login, which is unreliable inside embedded forms in some browsers (like Safari). Consider making login optional for external embedding.', 'give')}
-                    </div>
+                    </>
                 )}
-
-                <div className="give-embed-modal-items give-embed-modal-copy">
-                    <div>
-                        <Button
-                            icon={isExternalEmbedCopied ? CheckIcon : CopyIcon}
-                            variant="secondary"
-                            onClick={handleCopyExternalEmbed}
-                        >
-                            {isExternalEmbedCopied ? __('Copied', 'give') : __('Copy Embed Code', 'give')}
-                        </Button>
-                    </div>
-                </div>
-            </div>
+            </TabPanel>
         </div>,
         document.body,
     );
