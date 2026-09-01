@@ -18,7 +18,9 @@ import {WP_BASE_URL} from './environment';
  * parameter fallbacks, and the embed script itself only show their behavior cross-origin.
  */
 
-const EXTERNAL_ORIGIN = 'https://external-site.test';
+// Match the WordPress protocol: an https fixture page loading an http embed
+// script (CI runs wp-env on plain http) would be blocked as mixed content.
+const EXTERNAL_ORIGIN = `${new URL(WP_BASE_URL).protocol}//external-site.test`;
 const EXTERNAL_PAGE = `${EXTERNAL_ORIGIN}/donate`;
 
 function externalPageHtml(formId: number, wpUrl: string = WP_BASE_URL): string {
