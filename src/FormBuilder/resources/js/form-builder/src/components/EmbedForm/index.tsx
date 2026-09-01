@@ -526,7 +526,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
                             {hasConfirmationRedirect && (
                                 <div className="give-embed-modal-helptext">
-                                    {__('This form redirects to a page on your WordPress site after donating, so donors will leave the site the form is embedded on. Consider the inline receipt for external embeds.', 'give')}
+                                    {__('This form has "Confirmation Page Redirect" enabled in its settings, so donors will leave the site the form is embedded on after donating.', 'give')}
                                 </div>
                             )}
 
