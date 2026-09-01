@@ -57,7 +57,7 @@ givewp-donation-form {
     padding: 0.75rem 1.5rem;
     border: 0;
     border-radius: 4px;
-    background-color: #2d802f;
+    background-color: var(--givewp-primary-color, #2d802f);
     color: #fff;
     font: inherit;
     font-weight: 600;
@@ -185,6 +185,20 @@ class GiveWPDonationForm extends HTMLElement {
         this.initialized = true;
 
         injectStyles();
+
+        // Form colors are dynamic settings, not embed constants: the snippet
+        // passes them as attributes and the stylesheet reads the custom
+        // properties (same names the WordPress embeds use), with defaults as
+        // var() fallbacks.
+        const primaryColor = this.getAttribute('primary-color');
+        if (primaryColor) {
+            this.style.setProperty('--givewp-primary-color', primaryColor);
+        }
+
+        const secondaryColor = this.getAttribute('secondary-color');
+        if (secondaryColor) {
+            this.style.setProperty('--givewp-secondary-color', secondaryColor);
+        }
 
         this.formId = formId;
         this.wpBase = wpBase;
