@@ -240,22 +240,27 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      */
     const writeToClipboard = async (text: string) => {
         if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(text);
-        } else {
-            const textArea = document.createElement('textarea');
-
-            textArea.value = text;
-            textArea.style.display = 'hidden';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
             try {
-                document.execCommand('copy');
+                await navigator.clipboard.writeText(text);
+                return;
             } catch (error) {
-                console.error(error);
-            } finally {
-                textArea.remove();
+                // Clipboard API can reject (permissions); fall through to the textarea fallback.
             }
+        }
+
+        const textArea = document.createElement('textarea');
+
+        textArea.value = text;
+        textArea.style.display = 'hidden';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            document.execCommand('copy');
+        } catch (error) {
+            console.error(error);
+        } finally {
+            textArea.remove();
         }
     };
 
