@@ -5,6 +5,7 @@ import {GroupProps} from '@givewp/forms/propTypes';
 import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import postData from '@givewp/forms/app/utilities/postData';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
+import navigateTop from '@givewp/forms/app/utilities/navigateTop';
 import FieldError from '../layouts/FieldError';
 import styles from '../styles.module.scss';
 
@@ -24,8 +25,17 @@ const getRedirectUrl = (redirectUrl: URL) => {
 
     return redirectUrl;
 };
+/**
+ * @since TBD Bail in cross-origin embeds where the parent page URL is unreadable.
+ */
 const handleLoginPageRedirected = () => {
-    const formPageUrl = new URL(window.top.location.href);
+    let formPageUrl;
+
+    try {
+        formPageUrl = new URL(window.top.location.href);
+    } catch (e) {
+        return;
+    }
 
     const isAuthRedirect =
         formPageUrl.searchParams.has('givewp-auth-redirect') &&
@@ -40,7 +50,7 @@ const handleLoginPageRedirected = () => {
             formPageUrl.searchParams.get('givewp-embed-id') === embedId;
 
         if (isEmbedRedirect && isThisEmbed) {
-            window.frameElement.scrollIntoView({
+            window.frameElement?.scrollIntoView({
                 behavior: 'smooth',
             });
         }
@@ -80,7 +90,7 @@ export default function Authentication({
     const redirectToLoginPage = (e) => {
         e.preventDefault();
         const loginUrl = getRedirectUrl(new URL(loginRedirectUrl));
-        window.top.location.assign(loginUrl);
+        navigateTop(loginUrl);
     };
 
     return (
@@ -160,7 +170,7 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
                         onClick={(event) => {
                             event.preventDefault();
                             const passwordResetUrl = getRedirectUrl(new URL(lostPasswordUrl));
-                            window.top.location.assign(passwordResetUrl);
+                            navigateTop(passwordResetUrl);
                         }}
                     >
                         <span>{__('Reset', 'give')}</span>
