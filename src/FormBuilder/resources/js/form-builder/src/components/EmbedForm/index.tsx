@@ -488,7 +488,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                             </strong>
 
                             <div className="give-embed-modal-helptext">
-                                {__('Copy and paste this snippet into any non-WordPress website to display this donation form there.', 'give')}
+                                {__('Copy and paste this snippet into any other website to display this donation form there.', 'give')}
                             </div>
 
                             <SelectControl
