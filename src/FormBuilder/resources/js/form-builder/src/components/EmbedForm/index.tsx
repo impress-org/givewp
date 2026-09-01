@@ -290,12 +290,31 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     }
 
     /**
+     * The snippet carries the selected display style and the translated
+     * donor-facing strings, since the standalone embed script has no access
+     * to WordPress translations.
+     *
      * @since TBD
      */
     const getExternalEmbedSnippet = () => {
+        const attributes = [
+            `form-id="${formId}"`,
+            `wp-url="${homeUrl}"`,
+            `fallback-text="${__('Open donation form', 'give')}"`,
+        ];
+
+        if (isButton) {
+            attributes.push(`display-style="${state.selectedStyle}"`);
+            attributes.push(`button-text="${state.openFormButton || __('Donate', 'give')}"`);
+        }
+
+        if (state.selectedStyle === 'modal') {
+            attributes.push(`close-text="${__('Close', 'give')}"`);
+        }
+
         return [
             `<script src="${externalEmbedScriptUrl}" defer></script>`,
-            `<givewp-donation-form form-id="${formId}" wp-url="${homeUrl}"></givewp-donation-form>`,
+            `<givewp-donation-form ${attributes.join(' ')}></givewp-donation-form>`,
         ].join('\n');
     };
 
