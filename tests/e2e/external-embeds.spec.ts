@@ -115,6 +115,9 @@ test.describe('External donation form embeds', () => {
         const iframe = page.locator('givewp-donation-form iframe');
         await expect(iframe).toHaveAttribute('src', /donation-confirmation-receipt-view/);
         await expect(iframe).toHaveAttribute('src', new RegExp(`receipt-id=${receiptId}`));
+
+        // The one-time return params are consumed and removed from the URL.
+        await expect(page).toHaveURL(EXTERNAL_PAGE);
     });
 
     test('opens the form in an overlay with the modal display style', async ({page}) => {
