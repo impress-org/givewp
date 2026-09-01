@@ -18,13 +18,18 @@ export default function Steps({steps}: { steps: StepObject[] }) {
     const previousStep = usePrevious(currentStep);
 
     /**
+     * @since TBD Fall back to scrolling the iframe's own window in cross-origin embeds.
      * @since 4.0.0 prevent scroll on initial step.
      * @since 3.16.0 Scroll to the top of the iframe when the step changes.
      */
     useEffect(() => {
         if (currentStep > 0) {
-            /* @ts-ignore */
-            window.parent.document.getElementById(window.parentIFrame?.getId())?.scrollIntoView()
+            try {
+                /* @ts-ignore */
+                window.parent.document.getElementById(window.parentIFrame?.getId())?.scrollIntoView()
+            } catch (e) {
+                window.scrollTo({top: 0});
+            }
         }
     }, [currentStep]);
 

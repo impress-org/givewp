@@ -436,6 +436,39 @@ class DonateFormRouteDataTest extends TestCase
     }
 
     /**
+     * @since TBD
+     * @dataProvider originUrlProvider
+     */
+    public function testFromRequestValidatesOriginUrl(string $originUrl, bool $isKept): void
+    {
+        $formData = DonateFormRouteData::fromRequest([
+            'formId' => 1,
+            'gatewayId' => TestGateway::id(),
+            'originUrl' => $originUrl,
+            'isEmbed' => true,
+            'embedId' => 'test-embed',
+        ]);
+
+        $this->assertSame($isKept ? $originUrl : home_url(), $formData->originUrl);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function originUrlProvider(): array
+    {
+        return [
+            'https url' => ['https://external-site.test/donate', true],
+            'http url' => ['http://localhost:8080/donate', true],
+            'url with query and fragment' => ['https://example.org/give?x=1#form', true],
+            'javascript scheme' => ['javascript:alert(1)', false],
+            'data scheme' => ['data:text/html,<script>alert(1)</script>', false],
+            'scheme-relative url' => ['//evil.test/donate', false],
+            'not a url' => ['not a url', false],
+        ];
+    }
+
+    /**
      * @since 3.14.0
      */
     public function donationFormStatusProvider(): array
