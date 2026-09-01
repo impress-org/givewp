@@ -47,8 +47,29 @@ interface StateProps {
  */
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
-    const {formId, homeUrl, externalEmbedScriptUrl, blockData} = getWindowData();
+    const {formId, homeUrl, externalEmbedScriptUrl, blockData, settings, campaignColors} = getWindowData();
     const [isExternalEmbedCopied, setIsExternalEmbedCopied] = useState<boolean>(false);
+
+    /**
+     * The external embed script cannot read form settings, so the snippet
+     * carries the form's colors as attributes. Campaign colors win when the
+     * form inherits them, matching how the form itself resolves colors.
+     *
+     * @since TBD
+     */
+    const getEmbedColors = (): {primary: string; secondary: string} => {
+        try {
+            const parsedSettings = JSON.parse(settings);
+            const inherit = parsedSettings.inheritCampaignColors;
+
+            return {
+                primary: (inherit && campaignColors?.primaryColor) || parsedSettings.primaryColor || '',
+                secondary: (inherit && campaignColors?.secondaryColor) || parsedSettings.secondaryColor || '',
+            };
+        } catch (error) {
+            return {primary: '', secondary: ''};
+        }
+    };
 
     /**
      * Login inside a cross-origin embed is unreliable in some browsers, so
@@ -302,6 +323,14 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             `wp-url="${homeUrl}"`,
             `fallback-text="${__('Open donation form', 'give')}"`,
         ];
+
+        const colors = getEmbedColors();
+        if (colors.primary) {
+            attributes.push(`primary-color="${colors.primary}"`);
+        }
+        if (colors.secondary) {
+            attributes.push(`secondary-color="${colors.secondary}"`);
+        }
 
         if (isButton) {
             attributes.push(`display-style="${state.selectedStyle}"`);
