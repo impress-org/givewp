@@ -9,8 +9,14 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
     border: solid 1px #e6e6e6;
     font-size: 13px;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
 
     &-header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-color: #fff;
         font-weight: 500;
         line-height: 1.4;
         color: #0e0e0e;
