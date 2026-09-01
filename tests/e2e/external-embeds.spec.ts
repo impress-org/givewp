@@ -33,8 +33,21 @@ function externalPageHtml(formId: number, wpUrl: string = WP_BASE_URL): string {
 </html>`;
 }
 
-// Donors on an external site are never logged into WordPress.
-test.use({storageState: {cookies: [], origins: []}});
+/*
+ * Donors on an external site are never logged into WordPress.
+ *
+ * Private Network Access checks are a test-environment artifact: the fixture page's public origin
+ * requests wp-env, which resolves to 127.0.0.1, and Chrome blocks public-to-local requests. A real
+ * embed talks to a public WordPress site, where PNA never applies.
+ */
+test.use({
+    storageState: {cookies: [], origins: []},
+    launchOptions: {
+        args: [
+            '--disable-features=LocalNetworkAccessChecks,PrivateNetworkAccessChecks,BlockInsecurePrivateNetworkRequests',
+        ],
+    },
+});
 
 test.describe('External donation form embeds', () => {
     let formId: number;
