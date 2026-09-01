@@ -220,10 +220,17 @@ class GiveWPDonationForm extends HTMLElement {
     }
 
     getFormViewUrl(formId: string): string {
+        // Origin and pathname only: the page's query string and fragment may
+        // carry data that should not be forwarded to the WordPress site, and
+        // the offsite return flow appends its own parameters anyway.
+        const originUrl = new URL(window.location.href);
+        originUrl.search = '';
+        originUrl.hash = '';
+
         const url = new URL(this.wpBase.toString());
         url.searchParams.set('givewp-route', 'donation-form-view');
         url.searchParams.set('form-id', formId);
-        url.searchParams.set('origin-url', window.location.href);
+        url.searchParams.set('origin-url', originUrl.toString());
         url.searchParams.set('embed-id', this.embedId);
 
         const locale = this.getAttribute('locale');
@@ -342,8 +349,11 @@ class GiveWPDonationForm extends HTMLElement {
     }
 
     openModal(src: string) {
+        const launcher = document.activeElement as HTMLElement | null;
+
         if (this.overlay) {
             this.overlay.style.display = '';
+            this.focusDialog();
             return;
         }
 
@@ -355,6 +365,7 @@ class GiveWPDonationForm extends HTMLElement {
         dialog.setAttribute('role', 'dialog');
         dialog.setAttribute('aria-modal', 'true');
         dialog.setAttribute('aria-label', this.getAttribute('form-title') || 'Donation Form');
+        dialog.tabIndex = -1;
 
         const close = document.createElement('button');
         close.type = 'button';
@@ -364,6 +375,7 @@ class GiveWPDonationForm extends HTMLElement {
 
         const hide = () => {
             overlay.style.display = 'none';
+            launcher?.focus();
         };
 
         close.addEventListener('click', hide);
@@ -373,8 +385,20 @@ class GiveWPDonationForm extends HTMLElement {
             }
         });
         this.keydownHandler = (event: KeyboardEvent) => {
-            if (event.key === 'Escape' && overlay.style.display !== 'none') {
+            if (overlay.style.display === 'none') {
+                return;
+            }
+
+            if (event.key === 'Escape') {
                 hide();
+                return;
+            }
+
+            // Keep Tab inside the dialog. The iframe manages its own inner
+            // focus order; this only stops focus escaping to the host page.
+            if (event.key === 'Tab' && !dialog.contains(document.activeElement)) {
+                event.preventDefault();
+                dialog.focus();
             }
         };
         document.addEventListener('keydown', this.keydownHandler);
@@ -386,8 +410,12 @@ class GiveWPDonationForm extends HTMLElement {
 
         // The iframe lives on across open/close so form state survives.
         this.renderForm(src, dialog);
+        this.focusDialog();
     }
 
+    focusDialog() {
+        (this.overlay?.querySelector('.givewp-embed__dialog') as HTMLElement | null)?.focus();
+    }
 }
 
 if (!customElements.get('givewp-donation-form')) {
