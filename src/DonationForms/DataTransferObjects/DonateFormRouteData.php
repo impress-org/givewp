@@ -128,10 +128,12 @@ class DonateFormRouteData implements Arrayable
      * that are valid embed origins during development.
      *
      * @since TBD
+     *
+     * @param mixed $originUrl
      */
-    private static function validateOriginUrl(string $originUrl): string
+    private static function validateOriginUrl($originUrl): string
     {
-        if (!$originUrl) {
+        if (!is_string($originUrl) || $originUrl === '') {
             return '';
         }
 
