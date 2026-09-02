@@ -62,25 +62,13 @@ abstract class Route implements RestRoute
                 [
                     'methods' => 'POST',
                     'callback' => [$this, 'handleRequestWithDonorIdCheck'],
-                    'permission_callback' => $this->getPermissionCallback(),
+                    'permission_callback' => function () {
+                        return DonorDashboardHelpers::isDonorLoggedIn();
+                    },
                 ],
                 'args' => $this->args(),
             ]
         );
-    }
-
-    /**
-     * Gets the permission callback for the route.
-     *
-     * @since TBD
-     *
-     * @return callable Permission callback.
-     */
-    protected function getPermissionCallback(): callable
-    {
-        return function () {
-            return DonorDashboardHelpers::isDonorLoggedIn();
-        };
     }
 
     /**
