@@ -29,7 +29,7 @@ class NameCollisionException extends Exception
         Node $existingNode,
         Node $incomingNode,
         int $code = 0,
-        Exception $previous = null
+        ?Exception $previous = null
     )
     {
         $this->nodeNameCollision = $name;

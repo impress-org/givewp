@@ -27,7 +27,7 @@ class CurrencyRule implements ValidationRule
     /**
      * @since 4.10.0
      */
-    public static function fromString(string $options = null): ValidationRule
+    public static function fromString(?string $options = null): ValidationRule
     {
         return new self();
     }

@@ -27,7 +27,7 @@ class BECSGateway extends PaymentGateway
     /**
      * @param SubscriptionModule|null $subscriptionModule
      */
-    public function __construct(SubscriptionModule $subscriptionModule = null)
+    public function __construct(?SubscriptionModule $subscriptionModule = null)
     {
         parent::__construct($subscriptionModule);
 

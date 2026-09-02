@@ -878,7 +878,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return void
      */
-    public function resolving($abstract, Closure $callback = null)
+    public function resolving($abstract, ?Closure $callback = null)
     {
         if (is_string($abstract)) {
             $abstract = $this->getAlias($abstract);
@@ -899,7 +899,7 @@ class Container implements ArrayAccess, ContainerInterface
      *
      * @return void
      */
-    public function afterResolving($abstract, Closure $callback = null)
+    public function afterResolving($abstract, ?Closure $callback = null)
     {
         if (is_string($abstract)) {
             $abstract = $this->getAlias($abstract);

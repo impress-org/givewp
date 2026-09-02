@@ -22,7 +22,7 @@ class GenerateNextRenewalForSubscription
     public function __invoke(
         SubscriptionPeriod $period,
         int $frequency,
-        DateTimeInterface $baseDate = null
+        ?DateTimeInterface $baseDate = null
     ): DateTimeInterface {
         if ( $frequency < 1 ) {
             throw new InvalidArgumentException('Frequency must be greater than 0');
