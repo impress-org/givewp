@@ -56,7 +56,9 @@ class TestOffsiteGatewayLegacyFormTest extends TestCase
 
         give_update_option('gateways', [TestOffsiteGateway::id() => 1]);
 
-        // Plain permalinks, which the test site uses, give the success page a query string of its own.
+        // The ampersand this covers exists only under plain permalinks, where the success page is ?page_id=N.
+        update_option('permalink_structure', '');
+
         give_update_option('success_page', wp_insert_post([
             'post_type' => 'page',
             'post_status' => 'publish',

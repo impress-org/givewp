@@ -142,7 +142,7 @@ class SecureRouteArgsTest extends TestCase
      * urldecodes the way PHP does for $_GET, and give_clean is what GatewayRoute applies — so the
      * value comes back decoded, not as it was signed.
      */
-    private function returnRequestFor(Donation $donation, string $successUrl = null): array
+    private function returnRequestFor(Donation $donation, ?string $successUrl = null): array
     {
         $command = (new TestOffsiteGateway())->createPayment($donation, [
             'successUrl' => $successUrl ?? rawurlencode(
