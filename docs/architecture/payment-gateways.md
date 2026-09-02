@@ -168,7 +168,9 @@ The signature covers the args you pass to `generateSecureGatewayRouteUrl()`, so 
 trust the `$queryParams` it declared — the ids it reads to decide which record to act on, and the
 return URLs it redirects to. Editing or dropping one invalidates the signature. Anything the
 processor appends to the return URL on the way back was never signed and is ignored, so read those
-as untrusted input and validate them like any other processor claim.
+as untrusted input and validate them like any other processor claim. Args may be passed raw or
+rawurlencoded: they are normalized to what the route will receive, signed, and written to the URL
+encoded, so a return URL carrying its own query string survives the round trip either way.
 
 ## Structure
 

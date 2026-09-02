@@ -116,17 +116,36 @@ class SecureRouteArgsTest extends TestCase
     }
 
     /**
+     * A legacy form hands the gateway its success URL raw, and under plain permalinks that URL holds an
+     * ampersand. Written to the route URL as-is it would split into two parameters on the way back,
+     * leaving the route a truncated return URL and a signature it can never match.
+     *
+     * @since TBD
+     */
+    public function testARawReturnUrlWithAnAmpersandRoundTrips()
+    {
+        $donation = Donation::factory()->create(['status' => DonationStatus::PENDING()]);
+        $successUrl = home_url('/?page_id=5&payment-confirmation=test-gateway-offsite');
+
+        $request = $this->returnRequestFor($donation, $successUrl);
+
+        $this->assertSame($successUrl, $request['givewp-return-url']);
+        $this->assertArrayNotHasKey('payment-confirmation', $request);
+        $this->assertTrue($this->signatureFor($request)->isValid($request['give-route-signature']));
+    }
+
+    /**
      * Runs the gateway's real createPayment() and turns the URL it redirects to back into a request.
      *
-     * The successUrl is shaped like production hands it over: rawurlencoded by
+     * The default successUrl is shaped like a v3 form hands it over: rawurlencoded by
      * AddRedirectUrlsToGatewayData, carrying the confirmation page's own query args. parse_str
      * urldecodes the way PHP does for $_GET, and give_clean is what GatewayRoute applies — so the
      * value comes back decoded, not as it was signed.
      */
-    private function returnRequestFor(Donation $donation): array
+    private function returnRequestFor(Donation $donation, string $successUrl = null): array
     {
         $command = (new TestOffsiteGateway())->createPayment($donation, [
-            'successUrl' => rawurlencode(
+            'successUrl' => $successUrl ?? rawurlencode(
                 home_url('/donation-confirmation/?givewp-event=donation-completed&givewp-receipt-id=3e714ece57ed9590ece70ac2c296b6d0')
             ),
         ]);

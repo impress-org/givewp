@@ -112,12 +112,37 @@ class RouteSignature
      *
      * Only URL generation runs this; values arriving on a request have been through the real thing.
      *
+     * @since TBD normalize nested values too, as PHP decodes and give_clean() cleans at every depth
      * @since 4.16.8
      */
     public static function normalizeArgs(array $args): array
     {
         return array_map(static function ($value) {
+            if (is_array($value)) {
+                return self::normalizeArgs($value);
+            }
+
             return is_string($value) ? give_clean(urldecode($value)) : $value;
+        }, $args);
+    }
+
+    /**
+     * Encodes normalized args for the URL. add_query_arg() writes values as given, so a raw value
+     * holding an ampersand — a legacy form's success URL under plain permalinks — is split into
+     * separate parameters on the way back and the signed value never round-trips. Encoding what was
+     * signed means PHP's single decode hands the route exactly that value, however the gateway
+     * shaped it.
+     *
+     * @since TBD
+     */
+    public static function encodeArgs(array $args): array
+    {
+        return array_map(static function ($value) {
+            if (is_array($value)) {
+                return self::encodeArgs($value);
+            }
+
+            return is_string($value) ? rawurlencode($value) : $value;
         }, $args);
     }
 

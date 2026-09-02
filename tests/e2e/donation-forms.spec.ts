@@ -1,6 +1,7 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {createCampaignWithForm} from './utils/campaign';
 import {editForm, section} from './utils/form';
+import {captureOffsiteRedirect, enableTestOffsiteGateway, signedReturnUrl} from './utils/offsite-gateway';
 import {
     DONOR,
     donationForm,
@@ -362,6 +363,49 @@ test.describe('V3 donation forms', () => {
                 'href',
                 new RegExp(`p=${formId}`)
             );
+        });
+    });
+    /*
+     * An offsite gateway takes the donor away and brings them back on a signed return URL. The form's
+     * half of that is a redirect out of the iframe, and the return URL it signs is the receipt route on
+     * the page the form was embedded on, query string and all. See legacy-donation-forms.spec.ts for the
+     * v2 form's version of the same trip.
+     */
+    test.describe('paying through an offsite gateway', () => {
+        let formId: number;
+
+        test.beforeAll(async ({requestUtils}) => {
+            enableTestOffsiteGateway(3);
+            ({formId} = await createCampaignWithForm(requestUtils));
+        });
+
+        test('takes the donation out to the gateway and back to the receipt', async ({page}) => {
+            await page.goto(`/?post_type=give_forms&p=${formId}`);
+
+            const form = donationForm(page);
+
+            await waitForForm(form);
+            await form.getByRole('button', {name: 'Donate now'}).click();
+
+            await fillDonorDetails(form);
+            await form.getByRole('button', {name: 'Continue'}).click();
+
+            await form.getByRole('radio', {name: 'Donate with Test Gateway (Offsite)'}).check();
+
+            const offsiteUrl = await captureOffsiteRedirect(page, async () => {
+                await form.getByRole('button', {name: 'Donate now'}).click();
+            });
+
+            const returnUrl = signedReturnUrl(offsiteUrl);
+
+            expect(returnUrl).toContain('givewp-event=donation-completed');
+            expect(returnUrl).toContain('givewp-receipt-id=');
+
+            // Back from the processor, in the donor's own window.
+            await page.goto(offsiteUrl);
+
+            await expect(page).toHaveURL(/givewp-event=donation-completed/);
+            await expectReceipt(donationForm(page), '$10.00');
         });
     });
 });

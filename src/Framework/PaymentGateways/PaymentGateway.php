@@ -355,6 +355,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Generate secure gateway route url
      *
+     * @since TBD put the signed values on the URL encoded, so a raw value with an ampersand round-trips
      * @since 4.16.8 cover $args with the signature
      * @since 2.19.5 replace nonce with hash and expiration
      * @since 2.19.4 replace RouteSignature args with unique donationId
@@ -362,20 +363,14 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
      */
     public function generateSecureGatewayRouteUrl(string $gatewayMethod, int $donationId, array $args = []): string
     {
-        $args = array_diff_key($args, array_flip(GatewayRouteData::ROUTE_PARAMS));
+        $args = RouteSignature::normalizeArgs(array_diff_key($args, array_flip(GatewayRouteData::ROUTE_PARAMS)));
 
-        $signature = new RouteSignature(
-            static::id(),
-            $gatewayMethod,
-            $donationId,
-            null,
-            RouteSignature::normalizeArgs($args)
-        );
+        $signature = new RouteSignature(static::id(), $gatewayMethod, $donationId, null, $args);
 
         return (new GenerateGatewayRouteUrl())(
             static::id(),
             $gatewayMethod,
-            array_merge($args, [
+            array_merge(RouteSignature::encodeArgs($args), [
                 'give-route-signature' => $signature->toHash(),
                 'give-route-signature-id' => $donationId,
                 'give-route-signature-expiration' => $signature->expiration,
