@@ -1,4 +1,4 @@
 significance: patch
 type: security
-entry: Removed vulnerable dead code related to legacy donor relinking.
+entry: Removed vulnerable dead code related to legacy donor relinking. (CVE-2026-82675)
 timestamp: 2026-09-01T02:11:34.210Z
