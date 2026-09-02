@@ -26,7 +26,9 @@ The security invariants, which are not negotiable:
 - **Data arriving from the processor is a claim, not a fact.** Webhooks must verify merchant
   identity, amount, currency, and record linkage against stored donation data. A valid signature
   proves origin, not that the message is about this site's donation for this amount.
-- Use `generateSecureGatewayRouteUrl()` for any gateway route that changes state.
+- Use `generateSecureGatewayRouteUrl()` for any gateway route that changes state, and pass every arg
+  the route method reads through it — the signature covers those args, so the method can trust them.
+  Parameters the processor appends to the return URL are not covered and stay untrusted.
 
 `handleValidationRequest` is a workaround for SDKs that seize the submit button (PayPal Commerce,
 multi-step `NextButton`), not the default pattern. Gateways submitting through the normal donate

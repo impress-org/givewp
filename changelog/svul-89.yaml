@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Enhanced security on donor account access. (CVE-2026-82675)
+timestamp: 2026-08-31T16:43:37.610Z
