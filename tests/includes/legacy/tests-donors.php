@@ -184,6 +184,11 @@ class Tests_Give_Donors extends TestCase {
 	 * @since 4.16.8
 	 */
 	public function test_donor_view_does_not_relink_donor_from_get_parameters() {
+		// The test suite boots outside an admin request, so this admin-only function is never required.
+		if ( ! function_exists( 'give_render_donor_view' ) ) {
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donors.php';
+		}
+
 		$donor      = new Give_Donor( 'testadmin@domain.com' );
 		$target_user = $this->factory->user->create( [ 'role' => 'subscriber' ] );
 
