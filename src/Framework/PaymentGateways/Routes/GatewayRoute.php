@@ -108,7 +108,7 @@ class GatewayRoute
     /**
      * Validate signature using nonces
      *
-     * @since TBD verify the route's own query args against the signature
+     * @since 4.16.8 verify the route's own query args against the signature
      * @since 2.19.5 replace nonce with hash
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0

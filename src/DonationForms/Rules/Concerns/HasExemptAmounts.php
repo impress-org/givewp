@@ -10,19 +10,19 @@ use function is_numeric;
  * price. The custom amount minimum and maximum only constrain what a donor types into the custom amount
  * input, so those amounts are always accepted.
  *
- * @since TBD
+ * @since 4.16.8
  */
 trait HasExemptAmounts
 {
     /**
-     * @since TBD
+     * @since 4.16.8
      *
      * @var float[]
      */
     protected $exemptAmounts = [];
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function exemptAmounts(float ...$amounts): self
     {
@@ -32,7 +32,7 @@ trait HasExemptAmounts
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      *
      * @return float[]
      */
@@ -42,7 +42,7 @@ trait HasExemptAmounts
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      *
      * @param mixed $value
      */

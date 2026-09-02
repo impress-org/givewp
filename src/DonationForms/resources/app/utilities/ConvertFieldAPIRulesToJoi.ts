@@ -36,7 +36,7 @@ export default function getJoiRulesForForm(form: Form): ObjectSchema {
 }
 
 /**
- * @since TBD collect the amounts exempt from the minimum and maximum
+ * @since 4.16.8 collect the amounts exempt from the minimum and maximum
  * @since 3.0.0
  */
 function getJoiRulesForField(field: Field): AnySchema {
@@ -53,7 +53,7 @@ function getJoiRulesForField(field: Field): AnySchema {
  * The amounts the admin configured on the donation amount field. The custom amount minimum and maximum only
  * constrain what a donor types into the custom amount input, so these are always accepted.
  *
- * @since TBD
+ * @since 4.16.8
  */
 function getExemptAmounts(field: Field): number[] {
     if (field.type !== 'amount') {
@@ -71,7 +71,7 @@ function getExemptAmounts(field: Field): number[] {
 }
 
 /**
- * @since TBD exempt admin-defined amounts from the minimum and maximum
+ * @since 4.16.8 exempt admin-defined amounts from the minimum and maximum
  * @since 4.13.1 account for custom rules with only excludeUnless property
  * @since 4.13.0 add support for optional false values
  * @since 3.0.0

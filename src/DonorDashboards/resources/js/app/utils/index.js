@@ -57,7 +57,7 @@ const DONOR_DASHBOARD_NAMESPACE = '/give-api/v2/donor-dashboard/';
  * FormData is sent as-is so the browser can set its own multipart boundary. Anything
  * else is sent as JSON.
  *
- * @since TBD
+ * @since 4.16.8
  *
  * @param {string} endpoint Route relative to the Donor Dashboard namespace.
  * @param {Object|FormData} data Request payload.
@@ -81,7 +81,7 @@ export const donorDashboardApi = {
  * something a donor can act on, so it is the only kind whose message is shown; everything else,
  * server faults included, falls back to the generic message.
  *
- * @since TBD
+ * @since 4.16.8
  *
  * @param {Object} error Rejection value from apiFetch.
  * @return {string} Message to display.

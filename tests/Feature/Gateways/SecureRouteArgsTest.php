@@ -19,14 +19,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * the one an attacker would edit, so these tests are written against it rather than against the signature
  * in isolation.
  *
- * @since TBD
+ * @since 4.16.8
  */
 class SecureRouteArgsTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAGeneratedRouteUrlValidates()
     {
@@ -41,7 +41,7 @@ class SecureRouteArgsTest extends TestCase
      * The attack: a donor's own signed return URL, repointed at somebody else's pending donation, which
      * this gateway's route method would complete.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testARouteUrlRepointedAtAnotherDonationIsRejected()
     {
@@ -59,7 +59,7 @@ class SecureRouteArgsTest extends TestCase
      * The return URL rides on the same request and decides where the donor lands, so it has to be covered
      * as well or a signed URL becomes an open redirect.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAnEditedReturnUrlIsRejected()
     {
@@ -75,7 +75,7 @@ class SecureRouteArgsTest extends TestCase
      * Offsite gateways append their own parameters to the return URL. Those were never signed, so they
      * must not invalidate a genuine return.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testParametersTheGatewayAppendsAreIgnored()
     {
@@ -93,7 +93,7 @@ class SecureRouteArgsTest extends TestCase
      * URL and excluded from queryParams on the way back — a URL that could never validate. Reserved
      * names are dropped before signing instead.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAReservedRouteParamPassedAsAnArgCannotBreakTheUrl()
     {

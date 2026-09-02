@@ -1,5 +1,0 @@
-significance: patch
-type: fix
-entry: Fixed PHP warnings on the form builder screen when its page is opened without
-  the locale or donation form ID query arguments.
-timestamp: 2026-08-28T00:00:00.000Z

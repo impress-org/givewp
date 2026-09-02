@@ -7,7 +7,7 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
 
 /**
- * @since TBD
+ * @since 4.16.8
  * @covers Give\DonationForms\Rules\Max
  */
 class TestMaxRule extends TestCase
@@ -15,7 +15,7 @@ class TestMaxRule extends TestCase
     use HasValidationRules;
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testFailsWhenAmountIsAboveTheMaximum(): void
     {
@@ -23,7 +23,7 @@ class TestMaxRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testPassesWhenAmountIsAtOrBelowTheMaximum(): void
     {
@@ -32,7 +32,7 @@ class TestMaxRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testPassesWhenAmountIsExemptEvenThoughItIsAboveTheMaximum(): void
     {
@@ -43,7 +43,7 @@ class TestMaxRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testFailsWhenAmountIsAboveTheMaximumAndNotExempt(): void
     {
@@ -53,7 +53,7 @@ class TestMaxRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testKeepsAFractionalSize(): void
     {
@@ -66,7 +66,7 @@ class TestMaxRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testKeepsAWholeSizeAnInteger(): void
     {
@@ -74,7 +74,7 @@ class TestMaxRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testReportsExceedingTheMaximum(): void
     {
@@ -82,7 +82,7 @@ class TestMaxRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testReportsExceedingTheMaximumLength(): void
     {
@@ -95,7 +95,7 @@ class TestMaxRule extends TestCase
     /**
      * Runs the rule against a failing value and returns the message it reported.
      *
-     * @since TBD
+     * @since 4.16.8
      *
      * @param mixed $value
      */

@@ -229,7 +229,7 @@ class DonationAmountBlockModel
      * The lowest amount a donor may type into the custom amount input, or zero when the block does not
      * define one.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function getCustomAmountMin(): float
     {
@@ -240,7 +240,7 @@ class DonationAmountBlockModel
      * The highest amount a donor may type into the custom amount input, or zero when the block does not
      * define one.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function getCustomAmountMax(): float
     {
@@ -251,7 +251,7 @@ class DonationAmountBlockModel
      * The amounts the admin configured on the block: the donation levels, or the fixed set price. The
      * custom amount minimum and maximum never apply to these.
      *
-     * @since TBD
+     * @since 4.16.8
      *
      * @return float[]
      */
@@ -277,7 +277,7 @@ class DonationAmountBlockModel
      * fallback a form that leaves the minimum empty accepts any amount, which is a donation spam and card
      * testing vector.
      *
-     * @since TBD
+     * @since 4.16.8
      *
      * @return float|null Null when the block defines neither a minimum nor an amount to derive one from.
      */

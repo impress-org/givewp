@@ -1,5 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved a plugin conflict that prevented donor first and last names from
-  being recorded when the Charitable plugin was active alongside GiveWP.
-timestamp: 2026-08-19T01:38:00.242Z

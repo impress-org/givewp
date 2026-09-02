@@ -158,7 +158,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
 
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testValidatesADonationLevelBelowTheCustomAmountMinimum(): void
     {
@@ -176,7 +176,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testRejectsACustomAmountBelowTheCustomAmountMinimum(): void
     {
@@ -195,7 +195,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testValidatesADonationLevelAboveTheCustomAmountMaximum(): void
     {
@@ -214,7 +214,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testRejectsACustomAmountAboveTheCustomAmountMaximum(): void
     {
@@ -234,7 +234,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testValidatesTheSetPriceBelowTheCustomAmountMinimum(): void
     {
@@ -253,7 +253,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testExemptsDonationLevelsFromTheCustomAmountRange(): void
     {
@@ -281,7 +281,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testExemptsTheSetPriceFromTheCustomAmountRange(): void
     {
@@ -302,7 +302,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testLevelsWithoutAPositiveValueAreNotExempt(): void
     {
@@ -326,7 +326,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testFallsBackToTheLowestDonationLevelWhenNoCustomAmountMinimumIsSet(): void
     {
@@ -346,7 +346,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testFallsBackToTheLowestDonationLevelWhenTheCustomAmountMinimumIsZero(): void
     {
@@ -366,7 +366,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testFallsBackToTheSetPriceWhenNoCustomAmountMinimumIsSet(): void
     {
@@ -386,7 +386,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testFallsBackToTheLowestDonationLevelWhenCustomAmountIsDisabled(): void
     {
@@ -405,7 +405,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testIgnoresTheCustomAmountMinimumWhenCustomAmountIsDisabled(): void
     {
@@ -425,7 +425,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAppliesNoMinimumWhenTheBlockDefinesNoAmounts(): void
     {
@@ -441,7 +441,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testKeepsAFractionalCustomAmountMinimum(): void
     {
@@ -461,7 +461,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testKeepsAFractionalCustomAmountMaximum(): void
     {
@@ -481,7 +481,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testKeepsAFractionalLowestDonationLevelAsTheFallbackMinimum(): void
     {
@@ -502,7 +502,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     /**
      * Validates the given amount against the donation amount group built from the given block attributes.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     private function _validator(array $attributes, float $amount): Validator
     {
@@ -523,7 +523,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     /**
      * Builds the donation amount group from the given block attributes and returns its amount field.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     private function _amountNode(array $attributes): Amount
     {
@@ -534,7 +534,7 @@ final class TestConvertDonationAmountBlockToFieldsApi extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     private function _donationAmountGroup(array $attributes): DonationAmount
     {

@@ -619,7 +619,7 @@ class Give_DB_Meta extends Give_DB {
 	 * operation so data is always written to and read from GiveWP's table, then restore the
 	 * previous value afterwards so other plugins are unaffected.
 	 *
-	 * @since TBD
+	 * @since 4.16.8
 	 *
 	 * @return string The previous meta table name to restore.
 	 */
@@ -637,7 +637,7 @@ class Give_DB_Meta extends Give_DB {
 	/**
 	 * Restore a previously saved meta table name.
 	 *
-	 * @since TBD
+	 * @since 4.16.8
 	 *
 	 * @param string $metaTableName The meta table name to restore.
 	 *

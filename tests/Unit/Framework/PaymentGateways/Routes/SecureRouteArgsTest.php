@@ -10,12 +10,12 @@ use PHPUnit\Framework\TestCase;
  * Covers the round trip a secure route makes: the args a gateway puts on the URL come back through
  * GatewayRouteData, and the signature is rebuilt from them the way GatewayRoute does it.
  *
- * @since TBD
+ * @since 4.16.8
  */
 class SecureRouteArgsTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testSignedArgsSurviveTheRoundTrip()
     {
@@ -27,7 +27,7 @@ class SecureRouteArgsTest extends TestCase
     /**
      * The attack this closes: a route URL the sender legitimately owns, repointed at another record.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAnEditedArgIsRejected()
     {
@@ -41,7 +41,7 @@ class SecureRouteArgsTest extends TestCase
      * Offsite gateways append their own parameters to the return URL, so an arg the signature never
      * covered must not invalidate it.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAnUnsignedArgAddedByTheGatewayIsIgnored()
     {
@@ -52,7 +52,7 @@ class SecureRouteArgsTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testTheSignedArgListIsKeptOutOfQueryParams()
     {
@@ -67,7 +67,7 @@ class SecureRouteArgsTest extends TestCase
      * add_query_arg leaves null, false, and empty array args off the URL, so a signature covering them
      * could never be rebuilt from the request that comes back.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testArgsTheUrlCannotCarryAreNotSigned()
     {
@@ -89,7 +89,7 @@ class SecureRouteArgsTest extends TestCase
      * value. The signature has to be made from the value as it comes back, or every genuine return
      * fails — the PayFast bug.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAnEncodedReturnUrlValidatesAgainstTheDecodedValueTheRequestCarries()
     {

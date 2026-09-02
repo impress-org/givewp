@@ -255,7 +255,7 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     /**
      * Values inserted by V3 template tags must not be parsed as legacy tags.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testDoesNotParseLegacyTagsInsertedByDonationTemplateTags()
     {

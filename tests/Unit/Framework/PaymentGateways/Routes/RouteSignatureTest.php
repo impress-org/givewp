@@ -36,7 +36,7 @@ class RouteSignatureTest extends TestCase
      * A signature made without args has to keep hashing to what it did before args were covered, so URLs
      * already in flight through a gateway stay valid across the upgrade.
      *
-     * @since TBD
+     * @since 4.16.8
      *
      * @return void
      */
@@ -55,7 +55,7 @@ class RouteSignatureTest extends TestCase
      * The args are what a route reads to decide which record it acts on, so editing one has to break the
      * signature rather than leave it valid.
      *
-     * @since TBD
+     * @since 4.16.8
      *
      * @return void
      */
@@ -72,7 +72,7 @@ class RouteSignatureTest extends TestCase
     /**
      * Dropping a signed arg must not fall back to the argless signature.
      *
-     * @since TBD
+     * @since 4.16.8
      *
      * @return void
      */
@@ -89,7 +89,7 @@ class RouteSignatureTest extends TestCase
     /**
      * Query args do not keep their order through a redirect, so the signature must not depend on it.
      *
-     * @since TBD
+     * @since 4.16.8
      *
      * @return void
      */

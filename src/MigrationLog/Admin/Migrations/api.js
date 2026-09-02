@@ -4,7 +4,7 @@ import useSWR from 'swr';
 const NAMESPACE = '/give-api/v2/migrations';
 
 /**
- * @since TBD Replaced axios with @wordpress/api-fetch, which resolves with the parsed
+ * @since 4.16.8 Replaced axios with @wordpress/api-fetch, which resolves with the parsed
  *            response body and supplies the REST root and nonce from WordPress core.
  */
 const API = {
@@ -38,7 +38,7 @@ export const useMigrationFetcher = (endpoint, params = {}) => {
 /**
  * GET endpoint with additional parameters.
  *
- * @since TBD apiFetch's root URL middleware rewrites the separator on sites without
+ * @since 4.16.8 apiFetch's root URL middleware rewrites the separator on sites without
  *            pretty permalinks, so the endpoint always uses '?' here.
  */
 export const getEndpoint = (endpoint, data) => {

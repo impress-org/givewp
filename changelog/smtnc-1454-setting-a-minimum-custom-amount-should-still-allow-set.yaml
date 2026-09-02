@@ -1,8 +1,0 @@
-significance: patch
-type: fix
-entry: Resolved an issue where the custom amount minimum and maximum also
-  applied to the donation levels and the set donation amount, so a level below
-  the minimum could not be donated. Forms that leave the minimum empty now fall
-  back to the lowest configured amount, and a minimum or maximum with cents is
-  no longer rounded down.
-timestamp: 2026-08-19T16:58:46.460Z

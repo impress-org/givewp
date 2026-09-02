@@ -7,7 +7,7 @@ use Give\Tests\TestCase;
 use Give\Tests\Unit\DonationForms\TestTraits\HasValidationRules;
 
 /**
- * @since TBD
+ * @since 4.16.8
  * @covers Give\DonationForms\Rules\Min
  */
 class TestMinRule extends TestCase
@@ -15,7 +15,7 @@ class TestMinRule extends TestCase
     use HasValidationRules;
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testFailsWhenAmountIsBelowTheMinimum(): void
     {
@@ -23,7 +23,7 @@ class TestMinRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testPassesWhenAmountIsAtOrAboveTheMinimum(): void
     {
@@ -32,7 +32,7 @@ class TestMinRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testPassesWhenAmountIsExemptEvenThoughItIsBelowTheMinimum(): void
     {
@@ -44,7 +44,7 @@ class TestMinRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testFailsWhenAmountIsBelowTheMinimumAndNotExempt(): void
     {
@@ -55,7 +55,7 @@ class TestMinRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testPassesWhenAnExemptAmountIsADecimal(): void
     {
@@ -67,7 +67,7 @@ class TestMinRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testKeepsAFractionalSize(): void
     {
@@ -80,7 +80,7 @@ class TestMinRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testKeepsAWholeSizeAnInteger(): void
     {
@@ -88,7 +88,7 @@ class TestMinRule extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testExemptAmountsDefaultToAnEmptyList(): void
     {

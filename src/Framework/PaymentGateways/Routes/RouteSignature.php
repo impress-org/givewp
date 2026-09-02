@@ -23,7 +23,7 @@ class RouteSignature
     /**
      * Keys of the query args covered by this signature, sorted.
      *
-     * @since TBD
+     * @since 4.16.8
      * @var string[]
      */
     public $argKeys;
@@ -33,7 +33,7 @@ class RouteSignature
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      *
-     * @since TBD add $args so the route's own query args are covered
+     * @since 4.16.8 add $args so the route's own query args are covered
      *
      * @param  int  $gatewayId
      * @param  string  $gatewayMethod
@@ -74,7 +74,7 @@ class RouteSignature
      * Args the gateway appended on the way back are not among them, so they are ignored; one that was
      * signed and has since been edited or dropped changes the hash.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public static function fromRouteData(GatewayRouteData $data): self
     {
@@ -91,7 +91,7 @@ class RouteSignature
      * Drops null and empty array values at any depth, children first, so a parent left holding
      * nothing goes with them.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     private static function pruneArgs(array $args): array
     {
@@ -112,7 +112,7 @@ class RouteSignature
      *
      * Only URL generation runs this; values arriving on a request have been through the real thing.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public static function normalizeArgs(array $args): array
     {
@@ -127,7 +127,7 @@ class RouteSignature
      * @param  string  $gatewayId
      * @param  string  $gatewayMethod
      * @param  int  $donationId
-     * @since TBD append the route's query args
+     * @since 4.16.8 append the route's query args
      *
      * @param  string  $expiration
      * @return string

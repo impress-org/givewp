@@ -11,7 +11,7 @@ use Give\Vendors\StellarWP\Validation\Contracts\ValidationRule;
 use function is_numeric;
 
 /**
- * @since TBD Implement the rule directly instead of extending the vendor rule, whose size is an integer.
+ * @since 4.16.8 Implement the rule directly instead of extending the vendor rule, whose size is an integer.
  * @since 3.0.0
  */
 class Max implements ValidationRule, ValidatesOnFrontEnd
@@ -24,7 +24,7 @@ class Max implements ValidationRule, ValidatesOnFrontEnd
     protected $size;
 
     /**
-     * @since TBD
+     * @since 4.16.8
      *
      * @param numeric $size
      */
@@ -76,7 +76,7 @@ class Max implements ValidationRule, ValidatesOnFrontEnd
     /**
      * @inheritDoc
      *
-     * @since TBD Skip amounts the admin configured on the form, and report exceeding the maximum instead of
+     * @since 4.16.8 Skip amounts the admin configured on the form, and report exceeding the maximum instead of
      *            repeating the minimum wording.
      * @since 3.0.0
      **/

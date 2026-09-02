@@ -213,7 +213,7 @@ function give_donors_list() {
 /**
  * Renders the donor view wrapper.
  *
- * @since  TBD Relinking donors is handled only through the nonce-protected edit action.
+ * @since  4.16.8 Relinking donors is handled only through the nonce-protected edit action.
  * @since  1.0
  *
  * @param  string $view The View being requested.

@@ -63,7 +63,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
-     * @since TBD Read the query args without assuming they are set.
+     * @since 4.16.8 Read the query args without assuming they are set.
      * @since 3.22.0 Add locale support
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0

@@ -181,7 +181,7 @@ class Tests_Give_Donors extends TestCase {
 	/**
 	 * A donor view request must not relink a donor through GET parameters.
 	 *
-	 * @since TBD
+	 * @since 4.16.8
 	 */
 	public function test_donor_view_does_not_relink_donor_from_get_parameters() {
 		$donor      = new Give_Donor( 'testadmin@domain.com' );

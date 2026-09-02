@@ -28,7 +28,7 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
-     * @since TBD Exempt admin-defined amounts from the custom amount minimum and maximum, and fall back
+     * @since 4.16.8 Exempt admin-defined amounts from the custom amount minimum and maximum, and fall back
      *            to the lowest admin-defined amount when no custom amount minimum applies.
      * @since 4.16.5 Set default value for the levelId hidden field.
      * @since 4.10.0 Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list

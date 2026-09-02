@@ -157,7 +157,7 @@ export interface Field extends Node {
 /**
  * The donation amount field. Its levels and fixed amount are the amounts the admin configured on the form.
  *
- * @since TBD
+ * @since 4.16.8
  */
 export interface AmountField extends Field {
     type: 'amount';

@@ -246,7 +246,7 @@ class TestDonorRepository extends TestCase
      * re-assigns the global donor meta table (as Charitable does), and that the global is
      * restored afterwards so the other plugin is unaffected.
      *
-     * @since TBD
+     * @since 4.16.8
      *
      * @throws Exception
      */

@@ -10,7 +10,7 @@ export const getWindowData = ( value ) => {
 };
 
 /**
- * @since TBD Replaced axios with @wordpress/api-fetch. In-flight requests are now
+ * @since 4.16.8 Replaced axios with @wordpress/api-fetch. In-flight requests are now
  *            aborted from the effect cleanup rather than a cancel token recreated on
  *            every render, which never cancelled the request that was actually open.
  */

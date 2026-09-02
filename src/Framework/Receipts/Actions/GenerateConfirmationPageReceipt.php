@@ -334,7 +334,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since TBD Apply legacy tags before donor-supplied V3 tag values.
+     * @since 4.16.8 Apply legacy tags before donor-supplied V3 tag values.
      * @since 3.0.0
      */
     protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
@@ -352,7 +352,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since TBD Apply legacy tags before donor-supplied V3 tag values.
+     * @since 4.16.8 Apply legacy tags before donor-supplied V3 tag values.
      * @since 3.0.0
      */
     protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string

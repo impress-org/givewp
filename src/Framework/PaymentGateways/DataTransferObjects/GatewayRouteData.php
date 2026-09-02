@@ -36,7 +36,7 @@ final class GatewayRouteData
     /**
      * Keys of the query args the signature covers.
      *
-     * @since TBD
+     * @since 4.16.8
      * @var string[]
      */
     public $routeSignatureArgKeys = [];
@@ -46,7 +46,7 @@ final class GatewayRouteData
      * overwritten on the URL and excluded from queryParams on the way back, so a signature covering
      * it could never validate.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     const ROUTE_PARAMS = [
         'give-listener',
@@ -61,7 +61,7 @@ final class GatewayRouteData
     /**
      * Convert data from request into DTO
      *
-     * @since TBD add routeSignatureArgKeys
+     * @since 4.16.8 add routeSignatureArgKeys
      * @since 2.19.5 add routeSignatureExpiration
      * @since 2.19.4 add give-route-signature-id
      * @since 2.18.0
