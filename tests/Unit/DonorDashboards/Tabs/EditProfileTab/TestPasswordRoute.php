@@ -32,6 +32,8 @@ class TestPasswordRoute extends RestApiTestCase
     {
         parent::setUp();
 
+        unset($_GET['give_nl'], $_COOKIE['give_nl']);
+
         $uniqueId = uniqid('', true);
 
         $this->userId = wp_insert_user([
@@ -53,6 +55,8 @@ class TestPasswordRoute extends RestApiTestCase
      */
     public function tearDown(): void
     {
+        unset($_GET['give_nl'], $_COOKIE['give_nl']);
+
         if ($this->userId > 0 && get_user_by('id', $this->userId)) {
             wp_delete_user($this->userId);
         }
