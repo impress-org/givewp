@@ -83,4 +83,21 @@ class PasswordRoute extends RouteAbstract
             'success' => true,
         ];
     }
+
+    /**
+     * Gets the permission callback for authenticated donor password changes.
+     *
+     * @since TBD
+     *
+     * @return callable Permission callback.
+     */
+    protected function getPermissionCallback(): callable
+    {
+        return function () {
+            return is_user_logged_in() && ! empty(give()->donors->get_donor_by(
+                'user_id',
+                get_current_user_id()
+            ));
+        };
+    }
 }
