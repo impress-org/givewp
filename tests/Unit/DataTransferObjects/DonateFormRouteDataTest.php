@@ -439,7 +439,7 @@ class DonateFormRouteDataTest extends TestCase
      * @since TBD
      * @dataProvider originUrlProvider
      */
-    public function testFromRequestValidatesOriginUrl(string $originUrl, bool $isKept): void
+    public function testFromRequestValidatesOriginUrl($originUrl, $expected): void
     {
         $formData = DonateFormRouteData::fromRequest([
             'formId' => 1,
@@ -449,7 +449,7 @@ class DonateFormRouteDataTest extends TestCase
             'embedId' => 'test-embed',
         ]);
 
-        $this->assertSame($isKept ? $originUrl : home_url(), $formData->originUrl);
+        $this->assertSame($expected ?? home_url(), $formData->originUrl);
     }
 
     /**
@@ -457,14 +457,18 @@ class DonateFormRouteDataTest extends TestCase
      */
     public function originUrlProvider(): array
     {
+        // A null expectation means the home URL fallback.
         return [
-            'https url' => ['https://external-site.test/donate', true],
-            'http url' => ['http://localhost:8080/donate', true],
-            'url with query and fragment' => ['https://example.org/give?x=1#form', true],
-            'javascript scheme' => ['javascript:alert(1)', false],
-            'data scheme' => ['data:text/html,<script>alert(1)</script>', false],
-            'scheme-relative url' => ['//evil.test/donate', false],
-            'not a url' => ['not a url', false],
+            'https url' => ['https://external-site.test/donate', 'https://external-site.test/donate'],
+            'http url' => ['http://localhost:8080/donate', 'http://localhost:8080/donate'],
+            'url with query and fragment' => ['https://example.org/give?x=1#form', 'https://example.org/give?x=1#form'],
+            'empty string stays empty' => ['', ''],
+            'array is treated as absent' => [['https://external-site.test'], ''],
+            'zero string' => ['0', null],
+            'javascript scheme' => ['javascript:alert(1)', null],
+            'data scheme' => ['data:text/html,<script>alert(1)</script>', null],
+            'scheme-relative url' => ['//evil.test/donate', null],
+            'not a url' => ['not a url', null],
         ];
     }
 
