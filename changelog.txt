@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 4.16.8: September 2nd, 2026 =
+= 4.16.8: September 3rd, 2026 =
 * Fix: Fixed a campaign's default donation form appearing unpublished in the form builder.
 * Fix: Fixed PHP warnings on the form builder screen when its page is opened without the locale or donation form ID query arguments.
 * Fix: Resolved a plugin conflict that prevented donor first and last names from being recorded when the Charitable plugin was active alongside GiveWP.
