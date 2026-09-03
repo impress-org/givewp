@@ -40,7 +40,7 @@ slow test with a worse failure message.
 
 **One spec file per screen**, named for the screen, holding everything that screen is covered for:
 `campaigns.spec.ts`, `donation-forms.spec.ts`, `donor-dashboard.spec.ts`, `form-builder.spec.ts`,
-`reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
+`legacy-donation-forms.spec.ts`, `reports.spec.ts`, `tools-logs.spec.ts`, `tools-migrations.spec.ts`.
 
 A v3 donation form is two screens, not one: the form builder that edits it in wp-admin and the
 form itself on the front end. They share a subject and nothing else - different apps, different
@@ -63,7 +63,10 @@ rather than depending on what a site already has. `utils/form.ts` reads and writ
 `givewp/v3/form/<id>` - the same route the builder saves through - which is how a donor-facing spec
 sets up the variation it needs without driving the builder to get there. `utils/donation-form.ts`
 holds the embed iframe locator and the steps every donating spec repeats. `utils/rest.ts` records the REST calls a page makes and
-asserts it reached the route it owns with nothing failing. Assert on that traffic rather than on
+asserts it reached the route it owns with nothing failing. `utils/legacy-form.ts` creates a v2 form
+and enables a gateway for it through `utils/wp-cli.ts`, because neither has a REST route: a v2 form
+is a post with protected meta, and GiveWP's settings are one option. WP-CLI runs in the wp-env this
+checkout started, so those fixtures assume `WP_BASE_URL` points at it. Assert on that traffic rather than on
 rendered records: a wrong route, a missing nonce, or a response shape the client no longer unwraps
 all produce a page that builds and mounts cleanly and then shows nothing.
 
@@ -73,6 +76,12 @@ Every spec that completes a donation pays with Test Donation (`manual`), the onl
 finish one without an account somewhere else. It is enabled on a fresh install, so CI has it. A
 developer site that has turned it off skips those tests rather than failing them - the message says
 so. Turn it back on under Give > Settings > Payment Gateways to run them locally.
+
+The offsite path is different: the donor leaves the site and comes back to a signed gateway route,
+and no gateway that ships enabled does that. `legacy-donation-forms.spec.ts` pays with Test Gateway
+(Offsite), whose "offsite" page is the return route itself. It only registers when
+`GIVEWP_ENABLE_TEST_OFFSITE_GATEWAY` is defined, which `.wp-env.json` does for the environment the
+suite runs against and nothing else should.
 
 ### CI
 

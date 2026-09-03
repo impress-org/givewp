@@ -1,5 +1,8 @@
 {
     "plugins": ["."],
     "port": 8888,
-    "testsEnvironment": false
+    "testsEnvironment": false,
+    "config": {
+        "GIVEWP_ENABLE_TEST_OFFSITE_GATEWAY": true
+    }
 }
