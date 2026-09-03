@@ -134,4 +134,44 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 		$is_stripe_active = give_stripe_is_any_payment_method_active();
 		$this->assertFalse( $is_stripe_active );
 	}
+
+	/**
+	 * Ensure Stripe is reported as active when only a modern Stripe gateway is
+	 * enabled in the v3 settings.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function test_give_stripe_is_any_payment_method_active_with_v3_gateway() {
+
+		// Disable every legacy Stripe gateway so the result depends only on the v3 gateway.
+		foreach ( give_stripe_supported_payment_methods() as $gateway ) {
+			unset( $this->gateways[ $gateway ] );
+		}
+		give_update_option( 'gateways', $this->gateways );
+
+		// Simulate a site using only the modern Stripe Payment Element gateway.
+		give_update_option(
+			'gateways_v3',
+			array(
+				'stripe_payment_element' => 1,
+			)
+		);
+
+		// The modern gateway is registered as a supported Stripe payment method
+		// by GiveWP core's LegacyStripeAdapter.
+		add_filter(
+			'give_stripe_supported_payment_methods',
+			static function ( $gateways ) {
+				if ( ! in_array( 'stripe_payment_element', $gateways, true ) ) {
+					$gateways[] = 'stripe_payment_element';
+				}
+
+				return $gateways;
+			}
+		);
+
+		$this->assertTrue( give_stripe_is_any_payment_method_active() );
+	}
 }
