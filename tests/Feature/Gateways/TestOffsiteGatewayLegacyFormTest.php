@@ -23,7 +23,7 @@ use WPDieException;
  * hands it the success URL raw, and under plain permalinks that URL carries a query string of its own, so
  * this is the shape of return URL that Razorpay and PayPal Standard produce on legacy forms.
  *
- * @since TBD
+ * @since 4.16.8
  */
 class TestOffsiteGatewayLegacyFormTest extends TestCase
 {
@@ -31,7 +31,7 @@ class TestOffsiteGatewayLegacyFormTest extends TestCase
     use InterruptsRedirects;
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function setUp(): void
     {
@@ -67,7 +67,7 @@ class TestOffsiteGatewayLegacyFormTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function tearDown(): void
     {
@@ -80,7 +80,7 @@ class TestOffsiteGatewayLegacyFormTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testALegacyFormDonationCompletesWhenTheDonorReturnsFromTheGateway()
     {
@@ -108,7 +108,7 @@ class TestOffsiteGatewayLegacyFormTest extends TestCase
      * The same signed return URL, repointed at somebody else's pending donation, is refused before the
      * route method can complete it.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAReturnRepointedAtAnotherDonationIsRefused()
     {

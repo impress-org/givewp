@@ -11,12 +11,12 @@ use Error;
  * not be an Exception: the legacy adapter, the donate route and GatewayRoute all catch Exception on
  * the way out and would turn it into an error response.
  *
- * @since TBD
+ * @since 4.16.8
  */
 trait InterruptsRedirects
 {
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     protected function captureRedirect(callable $callback): string
     {

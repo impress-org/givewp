@@ -112,7 +112,7 @@ class RouteSignature
      *
      * Only URL generation runs this; values arriving on a request have been through the real thing.
      *
-     * @since TBD normalize nested values too, as PHP decodes and give_clean() cleans at every depth
+     * @since 4.16.8 normalize nested values too, as PHP decodes and give_clean() cleans at every depth
      * @since 4.16.8
      */
     public static function normalizeArgs(array $args): array
@@ -133,7 +133,7 @@ class RouteSignature
      * signed means PHP's single decode hands the route exactly that value, however the gateway
      * shaped it.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public static function encodeArgs(array $args): array
     {

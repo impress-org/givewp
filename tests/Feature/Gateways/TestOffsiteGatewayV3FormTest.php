@@ -27,7 +27,7 @@ use WPDieException;
  * the same GatewayRoute for every form version, and the piece that differs by version is only the shape of
  * the success URL, which this builds the way the v3 listener does.
  *
- * @since TBD
+ * @since 4.16.8
  */
 class TestOffsiteGatewayV3FormTest extends TestCase
 {
@@ -35,7 +35,7 @@ class TestOffsiteGatewayV3FormTest extends TestCase
     use InterruptsRedirects;
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function setUp(): void
     {
@@ -55,7 +55,7 @@ class TestOffsiteGatewayV3FormTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function tearDown(): void
     {
@@ -65,7 +65,7 @@ class TestOffsiteGatewayV3FormTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAV3FormDonationCompletesWhenTheDonorReturnsFromTheGateway()
     {
@@ -91,7 +91,7 @@ class TestOffsiteGatewayV3FormTest extends TestCase
      * The same signed return URL, repointed at somebody else's pending donation, is refused before the
      * route method can complete it.
      *
-     * @since TBD
+     * @since 4.16.8
      */
     public function testAReturnRepointedAtAnotherDonationIsRefused()
     {

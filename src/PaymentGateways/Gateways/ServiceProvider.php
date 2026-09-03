@@ -58,7 +58,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD register TestOffsiteGateway when GIVEWP_ENABLE_TEST_OFFSITE_GATEWAY is set
+     * @since 4.16.8 register TestOffsiteGateway when GIVEWP_ENABLE_TEST_OFFSITE_GATEWAY is set
      * @since 3.0.0
      *
      * @throws Exception

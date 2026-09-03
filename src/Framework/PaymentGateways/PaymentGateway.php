@@ -355,7 +355,7 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Generate secure gateway route url
      *
-     * @since TBD put the signed values on the URL encoded, so a raw value with an ampersand round-trips
+     * @since 4.16.8 put the signed values on the URL encoded, so a raw value with an ampersand round-trips
      * @since 4.16.8 cover $args with the signature
      * @since 2.19.5 replace nonce with hash and expiration
      * @since 2.19.4 replace RouteSignature args with unique donationId
