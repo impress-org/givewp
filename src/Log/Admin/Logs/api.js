@@ -1,22 +1,23 @@
-import axios from 'axios';
+import apiFetch from '@wordpress/api-fetch';
 import useSWR from 'swr';
 
-const API = axios.create({
-    baseURL: window.GiveLogs.apiRoot,
-    headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.GiveLogs.apiNonce,
-    },
-});
+const NAMESPACE = '/give-api/v2/logs';
+
+/**
+ * @since 4.16.8 Replaced axios with @wordpress/api-fetch, which resolves with the parsed
+ *            response body and supplies the REST root and nonce from WordPress core.
+ */
+const API = {
+    get: (endpoint) => apiFetch({path: NAMESPACE + endpoint}),
+    post: (endpoint, data) => apiFetch({path: NAMESPACE + endpoint, method: 'POST', data}),
+    delete: (endpoint) => apiFetch({path: NAMESPACE + endpoint, method: 'DELETE'}),
+};
 
 export default API;
 
-export const CancelToken = axios.CancelToken.source();
-
 // SWR Fetcher
 export const Fetcher = (endpoint) =>
-    API.get(endpoint).then((res) => {
-        const {data, ...rest} = res.data;
+    API.get(endpoint).then(({data, ...rest}) => {
         return {
             data,
             response: rest,
@@ -33,14 +34,15 @@ export const useLogFetcher = (endpoint, params = {}) => {
     };
 };
 
-// GET endpoint with additional parameters
+/**
+ * GET endpoint with additional parameters.
+ *
+ * @since 4.16.8 apiFetch's root URL middleware rewrites the separator on sites without
+ *            pretty permalinks, so the endpoint always uses '?' here.
+ */
 export const getEndpoint = (endpoint, data) => {
     if (data) {
-        const queryString = new URLSearchParams(data);
-        // pretty url?
-        const separator = window.GiveLogs.apiRoot.indexOf('?') === -1 ? '?' : '&';
-
-        return endpoint + separator + queryString.toString();
+        return endpoint + '?' + new URLSearchParams(data).toString();
     }
 
     return endpoint;

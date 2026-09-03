@@ -28,6 +28,8 @@ class ConvertDonationAmountBlockToFieldsApi
 {
 
     /**
+     * @since 4.16.8 Exempt admin-defined amounts from the custom amount minimum and maximum, and fall back
+     *            to the lowest admin-defined amount when no custom amount minimum applies.
      * @since 4.16.5 Set default value for the levelId hidden field.
      * @since 4.10.0 Replaced generic 'currency' rule with custom CurrencyRule that uses GiveWP's currency list
      * @since 3.0.0
@@ -39,22 +41,23 @@ class ConvertDonationAmountBlockToFieldsApi
     {
         $amountField = DonationAmount::make('donationAmount')->tap(function (Group $group) use ($block, $currency) {
             $amountRules = ['required', 'numeric'];
+            $exemptAmounts = $block->getAdminDefinedAmounts();
 
             if (!$block->isCustomAmountEnabled() &&
                 $block->getPriceOption() === 'set') {
                 $size = $block->getSetPrice();
 
                 $amountRules[] = new Size($size);
+            } else {
+                $minimum = $block->getMinimumAmount();
+
+                if ($minimum !== null) {
+                    $amountRules[] = (new Min($minimum))->exemptAmounts(...$exemptAmounts);
+                }
             }
 
-            if ($block->isCustomAmountEnabled()) {
-                if ($block->hasAttribute('customAmountMin')) {
-                    $amountRules[] = new Min($block->getAttribute('customAmountMin'));
-                }
-
-                if ($block->hasAttribute('customAmountMax') && $block->getAttribute('customAmountMax') > 0) {
-                    $amountRules[] = new Max($block->getAttribute('customAmountMax'));
-                }
+            if ($block->isCustomAmountEnabled() && $block->getCustomAmountMax() > 0) {
+                $amountRules[] = (new Max($block->getCustomAmountMax()))->exemptAmounts(...$exemptAmounts);
             }
 
             /** @var Amount $amountNode */

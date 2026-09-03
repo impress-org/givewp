@@ -224,4 +224,72 @@ class DonationAmountBlockModel
     {
         return $this->block->getAttribute('setPrice');
     }
+
+    /**
+     * The lowest amount a donor may type into the custom amount input, or zero when the block does not
+     * define one.
+     *
+     * @since 4.16.8
+     */
+    public function getCustomAmountMin(): float
+    {
+        return $this->hasAttribute('customAmountMin') ? (float)$this->getAttribute('customAmountMin') : 0.0;
+    }
+
+    /**
+     * The highest amount a donor may type into the custom amount input, or zero when the block does not
+     * define one.
+     *
+     * @since 4.16.8
+     */
+    public function getCustomAmountMax(): float
+    {
+        return $this->hasAttribute('customAmountMax') ? (float)$this->getAttribute('customAmountMax') : 0.0;
+    }
+
+    /**
+     * The amounts the admin configured on the block: the donation levels, or the fixed set price. The
+     * custom amount minimum and maximum never apply to these.
+     *
+     * @since 4.16.8
+     *
+     * @return float[]
+     */
+    public function getAdminDefinedAmounts(): array
+    {
+        $amounts = $this->getPriceOption() === 'multi'
+            ? array_column($this->getLevels(), 'value')
+            : [$this->getSetPrice()];
+
+        // An unset level or set price sanitizes to 0, which must never be exempt from the minimum.
+        return array_values(
+            array_filter(
+                array_map('floatval', $amounts),
+                static function (float $amount): bool {
+                    return $amount > 0;
+                }
+            )
+        );
+    }
+
+    /**
+     * The custom amount minimum, falling back to the lowest amount the admin configured. Without that
+     * fallback a form that leaves the minimum empty accepts any amount, which is a donation spam and card
+     * testing vector.
+     *
+     * @since 4.16.8
+     *
+     * @return float|null Null when the block defines neither a minimum nor an amount to derive one from.
+     */
+    public function getMinimumAmount(): ?float
+    {
+        if ($this->isCustomAmountEnabled() && $this->getCustomAmountMin() > 0) {
+            return $this->getCustomAmountMin();
+        }
+
+        $adminDefinedAmounts = $this->getAdminDefinedAmounts();
+        $lowestAmount = $adminDefinedAmounts ? min($adminDefinedAmounts) : 0.0;
+
+        return $lowestAmount > 0 ? $lowestAmount : null;
+    }
 }

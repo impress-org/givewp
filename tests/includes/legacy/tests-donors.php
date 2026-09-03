@@ -179,6 +179,31 @@ class Tests_Give_Donors extends TestCase {
 	}
 
 	/**
+	 * A donor view request must not relink a donor through GET parameters.
+	 *
+	 * @since 4.16.8
+	 */
+	public function test_donor_view_does_not_relink_donor_from_get_parameters() {
+		// The test suite boots outside an admin request, so this admin-only function is never required.
+		if ( ! function_exists( 'give_render_donor_view' ) ) {
+			require_once GIVE_PLUGIN_DIR . 'includes/admin/donors/donors.php';
+		}
+
+		$donor      = new Give_Donor( 'testadmin@domain.com' );
+		$target_user = $this->factory->user->create( [ 'role' => 'subscriber' ] );
+
+		wp_set_current_user( $this->_user_id );
+		$_GET['id']      = $donor->id;
+		$_GET['user_id'] = $target_user;
+
+		ob_start();
+		give_render_donor_view( 'legacy-overview', [ 'legacy-overview' => 'give_donor_view' ] );
+		ob_end_clean();
+
+		$this->assertSame( $this->_user_id, (int) $donor->user_id );
+	}
+
+	/**
 	 * Test Magic Get Method
 	 *
 	 * @covers Give_Donor::__get

@@ -3,6 +3,7 @@
 namespace Give\Framework\Receipts;
 
 use Give\DonationForms\Models\DonationForm;
+use Give\DonationForms\Properties\FormSettings;
 use Give\Donations\Models\Donation;
 use Give\Framework\FieldsAPI\Text;
 use Give\Framework\Receipts\Actions\GenerateConfirmationPageReceipt;
@@ -249,6 +250,33 @@ class TestGenerateConfirmationPageReceipt extends TestCase
                 'additionalDetails' => $additionalDetails->toArray(),
             ]
         );
+    }
+
+    /**
+     * Values inserted by V3 template tags must not be parsed as legacy tags.
+     *
+     * @since 4.16.8
+     */
+    public function testDoesNotParseLegacyTagsInsertedByDonationTemplateTags()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([
+                'receiptHeading' => 'Hey {first_name}',
+            ]),
+        ]);
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id,
+            'firstName' => '{meta_donor_verify_key}',
+        ]);
+
+        Give()->donors->update($donation->donorId, ['verify_key' => 'sensitive-token']);
+
+        $receipt = (new GenerateConfirmationPageReceipt())(new DonationReceipt($donation));
+
+        $this->assertSame('Hey {meta_donor_verify_key}', $receipt->settings->toArray()['heading']);
     }
 
     /**

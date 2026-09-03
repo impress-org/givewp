@@ -334,6 +334,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @since 4.16.8 Apply legacy tags before donor-supplied V3 tag values.
      * @since 3.0.0
      */
     protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
@@ -344,13 +345,14 @@ class GenerateConfirmationPageReceipt
             $content = $donationForm->settings->receiptHeading;
         }
 
-        return $this->transformV2FormTags(
-            (new DonationTemplateTags($receipt->donation, $content))->getContent(),
-            $receipt->donation
-        );
+        return (new DonationTemplateTags(
+            $receipt->donation,
+            $this->transformV2FormTags($content, $receipt->donation)
+        ))->getContent();
     }
 
     /**
+     * @since 4.16.8 Apply legacy tags before donor-supplied V3 tag values.
      * @since 3.0.0
      */
     protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
@@ -364,10 +366,10 @@ class GenerateConfirmationPageReceipt
             $content = $donationForm->settings->receiptDescription;
         }
 
-        return $this->transformV2FormTags(
-            (new DonationTemplateTags($receipt->donation, $content))->getContent(),
-            $receipt->donation
-        );
+        return (new DonationTemplateTags(
+            $receipt->donation,
+            $this->transformV2FormTags($content, $receipt->donation)
+        ))->getContent();
     }
 
     /**

@@ -119,6 +119,16 @@
                     "/Tests/"
                 ]
             },
+            "exclude_from_prefix": {
+                "file_patterns": [
+                    "/harbor/src/Harbor/global-functions\\.php$"
+                ]
+            },
+            "exclude_constants": {
+                "constants": [
+                    "FILTER_VALIDATE_BOOL"
+                ]
+            },
             "delete_vendor_packages": true,
             "override_autoload": {
                 "symfony/polyfill-ctype": {},

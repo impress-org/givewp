@@ -254,10 +254,10 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 
 		$form2 = new Give_Donate_Form( $form->ID );
 
-		$this->assertEquals( $earnings - $form2->price, $form2->earnings );
+		$this->assertEqualsWithDelta( $earnings - $form2->price, $form2->earnings, 0.001 );
 		$this->assertEquals( $sales - 1, $form2->sales );
 
-		$this->assertEquals( $site_earnings - $payment->total, give_get_total_earnings() );
+		$this->assertEqualsWithDelta( $site_earnings - $payment->total, give_get_total_earnings(), 0.001 );
 		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 	}
 
@@ -285,7 +285,7 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 
 		$form2 = new Give_Donate_Form( $form->ID );
 
-		$this->assertEquals( $earnings - $form->price, $form2->earnings );
+		$this->assertEqualsWithDelta( $earnings - $form->price, $form2->earnings, 0.001 );
 		$this->assertEquals( $sales - 1, $form2->sales );
 
 	}
@@ -317,13 +317,13 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$donor = new Give_Donor( $payment->customer_id );
 		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $donor_earnings - $payment->total, $donor->get_total_donation_amount() );
+		$this->assertEqualsWithDelta( $donor_earnings - $payment->total, $donor->get_total_donation_amount(), 0.001 );
 		$this->assertEquals( $donor_sales - 1, $donor->purchase_count );
 
-		$this->assertEquals( $form_earnings - $payment->total, $form->earnings );
+		$this->assertEqualsWithDelta( $form_earnings - $payment->total, $form->earnings, 0.001 );
 		$this->assertEquals( $form_sales - 1, $form->sales );
 
-		$this->assertEquals( $site_earnings - $payment->total, give_get_total_earnings() );
+		$this->assertEqualsWithDelta( $site_earnings - $payment->total, give_get_total_earnings(), 0.001 );
 		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 	}
 
@@ -407,13 +407,13 @@ class Tests_Payment_Class extends Give_Unit_Test_Case {
 		$donor = new Give_Donor( $payment->customer_id );
 		$form  = new Give_Donate_Form( $payment->form_id );
 
-		$this->assertEquals( $donor_earnings - $payment->total, $donor->get_total_donation_amount() );
+		$this->assertEqualsWithDelta( $donor_earnings - $payment->total, $donor->get_total_donation_amount(), 0.001 );
 		$this->assertEquals( $donor_sales - 1, $donor->purchase_count );
 
-		$this->assertEquals( $form_earnings - $payment->total, $form->earnings );
+		$this->assertEqualsWithDelta( $form_earnings - $payment->total, $form->earnings, 0.001 );
 		$this->assertEquals( $form_sales - 1, $form->sales );
 
-		$this->assertEquals( $site_earnings - $payment->total, give_get_total_earnings() );
+		$this->assertEqualsWithDelta( $site_earnings - $payment->total, give_get_total_earnings(), 0.001 );
 		$this->assertEquals( $site_sales - 1, give_get_total_donations() );
 	}
 

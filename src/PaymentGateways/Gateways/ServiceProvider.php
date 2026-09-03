@@ -58,6 +58,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since 4.16.8 register TestOffsiteGateway when GIVEWP_ENABLE_TEST_OFFSITE_GATEWAY is set
      * @since 3.0.0
      *
      * @throws Exception
@@ -66,8 +67,11 @@ class ServiceProvider implements ServiceProviderInterface
     private function registerGateways()
     {
         add_action('givewp_register_payment_gateway', static function (PaymentGatewayRegister $registrar) {
-            // Enable as needed for testing but do not push to production
-            // $registrar->registerGateway(TestOffsiteGateway::class);
+            // Not for production: it completes donations without charging anyone. The e2e suite turns it
+            // on through .wp-env.json to walk an offsite redirect end to end.
+            if (defined('GIVEWP_ENABLE_TEST_OFFSITE_GATEWAY') && GIVEWP_ENABLE_TEST_OFFSITE_GATEWAY) {
+                $registrar->registerGateway(TestOffsiteGateway::class);
+            }
 
             $registrar->registerGateway(StripePaymentElementGateway::class);
 

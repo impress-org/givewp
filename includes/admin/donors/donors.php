@@ -213,6 +213,7 @@ function give_donors_list() {
 /**
  * Renders the donor view wrapper.
  *
+ * @since  4.16.8 Relinking donors is handled only through the nonce-protected edit action.
  * @since  1.0
  *
  * @param  string $view The View being requested.
@@ -237,13 +238,7 @@ function give_render_donor_view( $view, $callbacks ) {
 	}
 
 	$donor_id          = (int) $_GET['id'];
-	$reconnect_user_id = ! empty( $_GET['user_id'] ) ? (int) $_GET['user_id'] : '';
 	$donor             = new Give_Donor( $donor_id );
-
-	// Reconnect User with Donor profile.
-	if ( $reconnect_user_id ) {
-		give_connect_user_donor_profile( $donor, array( 'user_id' => $reconnect_user_id ), array() );
-	}
 
 	if ( empty( $donor->id ) ) {
 		give_set_error( 'give-invalid_donor', __( 'Invalid Donor ID.', 'give' ) );

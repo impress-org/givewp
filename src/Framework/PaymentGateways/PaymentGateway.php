@@ -13,6 +13,7 @@ use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPausable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionPaymentMethodEditable;
 use Give\Framework\PaymentGateways\Contracts\Subscription\SubscriptionTransactionsSynchronizable;
 use Give\Framework\PaymentGateways\Contracts\WebhookNotificationsListener;
+use Give\Framework\PaymentGateways\DataTransferObjects\GatewayRouteData;
 use Give\Framework\PaymentGateways\Routes\RouteSignature;
 use Give\Framework\PaymentGateways\Traits\HandleHttpResponses;
 use Give\Framework\PaymentGateways\Traits\HasRouteMethods;
@@ -354,21 +355,28 @@ abstract class PaymentGateway implements PaymentGatewayInterface,
     /**
      * Generate secure gateway route url
      *
+     * @since 4.16.8 put the signed values on the URL encoded, so a raw value with an ampersand round-trips
+     * @since 4.16.8 cover $args with the signature
      * @since 2.19.5 replace nonce with hash and expiration
      * @since 2.19.4 replace RouteSignature args with unique donationId
      * @since 2.19.0
      */
     public function generateSecureGatewayRouteUrl(string $gatewayMethod, int $donationId, array $args = []): string
     {
-        $signature = new RouteSignature(static::id(), $gatewayMethod, $donationId);
+        $args = RouteSignature::normalizeArgs(array_diff_key($args, array_flip(GatewayRouteData::ROUTE_PARAMS)));
+
+        $signature = new RouteSignature(static::id(), $gatewayMethod, $donationId, null, $args);
 
         return (new GenerateGatewayRouteUrl())(
             static::id(),
             $gatewayMethod,
-            array_merge($args, [
+            array_merge(RouteSignature::encodeArgs($args), [
                 'give-route-signature' => $signature->toHash(),
                 'give-route-signature-id' => $donationId,
                 'give-route-signature-expiration' => $signature->expiration,
+                // Named here so the route knows which args to rebuild the signature from, and so a gateway
+                // appending its own on the way back does not break it. The list is itself signed.
+                'give-route-signature-args' => implode(',', $signature->argKeys),
             ])
         );
     }

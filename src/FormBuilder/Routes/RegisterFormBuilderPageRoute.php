@@ -63,6 +63,7 @@ class RegisterFormBuilderPageRoute
     /**
      * Render page with scripts
      *
+     * @since 4.16.8 Read the query args without assuming they are set.
      * @since 3.22.0 Add locale support
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
@@ -73,7 +74,13 @@ class RegisterFormBuilderPageRoute
     {
         $formBuilderViewModel = new FormBuilderViewModel();
 
-        $donationFormId = abs($_GET['donationFormID']);
+        /*
+         * `abs()` raises a TypeError on an array or a non-numeric string, so the id cannot be read
+         * without checking its shape first. `absint()` is what the redirect guarding this route
+         * already uses, and anything it cannot make a number of falls to the check below.
+         */
+        $donationFormIdParam = $_GET['donationFormID'] ?? null;
+        $donationFormId = is_scalar($donationFormIdParam) ? absint($donationFormIdParam) : 0;
 
         // validate form exists before proceeding
         // TODO: improve on this validation
@@ -81,7 +88,7 @@ class RegisterFormBuilderPageRoute
             wp_die(__('Donation form does not exist.', 'give'));
         }
 
-        $locale = give_clean($_GET['locale']) ?? '';
+        $locale = give_clean($_GET['locale'] ?? '');
         Language::switchToLocale($locale);
 
         wp_enqueue_style(

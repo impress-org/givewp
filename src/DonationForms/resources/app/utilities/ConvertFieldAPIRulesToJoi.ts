@@ -1,5 +1,5 @@
 import Joi, {AnySchema, ObjectSchema} from 'joi';
-import {BasicCondition, Field, Form, isField} from '@givewp/forms/types';
+import {AmountField, BasicCondition, Field, Form, isField} from '@givewp/forms/types';
 import {__, sprintf} from '@wordpress/i18n';
 import conditionOperatorFunctions from '@givewp/forms/app/utilities/conditionOperatorFunctions';
 
@@ -36,10 +36,11 @@ export default function getJoiRulesForForm(form: Form): ObjectSchema {
 }
 
 /**
+ * @since 4.16.8 collect the amounts exempt from the minimum and maximum
  * @since 3.0.0
  */
 function getJoiRulesForField(field: Field): AnySchema {
-    let rules: AnySchema = convertFieldAPIRulesToJoi(field.validationRules);
+    let rules: AnySchema = convertFieldAPIRulesToJoi(field.validationRules, getExemptAmounts(field));
 
     if (field.label) {
         rules = rules.label(field.label);
@@ -49,11 +50,33 @@ function getJoiRulesForField(field: Field): AnySchema {
 }
 
 /**
+ * The amounts the admin configured on the donation amount field. The custom amount minimum and maximum only
+ * constrain what a donor types into the custom amount input, so these are always accepted.
+ *
+ * @since 4.16.8
+ */
+function getExemptAmounts(field: Field): number[] {
+    if (field.type !== 'amount') {
+        return [];
+    }
+
+    const {levels, allowLevels, fixedAmountValue} = field as AmountField;
+
+    // An unset level or fixed amount reads as 0, which must never be exempt from the minimum.
+    if (allowLevels) {
+        return (levels ?? []).map((level) => Number(level.value)).filter((amount) => amount > 0);
+    }
+
+    return fixedAmountValue > 0 ? [Number(fixedAmountValue)] : [];
+}
+
+/**
+ * @since 4.16.8 exempt admin-defined amounts from the minimum and maximum
  * @since 4.13.1 account for custom rules with only excludeUnless property
  * @since 4.13.0 add support for optional false values
  * @since 3.0.0
  */
-function convertFieldAPIRulesToJoi(rules): AnySchema {
+function convertFieldAPIRulesToJoi(rules, exemptAmounts: number[] = []): AnySchema {
     let joiRules;
     const ruleKeys = Object.keys(rules);
 
@@ -92,12 +115,35 @@ function convertFieldAPIRulesToJoi(rules): AnySchema {
     }
 
     if (rules.hasOwnProperty('number') || !rules.hasOwnProperty('boolean')) {
-        if (rules.hasOwnProperty('min')) {
-            joiRules = joiRules.min(rules.min);
-        }
+        const hasMin = rules.hasOwnProperty('min');
+        const hasMax = rules.hasOwnProperty('max');
 
-        if (rules.hasOwnProperty('max')) {
-            joiRules = joiRules.max(rules.max);
+        if (exemptAmounts.length > 0 && (hasMin || hasMax)) {
+            joiRules = joiRules.custom((value, helpers) => {
+                const amount = Number(value);
+
+                if (exemptAmounts.includes(amount)) {
+                    return value;
+                }
+
+                if (hasMin && amount < rules.min) {
+                    return helpers.error('number.min', {limit: rules.min});
+                }
+
+                if (hasMax && amount > rules.max) {
+                    return helpers.error('number.max', {limit: rules.max});
+                }
+
+                return value;
+            }, 'exempt amount range');
+        } else {
+            if (hasMin) {
+                joiRules = joiRules.min(rules.min);
+            }
+
+            if (hasMax) {
+                joiRules = joiRules.max(rules.max);
+            }
         }
     }
 

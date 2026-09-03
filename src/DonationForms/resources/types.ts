@@ -154,6 +154,19 @@ export interface Field extends Node {
     fieldError: string | null;
 }
 
+/**
+ * The donation amount field. Its levels and fixed amount are the amounts the admin configured on the form.
+ *
+ * @since 4.16.8
+ */
+export interface AmountField extends Field {
+    type: 'amount';
+    levels: {label: string; value: number; checked?: boolean}[];
+    allowLevels: boolean;
+    allowCustomAmount: boolean;
+    fixedAmountValue: number;
+}
+
 export interface Group extends Node {
     nodeType: 'group';
     nodes: Node[];
