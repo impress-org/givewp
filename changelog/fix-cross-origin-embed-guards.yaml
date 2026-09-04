@@ -1,4 +1,0 @@
-significance: patch
-type: fix
-entry: Donation forms no longer error when embedded in a page on a different domain, and the client-provided origin URL is validated before use in redirects.
-timestamp: 2026-09-01T00:00:00.000Z
