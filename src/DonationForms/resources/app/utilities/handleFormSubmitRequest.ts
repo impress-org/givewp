@@ -13,8 +13,10 @@ import handleRedirect from '@givewp/forms/app/utilities/handleFormRedirect';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import postFormData from '@givewp/forms/app/utilities/postFormData';
 import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
+import {getAuthToken} from '@givewp/forms/app/utilities/authToken';
 
 /**
+ * @since TBD Send the auth token so embedded forms stay signed in without cookies
  * @since 3.22.0 Add locale support
  */
 export default async function handleSubmitRequest(
@@ -42,6 +44,7 @@ export default async function handleSubmitRequest(
             isEmbed,
             embedId,
             locale,
+            authToken: getAuthToken(),
         };
 
         const formData = convertValuesToFormData(formValues);

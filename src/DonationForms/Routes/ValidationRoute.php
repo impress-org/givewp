@@ -2,8 +2,8 @@
 
 namespace Give\DonationForms\Routes;
 
-
 use Exception;
+use Give\DonationForms\Actions\AuthenticateFormRequestWithToken;
 use Give\DonationForms\DataTransferObjects\DonateRouteData;
 use Give\DonationForms\DataTransferObjects\ValidationRouteData;
 use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
@@ -21,6 +21,7 @@ class ValidationRoute
     use HandleHttpResponses;
 
     /**
+     * @since TBD Sign the donor in from the auth token when the login cookie is unavailable.
      * @since 3.22.0 added additional catch statements for forbidden and unknown errors
      * @since 3.0.0
      */
@@ -31,6 +32,8 @@ class ValidationRoute
 
         // validate signature
         $routeData->validateSignature();
+
+        (new AuthenticateFormRequestWithToken())($request);
 
         // create DTO from POST request
         $formData = ValidationRouteData::fromRequest($request);
