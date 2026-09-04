@@ -40,15 +40,16 @@ class AuthenticationRoute
     }
 
     /**
-     * The token is the logged_in auth cookie value: signed by core, session
-     * backed, and revoked with the session. It carries the login where the
-     * cookie cannot, which is inside a cross-site iframe.
+     * The token is built like an auth cookie: signed by core, session backed,
+     * and revoked with the session. It carries the login where the cookie
+     * cannot, which is inside a cross-site iframe. Its own salt scheme means
+     * it is not usable as a login cookie.
      *
      * @since TBD
      */
     protected function generateAuthToken(WP_User $user): string
     {
-        return wp_generate_auth_cookie($user->ID, time() + HOUR_IN_SECONDS, 'logged_in');
+        return wp_generate_auth_cookie($user->ID, time() + HOUR_IN_SECONDS, AuthenticateFormRequestWithToken::SCHEME);
     }
 
     /**

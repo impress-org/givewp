@@ -91,6 +91,32 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     /**
      * @since TBD
      */
+    public function testTokenIsNotAValidLoginCookie(): void
+    {
+        $userId = $this->factory()->user->create();
+        $token = $this->tokenFor($userId);
+
+        $this->assertFalse(wp_validate_auth_cookie($token, 'logged_in'));
+        $this->assertFalse(wp_validate_auth_cookie($token, 'auth'));
+        $this->assertFalse(wp_validate_auth_cookie($token, 'secure_auth'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testLoginCookieIsNotAValidToken(): void
+    {
+        $userId = $this->factory()->user->create();
+        $cookie = wp_generate_auth_cookie($userId, time() + HOUR_IN_SECONDS, 'logged_in');
+
+        (new AuthenticateFormRequestWithToken())($this->requestWith($cookie));
+
+        $this->assertSame(0, get_current_user_id());
+    }
+
+    /**
+     * @since TBD
+     */
     public function testRevokedSessionIsRejected(): void
     {
         $userId = $this->factory()->user->create();
@@ -104,7 +130,7 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
 
     private function tokenFor(int $userId, int $ttl = HOUR_IN_SECONDS): string
     {
-        return wp_generate_auth_cookie($userId, time() + $ttl, 'logged_in');
+        return wp_generate_auth_cookie($userId, time() + $ttl, AuthenticateFormRequestWithToken::SCHEME);
     }
 
     /**
