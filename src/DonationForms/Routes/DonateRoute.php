@@ -2,8 +2,8 @@
 
 namespace Give\DonationForms\Routes;
 
-
 use Exception;
+use Give\DonationForms\Actions\AuthenticateFormRequestWithToken;
 use Give\DonationForms\Controllers\DonateController;
 use Give\DonationForms\DataTransferObjects\DonateControllerData;
 use Give\DonationForms\DataTransferObjects\DonateFormRouteData;
@@ -39,6 +39,7 @@ class DonateRoute
     }
 
     /**
+     * @since TBD Sign the donor in from the auth token when the login cookie is unavailable.
      * @since 3.0.0
      *
      * @return void
@@ -50,6 +51,8 @@ class DonateRoute
 
         // validate signature
         $routeData->validateSignature();
+
+        (new AuthenticateFormRequestWithToken())($request);
 
         // create DTO from POST request
         $formData = DonateFormRouteData::fromRequest($request);

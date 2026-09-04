@@ -1,5 +1,6 @@
 import {expect, test} from '@wordpress/e2e-test-utils-playwright';
 import {createCampaignWithForm} from './utils/campaign';
+import {editForm, section} from './utils/form';
 import {
     donationForm,
     expectReceipt,
@@ -99,6 +100,43 @@ test.describe('External donation form embeds', () => {
         await waitForForm(form);
 
         await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await fillDonorDetails(form);
+        await form.getByRole('button', {name: 'Continue'}).click();
+
+        await payWithTestGateway(form);
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await expectReceipt(form, '$10.00');
+    });
+
+    test('signs the donor in and completes a donation on a form that requires login', async ({page, requestUtils}) => {
+        /*
+         * The browser drops WordPress login cookies set from a cross-site iframe, so this only
+         * passes if the auth token the login route returns is accepted on validate and donate.
+         */
+        const {formId: loginFormId} = await createCampaignWithForm(requestUtils);
+        await editForm(requestUtils, loginFormId, (form) => {
+            section(form, "Who's Giving Today?").innerBlocks.unshift({
+                name: 'givewp/login',
+                attributes: {required: true, loginRedirect: false},
+                innerBlocks: [],
+            });
+        });
+        await page.route(`${EXTERNAL_PAGE}*`, (route) =>
+            route.fulfill({contentType: 'text/html', body: externalPageHtml(loginFormId)})
+        );
+
+        await page.goto(EXTERNAL_PAGE);
+
+        const form = donationForm(page);
+        await waitForForm(form);
+        await form.getByRole('button', {name: 'Donate now'}).click();
+
+        await form.locator('input[name="login"]').fill(process.env.WP_USERNAME ?? 'admin');
+        await form.locator('input[name="password"]').fill(process.env.WP_PASSWORD ?? 'password');
+        await form.getByRole('button', {name: 'Log In'}).click();
+        await expect(form.locator('input[name="login"]')).toBeHidden();
 
         await fillDonorDetails(form);
         await form.getByRole('button', {name: 'Continue'}).click();

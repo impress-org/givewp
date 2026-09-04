@@ -47,7 +47,7 @@ interface StateProps {
  */
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
-    const {formId, homeUrl, externalEmbedScriptUrl, blockData, settings, campaignColors} = getWindowData();
+    const {formId, homeUrl, externalEmbedScriptUrl, settings, campaignColors} = getWindowData();
     const [isExternalEmbedCopied, setIsExternalEmbedCopied] = useState<boolean>(false);
 
     const parsedSettings = (() => {
@@ -82,28 +82,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * @since TBD
      */
     const hasConfirmationRedirect = !!parsedSettings.enableReceiptConfirmationPage;
-
-    /**
-     * Login inside a cross-origin embed is unreliable in some browsers, so
-     * warn when this form requires it. Based on the saved block data.
-     *
-     * @since TBD
-     */
-    const hasRequiredLogin = (() => {
-        try {
-            const containsRequiredLogin = (blocks): boolean =>
-                Array.isArray(blocks) &&
-                blocks.some(
-                    (block) =>
-                        (block?.name === 'givewp/login' && block?.attributes?.required) ||
-                        containsRequiredLogin(block?.innerBlocks)
-                );
-
-            return containsRequiredLogin(JSON.parse(blockData));
-        } catch (error) {
-            return false;
-        }
-    })();
 
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const openFormBtnRef = useRef<HTMLInputElement>(null);
@@ -540,12 +518,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                                         };
                                     })}
                                 />
-                            )}
-
-                            {hasRequiredLogin && (
-                                <div className="give-embed-modal-helptext">
-                                    {__('This form requires donor login, which is unreliable inside embedded forms in some browsers (like Safari). Consider making login optional for external embedding.', 'give')}
-                                </div>
                             )}
 
                             {hasConfirmationRedirect && (
