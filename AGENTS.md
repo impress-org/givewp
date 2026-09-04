@@ -64,8 +64,9 @@ These are the two things that get missed most often:
   there is no autodiscovery, and a provider missing from it loads nothing and reports no error. See
   [docs/architecture/bootstrapping.md](docs/architecture/bootstrapping.md).
 - PRs target the `develop` branch, never `master`.
-- PR titles are prefixed with the change type: `Feature:`, `Enhancement:`, `Tweak:`, `Fix:`,
-  `Security:` — the same set the changelogger uses.
+- PR titles are prefixed with the change type: `Feature:`, `Enhancement:`, `Fix:`, or
+  `Security:`. Use the same type for the changelog entry. Small copy or behavior adjustments
+  are enhancements, not a separate type.
 - No leftover debug code (`var_dump()`, `error_log()`, `console.log()`), and `debug.log` should
   stay empty while testing a change.
 

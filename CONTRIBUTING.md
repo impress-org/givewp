@@ -52,7 +52,7 @@ See [tests/README.md](tests/README.md) for environment setup and how to filter t
    * You've added a changelog entry with `composer run changelog:add` — this drops a YAML file into `./changelog` that gets compiled into `readme.txt` at release time. Commit it with your PR.
    * There's no leftover debug code (`var_dump()`, `console.log()`) and `/wp-content/debug.log` stays empty while testing your changes.
 3. [Submit the pull request](https://help.github.com/articles/creating-a-pull-request) to the `develop` branch, referencing the related issue if there is one.
-4. Prefix the PR title with the type of change, e.g. `Feature: add donation form export`, `Fix: prevent duplicate receipts`, or `Tweak: improve settings copy`.
+4. Prefix the PR title with the type of change, e.g. `Feature: add donation form export`, `Fix: prevent duplicate receipts`, or `Enhancement: improve settings copy`.
 
 We review all pull requests and will make suggestions and changes if necessary.
 
