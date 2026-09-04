@@ -74,6 +74,10 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
      */
     public function defaultForm(): ?DonationForm
     {
+        if ( ! $this->defaultFormId) {
+            return null;
+        }
+
         return give(DonationFormsRepository::class)->getById($this->defaultFormId);
     }
 
