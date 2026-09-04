@@ -1,4 +1,0 @@
-significance: minor
-type: enhancement
-entry: Donors can sign in inside a donation form embedded on another website; the login no longer depends on cookies the browser blocks in cross-site iframes.
-timestamp: 2026-09-04T00:00:00.000Z
