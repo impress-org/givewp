@@ -271,11 +271,11 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     /**
      * @since TBD
      */
-    const writeToClipboard = async (text: string) => {
+    const writeToClipboard = async (text: string): Promise<boolean> => {
         if (navigator.clipboard && window.isSecureContext) {
             try {
                 await navigator.clipboard.writeText(text);
-                return;
+                return true;
             } catch (error) {
                 // Clipboard API can reject (permissions); fall through to the textarea fallback.
             }
@@ -284,17 +284,37 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         const textArea = document.createElement('textarea');
 
         textArea.value = text;
-        textArea.style.display = 'hidden';
+        textArea.setAttribute('readonly', '');
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '-9999px';
+        textArea.style.opacity = '0';
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
         try {
-            document.execCommand('copy');
+            return document.execCommand('copy');
         } catch (error) {
-            console.error(error);
+            return false;
         } finally {
             textArea.remove();
         }
+    };
+
+    /**
+     * The snippet is pasted as HTML, so every interpolated attribute value is
+     * encoded. A button label with a quote must not break the markup.
+     *
+     * @since TBD
+     */
+    const attribute = (name: string, value: string | number): string => {
+        const encoded = String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        return `${name}="${encoded}"`;
     };
 
     /**
@@ -303,7 +323,9 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * @since TBD extracted writeToClipboard
      */
     const handleCopy = async () => {
-        await writeToClipboard(getShortcode());
+        if (!(await writeToClipboard(getShortcode()))) {
+            return;
+        }
 
         setState(prevState => {
             return {
@@ -331,30 +353,30 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      */
     const getExternalEmbedSnippet = () => {
         const attributes = [
-            `form-id="${formId}"`,
-            `wp-url="${homeUrl}"`,
-            `fallback-text="${__('Open donation form', 'give')}"`,
+            attribute('form-id', formId),
+            attribute('wp-url', homeUrl),
+            attribute('fallback-text', __('Open donation form', 'give')),
         ];
 
         const colors = getEmbedColors();
         if (colors.primary) {
-            attributes.push(`primary-color="${colors.primary}"`);
+            attributes.push(attribute('primary-color', colors.primary));
         }
         if (colors.secondary) {
-            attributes.push(`secondary-color="${colors.secondary}"`);
+            attributes.push(attribute('secondary-color', colors.secondary));
         }
 
         if (isButton) {
-            attributes.push(`display-style="${state.selectedStyle}"`);
-            attributes.push(`button-text="${state.openFormButton || __('Donate', 'give')}"`);
+            attributes.push(attribute('display-style', state.selectedStyle));
+            attributes.push(attribute('button-text', state.openFormButton || __('Donate', 'give')));
         }
 
         if (state.selectedStyle === 'modal') {
-            attributes.push(`close-text="${__('Close', 'give')}"`);
+            attributes.push(attribute('close-text', __('Close', 'give')));
         }
 
         return [
-            `<script src="${externalEmbedScriptUrl}" defer></script>`,
+            `<script ${attribute('src', externalEmbedScriptUrl)} defer></script>`,
             `<givewp-donation-form ${attributes.join(' ')}></givewp-donation-form>`,
         ].join('\n');
     };
@@ -363,7 +385,9 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * @since TBD
      */
     const handleCopyExternalEmbed = async () => {
-        await writeToClipboard(getExternalEmbedSnippet());
+        if (!(await writeToClipboard(getExternalEmbedSnippet()))) {
+            return;
+        }
 
         setIsExternalEmbedCopied(true);
         setTimeout(() => setIsExternalEmbedCopied(false), 2000);
