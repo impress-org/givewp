@@ -8,10 +8,11 @@ namespace Give\DonationForms\Actions;
  *
  * A donation form embedded on another website cannot rely on cookies: the
  * browser drops WordPress auth cookies set from a cross-site iframe response.
- * The authentication route therefore also returns the auth cookie value, which
- * WordPress already signs, expires, and backs with a session token. The form
- * sends it back with the donation and the route validates it the same way core
- * validates the cookie.
+ * The authentication route therefore also returns a token built with the same
+ * core functions as the auth cookie, which WordPress signs, expires, and backs
+ * with a session token, under a plugin-specific scheme. The form sends it back
+ * with the donation and the route validates it the same way core validates
+ * the cookie.
  *
  * This runs from the two form routes rather than on determine_current_user so
  * it works even when another plugin resolves the current user before this
@@ -22,6 +23,13 @@ namespace Give\DonationForms\Actions;
 class AuthenticateFormRequestWithToken
 {
     const TOKEN_KEY = 'authToken';
+
+    /**
+     * A plugin-specific salt scheme. WordPress derives the salt from the scheme
+     * name, so the token verifies only here and is never a valid login cookie
+     * if it leaks.
+     */
+    const SCHEME = 'givewp_embedded_form';
 
     /**
      * @since TBD
@@ -38,7 +46,7 @@ class AuthenticateFormRequestWithToken
             return;
         }
 
-        $userId = wp_validate_auth_cookie($token, 'logged_in');
+        $userId = wp_validate_auth_cookie($token, self::SCHEME);
 
         if ($userId) {
             wp_set_current_user($userId);
