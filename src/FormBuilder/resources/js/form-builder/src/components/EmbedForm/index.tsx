@@ -4,7 +4,7 @@ import {createPortal} from 'react-dom';
 import {useDispatch, useSelect} from '@wordpress/data';
 import {store} from '@wordpress/core-data';
 import {__, sprintf} from '@wordpress/i18n';
-import {Button, RadioControl, SelectControl, Spinner, TextControl} from '@wordpress/components';
+import {Button, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
 import {external} from '@wordpress/icons';
 import getWindowData from '@givewp/form-builder/common/getWindowData';
 import {CheckIcon} from '@givewp/form-builder/components/icons';
@@ -47,7 +47,64 @@ interface StateProps {
  */
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
-    const {formId} = getWindowData();
+    const {formId, homeUrl, externalEmbedScriptUrl, blockData, settings, campaignColors} = getWindowData();
+    const [isExternalEmbedCopied, setIsExternalEmbedCopied] = useState<boolean>(false);
+
+    const parsedSettings = (() => {
+        try {
+            return JSON.parse(settings);
+        } catch (error) {
+            return {};
+        }
+    })();
+
+    /**
+     * The external embed script cannot read form settings, so the snippet
+     * carries the form's colors as attributes. Campaign colors win when the
+     * form inherits them, matching how the form itself resolves colors.
+     *
+     * @since TBD
+     */
+    const getEmbedColors = (): {primary: string; secondary: string} => {
+        const inherit = parsedSettings.inheritCampaignColors;
+
+        return {
+            primary: (inherit && campaignColors?.primaryColor) || parsedSettings.primaryColor || '',
+            secondary: (inherit && campaignColors?.secondaryColor) || parsedSettings.secondaryColor || '',
+        };
+    };
+
+    /**
+     * The confirmation page redirect sends donors to a page on this
+     * WordPress site after donating - which means leaving the site the form
+     * is embedded on, so the external tab warns about it.
+     *
+     * @since TBD
+     */
+    const hasConfirmationRedirect = !!parsedSettings.enableReceiptConfirmationPage;
+
+    /**
+     * Login inside a cross-origin embed is unreliable in some browsers, so
+     * warn when this form requires it. Based on the saved block data.
+     *
+     * @since TBD
+     */
+    const hasRequiredLogin = (() => {
+        try {
+            const containsRequiredLogin = (blocks): boolean =>
+                Array.isArray(blocks) &&
+                blocks.some(
+                    (block) =>
+                        (block?.name === 'givewp/login' && block?.attributes?.required) ||
+                        containsRequiredLogin(block?.innerBlocks)
+                );
+
+            return containsRequiredLogin(JSON.parse(blockData));
+        } catch (error) {
+            return false;
+        }
+    })();
+
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const openFormBtnRef = useRef<HTMLInputElement>(null);
     const viewInsertedPageBtnRef = useRef<HTMLButtonElement>(null);
@@ -212,26 +269,62 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     }
 
     /**
+     * @since TBD
+     */
+    const writeToClipboard = async (text: string): Promise<boolean> => {
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (error) {
+                // Clipboard API can reject (permissions); fall through to the textarea fallback.
+            }
+        }
+
+        const textArea = document.createElement('textarea');
+
+        textArea.value = text;
+        textArea.setAttribute('readonly', '');
+        textArea.style.position = 'fixed';
+        textArea.style.top = '0';
+        textArea.style.left = '-9999px';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            return document.execCommand('copy');
+        } catch (error) {
+            return false;
+        } finally {
+            textArea.remove();
+        }
+    };
+
+    /**
+     * The snippet is pasted as HTML, so every interpolated attribute value is
+     * encoded. A button label with a quote must not break the markup.
+     *
+     * @since TBD
+     */
+    const attribute = (name: string, value: string | number): string => {
+        const encoded = String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        return `${name}="${encoded}"`;
+    };
+
+    /**
      * Handle copying shortcode to clipboard
+     *
+     * @since TBD extracted writeToClipboard
      */
     const handleCopy = async () => {
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(getShortcode());
-        } else {
-            const textArea = document.createElement('textarea');
-
-            textArea.value = getShortcode();
-            textArea.style.display = 'hidden';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                document.execCommand('copy');
-            } catch (error) {
-                console.error(error);
-            } finally {
-                textArea.remove();
-            }
+        if (!(await writeToClipboard(getShortcode()))) {
+            return;
         }
 
         setState(prevState => {
@@ -250,6 +343,55 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             });
         }, 2000);
     }
+
+    /**
+     * The snippet carries the selected display style and the translated
+     * donor-facing strings, since the standalone embed script has no access
+     * to WordPress translations.
+     *
+     * @since TBD
+     */
+    const getExternalEmbedSnippet = () => {
+        const attributes = [
+            attribute('form-id', formId),
+            attribute('wp-url', homeUrl),
+            attribute('fallback-text', __('Open donation form', 'give')),
+        ];
+
+        const colors = getEmbedColors();
+        if (colors.primary) {
+            attributes.push(attribute('primary-color', colors.primary));
+        }
+        if (colors.secondary) {
+            attributes.push(attribute('secondary-color', colors.secondary));
+        }
+
+        if (isButton) {
+            attributes.push(attribute('display-style', state.selectedStyle));
+            attributes.push(attribute('button-text', state.openFormButton || __('Donate', 'give')));
+        }
+
+        if (state.selectedStyle === 'modal') {
+            attributes.push(attribute('close-text', __('Close', 'give')));
+        }
+
+        return [
+            `<script ${attribute('src', externalEmbedScriptUrl)} defer></script>`,
+            `<givewp-donation-form ${attributes.join(' ')}></givewp-donation-form>`,
+        ].join('\n');
+    };
+
+    /**
+     * @since TBD
+     */
+    const handleCopyExternalEmbed = async () => {
+        if (!(await writeToClipboard(getExternalEmbedSnippet()))) {
+            return;
+        }
+
+        setIsExternalEmbedCopied(true);
+        setTimeout(() => setIsExternalEmbedCopied(false), 2000);
+    };
 
     /**
      * Handle inserting form into existing post/page
@@ -355,6 +497,78 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 </button>
             </div>
 
+            <TabPanel
+                className="give-embed-modal-tabs"
+                tabs={[
+                    {name: 'internal', title: __('This site', 'give')},
+                    {name: 'external', title: __('External website', 'give')},
+                ]}
+            >
+                {(tab) => tab.name === 'external' ? (
+                    <>
+                        <div className="give-embed-modal-row">
+                            <strong>
+                                {__('Embed on an external website', 'give')}
+                            </strong>
+
+                            <div className="give-embed-modal-helptext">
+                                {__('Copy and paste this snippet into any other website to display this donation form there.', 'give')}
+                            </div>
+
+                            <SelectControl
+                                label={__('Display style', 'give')}
+                                value={state.selectedStyle}
+                                options={displayStyles}
+                                onChange={value => setState(prevState => {
+                                    return {
+                                        ...prevState,
+                                        selectedStyle: value,
+                                    };
+                                })}
+                                help={getStyleDescription()}
+                            />
+
+                            {isButton && (
+                                <TextControl
+                                    placeholder={__('Donate', 'give')}
+                                    label={__('Button label', 'give')}
+                                    value={state.openFormButton}
+                                    onChange={value => setState(prevState => {
+                                        return {
+                                            ...prevState,
+                                            openFormButton: value,
+                                        };
+                                    })}
+                                />
+                            )}
+
+                            {hasRequiredLogin && (
+                                <div className="give-embed-modal-helptext">
+                                    {__('This form requires donor login, which is unreliable inside embedded forms in some browsers (like Safari). Consider making login optional for external embedding.', 'give')}
+                                </div>
+                            )}
+
+                            {hasConfirmationRedirect && (
+                                <div className="give-embed-modal-helptext">
+                                    {__('This form has "Confirmation Page Redirect" enabled in its settings, so donors will leave the site the form is embedded on after donating.', 'give')}
+                                </div>
+                            )}
+
+                            <div className="give-embed-modal-items give-embed-modal-copy">
+                                <div>
+                                    <Button
+                                        icon={isExternalEmbedCopied ? CheckIcon : CopyIcon}
+                                        variant="secondary"
+                                        onClick={handleCopyExternalEmbed}
+                                    >
+                                        {isExternalEmbedCopied ? __('Copied', 'give') : __('Copy Embed Code', 'give')}
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <>
             <div className="give-embed-modal-row">
 
                 <strong>
@@ -591,6 +805,10 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     </div>
                 </div>
             </div>
+
+                    </>
+                )}
+            </TabPanel>
         </div>,
         document.body,
     );
