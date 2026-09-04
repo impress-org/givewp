@@ -6,6 +6,7 @@ import getWindowData from '@givewp/forms/app/utilities/getWindowData';
 import postData from '@givewp/forms/app/utilities/postData';
 import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrlData';
 import navigateTop from '@givewp/forms/app/utilities/navigateTop';
+import {setAuthToken} from '@givewp/forms/app/utilities/authToken';
 import FieldError from '../layouts/FieldError';
 import styles from '../styles.module.scss';
 
@@ -157,6 +158,14 @@ const LoginForm = ({children, success, lostPasswordUrl, nodeName}) => {
             setValue('firstName', firstName || responseData.firstName);
             setValue('lastName', lastName || responseData.lastName);
             setValue('email', email || responseData.email);
+
+            /*
+             * Inside a cross-site iframe the browser drops the login cookie, so the
+             * server also returns a signed token that rides along with every
+             * validate and donate request instead.
+             */
+            setAuthToken(responseData.authToken);
+
             success();
         } else {
             setErrorMessage(

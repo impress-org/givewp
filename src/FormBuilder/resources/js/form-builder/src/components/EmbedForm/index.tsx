@@ -13,7 +13,6 @@ import getWindowData from '@givewp/form-builder/common/getWindowData';
 import {CheckIcon} from '@givewp/form-builder/components/icons';
 import {CopyIcon, ExitIcon} from '@givewp/components/AdminUI/Icons';
 import {Interweave} from 'interweave';
-import type {BlockInstance} from '@wordpress/blocks';
 import type {FormSettings} from '@givewp/form-builder/types/formSettings';
 
 import './styles.scss';
@@ -53,7 +52,7 @@ interface StateProps {
  */
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
-    const {formId, externalEmbedScriptUrl, blockData, settings, campaignColors} = getWindowData();
+    const {formId, externalEmbedScriptUrl, settings, campaignColors} = getWindowData();
     const [isExternalEmbedCopied, setIsExternalEmbedCopied] = useState<boolean>(false);
 
     const parsedSettings = useMemo((): Partial<FormSettings> => {
@@ -88,30 +87,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * @since TBD
      */
     const hasConfirmationRedirect = !!parsedSettings.enableReceiptConfirmationPage;
-
-    /**
-     * Login inside a cross-origin embed is unreliable in some browsers, so
-     * warn when this form requires it. Based on the saved block data.
-     *
-     * @since TBD
-     */
-    const hasRequiredLogin = useMemo((): boolean => {
-        try {
-            const containsRequiredLogin = (blocks: BlockInstance[]): boolean =>
-                Array.isArray(blocks) &&
-                blocks.some(
-                    (block) =>
-                        (block?.name === 'givewp/login' && block?.attributes?.required) ||
-                        containsRequiredLogin(block?.innerBlocks)
-                );
-
-            return containsRequiredLogin(JSON.parse(blockData));
-        } catch (error) {
-            console.error(error);
-
-            return false;
-        }
-    }, [blockData]);
 
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const openFormBtnRef = useRef<HTMLInputElement>(null);
@@ -523,12 +498,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                                         {__('The button is part of the other website, so it keeps this color until the snippet is updated. The form itself always uses its current design.', 'give')}
                                     </div>
                                 </>
-                            )}
-
-                            {hasRequiredLogin && (
-                                <div className="give-embed-modal-helptext">
-                                    {__('This form requires donor login, which is unreliable inside embedded forms in some browsers (like Safari). Consider making login optional for external embedding.', 'give')}
-                                </div>
                             )}
 
                             {hasConfirmationRedirect && (
