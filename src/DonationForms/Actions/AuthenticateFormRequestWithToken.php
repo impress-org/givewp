@@ -46,6 +46,17 @@ class AuthenticateFormRequestWithToken
             return;
         }
 
+        /*
+         * Core extends the expiry by an hour for POST requests, which is meant
+         * for a form that sat open in a browser. This token is a short-lived
+         * credential, so its own expiry is the limit.
+         */
+        $parts = wp_parse_auth_cookie($token, self::SCHEME);
+
+        if (!$parts || (int)$parts['expiration'] < time()) {
+            return;
+        }
+
         $userId = wp_validate_auth_cookie($token, self::SCHEME);
 
         if ($userId) {
