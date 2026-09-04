@@ -14,9 +14,27 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @var string|null
+     */
+    private $requestMethod;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->requestMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+    }
+
     public function tearDown(): void
     {
         wp_set_current_user(0);
+
+        if ($this->requestMethod === null) {
+            unset($_SERVER['REQUEST_METHOD']);
+        } else {
+            $_SERVER['REQUEST_METHOD'] = $this->requestMethod;
+        }
 
         parent::tearDown();
     }
@@ -69,7 +87,10 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     {
         $userId = $this->factory()->user->create();
 
-        (new AuthenticateFormRequestWithToken())($this->requestWith($this->tokenFor($userId, -HOUR_IN_SECONDS)));
+        // Core grants POST requests an extra hour; a token expired by minutes must still fail.
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+        (new AuthenticateFormRequestWithToken())($this->requestWith($this->tokenFor($userId, -5 * MINUTE_IN_SECONDS)));
 
         $this->assertSame(0, get_current_user_id());
     }
