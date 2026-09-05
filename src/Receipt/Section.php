@@ -172,6 +172,7 @@ class Section implements Iterator, ArrayAccess
      * @since 2.7.0
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->lineItems[$this->lineItemIds[$this->position]];
@@ -182,6 +183,7 @@ class Section implements Iterator, ArrayAccess
      *
      * @since 2.7.0
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->position;
@@ -193,6 +195,7 @@ class Section implements Iterator, ArrayAccess
      * @since 2.7.0
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
@@ -204,6 +207,7 @@ class Section implements Iterator, ArrayAccess
      * @since 2.7.0
      * @return bool|void
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return isset($this->lineItemIds[$this->position]);
@@ -214,6 +218,7 @@ class Section implements Iterator, ArrayAccess
      *
      * @since 2.7.0
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->position = 0;
@@ -228,6 +233,7 @@ class Section implements Iterator, ArrayAccess
      *
      * @param string $offset LineItem ID.
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->addLineItem($value);
@@ -242,6 +248,7 @@ class Section implements Iterator, ArrayAccess
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->lineItems[$offset]);
@@ -255,6 +262,7 @@ class Section implements Iterator, ArrayAccess
      * @param string $offset LineItem ID.
      *
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         if ($this->offsetExists($offset)) {
@@ -272,6 +280,7 @@ class Section implements Iterator, ArrayAccess
      *
      * @return LineItem|null
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return isset($this->lineItems[$offset]) ? $this->lineItems[$offset] : null;
