@@ -19,7 +19,7 @@ class DonateRouteSignature
     /**
      * @since 3.0.0
      */
-    public function __construct(string $name, string $expiration = null)
+    public function __construct(string $name, ?string $expiration = null)
     {
         $this->expiration = $expiration ?: $this->createExpirationTimestamp();
         $this->signature = $this->generateSignatureString($name, $this->expiration);

@@ -22,7 +22,7 @@ class MissingTabException extends Exception implements LoggableException
      * @param int            $code
      * @param Exception|null $previous
      */
-    public function __construct($tabId, $code = 0, Exception $previous = null)
+    public function __construct($tabId, $code = 0, ?Exception $previous = null)
     {
         $message = __('No tab exists with the ID: ', 'give') . $tabId;
 
