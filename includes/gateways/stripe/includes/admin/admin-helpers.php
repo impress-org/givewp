@@ -48,7 +48,6 @@ function give_stripe_supported_payment_methods()
  */
 function give_stripe_is_any_payment_method_active()
 {
-	$settings             = give_get_settings();
     $stripePaymentMethods = give_stripe_supported_payment_methods();
 
     // The modern Stripe gateways (e.g. Stripe Payment Element) are stored in the
@@ -56,7 +55,7 @@ function give_stripe_is_any_payment_method_active()
     // setting. Both must be checked, so a site using only a modern Stripe gateway
     // is still reported as having an active Stripe payment method.
     $gateways = array_merge(
-        $settings['gateways'] ?? [],
+        (array) give_get_option('gateways', []),
         (array) give_get_option('gateways_v3', [])
     );
 
