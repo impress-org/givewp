@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Added additional validation to donor email lookups.
+timestamp: 2026-09-08T19:02:45.700Z
