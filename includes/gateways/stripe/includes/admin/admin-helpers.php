@@ -50,10 +50,12 @@ function give_stripe_is_any_payment_method_active()
 {
     $stripePaymentMethods = give_stripe_supported_payment_methods();
 
-    // The modern Stripe gateways (e.g. Stripe Payment Element) are stored in the
-    // `gateways_v3` option, while the legacy gateways live in the `gateways`
-    // setting. Both must be checked, so a site using only a modern Stripe gateway
-    // is still reported as having an active Stripe payment method.
+    /*
+     * The modern Stripe gateways (e.g. Stripe Payment Element) are stored in the
+     * `gateways_v3` option, while the legacy gateways live in the `gateways`
+     * setting. Both must be checked, so a site using only a modern Stripe gateway
+     * is still reported as having an active Stripe payment method.
+     */
     $gateways = array_merge(
         (array) give_get_option('gateways', []),
         (array) give_get_option('gateways_v3', [])
