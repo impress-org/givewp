@@ -395,6 +395,7 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Retrieves a single donor from the database
 	 *
+	 * @since TBD Reject an email lookup value that sanitize_text_field() would rewrite, instead of matching against the rewritten form.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -404,7 +405,8 @@ class Give_DB_Donors extends Give_DB {
 	 * @return mixed         Upon success, an object of the donor. Upon failure, NULL
 	 */
 	public function get_donor_by( $field = 'id', $value = 0 ) {
-		$value = sanitize_text_field( $value );
+		$submitted_value = is_string( $value ) ? trim( $value ) : $value;
+		$value           = sanitize_text_field( $value );
 
 		// Bailout.
 		if ( empty( $field ) || empty( $value ) ) {
@@ -427,6 +429,15 @@ class Give_DB_Donors extends Give_DB {
 		} elseif ( 'email' === $field ) {
 
 			if ( ! is_email( $value ) ) {
+				return false;
+			}
+
+			// The column this looks up is unique on its raw, stored bytes. Matching
+			// against a form that sanitize_text_field() rewrote (e.g. by removing
+			// percent-hex sequences) would compare a different string than what is
+			// actually stored, letting one row's raw value resolve to another row's
+			// plain value. Require the two to already agree.
+			if ( $value !== $submitted_value ) {
 				return false;
 			}
 
