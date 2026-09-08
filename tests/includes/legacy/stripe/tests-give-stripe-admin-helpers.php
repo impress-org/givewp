@@ -159,8 +159,10 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 			)
 		);
 
-		// The modern gateway is registered as a supported Stripe payment method
-		// by GiveWP core's LegacyStripeAdapter.
+		/*
+		 * The modern gateway is registered as a supported Stripe payment method
+		 * by GiveWP core's LegacyStripeAdapter.
+		 */
 		$this->assertContains( 'stripe_payment_element', give_stripe_supported_payment_methods() );
 
 		$this->assertTrue( give_stripe_is_any_payment_method_active() );
