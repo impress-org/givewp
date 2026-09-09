@@ -86,6 +86,38 @@ final class GenerateTicketsFromPurchaseDataTest extends TestCase
     /**
      * @since TBD
      */
+    public function testInvokeMintsNothingWhenAlreadyOversoldBeyondCapacity(): void
+    {
+        $ticketType = EventTicketType::factory()->create([
+            'eventId' => $this->makeActiveEvent()->id,
+            'price' => new Money(1000, 'USD'),
+            'capacity' => 2,
+        ]);
+        EventTicket::factory()->create([
+            'eventId' => $ticketType->eventId,
+            'ticketTypeId' => $ticketType->id,
+        ]);
+        EventTicket::factory()->create([
+            'eventId' => $ticketType->eventId,
+            'ticketTypeId' => $ticketType->id,
+        ]);
+
+        // Simulate an admin lowering capacity after tickets were already sold against the higher limit.
+        $ticketType->capacity = 1;
+        $ticketType->save();
+
+        $donation = Donation::factory()->create(['amount' => new Money(1000, 'USD')]);
+
+        $data = $this->makePurchaseData($ticketType, 1);
+
+        (new GenerateTicketsFromPurchaseData($donation))($data);
+
+        $this->assertSame(2, give(EventTicketRepository::class)->queryByTicketTypeId($ticketType->id)->count());
+    }
+
+    /**
+     * @since TBD
+     */
     private function makePurchaseData(EventTicketType $ticketType, int $quantity): TicketPurchaseData
     {
         $object = new stdClass();

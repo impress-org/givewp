@@ -46,6 +46,45 @@ final class ReleaseEventTicketsForDonationTest extends TestCase
     /**
      * @since TBD
      */
+    public function testInvokeDeletesTicketsWhenDonationIsFailed(): void
+    {
+        $donation = Donation::factory()->create(['status' => DonationStatus::FAILED()]);
+        EventTicket::factory()->create(['donationId' => $donation->id]);
+
+        (new ReleaseEventTicketsForDonation())($donation);
+
+        $this->assertSame(0, give(EventTicketRepository::class)->queryByDonationId($donation->id)->count());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testInvokeDeletesTicketsWhenDonationIsAbandoned(): void
+    {
+        $donation = Donation::factory()->create(['status' => DonationStatus::ABANDONED()]);
+        EventTicket::factory()->create(['donationId' => $donation->id]);
+
+        (new ReleaseEventTicketsForDonation())($donation);
+
+        $this->assertSame(0, give(EventTicketRepository::class)->queryByDonationId($donation->id)->count());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testInvokeDeletesTicketsWhenDonationIsRevoked(): void
+    {
+        $donation = Donation::factory()->create(['status' => DonationStatus::REVOKED()]);
+        EventTicket::factory()->create(['donationId' => $donation->id]);
+
+        (new ReleaseEventTicketsForDonation())($donation);
+
+        $this->assertSame(0, give(EventTicketRepository::class)->queryByDonationId($donation->id)->count());
+    }
+
+    /**
+     * @since TBD
+     */
     public function testInvokeLeavesTicketsAloneWhenDonationIsComplete(): void
     {
         $donation = Donation::factory()->create(['status' => DonationStatus::COMPLETE()]);

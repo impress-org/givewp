@@ -88,4 +88,19 @@ class FeatureFlagRepositoryTest extends TestCase
 
         $this->assertFalse(FeatureFlag::enabled('my_feature'));
     }
+
+    /**
+     * @since TBD
+     */
+    public function testShouldIgnorePostOverrideWhenCapabilityIsMissingEvenWithAValidNonce()
+    {
+        $userId = self::factory()->user->create(['role' => 'subscriber']);
+        wp_set_current_user($userId);
+        $_REQUEST['_give-save-settings'] = wp_create_nonce('give-save-settings');
+        $_POST['enable_my_feature'] = 'enabled';
+
+        give_update_option('enable_my_feature', false);
+
+        $this->assertFalse(FeatureFlag::enabled('my_feature'));
+    }
 }

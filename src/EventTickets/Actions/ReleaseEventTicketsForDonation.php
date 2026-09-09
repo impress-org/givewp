@@ -21,6 +21,8 @@ class ReleaseEventTicketsForDonation
 
         $tickets = give(EventTicketRepository::class)->queryByDonationId($donation->id)->getAll() ?? [];
 
+        // Each delete() runs in its own transaction (matches the per-row transaction style elsewhere
+        // in EventTicketRepository); a mid-loop failure can leave a release partially applied.
         foreach ($tickets as $ticket) {
             $ticket->delete();
         }
