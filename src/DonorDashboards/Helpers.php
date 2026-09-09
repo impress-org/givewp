@@ -2,7 +2,6 @@
 
 namespace Give\DonorDashboards;
 
-use Give\Donors\Models\Donor;
 use WP_User;
 
 /**
@@ -13,6 +12,7 @@ class Helpers
 
     /**
      * Retrieve the current donor ID from based on session
+     * @since TBD Guard against get_donor_by() finding no matching donor for the token's email.
      * @since 2.10.0
      */
     public static function getCurrentDonorId()
@@ -31,7 +31,9 @@ class Helpers
             if ($useToken) {
                 $donor = give()->donors->get_donor_by('email', give()->email_access->token_email);
 
-                return $donor->id;
+                if ($donor) {
+                    return $donor->id;
+                }
             }
         }
 

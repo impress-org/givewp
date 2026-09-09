@@ -154,6 +154,39 @@ class Tests_Donors_DB extends TestCase {
 	}
 
 	/**
+	 * get_donor_by('email', ...) must reject a value whose sanitize_text_field() form differs
+	 * from the value submitted, rather than matching it against the rewritten form.
+	 *
+	 * @since TBD
+	 *
+	 * @covers Give_DB_Donors::get_donor_by
+	 */
+	public function test_get_by_email_rejects_value_sanitize_text_field_would_rewrite() {
+
+		$donor = Give()->donors->get_donor_by( 'email', 'test%41admin@domain.com' );
+
+		$this->assertFalse( $donor );
+
+	}
+
+	/**
+	 * get_donor_by('email', ...) must still match a value that only differs from the stored
+	 * form by incidental leading/trailing whitespace.
+	 *
+	 * @since TBD
+	 *
+	 * @covers Give_DB_Donors::get_donor_by
+	 */
+	public function test_get_by_email_accepts_incidental_surrounding_whitespace() {
+
+		$donor = Give()->donors->get_donor_by( 'email', ' testadmin@domain.com ' );
+
+		$this->assertIsObject( $donor );
+		$this->assertObjectHasProperty( 'email', $donor );
+
+	}
+
+	/**
 	 * get_donor_by_token() must return the matching donor for a real, scalar verify_key.
 	 *
 	 * @since 4.16.6
