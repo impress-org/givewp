@@ -6,6 +6,7 @@ use Give\BetaFeatures\Facades\FeatureFlag;
 use Give\EventTickets\Actions\AddEventTicketsToDonationConfirmationPageDonationTotal;
 use Give\EventTickets\Actions\AddEventTicketsToDonationConfirmationPageEventTicketDetails;
 use Give\EventTickets\Actions\RegisterEventsMenuItem;
+use Give\EventTickets\Actions\ReleaseEventTicketsForDonation;
 use Give\EventTickets\Actions\RenderDonationFormBlock;
 use Give\EventTickets\Actions\UpdateDonationConfirmationPageReceiptDonationAmount;
 use Give\EventTickets\Repositories\EventRepository;
@@ -44,6 +45,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
+     * @since TBD Register the donation-status listener that releases tickets.
      * @since 3.6.0
      */
     public function boot(): void
@@ -56,6 +58,7 @@ class ServiceProvider implements ServiceProviderInterface
         $this->registerRoutes();
         $this->registerMenus();
         $this->registerFormExtension();
+        $this->registerDonationStatusListener();
     }
 
     /**
@@ -117,5 +120,13 @@ class ServiceProvider implements ServiceProviderInterface
         Hooks::addAction('givewp_generate_confirmation_page_receipt_before_donation_total', AddEventTicketsToDonationConfirmationPageDonationTotal::class);
         Hooks::addAction('givewp_generate_confirmation_page_receipt_fill_event_ticket_details', AddEventTicketsToDonationConfirmationPageEventTicketDetails::class);
         Hooks::addFilter('givewp_generate_confirmation_page_receipt_detail_donation_amount', UpdateDonationConfirmationPageReceiptDonationAmount::class, '__invoke', 10, 2);
+    }
+
+    /**
+     * @since TBD
+     */
+    private function registerDonationStatusListener(): void
+    {
+        Hooks::addAction('givewp_donation_updated', ReleaseEventTicketsForDonation::class);
     }
 }
