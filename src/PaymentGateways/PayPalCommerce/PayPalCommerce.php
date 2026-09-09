@@ -296,12 +296,21 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
+     * @since TBD Guard against a truncated PayPal response that would otherwise fatal on property access.
      * @since 4.0.0
+     *
+     * @throws PaymentGatewayException
      */
     private function shouldUpdateOrder(Donation $donation, $payPalOrder): bool
     {
-        $orderAmount = $payPalOrder->purchase_units[0]->amount->value;
-        $orderCurrency = $payPalOrder->purchase_units[0]->amount->currency_code;
+        $purchaseUnit = $payPalOrder->purchase_units[0] ?? null;
+
+        if (! isset($purchaseUnit->amount->value, $purchaseUnit->amount->currency_code)) {
+            throw new PaymentGatewayException('PayPal Order does not have an amount.');
+        }
+
+        $orderAmount = $purchaseUnit->amount->value;
+        $orderCurrency = $purchaseUnit->amount->currency_code;
         $currentOrderAmount = Money::fromDecimal($orderAmount, $orderCurrency);
 
         if (!$currentOrderAmount->equals($donation->amount)) {
@@ -329,8 +338,14 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
      */
     private function validateCompletedOrderAmountMatchesDonation(object $payPalOrder, Donation $donation): void
     {
-        $orderAmount = $payPalOrder->purchase_units[0]->amount->value;
-        $orderCurrency = $payPalOrder->purchase_units[0]->amount->currency_code;
+        $purchaseUnit = $payPalOrder->purchase_units[0] ?? null;
+
+        if (! isset($purchaseUnit->amount->value, $purchaseUnit->amount->currency_code)) {
+            throw new PaymentGatewayException('PayPal Order does not have an amount.');
+        }
+
+        $orderAmount = $purchaseUnit->amount->value;
+        $orderCurrency = $purchaseUnit->amount->currency_code;
         $completedOrderAmount = Money::fromDecimal($orderAmount, $orderCurrency);
 
         if (!$completedOrderAmount->equals($donation->amount)) {
@@ -353,9 +368,18 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
      */
     private function validateCaptureNotAlreadyRecorded(string $transactionId, Donation $donation): void
     {
-        $existingDonation = give(DonationRepository::class)->getByGatewayTransactionId($transactionId);
+        /**
+         * Guard against replaying the same capture for another donation; allow
+         * retry of the same donation. Note: not atomic with PaymentComplete save
+         * — concurrent replays could both pass; a UNIQUE DB constraint is the
+         * future hardening for that race.
+         */
+        $existingDonation = give(DonationRepository::class)
+            ->queryByGatewayTransactionId($transactionId)
+            ->where('ID', $donation->id, '!=')
+            ->get();
 
-        if ($existingDonation && $existingDonation->id !== $donation->id) {
+        if ($existingDonation) {
             Log::error(
                 sprintf(
                     'PayPal capture is already recorded against a different donation. Capture ID: %s, Donation ID: %s, Existing Donation ID: %s',
