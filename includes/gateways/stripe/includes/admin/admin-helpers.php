@@ -48,6 +48,7 @@ function give_stripe_supported_payment_methods()
  */
 function give_stripe_is_any_payment_method_active()
 {
+    $settings             = give_get_settings();
     $stripePaymentMethods = give_stripe_supported_payment_methods();
 
     /*
@@ -57,7 +58,7 @@ function give_stripe_is_any_payment_method_active()
      * is still reported as having an active Stripe payment method.
      */
     $gateways = array_merge(
-        (array) give_get_option('gateways', []),
+        (array) ($settings['gateways'] ?? []),
         (array) give_get_option('gateways_v3', [])
     );
 
