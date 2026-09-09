@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Added additional validation to PayPal Commerce completed-order processing.
+timestamp: 2026-09-09T01:44:08.163Z

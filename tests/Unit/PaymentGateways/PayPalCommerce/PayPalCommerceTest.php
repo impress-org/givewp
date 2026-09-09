@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\PaymentGateways\PayPalCommerce;
 
 use Give\Donations\Models\Donation;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
+use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
@@ -106,13 +107,14 @@ class PayPalCommerceTest extends TestCase
      * An order the v2 ajax endpoint already captured is recorded as-is; nothing is patched or
      * captured again.
      *
+     * @since TBD Give the completed order a matching amount, now required to be recorded.
      * @since 4.16.7.1
      */
     public function testCompletedOrderIsRecordedWithoutCapturingAgain(): void
     {
         $donation = $this->createDonation('25.00');
 
-        $order = $this->capturedOrder('CAPTURE1');
+        $order = $this->capturedOrder('CAPTURE1', '25.00', 'USD');
         $order->status = 'COMPLETED';
 
         $this->payPalOrder->method('getApprovedOrder')->willReturn($order);
@@ -125,14 +127,59 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
+     * A completed order can no longer be patched the way one still pending capture can, so an
+     * amount mismatch here must be rejected outright rather than silently recorded.
+     *
+     * @since TBD
+     */
+    public function testCompletedOrderWithDifferentAmountIsRejected(): void
+    {
+        $donation = $this->createDonation('25.00');
+
+        $order = $this->capturedOrder('CAPTURE1', '999999.00', 'USD');
+        $order->status = 'COMPLETED';
+
+        $this->payPalOrder->method('getApprovedOrder')->willReturn($order);
+        $this->payPalOrder->expects($this->never())->method('updateOrderFromDonation');
+        $this->payPalOrder->expects($this->never())->method('approveOrder');
+
+        $this->expectException(PaymentGatewayException::class);
+
+        give(PayPalCommerce::class)->createPayment($donation, ['payPalOrderId' => 'ORDER123']);
+    }
+
+    /**
+     * A completed order's capture already recorded against a different donation must be
+     * rejected, not recorded again for a second donation.
+     *
+     * @since TBD
+     */
+    public function testCompletedOrderWithCaptureAlreadyRecordedForAnotherDonationIsRejected(): void
+    {
+        $this->createDonation('25.00', 'CAPTURE1');
+        $donation = $this->createDonation('25.00');
+
+        $order = $this->capturedOrder('CAPTURE1', '25.00', 'USD');
+        $order->status = 'COMPLETED';
+
+        $this->payPalOrder->method('getApprovedOrder')->willReturn($order);
+
+        $this->expectException(PaymentGatewayException::class);
+
+        give(PayPalCommerce::class)->createPayment($donation, ['payPalOrderId' => 'ORDER123']);
+    }
+
+    /**
+     * @since TBD Add the optional $gatewayTransactionId param.
      * @since 4.16.7.1
      */
-    private function createDonation(string $amount): Donation
+    private function createDonation(string $amount, ?string $gatewayTransactionId = null): Donation
     {
-        return Donation::factory()->create([
+        return Donation::factory()->create(array_filter([
             'gatewayId' => PayPalCommerce::id(),
             'amount' => Money::fromDecimal($amount, 'USD'),
-        ]);
+            'gatewayTransactionId' => $gatewayTransactionId,
+        ]));
     }
 
     /**
@@ -154,16 +201,20 @@ class PayPalCommerceTest extends TestCase
     /**
      * The shape PayPal returns from POST /v2/checkout/orders/{id}/capture.
      *
+     * @since TBD Add the $amount/$currency params.
      * @since 4.16.7.1
      */
-    private function capturedOrder(string $captureId): stdClass
+    private function capturedOrder(string $captureId, string $amount = '25.00', string $currency = 'USD'): stdClass
     {
         $capture = (object)['id' => $captureId, 'status' => 'COMPLETED'];
 
         $order = new stdClass();
         $order->id = 'ORDER123';
         $order->status = 'COMPLETED';
-        $order->purchase_units = [(object)['payments' => (object)['captures' => [$capture]]]];
+        $order->purchase_units = [(object)[
+            'amount' => (object)['value' => $amount, 'currency_code' => $currency],
+            'payments' => (object)['captures' => [$capture]],
+        ]];
 
         return $order;
     }
