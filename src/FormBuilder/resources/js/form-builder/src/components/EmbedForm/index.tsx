@@ -1,4 +1,4 @@
-import {MouseEventHandler, Ref, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import cx from 'classnames';
 import {createPortal} from 'react-dom';
 import {useDispatch, useSelect} from '@wordpress/data';
@@ -510,7 +510,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                                     <Button
                                         icon={isExternalEmbedCopied ? CheckIcon : CopyIcon}
                                         variant="secondary"
-                                        ref={copyExternalEmbedRef as Ref<HTMLAnchorElement>}
+                                        ref={copyExternalEmbedRef}
                                     >
                                         {isExternalEmbedCopied ? __('Copied', 'give') : __('Copy Embed Code', 'give')}
                                     </Button>
@@ -741,7 +741,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                         <Button
                             icon={state.isCopied ? CheckIcon : CopyIcon}
                             variant="secondary"
-                            ref={copyShortcodeRef as Ref<HTMLAnchorElement>}
+                            ref={copyShortcodeRef}
                         >
                             {state.isCopied ? __('Copied', 'give') : __('Copy Shortcode', 'give')}
                         </Button>
