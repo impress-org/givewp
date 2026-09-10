@@ -16,6 +16,9 @@ export function setAuthToken(token: string): void {
     window.givewp.form.authToken = token ?? '';
 }
 
+/**
+ * @since TBD
+ */
 export function getAuthToken(): string {
     return window.givewp?.form?.authToken ?? '';
 }

@@ -22,14 +22,22 @@ namespace Give\DonationForms\Actions;
  */
 class AuthenticateFormRequestWithToken
 {
-    const TOKEN_KEY = 'authToken';
+    /**
+     * The request key the form sends the token under. The authentication
+     * route returns it under the same key.
+     *
+     * @since TBD
+     */
+    public const TOKEN_KEY = 'authToken';
 
     /**
      * A plugin-specific salt scheme. WordPress derives the salt from the scheme
      * name, so the token verifies only here and is never a valid login cookie
      * if it leaks.
+     *
+     * @since TBD
      */
-    const SCHEME = 'givewp_embedded_form';
+    public const SCHEME = 'givewp_embedded_form';
 
     /**
      * @since TBD
