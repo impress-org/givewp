@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Improved validation of the event tickets purchase flow.
+timestamp: 2026-09-09T19:27:15.358Z

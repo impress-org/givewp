@@ -9,6 +9,7 @@ use Give\EventTickets\Models\EventTicket;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\Exception;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Exceptions\Primitives\RuntimeException;
 use Give\Framework\Models\ModelQueryBuilder;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
@@ -59,10 +60,11 @@ class EventTicketRepository
     }
 
     /**
+     * @since TBD Enforce the ticket type's remaining capacity atomically with the insert (locking the ticket type row and re-counting under that lock), closing a race that let concurrent purchases jointly oversell it.
      * @since 3.20.0 Add "amount" column to the insert statement
      * @since 3.6.0
      *
-     * @throws Exception|InvalidArgumentException
+     * @throws Exception|InvalidArgumentException|RuntimeException
      */
     public function insert(EventTicket $eventTicket)
     {
@@ -77,6 +79,12 @@ class EventTicketRepository
         $createdDateTime = Temporal::withoutMicroseconds($eventTicket->createdAt ?: Temporal::getCurrentDateTime());
 
         DB::query('START TRANSACTION');
+
+        if (!$this->hasRemainingCapacity($eventTicket)) {
+            DB::query('ROLLBACK');
+
+            throw new RuntimeException('Ticket type has no remaining capacity');
+        }
 
         try {
             DB::table('give_event_tickets')
@@ -105,6 +113,39 @@ class EventTicketRepository
         DB::query('COMMIT');
 
         Hooks::doAction('givewp_events_event_ticket_created', $eventTicket);
+    }
+
+    /**
+     * Locks the ticket type's row and checks its remaining capacity against a fresh ticket count taken
+     * under that lock. Must only be called after DB::query('START TRANSACTION') — the lock it takes is
+     * what makes the check-then-insert in insert() atomic across concurrent requests for the same
+     * ticket type; called on its own, outside a transaction, it would just be another stale read.
+     *
+     * @since TBD
+     */
+    private function hasRemainingCapacity(EventTicket $eventTicket): bool
+    {
+        global $wpdb;
+
+        $capacity = DB::get_var(
+            DB::prepare(
+                "SELECT capacity FROM {$wpdb->give_event_ticket_types} WHERE id = %d FOR UPDATE",
+                $eventTicket->ticketTypeId
+            )
+        );
+
+        if ($capacity === null) {
+            return false;
+        }
+
+        $ticketCount = (int)DB::get_var(
+            DB::prepare(
+                "SELECT COUNT(*) FROM {$wpdb->give_event_tickets} WHERE ticket_type_id = %d",
+                $eventTicket->ticketTypeId
+            )
+        );
+
+        return $ticketCount < (int)$capacity;
     }
 
     /**

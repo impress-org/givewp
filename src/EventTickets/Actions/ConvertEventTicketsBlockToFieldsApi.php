@@ -15,6 +15,7 @@ use Give\Framework\Support\ValueObjects\Money;
 class ConvertEventTicketsBlockToFieldsApi
 {
     /**
+     * @since TBD Resolve a purchased ticket type only among the ticket types of this block's own event, and reject it if that event has already ended.
      * @since 4.6.0 Add support for currency conversion
      * @since 3.20.0 Set event end date and time.
      * @since 3.12.2 Remove event ID from field name
@@ -39,10 +40,10 @@ class ConvertEventTicketsBlockToFieldsApi
                     ->description($event->description)
                     ->ticketTypes($ticketTypes);
 
-                $eventTicketsField->scope(function (EventTickets $field, $value, Donation $donation) {
+                $eventTicketsField->scope(function (EventTickets $field, $value, Donation $donation) use ($event) {
 
-                    $ticketPurchaseData = array_map(function ($data) {
-                        return TicketPurchaseData::fromFieldValueObject($data);
+                    $ticketPurchaseData = array_map(function ($data) use ($event) {
+                        return TicketPurchaseData::fromFieldValueObject($data, $event);
                     }, json_decode($value));
 
                     array_walk($ticketPurchaseData, new GenerateTicketsFromPurchaseData($donation));

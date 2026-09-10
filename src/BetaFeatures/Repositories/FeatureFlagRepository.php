@@ -2,6 +2,8 @@
 
 namespace Give\BetaFeatures\Repositories;
 
+use Give\Framework\Permissions\Facades\UserPermissions;
+
 class FeatureFlagRepository
 {
     /**
@@ -38,16 +40,27 @@ class FeatureFlagRepository
     }
 
     /**
+     * @since TBD Only trust $_POST during a verified settings-save request, not any request.
      * @since 3.6.0
      */
     public function enabled($feature, $default = false): bool
     {
         // Workaround so that the updated option is available at the start of the request.
-        $option = isset($_POST["enable_$feature"])
+        $option = ($this->isVerifiedSettingsSaveRequest() && isset($_POST["enable_$feature"]))
             ? give_clean($_POST["enable_$feature"])
             : give_get_option("enable_$feature", $default);
 
         return give_is_setting_enabled($option);
 
+    }
+
+    /**
+     * @since TBD
+     */
+    private function isVerifiedSettingsSaveRequest(): bool
+    {
+        return UserPermissions::settings()->canManage()
+            && class_exists('Give_Admin_Settings')
+            && \Give_Admin_Settings::verify_nonce();
     }
 }
