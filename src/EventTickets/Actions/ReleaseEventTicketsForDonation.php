@@ -3,6 +3,7 @@
 namespace Give\EventTickets\Actions;
 
 use Give\Donations\Models\Donation;
+use Give\Donations\Models\DonationNote;
 use Give\EventTickets\Repositories\EventTicketRepository;
 
 /**
@@ -34,6 +35,19 @@ class ReleaseEventTicketsForDonation
         // in EventTicketRepository); a mid-loop failure can leave a release partially applied.
         foreach ($tickets as $ticket) {
             $ticket->delete();
+
+            // The ticket row is gone after delete(), so the note carries its identifying details
+            // itself rather than a ticket ID nothing will resolve afterward.
+            DonationNote::create([
+                'donationId' => $donation->id,
+                'content' => sprintf(
+                    /* translators: 1: event ID, 2: ticket type ID, 3: donation status */
+                    __('Event ticket released (event #%1$d, ticket type #%2$d) because the donation status changed to "%3$s".', 'give'),
+                    $ticket->eventId,
+                    $ticket->ticketTypeId,
+                    $donation->status->label()
+                ),
+            ]);
         }
     }
 
