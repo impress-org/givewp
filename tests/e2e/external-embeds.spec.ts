@@ -149,6 +149,21 @@ test.describe('External donation form embeds', () => {
         await waitForForm(form);
         await expect(page.locator('.givewp-embed__overlay')).toBeVisible();
 
+        // Focus never leaves the dialog for the host page: backwards past the
+        // close button, or forwards out the far side of the iframe.
+        const focusIsInsideDialog = () =>
+            page.evaluate(() => document.activeElement?.closest('.givewp-embed__dialog') !== null);
+
+        await page.locator('.givewp-embed__close').focus();
+        await page.keyboard.press('Shift+Tab');
+        expect(await focusIsInsideDialog()).toBe(true);
+
+        await page.locator('.givewp-embed__dialog iframe').focus();
+        for (let i = 0; i < 30; i++) {
+            await page.keyboard.press('Tab');
+            expect(await focusIsInsideDialog()).toBe(true);
+        }
+
         await page.locator('.givewp-embed__close').click();
         await expect(page.locator('.givewp-embed__overlay')).toBeHidden();
     });

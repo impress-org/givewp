@@ -93,6 +93,13 @@ givewp-donation-form {
     line-height: 1;
     cursor: pointer;
 }
+.givewp-embed__focus-guard {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
 `;
 
 function injectStyles() {
@@ -425,32 +432,41 @@ class GiveWPDonationForm extends HTMLElement {
             }
         });
         this.keydownHandler = (event: KeyboardEvent) => {
-            if (overlay.style.display === 'none') {
-                return;
-            }
-
-            if (event.key === 'Escape') {
+            if (overlay.style.display !== 'none' && event.key === 'Escape') {
                 hide();
-                return;
-            }
-
-            // Keep Tab inside the dialog. The iframe manages its own inner
-            // focus order; this only stops focus escaping to the host page.
-            if (event.key === 'Tab' && !dialog.contains(document.activeElement)) {
-                event.preventDefault();
-                dialog.focus();
             }
         };
         document.addEventListener('keydown', this.keydownHandler);
 
-        dialog.appendChild(close);
+        /*
+         * Focus guards bracket the dialog's contents. Tabbing past either end
+         * lands on a guard, still inside the dialog, which hands focus to the
+         * opposite end. A key listener cannot do this: the browser moves
+         * focus after keydown, and while focus is inside the cross-origin
+         * iframe the host document sees no key events at all.
+         */
+        const focusables = () => Array.from(dialog.querySelectorAll<HTMLElement>('a[href], button, iframe'));
+        const startGuard = this.createFocusGuard(() => focusables().pop()?.focus());
+        const endGuard = this.createFocusGuard(() => focusables().shift()?.focus());
+
+        dialog.append(startGuard, close);
         overlay.appendChild(dialog);
         this.appendChild(overlay);
         this.overlay = overlay;
 
         // The iframe lives on across open/close so form state survives.
         this.renderForm(src, dialog);
+        dialog.appendChild(endGuard);
         this.focusDialog();
+    }
+
+    createFocusGuard(onFocus: () => void): HTMLElement {
+        const guard = document.createElement('span');
+        guard.className = 'givewp-embed__focus-guard';
+        guard.tabIndex = 0;
+        guard.addEventListener('focus', onFocus);
+
+        return guard;
     }
 
     focusDialog() {
