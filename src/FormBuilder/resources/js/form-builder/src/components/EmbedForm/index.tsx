@@ -1,4 +1,4 @@
-import {MouseEventHandler, useCallback, useEffect, useRef, useState} from 'react';
+import {MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import cx from 'classnames';
 import {createPortal} from 'react-dom';
 import {useDispatch, useSelect} from '@wordpress/data';
@@ -10,6 +10,8 @@ import getWindowData from '@givewp/form-builder/common/getWindowData';
 import {CheckIcon} from '@givewp/form-builder/components/icons';
 import {CopyIcon, ExitIcon} from '@givewp/components/AdminUI/Icons';
 import {Interweave} from 'interweave';
+import type {BlockInstance} from '@wordpress/blocks';
+import type {FormSettings} from '@givewp/form-builder/types/formSettings';
 
 import './styles.scss';
 
@@ -50,7 +52,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const {formId, homeUrl, externalEmbedScriptUrl, blockData, settings, campaignColors} = getWindowData();
     const [isExternalEmbedCopied, setIsExternalEmbedCopied] = useState<boolean>(false);
 
-    const parsedSettings = (() => {
+    const parsedSettings = useMemo((): Partial<FormSettings> => {
         try {
             return JSON.parse(settings);
         } catch (error) {
@@ -58,7 +60,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
             return {};
         }
-    })();
+    }, [settings]);
 
     /**
      * The external embed script cannot read form settings, so the snippet
@@ -91,9 +93,9 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      *
      * @since TBD
      */
-    const hasRequiredLogin = (() => {
+    const hasRequiredLogin = useMemo((): boolean => {
         try {
-            const containsRequiredLogin = (blocks): boolean =>
+            const containsRequiredLogin = (blocks: BlockInstance[]): boolean =>
                 Array.isArray(blocks) &&
                 blocks.some(
                     (block) =>
@@ -107,7 +109,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
             return false;
         }
-    })();
+    }, [blockData]);
 
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const openFormBtnRef = useRef<HTMLInputElement>(null);
