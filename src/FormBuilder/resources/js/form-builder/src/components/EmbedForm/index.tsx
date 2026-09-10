@@ -1,7 +1,8 @@
-import {MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {MouseEventHandler, Ref, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import cx from 'classnames';
 import {createPortal} from 'react-dom';
 import {useDispatch, useSelect} from '@wordpress/data';
+import {useCopyToClipboard} from '@wordpress/compose';
 import {store} from '@wordpress/core-data';
 import {__, sprintf} from '@wordpress/i18n';
 import {Button, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
@@ -275,39 +276,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     }
 
     /**
-     * @since TBD
-     */
-    const writeToClipboard = async (text: string): Promise<boolean> => {
-        if (navigator.clipboard && window.isSecureContext) {
-            try {
-                await navigator.clipboard.writeText(text);
-                return true;
-            } catch (error) {
-                // Clipboard API can reject (permissions); fall through to the textarea fallback.
-            }
-        }
-
-        const textArea = document.createElement('textarea');
-
-        textArea.value = text;
-        textArea.setAttribute('readonly', '');
-        textArea.style.position = 'fixed';
-        textArea.style.top = '0';
-        textArea.style.left = '-9999px';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
-            return document.execCommand('copy');
-        } catch (error) {
-            return false;
-        } finally {
-            textArea.remove();
-        }
-    };
-
-    /**
      * The snippet is pasted as HTML, so every interpolated attribute value is
      * encoded. A button label with a quote must not break the markup.
      *
@@ -322,33 +290,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
         return `${name}="${encoded}"`;
     };
-
-    /**
-     * Handle copying shortcode to clipboard
-     *
-     * @since TBD extracted writeToClipboard
-     */
-    const handleCopy = async () => {
-        if (!(await writeToClipboard(getShortcode()))) {
-            return;
-        }
-
-        setState(prevState => {
-            return {
-                ...prevState,
-                isCopied: true,
-            };
-        });
-
-        setTimeout(() => {
-            setState(prevState => {
-                return {
-                    ...prevState,
-                    isCopied: false,
-                };
-            });
-        }, 2000);
-    }
 
     /**
      * The snippet carries the selected display style and the translated
@@ -388,16 +329,20 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     };
 
     /**
+     * Both copy buttons go through the WordPress clipboard hook, which reads
+     * the text on click and only reports success once the copy actually landed.
+     *
      * @since TBD
      */
-    const handleCopyExternalEmbed = async () => {
-        if (!(await writeToClipboard(getExternalEmbedSnippet()))) {
-            return;
-        }
+    const copyShortcodeRef = useCopyToClipboard(getShortcode, () => {
+        setState((prevState) => ({...prevState, isCopied: true}));
+        setTimeout(() => setState((prevState) => ({...prevState, isCopied: false})), 2000);
+    });
 
+    const copyExternalEmbedRef = useCopyToClipboard(getExternalEmbedSnippet, () => {
         setIsExternalEmbedCopied(true);
         setTimeout(() => setIsExternalEmbedCopied(false), 2000);
-    };
+    });
 
     /**
      * Handle inserting form into existing post/page
@@ -565,7 +510,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                                     <Button
                                         icon={isExternalEmbedCopied ? CheckIcon : CopyIcon}
                                         variant="secondary"
-                                        onClick={handleCopyExternalEmbed}
+                                        ref={copyExternalEmbedRef as Ref<HTMLAnchorElement>}
                                     >
                                         {isExternalEmbedCopied ? __('Copied', 'give') : __('Copy Embed Code', 'give')}
                                     </Button>
@@ -796,7 +741,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                         <Button
                             icon={state.isCopied ? CheckIcon : CopyIcon}
                             variant="secondary"
-                            onClick={handleCopy}
+                            ref={copyShortcodeRef as Ref<HTMLAnchorElement>}
                         >
                             {state.isCopied ? __('Copied', 'give') : __('Copy Shortcode', 'give')}
                         </Button>
