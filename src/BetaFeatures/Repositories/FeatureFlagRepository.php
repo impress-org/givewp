@@ -2,6 +2,8 @@
 
 namespace Give\BetaFeatures\Repositories;
 
+use Give\Framework\Permissions\Facades\UserPermissions;
+
 class FeatureFlagRepository
 {
     /**
@@ -57,7 +59,7 @@ class FeatureFlagRepository
      */
     private function isVerifiedSettingsSaveRequest(): bool
     {
-        return current_user_can('manage_give_settings')
+        return UserPermissions::settings()->canManage()
             && class_exists('Give_Admin_Settings')
             && \Give_Admin_Settings::verify_nonce();
     }
