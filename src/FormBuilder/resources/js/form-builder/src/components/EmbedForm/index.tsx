@@ -54,6 +54,8 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         try {
             return JSON.parse(settings);
         } catch (error) {
+            console.error(error);
+
             return {};
         }
     })();
@@ -101,6 +103,8 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
             return containsRequiredLogin(JSON.parse(blockData));
         } catch (error) {
+            console.error(error);
+
             return false;
         }
     })();
