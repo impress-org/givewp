@@ -16,12 +16,12 @@ use Give\EventTickets\Repositories\EventTicketRepository;
  * Runs on every donation status change (see ServiceProvider's givewp_donation_updated listener)
  * and is a no-op unless the new status is one of excludesFromSales().
  *
- * @since TBD
+ * @since 4.16.8.1
  */
 class ReleaseEventTicketsForDonation
 {
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function __invoke(Donation $donation)
     {
@@ -52,7 +52,7 @@ class ReleaseEventTicketsForDonation
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     private function excludesFromSales(Donation $donation): bool
     {

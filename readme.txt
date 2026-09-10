@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.6
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.16.8
+Stable tag: 4.16.8.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.16.8.1: September 10th, 2026 =
+* Security: Improved validation of the event tickets purchase flow.
+* Security: Added additional validation to PayPal Commerce completed-order processing.
+* Security: Added additional validation to donor email lookups. Thanks Jakub Herman for responsibly disclosing this issue.
+
 = 4.16.8: September 2nd, 2026 =
 * Fix: Fixed a campaign's default donation form appearing unpublished in the form builder.
 * Fix: Fixed PHP warnings on the form builder screen when its page is opened without the locale or donation form ID query arguments.

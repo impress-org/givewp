@@ -11,14 +11,14 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.16.8.1
  */
 final class ReleaseEventTicketsForDonationTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeDeletesTicketsWhenDonationIsCancelled(): void
     {
@@ -31,7 +31,7 @@ final class ReleaseEventTicketsForDonationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeDeletesTicketsWhenDonationIsRefunded(): void
     {
@@ -44,7 +44,7 @@ final class ReleaseEventTicketsForDonationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeDeletesTicketsWhenDonationIsFailed(): void
     {
@@ -57,7 +57,7 @@ final class ReleaseEventTicketsForDonationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeDeletesTicketsWhenDonationIsAbandoned(): void
     {
@@ -70,7 +70,7 @@ final class ReleaseEventTicketsForDonationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeDeletesTicketsWhenDonationIsRevoked(): void
     {
@@ -83,7 +83,7 @@ final class ReleaseEventTicketsForDonationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeLeavesTicketsAloneWhenDonationIsComplete(): void
     {
@@ -96,7 +96,7 @@ final class ReleaseEventTicketsForDonationTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeLeavesTicketsAloneWhenDonationIsPending(): void
     {

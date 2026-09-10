@@ -34,7 +34,7 @@ class TicketPurchaseData
     }
 
     /**
-     * @since TBD Require the ticket type to belong to the given event and that event to not have already ended, and clamp quantity to a non-negative integer.
+     * @since 4.16.8.1 Require the ticket type to belong to the given event and that event to not have already ended, and clamp quantity to a non-negative integer.
      * @since 3.6.0
      *
      * @throws InvalidArgumentException

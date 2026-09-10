@@ -107,7 +107,7 @@ class PayPalCommerceTest extends TestCase
      * An order the v2 ajax endpoint already captured is recorded as-is; nothing is patched or
      * captured again.
      *
-     * @since TBD Give the completed order a matching amount, now required to be recorded.
+     * @since 4.16.8.1 Give the completed order a matching amount, now required to be recorded.
      * @since 4.16.7.1
      */
     public function testCompletedOrderIsRecordedWithoutCapturingAgain(): void
@@ -130,7 +130,7 @@ class PayPalCommerceTest extends TestCase
      * A completed order can no longer be patched the way one still pending capture can, so an
      * amount mismatch here must be rejected outright rather than silently recorded.
      *
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testCompletedOrderWithDifferentAmountIsRejected(): void
     {
@@ -152,7 +152,7 @@ class PayPalCommerceTest extends TestCase
      * A completed order's capture already recorded against a different donation must be
      * rejected, not recorded again for a second donation.
      *
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testCompletedOrderWithCaptureAlreadyRecordedForAnotherDonationIsRejected(): void
     {
@@ -170,7 +170,7 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
-     * @since TBD Add the optional $gatewayTransactionId param.
+     * @since 4.16.8.1 Add the optional $gatewayTransactionId param.
      * @since 4.16.7.1
      */
     private function createDonation(string $amount, ?string $gatewayTransactionId = null): Donation
@@ -201,7 +201,7 @@ class PayPalCommerceTest extends TestCase
     /**
      * The shape PayPal returns from POST /v2/checkout/orders/{id}/capture.
      *
-     * @since TBD Add the $amount/$currency params.
+     * @since 4.16.8.1 Add the $amount/$currency params.
      * @since 4.16.7.1
      */
     private function capturedOrder(string $captureId, string $amount = '25.00', string $currency = 'USD'): stdClass

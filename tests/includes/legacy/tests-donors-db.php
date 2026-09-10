@@ -157,7 +157,7 @@ class Tests_Donors_DB extends TestCase {
 	 * get_donor_by('email', ...) must reject a value whose sanitize_text_field() form differs
 	 * from the value submitted, rather than matching it against the rewritten form.
 	 *
-	 * @since TBD
+	 * @since 4.16.8.1
 	 *
 	 * @covers Give_DB_Donors::get_donor_by
 	 */
@@ -173,7 +173,7 @@ class Tests_Donors_DB extends TestCase {
 	 * get_donor_by('email', ...) must still match a value that only differs from the stored
 	 * form by incidental leading/trailing whitespace.
 	 *
-	 * @since TBD
+	 * @since 4.16.8.1
 	 *
 	 * @covers Give_DB_Donors::get_donor_by
 	 */

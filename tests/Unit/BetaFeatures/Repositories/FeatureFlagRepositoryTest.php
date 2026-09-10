@@ -39,7 +39,7 @@ class FeatureFlagRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD $_POST is no longer trusted outside a verified settings-save request.
+     * @since 4.16.8.1 $_POST is no longer trusted outside a verified settings-save request.
      */
     public function testShouldIgnorePostOverrideWithoutAVerifiedSettingsSaveRequest()
     {
@@ -50,7 +50,7 @@ class FeatureFlagRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD $_POST is no longer trusted outside a verified settings-save request.
+     * @since 4.16.8.1 $_POST is no longer trusted outside a verified settings-save request.
      */
     public function testShouldIgnorePostOverrideEvenWhenItWouldEnableTheFeature()
     {
@@ -61,7 +61,7 @@ class FeatureFlagRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testShouldTrustPostOverrideDuringAVerifiedSettingsSaveRequest()
     {
@@ -76,7 +76,7 @@ class FeatureFlagRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testShouldIgnorePostOverrideWhenNonceIsMissingEvenForAnAdministrator()
     {
@@ -90,7 +90,7 @@ class FeatureFlagRepositoryTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testShouldIgnorePostOverrideWhenCapabilityIsMissingEvenWithAValidNonce()
     {

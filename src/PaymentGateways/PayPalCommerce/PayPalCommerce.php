@@ -82,7 +82,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Reject a completed order whose amount doesn't match the donation, or whose capture is already recorded against a different donation.
+     * @since 4.16.8.1 Reject a completed order whose amount doesn't match the donation, or whose capture is already recorded against a different donation.
      * @since 4.2.1 updated to use updateOrderFromDonation
      * @since 4.1.0 updated to include 3D Secure validation
      * @since 4.0.0 updated to update and capture payment
@@ -296,7 +296,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Guard against a truncated PayPal response that would otherwise fatal on property access.
+     * @since 4.16.8.1 Guard against a truncated PayPal response that would otherwise fatal on property access.
      * @since 4.0.0
      *
      * @throws PaymentGatewayException
@@ -332,7 +332,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
      * A completed order's amount cannot be reconciled the way shouldUpdateOrder() does for an
      * order still pending capture, so a mismatch here is rejected outright.
      *
-     * @since TBD
+     * @since 4.16.8.1
      *
      * @throws PaymentGatewayException
      */
@@ -362,7 +362,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      *
      * @throws PaymentGatewayException
      */

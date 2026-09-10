@@ -12,14 +12,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use stdClass;
 
 /**
- * @since TBD
+ * @since 4.16.8.1
  */
 final class TicketPurchaseDataTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testFromFieldValueObjectResolvesTicketTypeBelongingToTheGivenEvent(): void
     {
@@ -37,7 +37,7 @@ final class TicketPurchaseDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testFromFieldValueObjectThrowsWhenTicketTypeBelongsToADifferentEvent(): void
     {
@@ -54,7 +54,7 @@ final class TicketPurchaseDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testFromFieldValueObjectThrowsWhenTicketTypeDoesNotExist(): void
     {
@@ -70,7 +70,7 @@ final class TicketPurchaseDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testFromFieldValueObjectClampsNegativeQuantityToZero(): void
     {
@@ -87,7 +87,7 @@ final class TicketPurchaseDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testFromFieldValueObjectThrowsWhenEventHasAlreadyEnded(): void
     {
@@ -112,7 +112,7 @@ final class TicketPurchaseDataTest extends TestCase
      * date, not a bug in the check. Tests that aren't specifically about the ended-event
      * condition need a guaranteed-future event instead of the shared factory default.
      *
-     * @since TBD
+     * @since 4.16.8.1
      */
     private function makeActiveEvent(): Event
     {

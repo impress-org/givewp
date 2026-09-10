@@ -45,7 +45,7 @@ class ServiceProvider implements ServiceProviderInterface
     /**
      * @inheritDoc
      *
-     * @since TBD Register the donation-status listener that releases tickets.
+     * @since 4.16.8.1 Register the donation-status listener that releases tickets.
      * @since 3.6.0
      */
     public function boot(): void
@@ -123,7 +123,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     private function registerDonationStatusListener(): void
     {

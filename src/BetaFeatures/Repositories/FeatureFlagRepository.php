@@ -40,7 +40,7 @@ class FeatureFlagRepository
     }
 
     /**
-     * @since TBD Only trust $_POST during a verified settings-save request, not any request.
+     * @since 4.16.8.1 Only trust $_POST during a verified settings-save request, not any request.
      * @since 3.6.0
      */
     public function enabled($feature, $default = false): bool
@@ -55,7 +55,7 @@ class FeatureFlagRepository
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     private function isVerifiedSettingsSaveRequest(): bool
     {

@@ -16,14 +16,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use stdClass;
 
 /**
- * @since TBD
+ * @since 4.16.8.1
  */
 final class GenerateTicketsFromPurchaseDataTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeMintsExactlyTheRequestedQuantityWithinCapacity(): void
     {
@@ -42,7 +42,7 @@ final class GenerateTicketsFromPurchaseDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeClampsQuantityToRemainingCapacity(): void
     {
@@ -61,7 +61,7 @@ final class GenerateTicketsFromPurchaseDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeMintsNothingWhenCapacityIsAlreadySpent(): void
     {
@@ -84,7 +84,7 @@ final class GenerateTicketsFromPurchaseDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     public function testInvokeMintsNothingWhenAlreadyOversoldBeyondCapacity(): void
     {
@@ -116,7 +116,7 @@ final class GenerateTicketsFromPurchaseDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      */
     private function makePurchaseData(EventTicketType $ticketType, int $quantity): TicketPurchaseData
     {
@@ -133,7 +133,7 @@ final class GenerateTicketsFromPurchaseDataTest extends TestCase
      * date, not a bug in the check. These tests aren't about the ended-event condition, so they
      * need a guaranteed-future event instead of the shared factory default.
      *
-     * @since TBD
+     * @since 4.16.8.1
      */
     private function makeActiveEvent(): Event
     {

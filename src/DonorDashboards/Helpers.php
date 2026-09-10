@@ -12,7 +12,7 @@ class Helpers
 
     /**
      * Retrieve the current donor ID from based on session
-     * @since TBD Guard against get_donor_by() finding no matching donor for the token's email.
+     * @since 4.16.8.1 Guard against get_donor_by() finding no matching donor for the token's email.
      * @since 2.10.0
      */
     public static function getCurrentDonorId()

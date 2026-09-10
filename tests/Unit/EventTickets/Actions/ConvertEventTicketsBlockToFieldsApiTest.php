@@ -69,7 +69,7 @@ class ConvertEventTicketsBlockToFieldsApiTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      * @throws EmptyNameException
      * @throws Exception
      */
@@ -108,7 +108,7 @@ class ConvertEventTicketsBlockToFieldsApiTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      * @throws EmptyNameException
      * @throws Exception
      */
@@ -142,7 +142,7 @@ class ConvertEventTicketsBlockToFieldsApiTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.8.1
      * @throws EmptyNameException
      * @throws Exception
      */
@@ -184,7 +184,7 @@ class ConvertEventTicketsBlockToFieldsApiTest extends TestCase
      * date, not a bug in the check. Tests that aren't specifically about the ended-event
      * condition need a guaranteed-future event instead of the shared factory default.
      *
-     * @since TBD
+     * @since 4.16.8.1
      */
     private function makeActiveEvent(): Event
     {

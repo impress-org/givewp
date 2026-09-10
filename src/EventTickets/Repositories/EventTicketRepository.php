@@ -60,7 +60,7 @@ class EventTicketRepository
     }
 
     /**
-     * @since TBD Enforce the ticket type's remaining capacity atomically with the insert (locking the ticket type row and re-counting under that lock), closing a race that let concurrent purchases jointly oversell it.
+     * @since 4.16.8.1 Enforce the ticket type's remaining capacity atomically with the insert (locking the ticket type row and re-counting under that lock), closing a race that let concurrent purchases jointly oversell it.
      * @since 3.20.0 Add "amount" column to the insert statement
      * @since 3.6.0
      *
@@ -121,7 +121,7 @@ class EventTicketRepository
      * what makes the check-then-insert in insert() atomic across concurrent requests for the same
      * ticket type; called on its own, outside a transaction, it would just be another stale read.
      *
-     * @since TBD
+     * @since 4.16.8.1
      */
     private function hasRemainingCapacity(EventTicket $eventTicket): bool
     {

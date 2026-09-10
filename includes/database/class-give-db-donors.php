@@ -395,7 +395,7 @@ class Give_DB_Donors extends Give_DB {
 	/**
 	 * Retrieves a single donor from the database
 	 *
-	 * @since TBD Reject an email lookup value that sanitize_text_field() would rewrite, instead of matching against the rewritten form.
+	 * @since 4.16.8.1 Reject an email lookup value that sanitize_text_field() would rewrite, instead of matching against the rewritten form.
 	 * @since  1.0
 	 * @access public
 	 *
