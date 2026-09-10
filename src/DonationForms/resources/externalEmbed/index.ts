@@ -469,8 +469,15 @@ class GiveWPDonationForm extends HTMLElement {
         return guard;
     }
 
+    /**
+     * Initial focus goes to the close button, the first control, rather than
+     * the dialog container: the container is tabindex -1, so a Shift+Tab from
+     * it would walk backwards to the host page before reaching a guard.
+     */
     focusDialog() {
-        (this.overlay?.querySelector('.givewp-embed__dialog') as HTMLElement | null)?.focus();
+        const dialog = this.overlay?.querySelector<HTMLElement>('.givewp-embed__dialog');
+
+        (dialog?.querySelector<HTMLElement>('.givewp-embed__close') ?? dialog)?.focus();
     }
 }
 

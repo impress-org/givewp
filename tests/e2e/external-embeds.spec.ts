@@ -154,6 +154,10 @@ test.describe('External donation form embeds', () => {
         const focusIsInsideDialog = () =>
             page.evaluate(() => document.activeElement?.closest('.givewp-embed__dialog') !== null);
 
+        // Straight after opening, before the donor has focused anything themselves.
+        await page.keyboard.press('Shift+Tab');
+        expect(await focusIsInsideDialog()).toBe(true);
+
         await page.locator('.givewp-embed__close').focus();
         await page.keyboard.press('Shift+Tab');
         expect(await focusIsInsideDialog()).toBe(true);
