@@ -35,6 +35,7 @@ use Give\DonationForms\Migrations\UpdateDonationLevelsSchema;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
+use Give\DonationForms\Routes\ExternalEmbedScriptRoute;
 use Give\DonationForms\Routes\DonationFormsEntityRoute;
 use Give\DonationForms\Routes\ValidationRoute;
 use Give\DonationForms\Shortcodes\GiveFormShortcode;
@@ -192,6 +193,11 @@ class ServiceProvider implements ServiceProviderInterface
          * @since 3.0.0
          */
         Route::post('authenticate', AuthenticationRoute::class);
+
+        /**
+         * @since TBD
+         */
+        Hooks::addAction('parse_request', ExternalEmbedScriptRoute::class);
 
         /**
          * @since 3.22.0 Add locale support
