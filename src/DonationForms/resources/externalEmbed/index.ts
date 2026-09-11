@@ -176,6 +176,13 @@ class GiveWPDonationForm extends HTMLElement {
     keydownHandler: ((event: KeyboardEvent) => void) | null = null;
 
     /**
+     * Where focus returns when the modal closes: whatever had focus when it
+     * was last opened. Tracked on the element because the overlay is built
+     * once and reopened, and a receipt return opens it with nothing focused.
+     */
+    launcher: HTMLElement | null = null;
+
+    /**
      * The form app asks the parent page to navigate when it cannot navigate
      * window.top itself (see navigateTop.ts). Only messages from the
      * WordPress origin with a valid http(s) URL are honored.
@@ -363,6 +370,11 @@ class GiveWPDonationForm extends HTMLElement {
         url.searchParams.set('givewp-route', 'donation-form-view');
         url.searchParams.set('form-id', this.formId);
 
+        const locale = this.getAttribute('locale');
+        if (locale) {
+            url.searchParams.set('locale', locale);
+        }
+
         return url.toString();
     }
 
@@ -495,7 +507,7 @@ class GiveWPDonationForm extends HTMLElement {
      * launcher on close and keeps keyboard focus inside the dialog while open.
      */
     openModal(src: string) {
-        const launcher = document.activeElement as HTMLElement | null;
+        this.launcher = document.activeElement as HTMLElement | null;
 
         if (this.overlay) {
             this.overlay.style.display = '';
@@ -521,7 +533,7 @@ class GiveWPDonationForm extends HTMLElement {
 
         const hide = () => {
             overlay.style.display = 'none';
-            launcher?.focus();
+            this.launcher?.focus();
         };
 
         close.addEventListener('click', hide);

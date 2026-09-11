@@ -200,6 +200,14 @@ test.describe('External donation form embeds', () => {
 
         await page.goto(EXTERNAL_PAGE);
 
+        // A receipt return opens the overlay with nothing focused. The first
+        // open here is programmatic for the same reason: a later real click
+        // must still hand focus back to the button on close.
+        await page.evaluate(() => (document.querySelector('.givewp-embed__button') as HTMLElement).click());
+        await expect(page.locator('.givewp-embed__overlay')).toBeVisible();
+        await page.locator('.givewp-embed__close').click();
+        await expect(page.locator('.givewp-embed__overlay')).toBeHidden();
+
         await page.getByRole('button', {name: 'Give now'}).click();
 
         const form = donationForm(page);
@@ -227,6 +235,7 @@ test.describe('External donation form embeds', () => {
 
         await page.locator('.givewp-embed__close').click();
         await expect(page.locator('.givewp-embed__overlay')).toBeHidden();
+        await expect(page.getByRole('button', {name: 'Give now'})).toBeFocused();
     });
 
     test('degrades to a link when the form cannot load', async ({page}) => {
