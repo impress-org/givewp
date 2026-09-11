@@ -5,7 +5,7 @@ import {useDispatch, useSelect} from '@wordpress/data';
 import {useCopyToClipboard} from '@wordpress/compose';
 import {store} from '@wordpress/core-data';
 import {__, sprintf} from '@wordpress/i18n';
-import {Button, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
+import {BaseControl, Button, ColorPalette, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
 import {external} from '@wordpress/icons';
 import getWindowData from '@givewp/form-builder/common/getWindowData';
 import {CheckIcon} from '@givewp/form-builder/components/icons';
@@ -35,6 +35,7 @@ interface StateProps {
     selectedPost: string;
     selectedStyle: string;
     openFormButton: string;
+    buttonColor: string;
     isCopied: boolean;
     isInserting: boolean;
     insertPageNotSelected: boolean;
@@ -64,20 +65,18 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     }, [settings]);
 
     /**
-     * The external embed script cannot read form settings, so the snippet
-     * carries the form's colors as attributes. Campaign colors win when the
-     * form inherits them, matching how the form itself resolves colors.
+     * The color the launcher button starts with: the form's own primary color,
+     * campaign inheritance included. The form inside the iframe resolves its
+     * colors itself; this only seeds the button on the host page, and the
+     * admin can change it before copying.
      *
      * @since TBD
      */
-    const getEmbedColors = (): {primary: string; secondary: string} => {
+    const formPrimaryColor = useMemo((): string => {
         const inherit = parsedSettings.inheritCampaignColors;
 
-        return {
-            primary: (inherit && campaignColors?.primaryColor) || parsedSettings.primaryColor || '',
-            secondary: (inherit && campaignColors?.secondaryColor) || parsedSettings.secondaryColor || '',
-        };
-    };
+        return (inherit && campaignColors?.primaryColor) || parsedSettings.primaryColor || '';
+    }, [parsedSettings, campaignColors]);
 
     /**
      * The confirmation page redirect sends donors to a page on this
@@ -126,6 +125,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         selectedPost: '',
         selectedStyle: 'onpage',
         openFormButton: '',
+        buttonColor: '',
         isCopied: false,
         isInserting: false,
         insertPageNotSelected: false,
@@ -291,10 +291,12 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         return `${name}="${encoded}"`;
     };
 
+    const buttonColor = state.buttonColor || formPrimaryColor;
+
     /**
-     * The snippet carries the selected display style and the translated
-     * donor-facing strings, since the standalone embed script has no access
-     * to WordPress translations.
+     * The snippet carries only per-embed choices: the form, its title for
+     * assistive tech, and the launcher's display style, label, and color.
+     * Translated default labels travel with the script itself.
      *
      * @since TBD
      */
@@ -306,20 +308,15 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             attributes.push(attribute('form-title', parsedSettings.formTitle));
         }
 
-        const colors = getEmbedColors();
-        if (colors.primary) {
-            attributes.push(attribute('primary-color', colors.primary));
-        }
-        if (colors.secondary) {
-            attributes.push(attribute('secondary-color', colors.secondary));
-        }
-
         // Default labels travel with the script in the site's locale (see
-        // GetExternalEmbedScriptData); only an admin-chosen label is written out.
+        // GetExternalEmbedScriptData); only admin choices are written out.
         if (isButton) {
             attributes.push(attribute('display-style', state.selectedStyle));
             if (state.openFormButton) {
                 attributes.push(attribute('button-text', state.openFormButton));
+            }
+            if (buttonColor) {
+                attributes.push(attribute('primary-color', buttonColor));
             }
         }
 
@@ -481,17 +478,32 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                             />
 
                             {isButton && (
-                                <TextControl
-                                    placeholder={__('Donate', 'give')}
-                                    label={__('Button label', 'give')}
-                                    value={state.openFormButton}
-                                    onChange={value => setState(prevState => {
-                                        return {
-                                            ...prevState,
-                                            openFormButton: value,
-                                        };
-                                    })}
-                                />
+                                <>
+                                    <TextControl
+                                        placeholder={__('Donate', 'give')}
+                                        label={__('Button label', 'give')}
+                                        value={state.openFormButton}
+                                        onChange={value => setState(prevState => {
+                                            return {
+                                                ...prevState,
+                                                openFormButton: value,
+                                            };
+                                        })}
+                                    />
+
+                                    <BaseControl
+                                        id="give-embed-modal-button-color"
+                                        label={__('Button color', 'give')}
+                                        help={__('The button is part of the other website, so it keeps this color until the snippet is updated. The form itself always uses its current design.', 'give')}
+                                    >
+                                        <ColorPalette
+                                            colors={[{name: __('Form color', 'give'), color: formPrimaryColor}]}
+                                            value={buttonColor}
+                                            onChange={(value) => setState((prevState) => ({...prevState, buttonColor: value ?? ''}))}
+                                            clearable={false}
+                                        />
+                                    </BaseControl>
+                                </>
                             )}
 
                             {hasRequiredLogin && (
