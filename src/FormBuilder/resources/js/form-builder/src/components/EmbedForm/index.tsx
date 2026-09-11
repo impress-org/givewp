@@ -299,10 +299,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * @since TBD
      */
     const getExternalEmbedSnippet = () => {
-        const attributes = [
-            attribute('form-id', formId),
-            attribute('fallback-text', __('Open donation form', 'give')),
-        ];
+        const attributes = [attribute('form-id', formId)];
 
         const colors = getEmbedColors();
         if (colors.primary) {
@@ -312,13 +309,13 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             attributes.push(attribute('secondary-color', colors.secondary));
         }
 
+        // Default labels travel with the script in the site's locale (see
+        // GetExternalEmbedScriptData); only an admin-chosen label is written out.
         if (isButton) {
             attributes.push(attribute('display-style', state.selectedStyle));
-            attributes.push(attribute('button-text', state.openFormButton || __('Donate', 'give')));
-        }
-
-        if (state.selectedStyle === 'modal') {
-            attributes.push(attribute('close-text', __('Close', 'give')));
+            if (state.openFormButton) {
+                attributes.push(attribute('button-text', state.openFormButton));
+            }
         }
 
         return [
