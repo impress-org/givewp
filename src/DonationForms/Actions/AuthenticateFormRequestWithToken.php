@@ -59,7 +59,7 @@ class AuthenticateFormRequestWithToken
          * for a form that sat open in a browser. This token is a short-lived
          * credential, so its own expiry is the limit.
          */
-        $parts = wp_parse_auth_cookie($token, self::SCHEME);
+        $parts = wp_parse_auth_cookie($token);
 
         if (!$parts || (int)$parts['expiration'] < time()) {
             return;
