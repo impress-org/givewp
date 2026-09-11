@@ -13,12 +13,34 @@ use WP;
 class RouterScriptTest extends TestCase
 {
     /**
+     * A built script and its asset file, so the tests do not depend on build/.
+     */
+    private string $script;
+
+    /**
+     * @since TBD
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->script = tempnam(sys_get_temp_dir(), 'givewp-script') . '.js';
+        file_put_contents($this->script, 'console.log("embed");');
+        file_put_contents(
+            preg_replace('/\.js$/', '.asset.php', $this->script),
+            "<?php return ['dependencies' => [], 'version' => 'abc123'];"
+        );
+    }
+
+    /**
      * @since TBD
      */
     public function tearDown(): void
     {
         unset($_GET['givewp-route']);
         $this->setPermalinkStructure('');
+        @unlink($this->script);
+        @unlink(preg_replace('/\.js$/', '.asset.php', $this->script));
 
         parent::tearDown();
     }
@@ -86,9 +108,7 @@ class RouterScriptTest extends TestCase
      */
     public function testEtagIsTheQuotedAssetVersion(): void
     {
-        $version = require GIVE_PLUGIN_DIR . 'build/donationFormExternalEmbed.asset.php';
-
-        $this->assertSame('"' . $version['version'] . '"', (new ScriptResponse(GIVE_PLUGIN_DIR . 'build/donationFormExternalEmbed.js'))->etag());
+        $this->assertSame('"abc123"', (new ScriptResponse($this->script))->etag());
     }
 
     /**
@@ -96,7 +116,7 @@ class RouterScriptTest extends TestCase
      */
     public function testIfNoneMatchToleratesWeakAndGzipValidators(): void
     {
-        $response = new ScriptResponse(GIVE_PLUGIN_DIR . 'build/donationFormExternalEmbed.js');
+        $response = new ScriptResponse($this->script);
 
         $this->assertTrue($response->matchesIfNoneMatch('"abc"', '"abc"'));
         $this->assertTrue($response->matchesIfNoneMatch('"abc"', 'W/"abc"'));
