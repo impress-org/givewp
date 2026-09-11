@@ -4,7 +4,7 @@ namespace Give\Tests\Unit\VieModels;
 
 use Exception;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
-use Give\DonationForms\Routes\ExternalEmbedScriptRoute;
+use Give\DonationForms\Actions\GenerateExternalEmbedScriptUrl;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -48,7 +48,7 @@ class FormBuilderViewModelTest extends TestCase
                 'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $formId),
                 'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($formId),
                 'homeUrl' => home_url(),
-                'externalEmbedScriptUrl' => ExternalEmbedScriptRoute::url(),
+                'externalEmbedScriptUrl' => (new GenerateExternalEmbedScriptUrl())(),
                 'nonce' => wp_create_nonce('wp_rest'),
                 'blockData' => $mockForm->blocks->toJson(),
                 'settings' => $mockForm->settings->toJson(),

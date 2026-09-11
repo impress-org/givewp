@@ -4,6 +4,7 @@ namespace Give\FormBuilder\ViewModels;
 
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForms\Actions\GenerateExternalEmbedScriptUrl;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\ValueObjects\GoalProgressType;
 use Give\DonationForms\ValueObjects\GoalSource;
@@ -17,7 +18,6 @@ use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
-use Give\DonationForms\Routes\ExternalEmbedScriptRoute;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
@@ -44,7 +44,7 @@ class FormBuilderViewModel
             'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $donationFormId),
             'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($donationFormId),
             'homeUrl' => home_url(),
-            'externalEmbedScriptUrl' => ExternalEmbedScriptRoute::url(),
+            'externalEmbedScriptUrl' => (new GenerateExternalEmbedScriptUrl())(),
             'nonce' => wp_create_nonce('wp_rest'),
             'blockData' => $donationForm->blocks->toJson(),
             'settings' => $donationForm->settings->toJson(),
