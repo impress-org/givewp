@@ -182,6 +182,8 @@ non-trivial changes to that subsystem.
   framework, core-data entities, shared components
 - [donation-forms.md](docs/architecture/donation-forms.md) — the v2/v3 split, migration pipeline,
   campaign relationship
+- [external-embeds.md](docs/architecture/external-embeds.md) — the embed script URL contract,
+  `Route::script()`, permalink fallbacks, caching, and the `<givewp-donation-form>` element
 - [list-tables.md](docs/architecture/list-tables.md) — column rendering, the N+1 trap, the campaign
   and async-data caches, large-site behavior
 - [models.md](docs/architecture/models.md) — models and repositories, the model event lifecycle, and

@@ -39,6 +39,7 @@ type GoalProgressOption = {
 };
 
 /**
+ * @since TBD Added externalEmbedScriptUrl
  * @since 3.12.0 Added goalProgressOptions
  * @since 3.9.0 Added intlTelInputSettings
  * @since 3.7.0 Added isExcerptEnabled
@@ -49,6 +50,7 @@ interface FormBuilderWindowData {
     nonce: string;
     resourceURL: string;
     previewURL: string;
+    externalEmbedScriptUrl: string;
     blockData: string;
     settings: string;
     formDesigns: FormDesign[];
