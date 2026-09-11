@@ -54,11 +54,9 @@ type EmbedI18n = {
     close: string;
 };
 
-declare global {
-    interface Window {
-        givewpDonationFormEmbed?: {i18n?: Partial<EmbedI18n>};
-    }
-}
+declare const window: {
+    givewpDonationFormEmbed?: {i18n?: Partial<EmbedI18n>};
+} & Window;
 
 /*
  * The English values are only reached when the file is loaded from
