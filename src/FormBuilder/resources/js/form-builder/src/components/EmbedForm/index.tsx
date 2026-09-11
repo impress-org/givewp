@@ -5,7 +5,9 @@ import {useDispatch, useSelect} from '@wordpress/data';
 import {useCopyToClipboard} from '@wordpress/compose';
 import {store} from '@wordpress/core-data';
 import {__, sprintf} from '@wordpress/i18n';
-import {BaseControl, Button, ColorPalette, Popover, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
+import {Button, Popover, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
+import {PanelColorSettings} from '@wordpress/block-editor';
+import defaultColors from '@givewp/form-builder/settings/design/style-controls/color/defaultColors';
 import {external} from '@wordpress/icons';
 import getWindowData from '@givewp/form-builder/common/getWindowData';
 import {CheckIcon} from '@givewp/form-builder/components/icons';
@@ -502,19 +504,24 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                                         })}
                                     />
 
-                                    <BaseControl
-                                        id="give-embed-modal-button-color"
-                                        label={__('Button color', 'give')}
-                                        help={__('The button is part of the other website, so it keeps this color until the snippet is updated. The form itself always uses its current design.', 'give')}
-                                    >
-                                        <ColorPalette
-                                            colors={[{name: __('Form color', 'give'), color: formPrimaryColor}]}
-                                            value={buttonColor}
-                                            onChange={(value) => setState((prevState) => ({...prevState, buttonColor: value ?? ''}))}
-                                            clearable={false}
-                                            __experimentalIsRenderedInSidebar
-                                        />
-                                    </BaseControl>
+                                    {/* Same control as the Design tab's Primary Color, so it looks and works the same. */}
+                                    <PanelColorSettings
+                                        className="give-embed-modal-color"
+                                        colorSettings={[
+                                            {
+                                                value: buttonColor,
+                                                onChange: (value: string) =>
+                                                    setState((prevState) => ({...prevState, buttonColor: value ?? ''})),
+                                                label: __('Button color', 'give'),
+                                                disableCustomColors: false,
+                                                colors: defaultColors,
+                                            },
+                                        ]}
+                                    />
+
+                                    <div className="give-embed-modal-helptext">
+                                        {__('The button is part of the other website, so it keeps this color until the snippet is updated. The form itself always uses its current design.', 'give')}
+                                    </div>
                                 </>
                             )}
 
