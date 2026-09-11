@@ -32,12 +32,14 @@ class ScriptResponse
     /**
      * @since TBD
      *
-     * @param string $asset Webpack entry name, resolved to build/{$asset}.js
+     * @param string $file Absolute path to the built script. Its version comes
+     *                     from the .asset.php file @wordpress/scripts writes
+     *                     next to it.
      */
-    public function __construct(string $asset)
+    public function __construct(string $file)
     {
-        $this->file = GIVE_PLUGIN_DIR . "build/{$asset}.js";
-        $this->assetFile = GIVE_PLUGIN_DIR . "build/{$asset}.asset.php";
+        $this->file = $file;
+        $this->assetFile = preg_replace('/\.js$/', '.asset.php', $file);
     }
 
     /**

@@ -22,7 +22,7 @@ to keep working for as long as those pages exist, across plugin updates, build c
 changes to the site's own settings. So the snippet never points at the build file. It points at
 a URL the plugin owns and resolves at request time.
 
-`Route::script($uri, $asset)` in `src/Framework/Routes/Router.php` registers such a URL, and
+`Route::script($uri, $file)` in `src/Framework/Routes/Router.php` registers such a URL, and
 `Route::scriptUrl($uri)` builds it. The embed script is registered in
 `src/DonationForms/ServiceProvider.php`; the URI lives on
 `src/DonationForms/Actions/GenerateExternalEmbedScriptUrl.php` so the route and the snippet
@@ -68,7 +68,7 @@ result is acted on.
 The URL is stable, so the version has to travel in the response rather than in a `?ver=` query,
 which would freeze at whatever the snippet was copied with.
 
-- `ETag` is the build hash from `build/{asset}.asset.php`, read through `ScriptAsset`. It changes
+- `ETag` is the build hash from the `.asset.php` file next to the script, read through `ScriptAsset`. It changes
   when the bundle changes and is the same value `wp_enqueue_script` would use as `ver`.
 - `Cache-Control: public, max-age=3600`. A third-party page reuses the script for an hour, then
   revalidates. A matching `If-None-Match` gets a `304` with no body.

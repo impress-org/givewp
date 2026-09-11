@@ -10,7 +10,7 @@ use Give\Framework\Support\Facades\Facade;
  *
  * @method static string get(string $uri, string|callable $action, string $method = '_invoke')
  * @method static void post(string $uri, string|callable $action, string $method = '_invoke')
- * @method static void script(string $uri, string $asset)
+ * @method static void script(string $uri, string $file)
  * @method static string url(string $uri, array $args = [])
  * @method static string scriptUrl(string $uri)
  */

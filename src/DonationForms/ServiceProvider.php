@@ -197,7 +197,7 @@ class ServiceProvider implements ServiceProviderInterface
         /**
          * @since TBD
          */
-        Route::script(GenerateExternalEmbedScriptUrl::URI, 'donationFormExternalEmbed');
+        Route::script(GenerateExternalEmbedScriptUrl::URI, GIVE_PLUGIN_DIR . 'build/donationFormExternalEmbed.js');
 
         /**
          * @since 3.22.0 Add locale support

@@ -58,17 +58,17 @@ class Router
      *
      * @since TBD
      *
-     * @param string $uri   Path below the base, e.g. "embed/donation-form/script.js"
-     * @param string $asset Webpack entry name, resolved to build/{$asset}.js
+     * @param string $uri  Path below the base, e.g. "embed/donation-form/script.js"
+     * @param string $file Absolute path to the built script
      */
-    public function script(string $uri, string $asset): void
+    public function script(string $uri, string $file): void
     {
-        add_action('parse_request', function (WP $wp) use ($uri, $asset) {
+        add_action('parse_request', function (WP $wp) use ($uri, $file) {
             if (!$this->isScriptRequested($wp, $uri)) {
                 return;
             }
 
-            (new ScriptResponse($asset))->send();
+            (new ScriptResponse($file))->send();
         });
     }
 
