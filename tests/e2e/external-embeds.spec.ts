@@ -76,6 +76,26 @@ test.describe('External donation form embeds', () => {
         );
     });
 
+    /*
+     * The route prints the site's translated defaults ahead of the bundle as
+     * window.givewpDonationFormEmbed. The key set is the contract with EmbedI18n
+     * in externalEmbed/index.ts; a key missing on either side silently falls back
+     * to the English literal.
+     */
+    test('serves the script with the localized default labels', async ({request}) => {
+        const response = await request.get(EXTERNAL_SCRIPT_URL);
+
+        expect(response.ok()).toBe(true);
+        expect(response.headers()['content-type']).toContain('javascript');
+
+        const [prologue] = (await response.text()).split('\n', 1);
+        const match = prologue.match(/^var givewpDonationFormEmbed = (.*);$/);
+        expect(match).not.toBeNull();
+
+        const data = JSON.parse(match![1]);
+        expect(Object.keys(data.i18n).sort()).toEqual(['close', 'donate', 'formTitle', 'loading', 'openForm']);
+    });
+
     test('renders the form cross-origin', async ({page}) => {
         await page.goto(EXTERNAL_PAGE);
 

@@ -116,7 +116,7 @@ class RouterScriptTest extends TestCase
      */
     public function testLocalizedDataIsPrintedAheadOfTheScriptAndVersionsTheEtag(): void
     {
-        $response = new ScriptResponse(GIVE_PLUGIN_DIR . 'build/donationFormExternalEmbed.js');
+        $response = new ScriptResponse($this->script);
         $plainEtag = $response->etag();
 
         $response->localize('givewpTest', static function (): array {
