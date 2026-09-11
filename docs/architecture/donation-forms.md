@@ -158,3 +158,4 @@ before acting on it for anything substantial.
 - `src/Framework/FieldsAPI/` — the field schema v3 forms compile down to ([README](../../src/Framework/FieldsAPI/README.md))
 - `src/Framework/Blocks/` — block collection stored in `formBuilderFields`
 - `src/DonationForms/resources/app/` — the front-end React form
+- [external-embeds.md](external-embeds.md) — embedding a v3 form on a site outside WordPress

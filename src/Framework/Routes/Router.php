@@ -4,12 +4,25 @@ namespace Give\Framework\Routes;
 
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Helpers\Language;
+use WP;
 
 use function is_callable;
 use function str_contains;
 
+/**
+ * @since TBD Add script routes served from a plugin-controlled URL
+ * @since 3.0.0
+ */
 class Router
 {
+    /**
+     * Base path segment for pretty script URLs. Fixed on purpose: these URLs are
+     * pasted into third-party sites, so they must not follow any setting.
+     *
+     * @since TBD
+     */
+    protected string $scriptBase = 'give';
+
     /**
      * @since 3.0.0
      * @param  string  $uri
@@ -34,6 +47,57 @@ class Router
     public function post(string $uri, $action, $method = '__invoke')
     {
         $this->addRoute('POST', $method, $uri, $action);
+    }
+
+    /**
+     * Serve a built script from a URL the plugin controls, so the file can move
+     * without breaking URLs already pasted elsewhere. Matching happens on
+     * parse_request against the path WordPress already resolved, so no rewrite
+     * rule is registered and nothing needs flushing. See scriptUrl() for the
+     * URL shape per permalink setting.
+     *
+     * @since TBD
+     *
+     * @param string $uri   Path below the base, e.g. "embed/donation-form/script.js"
+     * @param string $asset Webpack entry name, resolved to build/{$asset}.js
+     */
+    public function script(string $uri, string $asset): void
+    {
+        add_action('parse_request', function (WP $wp) use ($uri, $asset) {
+            if (!$this->isScriptRequested($wp, $uri)) {
+                return;
+            }
+
+            (new ScriptResponse($asset))->send();
+        });
+    }
+
+    /**
+     * Pretty permalinks:  /give/{uri}
+     * Index permalinks:   /index.php/give/{uri}
+     * Plain permalinks:   /?givewp-route={uri}
+     *
+     * @since TBD
+     */
+    public function scriptUrl(string $uri): string
+    {
+        global $wp_rewrite;
+
+        if (!$wp_rewrite->using_permalinks()) {
+            return $this->url($uri);
+        }
+
+        $prefix = $wp_rewrite->using_index_permalinks() ? $wp_rewrite->index . '/' : '';
+
+        return home_url("/{$prefix}{$this->scriptBase}/{$uri}");
+    }
+
+    /**
+     * @since TBD
+     */
+    public function isScriptRequested(WP $wp, string $uri): bool
+    {
+        return $wp->request === "{$this->scriptBase}/{$uri}" || $this->isRouteValid($uri);
     }
 
     /**

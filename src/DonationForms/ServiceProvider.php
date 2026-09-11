@@ -6,6 +6,7 @@ use Exception;
 use Give\DonationForms\OrphanedForms\Actions\Assets as OrphanedFormsAssets;
 use Give\DonationForms\Actions\AddHoneyPotFieldToDonationForms;
 use Give\DonationForms\Actions\DispatchDonateControllerDonationCreatedListeners;
+use Give\DonationForms\Actions\GenerateExternalEmbedScriptUrl;
 use Give\DonationForms\Actions\DispatchDonateControllerSubscriptionCreatedListeners;
 use Give\DonationForms\Actions\PrintFormMetaTags;
 use Give\DonationForms\Actions\RegisterFormEntity;
@@ -35,7 +36,6 @@ use Give\DonationForms\Migrations\UpdateDonationLevelsSchema;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\Routes\AuthenticationRoute;
 use Give\DonationForms\Routes\DonateRoute;
-use Give\DonationForms\Routes\ExternalEmbedScriptRoute;
 use Give\DonationForms\Routes\DonationFormsEntityRoute;
 use Give\DonationForms\Routes\ValidationRoute;
 use Give\DonationForms\Shortcodes\GiveFormShortcode;
@@ -197,7 +197,7 @@ class ServiceProvider implements ServiceProviderInterface
         /**
          * @since TBD
          */
-        Hooks::addAction('parse_request', ExternalEmbedScriptRoute::class);
+        Route::script(GenerateExternalEmbedScriptUrl::URI, 'externalFormEmbed');
 
         /**
          * @since 3.22.0 Add locale support
