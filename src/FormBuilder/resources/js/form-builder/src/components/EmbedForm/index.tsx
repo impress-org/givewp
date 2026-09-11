@@ -5,7 +5,7 @@ import {useDispatch, useSelect} from '@wordpress/data';
 import {useCopyToClipboard} from '@wordpress/compose';
 import {store} from '@wordpress/core-data';
 import {__, sprintf} from '@wordpress/i18n';
-import {BaseControl, Button, ColorPalette, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
+import {BaseControl, Button, ColorPalette, Popover, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
 import {external} from '@wordpress/icons';
 import getWindowData from '@givewp/form-builder/common/getWindowData';
 import {CheckIcon} from '@givewp/form-builder/components/icons';
@@ -428,7 +428,18 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             : __('post', 'give');
     }
 
+    /*
+     * The builder's Popover.Slot lives inside the block editor, far below this
+     * panel's z-index, so a color picker opened from here would render behind
+     * the panel. Popovers from this panel go to a sibling slot at the same
+     * z-index instead. The slot-name provider is the documented way to pick a
+     * slot, but it is not in the components' type definitions.
+     */
+    // @ts-expect-error __unstableSlotNameProvider is missing from the Popover types.
+    const PopoverSlotName = Popover.__unstableSlotNameProvider;
+
     return createPortal(
+        <PopoverSlotName value="give-embed-modal">
         <div className="give-embed-modal">
 
             <div className="give-embed-modal-header">
@@ -501,6 +512,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                                             value={buttonColor}
                                             onChange={(value) => setState((prevState) => ({...prevState, buttonColor: value ?? ''}))}
                                             clearable={false}
+                                            __experimentalIsRenderedInSidebar
                                         />
                                     </BaseControl>
                                 </>
@@ -777,7 +789,12 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     </>
                 )}
             </TabPanel>
-        </div>,
+        </div>
+        <div className="give-embed-modal-popovers">
+            {/* @ts-ignore Popover.Slot is missing from the components' types, as in BlockEditorContainer. */}
+            <Popover.Slot name="give-embed-modal" />
+        </div>
+        </PopoverSlotName>,
         document.body,
     );
 }

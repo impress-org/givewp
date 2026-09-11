@@ -1,3 +1,14 @@
+/*
+ * Zero-size anchor at the viewport origin so popovers rendered into the
+ * panel's slot are positioned in viewport coordinates and stack with the panel.
+ */
+.give-embed-modal-popovers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999999999999;
+}
+
 .give-embed-modal {
     width: 474px;
     position: fixed;
