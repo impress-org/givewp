@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\VieModels;
 
 use Exception;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
+use Give\DonationForms\Actions\GenerateExternalEmbedScriptUrl;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -25,6 +26,7 @@ class FormBuilderViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * @since TBD Add externalEmbedScriptUrl key to the compared array
      * @since 3.9.0 Add support to intlTelInputSettings key in the compared array
      * @since 3.7.0 Add support to isExcerptEnabled key in the compared array
      * @since 3.2.0 Add support to nameTitlePrefixes key in the compared array
@@ -45,6 +47,7 @@ class FormBuilderViewModelTest extends TestCase
                 'formId' => $formId,
                 'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $formId),
                 'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($formId),
+                'externalEmbedScriptUrl' => (new GenerateExternalEmbedScriptUrl())(),
                 'nonce' => wp_create_nonce('wp_rest'),
                 'blockData' => $mockForm->blocks->toJson(),
                 'settings' => $mockForm->settings->toJson(),

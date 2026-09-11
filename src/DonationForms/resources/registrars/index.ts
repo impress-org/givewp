@@ -16,6 +16,7 @@ declare global {
             gateways: GatewayRegistrar;
             form: {
                 templates: typeof defaultFormTemplates;
+                authToken?: string;
                 hooks: {
                     useFormContext: typeof useFormContext;
                     useWatch: typeof useWatch;
