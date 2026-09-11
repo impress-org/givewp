@@ -480,8 +480,14 @@ class GiveWPDonationForm extends HTMLElement {
          * opposite end. A key listener cannot do this: the browser moves
          * focus after keydown, and while focus is inside the cross-origin
          * iframe the host document sees no key events at all.
+         *
+         * The iframe is hidden until the resizer handshake; a hidden element
+         * cannot take focus, so only rendered elements count.
          */
-        const focusables = () => Array.from(dialog.querySelectorAll<HTMLElement>('a[href], button, iframe'));
+        const focusables = () =>
+            Array.from(dialog.querySelectorAll<HTMLElement>('a[href], button, iframe')).filter(
+                (element) => element.getClientRects().length > 0
+            );
         const startGuard = this.createFocusGuard(() => focusables().pop()?.focus());
         const endGuard = this.createFocusGuard(() => focusables().shift()?.focus());
 
