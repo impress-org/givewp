@@ -90,9 +90,10 @@ into the script, but it costs more than it saves:
   database, and the ETag could no longer be the build hash alone.
 - The browser would cache one copy per form instead of one per site.
 
-Everything a per-form URL could supply is already on the element: the snippet generator reads the
-form's colors and translated labels at copy time and writes them as attributes. What the host page
-needs from the server is the script and the site location, and both come from the URL as it is.
+Everything a per-form URL could supply either belongs to the form inside the iframe, which
+resolves it itself, or is a per-embed choice written as an attribute. The route supplies the
+translated defaults. What the host page needs from the server is the script, the strings, and the
+site location, and all three come from the URL as it is.
 
 If a script variant is ever needed, add a query parameter (`?locale=fr`), read it through
 `Router::getRequestDataByType()` for the same sanitizing the other routes get, and fold its value
@@ -113,8 +114,26 @@ stripping the route tail from `document.currentScript.src`, which works for all 
 above and keeps the home path of a subdirectory install. `wp-url` overrides that for a page that
 loads the script from somewhere else; it must be the full home URL, not just the origin, and only
 `http:` and `https:` are accepted. Optional attributes: `display-style` (`onpage`, `modal`,
-`newTab`), `primary-color`, `secondary-color`, `button-text`, `form-title`, `loading-text`,
-`fallback-text`, `close-text`, `locale`.
+`newTab`), `button-text`, `primary-color`, `form-title`, `loading-text`, `fallback-text`,
+`close-text`, `locale`.
+
+### What the snippet bakes in, and why
+
+The form inside the iframe resolves its own colors, labels, and settings on every load, so a
+change in the builder reaches every embed immediately. Nothing about the form's design is copied
+into the snippet for the form's sake.
+
+The one exception is host-page chrome. For the `modal` and `newTab` styles the script draws a
+launcher button on the other site, and that button exists before any WordPress response does, so
+its color has to come from the snippet. The builder's external tab exposes it as a **Button
+color** field, seeded with the form's resolved primary color, written as `primary-color`, and
+labeled as a per-embed choice that does not follow the form's design. The stylesheet reads it as
+the `--givewp-primary-color` custom property, so a host page can also set it in its own CSS. The
+default is GiveWP's default form color. There is no `secondary-color`; nothing in the embed
+reads one.
+
+`display-style` and `button-text` are likewise per-embed choices, not form settings. `form-title`
+labels the iframe and dialog for assistive tech, and a stale one is harmless.
 
 The iframe loads the same `donation-form-view` route the on-site block uses, with `origin-url`
 set to the host page (origin and path only, never its query string or fragment) and an
