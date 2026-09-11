@@ -17,6 +17,7 @@ use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Framework\PaymentGateways\PaymentGateway;
+use Give\DonationForms\Routes\ExternalEmbedScriptRoute;
 use Give\Framework\Support\Facades\Scripts\ScriptAsset;
 use Give\Helpers\IntlTelInput;
 use Give\Subscriptions\Models\Subscription;
@@ -24,15 +25,6 @@ use Give_License;
 
 class FormBuilderViewModel
 {
-    /**
-     * The built script that renders a form on another website. The path
-     * matches the externalFormEmbed entry in webpack.config.js, and snippets
-     * already pasted into third-party sites point at it, so it must not move.
-     *
-     * @since TBD
-     */
-    public const EXTERNAL_EMBED_SCRIPT_PATH = 'build/externalFormEmbed.js';
-
     /**
      * @since TBD Add homeUrl and externalEmbedScriptUrl keys to the returned array
      * @since 4.14.0 Add countries key to the returned array
@@ -52,7 +44,7 @@ class FormBuilderViewModel
             'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $donationFormId),
             'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($donationFormId),
             'homeUrl' => home_url(),
-            'externalEmbedScriptUrl' => GIVE_PLUGIN_URL . self::EXTERNAL_EMBED_SCRIPT_PATH,
+            'externalEmbedScriptUrl' => ExternalEmbedScriptRoute::url(),
             'nonce' => wp_create_nonce('wp_rest'),
             'blockData' => $donationForm->blocks->toJson(),
             'settings' => $donationForm->settings->toJson(),
