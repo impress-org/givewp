@@ -301,6 +301,11 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const getExternalEmbedSnippet = () => {
         const attributes = [attribute('form-id', formId)];
 
+        // The iframe title and modal label; the form's own title beats the generic default.
+        if (parsedSettings.formTitle) {
+            attributes.push(attribute('form-title', parsedSettings.formTitle));
+        }
+
         const colors = getEmbedColors();
         if (colors.primary) {
             attributes.push(attribute('primary-color', colors.primary));
@@ -500,6 +505,10 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                                     {__('This form has "Confirmation Page Redirect" enabled in its settings, so donors will leave the site the form is embedded on after donating.', 'give')}
                                 </div>
                             )}
+
+                            <pre className="give-embed-modal-code" tabIndex={0} aria-label={__('Embed code', 'give')}>
+                                <code>{getExternalEmbedSnippet()}</code>
+                            </pre>
 
                             <div className="give-embed-modal-items give-embed-modal-copy">
                                 <div>
