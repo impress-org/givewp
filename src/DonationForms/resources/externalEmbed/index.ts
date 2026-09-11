@@ -16,8 +16,33 @@ import {iframeResize} from 'iframe-resizer';
  * spinner) or overridable per attribute, so the WordPress-generated snippet
  * supplies translated strings.
  *
+ * The WordPress site is located from the script's own URL, so the snippet
+ * only has to name the form. A `wp-url` attribute overrides that for pages
+ * that load the script from somewhere other than the WordPress site.
+ *
  * @since TBD
  */
+
+/**
+ * The script URL shapes Route::scriptUrl() produces all sit directly under
+ * the WordPress home URL: /give/embed/donation-form/script.js,
+ * /index.php/give/embed/donation-form/script.js, or
+ * /?givewp-route=embed/donation-form/script.js. Stripping that tail from the
+ * script's src yields the home URL, trailing slash included.
+ */
+const SCRIPT_HOME_URL = ((): string | null => {
+    const src = (document.currentScript as HTMLScriptElement | null)?.src;
+    if (!src) {
+        return null;
+    }
+
+    const url = new URL(src);
+    url.search = '';
+    url.hash = '';
+    url.pathname = url.pathname.replace(/(index\.php\/)?give\/embed\/donation-form\/script\.js$/, '');
+
+    return url.toString();
+})();
 
 const LOAD_TIMEOUT_MS = 10000;
 
@@ -156,10 +181,15 @@ class GiveWPDonationForm extends HTMLElement {
 
     connectedCallback() {
         const formId = this.getAttribute('form-id');
-        const wpUrl = this.getAttribute('wp-url');
+        const wpUrl = this.getAttribute('wp-url') || SCRIPT_HOME_URL;
 
-        if (!formId || !wpUrl) {
-            console.error('givewp-donation-form requires form-id and wp-url attributes.');
+        if (!formId) {
+            console.error('givewp-donation-form requires a form-id attribute.');
+            return;
+        }
+
+        if (!wpUrl) {
+            console.error('givewp-donation-form could not locate the WordPress site; add a wp-url attribute.');
             return;
         }
 
@@ -177,6 +207,12 @@ class GiveWPDonationForm extends HTMLElement {
         if (wpBase.protocol !== 'http:' && wpBase.protocol !== 'https:') {
             console.error('givewp-donation-form: wp-url must be an http(s) URL.', wpUrl);
             return;
+        }
+
+        // Route URLs are built by appending a query string, and WordPress
+        // redirects /blog?x to /blog/?x; a trailing slash avoids the round trip.
+        if (!wpBase.pathname.endsWith('/')) {
+            wpBase.pathname += '/';
         }
 
         window.addEventListener('message', this.messageHandler);

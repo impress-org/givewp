@@ -7,7 +7,7 @@ inside an iframe.
 
 ```html
 <script src="https://example.org/give/embed/donation-form/script.js" defer></script>
-<givewp-donation-form form-id="42" wp-url="https://example.org"></givewp-donation-form>
+<givewp-donation-form form-id="42"></givewp-donation-form>
 ```
 
 The form builder generates that snippet (`src/FormBuilder/resources/js/form-builder/src/components/EmbedForm/`).
@@ -78,6 +78,26 @@ which would freeze at whatever the snippet was copied with.
 Raising `max-age` trades update latency on other people's sites for fewer requests. An hour is
 the ceiling a plugin update should tolerate; do not go to a year.
 
+### Why the path has no dynamic segments
+
+The URL is the same for every form on a site, on purpose. A per-form URL such as
+`/give/embed/donation-form/42/script.js` would let the server bake that form's colors and labels
+into the script, but it costs more than it saves:
+
+- The custom element is registered once per page. A page embedding two forms would load two
+  scripts, and the second `customElements.define()` throws.
+- The response would depend on a form lookup, so every request and every revalidation hits the
+  database, and the ETag could no longer be the build hash alone.
+- The browser would cache one copy per form instead of one per site.
+
+Everything a per-form URL could supply is already on the element: the snippet generator reads the
+form's colors and translated labels at copy time and writes them as attributes. What the host page
+needs from the server is the script and the site location, and both come from the URL as it is.
+
+If a script variant is ever needed, add a query parameter (`?locale=fr`), read it through
+`Router::getRequestDataByType()` for the same sanitizing the other routes get, and fold its value
+into the ETag. The path stays put.
+
 ### Known ceiling
 
 Some nginx configurations serve `*.js` straight from disk and return `404` for a missing file
@@ -88,9 +108,11 @@ query string. If this shows up in support, the fix is to drop the `.js` extensio
 
 ## The custom element
 
-`<givewp-donation-form>` requires `form-id` and `wp-url`. `wp-url` is the full home URL, not
-just the origin, because a WordPress install in a subdirectory serves its routes under that path;
-only `http:` and `https:` are accepted. Optional attributes: `display-style` (`onpage`, `modal`,
+`<givewp-donation-form>` requires only `form-id`. The element finds the WordPress site by
+stripping the route tail from `document.currentScript.src`, which works for all three URL shapes
+above and keeps the home path of a subdirectory install. `wp-url` overrides that for a page that
+loads the script from somewhere else; it must be the full home URL, not just the origin, and only
+`http:` and `https:` are accepted. Optional attributes: `display-style` (`onpage`, `modal`,
 `newTab`), `primary-color`, `secondary-color`, `button-text`, `form-title`, `loading-text`,
 `fallback-text`, `close-text`, `locale`.
 

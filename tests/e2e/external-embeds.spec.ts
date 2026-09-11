@@ -29,13 +29,19 @@ const EXTERNAL_PAGE = `${EXTERNAL_ORIGIN}/donate`;
  */
 const EXTERNAL_SCRIPT_URL = `${WP_BASE_URL}/give/embed/donation-form/script.js`;
 
-function externalPageHtml(formId: number, wpUrl: string = WP_BASE_URL, attributes: string = ''): string {
+/*
+ * No wp-url by default: the element derives the WordPress site from the script URL, which is
+ * what the generated snippet relies on. Tests pass one only to point the embed somewhere else.
+ */
+function externalPageHtml(formId: number, wpUrl: string | null = null, attributes: string = ''): string {
+    const wpUrlAttribute = wpUrl ? `wp-url="${wpUrl}"` : '';
+
     return `<!DOCTYPE html>
 <html>
 <head><title>External donation page</title></head>
 <body>
     <h1>Support our cause</h1>
-    <givewp-donation-form form-id="${formId}" wp-url="${wpUrl}" ${attributes}></givewp-donation-form>
+    <givewp-donation-form form-id="${formId}" ${wpUrlAttribute} ${attributes}></givewp-donation-form>
     <script src="${EXTERNAL_SCRIPT_URL}" defer></script>
 </body>
 </html>`;
@@ -130,7 +136,7 @@ test.describe('External donation form embeds', () => {
         await page.route(`${EXTERNAL_PAGE}*`, (route) =>
             route.fulfill({
                 contentType: 'text/html',
-                body: externalPageHtml(formId, WP_BASE_URL, 'display-style="modal" button-text="Give now"'),
+                body: externalPageHtml(formId, null, 'display-style="modal" button-text="Give now"'),
             })
         );
 
