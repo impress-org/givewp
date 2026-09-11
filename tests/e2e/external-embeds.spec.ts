@@ -10,7 +10,7 @@ import {
 import {WP_BASE_URL} from './environment';
 
 /**
- * A v3 donation form embedded on a non-WordPress site via externalFormEmbed.js.
+ * A v3 donation form embedded on a non-WordPress site via donationFormExternalEmbed.js.
  *
  * There is no second server: navigation to a fictitious external origin is fulfilled with fixture
  * HTML that loads the real embed script and points at the real wp-env site. The iframe request

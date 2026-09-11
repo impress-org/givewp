@@ -12,7 +12,7 @@ inside an iframe.
 
 The form builder generates that snippet (`src/FormBuilder/resources/js/form-builder/src/components/EmbedForm/`).
 The script source is `src/DonationForms/resources/externalEmbed/index.ts`, built to
-`build/externalFormEmbed.js`. It is self-contained: no `@wordpress/*` packages, iframe-resizer v4
+`build/donationFormExternalEmbed.js`. It is self-contained: no `@wordpress/*` packages, iframe-resizer v4
 inlined. It has to run on pages that have none of the WordPress runtime.
 
 ## The script URL is a contract

@@ -86,9 +86,9 @@ class RouterScriptTest extends TestCase
      */
     public function testEtagIsTheQuotedAssetVersion(): void
     {
-        $version = require GIVE_PLUGIN_DIR . 'build/externalFormEmbed.asset.php';
+        $version = require GIVE_PLUGIN_DIR . 'build/donationFormExternalEmbed.asset.php';
 
-        $this->assertSame('"' . $version['version'] . '"', (new ScriptResponse('externalFormEmbed'))->etag());
+        $this->assertSame('"' . $version['version'] . '"', (new ScriptResponse('donationFormExternalEmbed'))->etag());
     }
 
     /**
@@ -96,7 +96,7 @@ class RouterScriptTest extends TestCase
      */
     public function testIfNoneMatchToleratesWeakAndGzipValidators(): void
     {
-        $response = new ScriptResponse('externalFormEmbed');
+        $response = new ScriptResponse('donationFormExternalEmbed');
 
         $this->assertTrue($response->matchesIfNoneMatch('"abc"', '"abc"'));
         $this->assertTrue($response->matchesIfNoneMatch('"abc"', 'W/"abc"'));
