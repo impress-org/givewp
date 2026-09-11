@@ -60,16 +60,22 @@ class Router
      *
      * @param string $uri  Path below the base, e.g. "embed/donation-form/script.js"
      * @param string $file Absolute path to the built script
+     *
+     * @return ScriptResponse The response, so callers can chain localize()
      */
-    public function script(string $uri, string $file): void
+    public function script(string $uri, string $file): ScriptResponse
     {
-        add_action('parse_request', function (WP $wp) use ($uri, $file) {
+        $response = new ScriptResponse($file);
+
+        add_action('parse_request', function (WP $wp) use ($uri, $response) {
             if (!$this->isScriptRequested($wp, $uri)) {
                 return;
             }
 
-            (new ScriptResponse($file))->send();
+            $response->send();
         });
+
+        return $response;
     }
 
     /**

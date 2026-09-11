@@ -31,6 +31,18 @@ class ScriptResponse
 
     /**
      * @since TBD
+     */
+    protected string $objectName = '';
+
+    /**
+     * @var callable|null
+     *
+     * @since TBD
+     */
+    protected $data;
+
+    /**
+     * @since TBD
      *
      * @param string $file Absolute path to the built script. Its version comes
      *                     from the .asset.php file @wordpress/scripts writes
@@ -43,6 +55,24 @@ class ScriptResponse
     }
 
     /**
+     * Expose data to the script as a global object, the way wp_localize_script()
+     * does for enqueued scripts. The callable runs at request time, after
+     * translations are loaded, so the data can carry the site's translated
+     * strings.
+     *
+     * @since TBD
+     *
+     * @param callable $data Returns the array to expose; must be JSON-encodable
+     */
+    public function localize(string $objectName, callable $data): self
+    {
+        $this->objectName = $objectName;
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
      * @since TBD
      */
     public function send(): void
@@ -52,7 +82,8 @@ class ScriptResponse
             exit;
         }
 
-        $etag = $this->etag();
+        $prologue = $this->prologue();
+        $etag = $this->etag($prologue);
 
         header('Content-Type: application/javascript; charset=utf-8');
         header('X-Content-Type-Options: nosniff');
@@ -64,18 +95,38 @@ class ScriptResponse
             exit;
         }
 
+        echo $prologue;
         readfile($this->file);
         exit;
     }
 
     /**
-     * The build hash from the asset file, quoted as a strong validator.
+     * The statement printed ahead of the file when data is localized.
      *
      * @since TBD
      */
-    public function etag(): string
+    public function prologue(): string
+    {
+        if (!$this->data) {
+            return '';
+        }
+
+        return sprintf("var %s = %s;\n", $this->objectName, wp_json_encode(($this->data)()));
+    }
+
+    /**
+     * The build hash from the asset file, quoted as a strong validator. Localized
+     * data is part of the response, so its hash is part of the validator too.
+     *
+     * @since TBD
+     */
+    public function etag(string $prologue = ''): string
     {
         $version = (string) ScriptAsset::getVersion($this->assetFile);
+
+        if ($prologue !== '') {
+            $version .= '-' . substr(md5($prologue), 0, 8);
+        }
 
         return sprintf('"%s"', $version);
     }

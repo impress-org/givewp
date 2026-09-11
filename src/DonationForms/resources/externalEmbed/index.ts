@@ -12,9 +12,9 @@ import {iframeResize} from 'iframe-resizer';
  * form inline, `modal` renders a button that opens the form in an overlay,
  * `newTab` renders a button that links to the standalone form page.
  *
- * Donor-facing text is either visually absent (the loading state is a
- * spinner) or overridable per attribute, so the WordPress-generated snippet
- * supplies translated strings.
+ * Donor-facing text comes from the WordPress site: the route that serves
+ * this script prints window.givewpDonationFormEmbed ahead of it with the
+ * strings translated in the site's locale. Attributes override per element.
  *
  * The WordPress site is located from the script's own URL, so the snippet
  * only has to name the form. A `wp-url` attribute overrides that for pages
@@ -45,6 +45,34 @@ const SCRIPT_HOME_URL = ((): string | null => {
 })();
 
 const LOAD_TIMEOUT_MS = 10000;
+
+type EmbedI18n = {
+    donate: string;
+    loading: string;
+    formTitle: string;
+    openForm: string;
+    close: string;
+};
+
+declare global {
+    interface Window {
+        givewpDonationFormEmbed?: {i18n?: Partial<EmbedI18n>};
+    }
+}
+
+/*
+ * The English values are only reached when the file is loaded from
+ * somewhere other than the route (a direct build path); the served script
+ * always carries the site's translations.
+ */
+const I18N: EmbedI18n = {
+    donate: 'Donate',
+    loading: 'Loading',
+    formTitle: 'Donation Form',
+    openForm: 'Open donation form',
+    close: 'Close',
+    ...window.givewpDonationFormEmbed?.i18n,
+};
 
 /**
  * Embed ids must be stable across page loads: an offsite gateway (e.g.
@@ -179,6 +207,11 @@ class GiveWPDonationForm extends HTMLElement {
         }
     };
 
+    /**
+     * Reads the attributes, resolves the WordPress base URL, and renders the
+     * chosen display style. Runs again when an SPA reattaches the element, so
+     * everything after the initialized guard happens once.
+     */
     connectedCallback() {
         const formId = this.getAttribute('form-id');
         const wpUrl = this.getAttribute('wp-url') || SCRIPT_HOME_URL;
@@ -280,6 +313,10 @@ class GiveWPDonationForm extends HTMLElement {
         window.history.replaceState(window.history.state, '', url.toString());
     }
 
+    /**
+     * Drops the document-level listeners; the DOM subtree is left intact so a
+     * reattach does not rebuild the iframe.
+     */
     disconnectedCallback() {
         window.removeEventListener('message', this.messageHandler);
         if (this.keydownHandler) {
@@ -287,10 +324,17 @@ class GiveWPDonationForm extends HTMLElement {
         }
     }
 
+    /**
+     * Label for the modal and new-tab launchers.
+     */
     getButtonText(): string {
-        return this.getAttribute('button-text') || 'Donate';
+        return this.getAttribute('button-text') || I18N.donate;
     }
 
+    /**
+     * The iframe src for the form, pointed at the donation-form-view route
+     * with the host page as origin-url so gateway redirects can come back.
+     */
     getFormViewUrl(formId: string): string {
         // Origin and pathname only: the page's query string and fragment may
         // carry data that should not be forwarded to the WordPress site, and
@@ -313,6 +357,9 @@ class GiveWPDonationForm extends HTMLElement {
         return url.toString();
     }
 
+    /**
+     * The form on its own page, for the new-tab launcher and the fallback link.
+     */
     getStandaloneFormUrl(): string {
         const url = new URL(this.wpBase.toString());
         url.searchParams.set('givewp-route', 'donation-form-view');
@@ -336,6 +383,10 @@ class GiveWPDonationForm extends HTMLElement {
         );
     }
 
+    /**
+     * The iframe src for the receipt of a donation that just returned from an
+     * offsite gateway; the receipt id comes from the return params.
+     */
     getReceiptViewUrl(): string {
         const params = new URLSearchParams(window.location.search);
         const url = new URL(this.wpBase.toString());
@@ -345,11 +396,15 @@ class GiveWPDonationForm extends HTMLElement {
         return url.toString();
     }
 
+    /**
+     * Renders the loading state and the hidden iframe into target, reveals the
+     * iframe on the resizer handshake, and falls back to a link on timeout.
+     */
     renderForm(src: string, target: HTMLElement) {
         const loading = document.createElement('div');
         loading.className = 'givewp-embed__loading';
         loading.setAttribute('role', 'status');
-        loading.setAttribute('aria-label', this.getAttribute('loading-text') || 'Loading');
+        loading.setAttribute('aria-label', this.getAttribute('loading-text') || I18N.loading);
 
         const spinner = document.createElement('span');
         spinner.className = 'givewp-embed__spinner';
@@ -358,7 +413,7 @@ class GiveWPDonationForm extends HTMLElement {
         const iframe = document.createElement('iframe');
         iframe.src = src;
         // Matches the title the WordPress embeds use, so tooling and donors see one name.
-        iframe.title = this.getAttribute('form-title') || 'Donation Form';
+        iframe.title = this.getAttribute('form-title') || I18N.formTitle;
         iframe.style.cssText = 'width: 1px; min-width: 100%; border: 0; display: none;';
         iframe.setAttribute('data-givewp-embed', 'true');
         iframe.setAttribute('data-givewp-embed-id', this.embedId);
@@ -393,19 +448,26 @@ class GiveWPDonationForm extends HTMLElement {
         );
     }
 
+    /**
+     * Replaces the loading state with a link to the standalone form when the
+     * iframe never completed the handshake.
+     */
     renderFallbackLink(loading: HTMLElement) {
         const link = document.createElement('a');
         link.href = this.getStandaloneFormUrl();
         link.target = '_blank';
         link.rel = 'noopener';
         link.className = 'givewp-embed__button';
-        link.textContent = this.getAttribute('fallback-text') || 'Open donation form';
+        link.textContent = this.getAttribute('fallback-text') || I18N.openForm;
 
         loading.replaceWith(link);
         this.iframe?.remove();
         this.iframe = null;
     }
 
+    /**
+     * A styled link that opens the standalone form in a new tab.
+     */
     renderNewTabButton() {
         const link = document.createElement('a');
         link.href = this.getStandaloneFormUrl();
@@ -417,6 +479,9 @@ class GiveWPDonationForm extends HTMLElement {
         this.appendChild(link);
     }
 
+    /**
+     * A button that opens the form in the modal overlay.
+     */
     renderModalButton(src: string) {
         const button = document.createElement('button');
         button.type = 'button';
@@ -427,6 +492,10 @@ class GiveWPDonationForm extends HTMLElement {
         this.appendChild(button);
     }
 
+    /**
+     * Shows the overlay, building it on first open. Returns focus to the
+     * launcher on close and keeps keyboard focus inside the dialog while open.
+     */
     openModal(src: string) {
         const launcher = document.activeElement as HTMLElement | null;
 
@@ -443,13 +512,13 @@ class GiveWPDonationForm extends HTMLElement {
         dialog.className = 'givewp-embed__dialog';
         dialog.setAttribute('role', 'dialog');
         dialog.setAttribute('aria-modal', 'true');
-        dialog.setAttribute('aria-label', this.getAttribute('form-title') || 'Donation Form');
+        dialog.setAttribute('aria-label', this.getAttribute('form-title') || I18N.formTitle);
         dialog.tabIndex = -1;
 
         const close = document.createElement('button');
         close.type = 'button';
         close.className = 'givewp-embed__close';
-        close.setAttribute('aria-label', this.getAttribute('close-text') || 'Close');
+        close.setAttribute('aria-label', this.getAttribute('close-text') || I18N.close);
         close.textContent = '×';
 
         const hide = () => {

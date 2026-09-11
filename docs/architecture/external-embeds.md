@@ -69,7 +69,8 @@ The URL is stable, so the version has to travel in the response rather than in a
 which would freeze at whatever the snippet was copied with.
 
 - `ETag` is the build hash from the `.asset.php` file next to the script, read through `ScriptAsset`. It changes
-  when the bundle changes and is the same value `wp_enqueue_script` would use as `ver`.
+  when the bundle changes and is the same value `wp_enqueue_script` would use as `ver`. When data
+  is localized (below), a hash of that data is appended, so a translation change revalidates too.
 - `Cache-Control: public, max-age=3600`. A third-party page reuses the script for an hour, then
   revalidates. A matching `If-None-Match` gets a `304` with no body.
 - The `If-None-Match` comparison ignores the `W/` weak prefix and the `-gzip` suffix Apache's
@@ -77,6 +78,19 @@ which would freeze at whatever the snippet was copied with.
 
 Raising `max-age` trades update latency on other people's sites for fewer requests. An hour is
 the ceiling a plugin update should tolerate; do not go to a year.
+
+### Translated strings travel with the script
+
+The bundle runs on pages without WordPress, so it cannot call `__()`. Instead the route localizes
+it: `Route::script(...)->localize('givewpDonationFormEmbed', new GetExternalEmbedScriptData())`
+prints `var givewpDonationFormEmbed = {...};` ahead of the file, the same shape
+`wp_localize_script()` gives an enqueued script. The callable runs at request time, after the
+text domain is loaded, so the strings are in the site's locale. The element reads its default
+labels from that object; the English literals in the source are reached only when the file is
+loaded from somewhere other than the route.
+
+Attributes still override per element (`button-text` for an admin-chosen label), but the snippet
+no longer has to carry translations of the defaults.
 
 ### Why the path has no dynamic segments
 

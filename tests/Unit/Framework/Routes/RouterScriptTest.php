@@ -114,6 +114,24 @@ class RouterScriptTest extends TestCase
     /**
      * @since TBD
      */
+    public function testLocalizedDataIsPrintedAheadOfTheScriptAndVersionsTheEtag(): void
+    {
+        $response = new ScriptResponse(GIVE_PLUGIN_DIR . 'build/donationFormExternalEmbed.js');
+        $plainEtag = $response->etag();
+
+        $response->localize('givewpTest', static function (): array {
+            return ['i18n' => ['donate' => 'Spenden']];
+        });
+        $prologue = $response->prologue();
+
+        $this->assertSame("var givewpTest = {\"i18n\":{\"donate\":\"Spenden\"}};\n", $prologue);
+        $this->assertNotSame($plainEtag, $response->etag($prologue));
+        $this->assertSame($response->etag($prologue), $response->etag($prologue));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testIfNoneMatchToleratesWeakAndGzipValidators(): void
     {
         $response = new ScriptResponse($this->script);
