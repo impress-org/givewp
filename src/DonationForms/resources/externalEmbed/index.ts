@@ -229,18 +229,14 @@ class GiveWPDonationForm extends HTMLElement {
 
         injectStyles();
 
-        // Form colors are dynamic settings, not embed constants: the snippet
-        // passes them as attributes and the stylesheet reads the custom
-        // properties (same names the WordPress embeds use), with defaults as
-        // var() fallbacks.
+        // The launcher button is host-page chrome, so the host page styles it:
+        // set --givewp-primary-color on givewp-donation-form in its CSS. The
+        // attribute is a shortcut for the same property. Nothing about the
+        // form's own colors is baked into the snippet; the form inside the
+        // iframe resolves those itself on every load.
         const primaryColor = this.getAttribute('primary-color');
         if (primaryColor) {
             this.style.setProperty('--givewp-primary-color', primaryColor);
-        }
-
-        const secondaryColor = this.getAttribute('secondary-color');
-        if (secondaryColor) {
-            this.style.setProperty('--givewp-secondary-color', secondaryColor);
         }
 
         this.formId = formId;
