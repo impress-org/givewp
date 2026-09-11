@@ -92,6 +92,10 @@ loaded from somewhere other than the route.
 Attributes still override per element (`button-text` for an admin-chosen label), but the snippet
 no longer has to carry translations of the defaults.
 
+The element's `locale` attribute does not reach these strings. It is forwarded to the iframe URL,
+so it changes the language of the form inside the frame only; the launcher button, spinner label,
+and dialog labels stay in the site's locale unless the text attributes override them.
+
 ### Why the path has no dynamic segments
 
 The URL is the same for every form on a site, on purpose. A per-form URL such as
@@ -109,9 +113,9 @@ resolves it itself, or is a per-embed choice written as an attribute. The route 
 translated defaults. What the host page needs from the server is the script, the strings, and the
 site location, and all three come from the URL as it is.
 
-If a script variant is ever needed, add a query parameter (`?locale=fr`), read it through
-`Router::getRequestDataByType()` for the same sanitizing the other routes get, and fold its value
-into the ETag. The path stays put.
+`Router::script()` reads no request data today. If a script variant is ever needed, add a query
+parameter (`?locale=fr`), read it through `Router::getRequestDataByType()` for the same sanitizing
+the other routes get, and fold its value into the ETag. The path stays put.
 
 ### Known ceiling
 
