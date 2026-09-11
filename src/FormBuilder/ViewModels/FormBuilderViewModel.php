@@ -26,7 +26,7 @@ use Give_License;
 class FormBuilderViewModel
 {
     /**
-     * @since TBD Add homeUrl and externalEmbedScriptUrl keys to the returned array
+     * @since TBD Add externalEmbedScriptUrl key to the returned array
      * @since 4.14.0 Add countries key to the returned array
      * @since 3.12.0 Add goalProgressOptions key to the returned array
      * @since 3.9.0 Add support to intlTelInputSettings key in the returned array
@@ -43,7 +43,6 @@ class FormBuilderViewModel
             'formId' => $donationFormId,
             'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $donationFormId),
             'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($donationFormId),
-            'homeUrl' => home_url(),
             'externalEmbedScriptUrl' => (new GenerateExternalEmbedScriptUrl())(),
             'nonce' => wp_create_nonce('wp_rest'),
             'blockData' => $donationForm->blocks->toJson(),

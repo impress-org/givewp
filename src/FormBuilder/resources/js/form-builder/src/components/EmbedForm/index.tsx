@@ -50,7 +50,7 @@ interface StateProps {
  */
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
-    const {formId, homeUrl, externalEmbedScriptUrl, blockData, settings, campaignColors} = getWindowData();
+    const {formId, externalEmbedScriptUrl, blockData, settings, campaignColors} = getWindowData();
     const [isExternalEmbedCopied, setIsExternalEmbedCopied] = useState<boolean>(false);
 
     const parsedSettings = useMemo((): Partial<FormSettings> => {
@@ -301,7 +301,6 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     const getExternalEmbedSnippet = () => {
         const attributes = [
             attribute('form-id', formId),
-            attribute('wp-url', homeUrl),
             attribute('fallback-text', __('Open donation form', 'give')),
         ];
 

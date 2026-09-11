@@ -26,7 +26,7 @@ class FormBuilderViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD Add homeUrl and externalEmbedScriptUrl keys to the compared array
+     * @since TBD Add externalEmbedScriptUrl key to the compared array
      * @since 3.9.0 Add support to intlTelInputSettings key in the compared array
      * @since 3.7.0 Add support to isExcerptEnabled key in the compared array
      * @since 3.2.0 Add support to nameTitlePrefixes key in the compared array
@@ -47,7 +47,6 @@ class FormBuilderViewModelTest extends TestCase
                 'formId' => $formId,
                 'resourceURL' => rest_url(FormBuilderRestRouteConfig::NAMESPACE . '/form/' . $formId),
                 'previewURL' => (new GenerateDonationFormPreviewRouteUrl())($formId),
-                'homeUrl' => home_url(),
                 'externalEmbedScriptUrl' => (new GenerateExternalEmbedScriptUrl())(),
                 'nonce' => wp_create_nonce('wp_rest'),
                 'blockData' => $mockForm->blocks->toJson(),
