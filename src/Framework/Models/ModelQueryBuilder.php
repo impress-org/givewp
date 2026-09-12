@@ -35,6 +35,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Returns the number of rows returned by a query
      *
+     * @since TBD Count the distinct groups of a grouped query rather than the first group's rows.
      * @since 2.24.0
      *
      * @param  null|string  $column
@@ -42,6 +43,18 @@ class ModelQueryBuilder extends QueryBuilder
     public function count($column = null): int
     {
         $column = ( ! $column || $column === '*') ? '1' : trim($column);
+
+        /*
+         * A grouped query returns one row per group and get_row() reads only the first of them,
+         * so counting the grouped columns is what the caller is actually asking for.
+         */
+        if ($this->groupByColumns) {
+            $groupedColumns = implode(', ', $this->groupByColumns);
+            $this->groupByColumns = [];
+            $this->selects = [new RawSQL("SELECT COUNT(DISTINCT {$groupedColumns}) AS count")];
+
+            return +parent::get()->count;
+        }
 
         if ('1' === $column) {
             $this->selects = [];
