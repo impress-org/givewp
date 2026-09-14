@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\Framework\Models;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignStatus;
+use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -54,5 +55,19 @@ final class ModelQueryBuilderTest extends TestCase
         }
 
         $this->assertSame(count($statuses), Campaign::query()->groupBy('status')->count());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCountIncludesTheGroupOfRowsWithANullGroupedColumn()
+    {
+        $endDates = [null, Temporal::withoutMicroseconds(Temporal::getCurrentDateTime())];
+
+        foreach ($endDates as $endDate) {
+            Campaign::factory()->count(2)->create(['endDate' => $endDate]);
+        }
+
+        $this->assertSame(count($endDates), Campaign::query()->groupBy('end_date')->count());
     }
 }

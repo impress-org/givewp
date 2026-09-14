@@ -35,7 +35,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Returns the number of rows returned by a query
      *
-     * @since TBD Count the distinct groups of a grouped query rather than the first group's rows.
+     * @since TBD Count the groups of a grouped query rather than the first group's rows.
      * @since 2.24.0
      *
      * @param  null|string  $column
@@ -46,14 +46,10 @@ class ModelQueryBuilder extends QueryBuilder
 
         /*
          * A grouped query returns one row per group and get_row() reads only the first of them,
-         * so counting the grouped columns is what the caller is actually asking for.
+         * so the number of groups is what the caller is actually asking for.
          */
         if ($this->groupByColumns) {
-            $groupedColumns = implode(', ', $this->groupByColumns);
-            $this->groupByColumns = [];
-            $this->selects = [new RawSQL("SELECT COUNT(DISTINCT {$groupedColumns}) AS count")];
-
-            return +parent::get()->count;
+            return +DB::get_row($this->getGroupCountSQL())->count;
         }
 
         if ('1' === $column) {
@@ -164,5 +160,30 @@ class ModelQueryBuilder extends QueryBuilder
         return array_map(static function ($object) use ($model) {
             return $model::fromQueryBuilderObject($object);
         }, $results);
+    }
+
+    /**
+     * Wraps the grouped query so that its rows, one per group, are what gets counted. A
+     * COUNT(DISTINCT ...) over the grouped columns would drop every group holding a NULL.
+     *
+     * The grouped columns are aliased because a derived table rejects duplicate column names, and
+     * the ordering and paging are dropped because neither changes the number of groups.
+     *
+     * @since TBD
+     */
+    private function getGroupCountSQL(): string
+    {
+        $groupedColumns = [];
+
+        foreach ($this->groupByColumns as $index => $groupByColumn) {
+            $groupedColumns[] = "{$groupByColumn} AS groupedColumn{$index}";
+        }
+
+        $this->selects = [new RawSQL('SELECT ' . implode(', ', $groupedColumns))];
+        $this->orderBys = [];
+        $this->limit = null;
+        $this->offset = null;
+
+        return "SELECT COUNT(*) AS count FROM ({$this->getSQL()}) AS groupedQuery";
     }
 }
