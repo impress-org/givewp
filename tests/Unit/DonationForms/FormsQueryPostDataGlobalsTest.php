@@ -40,7 +40,7 @@ class FormsQueryPostDataGlobalsTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($GLOBALS['id']);
+        unset($GLOBALS['id'], $GLOBALS['post']);
 
         parent::tearDown();
     }
@@ -75,5 +75,27 @@ class FormsQueryPostDataGlobalsTest extends TestCase
         $this->assertGreaterThan(0, $loopIterations, 'The results loop did not run, so nothing was exercised');
         $this->assertCount($loopIterations, $forms);
         $this->assertSame($unrelatedId, $GLOBALS['id']);
+    }
+
+    /**
+     * A global $post does not imply setup_postdata() ran for it, so its ID cannot be assumed to be
+     * what global $id held on the way in.
+     *
+     * @since TBD
+     */
+    public function testDoesNotDeriveTheGlobalIdFromAnOuterPost(): void
+    {
+        DonationForm::factory()->create();
+
+        $outerPost = self::factory()->post->create_and_get();
+        $unrelatedId = $this->faker->numberBetween(1, 1000);
+
+        $GLOBALS['post'] = $outerPost;
+        $GLOBALS['id'] = $unrelatedId;
+
+        (new Give_Forms_Query())->get_forms();
+
+        $this->assertSame($unrelatedId, $GLOBALS['id']);
+        $this->assertSame($outerPost->ID, $GLOBALS['post']->ID);
     }
 }

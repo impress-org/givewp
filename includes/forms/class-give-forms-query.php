@@ -133,13 +133,19 @@ class Give_Forms_Query {
 				}
 
 				wp_reset_postdata();
-				PostDataGlobals::restore( $post_data_globals );
 
 				// Prevent nest loop from producing unexpected results.
 				if ( $previous_post instanceof WP_Post ) {
 					$post = $previous_post;
 					setup_postdata( $post );
 				}
+
+				/*
+				 * Last, because setup_postdata() above rewrites the same globals from the outer
+				 * post. That post being set does not mean setup_postdata() ever ran for it, so its
+				 * ID is not necessarily what these globals held on the way in.
+				 */
+				PostDataGlobals::restore( $post_data_globals );
 
 				$results = $this->forms;
 			}

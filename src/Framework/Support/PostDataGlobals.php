@@ -16,8 +16,6 @@ namespace Give\Framework\Support;
 final class PostDataGlobals
 {
     /**
-     * @since TBD
-     *
      * @var string[] Names of the globals setup_postdata() declares and assigns.
      */
     private static $globalNames = [
@@ -40,7 +38,9 @@ final class PostDataGlobals
      *
      * @since TBD
      *
-     * @return array<string, mixed> Values keyed by global name, containing only the globals that were set.
+     * @return array{id?: mixed, authordata?: mixed, currentday?: mixed, currentmonth?: mixed, page?: mixed,
+     *               pages?: mixed, multipage?: mixed, more?: mixed, numpages?: mixed} Values keyed by global
+     *               name, containing only the globals that were set.
      */
     public static function snapshot(): array
     {
@@ -60,7 +60,9 @@ final class PostDataGlobals
      *
      * @since TBD
      *
-     * @param array<string, mixed> $snapshot Values keyed by global name, as returned by snapshot().
+     * @param array{id?: mixed, authordata?: mixed, currentday?: mixed, currentmonth?: mixed, page?: mixed,
+     *              pages?: mixed, multipage?: mixed, more?: mixed, numpages?: mixed} $snapshot Values keyed
+     *              by global name, as returned by snapshot().
      *
      * @return void
      */
