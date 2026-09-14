@@ -9,6 +9,8 @@
  * @since       1.0
  */
 
+use Give\Framework\Support\PostDataGlobals;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -213,8 +215,9 @@ class Give_Payments_Query extends Give_Stats {
 	 * query is run, or the filter on the arguments (existing mainly for backwards
 	 * compatibility).
 	 *
-	 * @since  1.0
+	 * @since TBD Restore the globals setup_postdata() writes to once the results loop is done.
 	 * @since 2.9.6 Normalize post IDs from either an array of IDs or Post objects.
+	 * @since  1.0
 	 *
 	 * @access public
 	 *
@@ -265,7 +268,8 @@ class Give_Payments_Query extends Give_Stats {
 				$results = $query->posts;
 
 			} else {
-				$previous_post = $post;
+				$previous_post     = $post;
+				$post_data_globals = PostDataGlobals::snapshot();
 
 				while ( $query->have_posts() ) {
 					$query->the_post();
@@ -277,6 +281,7 @@ class Give_Payments_Query extends Give_Stats {
 				}
 
 				wp_reset_postdata();
+				PostDataGlobals::restore( $post_data_globals );
 
 				// Prevent nest loop from producing unexpected results.
 				if ( $previous_post instanceof WP_Post ) {
