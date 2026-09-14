@@ -11,6 +11,7 @@
 
 // Exit if accessed directly.
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Helpers\Utils;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -381,6 +382,7 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
+     * @since TBD     Read meta through Utils::safeUnserialize() so values that were never serialized survive.
      * @since 4.16.7.2       Restrict unserialize to prevent object instantiation.
      * @since 2.27.0  Change to read comment from donations meta table
      * @since 2.3.0
@@ -417,7 +419,9 @@ class Give_Donor_Wall {
 
 			/* @var stdClass $result */
 			foreach ( $results as $result ) {
-				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = unserialize( $result->meta_value, [ 'allowed_classes' => false ] );
+				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = is_string( $result->meta_value )
+					? Utils::safeUnserialize( $result->meta_value )
+					: $result->meta_value;
 
 				// Set donation date.
 				if ( empty( $temp[ $result->{$donation_id_col} ]['donation_date'] ) ) {
