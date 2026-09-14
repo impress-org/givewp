@@ -119,8 +119,9 @@ class DonorWallTest extends TestCase
 
     /**
      * give_validate_gravatar() calls gravatar.com over HTTP and falls back to the name initials
-     * when the avatar is missing. Answering the request with a 404 pins the test to that fallback
-     * without reaching the network.
+     * when the avatar is missing. Answering that request with a 404 pins the test to that fallback
+     * without reaching the network. Every other URL is left alone, so a request the render path
+     * should not be making still surfaces instead of being quietly answered.
      *
      * @since TBD
      */
@@ -128,9 +129,15 @@ class DonorWallTest extends TestCase
     {
         add_filter(
             'pre_http_request',
-            static function () {
+            static function ($preempt, $parsedArgs, $url) {
+                if (strpos($url, 'gravatar.com') === false) {
+                    return $preempt;
+                }
+
                 return ['response' => ['code' => 404, 'message' => 'Not Found'], 'body' => ''];
-            }
+            },
+            10,
+            3
         );
     }
 }
