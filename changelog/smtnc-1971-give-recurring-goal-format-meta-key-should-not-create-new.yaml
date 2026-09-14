@@ -1,0 +1,5 @@
+significance: patch
+type: fixed
+entry: Updated campaign duplication to create a single copy of each associated
+  form when form metadata contains duplicate keys.
+timestamp: 2026-09-12T02:51:52.719Z
