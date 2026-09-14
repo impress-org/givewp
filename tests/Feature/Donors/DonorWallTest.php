@@ -88,6 +88,50 @@ class DonorWallTest extends TestCase
     }
 
     /**
+     * A payload nested inside a serialized string survives the first decode as inert text rather
+     * than as an object, so the wall has to stay inert for that shape too.
+     *
+     * @since TBD
+     *
+     * @dataProvider objectPayloadProvider
+     *
+     * @param string $storedMetaValue The meta value as it sits in the donationmeta row.
+     */
+    public function testDoesNotInstantiateClassesFromStoredMeta(string $storedMetaValue)
+    {
+        global $wpdb;
+
+        SerializedPayloadProbe::$instantiated = false;
+        $donation = $this->createDonorWallDonation();
+
+        $wpdb->update(
+            $wpdb->donationmeta,
+            ['meta_value' => $storedMetaValue],
+            ['donation_id' => $donation->id, 'meta_key' => DonationMetaKeys::LAST_NAME]
+        );
+
+        $this->renderDonorWall(['show_avatar' => 'false']);
+
+        $this->assertFalse(SerializedPayloadProbe::$instantiated);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @return array<string, array{0: string}>
+     */
+    public function objectPayloadProvider(): array
+    {
+        $payload = serialize(new SerializedPayloadProbe());
+
+        return [
+            'object at the top level' => [$payload],
+            'object nested in an array' => [serialize(['lastName' => new SerializedPayloadProbe()])],
+            'object wrapped in a serialized string' => [serialize($payload)],
+        ];
+    }
+
+    /**
      * The wall queries published donations only, renders the name only when the donation is not
      * anonymous, and skips the initials entirely when the donor has an uploaded avatar. The
      * factories randomize each of those.
