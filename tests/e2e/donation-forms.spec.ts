@@ -364,6 +364,74 @@ test.describe('V3 donation forms', () => {
                 new RegExp(`p=${formId}`)
             );
         });
+
+        /*
+         * The embed does not trust the iframe's `load` event, which fires for error pages too; the
+         * form is ready when iframe-resizer completes its handshake. Holding the form route back
+         * makes the window in between wide enough to observe.
+         */
+        test('holds a loading state until the form is ready', async ({page, requestUtils}) => {
+            const post = await requestUtils.createPost({
+                title: 'Loading embed',
+                content: `[give_form id="${formId}"]`,
+                status: 'publish',
+            });
+
+            await page.route(/givewp-route=donation-form-view/, async (route) => {
+                await new Promise((resolve) => setTimeout(resolve, 2_000));
+                await route.continue();
+            });
+
+            // The default `load` wait includes the iframe, which would land after the state has cleared.
+            await page.goto(post.link, {waitUntil: 'domcontentloaded'});
+
+            const loading = page.getByRole('status', {name: 'Loading donation form'});
+
+            await expect(loading).toBeVisible();
+
+            await waitForForm(donationForm(page));
+
+            await expect(loading).toBeHidden();
+            await expect(page.locator('iframe[title="Donation Form"]')).toBeVisible();
+        });
+
+        test('offers a link to the form page when the form never loads', async ({page, requestUtils}) => {
+            const post = await requestUtils.createPost({
+                title: 'Failed embed',
+                content: `[give_form id="${formId}"]`,
+                status: 'publish',
+            });
+
+            await page.route(/givewp-route=donation-form-view/, (route) => route.abort());
+
+            await page.goto(post.link);
+
+            const fallback = page.getByRole('link', {name: 'Open donation form'});
+
+            // The embed waits ten seconds for the handshake before giving up.
+            await expect(fallback).toBeVisible({timeout: 15_000});
+            await expect(fallback).toHaveAttribute('href', new RegExp(`p=${formId}`));
+            await expect(page.locator('iframe[title="Donation Form"]')).toHaveCount(0);
+        });
+
+        test('the modal format offers the link when the form never loads', async ({page, requestUtils}) => {
+            const post = await requestUtils.createPost({
+                title: 'Failed modal embed',
+                content: `[give_form id="${formId}" display_style="modal" continue_button_title="Donate now"]`,
+                status: 'publish',
+            });
+
+            await page.route(/givewp-route=donation-form-view/, (route) => route.abort());
+
+            await page.goto(post.link);
+
+            await page.getByRole('button', {name: 'Open donation form'}).click();
+
+            const fallback = page.getByRole('dialog').getByRole('link', {name: 'Open donation form'});
+
+            await expect(fallback).toBeVisible({timeout: 15_000});
+            await expect(fallback).toHaveAttribute('href', new RegExp(`p=${formId}`));
+        });
     });
     /*
      * An offsite gateway takes the donor away and brings them back on a signed return URL. The form's

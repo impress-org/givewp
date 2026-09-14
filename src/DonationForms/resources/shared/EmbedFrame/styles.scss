@@ -1,0 +1,64 @@
+/*
+ * Host pages do not load the design system foundation stylesheet (only the form inside the
+ * iframe does), so the values here are self-contained. The spinner accent follows the same
+ * --givewp-primary-color the launcher buttons use.
+ */
+.givewp-embed-frame {
+    position: relative;
+
+    &[data-state='loading'] {
+        min-height: 20rem;
+    }
+
+    &__loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__spinner {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        border: 3px solid rgba(0, 0, 0, 0.12);
+        border-top-color: var(--givewp-primary-color, rgba(0, 0, 0, 0.55));
+        animation: givewp-embed-frame-spin 0.8s linear infinite;
+    }
+
+    &__iframe {
+        width: 1px;
+        min-width: 100%;
+        border: 0;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    &[data-state='ready'] &__iframe {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    &__fallback {
+        display: inline-block;
+        width: auto;
+    }
+}
+
+@keyframes givewp-embed-frame-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .givewp-embed-frame__iframe {
+        transition: none;
+    }
+
+    .givewp-embed-frame__spinner {
+        animation-duration: 1.6s;
+    }
+}

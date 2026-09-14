@@ -1,9 +1,9 @@
 import {__} from '@wordpress/i18n';
-import IframeResizer from 'iframe-resizer-react';
 import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 import ModalForm from '@givewp/src/Campaigns/Blocks/shared/components/ModalForm';
 import '../editor/styles/index.scss';
 import renderDonationForm from './renderDonationForm';
+import EmbedFrame from '@givewp/forms/shared/EmbedFrame';
 
 /**
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage".
@@ -34,6 +34,7 @@ const isRedirect = (url: string) => {
 };
 
 /**
+ * @since TBD render every format through EmbedFrame for a shared loading and fallback state.
  * @since 4.3.0 replace ModalForm with Campaigns ModalForm.
  * @since 3.4.0 add logic for inline redirects.
  * @since 3.2.0 replace form format reveal with new tab.
@@ -71,24 +72,12 @@ export default function DonationFormBlockApp({
                 embedId={embedId}
                 isFormRedirect={isFormRedirect}
                 formViewUrl={formViewUrl}
+                formUrl={formUrl}
             />
         );
     }
 
-    return (
-        <IframeResizer
-            title={__('Donation Form', 'give')}
-            id={embedId}
-            src={dataSrc}
-            checkOrigin={false}
-            heightCalculationMethod={'taggedElement'}
-            style={{
-                width: '1px',
-                minWidth: '100%',
-                border: '0',
-            }}
-        />
-    );
+    return <EmbedFrame src={dataSrc} embedId={embedId} fallbackUrl={formUrl} />;
 }
 
 const roots = document.querySelectorAll('.root-data-givewp-embed');

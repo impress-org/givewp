@@ -1,0 +1,5 @@
+significance: minor
+type: changed
+entry: Donation form embeds show a loading state while the form loads and fall
+  back to a link to the form when it does not
+timestamp: 2026-09-14T16:21:53.624Z
