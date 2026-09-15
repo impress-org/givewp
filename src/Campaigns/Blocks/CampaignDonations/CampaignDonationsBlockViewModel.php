@@ -50,12 +50,14 @@ class CampaignDonationsBlockViewModel
 
 
     /**
+     * @since TBD Added additional sanitization to donor data.
      * @since 4.14.0 add avatar URL to donations data
      * @since 4.0.0
      */
     private function formatDonationsData(array $donations): array
     {
         return array_map(static function ($entry) {
+            $entry->donorName = give_strip_shortcodes_deep($entry->donorName ?? '');
             $entry->date = human_time_diff(strtotime($entry->date));
             $entry->amount = Money::fromDecimal($entry->amount, give_get_currency());
 

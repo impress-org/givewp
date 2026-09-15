@@ -50,12 +50,16 @@ class CampaignDonorsBlockViewModel
 
 
     /**
+     * @since TBD Added additional sanitization to donor data.
      * @since 4.14.0 add avatar URL to donors data
      * @since 4.0.0
      */
     private function formatDonorsData(array $donors): array
     {
         return array_map(static function ($entry) {
+            $entry->name = give_strip_shortcodes_deep($entry->name ?? '');
+            $entry->company = give_strip_shortcodes_deep($entry->company ?? '');
+
             if (isset($entry->date)) {
                 $entry->date = human_time_diff(strtotime($entry->date));
             }

@@ -148,8 +148,8 @@ if ( $donations ) : ?>
 					if ( filter_var( $donation_history_args['donor'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
 							'<td class="give-donation-donor"><span class="give-mobile-title">%2$s</span>%1$s</td>',
-							give_get_donor_name_by( $post->ID ),
-							$table_headings['donor']
+							esc_html( give_strip_shortcodes_deep( give_get_donor_name_by( $post->ID ) ) ),
+							esc_html( $table_headings['donor'] )
 						);
 					endif;
 					?>
