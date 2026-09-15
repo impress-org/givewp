@@ -7,7 +7,6 @@ use Give\DonationForms\Exceptions\DonationFormFieldErrorsException;
 use Give\DonationForms\Exceptions\DonationFormForbidden;
 use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
-use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\ProcessorResponseError;
 use Give\PaymentGateways\PayPalCommerce\Repositories\MerchantDetails;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalAuth;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
@@ -329,10 +328,12 @@ class AjaxRequestHandler
     }
 
     /**
-     * Approve order.
+     * Refuses every request. Both form versions now send their order id with the donation and let
+     * PayPalCommerce::createPayment() capture it, so nothing legitimate captures from the browser.
+     * The endpoint stays registered so anything still calling it receives an error it can report,
+     * rather than an empty response from a missing action.
      *
-     * @todo: handle payment capture error on frontend.
-     *
+     * @since TBD Refuse every request; the capture for both form versions happens in PayPalCommerce::createPayment().
      * @since 4.16.7.1 Refuse v3 forms; their capture happens in PayPalCommerce::createPayment(). Validate
      *            the posted form before every capture, not only when the amount changed.
      * @since 4.14.4 Validate donation amount before approving an order.
@@ -341,28 +342,9 @@ class AjaxRequestHandler
      */
     public function approveOrder()
     {
-        $this->validateFrontendRequest();
-        $this->rejectV3FormRequest();
-
-        $orderId = give_clean($_GET['order']);
-        $updateAmount = filter_var(give_clean($_GET['update_amount']), FILTER_VALIDATE_BOOLEAN);
-
-        try {
-            $orderData = $this->getOrderData();
-
-            if ($updateAmount) {
-                $this->validateOrderAmountNotDecreased($orderId, $orderData['donationAmount']);
-                give(PayPalOrder::class)->updateOrderAmount($orderId, $orderData);
-            }
-
-            $result = give(PayPalOrder::class)->approveOrder($orderId);
-            // PayPal does not return error in case of invalid cvv. So we need to check capture status and return error.
-            // ref - https://feedback.givewp.com/bug-reports/p/paypal-credit-card-donations-can-generate-a-fatal-error
-            $this->returnErrorOnFailedApproveOrderResponse($result);
-            wp_send_json_success(['order' => $result,]);
-        } catch (\Exception $ex) {
-            wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
-        }
+        wp_send_json_error(
+            ['error' => __('PayPal orders are captured when the donation is submitted.', 'give')]
+        );
     }
 
     /**
@@ -591,27 +573,4 @@ class AjaxRequestHandler
         return $address;
     }
 
-    /**
-     * This function should validate PayPal ApproveOrder response and respond to ajax request on error.
-     *
-     * @since 3.2.0
-     */
-    private function returnErrorOnFailedApproveOrderResponse(\stdClass $response)
-    {
-        // Get capture.
-        // ref - https://developer.paypal.com/docs/api/orders/v2/#orders_capture
-        $capture = $response->purchase_units[0]->payments->captures[0];
-
-        // Check if capture status is failed or declined.
-        if (
-            in_array($capture->status, ['FAILED', 'DECLINED'])
-            && property_exists($capture, 'processor_response')
-        ) {
-            $error = ProcessorResponseError::getError($capture->processor_response);
-
-            if ($error) {
-                wp_send_json_error(['error' => $error]);
-            }
-        }
-    }
 }

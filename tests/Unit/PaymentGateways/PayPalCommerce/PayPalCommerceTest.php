@@ -104,39 +104,16 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
-     * An order the v2 ajax endpoint already captured is recorded as-is; nothing is patched or
-     * captured again.
+     * Both form versions send an approved order and let the gateway capture it, so an order that is
+     * already captured cannot be paying for this donation.
      *
-     * @since 4.16.8.1 Give the completed order a matching amount, now required to be recorded.
-     * @since 4.16.7.1
+     * @since TBD
      */
-    public function testCompletedOrderIsRecordedWithoutCapturingAgain(): void
+    public function testAlreadyCapturedOrderIsRejected(): void
     {
         $donation = $this->createDonation('25.00');
 
         $order = $this->capturedOrder('CAPTURE1', '25.00', 'USD');
-        $order->status = 'COMPLETED';
-
-        $this->payPalOrder->method('getApprovedOrder')->willReturn($order);
-        $this->payPalOrder->expects($this->never())->method('updateOrderFromDonation');
-        $this->payPalOrder->expects($this->never())->method('approveOrder');
-
-        $command = give(PayPalCommerce::class)->createPayment($donation, ['payPalOrderId' => 'ORDER123']);
-
-        $this->assertSame('CAPTURE1', $command->gatewayTransactionId);
-    }
-
-    /**
-     * A completed order can no longer be patched the way one still pending capture can, so an
-     * amount mismatch here must be rejected outright rather than silently recorded.
-     *
-     * @since 4.16.8.1
-     */
-    public function testCompletedOrderWithDifferentAmountIsRejected(): void
-    {
-        $donation = $this->createDonation('25.00');
-
-        $order = $this->capturedOrder('CAPTURE1', '999999.00', 'USD');
         $order->status = 'COMPLETED';
 
         $this->payPalOrder->method('getApprovedOrder')->willReturn($order);
@@ -149,20 +126,14 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
-     * A completed order's capture already recorded against a different donation must be
-     * rejected, not recorded again for a second donation.
-     *
-     * @since 4.16.8.1
+     * @since TBD
      */
-    public function testCompletedOrderWithCaptureAlreadyRecordedForAnotherDonationIsRejected(): void
+    public function testCapturedAmountNotMatchingTheDonationIsRejected(): void
     {
-        $this->createDonation('25.00', 'CAPTURE1');
         $donation = $this->createDonation('25.00');
 
-        $order = $this->capturedOrder('CAPTURE1', '25.00', 'USD');
-        $order->status = 'COMPLETED';
-
-        $this->payPalOrder->method('getApprovedOrder')->willReturn($order);
+        $this->payPalOrder->method('getApprovedOrder')->willReturn($this->approvedOrder('25.00', 'USD'));
+        $this->payPalOrder->method('approveOrder')->willReturn($this->capturedOrder('CAPTURE1', '1.00', 'USD'));
 
         $this->expectException(PaymentGatewayException::class);
 
@@ -170,16 +141,39 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
+     * An invalid CVV is reported as a failed capture carrying a processor response, which used to be
+     * read by the ajax endpoint that no longer captures.
+     *
+     * @since TBD
+     */
+    public function testFailedCaptureIsRejectedWithItsProcessorResponse(): void
+    {
+        $donation = $this->createDonation('25.00');
+
+        $capturedOrder = $this->capturedOrder('CAPTURE1');
+        $capture = $capturedOrder->purchase_units[0]->payments->captures[0];
+        $capture->status = 'FAILED';
+        $capture->processor_response = (object)['cvv_code' => 'N'];
+
+        $this->payPalOrder->method('getApprovedOrder')->willReturn($this->approvedOrder('25.00', 'USD'));
+        $this->payPalOrder->method('approveOrder')->willReturn($capturedOrder);
+
+        $this->expectException(PaymentGatewayException::class);
+
+        give(PayPalCommerce::class)->createPayment($donation, ['payPalOrderId' => 'ORDER123']);
+    }
+
+    /**
+     * @since TBD Drop the $gatewayTransactionId param along with the capture-reuse check it fed.
      * @since 4.16.8.1 Add the optional $gatewayTransactionId param.
      * @since 4.16.7.1
      */
-    private function createDonation(string $amount, ?string $gatewayTransactionId = null): Donation
+    private function createDonation(string $amount): Donation
     {
-        return Donation::factory()->create(array_filter([
+        return Donation::factory()->create([
             'gatewayId' => PayPalCommerce::id(),
             'amount' => Money::fromDecimal($amount, 'USD'),
-            'gatewayTransactionId' => $gatewayTransactionId,
-        ]));
+        ]);
     }
 
     /**
@@ -201,12 +195,17 @@ class PayPalCommerceTest extends TestCase
     /**
      * The shape PayPal returns from POST /v2/checkout/orders/{id}/capture.
      *
+     * @since TBD Give the capture its own amount, which is what the gateway validates.
      * @since 4.16.8.1 Add the $amount/$currency params.
      * @since 4.16.7.1
      */
     private function capturedOrder(string $captureId, string $amount = '25.00', string $currency = 'USD'): stdClass
     {
-        $capture = (object)['id' => $captureId, 'status' => 'COMPLETED'];
+        $capture = (object)[
+            'id' => $captureId,
+            'status' => 'COMPLETED',
+            'amount' => (object)['value' => $amount, 'currency_code' => $currency],
+        ];
 
         $order = new stdClass();
         $order->id = 'ORDER123';

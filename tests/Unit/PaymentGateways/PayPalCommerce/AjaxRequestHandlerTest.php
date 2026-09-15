@@ -314,14 +314,15 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
-     * v2 approve requests are validated like create requests, even when the amount did not change.
+     * Neither form version captures from the browser any more, so the endpoint answers with an
+     * error whatever it is sent.
      *
-     * @since 4.16.7.1
+     * @since TBD
      */
-    public function testApproveOrderRejectsV2AmountBelowFormMinimumBeforeCapturing(): void
+    public function testApproveOrderRefusesV2Requests(): void
     {
-        $formId = $this->createV2FormWithCustomAmountMinimum(25);
-        $_POST = $this->v2Request($formId, ['give-amount' => '0.5']);
+        $formId = $this->createV2FormWithCustomAmountMinimum(1);
+        $_POST = $this->v2Request($formId);
         $_GET = ['order' => 'ORDER123', 'update_amount' => '0'];
 
         $this->payPalOrder->expects($this->never())->method('approveOrder');
@@ -331,37 +332,6 @@ class AjaxRequestHandlerTest extends TestCase
         });
 
         $this->assertFalse($response['success']);
-    }
-
-    /**
-     * Option-based (v2) forms capture through this endpoint, before the donation record exists;
-     * their scripts call it right after PayPal's onApprove and before the form is submitted.
-     *
-     * @since 4.16.7.1
-     */
-    public function testApproveOrderStillCapturesV2Orders(): void
-    {
-        $formId = $this->createV2FormWithCustomAmountMinimum(1);
-        $_POST = $this->v2Request($formId);
-        $_GET = ['order' => 'ORDER123', 'update_amount' => '0'];
-
-        $capture = (object)['status' => 'COMPLETED'];
-        $order = (object)[
-            'id' => 'ORDER123',
-            'purchase_units' => [(object)['payments' => (object)['captures' => [$capture]]]],
-        ];
-
-        $this->payPalOrder->expects($this->once())
-            ->method('approveOrder')
-            ->with('ORDER123')
-            ->willReturn($order);
-
-        $response = $this->invokeAndCatchWpDie(function () {
-            give(AjaxRequestHandler::class)->approveOrder();
-        });
-
-        $this->assertTrue($response['success']);
-        $this->assertSame('ORDER123', $response['data']['order']['id']);
     }
 
     /**

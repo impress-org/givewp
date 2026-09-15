@@ -5,7 +5,6 @@ namespace Give\PaymentGateways\PayPalCommerce;
 use Exception;
 use Give\Donations\Models\Donation;
 use Give\Donations\Models\DonationNote;
-use Give\Donations\Repositories\DonationRepository;
 use Give\Framework\PaymentGateways\Commands\GatewayCommand;
 use Give\Framework\PaymentGateways\Commands\PaymentComplete;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
@@ -15,6 +14,7 @@ use Give\Framework\PaymentGateways\PaymentGateway;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Log\Log;
 use Give\PaymentGateways\PayPalCommerce\Models\MerchantDetail;
+use Give\PaymentGateways\PayPalCommerce\PayPalCheckoutSdk\ProcessorResponseError;
 
 /**
  * Class PayPalCommerce
@@ -82,6 +82,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
+     * @since TBD Capture every order here, and validate the captured amount against the donation.
      * @since 4.16.8.1 Reject a completed order whose amount doesn't match the donation, or whose capture is already recorded against a different donation.
      * @since 4.2.1 updated to use updateOrderFromDonation
      * @since 4.1.0 updated to include 3D Secure validation
@@ -100,30 +101,28 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
 
         $payPalOrder = $payPalOrderRepository->getApprovedOrder($payPalOrderId);
 
-        if ($payPalOrder->status === 'COMPLETED') {
-            $this->validatePayPalOrder($payPalOrder);
-            $this->validateCompletedOrderAmountMatchesDonation($payPalOrder, $donation);
-
-            $transactionId = $payPalOrder->purchase_units[0]->payments->captures[0]->id;
-
-            $this->validateCaptureNotAlreadyRecorded($transactionId, $donation);
-
-        } elseif ($payPalOrder->status === 'APPROVED' || $payPalOrder->status === 'CREATED') {
-            $this->validate3dSecure($payPalOrder);
-
-            if ($this->shouldUpdateOrder($donation, $payPalOrder)){
-                $payPalOrderRepository->updateOrderFromDonation($payPalOrderId, $donation);
-            }
-
-            // ready to capture order, response is the updated PayPal order.
-            $response = $payPalOrderRepository->approveOrder($payPalOrderId);
-
-            $this->validatePayPalOrder($response);
-
-            $transactionId  = $response->purchase_units[0]->payments->captures[0]->id;
-        } else {
-            throw new PaymentGatewayException('PayPal Order status is not found.');
+        /*
+         * An order is only ever captured here, so one that is already captured belongs to another
+         * donation and cannot pay for this one. PayPal captures an order once and answers any
+         * further attempt with an error, which is what limits a capture to a single donation.
+         */
+        if ($payPalOrder->status !== 'APPROVED' && $payPalOrder->status !== 'CREATED') {
+            throw new PaymentGatewayException('PayPal Order is not ready to be captured.');
         }
+
+        $this->validate3dSecure($payPalOrder);
+
+        if ($this->shouldUpdateOrder($donation, $payPalOrder)){
+            $payPalOrderRepository->updateOrderFromDonation($payPalOrderId, $donation);
+        }
+
+        // ready to capture order, response is the updated PayPal order.
+        $response = $payPalOrderRepository->approveOrder($payPalOrderId);
+
+        $this->validatePayPalOrder($response);
+        $this->validateCapturedAmountMatchesDonation($response, $donation);
+
+        $transactionId = $response->purchase_units[0]->payments->captures[0]->id;
 
         give()->payment_meta->update_meta(
             $donation->id,
@@ -329,71 +328,40 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * A completed order's amount cannot be reconciled the way shouldUpdateOrder() does for an
-     * order still pending capture, so a mismatch here is rejected outright.
+     * shouldUpdateOrder() patches the order to the donation amount before the capture, but PayPal
+     * is what finally decides how much was taken, so the captured amount is compared to the
+     * donation rather than assumed to match.
      *
-     * @since 4.16.8.1
+     * @since TBD
      *
      * @throws PaymentGatewayException
      */
-    private function validateCompletedOrderAmountMatchesDonation(object $payPalOrder, Donation $donation): void
+    private function validateCapturedAmountMatchesDonation(object $payPalOrder, Donation $donation): void
     {
-        $purchaseUnit = $payPalOrder->purchase_units[0] ?? null;
+        $capture = $payPalOrder->purchase_units[0]->payments->captures[0] ?? null;
 
-        if (! isset($purchaseUnit->amount->value, $purchaseUnit->amount->currency_code)) {
-            throw new PaymentGatewayException('PayPal Order does not have an amount.');
+        if (! isset($capture->amount->value, $capture->amount->currency_code)) {
+            throw new PaymentGatewayException('PayPal capture does not have an amount.');
         }
 
-        $orderAmount = $purchaseUnit->amount->value;
-        $orderCurrency = $purchaseUnit->amount->currency_code;
-        $completedOrderAmount = Money::fromDecimal($orderAmount, $orderCurrency);
+        $capturedAmount = Money::fromDecimal($capture->amount->value, $capture->amount->currency_code);
 
-        if (!$completedOrderAmount->equals($donation->amount)) {
+        if (!$capturedAmount->equals($donation->amount)) {
             Log::error(
                 sprintf(
-                    'Completed PayPal Order amount does not match donation amount. PayPal Order ID: %s, Donation ID: %s',
+                    'Captured PayPal amount does not match donation amount. PayPal Order ID: %s, Donation ID: %s',
                     $payPalOrder->id,
                     $donation->id
                 )
             );
 
-            throw new PaymentGatewayException('PayPal Order amount does not match donation amount.');
+            throw new PaymentGatewayException('Captured PayPal amount does not match donation amount.');
         }
     }
 
     /**
-     * @since 4.16.8.1
+     * @since TBD Report a failed or declined capture's processor response, and treat FAILED like DECLINED.
      *
-     * @throws PaymentGatewayException
-     */
-    private function validateCaptureNotAlreadyRecorded(string $transactionId, Donation $donation): void
-    {
-        /**
-         * Guard against replaying the same capture for another donation; allow
-         * retry of the same donation. Note: not atomic with PaymentComplete save
-         * — concurrent replays could both pass; a UNIQUE DB constraint is the
-         * future hardening for that race.
-         */
-        $existingDonation = give(DonationRepository::class)
-            ->queryByGatewayTransactionId($transactionId)
-            ->where('ID', $donation->id, '!=')
-            ->get();
-
-        if ($existingDonation) {
-            Log::error(
-                sprintf(
-                    'PayPal capture is already recorded against a different donation. Capture ID: %s, Donation ID: %s, Existing Donation ID: %s',
-                    $transactionId,
-                    $donation->id,
-                    $existingDonation->id
-                )
-            );
-
-            throw new PaymentGatewayException('This PayPal transaction has already been recorded for another donation.');
-        }
-    }
-
-    /**
      * @throws PaymentGatewayException
      */
     private function validatePayPalOrder(object $payPalOrder): void
@@ -406,13 +374,22 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
             throw new PaymentGatewayException('PayPal Order does not have a transaction.');
         }
 
-        if ($transaction->status === "DECLINED") {
-            $errorMessage = sprintf(
-                __('PayPal Order has been declined.  Transaction status:: %s', 'give'),
-                $transaction->status
-            );
+        /*
+         * An invalid CVV or a failed AVS check is reported in the capture's processor response
+         * rather than as a PayPal error, so the reason is read from there when there is one.
+         * Previously done by the ajax capture endpoint, which no longer captures.
+         */
+        if (in_array($transaction->status, ['DECLINED', 'FAILED'], true)) {
+            $processorError = property_exists($transaction, 'processor_response')
+                ? ProcessorResponseError::getError($transaction->processor_response)
+                : '';
 
-            throw new PaymentGatewayException($errorMessage);
+            throw new PaymentGatewayException(
+                $processorError ?: sprintf(
+                    __('PayPal Order has been declined.  Transaction status:: %s', 'give'),
+                    $transaction->status
+                )
+            );
         }
 
         if (!empty($errors)) {
