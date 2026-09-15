@@ -34,6 +34,8 @@
     &[data-placeholder='skeleton'] &__loading {
         position: static;
         display: block;
+        /* The skeleton's container queries resolve against this box, the same width as the iframe. */
+        container-type: inline-size;
     }
 
     &__iframe {
@@ -79,8 +81,6 @@
     --givewp-skeleton-shine: rgba(255, 255, 255, 0.5);
     --givewp-skeleton-radius: 0.5rem;
     --givewp-skeleton-padding: clamp(1.5rem, 4vw, 5rem);
-
-    container-type: inline-size;
 
     /* A cqi value inside a custom property is invalid at use time without support, so it is gated. */
     @supports (padding: 1cqi) {

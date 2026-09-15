@@ -414,7 +414,8 @@ test.describe('V3 donation forms', () => {
             await expect(skeleton).toBeVisible();
             await expect(page.locator('.givewp-embed-frame__spinner')).toHaveCount(0);
 
-            const skeletonHeight = (await skeleton.boundingBox()).height;
+            const height = (locator) => locator.evaluate((el: HTMLElement) => el.getBoundingClientRect().height);
+            const skeletonHeight = await height(skeleton);
 
             await waitForForm(donationForm(page));
             await expect(skeleton).toBeHidden();
@@ -423,8 +424,8 @@ test.describe('V3 donation forms', () => {
             // sketch is built from the form's settings and blocks, not measured, so allow for the
             // header copy and field chrome it cannot know about.
             const frame = page.locator('iframe[title="Donation Form"]');
-            await expect.poll(async () => (await frame.boundingBox()).height).toBeGreaterThan(200);
-            const formHeight = (await frame.boundingBox()).height;
+            await expect.poll(() => height(frame)).toBeGreaterThan(200);
+            const formHeight = await height(frame);
 
             expect(Math.abs(skeletonHeight - formHeight) / formHeight).toBeLessThan(0.35);
         });
