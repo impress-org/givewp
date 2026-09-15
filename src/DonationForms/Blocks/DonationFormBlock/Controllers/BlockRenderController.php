@@ -4,11 +4,10 @@ namespace Give\DonationForms\Blocks\DonationFormBlock\Controllers;
 
 use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormViewRouteUrl;
+use Give\DonationForms\Actions\GetEmbedShape;
 use Give\DonationForms\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
 use Give\DonationForms\DataTransferObjects\DonationConfirmationReceiptViewRouteData;
 use Give\DonationForms\Models\DonationForm;
-use Give\DonationForms\Repositories\DonationFormRepository;
-use Give\Framework\Blocks\BlockModel;
 use Give\Framework\EnqueueScript;
 use Give\Framework\Routes\RouteListener;
 use Give\Helpers\Language;
@@ -53,7 +52,7 @@ class BlockRenderController
         $formUrl = add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms'));
         $formViewUrl = $this->getFormViewUrl($donationForm);
         $colorSettings = $donationForm->getColorSettings();
-        $embedShape = wp_json_encode($this->getEmbedShape($donationForm));
+        $embedShape = wp_json_encode((new GetEmbedShape())($donationForm));
 
         /**
          * Note: iframe-resizer uses querySelectorAll so using a data attribute makes the most sense to target.
@@ -72,39 +71,6 @@ class BlockRenderController
             esc_attr($colorSettings['primaryColor']),
             esc_attr($colorSettings['secondaryColor'])
         );
-    }
-
-    /**
-     * The little the embed needs to sketch the form before it loads: the design, whether there is a
-     * header and the two header parts with real height (goal bar, image), the block names in each
-     * section and how many gateway rows the donor will see. Every value is already on the form or in
-     * options, so this costs no extra queries. The embed only knows how to draw the core designs and
-     * falls back to a spinner for any other design id.
-     *
-     * @since TBD
-     */
-    protected function getEmbedShape(DonationForm $donationForm): array
-    {
-        $settings = $donationForm->settings;
-
-        $sections = array_map(static function (BlockModel $block): array {
-            if ($block->name !== 'givewp/section' || !$block->innerBlocks) {
-                return [$block->name];
-            }
-
-            return array_map(static function (BlockModel $innerBlock): string {
-                return $innerBlock->name;
-            }, $block->innerBlocks->getBlocks());
-        }, $donationForm->blocks->getBlocks());
-
-        return [
-            'design' => (string)$settings->designId,
-            'header' => (bool)$settings->showHeader,
-            'goal' => (bool)$settings->enableDonationGoal,
-            'image' => (bool)$settings->designSettingsImageUrl && $settings->designSettingsImageStyle !== 'background',
-            'sections' => array_values($sections),
-            'gateways' => count(give(DonationFormRepository::class)->getEnabledPaymentGateways($donationForm->id)),
-        ];
     }
 
     /**
