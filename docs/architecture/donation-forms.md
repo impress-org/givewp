@@ -110,9 +110,15 @@ React embed app into it, and the Elementor widgets and the `CampaignForm` and `D
 all reach that same app. The `onpage` and `modal` formats render the iframe through
 `resources/shared/EmbedFrame`, which owns the loading state: a spinner holds the space until the
 iframe-resizer handshake (`onInit`), because the iframe's own `load` event fires for error pages
-too, and after ten seconds without a handshake it swaps in a link to the standalone form page. The
-external embed script for other websites has to stay self-contained and so carries its own copy of
-the same behavior.
+too, and after ten seconds without a handshake it swaps in a link to the standalone form page. On
+the `onpage` format the placeholder is a skeleton rather than a spinner: `BlockRenderController`
+serializes the form's design id, header, goal and image flags, per-section block names and
+enabled gateway count into a `data-embed-shape` attribute on the root, and `EmbedFrame/EmbedSkeleton` draws a grey sketch from
+it, one section per block for classic and only the first step for the multi-step designs. The
+skeleton hard-codes the core designs' spacing and only knows the three core design ids; any other
+id, including add-on designs, gets the spinner. The external embed script for other websites has to
+stay self-contained and so carries its own copy of the spinner and fallback behavior, without the
+skeleton.
 
 **v3, standalone view** — `Controllers/DonationFormViewController::show()` for the real form and
 `::preview()` for the builder preview. Both build a `DonationFormViewModel` and render the React

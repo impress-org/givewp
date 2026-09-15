@@ -395,6 +395,63 @@ test.describe('V3 donation forms', () => {
             await expect(page.locator('iframe[title="Donation Form"]')).toBeVisible();
         });
 
+        test('holds a skeleton shaped like the form while it loads', async ({page, requestUtils}) => {
+            const post = await requestUtils.createPost({
+                title: 'Skeleton embed',
+                content: `[give_form id="${formId}"]`,
+                status: 'publish',
+            });
+
+            await page.route(/givewp-route=donation-form-view/, async (route) => {
+                await new Promise((resolve) => setTimeout(resolve, 2_000));
+                await route.continue();
+            });
+
+            await page.goto(post.link, {waitUntil: 'domcontentloaded'});
+
+            const skeleton = page.locator('.givewp-embed-skeleton');
+
+            await expect(skeleton).toBeVisible();
+            await expect(page.locator('.givewp-embed-frame__spinner')).toHaveCount(0);
+
+            const skeletonHeight = (await skeleton.boundingBox()).height;
+
+            await waitForForm(donationForm(page));
+            await expect(skeleton).toBeHidden();
+
+            // The point of the skeleton is to reserve roughly the space the form will take. The
+            // sketch is built from the form's settings and blocks, not measured, so allow for the
+            // header copy and field chrome it cannot know about.
+            const frame = page.locator('iframe[title="Donation Form"]');
+            await expect.poll(async () => (await frame.boundingBox()).height).toBeGreaterThan(200);
+            const formHeight = (await frame.boundingBox()).height;
+
+            expect(Math.abs(skeletonHeight - formHeight) / formHeight).toBeLessThan(0.35);
+        });
+
+        test('falls back to a spinner for a design it does not know', async ({page, requestUtils}) => {
+            const {formId: unknownDesignFormId} = await createCampaignWithForm(requestUtils);
+            await editForm(requestUtils, unknownDesignFormId, (form) => {
+                form.settings.designId = 'some-add-on-design';
+            });
+
+            const post = await requestUtils.createPost({
+                title: 'Unknown design embed',
+                content: `[give_form id="${unknownDesignFormId}"]`,
+                status: 'publish',
+            });
+
+            await page.route(/givewp-route=donation-form-view/, async (route) => {
+                await new Promise((resolve) => setTimeout(resolve, 2_000));
+                await route.continue();
+            });
+
+            await page.goto(post.link, {waitUntil: 'domcontentloaded'});
+
+            await expect(page.locator('.givewp-embed-frame__spinner')).toBeVisible();
+            await expect(page.locator('.givewp-embed-skeleton')).toHaveCount(0);
+        });
+
         test('offers a link to the form page when the form never loads', async ({page, requestUtils}) => {
             const post = await requestUtils.createPost({
                 title: 'Failed embed',

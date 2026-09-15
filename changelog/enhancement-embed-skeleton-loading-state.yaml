@@ -1,0 +1,5 @@
+significance: minor
+type: changed
+entry: On-page donation form embeds hold a skeleton shaped like the form while it
+  loads so the page moves less when the form appears
+timestamp: 2026-09-15T14:00:00.000Z
