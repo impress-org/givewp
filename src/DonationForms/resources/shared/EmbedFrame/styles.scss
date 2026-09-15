@@ -72,9 +72,10 @@
 }
 
 /*
- * Hand-copied from the core form designs: the 0.5rem radius, the primary-color header band, the
- * section padding clamp and the 51.5rem classic width. Container units stand in for the vw the
- * real designs use, because the form's viewport is the iframe, which is this box.
+ * Hand-copied from the core form designs: the 0.5rem radius, the header band, the section padding
+ * clamp and the 51.5rem classic width. Container units stand in for the vw the real designs use,
+ * because the form's viewport is the iframe, which is this box. Everything is neutral grey, even
+ * where the real form is colored, so the sketch reads as a placeholder and not as content.
  */
 .givewp-embed-skeleton {
     --givewp-skeleton-bar: rgba(0, 0, 0, 0.08);
@@ -106,9 +107,7 @@
         gap: 1rem;
         padding: var(--givewp-skeleton-padding);
         border-radius: var(--givewp-skeleton-radius);
-        background-color: var(--givewp-primary-color, #2d6ff7);
-        --givewp-skeleton-bar: rgba(255, 255, 255, 0.3);
-        --givewp-skeleton-shine: rgba(255, 255, 255, 0.25);
+        background-color: rgba(0, 0, 0, 0.04);
     }
 
     &__form {
@@ -232,8 +231,7 @@
     &__button {
         width: 100%;
         height: 4rem;
-        background-color: var(--givewp-primary-color, #2d6ff7);
-        opacity: 0.35;
+        background-color: rgba(0, 0, 0, 0.14);
     }
 
     &--classic &__header {
@@ -279,8 +277,6 @@
 
     &--multi-step &__form &__header {
         background-color: transparent;
-        --givewp-skeleton-bar: rgba(0, 0, 0, 0.08);
-        --givewp-skeleton-shine: rgba(255, 255, 255, 0.5);
 
         + .givewp-embed-skeleton__section {
             padding-top: 0;
@@ -296,8 +292,6 @@
         .givewp-embed-skeleton__header {
             flex: 1 1 42.5rem;
             background-color: transparent;
-            --givewp-skeleton-bar: rgba(0, 0, 0, 0.08);
-            --givewp-skeleton-shine: rgba(255, 255, 255, 0.5);
         }
 
         .givewp-embed-skeleton__form {
