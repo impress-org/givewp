@@ -1,10 +1,11 @@
 /**
- * What the server tells the embed about the form it is about to load. Everything here is already
- * on the form's settings and blocks; nothing is measured.
+ * What the server tells the embed about the form it is about to load, so the skeleton can be drawn
+ * before the iframe answers. Everything here is already on the form's settings and blocks; nothing
+ * is measured.
  *
  * @since TBD
  */
-export type EmbedShape = {
+export type SkeletonData = {
     design: string;
     header: boolean;
     /** Header parts with real height: the goal bar and an image that is not a background. */
@@ -27,8 +28,8 @@ const KNOWN_DESIGNS = ['classic', 'multi-step', 'two-panel-steps'];
 /**
  * @since TBD
  */
-export function hasSkeleton(shape: EmbedShape | null | undefined): shape is EmbedShape {
-    return Boolean(shape && KNOWN_DESIGNS.includes(shape.design) && Array.isArray(shape.sections));
+export function hasSkeleton(data: SkeletonData | null | undefined): data is SkeletonData {
+    return Boolean(data && KNOWN_DESIGNS.includes(data.design) && Array.isArray(data.sections));
 }
 
 /**
@@ -81,14 +82,14 @@ function Field({block, gateways}: {block: string; gateways: number}) {
     );
 }
 
-function Header({shape}: {shape: EmbedShape}) {
+function Header({data}: {data: SkeletonData}) {
     return (
         <div className="givewp-embed-skeleton__header">
             <Bar className="givewp-embed-skeleton__title" />
             <Bar className="givewp-embed-skeleton__line" />
             <Bar className="givewp-embed-skeleton__line givewp-embed-skeleton__line--short" />
-            {shape.image && <Bar className="givewp-embed-skeleton__image" />}
-            {shape.goal && <Bar className="givewp-embed-skeleton__goal" />}
+            {data.image && <Bar className="givewp-embed-skeleton__image" />}
+            {data.goal && <Bar className="givewp-embed-skeleton__goal" />}
         </div>
     );
 }
@@ -143,16 +144,16 @@ function Step({children}: {children: React.ReactNode}) {
  *
  * @since TBD
  */
-export default function EmbedSkeleton({shape}: {shape: EmbedShape}) {
-    const [firstSection = []] = shape.sections;
+export default function EmbedSkeleton({data}: {data: SkeletonData}) {
+    const [firstSection = []] = data.sections;
 
-    if (shape.design === 'classic') {
+    if (data.design === 'classic') {
         return (
             <div className="givewp-embed-skeleton givewp-embed-skeleton--classic" aria-hidden="true">
-                {shape.header && <Header shape={shape} />}
+                {data.header && <Header data={data} />}
                 <div className="givewp-embed-skeleton__form">
-                    {shape.sections.map((blocks, i) => (
-                        <Section key={i} blocks={blocks} gateways={shape.gateways} />
+                    {data.sections.map((blocks, i) => (
+                        <Section key={i} blocks={blocks} gateways={data.gateways} />
                     ))}
                     <Button />
                 </div>
@@ -160,12 +161,12 @@ export default function EmbedSkeleton({shape}: {shape: EmbedShape}) {
         );
     }
 
-    if (shape.design === 'two-panel-steps') {
+    if (data.design === 'two-panel-steps') {
         return (
             <div className="givewp-embed-skeleton givewp-embed-skeleton--two-panel" aria-hidden="true">
-                {shape.header && <Header shape={shape} />}
+                {data.header && <Header data={data} />}
                 <Step>
-                    <Section blocks={firstSection} gateways={shape.gateways} />
+                    <Section blocks={firstSection} gateways={data.gateways} />
                 </Step>
             </div>
         );
@@ -174,7 +175,7 @@ export default function EmbedSkeleton({shape}: {shape: EmbedShape}) {
     return (
         <div className="givewp-embed-skeleton givewp-embed-skeleton--multi-step" aria-hidden="true">
             <Step>
-                {shape.header ? <Header shape={shape} /> : <Section blocks={firstSection} gateways={shape.gateways} />}
+                {data.header ? <Header data={data} /> : <Section blocks={firstSection} gateways={data.gateways} />}
             </Step>
         </div>
     );

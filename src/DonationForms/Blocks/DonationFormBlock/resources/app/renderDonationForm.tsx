@@ -1,23 +1,23 @@
 import {createRoot} from 'react-dom/client';
 import DonationFormBlockApp from '.';
-import type {EmbedShape} from '@givewp/forms/shared/EmbedFrame/EmbedSkeleton';
+import type {SkeletonData} from '@givewp/forms/shared/EmbedFrame/EmbedSkeleton';
 
 /**
- * The shape attribute is optional and best-effort: a host that strips or mangles it just gets the
+ * The skeleton attribute is optional and best-effort: a host that strips or mangles it just gets the
  * spinner.
  *
  * @since TBD
  */
-function readEmbedShape(root: Element): EmbedShape | null {
+function readSkeletonData(root: Element): SkeletonData | null {
     try {
-        return JSON.parse(root.getAttribute('data-embed-shape') ?? 'null');
+        return JSON.parse(root.getAttribute('data-form-skeleton') ?? 'null');
     } catch {
         return null;
     }
 }
 
 /**
- * @since TBD pass the form's shape through for the loading skeleton.
+ * @since TBD pass the skeleton data through for the loading state.
  * @since 4.7.0
  */
 export default function renderDonationForm(root) {
@@ -35,7 +35,7 @@ export default function renderDonationForm(root) {
     const openFormButton = root.getAttribute('data-open-form-button');
     const formUrl = root.getAttribute('data-form-url');
     const formViewUrl = root.getAttribute('data-form-view-url');
-    const embedShape = readEmbedShape(root);
+    const skeletonData = readSkeletonData(root);
 
     createRoot(root).render(
         <DonationFormBlockApp
@@ -45,7 +45,7 @@ export default function renderDonationForm(root) {
             embedId={embedId}
             formUrl={formUrl}
             formViewUrl={formViewUrl}
-            embedShape={embedShape}
+            skeletonData={skeletonData}
         />
     );
 }

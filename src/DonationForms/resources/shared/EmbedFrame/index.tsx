@@ -1,7 +1,7 @@
 import {useEffect, useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-import EmbedSkeleton, {EmbedShape, hasSkeleton} from './EmbedSkeleton';
+import EmbedSkeleton, {SkeletonData, hasSkeleton} from './EmbedSkeleton';
 import './styles.scss';
 
 /**
@@ -26,7 +26,7 @@ type EmbedFrameProps = {
     embedId: string;
     fallbackUrl: string;
     /** When given for a design the skeleton knows, a sketch of the form holds the space instead of a spinner. */
-    shape?: EmbedShape | null;
+    skeleton?: SkeletonData | null;
     onReady?: () => void;
     onFail?: () => void;
 };
@@ -40,9 +40,9 @@ type EmbedFrameProps = {
  *
  * @since TBD
  */
-export default function EmbedFrame({src, embedId, fallbackUrl, shape, onReady, onFail}: EmbedFrameProps) {
+export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady, onFail}: EmbedFrameProps) {
     const [state, setState] = useState<EmbedFrameState>('loading');
-    const skeleton = hasSkeleton(shape);
+    const showSkeleton = hasSkeleton(skeleton);
 
     useEffect(() => {
         if (state !== 'loading') {
@@ -71,14 +71,18 @@ export default function EmbedFrame({src, embedId, fallbackUrl, shape, onReady, o
     }
 
     return (
-        <div className="givewp-embed-frame" data-state={state} data-placeholder={skeleton ? 'skeleton' : 'spinner'}>
+        <div className="givewp-embed-frame" data-state={state} data-placeholder={showSkeleton ? 'skeleton' : 'spinner'}>
             {state === 'loading' && (
                 <div
                     className="givewp-embed-frame__loading"
                     role="status"
                     aria-label={__('Loading donation form', 'give')}
                 >
-                    {skeleton ? <EmbedSkeleton shape={shape} /> : <span className="givewp-embed-frame__spinner" />}
+                    {showSkeleton ? (
+                        <EmbedSkeleton data={skeleton} />
+                    ) : (
+                        <span className="givewp-embed-frame__spinner" />
+                    )}
                 </div>
             )}
             <IframeResizer

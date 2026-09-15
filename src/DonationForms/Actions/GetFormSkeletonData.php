@@ -16,7 +16,7 @@ use Give\Framework\Blocks\BlockModel;
  *
  * @since TBD
  */
-class GetEmbedShape
+class GetFormSkeletonData
 {
     /**
      * @since TBD

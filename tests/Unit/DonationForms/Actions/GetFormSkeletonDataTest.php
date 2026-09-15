@@ -2,7 +2,7 @@
 
 namespace Give\Tests\Unit\DonationForms\Actions;
 
-use Give\DonationForms\Actions\GetEmbedShape;
+use Give\DonationForms\Actions\GetFormSkeletonData;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\Framework\Blocks\BlockCollection;
@@ -11,12 +11,12 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * The shape is the contract the embed's skeleton is drawn from, so every branch that changes a
+ * This data is the contract the embed's skeleton is drawn from, so every branch that changes a
  * value gets pinned here.
  *
  * @since TBD
  */
-class GetEmbedShapeTest extends TestCase
+class GetFormSkeletonDataTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -45,7 +45,7 @@ class GetEmbedShapeTest extends TestCase
             'image' => true,
             'sections' => [['givewp/donation-amount'], ['givewp/donor-name', 'givewp/email']],
             'gateways' => 1,
-        ], (new GetEmbedShape())($form));
+        ], (new GetFormSkeletonData())($form));
     }
 
     /**
@@ -59,7 +59,7 @@ class GetEmbedShapeTest extends TestCase
             'designSettingsImageStyle' => 'background',
         ]);
 
-        $this->assertFalse((new GetEmbedShape())($form)['image']);
+        $this->assertFalse((new GetFormSkeletonData())($form)['image']);
     }
 
     /**
@@ -69,7 +69,7 @@ class GetEmbedShapeTest extends TestCase
     {
         $form = $this->form(['designSettingsImageStyle' => 'above']);
 
-        $this->assertFalse((new GetEmbedShape())($form)['image']);
+        $this->assertFalse((new GetFormSkeletonData())($form)['image']);
     }
 
     /**
@@ -84,7 +84,7 @@ class GetEmbedShapeTest extends TestCase
 
         $this->assertSame(
             [[], ['givewp/payment-gateways']],
-            (new GetEmbedShape())($form)['sections']
+            (new GetFormSkeletonData())($form)['sections']
         );
     }
 
@@ -95,12 +95,12 @@ class GetEmbedShapeTest extends TestCase
     {
         give_update_option('gateways_v3', []);
 
-        $this->assertSame(0, (new GetEmbedShape())(DonationForm::factory()->create())['gateways']);
+        $this->assertSame(0, (new GetFormSkeletonData())(DonationForm::factory()->create())['gateways']);
     }
 
     /**
      * A saved form whose settings and blocks are then swapped in memory. Saving runs the blocks
-     * through the fields API, which wants fully formed blocks; the shape only reads their names.
+     * through the fields API, which wants fully formed blocks; the skeleton only reads their names.
      */
     private function form(array $settings, array $blocks = null): DonationForm
     {
