@@ -205,6 +205,11 @@ trip.
 - The form app may ask the host page to navigate (`givewp-navigate`) when it cannot reach
   `window.top` itself. The element honors that only when the message origin is exactly the
   WordPress origin, the source is its own iframe's window, and the URL parses as `http(s)`.
+  The form addresses that message to the host origin from `origin-url` (`navigateTop.ts`), not
+  `*`, because the URL can carry a gateway approval token or a receipt key.
+- The iframe carries `allow="payment"`. The Payment Request API, which Apple Pay, Google Pay,
+  and Link go through, is disabled in cross-origin frames unless the embedding page delegates
+  it. The on-site block's iframe is same-origin and inherits it.
 - On a receipt return the element also strips the return params from the host page's address
   bar, so a reload or a shared link does not replay the receipt view.
 

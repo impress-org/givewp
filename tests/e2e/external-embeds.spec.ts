@@ -106,6 +106,7 @@ test.describe('External donation form embeds', () => {
 
         const iframe = page.locator('givewp-donation-form iframe');
         await expect(iframe).toHaveAttribute('title', 'Donation Form');
+        await expect(iframe).toHaveAttribute('allow', 'payment');
         await expect(iframe).toHaveAttribute('src', /origin-url=/);
         await expect(iframe).toHaveAttribute('src', /embed-id=/);
     });

@@ -337,6 +337,10 @@ class GiveWPDonationForm extends HTMLElement {
         iframe.style.cssText = 'width: 1px; min-width: 100%; border: 0; display: none;';
         iframe.setAttribute('data-givewp-embed', 'true');
         iframe.setAttribute('data-givewp-embed-id', this.embedId);
+        // The Payment Request API (Apple Pay, Google Pay, Link) is off for
+        // cross-origin frames unless the host delegates it. The same-origin
+        // block embed inherits it and needs nothing.
+        iframe.setAttribute('allow', 'payment');
 
         // Browsers fire `load` even for error pages, so the signal that the
         // form is actually running is the iframe-resizer handshake (onInit).
