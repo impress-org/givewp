@@ -139,7 +139,7 @@ class Tests_Give_Stripe_Admin_Helpers extends Give_Unit_Test_Case {
 	 * Ensure Stripe is reported as active when only a modern Stripe gateway is
 	 * enabled in the v3 settings.
 	 *
-	 * @since TBD
+	 * @since 4.16.9
 	 *
 	 * @return void
 	 */

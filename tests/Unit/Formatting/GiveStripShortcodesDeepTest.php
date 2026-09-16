@@ -7,7 +7,7 @@ use Give\Tests\TestCase;
 /**
  * @covers ::give_strip_shortcodes_deep
  *
- * @since TBD
+ * @since 4.16.9
  */
 final class GiveStripShortcodesDeepTest extends TestCase
 {
@@ -17,7 +17,7 @@ final class GiveStripShortcodesDeepTest extends TestCase
     const TAG = 'svultag';
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function setUp(): void
     {
@@ -29,7 +29,7 @@ final class GiveStripShortcodesDeepTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function tearDown(): void
     {
@@ -41,7 +41,7 @@ final class GiveStripShortcodesDeepTest extends TestCase
     /**
      * A single strip_shortcodes() pass leaves a live tag behind; the deep strip must not.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testRemovesSelfNestedShortcodeThatSurvivesASinglePass(): void
     {
@@ -56,7 +56,7 @@ final class GiveStripShortcodesDeepTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function testRemovesPlainRegisteredShortcode(): void
     {
@@ -64,7 +64,7 @@ final class GiveStripShortcodesDeepTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function testLeavesUnregisteredBracketTextUnchanged(): void
     {
@@ -74,7 +74,7 @@ final class GiveStripShortcodesDeepTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function testLeavesBenignTextUnchanged(): void
     {
@@ -86,7 +86,7 @@ final class GiveStripShortcodesDeepTest extends TestCase
     /**
      * Running the strip twice must equal running it once.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testIsIdempotent(): void
     {
@@ -99,7 +99,7 @@ final class GiveStripShortcodesDeepTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function testReturnsInputUnchangedWhenNoBracketPresent(): void
     {
@@ -110,7 +110,7 @@ final class GiveStripShortcodesDeepTest extends TestCase
     /**
      * Legacy query rows can hand a null value; the helper must not fatal.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testCastsNonStringInputToString(): void
     {

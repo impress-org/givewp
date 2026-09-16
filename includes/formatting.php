@@ -772,7 +772,7 @@ function give_clean($var, $allow_serialized_data = false)
  * Strips shortcodes from a string repeatedly until the output stops changing, so nested
  * shortcode syntax is fully removed rather than only partially reduced by a single pass.
  *
- * @since TBD
+ * @since 4.16.9
  *
  * @param string $content Content that may contain shortcode syntax.
  *

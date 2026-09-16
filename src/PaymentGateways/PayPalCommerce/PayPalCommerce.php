@@ -82,7 +82,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Capture every order here, and validate the captured amount against the donation.
+     * @since 4.16.9 Capture every order here, and validate the captured amount against the donation.
      * @since 4.16.8.1 Reject a completed order whose amount doesn't match the donation, or whose capture is already recorded against a different donation.
      * @since 4.2.1 updated to use updateOrderFromDonation
      * @since 4.1.0 updated to include 3D Secure validation
@@ -336,7 +336,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
      * is what finally decides how much was taken, so the captured amount is compared to the
      * donation rather than assumed to match.
      *
-     * @since TBD
+     * @since 4.16.9
      *
      * @throws PaymentGatewayException
      */
@@ -370,7 +370,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
      * the reason, which the SDK raises as a plain exception. A donor is only shown the message of a
      * PaymentGatewayException, so the reason is read out here rather than left in the log.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     private function getCaptureFailureMessage(Exception $exception): string
     {
@@ -386,7 +386,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
-     * @since TBD Read the capture defensively, and report a failed or declined capture's processor response.
+     * @since 4.16.9 Read the capture defensively, and report a failed or declined capture's processor response.
      *
      * @throws PaymentGatewayException
      */

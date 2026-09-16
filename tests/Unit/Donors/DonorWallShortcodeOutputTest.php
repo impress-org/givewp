@@ -10,7 +10,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.16.9
  */
 final class DonorWallShortcodeOutputTest extends TestCase
 {
@@ -22,7 +22,7 @@ final class DonorWallShortcodeOutputTest extends TestCase
     const TAG = 'svultag';
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function setUp(): void
     {
@@ -34,7 +34,7 @@ final class DonorWallShortcodeOutputTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function tearDown(): void
     {
@@ -47,7 +47,7 @@ final class DonorWallShortcodeOutputTest extends TestCase
      * A donor name carrying a self-nested shortcode must not survive to the donor-wall output as a
      * live tag, and the shortcode must not execute.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testDonorWallNeutralizesShortcodesInDonorFields(): void
     {
@@ -77,7 +77,7 @@ final class DonorWallShortcodeOutputTest extends TestCase
      * the test harness would otherwise promote that pre-existing warning to a failure, so it is
      * swallowed around the render only.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     private function renderDonorWall(): string
     {

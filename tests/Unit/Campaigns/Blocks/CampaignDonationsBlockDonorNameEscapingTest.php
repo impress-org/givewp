@@ -9,7 +9,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_Block_Supports;
 
 /**
- * @since TBD
+ * @since 4.16.9
  */
 final class CampaignDonationsBlockDonorNameEscapingTest extends TestCase
 {
@@ -21,7 +21,7 @@ final class CampaignDonationsBlockDonorNameEscapingTest extends TestCase
     const TAG = 'svultag';
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function setUp(): void
     {
@@ -33,7 +33,7 @@ final class CampaignDonationsBlockDonorNameEscapingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function tearDown(): void
     {
@@ -46,7 +46,7 @@ final class CampaignDonationsBlockDonorNameEscapingTest extends TestCase
      * The donor name rendered by the donations block must have its shortcode syntax neutralized,
      * including a self-nested tag that survives a single strip pass.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testNeutralizesShortcodesInDonorName(): void
     {
@@ -82,7 +82,7 @@ final class CampaignDonationsBlockDonorNameEscapingTest extends TestCase
     /**
      * Capture the block's rendered HTML.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     private function renderViewModel(Campaign $campaign, array $donations, array $attributes): string
     {

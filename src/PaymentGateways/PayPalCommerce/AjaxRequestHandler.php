@@ -333,7 +333,7 @@ class AjaxRequestHandler
      * The endpoint stays registered so anything still calling it receives an error it can report,
      * rather than an empty response from a missing action.
      *
-     * @since TBD Refuse every request; the capture for both form versions happens in PayPalCommerce::createPayment().
+     * @since 4.16.9 Refuse every request; the capture for both form versions happens in PayPalCommerce::createPayment().
      * @since 4.16.7.1 Refuse v3 forms; their capture happens in PayPalCommerce::createPayment(). Validate
      *            the posted form before every capture, not only when the amount changed.
      * @since 4.14.4 Validate donation amount before approving an order.
@@ -353,7 +353,7 @@ class AjaxRequestHandler
      * change an order's amount. The endpoint stays registered for the same reason approveOrder()
      * does: a caller gets an error it can report rather than an empty response.
      *
-     * @since TBD Refuse every request; the order amount is reconciled in PayPalCommerce::createPayment().
+     * @since 4.16.9 Refuse every request; the order amount is reconciled in PayPalCommerce::createPayment().
      * @since 4.16.7.1 Refuse v3 forms; PayPalCommerce::createPayment() reconciles their order amount.
      * @since 4.14.4 Validate donation amount before updating an order amount.
      * @since 3.4.2
