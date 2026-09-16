@@ -203,38 +203,38 @@ test.describe('External donation form embeds', () => {
         // A receipt return opens the overlay with nothing focused. The first
         // open here is programmatic for the same reason: a later real click
         // must still hand focus back to the button on close.
-        await page.evaluate(() => (document.querySelector('.givewp-embed__button') as HTMLElement).click());
-        await expect(page.locator('.givewp-embed__overlay')).toBeVisible();
-        await page.locator('.givewp-embed__close').click();
-        await expect(page.locator('.givewp-embed__overlay')).toBeHidden();
+        await page.evaluate(() => (document.querySelector('.givewp-donation-form-modal__open') as HTMLElement).click());
+        await expect(page.locator('.givewp-donation-form-modal__overlay')).toBeVisible();
+        await page.locator('.givewp-donation-form-modal__close').click();
+        await expect(page.locator('.givewp-donation-form-modal__overlay')).toBeHidden();
 
         await page.getByRole('button', {name: 'Give now'}).click();
 
         const form = donationForm(page);
         await waitForForm(form);
-        await expect(page.locator('.givewp-embed__overlay')).toBeVisible();
+        await expect(page.locator('.givewp-donation-form-modal__overlay')).toBeVisible();
 
         // Focus never leaves the dialog for the host page: backwards past the
         // close button, or forwards out the far side of the iframe.
         const focusIsInsideDialog = () =>
-            page.evaluate(() => document.activeElement?.closest('.givewp-embed__dialog') !== null);
+            page.evaluate(() => document.activeElement?.closest('.givewp-donation-form-modal') !== null);
 
         // Straight after opening, before the donor has focused anything themselves.
         await page.keyboard.press('Shift+Tab');
         expect(await focusIsInsideDialog()).toBe(true);
 
-        await page.locator('.givewp-embed__close').focus();
+        await page.locator('.givewp-donation-form-modal__close').focus();
         await page.keyboard.press('Shift+Tab');
         expect(await focusIsInsideDialog()).toBe(true);
 
-        await page.locator('.givewp-embed__dialog iframe').focus();
+        await page.locator('.givewp-donation-form-modal iframe').focus();
         for (let i = 0; i < 30; i++) {
             await page.keyboard.press('Tab');
             expect(await focusIsInsideDialog()).toBe(true);
         }
 
-        await page.locator('.givewp-embed__close').click();
-        await expect(page.locator('.givewp-embed__overlay')).toBeHidden();
+        await page.locator('.givewp-donation-form-modal__close').click();
+        await expect(page.locator('.givewp-donation-form-modal__overlay')).toBeHidden();
         await expect(page.getByRole('button', {name: 'Give now'})).toBeFocused();
     });
 

@@ -1,4 +1,5 @@
 import {iframeResize} from 'iframe-resizer';
+import EMBED_CSS from './styles.scss?inline';
 
 /**
  * External embed script for GiveWP donation forms.
@@ -82,76 +83,16 @@ let embedInstance = 0;
 
 const STYLE_ID = 'givewp-embed-styles';
 
-const EMBED_CSS = `
-givewp-donation-form {
-    display: block;
-}
-.givewp-embed__loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 20rem;
-}
-.givewp-embed__spinner {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    border: 3px solid rgba(0, 0, 0, 0.12);
-    border-top-color: rgba(0, 0, 0, 0.55);
-    animation: givewp-embed-spin 0.8s linear infinite;
-}
-@keyframes givewp-embed-spin {
-    to { transform: rotate(360deg); }
-}
-.givewp-embed__button {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border: 0;
-    border-radius: 4px;
-    background-color: var(--givewp-primary-color, #2d802f);
-    color: #fff;
-    font: inherit;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-}
-.givewp-embed__overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 2147483646;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    overflow-y: auto;
-    padding: 2.5rem 1rem;
-    background-color: rgba(0, 0, 0, 0.6);
-}
-.givewp-embed__dialog {
-    position: relative;
-    width: 100%;
-    max-width: 34rem;
-    border-radius: 8px;
-    background-color: #fff;
-    padding: 1.5rem 1rem 1rem;
-}
-.givewp-embed__close {
-    position: absolute;
-    top: 0.25rem;
-    right: 0.5rem;
-    border: 0;
-    background: none;
-    font-size: 1.5rem;
-    line-height: 1;
-    cursor: pointer;
-}
-.givewp-embed__focus-guard {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-}
-`;
+/**
+ * The same icon the WordPress block's modal close button draws
+ * (Campaigns/Blocks/shared/components/ModalForm/ModalClose.tsx).
+ */
+const CLOSE_ICON_SVG =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">' +
+    '<path stroke="black" stroke-width="2" d="M13 11.8l6.1-6.3-1-1-6.1 6.2-6.1-6.2-1 1 6.1 6.3-6.5 6.7 1 1 6.5-6.6 6.5 6.6 1-1z"></path>' +
+    '</svg>';
+
+const EXIT_ANIMATION_MS = 150;
 
 function injectStyles() {
     if (document.getElementById(STYLE_ID)) {
@@ -171,6 +112,7 @@ class GiveWPDonationForm extends HTMLElement {
     formId: string = '';
     embedId: string = '';
     overlay: HTMLElement | null = null;
+    modalButton: HTMLButtonElement | null = null;
     initialized: boolean = false;
     scrollOnInit: boolean = false;
     keydownHandler: ((event: KeyboardEvent) => void) | null = null;
@@ -409,8 +351,9 @@ class GiveWPDonationForm extends HTMLElement {
     /**
      * Renders the loading state and the hidden iframe into target, reveals the
      * iframe on the resizer handshake, and falls back to a link on timeout.
+     * onInit runs after the reveal.
      */
-    renderForm(src: string, target: HTMLElement) {
+    renderForm(src: string, target: HTMLElement, onInit?: () => void) {
         const loading = document.createElement('div');
         loading.className = 'givewp-embed__loading';
         loading.setAttribute('role', 'status');
@@ -452,6 +395,8 @@ class GiveWPDonationForm extends HTMLElement {
                         this.scrollOnInit = false;
                         this.scrollIntoView({behavior: 'smooth', block: 'start'});
                     }
+
+                    onInit?.();
                 },
             },
             iframe
@@ -467,12 +412,17 @@ class GiveWPDonationForm extends HTMLElement {
         link.href = this.getStandaloneFormUrl();
         link.target = '_blank';
         link.rel = 'noopener';
-        link.className = 'givewp-embed__button';
+        link.className = 'givewp-donation-form-link';
         link.textContent = this.getAttribute('fallback-text') || I18N.openForm;
 
         loading.replaceWith(link);
         this.iframe?.remove();
         this.iframe = null;
+
+        // In the modal the overlay waits for the handshake; show it now so
+        // the donor can reach the link.
+        this.setLauncherLoading(false);
+        this.showOverlay();
     }
 
     /**
@@ -483,43 +433,79 @@ class GiveWPDonationForm extends HTMLElement {
         link.href = this.getStandaloneFormUrl();
         link.target = '_blank';
         link.rel = 'noopener';
-        link.className = 'givewp-embed__button';
+        link.className = 'givewp-donation-form-link';
         link.textContent = this.getButtonText();
 
         this.appendChild(link);
     }
 
     /**
-     * A button that opens the form in the modal overlay.
+     * A button that opens the form in the modal overlay. While the form loads
+     * it shows a spinner in place of its label, as the WordPress block does.
      */
     renderModalButton(src: string) {
         const button = document.createElement('button');
         button.type = 'button';
-        button.className = 'givewp-embed__button';
-        button.textContent = this.getButtonText();
+        button.className = 'givewp-donation-form-modal__open';
+
+        const label = document.createElement('span');
+        label.className = 'givewp-donation-form-modal__open__label';
+        label.textContent = this.getButtonText();
+        button.appendChild(label);
+
         button.addEventListener('click', () => this.openModal(src));
 
         this.appendChild(button);
+        this.modalButton = button;
     }
 
     /**
-     * Shows the overlay, building it on first open. Returns focus to the
-     * launcher on close and keeps keyboard focus inside the dialog while open.
+     * Swaps the launcher label for a spinner while the form loads: the same
+     * markup and attribute as the block's launcher, so its styles apply.
+     */
+    setLauncherLoading(isLoading: boolean) {
+        const button = this.modalButton;
+        if (!button) {
+            return;
+        }
+
+        // The visible label is the button's accessible name; only while loading is it replaced.
+        // data-pending is the attribute react-aria's Button sets in the block, so the shared CSS applies.
+        button.toggleAttribute('data-pending', isLoading);
+        button.querySelector('.givewp-donation-form-modal__open__spinner')?.remove();
+
+        if (!isLoading) {
+            button.removeAttribute('aria-label');
+            return;
+        }
+
+        button.setAttribute('aria-label', this.getAttribute('loading-text') || I18N.loading);
+        const spinner = document.createElement('span');
+        spinner.className = 'givewp-donation-form-modal__open__spinner';
+        spinner.setAttribute('aria-hidden', 'true');
+        button.appendChild(spinner);
+    }
+
+    /**
+     * Opens the modal, building it on first open. Like the WordPress block,
+     * the overlay stays hidden and the launcher shows a spinner until the
+     * form inside has completed the resizer handshake. Focus returns to the
+     * launcher on close and stays inside the dialog while open.
      */
     openModal(src: string) {
         this.launcher = document.activeElement as HTMLElement | null;
 
         if (this.overlay) {
-            this.overlay.style.display = '';
-            this.focusDialog();
+            this.showOverlay();
             return;
         }
 
         const overlay = document.createElement('div');
-        overlay.className = 'givewp-embed__overlay';
+        overlay.className = 'givewp-donation-form-modal__overlay';
+        overlay.style.display = 'none';
 
         const dialog = document.createElement('div');
-        dialog.className = 'givewp-embed__dialog';
+        dialog.className = 'givewp-donation-form-modal';
         dialog.setAttribute('role', 'dialog');
         dialog.setAttribute('aria-modal', 'true');
         dialog.setAttribute('aria-label', this.getAttribute('form-title') || I18N.formTitle);
@@ -527,24 +513,19 @@ class GiveWPDonationForm extends HTMLElement {
 
         const close = document.createElement('button');
         close.type = 'button';
-        close.className = 'givewp-embed__close';
+        close.className = 'givewp-donation-form-modal__close';
         close.setAttribute('aria-label', this.getAttribute('close-text') || I18N.close);
-        close.textContent = '×';
+        close.innerHTML = CLOSE_ICON_SVG;
 
-        const hide = () => {
-            overlay.style.display = 'none';
-            this.launcher?.focus();
-        };
-
-        close.addEventListener('click', hide);
+        close.addEventListener('click', () => this.hideOverlay());
         overlay.addEventListener('click', (event) => {
             if (event.target === overlay) {
-                hide();
+                this.hideOverlay();
             }
         });
         this.keydownHandler = (event: KeyboardEvent) => {
-            if (overlay.style.display !== 'none' && event.key === 'Escape') {
-                hide();
+            if (this.isOverlayOpen() && event.key === 'Escape') {
+                this.hideOverlay();
             }
         };
         document.addEventListener('keydown', this.keydownHandler);
@@ -572,9 +553,65 @@ class GiveWPDonationForm extends HTMLElement {
         this.overlay = overlay;
 
         // The iframe lives on across open/close so form state survives.
-        this.renderForm(src, dialog);
+        this.setLauncherLoading(true);
+        this.renderForm(src, dialog, () => {
+            this.setLauncherLoading(false);
+            this.showOverlay();
+        });
         dialog.appendChild(endGuard);
+    }
+
+    isOverlayOpen(): boolean {
+        return !!this.overlay && this.overlay.style.display !== 'none';
+    }
+
+    /**
+     * Reveals the overlay with the block's enter animation and moves focus
+     * into the dialog.
+     */
+    showOverlay() {
+        const overlay = this.overlay;
+        const dialog = overlay?.querySelector<HTMLElement>('.givewp-donation-form-modal');
+        if (!overlay || !dialog) {
+            return;
+        }
+
+        overlay.style.display = '';
+        // The iframe was laid out while hidden; ask for a fresh height, as the block does on init.
+        (this.iframe as any)?.iFrameResizer?.resize();
+        overlay.removeAttribute('data-exiting');
+        overlay.setAttribute('data-entering', 'true');
+        dialog.setAttribute('data-entering', 'true');
+        dialog.addEventListener(
+            'animationend',
+            () => {
+                overlay.removeAttribute('data-entering');
+                dialog.removeAttribute('data-entering');
+            },
+            {once: true}
+        );
+
         this.focusDialog();
+    }
+
+    /**
+     * Plays the block's exit animation, then hides the overlay and returns
+     * focus to the launcher. A timer rather than animationend, so a host
+     * page that disables animations still closes the modal.
+     */
+    hideOverlay() {
+        const overlay = this.overlay;
+        if (!overlay || !this.isOverlayOpen() || overlay.hasAttribute('data-exiting')) {
+            return;
+        }
+
+        overlay.removeAttribute('data-entering');
+        overlay.setAttribute('data-exiting', 'true');
+        window.setTimeout(() => {
+            overlay.style.display = 'none';
+            overlay.removeAttribute('data-exiting');
+            this.launcher?.focus();
+        }, EXIT_ANIMATION_MS);
     }
 
     createFocusGuard(onFocus: () => void): HTMLElement {
@@ -592,9 +629,9 @@ class GiveWPDonationForm extends HTMLElement {
      * it would walk backwards to the host page before reaching a guard.
      */
     focusDialog() {
-        const dialog = this.overlay?.querySelector<HTMLElement>('.givewp-embed__dialog');
+        const dialog = this.overlay?.querySelector<HTMLElement>('.givewp-donation-form-modal');
 
-        (dialog?.querySelector<HTMLElement>('.givewp-embed__close') ?? dialog)?.focus();
+        (dialog?.querySelector<HTMLElement>('.givewp-donation-form-modal__close') ?? dialog)?.focus();
     }
 }
 

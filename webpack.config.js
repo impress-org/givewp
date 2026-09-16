@@ -292,6 +292,25 @@ module.exports = {
     },
     entry,
     plugins,
+    module: {
+        ...defaultConfig.module,
+        rules: [
+            /**
+             * `import css from './styles.scss?inline'` yields the compiled CSS as a string instead of an
+             * extracted file. The external embed script injects its styles this way because the route
+             * that serves it sends one JS file and nothing else.
+             */
+            ...defaultConfig.module.rules.map((rule) =>
+                String(rule.test).includes('sc|sa') ? {...rule, resourceQuery: {not: [/inline/]}} : rule
+            ),
+            {
+                test: /\.(sc|sa)ss$/,
+                resourceQuery: /inline/,
+                type: 'asset/source',
+                use: ['sass-loader'],
+            },
+        ],
+    },
     optimization: {
         ...defaultConfig.optimization,
         splitChunks: {

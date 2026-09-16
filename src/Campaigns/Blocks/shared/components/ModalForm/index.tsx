@@ -3,7 +3,6 @@ import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
 import {Button, Dialog, Modal, ModalOverlay} from 'react-aria-components';
 import ModalCloseIcon from './ModalClose';
-import {Spinner} from '@wordpress/components';
 import './styles.scss';
 import '../EntitySelector/styles/index.scss';
 import {FocusScope} from 'react-aria';
@@ -20,6 +19,7 @@ type ModalFormProps = {
 };
 
 /**
+ * @since TBD Share the launcher's pending state markup and styles with the external embed.
  * @unreleasaed
  */
 export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect, formViewUrl}: ModalFormProps) {
@@ -103,20 +103,10 @@ export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect,
                 className="givewp-donation-form-modal__open"
                 onPress={openModal}
                 isPending={isLoading}
-                aria-label={isLoading ? __('Loading donation form', 'give') : __('Open donation form', 'give')}
+                aria-label={isLoading ? __('Loading donation form', 'give') : undefined}
             >
-                {isLoading && (
-                    <span className="givewp-donation-form-modal__open__spinner">
-                        <Spinner
-                            style={{margin: '0 auto', verticalAlign: 'middle'}}
-                            aria-label={__('In progress', 'give')}
-                        />
-                    </span>
-                )}
-
-                <span style={{margin: '0', visibility: isLoading ? 'hidden' : 'visible'}} aria-hidden={isLoading}>
-                    {buttonText}
-                </span>
+                {isLoading && <span className="givewp-donation-form-modal__open__spinner" aria-hidden="true" />}
+                <span className="givewp-donation-form-modal__open__label">{buttonText}</span>
             </Button>
 
             <ModalOverlay
@@ -127,13 +117,10 @@ export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect,
                 isDismissable
                 isEntering={isEntering}
             >
-                <Modal 
-                    className="givewp-donation-form-modal"
-                    data-loading={isLoading}
-                >
+                <Modal className="givewp-donation-form-modal" data-loading={isLoading}>
                     <FocusScope contain restoreFocus autoFocus>
-                        <Dialog 
-                            className="givewp-donation-form-modal__dialog" 
+                        <Dialog
+                            className="givewp-donation-form-modal__dialog"
                             aria-label={__('Donation Form', 'give')}
                             role="dialog"
                             aria-modal="true"

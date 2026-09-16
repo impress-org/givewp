@@ -147,8 +147,29 @@ its color has to come from the snippet. The builder's external tab exposes it as
 color** field, seeded with the form's resolved primary color, written as `primary-color`, and
 labeled as a per-embed choice that does not follow the form's design. The stylesheet reads it as
 the `--givewp-primary-color` custom property, so a host page can also set it in its own CSS. The
-default is GiveWP's default form color. There is no `secondary-color`; nothing in the embed
-reads one.
+fallback is the same `#2271b1` the on-site block uses. There is no `secondary-color`; nothing in
+the embed reads one.
+
+### The styles are the block's styles
+
+The launcher and the modal use the on-site block's class names (`givewp-donation-form-link`,
+`givewp-donation-form-modal__*`) and its SCSS: the launcher partial at
+`src/DonationForms/Blocks/DonationFormBlock/resources/styles/launcher.scss` and the modal at
+`src/Campaigns/Blocks/shared/components/ModalForm/styles.scss`. `externalEmbed/styles.scss`
+imports both and adds only what the host page needs that WordPress does not: a `display: block` on
+the element, higher z-indexes, the onpage loading spinner, and focus guards. The launcher's pending
+state is shared too: both render a `__label` span and a `__spinner` span and set `data-pending` on
+the button, which is what react-aria's `Button` emits for `isPending`, so the block and the embed
+draw the same CSS spinner.
+
+The route serves one JS file and nothing else, so the stylesheet cannot be a separate asset. The
+script imports it as `./styles.scss?inline`; the `?inline` resource query is matched by a rule in
+`webpack.config.js` that compiles the SCSS to a string (`type: 'asset/source'`) instead of
+extracting it, and the script writes that string into a `<style>` element once per page. Change
+the block's styles and the embed follows on the next build.
+
+The modal also follows the block's loading behavior: the launcher shows a spinner and the overlay
+stays hidden until the iframe-resizer handshake, then the overlay fades in and the dialog zooms.
 
 `display-style` and `button-text` are likewise per-embed choices, not form settings. `form-title`
 labels the iframe and dialog for assistive tech, and a stale one is harmless.
