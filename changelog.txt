@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 4.16.9: September 16th, 2026 =
+* Security: Added additional validation to PayPal Commerce donation processing.
+* Security: Added additional sanitization to donor information displayed on public pages.
+* Fix: Resolved an issue where resuming a paused Stripe subscription triggered a fatal error.
+
 = 4.16.8.1: September 10th, 2026 =
 * Security: Improved validation of the event tickets purchase flow.
 * Security: Added additional validation to PayPal Commerce completed-order processing.

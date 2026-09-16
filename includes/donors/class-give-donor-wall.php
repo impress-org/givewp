@@ -82,6 +82,7 @@ class Give_Donor_Wall {
     /**
      * Displays donors in a grid layout.
      *
+     * @since 4.16.9 Added additional sanitization to donor output.
      * @since 4.13.2 add strip_shortcodes to the html output
      * @since 4.3.1 remove redundant _give_redirect_form_id() function.
      * @since 3.7.0 Sanitize attributes
@@ -147,7 +148,7 @@ class Give_Donor_Wall {
 			$html = ob_get_clean();
 
             // Strip shortcodes to prevent execution of user-supplied shortcode syntax.
-            $html = strip_shortcodes($html);
+            $html = give_strip_shortcodes_deep($html);
 
             // Return only donor html.
             if (
