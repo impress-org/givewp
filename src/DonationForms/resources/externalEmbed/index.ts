@@ -13,64 +13,55 @@ import EMBED_CSS from './styles.scss?inline';
  * form inline, `modal` renders a button that opens the form in an overlay,
  * `newTab` renders a button that links to the standalone form page.
  *
- * Donor-facing text comes from the WordPress site: the route that serves
- * this script prints window.givewpDonationFormEmbed ahead of it with the
- * strings translated in the site's locale. Attributes override per element.
- *
- * The WordPress site is located from the script's own URL, so the snippet
- * only has to name the form. A `wp-url` attribute overrides that for pages
- * that load the script from somewhere other than the WordPress site.
+ * Everything about the WordPress site comes from the WordPress site: the
+ * route that serves this script prints window.givewpDonationFormEmbed ahead
+ * of it (see GetExternalEmbedScriptData) with the home URL, the route URLs
+ * the iframe loads, the form's own page URL, the offsite return parameters,
+ * and the donor-facing strings in the site's locale. The snippet only has
+ * to name the form; text attributes override per element.
  *
  * @since TBD
  */
 
-/**
- * The script URL shapes Route::scriptUrl() produces all sit directly under
- * the WordPress home URL: /give/embed/donation-form/script.js,
- * /index.php/give/embed/donation-form/script.js, or
- * /?givewp-route=embed/donation-form/script.js. Stripping that tail from the
- * script's src yields the home URL, trailing slash included.
- */
-const SCRIPT_HOME_URL = ((): string | null => {
-    const src = (document.currentScript as HTMLScriptElement | null)?.src;
-    if (!src) {
-        return null;
-    }
-
-    const url = new URL(src);
-    url.search = '';
-    url.hash = '';
-    url.pathname = url.pathname.replace(/(index\.php\/)?give\/embed\/donation-form\/script\.js$/, '');
-
-    return url.toString();
-})();
-
 const LOAD_TIMEOUT_MS = 10000;
 
-type EmbedI18n = {
-    donate: string;
-    loading: string;
-    formTitle: string;
-    openForm: string;
-    close: string;
+type EmbedData = {
+    homeUrl: string;
+    formViewUrl: string;
+    receiptViewUrl: string;
+    formPageUrl: string;
+    receiptReturn: {
+        match: Record<string, string>;
+        embedIdParam: string;
+        receiptIdParam: string;
+    };
+    i18n: {
+        donate: string;
+        loading: string;
+        formTitle: string;
+        openForm: string;
+        close: string;
+    };
 };
 
 declare const window: {
-    givewpDonationFormEmbed?: {i18n?: Partial<EmbedI18n>};
+    givewpDonationFormEmbed?: EmbedData;
 } & Window;
 
 /*
- * The English values are only reached when the file is loaded from
- * somewhere other than the route (a direct build path); the served script
- * always carries the site's translations.
+ * Absent only when the file is loaded from somewhere other than the route
+ * (a direct build path), which is unsupported: without the site's URLs the
+ * element has nothing to embed, and connectedCallback says so.
  */
-const I18N: EmbedI18n = {
+const DATA: EmbedData | undefined = window.givewpDonationFormEmbed;
+
+const I18N: EmbedData['i18n'] = {
     donate: 'Donate',
     loading: 'Loading',
     formTitle: 'Donation Form',
     openForm: 'Open donation form',
     close: 'Close',
-    ...window.givewpDonationFormEmbed?.i18n,
+    ...DATA?.i18n,
 };
 
 /**
@@ -108,7 +99,6 @@ function injectStyles() {
 class GiveWPDonationForm extends HTMLElement {
     iframe: HTMLIFrameElement | null = null;
     wpOrigin: string = '';
-    wpBase: URL | null = null;
     formId: string = '';
     embedId: string = '';
     overlay: HTMLElement | null = null;
@@ -155,44 +145,23 @@ class GiveWPDonationForm extends HTMLElement {
     };
 
     /**
-     * Reads the attributes, resolves the WordPress base URL, and renders the
-     * chosen display style. Runs again when an SPA reattaches the element, so
-     * everything after the initialized guard happens once.
+     * Reads the attributes and renders the chosen display style. Runs again
+     * when an SPA reattaches the element, so everything after the initialized
+     * guard happens once.
      */
     connectedCallback() {
         const formId = this.getAttribute('form-id');
-        const wpUrl = this.getAttribute('wp-url') || SCRIPT_HOME_URL;
 
         if (!formId) {
             console.error('givewp-donation-form requires a form-id attribute.');
             return;
         }
 
-        if (!wpUrl) {
-            console.error('givewp-donation-form could not locate the WordPress site; add a wp-url attribute.');
+        if (!DATA) {
+            console.error(
+                "givewp-donation-form: load the script from the WordPress site's embed URL (see the form builder's embed snippet)."
+            );
             return;
-        }
-
-        // The full URL, not just the origin: WordPress in a subdirectory
-        // (example.org/blog) serves its routes under that path. Only http(s)
-        // may reach the iframe src.
-        let wpBase: URL;
-        try {
-            wpBase = new URL(wpUrl);
-        } catch (e) {
-            console.error('givewp-donation-form: wp-url is not a valid URL.', wpUrl);
-            return;
-        }
-
-        if (wpBase.protocol !== 'http:' && wpBase.protocol !== 'https:') {
-            console.error('givewp-donation-form: wp-url must be an http(s) URL.', wpUrl);
-            return;
-        }
-
-        // Route URLs are built by appending a query string, and WordPress
-        // redirects /blog?x to /blog/?x; a trailing slash avoids the round trip.
-        if (!wpBase.pathname.endsWith('/')) {
-            wpBase.pathname += '/';
         }
 
         window.addEventListener('message', this.messageHandler);
@@ -220,8 +189,7 @@ class GiveWPDonationForm extends HTMLElement {
         }
 
         this.formId = formId;
-        this.wpBase = wpBase;
-        this.wpOrigin = wpBase.origin;
+        this.wpOrigin = new URL(DATA.homeUrl).origin;
         this.embedId = `givewp-embed-external-${embedInstance++}`;
 
         const displayStyle = this.getAttribute('display-style') || 'onpage';
@@ -253,10 +221,9 @@ class GiveWPDonationForm extends HTMLElement {
      * makes the URL ugly to share and replays the receipt on every reload.
      */
     consumeReturnParams() {
+        const {match, embedIdParam, receiptIdParam} = DATA.receiptReturn;
         const url = new URL(window.location.href);
-        ['givewp-event', 'givewp-listener', 'givewp-embed-id', 'givewp-receipt-id'].forEach((param) =>
-            url.searchParams.delete(param)
-        );
+        [...Object.keys(match), embedIdParam, receiptIdParam].forEach((param) => url.searchParams.delete(param));
         window.history.replaceState(window.history.state, '', url.toString());
     }
 
@@ -290,8 +257,7 @@ class GiveWPDonationForm extends HTMLElement {
         originUrl.search = '';
         originUrl.hash = '';
 
-        const url = new URL(this.wpBase.toString());
-        url.searchParams.set('givewp-route', 'donation-form-view');
+        const url = new URL(DATA.formViewUrl);
         url.searchParams.set('form-id', formId);
         url.searchParams.set('origin-url', originUrl.toString());
         url.searchParams.set('embed-id', this.embedId);
@@ -305,12 +271,14 @@ class GiveWPDonationForm extends HTMLElement {
     }
 
     /**
-     * The form on its own page, for the new-tab launcher and the fallback link.
+     * The form on its own page, for the new-tab launcher and the fallback
+     * link: the give_forms single, the same URL the WordPress block's new-tab
+     * launcher opens, rather than the bare donation-form-view route the
+     * iframe loads.
      */
     getStandaloneFormUrl(): string {
-        const url = new URL(this.wpBase.toString());
-        url.searchParams.set('givewp-route', 'donation-form-view');
-        url.searchParams.set('form-id', this.formId);
+        const url = new URL(DATA.formPageUrl);
+        url.searchParams.set('p', this.formId);
 
         const locale = this.getAttribute('locale');
         if (locale) {
@@ -322,16 +290,16 @@ class GiveWPDonationForm extends HTMLElement {
 
     /**
      * Mirrors the return-flow params the WordPress block handles server-side
-     * (RouteListener('donation-completed', 'show-donation-confirmation-receipt')).
+     * (RouteListener), as the site describes them.
      */
     isReceiptReturn(): boolean {
+        const {match, embedIdParam, receiptIdParam} = DATA.receiptReturn;
         const params = new URLSearchParams(window.location.search);
 
         return (
-            params.get('givewp-event') === 'donation-completed' &&
-            params.get('givewp-listener') === 'show-donation-confirmation-receipt' &&
-            params.get('givewp-embed-id') === this.embedId &&
-            /^[a-z0-9]{32}$/i.test(params.get('givewp-receipt-id') || '')
+            Object.entries(match).every(([param, value]) => params.get(param) === value) &&
+            params.get(embedIdParam) === this.embedId &&
+            /^[a-z0-9]{32}$/i.test(params.get(receiptIdParam) || '')
         );
     }
 
@@ -341,9 +309,8 @@ class GiveWPDonationForm extends HTMLElement {
      */
     getReceiptViewUrl(): string {
         const params = new URLSearchParams(window.location.search);
-        const url = new URL(this.wpBase.toString());
-        url.searchParams.set('givewp-route', 'donation-confirmation-receipt-view');
-        url.searchParams.set('receipt-id', params.get('givewp-receipt-id'));
+        const url = new URL(DATA.receiptViewUrl);
+        url.searchParams.set('receipt-id', params.get(DATA.receiptReturn.receiptIdParam));
 
         return url.toString();
     }

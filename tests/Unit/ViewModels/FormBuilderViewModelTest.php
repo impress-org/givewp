@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\VieModels;
 
+use Give\DonationForms\Actions\GenerateDonationFormPageUrl;
 use Exception;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Actions\GenerateExternalEmbedScriptUrl;
@@ -65,7 +66,7 @@ class FormBuilderViewModelTest extends TestCase
                 'formPage' => [
                     'isEnabled' => give_is_setting_enabled(give_get_option('forms_singular')),
                     // Note: Boolean values must be nested in an array to maintain boolean type, see \WP_Scripts::localize().
-                    'permalink' => add_query_arg(['p' => $formId], site_url('?post_type=give_forms')),
+                    'permalink' => (new GenerateDonationFormPageUrl())($formId),
                     'rewriteSlug' => get_post_type_object('give_forms')->rewrite['slug'],
                     'baseUrl' => preg_replace('/^https?:\/\//', '', site_url()),
                 ],

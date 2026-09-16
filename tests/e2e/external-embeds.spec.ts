@@ -31,18 +31,16 @@ const EXTERNAL_PAGE = `${EXTERNAL_ORIGIN}/donate`;
 const EXTERNAL_SCRIPT_URL = `${WP_BASE_URL}/give/embed/donation-form/script.js`;
 
 /*
- * No wp-url by default: the element derives the WordPress site from the script URL, which is
- * what the generated snippet relies on. Tests pass one only to point the embed somewhere else.
+ * The element learns everything about the WordPress site from the data the route prints ahead
+ * of the script, so the snippet carries only the form id and per-embed choices.
  */
-function externalPageHtml(formId: number, wpUrl: string | null = null, attributes: string = ''): string {
-    const wpUrlAttribute = wpUrl ? `wp-url="${wpUrl}"` : '';
-
+function externalPageHtml(formId: number, attributes: string = ''): string {
     return `<!DOCTYPE html>
 <html>
 <head><title>External donation page</title></head>
 <body>
     <h1>Support our cause</h1>
-    <givewp-donation-form form-id="${formId}" ${wpUrlAttribute} ${attributes}></givewp-donation-form>
+    <givewp-donation-form form-id="${formId}" ${attributes}></givewp-donation-form>
     <script src="${EXTERNAL_SCRIPT_URL}" defer></script>
 </body>
 </html>`;
@@ -194,7 +192,7 @@ test.describe('External donation form embeds', () => {
         await page.route(`${EXTERNAL_PAGE}*`, (route) =>
             route.fulfill({
                 contentType: 'text/html',
-                body: externalPageHtml(formId, null, 'display-style="modal" button-text="Give now"'),
+                body: externalPageHtml(formId, 'display-style="modal" button-text="Give now"'),
             })
         );
 
@@ -240,18 +238,18 @@ test.describe('External donation form embeds', () => {
 
     test('degrades to a link when the form cannot load', async ({page}) => {
         await page.route(`${EXTERNAL_PAGE}*`, (route) =>
-            route.fulfill({
-                contentType: 'text/html',
-                // .invalid never resolves, so the iframe never fires load and the timeout runs.
-                body: externalPageHtml(formId, 'https://blackhole.invalid'),
-            })
+            route.fulfill({contentType: 'text/html', body: externalPageHtml(formId)})
         );
+
+        // The iframe request never completes, so the resizer handshake never
+        // happens and the timeout runs: the shape of a blocked or offline site.
+        await page.route(/givewp-route=donation-form-view/, (route) => route.abort('connectionfailed'));
 
         await page.goto(EXTERNAL_PAGE);
 
         const fallback = page.locator('givewp-donation-form a');
         await expect(fallback).toHaveText('Open donation form', {timeout: 15_000});
-        await expect(fallback).toHaveAttribute('href', /donation-form-view/);
+        await expect(fallback).toHaveAttribute('href', /post_type=give_forms&p=\d+/);
         await expect(page.locator('givewp-donation-form iframe')).toHaveCount(0);
     });
 });

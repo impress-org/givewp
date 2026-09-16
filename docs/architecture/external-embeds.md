@@ -79,18 +79,30 @@ which would freeze at whatever the snippet was copied with.
 Raising `max-age` trades update latency on other people's sites for fewer requests. An hour is
 the ceiling a plugin update should tolerate; do not go to a year.
 
-### Translated strings travel with the script
+### The site's data travels with the script
 
-The bundle runs on pages without WordPress, so it cannot call `__()`. Instead the route localizes
-it: `Route::script(...)->localize('givewpDonationFormEmbed', new GetExternalEmbedScriptData())`
+The bundle runs on pages without WordPress, so it cannot call `__()` or `home_url()`. Instead the
+route localizes it: `Route::script(...)->localize('givewpDonationFormEmbed', new GetExternalEmbedScriptData())`
 prints `var givewpDonationFormEmbed = {...};` ahead of the file, the same shape
 `wp_localize_script()` gives an enqueued script. The callable runs at request time, after the
-text domain is loaded, so the strings are in the site's locale. The element reads its default
-labels from that object; the English literals in the source are reached only when the file is
-loaded from somewhere other than the route.
+text domain is loaded, so the strings are in the site's locale and the URLs are the site's
+current ones. The object carries:
 
-Attributes still override per element (`button-text` for an admin-chosen label), but the snippet
-no longer has to carry translations of the defaults.
+- `homeUrl`, which the element uses as the trusted origin for `postMessage` and iframe-resizer.
+- `formViewUrl` and `receiptViewUrl`, the two routes the iframe loads, from `Route::url()`. The
+  element appends `form-id` or `receipt-id` and its own per-embed params.
+- `formPageUrl`, the form's own page from `GenerateDonationFormPageUrl`, which the block's new-tab
+  launcher also uses. The element appends `p`.
+- `receiptReturn`, the offsite-gateway return parameters as `GenerateDonationConfirmationReceiptUrl`
+  builds them: the `match` params that must equal fixed values, and the names of the embed id and
+  receipt id params.
+- `i18n`, the default donor-facing labels. Attributes still override per element (`button-text`
+  for an admin-chosen label), but the snippet no longer has to carry translations.
+
+Nothing about the site is hardcoded in the bundle. The English literals in the source are reached
+only when the file is loaded from somewhere other than the route, and without the object the
+element logs an error and renders nothing, since it has no URLs to embed. Loading the built file
+directly is not supported.
 
 The element's `locale` attribute does not reach these strings. It is forwarded to the iframe URL,
 so it changes the language of the form inside the frame only; the launcher button, spinner label,
@@ -110,8 +122,8 @@ into the script, but it costs more than it saves:
 
 Everything a per-form URL could supply either belongs to the form inside the iframe, which
 resolves it itself, or is a per-embed choice written as an attribute. The route supplies the
-translated defaults. What the host page needs from the server is the script, the strings, and the
-site location, and all three come from the URL as it is.
+site's URLs and translated defaults. What the host page needs from the server is the script and
+that object, and both come from the URL as it is.
 
 `Router::script()` reads no request data today. If a script variant is ever needed, add a query
 parameter (`?locale=fr`), read it through `Router::getRequestDataByType()` for the same sanitizing
@@ -127,12 +139,9 @@ query string. If this shows up in support, the fix is to drop the `.js` extensio
 
 ## The custom element
 
-`<givewp-donation-form>` requires only `form-id`. The element finds the WordPress site by
-stripping the route tail from `document.currentScript.src`, which works for all three URL shapes
-above and keeps the home path of a subdirectory install. `wp-url` overrides that for a page that
-loads the script from somewhere else; it must be the full home URL, not just the origin, and only
-`http:` and `https:` are accepted. Optional attributes: `display-style` (`onpage`, `modal`,
-`newTab`), `button-text`, `primary-color`, `form-title`, `loading-text`, `fallback-text`,
+`<givewp-donation-form>` requires only `form-id`. The WordPress site's URLs come from the
+localized object above, never from the snippet. Optional attributes: `display-style` (`onpage`,
+`modal`, `newTab`), `button-text`, `primary-color`, `form-title`, `loading-text`, `fallback-text`,
 `close-text`, `locale`.
 
 ### What the snippet bakes in, and why
@@ -173,6 +182,12 @@ stays hidden until the iframe-resizer handshake, then the overlay fades in and t
 
 `display-style` and `button-text` are likewise per-embed choices, not form settings. `form-title`
 labels the iframe and dialog for assistive tech, and a stale one is harmless.
+
+The `newTab` launcher and the load-failure fallback link open the form's own page, the
+`formPageUrl` from the localized object with `p={id}` appended. `GenerateDonationFormPageUrl`
+builds it for the block's new-tab launcher too, so the two cannot drift. The bare
+`donation-form-view` route is only ever an iframe `src`; it has no theme header or footer and is
+not meant to be landed on.
 
 The iframe loads the same `donation-form-view` route the on-site block uses, with `origin-url`
 set to the host page (origin and path only, never its query string or fragment) and an
