@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved an issue where resuming a paused Stripe subscription triggered a
+  fatal error.
+timestamp: 2026-08-25T05:16:10.341Z
