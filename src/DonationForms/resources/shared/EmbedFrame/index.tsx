@@ -36,8 +36,9 @@ type EmbedFrameProps = {
  * Browsers fire `load` for error pages too, so the signal that the form is actually running is the
  * iframe-resizer handshake (`onInit`). Until it arrives a placeholder holds the space. There is no
  * reliable failure signal, so a slow handshake is never treated as one: the iframe stays mounted and
- * after LOAD_TIMEOUT_MS a link to the standalone form fades in under the placeholder, in case the
- * form never arrives.
+ * after LOAD_TIMEOUT_MS a link to the standalone form fades in over the placeholder, in case the
+ * form never arrives. It overlays the top of the frame rather than sitting under it, because a
+ * skeleton can run past the fold.
  *
  * @since TBD
  */
@@ -74,15 +75,15 @@ export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady
                 </div>
             )}
             {state === 'slow' && (
-                <p className="givewp-embed-frame__fallback">
-                    {__('The form is taking longer than usual to load.', 'give')}{' '}
+                <p className="givewp-embed-frame__fallback" role="status">
+                    {__('The form is taking longer than usual to load.', 'give')}
                     <a
                         className="givewp-donation-form-link"
                         href={fallbackUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {__('Open donation form', 'give')}
+                        {__('Open the form on its own page', 'give')}
                     </a>
                 </p>
             )}

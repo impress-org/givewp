@@ -464,7 +464,7 @@ test.describe('V3 donation forms', () => {
 
             await page.goto(post.link);
 
-            const fallback = page.getByRole('link', {name: 'Open donation form'});
+            const fallback = page.getByRole('link', {name: 'Open the form on its own page'});
 
             // The embed waits ten seconds for the handshake before offering the link. The iframe
             // and placeholder stay put, so a late handshake can still land.
@@ -488,7 +488,7 @@ test.describe('V3 donation forms', () => {
 
             await page.goto(post.link, {waitUntil: 'domcontentloaded'});
 
-            const fallback = page.getByRole('link', {name: 'Open donation form'});
+            const fallback = page.getByRole('link', {name: 'Open the form on its own page'});
 
             await expect(fallback).toBeVisible({timeout: 15_000});
 
@@ -511,7 +511,7 @@ test.describe('V3 donation forms', () => {
 
             await page.getByRole('button', {name: 'Open donation form'}).click();
 
-            const fallback = page.getByRole('dialog').getByRole('link', {name: 'Open donation form'});
+            const fallback = page.getByRole('dialog').getByRole('link', {name: 'Open the form on its own page'});
 
             await expect(fallback).toBeVisible({timeout: 15_000});
             await expect(fallback).toHaveAttribute('href', new RegExp(`p=${formId}`));

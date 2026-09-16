@@ -61,25 +61,45 @@
         opacity: 1;
     }
 
-    /* Sits under the placeholder, so the sketch stays put while the iframe keeps loading. */
+    /*
+     * Overlays the placeholder rather than sitting under it: a skeleton can be taller than the
+     * viewport, so anything below it lands below the fold where nobody scrolls to it.
+     */
     &__fallback {
-        position: relative;
-        margin: 1rem 0 0;
+        position: absolute;
+        z-index: 1;
+        margin: 0;
         text-align: center;
         animation: givewp-embed-frame-fade-in 0.3s ease;
 
+        /* The donate-button stylesheet styles the link as a pill, so give it its own centered line. */
         a {
-            display: inline-block;
-            width: auto;
-            margin-top: 0.5rem;
+            display: block;
+            width: fit-content;
+            margin: 0.75rem auto 0;
         }
     }
 
-    /* The spinner overlay is absolute, so here the message pins to the bottom of the frame instead. */
+    /* The spinner is short and centered, so the message fits along the bottom of the frame. */
     &[data-placeholder='spinner'] &__fallback {
-        position: absolute;
         inset: auto 0 1rem;
-        margin: 0;
+    }
+
+    /* Over a skeleton the message becomes a card at the top edge, where the viewer already is. */
+    &[data-placeholder='skeleton'] &__fallback {
+        top: 1rem;
+        left: 50%;
+        box-sizing: border-box;
+        /* With `left: 50%` the shrink-to-fit space is half the frame, so size to the text and let
+           the cap do the wrapping. */
+        width: max-content;
+        max-width: min(28rem, calc(100% - 2rem));
+        padding: 1rem 1.5rem;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+        transform: translateX(-50%);
     }
 }
 
@@ -365,6 +385,7 @@
     }
 
     .givewp-embed-frame__spinner,
+    .givewp-embed-frame__fallback,
     .givewp-embed-skeleton__bar {
         animation: none;
     }
