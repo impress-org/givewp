@@ -314,6 +314,28 @@ class AjaxRequestHandlerTest extends TestCase
     }
 
     /**
+     * The order amount is reconciled against the donation while it is being processed, so no form
+     * version asks this endpoint to change an order any more.
+     *
+     * @since TBD
+     */
+    public function testUpdateOrderAmountRefusesV2Requests(): void
+    {
+        $formId = $this->createV2FormWithCustomAmountMinimum(1);
+        $_POST = $this->v2Request($formId);
+        $_GET = ['order' => 'ORDER123', 'give-amount' => '999999.99'];
+
+        $this->payPalOrder->expects($this->never())->method('updateOrderAmount');
+        $this->payPalOrder->expects($this->never())->method('getApprovedOrder');
+
+        $response = $this->invokeAndCatchWpDie(function () {
+            give(AjaxRequestHandler::class)->updateOrderAmount();
+        });
+
+        $this->assertFalse($response['success']);
+    }
+
+    /**
      * Neither form version captures from the browser any more, so the endpoint answers with an
      * error whatever it is sent.
      *

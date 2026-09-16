@@ -114,6 +114,7 @@ class SmartButtons extends PaymentMethod {
     /**
      * On click event handler for smart buttons.
      *
+     * @since TBD Drop the amount observer; the server reconciles the order amount before capturing.
      * @since 2.9.0
      *
      * @param {object} data PayPal button data.

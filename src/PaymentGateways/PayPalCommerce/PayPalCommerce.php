@@ -107,12 +107,12 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
          * further attempt with an error, which is what limits a capture to a single donation.
          */
         if ($payPalOrder->status !== 'APPROVED' && $payPalOrder->status !== 'CREATED') {
-            throw new PaymentGatewayException('PayPal Order is not ready to be captured.');
+            throw new PaymentGatewayException(__('PayPal Order is not ready to be captured.', 'give'));
         }
 
         $this->validate3dSecure($payPalOrder);
 
-        if ($this->shouldUpdateOrder($donation, $payPalOrder)){
+        if ($this->shouldUpdateOrder($donation, $payPalOrder)) {
             $payPalOrderRepository->updateOrderFromDonation($payPalOrderId, $donation);
         }
 
@@ -341,7 +341,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
         $capture = $payPalOrder->purchase_units[0]->payments->captures[0] ?? null;
 
         if (! isset($capture->amount->value, $capture->amount->currency_code)) {
-            throw new PaymentGatewayException('PayPal capture does not have an amount.');
+            throw new PaymentGatewayException(__('PayPal capture does not have an amount.', 'give'));
         }
 
         $capturedAmount = Money::fromDecimal($capture->amount->value, $capture->amount->currency_code);
@@ -355,32 +355,35 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
                 )
             );
 
-            throw new PaymentGatewayException('Captured PayPal amount does not match donation amount.');
+            throw new PaymentGatewayException(
+                __('Captured PayPal amount does not match donation amount.', 'give')
+            );
         }
     }
 
     /**
-     * @since TBD Report a failed or declined capture's processor response, and treat FAILED like DECLINED.
+     * @since TBD Read the capture defensively, and report a failed or declined capture's processor response.
      *
      * @throws PaymentGatewayException
      */
     private function validatePayPalOrder(object $payPalOrder): void
     {
-        $transaction = $payPalOrder->purchase_units[0]->payments->captures[0];
+        $transaction = $payPalOrder->purchase_units[0]->payments->captures[0] ?? null;
 
-        $errors = property_exists($payPalOrder, 'details') ? $payPalOrder->details[0] : [];
-
-        if (!$transaction) {
-            throw new PaymentGatewayException('PayPal Order does not have a transaction.');
+        if (! $transaction) {
+            throw new PaymentGatewayException(__('PayPal Order does not have a transaction.', 'give'));
         }
 
         /*
          * An invalid CVV or a failed AVS check is reported in the capture's processor response
-         * rather than as a PayPal error, so the reason is read from there when there is one.
-         * Previously done by the ajax capture endpoint, which no longer captures.
+         * rather than as a PayPal error, so the reason is read from there when there is one. The
+         * response is only passed on when PayPal sent an object, since it is typed as one.
          */
         if (in_array($transaction->status, ['DECLINED', 'FAILED'], true)) {
-            $processorError = property_exists($transaction, 'processor_response')
+            $hasProcessorResponse = isset($transaction->processor_response)
+                && $transaction->processor_response instanceof \stdClass;
+
+            $processorError = $hasProcessorResponse
                 ? ProcessorResponseError::getError($transaction->processor_response)
                 : '';
 
@@ -392,13 +395,12 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
             );
         }
 
-        if (!empty($errors)) {
-            $errorMessage = sprintf(
-                __('PayPal Order has an error: %s', 'give'),
-                $errors->issue[0]->description
-            );
+        $error = $payPalOrder->details[0]->description ?? '';
 
-            throw new PaymentGatewayException($errorMessage);
+        if ($error) {
+            throw new PaymentGatewayException(
+                sprintf(__('PayPal Order has an error: %s', 'give'), $error)
+            );
         }
 
         $this->validate3dSecure($payPalOrder);

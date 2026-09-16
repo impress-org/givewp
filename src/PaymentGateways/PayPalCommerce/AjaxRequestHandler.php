@@ -348,26 +348,21 @@ class AjaxRequestHandler
     }
 
     /**
+     * Refuses every request. The order amount is reconciled against the donation in
+     * PayPalCommerce::createPayment() before the capture, so no form version needs the browser to
+     * change an order's amount. The endpoint stays registered for the same reason approveOrder()
+     * does: a caller gets an error it can report rather than an empty response.
+     *
+     * @since TBD Refuse every request; the order amount is reconciled in PayPalCommerce::createPayment().
      * @since 4.16.7.1 Refuse v3 forms; PayPalCommerce::createPayment() reconciles their order amount.
      * @since 4.14.4 Validate donation amount before updating an order amount.
      * @since 3.4.2
      */
     public function updateOrderAmount()
     {
-        $this->validateFrontendRequest();
-        $this->rejectV3FormRequest();
-
-        $orderId = give_clean($_GET['order']);
-
-        try {
-            $orderData = $this->getOrderData();
-            $this->validateOrderAmountNotDecreased($orderId, $orderData['donationAmount']);
-            give(PayPalOrder::class)->updateOrderAmount($orderId, $orderData);
-
-            wp_send_json_success(['order' => $orderId,]);
-        } catch (\Exception $ex) {
-            wp_send_json_error(['error' => json_decode($ex->getMessage(), true),]);
-        }
+        wp_send_json_error(
+            ['error' => __('PayPal order amounts are reconciled when the donation is submitted.', 'give')]
+        );
     }
 
     /**
@@ -508,45 +503,6 @@ class AjaxRequestHandler
                     __('Donation amount must not exceed %s.', 'give'),
                     give_currency_filter(give_format_amount($maxAmount, ['sanitize' => false]))
                 ),
-            ]);
-        }
-    }
-
-    /**
-     * Visual Form Builder (v3) forms never call the approve and update-amount endpoints: their order
-     * is reconciled and captured in PayPalCommerce::createPayment(), after the donation exists.
-     * Refusing them here keeps these endpoints from capturing outside donation processing.
-     *
-     * @since 4.16.7.1
-     */
-    private function rejectV3FormRequest(): void
-    {
-        if (FormUtils::isV3Form(absint($_POST['give-form-id']))) {
-            wp_send_json_error(
-                ['error' => __('This request is not supported for this donation form.', 'give')],
-                403
-            );
-        }
-    }
-
-    /**
-     * Validate that the new donation amount is not less than the original PayPal order amount.
-     *
-     * @since 4.14.4
-     *
-     * @param string $orderId
-     * @param float|string $newAmount
-     */
-    private function validateOrderAmountNotDecreased(string $orderId, $newAmount): void
-    {
-        $newAmount = (float)$newAmount;
-
-        $currentOrder = give(PayPalOrder::class)->getApprovedOrder($orderId);
-        $currentAmount = (float)$currentOrder->purchase_units[0]->amount->value;
-
-        if ($newAmount < $currentAmount) {
-            wp_send_json_error([
-                'error' => __('Donation amount cannot be decreased.', 'give'),
             ]);
         }
     }

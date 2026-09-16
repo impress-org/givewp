@@ -159,6 +159,8 @@ class PayPalCommerceTest extends TestCase
         $this->payPalOrder->method('approveOrder')->willReturn($capturedOrder);
 
         $this->expectException(PaymentGatewayException::class);
+        /* The message has to be the CVV one, not the generic decline the fallback would supply. */
+        $this->expectExceptionMessage('the CVV2/CSC does not match');
 
         give(PayPalCommerce::class)->createPayment($donation, ['payPalOrderId' => 'ORDER123']);
     }
