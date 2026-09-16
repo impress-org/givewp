@@ -10,6 +10,7 @@ use Give\PaymentGateways\PayPalCommerce\PayPalCommerce;
 use Give\PaymentGateways\PayPalCommerce\Repositories\PayPalOrder;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
+use PayPalHttp\HttpException as PayPalHttpException;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
@@ -121,6 +122,66 @@ class PayPalCommerceTest extends TestCase
         $this->payPalOrder->expects($this->never())->method('approveOrder');
 
         $this->expectException(PaymentGatewayException::class);
+
+        give(PayPalCommerce::class)->createPayment($donation, ['payPalOrderId' => 'ORDER123']);
+    }
+
+    /**
+     * A declined card is refused by PayPal as an HTTP error rather than as a captured order with a
+     * declined status, and the donor is only shown the message of a PaymentGatewayException.
+     *
+     * @since TBD
+     */
+    public function testDeclinedInstrumentIsReportedToTheDonor(): void
+    {
+        $donation = $this->createDonation('25.00');
+
+        $declined = json_encode([
+            'name' => 'UNPROCESSABLE_ENTITY',
+            'details' => [
+                [
+                    'issue' => 'INSTRUMENT_DECLINED',
+                    'description' => 'The instrument presented was either declined by the processor or bank.',
+                ],
+            ],
+        ]);
+
+        $this->payPalOrder->method('getApprovedOrder')->willReturn($this->approvedOrder('25.00', 'USD'));
+        $this->payPalOrder->method('approveOrder')->willThrowException(new PayPalHttpException($declined, 422, []));
+
+        $this->expectException(PaymentGatewayException::class);
+        /* The generic "unexpected error" copy is what a donor gets from any other exception type. */
+        $this->expectExceptionMessage('The payment method was declined.');
+
+        give(PayPalCommerce::class)->createPayment($donation, ['payPalOrderId' => 'ORDER123']);
+    }
+
+    /**
+     * A capture refused for a reason other than a decline still reports what PayPal said.
+     *
+     * @since TBD
+     */
+    public function testUnapprovedOrderReportsPayPalsReason(): void
+    {
+        $donation = $this->createDonation('25.00');
+
+        $unapproved = json_encode([
+            'name' => 'UNPROCESSABLE_ENTITY',
+            'details' => [
+                [
+                    'issue' => 'ORDER_NOT_APPROVED',
+                    'description' => 'Payer has not yet approved the Order for payment.',
+                ],
+            ],
+        ]);
+
+        $this->payPalOrder->method('getApprovedOrder')->willReturn($this->approvedOrder('25.00', 'USD'));
+        $this->payPalOrder->method('approveOrder')->willThrowException(
+            new PayPalHttpException($unapproved, 422, [])
+        );
+
+        $this->expectException(PaymentGatewayException::class);
+        $this->expectExceptionMessage('Payer has not yet approved the Order for payment.');
 
         give(PayPalCommerce::class)->createPayment($donation, ['payPalOrderId' => 'ORDER123']);
     }

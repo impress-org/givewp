@@ -117,7 +117,11 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
         }
 
         // ready to capture order, response is the updated PayPal order.
-        $response = $payPalOrderRepository->approveOrder($payPalOrderId);
+        try {
+            $response = $payPalOrderRepository->approveOrder($payPalOrderId);
+        } catch (Exception $exception) {
+            throw new PaymentGatewayException($this->getCaptureFailureMessage($exception));
+        }
 
         $this->validatePayPalOrder($response);
         $this->validateCapturedAmountMatchesDonation($response, $donation);
@@ -362,6 +366,26 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
+     * PayPal refuses a capture — most often a declined card — with an HTTP error whose body carries
+     * the reason, which the SDK raises as a plain exception. A donor is only shown the message of a
+     * PaymentGatewayException, so the reason is read out here rather than left in the log.
+     *
+     * @since TBD
+     */
+    private function getCaptureFailureMessage(Exception $exception): string
+    {
+        $response = json_decode($exception->getMessage());
+        $issue = $response->details[0]->issue ?? '';
+        $description = $response->details[0]->description ?? '';
+
+        if ($issue === 'INSTRUMENT_DECLINED') {
+            return __('The payment method was declined. Please try another card or payment method.', 'give');
+        }
+
+        return $description ?: __('PayPal was unable to complete the payment.', 'give');
+    }
+
+    /**
      * @since TBD Read the capture defensively, and report a failed or declined capture's processor response.
      *
      * @throws PaymentGatewayException
@@ -377,7 +401,9 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
         /*
          * An invalid CVV or a failed AVS check is reported in the capture's processor response
          * rather than as a PayPal error, so the reason is read from there when there is one. The
-         * response is only passed on when PayPal sent an object, since it is typed as one.
+         * response is only passed on when PayPal sent an object, since it is typed as one. It is
+         * added to the refusal rather than used in its place, because the same code map spells out
+         * the checks that passed too — on its own it can read as though nothing went wrong.
          */
         if (in_array($transaction->status, ['DECLINED', 'FAILED'], true)) {
             $hasProcessorResponse = isset($transaction->processor_response)
@@ -387,12 +413,12 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
                 ? ProcessorResponseError::getError($transaction->processor_response)
                 : '';
 
-            throw new PaymentGatewayException(
-                $processorError ?: sprintf(
-                    __('PayPal Order has been declined.  Transaction status:: %s', 'give'),
-                    $transaction->status
-                )
+            $message = sprintf(
+                __('PayPal Order has been declined.  Transaction status:: %s', 'give'),
+                $transaction->status
             );
+
+            throw new PaymentGatewayException(trim($message . ' ' . $processorError));
         }
 
         $error = $payPalOrder->details[0]->description ?? '';
