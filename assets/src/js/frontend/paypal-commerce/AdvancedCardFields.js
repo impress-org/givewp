@@ -134,25 +134,6 @@ class AdvancedCardFields extends PaymentMethod {
 	}
 
 	/**
-	 * Approve PayPal payment after successfully payment.
-	 *
-	 * @since 2.9.0
-	 *
-	 * @param {string} orderId Order id.
-	 *
-	 * @return {Promise<any>} Return request response.
-	 */
-	async approvePayment( orderId ) {
-		// eslint-disable-next-line
-		const response = await fetch( `${ this.ajaxurl }?action=give_paypal_commerce_approve_order&order=` + orderId, {
-			method: 'POST',
-			body: DonationForm.getFormDataWithoutGiveActionField( this.form ),
-		} );
-
-		return await response.json();
-	}
-
-	/**
 	 * Get computed style for hosted card fields.
 	 *
 	 * List of style properties support by PayPal for advanced card fields: https://developer.paypal.com/docs/business/checkout/reference/style-guide/#style-the-card-payments-fields
@@ -243,6 +224,10 @@ class AdvancedCardFields extends PaymentMethod {
 	/**
 	 * Handle PayPal payment on approve event.
 	 *
+	 * The card is authorized here but captured on the server, with the donation, so a capture
+	 * failure is reported by the donation submission rather than by a separate request.
+	 *
+	 * @since TBD Send the authorized order with the donation instead of capturing it here.
      * @since 3.2.0 Hide processing state upon error.
 	 * @since 2.9.0
 	 *
@@ -251,16 +236,8 @@ class AdvancedCardFields extends PaymentMethod {
 	async onApproveHandler( payload ) {
 		Give.form.fn.showProcessingState( window.givePayPalCommerce.textForOverlayScreen );
 
-		const result = await this.approvePayment( payload.orderId );
-
-		if ( ! result.success ) {
-            this.hostedFieldOnSubmitErrorHandler(result.data.error);
-            Give.form.fn.hideProcessingState();
-            return;
-		}
-
-        await DonationForm.addFieldToForm( this.form, result.data.order.id, 'payPalOrderId' );
-        this.submitDonationForm();
+		await DonationForm.addFieldToForm( this.form, payload.orderId, 'payPalOrderId' );
+		this.submitDonationForm();
 	}
 
 	/**

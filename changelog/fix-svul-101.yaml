@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Added additional validation to PayPal Commerce donation processing.
+timestamp: 2026-09-15T23:50:29.302Z
