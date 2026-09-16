@@ -1,4 +1,0 @@
-significance: security
-type: fix
-entry: Added additional sanitization to donor information displayed on public pages.
-timestamp: 2026-09-14T07:43:57.633Z

@@ -11,7 +11,7 @@ class SmartButtons extends PaymentMethod {
     /**
      * Setup properties.
      *
-     * @since TBD Drop the updateOrderAmount property; the server reconciles the order amount before capture.
+     * @since 4.16.9 Drop the updateOrderAmount property; the server reconciles the order amount before capture.
      * @since 3.5.0 Add the updateOrderAmount property
      * @since 2.9.0
      */
@@ -114,7 +114,7 @@ class SmartButtons extends PaymentMethod {
     /**
      * On click event handler for smart buttons.
      *
-     * @since TBD Drop the amount observer; the server reconciles the order amount before capturing.
+     * @since 4.16.9 Drop the amount observer; the server reconciles the order amount before capturing.
      * @since 2.9.0
      *
      * @param {object} data PayPal button data.
@@ -226,7 +226,7 @@ class SmartButtons extends PaymentMethod {
      * is captured is the one the server validated. Any capture failure is reported by the donation
      * submission that follows.
      *
-     * @since TBD Send the approved order with the donation instead of capturing it here.
+     * @since 4.16.9 Send the approved order with the donation instead of capturing it here.
      * @since 3.5.0 Add 'update_amount' query string to the ajax URL
      * @since 3.1.2 Handle custom error.
      * @since 2.9.0

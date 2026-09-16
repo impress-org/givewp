@@ -317,7 +317,7 @@ class AjaxRequestHandlerTest extends TestCase
      * The order amount is reconciled against the donation while it is being processed, so no form
      * version asks this endpoint to change an order any more.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testUpdateOrderAmountRefusesV2Requests(): void
     {
@@ -339,7 +339,7 @@ class AjaxRequestHandlerTest extends TestCase
      * Neither form version captures from the browser any more, so the endpoint answers with an
      * error whatever it is sent.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testApproveOrderRefusesV2Requests(): void
     {

@@ -50,7 +50,7 @@ class CampaignDonationsBlockViewModel
 
 
     /**
-     * @since TBD Added additional sanitization to donor data.
+     * @since 4.16.9 Added additional sanitization to donor data.
      * @since 4.14.0 add avatar URL to donations data
      * @since 4.0.0
      */

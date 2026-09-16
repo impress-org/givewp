@@ -15,7 +15,7 @@ class ProcessorResponseError
     /**
      * This function decode the error code from PayPal.
      *
-     * @since TBD Read the CVV message with the CVV code.
+     * @since 4.16.9 Read the CVV message with the CVV code.
      * @since 3.2.0
      * @param \stdClass $processorResponse
      */

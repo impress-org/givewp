@@ -227,7 +227,7 @@ class AdvancedCardFields extends PaymentMethod {
 	 * The card is authorized here but captured on the server, with the donation, so a capture
 	 * failure is reported by the donation submission rather than by a separate request.
 	 *
-	 * @since TBD Send the authorized order with the donation instead of capturing it here.
+	 * @since 4.16.9 Send the authorized order with the donation instead of capturing it here.
      * @since 3.2.0 Hide processing state upon error.
 	 * @since 2.9.0
 	 *

@@ -108,7 +108,7 @@ class PayPalCommerceTest extends TestCase
      * Both form versions send an approved order and let the gateway capture it, so an order that is
      * already captured cannot be paying for this donation.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testAlreadyCapturedOrderIsRejected(): void
     {
@@ -130,7 +130,7 @@ class PayPalCommerceTest extends TestCase
      * A declined card is refused by PayPal as an HTTP error rather than as a captured order with a
      * declined status, and the donor is only shown the message of a PaymentGatewayException.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testDeclinedInstrumentIsReportedToTheDonor(): void
     {
@@ -159,7 +159,7 @@ class PayPalCommerceTest extends TestCase
     /**
      * A capture refused for a reason other than a decline still reports what PayPal said.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testUnapprovedOrderReportsPayPalsReason(): void
     {
@@ -187,7 +187,7 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function testCapturedAmountNotMatchingTheDonationIsRejected(): void
     {
@@ -205,7 +205,7 @@ class PayPalCommerceTest extends TestCase
      * An invalid CVV is reported as a failed capture carrying a processor response, which used to be
      * read by the ajax endpoint that no longer captures.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     public function testFailedCaptureIsRejectedWithItsProcessorResponse(): void
     {
@@ -227,7 +227,7 @@ class PayPalCommerceTest extends TestCase
     }
 
     /**
-     * @since TBD Drop the $gatewayTransactionId param along with the capture-reuse check it fed.
+     * @since 4.16.9 Drop the $gatewayTransactionId param along with the capture-reuse check it fed.
      * @since 4.16.8.1 Add the optional $gatewayTransactionId param.
      * @since 4.16.7.1
      */
@@ -258,7 +258,7 @@ class PayPalCommerceTest extends TestCase
     /**
      * The shape PayPal returns from POST /v2/checkout/orders/{id}/capture.
      *
-     * @since TBD Give the capture its own amount, which is what the gateway validates.
+     * @since 4.16.9 Give the capture its own amount, which is what the gateway validates.
      * @since 4.16.8.1 Add the $amount/$currency params.
      * @since 4.16.7.1
      */
