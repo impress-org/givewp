@@ -345,7 +345,8 @@ test.describe('V3 donation forms', () => {
 
             await page.goto(post.link);
 
-            await page.getByRole('button', {name: 'Open donation form'}).click();
+            // The launcher's accessible name is its visible label.
+            await page.getByRole('button', {name: 'Donate now'}).click();
 
             await waitForForm(donationForm(page));
         });
