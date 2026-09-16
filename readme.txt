@@ -275,7 +275,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 = 4.16.9: September 16th, 2026 =
 * Security: Added additional validation to PayPal Commerce donation processing.
-* Fix: Added additional sanitization to donor information displayed on public pages.
+* Security: Added additional sanitization to donor information displayed on public pages.
 * Fix: Resolved an issue where resuming a paused Stripe subscription triggered a fatal error.
 
 = 4.16.8.1: September 10th, 2026 =
