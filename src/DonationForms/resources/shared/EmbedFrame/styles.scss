@@ -6,7 +6,8 @@
 .givewp-embed-frame {
     position: relative;
 
-    &[data-state='loading'] {
+    &[data-state='loading'],
+    &[data-state='slow'] {
         min-height: 20rem;
     }
 
@@ -48,7 +49,8 @@
     }
 
     /* Until the handshake the iframe's default height must not add to the placeholder's. */
-    &[data-state='loading'] &__iframe {
+    &[data-state='loading'] &__iframe,
+    &[data-state='slow'] &__iframe {
         position: absolute;
         top: 0;
         left: 0;
@@ -59,15 +61,37 @@
         opacity: 1;
     }
 
+    /* Sits under the placeholder, so the sketch stays put while the iframe keeps loading. */
     &__fallback {
-        display: inline-block;
-        width: auto;
+        position: relative;
+        margin: 1rem 0 0;
+        text-align: center;
+        animation: givewp-embed-frame-fade-in 0.3s ease;
+
+        a {
+            display: inline-block;
+            width: auto;
+            margin-top: 0.5rem;
+        }
+    }
+
+    /* The spinner overlay is absolute, so here the message pins to the bottom of the frame instead. */
+    &[data-placeholder='spinner'] &__fallback {
+        position: absolute;
+        inset: auto 0 1rem;
+        margin: 0;
     }
 }
 
 @keyframes givewp-embed-frame-spin {
     to {
         transform: rotate(360deg);
+    }
+}
+
+@keyframes givewp-embed-frame-fade-in {
+    from {
+        opacity: 0;
     }
 }
 

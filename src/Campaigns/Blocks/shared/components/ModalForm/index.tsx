@@ -9,7 +9,7 @@ import '../EntitySelector/styles/index.scss';
 import {FocusScope} from 'react-aria';
 
 /**
- * @since TBD add formUrl, where the fallback link points when the form never loads.
+ * @since TBD add formUrl, where the fallback link points when the form is slow to load.
  * @since 4.3.0
  */
 type ModalFormProps = {
@@ -22,7 +22,7 @@ type ModalFormProps = {
 };
 
 /**
- * @since TBD render the iframe through EmbedFrame; a form that never loads shows a link instead.
+ * @since TBD render the iframe through EmbedFrame; a form that is slow to load also offers a link.
  * @since 4.3.0
  */
 export default function ModalForm({
@@ -160,7 +160,7 @@ export default function ModalForm({
                                     embedId={embedId}
                                     fallbackUrl={formUrl || dataSrcUrl}
                                     onReady={() => setLoading(false)}
-                                    onFail={() => setLoading(false)}
+                                    onSlow={() => setLoading(false)}
                                 />
                             </div>
                         </Dialog>

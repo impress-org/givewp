@@ -110,7 +110,9 @@ React embed app into it, and the Elementor widgets and the `CampaignForm` and `D
 all reach that same app. The `onpage` and `modal` formats render the iframe through
 `resources/shared/EmbedFrame`, which owns the loading state: a spinner holds the space until the
 iframe-resizer handshake (`onInit`), because the iframe's own `load` event fires for error pages
-too, and after ten seconds without a handshake it swaps in a link to the standalone form page. On
+too. There is no reliable failure signal, so a slow handshake is never treated as one: after ten
+seconds the iframe and placeholder stay put and a link to the standalone form page fades in under
+them, and a late handshake still swaps the form in. On
 the `onpage` format the placeholder is a skeleton rather than a spinner: `BlockRenderController` runs
 `Actions/GetFormSkeletonData` and serializes the form's design id, header, goal and image flags, per-section block names and
 enabled gateway count into a `data-form-skeleton` attribute on the root, and `EmbedFrame/EmbedSkeleton` draws a grey sketch from

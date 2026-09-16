@@ -466,10 +466,36 @@ test.describe('V3 donation forms', () => {
 
             const fallback = page.getByRole('link', {name: 'Open donation form'});
 
-            // The embed waits ten seconds for the handshake before giving up.
+            // The embed waits ten seconds for the handshake before offering the link. The iframe
+            // and placeholder stay put, so a late handshake can still land.
             await expect(fallback).toBeVisible({timeout: 15_000});
             await expect(fallback).toHaveAttribute('href', new RegExp(`p=${formId}`));
-            await expect(page.locator('iframe[title="Donation Form"]')).toHaveCount(0);
+            await expect(page.locator('iframe[title="Donation Form"]')).toHaveCount(1);
+            await expect(page.locator('.givewp-embed-skeleton')).toBeVisible();
+        });
+
+        test('still shows the form when the handshake arrives after the link', async ({page, requestUtils}) => {
+            const post = await requestUtils.createPost({
+                title: 'Slow embed',
+                content: `[give_form id="${formId}"]`,
+                status: 'publish',
+            });
+
+            await page.route(/givewp-route=donation-form-view/, async (route) => {
+                await new Promise((resolve) => setTimeout(resolve, 12_000));
+                await route.continue();
+            });
+
+            await page.goto(post.link, {waitUntil: 'domcontentloaded'});
+
+            const fallback = page.getByRole('link', {name: 'Open donation form'});
+
+            await expect(fallback).toBeVisible({timeout: 15_000});
+
+            await waitForForm(donationForm(page));
+
+            await expect(fallback).toBeHidden();
+            await expect(page.locator('iframe[title="Donation Form"]')).toBeVisible();
         });
 
         test('the modal format offers the link when the form never loads', async ({page, requestUtils}) => {

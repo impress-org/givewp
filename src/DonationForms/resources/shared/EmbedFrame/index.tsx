@@ -5,9 +5,8 @@ import EmbedSkeleton, {SkeletonData, hasSkeleton} from './EmbedSkeleton';
 import './styles.scss';
 
 /**
- * How long the embed waits for the form to announce itself before giving up and
- * offering a link to the standalone form instead. Shared with the external embed
- * script so every embed context degrades on the same schedule.
+ * How long the embed waits for the form to announce itself before it starts offering a link to
+ * the standalone form alongside the placeholder. The iframe keeps loading either way.
  *
  * @since TBD
  */
@@ -16,7 +15,7 @@ export const LOAD_TIMEOUT_MS = 10000;
 /**
  * @since TBD
  */
-type EmbedFrameState = 'loading' | 'ready' | 'failed';
+type EmbedFrameState = 'loading' | 'slow' | 'ready';
 
 /**
  * @since TBD
@@ -28,19 +27,21 @@ type EmbedFrameProps = {
     /** When given for a design the skeleton knows, a sketch of the form holds the space instead of a spinner. */
     skeleton?: SkeletonData | null;
     onReady?: () => void;
-    onFail?: () => void;
+    onSlow?: () => void;
 };
 
 /**
  * The iframe every on-site embed renders the form into, wrapped in a loading state.
  *
  * Browsers fire `load` for error pages too, so the signal that the form is actually running is the
- * iframe-resizer handshake (`onInit`). Until it arrives a spinner holds the space; if it never
- * arrives, the frame degrades to a link that opens the form on its own page.
+ * iframe-resizer handshake (`onInit`). Until it arrives a placeholder holds the space. There is no
+ * reliable failure signal, so a slow handshake is never treated as one: the iframe stays mounted and
+ * after LOAD_TIMEOUT_MS a link to the standalone form fades in under the placeholder, in case the
+ * form never arrives.
  *
  * @since TBD
  */
-export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady, onFail}: EmbedFrameProps) {
+export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady, onSlow}: EmbedFrameProps) {
     const [state, setState] = useState<EmbedFrameState>('loading');
     const showSkeleton = hasSkeleton(skeleton);
 
@@ -50,29 +51,16 @@ export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady
         }
 
         const timeout = window.setTimeout(() => {
-            setState('failed');
-            onFail?.();
+            setState('slow');
+            onSlow?.();
         }, LOAD_TIMEOUT_MS);
 
         return () => window.clearTimeout(timeout);
     }, [state]);
 
-    if (state === 'failed') {
-        return (
-            <a
-                className="givewp-donation-form-link givewp-embed-frame__fallback"
-                href={fallbackUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                {__('Open donation form', 'give')}
-            </a>
-        );
-    }
-
     return (
         <div className="givewp-embed-frame" data-state={state} data-placeholder={showSkeleton ? 'skeleton' : 'spinner'}>
-            {state === 'loading' && (
+            {state !== 'ready' && (
                 <div
                     className="givewp-embed-frame__loading"
                     role="status"
@@ -84,6 +72,19 @@ export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady
                         <span className="givewp-embed-frame__spinner" />
                     )}
                 </div>
+            )}
+            {state === 'slow' && (
+                <p className="givewp-embed-frame__fallback">
+                    {__('The form is taking longer than usual to load.', 'give')}{' '}
+                    <a
+                        className="givewp-donation-form-link"
+                        href={fallbackUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {__('Open donation form', 'give')}
+                    </a>
+                </p>
             )}
             <IframeResizer
                 title={__('Donation Form', 'give')}
