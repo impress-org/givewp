@@ -514,14 +514,19 @@ class GiveWPDonationForm extends HTMLElement {
         const startGuard = this.createFocusGuard(() => focusables().pop()?.focus());
         const endGuard = this.createFocusGuard(() => focusables().shift()?.focus());
 
-        dialog.append(startGuard, close);
+        // Same structure as the block: the zoom animates this wrapper, and the
+        // close button stays outside it so its fixed position holds.
+        const content = document.createElement('div');
+        content.className = 'givewp-donation-form-modal__dialog__content';
+
+        dialog.append(startGuard, close, content);
         overlay.appendChild(dialog);
         this.appendChild(overlay);
         this.overlay = overlay;
 
         // The iframe lives on across open/close so form state survives.
         this.setLauncherLoading(true);
-        this.renderForm(src, dialog, () => {
+        this.renderForm(src, content, () => {
             this.setLauncherLoading(false);
             this.showOverlay();
         });

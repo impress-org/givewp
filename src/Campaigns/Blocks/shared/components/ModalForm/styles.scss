@@ -4,8 +4,18 @@
     padding: 1rem;
     overflow-y: scroll;
 
+    /*
+     * The zoom runs on the content, not on this element: the close button
+     * inside is position: fixed, and a transformed ancestor would pin it to
+     * the dialog for the length of the animation, then let it jump to the
+     * viewport corner.
+     */
     &[data-entering='true'] {
-        animation: modal-fade 300ms, modal-zoom 600ms;
+        animation: modal-fade 300ms;
+
+        .givewp-donation-form-modal__dialog__content {
+            animation: modal-zoom 600ms;
+        }
     }
 
     @keyframes modal-fade {

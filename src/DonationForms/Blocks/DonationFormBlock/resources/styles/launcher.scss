@@ -4,10 +4,19 @@
  * which inlines it (externalEmbed/styles.scss), so keep it free of
  * WordPress-only selectors.
  */
+
+/*
+ * Text color from the button color's own lightness: white on a dark primary
+ * color, black on a light one. Relative color syntax; browsers without it
+ * keep the white declared first. Interpolated so Sass leaves the math to CSS.
+ */
+$launcher-text-color: #{'oklch(from var(--givewp-primary-color, #2271b1) clamp(0, (0.7 - l) * 1000, 1) 0 0)'};
+
 .givewp-donation-form-link,
 .givewp-donation-form-modal__open {
     color: #ffffff !important;
-    background: var(--givewp-primary-color, #2271b1);
+    color: $launcher-text-color !important;
+    background: var(--givewp-primary-color, #2271b1) !important;
     padding: 0.75rem 1.25rem !important;
     cursor: pointer;
     border: none;
@@ -17,4 +26,20 @@
     text-decoration: none !important;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
         sans-serif;
+
+    transition: background-color 0.2s ease;
+
+    /*
+     * Theme and host-page rules such as `button:hover` or `a:hover` outrank a
+     * lone class and would recolor the launcher with the theme's hover color.
+     * Own every state: the same darkening the campaign donate button uses.
+     */
+    &:hover,
+    &:focus,
+    &:active {
+        color: #ffffff !important;
+        color: $launcher-text-color !important;
+        background: color-mix(in srgb, var(--givewp-primary-color, #2271b1), black 20%) !important;
+        text-decoration: none !important;
+    }
 }
