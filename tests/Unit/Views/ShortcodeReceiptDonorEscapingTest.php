@@ -11,7 +11,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 /**
  * Covers the donor name and company output of templates/shortcode-receipt.php.
  *
- * @since TBD
+ * @since 4.16.9
  */
 final class ShortcodeReceiptDonorEscapingTest extends TestCase
 {
@@ -23,7 +23,7 @@ final class ShortcodeReceiptDonorEscapingTest extends TestCase
     const TAG = 'svultag';
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function setUp(): void
     {
@@ -35,7 +35,7 @@ final class ShortcodeReceiptDonorEscapingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function tearDown(): void
     {
@@ -45,7 +45,7 @@ final class ShortcodeReceiptDonorEscapingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function testNeutralizesShortcodesInDonorNameAndCompany(): void
     {
@@ -77,7 +77,7 @@ final class ShortcodeReceiptDonorEscapingTest extends TestCase
     /**
      * Render templates/shortcode-receipt.php directly with the globals it reads.
      *
-     * @since TBD
+     * @since 4.16.9
      */
     private function renderReceipt(int $donationId): string
     {

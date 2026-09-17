@@ -15,7 +15,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * plumbing, so this asserts the exact sink expression the template uses rather than driving that
  * plumbing.
  *
- * @since TBD
+ * @since 4.16.9
  */
 final class DonationHistoryDonorEscapingTest extends TestCase
 {
@@ -27,7 +27,7 @@ final class DonationHistoryDonorEscapingTest extends TestCase
     const TAG = 'svultag';
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function setUp(): void
     {
@@ -39,7 +39,7 @@ final class DonationHistoryDonorEscapingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function tearDown(): void
     {
@@ -49,7 +49,7 @@ final class DonationHistoryDonorEscapingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.16.9
      */
     public function testDonorNameSinkExpressionNeutralizesShortcodes(): void
     {

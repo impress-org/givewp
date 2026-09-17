@@ -1,3 +1,14 @@
+/*
+ * Zero-size anchor at the viewport origin so popovers rendered into the
+ * panel's slot are positioned in viewport coordinates and stack with the panel.
+ */
+.give-embed-modal-popovers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999999999999;
+}
+
 .give-embed-modal {
     width: 474px;
     position: fixed;
@@ -8,9 +19,23 @@
     border-radius: 5px;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
     border: solid 1px #e6e6e6;
-    font-size: 13px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--givewp-neutral-700);
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+
+    /* WordPress control help defaults to 12px light grey, too faint in a side panel. */
+    .components-base-control__help {
+        font-size: 13px;
+        color: var(--givewp-neutral-600);
+    }
 
     &-header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-color: #fff;
         font-weight: 500;
         line-height: 1.4;
         color: #0e0e0e;
@@ -24,6 +49,13 @@
             fill: var(--givewp-grey-500);
             top: var(--givewp-spacing-2);
             right: var(--givewp-spacing-6);
+        }
+    }
+
+    &-tabs {
+        .components-tab-panel__tabs {
+            border-bottom: solid 1px #e6e6e6;
+            padding: 0 var(--givewp-spacing-6);
         }
     }
 
@@ -77,14 +109,30 @@
     }
 
     &-helptext {
-        font-size: 12px;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--givewp-neutral-600);
         margin-bottom: var(--givewp-spacing-3);
     }
 
 
+    &-code {
+        margin: 0 0 var(--givewp-spacing-3);
+        padding: var(--givewp-spacing-3);
+        border: 1px solid var(--givewp-grey-100);
+        border-radius: 4px;
+        background: var(--givewp-grey-25);
+        color: var(--givewp-neutral-700);
+        font-size: 13px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-all;
+        user-select: all;
+    }
+
     &-select-error {
         margin-bottom: 0;
-        font-size: 12px;
+        font-size: 13px;
         color: var(--givewp-red-500);
 
         &:first-letter {

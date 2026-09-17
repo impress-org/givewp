@@ -44,6 +44,7 @@ class DonateFormRouteData implements Arrayable
     /**
      * Convert data from request into DTO
      *
+     * @since TBD Validate the client-provided origin URL before it is used in redirects.
      * @since 3.0.0
      */
     public static function fromRequest(array $requestData): self
@@ -51,7 +52,7 @@ class DonateFormRouteData implements Arrayable
         $self = new self();
         $self->formId = (int)$requestData['formId'];
         $self->gatewayId = $requestData['gatewayId'];
-        $self->originUrl = $requestData['originUrl'];
+        $self->originUrl = self::validateOriginUrl($requestData['originUrl'] ?? '');
         $self->isEmbed = filter_var($requestData['isEmbed'], FILTER_VALIDATE_BOOLEAN);
         $self->embedId = $self->isEmbed ? $requestData['embedId'] : null;
         $self->requestData = $requestData;
@@ -118,6 +119,31 @@ class DonateFormRouteData implements Arrayable
     public function getRequestData(): array
     {
         return $this->requestData;
+    }
+
+    /**
+     * The origin URL is client-provided and later used as a redirect target,
+     * so anything that is not a valid http(s) URL falls back to the site URL.
+     * Intentionally not wp_http_validate_url(), which rejects localhost hosts
+     * that are valid embed origins during development.
+     *
+     * @since TBD
+     *
+     * @param mixed $originUrl
+     */
+    private static function validateOriginUrl($originUrl): string
+    {
+        if (!is_string($originUrl) || $originUrl === '') {
+            return '';
+        }
+
+        $scheme = wp_parse_url($originUrl, PHP_URL_SCHEME);
+
+        if (in_array($scheme, ['http', 'https'], true) && filter_var($originUrl, FILTER_VALIDATE_URL)) {
+            return $originUrl;
+        }
+
+        return home_url();
     }
 
     /**
