@@ -3,6 +3,7 @@
 namespace Give\Tests\Feature\Actions;
 
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\LocksUpgraderDirectory;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WPDieException;
 use ZipArchive;
@@ -19,6 +20,7 @@ use ZipArchive;
 final class AddonUploadActivateTest extends TestCase
 {
     use RefreshDatabase;
+    use LocksUpgraderDirectory;
 
     /** @var string[] Directory paths created during tests for cleanup. */
     private $createdDirs = [];
@@ -30,11 +32,14 @@ final class AddonUploadActivateTest extends TestCase
     private $testPluginSlugs = [];
 
     /**
+     * @since TBD Hold the upgrader directory lock while the test runs.
      * @since 4.16.6
      */
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->lockUpgraderDirectory();
 
         // wp_send_json_* calls wp_die() only when wp_doing_ajax() is true.
         add_filter('wp_doing_ajax', '__return_true');
@@ -51,6 +56,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
+     * @since TBD Hold the upgrader directory lock while the test runs.
      * @since 4.16.6
      */
     public function tearDown(): void
@@ -86,6 +92,8 @@ final class AddonUploadActivateTest extends TestCase
         );
 
         wp_clean_plugins_cache(true);
+
+        $this->unlockUpgraderDirectory();
 
         parent::tearDown();
     }
