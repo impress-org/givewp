@@ -1,0 +1,392 @@
+/*
+ * Host pages do not load the design system foundation stylesheet (only the form inside the
+ * iframe does), so the values here are self-contained. The spinner accent follows the same
+ * --givewp-primary-color the launcher buttons use.
+ */
+.givewp-embed-frame {
+    position: relative;
+
+    &[data-state='loading'],
+    &[data-state='slow'] {
+        min-height: 20rem;
+    }
+
+    &__loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__spinner {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        border: 3px solid rgba(0, 0, 0, 0.12);
+        border-top-color: var(--givewp-primary-color, rgba(0, 0, 0, 0.55));
+        animation: givewp-embed-frame-spin 0.8s linear infinite;
+    }
+
+    /*
+     * A skeleton sits in normal flow and sets the frame's height itself; the spinner keeps the
+     * absolute, centered layout above.
+     */
+    &[data-placeholder='skeleton'] &__loading {
+        position: static;
+        display: block;
+        /* The skeleton's container queries resolve against this box, the same width as the iframe. */
+        container-type: inline-size;
+    }
+
+    &__iframe {
+        width: 1px;
+        min-width: 100%;
+        border: 0;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    /* Until the handshake the iframe's default height must not add to the placeholder's. */
+    &[data-state='loading'] &__iframe,
+    &[data-state='slow'] &__iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    &[data-state='ready'] &__iframe {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    /*
+     * Overlays the placeholder rather than sitting under it: a skeleton can be taller than the
+     * viewport, so anything below it lands below the fold where nobody scrolls to it.
+     */
+    &__fallback {
+        position: absolute;
+        z-index: 1;
+        margin: 0;
+        text-align: center;
+        animation: givewp-embed-frame-fade-in 0.3s ease;
+
+        /* The donate-button stylesheet styles the link as a pill, so give it its own centered line. */
+        a {
+            display: block;
+            width: fit-content;
+            margin: 0.75rem auto 0;
+        }
+    }
+
+    /* The spinner is short and centered, so the message fits along the bottom of the frame. */
+    &[data-placeholder='spinner'] &__fallback {
+        inset: auto 0 1rem;
+    }
+
+    /* Over a skeleton the message becomes a card at the top edge, where the viewer already is. */
+    &[data-placeholder='skeleton'] &__fallback {
+        top: 1rem;
+        left: 50%;
+        box-sizing: border-box;
+        /* With `left: 50%` the shrink-to-fit space is half the frame, so size to the text and let
+           the cap do the wrapping. */
+        width: max-content;
+        max-width: min(28rem, calc(100% - 2rem));
+        padding: 1rem 1.5rem;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes givewp-embed-frame-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes givewp-embed-frame-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+/*
+ * Hand-copied from the core form designs: the 0.5rem radius, the header band, the section padding
+ * clamp and the 51.5rem classic width. Container units stand in for the vw the real designs use,
+ * because the form's viewport is the iframe, which is this box. Everything is neutral grey, even
+ * where the real form is colored, so the sketch reads as a placeholder and not as content.
+ */
+.givewp-embed-skeleton {
+    --givewp-skeleton-bar: rgba(0, 0, 0, 0.08);
+    --givewp-skeleton-shine: rgba(255, 255, 255, 0.5);
+    --givewp-skeleton-radius: 0.5rem;
+    --givewp-skeleton-padding: clamp(1.5rem, 4vw, 5rem);
+
+    /* A cqi value inside a custom property is invalid at use time without support, so it is gated. */
+    @supports (padding: 1cqi) {
+        --givewp-skeleton-padding: clamp(1.5rem, 7cqi, 5rem);
+    }
+    width: 100%;
+    max-width: 51.5rem;
+    margin: 0 auto;
+
+    &__bar {
+        display: block;
+        border-radius: 0.25rem;
+        background-color: var(--givewp-skeleton-bar);
+        background-image: linear-gradient(90deg, transparent, var(--givewp-skeleton-shine), transparent);
+        background-size: 200% 100%;
+        animation: givewp-embed-skeleton-shine 1.4s ease-in-out infinite;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: var(--givewp-skeleton-padding);
+        border-radius: var(--givewp-skeleton-radius);
+        background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        border-radius: var(--givewp-skeleton-radius);
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    &__section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+        padding: var(--givewp-skeleton-padding);
+
+        &:last-child {
+            padding-top: 0;
+        }
+    }
+
+    &__section-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__image {
+        width: 100%;
+        height: 12rem;
+        border-radius: var(--givewp-skeleton-radius);
+    }
+
+    &__title {
+        width: 60%;
+        height: 2rem;
+    }
+
+    &__heading {
+        width: 45%;
+        height: 1.5rem;
+    }
+
+    &__panel {
+        width: 100%;
+        height: 14rem;
+        border-radius: var(--givewp-skeleton-radius);
+
+        &--tall {
+            height: 15rem;
+        }
+    }
+
+    &__line {
+        width: 90%;
+        height: 1rem;
+
+        &--short {
+            width: 55%;
+        }
+    }
+
+    &__goal {
+        width: 100%;
+        height: 4rem;
+        border-radius: var(--givewp-skeleton-radius);
+    }
+
+    &__label {
+        width: 35%;
+        height: 1rem;
+    }
+
+    &__input {
+        width: 100%;
+        height: 3.5rem;
+
+        &--tall {
+            height: 4.5rem;
+        }
+    }
+
+    /*
+     * The real levels grid is one column under the form's 576px breakpoint and three above. The
+     * media query is the fallback for browsers without container queries; the container query
+     * comes later so it wins where supported.
+     */
+    &__levels {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+
+        @media (min-width: 36rem) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @container (max-width: 36rem) {
+            grid-template-columns: 1fr;
+        }
+
+        @container (min-width: 36rem) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    &__level {
+        height: 3rem;
+    }
+
+    &__field--gateways {
+        gap: 1rem;
+    }
+
+    &__button {
+        width: 100%;
+        height: 4rem;
+        background-color: rgba(0, 0, 0, 0.14);
+    }
+
+    &--classic &__header {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    &--classic &__header + &__form {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    /* Multi-step: a 35rem card, a 50px step title bar with a progress line, 2rem body padding. */
+    &__step {
+        --givewp-skeleton-padding: 2rem;
+
+        max-width: 35rem;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    &__step-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        height: 3.625rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 0.5rem solid rgba(0, 0, 0, 0.08);
+    }
+
+    &__step-title {
+        width: 60%;
+        height: 1.25rem;
+    }
+
+    &__secure {
+        width: 10rem;
+        height: 1.25rem;
+        margin: 0 auto 1.5rem;
+    }
+
+    &--multi-step &__form &__header {
+        background-color: transparent;
+
+        + .givewp-embed-skeleton__section {
+            padding-top: 0;
+        }
+    }
+
+    &--two-panel {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        max-width: 78rem;
+
+        .givewp-embed-skeleton__header {
+            flex: 1 1 42.5rem;
+            background-color: transparent;
+        }
+
+        .givewp-embed-skeleton__form {
+            flex: 1 1 35.5rem;
+            max-width: none;
+        }
+
+        @media (max-width: 53.5rem) {
+            flex-direction: column;
+            gap: 0;
+            max-width: 35rem;
+
+            .givewp-embed-skeleton__header,
+            .givewp-embed-skeleton__form {
+                flex-basis: auto;
+                width: 100%;
+            }
+        }
+
+        @container (max-width: 53.5rem) {
+            flex-direction: column;
+            gap: 0;
+            max-width: 35rem;
+
+            .givewp-embed-skeleton__header,
+            .givewp-embed-skeleton__form {
+                flex-basis: auto;
+                width: 100%;
+            }
+        }
+    }
+}
+
+@keyframes givewp-embed-skeleton-shine {
+    from {
+        background-position: 200% 0;
+    }
+
+    to {
+        background-position: -200% 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .givewp-embed-frame__iframe {
+        transition: none;
+    }
+
+    .givewp-embed-frame__spinner,
+    .givewp-embed-frame__fallback,
+    .givewp-embed-skeleton__bar {
+        animation: none;
+    }
+}

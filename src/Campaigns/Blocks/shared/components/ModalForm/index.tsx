@@ -1,14 +1,15 @@
 import {useEffect, useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
-import IframeResizer from 'iframe-resizer-react';
 import {Button, Dialog, Modal, ModalOverlay} from 'react-aria-components';
 import ModalCloseIcon from './ModalClose';
+import EmbedFrame from '@givewp/forms/shared/EmbedFrame';
 import './styles.scss';
 import '../EntitySelector/styles/index.scss';
 import {FocusScope} from 'react-aria';
 
 /**
- * @unreleasaed
+ * @since TBD add formUrl, where the fallback link points when the form is slow to load.
+ * @since 4.3.0
  */
 type ModalFormProps = {
     dataSrc: string;
@@ -16,13 +17,22 @@ type ModalFormProps = {
     buttonText: string;
     isFormRedirect: boolean;
     formViewUrl: string;
+    formUrl?: string;
 };
 
 /**
+ * @since TBD render the iframe through EmbedFrame; a form that is slow to load also offers a link.
  * @since TBD Share the launcher's pending state markup and styles with the external embed.
- * @unreleasaed
+ * @since 4.3.0
  */
-export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect, formViewUrl}: ModalFormProps) {
+export default function ModalForm({
+    dataSrc,
+    embedId,
+    buttonText,
+    isFormRedirect,
+    formViewUrl,
+    formUrl,
+}: ModalFormProps) {
     const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
     const [isOpen, setIsOpen] = useState<boolean>(isFormRedirect);
     const [isLoading, setLoading] = useState<boolean>(false);
@@ -135,20 +145,12 @@ export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect,
                                 <ModalCloseIcon />
                             </button>
                             <div className="givewp-donation-form-modal__dialog__content">
-                                <IframeResizer
-                                    title={__('Donation Form', 'give')}
-                                    id={embedId}
+                                <EmbedFrame
                                     src={dataSrcUrl}
-                                    checkOrigin={false}
-                                    heightCalculationMethod="taggedElement"
-                                    style={{
-                                        minWidth: '100%',
-                                        border: 'none',
-                                    }}
-                                    onInit={(iframe) => {
-                                        iframe.iFrameResizer.resize();
-                                        setLoading(false);
-                                    }}
+                                    embedId={embedId}
+                                    fallbackUrl={formUrl || dataSrcUrl}
+                                    onReady={() => setLoading(false)}
+                                    onSlow={() => setLoading(false)}
                                 />
                             </div>
                         </Dialog>
