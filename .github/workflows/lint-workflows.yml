@@ -7,9 +7,9 @@ name: Lint Workflows
 on:
     push:
         branches: [ master, develop ]
-        paths: [ '.github/workflows/**' ]
+        paths: [ '.github/workflows/**', '.github/actionlint.yaml' ]
     pull_request:
-        paths: [ '.github/workflows/**' ]
+        paths: [ '.github/workflows/**', '.github/actionlint.yaml' ]
     workflow_dispatch:
 
 jobs:
