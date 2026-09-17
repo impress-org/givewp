@@ -319,9 +319,10 @@ class TestListDonations extends TestCase
 
 
     /**
+     * @since TBD Declare the nullable parameter explicitly.
      * @since 4.10.0
      */
-    private function createSubscription(int $campaignId, DateTime $donationDate = null): Subscription
+    private function createSubscription(int $campaignId, ?DateTime $donationDate = null): Subscription
     {
         $donationData = [
             'campaignId' => $campaignId

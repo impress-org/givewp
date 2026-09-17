@@ -16,12 +16,13 @@ class DuplicateTabException extends Exception implements LoggableException
     /**
      * DuplicateTabException constructor.
      *
+     * @since TBD Declare the nullable parameter explicitly.
      * @since 2.10.0
      *
      * @param int            $code
      * @param Exception|null $previous
      */
-    public function __construct($code = 0, Exception $previous = null)
+    public function __construct($code = 0, ?Exception $previous = null)
     {
         parent::__construct(
             __('A tab can only be added once. Make sure there are not id conflicts.', 'give'),

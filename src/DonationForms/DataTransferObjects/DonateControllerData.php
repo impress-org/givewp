@@ -18,6 +18,10 @@ use Give\Subscriptions\ValueObjects\SubscriptionMode;
 use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
 use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 
+/**
+ * @since TBD Allow dynamic properties, since custom field values are assigned by name.
+ */
+#[\AllowDynamicProperties]
 class DonateControllerData
 {
     /**

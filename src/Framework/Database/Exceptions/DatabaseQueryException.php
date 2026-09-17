@@ -27,6 +27,7 @@ class DatabaseQueryException extends Exception
     private $query;
 
     /**
+     * @since TBD Declare the nullable parameter explicitly.
      * @since 2.21.0 include query and query errors, and make auto-logging compatible
      * @since 2.9.2
      */
@@ -35,7 +36,7 @@ class DatabaseQueryException extends Exception
         array $queryErrors,
         string $message = 'Database Query',
         $code = 0,
-        Throwable $previous = null
+        ?Throwable $previous = null
     ) {
         $this->query = $query;
         $this->queryErrors = $queryErrors;
