@@ -17,6 +17,7 @@ use Give\Subscriptions\ValueObjects\SubscriptionStatus;
 class SubscriptionFirstDonationCompleted
 {
     /**
+     * @since TBD Guard against a null initial donation and a missing subscription before comparing donation IDs.
      * @since 4.16.0 Add $donationId to support gateways that only receive the transaction ID via webhook (e.g. PayFast).
      * @since 4.5.0 Add $setDonationComplete and $gatewaySubscriptionId parameters
      * @since 3.6.0
@@ -47,12 +48,21 @@ class SubscriptionFirstDonationCompleted
 
             if (! $donation && ! empty($gatewaySubscriptionId) && $subscription = give()->subscriptions->getByGatewaySubscriptionId($gatewaySubscriptionId)) {
                 $donation = $subscription->initialDonation();
-                $donation->gatewayTransactionId = $gatewayTransactionId;
-                $donation->save();
+
+                if ($donation) {
+                    $donation->gatewayTransactionId = $gatewayTransactionId;
+                    $donation->save();
+                }
             }
         }
 
-        if ( ! $donation || ! $donation->type->isSubscription() || $donation->id !== $donation->subscription->initialDonation()->id) {
+        if ( ! $donation || ! $donation->type->isSubscription() || ! $donation->subscription) {
+            return;
+        }
+
+        $initialDonation = $donation->subscription->initialDonation();
+
+        if ( ! $initialDonation || $donation->id !== $initialDonation->id) {
             return;
         }
 

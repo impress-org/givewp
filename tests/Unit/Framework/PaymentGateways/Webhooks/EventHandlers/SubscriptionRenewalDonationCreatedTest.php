@@ -92,4 +92,25 @@ class SubscriptionRenewalDonationCreatedTest extends TestCase
 
         $this->assertEquals(1, $totalDonations);
     }
+
+    /**
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function testShouldNotCreateRenewalDonationWhenSubscriptionHasNoInitialDonation()
+    {
+        $subscription = Subscription::factory()->create([
+            'gatewaySubscriptionId' => 'gateway-subscription-id',
+        ]);
+
+        $renewalGatewayTransactionId = 'renewal-gateway-transaction-id';
+
+        give(SubscriptionRenewalDonationCreated::class)($subscription->gatewaySubscriptionId,
+            $renewalGatewayTransactionId);
+
+        $this->assertNull($subscription->initialDonation());
+        $this->assertEquals(0,
+            give()->donations->getTotalDonationCountByGatewayTransactionId($renewalGatewayTransactionId));
+    }
 }
