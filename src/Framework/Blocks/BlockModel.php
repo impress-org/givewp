@@ -39,7 +39,7 @@ class BlockModel implements Arrayable
      */
     public function __construct(
         string $name,
-        string $clientId = null,
+        ?string $clientId = null,
         bool   $isValid = true,
         array  $attributes = [],
                $innerBlocks = null

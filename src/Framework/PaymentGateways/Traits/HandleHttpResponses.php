@@ -54,7 +54,7 @@ trait HandleHttpResponses
         Exception $exception,
         string $message,
         string $type = DonationFormErrorTypes::UNKNOWN,
-        WP_Error $errors = null
+        ?WP_Error $errors = null
     ) {
         if ($exception instanceof PaymentGatewayException) {
             $message = $exception->getMessage();
