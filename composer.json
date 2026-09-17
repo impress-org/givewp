@@ -84,7 +84,10 @@
         "psr-4": {
             "Give\\PHPStan\\": ".phpstan/",
             "Give\\Tests\\": "tests/"
-        }
+        },
+        "exclude-from-classmap": [
+            "tests/includes/legacy/"
+        ]
     },
     "config": {
         "process-timeout": 0,
