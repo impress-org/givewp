@@ -3,6 +3,7 @@
 namespace Give\DonationForms\Blocks\DonationFormBlock\Controllers;
 
 use Give\DonationForms\Actions\GenerateDonationConfirmationReceiptViewRouteUrl;
+use Give\DonationForms\Actions\GenerateDonationFormPageUrl;
 use Give\DonationForms\Actions\GenerateDonationFormViewRouteUrl;
 use Give\DonationForms\Blocks\DonationFormBlock\DataTransferObjects\BlockAttributes;
 use Give\DonationForms\DataTransferObjects\DonationConfirmationReceiptViewRouteData;
@@ -19,6 +20,7 @@ class BlockRenderController
     protected static int $embedInstance = 0;
 
     /**
+     * @since TBD Build the form page URL through GenerateDonationFormPageUrl, shared with the external embed.
 	 * @since 4.14.5 add escaping to the output.
      * @since 4.7.0 detach check for gutenberg editor to make this more reusable
      * @since 4.1.0 updated with embed ID instance fallback when block ID is not set.
@@ -47,7 +49,7 @@ class BlockRenderController
 
         $locale = Language::getLocale();
         $viewUrl = $this->getViewUrl($donationForm, $embedId);
-        $formUrl = add_query_arg(['p' => $blockAttributes->formId], site_url('?post_type=give_forms'));
+        $formUrl = (new GenerateDonationFormPageUrl())($blockAttributes->formId);
         $formViewUrl = $this->getFormViewUrl($donationForm);
         $colorSettings = $donationForm->getColorSettings();
 

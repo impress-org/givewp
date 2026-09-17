@@ -24,7 +24,6 @@ export default function ConsentModal({setShowModal, modalHeading, modalAcceptanc
                     </Button>
                 </div>
             </div>
-        </div>,
-        window.top.document.body
+        </div>
     );
 }
