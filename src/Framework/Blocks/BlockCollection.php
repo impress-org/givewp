@@ -117,7 +117,7 @@ class BlockCollection implements Arrayable
      *
      * @return BlockModel|BlockCollection|null
      */
-    private function findByNameRecursive(string $blockName, int $blockIndex = 0, string $return = 'self', BlockCollection $blockCollection = null, int &$count = 0)
+    private function findByNameRecursive(string $blockName, int $blockIndex = 0, string $return = 'self', ?BlockCollection $blockCollection = null, int &$count = 0)
     {
         if (!$blockCollection) {
             $blockCollection = $this;

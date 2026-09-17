@@ -122,7 +122,7 @@ trait InsertNode
      *
      * @throws NameCollisionException
      */
-    protected function insert(Node $node, int $index = null)
+    protected function insert(Node $node, ?int $index = null)
     {
         $this->checkNameCollisionDeep($node);
 
