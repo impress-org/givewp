@@ -1,11 +1,13 @@
 import {__} from '@wordpress/i18n';
-import IframeResizer from 'iframe-resizer-react';
 import isRouteInlineRedirect from '@givewp/forms/app/utilities/isRouteInlineRedirect';
 import ModalForm from '@givewp/src/Campaigns/Blocks/shared/components/ModalForm';
 import '../editor/styles/index.scss';
 import renderDonationForm from './renderDonationForm';
+import EmbedFrame from '@givewp/forms/shared/EmbedFrame';
+import type {SkeletonData} from '@givewp/forms/shared/EmbedFrame/EmbedSkeleton';
 
 /**
+ * @since TBD add skeletonData for the on-page loading skeleton.
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage".
  * @since 3.1.2
  */
@@ -16,6 +18,7 @@ type DonationFormBlockAppProps = {
     openFormButton: string;
     formUrl: string;
     formViewUrl: string;
+    skeletonData?: SkeletonData | null;
 };
 
 /**
@@ -34,6 +37,8 @@ const isRedirect = (url: string) => {
 };
 
 /**
+ * @since TBD render every format through EmbedFrame for a shared loading and fallback state, with
+ *            a skeleton of the form on the on-page format.
  * @since 4.3.0 replace ModalForm with Campaigns ModalForm.
  * @since 3.4.0 add logic for inline redirects.
  * @since 3.2.0 replace form format reveal with new tab.
@@ -46,6 +51,7 @@ export default function DonationFormBlockApp({
     openFormButton,
     formUrl,
     formViewUrl,
+    skeletonData,
 }: DonationFormBlockAppProps) {
     const isFormRedirect = isRedirect(dataSrc);
 
@@ -71,24 +77,12 @@ export default function DonationFormBlockApp({
                 embedId={embedId}
                 isFormRedirect={isFormRedirect}
                 formViewUrl={formViewUrl}
+                formUrl={formUrl}
             />
         );
     }
 
-    return (
-        <IframeResizer
-            title={__('Donation Form', 'give')}
-            id={embedId}
-            src={dataSrc}
-            checkOrigin={false}
-            heightCalculationMethod={'taggedElement'}
-            style={{
-                width: '1px',
-                minWidth: '100%',
-                border: '0',
-            }}
-        />
-    );
+    return <EmbedFrame src={dataSrc} embedId={embedId} fallbackUrl={formUrl} skeleton={skeletonData} />;
 }
 
 const roots = document.querySelectorAll('.root-data-givewp-embed');
