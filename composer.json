@@ -115,7 +115,8 @@
             "exclude_from_copy": {
                 "packages": [
                     "symfony/deprecation-contracts",
-                    "psr/container"
+                    "psr/container",
+                    "symfony/polyfill-php80"
                 ],
                 "file_patterns": [
                     "/Tests/"
