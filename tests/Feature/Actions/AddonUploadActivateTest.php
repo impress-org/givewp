@@ -51,6 +51,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
+     * @since TBD Remove the upgrader working directory.
      * @since 4.16.6
      */
     public function tearDown(): void
@@ -86,6 +87,12 @@ final class AddonUploadActivateTest extends TestCase
         );
 
         wp_clean_plugins_cache(true);
+
+        // Plugin_Upgrader unpacks archives into WP_CONTENT_DIR/upgrade and leaves rejected ones
+        // behind. WP_CONTENT_DIR is the tests directory here, so remove it after every test.
+        if (is_dir(WP_CONTENT_DIR . '/upgrade')) {
+            $this->recursiveRemoveDir(WP_CONTENT_DIR . '/upgrade');
+        }
 
         parent::tearDown();
     }
