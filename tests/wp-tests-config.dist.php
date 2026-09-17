@@ -59,12 +59,14 @@ define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
 define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
 define( 'NONCE_SALT',       'put your unique phrase here' );
 
-$table_prefix = 'wptests_';   // Only numbers, letters, and underscores please!
+// Paratest sets TEST_TOKEN per worker; each worker installs WordPress under its own prefix.
+$table_prefix = getenv('TEST_TOKEN') ? 'wptests' . getenv('TEST_TOKEN') . '_' : 'wptests_';   // Only numbers, letters, and underscores please!
 
 define( 'WP_TESTS_DOMAIN', 'example.org' );
 define( 'WP_TESTS_EMAIL', 'admin@example.org' );
 define( 'WP_TESTS_TITLE', 'Test Blog' );
 
-define( 'WP_PHP_BINARY', 'php' );
+// Absolute path: paratest workers run without PATH, and the WordPress test bootstrap shells out to this.
+define( 'WP_PHP_BINARY', PHP_BINARY );
 
 define( 'WPLANG', '' );

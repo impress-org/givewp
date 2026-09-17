@@ -20,6 +20,7 @@ class Tests_Emails extends Give_Unit_Test_Case {
 	 */
 	public function setUp(): void {
 		parent::setUp();
+		wp_update_user( array( 'ID' => 1, 'first_name' => 'Admin', 'last_name' => 'User' ) );
 		$this->_tags       = new Give_Email_Template_Tags();
 		$this->_payment_id = Give_Helper_Payment::create_simple_payment();
 	}

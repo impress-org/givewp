@@ -28,6 +28,8 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
     /**
      * Setup test case.
      *
+     * @since TBD Clear Give errors left in the session by the previous test.
+     * @since TBD Clear Give errors left in the session by the previous test.
      * @since 1.0
      */
     public function setUp(): void
@@ -40,6 +42,14 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
         self::$saved_settings = Give_Cache_Setting::get_settings();
 
         parent::setUp();
+
+        // Give errors are stored in the session, not the database, so they survive the
+        // transaction rollback between tests and make give_register_and_login_new_user() bail.
+        give_clear_errors();
+
+        // Give errors are stored in the session, not the database, so they survive the
+        // transaction rollback between tests and make give_register_and_login_new_user() bail.
+        give_clear_errors();
 
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
         $_SERVER['SERVER_NAME'] = '';
