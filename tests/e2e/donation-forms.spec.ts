@@ -510,7 +510,7 @@ test.describe('V3 donation forms', () => {
 
             await page.goto(post.link);
 
-            await page.getByRole('button', {name: 'Open donation form'}).click();
+            await page.getByRole('button', {name: 'Donate now'}).click();
 
             const fallback = page.getByRole('dialog').getByRole('link', {name: 'Open the form on its own page'});
 
