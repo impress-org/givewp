@@ -6,12 +6,14 @@ use Give\Framework\Support\ValueObjects\Enum;
 use Give\Framework\Support\ValueObjects\EnumInteractsWithQueryBuilder;
 
 /**
+ * @since TBD Add PENDING_EMAIL
  * @since 4.4.0 Add AVATAR_ID and COMPANY
  * @since 2.19.6
  *
  * @method static DonorMetaKeys FIRST_NAME()
  * @method static DonorMetaKeys LAST_NAME()
  * @method static DonorMetaKeys ADDITIONAL_EMAILS()
+ * @method static DonorMetaKeys PENDING_EMAIL()
  * @method static DonorMetaKeys ADDRESS_LINE1()
  * @method static DonorMetaKeys ADDRESS_LINE2()
  * @method static DonorMetaKeys ADDRESS_CITY()
@@ -29,6 +31,10 @@ class DonorMetaKeys extends Enum
     const FIRST_NAME = '_give_donor_first_name';
     const LAST_NAME = '_give_donor_last_name';
     const ADDITIONAL_EMAILS = 'additional_email';
+    /**
+     * @since TBD
+     */
+    const PENDING_EMAIL = '_give_pending_email';
     const ADDRESS_LINE1 = '_give_donor_address_billing_line1_';
     const ADDRESS_LINE2 = '_give_donor_address_billing_line2_';
     const ADDRESS_CITY = '_give_donor_address_billing_city_';
