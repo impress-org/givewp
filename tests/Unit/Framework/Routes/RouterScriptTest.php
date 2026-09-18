@@ -152,6 +152,23 @@ class RouterScriptTest extends TestCase
     /**
      * @since TBD
      */
+    public function testScriptRequestMatchesARootLevelUriWithNoDirectory(): void
+    {
+        $router = new Router();
+        $wp = new WP();
+        $uri = 'script.js';
+
+        $wp->request = 'give/script.js';
+        $this->assertSame([], $router->scriptRequest($wp, $uri));
+
+        $wp->request = '';
+        $_GET['givewp-route'] = 'script.js';
+        $this->assertSame([], $router->scriptRequest($wp, $uri));
+    }
+
+    /**
+     * @since TBD
+     */
     public function testLocalizeCallableReceivesTheRequest(): void
     {
         $response = new ScriptResponse($this->script);
