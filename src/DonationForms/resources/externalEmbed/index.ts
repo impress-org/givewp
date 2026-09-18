@@ -42,10 +42,13 @@ type EmbedData = {
         openForm: string;
         close: string;
     };
+    /** Server-rendered skeleton markup by form id, for the forms the script URL named. */
+    skeletons?: Record<string, string>;
 };
 
 declare const window: {
     givewpDonationFormEmbed?: EmbedData;
+    givewpDonationFormEmbedSkeletons?: Record<string, string>;
 } & Window;
 
 /*
@@ -54,6 +57,15 @@ declare const window: {
  * element has nothing to embed, and connectedCallback says so.
  */
 const DATA: EmbedData | undefined = window.givewpDonationFormEmbed;
+
+/**
+ * Skeletons from every script instance on the page, keyed by form id. A page
+ * with two forms loads the script once per `?form-id`; the second run skips
+ * defining the element but still merges its skeletons here, then (at the end
+ * of this file) tells the elements already waiting to pick theirs up.
+ */
+const SKELETONS: Record<string, string> = (window.givewpDonationFormEmbedSkeletons ??= {});
+Object.assign(SKELETONS, DATA?.skeletons);
 
 const I18N: EmbedData['i18n'] = {
     donate: 'Donate',
@@ -92,6 +104,25 @@ const EXIT_ANIMATION_MS = 150;
  */
 const MAX_SHELL_HEIGHT_PX = 5000;
 
+/**
+ * Runs the callback once all deferred scripts on the page have executed, which
+ * is DOMContentLoaded, or at once when that has already happened. Deferred
+ * scripts run at readyState "interactive", the same value the document keeps
+ * after DOMContentLoaded until load, so the event itself is checked through
+ * navigation timing instead.
+ */
+function afterDeferredScripts(callback: () => void) {
+    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+    const fired = document.readyState === 'complete' || (navigation?.domContentLoadedEventEnd ?? 0) > 0;
+
+    if (fired) {
+        callback();
+        return;
+    }
+
+    document.addEventListener('DOMContentLoaded', callback, {once: true});
+}
+
 function injectStyles() {
     if (document.getElementById(STYLE_ID)) {
         return;
@@ -126,6 +157,12 @@ class GiveWPDonationForm extends HTMLElement {
      * renderForm for the on-page style only.
      */
     onShell: ((height: number) => void) | null = null;
+
+    /**
+     * The on-page loading state, while it is showing.
+     */
+    loading: HTMLElement | null = null;
+    hasSkeleton: boolean = false;
 
     /**
      * Messages from the form inside the iframe. Only the WordPress origin and
@@ -363,10 +400,6 @@ class GiveWPDonationForm extends HTMLElement {
         loading.setAttribute('role', 'status');
         loading.setAttribute('aria-label', this.getAttribute('loading-text') || I18N.loading);
 
-        const spinner = document.createElement('span');
-        spinner.className = 'givewp-embed__spinner';
-        loading.appendChild(spinner);
-
         const iframe = document.createElement('iframe');
         iframe.src = src;
         // Matches the title the WordPress embeds use, so tooling and donors see one name.
@@ -398,11 +431,28 @@ class GiveWPDonationForm extends HTMLElement {
             this.onShell = null;
         };
 
+        const showSpinner = () => {
+            if (this.hasSkeleton || !loading.isConnected) {
+                return;
+            }
+            const spinner = document.createElement('span');
+            spinner.className = 'givewp-embed__spinner';
+            loading.appendChild(spinner);
+        };
+
         if (target === this) {
+            this.loading = loading;
             this.onShell = (height) => {
                 iframe.style.height = `${height}px`;
                 reveal();
             };
+            this.applySkeleton();
+            // Another script instance later in the document may still bring
+            // this form's skeleton, so the spinner waits until every deferred
+            // script has run rather than flashing before the skeleton.
+            afterDeferredScripts(showSpinner);
+        } else {
+            showSpinner();
         }
 
         iframeResize(
@@ -425,6 +475,27 @@ class GiveWPDonationForm extends HTMLElement {
             },
             iframe
         );
+    }
+
+    /**
+     * Swaps the on-page spinner for the form's server-rendered skeleton when
+     * the script data carries one. Runs at render, and again when a later
+     * script instance merges more skeletons. With the skeleton in place the
+     * shell reveal is skipped: the iframe draws the same markup, so revealing
+     * it early would change nothing, and the reveal waits for the handshake
+     * as the WordPress block's does.
+     */
+    applySkeleton() {
+        const html = SKELETONS[this.formId];
+
+        if (!html || this.hasSkeleton || !this.loading?.isConnected) {
+            return;
+        }
+
+        this.hasSkeleton = true;
+        this.loading.classList.add('givewp-embed__loading--skeleton');
+        this.loading.innerHTML = html;
+        this.onShell = null;
     }
 
     /**
@@ -673,3 +744,9 @@ class GiveWPDonationForm extends HTMLElement {
 if (!customElements.get('givewp-donation-form')) {
     customElements.define('givewp-donation-form', GiveWPDonationForm);
 }
+
+// Defining the element upgraded every instance on the page during the first
+// script; a later script instance hands its skeletons to the ones still waiting.
+document.querySelectorAll<GiveWPDonationForm>('givewp-donation-form').forEach((element) => {
+    element.applySkeleton?.();
+});
