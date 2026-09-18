@@ -9,9 +9,9 @@ GiveWP — a WordPress donation/fundraising plugin. PHP + React, distributed on 
 
 | Task | Command |
 |:--|:--|
-| Run tests | `composer test` |
+| Run tests | `composer test` (parallel) or `composer test:serial` |
 | Run E2E tests | `npm run test:e2e` (needs `npm run env:start`) |
-| Run one test | `composer test -- --filter DonationRepositoryTest` or `--filter ClassName::methodName` |
+| Run one test | `composer test:serial -- --filter TestDonationRepository` or `--filter ClassName::methodName` |
 | Build assets (dev) | `npm run dev` |
 | Watch assets | `npm run watch` |
 | Build assets (production) | `npm run build` |

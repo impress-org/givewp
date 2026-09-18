@@ -286,6 +286,14 @@ const plugins = [
  */
 module.exports = {
     ...defaultConfig,
+    // Persist the build cache under node_modules/.cache/webpack so repeat builds, locally and in CI,
+    // only recompile what changed. Webpack invalidates entries by content hash, so a stale cache is safe.
+    cache: {
+        type: 'filesystem',
+        buildDependencies: {
+            config: [__filename],
+        },
+    },
     resolve: {
         ...defaultConfig.resolve,
         alias,

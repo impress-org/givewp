@@ -19,7 +19,7 @@
             <directory prefix="Test" suffix=".php">./tests/Feature</directory>
         </testsuite>
          <testsuite name="Legacy Unit Tests">
-            <directory prefix="tests-" suffix=".php">./tests/includes/legacy</directory>
+            <directory prefix="Test" suffix=".php">./tests/includes/legacy</directory>
         </testsuite>
     </testsuites>
     <filter>

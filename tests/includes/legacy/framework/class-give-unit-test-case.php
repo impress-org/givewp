@@ -28,6 +28,8 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
     /**
      * Setup test case.
      *
+     * @since TBD Clear Give errors left in the session by the previous test, and give user 1 a name.
+     * @since TBD Clear Give errors left in the session by the previous test.
      * @since 1.0
      */
     public function setUp(): void
@@ -40,6 +42,14 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
         self::$saved_settings = Give_Cache_Setting::get_settings();
 
         parent::setUp();
+
+        // Give errors are stored in the session, not the database, so they survive the
+        // transaction rollback between tests and make give_register_and_login_new_user() bail.
+        give_clear_errors();
+
+        // Legacy helpers build donations from user 1, and several tests assert on the name
+        // "Admin User". Set it here so no test depends on an earlier one having done so.
+        wp_update_user( [ 'ID' => 1, 'first_name' => 'Admin', 'last_name' => 'User' ] );
 
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
         $_SERVER['SERVER_NAME'] = '';

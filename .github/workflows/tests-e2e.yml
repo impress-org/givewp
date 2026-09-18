@@ -46,6 +46,17 @@ jobs:
             -   name: Install Node dependencies
                 run: npm ci
 
+            # webpack's filesystem cache (see webpack.config.js). The lockfile is the key because
+            # webpack invalidates individual entries by content hash itself; a cache from an older
+            # commit is just a warmer start.
+            -   name: Cache webpack build cache
+                uses: actions/cache@v6
+                with:
+                    path: node_modules/.cache/webpack
+                    key: webpack-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+                    restore-keys: |
+                        webpack-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+
             # The admin screens under test are React apps served from build/, which is gitignored.
             -   name: Build assets
                 run: npm run build
@@ -53,6 +64,8 @@ jobs:
             -   name: Start WordPress environment
                 run: npx wp-env start
 
+            # Not cached on purpose: restoring the binary plus installing its OS libraries takes
+            # longer than the plain install.
             -   name: Install Playwright browsers
                 run: npx playwright install chromium --with-deps
 
@@ -68,7 +81,3 @@ jobs:
                     # carries the logged-in admin cookie for the wp-env site.
                     path: artifacts/test-results/
                     retention-days: 7
-
-            -   name: Stop WordPress environment
-                if: always()
-                run: npx wp-env stop
