@@ -235,6 +235,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @unreleased Group live-mode conditions so trashed donations stay excluded from the default list
      * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
      * @since 4.8.0 Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
@@ -327,8 +328,13 @@ class ListDonations extends Endpoint
         } elseif ($testMode) {
             $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
-            $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-                ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+            // Group the live-mode alternatives so the OR stays subordinate to the
+            // post type and status clauses. Without the grouping, a live row would be
+            // admitted even when its status is trash.
+            $query->where(function ($query) {
+                $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
+                    ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+            });
         }
 
         return [
