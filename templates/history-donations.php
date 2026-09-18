@@ -8,10 +8,18 @@ $donation_history_args = Give()->session->get( 'give_donation_history_args' );
 
 // User's Donations.
 if ( is_user_logged_in() ) {
+
 	$donations = give_get_users_donations( get_current_user_id(), 20, true, 'any' );
+	$donor = Give()->donors->get_donor_by( 'user_id', get_current_user_id() );
+	$donations_count = ( $donor ) ? count( explode( ',', $donor->payment_ids ) ) : 0;
+
 } elseif ( Give()->email_access->token_exists ) {
 	// Email Access Token?
 	$donations = give_get_users_donations( 0, 20, true, 'any' );
+	$user = Give()->email_access->token_email;
+	$donor = Give()->donors->get_donor_by( 'email', $user );
+	$donations_count = ( $donor ) ? count( explode( ',', $donor->payment_ids ) ) : 0;
+
 } elseif (
 	false !== Give()->session->get_session_expiration() ||
 	true === give_get_history_session()
@@ -265,7 +273,7 @@ if ( $donations ) : ?>
 					'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 					'format'  => '?paged=%#%',
 					'current' => max( 1, get_query_var( 'paged' ) ),
-					'total'   => ceil( give_count_donations_of_donor() / 20 ), // 20 items per page
+					'total'   => ceil( $donations_count / 20 ), // 20 items per page
 				)
 			);
 			?>
