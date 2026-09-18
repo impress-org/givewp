@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Fixed PHP 8.4 deprecation notices about implicitly nullable parameters
+timestamp: 2026-09-17T00:00:00.000Z

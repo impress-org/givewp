@@ -11,7 +11,10 @@ class FailedDonorUpdateException extends Exception
 {
     protected $donor;
 
-    public function __construct( Donor $donor = null, $code = 0, $previous = null ) {
+    /**
+     * @since TBD Declare the nullable parameter explicitly.
+     */
+    public function __construct( ?Donor $donor = null, $code = 0, $previous = null ) {
         parent::__construct('Failed updating the donor', $code, $previous);
         $this->donor = $donor;
     }

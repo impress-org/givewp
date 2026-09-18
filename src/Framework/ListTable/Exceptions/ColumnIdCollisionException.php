@@ -9,7 +9,10 @@ use Give\Framework\Exceptions\Primitives\Exception;
  */
 class ColumnIdCollisionException extends Exception
 {
-    public function __construct($id, $code = 0, Exception $previous = null)
+    /**
+     * @since TBD Declare the nullable parameter explicitly.
+     */
+    public function __construct($id, $code = 0, ?Exception $previous = null)
     {
         $message = "Column with id \"$id\" already exist";
         parent::__construct($message, $code, $previous);

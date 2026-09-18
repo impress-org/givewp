@@ -19,10 +19,13 @@ use Give\Subscriptions\ValueObjects\SubscriptionPeriod;
  */
 class GenerateNextRenewalForSubscription
 {
+    /**
+     * @since TBD Declare the nullable parameter explicitly.
+     */
     public function __invoke(
         SubscriptionPeriod $period,
         int $frequency,
-        DateTimeInterface $baseDate = null
+        ?DateTimeInterface $baseDate = null
     ): DateTimeInterface {
         if ( $frequency < 1 ) {
             throw new InvalidArgumentException('Frequency must be greater than 0');

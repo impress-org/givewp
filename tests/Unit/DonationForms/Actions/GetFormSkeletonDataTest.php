@@ -101,8 +101,9 @@ class GetFormSkeletonDataTest extends TestCase
     /**
      * A saved form whose settings and blocks are then swapped in memory. Saving runs the blocks
      * through the fields API, which wants fully formed blocks; the skeleton only reads their names.
+     * @since TBD Declare the nullable parameter explicitly.
      */
-    private function form(array $settings, array $blocks = null): DonationForm
+    private function form(array $settings, ?array $blocks = null): DonationForm
     {
         /** @var DonationForm $form */
         $form = DonationForm::factory()->create();

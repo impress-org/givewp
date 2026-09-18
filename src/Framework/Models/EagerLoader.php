@@ -54,6 +54,7 @@ class EagerLoader
     protected $foreignAttribute;
 
     /**
+     * @since TBD Declare the nullable parameter explicitly.
      * @since 3.5.0
      *
      * @param class-string<M> $modelClass
@@ -62,7 +63,7 @@ class EagerLoader
      * @param string $foreignKey
      * @param string|null $foreignAttribute
      */
-    public function __construct(string $modelClass, string $eagerLoadedModelClass, string $relationshipKey, string $foreignKey, string $foreignAttribute = null)
+    public function __construct(string $modelClass, string $eagerLoadedModelClass, string $relationshipKey, string $foreignKey, ?string $foreignAttribute = null)
     {
         if (!is_subclass_of($modelClass, Model::class)) {
             throw new InvalidArgumentException("$modelClass must be an instance of " . Model::class);
