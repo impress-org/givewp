@@ -9,6 +9,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -235,6 +236,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @since TBD Group OR conditions for mode and name filters so they do not override the other WHERE clauses.
      * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
      * @since 4.8.0 Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
@@ -280,9 +282,11 @@ class ListDonations extends Endpoint
                     ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
                 $dependencies[] = DonationMetaKeys::EMAIL();
             } else {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
-                    ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
+                $query->where(static function (WhereQueryBuilder $builder) use ($search) {
+                    $builder
+                        ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
+                        ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
+                });
                 $dependencies[] = DonationMetaKeys::FIRST_NAME();
                 $dependencies[] = DonationMetaKeys::LAST_NAME();
             }
@@ -294,9 +298,11 @@ class ListDonations extends Endpoint
                     ->where('give_donationmeta_attach_meta_donorId.meta_value', $donor);
                 $dependencies[] = DonationMetaKeys::DONOR_ID();
             } else {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $donor)
-                    ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $donor);
+                $query->where(static function (WhereQueryBuilder $builder) use ($donor) {
+                    $builder
+                        ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $donor)
+                        ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $donor);
+                });
                 $dependencies[] = DonationMetaKeys::FIRST_NAME();
                 $dependencies[] = DonationMetaKeys::LAST_NAME();
             }
@@ -327,8 +333,11 @@ class ListDonations extends Endpoint
         } elseif ($testMode) {
             $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
         } else {
-            $query->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-                ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+            $query->where(static function (WhereQueryBuilder $builder) {
+                $builder
+                    ->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
+                    ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
+            });
         }
 
         return [

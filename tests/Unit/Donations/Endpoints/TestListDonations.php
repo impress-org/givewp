@@ -8,6 +8,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Subscriptions\Models\Subscription;
@@ -333,6 +334,84 @@ class TestListDonations extends TestCase
         }
 
         return Subscription::factory()->createWithDonation([], $donationData);
+    }
+
+    /**
+     * The live-mode filter is an OR expression; ungrouped it overrode every other WHERE clause
+     * and let trash donations through.
+     *
+     * @since TBD
+     */
+    public function testLiveModeListingExcludesTrashAndTestDonations()
+    {
+        $campaign = Campaign::factory()->create();
+        $live = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::LIVE(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::LIVE(),
+            'status' => DonationStatus::TRASH(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::TEST(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', false);
+
+        $response = give(ListDonations::class)->handleRequest($mockRequest);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($live->id, $response->data['items'][0]['id']);
+        $this->assertEquals(1, $response->data['totalItems']);
+    }
+
+    /**
+     * Name search is an OR over first and last name; ungrouped it leaked rows excluded by status.
+     *
+     * @since TBD
+     */
+    public function testNameSearchRespectsOtherFilters()
+    {
+        $campaign = Campaign::factory()->create();
+        $match = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'firstName' => 'Zedrick',
+            'lastName' => 'Alpha',
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'firstName' => 'Beta',
+            'lastName' => 'Zedrick',
+            'status' => DonationStatus::TRASH(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'firstName' => 'Gamma',
+            'lastName' => 'Delta',
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('search', 'Zedrick');
+
+        $response = give(ListDonations::class)->handleRequest($mockRequest);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($match->id, $response->data['items'][0]['id']);
     }
 
     /**
