@@ -4,6 +4,7 @@ namespace Unit\API\REST\V3\Routes\Donors;
 
 use Give\API\REST\V3\Routes\Donors\ValueObjects\DonorRoute;
 use Give\Donors\Models\Donor;
+use Give\Donors\Repositories\DonorPendingEmailRepository;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\RestApiTestCase;
 use Give\Tests\TestTraits\HasDefaultWordPressUsers;
@@ -474,4 +475,45 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $unchangedDonor = Donor::find($otherDonor->id);
         $this->assertEquals('Original', $unchangedDonor->firstName);
     }
+
+    /**
+     * @since TBD SVUL-118: an owner-subscriber must not be able to activate additional emails without verifying ownership.
+     */
+    public function testUpdateDonorShouldDivertAdditionalEmailsToPendingForOwnerSubscriber()
+    {
+        $user = $this->factory()->user->create([
+            'role' => 'subscriber',
+            'user_login' => 'testSvul118Owner',
+            'user_email' => 'testSvul118Owner@test.com',
+        ]);
+        wp_set_current_user($user);
+
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create([
+            'userId' => $user,
+            'additionalEmails' => ['existing@test.com'],
+        ]);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = new WP_REST_Request('PUT', $route);
+        $request->set_body_params([
+            'additionalEmails' => ['existing@test.com', 'hijack1@test.com', 'hijack2@test.com'],
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        $this->assertEquals(200, $response->get_status());
+        $data = $response->get_data();
+        $this->assertEquals(['existing@test.com'], $data['additionalEmails']);
+
+        // The verified list is unchanged and no email was activated without verification.
+        $updatedDonor = Donor::find($donor->id);
+        $this->assertEquals(['existing@test.com'], $updatedDonor->additionalEmails);
+
+        $pending = (new DonorPendingEmailRepository())->all($donor->id);
+        $this->assertCount(2, $pending);
+        $this->assertSame('hijack1@test.com', $pending[0]['email']);
+        $this->assertSame('hijack2@test.com', $pending[1]['email']);
+    }
 }
+
