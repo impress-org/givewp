@@ -7,6 +7,7 @@ use Give\Donors\Actions\CreateUserFromDonor;
 use Give\Donors\Actions\LoadDonorAdminOptions;
 use Give\Donors\Actions\SendDonorUserRegistrationNotification;
 use Give\Donors\Actions\UpdateAdminDonorDetails;
+use Give\Donors\Actions\VerifyAdditionalEmail;
 use Give\Donors\CustomFields\Controllers\DonorDetailsController;
 use Give\Donors\Exceptions\FailedDonorUserCreationException;
 use Give\Donors\ListTable\DonorsListTable;
@@ -58,6 +59,8 @@ class ServiceProvider implements ServiceProviderInterface
         ]);
 
         Hooks::addAction('give_admin_donor_details_updating', UpdateAdminDonorDetails::class, '__invoke', 10, 2);
+
+        Hooks::addAction('init', VerifyAdditionalEmail::class);
 
         $this->loadDonorAdminOptions();
     }
