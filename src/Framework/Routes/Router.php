@@ -130,7 +130,9 @@ class Router
      */
     public function scriptRequest(WP $wp, string $uri): ?array
     {
-        $pattern = preg_quote(dirname($uri), '#') . '(?:/(\d+))?/' . preg_quote(basename($uri), '#');
+        $directory = dirname($uri);
+        $directory = $directory === '.' ? '' : preg_quote($directory, '#') . '/';
+        $pattern = $directory . '(?:(\d+)/)?' . preg_quote(basename($uri), '#');
 
         $candidates = [
             '#^' . preg_quote($this->scriptBase, '#') . '/' . $pattern . '$#' => (string)$wp->request,
