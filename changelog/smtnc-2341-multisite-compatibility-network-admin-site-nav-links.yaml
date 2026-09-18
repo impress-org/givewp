@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Corrected donation and form queries leaving WordPress post globals
+  populated after their results loop, which caused Multisite Network Admin site
+  links to use a donation ID instead of the site ID.
+timestamp: 2026-09-14T08:39:20.561Z
