@@ -121,6 +121,30 @@ class RenderFormSkeletonTest extends TestCase
         $this->assertSame('', (new RenderFormSkeleton())([]));
     }
 
+    /**
+     * The markup is injected with innerHTML on host pages, so nothing from the data may reach it
+     * as text. The design id is checked against a fixed list, block names are lookup keys only,
+     * and the remaining values are booleans and a count.
+     *
+     * @since TBD
+     */
+    public function testNoDataValueReachesTheMarkup()
+    {
+        $hostile = '"><img src=x onerror=alert(1)>';
+        $renderer = new RenderFormSkeleton();
+
+        $this->assertSame('', $renderer($this->data(['design' => 'classic' . $hostile])));
+
+        $html = $renderer($this->data([
+            'sections' => [[$hostile, 'givewp/payment-gateways' . $hostile]],
+            'gateways' => $hostile,
+        ]));
+
+        $this->assertStringNotContainsString('onerror', $html);
+        $this->assertStringNotContainsString('<img', $html);
+        $this->assertSame(2, substr_count($html, 'givewp-embed-skeleton__field--field"'));
+    }
+
     private function data(array $overrides = []): array
     {
         return array_merge([

@@ -6,6 +6,8 @@
  */
 @import '@givewp/src/DonationForms/Blocks/DonationFormBlock/resources/styles/launcher';
 @import '@givewp/src/Campaigns/Blocks/shared/components/ModalForm/styles';
+/* The form skeleton the script data carries when the script URL names the form. */
+@import '@givewp/src/DonationForms/resources/styles/skeleton';
 
 givewp-donation-form {
     display: block;
@@ -31,6 +33,13 @@ givewp-donation-form {
         align-items: center;
         justify-content: center;
         min-height: 20rem;
+    }
+
+    /* A skeleton sits in flow and sets the height itself; its container queries resolve here. */
+    &__loading--skeleton {
+        display: block;
+        min-height: 0;
+        container-type: inline-size;
     }
 
     &__spinner {

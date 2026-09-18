@@ -6,7 +6,7 @@ registers. Everything else, the form, the payment, the receipt, still runs on th
 inside an iframe.
 
 ```html
-<script src="https://example.org/give/embed/donation-form/script.js" defer></script>
+<script src="https://example.org/give/embed/donation-form/script.js?form-id=42" defer></script>
 <givewp-donation-form form-id="42"></givewp-donation-form>
 ```
 
@@ -108,26 +108,44 @@ The element's `locale` attribute does not reach these strings. It is forwarded t
 so it changes the language of the form inside the frame only; the launcher button, spinner label,
 and dialog labels stay in the site's locale unless the text attributes override them.
 
-### Why the path has no dynamic segments
+### The form id on the script URL
 
-The URL is the same for every form on a site, on purpose. A per-form URL such as
-`/give/embed/donation-form/42/script.js` would let the server bake that form's colors and labels
-into the script, but it costs more than it saves:
+The URL is the same for every form on a site, with one optional addition: `?form-id=42`. Without
+it the response is site-level. With it, the response also carries that form's server-rendered
+skeleton (`RenderFormSkeleton`, the same markup the on-site block prints), keyed by id under
+`skeletons`, so the element can draw the form's shape at connect, before the form page has
+answered. The builder writes the id on both lines of the snippet; the element attribute stays
+the contract for which form loads, and the URL id only unlocks the early skeleton. A wrong or
+missing id degrades to a spinner until the form page's own skeleton (below), never to a wrong
+form.
 
-- The custom element is registered once per page. A page embedding two forms would load two
-  scripts, and the second `customElements.define()` throws.
-- The response would depend on a form lookup, so every request and every revalidation hits the
-  database, and the ETag could no longer be the build hash alone.
-- The browser would cache one copy per form instead of one per site.
+`Router::scriptRequest()` hands the cleaned query string to the localize callable, so
+`GetExternalEmbedScriptData` reads `form-id`: a comma list is accepted for pages with several
+forms, ids are `absint`ed, deduplicated and capped at ten, and only published forms get an entry.
+The ETag already hashes the localized data, so a skeleton change revalidates on the next request
+like a translation change does. Nothing in the response is per-visitor, so it stays `public`.
 
-Everything a per-form URL could supply either belongs to the form inside the iframe, which
-resolves it itself, or is a per-embed choice written as an attribute. The route supplies the
-site's URLs and translated defaults. What the host page needs from the server is the script and
-that object, and both come from the URL as it is.
+The costs this trades against the earlier per-form URL idea are accepted for the skeleton:
 
-`Router::script()` reads no request data today. If a script variant is ever needed, add a query
-parameter (`?locale=fr`), read it through `Router::getRequestDataByType()` for the same sanitizing
-the other routes get, and fold its value into the ETag. The path stays put.
+- A form load per script request and revalidation. The route already bootstraps WordPress and
+  runs the localize callable per request; this adds one `DonationForm::find` and its settings.
+- One cached copy per form instead of one per site. A page with two forms downloads the script
+  twice. `customElements.define()` is guarded, and the bundle merges every instance's skeletons
+  into `window.givewpDonationFormEmbedSkeletons` at module scope, then calls `applySkeleton()`
+  on every element already on the page, because defining the element in the first script upgraded
+  all of them before the second script ran.
+- The id appears twice in the snippet. The builder writes it, nobody types it.
+
+A path form, `/give/embed/donation-form/42/script.js`, serves the identical response.
+`scriptRequest()` matches an optional numeric segment before the file name on both the pretty
+path and the `givewp-route` query var and returns it as `id`. It exists for caches configured to
+drop query strings from their key, which would otherwise hand one form's skeleton to another
+form's page (cosmetic: the form page's skeleton corrects it at the shell message). The builder
+does not emit it; support can point a customer on such a host at it.
+
+What the URL still does not carry: anything per-embed. Display style, labels, and the launcher
+color are attributes on the element; the form's own design and settings are resolved inside the
+iframe on every load.
 
 ### Known ceiling
 
@@ -202,10 +220,13 @@ trip.
   `load` for error pages too. If the handshake has not happened in ten seconds the element
   degrades to a plain "Open donation form" link. That covers frame-blocking headers, ad blockers,
   and network failure.
-- On the `onpage` style the iframe is also revealed earlier, on a `givewp-embed-shell` message.
-  The form view prints the form's skeleton (`RenderFormSkeleton`, the same markup the on-site
-  block prints in its own page) inside the root element, followed by one inline script that posts
-  the document's height to the parent. That arrives once the iframe's HTML and head stylesheets
+- On the `onpage` style the iframe is also revealed earlier, on a `givewp-embed-shell` message,
+  when the script URL did not name the form and the element is still showing a spinner. (With the
+  skeleton from the script data in place the shell is ignored: the iframe draws the same markup,
+  so the reveal waits for the handshake as the block's does.) The form view prints the form's
+  skeleton (`RenderFormSkeleton`, the same markup the on-site block prints in its own page)
+  inside the root element, followed by one inline script that posts the document's height to the
+  parent. That arrives once the iframe's HTML and head stylesheets
   have loaded, before the app bundles, which is the earliest the element can know anything about
   the form without a request of its own. The element accepts the message only from the WordPress
   origin and its own iframe's window, requires a finite positive height and caps it, sets that

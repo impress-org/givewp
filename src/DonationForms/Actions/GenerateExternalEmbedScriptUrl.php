@@ -20,10 +20,14 @@ class GenerateExternalEmbedScriptUrl
     public const URI = 'embed/donation-form/script.js';
 
     /**
+     * With a form id the URL names the form (`?form-id=42`), and the script response carries
+     * that form's skeleton so the embed can draw it before the form page answers. Without one the
+     * script is site-level and the embed shows a spinner until the form page's own skeleton.
+     *
      * @since TBD
      */
-    public function __invoke(): string
+    public function __invoke(int $formId = 0): string
     {
-        return Route::scriptUrl(self::URI);
+        return Route::scriptUrl(self::URI, $formId > 0 ? ['form-id' => $formId] : []);
     }
 }

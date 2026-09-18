@@ -2,6 +2,7 @@
 
 namespace Give\DonationForms\Actions;
 
+use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Routes\Route;
 
 /**
@@ -15,14 +16,30 @@ use Give\Framework\Routes\Route;
  * return carries. The script only appends per-embed values such as the form
  * id.
  *
+ * When the script URL names a form (`?form-id=42`, or the `42` path segment),
+ * the response also carries that form's server-rendered skeleton, keyed by
+ * id, so the embed can draw the form's shape before the form page answers.
+ * Only published forms are included, and the id never selects which form the
+ * embed loads: the element looks up its own `form-id` attribute in the map.
+ *
  * @since TBD
  */
 class GetExternalEmbedScriptData
 {
     /**
+     * Upper bound on form ids honored per request, so a long list cannot turn
+     * one script request into many form loads.
+     *
      * @since TBD
      */
-    public function __invoke(): array
+    private const MAX_FORMS = 10;
+
+    /**
+     * @since TBD
+     *
+     * @param array $request The query arguments and path id the router matched.
+     */
+    public function __invoke(array $request = []): array
     {
         return [
             'homeUrl' => home_url('/'),
@@ -49,6 +66,68 @@ class GetExternalEmbedScriptData
                 'openForm' => __('Open donation form', 'give'),
                 'close' => __('Close', 'give'),
             ],
+            // An object even when empty, so the script always sees a map.
+            'skeletons' => (object)$this->skeletons($this->formIds($request)),
         ];
+    }
+
+    /**
+     * The form ids the request names: a comma list in `form-id` and the path
+     * segment the router returns as `id`. Cleaned, deduplicated and capped.
+     *
+     * @since TBD
+     *
+     * @return int[]
+     */
+    private function formIds(array $request): array
+    {
+        $ids = [];
+
+        if (isset($request['form-id'])) {
+            $ids = is_array($request['form-id']) ? $request['form-id'] : explode(',', (string)$request['form-id']);
+        }
+
+        if (!empty($request['id'])) {
+            $ids[] = $request['id'];
+        }
+
+        $ids = array_values(array_unique(array_filter(array_map('absint', $ids))));
+
+        return array_slice($ids, 0, self::MAX_FORMS);
+    }
+
+    /**
+     * Skeleton markup by form id for the published forms among the ids. A form
+     * whose design the skeleton cannot sketch gets no entry, and the embed
+     * shows a spinner for it.
+     *
+     * @since TBD
+     *
+     * @param int[] $ids
+     *
+     * @return array<int, string>
+     */
+    private function skeletons(array $ids): array
+    {
+        $renderer = new RenderFormSkeleton();
+        $skeletonData = new GetFormSkeletonData();
+        $skeletons = [];
+
+        foreach ($ids as $id) {
+            /** @var DonationForm|null $form */
+            $form = DonationForm::find($id);
+
+            if (!$form || !$form->status->isPublished()) {
+                continue;
+            }
+
+            $markup = $renderer($skeletonData($form));
+
+            if ($markup) {
+                $skeletons[$id] = $markup;
+            }
+        }
+
+        return $skeletons;
     }
 }

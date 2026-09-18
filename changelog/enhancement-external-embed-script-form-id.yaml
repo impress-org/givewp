@@ -1,0 +1,4 @@
+significance: patch
+type: enhancement
+entry: Name the form on the external embed script URL so the embed shows the form's skeleton immediately, with no spinner, while the form loads
+timestamp: 2026-09-18T00:00:00.000Z
