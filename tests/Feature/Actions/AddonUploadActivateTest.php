@@ -3,6 +3,7 @@
 namespace Give\Tests\Feature\Actions;
 
 use Give\Tests\TestCase;
+use Give\Tests\TestTraits\LocksUpgraderDirectory;
 use Give\Tests\TestTraits\RefreshDatabase;
 use WPDieException;
 use ZipArchive;
@@ -19,6 +20,7 @@ use ZipArchive;
 final class AddonUploadActivateTest extends TestCase
 {
     use RefreshDatabase;
+    use LocksUpgraderDirectory;
 
     /** @var string[] Directory paths created during tests for cleanup. */
     private $createdDirs = [];
@@ -30,11 +32,14 @@ final class AddonUploadActivateTest extends TestCase
     private $testPluginSlugs = [];
 
     /**
+     * @since TBD Hold the upgrader directory lock while the test runs.
      * @since 4.16.6
      */
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->lockUpgraderDirectory();
 
         // wp_send_json_* calls wp_die() only when wp_doing_ajax() is true.
         add_filter('wp_doing_ajax', '__return_true');
@@ -51,6 +56,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
+     * @since TBD Hold the upgrader directory lock while the test runs.
      * @since 4.16.6
      */
     public function tearDown(): void
@@ -86,6 +92,8 @@ final class AddonUploadActivateTest extends TestCase
         );
 
         wp_clean_plugins_cache(true);
+
+        $this->unlockUpgraderDirectory();
 
         parent::tearDown();
     }
@@ -627,6 +635,7 @@ final class AddonUploadActivateTest extends TestCase
      * The ZIP's internal folder name is $pluginSlug regardless of the outer
      * filename, simulating the renamed-ZIP scenario.
      *
+     * @since TBD Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createTestPluginZip(string $pluginSlug, string $pluginName, ?string $zipFilename = null): string
@@ -642,6 +651,9 @@ final class AddonUploadActivateTest extends TestCase
 
         $zip_file = sys_get_temp_dir() . '/give-test-' . ($zipFilename ?? "{$pluginSlug}.zip");
         $this->createdFiles[] = $zip_file;
+        // Plugin_Upgrader unpacks the archive into WP_CONTENT_DIR/upgrade/<archive name> and leaves
+        // rejected ones behind. WP_CONTENT_DIR is the tests directory here.
+        $this->createdDirs[] = WP_CONTENT_DIR . '/upgrade/' . basename($zip_file, '.zip');
 
         if (file_exists($zip_file)) {
             @unlink($zip_file);
@@ -661,6 +673,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP that does NOT contain a valid WordPress plugin file.
      *
+     * @since TBD Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createNonPluginZip(string $zipFilename): string
@@ -673,6 +686,9 @@ final class AddonUploadActivateTest extends TestCase
 
         $zip_file = sys_get_temp_dir() . '/give-test-' . $zipFilename;
         $this->createdFiles[] = $zip_file;
+        // Plugin_Upgrader unpacks the archive into WP_CONTENT_DIR/upgrade/<archive name> and leaves
+        // rejected ones behind. WP_CONTENT_DIR is the tests directory here.
+        $this->createdDirs[] = WP_CONTENT_DIR . '/upgrade/' . basename($zip_file, '.zip');
 
         if (file_exists($zip_file)) {
             @unlink($zip_file);
@@ -689,6 +705,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP file with multiple top-level directories (ambiguous structure).
      *
+     * @since TBD Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createMultiFolderZip(string $zipFilename): string
@@ -703,6 +720,9 @@ final class AddonUploadActivateTest extends TestCase
 
         $zip_file = sys_get_temp_dir() . '/give-test-' . $zipFilename;
         $this->createdFiles[] = $zip_file;
+        // Plugin_Upgrader unpacks the archive into WP_CONTENT_DIR/upgrade/<archive name> and leaves
+        // rejected ones behind. WP_CONTENT_DIR is the tests directory here.
+        $this->createdDirs[] = WP_CONTENT_DIR . '/upgrade/' . basename($zip_file, '.zip');
 
         if (file_exists($zip_file)) {
             @unlink($zip_file);
@@ -720,6 +740,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP file with both a __MACOSX folder and a real plugin folder.
      *
+     * @since TBD Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createZipWithMacosxAndRealFolder(string $realFolder, string $zipFilename): string
@@ -737,6 +758,9 @@ final class AddonUploadActivateTest extends TestCase
 
         $zip_file = sys_get_temp_dir() . '/give-test-' . $zipFilename;
         $this->createdFiles[] = $zip_file;
+        // Plugin_Upgrader unpacks the archive into WP_CONTENT_DIR/upgrade/<archive name> and leaves
+        // rejected ones behind. WP_CONTENT_DIR is the tests directory here.
+        $this->createdDirs[] = WP_CONTENT_DIR . '/upgrade/' . basename($zip_file, '.zip');
 
         if (file_exists($zip_file)) {
             @unlink($zip_file);
@@ -757,6 +781,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP with only a __MACOSX folder and root-level files — no real plugin folder.
      *
+     * @since TBD Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createMacosxOnlyZip(string $zipFilename): string
@@ -770,6 +795,9 @@ final class AddonUploadActivateTest extends TestCase
 
         $zip_file = sys_get_temp_dir() . '/give-test-' . $zipFilename;
         $this->createdFiles[] = $zip_file;
+        // Plugin_Upgrader unpacks the archive into WP_CONTENT_DIR/upgrade/<archive name> and leaves
+        // rejected ones behind. WP_CONTENT_DIR is the tests directory here.
+        $this->createdDirs[] = WP_CONTENT_DIR . '/upgrade/' . basename($zip_file, '.zip');
 
         if (file_exists($zip_file)) {
             @unlink($zip_file);

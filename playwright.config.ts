@@ -18,9 +18,14 @@ export default defineConfig({
         // Local environments that terminate TLS in front of wp-env use a self-signed certificate.
         ignoreHTTPSErrors: true,
         storageState: STORAGE_STATE_PATH,
-        video: 'retain-on-failure',
+        /*
+         * retain-on-failure still records every test and discards the passing ones, which costs
+         * CPU on a runner where WordPress is the bottleneck. on-first-retry records only the rerun
+         * of a test that already failed, and CI retries twice, so failures still ship a video and trace.
+         */
+        video: 'on-first-retry',
         screenshot: 'only-on-failure',
-        trace: 'retain-on-failure',
+        trace: 'on-first-retry',
     },
     projects: [
         {

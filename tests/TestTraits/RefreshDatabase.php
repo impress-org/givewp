@@ -8,15 +8,17 @@ trait RefreshDatabase {
     /**
      * Truncate all Give database tables.
      *
+     * @since TBD Match tables by the current prefix so parallel workers do not truncate each other's tables.
      * @since 2.22.1
      *
      * @return void
      */
     public function refreshDatabase()
     {
-	    $giveTables = DB::get_col("SHOW TABLES LIKE '%give%'");
-        $wpCommentTables = DB::get_col("SHOW TABLES LIKE '%comment%'");
-        $wpPostTables = DB::get_col("SHOW TABLES LIKE '%post%'");
+        $prefix = DB::prefix('');
+        $giveTables = DB::get_col("SHOW TABLES LIKE '{$prefix}give%'");
+        $wpCommentTables = DB::get_col("SHOW TABLES LIKE '{$prefix}comment%'");
+        $wpPostTables = DB::get_col("SHOW TABLES LIKE '{$prefix}post%'");
 
         foreach (array_merge($giveTables, $wpCommentTables, $wpPostTables) as $table) {
             DB::query("TRUNCATE TABLE $table");
