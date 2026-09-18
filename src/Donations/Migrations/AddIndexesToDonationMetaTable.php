@@ -10,7 +10,10 @@ use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 /**
  * The donation meta table only indexes donation_id and meta_key on their own. Every model query
  * joins the table once per meta key, and every filter by value (test mode, campaign, email) has
- * to scan the whole key. Two composite indexes cover both patterns.
+ * to scan the whole key. Two composite indexes cover both patterns, and the single-column indexes
+ * they start with become redundant, so they are dropped to keep the table from growing by more
+ * than about a third. This mirrors the WooCommerce HPOS order meta table, which indexes
+ * (meta_key, meta_value) and (order_id, meta_key, meta_value) only.
  *
  * @since TBD
  */
@@ -51,18 +54,23 @@ class AddIndexesToDonationMetaTable extends Migration
         $table = $wpdb->prefix . 'give_donationmeta';
 
         try {
-            $existing = DB::get_col("SHOW INDEX FROM {$table}", 2);
+            $existing = array_flip(DB::get_col("SHOW INDEX FROM {$table}", 2));
 
-            $indexes = array_diff_key([
+            $clauses = array_diff_key([
                 'donation_meta_key' => 'ADD INDEX donation_meta_key (donation_id, meta_key)',
                 'meta_key_value' => 'ADD INDEX meta_key_value (meta_key, meta_value(191))',
-            ], array_flip($existing));
+            ], $existing);
 
-            if (!$indexes) {
+            $clauses += array_intersect_key([
+                'donation_id' => 'DROP INDEX donation_id',
+                'meta_key' => 'DROP INDEX meta_key',
+            ], $existing);
+
+            if (!$clauses) {
                 return;
             }
 
-            DB::query("ALTER TABLE {$table} " . implode(', ', $indexes));
+            DB::query("ALTER TABLE {$table} " . implode(', ', $clauses));
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while adding indexes to the {$table} table", 0, $exception);
         }
