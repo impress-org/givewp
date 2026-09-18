@@ -24,12 +24,15 @@ class NameCollisionException extends Exception
      */
     protected $incomingNode;
     
+    /**
+     * @since TBD Declare the nullable parameter explicitly.
+     */
     public function __construct(
         string $name,
         Node $existingNode,
         Node $incomingNode,
         int $code = 0,
-        Exception $previous = null
+        ?Exception $previous = null
     )
     {
         $this->nodeNameCollision = $name;

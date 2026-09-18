@@ -15,6 +15,14 @@ a stack trace pointing at the line.
 
 Setup and conventions are in [tests/README.md](../tests/README.md).
 
+`composer test` runs the suite through [paratest](https://github.com/paratestphp/paratest), one
+worker per CPU core. Each worker bootstraps WordPress under its own table prefix (`wptests1_`,
+`wptests2_`, ...) taken from the `TEST_TOKEN` environment variable paratest sets, so workers never
+see each other's rows. Two things follow from that: every test file must contain a class whose name
+matches the file name, because PHPUnit's single-file loader is strict about it, and anything that
+hardcodes `wptests_` must use `$wpdb->prefix` instead. `composer test:serial` runs plain PHPUnit in
+one process; use it with `--filter`, which paratest does not support in this mode, and when debugging.
+
 Add-ons run this same suite against core: an add-on's `tests/bootstrap.php` requires GiveWP's
 autoloader from the sibling directory and hands its main plugin file to
 `Give\Tests\Framework\Addons\Bootstrap`, which loads the add-on on `muplugins_loaded` and then

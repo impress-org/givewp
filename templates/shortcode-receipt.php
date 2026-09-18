@@ -45,7 +45,7 @@ $full_name = give_get_donor_name_with_title_prefixes( $user['title'], "{$user['f
  */
 $give_receipt_args['donation_receipt']['donor'] = [
 	'name'    => __( 'Donor', 'give' ),
-	'value'   => $full_name,
+	'value'   => esc_html( give_strip_shortcodes_deep( $full_name ) ),
 	'display' => $give_receipt_args['donor'],
 ];
 
@@ -60,7 +60,7 @@ $give_receipt_args['donation_receipt']['donor'] = [
  */
 $give_receipt_args['donation_receipt']['company_name'] = [
 	'name'    => __( 'Company Name', 'give' ),
-	'value'   => esc_attr( $company_name ),
+	'value'   => esc_html( give_strip_shortcodes_deep( $company_name ) ),
 	// Do not show company field if empty
 	'display' => empty( $company_name ) ? false : $give_receipt_args['company_name'],
 ];

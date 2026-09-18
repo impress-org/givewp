@@ -25,19 +25,21 @@ abstract class PaymentCommand implements GatewayCommand
      * @param string|null $gatewayTransactionId
      *
      * @return static
+     * @since TBD Declare the nullable parameter explicitly.
      */
-    public static function make(string $gatewayTransactionId = null): PaymentCommand
+    public static function make(?string $gatewayTransactionId = null): PaymentCommand
     {
         return new static($gatewayTransactionId);
     }
 
     /**
+     * @since TBD Declare the nullable parameter explicitly.
      * @since      2.18.0
      * @since 2.23.1 Make constructor final to avoid unsafe usage of `new static()`.
      *
      * @param string|null $gatewayTransactionId
      */
-    final public function __construct(string $gatewayTransactionId = null)
+    final public function __construct(?string $gatewayTransactionId = null)
     {
         $this->gatewayTransactionId = $gatewayTransactionId;
     }

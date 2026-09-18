@@ -101,7 +101,7 @@ class Tests_Cache extends Give_Unit_Test_Case {
 	 * @cover        Give_Cache::set
 	 * @dataProvider give_set_provider
 	 */
-	function test_set( $cache_key, $data, $expiration = 0, $expected ) {
+	function test_set( $cache_key, $data, $expiration, $expected ) {
 		Give_Cache::set( $cache_key, $data, $expiration );
 		$result = (bool) Give_Cache::get( $cache_key );
 

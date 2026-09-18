@@ -22,7 +22,7 @@ class AddExtraMetadataToPaymentIntentTest extends TestCase
     public function testShouldAddCampaignNameToMetadata()
     {
         $campaign = Campaign::factory()->create(['title' => 'Save The Whales']);
-        $donation = Donation::factory()->create(['formId' => $campaign->defaultFormId]);
+        $donation = Donation::factory()->create(['formId' => $campaign->defaultFormId, 'campaignId' => $campaign->id]);
 
         $metadata = (new AddExtraMetadataToPaymentIntent())([], $donation->id);
 
@@ -35,7 +35,7 @@ class AddExtraMetadataToPaymentIntentTest extends TestCase
     public function testShouldTruncateCampaignNameExceedingStripeMaxLength()
     {
         $campaign = Campaign::factory()->create(['title' => str_repeat('a', 600)]);
-        $donation = Donation::factory()->create(['formId' => $campaign->defaultFormId]);
+        $donation = Donation::factory()->create(['formId' => $campaign->defaultFormId, 'campaignId' => $campaign->id]);
 
         $metadata = (new AddExtraMetadataToPaymentIntent())([], $donation->id);
 
@@ -52,7 +52,7 @@ class AddExtraMetadataToPaymentIntentTest extends TestCase
     public function testShouldNotAddCampaignNameWhenCampaignTitleIsEmpty()
     {
         $campaign = Campaign::factory()->create();
-        $donation = Donation::factory()->create(['formId' => $campaign->defaultFormId]);
+        $donation = Donation::factory()->create(['formId' => $campaign->defaultFormId, 'campaignId' => $campaign->id]);
 
         $campaign->title = '';
         give(CampaignRepository::class)->update($campaign);
