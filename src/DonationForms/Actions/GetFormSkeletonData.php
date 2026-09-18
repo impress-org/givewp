@@ -53,7 +53,7 @@ class GetFormSkeletonData
      *
      * @param DesignSettingsImageStyle|string|null $style
      */
-    private function imageTakesSpace($url, $style): bool
+    private function imageTakesSpace(?string $url, $style): bool
     {
         if (!$url || !$style instanceof DesignSettingsImageStyle) {
             return false;

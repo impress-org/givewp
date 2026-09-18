@@ -237,6 +237,28 @@ test.describe('External donation form embeds', () => {
         await expect(page.getByRole('button', {name: 'Give now'})).toBeFocused();
     });
 
+    test('shows the form skeleton inside the iframe before the app loads', async ({page}) => {
+        // Hold the app bundle so the window between the form view's HTML and the handshake is
+        // wide enough to observe.
+        await page.route(/build\/donationFormApp\.js/, async (route) => {
+            await new Promise((resolve) => setTimeout(resolve, 2_000));
+            await route.continue();
+        });
+
+        await page.goto(EXTERNAL_PAGE, {waitUntil: 'domcontentloaded'});
+
+        const iframe = page.locator('givewp-donation-form iframe');
+        const skeleton = page.frameLocator('givewp-donation-form iframe').locator('.givewp-embed-skeleton');
+
+        // The shell message reveals the iframe with the skeleton in it and removes the spinner.
+        await expect(skeleton).toBeVisible();
+        await expect(iframe).toBeVisible();
+        await expect(page.locator('givewp-donation-form .givewp-embed__spinner')).toHaveCount(0);
+
+        await waitForForm(donationForm(page));
+        await expect(skeleton).toHaveCount(0);
+    });
+
     test('degrades to a link when the form cannot load', async ({page}) => {
         await page.route(`${EXTERNAL_PAGE}*`, (route) =>
             route.fulfill({contentType: 'text/html', body: externalPageHtml(formId)})

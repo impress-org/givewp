@@ -1,0 +1,4 @@
+significance: patch
+type: enhancement
+entry: Render the donation form loading skeleton on the server so on-page embeds show it before any script runs, and external embeds show it as soon as the form page responds
+timestamp: 2026-09-18T00:00:00.000Z
