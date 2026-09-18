@@ -130,6 +130,7 @@ class TestDonorRepository extends TestCase
     }
 
     /**
+     * @since TBD Act as an administrator: additional emails written by untrusted users now require verification.
      * @since 3.7.0 Test "phone" property
      * @since 2.19.6
      *
@@ -139,6 +140,8 @@ class TestDonorRepository extends TestCase
      */
     public function testUpdateShouldUpdateDonorValuesInTheDatabase()
     {
+        wp_set_current_user(self::factory()->user->create(['role' => 'administrator']));
+
         /** @var Donor $donor */
         $donor = Donor::factory()->create();
         $repository = new DonorRepository();

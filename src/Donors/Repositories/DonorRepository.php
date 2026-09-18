@@ -4,6 +4,7 @@ namespace Give\Donors\Repositories;
 
 use Exception;
 use Give\Donations\ValueObjects\DonationMetaKeys;
+use Give\Donors\Actions\SendAdditionalEmailVerification;
 use Give\Donors\Exceptions\FailedDonorUpdateException;
 use Give\Donors\Models\Donor;
 use Give\Donors\Models\DonorModelQueryBuilder;
@@ -11,6 +12,7 @@ use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Donors\ValueObjects\DonorType;
 use Give\Framework\Database\DB;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
+use Give\Framework\Permissions\Facades\UserPermissions;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Helpers\Hooks;
 use Give\Log\Log;
@@ -36,6 +38,16 @@ class DonorRepository
         'lastName',
         'email',
     ];
+
+    /**
+     * Additional emails diverted to verification by updateAdditionalEmails(),
+     * dispatched once the donor update transaction commits.
+     *
+     * @since TBD
+     *
+     * @var array<int, array{0: int, 1: string}>
+     */
+    private $additionalEmailsToVerify = [];
 
     /**
      * @since 4.4.0
@@ -246,6 +258,8 @@ class DonorRepository
 
         DB::query('COMMIT');
 
+        $this->sendAdditionalEmailVerifications();
+
         Hooks::doAction('givewp_donor_updated', $donor);
     }
 
@@ -428,6 +442,12 @@ class DonorRepository
      * Additional emails are assigned to the same additional_email meta key.
      * In order to update them we need to delete and re-insert.
      *
+     * Untrusted writers — anyone without donor edit capabilities, i.e. donors updating their
+     * own profile — may keep or remove the emails already stored for them, but new emails are
+     * diverted to pending verification (DonorPendingEmailRepository) instead of being stored,
+     * and a verification email is dispatched after the update commits.
+     *
+     * @since TBD Require ownership verification for new additional emails written by untrusted users.
      * @since 4.4.0 Remove all additional emails and re-insert only the new ones
      * @since 3.20.0 store meta using native WP functions
      * @since 2.19.6
@@ -435,6 +455,35 @@ class DonorRepository
      * @return void
      */
     private function updateAdditionalEmails(Donor $donor)
+    {
+        if (UserPermissions::donors()->canEdit()) {
+            $this->overwriteAdditionalEmails($donor);
+
+            return;
+        }
+
+        $storedEmails = $this->getAdditionalEmails($donor->id) ?: [];
+        $incomingEmails = $donor->additionalEmails ?: [];
+
+        // Removals of already-stored emails are honored; only additions require verification.
+        $donor->additionalEmails = array_values(array_intersect($incomingEmails, $storedEmails));
+
+        $this->overwriteAdditionalEmails($donor);
+
+        foreach (array_diff($incomingEmails, $storedEmails) as $newEmail) {
+            $this->additionalEmailsToVerify[] = [(int)$donor->id, $newEmail];
+        }
+    }
+
+    /**
+     * Delete all additional emails and re-insert the donor's current list.
+     *
+     * @since TBD Extracted from updateAdditionalEmails
+     * @since 4.4.0
+     *
+     * @return void
+     */
+    private function overwriteAdditionalEmails(Donor $donor)
     {
         DB::table('give_donormeta')
             ->where('donor_id', $donor->id)
@@ -444,6 +493,57 @@ class DonorRepository
         foreach ($donor->additionalEmails as $additionalEmail) {
             give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDITIONAL_EMAILS, $additionalEmail);
         }
+    }
+
+    /**
+     * Dispatch the verification emails queued by updateAdditionalEmails().
+     *
+     * Runs after the transaction commits so no email is sent for a rolled back update.
+     *
+     * @since TBD
+     *
+     * @return void
+     */
+    private function sendAdditionalEmailVerifications()
+    {
+        if (empty($this->additionalEmailsToVerify)) {
+            return;
+        }
+
+        $sendVerification = give(SendAdditionalEmailVerification::class);
+
+        foreach ($this->additionalEmailsToVerify as [$donorId, $email]) {
+            $sendVerification($donorId, $email);
+        }
+
+        $this->additionalEmailsToVerify = [];
+    }
+
+    /**
+     * Append an additional email to a donor, trusting that the caller has verified the donor
+     * owns the email (payment context, admin action, or completed token verification).
+     *
+     * This is the only write path for additional emails that bypasses ownership verification.
+     *
+     * @since TBD
+     *
+     * @return bool True when the email was appended, false when it was rejected.
+     */
+    public function addVerifiedAdditionalEmail(Donor $donor, string $email): bool
+    {
+        if (!$donor->id || !is_email($email) || $donor->hasEmail($email)) {
+            return false;
+        }
+
+        Hooks::doAction('givewp_donor_updating', $donor);
+
+        $donor->additionalEmails = array_merge($donor->additionalEmails ?: [], [$email]);
+
+        $metaId = give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDITIONAL_EMAILS, $email);
+
+        Hooks::doAction('givewp_donor_updated', $donor);
+
+        return (bool)$metaId;
     }
 
     /**

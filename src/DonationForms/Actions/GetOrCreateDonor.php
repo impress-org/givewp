@@ -13,6 +13,7 @@ class GetOrCreateDonor
     public $donorCreated = false;
 
     /**
+     * @since TBD Attach the payment email via DonorRepository::addVerifiedAdditionalEmail() so checkout bypasses additional-email verification.
      * @since 3.9.0 Add support to "phone" property
      * @since 3.2.0
      *
@@ -30,9 +31,9 @@ class GetOrCreateDonor
         $donor = $userId ? Donor::whereUserId($userId) : null;
 
         // if they exist as a donor & user then make sure they don't already own this email before adding to their additional emails list..
+        // The payment email context is trusted: attach it directly, bypassing ownership verification.
         if ($donor && !$donor->hasEmail($donorEmail) && !Donor::whereEmail($donorEmail)) {
-            $donor->additionalEmails = array_merge($donor->additionalEmails ?? [], [$donorEmail]);
-            $donor->save();
+            give()->donors->addVerifiedAdditionalEmail($donor, $donorEmail);
         }
 
         // if donor is not a user than check for any donor matching this email
