@@ -41,6 +41,11 @@ TestHooks::addFilter('muplugins_loaded', static function () {
 TestHooks::addFilter('setup_theme', static function () {
     echo 'Installing GiveWP.....' . PHP_EOL;
     give()->install();
+
+    // Give_Roles::add_caps() writes capabilities to the roles array and the database but not to
+    // the WP_Role objects WordPress already built, so this process would not see them until a
+    // reload. On a table prefix that has never been installed, nothing else reloads them.
+    wp_roles()->for_site();
 });
 
 // Eagerly declare Harbor global function stubs so they win Harbor's

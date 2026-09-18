@@ -105,6 +105,24 @@ the donation form block both route to `BlockRenderController`. Note the shortcod
 unchanged when the form isn't v3, handing off to the legacy shortcode handler. If
 `BlockRenderController` renders nothing, it falls back to an iframe pointed at the view route.
 
+The controller prints a root element; `Blocks/DonationFormBlock/resources/app/index.tsx` mounts the
+React embed app into it, and the Elementor widgets and the `CampaignForm` and `DonateButton` blocks
+all reach that same app. The `onpage` and `modal` formats render the iframe through
+`resources/shared/EmbedFrame`, which owns the loading state: a spinner holds the space until the
+iframe-resizer handshake (`onInit`), because the iframe's own `load` event fires for error pages
+too. There is no reliable failure signal, so a slow handshake is never treated as one: after ten
+seconds the iframe and placeholder stay put and a link to the standalone form page fades in over
+them, pinned to the top edge of the frame because a skeleton can run past the fold, and a late
+handshake still swaps the form in. On
+the `onpage` format the placeholder is a skeleton rather than a spinner: `BlockRenderController` runs
+`Actions/GetFormSkeletonData` and serializes the form's design id, header, goal and image flags, per-section block names and
+enabled gateway count into a `data-form-skeleton` attribute on the root, and `EmbedFrame/EmbedSkeleton` draws a grey sketch from
+it, one section per block for classic and only the first step for the multi-step designs. The
+skeleton hard-codes the core designs' spacing and only knows the three core design ids; any other
+id, including add-on designs, gets the spinner. The external embed script for other websites has to
+stay self-contained and so carries its own copy of the spinner and fallback behavior, without the
+skeleton.
+
 **v3, standalone view** — `Controllers/DonationFormViewController::show()` for the real form and
 `::preview()` for the builder preview. Both build a `DonationFormViewModel` and render the React
 app. `preview()` takes blocks and settings from the request rather than the database, which is how
@@ -158,3 +176,4 @@ before acting on it for anything substantial.
 - `src/Framework/FieldsAPI/` — the field schema v3 forms compile down to ([README](../../src/Framework/FieldsAPI/README.md))
 - `src/Framework/Blocks/` — block collection stored in `formBuilderFields`
 - `src/DonationForms/resources/app/` — the front-end React form
+- [external-embeds.md](external-embeds.md) — embedding a v3 form on a site outside WordPress

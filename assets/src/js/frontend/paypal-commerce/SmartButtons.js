@@ -11,6 +11,7 @@ class SmartButtons extends PaymentMethod {
     /**
      * Setup properties.
      *
+     * @since 4.16.9 Drop the updateOrderAmount property; the server reconciles the order amount before capture.
      * @since 3.5.0 Add the updateOrderAmount property
      * @since 2.9.0
      */
@@ -18,7 +19,6 @@ class SmartButtons extends PaymentMethod {
         this.ccFieldsContainer = this.form.querySelector('[id^="give_cc_fields-"]');
         this.recurringChoiceHiddenField = this.form.querySelector('input[name="_give_is_donation_recurring"]');
         this.smartButton = null;
-        this.updateOrderAmount = false;
     }
 
     /**
@@ -114,6 +114,7 @@ class SmartButtons extends PaymentMethod {
     /**
      * On click event handler for smart buttons.
      *
+     * @since 4.16.9 Drop the amount observer; the server reconciles the order amount before capturing.
      * @since 2.9.0
      *
      * @param {object} data PayPal button data.
@@ -136,35 +137,11 @@ class SmartButtons extends PaymentMethod {
         const result = await Give.form.fn.isDonorFilledValidData(this.form, formData);
 
         if ('success' === result) {
-            this.observeAmount();
             return actions.resolve();
         }
 
         this.showError(result);
         return actions.reject();
-    }
-
-    /**
-     * Watching for changes in the amount field input after the user has clicked on the smart buttons
-     * @since 3.5.0
-     */
-    observeAmount() {
-        const $this = this;
-        const giveAmount = $this.form.querySelector('#give-amount');
-
-        if (!!giveAmount) {
-            const observer = new MutationObserver(function (mutations) {
-                $this.updateOrderAmount = true;
-            });
-
-            const config = {
-                attributes: true,
-                childList: true,
-                characterData: true,
-            };
-
-            observer.observe(giveAmount, config);
-        }
     }
 
     /**
@@ -245,54 +222,23 @@ class SmartButtons extends PaymentMethod {
     /**
      * Order approve event handler for smart buttons.
      *
+     * The approved order is sent with the donation and captured on the server, so the amount that
+     * is captured is the one the server validated. Any capture failure is reported by the donation
+     * submission that follows.
+     *
+     * @since 4.16.9 Send the approved order with the donation instead of capturing it here.
      * @since 3.5.0 Add 'update_amount' query string to the ajax URL
      * @since 3.1.2 Handle custom error.
      * @since 2.9.0
      *
      * @param {object} data PayPal button data.
-     * @param {object} actions PayPal button actions.
-     *
-     * @return {*} Return whether or not PayPal payment captured.
      */
-    async orderApproveHandler(data, actions) {
+    async orderApproveHandler(data) {
         Give.form.fn.showProcessingState(window.givePayPalCommerce.textForOverlayScreen);
         Give.form.fn.disable(this.jQueryForm, true);
         Give.form.fn.removeErrors(this.jQueryForm);
 
-        // eslint-disable-next-line
-        const response = await fetch(
-            `${this.ajaxurl}?action=give_paypal_commerce_approve_order&order=${data.orderID}&update_amount=${this.updateOrderAmount}`,
-            {
-                method: 'post',
-                body: DonationForm.getFormDataWithoutGiveActionField(this.form),
-            }
-        );
-        const responseJson = await response.json();
-
-        // Three cases to handle:
-        //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
-        //   (2) Other non-recoverable errors -> Show a failure message
-        //   (3) Successful transaction -> Show a success / thank you message
-
-        let errorDetail = {};
-        if (!responseJson.success) {
-            Give.form.fn.disable(this.jQueryForm, false);
-            Give.form.fn.hideProcessingState();
-
-            this.displayErrorMessage(responseJson.data.error, true);
-
-            errorDetail = responseJson.data.error?.details?.[0];
-            if (errorDetail && errorDetail.issue === 'INSTRUMENT_DECLINED') {
-                // Recoverable state, see: "Handle Funding Failures"
-                // https://developer.paypal.com/docs/checkout/integration-features/funding-failure/
-                return actions.restart();
-            }
-
-            return;
-        }
-
-        const orderData = responseJson.data.order;
-        await DonationForm.addFieldToForm(this.form, orderData.id, 'payPalOrderId');
+        await DonationForm.addFieldToForm(this.form, data.orderID, 'payPalOrderId');
 
         this.submitDonationForm();
     }

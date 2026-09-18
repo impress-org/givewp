@@ -6,8 +6,10 @@ import {__} from '@wordpress/i18n';
 import {FieldValues, UseFormSetError} from 'react-hook-form';
 import postFormData from '@givewp/forms/app/utilities/postFormData';
 import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesToFormData';
+import {getAuthToken} from '@givewp/forms/app/utilities/authToken';
 
 /**
+ * @since TBD Send the auth token so embedded forms stay signed in without cookies
  * @since 3.0.0
  */
 export default async function handleValidationRequest(
@@ -26,7 +28,7 @@ export default async function handleValidationRequest(
     }
 
     try {
-        const formData = convertValuesToFormData(values);
+        const formData = convertValuesToFormData({...values, authToken: getAuthToken()});
 
         const {response} = await postFormData(validateUrl, formData);
 

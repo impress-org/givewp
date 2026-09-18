@@ -46,6 +46,7 @@ trait HandleHttpResponses
      * 1. Redirect to donation form if donation form submit.
      * 2. Return json response if processing payment on ajax.
      *
+     * @since TBD Declare the nullable parameter explicitly.
      * @since 3.0.0 Update response with type and WP_Error errors.
      * @since 2.21.0 Handle PHP exception.
      * @since 2.19.0
@@ -54,7 +55,7 @@ trait HandleHttpResponses
         Exception $exception,
         string $message,
         string $type = DonationFormErrorTypes::UNKNOWN,
-        WP_Error $errors = null
+        ?WP_Error $errors = null
     ) {
         if ($exception instanceof PaymentGatewayException) {
             $message = $exception->getMessage();

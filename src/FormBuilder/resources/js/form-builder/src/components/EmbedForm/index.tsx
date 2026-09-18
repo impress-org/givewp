@@ -1,15 +1,19 @@
-import {MouseEventHandler, useCallback, useEffect, useRef, useState} from 'react';
+import {MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import cx from 'classnames';
 import {createPortal} from 'react-dom';
 import {useDispatch, useSelect} from '@wordpress/data';
+import {useCopyToClipboard} from '@wordpress/compose';
 import {store} from '@wordpress/core-data';
 import {__, sprintf} from '@wordpress/i18n';
-import {Button, RadioControl, SelectControl, Spinner, TextControl} from '@wordpress/components';
+import {Button, Popover, RadioControl, SelectControl, Spinner, TabPanel, TextControl} from '@wordpress/components';
+import {PanelColorSettings} from '@wordpress/block-editor';
+import defaultColors from '@givewp/form-builder/settings/design/style-controls/color/defaultColors';
 import {external} from '@wordpress/icons';
 import getWindowData from '@givewp/form-builder/common/getWindowData';
 import {CheckIcon} from '@givewp/form-builder/components/icons';
 import {CopyIcon, ExitIcon} from '@givewp/components/AdminUI/Icons';
 import {Interweave} from 'interweave';
+import type {FormSettings} from '@givewp/form-builder/types/formSettings';
 
 import './styles.scss';
 
@@ -32,6 +36,7 @@ interface StateProps {
     selectedPost: string;
     selectedStyle: string;
     openFormButton: string;
+    buttonColor: string;
     isCopied: boolean;
     isInserting: boolean;
     insertPageNotSelected: boolean;
@@ -47,7 +52,42 @@ interface StateProps {
  */
 export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
 
-    const {formId} = getWindowData();
+    const {formId, externalEmbedScriptUrl, settings, campaignColors} = getWindowData();
+    const [isExternalEmbedCopied, setIsExternalEmbedCopied] = useState<boolean>(false);
+
+    const parsedSettings = useMemo((): Partial<FormSettings> => {
+        try {
+            return JSON.parse(settings);
+        } catch (error) {
+            console.error(error);
+
+            return {};
+        }
+    }, [settings]);
+
+    /**
+     * The color the launcher button starts with: the form's own primary color,
+     * campaign inheritance included. The form inside the iframe resolves its
+     * colors itself; this only seeds the button on the host page, and the
+     * admin can change it before copying.
+     *
+     * @since TBD
+     */
+    const formPrimaryColor = useMemo((): string => {
+        const inherit = parsedSettings.inheritCampaignColors;
+
+        return (inherit && campaignColors?.primaryColor) || parsedSettings.primaryColor || '';
+    }, [parsedSettings, campaignColors]);
+
+    /**
+     * The confirmation page redirect sends donors to a page on this
+     * WordPress site after donating - which means leaving the site the form
+     * is embedded on, so the external tab warns about it.
+     *
+     * @since TBD
+     */
+    const hasConfirmationRedirect = !!parsedSettings.enableReceiptConfirmationPage;
+
     const newPostNameRef = useRef<HTMLInputElement>(null);
     const openFormBtnRef = useRef<HTMLInputElement>(null);
     const viewInsertedPageBtnRef = useRef<HTMLButtonElement>(null);
@@ -62,6 +102,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
         selectedPost: '',
         selectedStyle: 'onpage',
         openFormButton: '',
+        buttonColor: '',
         isCopied: false,
         isInserting: false,
         insertPageNotSelected: false,
@@ -212,44 +253,71 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
     }
 
     /**
-     * Handle copying shortcode to clipboard
+     * The snippet is pasted as HTML, so every interpolated attribute value is
+     * encoded. A button label with a quote must not break the markup.
+     *
+     * @since TBD
      */
-    const handleCopy = async () => {
-        if (navigator.clipboard && window.isSecureContext) {
-            await navigator.clipboard.writeText(getShortcode());
-        } else {
-            const textArea = document.createElement('textarea');
+    const attribute = (name: string, value: string | number): string => {
+        const encoded = String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
 
-            textArea.value = getShortcode();
-            textArea.style.display = 'hidden';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                document.execCommand('copy');
-            } catch (error) {
-                console.error(error);
-            } finally {
-                textArea.remove();
+        return `${name}="${encoded}"`;
+    };
+
+    const buttonColor = state.buttonColor || formPrimaryColor;
+
+    /**
+     * The snippet carries only per-embed choices: the form, its title for
+     * assistive tech, and the launcher's display style, label, and color.
+     * Translated default labels travel with the script itself.
+     *
+     * @since TBD
+     */
+    const getExternalEmbedSnippet = () => {
+        const attributes = [attribute('form-id', formId)];
+
+        // The iframe title and modal label; the form's own title beats the generic default.
+        if (parsedSettings.formTitle) {
+            attributes.push(attribute('form-title', parsedSettings.formTitle));
+        }
+
+        // Default labels travel with the script in the site's locale (see
+        // GetExternalEmbedScriptData); only admin choices are written out.
+        if (isButton) {
+            attributes.push(attribute('display-style', state.selectedStyle));
+            if (state.openFormButton) {
+                attributes.push(attribute('button-text', state.openFormButton));
+            }
+            if (buttonColor) {
+                attributes.push(attribute('primary-color', buttonColor));
             }
         }
 
-        setState(prevState => {
-            return {
-                ...prevState,
-                isCopied: true,
-            };
-        });
+        return [
+            `<script ${attribute('src', externalEmbedScriptUrl)} defer></script>`,
+            `<givewp-donation-form ${attributes.join(' ')}></givewp-donation-form>`,
+        ].join('\n');
+    };
 
-        setTimeout(() => {
-            setState(prevState => {
-                return {
-                    ...prevState,
-                    isCopied: false,
-                };
-            });
-        }, 2000);
-    }
+    /**
+     * Both copy buttons go through the WordPress clipboard hook, which reads
+     * the text on click and only reports success once the copy actually landed.
+     *
+     * @since TBD
+     */
+    const copyShortcodeRef = useCopyToClipboard(getShortcode, () => {
+        setState((prevState) => ({...prevState, isCopied: true}));
+        setTimeout(() => setState((prevState) => ({...prevState, isCopied: false})), 2000);
+    });
+
+    const copyExternalEmbedRef = useCopyToClipboard(getExternalEmbedSnippet, () => {
+        setIsExternalEmbedCopied(true);
+        setTimeout(() => setIsExternalEmbedCopied(false), 2000);
+    });
 
     /**
      * Handle inserting form into existing post/page
@@ -337,7 +405,18 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
             : __('post', 'give');
     }
 
+    /*
+     * The builder's Popover.Slot lives inside the block editor, far below this
+     * panel's z-index, so a color picker opened from here would render behind
+     * the panel. Popovers from this panel go to a sibling slot at the same
+     * z-index instead. The slot-name provider is the documented way to pick a
+     * slot, but it is not in the components' type definitions.
+     */
+    // @ts-expect-error __unstableSlotNameProvider is missing from the Popover types.
+    const PopoverSlotName = Popover.__unstableSlotNameProvider;
+
     return createPortal(
+        <PopoverSlotName value="give-embed-modal">
         <div className="give-embed-modal">
 
             <div className="give-embed-modal-header">
@@ -355,6 +434,97 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                 </button>
             </div>
 
+            <TabPanel
+                className="give-embed-modal-tabs"
+                tabs={[
+                    {name: 'internal', title: __('This site', 'give')},
+                    {name: 'external', title: __('External website', 'give')},
+                ]}
+            >
+                {(tab) => tab.name === 'external' ? (
+                    <>
+                        <div className="give-embed-modal-row">
+                            <strong>
+                                {__('Embed on an external website', 'give')}
+                            </strong>
+
+                            <div className="give-embed-modal-helptext">
+                                {__('Copy and paste this snippet into any other website to display this donation form there.', 'give')}
+                            </div>
+
+                            <SelectControl
+                                label={__('Display style', 'give')}
+                                value={state.selectedStyle}
+                                options={displayStyles}
+                                onChange={value => setState(prevState => {
+                                    return {
+                                        ...prevState,
+                                        selectedStyle: value,
+                                    };
+                                })}
+                                help={getStyleDescription()}
+                            />
+
+                            {isButton && (
+                                <>
+                                    <TextControl
+                                        placeholder={__('Donate', 'give')}
+                                        label={__('Button label', 'give')}
+                                        value={state.openFormButton}
+                                        onChange={value => setState(prevState => {
+                                            return {
+                                                ...prevState,
+                                                openFormButton: value,
+                                            };
+                                        })}
+                                    />
+
+                                    {/* Same control as the Design tab's Primary Color, so it looks and works the same. */}
+                                    <PanelColorSettings
+                                        className="give-embed-modal-color"
+                                        colorSettings={[
+                                            {
+                                                value: buttonColor,
+                                                onChange: (value: string) =>
+                                                    setState((prevState) => ({...prevState, buttonColor: value ?? ''})),
+                                                label: __('Button color', 'give'),
+                                                disableCustomColors: false,
+                                                colors: defaultColors,
+                                            },
+                                        ]}
+                                    />
+
+                                    <div className="give-embed-modal-helptext">
+                                        {__('The button is part of the other website, so it keeps this color until the snippet is updated. The form itself always uses its current design.', 'give')}
+                                    </div>
+                                </>
+                            )}
+
+                            {hasConfirmationRedirect && (
+                                <div className="give-embed-modal-helptext">
+                                    {__('This form has "Confirmation Page Redirect" enabled in its settings, so donors will leave the site the form is embedded on after donating.', 'give')}
+                                </div>
+                            )}
+
+                            <pre className="give-embed-modal-code" tabIndex={0} aria-label={__('Embed code', 'give')}>
+                                <code>{getExternalEmbedSnippet()}</code>
+                            </pre>
+
+                            <div className="give-embed-modal-items give-embed-modal-copy">
+                                <div>
+                                    <Button
+                                        icon={isExternalEmbedCopied ? CheckIcon : CopyIcon}
+                                        variant="secondary"
+                                        ref={copyExternalEmbedRef}
+                                    >
+                                        {isExternalEmbedCopied ? __('Copied', 'give') : __('Copy Embed Code', 'give')}
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <>
             <div className="give-embed-modal-row">
 
                 <strong>
@@ -576,7 +746,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                         <Button
                             icon={state.isCopied ? CheckIcon : CopyIcon}
                             variant="secondary"
-                            onClick={handleCopy}
+                            ref={copyShortcodeRef}
                         >
                             {state.isCopied ? __('Copied', 'give') : __('Copy Shortcode', 'give')}
                         </Button>
@@ -591,7 +761,16 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
                     </div>
                 </div>
             </div>
-        </div>,
+
+                    </>
+                )}
+            </TabPanel>
+        </div>
+        <div className="give-embed-modal-popovers">
+            {/* @ts-ignore Popover.Slot is missing from the components' types, as in BlockEditorContainer. */}
+            <Popover.Slot name="give-embed-modal" />
+        </div>
+        </PopoverSlotName>,
         document.body,
     );
 }

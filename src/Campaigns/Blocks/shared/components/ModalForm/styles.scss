@@ -4,8 +4,18 @@
     padding: 1rem;
     overflow-y: scroll;
 
-    &[data-entering="true"] {
-        animation: modal-fade 300ms, modal-zoom 600ms;
+    /*
+     * The zoom runs on the content, not on this element: the close button
+     * inside is position: fixed, and a transformed ancestor would pin it to
+     * the dialog for the length of the animation, then let it jump to the
+     * viewport corner.
+     */
+    &[data-entering='true'] {
+        animation: modal-fade 300ms;
+
+        .givewp-donation-form-modal__dialog__content {
+            animation: modal-zoom 600ms;
+        }
     }
 
     @keyframes modal-fade {
@@ -34,23 +44,37 @@
         left: 0;
         width: 100vw;
         height: 100dvh;
-        background: rgba(0 0 0 / .7);
+        background: rgba(0 0 0 / 0.7);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         z-index: 100;
 
-        &[data-loading="true"] {
+        &[data-loading='true'] {
             display: none;
         }
 
-        &[data-entering="true"] {
+        &[data-entering='true'] {
             animation: modal-fade 300ms;
         }
 
-        &[data-exiting="true"] {
+        &[data-exiting='true'] {
             animation: modal-fade 150ms reverse ease-in;
+        }
+    }
+
+    /*
+     * While the form loads the launcher keeps its size and swaps the label
+     * for a spinner. Drawn in CSS so the external embed, which has no
+     * @wordpress/components, renders the same thing. `data-pending` is what
+     * react-aria's Button sets from isPending; the embed sets it by hand.
+     */
+    &__open {
+        position: relative;
+
+        &[data-pending] &__label {
+            visibility: hidden;
         }
     }
 
@@ -61,10 +85,22 @@
         transform: translate(-50%, -50%);
         z-index: 100;
         line-height: 1;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 1.5px solid currentColor;
+        border-right-color: transparent;
+        animation: modal-spin 1.4s linear infinite;
     }
 
-    &__open {
-        position: relative;
+    @keyframes modal-spin {
+        from {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        to {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
     }
 
     &__close {
@@ -72,7 +108,7 @@
         position: fixed;
         top: 25px;
         right: 25px;
-        padding: .75rem;
+        padding: 0.75rem;
         width: fit-content;
         background: #e7e8ed;
         cursor: pointer;
@@ -86,7 +122,9 @@
             width: 1rem;
         }
 
-        &:hover, &:focus, &:active {
+        &:hover,
+        &:focus,
+        &:active {
             border: 1px solid darken(#e7e8ed, 10%);
             background-color: darken(#e7e8ed, 10%);
         }

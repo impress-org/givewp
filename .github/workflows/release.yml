@@ -10,7 +10,7 @@ jobs:
 
     release:
         name: New release
-        runs-on: ubuntu-latest
+        runs-on: blacksmith-4vcpu-ubuntu-2404
         environment: live
         needs: tests
         permissions:
