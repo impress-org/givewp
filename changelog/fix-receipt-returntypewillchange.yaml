@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Resolved PHP 8.1 and later deprecation notices raised by the donation
+  receipt classes.
+timestamp: 2026-08-28T18:30:00.000Z
