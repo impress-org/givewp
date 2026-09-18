@@ -73,7 +73,8 @@ class GetExternalEmbedScriptData
 
     /**
      * The form ids the request names: a comma list in `form-id` and the path
-     * segment the router returns as `id`. Cleaned, deduplicated and capped.
+     * segment the router returns as `id`. Anything but a plain positive integer
+     * is dropped, then deduplicated and capped.
      *
      * @since TBD
      *
@@ -91,7 +92,9 @@ class GetExternalEmbedScriptData
             $ids[] = $request['id'];
         }
 
-        $ids = array_values(array_unique(array_filter(array_map('absint', $ids))));
+        // Only plain positive integers: absint() would read "-42" and "42abc" as 42.
+        $ids = array_filter(array_map('trim', array_map('strval', $ids)), 'ctype_digit');
+        $ids = array_values(array_unique(array_filter(array_map('intval', $ids))));
 
         return array_slice($ids, 0, self::MAX_FORMS);
     }

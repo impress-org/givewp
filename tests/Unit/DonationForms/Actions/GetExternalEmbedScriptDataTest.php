@@ -54,11 +54,16 @@ class GetExternalEmbedScriptDataTest extends TestCase
         $draft = DonationForm::factory()->create(['status' => DonationFormStatus::DRAFT()]);
         $published = DonationForm::factory()->create();
 
+        // A signed or mixed token must not alias a real id: absint("-42") and absint("42abc") are 42.
         $skeletons = (array)(new GetExternalEmbedScriptData())([
-            'form-id' => "{$draft->id},999999,abc,-1,{$published->id}",
+            'form-id' => "{$draft->id},999999,abc,-{$published->id},{$published->id}abc, {$published->id} ",
         ])['skeletons'];
 
         $this->assertSame([$published->id], array_keys($skeletons));
+
+        $this->assertSame([], (array)(new GetExternalEmbedScriptData())([
+            'form-id' => "-{$published->id},{$published->id}abc,{$published->id}.0",
+        ])['skeletons']);
     }
 
     /**
