@@ -202,6 +202,20 @@ trip.
   `load` for error pages too. If the handshake has not happened in ten seconds the element
   degrades to a plain "Open donation form" link. That covers frame-blocking headers, ad blockers,
   and network failure.
+- On the `onpage` style the iframe is also revealed earlier, on a `givewp-embed-shell` message.
+  The form view prints the form's skeleton (`RenderFormSkeleton`, the same markup the on-site
+  block prints in its own page) inside the root element, followed by one inline script that posts
+  the document's height to the parent. That arrives once the iframe's HTML and head stylesheets
+  have loaded, before the app bundles, which is the earliest the element can know anything about
+  the form without a request of its own. The element accepts the message only from the WordPress
+  origin and its own iframe's window, requires a finite positive height and caps it, sets that
+  height on the iframe and shows it; the handshake then hands height control to iframe-resizer as
+  before. The payload is that number and nothing else, which is why the form view addresses it to
+  `*`. The ten-second fallback keeps running after the shell message, and the modal ignores it: the
+  launcher keeps its spinner and the overlay stays hidden until the handshake. Until the shell
+  message the iframe is hidden but laid out at full width (`visibility: hidden`, absolutely
+  positioned), not `display: none`, so the form view measures its skeleton at the width it will be
+  shown at.
 - The form app may ask the host page to navigate (`givewp-navigate`) when it cannot reach
   `window.top` itself. The element honors that only when the message origin is exactly the
   WordPress origin, the source is its own iframe's window, and the URL parses as `http(s)`.

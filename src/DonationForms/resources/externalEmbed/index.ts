@@ -85,6 +85,13 @@ const CLOSE_ICON_SVG =
 
 const EXIT_ANIMATION_MS = 150;
 
+/**
+ * A ceiling on the height the shell message may ask for, so a broken
+ * measurement cannot stretch the host page. iframe-resizer corrects it at the
+ * handshake.
+ */
+const MAX_SHELL_HEIGHT_PX = 5000;
+
 function injectStyles() {
     if (document.getElementById(STYLE_ID)) {
         return;
@@ -115,20 +122,45 @@ class GiveWPDonationForm extends HTMLElement {
     launcher: HTMLElement | null = null;
 
     /**
-     * The form app asks the parent page to navigate when it cannot navigate
-     * window.top itself (see navigateTop.ts). Only messages from the
-     * WordPress origin with a valid http(s) URL are honored.
+     * Runs when the form view announces its shell (see below); set by
+     * renderForm for the on-page style only.
+     */
+    onShell: ((height: number) => void) | null = null;
+
+    /**
+     * Messages from the form inside the iframe. Only the WordPress origin and
+     * this element's own iframe window are listened to.
+     *
+     * `givewp-embed-shell`: the form view has painted its server-rendered
+     * skeleton and says how tall it is, so the on-page embed can show the
+     * iframe before the app bundles finish loading.
+     *
+     * `givewp-navigate`: the form app asks the parent page to navigate when
+     * it cannot navigate window.top itself (see navigateTop.ts). Only a valid
+     * http(s) URL is honored.
      */
     messageHandler = (event: MessageEvent) => {
         if (event.origin !== this.wpOrigin) {
             return;
         }
 
-        if (!event.data || typeof event.data !== 'object' || event.data.type !== 'givewp-navigate') {
+        if (!event.data || typeof event.data !== 'object') {
             return;
         }
 
         if (event.source !== this.iframe?.contentWindow) {
+            return;
+        }
+
+        if (event.data.type === 'givewp-embed-shell') {
+            const height = Number(event.data.height);
+            if (Number.isFinite(height) && height > 0) {
+                this.onShell?.(Math.min(height, MAX_SHELL_HEIGHT_PX));
+            }
+            return;
+        }
+
+        if (event.data.type !== 'givewp-navigate') {
             return;
         }
 
@@ -319,6 +351,11 @@ class GiveWPDonationForm extends HTMLElement {
      * Renders the loading state and the hidden iframe into target, reveals the
      * iframe on the resizer handshake, and falls back to a link on timeout.
      * onInit runs after the reveal.
+     *
+     * On the page (target is the element itself) the iframe is also revealed
+     * early, on the form view's shell message, so the skeleton the WordPress
+     * site rendered inside it shows while the app bundles load. In the modal
+     * the overlay waits for the handshake and the launcher keeps its spinner.
      */
     renderForm(src: string, target: HTMLElement, onInit?: () => void) {
         const loading = document.createElement('div');
@@ -334,7 +371,10 @@ class GiveWPDonationForm extends HTMLElement {
         iframe.src = src;
         // Matches the title the WordPress embeds use, so tooling and donors see one name.
         iframe.title = this.getAttribute('form-title') || I18N.formTitle;
-        iframe.style.cssText = 'width: 1px; min-width: 100%; border: 0; display: none;';
+        // Hidden but laid out at full width, so the form view measures its
+        // skeleton at the width it will be shown at.
+        iframe.style.cssText =
+            'width: 1px; min-width: 100%; border: 0; visibility: hidden; position: absolute; top: 0; left: 0;';
         iframe.setAttribute('data-givewp-embed', 'true');
         iframe.setAttribute('data-givewp-embed-id', this.embedId);
         // The Payment Request API (Apple Pay, Google Pay, Link) is off for
@@ -346,10 +386,24 @@ class GiveWPDonationForm extends HTMLElement {
         // form is actually running is the iframe-resizer handshake (onInit).
         // Until it arrives - frame-blocking headers, ad blockers, network
         // failure - the timeout degrades to a plain link to the form.
-        const timeout = window.setTimeout(() => this.renderFallbackLink(loading), LOAD_TIMEOUT_MS);
+        const timeout = window.setTimeout(() => this.renderFallbackLink(loading, target), LOAD_TIMEOUT_MS);
 
         target.append(loading, iframe);
         this.iframe = iframe;
+
+        const reveal = () => {
+            loading.remove();
+            iframe.style.visibility = '';
+            iframe.style.position = '';
+            this.onShell = null;
+        };
+
+        if (target === this) {
+            this.onShell = (height) => {
+                iframe.style.height = `${height}px`;
+                reveal();
+            };
+        }
 
         iframeResize(
             {
@@ -357,8 +411,7 @@ class GiveWPDonationForm extends HTMLElement {
                 heightCalculationMethod: 'taggedElement',
                 onInit: () => {
                     window.clearTimeout(timeout);
-                    loading.remove();
-                    iframe.style.display = '';
+                    reveal();
 
                     // A gateway-redirect return lands at the top of the page;
                     // bring the receipt back into view.
@@ -376,9 +429,10 @@ class GiveWPDonationForm extends HTMLElement {
 
     /**
      * Replaces the loading state with a link to the standalone form when the
-     * iframe never completed the handshake.
+     * iframe never completed the handshake. After a shell reveal the loading
+     * state is already gone, so the link takes the iframe's place instead.
      */
-    renderFallbackLink(loading: HTMLElement) {
+    renderFallbackLink(loading: HTMLElement, target: HTMLElement) {
         const link = document.createElement('a');
         link.href = this.getStandaloneFormUrl();
         link.target = '_blank';
@@ -386,9 +440,14 @@ class GiveWPDonationForm extends HTMLElement {
         link.className = 'givewp-donation-form-link';
         link.textContent = this.getAttribute('fallback-text') || I18N.openForm;
 
-        loading.replaceWith(link);
+        if (loading.isConnected) {
+            loading.replaceWith(link);
+        } else {
+            target.appendChild(link);
+        }
         this.iframe?.remove();
         this.iframe = null;
+        this.onShell = null;
 
         // In the modal the overlay waits for the handshake; show it now so
         // the donor can reach the link.

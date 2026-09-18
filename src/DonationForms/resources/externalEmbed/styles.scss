@@ -9,6 +9,8 @@
 
 givewp-donation-form {
     display: block;
+    /* The on-page iframe is absolutely positioned until it is revealed. */
+    position: relative;
 }
 
 /*
