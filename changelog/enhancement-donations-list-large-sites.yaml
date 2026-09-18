@@ -1,4 +1,4 @@
 significance: minor
 type: enhancement
-entry: Improved donations list table performance on sites with hundreds of thousands of donations by paging on IDs first, fixing the total count query, and adding composite indexes to the donation meta table
+entry: Improved donations list table performance on sites with hundreds of thousands of donations by paging on IDs first, fixing the total count query, and replacing the single-column donation meta indexes with composite ones
 timestamp: 2026-09-18T00:00:01.000Z
