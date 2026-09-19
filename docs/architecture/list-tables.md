@@ -174,7 +174,7 @@ forms list usually ends with one of these being set.
 
 `FormGrid/` applies the same treatment to the front-end form grid shortcode.
 
-## Pagination cost
+## Pagination cost, and the donations list pattern
 
 `List*` endpoints run two queries per page: the page of models (`limit`/`offset`) and a separate
 `count()` for the total (`ListDonations::getTotalDonationsCount()`). On a large donations table
@@ -184,6 +184,40 @@ view, including page 400.
 If you add a filter, add it to *both* `getDonations()` and `getTotalDonationsCount()` — they build
 their conditions through the shared `getWhereConditions()`, and bypassing it makes the total
 disagree with the rows.
+
+**Do not page the fully joined model query.** `DonationRepository::prepareQuery()` LEFT JOINs
+`give_donationmeta` once per model property (about 30 joins). Applying `ORDER BY ... LIMIT ...
+OFFSET` to that makes the database build the whole joined set before it can skip rows: at a
+million donations that was two minutes for page one and longer for the last page. The donations
+endpoint instead does what `WP_Query` always did for the legacy screen:
+
+1. Select the page of IDs from `posts` with only the meta the filters and the sort expression
+   need attached (`getWhereConditions()` returns those dependencies; `getSortDependencies()` adds
+   the sort's).
+2. Hydrate those IDs through `prepareQuery()->whereIn('ID', $ids)` and re-apply the sort.
+
+Two rules that fall out of the same profiling, and apply to any endpoint that filters on meta:
+
+- **Filter on meta through an indexed subquery, not a joined column with an `OR`.** Test mode is
+  `ID NOT IN (SELECT donation_id FROM give_donationmeta WHERE meta_key = '_give_payment_mode' AND
+  meta_value = 'test')`, and name or email search is `ID IN (... WHERE meta_key IN (first, last)
+  AND meta_value LIKE 'term%')`. A `LEFT JOIN ... WHERE meta IS NULL OR meta <> 'test'`, or a
+  `HAVING` on a joined column, forces the full join to materialise first. And group any `OR` you
+  do write with a closure `where(function ($q) { ... })`: an ungrouped `orWhere()` binds looser
+  than the preceding `AND`s and silently drops them, which is how trashed donations once leaked
+  into the live list.
+- **Search is prefix match.** `LIKE 'term%'` walks the `(meta_key, meta_value(191))` index;
+  `LIKE '%term%'` scans every row for that key. Typing "smi" finds Smith; "mit" does not.
+
+`give_donationmeta` carries two composite indexes for this, `(donation_id, meta_key)` for the
+per-property joins and `(meta_key, meta_value(191))` for value lookups, added by
+`Donations/Migrations/AddIndexesToDonationMetaTable`, which also drops the single-column
+`donation_id` and `meta_key` indexes they make redundant. The same indexes are what let
+`CampaignsDataQuery`, `CampaignDonationQuery`, and `DonorStatisticsQuery` answer in milliseconds
+at a million rows without code changes. They do nothing for `ORDER BY` on a meta value or an
+expression over several (sorting the list by amount is still a full scan), and nothing for
+aggregates that must touch every row; those remain the case for moving donations into their own
+table.
 
 ## Checklist for a new column
 
