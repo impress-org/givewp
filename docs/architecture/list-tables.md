@@ -195,11 +195,11 @@ Two rules that fall out of the same profiling, and apply to any endpoint that fi
   do write with a closure `where(function ($q) { ... })`: an ungrouped `orWhere()` binds looser
   than the preceding `AND`s and silently drops them, which is how trashed donations once leaked
   into the live list.
-- **Search is prefix match.** `LIKE 'term%'` walks the `(meta_key(191), meta_value(191))` index;
+- **Search is prefix match.** `LIKE 'term%'` walks the `(meta_key(100), meta_value(82))` index;
   `LIKE '%term%'` scans every row for that key. Typing "smi" finds Smith; "mit" does not.
 
-`give_donationmeta` carries two composite indexes for this, `(donation_id, meta_key(191))` for the
-per-property joins and `(meta_key(191), meta_value(191))` for value lookups, added by
+`give_donationmeta` carries two composite indexes for this, `(donation_id, meta_key(100))` for the
+per-property joins and `(meta_key(100), meta_value(82))` for value lookups, added by
 `Donations/Migrations/AddIndexesToDonationMetaTable`, which also drops the single-column
 `donation_id` and `meta_key` indexes they make redundant. The same indexes are what let
 `CampaignsDataQuery`, `CampaignDonationQuery`, and `DonorStatisticsQuery` answer in milliseconds
