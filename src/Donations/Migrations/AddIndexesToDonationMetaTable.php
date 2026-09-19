@@ -57,11 +57,12 @@ class AddIndexesToDonationMetaTable extends Migration
         try {
             $existing = array_flip(DB::get_col("SHOW INDEX FROM {$table}", 2));
 
-            // 191 is the longest utf8mb4 prefix that fits the 767-byte key limit of InnoDB tables still in the
-            // COMPACT row format, which is what old installs have. WordPress core uses the same prefix.
+            // Prefix lengths match WooCommerce HPOS wc_orders_meta. Under utf8mb4 they keep each key part under
+            // the 767-byte InnoDB COMPACT limit and the whole key under the 1000-byte MyISAM limit, so the
+            // ALTER succeeds on tables created by any host GiveWP has ever run on.
             $clauses = array_diff_key([
-                'donation_meta_key' => 'ADD INDEX donation_meta_key (donation_id, meta_key(191))',
-                'meta_key_value' => 'ADD INDEX meta_key_value (meta_key(191), meta_value(191))',
+                'donation_meta_key' => 'ADD INDEX donation_meta_key (donation_id, meta_key(100))',
+                'meta_key_value' => 'ADD INDEX meta_key_value (meta_key(100), meta_value(82))',
             ], $existing);
 
             $clauses += array_intersect_key([
