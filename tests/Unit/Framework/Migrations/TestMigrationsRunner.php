@@ -18,6 +18,15 @@ class TestMigrationsRunner extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (!class_exists('WP_Upgrader')) {
+            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+        }
+    }
+
     /**
      * @since TBD
      */
