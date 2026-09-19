@@ -28,6 +28,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Retrieve sale stats
 	 *
+	 * @since TBD Count donations with one SQL query instead of loading every ID
 	 * @since  1.0
 	 * @access public
 	 *
@@ -65,6 +66,12 @@ class Give_Payment_Stats extends Give_Stats {
 			$args['give_forms'] = $form_id;
 		}
 
+		$count = $this->count_donations_in_sql( $args );
+
+		if ( null !== $count ) {
+			return $count;
+		}
+
 		/* @var Give_Payments_Query $payments */
 		$payments = new Give_Payments_Query( $args );
 		$payments = $payments->get_payments();
@@ -76,6 +83,7 @@ class Give_Payment_Stats extends Give_Stats {
 	/**
 	 * Retrieve earning stats
 	 *
+	 * @since TBD Sum donation totals with one SQL query instead of loading every ID and formatting each amount
 	 * @since  1.0
 	 * @access public
 	 *
@@ -138,9 +146,14 @@ class Give_Payment_Stats extends Give_Stats {
 		if ( false === $earnings ) {
 
 			$this->timestamp = false;
-			$payments        = new Give_Payments_Query( $args );
-			$payments        = $payments->get_payments();
-			$earnings        = 0;
+			$payments        = [];
+			$earnings        = $this->sum_earnings_in_sql( $args );
+
+			if ( null === $earnings ) {
+				$payments = new Give_Payments_Query( $args );
+				$payments = $payments->get_payments();
+				$earnings = 0;
+			}
 
 			if ( ! empty( $payments ) ) {
 				$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
@@ -261,6 +274,183 @@ class Give_Payment_Stats extends Give_Stats {
 		// return earnings
 		return $key;
 
+	}
+
+	/**
+	 * Sum donation totals in one query instead of loading every matching donation ID into PHP
+	 * and formatting each amount. Uses the Currency Switcher base amount when a donation has one,
+	 * which is what its `give_donation_amount` filter returns for stats.
+	 *
+	 * Returns null when the query args contain something this method does not translate, or when an
+	 * add-on filters `give_donation_amount`, so the caller falls back to the per-donation loop.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $args Give_Payments_Query arguments.
+	 *
+	 * @return float|null
+	 */
+	private function sum_earnings_in_sql( array $args ) {
+		global $wpdb;
+
+		if ( $this->has_donation_amount_filter() ) {
+			return null;
+		}
+
+		$where = $this->stats_where_sql( $args );
+
+		if ( null === $where ) {
+			return null;
+		}
+
+		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
+
+		$sql = "SELECT SUM( COALESCE( NULLIF( base.meta_value, '' ), total.meta_value ) + 0 )
+			FROM {$wpdb->posts} AS p
+			INNER JOIN {$wpdb->donationmeta} AS total ON total.{$donation_id_col} = p.ID AND total.meta_key = '_give_payment_total'
+			LEFT JOIN {$wpdb->donationmeta} AS base ON base.{$donation_id_col} = p.ID AND base.meta_key = '_give_cs_base_amount'
+			WHERE p.post_type = 'give_payment' {$where}";
+
+		return (float) $wpdb->get_var( $sql );
+	}
+
+	/**
+	 * Count matching donations in one query instead of loading every ID into PHP.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $args Give_Payments_Query arguments.
+	 *
+	 * @return int|null
+	 */
+	private function count_donations_in_sql( array $args ) {
+		global $wpdb;
+
+		$where = $this->stats_where_sql( $args );
+
+		if ( null === $where ) {
+			return null;
+		}
+
+		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} AS p WHERE p.post_type = 'give_payment' {$where}" );
+	}
+
+	/**
+	 * Add-ons that change amounts through `give_donation_amount` (Fee Recovery, Currency Switcher) need
+	 * the per-donation loop for earnings so their callbacks run. Counts are unaffected and stay in SQL. Core itself always hooks the deprecated filter
+	 * mapping there, so that one callback does not count.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool
+	 */
+	private function has_donation_amount_filter() {
+		global $wp_filter;
+
+		if ( has_filter( 'give_payment_amount' ) ) {
+			return true;
+		}
+
+		foreach ( $wp_filter['give_donation_amount']->callbacks ?? [] as $callbacks ) {
+			foreach ( $callbacks as $callback ) {
+				if ( 'give_deprecated_filter_mapping' !== $callback['function'] ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Translate the subset of Give_Payments_Query arguments the stats methods build (status, date
+	 * range, form, and simple meta equality) into a WHERE fragment. Anything else returns null.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $args
+	 *
+	 * @return string|null
+	 */
+	private function stats_where_sql( array $args ) {
+		global $wpdb;
+
+		/**
+		 * Allow add-ons that alter stats amounts some other way to keep the per-donation code path.
+		 *
+		 * @since TBD
+		 *
+		 * @param bool  $aggregate_in_sql
+		 * @param array $args
+		 */
+		if ( ! apply_filters( 'givewp_payment_stats_aggregate_in_sql', true, $args ) ) {
+			return null;
+		}
+
+		$known = [ 'status', 'post_status', 'start_date', 'end_date', 'fields', 'number', 'output', 'meta_query', 'give_forms' ];
+
+		if ( array_diff( array_keys( $args ), $known ) ) {
+			return null;
+		}
+
+		if ( isset( $args['number'] ) && -1 !== (int) $args['number'] ) {
+			return null;
+		}
+
+		$statuses = (array) ( $args['post_status'] ?? $args['status'] ?? 'publish' );
+		$where    = ' AND p.post_status IN (' . implode( ',', array_map( static function ( $status ) use ( $wpdb ) {
+			return $wpdb->prepare( '%s', $status );
+		}, $statuses ) ) . ')';
+
+		if ( ! empty( $args['start_date'] ) && ! is_wp_error( $args['start_date'] ) ) {
+			$where .= $wpdb->prepare( ' AND p.post_date >= %s', date( 'Y-m-d H:i:s', $args['start_date'] ) );
+		}
+
+		if ( ! empty( $args['end_date'] ) && ! is_wp_error( $args['end_date'] ) ) {
+			$where .= $wpdb->prepare( ' AND p.post_date <= %s', date( 'Y-m-d H:i:s', $args['end_date'] ) );
+		}
+
+		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
+		$meta_conditions = [];
+
+		if ( ! empty( $args['give_forms'] ) ) {
+			$meta_conditions[] = [ 'key' => '_give_payment_form_id', 'value' => $args['give_forms'] ];
+		}
+
+		foreach ( (array) ( $args['meta_query'] ?? [] ) as $index => $condition ) {
+			if ( 'relation' === $index ) {
+				if ( 'AND' !== strtoupper( $condition ) ) {
+					return null;
+				}
+				continue;
+			}
+
+			if ( ! is_array( $condition ) || empty( $condition['key'] ) || ! isset( $condition['value'] ) ) {
+				return null;
+			}
+
+			if ( ! in_array( strtoupper( $condition['compare'] ?? '=' ), [ '=', 'IN' ], true ) ) {
+				return null;
+			}
+
+			$meta_conditions[] = $condition;
+		}
+
+		foreach ( $meta_conditions as $condition ) {
+			$values = array_map( 'strval', (array) $condition['value'] );
+
+			if ( ! $values ) {
+				return null;
+			}
+
+			$placeholders = implode( ',', array_fill( 0, count( $values ), '%s' ) );
+			$where       .= $wpdb->prepare(
+				" AND p.ID IN (SELECT {$donation_id_col} FROM {$wpdb->donationmeta} WHERE meta_key = %s AND meta_value IN ({$placeholders}))",
+				array_merge( [ $condition['key'] ], $values )
+			);
+		}
+
+		return $where;
 	}
 
 	/**
