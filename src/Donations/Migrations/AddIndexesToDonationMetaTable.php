@@ -56,9 +56,11 @@ class AddIndexesToDonationMetaTable extends Migration
         try {
             $existing = array_flip(DB::get_col("SHOW INDEX FROM {$table}", 2));
 
+            // 191 is the longest utf8mb4 prefix that fits the 767-byte key limit of InnoDB tables still in the
+            // COMPACT row format, which is what old installs have. WordPress core uses the same prefix.
             $clauses = array_diff_key([
-                'donation_meta_key' => 'ADD INDEX donation_meta_key (donation_id, meta_key)',
-                'meta_key_value' => 'ADD INDEX meta_key_value (meta_key, meta_value(191))',
+                'donation_meta_key' => 'ADD INDEX donation_meta_key (donation_id, meta_key(191))',
+                'meta_key_value' => 'ADD INDEX meta_key_value (meta_key(191), meta_value(191))',
             ], $existing);
 
             $clauses += array_intersect_key([
