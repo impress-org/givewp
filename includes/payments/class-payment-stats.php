@@ -293,6 +293,10 @@ class Give_Payment_Stats extends Give_Stats {
 	private function sum_earnings_in_sql( array $args ) {
 		global $wpdb;
 
+		if ( $this->has_donation_amount_filter() ) {
+			return null;
+		}
+
 		$where = $this->stats_where_sql( $args );
 
 		if ( null === $where ) {
@@ -333,7 +337,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 	/**
 	 * Add-ons that change amounts through `give_donation_amount` (Fee Recovery, Currency Switcher) need
-	 * the per-donation loop so their callbacks run. Core itself always hooks the deprecated filter
+	 * the per-donation loop for earnings so their callbacks run. Counts are unaffected and stay in SQL. Core itself always hooks the deprecated filter
 	 * mapping there, so that one callback does not count.
 	 *
 	 * @since TBD
@@ -370,10 +374,6 @@ class Give_Payment_Stats extends Give_Stats {
 	 */
 	private function stats_where_sql( array $args ) {
 		global $wpdb;
-
-		if ( $this->has_donation_amount_filter() ) {
-			return null;
-		}
 
 		/**
 		 * Allow add-ons that alter stats amounts some other way to keep the per-donation code path.
