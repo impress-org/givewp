@@ -281,9 +281,8 @@ class Give_Payment_Stats extends Give_Stats {
 	 * and formatting each amount. Uses the Currency Switcher base amount when a donation has one,
 	 * which is what its `give_donation_amount` filter returns for stats.
 	 *
-	 * Returns null when the query args contain something this method does not translate, so the
-	 * caller falls back to the per-donation loop. Add-ons that change stats amounts through the
-	 * `give_donation_amount` filter can force that path with `givewp_payment_stats_aggregate_in_sql`.
+	 * Returns null when the query args contain something this method does not translate, or when an
+	 * add-on filters `give_donation_amount`, so the caller falls back to the per-donation loop.
 	 *
 	 * @since TBD
 	 *
@@ -300,10 +299,12 @@ class Give_Payment_Stats extends Give_Stats {
 			return null;
 		}
 
+		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
+
 		$sql = "SELECT SUM( COALESCE( NULLIF( base.meta_value, '' ), total.meta_value ) + 0 )
 			FROM {$wpdb->posts} AS p
-			INNER JOIN {$wpdb->donationmeta} AS total ON total.donation_id = p.ID AND total.meta_key = '_give_payment_total'
-			LEFT JOIN {$wpdb->donationmeta} AS base ON base.donation_id = p.ID AND base.meta_key = '_give_cs_base_amount'
+			INNER JOIN {$wpdb->donationmeta} AS total ON total.{$donation_id_col} = p.ID AND total.meta_key = '_give_payment_total'
+			LEFT JOIN {$wpdb->donationmeta} AS base ON base.{$donation_id_col} = p.ID AND base.meta_key = '_give_cs_base_amount'
 			WHERE p.post_type = 'give_payment' {$where}";
 
 		return (float) $wpdb->get_var( $sql );
@@ -331,6 +332,33 @@ class Give_Payment_Stats extends Give_Stats {
 	}
 
 	/**
+	 * Add-ons that change amounts through `give_donation_amount` (Fee Recovery, Currency Switcher) need
+	 * the per-donation loop so their callbacks run. Core itself always hooks the deprecated filter
+	 * mapping there, so that one callback does not count.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool
+	 */
+	private function has_donation_amount_filter() {
+		global $wp_filter;
+
+		if ( has_filter( 'give_payment_amount' ) ) {
+			return true;
+		}
+
+		foreach ( $wp_filter['give_donation_amount']->callbacks ?? [] as $callbacks ) {
+			foreach ( $callbacks as $callback ) {
+				if ( 'give_deprecated_filter_mapping' !== $callback['function'] ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Translate the subset of Give_Payments_Query arguments the stats methods build (status, date
 	 * range, form, and simple meta equality) into a WHERE fragment. Anything else returns null.
 	 *
@@ -343,8 +371,12 @@ class Give_Payment_Stats extends Give_Stats {
 	private function stats_where_sql( array $args ) {
 		global $wpdb;
 
+		if ( $this->has_donation_amount_filter() ) {
+			return null;
+		}
+
 		/**
-		 * Allow add-ons that alter stats amounts per donation to keep the per-donation code path.
+		 * Allow add-ons that alter stats amounts some other way to keep the per-donation code path.
 		 *
 		 * @since TBD
 		 *
@@ -361,6 +393,10 @@ class Give_Payment_Stats extends Give_Stats {
 			return null;
 		}
 
+		if ( isset( $args['number'] ) && -1 !== (int) $args['number'] ) {
+			return null;
+		}
+
 		$statuses = (array) ( $args['post_status'] ?? $args['status'] ?? 'publish' );
 		$where    = ' AND p.post_status IN (' . implode( ',', array_map( static function ( $status ) use ( $wpdb ) {
 			return $wpdb->prepare( '%s', $status );
@@ -374,6 +410,7 @@ class Give_Payment_Stats extends Give_Stats {
 			$where .= $wpdb->prepare( ' AND p.post_date <= %s', date( 'Y-m-d H:i:s', $args['end_date'] ) );
 		}
 
+		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 		$meta_conditions = [];
 
 		if ( ! empty( $args['give_forms'] ) ) {
@@ -408,7 +445,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 			$placeholders = implode( ',', array_fill( 0, count( $values ), '%s' ) );
 			$where       .= $wpdb->prepare(
-				" AND p.ID IN (SELECT donation_id FROM {$wpdb->donationmeta} WHERE meta_key = %s AND meta_value IN ({$placeholders}))",
+				" AND p.ID IN (SELECT {$donation_id_col} FROM {$wpdb->donationmeta} WHERE meta_key = %s AND meta_value IN ({$placeholders}))",
 				array_merge( [ $condition['key'] ], $values )
 			);
 		}

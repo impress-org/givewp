@@ -109,6 +109,22 @@ class PaymentStatsTest extends TestCase
         remove_filter('give_stats_earnings_args', $filter);
     }
 
+    /**
+     * @since TBD
+     */
+    public function testRunsDonationAmountFiltersWhenAnAddOnRegistersOne()
+    {
+        $this->donation(1000, '-1 day');
+        $double = static function ($amount) {
+            return give_maybe_sanitize_amount($amount) * 2;
+        };
+        add_filter('give_donation_amount', $double);
+
+        $this->assertEquals(20.0, (new Give_Payment_Stats())->get_earnings(0, strtotime('-7 days'), time()));
+
+        remove_filter('give_donation_amount', $double);
+    }
+
     private function donation(int $cents, string $when, ?DonationStatus $status = null): Donation
     {
         $created = new DateTime($when);
