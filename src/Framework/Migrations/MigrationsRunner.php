@@ -12,6 +12,7 @@ use Give\Log\Log;
 use Give\MigrationLog\MigrationLogFactory;
 use Give\MigrationLog\MigrationLogRepository;
 use Give\MigrationLog\MigrationLogStatus;
+use WP_Upgrader;
 
 /**
  * Class MigrationsRunner
@@ -20,6 +21,11 @@ use Give\MigrationLog\MigrationLogStatus;
  */
 class MigrationsRunner
 {
+    /**
+     * @since TBD
+     */
+    const LOCK_NAME = 'give_migrations';
+
     /**
      * List of completed migrations.
      *
@@ -70,6 +76,7 @@ class MigrationsRunner
     /**
      * Run database migrations.
      *
+     * @since      TBD hold a lock so concurrent requests do not run the same migration twice
      * @since      4.0.0 add support for batch processing
      * @since      2.9.0
      */
@@ -86,116 +93,130 @@ class MigrationsRunner
             return;
         }
 
-        $migrations = $this->migrationRegister->getMigrations();
+        if ( ! class_exists('WP_Upgrader')) {
+            require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+        }
 
-        foreach ($migrations as $migrationClass) {
-            $migrationId = $migrationClass::id();
+        // Migrations run on every request, so without this a slow one (an ALTER TABLE over millions of
+        // rows) starts again in every request that arrives while it is still running.
+        if ( ! WP_Upgrader::create_lock(self::LOCK_NAME)) {
+            return;
+        }
 
-            if (in_array($migrationId, $this->completedMigrations, true)) {
-                continue;
-            }
+        try {
+            $migrations = $this->migrationRegister->getMigrations();
 
-            $migrationLog = $this->migrationLogFactory->make($migrationId);
+            foreach ($migrations as $migrationClass) {
+                $migrationId = $migrationClass::id();
 
-            try {
-                /**
-                 * @var Migration|BatchMigration $migration
-                 */
-                $migration = give($migrationClass);
+                if (in_array($migrationId, $this->completedMigrations, true)) {
+                    continue;
+                }
 
-                if ($migration instanceof BatchMigration) {
-                    $status = (new BatchMigrationRunner($migration))->run();
+                $migrationLog = $this->migrationLogFactory->make($migrationId);
 
-                    if ($status === MigrationLogStatus::RUNNING) {
-                        give()->notices->register_notice(
-                            [
-                                'id' => $migrationId,
-                                'description' => esc_html__('GiveWP is running database updates in the background. You will be notified as soon as it completes.',
-                                    'give'),
-                            ]
-                        );
+                try {
+                    /**
+                     * @var Migration|BatchMigration $migration
+                     */
+                    $migration = give($migrationClass);
 
-                        // Update status to RUNNING
-                        if (MigrationLogStatus::RUNNING !== $migrationLog->getStatus()) {
-                            $migrationLog->setStatus(MigrationLogStatus::RUNNING);
-                            $migrationLog->save();
+                    if ($migration instanceof BatchMigration) {
+                        $status = (new BatchMigrationRunner($migration))->run();
+
+                        if ($status === MigrationLogStatus::RUNNING) {
+                            give()->notices->register_notice(
+                                [
+                                    'id' => $migrationId,
+                                    'description' => esc_html__('GiveWP is running database updates in the background. You will be notified as soon as it completes.',
+                                        'give'),
+                                ]
+                            );
+
+                            // Update status to RUNNING
+                            if (MigrationLogStatus::RUNNING !== $migrationLog->getStatus()) {
+                                $migrationLog->setStatus(MigrationLogStatus::RUNNING);
+                                $migrationLog->save();
+                            }
+
+                            break;
                         }
 
-                        break;
+                        if ($status === MigrationLogStatus::INCOMPLETE) {
+                            $listTableLink = sprintf(
+                                '<a href="%s">%s</a>',
+                                admin_url('edit.php?post_type=give_forms&page=give-tools&tab=data'),
+                                esc_html__('Resume update', 'give')
+                            );
+
+                            give()->notices->register_notice(
+                                [
+                                    'id' => $migrationId,
+                                    'type' => 'warning',
+                                    'description' => sprintf(
+                                        __('Incomplete database update: "%s". %s', 'give'),
+                                        $migration::title(),
+                                        $listTableLink
+                                    ),
+                                ]
+                            );
+                        }
+
+                        $migrationLog->setStatus($status);
+                    } else {
+                        $migration->run();
+                        $migrationLog->setStatus(MigrationLogStatus::SUCCESS);
                     }
+                } catch (Exception $exception) {
+                    DB::rollback();
+                    $migrationLog
+                        ->setStatus(MigrationLogStatus::FAILED)
+                        ->setError([
+                            'status' => __('Migration failed', 'give'),
+                            'error' => [
+                                'message' => $exception->getMessage(),
+                                'code' => $exception->getCode(),
+                                'file' => $exception->getFile(),
+                                'line' => $exception->getLine(),
+                            ],
+                        ]);
 
-                    if ($status === MigrationLogStatus::INCOMPLETE) {
-                        $listTableLink = sprintf(
-                            '<a href="%s">%s</a>',
-                            admin_url('edit.php?post_type=give_forms&page=give-tools&tab=data'),
-                            esc_html__('Resume update', 'give')
-                        );
-
-                        give()->notices->register_notice(
-                            [
-                                'id' => $migrationId,
-                                'type' => 'warning',
-                                'description' => sprintf(
-                                    __('Incomplete database update: "%s". %s', 'give'),
-                                    $migration::title(),
-                                    $listTableLink
-                                ),
-                            ]
-                        );
-                    }
-
-                    $migrationLog->setStatus($status);
-                } else {
-                    $migration->run();
-                    $migrationLog->setStatus(MigrationLogStatus::SUCCESS);
+                    give()->notices->register_notice(
+                        [
+                            'id' => 'migration-failure',
+                            'description' => sprintf(
+                                '%1$s <a href="https://givewp.com/support/">https://givewp.com/support</a>',
+                                esc_html__(
+                                    'There was a problem running the migrations. Please reach out to GiveWP support for assistance:',
+                                    'give'
+                                )
+                            ),
+                        ]
+                    );
                 }
-            } catch (Exception $exception) {
-                DB::rollback();
-                $migrationLog
-                    ->setStatus(MigrationLogStatus::FAILED)
-                    ->setError([
-                        'status' => __('Migration failed', 'give'),
-                        'error' => [
-                            'message' => $exception->getMessage(),
-                            'code' => $exception->getCode(),
-                            'file' => $exception->getFile(),
-                            'line' => $exception->getLine(),
-                        ],
-                    ]);
 
-                give()->notices->register_notice(
-                    [
-                        'id' => 'migration-failure',
-                        'description' => sprintf(
-                            '%1$s <a href="https://givewp.com/support/">https://givewp.com/support</a>',
-                            esc_html__(
-                                'There was a problem running the migrations. Please reach out to GiveWP support for assistance:',
-                                'give'
-                            )
-                        ),
-                    ]
-                );
+                try {
+                    $migrationLog->save();
+                } catch (DatabaseQueryException $e) {
+                    Log::error(
+                        'Failed to save migration log',
+                        [
+                            'Error Message' => $e->getMessage(),
+                            'Query Errors' => $e->getQueryErrors(),
+                        ]
+                    );
+                }
+
+                // Stop Migration Runner if migration has failed
+                if ($migrationLog->getStatus() === MigrationLogStatus::FAILED) {
+                    break;
+                }
+
+                // Commit transaction if successful
+                DB::commit();
             }
-
-            try {
-                $migrationLog->save();
-            } catch (DatabaseQueryException $e) {
-                Log::error(
-                    'Failed to save migration log',
-                    [
-                        'Error Message' => $e->getMessage(),
-                        'Query Errors' => $e->getQueryErrors(),
-                    ]
-                );
-            }
-
-            // Stop Migration Runner if migration has failed
-            if ($migrationLog->getStatus() === MigrationLogStatus::FAILED) {
-                break;
-            }
-
-            // Commit transaction if successful
-            DB::commit();
+        } finally {
+            WP_Upgrader::release_lock(self::LOCK_NAME);
         }
     }
 

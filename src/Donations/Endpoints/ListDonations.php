@@ -2,6 +2,7 @@
 
 namespace Give\Donations\Endpoints;
 
+use Closure;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\ValueObjects\DonationMetaKeys;
 use Give\Donations\ValueObjects\DonationMode;
@@ -9,7 +10,6 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
 use Give\Framework\ListTable\Exceptions\ColumnIdCollisionException;
 use Give\Framework\QueryBuilder\QueryBuilder;
-use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -180,6 +180,7 @@ class ListDonations extends Endpoint
     }
 
     /**
+     * @since TBD Select the page of IDs first, then hydrate, so deep pages do not join every row
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
@@ -192,26 +193,67 @@ class ListDonations extends Endpoint
         $sortColumns = $this->listTable->getSortColumnById($this->request->get_param('sortColumn') ?: 'id');
         $sortDirection = $this->request->get_param('sortDirection') ?: 'desc';
 
-        $query = give()->donations->prepareQuery();
-        list($query) = $this->getWhereConditions($query);
+        // Resolve the page of IDs against the posts table with only the meta the filters and sort
+        // need, then hydrate those rows. Paging the fully joined model query scans every row.
+        $idQuery = DB::table('posts')->select(['ID', 'id'], ['post_date', 'createdAt'], ['post_status', 'status']);
+        list($idQuery, $dependencies) = $this->getWhereConditions($idQuery);
+        $dependencies = array_merge($dependencies, $this->getSortDependencies($sortColumns));
+
+        if ($dependencies) {
+            $idQuery->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
+            );
+        }
+
+        foreach ($sortColumns as $sortColumn) {
+            $idQuery->orderBy($sortColumn, $sortDirection);
+        }
+
+        $ids = array_column($idQuery->limit($perPage)->offset(($page - 1) * $perPage)->getAll() ?: [], 'id');
+
+        if (!$ids) {
+            return [];
+        }
+
+        $query = give()->donations->prepareQuery()->whereIn('ID', $ids);
 
         foreach ($sortColumns as $sortColumn) {
             $query->orderBy($sortColumn, $sortDirection);
         }
 
-        $query->limit($perPage)
-            ->offset(($page - 1) * $perPage);
-
-        $donations = $query->getAll();
-
-        if (!$donations) {
-            return [];
-        }
-
-        return $donations;
+        return $query->getAll() ?: [];
     }
 
     /**
+     * Meta keys a sort expression references, so the ID query can attach them.
+     *
+     * @since TBD
+     *
+     * @param string[] $sortColumns
+     *
+     * @return DonationMetaKeys[]
+     */
+    private function getSortDependencies(array $sortColumns): array
+    {
+        $sortSql = implode(' ', $sortColumns);
+        $candidates = [
+            DonationMetaKeys::FIRST_NAME(),
+            DonationMetaKeys::LAST_NAME(),
+            DonationMetaKeys::AMOUNT(),
+            DonationMetaKeys::EXCHANGE_RATE(),
+            DonationMetaKeys::GATEWAY(),
+        ];
+
+        return array_values(array_filter($candidates, static function (DonationMetaKeys $key) use ($sortSql) {
+            return strpos($sortSql, $key->getKeyAsCamelCase()) !== false;
+        }));
+    }
+
+    /**
+     * @since TBD Drop the GROUP BY on mode, which made count() return the size of one mode group
      * @since 2.24.0 Replace Query Builder with Donations model
      * @since 2.21.0
      *
@@ -219,24 +261,52 @@ class ListDonations extends Endpoint
      */
     public function getTotalDonationsCount(): int
     {
-        $query = DB::table('posts')
-            ->where('post_type', 'give_payment')
-            ->groupBy('mode');
+        list($query, $dependencies) = $this->getWhereConditions(DB::table('posts'));
 
-        list($query, $dependencies) = $this->getWhereConditions($query);
-
-        $query->attachMeta(
-            'give_donationmeta',
-            'ID',
-            'donation_id',
-            ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
-        );
+        if ($dependencies) {
+            $query->attachMeta(
+                'give_donationmeta',
+                'ID',
+                'donation_id',
+                ...DonationMetaKeys::getColumnsForAttachMetaQueryFromArray($dependencies)
+            );
+        }
 
         return $query->count();
     }
 
     /**
-     * @since TBD Group OR conditions for mode and name filters so they do not override the other WHERE clauses.
+     * @since TBD
+     */
+    private function donationIdsWithNamePrefix(string $value): Closure
+    {
+        return $this->donationIdsWithMetaPrefix([DonationMetaKeys::FIRST_NAME, DonationMetaKeys::LAST_NAME], $value);
+    }
+
+    /**
+     * Subquery for donation IDs whose meta value starts with the search term. A prefix match on
+     * the (meta_key, meta_value) index replaces a leading-wildcard LIKE across joined meta tables,
+     * which had to scan every row for the key.
+     *
+     * @since TBD
+     *
+     * @param string[] $metaKeys
+     */
+    private function donationIdsWithMetaPrefix(array $metaKeys, string $value): Closure
+    {
+        $prefix = DB::esc_like($value) . '%';
+
+        return static function (QueryBuilder $builder) use ($metaKeys, $prefix) {
+            $builder
+                ->select('donation_id')
+                ->from('give_donationmeta')
+                ->whereIn('meta_key', $metaKeys)
+                ->where('meta_value', $prefix, 'LIKE');
+        };
+    }
+
+    /**
+     * @since TBD Match name and email searches by prefix through indexed subqueries, and filter test mode the same way instead of HAVING
      * @since 4.12.0 Updated status filtering to accept multiple comma-separated values
      * @since 4.8.0 Added support for subscriptionId parameter to filter donations
      * @since 4.6.0 add status status condition to filter donations
@@ -259,11 +329,7 @@ class ListDonations extends Endpoint
         $campaignId = $this->request->get_param('campaignId');
         $subscriptionId = $this->request->get_param('subscriptionId');
         $status = $this->request->get_param('status');
-        $dependencies = [
-            DonationMetaKeys::MODE(),
-        ];
-
-        $hasWhereConditions = $search || $start || $end || $campaignId || $subscriptionId || $donor || $status;
+        $dependencies = [];
 
         $query->where('post_type', 'give_payment');
 
@@ -278,17 +344,9 @@ class ListDonations extends Endpoint
             if (ctype_digit($search)) {
                 $query->where('id', $search);
             } elseif (strpos($search, '@') !== false) {
-                $query
-                    ->whereLike('give_donationmeta_attach_meta_email.meta_value', $search);
-                $dependencies[] = DonationMetaKeys::EMAIL();
+                $query->whereIn('ID', $this->donationIdsWithMetaPrefix([DonationMetaKeys::EMAIL], $search));
             } else {
-                $query->where(static function (WhereQueryBuilder $builder) use ($search) {
-                    $builder
-                        ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $search)
-                        ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $search);
-                });
-                $dependencies[] = DonationMetaKeys::FIRST_NAME();
-                $dependencies[] = DonationMetaKeys::LAST_NAME();
+                $query->whereIn('ID', $this->donationIdsWithNamePrefix($search));
             }
         }
 
@@ -298,13 +356,7 @@ class ListDonations extends Endpoint
                     ->where('give_donationmeta_attach_meta_donorId.meta_value', $donor);
                 $dependencies[] = DonationMetaKeys::DONOR_ID();
             } else {
-                $query->where(static function (WhereQueryBuilder $builder) use ($donor) {
-                    $builder
-                        ->whereLike('give_donationmeta_attach_meta_firstName.meta_value', $donor)
-                        ->orWhereLike('give_donationmeta_attach_meta_lastName.meta_value', $donor);
-                });
-                $dependencies[] = DonationMetaKeys::FIRST_NAME();
-                $dependencies[] = DonationMetaKeys::LAST_NAME();
+                $query->whereIn('ID', $this->donationIdsWithNamePrefix($donor));
             }
         }
 
@@ -328,16 +380,20 @@ class ListDonations extends Endpoint
             $query->where('post_date', $end, '<=');
         }
 
-        if ($hasWhereConditions) {
-            $query->havingRaw('HAVING COALESCE(give_donationmeta_attach_meta_mode.meta_value, %s) = %s', DonationMode::LIVE, $testMode ? DonationMode::TEST : DonationMode::LIVE);
-        } elseif ($testMode) {
-            $query->where('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST);
+        // Test-mode donations carry a mode meta row; live donations may have none. A subquery on
+        // (meta_key, meta_value) is index-friendly, unlike a LEFT JOIN with an IS NULL OR condition.
+        $testModeDonationIds = static function (QueryBuilder $builder) {
+            $builder
+                ->select('donation_id')
+                ->from('give_donationmeta')
+                ->where('meta_key', DonationMetaKeys::MODE)
+                ->where('meta_value', DonationMode::TEST);
+        };
+
+        if ($testMode) {
+            $query->whereIn('ID', $testModeDonationIds);
         } else {
-            $query->where(static function (WhereQueryBuilder $builder) {
-                $builder
-                    ->whereIsNull('give_donationmeta_attach_meta_mode.meta_value')
-                    ->orWhere('give_donationmeta_attach_meta_mode.meta_value', DonationMode::TEST, '<>');
-            });
+            $query->whereNotIn('ID', $testModeDonationIds);
         }
 
         return [

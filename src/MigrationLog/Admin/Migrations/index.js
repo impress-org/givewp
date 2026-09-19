@@ -12,7 +12,7 @@ const Migrations = () => {
         initialLoad: false,
         currentPage: 1,
         sortColumn: 'run_order',
-        sortDirection: 'asc',
+        sortDirection: 'desc',
         pages: 0,
         showOptions: false,
         isSorting: false,
