@@ -52,6 +52,7 @@ class AddIndexesToDonationMetaTable extends Migration
         global $wpdb;
 
         $table = $wpdb->prefix . 'give_donationmeta';
+        $wanted = ['donation_meta_key', 'meta_key_value'];
 
         try {
             $existing = array_flip(DB::get_col("SHOW INDEX FROM {$table}", 2));
@@ -74,6 +75,11 @@ class AddIndexesToDonationMetaTable extends Migration
 
             DB::query("ALTER TABLE {$table} " . implode(', ', $clauses));
         } catch (DatabaseQueryException $exception) {
+            // Another request may have built the indexes while this one waited on the table lock.
+            if (!array_diff($wanted, DB::get_col("SHOW INDEX FROM {$table}", 2))) {
+                return;
+            }
+
             throw new DatabaseMigrationException("An error occurred while adding indexes to the {$table} table", 0, $exception);
         }
     }
