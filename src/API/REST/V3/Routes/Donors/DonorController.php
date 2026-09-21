@@ -189,6 +189,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
+     * @since TBD Non-admin callers may no longer add unverified email addresses.
      * @since 4.16.6 Skip readonly schema properties when applying PATCH updates.
      * @since 4.8.0 Update donor name when firstName or lastName is updated
      * @since 4.7.0 Add support for updating custom fields
@@ -219,6 +220,14 @@ class DonorController extends WP_REST_Controller
                 )
             )
         );
+
+        if (!DonorPermissions::canEdit() && $request->has_param('additionalEmails')) {
+            $allowed = array_merge($donor->additionalEmails ?? [], [$donor->email]);
+            $request->set_param(
+                'additionalEmails',
+                array_values(array_intersect((array)$request->get_param('additionalEmails'), $allowed))
+            );
+        }
 
         foreach ($request->get_params() as $key => $value) {
             if (! in_array($key, $nonEditableFields, true)) {
