@@ -121,7 +121,8 @@ form.
 
 `Router::scriptRequest()` hands the cleaned query string to the localize callable, so
 `GetExternalEmbedScriptData` reads `form-id`: a comma list is accepted for pages with several
-forms, ids are `absint`ed, deduplicated and capped at ten, and only published forms get an entry.
+forms, ids must be positive decimal integers (non-digit tokens like 42abc or -42 are dropped, not
+coerced), deduplicated and capped at ten, and only published forms get an entry.
 The ETag already hashes the localized data, so a skeleton change revalidates on the next request
 like a translation change does. Nothing in the response is per-visitor, so it stays `public`.
 
