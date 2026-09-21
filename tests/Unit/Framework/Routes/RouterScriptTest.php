@@ -37,7 +37,7 @@ class RouterScriptTest extends TestCase
      */
     public function tearDown(): void
     {
-        unset($_GET['givewp-route']);
+        unset($_GET['givewp-route'], $_GET['form-id']);
         $this->setPermalinkStructure('');
         @unlink($this->script);
         @unlink(preg_replace('/\.js$/', '.asset.php', $this->script));
@@ -101,6 +101,82 @@ class RouterScriptTest extends TestCase
         $_GET['givewp-route'] = 'embed/donation-form/script.js';
         $this->assertTrue($router->isScriptRequested($wp, 'embed/donation-form/script.js'));
         $this->assertFalse($router->isScriptRequested($wp, 'embed/other.js'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testScriptUrlAppendsArgs(): void
+    {
+        $this->setPermalinkStructure('/%postname%/');
+        $this->assertSame(
+            home_url('/give/embed/donation-form/script.js?form-id=42'),
+            (new Router())->scriptUrl('embed/donation-form/script.js', ['form-id' => 42])
+        );
+
+        $this->setPermalinkStructure('');
+        $this->assertSame(
+            home_url('/?givewp-route=embed/donation-form/script.js&form-id=42'),
+            (new Router())->scriptUrl('embed/donation-form/script.js', ['form-id' => 42])
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testScriptRequestReturnsQueryArgsAndThePathId(): void
+    {
+        $router = new Router();
+        $wp = new WP();
+        $uri = 'embed/donation-form/script.js';
+
+        $wp->request = 'give/embed/donation-form/script.js';
+        $_GET['form-id'] = '42,7';
+        $this->assertSame(['form-id' => '42,7'], $router->scriptRequest($wp, $uri));
+        unset($_GET['form-id']);
+
+        $wp->request = 'give/embed/donation-form/42/script.js';
+        $this->assertSame(['id' => 42], $router->scriptRequest($wp, $uri));
+
+        $wp->request = 'give/embed/donation-form/abc/script.js';
+        $this->assertNull($router->scriptRequest($wp, $uri));
+
+        $wp->request = '';
+        $_GET['givewp-route'] = 'embed/donation-form/42/script.js';
+        $this->assertSame(['id' => 42], $router->scriptRequest($wp, $uri));
+
+        $_GET['givewp-route'] = 'embed/donation-form/script.js';
+        $this->assertSame([], $router->scriptRequest($wp, $uri));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testScriptRequestMatchesARootLevelUriWithNoDirectory(): void
+    {
+        $router = new Router();
+        $wp = new WP();
+        $uri = 'script.js';
+
+        $wp->request = 'give/script.js';
+        $this->assertSame([], $router->scriptRequest($wp, $uri));
+
+        $wp->request = '';
+        $_GET['givewp-route'] = 'script.js';
+        $this->assertSame([], $router->scriptRequest($wp, $uri));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testLocalizeCallableReceivesTheRequest(): void
+    {
+        $response = new ScriptResponse($this->script);
+        $response->localize('givewpTest', static function (array $request): array {
+            return $request;
+        });
+
+        $this->assertSame("var givewpTest = {\"id\":42};\n", $response->prologue(['id' => 42]));
     }
 
     /**
