@@ -128,8 +128,9 @@ like a translation change does. Nothing in the response is per-visitor, so it st
 
 The costs this trades against the earlier per-form URL idea are accepted for the skeleton:
 
-- A form load per script request and revalidation. The route already bootstraps WordPress and
-  runs the localize callable per request; this adds one `DonationForm::find` and its settings.
+- A form load per accepted id per script request and revalidation. The route already bootstraps
+  WordPress and runs the localize callable per request; this adds one `DonationForm::find` and
+  one skeleton render for each id, up to ten.
 - One cached copy per form instead of one per site. A page with two forms downloads the script
   twice. `customElements.define()` is guarded, and the bundle merges every instance's skeletons
   into `window.givewpDonationFormEmbedSkeletons` at module scope, then calls `applySkeleton()`
