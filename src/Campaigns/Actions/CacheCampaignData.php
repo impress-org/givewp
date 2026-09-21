@@ -47,6 +47,8 @@ class CacheCampaignData
 
     /**
      * Handle campaign cache
+     *
+     * @since TBD Read the subscriptions cache from the option it is written to.
      * @since 4.8.0
      */
     public function handleCache(int $campaignId): void
@@ -58,7 +60,7 @@ class CacheCampaignData
         }
 
         $campaignsData = get_option('give_campaigns_data', []);
-        $campaignsSubscriptionData = get_option('give_campaigns_subscription_data', []);
+        $campaignsSubscriptionData = get_option('give_campaigns_subscriptions_data', []);
 
         // Prefill cache structure to ensure keys exist
         $campaignsData = array_merge([

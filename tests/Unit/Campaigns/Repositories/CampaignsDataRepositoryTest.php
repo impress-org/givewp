@@ -21,6 +21,20 @@ final class CampaignsDataRepositoryTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * The cache lives in options, which RefreshDatabase does not truncate, and a donation insert
+     * commits the test transaction. Start every test with a cold cache.
+     *
+     * @since TBD
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        delete_option('give_campaigns_data');
+        delete_option('give_campaigns_subscriptions_data');
+    }
+
+    /**
      * @since 4.2.0
      */
     public function testCountCampaignDonations()
@@ -78,6 +92,48 @@ final class CampaignsDataRepositoryTest extends TestCase
         $campaignsData = CampaignsDataRepository::campaigns([$campaign->id]);
 
         $this->assertEquals(20.32, $campaignsData->getRevenue($campaign));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testWarmCacheStillReturnsStatsForCampaignsMissingFromIt()
+    {
+        $cachedCampaign = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        CampaignsDataRepository::campaigns([$cachedCampaign->id]);
+
+        $newCampaign = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        Donation::factory()->create([
+            'campaignId' => $newCampaign->id,
+            'formId' => $newCampaign->defaultFormId,
+            'status' => DonationStatus::COMPLETE(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
+
+        $campaignsData = CampaignsDataRepository::campaigns([$cachedCampaign->id, $newCampaign->id]);
+
+        $this->assertEquals(1, $campaignsData->getDonationsCount($newCampaign));
+        $this->assertEquals(10, $campaignsData->getRevenue($newCampaign));
+        $this->assertContains(
+            (string)$newCampaign->id,
+            array_map('strval', array_column(get_option('give_campaigns_data')['donationsCount'], 'campaign_id'))
+        );
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCampaignWithNoDonationsIsCachedAsZero()
+    {
+        $campaign = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+
+        $campaignsData = CampaignsDataRepository::campaigns([$campaign->id]);
+
+        $this->assertEquals(0, $campaignsData->getDonationsCount($campaign));
+        $this->assertContains(
+            (string)$campaign->id,
+            array_map('strval', array_column(get_option('give_campaigns_data')['donationsCount'], 'campaign_id'))
+        );
     }
 
     /**

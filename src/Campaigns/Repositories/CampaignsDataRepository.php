@@ -40,7 +40,10 @@ class CampaignsDataRepository
     private $subscriptionDonorsCount = [];
 
     /**
+     * Cached stats for the given campaigns. Campaigns missing from the cache are queried and added
+     * to it, so a warm cache never hides a campaign that arrived after it was built.
      *
+     * @since TBD Query and cache campaigns that are missing from the cache; read subscriptions from the option they are written to.
      * @since 4.8.0 added data caching layer
      *
      * @param int[] $ids
@@ -50,70 +53,70 @@ class CampaignsDataRepository
     public static function campaigns(array $ids): CampaignsDataRepository
     {
         $self = new self();
-        $campaignsData = get_option('give_campaigns_data', []);
-        $campaignsSubscriptionData = get_option('give_campaigns_subscription_data', []);
+        $emptyCache = ['amounts' => [], 'donationsCount' => [], 'donorsCount' => []];
+        $campaignsData = array_merge($emptyCache, (array)get_option('give_campaigns_data', []));
+        $campaignsSubscriptionData = array_merge($emptyCache, (array)get_option('give_campaigns_subscriptions_data', []));
 
-        // remove cached campaign ids
-        $campaignIds = array_filter($ids, function ($id) use ($campaignsData) {
-            foreach ($campaignsData as $row) {
-                foreach($row as $campaign) {
-                    if ($campaign['campaign_id'] == $id) {
-                        return false;
-                    }
-                }
-            }
+        $cachedIds = array_column($campaignsData['donationsCount'], 'campaign_id');
+        $uncachedIds = array_values(array_filter($ids, static function ($id) use ($cachedIds) {
+            return ! in_array((string)$id, array_map('strval', $cachedIds), true);
+        }));
 
-            return true;
-        });
+        if ($uncachedIds) {
+            $donations = CampaignsDataQuery::donations($uncachedIds);
 
-        if (
-            ! empty($campaignsData['donationsCount'])
-            || ! empty($campaignsSubscriptionData['donationsCount'])
-        ) {
-            $self->amounts = $campaignsData['amounts'];
-            $self->donationsCount = $campaignsData['donationsCount'];
-            $self->donorsCount = $campaignsData['donorsCount'];
+            $campaignsData = [
+                'amounts' => array_merge($campaignsData['amounts'], self::withZeroRows($donations->collectIntendedAmounts(), $uncachedIds, 'sum')),
+                'donationsCount' => array_merge($campaignsData['donationsCount'], self::withZeroRows($donations->collectDonations(), $uncachedIds, 'count')),
+                'donorsCount' => array_merge($campaignsData['donorsCount'], self::withZeroRows($donations->collectDonors(), $uncachedIds, 'count')),
+            ];
+
+            update_option('give_campaigns_data', $campaignsData);
 
             if (defined('GIVE_RECURRING_VERSION')) {
-                $self->subscriptionAmounts = $campaignsSubscriptionData['amounts'];
-                $self->subscriptionDonationsCount = $campaignsSubscriptionData['donationsCount'];
-                $self->subscriptionDonorsCount = $campaignsSubscriptionData['donorsCount'];
-            }
+                $subscriptions = CampaignsDataQuery::subscriptions($uncachedIds);
 
-            return $self;
+                $campaignsSubscriptionData = [
+                    'amounts' => array_merge($campaignsSubscriptionData['amounts'], self::withZeroRows($subscriptions->collectInitialAmounts(), $uncachedIds, 'sum')),
+                    'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'], self::withZeroRows($subscriptions->collectDonations(), $uncachedIds, 'count')),
+                    'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'], self::withZeroRows($subscriptions->collectDonors(), $uncachedIds, 'count')),
+                ];
+
+                update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
+            }
         }
 
-        // Fetch data from db
-        $donations = CampaignsDataQuery::donations($campaignIds);
+        $self->amounts = $campaignsData['amounts'];
+        $self->donationsCount = $campaignsData['donationsCount'];
+        $self->donorsCount = $campaignsData['donorsCount'];
 
-        $self->amounts = $donations->collectIntendedAmounts();
-        $self->donationsCount = $donations->collectDonations();
-        $self->donorsCount = $donations->collectDonors();
-
-        // cache campaigns data
-        update_option('give_campaigns_data', [
-            'amounts' => array_merge($campaignsData['amounts'] ?? [], $self->amounts),
-            'donationsCount' => array_merge($campaignsData['donationsCount'] ?? [], $self->donationsCount),
-            'donorsCount' => array_merge($campaignsData['donorsCount'] ?? [], $self->donorsCount),
-        ]);
-
-        // Set subscriptions data
         if (defined('GIVE_RECURRING_VERSION')) {
-            $subscriptions = CampaignsDataQuery::subscriptions($campaignIds);
-
-            $self->subscriptionAmounts = $subscriptions->collectInitialAmounts();
-            $self->subscriptionDonationsCount = $subscriptions->collectDonations();
-            $self->subscriptionDonorsCount = $subscriptions->collectDonors();
-
-            // cache campaigns subscriptions data
-            update_option('give_campaigns_subscriptions_data', [
-                'amounts' => array_merge($campaignsSubscriptionData['amounts'] ?? [], $self->subscriptionAmounts),
-                'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'] ?? [], $self->subscriptionDonationsCount),
-                'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'] ?? [], $self->subscriptionDonorsCount),
-            ]);
+            $self->subscriptionAmounts = $campaignsSubscriptionData['amounts'];
+            $self->subscriptionDonationsCount = $campaignsSubscriptionData['donationsCount'];
+            $self->subscriptionDonorsCount = $campaignsSubscriptionData['donorsCount'];
         }
 
         return $self;
+    }
+
+    /**
+     * The aggregate queries return no row for a campaign with no donations. Add a zero row for each
+     * such campaign so it counts as cached and is not queried again on every page load.
+     *
+     * @since TBD
+     */
+    private static function withZeroRows($rows, array $ids, string $column): array
+    {
+        $rows = is_array($rows) ? $rows : [];
+        $present = array_map('strval', array_column($rows, 'campaign_id'));
+
+        foreach ($ids as $id) {
+            if ( ! in_array((string)$id, $present, true)) {
+                $rows[] = ['campaign_id' => (string)$id, $column => 0];
+            }
+        }
+
+        return $rows;
     }
 
     /**

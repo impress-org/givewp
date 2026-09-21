@@ -53,6 +53,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
+     * @since TBD Merge donors into the donors list and subscriptions into the subscriptions option.
      * @since 4.12.0 add early return if no campaigns found
      * @since 4.8.0
      *
@@ -93,14 +94,14 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
                     $donations->collectDonations()
                 ),
                 'donorsCount' => array_merge(
-                    $campaignsData['donationsCount'] ?? [],
+                    $campaignsData['donorsCount'] ?? [],
                     $donations->collectDonors()
                 ),
             ]);
 
             // Set subscriptions data
             if (defined('GIVE_RECURRING_VERSION')) {
-                $subscriptionsData = get_option('give_campaigns_data', []);
+                $subscriptionsData = get_option('give_campaigns_subscriptions_data', []);
                 $subscriptions = CampaignsDataQuery::subscriptions($campaignIds);
 
                 update_option('give_campaigns_subscriptions_data', [
