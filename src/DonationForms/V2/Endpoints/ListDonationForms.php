@@ -8,8 +8,8 @@ use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\Database\DB;
-use Give\Framework\QueryBuilder\JoinQueryBuilder;
 use Give\Framework\QueryBuilder\QueryBuilder;
+use Give\Framework\QueryBuilder\WhereQueryBuilder;
 use Give\Helpers\Language;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -252,7 +252,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @since TBD Add "campaign" filter: a campaign id or "none" for standalone forms
+     * @since TBD Add "campaign" filter: a campaign id or "none" for standalone forms; campaign id filter includes the campaign's default form
      * @since      4.0.0 Add "campaignId" support
      * @since      2.24.0
      *
@@ -289,14 +289,24 @@ class ListDonationForms extends Endpoint
         $campaign = (string)$this->request->get_param('campaign');
         $campaignId = $this->request->get_param('campaignId') ?: (ctype_digit($campaign) ? (int)$campaign : 0);
 
+        // Forms attached through the campaign forms table, or the campaign's own default form
+        // (how Peer-to-Peer campaigns link their form)
         if ($campaignId) {
-            $query
-                ->join(function (JoinQueryBuilder $builder) {
-                    $builder
-                        ->leftJoin('give_campaign_forms', 'campaign_forms')
-                        ->on('campaign_forms.form_id', 'ID');
-                })
-                ->where('campaign_forms.campaign_id', $campaignId);
+            $query->where(function (WhereQueryBuilder $builder) use ($campaignId) {
+                $builder
+                    ->whereIn('ID', function (QueryBuilder $subQuery) use ($campaignId) {
+                        $subQuery
+                            ->from('give_campaign_forms')
+                            ->select('form_id')
+                            ->where('campaign_id', $campaignId);
+                    })
+                    ->orWhereIn('ID', function (QueryBuilder $subQuery) use ($campaignId) {
+                        $subQuery
+                            ->from('give_campaigns')
+                            ->select('form_id')
+                            ->where('id', $campaignId);
+                    });
+            });
         }
 
         // Standalone forms: no campaign forms row and not a Peer-to-Peer campaign's form

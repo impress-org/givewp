@@ -121,6 +121,7 @@ class TestListDonationForms extends TestCase
         $mockRequest->set_param('campaign', (string)$campaign->id);
         $response = (new ListDonationForms())->handleRequest($mockRequest);
         $this->assertContains($linkedForm->id, array_column($response->data['items'], 'id'));
+        $this->assertContains($campaign->defaultFormId, array_column($response->data['items'], 'id'));
         $this->assertEmpty(array_intersect($standaloneIds, array_column($response->data['items'], 'id')));
 
         $mockRequest->set_param('campaign', '');
