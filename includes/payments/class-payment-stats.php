@@ -433,6 +433,10 @@ class Give_Payment_Stats extends Give_Stats {
 				return null;
 			}
 
+			if ( array_diff( array_keys( $condition ), [ 'key', 'value', 'compare' ] ) ) {
+				return null;
+			}
+
 			$meta_conditions[] = $condition;
 		}
 

@@ -112,6 +112,27 @@ class PaymentStatsTest extends TestCase
     /**
      * @since TBD
      */
+    public function testFallsBackWhenMetaQueryUsesUnsupportedOptions()
+    {
+        $donation = $this->donation(1000, '-1 day');
+        $filter = static function ($args) use ($donation) {
+            $args['meta_query'][] = [
+                'key' => '_give_payment_form_id',
+                'value' => $donation->formId . '.0',
+                'type' => 'NUMERIC',
+            ];
+            return $args;
+        };
+        add_filter('give_stats_earnings_args', $filter);
+
+        $this->assertEquals(10.0, (new Give_Payment_Stats())->get_earnings(0, strtotime('-7 days'), time()));
+
+        remove_filter('give_stats_earnings_args', $filter);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testRunsDonationAmountFiltersWhenAnAddOnRegistersOne()
     {
         $this->donation(1000, '-1 day');
