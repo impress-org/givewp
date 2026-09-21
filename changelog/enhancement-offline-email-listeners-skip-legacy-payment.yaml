@@ -1,4 +1,4 @@
 significance: patch
 type: enhancement
-entry: Offline donation email listeners now check the gateway before loading the legacy payment object, saving about 20 queries on every non-offline donation
-timestamp: 2026-09-21T14:06:31.000Z
+entry: Improved donation processing speed by skipping unnecessary offline donation email checks
+timestamp: 2026-09-21T14:13:47.000Z
