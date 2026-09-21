@@ -2,6 +2,7 @@
 
 namespace Give\Tests\Unit\DonationForms\DataTransferObjects;
 
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
@@ -48,5 +49,28 @@ class DonationFormGoalDataTest extends TestCase
             'percentage' => $progressPercentage,
             'isAchieved' => $isEnabled && $donationForm->settings->enableAutoClose && $progressPercentage >= 100
         ]);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFallsBackToFormGoalWhenFormHasNoCampaign()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([
+                'goalSource' => GoalSource::CAMPAIGN,
+                'goalType' => GoalType::DONATIONS,
+                'goalAmount' => 25,
+                'enableDonationGoal' => true,
+            ]),
+        ]);
+
+        $goalData = (new DonationFormGoalData($donationForm->id, $donationForm->settings))->toArray();
+
+        $this->assertNull(Campaign::findByFormId($donationForm->id));
+        $this->assertEquals(GoalType::DONATIONS, $goalData['type']);
+        $this->assertEquals(25, $goalData['targetAmount']);
+        $this->assertEquals(0, $goalData['currentAmount']);
     }
 }

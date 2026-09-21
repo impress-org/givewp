@@ -35,6 +35,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
+     * @since TBD Show the form title when the donation has no campaign or its campaign no longer exists.
      * @since 4.8.0 Added class to link
      * @since 4.3.0
      *
@@ -44,11 +45,17 @@ class CampaignColumn extends ModelColumn
      */
     public function getCellValue($model): string
     {
+        $campaign = $model->campaignId ? $model->campaign : null;
+
+        if ( ! $campaign) {
+            return esc_html($model->formTitle);
+        }
+
         return sprintf(
             '<a href="%s" aria-label="%s" class="campaignLink">%s</a>',
-            admin_url("edit.php?post_type=give_forms&page=give-campaigns&id={$model->campaign->id}&tab=overview&action=edit"),
+            admin_url("edit.php?post_type=give_forms&page=give-campaigns&id={$campaign->id}&tab=overview&action=edit"),
             __('Visit campaign page', 'give'),
-            $model->campaign->title
+            esc_html($campaign->title)
         );
     }
 }
