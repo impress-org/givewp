@@ -33,6 +33,13 @@ class DonorPendingEmailRepository
     const DEFAULT_TTL = DAY_IN_SECONDS;
 
     /**
+     * Character length of the verification tokens.
+     *
+     * @since TBD
+     */
+    const TOKEN_LENGTH = 24;
+
+    /**
      * List a donor's pending emails, pruning expired entries.
      *
      * @since TBD
@@ -43,7 +50,12 @@ class DonorPendingEmailRepository
     {
         $rows = (array)give()->donor_meta->get_meta($donorId, DonorMetaKeys::PENDING_EMAIL, false);
 
-        return array_values($this->pruneExpired($donorId, $this->validEntries($rows)));
+        // Meta rows are untrusted values: malformed entries are ignored, not trusted.
+        $entries = array_values(array_filter($rows, function ($entry): bool {
+            return is_array($entry) && $this->isValidEntry($entry);
+        }));
+
+        return array_values($this->pruneExpired($donorId, $entries));
     }
 
     /**
@@ -76,7 +88,7 @@ class DonorPendingEmailRepository
         }
 
         $entry = [
-            'token' => wp_generate_password(24, false),
+            'token' => wp_generate_password(self::TOKEN_LENGTH, false),
             'email' => $email,
             'createdAt' => time(),
         ];
@@ -133,20 +145,6 @@ class DonorPendingEmailRepository
     public function delete(int $donorId, array $entry): bool
     {
         return (bool)give()->donor_meta->delete_meta($donorId, DonorMetaKeys::PENDING_EMAIL, $entry);
-    }
-
-    /**
-     * @since TBD
-     *
-     * @param array<int, mixed> $rows
-     *
-     * @return array<int, array{token: string, email: string, createdAt: int}>
-     */
-    private function validEntries(array $rows): array
-    {
-        return array_values(array_filter($rows, function ($entry): bool {
-            return is_array($entry) && $this->isValidEntry($entry);
-        }));
     }
 
     /**

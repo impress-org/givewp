@@ -18,6 +18,11 @@ class TestDonorPendingEmailRepository extends TestCase
     use RefreshDatabase;
 
     /**
+     * A fixed timestamp (2001-09-09) that is always beyond the 24h pending TTL.
+     */
+    const EXPIRED_TIMESTAMP = 1000000000;
+
+    /**
      * @since TBD
      */
     public function testAddShouldStorePendingEmailAndReturnToken(): void
@@ -27,7 +32,8 @@ class TestDonorPendingEmailRepository extends TestCase
         $token = (new DonorPendingEmailRepository())->add($donor->id, 'pending@givewp.com');
 
         $this->assertIsString($token);
-        $this->assertMatchesRegularExpression('/^[a-zA-Z0-9]{24}$/', $token);
+        $this->assertSame(DonorPendingEmailRepository::TOKEN_LENGTH, strlen($token));
+        $this->assertTrue(ctype_alnum($token), 'Token must be alphanumeric and URL-safe');
 
         $pending = (new DonorPendingEmailRepository())->all($donor->id);
         $this->assertCount(1, $pending);
@@ -56,12 +62,14 @@ class TestDonorPendingEmailRepository extends TestCase
         $donor = Donor::factory()->create();
         $repository = new DonorPendingEmailRepository();
 
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= DonorPendingEmailRepository::DEFAULT_LIMIT; $i++) {
             $this->assertIsString($repository->add($donor->id, "pending{$i}@givewp.com"));
         }
 
-        $this->assertNull($repository->add($donor->id, 'pending6@givewp.com'));
-        $this->assertCount(5, $repository->all($donor->id));
+        $this->assertNull(
+            $repository->add($donor->id, 'pending' . (DonorPendingEmailRepository::DEFAULT_LIMIT + 1) . '@givewp.com')
+        );
+        $this->assertCount(DonorPendingEmailRepository::DEFAULT_LIMIT, $repository->all($donor->id));
     }
 
     /**
@@ -120,7 +128,7 @@ class TestDonorPendingEmailRepository extends TestCase
         give()->donor_meta->add_meta($donor->id, DonorMetaKeys::PENDING_EMAIL, [
             'token' => 'expiredtokenexpiredtoke',
             'email' => 'expired@givewp.com',
-            'createdAt' => time() - DAY_IN_SECONDS - 1,
+            'createdAt' => self::EXPIRED_TIMESTAMP,
         ]);
 
         $pending = $repository->all($donor->id);
@@ -166,7 +174,7 @@ class TestDonorPendingEmailRepository extends TestCase
         give()->donor_meta->add_meta($donor->id, DonorMetaKeys::PENDING_EMAIL, [
             'token' => 'expiredtokenexpiredtoke',
             'email' => 'expired@givewp.com',
-            'createdAt' => time() - DAY_IN_SECONDS - 1,
+            'createdAt' => self::EXPIRED_TIMESTAMP,
         ]);
 
         $this->assertNull((new DonorPendingEmailRepository())->findByToken('expiredtokenexpiredtoke'));

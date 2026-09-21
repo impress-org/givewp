@@ -264,6 +264,33 @@ class DonorRepository
     }
 
     /**
+     * Append an additional email to a donor, trusting that the caller has verified the donor
+     * owns the email (payment context, admin action, or completed token verification).
+     *
+     * This is the only write path for additional emails that bypasses ownership verification.
+     *
+     * @since TBD
+     *
+     * @return bool True when the email was appended, false when it was rejected.
+     */
+    public function addVerifiedAdditionalEmail(Donor $donor, string $email): bool
+    {
+        if (!$donor->id || !is_email($email) || $donor->hasEmail($email)) {
+            return false;
+        }
+
+        Hooks::doAction('givewp_donor_updating', $donor);
+
+        $donor->additionalEmails = array_merge($donor->additionalEmails ?: [], [$email]);
+
+        $metaId = give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDITIONAL_EMAILS, $email);
+
+        Hooks::doAction('givewp_donor_updated', $donor);
+
+        return (bool)$metaId;
+    }
+
+    /**
      * @since 2.19.6
      *
      * @throws Exception
@@ -479,7 +506,6 @@ class DonorRepository
      * Delete all additional emails and re-insert the donor's current list.
      *
      * @since TBD Extracted from updateAdditionalEmails
-     * @since 4.4.0
      *
      * @return void
      */
@@ -517,33 +543,6 @@ class DonorRepository
         }
 
         $this->additionalEmailsToVerify = [];
-    }
-
-    /**
-     * Append an additional email to a donor, trusting that the caller has verified the donor
-     * owns the email (payment context, admin action, or completed token verification).
-     *
-     * This is the only write path for additional emails that bypasses ownership verification.
-     *
-     * @since TBD
-     *
-     * @return bool True when the email was appended, false when it was rejected.
-     */
-    public function addVerifiedAdditionalEmail(Donor $donor, string $email): bool
-    {
-        if (!$donor->id || !is_email($email) || $donor->hasEmail($email)) {
-            return false;
-        }
-
-        Hooks::doAction('givewp_donor_updating', $donor);
-
-        $donor->additionalEmails = array_merge($donor->additionalEmails ?: [], [$email]);
-
-        $metaId = give()->donor_meta->add_meta($donor->id, DonorMetaKeys::ADDITIONAL_EMAILS, $email);
-
-        Hooks::doAction('givewp_donor_updated', $donor);
-
-        return (bool)$metaId;
     }
 
     /**

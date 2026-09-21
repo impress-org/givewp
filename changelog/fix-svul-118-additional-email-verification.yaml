@@ -1,9 +1,5 @@
 significance: patch
 type: security
-entry: Require proof of email ownership before additional emails become active
-  on a donor record. Additional emails submitted by donors updating their own
-  profile (REST API or Donor Dashboard) are now held as pending with a 24-hour
-  expiring verification link instead of being activated immediately, and emails
-  already claimed by another donor are rejected. Checkout and admin writes are
-  unchanged.
+entry: Required proof of email ownership before additional emails can be
+  activated on a donor record.
 timestamp: 2026-09-18T19:34:01.978Z

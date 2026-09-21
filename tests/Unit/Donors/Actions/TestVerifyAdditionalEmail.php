@@ -20,6 +20,16 @@ class TestVerifyAdditionalEmail extends TestCase
     use RefreshDatabase;
 
     /**
+     * A fixed timestamp (2001-09-09) that is always beyond the 24h pending TTL.
+     */
+    const EXPIRED_TIMESTAMP = 1000000000;
+
+    /**
+     * A fixed timestamp (2033-05-18) that is safely within the TTL of any test run.
+     */
+    const UNEXPIRED_TIMESTAMP = 2000000000;
+
+    /**
      * @since TBD
      */
     public function testVerifyShouldAppendEmailAndDeletePendingEntry(): void
@@ -56,7 +66,7 @@ class TestVerifyAdditionalEmail extends TestCase
         give()->donor_meta->add_meta($donor->id, DonorMetaKeys::PENDING_EMAIL, [
             'token' => 'expiredtokenexpiredtoke',
             'email' => 'expired@givewp.com',
-            'createdAt' => time() - DAY_IN_SECONDS - 1,
+            'createdAt' => self::EXPIRED_TIMESTAMP,
         ]);
 
         $this->assertSame(
@@ -95,7 +105,7 @@ class TestVerifyAdditionalEmail extends TestCase
         give()->donor_meta->add_meta($donor->id, DonorMetaKeys::PENDING_EMAIL, [
             'token' => 'alreadytokenalreadytok',
             'email' => 'already@givewp.com',
-            'createdAt' => time(),
+            'createdAt' => self::UNEXPIRED_TIMESTAMP,
         ]);
 
         $status = (new VerifyAdditionalEmail())->verify('alreadytokenalreadytok');
