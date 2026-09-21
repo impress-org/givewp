@@ -6,6 +6,8 @@ use Give\DonationForms\Actions\GenerateDonationFormPageUrl;
 use Exception;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Actions\GenerateExternalEmbedScriptUrl;
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -25,6 +27,21 @@ use Give_License;
 class FormBuilderViewModelTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @since TBD
+     */
+    public function testGoalSourceOptionsOnlyIncludeCampaignWhenFormHasOne()
+    {
+        $viewModel = new FormBuilderViewModel();
+        $standaloneForm = DonationForm::factory()->create();
+        $campaignForm = DonationForm::factory()->create();
+        $campaign = Campaign::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($campaign, $campaignForm->id);
+
+        $this->assertSame(['form'], array_column($viewModel->getGoalSourceOptions($standaloneForm->id), 'value'));
+        $this->assertSame(['campaign', 'form'], array_column($viewModel->getGoalSourceOptions($campaignForm->id), 'value'));
+    }
 
     /**
      * @since TBD Add externalEmbedScriptUrl key to the compared array
@@ -93,7 +110,7 @@ class FormBuilderViewModelTest extends TestCase
                     'agreementText' => give_get_option('agreement_text'),
                 ],
                 'goalTypeOptions' => $viewModel->getGoalTypeOptions(),
-                'goalSourceOptions' => $viewModel->getGoalSourceOptions(),
+                'goalSourceOptions' => $viewModel->getGoalSourceOptions($formId),
                 'goalProgressOptions' => $viewModel->getGoalProgressOptions(),
                 'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
                 'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),

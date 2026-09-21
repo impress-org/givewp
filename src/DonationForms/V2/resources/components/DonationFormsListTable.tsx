@@ -94,6 +94,16 @@ const donationFormsFilters: Array<FilterConfig> = [
     },
 ];
 
+if (!isCampaignDetailsPage) {
+    donationFormsFilters.unshift({
+        name: 'campaign',
+        type: 'campaignselect',
+        text: __('All campaigns', 'give'),
+        ariaLabel: __('Filter donation forms by campaign', 'give'),
+        options: [{value: 'none', text: __('No campaign', 'give')}],
+    });
+}
+
 if (isCampaignDetailsPage) {
     donationFormsFilters.push({
         name: 'campaignId',
@@ -367,6 +377,9 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                     </div>
                 ) : (
                     <>
+                        <a href={window.GiveNextGen?.newFormUrl} className={`button button-primary ${styles.button}`}>
+                            {__('Add form', 'give')}
+                        </a>
                         {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
                             <button
                                 className={`button button-secondary ${styles.button} ${styles.buttonSecondary}`}

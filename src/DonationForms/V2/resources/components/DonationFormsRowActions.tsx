@@ -6,6 +6,7 @@ import {useContext} from 'react';
 import {ShowConfirmModalContext} from '@givewp/components/ListTable/ListTablePage';
 import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
+import LinkToCampaignRowAction from './LinkToCampaignModal';
 import {createInterpolateElement} from '@wordpress/element';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
@@ -157,6 +158,15 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             actionId={item.id}
                             displayText={__('Make as default', 'give')}
                             hiddenText={item?.name}
+                        />
+                    )}
+                    {!isCampaignDetailsPage && !item.campaignId && (
+                        <LinkToCampaignRowAction
+                            formId={item.id}
+                            formTitle={item?.name}
+                            onLinked={async () => {
+                                await mutate(parameters);
+                            }}
                         />
                     )}
                 </>

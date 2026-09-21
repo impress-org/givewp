@@ -3,6 +3,8 @@
 namespace Give\Tests\Unit\DonationForms\Endpoints;
 
 use Exception;
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Endpoints\ListDonationForms;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
@@ -93,6 +95,49 @@ class TestListDonationForms extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testCampaignNoneFilterReturnsOnlyStandaloneForms()
+    {
+        $campaign = Campaign::factory()->create(['title' => 'Linked Campaign']);
+        $linkedForm = $this->donationForms[0];
+        give(CampaignRepository::class)->addCampaignForm($campaign, $linkedForm->id);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('status', 'any');
+        $mockRequest->set_param('campaign', 'none');
+
+        $response = (new ListDonationForms())->handleRequest($mockRequest);
+        $ids = array_column($response->data['items'], 'id');
+
+        $this->assertCount(count($this->donationForms) - 1, $ids);
+        $this->assertNotContains($linkedForm->id, $ids);
+
+        $standaloneIds = array_diff(array_column($this->donationForms, 'id'), [$linkedForm->id]);
+
+        $mockRequest->set_param('campaign', (string)$campaign->id);
+        $response = (new ListDonationForms())->handleRequest($mockRequest);
+        $this->assertContains($linkedForm->id, array_column($response->data['items'], 'id'));
+        $this->assertEmpty(array_intersect($standaloneIds, array_column($response->data['items'], 'id')));
+
+        $mockRequest->set_param('campaign', '');
+        $response = (new ListDonationForms())->handleRequest($mockRequest);
+
+        foreach ($response->data['items'] as $item) {
+            if ($item['id'] === $linkedForm->id) {
+                $this->assertSame($campaign->id, $item['campaignId']);
+                $this->assertStringContainsString('Linked Campaign', $item['campaign']);
+            } elseif (in_array($item['id'], $standaloneIds, true)) {
+                $this->assertSame(0, $item['campaignId']);
+                $this->assertSame('No campaign', $item['campaign']);
+            }
+        }
+    }
+
+    /**
      * @since 4.0.0 Add support to isDefaultCampaignForm key
      * @since 2.25.0
      *
@@ -124,6 +169,7 @@ class TestListDonationForms extends TestCase
             $expectedItem['status_raw'] = $donationForm->status->getValue();
 
             $expectedItem['isDefaultCampaignForm'] = false;
+            $expectedItem['campaignId'] = 0;
 
             $expectedItems[] = $expectedItem;
         }

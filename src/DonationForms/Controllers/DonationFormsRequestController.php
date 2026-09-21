@@ -3,6 +3,7 @@
 namespace Give\DonationForms\Controllers;
 
 use Exception;
+use Give\Campaigns\Actions\CacheCampaignData;
 use Give\Campaigns\Repositories\CampaignRepository;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Models\DonationForm;
@@ -125,6 +126,7 @@ class DonationFormsRequestController
     }
 
     /**
+     * @since TBD Refresh the campaign's cached totals after linking forms.
      * @since 4.2.0
      *
      * @throws Exception
@@ -139,6 +141,8 @@ class DonationFormsRequestController
             foreach ($formIDs as $formID) {
                 $campaignRepository->addCampaignForm($campaign, $formID);
             }
+
+            give(CacheCampaignData::class)->dispatch($campaign->id);
 
             return new WP_REST_Response($formIDs);
         }

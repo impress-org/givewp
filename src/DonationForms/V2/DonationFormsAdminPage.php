@@ -61,6 +61,7 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
+     * @since TBD Show the "Forms" submenu again so standalone forms have a home in the admin.
      * @since 4.14.0 update permission capability to use facade
      * @since 4.0.0 set submenu parent to empty string to hide "all forms" from admin menu
      */
@@ -68,37 +69,14 @@ class DonationFormsAdminPage
     {
         remove_submenu_page('edit.php?post_type=give_forms', 'edit.php?post_type=give_forms');
         add_submenu_page(
-            '',
+            'edit.php?post_type=give_forms',
             esc_html__('Donation Forms', 'give'),
-            esc_html__('All Forms', 'give'),
+            esc_html__('Forms', 'give'),
             UserPermissions::donationForms()->viewCap(),
             'give-forms',
             [$this, 'render'],
-            // Do not change the submenu position unless you have a strong reason.
-            // We use this position value to access this menu data in $submenu to add a custom class.
-            // Check DonationFormsAdminPage::highlightAllFormsMenuItem
-            0
+            1
         );
-    }
-
-    /**
-     * @since 2.20.0
-     */
-    public function highlightAllFormsMenuItem()
-    {
-        global $submenu;
-        $pages = [
-            '/wp-admin/admin.php?page=give-forms', // Donation main menu page.
-            '/wp-admin/edit.php?post_type=give_forms', // Legacy donation form listing page.
-        ];
-
-        if (in_array($_SERVER['REQUEST_URI'], $pages)) {
-            // Add class to highlight 'All Forms' submenu.
-            $submenu['edit.php?post_type=give_forms'][0][4] = add_cssclass(
-                'current',
-                isset($submenu['edit.php?post_type=give_forms'][0][4]) ? $submenu['edit.php?post_type=give_forms'][0][4] : ''
-            );
-        }
     }
 
     /**

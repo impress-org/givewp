@@ -187,6 +187,18 @@ class CampaignRepository
     }
 
     /**
+     * Whether a form belongs to any campaign. Checks the campaign forms table and the campaign's own
+     * default form id, which is how Peer-to-Peer campaigns link their form.
+     *
+     * @since TBD
+     */
+    public function formHasCampaign(int $donationFormId): bool
+    {
+        return (bool)DB::table('give_campaign_forms')->where('form_id', $donationFormId)->count()
+            || (bool)DB::table('give_campaigns')->where('form_id', $donationFormId)->count();
+    }
+
+    /**
      * @since 4.0.0
      *
      * @throws Exception

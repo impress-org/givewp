@@ -32,6 +32,13 @@ class DonationFormDataRepository
     private array $campaignSubscriptionDonorsCount = [];
 
     /**
+     * @since TBD
+     *
+     * @var array<int, object{id: int, title: string}> keyed by form id
+     */
+    private array $campaigns = [];
+
+    /**
      * @param DonationForm[] $forms
      *
      * @return DonationFormDataRepository
@@ -42,6 +49,10 @@ class DonationFormDataRepository
 
         $formsUsingFormGoal = [];
         $formsUsingCampaignGoal = [];
+
+        $self->setFormsCampaigns(array_map(static function ($form) {
+            return $form->id;
+        }, $forms));
 
         foreach ($forms as $form) {
             if ($form->goalSettings->goalSource === GoalSource::CAMPAIGN) {
@@ -82,6 +93,46 @@ class DonationFormDataRepository
             $this->formSubscriptionDonationsCount = $subscriptions->collectDonations();
             $this->formSubscriptionDonorsCount = $subscriptions->collectDonors();
         }
+    }
+
+    /**
+     * Load the campaign each form belongs to. Forms attached through the campaign forms table
+     * come first; the campaign's own default form id covers Peer-to-Peer forms that have no row there.
+     *
+     * @since TBD
+     */
+    public function setFormsCampaigns(array $ids): void
+    {
+        if (empty($ids)) {
+            return;
+        }
+
+        $linked = DB::table('give_campaign_forms', 'campaign_forms')
+            ->select(['campaign_forms.form_id', 'formId'], ['campaigns.id', 'id'], ['campaigns.campaign_title', 'title'])
+            ->leftJoin('give_campaigns', 'campaign_forms.campaign_id', 'campaigns.id', 'campaigns')
+            ->whereIn('campaign_forms.form_id', $ids)
+            ->getAll();
+
+        $defaults = DB::table('give_campaigns')
+            ->select(['form_id', 'formId'], ['id', 'id'], ['campaign_title', 'title'])
+            ->whereIn('form_id', $ids)
+            ->getAll();
+
+        foreach (array_merge($linked ?? [], $defaults ?? []) as $row) {
+            if ($row->id && ! isset($this->campaigns[(int)$row->formId])) {
+                $this->campaigns[(int)$row->formId] = (object)['id' => (int)$row->id, 'title' => $row->title];
+            }
+        }
+    }
+
+    /**
+     * @since TBD
+     *
+     * @return object{id: int, title: string}|null
+     */
+    public function getCampaign(DonationForm $form)
+    {
+        return $this->campaigns[$form->id] ?? null;
     }
 
     /**

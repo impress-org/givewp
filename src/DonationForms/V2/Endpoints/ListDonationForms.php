@@ -118,6 +118,11 @@ class ListDonationForms extends Endpoint
                         'type' => 'integer',
                         'required' => false,
                     ],
+                    'campaign' => [
+                        'type' => 'string',
+                        'required' => false,
+                        'description' => 'A campaign id, "none" for standalone forms, or empty for all forms.',
+                    ],
                 ],
             ]
         );
@@ -181,6 +186,7 @@ class ListDonationForms extends Endpoint
                 $item['v3form'] = $forms[$i]->usesFormBuilder;
                 $item['status_raw'] = $forms[$i]->status->getValue();
                 $item['isDefaultCampaignForm'] = $defaultCampaignForm && $item['id'] === $defaultCampaignForm->id;
+                $item['campaignId'] = $formsData->getCampaign($forms[$i])->id ?? 0;
             }
         }
 
@@ -246,6 +252,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
+     * @since TBD Add "campaign" filter: a campaign id or "none" for standalone forms
      * @since      4.0.0 Add "campaignId" support
      * @since      2.24.0
      *
@@ -279,7 +286,10 @@ class ListDonationForms extends Endpoint
             }
         }
 
-        if ($campaignId = $this->request->get_param('campaignId')) {
+        $campaign = (string)$this->request->get_param('campaign');
+        $campaignId = $this->request->get_param('campaignId') ?: (ctype_digit($campaign) ? (int)$campaign : 0);
+
+        if ($campaignId) {
             $query
                 ->join(function (JoinQueryBuilder $builder) {
                     $builder
@@ -287,6 +297,22 @@ class ListDonationForms extends Endpoint
                         ->on('campaign_forms.form_id', 'ID');
                 })
                 ->where('campaign_forms.campaign_id', $campaignId);
+        }
+
+        // Standalone forms: no campaign forms row and not a Peer-to-Peer campaign's form
+        if ($campaign === 'none') {
+            $query
+                ->whereNotIn('ID', function (QueryBuilder $builder) {
+                    $builder
+                        ->from('give_campaign_forms')
+                        ->select('form_id');
+                })
+                ->whereNotIn('ID', function (QueryBuilder $builder) {
+                    $builder
+                        ->from('give_campaigns')
+                        ->select('form_id')
+                        ->where('campaign_type', CampaignType::CORE, '!=');
+                });
         }
 
         return $query;
