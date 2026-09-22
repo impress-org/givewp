@@ -63,9 +63,10 @@ class DonationFormGoalDataTest extends TestCase
     {
         /** @var DonationForm $donationForm */
         $donationForm = DonationForm::factory()->create([
+            /* FormSettings::fromArray() validates these against the enum values, so pass the strings. */
             'settings' => FormSettings::fromArray([
-                'goalSource' => GoalSource::CAMPAIGN(),
-                'goalType' => GoalType::DONATIONS(),
+                'goalSource' => GoalSource::CAMPAIGN,
+                'goalType' => GoalType::DONATIONS,
                 'goalAmount' => 30,
                 'enableDonationGoal' => true,
             ]),
@@ -78,11 +79,13 @@ class DonationFormGoalDataTest extends TestCase
             ->where('id', $campaign->id)
             ->update(['form_id' => $donationForm->id]);
 
+        /* Without both of these the test would pass on the form goal branch and prove nothing. */
+        $this->assertSame(GoalSource::CAMPAIGN, $donationForm->settings->goalSource->getValue());
         $this->assertNull(Campaign::findByFormId($donationForm->id));
 
         $goalData = (new DonationFormGoalData($donationForm->id, $donationForm->settings))->toArray();
 
         $this->assertSame(GoalType::DONATIONS, $goalData['type']);
-        $this->assertSame(30, $goalData['targetAmount']);
+        $this->assertEquals(30, $goalData['targetAmount']);
     }
 }
