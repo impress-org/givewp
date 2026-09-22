@@ -57,10 +57,7 @@ class CampaignsDataRepository
         $campaignsData = array_merge($emptyCache, (array)get_option('give_campaigns_data', []));
         $campaignsSubscriptionData = array_merge($emptyCache, (array)get_option('give_campaigns_subscriptions_data', []));
 
-        $cachedIds = array_column($campaignsData['donationsCount'], 'campaign_id');
-        $uncachedIds = array_values(array_filter($ids, static function ($id) use ($cachedIds) {
-            return ! in_array((string)$id, array_map('strval', $cachedIds), true);
-        }));
+        $uncachedIds = self::missingIds($campaignsData, $ids);
 
         if ($uncachedIds) {
             $donations = CampaignsDataQuery::donations($uncachedIds);
@@ -72,18 +69,23 @@ class CampaignsDataRepository
             ];
 
             update_option('give_campaigns_data', $campaignsData);
+        }
 
-            if (defined('GIVE_RECURRING_VERSION')) {
-                $subscriptions = CampaignsDataQuery::subscriptions($uncachedIds);
+        // The subscriptions cache can lag the donations cache, for example when Recurring is activated later
+        $uncachedSubscriptionIds = defined('GIVE_RECURRING_VERSION')
+            ? self::missingIds($campaignsSubscriptionData, $ids)
+            : [];
 
-                $campaignsSubscriptionData = [
-                    'amounts' => array_merge($campaignsSubscriptionData['amounts'], self::withZeroRows($subscriptions->collectInitialAmounts(), $uncachedIds, 'sum')),
-                    'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'], self::withZeroRows($subscriptions->collectDonations(), $uncachedIds, 'count')),
-                    'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'], self::withZeroRows($subscriptions->collectDonors(), $uncachedIds, 'count')),
-                ];
+        if ($uncachedSubscriptionIds) {
+            $subscriptions = CampaignsDataQuery::subscriptions($uncachedSubscriptionIds);
 
-                update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
-            }
+            $campaignsSubscriptionData = [
+                'amounts' => array_merge($campaignsSubscriptionData['amounts'], self::withZeroRows($subscriptions->collectInitialAmounts(), $uncachedSubscriptionIds, 'sum')),
+                'donationsCount' => array_merge($campaignsSubscriptionData['donationsCount'], self::withZeroRows($subscriptions->collectDonations(), $uncachedSubscriptionIds, 'count')),
+                'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'], self::withZeroRows($subscriptions->collectDonors(), $uncachedSubscriptionIds, 'count')),
+            ];
+
+            update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
         }
 
         $self->amounts = $campaignsData['amounts'];
@@ -97,6 +99,20 @@ class CampaignsDataRepository
         }
 
         return $self;
+    }
+
+    /**
+     * Ids with no row in the given cache.
+     *
+     * @since TBD
+     */
+    private static function missingIds(array $cache, array $ids): array
+    {
+        $cachedIds = array_map('strval', array_column($cache['donationsCount'], 'campaign_id'));
+
+        return array_values(array_filter($ids, static function ($id) use ($cachedIds) {
+            return ! in_array((string)$id, $cachedIds, true);
+        }));
     }
 
     /**
