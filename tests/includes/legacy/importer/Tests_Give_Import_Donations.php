@@ -478,29 +478,6 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	}
 
 	/**
-	 * Check if a purchase key can be found among the keys derivable from the given wall-clock seconds.
-	 *
-	 * @since TBD
-	 *
-	 * @param string $purchase_key Purchase key to look for.
-	 * @param int    $second_from  First second of the window, inclusive.
-	 * @param int    $second_to    Last second of the window, inclusive.
-	 *
-	 * @return bool
-	 */
-	private function is_purchase_key_within_time_window( $purchase_key, $second_from, $second_to ) {
-		for ( $second = $second_from; $second <= $second_to; $second++ ) {
-			for ( $microsecond = 0; $microsecond < 1000000; $microsecond++ ) {
-				if ( strtolower( md5( sprintf( '%08x%05x', $second, $microsecond ) ) ) === $purchase_key ) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Test that the purchase key of an imported donation is not derivable from the import time.
 	 *
 	 * @since TBD
@@ -543,5 +520,29 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 			$this->is_purchase_key_within_time_window( $control_key, $control_time_before, $control_time_after ),
 			'The control key generated from a timestamp must be found by the window sweep.'
 		);
+	}
+
+	/**
+	 * Check if a purchase key can be found among the keys derivable from the given wall-clock seconds.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $purchase_key Purchase key to look for.
+	 * @param int    $second_from  First second of the window, inclusive.
+	 * @param int    $second_to    Last second of the window, inclusive.
+	 *
+	 * @return bool
+	 */
+	private function is_purchase_key_within_time_window( $purchase_key, $second_from, $second_to ) {
+		for ( $second = $second_from; $second <= $second_to; $second++ ) {
+			// uniqid() encodes the microsecond (0–999999) in its last 5 hex characters.
+			for ( $microsecond = 0; $microsecond < 1000000; $microsecond++ ) {
+				if ( strtolower( md5( sprintf( '%08x%05x', $second, $microsecond ) ) ) === $purchase_key ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 }
