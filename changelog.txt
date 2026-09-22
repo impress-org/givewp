@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 4.17.0: September 22nd, 2026 =
+* Feature: Added the ability to embed donation forms on any website with a copy-paste snippet from the form builder
+* Enhancement: Donation form embeds now show a loading state while the form loads
+* Fix: Fixed PHP 8.4 deprecation notices about implicitly nullable parameters
+* Fix: Fixed the revenue table index migration adding duplicate indexes when it runs more than once
+* Fix: Added additional escaping to the legacy donation form's billing address fields.
+
 = 4.16.9: September 16th, 2026 =
 * Security: Added additional validation to PayPal Commerce donation processing.
 * Security: Added additional sanitization to donor information displayed on public pages.

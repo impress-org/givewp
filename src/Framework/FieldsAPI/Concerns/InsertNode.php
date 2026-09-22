@@ -115,7 +115,7 @@ trait InsertNode
     }
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 2.24.0 Make index optional to avoid rebuilding array when appending
      * @since 2.10.2
      *

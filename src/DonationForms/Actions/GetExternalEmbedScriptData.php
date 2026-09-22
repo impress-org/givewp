@@ -22,7 +22,7 @@ use Give\Framework\Routes\Route;
  * Only published forms are included, and the id never selects which form the
  * embed loads: the element looks up its own `form-id` attribute in the map.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class GetExternalEmbedScriptData
 {
@@ -30,12 +30,12 @@ class GetExternalEmbedScriptData
      * Upper bound on form ids honored per request, so a long list cannot turn
      * one script request into many form loads.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     private const MAX_FORMS = 10;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      *
      * @param array $request The query arguments and path id the router matched.
      */
@@ -76,7 +76,7 @@ class GetExternalEmbedScriptData
      * segment the router returns as `id`. Anything but a plain positive integer
      * is dropped, then deduplicated and capped.
      *
-     * @since TBD
+     * @since 4.17.0
      *
      * @return int[]
      */
@@ -104,7 +104,7 @@ class GetExternalEmbedScriptData
      * whose design the skeleton cannot sketch gets no entry, and the embed
      * shows a spinner for it.
      *
-     * @since TBD
+     * @since 4.17.0
      *
      * @param int[] $ids
      *

@@ -8,7 +8,7 @@ import '../EntitySelector/styles/index.scss';
 import {FocusScope} from 'react-aria';
 
 /**
- * @since TBD add formUrl, where the fallback link points when the form is slow to load.
+ * @since 4.17.0 add formUrl, where the fallback link points when the form is slow to load.
  * @since 4.3.0
  */
 type ModalFormProps = {
@@ -21,8 +21,8 @@ type ModalFormProps = {
 };
 
 /**
- * @since TBD render the iframe through EmbedFrame; a form that is slow to load also offers a link.
- * @since TBD Share the launcher's pending state markup and styles with the external embed.
+ * @since 4.17.0 render the iframe through EmbedFrame; a form that is slow to load also offers a link.
+ * @since 4.17.0 Share the launcher's pending state markup and styles with the external embed.
  * @since 4.3.0
  */
 export default function ModalForm({

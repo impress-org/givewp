@@ -19,7 +19,7 @@ class DonationTypeRule implements ValidationRule, ValidatesOnFrontEnd, Sanitizer
     }
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 3.0.0
      */
     public static function fromString(?string $options = null): ValidationRule

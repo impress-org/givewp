@@ -11,7 +11,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 class ReferenceBlockNotFoundException extends Exception
 {
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      */
     public function __construct($name, $code = 0, ?Exception $previous = null)
     {

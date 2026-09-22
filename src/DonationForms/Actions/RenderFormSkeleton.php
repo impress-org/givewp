@@ -15,14 +15,14 @@ use Give\Framework\Views\View;
  * Two-panel puts the header beside the first section. Any other design id, including one an
  * add-on registers, renders nothing, and the embed shows a spinner.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class RenderFormSkeleton
 {
     /**
      * The core designs the sketch knows the spacing of.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     private const KNOWN_DESIGNS = ['classic', 'multi-step', 'two-panel-steps'];
 
@@ -30,7 +30,7 @@ class RenderFormSkeleton
      * Blocks whose real height is far from a single input, so the section template gives them
      * their own sketch. Anything else is drawn as a label and one input row.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     private const BLOCK_VARIANTS = [
         'givewp/donation-amount' => 'amount',
@@ -39,7 +39,7 @@ class RenderFormSkeleton
     ];
 
     /**
-     * @since TBD
+     * @since 4.17.0
      *
      * @param array $data The array GetFormSkeletonData returns.
      *
@@ -74,7 +74,7 @@ class RenderFormSkeleton
      * the block prints a style element next to it in the content, since anything it enqueued would
      * print in the footer, and the form view adds it to its head through wp_add_inline_style().
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public function css(): string
     {

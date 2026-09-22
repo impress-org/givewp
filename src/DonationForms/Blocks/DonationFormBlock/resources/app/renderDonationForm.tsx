@@ -2,7 +2,7 @@ import {createRoot} from 'react-dom/client';
 import DonationFormBlockApp from '.';
 
 /**
- * @since TBD hand the server-rendered skeleton inside the root to the app before React clears it.
+ * @since 4.17.0 hand the server-rendered skeleton inside the root to the app before React clears it.
  * @since 4.7.0
  */
 export default function renderDonationForm(root) {

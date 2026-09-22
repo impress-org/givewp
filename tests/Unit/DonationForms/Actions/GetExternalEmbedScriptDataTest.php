@@ -12,14 +12,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * The skeletons map is the contract between the script URL's form id and what the embed draws
  * before the form page answers, so which forms get in and how ids are read are pinned here.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class GetExternalEmbedScriptDataTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testNoFormIdGivesAnEmptySkeletonMap()
     {
@@ -30,7 +30,7 @@ class GetExternalEmbedScriptDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testPublishedFormsNamedByQueryOrPathGetTheirSkeleton()
     {
@@ -47,7 +47,7 @@ class GetExternalEmbedScriptDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testDraftMissingAndMalformedIdsAreLeftOut()
     {
@@ -67,7 +67,7 @@ class GetExternalEmbedScriptDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testAtMostTenIdsAreHonored()
     {

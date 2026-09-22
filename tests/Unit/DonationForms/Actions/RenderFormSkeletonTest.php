@@ -9,12 +9,12 @@ use Give\Tests\TestCase;
  * The markup is what the block and the form view print and what the embed stylesheets target, so
  * the class names and the per-design structure are pinned here.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class RenderFormSkeletonTest extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testClassicRendersHeaderEverySectionAndButton()
     {
@@ -33,7 +33,7 @@ class RenderFormSkeletonTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testMultiStepShowsOnlyTheHeaderStepWhenTheFormHasAHeader()
     {
@@ -47,7 +47,7 @@ class RenderFormSkeletonTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testMultiStepShowsTheFirstSectionWhenThereIsNoHeader()
     {
@@ -63,7 +63,7 @@ class RenderFormSkeletonTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testTwoPanelPutsTheHeaderBesideTheFirstStep()
     {
@@ -80,7 +80,7 @@ class RenderFormSkeletonTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testHeaderPartsFollowTheImageAndGoalFlags()
     {
@@ -96,7 +96,7 @@ class RenderFormSkeletonTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testGatewaysDrawOneRowPerGatewayPlusTheOpenPanel()
     {
@@ -113,7 +113,7 @@ class RenderFormSkeletonTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testUnknownDesignRendersNothing()
     {
@@ -126,7 +126,7 @@ class RenderFormSkeletonTest extends TestCase
      * as text. The design id is checked against a fixed list, block names are lookup keys only,
      * and the remaining values are booleans and a count.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public function testNoDataValueReachesTheMarkup()
     {

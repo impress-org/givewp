@@ -27,7 +27,7 @@ const getRedirectUrl = (redirectUrl: URL) => {
     return redirectUrl;
 };
 /**
- * @since TBD Bail in cross-origin embeds where the parent page URL is unreadable.
+ * @since 4.17.0 Bail in cross-origin embeds where the parent page URL is unreadable.
  */
 const handleLoginPageRedirected = () => {
     let formPageUrl;
@@ -89,7 +89,7 @@ export default function Authentication({
     const [showLogin, setShowLogin] = useState<boolean>(required);
     const toggleShowLogin = () => setShowLogin(!showLogin);
     /**
-     * @since TBD In cross-origin embeds, use the inline login form instead:
+     * @since 4.17.0 In cross-origin embeds, use the inline login form instead:
      * wp-login.php rejects a redirect_to pointing at an external site, which
      * would strand the donor on the WordPress admin after logging in.
      */

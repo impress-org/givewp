@@ -27,7 +27,7 @@ class FormBuilderViewModelTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * @since TBD Add externalEmbedScriptUrl key, naming the form, to the compared array
+     * @since 4.17.0 Add externalEmbedScriptUrl key, naming the form, to the compared array
      * @since 3.9.0 Add support to intlTelInputSettings key in the compared array
      * @since 3.7.0 Add support to isExcerptEnabled key in the compared array
      * @since 3.2.0 Add support to nameTitlePrefixes key in the compared array

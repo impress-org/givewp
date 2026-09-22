@@ -9,7 +9,7 @@ import convertValuesToFormData from '@givewp/forms/app/utilities/convertValuesTo
 import {getAuthToken} from '@givewp/forms/app/utilities/authToken';
 
 /**
- * @since TBD Send the auth token so embedded forms stay signed in without cookies
+ * @since 4.17.0 Send the auth token so embedded forms stay signed in without cookies
  * @since 3.0.0
  */
 export default async function handleValidationRequest(

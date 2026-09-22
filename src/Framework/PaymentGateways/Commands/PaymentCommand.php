@@ -25,7 +25,7 @@ abstract class PaymentCommand implements GatewayCommand
      * @param string|null $gatewayTransactionId
      *
      * @return static
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      */
     public static function make(?string $gatewayTransactionId = null): PaymentCommand
     {
@@ -33,7 +33,7 @@ abstract class PaymentCommand implements GatewayCommand
     }
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since      2.18.0
      * @since 2.23.1 Make constructor final to avoid unsafe usage of `new static()`.
      *
