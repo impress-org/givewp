@@ -187,15 +187,17 @@ class CampaignRepository
     }
 
     /**
-     * Whether a form belongs to any campaign. Checks the campaign forms table and the campaign's own
-     * default form id, which is how Peer-to-Peer campaigns link their form.
+     * Whether a form can inherit a campaign goal. Deliberately limited to the campaign forms table,
+     * because that is the only relationship queryByFormId() resolves. A form linked solely through
+     * give_campaigns.form_id — as a Peer-to-Peer campaign that predates the junction table is —
+     * would otherwise be offered the campaign goal in the builder and then fall back to its own goal
+     * at render time, because Campaign::findByFormId() cannot find its campaign.
      *
      * @since TBD
      */
     public function formHasCampaign(int $donationFormId): bool
     {
-        return (bool)DB::table('give_campaign_forms')->where('form_id', $donationFormId)->count()
-            || (bool)DB::table('give_campaigns')->where('form_id', $donationFormId)->count();
+        return (bool)DB::table('give_campaign_forms')->where('form_id', $donationFormId)->count();
     }
 
     /**

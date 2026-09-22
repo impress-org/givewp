@@ -129,6 +129,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
+     * @since TBD Resolve isDefaultCampaignForm from the row's campaign when the request names none
      * @since 3.22.0 Add locale support
      * @since 2.24.0 Change this to use the new ListTable class
      *
@@ -180,13 +181,22 @@ class ListDonationForms extends Endpoint
                     }
                 }
 
+                $campaign = $formsData->getCampaign($forms[$i]);
+
                 $item['name'] = $forms[$i]->title;
                 $item['edit'] = add_query_arg($queryArgs, get_edit_post_link($item['id'], 'edit'));
                 $item['permalink'] = get_permalink($item['id']);
                 $item['v3form'] = $forms[$i]->usesFormBuilder;
                 $item['status_raw'] = $forms[$i]->status->getValue();
-                $item['isDefaultCampaignForm'] = $defaultCampaignForm && $item['id'] === $defaultCampaignForm->id;
-                $item['campaignId'] = $formsData->getCampaign($forms[$i])->id ?? 0;
+                /*
+                 * $defaultCampaignForm only exists when the request names a campaign, which the
+                 * global forms list does not do, so fall back to the campaign loaded for the row.
+                 * Without it every default form there renders with the delete and trash actions.
+                 */
+                $item['isDefaultCampaignForm'] = $defaultCampaignForm
+                    ? $item['id'] === $defaultCampaignForm->id
+                    : ($campaign && $campaign->defaultFormId === (int)$item['id']);
+                $item['campaignId'] = $campaign->id ?? 0;
             }
         }
 

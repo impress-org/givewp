@@ -34,7 +34,7 @@ class DonationFormDataRepository
     /**
      * @since TBD
      *
-     * @var array<int, object{id: int, title: string}> keyed by form id
+     * @var array<int, object{id: int, title: string, defaultFormId: int, type: string}> keyed by form id
      */
     private array $campaigns = [];
 
@@ -108,19 +108,36 @@ class DonationFormDataRepository
         }
 
         $linked = DB::table('give_campaign_forms', 'campaign_forms')
-            ->select(['campaign_forms.form_id', 'formId'], ['campaigns.id', 'id'], ['campaigns.campaign_title', 'title'])
+            ->select(
+                ['campaign_forms.form_id', 'formId'],
+                ['campaigns.id', 'id'],
+                ['campaigns.campaign_title', 'title'],
+                ['campaigns.form_id', 'defaultFormId'],
+                ['campaigns.campaign_type', 'type']
+            )
             ->leftJoin('give_campaigns', 'campaign_forms.campaign_id', 'campaigns.id', 'campaigns')
             ->whereIn('campaign_forms.form_id', $ids)
             ->getAll();
 
         $defaults = DB::table('give_campaigns')
-            ->select(['form_id', 'formId'], ['id', 'id'], ['campaign_title', 'title'])
+            ->select(
+                ['form_id', 'formId'],
+                ['id', 'id'],
+                ['campaign_title', 'title'],
+                ['form_id', 'defaultFormId'],
+                ['campaign_type', 'type']
+            )
             ->whereIn('form_id', $ids)
             ->getAll();
 
         foreach (array_merge($linked ?? [], $defaults ?? []) as $row) {
             if ($row->id && ! isset($this->campaigns[(int)$row->formId])) {
-                $this->campaigns[(int)$row->formId] = (object)['id' => (int)$row->id, 'title' => $row->title];
+                $this->campaigns[(int)$row->formId] = (object)[
+                    'id' => (int)$row->id,
+                    'title' => $row->title,
+                    'defaultFormId' => (int)$row->defaultFormId,
+                    'type' => (string)$row->type,
+                ];
             }
         }
     }
@@ -128,7 +145,7 @@ class DonationFormDataRepository
     /**
      * @since TBD
      *
-     * @return object{id: int, title: string}|null
+     * @return object{id: int, title: string, defaultFormId: int, type: string}|null
      */
     public function getCampaign(DonationForm $form)
     {

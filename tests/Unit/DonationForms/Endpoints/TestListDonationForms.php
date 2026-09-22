@@ -130,12 +130,34 @@ class TestListDonationForms extends TestCase
         foreach ($response->data['items'] as $item) {
             if ($item['id'] === $linkedForm->id) {
                 $this->assertSame($campaign->id, $item['campaignId']);
-                $this->assertStringContainsString('Linked Campaign', $item['campaign']);
+                $this->assertStringContainsString('Linked Campaign', $item['formCampaign']);
             } elseif (in_array($item['id'], $standaloneIds, true)) {
                 $this->assertSame(0, $item['campaignId']);
-                $this->assertSame('No campaign', $item['campaign']);
+                $this->assertSame('No campaign', $item['formCampaign']);
             }
         }
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFlagsDefaultCampaignFormWhenRequestNamesNoCampaign()
+    {
+        $campaign = Campaign::factory()->create();
+        $attachedForm = $this->donationForms[0];
+        give(CampaignRepository::class)->addCampaignForm($campaign, $attachedForm->id);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('status', 'any');
+
+        $response = (new ListDonationForms())->handleRequest($mockRequest);
+        $flags = array_column($response->data['items'], 'isDefaultCampaignForm', 'id');
+
+        $this->assertTrue($flags[$campaign->defaultFormId]);
+        $this->assertFalse($flags[$attachedForm->id]);
     }
 
     /**
