@@ -1,7 +1,7 @@
 import {useEffect, useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-import EmbedSkeleton, {SkeletonData, hasSkeleton} from './EmbedSkeleton';
+import {Interweave} from 'interweave';
 import './styles.scss';
 
 /**
@@ -24,8 +24,11 @@ type EmbedFrameProps = {
     src: string;
     embedId: string;
     fallbackUrl: string;
-    /** When given for a design the skeleton knows, a sketch of the form holds the space instead of a spinner. */
-    skeleton?: SkeletonData | null;
+    /**
+     * The skeleton RenderFormSkeleton printed on the server, with its inline styles. When present a
+     * sketch of the form holds the space instead of a spinner.
+     */
+    skeletonHtml?: string;
     onReady?: () => void;
     onSlow?: () => void;
 };
@@ -42,9 +45,9 @@ type EmbedFrameProps = {
  *
  * @since TBD
  */
-export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady, onSlow}: EmbedFrameProps) {
+export default function EmbedFrame({src, embedId, fallbackUrl, skeletonHtml, onReady, onSlow}: EmbedFrameProps) {
     const [state, setState] = useState<EmbedFrameState>('loading');
-    const showSkeleton = hasSkeleton(skeleton);
+    const showSkeleton = Boolean(skeletonHtml);
 
     useEffect(() => {
         if (state !== 'loading') {
@@ -68,7 +71,12 @@ export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady
                     aria-label={__('Loading donation form', 'give')}
                 >
                     {showSkeleton ? (
-                        <EmbedSkeleton data={skeleton} />
+                        /*
+                         * The server's markup, read back from the root it was printed into. Interweave
+                         * drops the inline style element that came with it; by now the block stylesheet,
+                         * which carries the same rules, has loaded.
+                         */
+                        <Interweave content={skeletonHtml} noWrap disableLineBreaks />
                     ) : (
                         <span className="givewp-embed-frame__spinner" />
                     )}

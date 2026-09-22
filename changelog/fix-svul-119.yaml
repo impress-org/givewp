@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Added additional escaping to the legacy donation form's billing address fields.
+timestamp: 2026-09-17T20:01:39.442Z

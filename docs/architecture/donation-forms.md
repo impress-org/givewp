@@ -114,14 +114,20 @@ too. There is no reliable failure signal, so a slow handshake is never treated a
 seconds the iframe and placeholder stay put and a link to the standalone form page fades in over
 them, pinned to the top edge of the frame because a skeleton can run past the fold, and a late
 handshake still swaps the form in. On
-the `onpage` format the placeholder is a skeleton rather than a spinner: `BlockRenderController` runs
-`Actions/GetFormSkeletonData` and serializes the form's design id, header, goal and image flags, per-section block names and
-enabled gateway count into a `data-form-skeleton` attribute on the root, and `EmbedFrame/EmbedSkeleton` draws a grey sketch from
-it, one section per block for classic and only the first step for the multi-step designs. The
-skeleton hard-codes the core designs' spacing and only knows the three core design ids; any other
-id, including add-on designs, gets the spinner. The external embed script for other websites has to
-stay self-contained and so carries its own copy of the spinner and fallback behavior, without the
-skeleton.
+the `onpage` format the placeholder is a skeleton rather than a spinner. `BlockRenderController` runs
+`Actions/GetFormSkeletonData` (design id, header, goal and image flags, per-section block names,
+enabled gateway count) through `Actions/RenderFormSkeleton`, which renders the `form-skeleton` views in
+`resources/views/` (`View::load`) into a grey sketch, one section per block for classic and only the
+first step for the multi-step designs. The controller
+prints that markup, with the skeleton stylesheet inlined ahead of it from
+`build/donationFormSkeletonCss.css`, *inside* the root element, so it paints as the page parses,
+before the block script or its footer stylesheet arrives. `renderDonationForm.tsx` reads the root's
+inner HTML before `createRoot()` empties it and hands it to `EmbedFrame` as `skeletonHtml`, which
+renders it through Interweave until the handshake. Interweave strips the inline `<style>`, so the
+block stylesheet imports the same `skeleton.scss`; it has loaded by the time the block script runs. The skeleton hard-codes the core designs' spacing and
+only knows the three core design ids; any other id, including add-on designs, renders nothing and
+gets the spinner. The same renderer prints the skeleton inside the form view for the external
+embed; see [external-embeds.md](external-embeds.md).
 
 **v3, standalone view** — `Controllers/DonationFormViewController::show()` for the real form and
 `::preview()` for the builder preview. Both build a `DonationFormViewModel` and render the React

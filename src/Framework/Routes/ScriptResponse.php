@@ -62,7 +62,8 @@ class ScriptResponse
      *
      * @since TBD
      *
-     * @param callable $data Returns the array to expose; must be JSON-encodable
+     * @param callable $data Returns the array to expose; must be JSON-encodable. Receives the
+     *                       request data the router matched (query arguments and a path id).
      */
     public function localize(string $objectName, callable $data): self
     {
@@ -74,15 +75,17 @@ class ScriptResponse
 
     /**
      * @since TBD
+     *
+     * @param array $request Request data handed to the localize callable.
      */
-    public function send(): void
+    public function send(array $request = []): void
     {
         if (!is_readable($this->file)) {
             status_header(404);
             exit;
         }
 
-        $prologue = $this->prologue();
+        $prologue = $this->prologue($request);
         $etag = $this->etag($prologue);
 
         header('Content-Type: application/javascript; charset=utf-8');
@@ -105,13 +108,13 @@ class ScriptResponse
      *
      * @since TBD
      */
-    public function prologue(): string
+    public function prologue(array $request = []): string
     {
         if (!$this->data) {
             return '';
         }
 
-        return sprintf("var %s = %s;\n", $this->objectName, wp_json_encode(($this->data)()));
+        return sprintf("var %s = %s;\n", $this->objectName, wp_json_encode(($this->data)($request)));
     }
 
     /**

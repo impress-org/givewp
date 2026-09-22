@@ -1200,6 +1200,7 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
 /**
  * Outputs the default credit card address fields.
  *
+ * @since TBD Escape prefilled billing address values before output.
  * @since 3.1.0 Add the give_default_cc_address_fields_user_info filter
  * @since  1.0
  *
@@ -1296,7 +1297,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				autocomplete="address-line1"
 				class="card-address give-input<?php echo( give_field_is_required( 'card_address', $form_id ) ? ' required' : '' ); ?>"
 				placeholder="<?php _e( 'Address line 1', 'give' ); ?>"
-				value="<?php echo isset( $give_user_info['card_address'] ) ? $give_user_info['card_address'] : ''; ?>"
+				value="<?php echo isset( $give_user_info['card_address'] ) ? esc_attr( $give_user_info['card_address'] ) : ''; ?>"
 				<?php echo( give_field_is_required( 'card_address', $form_id ) ? '  required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
@@ -1317,7 +1318,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				autocomplete="address-line2"
 				class="card-address-2 give-input<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required' : '' ); ?>"
 				placeholder="<?php _e( 'Address line 2', 'give' ); ?>"
-				value="<?php echo isset( $give_user_info['card_address_2'] ) ? $give_user_info['card_address_2'] : ''; ?>"
+				value="<?php echo isset( $give_user_info['card_address_2'] ) ? esc_attr( $give_user_info['card_address_2'] ) : ''; ?>"
 				<?php echo( give_field_is_required( 'card_address_2', $form_id ) ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
@@ -1337,7 +1338,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				autocomplete="address-level2"
 				class="card-city give-input<?php echo( give_field_is_required( 'card_city', $form_id ) ? ' required' : '' ); ?>"
 				placeholder="<?php _e( 'City', 'give' ); ?>"
-				value="<?php echo( isset( $give_user_info['card_city'] ) ? $give_user_info['card_city'] : '' ); ?>"
+				value="<?php echo( isset( $give_user_info['card_city'] ) ? esc_attr( $give_user_info['card_city'] ) : '' ); ?>"
 				<?php echo( give_field_is_required( 'card_city', $form_id ) && $city_required ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>
@@ -1393,7 +1394,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				</select>
 			<?php else : ?>
 				<input type="text" size="6" name="card_state" id="card_state" class="card_state give-input"
-					   placeholder="<?php echo $state_label; ?>" value="<?php echo $selected_state; ?>"
+					   placeholder="<?php echo esc_attr( $state_label ); ?>" value="<?php echo esc_attr( $selected_state ); ?>"
 					<?php echo $validate_state ? ' required aria-required="true" ' : ''; ?>
 				/>
 			<?php endif; ?>
@@ -1414,7 +1415,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				autocomplete="postal-code"
 				class="card-zip give-input<?php echo( $postcode_required ? ' required' : '' ); ?>"
 				placeholder="<?php _e( 'Zip / Postal Code', 'give' ); ?>"
-				value="<?php echo isset( $give_user_info['card_zip'] ) ? $give_user_info['card_zip'] : ''; ?>"
+				value="<?php echo isset( $give_user_info['card_zip'] ) ? esc_attr( $give_user_info['card_zip'] ) : ''; ?>"
 				<?php echo( $postcode_required ? ' required aria-required="true" ' : '' ); ?>
 			/>
 		</p>

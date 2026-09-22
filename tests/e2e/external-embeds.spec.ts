@@ -34,14 +34,14 @@ const EXTERNAL_SCRIPT_URL = `${WP_BASE_URL}/give/embed/donation-form/script.js`;
  * The element learns everything about the WordPress site from the data the route prints ahead
  * of the script, so the snippet carries only the form id and per-embed choices.
  */
-function externalPageHtml(formId: number, attributes: string = ''): string {
+function externalPageHtml(formId: number, attributes: string = '', scriptUrl: string = EXTERNAL_SCRIPT_URL): string {
     return `<!DOCTYPE html>
 <html>
 <head><title>External donation page</title></head>
 <body>
     <h1>Support our cause</h1>
     <givewp-donation-form form-id="${formId}" ${attributes}></givewp-donation-form>
-    <script src="${EXTERNAL_SCRIPT_URL}" defer></script>
+    <script src="${scriptUrl}" defer></script>
 </body>
 </html>`;
 }
@@ -93,6 +93,28 @@ test.describe('External donation form embeds', () => {
 
         const data = JSON.parse(match![1]);
         expect(Object.keys(data.i18n).sort()).toEqual(['close', 'donate', 'formTitle', 'loading', 'openForm']);
+        expect(data.skeletons).toEqual({});
+    });
+
+    /*
+     * Naming the form on the script URL, by query argument or by path segment, adds that form's
+     * server-rendered skeleton to the data so the element can draw it before the form page answers.
+     */
+    test('carries the named form skeleton, by query argument or path segment', async ({request}) => {
+        const skeletonsFrom = async (url: string) => {
+            const response = await request.get(url);
+            expect(response.ok()).toBe(true);
+            const [prologue] = (await response.text()).split('\n', 1);
+            return JSON.parse(prologue.match(/^var givewpDonationFormEmbed = (.*);$/)![1]).skeletons;
+        };
+
+        const byQuery = await skeletonsFrom(`${EXTERNAL_SCRIPT_URL}?form-id=${formId}`);
+        expect(byQuery[formId]).toContain('givewp-embed-skeleton--');
+
+        const byPath = await skeletonsFrom(EXTERNAL_SCRIPT_URL.replace('/script.js', `/${formId}/script.js`));
+        expect(byPath).toEqual(byQuery);
+
+        expect(await skeletonsFrom(`${EXTERNAL_SCRIPT_URL}?form-id=999999`)).toEqual({});
     });
 
     test('renders the form cross-origin', async ({page}) => {
@@ -235,6 +257,90 @@ test.describe('External donation form embeds', () => {
         await page.locator('.givewp-donation-form-modal__close').click();
         await expect(page.locator('.givewp-donation-form-modal__overlay')).toBeHidden();
         await expect(page.getByRole('button', {name: 'Give now'})).toBeFocused();
+    });
+
+    test('shows the form skeleton inside the iframe before the app loads', async ({page}) => {
+        // Hold the app bundle so the window between the form view's HTML and the handshake is
+        // wide enough to observe.
+        await page.route(/build\/donationFormApp\.js/, async (route) => {
+            await new Promise((resolve) => setTimeout(resolve, 2_000));
+            await route.continue();
+        });
+
+        await page.goto(EXTERNAL_PAGE, {waitUntil: 'domcontentloaded'});
+
+        const iframe = page.locator('givewp-donation-form iframe');
+        const skeleton = page.frameLocator('givewp-donation-form iframe').locator('.givewp-embed-skeleton');
+
+        // The shell message reveals the iframe with the skeleton in it and removes the spinner.
+        await expect(skeleton).toBeVisible();
+        await expect(iframe).toBeVisible();
+        await expect(page.locator('givewp-donation-form .givewp-embed__spinner')).toHaveCount(0);
+
+        await waitForForm(donationForm(page));
+        await expect(skeleton).toHaveCount(0);
+    });
+
+    test('paints the form skeleton before the form page answers when the script names the form', async ({page}) => {
+        await page.route(`${EXTERNAL_PAGE}*`, (route) =>
+            route.fulfill({
+                contentType: 'text/html',
+                body: externalPageHtml(formId, '', `${EXTERNAL_SCRIPT_URL}?form-id=${formId}`),
+            })
+        );
+
+        // Hold the form page so the window before any iframe response is wide enough to observe.
+        await page.route(/givewp-route=donation-form-view/, async (route) => {
+            await new Promise((resolve) => setTimeout(resolve, 2_000));
+            await route.continue();
+        });
+
+        await page.goto(EXTERNAL_PAGE, {waitUntil: 'domcontentloaded'});
+
+        // The skeleton comes with the script, so it is on the host page with no spinner and the
+        // iframe still hidden.
+        const skeleton = page.locator('givewp-donation-form > .givewp-embed__loading .givewp-embed-skeleton');
+        await expect(skeleton).toBeVisible();
+        await expect(page.locator('givewp-donation-form .givewp-embed__spinner')).toHaveCount(0);
+        await expect(page.locator('givewp-donation-form iframe')).toBeHidden();
+
+        await waitForForm(donationForm(page));
+        await expect(skeleton).toHaveCount(0);
+    });
+
+    /*
+     * Two forms mean two script tags, one per form id. The first defines the element and upgrades
+     * both instances before the second script has run, so the second form's skeleton arrives late
+     * and has to be handed to an element that is already waiting.
+     */
+    test('paints both skeletons when two scripts name two forms', async ({page, requestUtils}) => {
+        const {formId: secondFormId} = await createCampaignWithForm(requestUtils);
+
+        await page.route(`${EXTERNAL_PAGE}*`, (route) =>
+            route.fulfill({
+                contentType: 'text/html',
+                body: `<!DOCTYPE html><html><body>
+    <givewp-donation-form form-id="${formId}"></givewp-donation-form>
+    <script src="${EXTERNAL_SCRIPT_URL}?form-id=${formId}" defer></script>
+    <givewp-donation-form form-id="${secondFormId}"></givewp-donation-form>
+    <script src="${EXTERNAL_SCRIPT_URL}?form-id=${secondFormId}" defer></script>
+</body></html>`,
+            })
+        );
+        await page.route(/givewp-route=donation-form-view/, async (route) => {
+            await new Promise((resolve) => setTimeout(resolve, 2_000));
+            await route.continue();
+        });
+
+        await page.goto(EXTERNAL_PAGE, {waitUntil: 'domcontentloaded'});
+
+        const skeletons = page.locator('givewp-donation-form > .givewp-embed__loading .givewp-embed-skeleton');
+        await expect(skeletons).toHaveCount(2);
+        await expect(skeletons.nth(0)).toBeVisible();
+        await expect(skeletons.nth(1)).toBeVisible();
+        await expect(page.locator('givewp-donation-form .givewp-embed__spinner')).toHaveCount(0);
+
+        await expect(page.locator('givewp-donation-form iframe')).toHaveCount(2);
     });
 
     test('degrades to a link when the form cannot load', async ({page}) => {
