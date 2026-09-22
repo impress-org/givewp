@@ -80,6 +80,7 @@ class DonationFormGoalData implements Arrayable
     }
 
     /**
+     * @since TBD Read the goal through usesCampaignGoal() so a missing campaign cannot fatal
      * @since 4.1.0 switch between Campaign goal and Form goal
      * @since      3.0.0
      *
@@ -92,7 +93,7 @@ class DonationFormGoalData implements Arrayable
             case 'donorsFromSubscriptions':
                 return $this->getQuery()->countDonors();
             case 'donations':
-                return $this->goalSource->isCampaign()
+                return $this->usesCampaignGoal()
                     ? $this->getQuery()->countDonations()
                     : $this->getQuery()->count();
             case 'subscriptions':
@@ -120,11 +121,12 @@ class DonationFormGoalData implements Arrayable
     }
 
     /**
+     * @since TBD Read the goal through usesCampaignGoal() so a missing campaign cannot fatal
      * @since 4.1.0
      */
     public function getQuery()
     {
-        return $this->goalSource->isCampaign()
+        return $this->usesCampaignGoal()
             ? $this->getCampaignQuery()
             : $this->getFormQuery();
     }
@@ -183,11 +185,13 @@ class DonationFormGoalData implements Arrayable
     /**
      * Get goal type
      *
+     * @since TBD Read the goal through usesCampaignGoal() so a missing campaign cannot fatal
+     *
      * @return CampaignGoalType|GoalType
      */
     public function getGoalType()
     {
-        return $this->goalSource->isCampaign()
+        return $this->usesCampaignGoal()
             ? $this->campaign->goalType
             : $this->goalType;
     }
@@ -195,13 +199,14 @@ class DonationFormGoalData implements Arrayable
     /**
      * Get target amount
      *
+     * @since TBD Read the goal through usesCampaignGoal() so a missing campaign cannot fatal
      * @since 4.1.0
      *
      * @return float|int
      */
     public function getTargetAmount()
     {
-        return $this->goalSource->isCampaign()
+        return $this->usesCampaignGoal()
             ? $this->campaign->goal ?? 0
             : $this->targetAmount;
     }
@@ -268,6 +273,7 @@ class DonationFormGoalData implements Arrayable
     /**
      * Get total donation revenue, the exception is for subscription amount goal, it will return the sum of initial amount
      *
+     * @since TBD Read the goal through usesCampaignGoal() so a missing campaign cannot fatal
      * @since 4.3.0
      */
     public function getTotalDonationRevenue()
@@ -279,10 +285,23 @@ class DonationFormGoalData implements Arrayable
         }
 
 
-        $query = $this->goalSource->isCampaign()
+        $query = $this->usesCampaignGoal()
             ? new CampaignDonationQuery($this->campaign)
             : (new DonationQuery())->form($this->formId);
 
         return $query->sumIntendedAmount();
+    }
+
+    /**
+     * A form can carry the campaign goal source without a campaign to read it from: the campaign was
+     * deleted, or it links the form only through give_campaigns.form_id, which findByFormId() does not
+     * resolve. Every campaign branch below dereferences $this->campaign, so they all ask this first
+     * and fall back to the form's own goal rather than fataling.
+     *
+     * @since TBD
+     */
+    private function usesCampaignGoal(): bool
+    {
+        return $this->goalSource->isCampaign() && $this->campaign;
     }
 }

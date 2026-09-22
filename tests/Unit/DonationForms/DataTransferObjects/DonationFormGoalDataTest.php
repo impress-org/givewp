@@ -2,11 +2,13 @@
 
 namespace Give\Tests\Unit\DonationForms\DataTransferObjects;
 
+use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
 use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
+use Give\Framework\Database\DB;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -48,5 +50,39 @@ class DonationFormGoalDataTest extends TestCase
             'percentage' => $progressPercentage,
             'isAchieved' => $isEnabled && $donationForm->settings->enableAutoClose && $progressPercentage >= 100
         ]);
+    }
+
+    /**
+     * Mirrors a Peer-to-Peer campaign that links its form only through give_campaigns.form_id, which
+     * Campaign::findByFormId() does not resolve, so the form carries the campaign goal source with no
+     * campaign behind it.
+     *
+     * @since TBD
+     */
+    public function testFallsBackToTheFormGoalWhenTheCampaignGoalHasNoCampaign()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([
+                'goalSource' => GoalSource::CAMPAIGN(),
+                'goalType' => GoalType::DONATIONS(),
+                'goalAmount' => 30,
+                'enableDonationGoal' => true,
+            ]),
+        ]);
+
+        $campaign = Campaign::factory()->create();
+
+        DB::table('give_campaign_forms')->where('form_id', $donationForm->id)->delete();
+        DB::table('give_campaigns')
+            ->where('id', $campaign->id)
+            ->update(['form_id' => $donationForm->id]);
+
+        $this->assertNull(Campaign::findByFormId($donationForm->id));
+
+        $goalData = (new DonationFormGoalData($donationForm->id, $donationForm->settings))->toArray();
+
+        $this->assertSame(GoalType::DONATIONS, $goalData['type']);
+        $this->assertSame(30, $goalData['targetAmount']);
     }
 }
