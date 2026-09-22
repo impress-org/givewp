@@ -11,23 +11,15 @@ namespace Give\Tests\Feature\Donors;
 class SerializedPayloadProbe
 {
     /**
-     * @since TBD
-     *
      * @var bool
      */
     public static $instantiated = false;
 
-    /**
-     * @since TBD
-     */
     public function __wakeup()
     {
         self::$instantiated = true;
     }
 
-    /**
-     * @since TBD
-     */
     public function __destruct()
     {
         self::$instantiated = true;

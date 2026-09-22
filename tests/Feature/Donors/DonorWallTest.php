@@ -11,9 +11,9 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give_Donor_Wall;
 
 /**
- * The donor wall reads raw rows out of the donationmeta table, and hardly any of them are
- * serialized; a first name is stored as the plain string it was typed as. So the read has to
- * return those untouched while still refusing to hand back an object, which is the pair of
+ * The donor wall renders the Donation model for everything it displays and passes the remaining
+ * donationmeta rows through as the text they are stored as, so add-ons that read the template's
+ * meta keys keep working. Nothing on the path decodes a stored value, which is the pair of
  * requirements these tests hold together.
  *
  * @since TBD
@@ -63,11 +63,11 @@ class DonorWallTest extends TestCase
     /**
      * @since TBD
      */
-    public function testDoesNotRenderSerializedObjectPayloads()
+    public function testRendersSerializedPayloadsAsEscapedTextWithoutDecodingThem()
     {
         global $wpdb;
 
-        $marker = 'givewp-donor-wall-object-payload';
+        $storedMetaValue = serialize((object)['name' => 'givewp-donor-wall-object-payload']);
         $donation = $this->createDonorWallDonation();
 
         /*
@@ -77,19 +77,40 @@ class DonorWallTest extends TestCase
          */
         $wpdb->update(
             $wpdb->donationmeta,
-            ['meta_value' => serialize((object)['name' => $marker])],
+            ['meta_value' => $storedMetaValue],
             ['donation_id' => $donation->id, 'meta_key' => DonationMetaKeys::LAST_NAME]
         );
 
         $html = $this->renderDonorWall(['show_avatar' => 'false']);
 
-        $this->assertStringNotContainsString($marker, $html);
-        $this->assertStringNotContainsString('stdClass', $html);
+        $this->assertStringContainsString(esc_html($storedMetaValue), $html);
+        $this->assertStringNotContainsString($storedMetaValue, $html);
     }
 
     /**
-     * A payload nested inside a serialized string survives the first decode as inert text rather
-     * than as an object, so the wall has to stay inert for that shape too.
+     * The donor wall template exposes every donationmeta key to add-ons — Tributes renders the
+     * honoree out of keys core knows nothing about — so the model rewrite has to keep handing the
+     * unmodelled rows to the template.
+     *
+     * @since TBD
+     */
+    public function testPassesUnmodelledDonationMetaToTheTemplate()
+    {
+        $donation = $this->createDonorWallDonation();
+
+        give_update_payment_meta($donation->id, '_give_tributes_type', 'In honor of');
+        give_update_payment_meta($donation->id, '_give_tributes_first_name', 'Ada');
+        give_update_payment_meta($donation->id, '_give_tributes_last_name', 'Lovelace');
+
+        $html = $this->renderDonorWall(['show_avatar' => 'false', 'show_tributes' => 'true']);
+
+        $this->assertStringContainsString('In honor of', $html);
+        $this->assertStringContainsString('Ada L.', $html);
+    }
+
+    /**
+     * Guards the read path against a future reintroduction of unserialize(): no shape of stored
+     * payload — top level, nested, or double-encoded — may bring a class into being.
      *
      * @since TBD
      *
