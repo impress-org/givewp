@@ -1,9 +1,10 @@
+<?php /** @since TBD Escape output. */ ?>
 :root {
-    --give-primary-color: <?= $primaryColor ?>;
-    --give-header-background-image: url("<?= $headerBackgroundImage ?>");
+    --give-primary-color: <?= esc_attr($primaryColor) ?>;
+    --give-header-background-image: url("<?= esc_url($headerBackgroundImage) ?>");
     <?php if (!empty($headerBackgroundColor)) : ?>
-    --give-header-background-color--for-rgb: <?= hexdec(substr($headerBackgroundColor, 1, 2)) ?>, <?= hexdec(substr($headerBackgroundColor, 3, 2)) ?>, <?= hexdec(substr($headerBackgroundColor, 5, 2)) ?>;
+    --give-header-background-color--for-rgb: <?= (int) hexdec(substr($headerBackgroundColor, 1, 2)) ?>, <?= (int) hexdec(substr($headerBackgroundColor, 3, 2)) ?>, <?= (int) hexdec(substr($headerBackgroundColor, 5, 2)) ?>;
     <?php endif; ?>
     --give-header-stats-progressbar-color: <?= sanitize_hex_color($statsProgressBarColor) ?? '' ?>;
-    --give-primary-font: '<?= $primaryFont; ?>';
+    --give-primary-font: '<?= esc_attr($primaryFont); ?>';
 }
