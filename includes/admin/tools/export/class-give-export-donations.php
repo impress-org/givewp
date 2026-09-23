@@ -124,6 +124,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 		/**
 		 * Print the HTML for core setting exporter.
 		 *
+		 * @since TBD Escape output.
 		 * @since 2.1
 		 */
 		public function html() {
@@ -150,6 +151,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 							<td class="give-field-wrap">
 								<div class="give-clearfix">
 									<?php
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- category_dropdown() renders a <select> control; wp_kses_post() would strip it, and its values are used internally as attribute data, not printed raw.
 									echo Give()->html->category_dropdown(
 										'give_forms_categories[]',
 										0,
@@ -160,7 +162,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 											'multiple'    => true,
 											'selected'    => [],
 											'show_option_all' => false,
-											'placeholder' => __( 'Choose one or more from categories', 'give' ),
+											'placeholder' => esc_attr__( 'Choose one or more from categories', 'give' ),
 											'data'        => [ 'search-type' => 'categories' ],
 										]
 									);
@@ -183,6 +185,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 							<td class="give-field-wrap">
 								<div class="give-clearfix">
 									<?php
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- tags_dropdown() renders a <select> control; wp_kses_post() would strip it, and its values are used internally as attribute data, not printed raw.
 									echo Give()->html->tags_dropdown(
 										'give_forms_tags[]',
 										0,
@@ -193,7 +196,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 											'multiple'    => true,
 											'selected'    => [],
 											'show_option_all' => false,
-											'placeholder' => __( 'Choose one or more from tags', 'give' ),
+											'placeholder' => esc_attr__( 'Choose one or more from tags', 'give' ),
 											'data'        => [ 'search-type' => 'tags' ],
 										]
 									);
@@ -222,6 +225,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'placeholder' => __( 'All Forms', 'give' ),
 									'data'        => [ 'no-form' => __( 'No donation forms found', 'give' ) ],
 								];
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 								echo Give()->html->forms_dropdown( $args );
 								?>
 
@@ -243,6 +247,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'placeholder'  => __( 'Start Date', 'give' ),
 									'autocomplete' => 'off',
 								];
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- date_field() renders an <input> control; wp_kses_post() would strip it.
 								echo Give()->html->date_field( $args );
 								?>
 								<?php
@@ -252,6 +257,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									'placeholder'  => __( 'End Date', 'give' ),
 									'autocomplete' => 'off',
 								];
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- date_field() renders an <input> control; wp_kses_post() would strip it.
 								echo Give()->html->date_field( $args );
 								?>
 							</div>
@@ -270,7 +276,7 @@ if ( ! class_exists( 'Give_Export_Donations' ) ) {
 									<?php
 									$statuses = give_get_payment_statuses();
 									foreach ( $statuses as $status => $label ) {
-										echo '<option value="' . $status . '">' . $label . '</option>';
+										echo '<option value="' . esc_attr( $status ) . '">' . esc_html( $label ) . '</option>';
 									}
 									?>
 								</select>
