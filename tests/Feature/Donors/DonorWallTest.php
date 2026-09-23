@@ -11,10 +11,9 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use Give_Donor_Wall;
 
 /**
- * The donor wall renders the Donation model for everything it displays and passes the remaining
- * donationmeta rows through as the text they are stored as, so add-ons that read the template's
- * meta keys keep working. Nothing on the path decodes a stored value, which is the pair of
- * requirements these tests hold together.
+ * The donor wall renders the donationmeta rows exactly as they are stored, so what it displays is
+ * text and add-ons that read the template's meta keys keep working. Nothing on the path decodes a
+ * stored value, which is the pair of requirements these tests hold together.
  *
  * @since TBD
  */
@@ -89,8 +88,8 @@ class DonorWallTest extends TestCase
 
     /**
      * The donor wall template exposes every donationmeta key to add-ons — Tributes renders the
-     * honoree out of keys core knows nothing about — so the model rewrite has to keep handing the
-     * unmodelled rows to the template.
+     * honoree out of keys core knows nothing about — so the wall has to keep handing every row
+     * through to the template.
      *
      * @since TBD
      */

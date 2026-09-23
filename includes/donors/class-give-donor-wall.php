@@ -11,7 +11,6 @@
 
 // Exit if accessed directly.
 use Give\Donations\ValueObjects\DonationMetaKeys;
-use Give\Framework\Database\DB;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -382,7 +381,8 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
-     * @since TBD     Read the rendered values off the Donation model instead of unserializing raw meta rows.
+     * @since TBD     Read meta values as stored instead of unserializing them, and read the donor
+     *                comment from the fetched rows instead of a per-donation meta lookup.
      * @since 4.16.7.2       Restrict unserialize to prevent object instantiation.
      * @since 2.27.0  Change to read comment from donations meta table
      * @since 2.3.0
@@ -392,98 +392,60 @@ class Give_Donor_Wall {
      * @return array
      */
 	private function get_donation_data( $atts = [] ) {
+		global $wpdb;
+
 		// Bailout if donation does not exist.
 		if ( ! ( $donation_ids = $this->get_donations( $atts ) ) ) {
 			return [];
 		}
 
-		$donation_ids = array_map( 'absint', $donation_ids );
+		$donation_ids = ! empty( $donation_ids )
+			? '\'' . implode( '\',\'', $donation_ids ) . '\''
+			: '';
 
-		$donations = give()->donations->prepareQuery()
-			->whereIn( 'ID', $donation_ids )
-			->getAll();
+		// Backward compatibility
+		$donation_id_col = Give()->payment_meta->get_meta_type() . '_id';
 
-		if ( ! $donations ) {
-			return [];
-		}
+		$sql = "SELECT m1.*, p1.post_date as donation_date FROM {$wpdb->donationmeta} as m1
+				INNER JOIN {$wpdb->posts} as p1 ON (m1.{$donation_id_col}=p1.ID)
+				WHERE m1.{$donation_id_col} IN ( {$donation_ids} )
+				ORDER BY FIELD( p1.ID, {$donation_ids} )
+				";
 
-		$donations_by_id = [];
+		$results = (array) $wpdb->get_results( $sql );
 
-		foreach ( $donations as $donation ) {
-			$donations_by_id[ $donation->id ] = $donation;
-		}
+		if ( ! empty( $results ) ) {
+			$temp = [];
 
-		$meta_by_donation_id = $this->get_donations_meta( $donation_ids );
+			/* @var stdClass $result */
+			foreach ( $results as $result ) {
+				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = $result->meta_value;
 
-		$results = [];
-
-		/*
-		 * Iterating the IDs rather than the models because get_donations() already sorted them by
-		 * the shortcode's order attributes and the model query does not preserve that order.
-		 */
-		foreach ( $donation_ids as $donation_id ) {
-			if ( ! isset( $donations_by_id[ $donation_id ] ) ) {
-				continue;
+				// Set donation date.
+				if ( empty( $temp[ $result->{$donation_id_col} ]['donation_date'] ) ) {
+					$temp[ $result->{$donation_id_col} ]['donation_date'] = $result->donation_date;
+				}
 			}
 
-			$donation = $donations_by_id[ $donation_id ];
+			if ( ! empty( $temp ) ) {
+				foreach ( $temp as $donation_id => $donation_data ) {
+					$temp[ $donation_id ]['donation_id'] = $donation_id;
 
-			$results[ $donation_id ] = array_merge(
-				isset( $meta_by_donation_id[ $donation_id ] ) ? $meta_by_donation_id[ $donation_id ] : [],
-				[
-					DonationMetaKeys::DONOR_ID   => $donation->donorId,
-					DonationMetaKeys::FIRST_NAME => $donation->firstName,
-					DonationMetaKeys::LAST_NAME  => $donation->lastName,
-					DonationMetaKeys::EMAIL      => $donation->email,
-					DonationMetaKeys::ANONYMOUS  => $donation->anonymous,
-					DonationMetaKeys::FORM_ID    => $donation->formId,
-					DonationMetaKeys::FORM_TITLE => $donation->formTitle,
-					'donation_id'                => $donation->id,
-					'donation_date'              => $donation->createdAt->format( 'Y-m-d H:i:s' ),
-					'donor_comment'              => $donation->comment,
-					'name_initial'               => give_get_name_initial(
+					$temp[ $donation_id ]['name_initial'] = give_get_name_initial(
 						[
-							'firstname' => (string) $donation->firstName,
-							'lastname'  => (string) $donation->lastName,
+							'firstname' => $donation_data['_give_donor_billing_first_name'],
+							'lastname'  => $donation_data['_give_donor_billing_last_name'],
 						]
-					),
-				]
-			);
+					);
 
-			/* The template hides the company heading by testing isset(), so an empty company has to leave the key absent. */
-			if ( $donation->company ) {
-				$results[ $donation_id ][ DonationMetaKeys::COMPANY ] = $donation->company;
+					$temp[ $donation_id ]['donor_comment'] = $donation_data[ DonationMetaKeys::COMMENT ] ?? '';
+				}
+
+				$results = ! empty( $temp ) ? $temp : [];
 			}
 		}
 
 		return $results;
-	}
-
-	/**
-	 * Get the donation meta the donor wall template — and the add-ons extending it — read by key.
-	 *
-	 * Values come back exactly as they are stored. The wall renders them as text, and decoding a
-	 * stored payload is what let an object reach the template in the first place.
-	 *
-	 * @since TBD
-	 *
-	 * @param  int[] $donation_ids
-	 *
-	 * @return array Donation meta keyed by donation ID, then by meta key.
-	 */
-	private function get_donations_meta( $donation_ids ) {
-		$meta = [];
-
-		$rows = DB::table( 'give_donationmeta' )
-			->select( 'donation_id', 'meta_key', 'meta_value' )
-			->whereIn( 'donation_id', $donation_ids )
-			->getAll();
-
-		foreach ( (array) $rows as $row ) {
-			$meta[ (int) $row->donation_id ][ $row->meta_key ] = $row->meta_value;
-		}
-
-		return $meta;
 	}
 
 	/**
