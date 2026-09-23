@@ -1,4 +1,5 @@
 <?php
+/** @since TBD Escape output. */
 
 use Give\Helpers\Form\Template as FormTemplateUtils;
 use Give\Receipt\DonationReceipt;
@@ -31,7 +32,7 @@ ob_start();
                     <i class="fas fa-times"></i>
                 </div>
                 <h2 class="headline">
-                    <?= __('Donation Failed', 'give') ?>
+                    <?= esc_html__('Donation Failed', 'give') ?>
                 </h2>
                 <p class="message">
                     <?= esc_html__('We\'re sorry, your donation failed to process. Please try again or contact site support.', 'give') ?>
@@ -50,10 +51,10 @@ ob_start();
                 <?php endif; ?>
 
                 <h2 class="headline">
-                    <?php echo $receipt->heading; ?>
+                    <?php echo esc_html($receipt->heading); ?>
                 </h2>
                 <p class="message">
-                    <?php echo $receipt->message; ?>
+                    <?php echo wp_kses_post($receipt->message); ?>
                 </p>
 
                 <?php require 'social-sharing.php'; ?>
@@ -72,9 +73,9 @@ ob_start();
                     continue;
                 }
 
-                echo '<div class="details ' . sanitize_title($section->id) . '-section">';
+                echo '<div class="details ' . esc_attr(sanitize_title($section->id)) . '-section">';
                 if ($section->label) {
-                    printf('<h3 class="headline">%1$s</h3>', $section->label);
+                    printf('<h3 class="headline">%1$s</h3>', esc_html($section->label));
                 }
                 echo '<div class="details-table">';
 
@@ -93,10 +94,10 @@ ob_start();
 
                     printf(
                         '<div class="details-row %1$s">%2$s<div class="detail">%3$s</div><div class="value">%4$s</div></div>',
-                        $detailRowClass,
-                        $lineItem->icon,
-                        $lineItem->label,
-                        $lineItem->value
+                        esc_attr($detailRowClass),
+                        wp_kses_post($lineItem->icon),
+                        esc_html($lineItem->label),
+                        wp_kses_post($lineItem->value)
                     );
                 }
                 echo '</div>';
@@ -107,7 +108,7 @@ ob_start();
             <?php if ($pdfReceiptLinkDetailItem) : ?>
                 <div class="give-btn download-btn">
                     <?php
-                    echo $pdfReceiptLinkDetailItem->value; ?>
+                    echo wp_kses_post($pdfReceiptLinkDetailItem->value); ?>
                 </div>
             <?php endif; ?>
 
@@ -125,7 +126,7 @@ ob_start();
 
 $pageId     = give_get_option('success_page');
 $iframeView = new IframeContentView();
+$iframeView = $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))->setPostId($pageId)
+                ->setBody(ob_get_clean());
 
-echo $iframeView->setTitle(esc_html__('Donation Receipt', 'give'))->setPostId($pageId)
-                ->setBody(ob_get_clean())
-                ->renderBody();
+echo $iframeView->renderBody(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renderBody() returns the receipt markup captured above by ob_get_clean(), already escaped piece by piece; wp_kses_post() would strip the inline <svg>/<use> icons.
