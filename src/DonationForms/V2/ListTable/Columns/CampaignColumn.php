@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Give\DonationForms\V2\ListTable\Columns;
 
+use Give\Campaigns\ValueObjects\CampaignType;
 use Give\DonationForms\Repositories\DonationFormDataRepository;
 use Give\DonationForms\V2\Models\DonationForm;
 use Give\Framework\ListTable\ModelColumn;
@@ -18,13 +19,16 @@ class CampaignColumn extends ModelColumn
     protected $useData = true;
 
     /**
+     * Prefixed so the givewp_list_table_cell_value_{id} filter does not collide with the donations
+     * campaign column, whose filters expect a Donation.
+     *
      * @since TBD
      *
      * @inheritDoc
      */
     public static function getId(): string
     {
-        return 'campaign';
+        return 'formCampaign';
     }
 
     /**
@@ -52,6 +56,11 @@ class CampaignColumn extends ModelColumn
 
         if ( ! $campaign) {
             return __('No campaign', 'give');
+        }
+
+        /* Only core campaigns have a page under give-campaigns. Add-ons link their own through the cell filter. */
+        if (CampaignType::CORE !== $campaign->type) {
+            return esc_html($campaign->title);
         }
 
         return sprintf(

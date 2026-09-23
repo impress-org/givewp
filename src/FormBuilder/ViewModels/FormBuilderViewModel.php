@@ -223,7 +223,7 @@ class FormBuilderViewModel
             ),
         ];
 
-        if ($donationFormId && give()->campaigns->formHasCampaign($donationFormId)) {
+        if ($donationFormId && Campaign::findByFormId($donationFormId)) {
             array_unshift($options, $this->getGoalTypeOption(
                 GoalSource::CAMPAIGN,
                 __('Campaign', 'give'),

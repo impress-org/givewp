@@ -16,6 +16,7 @@ use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
+use Give\Framework\Database\DB;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Helpers\IntlTelInput;
@@ -41,6 +42,24 @@ class FormBuilderViewModelTest extends TestCase
 
         $this->assertSame(['form'], array_column($viewModel->getGoalSourceOptions($standaloneForm->id), 'value'));
         $this->assertSame(['campaign', 'form'], array_column($viewModel->getGoalSourceOptions($campaignForm->id), 'value'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGoalSourceOptionsExcludeCampaignForFormLinkedOnlyByCampaignFormId()
+    {
+        $viewModel = new FormBuilderViewModel();
+        $campaign = Campaign::factory()->create();
+        $form = DonationForm::factory()->create();
+
+        /* A Peer-to-Peer campaign links its form through give_campaigns.form_id with no give_campaign_forms row. */
+        DB::table('give_campaigns')
+            ->where('id', $campaign->id)
+            ->update(['form_id' => $form->id]);
+
+        $this->assertNull(Campaign::findByFormId($form->id));
+        $this->assertSame(['form'], array_column($viewModel->getGoalSourceOptions($form->id), 'value'));
     }
 
     /**
