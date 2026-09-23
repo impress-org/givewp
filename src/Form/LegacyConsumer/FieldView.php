@@ -19,6 +19,7 @@ class FieldView
     ];
 
     /**
+     * @since TBD Escape output.
      * @since 2.28.0 add shim for CheckboxGroup, only necessary for legacy FFM fields.
      * @since 2.10.2
      * @since 2.14.0 add $formId as a param
@@ -53,9 +54,10 @@ class FieldView
 
         printf(
             '<div class="%1$s" data-field-type="%2$s" data-field-name="%3$s" %4$s>',
-            $className,
-            $type,
-            $field->getName(),
+            esc_attr($className),
+            esc_attr($type),
+            esc_attr($field->getName()),
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getVisibilityConditionAttribute() returns a pre-built 'data-field-visibility-conditions="..."' attribute string, escaped internally with esc_attr().
             self::getVisibilityConditionAttribute($field)
         );
 
