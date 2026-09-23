@@ -3,6 +3,7 @@
  * Give Settings Page/Tab
  *
  * @package     Give
+ * @since       TBD Escape output.
  * @since       1.8
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -625,7 +626,7 @@ if (!class_exists('Give_Settings_General')) :
         {
             ?>
             <tr valign="top" <?php
-            echo !empty($field['wrapper_class']) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+            echo !empty($field['wrapper_class']) ? 'class="' . esc_attr($field['wrapper_class']) . '"' : ''; ?>>
                 <th scope="row" class="titledesc">
                     <label
                         for="<?php
@@ -636,7 +637,7 @@ if (!class_exists('Give_Settings_General')) :
                     <input id="<?php
                     echo esc_attr($field['id']); ?>" class="give-input-field" type="text" disabled>
                     <?php
-                    echo Give_Admin_Settings::get_field_description($field); ?>
+                    echo wp_kses_post(Give_Admin_Settings::get_field_description($field)); ?>
                 </td>
             </tr>
             <?php
@@ -662,7 +663,7 @@ if (!class_exists('Give_Settings_General')) :
                 : sprintf('%1$s%2$s', esc_html($field['default']), esc_html($currency_symbol));
             ?>
             <tr valign="top" <?php
-            echo !empty($field['wrapper_class']) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+            echo !empty($field['wrapper_class']) ? 'class="' . esc_attr($field['wrapper_class']) . '"' : ''; ?>>
                 <th scope="row" class="titledesc">
                     <label
                         for="<?php
@@ -674,7 +675,7 @@ if (!class_exists('Give_Settings_General')) :
                     echo esc_attr($field['id']); ?>" class="give-input-field" type="text" disabled value="<?php
                     echo esc_attr($formatted_currency); ?>">
                     <?php
-                    echo Give_Admin_Settings::get_field_description($field); ?>
+                    echo wp_kses_post(Give_Admin_Settings::get_field_description($field)); ?>
                 </td>
             </tr>
             <?php
@@ -692,7 +693,7 @@ if (!class_exists('Give_Settings_General')) :
         {
             ?>
             <tr valign="top" <?php
-            echo !empty($field['wrapper_class']) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+            echo !empty($field['wrapper_class']) ? 'class="' . esc_attr($field['wrapper_class']) . '"' : ''; ?>>
                 <th scope="row" class="titledesc">
                     <label
                         for="<?php
@@ -701,11 +702,11 @@ if (!class_exists('Give_Settings_General')) :
                 </th>
                 <td class="give-forminp">
                     <?php
-                    echo Give_Admin_Settings::get_field_description($field); ?>
+                    echo wp_kses_post(Give_Admin_Settings::get_field_description($field)); ?>
                     <a href="" id="<?php
-                    echo $field['id']; ?>" data-message="<?php
-                    echo $field['confirmation_msg']; ?>"><?php
-                        echo __('Unlock all settings', 'give'); ?></a>
+                    echo esc_attr($field['id']); ?>" data-message="<?php
+                    echo esc_attr($field['confirmation_msg']); ?>"><?php
+                        echo esc_html__('Unlock all settings', 'give'); ?></a>
                 </td>
             </tr>
             <?php
