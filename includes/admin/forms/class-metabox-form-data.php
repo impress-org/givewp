@@ -789,6 +789,7 @@ class Give_MetaBox_Form_Data {
 	/**
 	 * Output metabox settings.
 	 *
+	 * @since TBD Escape output.
 	 * @since 1.8
 	 *
 	 * @return void
@@ -811,28 +812,28 @@ class Give_MetaBox_Form_Data {
 						// Determine if current tab is active.
 						$is_active = $active_tab === $form_data_tab['id'] ? true : false;
 						?>
-						<li class="<?php echo "{$form_data_tab['id']}_tab" . ( $is_active ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ); ?>">
-							<a href="#<?php echo $form_data_tab['id']; ?>"
-							   data-tab-id="<?php echo $form_data_tab['id']; ?>">
+						<li class="<?php echo esc_attr( "{$form_data_tab['id']}_tab" . ( $is_active ? ' active' : '' ) . ( $this->has_sub_tab( $form_data_tab ) ? ' has-sub-fields' : '' ) ); ?>">
+							<a href="#<?php echo esc_attr( $form_data_tab['id'] ); ?>"
+							   data-tab-id="<?php echo esc_attr( $form_data_tab['id'] ); ?>">
 								<?php if ( ! empty( $form_data_tab['icon-html'] ) ) : ?>
-									<?php echo $form_data_tab['icon-html']; ?>
+									<?php echo wp_kses_post( $form_data_tab['icon-html'] ); ?>
 								<?php else : ?>
 									<i class="fas fa-angle-right"></i>
 								<?php endif; ?>
-								<span class="give-label"><?php echo $form_data_tab['label']; ?></span>
+								<span class="give-label"><?php echo esc_html( $form_data_tab['label'] ); ?></span>
 							</a>
 							<?php if ( $this->has_sub_tab( $form_data_tab ) ) : ?>
 								<ul class="give-metabox-sub-tabs give-hidden">
 									<?php foreach ( $form_data_tab['sub-fields'] as $sub_tab ) : ?>
-										<li class="<?php echo "{$sub_tab['id']}_tab"; ?>">
-											<a href="#<?php echo $sub_tab['id']; ?>"
-											   data-tab-id="<?php echo $sub_tab['id']; ?>">
+										<li class="<?php echo esc_attr( "{$sub_tab['id']}_tab" ); ?>">
+											<a href="#<?php echo esc_attr( $sub_tab['id'] ); ?>"
+											   data-tab-id="<?php echo esc_attr( $sub_tab['id'] ); ?>">
 												<?php if ( ! empty( $sub_tab['icon-html'] ) ) : ?>
-													<?php echo $sub_tab['icon-html']; ?>
+													<?php echo wp_kses_post( $sub_tab['icon-html'] ); ?>
 												<?php else : ?>
 													<i class="fas fa-angle-right"></i>
 												<?php endif; ?>
-												<span class="give-label"><?php echo $sub_tab['label']; ?></span>
+												<span class="give-label"><?php echo esc_html( $sub_tab['label'] ); ?></span>
 											</a>
 										</li>
 									<?php endforeach; ?>
@@ -848,11 +849,11 @@ class Give_MetaBox_Form_Data {
 					// Determine if current panel is active.
 					$is_active = $active_tab === $setting['id'];
 					?>
-					<div id="<?php echo $setting['id']; ?>"
+					<div id="<?php echo esc_attr( $setting['id'] ); ?>"
 						 class="panel give_options_panel<?php echo( $is_active ? ' active' : '' ); ?>">
 						<?php
 						if ( ! $added_upsells_notice ) {
-							echo UpsellNotice::recurringAddon();
+							echo wp_kses_post( UpsellNotice::recurringAddon() );
 							$added_upsells_notice = true;
 						}
 						?>
@@ -869,7 +870,7 @@ class Give_MetaBox_Form_Data {
 					<?php if ( $this->has_sub_tab( $setting ) ) : ?>
 						<?php if ( ! empty( $setting['sub-fields'] ) ) : ?>
 							<?php foreach ( $setting['sub-fields'] as $index => $sub_fields ) : ?>
-								<div id="<?php echo $sub_fields['id']; ?>" class="panel give_options_panel give-hidden">
+								<div id="<?php echo esc_attr( $sub_fields['id'] ); ?>" class="panel give_options_panel give-hidden">
 									<?php if ( ! empty( $sub_fields['fields'] ) ) : ?>
 										<?php foreach ( $sub_fields['fields'] as $sub_field ) : ?>
 											<?php give_render_field( $sub_field ); ?>
@@ -891,13 +892,14 @@ class Give_MetaBox_Form_Data {
 	 * @param object $post Post Object.
 	 *
 	 * @access public
+	 * @since  TBD Escape output.
 	 * @since  2.1.0
 	 *
 	 * @return void
 	 */
 	public function output_goal( $post ) {
 
-		echo give_admin_form_goal_stats( $post->ID );
+		echo wp_kses_post( give_admin_form_goal_stats( $post->ID ) );
 
 	}
 
