@@ -1,4 +1,5 @@
 <?php
+/** @since TBD Escape output. */
 /** @var Give\Framework\FieldsAPI\Radio $field */ ?>
 <?php
 /** @var string $fieldIdAttribute */ ?>
@@ -18,22 +19,22 @@
         <?php
         $id = $fieldIdAttribute . '-' . $index; ?>
         <label for="<?php
-        echo $id; ?>">
+        echo esc_attr($id); ?>">
             <input
                 type="radio"
                 name="<?php
-                echo $field->getName(); ?>"
+                echo esc_attr($field->getName()); ?>"
                 id="<?php
-                echo $id; ?>"
+                echo esc_attr($id); ?>"
                 <?php
                 echo $field->isRequired() ? 'required' : ''; ?>
                 <?php
                 echo $option->getValue() === $field->getDefaultValue() ? 'checked' : ''; ?>
                 value="<?php
-                echo $option->getValue(); ?>"
+                echo esc_attr($option->getValue()); ?>"
             >
             <?php
-            echo $option->getLabel() ?: $option->getValue(); ?>
+            echo esc_html($option->getLabel() ?: $option->getValue()); ?>
         </label>
     <?php
     endforeach; ?>
