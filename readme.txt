@@ -275,10 +275,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 = 4.17.0: September 23rd, 2026 =
 * Feature: Added the ability to embed donation forms on any website with a copy-paste snippet from the form builder
-* Enhancement: All donation form embeds now show a loading state while the form loads
+* Enhancement: Donation form embeds now show a loading state while the form loads
 * Fix: Fixed PHP 8.4 deprecation notices about implicitly nullable parameters
 * Fix: Fixed the revenue table index migration adding duplicate indexes when it runs more than once
 * Fix: Added additional escaping to the legacy donation form's billing address fields.
+* Security: Donors can no longer add unverified email addresses to their own donor record.
+* Security: Enhanced security for donations imported from CSV
 
 = 4.16.9: September 16th, 2026 =
 * Security: Added additional validation to PayPal Commerce donation processing.
