@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Show report graphs
  *
+ * @since TBD Escape output.
  * @since 1.0
  * @return void
  */
@@ -205,20 +206,20 @@ function give_reports_graph() {
 				<tbody>
 				<tr>
 					<th scope="row"><strong><?php _e( 'Total revenue for period:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ); ?></td>
+					<td><?php echo esc_html( give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?><strong></th>
-					<td><?php echo $sales_totals; ?></td>
+					<td><?php echo esc_html( $sales_totals ); ?></td>
 				</tr>
 				<?php if ( 'this_month' === $dates['range'] ) : ?>
 					<tr>
 						<th scope="row"><strong><?php _e( 'Estimated monthly revenue:', 'give' ); ?></strong></th>
-						<td><?php echo give_currency_filter( give_format_amount( $estimated['earnings'], [ 'sanitize' => false ] ) ); ?></td>
+						<td><?php echo esc_html( give_currency_filter( give_format_amount( $estimated['earnings'], [ 'sanitize' => false ] ) ) ); ?></td>
 					</tr>
 					<tr class="alternate">
 						<th scope="row"><strong><?php _e( 'Estimated monthly donations:', 'give' ); ?></strong></th>
-						<td><?php echo floor( $estimated['sales'] ); ?></td>
+						<td><?php echo (int) floor( $estimated['sales'] ); ?></td>
 					</tr>
 				<?php endif; ?>
 			</table>
@@ -241,12 +242,14 @@ function give_reports_graph() {
 	$output = ob_get_contents();
 	ob_end_clean();
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $output is this widget's own buffered markup, including Give_Graph::display()'s <script> block (already escaped internally); wp_kses_post() would strip the script tag.
 	echo $output;
 }
 
 /**
  * Show report graphs of a specific donation form.
  *
+ * @since TBD Escape output.
  * @since 1.0
  *
  * @param int $form_id
@@ -435,7 +438,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			printf(
 				/* translators: %s: form title */
 				esc_html__( 'Revenue Report for %s', 'give' ),
-				get_the_title( $form_id )
+				esc_html( get_the_title( $form_id ) )
 			);
 	?>
 			</span></h3>
@@ -457,15 +460,15 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 				<tbody>
 				<tr>
 					<th scope="row"><strong><?php _e( 'Total revenue for period:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ); ?></td>
+					<td><?php echo esc_html( give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?></strong></th>
-					<td><?php echo $sales_totals; ?></td>
+					<td><?php echo esc_html( $sales_totals ); ?></td>
 				</tr>
 				<tr>
 					<th scope="row"><strong><?php _e( 'Average monthly revenue:', 'give' ); ?></strong></th>
-					<td><?php echo give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ), [ 'sanitize' => false ] ) ); ?></td>
+					<td><?php echo esc_html( give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ), [ 'sanitize' => false ] ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
 					<th scope="row"><strong><?php _e( 'Average monthly donations:', 'give' ); ?></strong></th>
@@ -488,6 +491,7 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 		</div>
 	</div>
 	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- this widget's own buffered markup, including Give_Graph::display()'s <script> block (already escaped internally); wp_kses_post() would strip the script tag.
 	echo ob_get_clean();
 }
 
@@ -821,6 +825,7 @@ add_action( 'give_filter_reports', 'give_parse_report_dates' );
  *
  * Outputs a "Refresh Reports" button for graphs
  *
+ * @since      TBD Escape output.
  * @since      1.3
  */
 function give_reports_refresh_button() {
@@ -835,7 +840,7 @@ function give_reports_refresh_button() {
 		'give-refresh-reports'
 	);
 
-	echo Give()->tooltips->render_link(
+	echo wp_kses_post( Give()->tooltips->render_link(
 		[
 			'label'       => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
 			'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),
@@ -845,7 +850,7 @@ function give_reports_refresh_button() {
 				'class' => 'button alignright give-admin-button',
 			],
 		]
-	);
+	) );
 }
 
 add_action( 'give_reports_graph_additional_stats', 'give_reports_refresh_button' );
