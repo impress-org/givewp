@@ -103,7 +103,7 @@ final class TestProfile extends TestCase
     }
 
     /**
-     * @since TBD Non-admins cannot add unverified emails via dashboard.
+     * @since 4.17.0 Non-admins cannot add unverified emails via dashboard.
      */
     public function testUpdateShouldNotAddNewUnverifiedEmails(): void
     {
@@ -135,7 +135,7 @@ final class TestProfile extends TestCase
     }
 
     /**
-     * @since TBD Non-admins can remove existing emails via dashboard.
+     * @since 4.17.0 Non-admins can remove existing emails via dashboard.
      */
     public function testUpdateShouldRemoveExistingEmails(): void
     {
@@ -165,7 +165,7 @@ final class TestProfile extends TestCase
     }
 
     /**
-     * @since TBD Non-admins can swap primary and additional emails via dashboard.
+     * @since 4.17.0 Non-admins can swap primary and additional emails via dashboard.
      */
     public function testUpdateShouldSwapPrimaryAndAdditionalEmails(): void
     {

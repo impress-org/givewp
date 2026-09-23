@@ -480,7 +480,7 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	/**
 	 * Test that the purchase key of an imported donation is not derivable from the import time.
 	 *
-	 * @since TBD
+	 * @since 4.17.0
 	 */
 	public function test_imported_donation_purchase_key_is_not_derived_from_import_time() {
 		give_import_donation_report_reset();
@@ -525,7 +525,7 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 	/**
 	 * Check if a purchase key can be found among the keys derivable from the given wall-clock seconds.
 	 *
-	 * @since TBD
+	 * @since 4.17.0
 	 *
 	 * @param string $purchase_key Purchase key to look for.
 	 * @param int    $second_from  First second of the window, inclusive.

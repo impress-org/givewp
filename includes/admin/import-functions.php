@@ -654,7 +654,7 @@ function give_log_user_in_on_register_callback( $value ) {
 /**
  * Add import Donation forms, donations , donor from CSV to database
  *
- * @since TBD Generate the purchase key with the shared GeneratePurchaseKey action.
+ * @since 4.17.0 Generate the purchase key with the shared GeneratePurchaseKey action.
  * @since 1.8.13
  *
  * @param array $raw_key Setup bu user at step 2.

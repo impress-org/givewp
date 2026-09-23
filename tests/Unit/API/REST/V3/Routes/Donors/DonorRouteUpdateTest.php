@@ -476,7 +476,7 @@ class DonorRouteUpdateTest extends RestApiTestCase
     }
 
     /**
-     * @since TBD Non-admin caller cannot add unverified email addresses.
+     * @since 4.17.0 Non-admin caller cannot add unverified email addresses.
      */
     public function testNonAdminCannotAddUnverifiedEmailAddresses()
     {

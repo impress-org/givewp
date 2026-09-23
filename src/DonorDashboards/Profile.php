@@ -34,7 +34,7 @@ class Profile
     /**
      * Handles updating relevant profile fields in donor database and meta database
      *
-     * @since TBD Logged-in donors can no longer add unverified email addresses.
+     * @since 4.17.0 Logged-in donors can no longer add unverified email addresses.
      * @since 2.27.3 Use Donor model to update data used by webhooks addon to prevent multiple events creation
      * @since      2.10.0
      *

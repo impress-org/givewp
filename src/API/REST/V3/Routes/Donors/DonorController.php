@@ -189,7 +189,7 @@ class DonorController extends WP_REST_Controller
     /**
      * Update a single donor.
      *
-     * @since TBD Non-admin callers may no longer add unverified email addresses.
+     * @since 4.17.0 Non-admin callers may no longer add unverified email addresses.
      * @since 4.16.6 Skip readonly schema properties when applying PATCH updates.
      * @since 4.8.0 Update donor name when firstName or lastName is updated
      * @since 4.7.0 Add support for updating custom fields
