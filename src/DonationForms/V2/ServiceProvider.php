@@ -27,22 +27,30 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD Defer the legacy check to admin_menu and register the "Forms" submenu only for users
+     *            who have not switched to the legacy list, since the React bundle is only enqueued for it.
+     *
      * @inheritDoc
      */
     public function boot()
     {
-        $userId = get_current_user_id();
-        $showLegacy = get_user_meta($userId, '_give_donation_forms_archive_show_legacy', true);
+        add_action('admin_menu', static function () {
+            $showLegacy = get_user_meta(get_current_user_id(), '_give_donation_forms_archive_show_legacy', true);
 
-        Hooks::addAction('admin_menu', DonationFormsAdminPage::class, 'register', 0);
+            if ( ! empty($showLegacy)) {
+                if (DonationFormsAdminPage::isShowingLegacyPage()) {
+                    Hooks::addAction('admin_head', DonationFormsAdminPage::class, 'renderReactSwitch');
+                }
 
-        if (empty($showLegacy)) {
+                return;
+            }
+
+            give(DonationFormsAdminPage::class)->register();
+
             if (DonationFormsAdminPage::isShowing()) {
                 Hooks::addAction('admin_enqueue_scripts', DonationFormsAdminPage::class, 'loadScripts');
             }
-        } elseif (DonationFormsAdminPage::isShowingLegacyPage()) {
-            Hooks::addAction('admin_head', DonationFormsAdminPage::class, 'renderReactSwitch');
-        }
+        }, 0);
 
         // Onboarding
         Hooks::addAction('submitpost_box', DonationFormsAdminPage::class, 'renderMigrationGuideBox');
