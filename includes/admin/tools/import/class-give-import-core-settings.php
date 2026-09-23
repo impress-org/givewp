@@ -146,19 +146,21 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Print submit and nonce button.
 		 *
+		 * @since TBD Escape output.
 		 * @since 1.8.17
 		 */
 		public function submit() {
 			wp_nonce_field( 'give-save-settings', '_give-save-settings' );
 			?>
-			<input type="hidden" class="import-step" id="import-step" name="step" value="<?php echo $this->get_step(); ?>"/>
-			<input type="hidden" class="importer-type" value="<?php echo $this->importer_type; ?>"/>
+			<input type="hidden" class="import-step" id="import-step" name="step" value="<?php echo (int) $this->get_step(); ?>"/>
+			<input type="hidden" class="importer-type" value="<?php echo esc_attr( $this->importer_type ); ?>"/>
 			<?php
 		}
 
 		/**
 		 * Print the HTML for core setting importer.
 		 *
+		 * @since TBD Escape output.
 		 * @since 1.8.17
 		 */
 		public function html() {
@@ -169,8 +171,8 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			?>
 			<section>
 				<table
-					class="widefat export-options-table give-table <?php echo "step-{$step}"; ?> <?php echo( 1 === $step && ! empty( $this->is_json_valid ) ? 'give-hidden' : '' ); ?> "
-					id="<?php echo "step-{$step}"; ?>">
+					class="widefat export-options-table give-table <?php echo esc_attr( "step-{$step}" ); ?> <?php echo( 1 === $step && ! empty( $this->is_json_valid ) ? 'give-hidden' : '' ); ?> "
+					id="<?php echo esc_attr( "step-{$step}" ); ?>">
 					<tbody>
 					<?php
 					switch ( $step ) {
@@ -195,6 +197,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		/**
 		 * Show message after the Core Settings Imported
 		 *
+		 * @since TBD Escape output.
 		 * @since 1.8.17
 		 */
 		public function import_success() {
@@ -240,10 +243,10 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 			?>
 			<tr valign="top" class="give-import-dropdown">
 				<th colspan="2">
-					<h2><?php echo $title; ?></h2>
+					<h2><?php echo esc_html( $title ); ?></h2>
 					<p>
-						<a class="button button-large button-secondary" href="<?php echo esc_url( add_query_arg( $query_arg_success, admin_url( 'edit.php' ) ) ); ?>"><?php echo $text; ?></a>
-						<a class="button button-large button-secondary" href="<?php echo esc_url( add_query_arg( $query_arg_setting, admin_url( 'edit.php' ) ) ); ?>"><?php echo __( 'View Settings', 'give' ); ?></a>
+						<a class="button button-large button-secondary" href="<?php echo esc_url( add_query_arg( $query_arg_success, admin_url( 'edit.php' ) ) ); ?>"><?php echo esc_html( $text ); ?></a>
+						<a class="button button-large button-secondary" href="<?php echo esc_url( add_query_arg( $query_arg_setting, admin_url( 'edit.php' ) ) ); ?>"><?php echo esc_html__( 'View Settings', 'give' ); ?></a>
 					</p>
 				</th>
 			</tr>
@@ -339,6 +342,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 		 *
 		 * Print the html of the file upload from which json will be uploaded.
 		 *
+		 * @since TBD Escape output.
 		 * @since 1.8.17
 		 * @return void
 		 */
@@ -393,7 +397,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 					<th></th>
 					<th>
 						<input type="submit"
-							   class="button button-primary button-large button-secondary <?php echo "step-{$step}"; ?>"
+							   class="button button-primary button-large button-secondary <?php echo esc_attr( "step-{$step}" ); ?>"
 							   id="recount-stats-submit"
 							   value="<?php esc_attr_e( 'Submit', 'give' ); ?>"/>
 					</th>
@@ -401,7 +405,7 @@ if ( ! class_exists( 'Give_Import_Core_Settings' ) ) {
 				<?php
 			} else {
 				?>
-				<input type="hidden" name="is_json_valid" class="is_json_valid" value="<?php echo $this->is_json_valid; ?>">
+				<input type="hidden" name="is_json_valid" class="is_json_valid" value="<?php echo esc_attr( $this->is_json_valid ); ?>">
 				<?php
 			}
 		}
