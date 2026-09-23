@@ -21,7 +21,7 @@ class ValidationRoute
     use HandleHttpResponses;
 
     /**
-     * @since TBD Sign the donor in from the auth token when the login cookie is unavailable.
+     * @since 4.17.0 Sign the donor in from the auth token when the login cookie is unavailable.
      * @since 3.22.0 added additional catch statements for forbidden and unknown errors
      * @since 3.0.0
      */

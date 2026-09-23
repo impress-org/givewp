@@ -185,6 +185,7 @@ const entry = {
     twoPanelStepsFormLayoutCss: srcPath('DonationForms/FormDesigns/TwoPanelStepsFormLayout/css/main.scss'),
     donationConfirmationReceiptApp: srcPath('DonationForms/resources/receipt/DonationConfirmationReceiptApp.tsx'),
     baseFormDesignCss: srcPath('DonationForms/resources/styles/base.scss'),
+    donationFormSkeletonCss: srcPath('DonationForms/resources/styles/skeleton.scss'),
     formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),
     formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
     formTaxonomySettings: srcPath('FormTaxonomies/resources/form-builder/index.tsx'),

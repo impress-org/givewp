@@ -39,7 +39,7 @@ class DonateRoute
     }
 
     /**
-     * @since TBD Sign the donor in from the auth token when the login cookie is unavailable.
+     * @since 4.17.0 Sign the donor in from the auth token when the login cookie is unavailable.
      * @since 3.0.0
      *
      * @return void

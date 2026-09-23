@@ -1,23 +1,8 @@
 import {createRoot} from 'react-dom/client';
 import DonationFormBlockApp from '.';
-import type {SkeletonData} from '@givewp/forms/shared/EmbedFrame/EmbedSkeleton';
 
 /**
- * The skeleton attribute is optional and best-effort: a host that strips or mangles it just gets the
- * spinner.
- *
- * @since TBD
- */
-function readSkeletonData(root: Element): SkeletonData | null {
-    try {
-        return JSON.parse(root.getAttribute('data-form-skeleton') ?? 'null');
-    } catch {
-        return null;
-    }
-}
-
-/**
- * @since TBD pass the skeleton data through for the loading state.
+ * @since 4.17.0 hand the server-rendered skeleton inside the root to the app before React clears it.
  * @since 4.7.0
  */
 export default function renderDonationForm(root) {
@@ -35,7 +20,9 @@ export default function renderDonationForm(root) {
     const openFormButton = root.getAttribute('data-open-form-button');
     const formUrl = root.getAttribute('data-form-url');
     const formViewUrl = root.getAttribute('data-form-view-url');
-    const skeletonData = readSkeletonData(root);
+    // The server prints the skeleton and its styles inside the root; createRoot() will empty it. A
+    // root that already holds the app (Elementor re-renders) has no skeleton to hand over.
+    const skeletonHtml = root.querySelector(':scope > .givewp-embed-skeleton') ? root.innerHTML : '';
 
     createRoot(root).render(
         <DonationFormBlockApp
@@ -45,7 +32,7 @@ export default function renderDonationForm(root) {
             embedId={embedId}
             formUrl={formUrl}
             formViewUrl={formViewUrl}
-            skeletonData={skeletonData}
+            skeletonHtml={skeletonHtml}
         />
     );
 }

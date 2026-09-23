@@ -21,7 +21,7 @@ class HoneyPotRule implements ValidationRule
     }
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 3.16.2
      */
     public static function fromString(?string $options = null): ValidationRule

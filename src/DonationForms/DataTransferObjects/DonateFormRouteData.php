@@ -44,7 +44,7 @@ class DonateFormRouteData implements Arrayable
     /**
      * Convert data from request into DTO
      *
-     * @since TBD Validate the client-provided origin URL before it is used in redirects.
+     * @since 4.17.0 Validate the client-provided origin URL before it is used in redirects.
      * @since 3.0.0
      */
     public static function fromRequest(array $requestData): self
@@ -127,7 +127,7 @@ class DonateFormRouteData implements Arrayable
      * Intentionally not wp_http_validate_url(), which rejects localhost hosts
      * that are valid embed origins during development.
      *
-     * @since TBD
+     * @since 4.17.0
      *
      * @param mixed $originUrl
      */

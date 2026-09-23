@@ -21,7 +21,7 @@ class PaymentGatewayRegister extends PaymentGatewaysIterator
     /**
      * Get Gateways
      *
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 2.30.0 added $supportedFormVersion param to filter gateways by supported form version
      * @since 2.18.0
      */

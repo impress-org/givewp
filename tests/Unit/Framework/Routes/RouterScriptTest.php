@@ -8,7 +8,7 @@ use Give\Tests\TestCase;
 use WP;
 
 /**
- * @since TBD
+ * @since 4.17.0
  */
 class RouterScriptTest extends TestCase
 {
@@ -18,7 +18,7 @@ class RouterScriptTest extends TestCase
     private string $script;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function setUp(): void
     {
@@ -33,11 +33,11 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function tearDown(): void
     {
-        unset($_GET['givewp-route']);
+        unset($_GET['givewp-route'], $_GET['form-id']);
         $this->setPermalinkStructure('');
         @unlink($this->script);
         @unlink(preg_replace('/\.js$/', '.asset.php', $this->script));
@@ -46,7 +46,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testScriptUrlWithPrettyPermalinks(): void
     {
@@ -59,7 +59,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testScriptUrlWithIndexPermalinks(): void
     {
@@ -72,7 +72,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testScriptUrlWithPlainPermalinks(): void
     {
@@ -85,7 +85,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testMatchesPrettyPathOrRouteQueryVar(): void
     {
@@ -104,7 +104,83 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
+     */
+    public function testScriptUrlAppendsArgs(): void
+    {
+        $this->setPermalinkStructure('/%postname%/');
+        $this->assertSame(
+            home_url('/give/embed/donation-form/script.js?form-id=42'),
+            (new Router())->scriptUrl('embed/donation-form/script.js', ['form-id' => 42])
+        );
+
+        $this->setPermalinkStructure('');
+        $this->assertSame(
+            home_url('/?givewp-route=embed/donation-form/script.js&form-id=42'),
+            (new Router())->scriptUrl('embed/donation-form/script.js', ['form-id' => 42])
+        );
+    }
+
+    /**
+     * @since 4.17.0
+     */
+    public function testScriptRequestReturnsQueryArgsAndThePathId(): void
+    {
+        $router = new Router();
+        $wp = new WP();
+        $uri = 'embed/donation-form/script.js';
+
+        $wp->request = 'give/embed/donation-form/script.js';
+        $_GET['form-id'] = '42,7';
+        $this->assertSame(['form-id' => '42,7'], $router->scriptRequest($wp, $uri));
+        unset($_GET['form-id']);
+
+        $wp->request = 'give/embed/donation-form/42/script.js';
+        $this->assertSame(['id' => 42], $router->scriptRequest($wp, $uri));
+
+        $wp->request = 'give/embed/donation-form/abc/script.js';
+        $this->assertNull($router->scriptRequest($wp, $uri));
+
+        $wp->request = '';
+        $_GET['givewp-route'] = 'embed/donation-form/42/script.js';
+        $this->assertSame(['id' => 42], $router->scriptRequest($wp, $uri));
+
+        $_GET['givewp-route'] = 'embed/donation-form/script.js';
+        $this->assertSame([], $router->scriptRequest($wp, $uri));
+    }
+
+    /**
+     * @since 4.17.0
+     */
+    public function testScriptRequestMatchesARootLevelUriWithNoDirectory(): void
+    {
+        $router = new Router();
+        $wp = new WP();
+        $uri = 'script.js';
+
+        $wp->request = 'give/script.js';
+        $this->assertSame([], $router->scriptRequest($wp, $uri));
+
+        $wp->request = '';
+        $_GET['givewp-route'] = 'script.js';
+        $this->assertSame([], $router->scriptRequest($wp, $uri));
+    }
+
+    /**
+     * @since 4.17.0
+     */
+    public function testLocalizeCallableReceivesTheRequest(): void
+    {
+        $response = new ScriptResponse($this->script);
+        $response->localize('givewpTest', static function (array $request): array {
+            return $request;
+        });
+
+        $this->assertSame("var givewpTest = {\"id\":42};\n", $response->prologue(['id' => 42]));
+    }
+
+    /**
+     * @since 4.17.0
      */
     public function testEtagIsTheQuotedAssetVersion(): void
     {
@@ -112,7 +188,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testLocalizedDataIsPrintedAheadOfTheScriptAndVersionsTheEtag(): void
     {
@@ -130,7 +206,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testIfNoneMatchToleratesWeakAndGzipValidators(): void
     {
@@ -146,7 +222,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     private function setPermalinkStructure(string $structure): void
     {

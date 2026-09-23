@@ -28,8 +28,8 @@ class Give_Unit_Test_Case extends WP_UnitTestCase
     /**
      * Setup test case.
      *
-     * @since TBD Clear Give errors left in the session by the previous test, and give user 1 a name.
-     * @since TBD Clear Give errors left in the session by the previous test.
+     * @since 4.17.0 Clear Give errors left in the session by the previous test, and give user 1 a name.
+     * @since 4.17.0 Clear Give errors left in the session by the previous test.
      * @since 1.0
      */
     public function setUp(): void

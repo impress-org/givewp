@@ -4,10 +4,9 @@ import ModalForm from '@givewp/src/Campaigns/Blocks/shared/components/ModalForm'
 import '../editor/styles/index.scss';
 import renderDonationForm from './renderDonationForm';
 import EmbedFrame from '@givewp/forms/shared/EmbedFrame';
-import type {SkeletonData} from '@givewp/forms/shared/EmbedFrame/EmbedSkeleton';
 
 /**
- * @since TBD add skeletonData for the on-page loading skeleton.
+ * @since 4.17.0 add skeletonHtml, the server-rendered skeleton for the on-page loading state.
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage".
  * @since 3.1.2
  */
@@ -18,7 +17,7 @@ type DonationFormBlockAppProps = {
     openFormButton: string;
     formUrl: string;
     formViewUrl: string;
-    skeletonData?: SkeletonData | null;
+    skeletonHtml?: string;
 };
 
 /**
@@ -37,7 +36,7 @@ const isRedirect = (url: string) => {
 };
 
 /**
- * @since TBD render every format through EmbedFrame for a shared loading and fallback state, with
+ * @since 4.17.0 render every format through EmbedFrame for a shared loading and fallback state, with
  *            a skeleton of the form on the on-page format.
  * @since 4.3.0 replace ModalForm with Campaigns ModalForm.
  * @since 3.4.0 add logic for inline redirects.
@@ -51,7 +50,7 @@ export default function DonationFormBlockApp({
     openFormButton,
     formUrl,
     formViewUrl,
-    skeletonData,
+    skeletonHtml,
 }: DonationFormBlockAppProps) {
     const isFormRedirect = isRedirect(dataSrc);
 
@@ -82,7 +81,7 @@ export default function DonationFormBlockApp({
         );
     }
 
-    return <EmbedFrame src={dataSrc} embedId={embedId} fallbackUrl={formUrl} skeleton={skeletonData} />;
+    return <EmbedFrame src={dataSrc} embedId={embedId} fallbackUrl={formUrl} skeletonHtml={skeletonHtml} />;
 }
 
 const roots = document.querySelectorAll('.root-data-givewp-embed');

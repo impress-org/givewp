@@ -14,12 +14,12 @@ use Give\Framework\Blocks\BlockModel;
  * or in options, so this costs no extra queries. The embed only knows how to draw the core
  * designs and falls back to a spinner for any other design id.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class GetFormSkeletonData
 {
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function __invoke(DonationForm $donationForm): array
     {
@@ -49,11 +49,11 @@ class GetFormSkeletonData
      * Only the "above" and "center" image styles put an image element in the header flow. The
      * background and cover styles paint behind the text and add no height.
      *
-     * @since TBD
+     * @since 4.17.0
      *
      * @param DesignSettingsImageStyle|string|null $style
      */
-    private function imageTakesSpace($url, $style): bool
+    private function imageTakesSpace(?string $url, $style): bool
     {
         if (!$url || !$style instanceof DesignSettingsImageStyle) {
             return false;

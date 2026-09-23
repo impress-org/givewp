@@ -27,7 +27,7 @@ class DatabaseQueryException extends Exception
     private $query;
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 2.21.0 include query and query errors, and make auto-logging compatible
      * @since 2.9.2
      */

@@ -1,31 +1,34 @@
 import {useEffect, useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
 import IframeResizer from 'iframe-resizer-react';
-import EmbedSkeleton, {SkeletonData, hasSkeleton} from './EmbedSkeleton';
+import {Interweave} from 'interweave';
 import './styles.scss';
 
 /**
  * How long the embed waits for the form to announce itself before it starts offering a link to
  * the standalone form alongside the placeholder. The iframe keeps loading either way.
  *
- * @since TBD
+ * @since 4.17.0
  */
 export const LOAD_TIMEOUT_MS = 10000;
 
 /**
- * @since TBD
+ * @since 4.17.0
  */
 type EmbedFrameState = 'loading' | 'slow' | 'ready';
 
 /**
- * @since TBD
+ * @since 4.17.0
  */
 type EmbedFrameProps = {
     src: string;
     embedId: string;
     fallbackUrl: string;
-    /** When given for a design the skeleton knows, a sketch of the form holds the space instead of a spinner. */
-    skeleton?: SkeletonData | null;
+    /**
+     * The skeleton RenderFormSkeleton printed on the server, with its inline styles. When present a
+     * sketch of the form holds the space instead of a spinner.
+     */
+    skeletonHtml?: string;
     onReady?: () => void;
     onSlow?: () => void;
 };
@@ -40,11 +43,11 @@ type EmbedFrameProps = {
  * form never arrives. It overlays the top of the frame rather than sitting under it, because a
  * skeleton can run past the fold.
  *
- * @since TBD
+ * @since 4.17.0
  */
-export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady, onSlow}: EmbedFrameProps) {
+export default function EmbedFrame({src, embedId, fallbackUrl, skeletonHtml, onReady, onSlow}: EmbedFrameProps) {
     const [state, setState] = useState<EmbedFrameState>('loading');
-    const showSkeleton = hasSkeleton(skeleton);
+    const showSkeleton = Boolean(skeletonHtml);
 
     useEffect(() => {
         if (state !== 'loading') {
@@ -68,7 +71,12 @@ export default function EmbedFrame({src, embedId, fallbackUrl, skeleton, onReady
                     aria-label={__('Loading donation form', 'give')}
                 >
                     {showSkeleton ? (
-                        <EmbedSkeleton data={skeleton} />
+                        /*
+                         * The server's markup, read back from the root it was printed into. Interweave
+                         * drops the inline style element that came with it; by now the block stylesheet,
+                         * which carries the same rules, has loaded.
+                         */
+                        <Interweave content={skeletonHtml} noWrap disableLineBreaks />
                     ) : (
                         <span className="givewp-embed-frame__spinner" />
                     )}

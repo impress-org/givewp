@@ -1,5 +1,5 @@
 /**
- * @since TBD Support cross-origin embeds: guard window.top and window.frameElement access with URL parameter fallbacks.
+ * @since 4.17.0 Support cross-origin embeds: guard window.top and window.frameElement access with URL parameter fallbacks.
  * @since 3.22.0 Add locale support
  */
 export default function getCurrentFormUrlData() {

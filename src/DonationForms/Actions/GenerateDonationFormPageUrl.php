@@ -10,12 +10,12 @@ namespace Give\DonationForms\Actions;
  * Used by the block's new-tab launcher and shipped to the external embed
  * script, which appends the form id itself.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class GenerateDonationFormPageUrl
 {
     /**
-     * @since TBD
+     * @since 4.17.0
      *
      * @param int|null $formId Omit for the base URL without a form id.
      */

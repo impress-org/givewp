@@ -39,7 +39,7 @@ type GoalProgressOption = {
 };
 
 /**
- * @since TBD Added externalEmbedScriptUrl
+ * @since 4.17.0 Added externalEmbedScriptUrl
  * @since 3.12.0 Added goalProgressOptions
  * @since 3.9.0 Added intlTelInputSettings
  * @since 3.7.0 Added isExcerptEnabled

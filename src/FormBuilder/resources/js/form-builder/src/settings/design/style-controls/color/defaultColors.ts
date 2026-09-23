@@ -3,7 +3,7 @@
  * tab's primary and secondary colors and the external embed's button color.
  *
  * @since 4.3.0 Update the value of the default colors Primary color to improve accessibility color contrast.
- * @since TBD Shared with the external embed button color.
+ * @since 4.17.0 Shared with the external embed button color.
  */
 const defaultColors = [
     {name: 'Black', slug: 'black', color: '#000000'},

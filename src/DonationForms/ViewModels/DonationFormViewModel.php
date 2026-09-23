@@ -7,8 +7,11 @@ use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Actions\GenerateAuthUrl;
 use Give\DonationForms\Actions\GenerateDonateRouteUrl;
 use Give\DonationForms\Actions\GenerateDonationFormValidationRouteUrl;
+use Give\DonationForms\Actions\GetFormSkeletonData;
 use Give\DonationForms\Actions\IsolateEnqueuedFormViewAssets;
+use Give\DonationForms\Actions\RenderFormSkeleton;
 use Give\DonationForms\DataTransferObjects\DonationFormGoalData;
+use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\Repositories\DonationFormRepository;
 use Give\DonationForms\ValueObjects\GoalType;
@@ -48,6 +51,15 @@ class DonationFormViewModel
      * @var bool
      */
     private $previewMode;
+
+    /**
+     * The skeleton markup for this render, or empty when there is none to show.
+     *
+     * @since 4.17.0
+     *
+     * @var string
+     */
+    private $skeleton = '';
     /**
      * @since 4.1.0
      */
@@ -146,6 +158,13 @@ class DonationFormViewModel
         );
 
         wp_enqueue_style('givewp-base-form-styles');
+
+        // The skeleton prints in the body before the app bundles load, so its styles go in the head with the rest.
+        if ($this->skeleton) {
+            wp_register_style('givewp-form-skeleton-styles', false);
+            wp_add_inline_style('givewp-form-skeleton-styles', (new RenderFormSkeleton())->css());
+            wp_enqueue_style('givewp-form-skeleton-styles');
+        }
     }
 
     /**
@@ -276,6 +295,7 @@ class DonationFormViewModel
     }
 
     /**
+     * @since 4.17.0 print the form's skeleton inside the root and announce the shell to the embedding page.
      * This is the order of loading:
      * 1. Enqueue global styles from WP.
      *  - This ensures template compatability with global WP css variables as needed. Loads before our templates, so they can use things like global font-family, etc.
@@ -298,6 +318,8 @@ class DonationFormViewModel
      */
     public function render(): string
     {
+        $this->skeleton = $this->previewMode ? '' : $this->renderSkeleton();
+
         $this->enqueueGlobalStyles();
 
         $this->enqueueFormScripts(
@@ -329,7 +351,11 @@ class DonationFormViewModel
 
         <div data-theme="light" id="root-givewp-donation-form"
              data-iframe-height
-             class="<?= esc_attr(implode(' ', $classNames)) ?>"></div>
+             class="<?= esc_attr(implode(' ', $classNames)) ?>"><?= $this->skeleton ?></div>
+
+        <?php if ($this->skeleton): ?>
+            <script>parent.postMessage({type: 'givewp-embed-shell', height: document.documentElement.scrollHeight}, '*');</script>
+        <?php endif; ?>
 
         <?php
         wp_print_footer_scripts();
@@ -337,6 +363,28 @@ class DonationFormViewModel
         echo ob_get_clean();
 
         exit();
+    }
+
+    /**
+     * The skeleton RenderFormSkeleton draws, printed inside the root so the iframe shows the form's
+     * shape as soon as its HTML and head styles arrive, before the app bundles load. createRoot()
+     * replaces it with the form. The inline script that follows the root tells the embedding page
+     * the shell has painted and how tall it is; the payload is that height and nothing else, so it
+     * is addressed to any origin and the embed authenticates the message by its origin and source
+     * instead. Both are skipped for an unknown design, where there is nothing to show, and in the
+     * builder preview.
+     *
+     * @since 4.17.0
+     */
+    private function renderSkeleton(): string
+    {
+        $form = DonationForm::find($this->donationFormId);
+
+        if (!$form) {
+            return '';
+        }
+
+        return (new RenderFormSkeleton())((new GetFormSkeletonData())($form));
     }
 
     /**
