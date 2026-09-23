@@ -27,6 +27,7 @@ trait CheckoutRedirect
     }
 
     /**
+     * @since TBD Escape output.
      * @since 3.12.1 add esc_attr to $session_id
      * @since  2.5.5
      * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::redirect_to_checkout implementation of the Stripe Checkout Gateway.
@@ -71,11 +72,11 @@ trait CheckoutRedirect
             window.addEventListener('load', function() {
                 let stripe = {};
 
-                stripe = Stripe( '<?php echo $publishable_key; ?>' );
+                stripe = Stripe( '<?php echo esc_js( $publishable_key ); ?>' );
 
                 <?php if ( ! empty( $stripe_account_id ) ) { ?>
-                stripe = Stripe( '<?php echo $publishable_key; ?>', {
-                    'stripeAccount': '<?php echo $stripe_account_id; ?>'
+                stripe = Stripe( '<?php echo esc_js( $publishable_key ); ?>', {
+                    'stripeAccount': '<?php echo esc_js( $stripe_account_id ); ?>'
                 } );
                 <?php } ?>
 
