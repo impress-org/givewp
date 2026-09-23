@@ -4,6 +4,7 @@
  * Give Settings Page/Tab
  *
  * @package     Give
+ * @since       TBD Escape output.
  * @since       1.8
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
@@ -298,25 +299,26 @@ if (! class_exists('Give_Settings_Gateways')) :
 
                     <p class="give-gateways-notice-message">
                         <?php
-                        printf(
+                        echo wp_kses_post( sprintf(
                             __(
                                 'Activate the free Stripe payment gateway %1$s, <a href="%2$s" target="_blank">PayPal Donations</a>, or a premium gateway like <a href="%3$s" target="_blank">2checkout</a>, or <a href="%4$s" target="_blank">Authorize.Net</a>.',
                                 'give'
                             ),
-                            Give()->tooltips->render_help(
+                            wp_kses_post( Give()->tooltips->render_help(
                                 __(
                                     'The Stripe payment gateway includes a 2% processing fee in addition to Stripe’s transaction fee. This ensures our ability to provide future support and updates for the plugin.',
                                     'give'
                                 )
-                            ),
-                            admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal'),
+                            ) ),
+                            esc_url( admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal') ),
                             'https://givewp.com/addons/2checkout/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner',
                             'https://givewp.com/addons/authorize-net-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner'
-                        );
+                        ) );
                         ?>
                     </p>
 
                     <div class="give-gateways-notice-button">
+                        <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getStripeConnectButtonMarkup() returns a button with an inline <svg> icon; its own values (URL, label) are escaped, and wp_kses_post() would strip the svg. ?>
                         <?php echo give(AccountManagerSettingField::class)->getStripeConnectButtonMarkup(); ?>
                         <a href="https://givewp.com/addons/category/payment-gateways/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner"
                            target="_blank" class="give-view-gateways-btn button">
@@ -420,7 +422,7 @@ if (! class_exists('Give_Settings_Gateways')) :
 
             ob_start();
 
-            echo '<h4>' . __('Enabled Gateways', 'give') . '</h4>';
+            echo '<h4>' . esc_html__('Enabled Gateways', 'give') . '</h4>';
             echo '<div class="give-settings-section-content give-payment-gateways-settings">';
 
             if (count($groups) > 1) {
@@ -457,7 +459,7 @@ if (! class_exists('Give_Settings_Gateways')) :
                         ),
                         esc_html($slug),
                         esc_html($group['label']),
-                        $helper ?? ''
+                        wp_kses_post($helper ?? '')
                     );
                 }
                 echo '</ul>';
@@ -486,10 +488,10 @@ if (! class_exists('Give_Settings_Gateways')) :
                             <span style="text-align: center;">%3$s</span>
                             <span style="text-align: center;">%4$s</span>
                             ',
-                    __('Gateway', 'give'),
-                    __('Label', 'give'),
-                    __('Default', 'give'),
-                    __('Enabled', 'give')
+                    esc_html__('Gateway', 'give'),
+                    esc_html__('Label', 'give'),
+                    esc_html__('Default', 'give'),
+                    esc_html__('Enabled', 'give')
                 );
                 echo '</div>';
 
@@ -505,9 +507,9 @@ if (! class_exists('Give_Settings_Gateways')) :
                     printf(
                         '<span class="admin-label">%1$s %2$s</span>',
                         esc_html($option['admin_label']),
-                        !empty($option['admin_tooltip']) ? Give()->tooltips->render_help(
+                        !empty($option['admin_tooltip']) ? wp_kses_post( Give()->tooltips->render_help(
                             esc_attr($option['admin_tooltip'])
-                        ) : ''
+                        ) ) : ''
                     );
 
                     $label = '';
@@ -517,7 +519,7 @@ if (! class_exists('Give_Settings_Gateways')) :
 
                     printf(
                         '<input class="checkout-label" type="text" id="%1$s[%2$s]" name="%1$s[%2$s]" value="%3$s" placeholder="%4$s"/>',
-                        'gateways_label' . $suffix,
+                        esc_attr('gateways_label' . $suffix),
                         esc_attr($key),
                         esc_html($label),
                         esc_html($option['checkout_label'])
@@ -525,15 +527,15 @@ if (! class_exists('Give_Settings_Gateways')) :
 
                     printf(
                         '<input class="gateways-radio" type="radio" name="%1$s" value="%2$s" %3$s %4$s>',
-                        'default_gateway' . $suffix,
-                        $key,
+                        esc_attr('default_gateway' . $suffix),
+                        esc_attr($key),
                         checked($key, $group['defaultGateway'], false),
                         disabled(null, $enabled, false)
                     );
 
                     printf(
                         '<input class="gateways-checkbox" name="%1$s[%2$s]" id="%1$s[%2$s]" type="checkbox" value="1" %3$s data-payment-gateway="%4$s"/>',
-                        esc_attr($id) . $suffix,
+                        esc_attr($id) . esc_attr($suffix),
                         esc_attr($key),
                         checked('1', $enabled, false),
                         esc_html($option['admin_label'])
@@ -548,6 +550,7 @@ if (! class_exists('Give_Settings_Gateways')) :
 
             echo '</div>'; // end give-settings-section-content.
 
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- buffered content is the gateway list built above (radio/checkbox/text inputs); every value in it is already escaped at its own printf() call, and wp_kses_post() would strip the <input> elements.
             printf('<tr><td colspan="2" style="padding: 0">%s</td></tr>', ob_get_clean());
         }
     }
