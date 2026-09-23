@@ -2,6 +2,8 @@
 
 /**
  * This template is used to display the donation grid with [give_donor_wall]
+ *
+ * @since TBD Escape output.
  */
 
 // Exit if accessed directly.
@@ -65,11 +67,11 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                     // Everyone else
 
                     $initial = esc_html($donation['name_initial']);
-                    echo "
+                    echo wp_kses_post("
                            <div class='give-donor-container__image' style='" . esc_attr('height: ' . $avatarSize . 'px; width: ' . $avatarSize . 'px;') . "'>
                              <span class='give-donor-container__image__name_initial'>$initial</span>
                            </div>
-                        ";
+                        ");
                 }
             }
             ?>
@@ -120,7 +122,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
 
                         $total_chars = strlen($stripped_comment);
                         $max_chars = $atts['comment_length'];
-                        $read_more_text = $atts['readmore_text'];
+                        $read_more_text = esc_html($atts['readmore_text']);
 
                         // A truncated excerpt is displayed if the comment is too long.
                         if ($max_chars < $total_chars) {
@@ -138,15 +140,15 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
 
                             $excerpt = trim($excerpt, '.!,:;');
 
-                            echo "<p class='give-donor-content__excerpt'>$excerpt &hellip;
+                            echo wp_kses_post("<p class='give-donor-content__excerpt'>$excerpt &hellip;
                                     <span> <a class='give-donor-content__read-more' style='color: " . esc_attr($primary_color) . "'> $read_more_text </a></span>
-                                   </p>";
+                                   </p>");
 
-                            echo "<p class='give-donor-content__comment'> $comment </p>";
+                            echo wp_kses_post("<p class='give-donor-content__comment'> $comment </p>");
                         } else {
-                            echo "<p class='give-donor-content__comment'>
+                            echo wp_kses_post("<p class='give-donor-content__comment'>
                                     $comment
-                            </p>";
+                            </p>");
                         }
                         ?>
                     </div>
@@ -163,14 +165,14 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                     // Determine whether to truncate form name based on amount of words
                     if ($atts['show_form'] && $atts['show_total'] && isset($donation['_give_payment_form_title'])) {
                         if (str_word_count($donation['_give_payment_form_title'], 0) <= $word_count) {
-                            echo "<span class='give-donor-details__form_title'> $full_form_name </span>";
+                            echo wp_kses_post("<span class='give-donor-details__form_title'> $full_form_name </span>");
                         } else {
-                            echo "<span class='give-donor-details__form_title'> $truncated_form_name </span>";
+                            echo wp_kses_post("<span class='give-donor-details__form_title'> $truncated_form_name </span>");
                         }
                     } // Display full form name if ['show_total'] is false
                     else {
                         if ($atts['show_form'] && !$atts['show_total'] && isset($donation['_give_payment_form_title'])) {
-                            echo "<span class='give-donor-details__form_title' style='text-align: center'> $full_form_name </span>";
+                            echo wp_kses_post("<span class='give-donor-details__form_title' style='text-align: center'> $full_form_name </span>");
                         }
                     }
 
@@ -184,12 +186,12 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                 </div>
 
                 <?php
-                $donation_amount = give_donation_amount(esc_html($donation['donation_id']), true);
+                $donation_amount = esc_html(give_donation_amount($donation['donation_id'], true));
 
                 if ($atts['show_total']) {
-                    echo "
+                    echo wp_kses_post("
                              <span class= 'give-donor-details__total' style='color: " . esc_attr($primary_color) . "'> $donation_amount </span>
-                        ";
+                        ");
                 }
                 ?>
             </div>
@@ -208,7 +210,7 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                 // Else add period at the end of first name
                 trim($honoree_first_name) . ".";
 
-            echo
+            $tribute_markup =
             "<div class='give-donor-tribute' style='background-color: " . esc_attr($tribute_background_color) . " '>
                     <span>
                         <svg width='16' height='16' viewBox='0 0 16 16'  xmlns='http://www.w3.org/2000/svg' class='give-donor-tribute__svg'>
@@ -223,6 +225,8 @@ $tribute_background_color = !empty($atts['color']) ? $atts['color'] . '20' : '#2
                         <span> $honoree_full_name </span>
                     </span>
                 </div>";
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG tribute icon markup; color and text values are escaped above, wp_kses_post() would strip the <svg> element.
+            echo $tribute_markup;
         }
         ?>
     </div>
