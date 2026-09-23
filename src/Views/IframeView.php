@@ -335,6 +335,8 @@ class IframeView
     }
 
     /**
+     * @since TBD Escape the fallback URL from getIframeURL(), which was missing esc_url() unlike the other two assignment paths.
+     *
      *  Setup Default config.
      */
     private function loadDefaultConfig()
@@ -343,7 +345,7 @@ class IframeView
         $this->template = Give()->templates->getTemplate($activeFormTemplate);
         $this->minHeight = $this->template->getFormStartingHeight($this->formId);
 
-        $this->url = $this->url ?: $this->getIframeURL();
+        $this->url = $this->url ?: esc_url($this->getIframeURL());
 
         $this->addExtraQueryParams();
     }
@@ -354,6 +356,7 @@ class IframeView
      * Note: if you want to overwrite this function then do not forget to add action hook in footer and header.
      * We use these hooks to manipulated donation form related actions.
      *
+     * @since TBD Escape output.
      * @since 2.7.0
      */
     public function render()
@@ -363,15 +366,12 @@ class IframeView
         $this->loadDefaultConfig();
 
         if ($this->modal) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getButtonHTML() escapes internally.
             echo $this->getButtonHTML();
         }
 
-        printf(
-            '<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s</div>',
-            $this->modal ? ' is-hide' : '',
-            $this->uniqueId,
-            $this->getIframeHTML()
-        );
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getIframeHTML() escapes internally; $this->uniqueId is a uniqid() value with no user input.
+        printf('<div class="give-embed-form-wrapper%1$s" id="%2$s">%3$s</div>', $this->modal ? ' is-hide' : '', esc_attr($this->uniqueId), $this->getIframeHTML());
 
         return ob_get_clean();
     }
