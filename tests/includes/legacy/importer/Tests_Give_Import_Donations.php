@@ -476,4 +476,73 @@ class Tests_Give_Import_Donations extends Give_Unit_Test_Case {
 		$donor_data = get_user_by( 'email', 'enormansell6@youtu.be' );
 		$this->assertTrue( empty( $donor_data->ID ) );
 	}
+
+	/**
+	 * Test that the purchase key of an imported donation is not derivable from the import time.
+	 *
+	 * @since TBD
+	 */
+	public function test_imported_donation_purchase_key_is_not_derived_from_import_time() {
+		give_import_donation_report_reset();
+
+		$import_setting = $this->get_import_setting();
+		$raw_key        = $import_setting['raw_key'];
+
+		$raw_data = give_get_raw_data_from_file( $this->csv_file, 1, $this->total, ',' );
+		$main_key = give_get_raw_data_from_file( $this->csv_file, 0, 1, ',' );
+		$main_key = $main_key[0];
+
+		$import_setting['donation_key'] = 1;
+
+		$time_before = time();
+		$payment_id  = give_save_import_donation_to_db( $raw_key, $raw_data[0], $main_key, $import_setting );
+		$time_after  = time();
+
+		$this->assertNotEmpty( $payment_id );
+
+		$purchase_key = give_get_meta( $payment_id, '_give_payment_purchase_key', true );
+		$this->assertNotEmpty( $purchase_key );
+
+		// The receipt link resolves the purchase key back to the imported donation.
+		$this->assertEquals( $payment_id, give_get_donation_id_by_key( $purchase_key ) );
+
+		$this->assertFalse(
+			$this->is_purchase_key_within_time_window( $purchase_key, $time_before, $time_after ),
+			'The imported donation purchase key must not be derivable from the import time.'
+		);
+
+		// Control: a key generated from a wall-clock timestamp alone is found by the same window sweep.
+		$control_time_before = time();
+		$control_key         = strtolower( md5( uniqid() ) );
+		$control_time_after  = time();
+
+		$this->assertTrue(
+			$this->is_purchase_key_within_time_window( $control_key, $control_time_before, $control_time_after ),
+			'The control key generated from a timestamp must be found by the window sweep.'
+		);
+	}
+
+	/**
+	 * Check if a purchase key can be found among the keys derivable from the given wall-clock seconds.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $purchase_key Purchase key to look for.
+	 * @param int    $second_from  First second of the window, inclusive.
+	 * @param int    $second_to    Last second of the window, inclusive.
+	 *
+	 * @return bool
+	 */
+	private function is_purchase_key_within_time_window( $purchase_key, $second_from, $second_to ) {
+		for ( $second = $second_from; $second <= $second_to; $second++ ) {
+			// uniqid() encodes the microsecond (0–999999) in its last 5 hex characters.
+			for ( $microsecond = 0; $microsecond < 1000000; $microsecond++ ) {
+				if ( strtolower( md5( sprintf( '%08x%05x', $second, $microsecond ) ) ) === $purchase_key ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 }
