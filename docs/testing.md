@@ -187,17 +187,35 @@ E2E_ADDONS=give-peer-to-peer npm run test:e2e
 ### The token
 
 The add-on repositories are private and `GITHUB_TOKEN` is scoped to this repository, so the job
-mints an installation token with `actions/create-github-app-token` from a GitHub App installed on
-`impress-org` with `Contents: read` on the add-on repositories. Two repository secrets carry it:
-`ADDONS_APP_ID` and `ADDONS_APP_PRIVATE_KEY`. An App rather than a personal token because it
-belongs to the organization, not to whoever created it, and each run's token expires in an hour.
+mints an installation token with `actions/create-github-app-token` from the
+`givewp-ci-add-on-reader` GitHub App, installed on every `impress-org` repository with
+`Contents: read` and nothing else. Two repository secrets carry it: `ADDONS_APP_ID` and
+`ADDONS_APP_PRIVATE_KEY`. An App rather than a personal token because it belongs to the
+organization, not to whoever created it, and each run's token expires in an hour.
+
+The installation is organization-wide on purpose, so adding an add-on never needs an org owner.
+The workflow narrows each run's token to the repositories in `ADDONS`, so the wide installation
+does not widen what a run can read.
 
 Pull requests from forks get no secrets. The add-on steps skip, `E2E_ADDONS` stays unset, the
-add-on spec skips itself, and the suite runs against core alone.
+add-on specs skip themselves, and the suite runs against core alone.
 
-Adding an add-on is one more name in the comma-separated `ADDONS` and, if the App does not
-already cover it, adding its repository to the App installation. The minted token is limited to
-the repositories in `ADDONS` regardless of what the installation covers.
+### Adding an add-on
+
+1. Add its repository name to the comma-separated `ADDONS` env in
+   `.github/workflows/tests-e2e.yml`. The name is the `impress-org` repository, which is also the
+   plugin directory and the release asset name (`give-recurring` publishes `give-recurring.zip`).
+2. Run the suite locally with it first (commands above, one more `gh release download` and one
+   more entry in the override's `plugins`). Every core spec now runs with the add-on active, and
+   whatever breaks is a finding for the add-on or for core, so sort it out before opening the PR.
+3. Copy `tests/e2e/addon-peer-to-peer.spec.ts` to `addon-<slug>.spec.ts`, change `SLUG`, and point
+   the admin page test at the add-on's own screen. Two assertions is the target: it is active, and
+   its admin screen mounts. Add-on features get their own tests only when a core change has to be
+   checked against them.
+4. Open the PR. The E2E job on it runs with the add-on; the "Install the latest add-on releases"
+   step log shows the release it fetched.
+
+Nothing else. No secret, no App change, no override file in the repository.
 
 ### The other direction
 
