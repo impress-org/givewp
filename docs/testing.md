@@ -153,68 +153,71 @@ itself through `requestUtils.rest()`.
 
 ## Add-on smoke tests in CI
 
-Not wired up yet. This section is the design, not a description of something that runs.
+`.github/workflows/tests-e2e.yml` installs the latest GitHub release of each add-on named in its
+`ADDONS` env next to core before starting wp-env, so the whole Playwright suite runs with them
+active. A fatal on activation, a filter typed against the wrong model, an asset that 404s: the core
+specs see all of it. `tests/e2e/addon-peer-to-peer.spec.ts` adds what they cannot: that the add-on
+really is active, so a failed download cannot pass as a green run, and that its own admin screen
+still mounts.
 
 ### Add-ons come from their release zips, not from source
 
-Every add-on publishes a single `<slug>.zip` asset on its GitHub release — verified on
-`give-recurring` 2.19.1, `give-fee-recovery` 2.3.7, `give-form-field-manager` 3.2.1, and
-`give-data-generator` 1.0.0. The zip is what pup built and what customers install: `vendor/` is
-already there, assets are already compiled, and everything is wrapped in a `<slug>/` directory, so
-it unzips straight into a plugins directory.
+Every add-on publishes a single `<slug>.zip` asset on its GitHub release, built by the shared
+`givewp-release.yml` workflow. It is what customers install: `vendor/` is there, assets are
+compiled, and everything is wrapped in a `<slug>/` directory, so it unzips straight into
+`addons/`. That skips the per-add-on `composer install` and `npm run build` a source checkout
+would need, and tests the artifact people actually run.
 
-That removes the per-add-on `composer install` and `npm ci && npm run build` a source checkout would
-need, and it tests the artifact people actually run rather than a working tree.
+`.wp-env.override.json` is gitignored and outranks `.wp-env.json`, so the job writes one naming
+`.` plus each unpacked add-on. wp-env activates every plugin it names. The override also turns
+`WP_DEBUG_DISPLAY` off: an add-on's PHP deprecation notice printed into a REST response breaks its
+JSON and with it every spec, which is a finding for the add-on, not for this suite. The job then
+exports `E2E_ADDONS` for the specs.
 
-```yaml
-- name: Download the latest add-on releases
-  run: |
-    mkdir -p addons
-    for slug in give-recurring give-fee-recovery; do
-      gh release download --repo "impress-org/$slug" --pattern "$slug.zip" --dir addons
-      unzip -q "addons/$slug.zip" -d addons
-    done
-  env:
-    GH_TOKEN: ${{ secrets.ADDON_READ_TOKEN }}
+`addons/` is gitignored too, so reproducing a CI failure locally is the same two steps:
+
+```sh
+gh release download --repo impress-org/give-peer-to-peer --pattern give-peer-to-peer.zip --dir addons
+unzip -q addons/give-peer-to-peer.zip -d addons
+echo '{"plugins": [".", "./addons/give-peer-to-peer"], "config": {"WP_DEBUG_DISPLAY": false}}' > .wp-env.override.json
+npm run env:start
+E2E_ADDONS=give-peer-to-peer npm run test:e2e
 ```
 
-### Getting them into wp-env
+### The token
 
-`.wp-env.override.json` is gitignored and outranks `.wp-env.json`, so the job writes one naming what
-it just unpacked. Paths are relative to the config file.
+The add-on repositories are private and `GITHUB_TOKEN` is scoped to this repository, so the job
+mints an installation token with `actions/create-github-app-token` from the
+`givewp-ci-add-on-reader` GitHub App, installed on every `impress-org` repository with
+`Contents: read` and nothing else. Two repository secrets carry it: `ADDONS_APP_ID` and
+`ADDONS_APP_PRIVATE_KEY`. An App rather than a personal token because it belongs to the
+organization, not to whoever created it, and each run's token expires in an hour.
 
-```yaml
-- name: Compose a wp-env config that includes the add-ons
-  run: |
-    cat > .wp-env.override.json <<'JSON'
-    {
-        "plugins": [".", "./addons/give-recurring", "./addons/give-fee-recovery"],
-        "port": 8888,
-        "testsEnvironment": false
-    }
-    JSON
-```
+The installation is organization-wide on purpose, so adding an add-on never needs an org owner.
+The workflow narrows each run's token to the repositories in `ADDONS`, so the wide installation
+does not widen what a run can read.
 
-`addons/` is gitignored, so the same two steps work locally when you want to reproduce a CI failure.
+Pull requests from forks get no secrets. The add-on steps skip, `E2E_ADDONS` stays unset, the
+add-on specs skip themselves, and the suite runs against core alone. That is the only case that
+skips: on any other trigger a missing secret fails the token step, so a deleted secret cannot
+quietly turn the suite into a core-only run.
 
-### The blocker is a token, not the tooling
+### Adding an add-on
 
-`give-recurring`, `give-fee-recovery`, and `give-form-field-manager` are private. Core's
-`GITHUB_TOKEN` is scoped to `impress-org/give` alone, so it cannot read their releases.
-`.github/workflows/zip.yml` notes that no bot token is wired into this repository, and
-`gh secret list --repo impress-org/give` is still empty. A fine-grained PAT or GitHub App
-installation token with `contents: read` on the add-on repositories is the first step.
+1. Add its repository name to the comma-separated `ADDONS` env in
+   `.github/workflows/tests-e2e.yml`. The name is the `impress-org` repository, which is also the
+   plugin directory and the release asset name (`give-recurring` publishes `give-recurring.zip`).
+2. Run the suite locally with it first (commands above, one more `gh release download` and one
+   more entry in the override's `plugins`). Every core spec now runs with the add-on active, and
+   whatever breaks is a finding for the add-on or for core, so sort it out before opening the PR.
+3. Copy `tests/e2e/addon-peer-to-peer.spec.ts` to `addon-<slug>.spec.ts`, change `SLUG`, and point
+   the admin page test at the add-on's own screen. Two assertions is the target: it is active, and
+   its admin screen mounts. Add-on features get their own tests only when a core change has to be
+   checked against them.
+4. Open the PR. The E2E job on it runs with the add-on; the "Install the latest add-on releases"
+   step log shows the release it fetched.
 
-`give-data-generator` is public, so the whole mechanism can be proven end to end with the default
-`GITHUB_TOKEN` before any secret exists.
-
-### What the specs should assert
-
-A smoke test that only checks core still works with an add-on active catches most of what breaks: a
-fatal on activation, a JavaScript error that stops a list table mounting, an asset that 404s. The
-existing specs in `tests/e2e/admin-pages.spec.ts` already do all three, which is why that file
-stays breadth-first — pointing it at an environment with add-ons loaded is most of the value,
-before a single add-on-specific spec is written.
+Nothing else. No secret, no App change, no override file in the repository.
 
 ### The other direction
 
