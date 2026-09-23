@@ -2,6 +2,7 @@
 /**
  * Offsite payment gateway Iframe redirect handler view.
  *
+ * @since TBD Escape output.
  * @since 2.7.0
  */
 
@@ -17,7 +18,7 @@ language_attributes(); ?>>
 </head>
 <body>
 <a style="font-size: 0" id="link" href="<?php
-echo $location; ?>" target="_parent"></a>
+echo esc_url($location); ?>" target="_parent"></a>
 <script>
     document.getElementById('link').click();
 </script>

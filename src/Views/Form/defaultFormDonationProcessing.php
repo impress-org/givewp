@@ -2,6 +2,7 @@
 /**
  * Payment confirmation view.
  *
+ * @since TBD Escape output.
  * @since 2.7.0
  */
 
@@ -17,7 +18,7 @@ language_attributes(); ?>>
 <body>
 <script type="text/javascript">
     setTimeout(function() {
-        window.location = '<?php echo give_get_success_page_uri(); ?>';
+        window.location = '<?php echo esc_js(give_get_success_page_uri()); ?>';
     }, 5000);
 </script>
 </body>
