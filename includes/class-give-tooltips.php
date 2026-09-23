@@ -80,6 +80,7 @@ class Give_Tooltips {
 	/**
 	 * Render tooltip
 	 *
+	 * @since  TBD Attribute values, including aria-label, are escaped by give_get_attribute_str().
 	 * @since  2.0
 	 * @access public
 	 *
@@ -132,7 +133,7 @@ class Give_Tooltips {
 			$args['attributes']['href'] = esc_url( $args['link'] );
 		}
 
-		return sprintf( '<%1$s %2$s rel="tooltip">%3$s</%1$s>', $args['tag'], give_get_attribute_str( $args['attributes'] ), $args['tag_content'] );
+		return sprintf( '<%1$s %2$s rel="tooltip">%3$s</%1$s>', tag_escape( $args['tag'] ), give_get_attribute_str( $args['attributes'] ), $args['tag_content'] );
 	}
 
 
