@@ -21,6 +21,7 @@ class ValidationRoute
     use HandleHttpResponses;
 
     /**
+     * @since TBD Escape output.
      * @since 4.17.0 Sign the donor in from the auth token when the login cookie is unavailable.
      * @since 3.22.0 added additional catch statements for forbidden and unknown errors
      * @since 3.0.0
@@ -47,7 +48,7 @@ class ValidationRoute
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, $exception->getError());
         } catch (DonationFormForbidden $exception) {
-            wp_die($exception->getMessage(), 403);
+            wp_die(esc_html($exception->getMessage()), 403);
         } catch (Exception $exception) {
             $type = DonationFormErrorTypes::UNKNOWN;
             $this->logError($type, $exception->getMessage(), $formData);

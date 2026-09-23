@@ -39,6 +39,7 @@ class DonateRoute
     }
 
     /**
+     * @since TBD Escape output.
      * @since 4.17.0 Sign the donor in from the auth token when the login cookie is unavailable.
      * @since 3.0.0
      *
@@ -80,7 +81,7 @@ class DonateRoute
             $this->logError($type, $exception->getMessage(), $formData);
             $this->sendJsonError($type, new WP_Error($type, $exception->getMessage()));
         } catch (DonationFormForbidden $exception) {
-            wp_die($exception->getMessage(), 403);
+            wp_die(esc_html($exception->getMessage()), 403);
         } catch (Exception $exception) {
             $type = DonationFormErrorTypes::UNKNOWN;
             $this->logError($type, $exception->getMessage(), $formData);
