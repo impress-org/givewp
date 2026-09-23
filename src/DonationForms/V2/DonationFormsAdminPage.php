@@ -291,6 +291,7 @@ class DonationFormsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
+     * @since TBD Escape output.
      * @since 2.20.0
      */
     public function renderReactSwitch()
@@ -306,7 +307,7 @@ class DonationFormsAdminPage
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/forms/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                        ['X-WP-Nonce']: '<?php echo esc_js(wp_create_nonce('wp_rest')) ?>'
                     }
                 })
                     .then((res) => {
