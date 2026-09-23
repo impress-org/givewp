@@ -87,6 +87,7 @@ class AccountManagerSettingField
     }
 
     /**
+     * @since TBD Escape output.
      * Render Stripe account manager setting field.
      *
      * @since 2.13.0
@@ -99,7 +100,7 @@ class AccountManagerSettingField
         $classes = ! empty($field['wrapper_class']) ? esc_attr($field['wrapper_class']) : ''
         ?>
         <div class="<?php
-        echo $classes; ?>">
+        echo esc_attr($classes); ?>">
 
             <div id="give-stripe-account-manager-errors"></div>
             <?php
@@ -121,6 +122,7 @@ class AccountManagerSettingField
     }
 
     /**
+     * @since TBD Escape output.
      * @since 2.13.0
      */
     private function getIntroductionSectionMarkup()
@@ -155,10 +157,10 @@ class AccountManagerSettingField
 
             <p class="give-stripe-subheading-description">
                 <?php
-                printf(
+                echo wp_kses_post(sprintf(
                     __('Connect to the Stripe payment gateway using this section. Multiple Stripe accounts can be connected simultaneously. All donation forms will use the "Default Account" unless configured otherwise. To specify a different Stripe account for a form, configure the settings within the "Stripe Account" tab on the individual form edit screen. An additional 2%% fee is applied to donations for free users (removed with any premium product license). Read our <a href="%s" target="_blank" rel="noopener noreferrer">Stripe documentation</a> for more information.', 'give'),
-                    'https://docs.givewp.com/stripe-fees'
-                );
+                    esc_url('https://docs.givewp.com/stripe-fees')
+                ));
                 ?>
             </p>
             <hr style="margin: 25px 0; display: block" />
@@ -190,6 +192,7 @@ class AccountManagerSettingField
     }
 
     /**
+     * @since TBD Escape output.
      * @since 2.13.0
      */
     private function getAddNewStripeAccountSectionMarkup()
@@ -218,7 +221,7 @@ class AccountManagerSettingField
                 <?php
 
                 // Output Stripe Connect Button.
-                echo $this->getStripeConnectButtonMarkup();
+                echo wp_kses_post($this->getStripeConnectButtonMarkup());
 
                 // Check if premium is active.
                 if (give_stripe_is_premium_active()) {
@@ -239,6 +242,7 @@ class AccountManagerSettingField
     }
 
     /**
+     * @since TBD Escape output.
      * @since 2.13.0
      *
      * @param array $stripeAccount
@@ -276,12 +280,12 @@ class AccountManagerSettingField
         ?>
         <div
             id="give-stripe-<?php
-            echo $stripeAccountSlug; ?>"
+            echo esc_attr($stripeAccountSlug); ?>"
             class="give-stripe-account-manager-list-item give-stripe-boxshadow-option-wrap<?php
-            echo $classes; ?>"
+            echo esc_attr($classes); ?>"
         >
             <input type="hidden" name="stripe-account-slug" value="<?php
-            echo $stripeAccountSlug; ?>" readonly>
+            echo esc_attr($stripeAccountSlug); ?>" readonly>
             <input type="hidden" name="setting-page" value="<?php
             echo $this->isGlobalSettingPage() ? 'global' : 'form'; ?>" readonly>
             <?php
@@ -338,7 +342,7 @@ class AccountManagerSettingField
                 </span>
                 <div class="give-stripe-connect-data-field">
                     <?php
-                    echo give_stripe_connection_type_name($stripeAccount['type']); ?>
+                    echo esc_html(give_stripe_connection_type_name($stripeAccount['type'])); ?>
                 </div>
             </div>
 
@@ -347,9 +351,9 @@ class AccountManagerSettingField
                     <?php
                     esc_html_e('Statement Descriptor:', 'give'); ?>
                     <?php
-                    echo sprintf(
+                    echo wp_kses_post(sprintf(
                         '<a href="%s" target="_blank">%s</a>',
-                        'https://stripe.com/docs/statement-descriptors#requirements',
+                        esc_url('https://stripe.com/docs/statement-descriptors#requirements'),
                         Give()->tooltips->render_help([
                                 'label' => esc_html__(
                                     'This is the text that appears on your donor\'s bank statements. This is typically the name of your website or organization. Click on this icon to read more about Stripe statement text requirements.',
@@ -358,16 +362,16 @@ class AccountManagerSettingField
                                 'size' => 'medium',
                             ]
                         )
-                    );
+                    ));
                     ?>
                 </span>
                 <div
                     class="give-stripe-connect-data-field"
                     data-action-url="<?php
-                    echo $editStatementDescriptorUrl; ?>"
+                    echo esc_url($editStatementDescriptorUrl); ?>"
                 >
                     <?php
-                    echo $stripeAccount['statement_descriptor']; ?>
+                    echo esc_html($stripeAccount['statement_descriptor']); ?>
                     <?php
                     if ($this->isGlobalSettingPage()): ?>
                         <span class="give-stripe-edit-statement-descriptor">
@@ -399,10 +403,10 @@ class AccountManagerSettingField
             );
 
             if ($stripeAccountActionsHtml) {
-                printf(
+                echo wp_kses_post(sprintf(
                     '<div class="give-stripe-account-fieldset give-stripe-account-edit">%s</div>',
                     $stripeAccountActionsHtml
-                );
+                ));
             }
             ?>
 
@@ -421,7 +425,7 @@ class AccountManagerSettingField
                     ) :?>
                         <span class="give-stripe-account-disconnect">
                             <a class="give-stripe-disconnect-account-btn" href="<?php
-                            echo $disconnectUrl; ?>">
+                            echo esc_url($disconnectUrl); ?>">
                                 <span class="dashicons dashicons-editor-unlink"></span>
                                 <?php
                                 esc_html_e('Disconnect', 'give'); ?>
@@ -443,7 +447,7 @@ class AccountManagerSettingField
                 <div class="give-stripe-account-default">
                     <a
                         data-account="<?php
-                        echo $stripeAccountSlug; ?>"
+                        echo esc_attr($stripeAccountSlug); ?>"
                         class="give-stripe-account-set-default"
                         href="#"
                     ><?php
@@ -456,6 +460,7 @@ class AccountManagerSettingField
     }
 
     /**
+     * @since TBD Escape output.
      * @since 2.13.0
      */
     private function getStripeAccountOnBoardingModalMarkup()
@@ -493,13 +498,13 @@ class AccountManagerSettingField
             class="stripe-btn-disabled give-hidden"
             data-status="connected"
             data-title="<?php
-            echo $modal_title; ?>"
+            echo esc_attr($modal_title); ?>"
             data-first-detail="<?php
-            echo $modal_first_detail; ?>"
+            echo esc_attr($modal_first_detail); ?>"
             data-second-detail="<?php
-            echo $modal_second_detail; ?>"
+            echo esc_attr($modal_second_detail); ?>"
             data-display="<?php
-            echo $can_display; ?>"
+            echo esc_attr($can_display); ?>"
             data-redirect-url="<?php
             echo esc_url_raw($redirectUrl); ?>"
         >
@@ -536,6 +541,7 @@ class AccountManagerSettingField
     }
 
     /**
+     * @since TBD Escape output.
      * @since 2.13.0
      */
     public function getNoStripeAccountMarkup()
@@ -562,7 +568,7 @@ class AccountManagerSettingField
                     ?>
                 </p>
                 <?php
-                echo $this->getStripeConnectButtonMarkup(); ?>
+                echo wp_kses_post($this->getStripeConnectButtonMarkup()); ?>
             </div>
         </div>
         <?php
