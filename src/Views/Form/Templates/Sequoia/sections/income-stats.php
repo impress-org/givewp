@@ -1,4 +1,5 @@
 <?php
+/** @since TBD Escape output. */
 
 /**
  * @var int $formId
@@ -68,7 +69,7 @@ if ($form->has_goal()) : ?>
         <div class="raised">
             <div class="number">
                 <?php
-                echo $raised; ?>
+                echo esc_html($raised); ?>
             </div>
             <div class="text"><?php
                 _e('raised', 'give'); ?></div>
@@ -76,15 +77,15 @@ if ($form->has_goal()) : ?>
         <div class="count">
             <div class="number">
                 <?php
-                echo $count; ?>
+                echo esc_html($count); ?>
             </div>
             <div class="text"><?php
-                echo $countLabel; ?></div>
+                echo esc_html($countLabel); ?></div>
         </div>
         <div class="goal">
             <div class="number">
                 <?php
-                echo $goal; ?>
+                echo esc_html($goal); ?>
             </div>
             <div class="text"><?php
                 _e('goal', 'give'); ?></div>
