@@ -4,6 +4,8 @@ use Give\Helpers\Utils;
 
 /**
  * Admin View: Settings
+ *
+ * @since TBD Escape output.
  */
 if ( ! defined('ABSPATH')) {
     exit;
@@ -52,6 +54,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
     echo esc_html($wrapper_class); ?>">
 
         <?php
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $form_open_tag is a filtered <form ...> opening tag; wp_kses_post() would strip the form element.
         echo $form_open_tag; ?>
 
         <div class="give-settings-header">
@@ -61,7 +64,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
                 ! empty($current_setting_obj)
                 && method_exists($current_setting_obj, 'get_heading_html')
             ) {
-                echo $current_setting_obj->get_heading_html();
+                echo wp_kses_post( $current_setting_obj->get_heading_html() );
             } else {
                 // Backward compatibility.
                 echo sprintf(
@@ -97,7 +100,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
                 $urlPath = $name === 'recurring' ? 'https://docs.givewp.com/recurring-link' : admin_url(
                     'edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}"
                 );
-                echo '<a ' . $target . 'href="' . $urlPath . '"' . ' class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . $label . '</a>';
+                echo '<a ' . esc_attr( $target ) . 'href="' . esc_url( $urlPath ) . '"' . ' class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . esc_html( $label ) . '</a>';
             }
 
             /**
@@ -110,8 +113,8 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
                         <a class="give-nav-addons-tab" href="' . esc_url(
                         admin_url('edit.php?post_type=give_forms&page=give-add-ons')
                     ) . '">
-                           <img src="' . GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/add-on-star-icon.svg"/>
-                            <span>' . __('ADD-ONS', 'give') . '</span>
+                           <img src="' . esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/add-on-star-icon.svg' ) . '"/>
+                            <span>' . esc_html__('ADD-ONS', 'give') . '</span>
                         </a>
                     ';
             }
@@ -132,7 +135,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
             if ($isReports === true) {
                 echo sprintf(
                     '<a href="%1$s" class="nav-tab nav-tab" id="new-reports-link">%2$s</a>',
-                    admin_url('edit.php?post_type=give_forms&page=give-reports'),
+                    esc_url( admin_url('edit.php?post_type=give_forms&page=give-reports') ),
                     esc_html__('New Reports Dashboard', 'give')
                 );
             }
@@ -182,6 +185,7 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
         <?php
         endif; ?>
         <?php
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $form_close_tag is a filtered </form> closing tag; wp_kses_post() would strip the form element.
         echo $form_close_tag; ?>
     </div>
 <?php
