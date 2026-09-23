@@ -68,11 +68,13 @@ class Router
         $response = new ScriptResponse($file);
 
         add_action('parse_request', function (WP $wp) use ($uri, $response) {
-            if (!$this->isScriptRequested($wp, $uri)) {
+            $request = $this->scriptRequest($wp, $uri);
+
+            if ($request === null) {
                 return;
             }
 
-            $response->send();
+            $response->send($request);
         });
 
         return $response;
@@ -84,18 +86,27 @@ class Router
      * Plain permalinks:   /?givewp-route={uri}
      *
      * @since TBD
+     *
+     * @param array $args Query arguments appended to the URL; the script's localize callable
+     *                    receives them at request time.
      */
-    public function scriptUrl(string $uri): string
+    public function scriptUrl(string $uri, array $args = []): string
     {
         global $wp_rewrite;
 
         if (!$wp_rewrite->using_permalinks()) {
-            return $this->url($uri);
+            $url = $this->url($uri);
+        } else {
+            $prefix = $wp_rewrite->using_index_permalinks() ? $wp_rewrite->index . '/' : '';
+            $url = home_url("/{$prefix}{$this->scriptBase}/{$uri}");
         }
 
-        $prefix = $wp_rewrite->using_index_permalinks() ? $wp_rewrite->index . '/' : '';
+        if (!$args) {
+            return $url;
+        }
 
-        return home_url("/{$prefix}{$this->scriptBase}/{$uri}");
+        // Appended by hand: add_query_arg() would re-encode the givewp-route value's slashes.
+        return $url . (strpos($url, '?') === false ? '?' : '&') . http_build_query($args);
     }
 
     /**
@@ -103,7 +114,47 @@ class Router
      */
     public function isScriptRequested(WP $wp, string $uri): bool
     {
-        return $wp->request === "{$this->scriptBase}/{$uri}" || $this->isRouteValid($uri);
+        return $this->scriptRequest($wp, $uri) !== null;
+    }
+
+    /**
+     * The request data for a script route when the current request is for it, null otherwise.
+     * The data is the query string run through give_clean(), minus givewp-route itself, so a
+     * `?form-id=42` argument arrives as `['form-id' => '42']`. Matching covers the pretty path and
+     * the givewp-route query var, each with an optional numeric segment before the file name
+     * (embed/donation-form/42/script.js), which comes back as `id`. The segment exists for caches
+     * that drop query strings from their key; a query argument is the primary way to pass data
+     * to a script route.
+     *
+     * @since TBD
+     */
+    public function scriptRequest(WP $wp, string $uri): ?array
+    {
+        $directory = dirname($uri);
+        $directory = $directory === '.' ? '' : preg_quote($directory, '#') . '/';
+        $pattern = $directory . '(?:(\d+)/)?' . preg_quote(basename($uri), '#');
+
+        $candidates = [
+            '#^' . preg_quote($this->scriptBase, '#') . '/' . $pattern . '$#' => (string)$wp->request,
+            '#^' . $pattern . '$#' => isset($_GET['givewp-route']) ? (string)$_GET['givewp-route'] : '',
+        ];
+
+        foreach ($candidates as $regex => $subject) {
+            if ($subject === '' || !preg_match($regex, $subject, $matches)) {
+                continue;
+            }
+
+            $request = $this->getDataFromGetRequest();
+            unset($request['givewp-route']);
+
+            if (!empty($matches[1])) {
+                $request['id'] = (int)$matches[1];
+            }
+
+            return $request;
+        }
+
+        return null;
     }
 
     /**
