@@ -152,6 +152,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 	/**
 	 * Add donation search filter.
 	 *
+	 * @since TBD Escape output.
+	 *
 	 * @return void
 	 */
 	public function advanced_filters() {
@@ -173,8 +175,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 						   name="start-date"
 						   class="give_datepicker"
 						   autocomplete="off"
-						   value="<?php echo $start_date ? date_i18n( give_date_format(), $start_date ) : ''; ?>"
-						   data-standard-date="<?php echo $start_date ? date( 'Y-m-d', $start_date ) : $start_date; ?>"
+						   value="<?php echo $start_date ? esc_attr( date_i18n( give_date_format(), $start_date ) ) : ''; ?>"
+						   data-standard-date="<?php echo $start_date ? esc_attr( date( 'Y-m-d', $start_date ) ) : esc_attr( $start_date ); ?>"
 						   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
 					/>
 				</div>
@@ -185,8 +187,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 						   name="end-date"
 						   class="give_datepicker"
 						   autocomplete="off"
-						   value="<?php echo $end_date ? date_i18n( give_date_format(), $end_date ) : ''; ?>"
-						   data-standard-date="<?php echo $end_date ? date( 'Y-m-d', $end_date ) : $end_date; ?>"
+						   value="<?php echo $end_date ? esc_attr( date_i18n( give_date_format(), $end_date ) ) : ''; ?>"
+						   data-standard-date="<?php echo $end_date ? esc_attr( date( 'Y-m-d', $end_date ) ) : esc_attr( $end_date ); ?>"
 						   placeholder="<?php _e( 'End Date', 'give' ); ?>"
 					/>
 				</div>
@@ -196,12 +198,13 @@ class Give_Payment_History_Table extends WP_List_Table {
 					   class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
 				<?php
 				// Filter Donations by Donation Forms.
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 				echo Give()->html->forms_dropdown(
 					[
 						'name'     => 'form_id',
 						'id'       => 'give-donation-forms-filter',
 						'class'    => 'give-donation-forms-filter',
-						'selected' => $form_id, // Make sure to have $form_id set to 0, if there is no selection.
+						'selected' => (int) $form_id, // Make sure to have $form_id set to 0, if there is no selection.
 						'chosen'   => true,
 						'number'   => 30,
 					]
@@ -232,7 +235,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 				// Clear active filters button.
 				if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) :
 					?>
-					<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>"
+					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ) ); ?>"
 					   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
 				<?php endif; ?>
 			</div>
@@ -247,6 +250,7 @@ class Give_Payment_History_Table extends WP_List_Table {
 	 * @param string $text     Label for the search box.
 	 * @param string $input_id ID of the search box.
 	 *
+	 * @since  TBD Escape output.
 	 * @since  1.0
 	 * @access public
 	 *
@@ -273,8 +277,8 @@ class Give_Payment_History_Table extends WP_List_Table {
 			 */
 			do_action( 'give_payment_history_search' );
 			?>
-			<label class="screen-reader-text" for="<?php echo $input_id; ?>"><?php echo $text; ?>:</label>
-			<input type="search" id="<?php echo $input_id; ?>" name="s"
+			<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
+			<input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s"
 				   value="<?php _admin_search_query(); ?>"
 				   placeholder="<?php _e( 'Name, Email, or Donation ID', 'give' ); ?>" />
 			<?php
