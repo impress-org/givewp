@@ -111,6 +111,7 @@ function give_slug_to_title( $string, $filters = [] ) {
 /**
  * Display the API Keys
  *
+ * @since       TBD Escape output.
  * @since       1.0
  * @return      void
  */
@@ -135,12 +136,12 @@ function give_api_callback() {
 	?>
 	<span class="give-metabox-description api-description">
 		<?php
-		echo sprintf(
+		echo wp_kses_post( sprintf(
 			/* translators: 1: http://docs.givewp.com/api 2: http://docs.givewp.com/addon-zapier */
 			__( 'You can create API keys for individual users within their profile edit screen. API keys allow users to use the <a href="%1$s" target="_blank">GiveWP REST API</a> to retrieve donation data in JSON or XML for external applications or devices, such as <a href="%2$s" target="_blank">Zapier</a>.', 'give' ),
 			esc_url( 'http://docs.givewp.com/api' ),
 			esc_url( 'http://docs.givewp.com/addon-zapier' )
-		);
+		) );
 		?>
 	</span>
 	<?php
@@ -203,6 +204,7 @@ function give_get_format_md( $readme ) {
  * @param bool   $echo
  *
  * @return string
+ * @since TBD Escape output.
  * @since 1.0
  */
 function give_add_ons_feed( $feed_type = '', $echo = true ) {
@@ -244,7 +246,7 @@ function give_add_ons_feed( $feed_type = '', $echo = true ) {
 	$cache = wp_kses_post( $cache );
 
 	if ( $echo ) {
-		echo $cache;
+		echo wp_kses_post( $cache );
 	}
 
 	return $cache;
