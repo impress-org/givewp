@@ -1,6 +1,8 @@
 <?php
 /**
  * Admin View: Exports
+ *
+ * @since TBD Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -95,14 +97,11 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     0,
                                     $firstDonationDate ? ($currentYear - $firstDonationDate->format('Y')) : 0
                                 );
-                                printf(
-                                    esc_html__('%1$s to %2$s', 'give'),
-                                    $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'),
-                                    $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month')
-                                );
+                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- year_dropdown()/month_dropdown() render <select> controls; wp_kses_post() would strip them.
+                                echo sprintf( esc_html__('%1$s to %2$s', 'give'), $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'), $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month') );
                                 ?>
 								<input type="hidden" name="give-action" value="earnings_export"/>
-								<input type="hidden" name="give-nonce" value="<?= wp_create_nonce('give_earnings_export') ?>"/>
+								<input type="hidden" name="give-nonce" value="<?= esc_attr( wp_create_nonce('give_earnings_export') ) ?>"/>
 								<input type="submit" value="<?php esc_attr_e( 'Generate CSV', 'give' ); ?>" class="button-secondary"/>
 							</form>
 						</td>
@@ -139,12 +138,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 									<ul class="settings-excludes-list">
 										<?php foreach ( $export_excludes as $option_key => $option_label ) { ?>
 											<li>
-												<label for="settings_export_excludes[<?php echo $option_key; ?>]">
+												<label for="settings_export_excludes[<?php echo esc_attr( $option_key ); ?>]">
 													<input
 															type="checkbox"
 															checked
-															name="settings_export_excludes[<?php echo $option_key; ?>]"
-															id="settings_export_excludes[<?php echo $option_key; ?>]"
+															name="settings_export_excludes[<?php echo esc_attr( $option_key ); ?>]"
+															id="settings_export_excludes[<?php echo esc_attr( $option_key ); ?>]"
 													/>
 													<?php echo esc_html( $option_label ); ?>
 												</label>
