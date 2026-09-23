@@ -312,6 +312,7 @@ class DonationFormViewModel
      *
      * @since 4.16.7 Isolate the printed assets from anything enqueued after the form has been prepared
      * @since 4.14.3 Escape HTML attributes for classNames property
+     * @since TBD Escape output.
      * @since 3.20.0 Adds class for form design
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -337,7 +338,7 @@ class DonationFormViewModel
         <?php
         if ($this->previewMode || $this->formSettings->customCss): ?>
             <style id="root-givewp-donation-form-style"><?php
-                echo wp_strip_all_tags($this->formSettings->customCss); ?></style>
+                echo esc_html(wp_strip_all_tags($this->formSettings->customCss)); ?></style>
         <?php
         endif; ?>
 
@@ -351,7 +352,7 @@ class DonationFormViewModel
 
         <div data-theme="light" id="root-givewp-donation-form"
              data-iframe-height
-             class="<?= esc_attr(implode(' ', $classNames)) ?>"><?= $this->skeleton ?></div>
+             class="<?= esc_attr(implode(' ', $classNames)) ?>"><?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $this->skeleton is RenderFormSkeleton's output, which escapes internally (see form-skeleton.php). ?><?= $this->skeleton ?></div>
 
         <?php if ($this->skeleton): ?>
             <script>parent.postMessage({type: 'givewp-embed-shell', height: document.documentElement.scrollHeight}, '*');</script>
@@ -360,6 +361,7 @@ class DonationFormViewModel
         <?php
         wp_print_footer_scripts();
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs the buffered page built from wp_print_styles()/wp_print_head_scripts()/wp_print_footer_scripts() and the already-escaped markup above.
         echo ob_get_clean();
 
         exit();
