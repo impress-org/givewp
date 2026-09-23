@@ -474,4 +474,53 @@ class DonorRouteUpdateTest extends RestApiTestCase
         $unchangedDonor = Donor::find($otherDonor->id);
         $this->assertEquals('Original', $unchangedDonor->firstName);
     }
+
+    /**
+     * @since TBD Non-admin caller cannot add unverified email addresses.
+     */
+    public function testNonAdminCannotAddUnverifiedEmailAddresses()
+    {
+        // Create a user
+        $user = $this->factory()->user->create([
+            'role' => 'subscriber',
+            'user_login' => 'testEmailFilter',
+            'user_email' => 'testEmailFilter@test.com',
+        ]);
+        wp_set_current_user($user);
+
+        // Create a donor linked to this user with existing additional email
+        /** @var Donor $donor */
+        $donor = Donor::factory()->create([
+            'userId' => $user,
+            'email' => 'primary@test.com',
+            'additionalEmails' => ['existing@test.com'],
+        ]);
+
+        $route = '/' . DonorRoute::NAMESPACE . '/' . DonorRoute::BASE . '/' . $donor->id;
+        $request = new WP_REST_Request('PATCH', $route);
+        $request->set_body_params([
+            'additionalEmails' => ['newemail@test.com'],
+            'phone' => '5551234567',
+        ]);
+
+        $response = $this->dispatchRequest($request);
+
+        // Request should succeed
+        $this->assertEquals(200, $response->get_status());
+        $data = $response->get_data();
+
+        // New email should not be stored
+        $this->assertNotContains('newemail@test.com', $data['additionalEmails']);
+
+        // Existing email should be removed (not in the filter list anymore)
+        $this->assertEmpty($data['additionalEmails']);
+
+        // Other fields should still update
+        $this->assertEquals('5551234567', $data['phone']);
+
+        // Verify in database
+        $updatedDonor = Donor::find($donor->id);
+        $this->assertEmpty($updatedDonor->additionalEmails);
+        $this->assertEquals('5551234567', $updatedDonor->phone);
+    }
 }

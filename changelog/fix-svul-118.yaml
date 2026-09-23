@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Donors can no longer add unverified email addresses to their own donor record.
+timestamp: 2026-09-21T17:01:38.237Z
