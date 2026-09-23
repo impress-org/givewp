@@ -1,6 +1,8 @@
 <?php
 /**
  * This template is used to display the donation grid with [donation_grid]
+ *
+ * @since TBD Escape output.
  */
 
 use Give\Helpers\Form\Template;
@@ -60,7 +62,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 esc_attr($tag_bg_color)
             );
 
-            return "<span style='$style'>$term->name</span>";
+            return "<span style='$style'>" . esc_html($term->name) . "</span>";
         },
         $tags
     );
@@ -135,25 +137,25 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
             $image = wp_get_attachment_image(attachment_url_to_postid($imageSrc), $image_size, false, $image_attr);
 
 
-            echo "
+            echo wp_kses_post("
                         <div class='give-form-grid-media'>
                             <div class='give-card__media'> $image </div>
 
                             {$renderTags('give-form-grid-media__tags')}
                         </div>
-                    ";
+                    ");
         } elseif (
             give_is_setting_enabled($give_settings['form_featured_img'])
             && ($imageSrc = $formTemplate->getFormFeaturedImage($form_id))
             && $atts['show_featured_image']
             && $atts['columns'] === '1') {
-            echo "
+            echo wp_kses_post("
                             <div id='row-media' class='give-form-grid-media'>
                                 <img class='give-form-grid-media' src='" . esc_url($imageSrc) . "' alt='' />
 
                                 {$renderTags('give-form-grid-media__tags')}
                             </div>
-                        ";
+                        ");
         }
         ?>
 
@@ -161,11 +163,11 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
             <div class="give-form-grid-content">
                 <?php
                 if (!$atts['show_featured_image']) {
-                    echo "
+                    echo wp_kses_post("
                                  <div class='give-form-grid-media'>
                                         {$renderTags('give-form-grid-media__tags_no_image', false)}
                                    </div>
-                            ";
+                            ");
                 }
                 ?>
 
@@ -175,7 +177,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                 if (true === $atts['show_title']) {
                     printf(
                         '<h3 class="give-form-grid-content__title">%1$s</h3>',
-                        $formTemplate->getFormHeading($form_id)
+                        esc_html($formTemplate->getFormHeading($form_id))
                     );
                 }
 
@@ -205,7 +207,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                     $excerpt = ($excerpt === '[]') ? '' : $excerpt;
 
-                    printf('<p class="give-form-grid-content__text">%s</p>', $excerpt);
+                    printf('<p class="give-form-grid-content__text">%s</p>', esc_html($excerpt));
                 }
 
                 if ($atts['show_donate_button']):
@@ -295,7 +297,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                     $style = "width:$progress_bar_value%;";
                     $style .= "background: linear-gradient(180deg, {$color} 0%, {$color} 100%); background-blend-mode: multiply;";
                     echo '<div class="give-form-grid-progress-bar">
-                        <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . $progress_bar_value . '" aria-label="' . esc_attr( sprintf( __( 'Form progress: %s%% toward goal', 'give' ), $progress_bar_value ) ) . '">
+                        <div class="give-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' . esc_attr( $progress_bar_value ) . '" aria-label="' . esc_attr( sprintf( __( 'Form progress: %s%% toward goal', 'give' ), $progress_bar_value ) ) . '">
                             <span style="' . esc_attr($style) . '"></span>
                         </div>
                     </div>';
@@ -402,7 +404,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'form_id' => $form_id,
                                     ]
                                 );
-                                echo sprintf(
+                                echo wp_kses_post( sprintf(
                                 /* translators: 1: amount of income raised 2: goal target amount. */
                                     __(
                                         '<span class="amount"  data-amounts="%1$s">%2$s</span>
@@ -410,49 +412,49 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    apply_filters('give_form_grid_progress_bar_amount_raised_value', esc_attr($formatted_income), $form_id),
+                                    esc_html( apply_filters('give_form_grid_progress_bar_amount_raised_value', esc_attr($formatted_income), $form_id) ),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
-                                );
+                                ) );
 
                             elseif ('percentage' === $goal_format) :
 
-                                echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
+                                echo wp_kses_post( sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
                                     __(
                                         '
                                                    <span class="amount">%s%%</span>
                                                    <span class="goal">of 100&#37;</span>',
                                         'give'
                                     ),
-                                    round($progress)
-                                );
+                                    (float) round($progress)
+                                ) );
 
                             elseif ('donation' === $goal_format) :?>
 
                                 <span class="amount">
                                     <?php
-                                    echo give_format_amount($form->get_sales(), ['decimal' => false]) ?>
+                                    echo esc_html( give_format_amount($form->get_sales(), ['decimal' => false]) ) ?>
                                 </span>
 
                                 <span class="goal">
                                     <?php
-                                    echo sprintf(
+                                    echo esc_html( sprintf(
                                         _n('of %s donation', 'of %s donations', $goal, 'give'),
                                         give_format_amount($goal, ['decimal' => false])
-                                    ); ?>
+                                    ) ); ?>
                                 </span>
 
                             <?php
                             elseif ('donors' === $goal_format) : ?>
 
                                 <span class="amount"> <?php
-                                    echo give_get_form_donor_count($form->ID) ?> </span>
+                                    echo esc_html( give_get_form_donor_count($form->ID) ) ?> </span>
                                 <span class="goal">
                                     <?php
-                                    echo sprintf(
+                                    echo esc_html( sprintf(
                                         _n('of %s donor', 'of %s donors', $goal, 'give'),
                                         give_format_amount($goal, ['decimal' => false])
-                                    ); ?>
+                                    ) ); ?>
                                 </span>
                             <?php
                             endif ?>
@@ -460,11 +462,11 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
-                                <?php echo apply_filters('give_form_grid_progress_bar_donations_count_value', $form->get_sales(), $form_id) ?>
+                                <?php echo esc_html( apply_filters('give_form_grid_progress_bar_donations_count_value', $form->get_sales(), $form_id) ) ?>
                             </span>
                             <span class="goal">
                                 <?php
-                                echo _n('donation', 'donations', $goal, 'give') ?> </span>
+                                echo esc_html( _n('donation', 'donations', $goal, 'give') ) ?> </span>
                         </div>
                     </div>
                 </div>
@@ -480,6 +482,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
             !isset($_GET['context']) // check if we are in block editor
             && !FormUtils::isLegacyForm($form_id)
         ) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() renders the whole donation form; wp_kses_post() would strip the form elements, and its own output is escaped internally.
             echo give_form_shortcode(
                 [
                     'id' => $form_id,
@@ -489,9 +492,10 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
         } else {
             printf(
                 '<div id="give-modal-form-%1$s" class="give-donation-grid-item-form give-modal--slide mfp-hide">',
-                $form_id
+                (int) $form_id
             );
 
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() renders the whole donation form; wp_kses_post() would strip the form elements, and its own output is escaped internally.
             echo give_form_shortcode(
                 [
                     'id' => $form_id,
