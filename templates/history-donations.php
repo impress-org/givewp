@@ -1,6 +1,8 @@
 <?php
 /**
  * This template is used to display the donation history of the current user.
+ *
+ * @since TBD Escape output.
  */
 
 $donations             = array();
@@ -93,8 +95,8 @@ if ( $donations ) : ?>
 					if ( filter_var( $donation_history_args[ $index ], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
 							'<th scope="col" class="give-donation-%1$s>">%2$s</th>',
-							$index,
-							$table_headings[ $index ]
+							esc_attr( $index ),
+							esc_html( $table_headings[ $index ] )
 						);
 					endif;
 				}
@@ -132,7 +134,7 @@ if ( $donations ) : ?>
 					if ( filter_var( $donation_history_args['id'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
 							'<td class="give-donation-id"><span class="give-mobile-title">%2$s</span>%1$s</td>',
-							give_get_payment_number( $post->ID ),
+							esc_html( give_get_payment_number( $post->ID ) ),
 							esc_html( $table_headings['id'] )
 						);
 					endif;
@@ -140,7 +142,7 @@ if ( $donations ) : ?>
 					if ( filter_var( $donation_history_args['date'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
 							'<td class="give-donation-date"><span class="give-mobile-title">%2$s</span>%1$s</td>',
-							date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ),
+							esc_html( date_i18n( give_date_format(), strtotime( get_post_field( 'post_date', $post->ID ) ) ) ),
 							esc_html( $table_headings['date'] )
 						);
 					endif;
@@ -172,7 +174,7 @@ if ( $donations ) : ?>
 							 *
 							 * @return int
 							 */
-							echo apply_filters( 'give_donation_history_row_amount', $donation_amount, $post->ID );
+							echo wp_kses_post( apply_filters( 'give_donation_history_row_amount', $donation_amount, $post->ID ) );
 							?>
 						</span>
 						</td>
@@ -182,7 +184,7 @@ if ( $donations ) : ?>
 					if ( filter_var( $donation_history_args['status'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
 							'<td class="give-donation-status"><span class="give-mobile-title">%2$s</span>%1$s</td>',
-							give_get_payment_status( $post, true ),
+							esc_html( give_get_payment_status( $post, true ) ),
 							esc_html( $table_headings['status'] )
 						);
 					endif;
@@ -190,7 +192,7 @@ if ( $donations ) : ?>
 					if ( filter_var( $donation_history_args['payment_method'], FILTER_VALIDATE_BOOLEAN ) ) :
 						echo sprintf(
 							'<td class="give-donation-payment-method"><span class="give-mobile-title">%2$s</span>%1$s</td>',
-							give_get_gateway_checkout_label( give_get_payment_gateway( $post->ID ) ),
+							esc_html( give_get_gateway_checkout_label( give_get_payment_gateway( $post->ID ) ) ),
 							esc_html( $table_headings['payment_method'] )
 						);
 					endif;
@@ -208,8 +210,8 @@ if ( $donations ) : ?>
                                         $_SERVER['REQUEST_URI']
 									)
 								),
-								$post->post_status,
-								__( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;',
+								esc_attr( $post->post_status ),
+								esc_html( __( 'View', 'give' ) . ' ' . give_get_payment_status( $post, true ) . ' &raquo;' ),
 								esc_html( $table_headings['details'] )
 							);
 
@@ -223,7 +225,7 @@ if ( $donations ) : ?>
                                         $_SERVER['REQUEST_URI']
                                     )
 								),
-								__( 'View Receipt &raquo;', 'give' ),
+								esc_html( __( 'View Receipt &raquo;', 'give' ) ),
 								esc_html( $table_headings['details'] )
 							);
 
@@ -260,14 +262,14 @@ if ( $donations ) : ?>
 		<div id="give-donation-history-pagination" class="give_pagination navigation">
 			<?php
 			$big = 999999;
-			echo paginate_links(
+			echo wp_kses_post( paginate_links(
 				array(
 					'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 					'format'  => '?paged=%#%',
 					'current' => max( 1, get_query_var( 'paged' ) ),
 					'total'   => ceil( give_count_donations_of_donor() / 20 ), // 20 items per page
 				)
-			);
+			) );
 			?>
 		</div>
 	</div>
