@@ -179,7 +179,7 @@ class TestListDonationsStats extends TestCase
     }
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 4.10.0
      */
     private function createSubscription(int $campaignId, ?DateTime $donationDate = null): Subscription

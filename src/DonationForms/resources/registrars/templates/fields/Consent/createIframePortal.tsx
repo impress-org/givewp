@@ -5,7 +5,7 @@ import {useEffect, useRef} from 'react';
 import './styles.scss';
 
 /**
- * @since TBD Fall back to the iframe's own document in cross-origin embeds where the top document is unreachable.
+ * @since 4.17.0 Fall back to the iframe's own document in cross-origin embeds where the top document is unreachable.
  * @since 3.14.0
  * Creates a portal to the Top Level document, rendering children elements within an iframe.
  */

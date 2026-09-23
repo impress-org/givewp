@@ -22,8 +22,8 @@ class BlockRenderController
     protected static int $embedInstance = 0;
 
     /**
-     * @since TBD print a server-rendered skeleton of the form inside the root so it paints before any script runs.
-     * @since TBD Build the form page URL through GenerateDonationFormPageUrl, shared with the external embed.
+     * @since 4.17.0 print a server-rendered skeleton of the form inside the root so it paints before any script runs.
+     * @since 4.17.0 Build the form page URL through GenerateDonationFormPageUrl, shared with the external embed.
 	 * @since 4.14.5 add escaping to the output.
      * @since 4.7.0 detach check for gutenberg editor to make this more reusable
      * @since 4.1.0 updated with embed ID instance fallback when block ID is not set.
@@ -84,7 +84,7 @@ class BlockRenderController
      * and keeps showing them until the form's handshake. An empty string means the design is one
      * the skeleton cannot sketch, and the app shows a spinner.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     private function renderSkeleton(DonationForm $donationForm): string
     {

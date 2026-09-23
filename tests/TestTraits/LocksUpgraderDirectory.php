@@ -9,7 +9,7 @@ namespace Give\Tests\TestTraits;
  * every paratest worker shares that directory. Holding this lock for the duration of a test keeps
  * one worker from deleting another worker's package mid-install.
  *
- * @since TBD
+ * @since 4.17.0
  */
 trait LocksUpgraderDirectory
 {
@@ -19,7 +19,7 @@ trait LocksUpgraderDirectory
     private $upgraderLock;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     protected function lockUpgraderDirectory(): void
     {
@@ -28,7 +28,7 @@ trait LocksUpgraderDirectory
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     protected function unlockUpgraderDirectory(): void
     {
