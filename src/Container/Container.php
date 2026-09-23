@@ -877,7 +877,7 @@ class Container implements ArrayAccess, ContainerInterface
      * @param Closure|null   $callback
      *
      * @return void
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      */
     public function resolving($abstract, ?Closure $callback = null)
     {
@@ -899,7 +899,7 @@ class Container implements ArrayAccess, ContainerInterface
      * @param Closure|null   $callback
      *
      * @return void
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      */
     public function afterResolving($abstract, ?Closure $callback = null)
     {

@@ -8,7 +8,7 @@ trait RefreshDatabase {
     /**
      * Truncate all Give database tables.
      *
-     * @since TBD Match tables by the current prefix so parallel workers do not truncate each other's tables.
+     * @since 4.17.0 Match tables by the current prefix so parallel workers do not truncate each other's tables.
      * @since 2.22.1
      *
      * @return void

@@ -10,7 +10,7 @@ use function is_callable;
 use function str_contains;
 
 /**
- * @since TBD Add script routes served from a plugin-controlled URL
+ * @since 4.17.0 Add script routes served from a plugin-controlled URL
  * @since 3.0.0
  */
 class Router
@@ -19,7 +19,7 @@ class Router
      * Base path segment for pretty script URLs. Fixed on purpose: these URLs are
      * pasted into third-party sites, so they must not follow any setting.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     protected string $scriptBase = 'give';
 
@@ -56,7 +56,7 @@ class Router
      * rule is registered and nothing needs flushing. See scriptUrl() for the
      * URL shape per permalink setting.
      *
-     * @since TBD
+     * @since 4.17.0
      *
      * @param string $uri  Path below the base, e.g. "embed/donation-form/script.js"
      * @param string $file Absolute path to the built script
@@ -85,7 +85,7 @@ class Router
      * Index permalinks:   /index.php/give/{uri}
      * Plain permalinks:   /?givewp-route={uri}
      *
-     * @since TBD
+     * @since 4.17.0
      *
      * @param array $args Query arguments appended to the URL; the script's localize callable
      *                    receives them at request time.
@@ -110,7 +110,7 @@ class Router
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function isScriptRequested(WP $wp, string $uri): bool
     {
@@ -126,7 +126,7 @@ class Router
      * that drop query strings from their key; a query argument is the primary way to pass data
      * to a script route.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public function scriptRequest(WP $wp, string $uri): ?array
     {

@@ -32,7 +32,7 @@ final class AddonUploadActivateTest extends TestCase
     private $testPluginSlugs = [];
 
     /**
-     * @since TBD Hold the upgrader directory lock while the test runs.
+     * @since 4.17.0 Hold the upgrader directory lock while the test runs.
      * @since 4.16.6
      */
     public function setUp(): void
@@ -56,7 +56,7 @@ final class AddonUploadActivateTest extends TestCase
     }
 
     /**
-     * @since TBD Hold the upgrader directory lock while the test runs.
+     * @since 4.17.0 Hold the upgrader directory lock while the test runs.
      * @since 4.16.6
      */
     public function tearDown(): void
@@ -635,7 +635,7 @@ final class AddonUploadActivateTest extends TestCase
      * The ZIP's internal folder name is $pluginSlug regardless of the outer
      * filename, simulating the renamed-ZIP scenario.
      *
-     * @since TBD Register the upgrader's unpacked folder for cleanup.
+     * @since 4.17.0 Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createTestPluginZip(string $pluginSlug, string $pluginName, ?string $zipFilename = null): string
@@ -673,7 +673,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP that does NOT contain a valid WordPress plugin file.
      *
-     * @since TBD Register the upgrader's unpacked folder for cleanup.
+     * @since 4.17.0 Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createNonPluginZip(string $zipFilename): string
@@ -705,7 +705,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP file with multiple top-level directories (ambiguous structure).
      *
-     * @since TBD Register the upgrader's unpacked folder for cleanup.
+     * @since 4.17.0 Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createMultiFolderZip(string $zipFilename): string
@@ -740,7 +740,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP file with both a __MACOSX folder and a real plugin folder.
      *
-     * @since TBD Register the upgrader's unpacked folder for cleanup.
+     * @since 4.17.0 Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createZipWithMacosxAndRealFolder(string $realFolder, string $zipFilename): string
@@ -781,7 +781,7 @@ final class AddonUploadActivateTest extends TestCase
     /**
      * Creates a ZIP with only a __MACOSX folder and root-level files — no real plugin folder.
      *
-     * @since TBD Register the upgrader's unpacked folder for cleanup.
+     * @since 4.17.0 Register the upgrader's unpacked folder for cleanup.
      * @since 4.16.6
      */
     private function createMacosxOnlyZip(string $zipFilename): string

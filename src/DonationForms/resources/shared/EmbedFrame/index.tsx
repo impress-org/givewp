@@ -8,17 +8,17 @@ import './styles.scss';
  * How long the embed waits for the form to announce itself before it starts offering a link to
  * the standalone form alongside the placeholder. The iframe keeps loading either way.
  *
- * @since TBD
+ * @since 4.17.0
  */
 export const LOAD_TIMEOUT_MS = 10000;
 
 /**
- * @since TBD
+ * @since 4.17.0
  */
 type EmbedFrameState = 'loading' | 'slow' | 'ready';
 
 /**
- * @since TBD
+ * @since 4.17.0
  */
 type EmbedFrameProps = {
     src: string;
@@ -43,7 +43,7 @@ type EmbedFrameProps = {
  * form never arrives. It overlays the top of the frame rather than sitting under it, because a
  * skeleton can run past the fold.
  *
- * @since TBD
+ * @since 4.17.0
  */
 export default function EmbedFrame({src, embedId, fallbackUrl, skeletonHtml, onReady, onSlow}: EmbedFrameProps) {
     const [state, setState] = useState<EmbedFrameState>('loading');

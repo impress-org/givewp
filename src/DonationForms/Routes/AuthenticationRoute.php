@@ -17,7 +17,7 @@ class AuthenticationRoute
     use HandleHttpResponses;
 
     /**
-     * @since TBD Return an auth token so embedded forms can authenticate without cookies.
+     * @since 4.17.0 Return an auth token so embedded forms can authenticate without cookies.
      * @since 3.0.0
      *
      * @return void
@@ -45,7 +45,7 @@ class AuthenticationRoute
      * cannot, which is inside a cross-site iframe. Its own salt scheme means
      * it is not usable as a login cookie.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     protected function generateAuthToken(WP_User $user): string
     {

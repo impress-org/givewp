@@ -10,7 +10,7 @@ use Give\Framework\Exceptions\Primitives\Exception;
 class ColumnIdCollisionException extends Exception
 {
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      */
     public function __construct($id, $code = 0, ?Exception $previous = null)
     {

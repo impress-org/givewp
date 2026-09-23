@@ -8,41 +8,41 @@ use Give\Framework\Support\Facades\Scripts\ScriptAsset;
  * Sends a built script with revalidation headers. The ETag is the build hash
  * from the script's asset file, so it changes exactly when the bundle does.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class ScriptResponse
 {
     /**
      * Seconds a browser may reuse the response before revalidating its ETag.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     protected int $maxAge = HOUR_IN_SECONDS;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     protected string $file;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     protected string $assetFile;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     protected string $objectName = '';
 
     /**
      * @var callable|null
      *
-     * @since TBD
+     * @since 4.17.0
      */
     protected $data;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      *
      * @param string $file Absolute path to the built script. Its version comes
      *                     from the .asset.php file @wordpress/scripts writes
@@ -60,7 +60,7 @@ class ScriptResponse
      * translations are loaded, so the data can carry the site's translated
      * strings.
      *
-     * @since TBD
+     * @since 4.17.0
      *
      * @param callable $data Returns the array to expose; must be JSON-encodable. Receives the
      *                       request data the router matched (query arguments and a path id).
@@ -74,7 +74,7 @@ class ScriptResponse
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      *
      * @param array $request Request data handed to the localize callable.
      */
@@ -106,7 +106,7 @@ class ScriptResponse
     /**
      * The statement printed ahead of the file when data is localized.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public function prologue(array $request = []): string
     {
@@ -121,7 +121,7 @@ class ScriptResponse
      * The build hash from the asset file, quoted as a strong validator. Localized
      * data is part of the response, so its hash is part of the validator too.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public function etag(string $prologue = ''): string
     {
@@ -137,7 +137,7 @@ class ScriptResponse
     /**
      * Weak validators and the "-gzip" suffix mod_deflate appends both name the same file.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public function matchesIfNoneMatch(string $etag, string $header): bool
     {

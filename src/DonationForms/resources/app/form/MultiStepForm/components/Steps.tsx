@@ -18,7 +18,7 @@ export default function Steps({steps}: { steps: StepObject[] }) {
     const previousStep = usePrevious(currentStep);
 
     /**
-     * @since TBD Fall back to scrolling the iframe's own window in cross-origin embeds.
+     * @since 4.17.0 Fall back to scrolling the iframe's own window in cross-origin embeds.
      * @since 4.0.0 prevent scroll on initial step.
      * @since 3.16.0 Scroll to the top of the iframe when the step changes.
      */

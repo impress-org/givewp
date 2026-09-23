@@ -1200,7 +1200,7 @@ add_action( 'give_cc_form', 'give_get_cc_form' );
 /**
  * Outputs the default credit card address fields.
  *
- * @since TBD Escape prefilled billing address values before output.
+ * @since 4.17.0 Escape prefilled billing address values before output.
  * @since 3.1.0 Add the give_default_cc_address_fields_user_info filter
  * @since  1.0
  *

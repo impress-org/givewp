@@ -3,7 +3,7 @@
  * One form section: a heading, a line of description, and a field per block. The amount, gateway
  * and summary blocks get their own sketch; every other block is a label and one input row.
  *
- * @since TBD
+ * @since 4.17.0
  *
  * @var string[] $blocks   Block names in the section.
  * @var int      $gateways Enabled gateways; the selected one opens its fields under its row.

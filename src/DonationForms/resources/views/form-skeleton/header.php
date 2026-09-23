@@ -3,7 +3,7 @@
  * The form header: title, two lines of description, and the two parts with real height when the
  * form has them.
  *
- * @since TBD
+ * @since 4.17.0
  *
  * @var bool $goal
  * @var bool $image

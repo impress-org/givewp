@@ -196,7 +196,7 @@ class ServiceProvider implements ServiceProviderInterface
         Route::post('authenticate', AuthenticationRoute::class);
 
         /**
-         * @since TBD
+         * @since 4.17.0
          */
         Route::script(GenerateExternalEmbedScriptUrl::URI, GIVE_PLUGIN_DIR . 'build/donationFormExternalEmbed.js')
             ->localize('givewpDonationFormEmbed', new GetExternalEmbedScriptData());

@@ -26,7 +26,7 @@ class BECSGateway extends PaymentGateway
 
     /**
      * @param SubscriptionModule|null $subscriptionModule
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      */
     public function __construct(?SubscriptionModule $subscriptionModule = null)
     {

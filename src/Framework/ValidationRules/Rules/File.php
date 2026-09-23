@@ -105,7 +105,7 @@ class File implements ValidationRule, ValidatesOnFrontEnd
     }
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 2.32.0
      */
     public static function fromString(?string $options = null): ValidationRule

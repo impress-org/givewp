@@ -71,7 +71,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * colors itself; this only seeds the button on the host page, and the
      * admin can change it before copying.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     const formPrimaryColor = useMemo((): string => {
         const inherit = parsedSettings.inheritCampaignColors;
@@ -84,7 +84,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * WordPress site after donating - which means leaving the site the form
      * is embedded on, so the external tab warns about it.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     const hasConfirmationRedirect = !!parsedSettings.enableReceiptConfirmationPage;
 
@@ -256,7 +256,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * The snippet is pasted as HTML, so every interpolated attribute value is
      * encoded. A button label with a quote must not break the markup.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     const attribute = (name: string, value: string | number): string => {
         const encoded = String(value)
@@ -275,7 +275,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * assistive tech, and the launcher's display style, label, and color.
      * Translated default labels travel with the script itself.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     const getExternalEmbedSnippet = () => {
         const attributes = [attribute('form-id', formId)];
@@ -307,7 +307,7 @@ export default function EmbedFormModal({handleClose}: EmbedFormModalProps) {
      * Both copy buttons go through the WordPress clipboard hook, which reads
      * the text on click and only reports success once the copy actually landed.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     const copyShortcodeRef = useCopyToClipboard(getShortcode, () => {
         setState((prevState) => ({...prevState, isCopied: true}));
