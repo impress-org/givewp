@@ -1,6 +1,8 @@
 <?php
 /**
  * Admin View: Exports
+ *
+ * @since TBD Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -60,12 +62,14 @@ do_action( 'give_tools_recount_stats_before' );
 							'chosen'      => true,
 							'placeholder' => esc_attr__( 'Select Form', 'give' ),
 						];
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 						echo Give()->html->forms_dropdown( $args );
 						?>
 					</span>
 
 					<span class="tools-date-dropdown tools-date-dropdown-delete-donations" style="display: none">
 						<?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- date_field() renders an <input> control; wp_kses_post() would strip it.
 						echo Give()->html->date_field(
 							[
 								'id'           => 'give_delete_donations_start_date',
@@ -75,6 +79,7 @@ do_action( 'give_tools_recount_stats_before' );
 							]
 						);
 
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- date_field() renders an <input> control; wp_kses_post() would strip it.
 						echo Give()->html->date_field(
 							[
 								'id'           => 'give_delete_donations_end_date',
@@ -89,6 +94,7 @@ do_action( 'give_tools_recount_stats_before' );
 					<span class="tools-form-dropdown tools-form-dropdown-delete-import-donors" style="display: none">
 						<label for="delete-import-donors">
 							<?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- checkbox() renders an <input> control; wp_kses_post() would strip it.
 							echo Give()->html->checkbox( [ 'name' => 'delete-import-donors' ] );
 							esc_html_e( 'Delete imported WordPress users', 'give' );
 							?>
