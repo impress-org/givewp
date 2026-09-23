@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Renders the reports page contents.
  *
+ * @since TBD Escape output.
  * @since 1.0
  * @return void
  */
@@ -35,7 +36,7 @@ function give_reports_page() {
 	?>
 	<div class="wrap give-settings-page">
 
-		<h1 class="screen-reader-text"><?php echo get_admin_page_title(); ?></h1>
+		<h1 class="screen-reader-text"><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
 		<h2 class="nav-tab-wrapper">
 			<?php foreach ( $views as $tab => $label ) { ?>
@@ -153,13 +154,14 @@ function give_get_reporting_view( $default = 'earnings' ) {
 /**
  * Renders the Reports page
  *
+ * @since TBD Escape output.
  * @since 1.0
  * @return void
  */
 function give_reports_tab_reports() {
 
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		wp_die( __( 'You do not have permission to access this report', 'give' ), __( 'Error', 'give' ), [ 'response' => 403 ] );
+		wp_die( esc_html__( 'You do not have permission to access this report', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	$current_view = 'earnings';
@@ -182,6 +184,7 @@ add_action( 'give_reports_tab_reports', 'give_reports_tab_reports' );
 /**
  * Renders the Reports Page Views Drop Downs
  *
+ * @since TBD Escape output.
  * @since 1.0
  * @return void
  */
@@ -199,7 +202,7 @@ function give_report_views() {
 		<select id="give-reports-view" name="view">
 			<option value="-1"><?php esc_html_e( 'Report Type', 'give' ); ?></option>
 			<?php foreach ( $views as $view_id => $label ) : ?>
-				<option value="<?php echo esc_attr( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo $label; ?></option>
+				<option value="<?php echo esc_attr( $view_id ); ?>" <?php selected( $view_id, $current_view ); ?>><?php echo esc_html( $label ); ?></option>
 			<?php endforeach; ?>
 		</select>
 
@@ -298,13 +301,14 @@ add_action( 'give_reports_view_gateways', 'give_reports_gateways_table' );
 /**
  * Renders the Reports Earnings Graphs
  *
+ * @since TBD Escape output.
  * @since 3.22.1 added permissions check
  * @since 1.0
  * @return void
  */
 function give_reports_earnings() {
     if (!current_user_can('view_give_reports')){
-        wp_die(__('You do not have permission to access this report', 'give'), __('Error', 'give'), ['response' => 403]);
+        wp_die(esc_html__('You do not have permission to access this report', 'give'), esc_html__('Error', 'give'), ['response' => 403]);
     }
 
 	?>
