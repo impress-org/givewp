@@ -28,9 +28,11 @@ $firstSectionHtml = View::load('DonationForms.form-skeleton/section', [
 ?>
 <div class="givewp-embed-skeleton givewp-embed-skeleton--<?= esc_attr($modifier) ?>" aria-hidden="true">
     <?php if ($design === 'classic') : ?>
+        <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $headerHtml is View::load() output, which escapes internally. ?>
         <?= $headerHtml ?>
         <div class="givewp-embed-skeleton__form">
             <?php foreach ($sections as $blocks) : ?>
+                <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- View::load() output escapes internally. ?>
                 <?= View::load('DonationForms.form-skeleton/section', compact('blocks', 'gateways', 'variants')) ?>
             <?php endforeach; ?>
             <div class="givewp-embed-skeleton__section">
@@ -38,9 +40,12 @@ $firstSectionHtml = View::load('DonationForms.form-skeleton/section', [
             </div>
         </div>
     <?php elseif ($design === 'two-panel-steps') : ?>
+        <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $headerHtml is View::load() output, which escapes internally. ?>
         <?= $headerHtml ?>
+        <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- View::load() output escapes internally; $firstSectionHtml is likewise pre-escaped. ?>
         <?= View::load('DonationForms.form-skeleton/step', ['content' => $firstSectionHtml]) ?>
     <?php else : ?>
+        <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- View::load() output escapes internally; $headerHtml/$firstSectionHtml are likewise pre-escaped. ?>
         <?= View::load('DonationForms.form-skeleton/step', ['content' => $header ? $headerHtml : $firstSectionHtml]) ?>
     <?php endif; ?>
 </div>
