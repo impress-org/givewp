@@ -21,11 +21,12 @@ class SubscriptionProcessing implements GatewayCommand
     public $gatewaySubscriptionId;
 
     /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 2.23.2
      */
     public function __construct(
         string $gatewaySubscriptionId,
-        string $gatewayTransactionId = null
+        ?string $gatewayTransactionId = null
     ) {
         $this->gatewayTransactionId = $gatewayTransactionId;
         $this->gatewaySubscriptionId = $gatewaySubscriptionId;

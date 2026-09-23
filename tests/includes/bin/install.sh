@@ -82,6 +82,10 @@ install_test_suite() {
 		sed $ioption "s/yourusernamehere/$DB_USER/" "$WP_TESTS_DIR"/wp-tests-config.php
 		sed $ioption "s/yourpasswordhere/$DB_PASS/" "$WP_TESTS_DIR"/wp-tests-config.php
 		sed $ioption "s|localhost|${DB_HOST}|" "$WP_TESTS_DIR"/wp-tests-config.php
+		# Paratest sets TEST_TOKEN per worker; give each worker its own table prefix.
+		sed $ioption "s|^\$table_prefix = 'wptests_';|\$table_prefix = getenv('TEST_TOKEN') ? 'wptests' . getenv('TEST_TOKEN') . '_' : 'wptests_';|" "$WP_TESTS_DIR"/wp-tests-config.php
+		# Paratest workers run without PATH, so the bootstrap's shell-out to php needs an absolute binary.
+		sed $ioption "s|define( 'WP_PHP_BINARY', 'php' );|define( 'WP_PHP_BINARY', PHP_BINARY );|" "$WP_TESTS_DIR"/wp-tests-config.php
 	fi
 
 }

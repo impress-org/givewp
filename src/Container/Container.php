@@ -877,8 +877,9 @@ class Container implements ArrayAccess, ContainerInterface
      * @param Closure|null   $callback
      *
      * @return void
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      */
-    public function resolving($abstract, Closure $callback = null)
+    public function resolving($abstract, ?Closure $callback = null)
     {
         if (is_string($abstract)) {
             $abstract = $this->getAlias($abstract);
@@ -898,8 +899,9 @@ class Container implements ArrayAccess, ContainerInterface
      * @param Closure|null   $callback
      *
      * @return void
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      */
-    public function afterResolving($abstract, Closure $callback = null)
+    public function afterResolving($abstract, ?Closure $callback = null)
     {
         if (is_string($abstract)) {
             $abstract = $this->getAlias($abstract);

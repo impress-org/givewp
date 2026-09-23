@@ -17,9 +17,10 @@ class DonationFormFieldErrorsException extends \Exception implements LoggableExc
     protected $error;
 
     /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 3.0.0
      */
-    public function __construct(WP_Error $error, Throwable $previous = null)
+    public function __construct(WP_Error $error, ?Throwable $previous = null)
     {
         parent::__construct('Form field validation error', 0, $previous);
         $this->error = $error;

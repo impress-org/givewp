@@ -8,6 +8,7 @@ use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\PaymentGateways\Commands\PaymentRefunded;
 use Give\Framework\PaymentGateways\Exceptions\PaymentGatewayException;
 use Give\PaymentGateways\Gateways\Stripe\StripePaymentElementGateway\StripePaymentElementGateway;
+use Give\Tests\Feature\Gateways\Stripe\TestTraits\HasMockStripeAccounts;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 use PHPUnit\Framework\MockObject\MockBuilder;
@@ -17,6 +18,17 @@ use Stripe\Refund;
 class StripePaymentElementGatewayTest extends TestCase
 {
     use RefreshDatabase;
+    use HasMockStripeAccounts;
+
+    /**
+     * @since 4.17.0
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->addMockStripeAccounts();
+    }
 
     /**
      * @since 4.16.5

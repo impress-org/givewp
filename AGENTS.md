@@ -9,9 +9,9 @@ GiveWP — a WordPress donation/fundraising plugin. PHP + React, distributed on 
 
 | Task | Command |
 |:--|:--|
-| Run tests | `composer test` |
+| Run tests | `composer test` (parallel) or `composer test:serial` |
 | Run E2E tests | `npm run test:e2e` (needs `npm run env:start`) |
-| Run one test | `composer test -- --filter DonationRepositoryTest` or `--filter ClassName::methodName` |
+| Run one test | `composer test:serial -- --filter TestDonationRepository` or `--filter ClassName::methodName` |
 | Build assets (dev) | `npm run dev` |
 | Watch assets | `npm run watch` |
 | Build assets (production) | `npm run build` |
@@ -89,36 +89,15 @@ These are the two things that get missed most often:
 ## Models and repositories
 
 Models are the preferred way to read and write GiveWP data — always prefer them over the legacy
-`Give_*` classes and over raw `$wpdb` queries.
-
-- Framework: `src/Framework/Models/Model.php`, query builder in `src/Framework/QueryBuilder/`
-  (see its [README](src/Framework/QueryBuilder/README.md)).
-- Core models: `Donation`, `Donor`, `Subscription`, `Campaign`, `DonationForm` — each at
-  `src/<Domain>/Models/`.
-- Core repositories: same domains, at `src/<Domain>/Repositories/`. Models delegate the messy
-  data access to these.
-- Legacy models kept only for backwards compatibility: `Give_Payment`, `Give_Donor`,
-  `Give_Donate_Form` (in `includes/`) and `Give_Subscription` (in `src/LegacySubscriptions/`).
-  Don't use them in new code.
-- Repositories dispatch the model events —
-  `givewp_{model}_{creating,created,updating,updated,deleting,deleted}`. New listeners go there.
-  Note that the legacy hook bridge is **one-way**, so `give_insert_payment` currently has wider
-  coverage than `givewp_donation_created`. See [docs/architecture/models.md](docs/architecture/models.md)
-  before adding either.
+`Give_*` classes (`Give_Payment`, `Give_Donor`, `Give_Donate_Form`, `Give_Subscription`) and over
+raw `$wpdb` queries. Where things live, and the model event lifecycle, are in
+[docs/architecture/models.md](docs/architecture/models.md).
 
 ## Payment gateways
 
-The Gateway API connects donation forms to external payment processors. Read
+Payments have a strict client/server trust boundary. Read
 [docs/architecture/payment-gateways.md](docs/architecture/payment-gateways.md) before writing
-gateway code — payments have a strict client/server trust boundary.
-
-- Framework: `src/Framework/PaymentGateways/` — the `PaymentGateway` abstract class, the
-  `PaymentGateway` interface, and `PaymentGatewayRegister`.
-- Reference implementations: `src/PaymentGateways/Gateways/TestGateway/` (simplest) and
-  `src/PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/` (full-featured).
-- Subscriptions go through `SubscriptionModule`; modes are in
-  `src/Subscriptions/ValueObjects/SubscriptionMode.php`.
-- Public docs: https://givewp.com/documentation/developers/how-to-build-a-gateway-add-on-for-givewp/
+gateway code.
 
 ## JavaScript and React
 
@@ -127,8 +106,6 @@ gateway code — payments have a strict client/server trust boundary.
 - WordPress data stores for state, `@wordpress/*` packages for components and hooks. Follow
   WordPress component patterns and accessibility guidelines.
 - All user-facing strings translatable via `@wordpress/i18n` with the correct text domain.
-- Formatting follows `.prettierrc.json`: 4-space indent, single quotes, no bracket spacing,
-  120-column width.
 
 ## Styles
 
@@ -159,17 +136,6 @@ Modifying `includes/` is still correct when the bug is genuinely there — a fix
 belongs in legacy code. The rule is about not putting *new* behavior there, and not reaching for an
 edit when a hook would do.
 
-- `src/` — modern code, organized by domain (`Donations/`, `Donors/`, `Campaigns/`,
-  `DonationForms/`, `Subscriptions/`, …). Each domain typically has `Models/`, `Repositories/`,
-  `Actions/`, `ValueObjects/`, and a `ServiceProvider.php`.
-- `src/Framework/` — shared infrastructure: models, query builder, fields API, migrations,
-  payment gateways, HTTP routes, validation.
-- `includes/` — legacy procedural code, `Give_*` classes, the settings API, and the legacy admin
-  screens.
-- `blocks/` — Gutenberg blocks. `assets/` — source styles and images. `templates/` — front-end
-  templates.
-- `tests/Unit/` and `tests/Feature/` — PHPUnit tests, mirroring the `src/` layout.
-
 ## Architecture docs
 
 Deeper per-subsystem notes live in [docs/architecture/](docs/architecture/) — the traps and
@@ -182,6 +148,8 @@ non-trivial changes to that subsystem.
   framework, core-data entities, shared components
 - [donation-forms.md](docs/architecture/donation-forms.md) — the v2/v3 split, migration pipeline,
   campaign relationship
+- [external-embeds.md](docs/architecture/external-embeds.md) — the embed script URL contract,
+  `Route::script()`, permalink fallbacks, caching, and the `<givewp-donation-form>` element
 - [list-tables.md](docs/architecture/list-tables.md) — column rendering, the N+1 trap, the campaign
   and async-data caches, large-site behavior
 - [models.md](docs/architecture/models.md) — models and repositories, the model event lifecycle, and

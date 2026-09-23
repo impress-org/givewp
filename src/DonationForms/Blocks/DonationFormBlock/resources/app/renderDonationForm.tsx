@@ -1,7 +1,8 @@
-import { createRoot } from 'react-dom/client';
+import {createRoot} from 'react-dom/client';
 import DonationFormBlockApp from '.';
 
 /**
+ * @since 4.17.0 hand the server-rendered skeleton inside the root to the app before React clears it.
  * @since 4.7.0
  */
 export default function renderDonationForm(root) {
@@ -19,6 +20,9 @@ export default function renderDonationForm(root) {
     const openFormButton = root.getAttribute('data-open-form-button');
     const formUrl = root.getAttribute('data-form-url');
     const formViewUrl = root.getAttribute('data-form-view-url');
+    // The server prints the skeleton and its styles inside the root; createRoot() will empty it. A
+    // root that already holds the app (Elementor re-renders) has no skeleton to hand over.
+    const skeletonHtml = root.querySelector(':scope > .givewp-embed-skeleton') ? root.innerHTML : '';
 
     createRoot(root).render(
         <DonationFormBlockApp
@@ -28,6 +32,7 @@ export default function renderDonationForm(root) {
             embedId={embedId}
             formUrl={formUrl}
             formViewUrl={formViewUrl}
+            skeletonHtml={skeletonHtml}
         />
     );
 }

@@ -19,7 +19,7 @@ jobs:
     # This workflow contains a single job called "test"
     test:
         # The type of runner that the job will run on
-        runs-on: ubuntu-latest
+        runs-on: blacksmith-4vcpu-ubuntu-2404
 
         # The job reads the checkout and runs the test suite, nothing else.
         permissions:
@@ -32,13 +32,13 @@ jobs:
                 wordpress: [ '6.5', latest ]
 
         services:
+            # --log-error-verbosity=1 keeps the server log to errors only; at the default level MySQL
+            # writes a note for every TRUNCATE, and the test suite runs thousands of them.
             mysql57:
                 image: mysql:5.7
-                env:
-                    MYSQL_ROOT_PASSWORD: N0Tweak!@123!
                 ports:
                     - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:5.7 -c "exec docker-entrypoint.sh mysqld --log-error-verbosity=1"
 
             # This was a total pain to get setup. The default authentication plugin changed in MySQL 8 and is incompatible
             # with WordPress. So it needs to be set back to mysql_native_password. The best way to do this is to use the
@@ -50,7 +50,7 @@ jobs:
                 image: mysql:8.0
                 ports:
                     - 3306
-                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password"
+                options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 -e MYSQL_ROOT_PASSWORD=N0Tweak!@123! --entrypoint sh mysql:8.0 -c "exec docker-entrypoint.sh mysqld --default-authentication-plugin=mysql_native_password --log-error-verbosity=1"
 
         # Steps represent a sequence of tasks that will be executed as part of the job
         steps:
@@ -116,6 +116,6 @@ jobs:
                 run: bash tests/includes/bin/install.sh wordpress_test root ${{ env.mysql_pass }} 127.0.0.1:${{ env.mysql_port }} ${{ matrix.wordpress }}
 
             -   name: Run Tests
-                run: php -d memory_limit=-1 vendor/bin/phpunit
+                run: composer test
                 env:
                     DB_PORT: ${{ env.mysql_port }}

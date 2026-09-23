@@ -1,15 +1,15 @@
 import {useEffect, useState} from '@wordpress/element';
 import {__} from '@wordpress/i18n';
-import IframeResizer from 'iframe-resizer-react';
 import {Button, Dialog, Modal, ModalOverlay} from 'react-aria-components';
 import ModalCloseIcon from './ModalClose';
-import {Spinner} from '@wordpress/components';
+import EmbedFrame from '@givewp/forms/shared/EmbedFrame';
 import './styles.scss';
 import '../EntitySelector/styles/index.scss';
 import {FocusScope} from 'react-aria';
 
 /**
- * @unreleasaed
+ * @since 4.17.0 add formUrl, where the fallback link points when the form is slow to load.
+ * @since 4.3.0
  */
 type ModalFormProps = {
     dataSrc: string;
@@ -17,12 +17,22 @@ type ModalFormProps = {
     buttonText: string;
     isFormRedirect: boolean;
     formViewUrl: string;
+    formUrl?: string;
 };
 
 /**
- * @unreleasaed
+ * @since 4.17.0 render the iframe through EmbedFrame; a form that is slow to load also offers a link.
+ * @since 4.17.0 Share the launcher's pending state markup and styles with the external embed.
+ * @since 4.3.0
  */
-export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect, formViewUrl}: ModalFormProps) {
+export default function ModalForm({
+    dataSrc,
+    embedId,
+    buttonText,
+    isFormRedirect,
+    formViewUrl,
+    formUrl,
+}: ModalFormProps) {
     const [dataSrcUrl, setDataSrcUrl] = useState(dataSrc);
     const [isOpen, setIsOpen] = useState<boolean>(isFormRedirect);
     const [isLoading, setLoading] = useState<boolean>(false);
@@ -103,20 +113,10 @@ export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect,
                 className="givewp-donation-form-modal__open"
                 onPress={openModal}
                 isPending={isLoading}
-                aria-label={isLoading ? __('Loading donation form', 'give') : __('Open donation form', 'give')}
+                aria-label={isLoading ? __('Loading donation form', 'give') : undefined}
             >
-                {isLoading && (
-                    <span className="givewp-donation-form-modal__open__spinner">
-                        <Spinner
-                            style={{margin: '0 auto', verticalAlign: 'middle'}}
-                            aria-label={__('In progress', 'give')}
-                        />
-                    </span>
-                )}
-
-                <span style={{margin: '0', visibility: isLoading ? 'hidden' : 'visible'}} aria-hidden={isLoading}>
-                    {buttonText}
-                </span>
+                {isLoading && <span className="givewp-donation-form-modal__open__spinner" aria-hidden="true" />}
+                <span className="givewp-donation-form-modal__open__label">{buttonText}</span>
             </Button>
 
             <ModalOverlay
@@ -127,13 +127,10 @@ export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect,
                 isDismissable
                 isEntering={isEntering}
             >
-                <Modal 
-                    className="givewp-donation-form-modal"
-                    data-loading={isLoading}
-                >
+                <Modal className="givewp-donation-form-modal" data-loading={isLoading}>
                     <FocusScope contain restoreFocus autoFocus>
-                        <Dialog 
-                            className="givewp-donation-form-modal__dialog" 
+                        <Dialog
+                            className="givewp-donation-form-modal__dialog"
                             aria-label={__('Donation Form', 'give')}
                             role="dialog"
                             aria-modal="true"
@@ -148,20 +145,12 @@ export default function ModalForm({dataSrc, embedId, buttonText, isFormRedirect,
                                 <ModalCloseIcon />
                             </button>
                             <div className="givewp-donation-form-modal__dialog__content">
-                                <IframeResizer
-                                    title={__('Donation Form', 'give')}
-                                    id={embedId}
+                                <EmbedFrame
                                     src={dataSrcUrl}
-                                    checkOrigin={false}
-                                    heightCalculationMethod="taggedElement"
-                                    style={{
-                                        minWidth: '100%',
-                                        border: 'none',
-                                    }}
-                                    onInit={(iframe) => {
-                                        iframe.iFrameResizer.resize();
-                                        setLoading(false);
-                                    }}
+                                    embedId={embedId}
+                                    fallbackUrl={formUrl || dataSrcUrl}
+                                    onReady={() => setLoading(false)}
+                                    onSlow={() => setLoading(false)}
                                 />
                             </div>
                         </Dialog>

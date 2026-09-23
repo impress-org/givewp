@@ -1,0 +1,129 @@
+@import '../../styles/skeleton';
+
+/*
+ * Host pages do not load the design system foundation stylesheet (only the form inside the
+ * iframe does), so the values here are self-contained. The spinner accent follows the same
+ * --givewp-primary-color the launcher buttons use.
+ */
+.givewp-embed-frame {
+    position: relative;
+
+    &[data-state='loading'],
+    &[data-state='slow'] {
+        min-height: 20rem;
+    }
+
+    &__loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__spinner {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        border: 3px solid rgba(0, 0, 0, 0.12);
+        border-top-color: var(--givewp-primary-color, rgba(0, 0, 0, 0.55));
+        animation: givewp-embed-frame-spin 0.8s linear infinite;
+    }
+
+    /*
+     * A skeleton sits in normal flow and sets the frame's height itself; the spinner keeps the
+     * absolute, centered layout above.
+     */
+    &[data-placeholder='skeleton'] &__loading {
+        position: static;
+        display: block;
+        /* The skeleton's container queries resolve against this box, the same width as the iframe. */
+        container-type: inline-size;
+    }
+
+    &__iframe {
+        width: 1px;
+        min-width: 100%;
+        border: 0;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    /* Until the handshake the iframe's default height must not add to the placeholder's. */
+    &[data-state='loading'] &__iframe,
+    &[data-state='slow'] &__iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    &[data-state='ready'] &__iframe {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    /*
+     * Overlays the placeholder rather than sitting under it: a skeleton can be taller than the
+     * viewport, so anything below it lands below the fold where nobody scrolls to it.
+     */
+    &__fallback {
+        position: absolute;
+        z-index: 1;
+        margin: 0;
+        text-align: center;
+        animation: givewp-embed-frame-fade-in 0.3s ease;
+
+        /* The donate-button stylesheet styles the link as a pill, so give it its own centered line. */
+        a {
+            display: block;
+            width: fit-content;
+            margin: 0.75rem auto 0;
+        }
+    }
+
+    /* The spinner is short and centered, so the message fits along the bottom of the frame. */
+    &[data-placeholder='spinner'] &__fallback {
+        inset: auto 0 1rem;
+    }
+
+    /* Over a skeleton the message becomes a card at the top edge, where the viewer already is. */
+    &[data-placeholder='skeleton'] &__fallback {
+        top: 1rem;
+        left: 50%;
+        box-sizing: border-box;
+        /* With `left: 50%` the shrink-to-fit space is half the frame, so size to the text and let
+           the cap do the wrapping. */
+        width: max-content;
+        max-width: min(28rem, calc(100% - 2rem));
+        padding: 1rem 1.5rem;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15);
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes givewp-embed-frame-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes givewp-embed-frame-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .givewp-embed-frame__iframe {
+        transition: none;
+    }
+
+    .givewp-embed-frame__spinner,
+    .givewp-embed-frame__fallback {
+        animation: none;
+    }
+}

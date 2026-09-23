@@ -20,9 +20,10 @@ class RouteListener
     }
 
     /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 3.0.0
      */
-    public function isValid(array $request, callable $validation = null): bool
+    public function isValid(array $request, ?callable $validation = null): bool
     {
         $eventValid = isset($request['givewp-event']) && $request['givewp-event'] === $this->event;
         $listenerValid = isset($request['givewp-listener']) && $request['givewp-listener'] === $this->listener;

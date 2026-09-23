@@ -42,6 +42,31 @@ class BlockRenderControllerTest extends TestCase
     }
 
     /**
+     * @since 4.17.0
+     */
+    public function testOnPageRenderPrintsTheSkeletonInsideTheRootAndTheModalDoesNot(): void
+    {
+        $donationForm = DonationForm::factory()->create();
+
+        $blockRenderController = $this->createMockWithCallback(
+            BlockRenderController::class,
+            function (MockBuilder $mockBuilder) {
+                $mockBuilder->setMethods(['loadEmbedScript']);
+                return $mockBuilder->getMock();
+            }
+        );
+
+        $onPage = $blockRenderController->render(['formId' => $donationForm->id, 'formFormat' => 'onpage']);
+        $modal = $blockRenderController->render(['formId' => $donationForm->id, 'formFormat' => 'modal']);
+
+        $this->assertMatchesRegularExpression(
+            "/<div class='root-data-givewp-embed'[^>]*>(<style[^>]*>.*<\/style>)?\s*<div class=\"givewp-embed-skeleton givewp-embed-skeleton--classic\"/s",
+            $onPage
+        );
+        $this->assertStringNotContainsString('givewp-embed-skeleton', $modal);
+    }
+
+    /**
      * @since 4.14.5
      *
      * @throws Exception

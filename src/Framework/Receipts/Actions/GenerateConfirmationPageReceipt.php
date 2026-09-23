@@ -334,10 +334,11 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 4.16.8 Apply legacy tags before donor-supplied V3 tag values.
      * @since 3.0.0
      */
-    protected function getHeading(DonationReceipt $receipt, DonationForm $donationForm = null): string
+    protected function getHeading(DonationReceipt $receipt, ?DonationForm $donationForm = null): string
     {
         if (!$donationForm) {
             $content = __("Hey {first_name}, thanks for your donation!", 'give');
@@ -352,10 +353,11 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 4.16.8 Apply legacy tags before donor-supplied V3 tag values.
      * @since 3.0.0
      */
-    protected function getDescription(DonationReceipt $receipt, DonationForm $donationForm = null): string
+    protected function getDescription(DonationReceipt $receipt, ?DonationForm $donationForm = null): string
     {
         if (!$donationForm) {
             $content = __(

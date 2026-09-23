@@ -90,3 +90,10 @@ playwright-report/
 
 # Add-on release zips unpacked for e2e runs
 addons/
+
+# Scratch directory WordPress's upgrader writes to while the PHPUnit suite runs (WP_CONTENT_DIR is tests/).
+/tests/upgrade
+/tests/.upgrader.lock
+
+# claude
+.claude/worktrees
