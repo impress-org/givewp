@@ -1,4 +1,4 @@
 significance: patch
 type: fix
-entry: Fixed the donations list table running extremely slowly and including trashed donations on large sites because the live/test mode filter was not grouped correctly in the query
+entry: Donations list table was running extremely slowly and including trashed donations on large sites.
 timestamp: 2026-09-18T00:00:00.000Z
