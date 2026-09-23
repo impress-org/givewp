@@ -126,6 +126,7 @@ class IntlTelInput
     }
 
     /**
+     * @since TBD Escape output.
      * @since 4.16.4 Escaped the value attribute output.
      * @since 3.9.0
      */
@@ -139,20 +140,20 @@ class IntlTelInput
 
         ?>
         <script src="<?php
-        echo self::getScriptUrl(); ?>">
+        echo esc_url(self::getScriptUrl()); ?>">
         </script>
 
         <link rel="stylesheet" href="<?php
-        echo self::getCssUrl(); ?>">
+        echo esc_url(self::getCssUrl()); ?>">
 
         <input id="<?php
-        echo $id . '--intl_tel_input'; ?>" class="<?php
-        echo $class; ?>" name="<?php
-        echo $name; ?>" value="<?php
+        echo esc_attr($id . '--intl_tel_input'); ?>" class="<?php
+        echo esc_attr($class); ?>" name="<?php
+        echo esc_attr($name); ?>" value="<?php
         echo esc_attr($value); ?>" type='text'>
 
         <span id="<?php
-        echo $id . '--error-msg'; ?>" class="give-intl-tel-input-hide" style="color:red;"></span>
+        echo esc_attr($id . '--error-msg'); ?>" class="give-intl-tel-input-hide" style="color:red;"></span>
 
         <style>
             .give-intl-tel-input-hide {
@@ -171,22 +172,22 @@ class IntlTelInput
             }
 
             function readyHandler() {
-                const input = document.querySelector("#<?php echo $id . '--intl_tel_input'; ?>");
+                const input = document.querySelector("#<?php echo esc_js($id . '--intl_tel_input'); ?>");
                 const intl = window.intlTelInput(input, {
-                    utilsScript: "<?php echo self::getUtilsScriptUrl(); ?>",
+                    utilsScript: "<?php echo esc_url(self::getUtilsScriptUrl()); ?>",
                     hiddenInput: function (telInputName) {
                         return {
-                            phone: "<?php echo $id ?>",
+                            phone: "<?php echo esc_js($id); ?>",
                         };
                     },
-                    initialCountry: "<?php echo self::getInitialCountry(); ?>",
-                    showSelectedDialCode: Boolean(<?php echo self::getShowSelectedDialCode(); ?>),
-                    useFullscreenPopup: Boolean(<?php echo self::getUseFullscreenPopup(); ?>),
-                    strictMode: Boolean(<?php echo self::getStrictMode(); ?>),
+                    initialCountry: "<?php echo esc_js(self::getInitialCountry()); ?>",
+                    showSelectedDialCode: Boolean(<?php echo (int) self::getShowSelectedDialCode(); ?>),
+                    useFullscreenPopup: Boolean(<?php echo (int) self::getUseFullscreenPopup(); ?>),
+                    strictMode: Boolean(<?php echo (int) self::getStrictMode(); ?>),
                     i18n: <?php echo json_encode(self::getI18n()); ?>,
                 });
 
-                const errorMsg = document.querySelector("#<?php echo $id . '--error-msg'; ?>");
+                const errorMsg = document.querySelector("#<?php echo esc_js($id . '--error-msg'); ?>");
                 const errorMap = <?php echo json_encode(self::getErrorMap()); ?>;
 
                 const resetErrorMessage = () => {
