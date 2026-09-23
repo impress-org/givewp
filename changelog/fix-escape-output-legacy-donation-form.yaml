@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped every output site in the legacy (v2) donation form template, widget, and price/goal helpers.
+timestamp: 2026-09-23T00:00:00.000Z
