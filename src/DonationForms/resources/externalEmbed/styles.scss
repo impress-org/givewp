@@ -1,0 +1,67 @@
+/*
+ * Styles for the <givewp-donation-form> element on non-WordPress pages.
+ * Compiled to a string (see the ?inline rule in webpack.config.js) and
+ * injected by index.ts, so the embed looks the same as the WordPress block
+ * without a separate stylesheet request.
+ */
+@import '@givewp/src/DonationForms/Blocks/DonationFormBlock/resources/styles/launcher';
+@import '@givewp/src/Campaigns/Blocks/shared/components/ModalForm/styles';
+/* The form skeleton the script data carries when the script URL names the form. */
+@import '@givewp/src/DonationForms/resources/styles/skeleton';
+
+givewp-donation-form {
+    display: block;
+    /* The on-page iframe is absolutely positioned until it is revealed. */
+    position: relative;
+}
+
+/*
+ * Host pages stack their own chrome at arbitrary z-indexes; the block's
+ * values assume a WordPress theme.
+ */
+.givewp-donation-form-modal__overlay {
+    z-index: 2147483646;
+}
+
+.givewp-donation-form-modal__close {
+    z-index: 2147483647;
+}
+
+.givewp-embed {
+    &__loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 20rem;
+    }
+
+    /* A skeleton sits in flow and sets the height itself; its container queries resolve here. */
+    &__loading--skeleton {
+        display: block;
+        min-height: 0;
+        container-type: inline-size;
+    }
+
+    &__spinner {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        border: 3px solid rgba(0, 0, 0, 0.12);
+        border-top-color: rgba(0, 0, 0, 0.55);
+        animation: givewp-embed-spin 0.8s linear infinite;
+    }
+
+    &__focus-guard {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+    }
+}
+
+@keyframes givewp-embed-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

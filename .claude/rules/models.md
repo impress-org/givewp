@@ -29,5 +29,16 @@ Read `docs/architecture/models.md` before adding a listener or changing a reposi
   a repository is one more event the model hooks can see.
 - Check `ModelCrud` vs `ModelReadOnly` before assuming `save()` exists.
 
+Where things live:
+
+- Framework: `src/Framework/Models/Model.php`, query builder in `src/Framework/QueryBuilder/`
+  (see its [README](../../src/Framework/QueryBuilder/README.md)).
+- Core models: `Donation`, `Donor`, `Subscription`, `Campaign`, `DonationForm` — each at
+  `src/<Domain>/Models/`. Core repositories at `src/<Domain>/Repositories/`; models delegate the
+  messy data access to these.
+- Legacy models kept only for backwards compatibility: `Give_Payment`, `Give_Donor`,
+  `Give_Donate_Form` (in `includes/`) and `Give_Subscription` (in `src/LegacySubscriptions/`).
+  Don't use them in new code.
+
 Direction of travel: converge on model hooks completely **when coverage allows**. Until legacy write
 paths are retired or routed through repositories, the legacy hooks stay and stay fired.

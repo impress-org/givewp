@@ -113,11 +113,12 @@ class BlockCollection implements Arrayable
     }
 
     /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 3.0.0
      *
      * @return BlockModel|BlockCollection|null
      */
-    private function findByNameRecursive(string $blockName, int $blockIndex = 0, string $return = 'self', BlockCollection $blockCollection = null, int &$count = 0)
+    private function findByNameRecursive(string $blockName, int $blockIndex = 0, string $return = 'self', ?BlockCollection $blockCollection = null, int &$count = 0)
     {
         if (!$blockCollection) {
             $blockCollection = $this;

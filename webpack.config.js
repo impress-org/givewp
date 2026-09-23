@@ -164,6 +164,7 @@ const entry = {
     donationFormRegistrars: srcPath('DonationForms/resources/registrars/index.ts'),
     donationFormEmbed: srcPath('DonationForms/resources/embed.ts'),
     donationFormEmbedInside: srcPath('DonationForms/resources/embedInside.ts'),
+    donationFormExternalEmbed: srcPath('DonationForms/resources/externalEmbed/index.ts'),
     eventTicketsBlock: srcPath('EventTickets/resources/blocks/index.ts'),
     eventTicketsTemplate: srcPath('EventTickets/resources/templates/index.ts'),
     stripePaymentElementGateway: srcPath(
@@ -184,6 +185,7 @@ const entry = {
     twoPanelStepsFormLayoutCss: srcPath('DonationForms/FormDesigns/TwoPanelStepsFormLayout/css/main.scss'),
     donationConfirmationReceiptApp: srcPath('DonationForms/resources/receipt/DonationConfirmationReceiptApp.tsx'),
     baseFormDesignCss: srcPath('DonationForms/resources/styles/base.scss'),
+    donationFormSkeletonCss: srcPath('DonationForms/resources/styles/skeleton.scss'),
     formBuilderApp: srcPath('FormBuilder/resources/js/form-builder/src/index.tsx'),
     formBuilderRegistrars: srcPath('FormBuilder/resources/js/registrars/index.ts'),
     formTaxonomySettings: srcPath('FormTaxonomies/resources/form-builder/index.tsx'),
@@ -285,12 +287,39 @@ const plugins = [
  */
 module.exports = {
     ...defaultConfig,
+    // Persist the build cache under node_modules/.cache/webpack so repeat builds, locally and in CI,
+    // only recompile what changed. Webpack invalidates entries by content hash, so a stale cache is safe.
+    cache: {
+        type: 'filesystem',
+        buildDependencies: {
+            config: [__filename],
+        },
+    },
     resolve: {
         ...defaultConfig.resolve,
         alias,
     },
     entry,
     plugins,
+    module: {
+        ...defaultConfig.module,
+        rules: [
+            /**
+             * `import css from './styles.scss?inline'` yields the compiled CSS as a string instead of an
+             * extracted file. The external embed script injects its styles this way because the route
+             * that serves it sends one JS file and nothing else.
+             */
+            ...defaultConfig.module.rules.map((rule) =>
+                String(rule.test).includes('sc|sa') ? {...rule, resourceQuery: {not: [/inline/]}} : rule
+            ),
+            {
+                test: /\.(sc|sa)ss$/,
+                resourceQuery: /inline/,
+                type: 'asset/source',
+                use: ['sass-loader'],
+            },
+        ],
+    },
     optimization: {
         ...defaultConfig.optimization,
         splitChunks: {

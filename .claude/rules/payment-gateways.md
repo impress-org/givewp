@@ -33,3 +33,13 @@ The security invariants, which are not negotiable:
 `handleValidationRequest` is a workaround for SDKs that seize the submit button (PayPal Commerce,
 multi-step `NextButton`), not the default pattern. Gateways submitting through the normal donate
 route already get server-side validation.
+
+Where things live:
+
+- Framework: `src/Framework/PaymentGateways/` — the `PaymentGateway` abstract class, the
+  `PaymentGateway` interface, and `PaymentGatewayRegister`.
+- Reference implementations: `src/PaymentGateways/Gateways/TestGateway/` (simplest) and
+  `src/PaymentGateways/Gateways/Stripe/StripePaymentElementGateway/` (full-featured).
+- Subscriptions go through `SubscriptionModule`; modes are in
+  `src/Subscriptions/ValueObjects/SubscriptionMode.php`.
+- Public docs: https://givewp.com/documentation/developers/how-to-build-a-gateway-add-on-for-givewp/

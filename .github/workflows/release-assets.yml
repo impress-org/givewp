@@ -5,7 +5,7 @@ on:
 jobs:
     trunk:
         name: Push to trunk
-        runs-on: ubuntu-latest
+        runs-on: blacksmith-4vcpu-ubuntu-2404
         environment: live
         # The push to WordPress.org authenticates over SVN, so the workflow token only has to read
         # this repository. Naming it also stops a permissive repository or organisation default from

@@ -16,13 +16,14 @@ class MissingTabException extends Exception implements LoggableException
     /**
      * MissingTabException constructor.
      *
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 2.10.0
      *
      * @param                $tabId
      * @param int            $code
      * @param Exception|null $previous
      */
-    public function __construct($tabId, $code = 0, Exception $previous = null)
+    public function __construct($tabId, $code = 0, ?Exception $previous = null)
     {
         $message = __('No tab exists with the ID: ', 'give') . $tabId;
 

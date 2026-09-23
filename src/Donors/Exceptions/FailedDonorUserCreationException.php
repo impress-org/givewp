@@ -14,7 +14,10 @@ class FailedDonorUserCreationException extends Exception
 {
     protected $donor;
 
-    public function __construct( Donor $donor = null, $code = 0, $previous = null ) {
+    /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
+     */
+    public function __construct( ?Donor $donor = null, $code = 0, $previous = null ) {
         parent::__construct('Failed creating a user for the donor.', $code, $previous);
         $this->donor = $donor;
     }

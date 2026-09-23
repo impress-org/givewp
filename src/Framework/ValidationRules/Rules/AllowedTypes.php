@@ -40,9 +40,10 @@ class AllowedTypes implements ValidationRule
     /**
      * @inheritDoc
      *
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 2.24.0
      */
-    public static function fromString(string $options = null): ValidationRule
+    public static function fromString(?string $options = null): ValidationRule
     {
         $types = explode(',', $options);
 

@@ -3,7 +3,6 @@ import {__} from '@wordpress/i18n';
 
 import TextControl from '../../../components/text-control';
 import FieldRow from '../../../components/field-row';
-import Button from '../../../components/button';
 
 const EmailControls = ({primaryEmail, additionalEmails, onChangePrimaryEmail, onChangeAdditionalEmails}) => {
     const setAdditionalEmail = (newEmail, index) => {
@@ -14,11 +13,6 @@ const EmailControls = ({primaryEmail, additionalEmails, onChangePrimaryEmail, on
 
     const removeAdditionalEmail = (remove) => {
         const newAdditionalEmails = additionalEmails.filter((email, index) => index !== remove);
-        onChangeAdditionalEmails(newAdditionalEmails);
-    };
-
-    const addAdditionalEmail = (newEmail) => {
-        const newAdditionalEmails = additionalEmails.concat(newEmail);
         onChangeAdditionalEmails(newAdditionalEmails);
     };
 
@@ -38,8 +32,8 @@ const EmailControls = ({primaryEmail, additionalEmails, onChangePrimaryEmail, on
                 <TextControl
                     label={index === 0 ? __('Additional Emails', 'give') : null}
                     value={email}
-                    onChange={(value) => setAdditionalEmail(value, index)}
                     icon="envelope"
+                    disabled={true}
                 />
                 <div className="give-donor-dashboard__email-controls">
                     <div
@@ -66,9 +60,6 @@ const EmailControls = ({primaryEmail, additionalEmails, onChangePrimaryEmail, on
                 icon="envelope"
             />
             {additionalEmailControls}
-            <Button onClick={() => addAdditionalEmail('')} icon="plus">
-                {__('Add Email', 'give')}
-            </Button>
         </Fragment>
     );
 };

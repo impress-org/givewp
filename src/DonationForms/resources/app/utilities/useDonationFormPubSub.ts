@@ -40,7 +40,14 @@ export default function useDonationFormPubSub() {
         return message.data
     }
 
+    /**
+     * @since 4.17.0 Ignore messages from other origins.
+     */
     const eventListener = (message: MessageEvent) => {
+        if (message.origin !== window.location.origin) {
+            return;
+        }
+
         const {event, data} = getMessage(message);
 
         if (events[event]) {

@@ -26,15 +26,21 @@ Change directory to the plugin root directory and run:
 
     $ composer run test
 
+This runs the suite in parallel with paratest, one worker per CPU core. Each worker uses its own
+table prefix (`wptests1_`, `wptests2_`, ...), so a run leaves several sets of tables in the test
+database. To run everything in a single PHPUnit process instead:
+
+    $ composer run test:serial
+
 The tests will execute and you'll be presented with a summary.
 
-You can run specific tests using `--filter` followed by the class name and/or method to test:
+You can run specific tests with `test:serial` and `--filter` followed by the class name and/or method to test:
 
-    $ composer run test -- --filter Tests_Templates
+    $ composer run test:serial -- --filter Tests_Templates
 
-    $ composer run test -- --filter test_get_donation_form
+    $ composer run test:serial -- --filter test_get_donation_form
 
-    $ composer run test -- --filter Tests_Templates::test_get_donation_form
+    $ composer run test:serial -- --filter Tests_Templates::test_get_donation_form
 
 ## Writing Tests
 

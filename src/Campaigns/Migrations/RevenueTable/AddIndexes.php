@@ -38,6 +38,10 @@ class AddIndexes extends Migration
 
     /**
      * @inheritDoc
+     *
+     * @since 4.17.0 Only add indexes that do not exist yet, so re-running the migration is safe.
+     * @since 4.0.0
+     *
      * @throws DatabaseMigrationException
      */
     public function run()
@@ -45,7 +49,21 @@ class AddIndexes extends Migration
         global $wpdb;
 
         try {
-            DB::query("ALTER TABLE {$wpdb->give_revenue} ADD INDEX (form_id), ADD INDEX (campaign_id)");
+            $existing = DB::get_col("SHOW INDEX FROM {$wpdb->give_revenue}", 4);
+
+            $indexes = array_filter(['form_id', 'campaign_id'], static function ($column) use ($existing) {
+                return !in_array($column, $existing, true);
+            });
+
+            if (!$indexes) {
+                return;
+            }
+
+            $clauses = array_map(static function ($column) {
+                return "ADD INDEX ($column)";
+            }, $indexes);
+
+            DB::query("ALTER TABLE {$wpdb->give_revenue} " . implode(', ', $clauses));
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while updating the {$wpdb->give_revenue} table", 0,
                 $exception);

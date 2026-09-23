@@ -29,6 +29,7 @@ class BlockModel implements Arrayable
     public $innerBlocks;
 
     /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 3.1.0 added innerBlocks sanitization
      * @since 3.0.0
      * @param string $name
@@ -39,7 +40,7 @@ class BlockModel implements Arrayable
      */
     public function __construct(
         string $name,
-        string $clientId = null,
+        ?string $clientId = null,
         bool   $isValid = true,
         array  $attributes = [],
                $innerBlocks = null

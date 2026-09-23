@@ -10,7 +10,10 @@ use Throwable;
  */
 class DonationFormForbidden extends Exception
 {
-    public function __construct($message = 'Forbidden', $code = 403, Throwable $previous = null)
+    /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
+     */
+    public function __construct($message = 'Forbidden', $code = 403, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

@@ -22,7 +22,10 @@ class CreditCardGateway extends PaymentGateway
     /** @var array */
     protected $errorMessages = [];
 
-    public function __construct(SubscriptionModule $subscriptionModule = null)
+    /**
+     * @since 4.17.0 Declare the nullable parameter explicitly.
+     */
+    public function __construct(?SubscriptionModule $subscriptionModule = null)
     {
         parent::__construct($subscriptionModule);
 
