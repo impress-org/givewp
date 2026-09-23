@@ -29,6 +29,7 @@ class View
      * @return string|void
      * @throws InvalidArgumentException if template file not exist
      *
+     * @since TBD Escape output.
      */
     public static function load($view, $templateParams = [], $echo = false)
     {
@@ -49,6 +50,7 @@ class View
             return $content;
         }
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs the buffered content of the included template, which is responsible for escaping its own output.
         echo $content;
     }
 

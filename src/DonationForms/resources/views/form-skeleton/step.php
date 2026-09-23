@@ -13,6 +13,7 @@
         <span class="givewp-embed-skeleton__bar givewp-embed-skeleton__step-title"></span>
         <span class="givewp-embed-skeleton__step-progress"></span>
     </div>
+    <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $content is View::load() output passed in by the caller, which escapes internally. ?>
     <?= $content ?>
     <div class="givewp-embed-skeleton__section">
         <span class="givewp-embed-skeleton__bar givewp-embed-skeleton__button"></span>
