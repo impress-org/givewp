@@ -15,6 +15,7 @@ trait CreditCardForm
      * @param int   $form_id Donation Form ID.
      * @param array $args    Donation Form Arguments.
      *
+     * @since TBD Escape output.
      * @since 2.19.0 Migrated from the legacy Give_Stripe_Card::addCreditCardForm implementation of the Stripe Gateway.
      *
      * @return string
@@ -45,6 +46,7 @@ trait CreditCardForm
 
             if ( $this->canShowFields() ) {
                 // Show Credit Card Fields.
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- showCreditCardFields() renders the credit card input fields; wp_kses_post() would strip the input elements, and its own values are escaped internally.
                 echo \Give\Helpers\Gateways\Stripe::showCreditCardFields( $idPrefix );
 
                 /**

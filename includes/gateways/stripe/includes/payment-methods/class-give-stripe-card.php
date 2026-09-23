@@ -32,6 +32,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
 
 
 		/**
+         * @since TBD Escape output.
          * @since 2.21.0 recover method for legacy give-recurring usage.
          * @since  1.0
          *
@@ -51,6 +52,7 @@ if ( ! class_exists( 'Give_Stripe_Card' ) ) {
             $form = $this->getCreditCardFormHTML($form_id, $args);
 
             if ( false !== $echo ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getCreditCardFormHTML() renders the credit card input fields; wp_kses_post() would strip the input elements, and its own values are escaped internally.
 				echo $form;
 			}
 
