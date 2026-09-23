@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Added additional escaping to the legacy donation form metabox, form template settings panel, and forms list table columns.
+timestamp: 2026-09-23T09:00:00.000Z
