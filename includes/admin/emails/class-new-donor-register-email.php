@@ -127,6 +127,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 		/**
 		 * email preview header.
 		 *
+		 * @since  TBD Escape output.
 		 * @since  2.0
 		 * @access public
 		 *
@@ -176,7 +177,7 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 					var transactions = document.getElementById("give_preview_email_user_id");
 					var selected_trans = transactions.options[transactions.selectedIndex];
 					if (selected_trans) {
-						var url_string = "<?php echo $request_url; ?>&user_id=" + selected_trans.value;
+						var url_string = "<?php echo esc_url( $request_url ); ?>&user_id=" + selected_trans.value;
 						window.location = url_string;
 					}
 				}
@@ -208,13 +209,14 @@ if ( ! class_exists( 'Give_New_Donor_Register_Email' ) ) :
 
 				<?php
 				// The select field with 100 latest transactions
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- select() renders a <select> control; wp_kses_post() would strip it.
 				echo Give()->html->select(
 					array(
 						'name'             => 'preview_email_user_id',
-						'selected'         => $user_id,
+						'selected'         => $user_id, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- passed as data to select(), which escapes each option itself.
 						'id'               => 'give_preview_email_user_id',
 						'class'            => 'give-preview-email-donor-id',
-						'options'          => $options,
+						'options'          => $options, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- passed as data to select(), which escapes each option itself.
 						'chosen'           => false,
 						'select_atts'      => 'onchange="change_preview()"',
 						'show_option_all'  => false,
