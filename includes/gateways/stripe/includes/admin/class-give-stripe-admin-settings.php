@@ -647,6 +647,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Stripe Webhook field.
 		 *
+		 * @since TBD Escape output.
 		 * @since 2.5.0
 		 *
 		 * @param $value
@@ -654,7 +655,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 */
 		public function stripe_webhook_field( $value, $option_value ) {
 			?>
-			<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . $value['wrapper_class'] . '"' : ''; ?>>
+			<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . esc_attr( $value['wrapper_class'] ) . '"' : ''; ?>>
 				<th scope="row" class="titledesc">
 					<label for=""><?php _e( 'Stripe Webhooks', 'give' ); ?></label>
 				</th>
@@ -664,18 +665,18 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 						<p class="give-stripe-webhook-explanation" style="margin-bottom: 15px;">
 							<?php
 							esc_html_e( 'In order for Stripe to function properly, you must configure your Stripe webhooks.', 'give' );
-							echo sprintf(
+							echo wp_kses_post( sprintf(
 								/* translators: 1. Webhook settings page. */
 								__( ' You can  visit your <a href="%1$s" target="_blank">Stripe Account Dashboard</a> to add a new webhook. ', 'give' ),
-								esc_url_raw( 'https://docs.givewp.com/stripe-dashboard-webhooks' )
-							);
+								esc_url( 'https://docs.givewp.com/stripe-dashboard-webhooks' )
+							) );
 							esc_html_e( 'Please add a new webhook endpoint for the following URL:', 'give' );
 							?>
 						</p>
 						<p style="margin-bottom: 15px;">
 							<strong><?php echo esc_html__( 'Webhook URL:', 'give' ); ?></strong>
 							<input style="width: 400px;" type="text" readonly="true"
-								   value="<?php echo site_url() . '/?give-listener=stripe'; ?>"/>
+								   value="<?php echo esc_attr( site_url() . '/?give-listener=stripe' ); ?>"/>
 						</p>
 						<?php
 						$webhook_received_on = give_get_option( 'give_stripe_last_webhook_received_timestamp' );
@@ -683,18 +684,18 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 							$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 							?>
 							<p>
-								<strong><?php esc_html_e( 'Last webhook received on', 'give' ); ?></strong> <?php echo date_i18n( esc_html( $date_time_format ), $webhook_received_on ); ?>
+								<strong><?php esc_html_e( 'Last webhook received on', 'give' ); ?></strong> <?php echo esc_html( date_i18n( $date_time_format, $webhook_received_on ) ); ?>
 							</p>
 							<?php
 						}
 						?>
 						<p>
 							<?php
-							echo sprintf(
+							echo wp_kses_post( sprintf(
 								/* translators: 1. Documentation on webhook setup. */
 								__( 'See our <a href="%1$s" target="_blank">documentation</a> for more information.', 'give' ),
-								esc_url_raw( 'http://docs.givewp.com/stripe-webhooks' )
-							);
+								esc_url( 'http://docs.givewp.com/stripe-webhooks' )
+							) );
 							?>
 						</p>
 					</div>
@@ -713,6 +714,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		 * @param array  $field_options List of field options.
 		 * @param string $option_value  Option value.
 		 *
+		 * @since  TBD Escape output.
 		 * @since  2.5.0
 		 * @access public
 		 */
@@ -749,7 +751,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								id="<?php echo esc_attr( $field_options['id'] ) . '_base'; ?>"
 								style="<?php echo esc_attr( $field_options['css'] ); ?>"
 								class="<?php echo esc_attr( $field_options['class'] ); ?>"
-								<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
+				<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 							><?php echo esc_textarea( $base_styles_value ); ?></textarea>
 						</p>
 					</div>
@@ -763,7 +765,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								id="<?php echo esc_attr( $field_options['id'] ) . '_empty'; ?>"
 								style="<?php echo esc_attr( $field_options['css'] ); ?>"
 								class="<?php echo esc_attr( $field_options['class'] ); ?>"
-								<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
+				<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 							>
 								<?php echo esc_textarea( $empty_styles_value ); ?>
 							</textarea>
@@ -779,7 +781,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								id="<?php echo esc_attr( $field_options['id'] ) . '_invalid'; ?>"
 								style="<?php echo esc_attr( $field_options['css'] ); ?>"
 								class="<?php echo esc_attr( $field_options['class'] ); ?>"
-								<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
+				<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 							>
 								<?php echo esc_textarea( $invalid_styles_value ); ?>
 							</textarea>
@@ -795,14 +797,14 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 								id="<?php echo esc_attr( $field_options['id'] ) . '_complete'; ?>"
 								style="<?php echo esc_attr( $field_options['css'] ); ?>"
 								class="<?php echo esc_attr( $field_options['class'] ); ?>"
-								<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); ?>
+				<?php echo give_get_attribute_str( $textarea_attributes, $default_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 							>
 								<?php echo esc_textarea( $complete_styles_value ); ?>
 							</textarea>
 						</p>
 					</div>
 					<p class="give-field-description">
-						<?php echo $field_options['desc']; ?>
+						<?php echo wp_kses_post( $field_options['desc'] ); ?>
 					</p>
 				</td>
 			</tr>
