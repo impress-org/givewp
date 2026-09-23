@@ -12,6 +12,7 @@ use Give\Helpers\Form\Utils;
 class PayPalStandardBillingFields
 {
     /**
+     * @since TBD Escape output.
      * @since 2.22.2
      *
      * @param int $formId
@@ -43,7 +44,7 @@ class PayPalStandardBillingFields
                     'You will be redirected to PayPal to complete your donation with your debit card, credit card, or with your PayPal account. Once complete, you will be redirected back to this site to view your receipt.',
                     'give'
                 ),
-                $this->getLogo()
+                $this->getLogo() // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getLogo() returns a static SVG file bundled with the plugin, not user input; wp_kses_post() would strip the svg element.
             );
         }
 
