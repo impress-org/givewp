@@ -250,6 +250,7 @@ add_filter( 'all_plugins', 'give_prepare_filter_addons' );
  * @param array $data Array of plugin metadata.
  * @param array $response An array of metadata about the available plugin update.
  *
+ * @since TBD Escape output.
  * @since 2.1
  */
 function give_in_plugin_update_message( $data, $response ) {
@@ -267,7 +268,7 @@ function give_in_plugin_update_message( $data, $response ) {
 	$upgrade_notice = give_get_plugin_upgrade_notice( $new_version );
 
 	// Display upgrade notice.
-	echo apply_filters( 'give_in_plugin_update_message', $upgrade_notice ? '</p>' . wp_kses_post( $upgrade_notice ) . '<p class="dummy">' : '' );
+	echo wp_kses_post( apply_filters( 'give_in_plugin_update_message', $upgrade_notice ? '</p>' . wp_kses_post( $upgrade_notice ) . '<p class="dummy">' : '' ) );
 }
 
 // Display upgrade notice.
@@ -398,6 +399,7 @@ add_action( 'admin_head', 'give_plugin_notice_css' );
  * Renders the Give Deactivation Survey Form.
  * Note: only for internal use
  *
+ * @since TBD Escape output.
  * @since 4.10.0 Updated the icon path to the new build directory.
  * @since 2.2
  */
@@ -464,9 +466,9 @@ function give_deactivation_popup() {
 				<?php
 					printf(
 						'%1$s %2$s %3$s',
-						__( "We're sorry to hear that, check", 'give' ),
+						esc_html__( "We're sorry to hear that, check", 'give' ),
 						'<a href="https://wordpress.org/support/plugin/give">GiveWP Support</a>.',
-						__( 'Can you describe the issue?', 'give' )
+						esc_html__( 'Can you describe the issue?', 'give' )
 					);
 				?>
 				</p>
@@ -485,9 +487,9 @@ function give_deactivation_popup() {
 				<?php
 					printf(
 						'%1$s %2$s %3$s',
-						__( "We're sorry to hear that, check", 'give' ),
+						esc_html__( "We're sorry to hear that, check", 'give' ),
 						'<a href="https://wordpress.org/support/plugin/give">GiveWP Support</a>.',
-						__( 'Can you describe the issue?', 'give' )
+						esc_html__( 'Can you describe the issue?', 'give' )
 					);
 				?>
 				</p>
