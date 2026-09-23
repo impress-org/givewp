@@ -1472,6 +1472,7 @@ function give_delete_payment_note( $comment_id = 0, $payment_id = 0 ) {
  * @param object|int $note       The comment object or ID.
  * @param int        $payment_id The payment ID the note is connected to.
  *
+ * @since TBD Escape the note author, content and delete-link text.
  * @since 1.0
  *
  * @return string
@@ -1506,11 +1507,11 @@ function give_get_payment_note_html( $note, $payment_id = 0 ) {
 		'give_delete_payment_note_' . $note->comment_ID
 	);
 
-	$note_html  = '<div class="give-payment-note" id="give-payment-note-' . $note->comment_ID . '">';
+	$note_html  = '<div class="give-payment-note" id="give-payment-note-' . absint( $note->comment_ID ) . '">';
 	$note_html .= '<p>';
-	$note_html .= '<strong>' . $user . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . date_i18n( $date_format, strtotime( $note->comment_date ) ) . '</span><br/>';
-	$note_html .= nl2br( $note->comment_content );
-	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" aria-label="' . __( 'Delete this donation note.', 'give' ) . '">' . __( 'Delete', 'give' ) . '</a>';
+	$note_html .= '<strong>' . esc_html( $user ) . '</strong>&nbsp;&ndash;&nbsp;<span style="color:#aaa;font-style:italic;">' . esc_html( date_i18n( $date_format, strtotime( $note->comment_date ) ) ) . '</span><br/>';
+	$note_html .= nl2br( esc_html( $note->comment_content ) );
+	$note_html .= '&nbsp;&ndash;&nbsp;<a href="' . esc_url( $delete_note_url ) . '" class="give-delete-payment-note" data-note-id="' . absint( $note->comment_ID ) . '" data-payment-id="' . absint( $payment_id ) . '" aria-label="' . esc_attr__( 'Delete this donation note.', 'give' ) . '">' . esc_html__( 'Delete', 'give' ) . '</a>';
 	$note_html .= '</p>';
 	$note_html .= '</div>';
 
