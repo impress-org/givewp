@@ -6,6 +6,7 @@
  * @subpackage  Admin/Upgrades
  * @copyright   Copyright (c) 2017, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since       TBD Escape output.
  * @since       1.8.12
  */
 
@@ -18,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<div class="give-settings-header">
 		<h1 id="give-updates-h1"
-			class="wp-heading-inline"><?php echo sprintf( __( 'GiveWP %s Updates Complete', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
+			class="wp-heading-inline"><?php echo sprintf( esc_html__( 'GiveWP %s Updates Complete', 'give' ), '<span class="give-settings-heading-sep dashicons dashicons-arrow-right-alt2"></span>' ); ?></h1>
 	</div>
 
 	<div id="give-updates-content">
