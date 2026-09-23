@@ -5,6 +5,7 @@ use Give\Helpers\Form\Template as FormTemplateUtils;
 /**
  * The following variables should be in scope when including this view
  *
+ * @since TBD Escape output.
  * @since 4.3.0 hide form background on v2 loader.
  * @var int $formId
  */
@@ -33,6 +34,7 @@ $loaderBG = "&quot;data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encodin
         height: 90px;
         width: 90px;
         background-image: url(<?php
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $loaderBG is a static SVG data URI; esc_url() would strip the data: URI entirely.
     echo $loaderBG; ?>);
         animation: spin 0.6s linear infinite;
         "></div>
