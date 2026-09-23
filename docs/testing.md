@@ -198,7 +198,9 @@ The workflow narrows each run's token to the repositories in `ADDONS`, so the wi
 does not widen what a run can read.
 
 Pull requests from forks get no secrets. The add-on steps skip, `E2E_ADDONS` stays unset, the
-add-on specs skip themselves, and the suite runs against core alone.
+add-on specs skip themselves, and the suite runs against core alone. That is the only case that
+skips: on any other trigger a missing secret fails the token step, so a deleted secret cannot
+quietly turn the suite into a core-only run.
 
 ### Adding an add-on
 

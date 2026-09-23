@@ -23,9 +23,6 @@ jobs:
             # Add-ons whose latest GitHub release is installed next to core before the suite runs.
             # Comma-separated repository names under impress-org; each release carries <slug>.zip.
             ADDONS: give-peer-to-peer
-            # Read here so the steps below can skip when the secret is absent, which is every pull
-            # request from a fork.
-            ADDONS_APP_ID: ${{ secrets.ADDONS_APP_ID }}
 
         steps:
             -   uses: actions/checkout@v7
@@ -71,17 +68,21 @@ jobs:
 
             # The add-on repositories are private and GITHUB_TOKEN only reads this one, so an
             # installation token from the GitHub App named in the secrets reads their releases.
-            # The token is cut down to the add-on repositories whatever the App's installation
-            # covers, so a workflow edit on a branch cannot borrow it for anything else.
+            # The token is cut down to the add-on repositories and to reading their contents,
+            # whatever the App's installation covers, so a workflow edit on a branch cannot borrow
+            # it for anything else. Only pull requests from forks skip this, because they have no
+            # secrets; anywhere else a missing secret fails the run rather than quietly testing
+            # core alone.
             -   name: Create a token that can read the add-on releases
                 id: addons-token
-                if: env.ADDONS_APP_ID != ''
+                if: github.event_name != 'pull_request' || !github.event.pull_request.head.repo.fork
                 uses: actions/create-github-app-token@v2
                 with:
                     app-id: ${{ secrets.ADDONS_APP_ID }}
                     private-key: ${{ secrets.ADDONS_APP_PRIVATE_KEY }}
                     owner: impress-org
                     repositories: ${{ env.ADDONS }}
+                    permission-contents: read
 
             # The release zip is what customers install: vendor/ and compiled assets included,
             # wrapped in a <slug>/ directory, so it unzips straight into a plugins directory.
