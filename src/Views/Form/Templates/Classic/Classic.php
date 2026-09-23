@@ -108,7 +108,7 @@ class Classic extends Template implements Hookable, Scriptable
             [$start, $end] = array_pad($section['hooks'], 2, null);
 
             add_action($start, function () use ($section) {
-                printf('<section class="give-form-section %s">', $section[ 'class' ]);
+                printf('<section class="give-form-section %s">', esc_attr($section[ 'class' ]));
             }, -10000);
 
             add_action($end ? : $start, function () {
@@ -223,7 +223,7 @@ class Classic extends Template implements Hookable, Scriptable
      */
     public function renderLoadingView($formId = null)
     {
-        echo $this->getLoadingView();
+        echo $this->getLoadingView(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getLoadingView() returns loading.php's buffered output, already escaped internally.
     }
 
     /**
@@ -249,14 +249,16 @@ class Classic extends Template implements Hookable, Scriptable
     {
         $hasGoal = $form->has_goal();
 
-        echo $this->loadFile('views/header.php', [
+        $headerArgs = [
             'title'                => isset($this->options['visual_appearance']['main_heading']) ? $this->options['visual_appearance']['main_heading'] : $form->post_title,
             'description'          => $this->options[ 'visual_appearance' ][ 'description' ],
             'isSecureBadgeEnabled' => $this->options[ 'visual_appearance' ][ 'secure_badge' ] === 'enabled',
             'secureBadgeContent'   => $this->options[ 'visual_appearance' ][ 'secure_badge_text' ],
             'hasGoal'              => $hasGoal,
             'goalStats'            => $hasGoal ? $this->getFormGoalStats($form) : []
-        ]);
+        ];
+
+        echo $this->loadFile('views/header.php', $headerArgs); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- header.php escapes each of these values internally.
     }
 
     /**
@@ -264,9 +266,11 @@ class Classic extends Template implements Hookable, Scriptable
      */
     public function renderDonationAmountHeading()
     {
-        echo $this->loadFile('views/donation-amount-heading.php', [
+        $headingArgs = [
             'content' => $this->options[ 'donation_amount' ][ 'headline' ],
-        ]);
+        ];
+
+        echo $this->loadFile('views/donation-amount-heading.php', $headingArgs); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- donation-amount-heading.php escapes $content internally.
     }
 
     /**
@@ -276,7 +280,7 @@ class Classic extends Template implements Hookable, Scriptable
      */
     public function renderIconDefinitions()
     {
-        echo $this->loadFile('views/icon-defs.php');
+        echo $this->loadFile('views/icon-defs.php'); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static SVG icon definitions with no dynamic data; wp_kses_post() would strip the svg/defs/path elements.
     }
 
     /**
