@@ -21,6 +21,7 @@ if (!defined('ABSPATH')) {
  *
  * Process the payment details edit
  *
+ * @since TBD Escape output.
  * @since 2.27.0 Change to save comment to donations meta table
  * @since  1.0
  *
@@ -33,7 +34,7 @@ if (!defined('ABSPATH')) {
 function give_update_payment_details( $data ) {
 
 	if ( ! current_user_can( 'edit_give_payments', $data['give_payment_id'] ) ) {
-		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	check_admin_referer( 'give_update_payment_details_nonce' );
@@ -88,7 +89,7 @@ function give_update_payment_details( $data ) {
 	$updated = $payment->save();
 
 	if ( 0 === $updated ) {
-		wp_die( __( 'Error Updating Donation.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
+		wp_die( esc_html__( 'Error Updating Donation.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 	}
 
 	$donor_changed = false;
@@ -101,7 +102,7 @@ function give_update_payment_details( $data ) {
 		$names      = strip_tags( wp_unslash( trim( "{$first_name} {$last_name}" ) ) );
 
 		if ( empty( $email ) || empty( $first_name ) ) {
-			wp_die( __( 'New Donor requires first name and email address.', 'give' ), __( 'Error', 'give' ), array( 'response' => 400 ) );
+			wp_die( esc_html__( 'New Donor requires first name and email address.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 400 ) );
 		}
 
 		$donor = new Give_Donor( $email );
@@ -364,6 +365,7 @@ add_action( 'give_update_payment_details', 'give_update_payment_details' );
 /**
  * Trigger a Donation Deletion.
  *
+ * @since TBD Escape output.
  * @since 1.0
  *
  * @param array $data Arguments passed.
@@ -376,7 +378,7 @@ function give_trigger_donation_delete( $data ) {
 		$payment_id = absint( $data['purchase_id'] );
 
 		if ( ! current_user_can( 'delete_give_payments', $payment_id ) ) {
-			wp_die( __( 'You do not have permission to delete payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+			wp_die( esc_html__( 'You do not have permission to delete payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 		}
 
 		give_delete_donation( $payment_id );
@@ -390,6 +392,7 @@ add_action( 'give_delete_payment', 'give_trigger_donation_delete' );
 /**
  * AJAX Store Donation Note
  *
+ * @since TBD Escape output.
  * @since 2.25.3 Add nonce check.
  */
 function give_ajax_store_payment_note() {
@@ -400,7 +403,7 @@ function give_ajax_store_payment_note() {
     $note_type = give_clean($_POST['type']);
 
     if ( ! current_user_can('edit_give_payments', $payment_id)) {
-        wp_die(__('You do not have permission to edit payments.', 'give'), __('Error', 'give'), ['response' => 403]);
+        wp_die(esc_html__('You do not have permission to edit payments.', 'give'), esc_html__('Error', 'give'), ['response' => 403]);
     }
 
 	if ( empty( $payment_id ) || empty( $note ) ) {
@@ -437,7 +440,7 @@ function give_ajax_store_payment_note() {
 		do_action( 'give_donor-note_email_notification', $note_id, $payment_id );
 	}
 
-	die( give_get_payment_note_html( $note_id ) );
+	die( wp_kses_post( give_get_payment_note_html( $note_id ) ) );
 }
 
 add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' );
@@ -445,6 +448,7 @@ add_action( 'wp_ajax_give_insert_payment_note', 'give_ajax_store_payment_note' )
 /**
  * Triggers a donation note deletion without ajax
  *
+ * @since TBD Escape output.
  * @since 1.0
  *
  * @param array $data Arguments passed
@@ -458,7 +462,7 @@ function give_trigger_payment_note_deletion( $data ) {
 	}
 
 	if ( ! current_user_can( 'edit_give_payments', $data['payment_id'] ) ) {
-		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	$edit_order_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&view=view-payment-details&give-messages[]=donation-note-deleted&id=' . absint( $data['payment_id'] ) );
@@ -473,6 +477,7 @@ add_action( 'give_delete_payment_note', 'give_trigger_payment_note_deletion' );
 /**
  * Delete a payment note deletion with ajax
  *
+ * @since TBD Escape output.
  * @since 2.25.3 Add nonce check.
  * @since 1.0
  *
@@ -482,7 +487,7 @@ function give_ajax_delete_payment_note() {
     check_ajax_referer('give_delete_payment_note');
 
 	if ( ! current_user_can( 'edit_give_payments', $_POST['payment_id'] ) ) {
-		wp_die( __( 'You do not have permission to edit payments.', 'give' ), __( 'Error', 'give' ), array( 'response' => 403 ) );
+		wp_die( esc_html__( 'You do not have permission to edit payments.', 'give' ), esc_html__( 'Error', 'give' ), array( 'response' => 403 ) );
 	}
 
 	if ( give_delete_payment_note( $_POST['note_id'], $_POST['payment_id'] ) ) {
