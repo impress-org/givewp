@@ -195,8 +195,9 @@ belongs to the organization, not to whoever created it, and each run's token exp
 Pull requests from forks get no secrets. The add-on steps skip, `E2E_ADDONS` stays unset, the
 add-on spec skips itself, and the suite runs against core alone.
 
-Adding an add-on is one word in `ADDONS` and, if the App does not already cover it, adding its
-repository to the App installation.
+Adding an add-on is one more name in the comma-separated `ADDONS` and, if the App does not
+already cover it, adding its repository to the App installation. The minted token is limited to
+the repositories in `ADDONS` regardless of what the installation covers.
 
 ### The other direction
 

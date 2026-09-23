@@ -21,7 +21,7 @@ jobs:
 
         env:
             # Add-ons whose latest GitHub release is installed next to core before the suite runs.
-            # Space-separated repository names under impress-org; each release carries <slug>.zip.
+            # Comma-separated repository names under impress-org; each release carries <slug>.zip.
             ADDONS: give-peer-to-peer
             # Read here so the steps below can skip when the secret is absent, which is every pull
             # request from a fork.
@@ -71,7 +71,8 @@ jobs:
 
             # The add-on repositories are private and GITHUB_TOKEN only reads this one, so an
             # installation token from the GitHub App named in the secrets reads their releases.
-            # The App's installation decides which repositories that covers.
+            # The token is cut down to the add-on repositories whatever the App's installation
+            # covers, so a workflow edit on a branch cannot borrow it for anything else.
             -   name: Create a token that can read the add-on releases
                 id: addons-token
                 if: env.ADDONS_APP_ID != ''
@@ -80,6 +81,7 @@ jobs:
                     app-id: ${{ secrets.ADDONS_APP_ID }}
                     private-key: ${{ secrets.ADDONS_APP_PRIVATE_KEY }}
                     owner: impress-org
+                    repositories: ${{ env.ADDONS }}
 
             # The release zip is what customers install: vendor/ and compiled assets included,
             # wrapped in a <slug>/ directory, so it unzips straight into a plugins directory.
@@ -95,13 +97,13 @@ jobs:
                 run: |
                     mkdir -p addons
                     plugins='"."'
-                    for slug in $ADDONS; do
+                    for slug in ${ADDONS//,/ }; do
                         gh release download --repo "impress-org/$slug" --pattern "$slug.zip" --dir addons
                         unzip -q "addons/$slug.zip" -d addons
                         plugins="$plugins, \"./addons/$slug\""
                     done
                     echo "{\"plugins\": [$plugins], \"config\": {\"WP_DEBUG_DISPLAY\": false}}" > .wp-env.override.json
-                    echo "E2E_ADDONS=$ADDONS" >> "$GITHUB_ENV"
+                    echo "E2E_ADDONS=${ADDONS//,/ }" >> "$GITHUB_ENV"
 
             -   name: Start WordPress environment
                 run: npx wp-env start
