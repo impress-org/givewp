@@ -66,6 +66,7 @@ class AdminSettingFields
      * Render account country field.
      *
      * @since 2.9.0
+     * @since TBD Escape output.
      */
     public function accountCountryField()
     {
@@ -96,7 +97,7 @@ class AdminSettingFields
                 <?php
                 printf(
                     '%1$s<div class="give-field-description">%2$s</div>',
-                    $settingHtml,
+                    $settingHtml, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $settingHtml is a <select> control built by Give_HTML_Elements::select(); wp_kses_post() would strip the <select>/<option> elements.
                     esc_html__('The country the PayPal account is based from. Make sure to select before connecting.', 'give')
                 )
                 ?>
@@ -110,6 +111,7 @@ class AdminSettingFields
      *
      * @since 3.0.0 Update PayPal sandbox connection button description.
      * @since 2.9.0
+     * @since TBD Escape output.
      */
     public function payPalCommerceAccountManagerField()
     {
@@ -123,6 +125,7 @@ class AdminSettingFields
         $paypalLiveSetting->connectButtonLabel = esc_html__('Connect with PayPal Live', 'give');
         $paypalLiveSetting->description = esc_html__('PayPal is currently NOT connected.', 'give');
         $paypalLiveSetting->isRecurringAddonActive = $isRecurringAddonActive;
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getPayPalConnectionSettingView() renders connect/disconnect buttons; every value in it is escaped at its own point, and wp_kses_post() would strip the <button> elements.
         echo $this->getPayPalConnectionSettingView($paypalLiveSetting);
 
         // Show sandbox PayPal connect button.
@@ -139,15 +142,17 @@ class AdminSettingFields
         );
         $paypalSandboxSetting->isRecurringAddonActive = $isRecurringAddonActive;
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getPayPalConnectionSettingView() renders connect/disconnect buttons; every value in it is escaped at its own point, and wp_kses_post() would strip the <button> elements.
         echo $this->getPayPalConnectionSettingView($paypalSandboxSetting);
 
-        echo $this->getBanner();
+        echo wp_kses_post($this->getBanner());
     }
 
     /**
      * PayPal Commerce introduction section.
      *
      * @since 2.9.0
+     * @since TBD Escape output.
      */
     public function introductionSection()
     {
@@ -167,7 +172,7 @@ class AdminSettingFields
                     </p>
                 </div>
                 <div class="paypal-logo">
-                    <img src="<?php echo GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/paypal-logo.png'; ?>"
+                    <img src="<?php echo esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/paypal-logo.png' ); ?>"
                          width="316"
                          height="84"
                          alt="<?php esc_attr_e('PayPal Logo Image', 'give'); ?>">
@@ -273,6 +278,7 @@ class AdminSettingFields
      * Print on boarding errors.
      *
      * @since 2.9.6
+     * @since TBD Escape output.
      */
     private function printErrors(MerchantDetails $merchantDetailsRepository)
     {
@@ -290,7 +296,7 @@ class AdminSettingFields
                             'There is an issue with your PayPal account that is preventing you from being able to accept donations.',
                             'give'
                         ),
-                        $this->getAdminGuidanceNotice()
+                        wp_kses_post($this->getAdminGuidanceNotice())
                     )
                     ?>
                 </p>
@@ -301,7 +307,7 @@ class AdminSettingFields
                         'give'
                     );
                     ?><br>
-                    <?php echo $this->formatErrors($accountErrors); ?>
+                    <?php echo wp_kses_post($this->formatErrors($accountErrors)); ?>
                     <br>
                     <?php
                     esc_html_e(
@@ -330,7 +336,7 @@ class AdminSettingFields
                     );
                     ?>
                     <p>
-                        <a href="<?php echo $reCheckAccountStatusUrl; ?>">
+                        <a href="<?php echo esc_url($reCheckAccountStatusUrl); ?>">
                             <?php esc_html_e('Re-Check Account Status', 'give'); ?>
                         </a>
                     </p>
@@ -398,6 +404,8 @@ class AdminSettingFields
     /**
      * This function return html for "PayPal Connection" and "PayPal Sandbox Connection".
      *
+     * @since TBD Escape output.
+     *
      * @param \stdClass $paypalSetting PayPal setting data.
      */
     private function getPayPalConnectionSettingView(\stdClass $paypalSetting): string
@@ -415,7 +423,7 @@ class AdminSettingFields
         <tr>
             <th scope="row" class="titledesc">
                 <label for="give_paypal_commerce_country">
-                    <?php echo $paypalSetting->label ?>
+                    <?php echo esc_html($paypalSetting->label) ?>
                 </label>
             </th>
             <td class="give-forminp">
@@ -425,9 +433,9 @@ class AdminSettingFields
                             class="button-wrap connection-setting<?php echo $canShowAccountInformation ? ' give-hidden' : ''; ?>">
                             <div>
                                 <button class="button button-primary button-large js-give-paypal-on-boarding-handler"
-                                        data-mode="<?php echo $paypalSetting->mode; ?>">
+                                        data-mode="<?php echo esc_attr($paypalSetting->mode); ?>">
                                     <i class="fab fa-paypal"></i>&nbsp;&nbsp;
-                                    <?php echo $paypalSetting->connectButtonLabel; ?>
+                                    <?php echo esc_html($paypalSetting->connectButtonLabel); ?>
                                 </button>
                                 <?php if ('live' === $paypalSetting->mode) : ?>
                                     <span class="tooltip">
@@ -441,7 +449,7 @@ class AdminSettingFields
                                 <?php endif; ?>
                             </div>
                             <span class="give-field-description">
-                                <i class="fa fa-exclamation"></i><?php echo $paypalSetting->description ?>
+                                <i class="fa fa-exclamation"></i><?php echo wp_kses_post($paypalSetting->description) ?>
                             </span>
                         </div>
                         <div
@@ -466,15 +474,15 @@ class AdminSettingFields
 
                                     printf(
                                         '%1$s <span class="paypal-account-email">%2$s</span>',
-                                        $connectedAccountTypeMessage,
-                                        $merchantDetail->merchantId
+                                        esc_html($connectedAccountTypeMessage),
+                                        esc_html($merchantDetail->merchantId)
                                     );
                                     ?>
                                 </span>
                                 <span class="actions">
                                     <button
                                         class="js-give-paypal-disconnect-paypal-account"
-                                        data-mode="<?php echo $paypalSetting->mode; ?>"
+                                        data-mode="<?php echo esc_attr($paypalSetting->mode); ?>"
                                         data-nonce="<?php echo esc_attr(wp_create_nonce('give_paypal_commerce_disconnect_account')); ?>"
                                     >
                                         <?php esc_html_e('Disconnect', 'give'); ?>
@@ -492,6 +500,7 @@ class AdminSettingFields
     }
 
     /**
+     * @since TBD Escape output.
      * @since 2.33.0
      */
     private function getBanner(): string
@@ -509,7 +518,7 @@ class AdminSettingFields
             <th scope="row" class="titledesc">
             </th>
             <td class="give-forminp">
-                <?php echo give(PayPalDonationsSettingPageBanner::class)->render(); ?>
+                <?php echo wp_kses_post(give(PayPalDonationsSettingPageBanner::class)->render()); ?>
             </td>
         </tr>
         <?php
