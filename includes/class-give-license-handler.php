@@ -773,6 +773,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param $plugin
 		 *
 		 * @return string
+		 * @since TBD Escape output.
 		 * @since 2.5.0
 		 */
 		public static function html_by_plugin( $plugin ) {
@@ -812,8 +813,12 @@ if ( ! class_exists('Give_License') ) :
 			?>
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">
-					<?php echo self::html_license_row( $license, $plugin ); ?>
-					<?php echo self::html_plugin_row( $plugin ); ?>
+					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html_license_row() renders license activate/deactivate buttons; wp_kses_post() would strip the button elements, and its own values are escaped internally.
+					echo self::html_license_row( $license, $plugin );
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html_plugin_row() renders a download button; wp_kses_post() would strip it, and its own values are escaped internally.
+					echo self::html_plugin_row( $plugin );
+					?>
 				</div>
 			</div>
 			<?php
@@ -828,6 +833,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param array $license
 		 *
 		 * @return string
+		 * @since TBD Escape output.
 		 * @since 2.5.0
 		 */
 		private static function html_by_license( $license ) {
@@ -838,6 +844,7 @@ if ( ! class_exists('Give_License') ) :
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">
 					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html_license_row() renders license activate/deactivate buttons; wp_kses_post() would strip the button elements, and its own values are escaped internally.
 					echo self::html_license_row( $license );
 
 					$addons = $license['download'];
@@ -871,6 +878,7 @@ if ( ! class_exists('Give_License') ) :
 
 						$plugin['License'] = $license;
 
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html_plugin_row() renders a download button; wp_kses_post() would strip it, and its own values are escaped internally.
 						echo self::html_plugin_row( $plugin );
 					}
 					?>
@@ -889,6 +897,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param array $plugin
 		 *
 		 * @return string
+		 * @since TBD Escape output.
 		 * @since 2.5.0
 		 */
 		private static function html_license_row( $license, $plugin = [] ) {
@@ -910,13 +919,13 @@ if ( ! class_exists('Give_License') ) :
 						<div class="give-license__key<?php echo $license_key ? ' give-has-license-key' : ''; ?>">
 							<?php $value = $license_key ? give_hide_char( $license['license_key'], 5 ) : ''; ?>
 							<label for="give-license-addon-key-field" class="give-license-top-header"><?php _e( 'License Key', 'give' ); ?></label>
-							<input id="give-license-addon-key-field" type="text" autocomplete="off" value="<?php echo $value; ?>"<?php echo $value ? ' readonly' : ''; ?>>
+							<input id="give-license-addon-key-field" type="text" autocomplete="off" value="<?php echo esc_attr( $value ); ?>"<?php echo $value ? ' readonly' : ''; ?>>
 							<?php if ( ! $license_key ) : ?>
-								<button class="give-button__license-activate button-primary" data-addon="<?php echo $addon_dir; ?>">
+								<button class="give-button__license-activate button-primary" data-addon="<?php echo esc_attr( $addon_dir ); ?>">
 									<?php _e( 'Activate', 'give' ); ?>
 								</button>
 							<?php elseif ( $license_is_inactive ) : ?>
-								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo $addon_dir; ?>" data-license="<?php echo $license['license_key']; ?>">
+								<button class="give-button__license-reactivate button-primary" data-addon="<?php echo esc_attr( $addon_dir ); ?>" data-license="<?php echo esc_attr( $license['license_key'] ); ?>">
 									<?php _e( 'Reactivate', 'give' ); ?>
 								</button>
 							<?php else : ?>
@@ -924,11 +933,11 @@ if ( ! class_exists('Give_License') ) :
 								<?php
 								echo sprintf(
 									'<button class="give-license__deactivate button button-secondary" data-license-key="%2$s" data-item-name="%3$s"  data-plugin-dirname="%5$s" data-nonce="%4$s">%1$s</button>',
-									__( 'Deactivate', 'give' ),
-									$license['license_key'],
-									$license['item_name'],
-									wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ),
-									! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : ''
+									esc_html__( 'Deactivate', 'give' ),
+									esc_attr( $license['license_key'] ),
+									esc_attr( $license['item_name'] ),
+									esc_attr( wp_create_nonce( "give-deactivate-license-{$license['item_name']}" ) ),
+									esc_attr( ! empty( $license['plugin_slug'] ) ? $license['plugin_slug'] : '' )
 								);
 								?>
 
@@ -940,21 +949,21 @@ if ( ! class_exists('Give_License') ) :
 									? sprintf(
 										'<span class="dashicons dashicons-%2$s"></span>&nbsp;%1$s',
 										$is_license_expired
-											? __( 'License is expired. Please activate your license key.', 'give' )
-											: __( 'License is active and you are receiving updates and support.', 'give' ),
+											? esc_html__( 'License is expired. Please activate your license key.', 'give' )
+											: esc_html__( 'License is active and you are receiving updates and support.', 'give' ),
 										$is_license_expired
 											? 'no'
 											: 'yes'
 									)
 									: sprintf(
 										'<span class="dashicons dashicons-no"></span> %1$s %2$s',
-										__( 'License is inactive.', 'give' ),
+										esc_html__( 'License is inactive.', 'give' ),
 										$license_is_inactive
-											? sprintf(
+											? wp_kses_post( sprintf(
 												__( 'Please <a href="%1$s" target="_blank">Visit your dashboard</a> to check this license details and activate this license to receive updates and support.', 'give' ),
-												self::get_account_url()
-											)
-											: __( 'Please activate your license key.', 'give' )
+												esc_url( self::get_account_url() )
+											) )
+											: esc_html__( 'Please activate your license key.', 'give' )
 									);
 								?>
 							</div>
@@ -972,8 +981,8 @@ if ( ! class_exists('Give_License') ) :
 								<?php
 								echo sprintf(
 									'<p class="give-license-renewal-date"><span class="dashicons dashicons-calendar-alt"></span> <strong>%1$s</strong> %2$s</p>',
-									$is_license_expired ? __( 'Expired:', 'give' ) : __( 'Renews:', 'give' ),
-									date( give_date_format(), $expires_timestamp )
+									$is_license_expired ? esc_html__( 'Expired:', 'give' ) : esc_html__( 'Renews:', 'give' ),
+									esc_html( date( give_date_format(), $expires_timestamp ) )
 								);
 								?>
 							<?php endif; ?>
@@ -983,20 +992,20 @@ if ( ! class_exists('Give_License') ) :
 								// @todo: need to test renew license link
 								echo sprintf(
 									'<a href="%1$s" target="_blank">%2$s</a>',
-									$license['renew_url'],
-									__( 'Renew to manage sites', 'give' )
+									esc_url( $license['renew_url'] ),
+									esc_html__( 'Renew to manage sites', 'give' )
 								);
 							} elseif ( $license_key ) {
 								if ( ! $license['activations_left'] ) {
 									echo sprintf(
 										'<span class="give-license-activations-left">%1$s</span>',
-										__( 'No activations remaining', 'give' )
+										esc_html__( 'No activations remaining', 'give' )
 									);
 								} else {
 									echo sprintf(
 										'<span class="give-license-activations-left"><span class="give-license-activations-remaining-icon wp-ui-highlight">%1$s</span> %2$s</span>',
-										$license['activations_left'],
-										_n( 'Activation Remaining', 'Activations Remaining', $license['activations_left'], 'give' )
+										esc_html( $license['activations_left'] ),
+										esc_html( _n( 'Activation Remaining', 'Activations Remaining', $license['activations_left'], 'give' ) )
 									);
 								}
 							}
@@ -1018,8 +1027,8 @@ if ( ! class_exists('Give_License') ) :
 							<?php
 							echo sprintf(
 								'<a class="give-button button-secondary" href="%1$s" target="_blank">%2$s</a>',
-								$license['purchase_link'],
-								__( 'Purchase License', 'give' )
+								esc_url( $license['purchase_link'] ),
+								esc_html__( 'Purchase License', 'give' )
 							);
 							?>
 						<?php endif; ?>
@@ -1029,15 +1038,15 @@ if ( ! class_exists('Give_License') ) :
 						if ( ! $is_license_expired && $license_key ) {
 							echo sprintf(
 								'<a href="%1$spurchase-history/?license_id=%2$s&action=manage_licenses&payment_id=%3$s" target="_blank" class="give-license-action-link">%4$s</a>',
-								trailingslashit( self::get_website_url() ),
-								$license['license_id'],
-								$license['payment_id'],
-								__( 'Manage License', 'give' )
+								esc_url( trailingslashit( self::get_website_url() ) ),
+								esc_attr( $license['license_id'] ),
+								esc_attr( $license['payment_id'] ),
+								esc_html__( 'Manage License', 'give' )
 							);
 							echo sprintf(
 								'<a href="%1$spriority-support/" target="_blank" class="give-license-action-link">%2$s</a>',
-								trailingslashit( self::get_website_url() ),
-								__( 'Access Support', 'give' )
+								esc_url( trailingslashit( self::get_website_url() ) ),
+								esc_html__( 'Access Support', 'give' )
 							);
 						}
 						?>
@@ -1056,6 +1065,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param array $plugin
 		 *
 		 * @return string
+		 * @since TBD Escape output.
 		 * @since 2.5.0
 		 */
 		public static function html_plugin_row( $plugin ) {
@@ -1073,10 +1083,10 @@ if ( ! class_exists('Give_License') ) :
 
 				<div class="give-addon-info-left">
 					<span class="give-addon-name">
-						<?php echo $plugin['Name']; ?>
+						<?php echo esc_html( $plugin['Name'] ); ?>
 					</span>
 					<span class="give-addon-version">
-						<?php echo sprintf( '%1$s %2$s', __( 'Version', 'give' ), $plugin['Version'] ); ?>
+						<?php echo sprintf( '%1$s %2$s', esc_html__( 'Version', 'give' ), esc_html( $plugin['Version'] ) ); ?>
 					</span>
 				</div>
 
@@ -1084,16 +1094,16 @@ if ( ! class_exists('Give_License') ) :
 					<?php
 					echo sprintf(
 						'<a href="%1$s" class="give-ajax-modal give-addon-view-changelog" title="%3$s">%2$s</a>',
-						give_modal_ajax_url(
+						esc_url( give_modal_ajax_url(
 							[
 								'url'            => filter_var( $plugin['ChangeLogSlug'], FILTER_VALIDATE_URL )
 									? urldecode_deep( $plugin['ChangeLogSlug'] )
 									: urlencode_deep( give_get_addon_readme_url( $plugin['ChangeLogSlug'] ) ),
 								'show_changelog' => 1,
 							]
-						),
-						__( 'View Changelog', 'give' ),
-						__( 'Changelog of', 'give' ) . " {$plugin['Name']}"
+						) ),
+						esc_html__( 'View Changelog', 'give' ),
+						esc_attr( __( 'Changelog of', 'give' ) . " {$plugin['Name']}" )
 					);
 					?>
 
@@ -1102,14 +1112,14 @@ if ( ! class_exists('Give_License') ) :
 					if ( in_array( $plugin['Status'], [ 'active', 'inactive' ] ) ) {
 						echo sprintf(
 							'<span class="give-addon-activation-status give-addon-activation-status__%1$s">%1$s</span>',
-							'active' === $plugin['Status'] ? __( 'activated', 'give' ) : __( 'installed', 'give' )
+							'active' === $plugin['Status'] ? esc_html__( 'activated', 'give' ) : esc_html__( 'installed', 'give' )
 						);
 					}
 
 					printf(
 						'<%3$s class="give-button button button-secondary button-small" href="%1$s"%4$s><span class="dashicons dashicons-download"></span>%2$s</%3$s>',
-						$plugin['DownloadURL'],
-						__( 'Download', 'give' ),
+						esc_url( $plugin['DownloadURL'] ),
+						esc_html__( 'Download', 'give' ),
 						$is_license_expired || ! $plugin['DownloadURL'] ? 'button' : 'a',
 						$is_license_expired || ! $plugin['DownloadURL'] ? ' disabled' : ''
 					);
