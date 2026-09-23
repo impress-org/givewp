@@ -222,6 +222,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	/**
 	 * Generate the table navigation above or below the table
 	 *
+	 * @since  TBD Escape output.
 	 * @since  3.1.0
 	 * @access protected
 	 *
@@ -278,6 +279,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 			'name' => 'user_id',
 		);
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ajax_user_search() renders a <select> control; wp_kses_post() would strip it, and its own values are escaped internally.
 		echo Give()->html->ajax_user_search( $args );
 
 		submit_button( esc_html__( 'Generate New API Keys', 'give' ), 'secondary', 'submit', false );
