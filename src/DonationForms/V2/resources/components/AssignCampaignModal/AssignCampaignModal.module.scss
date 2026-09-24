@@ -1,4 +1,4 @@
-.linkModal {
+.modal {
     :global(.givewp-modal-dialog) {
         width: 100%;
         max-width: 32rem;
@@ -64,4 +64,32 @@
     display: flex;
     gap: var(--givewp-spacing-3);
     margin-block-start: var(--givewp-spacing-6);
+}
+
+.removeLink {
+    margin-inline-start: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--givewp-red-500);
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus {
+        color: var(--givewp-red-600);
+    }
+}
+
+.danger {
+    color: #fff;
+    border-color: var(--givewp-red-500);
+    background: var(--givewp-red-500);
+
+    &:hover,
+    &:focus {
+        color: #fff;
+        border-color: var(--givewp-red-600);
+        background: var(--givewp-red-600);
+    }
 }
