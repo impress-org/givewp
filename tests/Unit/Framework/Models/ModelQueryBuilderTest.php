@@ -70,4 +70,44 @@ final class ModelQueryBuilderTest extends TestCase
 
         $this->assertSame(count($endDates), Campaign::query()->groupBy('end_date')->count());
     }
+
+    /**
+     * @since TBD
+     */
+    public function testCountWithColumnCountsNonNullValuesWithinGroups()
+    {
+        $nonNullEndDates = Temporal::withoutMicroseconds(Temporal::getCurrentDateTime());
+
+        Campaign::factory()->count(2)->create(['endDate' => null]);
+        Campaign::factory()->count(2)->create(['endDate' => $nonNullEndDates]);
+
+        $query = Campaign::query()->groupBy('status');
+
+        $this->assertSame(1, $query->count());
+        $this->assertSame(4, $query->count('id'));
+        $this->assertSame(2, $query->count('end_date'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testCountKeepsSelectAliasesReferencedByHaving()
+    {
+        Campaign::factory()->count(3)->create(['status' => CampaignStatus::ACTIVE()]);
+        Campaign::factory()->count(1)->create(['status' => CampaignStatus::DRAFT()]);
+
+        /*
+         * The HAVING filters out every group whose aggregate alias drops below the threshold, so
+         * only the active group survives and the count must reflect the surviving groups rather
+         * than fail on the alias the grouped count's select list would otherwise drop.
+         */
+        $this->assertSame(
+            1,
+            Campaign::query()
+                ->select(['COUNT(id)', 'total'])
+                ->groupBy('status')
+                ->having('total', '>', 2)
+                ->count()
+        );
+    }
 }
