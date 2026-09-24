@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped output in admin page mounts, service providers, and miscellaneous admin views.
+timestamp: 2026-09-24T00:00:00.000Z
