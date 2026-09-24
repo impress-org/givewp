@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped output in the Elementor V1 and V2 GiveWP widgets.
+timestamp: 2026-09-24T00:00:00.000Z
