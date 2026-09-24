@@ -11,6 +11,7 @@ use Give\DonationForms\V2\Properties\DonationFormLevel;
 use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys as LegacyDonationFormMetaKeys;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\Facades\DateTime\Temporal;
 use Give\Framework\Support\ValueObjects\Money;
@@ -155,6 +156,7 @@ final class DonationFormQueryData
 
 
     /**
+     * @since TBD Fall back to the form goal when the form has no campaign.
      * @since 4.6.0 Cast $queryObject->goalFormat to string
      * @since 4.3.0
      */
@@ -165,13 +167,16 @@ final class DonationFormQueryData
         // v3 form
         if ($formSettings) {
             $settings = FormSettings::fromjson($formSettings);
+            $campaign = $settings->goalSource->isCampaign()
+                ? Campaign::findByFormId($queryObject->id)
+                : null;
+
             // uses campaign goal settings
-            if ($settings->goalSource->isCampaign()) {
-                $campaign = Campaign::findByFormId($queryObject->id);
+            if ($campaign) {
                 $this->campaignId = $campaign->id;
 
                 return GoalSettings::fromArray([
-                    'goalSource' => $settings->goalSource->getValue(),
+                    'goalSource' => GoalSource::CAMPAIGN,
                     'enableDonationGoal' => $settings->enableDonationGoal,
                     'goalType' => $this->convertGoalType($campaign->goalType->getValue()),
                     'goalAmount' => $campaign->goal,
@@ -179,7 +184,7 @@ final class DonationFormQueryData
             }
 
             return GoalSettings::fromArray([
-                'goalSource' => $settings->goalSource->getValue(),
+                'goalSource' => GoalSource::FORM,
                 'enableDonationGoal' => $settings->enableDonationGoal,
                 'goalType' => $settings->goalType,
                 'goalAmount' => $settings->goalAmount,

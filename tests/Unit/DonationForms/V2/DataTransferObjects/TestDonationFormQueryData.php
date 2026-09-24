@@ -8,7 +8,9 @@ use Give\DonationForms\V2\Models\DonationForm;
 use Give\DonationForms\V2\Properties\DonationFormLevel;
 use Give\DonationForms\V2\ValueObjects\DonationFormMetaKeys as LegacyDonationFormMetaKeys;
 use Give\DonationForms\V2\ValueObjects\DonationFormStatus;
+use Give\DonationForms\Properties\FormSettings;
 use Give\DonationForms\ValueObjects\DonationFormMetaKeys;
+use Give\DonationForms\ValueObjects\GoalSource;
 use Give\DonationForms\ValueObjects\GoalType;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Tests\TestCase;
@@ -202,6 +204,28 @@ final class TestDonationFormQueryData extends TestCase
         $donationFormQueryData = DonationFormQueryData::fromObject($queryObject);
 
         $this->assertEquals(GoalType::AMOUNT(), $donationFormQueryData->goalSettings->goalType);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testFromObjectShouldFallBackToFormGoalWhenFormHasNoCampaign()
+    {
+        $v2Form = $this->createSimpleDonationForm();
+        $queryObject = $this->createMockQueryObject($v2Form);
+        $queryObject->{DonationFormMetaKeys::SETTINGS()->getKeyAsCamelCase()} = FormSettings::fromArray([
+            'goalSource' => GoalSource::CAMPAIGN,
+            'goalType' => GoalType::DONORS,
+            'goalAmount' => 40,
+            'enableDonationGoal' => true,
+        ])->toJson();
+
+        $donationFormQueryData = DonationFormQueryData::fromObject($queryObject);
+
+        $this->assertEquals(GoalSource::FORM, $donationFormQueryData->goalSettings->goalSource);
+        $this->assertEquals(GoalType::DONORS(), $donationFormQueryData->goalSettings->goalType);
+        $this->assertEquals(40, $donationFormQueryData->goalSettings->goalAmount);
+        $this->assertEquals(0, $donationFormQueryData->campaignId);
     }
 
     /**

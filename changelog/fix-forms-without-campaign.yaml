@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Forms that are not linked to a campaign now load their own goal on the form page and in the forms list, and their donations show the form title in the donations list
+timestamp: 2026-09-21T00:00:00.000Z
