@@ -43,12 +43,14 @@ class UpgradeNotice
     /**
      * Render notice output
      *
+     * @since TBD Escape output.
      * @since 2.10.0
      * @return void
      *
      */
     protected function renderOutput()
     {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getOutput() renders upgradenotice.php, already escaped internally.
         echo $this->getOutput();
     }
 

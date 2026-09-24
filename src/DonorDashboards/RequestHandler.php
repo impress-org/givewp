@@ -32,6 +32,8 @@ class RequestHandler
     /**
      * Load donor dashboard markup, if donor dashboard exists in query vars
      *
+     * @since TBD Escape output.
+     *
      * @param WP_Query $query
      *
      * @return void
@@ -56,6 +58,7 @@ class RequestHandler
             $this->setUpFrontendHooks();
 
             $app = new App();
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs the complete iframe document built from escaped parts.
             echo $app->getIframeContent();
             exit; // and exit
         }

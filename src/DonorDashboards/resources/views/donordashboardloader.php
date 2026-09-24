@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @since TBD Escape output.
+ */
+
 $primaryColor = ! empty($accentColor) ? $accentColor : '#28C77B';
 $primaryColor = trim($accentColor, '#');
 
@@ -31,6 +35,7 @@ $loaderBG = "&quot;data:image/svg+xml;charset=utf8,%3C?xml version='1.0' encodin
             height: 90px;
             width: 90px;
             background-image: url(<?php
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $loaderBG is a static SVG data URI; esc_url() would strip the data: scheme.
         echo $loaderBG; ?>);
             animation: spin 0.6s linear infinite;
             "></div>

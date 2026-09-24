@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @since TBD Escape output.
+ */
+
 $setupUrl = add_query_arg(
     [
         'give-generate-donor-dashboard-page' => '1',
@@ -13,7 +17,7 @@ $setupUrl = add_query_arg(
      data-give-dismissible="upgrade-donor-dashboards-notice-210">
     <div class="give-donor-dashboard-upgrade-notice__graphic">
         <img src="<?php
-        echo GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/donor-dashboard.svg'; ?>" />
+        echo esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/donor-dashboard.svg' ); ?>" />
     </div>
     <div class="give-donor-dashboard-upgrade-notice__copy">
         <div class="give-donor-dashboard-upgrade-notice__row">
@@ -35,19 +39,19 @@ $setupUrl = add_query_arg(
         </div>
         <div class="give-donor-dashboard-upgrade-notice__row">
             <a class="give-donor-dashboard-upgrade-notice__button" href="<?php
-            echo $setupUrl; ?>">
+            echo esc_url( $setupUrl ); ?>">
                 <?php
                 _e('Create Donor Dashboard Page', 'give'); ?>
             </a>
             <div class="give-donor-dashboard-upgrade-notice__pill">
                 <?php
-                printf(
+                echo wp_kses_post( sprintf(
                     __(
                         'Want to know more? Learn more about the <a href="%s" target="_blank">new Donor Dashboard <i class="fas fa-external-link-alt"></i></a>',
                         'give'
                     ),
-                    'http://docs.givewp.com/donor-dashboard'
-                ); ?>
+                    esc_url( 'http://docs.givewp.com/donor-dashboard' )
+                ) ); ?>
             </div>
         </div>
         <a class="give-donor-dashboard-upgrade-notice__dismiss-link">
