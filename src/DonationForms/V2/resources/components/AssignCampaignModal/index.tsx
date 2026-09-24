@@ -9,6 +9,7 @@ import {AsyncPaginate} from 'react-select-async-paginate';
 import {useCampaignAsyncSelect} from '@givewp/components/ListTable/CustomFilter/useAsyncCampaigns';
 import {CampaignOption} from '@givewp/components/ListTable/CustomFilter/utils';
 import {Interweave} from 'interweave';
+import selectStyles from '@givewp/components/ListTable/CustomFilter/styles.module.scss';
 import styles from './AssignCampaignModal.module.scss';
 
 type AssignCampaignProps = {
@@ -206,7 +207,7 @@ function AssignCampaignModal({
                         isSearchable
                         isClearable
                         debounceTimeout={600}
-                        className={styles.select}
+                        className={`${selectStyles.searchableSelect} ${styles.select}`}
                         classNamePrefix="searchableSelect"
                     />
                     {error && <p className={styles.error}>{error}</p>}

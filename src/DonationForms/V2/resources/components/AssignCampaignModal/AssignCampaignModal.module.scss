@@ -2,6 +2,16 @@
     :global(.givewp-modal-dialog) {
         width: 100%;
         max-width: 32rem;
+        /* Let the campaign menu open past the dialog edge instead of scrolling inside it. */
+        overflow: visible;
+    }
+
+    :global(.searchableSelect__menu) {
+        width: 100%;
+    }
+
+    :global(.searchableSelect__menu-list) {
+        max-height: 14rem;
     }
 
     label {
