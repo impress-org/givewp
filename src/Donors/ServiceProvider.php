@@ -107,6 +107,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD Escape output.
      * @since 3.0.0
      */
     private function addCustomFieldsToDonorDetails()
@@ -115,6 +116,7 @@ class ServiceProvider implements ServiceProviderInterface
             /** @var Donor $donor */
             $donor = Donor::find($legacyDonor->id);
 
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the full donor details page; its view escapes its own values.
             echo (new DonorDetailsController())->show($donor);
         });
     }
