@@ -221,7 +221,8 @@ class AccountManagerSettingField
                 <?php
 
                 // Output Stripe Connect Button.
-                echo wp_kses_post($this->getStripeConnectButtonMarkup());
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getStripeConnectButtonMarkup() returns a button with an inline <svg> icon; its own values (URL, label) are escaped, and wp_kses_post() would strip the svg.
+                echo $this->getStripeConnectButtonMarkup();
 
                 // Check if premium is active.
                 if (give_stripe_is_premium_active()) {
@@ -568,7 +569,8 @@ class AccountManagerSettingField
                     ?>
                 </p>
                 <?php
-                echo wp_kses_post($this->getStripeConnectButtonMarkup()); ?>
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- getStripeConnectButtonMarkup() returns a button with an inline <svg> icon; its own values (URL, label) are escaped, and wp_kses_post() would strip the svg.
+                echo $this->getStripeConnectButtonMarkup(); ?>
             </div>
         </div>
         <?php
