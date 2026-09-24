@@ -934,7 +934,8 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											$no_notes_display = '';
 										}
 
-										echo '<p class="give-no-payment-notes"' . esc_attr( $no_notes_display ) . '>' . esc_html__( 'No donation notes.', 'give' ) . '</p>';
+										// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $no_notes_display is a hardcoded ' style="display:none;"' attribute fragment or empty string, never user input; esc_attr() would encode its own quotes.
+										echo '<p class="give-no-payment-notes"' . $no_notes_display . '>' . esc_html__( 'No donation notes.', 'give' ) . '</p>';
 										?>
 									</div>
 									<textarea name="give-payment-note" id="give-payment-note" class="large-text"></textarea>
