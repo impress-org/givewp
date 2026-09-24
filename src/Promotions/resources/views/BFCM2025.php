@@ -8,12 +8,13 @@
  * @var $backgroundSmall string
  * @var $cartIcon string
  *
+ * @since TBD Escape output.
  * @since 4.11.0
  */
 
 ?>
 
-<section <?php echo $elements->customWrapperAttributes; ?>
+<section <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $elements->customWrapperAttributes escapes each attribute value internally. ?><?php echo $elements->customWrapperAttributes; ?>
     id='givewp-bfcm-2025-banner'
     class='givewp-bfcm-2025-banner'
     role='banner'

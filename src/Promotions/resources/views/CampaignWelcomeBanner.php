@@ -1,5 +1,7 @@
 <?php
 /**
+ * @since TBD Escape output.
+ *
  * @var $elements
  * @var $backgroundUrl
  * @var $badgeIconUrl
@@ -10,7 +12,7 @@
 
 ?>
 
-<div <?php echo $elements->customWrapperAttributes; ?>
+<div <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $elements->customWrapperAttributes escapes each attribute value internally. ?><?php echo $elements->customWrapperAttributes; ?>
     class='givewp-campaign-welcome-banner-background'
     style='background-image: url("<?php echo esc_url($backgroundUrl); ?>"); no-repeat right;'>
 
@@ -20,7 +22,7 @@
                 <img src='<?php echo esc_url($badgeIconUrl); ?>' alt='badge' /> <?php echo esc_html__('NEW', 'give'); ?>
             </div>
             <button type='button' class='givewp-campaign-welcome-banner__actions__dismiss'
-                <?php echo $elements->closeAttributes(); ?>>
+                <?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $elements->closeAttributes() escapes each attribute value internally. ?><?php echo $elements->closeAttributes(); ?>>
                 <img src='<?php echo esc_url($exitIconUrl); ?>' alt='exit'>
             </button>
         </div> <!-- End actions -->
