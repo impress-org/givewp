@@ -126,7 +126,7 @@ final class CampaignsDataQueryTest extends TestCase
      */
     public function testCampaignCache()
     {
-        give_update_option('test_mode', 'disabled');
+        add_filter('give_is_test_mode', '__return_false');
 
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create([
@@ -155,6 +155,6 @@ final class CampaignsDataQueryTest extends TestCase
         $this->assertEquals($campaignsDataCache['donationsCount'], $campaignsDataQuery->collectDonations());
         $this->assertEquals($campaignsDataCache['donorsCount'], $campaignsDataQuery->collectDonors());
 
-        give_update_option('test_mode', 'enabled');
+        remove_filter('give_is_test_mode', '__return_false');
     }
 }

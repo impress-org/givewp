@@ -122,8 +122,10 @@ Things to know before touching this:
   `CacheCampaignData` ran for it.
 - **The cache is live-mode only.** `CampaignsDataQuery` filters by `give_is_test_mode()` but the
   options carry no mode, so a test-mode write would poison the live figures. In test mode
-  `campaigns()` queries every id directly and writes nothing, and `CacheCampaignData` and the
-  `CacheCampaignsData` migration return early.
+  `campaigns()` queries every id directly and writes nothing. `CacheCampaignData` and the
+  `CacheCampaignsData` migration force live mode through the `give_is_test_mode` filter while they
+  run, so a refresh queued by a live donation still lands even if test mode was switched on before
+  Action Scheduler picked it up.
 - **Both readers and all writers use `give_campaigns_subscriptions_data`.** Until the fix, the two
   readers used a singular key, so the subscriptions cache never hit. The
   `Campaigns/Migrations/FlushCampaignsDataCache` migration drops both options once so no site

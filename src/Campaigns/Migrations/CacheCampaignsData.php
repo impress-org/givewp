@@ -53,7 +53,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
-     * @since TBD Merge donors into the donors list and subscriptions into the subscriptions option; skip in test mode, the cache holds live stats only.
+     * @since TBD Merge donors into the donors list and subscriptions into the subscriptions option; always compute live stats, the cache holds live stats only.
      * @since 4.12.0 add early return if no campaigns found
      * @since 4.8.0
      *
@@ -61,9 +61,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
      */
     public function runBatch($firstId, $lastId)
     {
-        if (give_is_test_mode()) {
-            return;
-        }
+        add_filter('give_is_test_mode', '__return_false', PHP_INT_MAX);
 
         try {
             $query = $this->query();
@@ -125,6 +123,8 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
             }
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while caching campaign data", 0, $exception);
+        } finally {
+            remove_filter('give_is_test_mode', '__return_false', PHP_INT_MAX);
         }
     }
 

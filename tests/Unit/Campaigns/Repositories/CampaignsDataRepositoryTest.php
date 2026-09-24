@@ -24,7 +24,9 @@ final class CampaignsDataRepositoryTest extends TestCase
     /**
      * The cache lives in options, which RefreshDatabase does not truncate, and a donation insert
      * commits the test transaction. Start every test with a cold cache, in live mode so the
-     * repository uses the cache at all.
+     * repository uses the cache at all. The mode is set through the filter rather than the
+     * setting, because give_update_option() leaves its global stale when the stored value
+     * already matches.
      *
      * @since TBD
      */
@@ -34,7 +36,7 @@ final class CampaignsDataRepositoryTest extends TestCase
 
         delete_option('give_campaigns_data');
         delete_option('give_campaigns_subscriptions_data');
-        give_update_option('test_mode', 'disabled');
+        add_filter('give_is_test_mode', '__return_false');
     }
 
     /**
@@ -42,9 +44,18 @@ final class CampaignsDataRepositoryTest extends TestCase
      */
     public function tearDown(): void
     {
-        give_update_option('test_mode', 'enabled');
+        remove_filter('give_is_test_mode', '__return_false');
+        remove_filter('give_is_test_mode', '__return_true', 20);
 
         parent::tearDown();
+    }
+
+    /**
+     * @since TBD
+     */
+    private function enableTestMode(): void
+    {
+        add_filter('give_is_test_mode', '__return_true', 20);
     }
 
     /**
@@ -170,7 +181,7 @@ final class CampaignsDataRepositoryTest extends TestCase
         CampaignsDataRepository::campaigns([$campaign->id]);
         $liveCache = get_option('give_campaigns_data');
 
-        give_update_option('test_mode', 'enabled');
+        $this->enableTestMode();
         Donation::factory()->count(2)->create([
             'campaignId' => $campaign->id,
             'formId' => $campaign->defaultFormId,
@@ -190,7 +201,7 @@ final class CampaignsDataRepositoryTest extends TestCase
      */
     public function testTestModeDoesNotWriteTheCache()
     {
-        give_update_option('test_mode', 'enabled');
+        $this->enableTestMode();
         $campaign = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
 
         CampaignsDataRepository::campaigns([$campaign->id]);
