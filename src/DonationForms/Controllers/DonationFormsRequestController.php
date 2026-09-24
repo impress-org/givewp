@@ -171,7 +171,7 @@ class DonationFormsRequestController
                 $currentCampaign = $campaignRepository->getByFormId($formID);
 
                 if ($currentCampaign && $currentCampaign->id !== $campaign->id) {
-                    $campaignRepository->assertNotDefaultForm($currentCampaign, $formID);
+                    $campaignRepository->validateFormIsNotDefault($currentCampaign, $formID);
                 }
             }
         } catch (InvalidArgumentException $exception) {

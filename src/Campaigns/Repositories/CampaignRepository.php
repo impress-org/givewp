@@ -236,7 +236,7 @@ class CampaignRepository
      */
     public function removeCampaignForm(Campaign $campaign, int $donationFormId): void
     {
-        $this->assertNotDefaultForm($campaign, $donationFormId);
+        $this->validateFormIsNotDefault($campaign, $donationFormId);
 
         Hooks::doAction('givewp_campaign_form_relationship_deleting', $campaign, $donationFormId);
 
@@ -275,7 +275,7 @@ class CampaignRepository
             return null;
         }
 
-        $this->assertNotDefaultForm($currentCampaign, $donationFormId);
+        $this->validateFormIsNotDefault($currentCampaign, $donationFormId);
 
         Hooks::doAction('givewp_campaign_form_relationship_deleting', $currentCampaign, $donationFormId);
         Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationFormId, false);
@@ -296,7 +296,7 @@ class CampaignRepository
      *
      * @throws InvalidArgumentException
      */
-    public function assertNotDefaultForm(Campaign $campaign, int $donationFormId): void
+    public function validateFormIsNotDefault(Campaign $campaign, int $donationFormId): void
     {
         if ($campaign->defaultFormId !== $donationFormId) {
             return;
