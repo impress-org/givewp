@@ -33,6 +33,7 @@ class DonorsAdminPage
     /**
      * Render admin page container
      *
+     * @since TBD Escape output.
      * @since 4.4.0 Add new details page view
      * @since 2.20.0
      */
@@ -42,7 +43,7 @@ class DonorsAdminPage
             $donor = Donor::find(absint($_GET['id']));
 
             if (! $donor) {
-                wp_die(__('Donor not found', 'give'), 404);
+                wp_die(esc_html__('Donor not found', 'give'), 404);
             }
 
             give(LoadDonorDetailsAssets::class)();
@@ -66,7 +67,7 @@ class DonorsAdminPage
                 fetch('<?php echo esc_url_raw(rest_url('give-api/v2/admin/donors/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>',
+                        ['X-WP-Nonce']: '<?php echo esc_js(wp_create_nonce('wp_rest')) ?>',
                     },
                 })
                     .then((res) => {
