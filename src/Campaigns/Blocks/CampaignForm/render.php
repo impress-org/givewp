@@ -4,6 +4,8 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
 /**
+ * @since TBD Escape output.
+ *
  * @var array    $attributes
  * @var Campaign $campaign
  *
@@ -35,8 +37,10 @@ if (! isset($attributes['campaignId']) ||
         $atts['id'] = $campaign->defaultFormId;
     }
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() renders the whole donation form; its own output is escaped internally.
     echo give_form_shortcode($atts);
 
     $final_output = ob_get_clean();
 
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $final_output is the buffered give_form_shortcode() output above, already escaped internally.
     echo $final_output;
