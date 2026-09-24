@@ -6,6 +6,7 @@ use Give\Campaigns\CampaignsAdminPage;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
+use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormMigration\Actions\GetMigratedFormId;
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Language;
@@ -61,6 +62,7 @@ class DonationFormsAdminPage
 
     /**
      * Register menu item
+     * @since TBD Show the "Forms" submenu again so standalone forms have a home in the admin.
      * @since 4.14.0 update permission capability to use facade
      * @since 4.0.0 set submenu parent to empty string to hide "all forms" from admin menu
      */
@@ -68,42 +70,20 @@ class DonationFormsAdminPage
     {
         remove_submenu_page('edit.php?post_type=give_forms', 'edit.php?post_type=give_forms');
         add_submenu_page(
-            '',
+            'edit.php?post_type=give_forms',
             esc_html__('Donation Forms', 'give'),
-            esc_html__('All Forms', 'give'),
+            esc_html__('Forms', 'give'),
             UserPermissions::donationForms()->viewCap(),
             'give-forms',
             [$this, 'render'],
-            // Do not change the submenu position unless you have a strong reason.
-            // We use this position value to access this menu data in $submenu to add a custom class.
-            // Check DonationFormsAdminPage::highlightAllFormsMenuItem
-            0
+            1
         );
-    }
-
-    /**
-     * @since 2.20.0
-     */
-    public function highlightAllFormsMenuItem()
-    {
-        global $submenu;
-        $pages = [
-            '/wp-admin/admin.php?page=give-forms', // Donation main menu page.
-            '/wp-admin/edit.php?post_type=give_forms', // Legacy donation form listing page.
-        ];
-
-        if (in_array($_SERVER['REQUEST_URI'], $pages)) {
-            // Add class to highlight 'All Forms' submenu.
-            $submenu['edit.php?post_type=give_forms'][0][4] = add_cssclass(
-                'current',
-                isset($submenu['edit.php?post_type=give_forms'][0][4]) ? $submenu['edit.php?post_type=give_forms'][0][4] : ''
-            );
-        }
     }
 
     /**
      * Load scripts
      *
+     * @since TBD Localize newFormUrl here instead of relying on the form builder to attach it to this script.
      * @since 3.22.0 Add locale support
      */
     public function loadScripts()
@@ -125,6 +105,7 @@ class DonationFormsAdminPage
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
             'locale' => Language::getLocale(),
+            'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute()->getUrl(),
             'swrConfig' => [
                 'revalidateOnFocus' => false
             ],

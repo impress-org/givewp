@@ -18,27 +18,27 @@ class CampaignColumnTest extends TestCase
     /**
      * @since TBD
      */
-    public function testShowsFormTitleWhenDonationHasNoCampaign()
+    public function testSaysNoCampaignWhenDonationHasNoCampaign()
     {
         $donation = new Donation([
             'campaignId' => 0,
             'formTitle' => 'Standalone Form',
         ]);
 
-        $this->assertSame('Standalone Form', (new CampaignColumn())->getCellValue($donation));
+        $this->assertSame('No campaign', (new CampaignColumn())->getCellValue($donation));
     }
 
     /**
      * @since TBD
      */
-    public function testShowsFormTitleWhenCampaignNoLongerExists()
+    public function testSaysNoCampaignWhenCampaignNoLongerExists()
     {
         $donation = new Donation([
             'campaignId' => 999999,
             'formTitle' => 'Orphaned Form',
         ]);
 
-        $this->assertSame('Orphaned Form', (new CampaignColumn())->getCellValue($donation));
+        $this->assertSame('No campaign', (new CampaignColumn())->getCellValue($donation));
     }
 
     /**

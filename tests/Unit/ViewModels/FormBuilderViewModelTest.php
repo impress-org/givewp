@@ -6,6 +6,8 @@ use Give\DonationForms\Actions\GenerateDonationFormPageUrl;
 use Exception;
 use Give\DonationForms\Actions\GenerateDonationFormPreviewRouteUrl;
 use Give\DonationForms\Actions\GenerateExternalEmbedScriptUrl;
+use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMetaKeys;
@@ -14,6 +16,7 @@ use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\FormBuilder\DataTransferObjects\EmailNotificationData;
 use Give\FormBuilder\ValueObjects\FormBuilderRestRouteConfig;
 use Give\FormBuilder\ViewModels\FormBuilderViewModel;
+use Give\Framework\Database\DB;
 use Give\Framework\FormDesigns\FormDesign;
 use Give\Framework\FormDesigns\Registrars\FormDesignRegistrar;
 use Give\Helpers\IntlTelInput;
@@ -25,6 +28,39 @@ use Give_License;
 class FormBuilderViewModelTest extends TestCase
 {
     use RefreshDatabase;
+
+    /**
+     * @since TBD
+     */
+    public function testGoalSourceOptionsOnlyIncludeCampaignWhenFormHasOne()
+    {
+        $viewModel = new FormBuilderViewModel();
+        $standaloneForm = DonationForm::factory()->create();
+        $campaignForm = DonationForm::factory()->create();
+        $campaign = Campaign::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($campaign, $campaignForm->id);
+
+        $this->assertSame(['form'], array_column($viewModel->getGoalSourceOptions($standaloneForm->id), 'value'));
+        $this->assertSame(['campaign', 'form'], array_column($viewModel->getGoalSourceOptions($campaignForm->id), 'value'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testGoalSourceOptionsExcludeCampaignForFormLinkedOnlyByCampaignFormId()
+    {
+        $viewModel = new FormBuilderViewModel();
+        $campaign = Campaign::factory()->create();
+        $form = DonationForm::factory()->create();
+
+        /* A Peer-to-Peer campaign links its form through give_campaigns.form_id with no give_campaign_forms row. */
+        DB::table('give_campaigns')
+            ->where('id', $campaign->id)
+            ->update(['form_id' => $form->id]);
+
+        $this->assertNull(Campaign::findByFormId($form->id));
+        $this->assertSame(['form'], array_column($viewModel->getGoalSourceOptions($form->id), 'value'));
+    }
 
     /**
      * @since TBD Add externalEmbedScriptUrl key, naming the form, to the compared array
@@ -93,7 +129,7 @@ class FormBuilderViewModelTest extends TestCase
                     'agreementText' => give_get_option('agreement_text'),
                 ],
                 'goalTypeOptions' => $viewModel->getGoalTypeOptions(),
-                'goalSourceOptions' => $viewModel->getGoalSourceOptions(),
+                'goalSourceOptions' => $viewModel->getGoalSourceOptions($formId),
                 'goalProgressOptions' => $viewModel->getGoalProgressOptions(),
                 'nameTitlePrefixes' => give_get_option('title_prefixes', array_values(give_get_default_title_prefixes())),
                 'isExcerptEnabled' => give_is_setting_enabled(give_get_option('forms_excerpt')),

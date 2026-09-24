@@ -1,0 +1,4 @@
+significance: minor
+type: feature
+entry: Added the ability to create and edit donation forms without a campaign, and brought back the Forms list with a Campaign column, a "No campaign" filter, and a link-to-campaign action
+timestamp: 2026-09-21T00:00:00.000Z

@@ -1,4 +1,4 @@
-import React, {CSSProperties, useState} from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 import {
     __experimentalNumberControl as NumberControl,
     Icon,
@@ -83,6 +83,18 @@ const DonationGoal = ({dispatch}) => {
     const selectedGoalDescription = selectedGoalType ? selectedGoalType.description : '';
     const selectedGoalSource = goalSourceOptions.find((option) => option.value === goalSource);
     const selectedGoalSourceDescription = selectedGoalSource ? selectedGoalSource.description : '';
+
+    /**
+     * A form whose campaign was removed can still carry goalSource "campaign". Fall back to its own goal.
+     *
+     * @since TBD
+     */
+    useEffect(() => {
+        if (!selectedGoalSource) {
+            dispatch(setFormSettings({goalSource: 'form'}));
+            publishGoalSource({goalSource: 'form'});
+        }
+    }, [selectedGoalSource]);
     const selectedGoalProgressType = goalProgressOptions.find((option) => option.value === goalProgressType);
     const selectedGoalProgressDescription = selectedGoalProgressType ? selectedGoalProgressType.description : '';
 
@@ -102,18 +114,20 @@ const DonationGoal = ({dispatch}) => {
 
             {enableDonationGoal && (
                 <>
-                    <PanelRow>
-                        <SelectControl
-                            label={__('Form Goal', 'give')}
-                            value={goalSource}
-                            options={goalSourceOptions}
-                            onChange={(goalSource: string) => {
-                                dispatch(setFormSettings({goalSource}));
-                                publishGoalSource({goalSource});
-                            }}
-                            help={selectedGoalSourceDescription}
-                        />
-                    </PanelRow>
+                    {goalSourceOptions.length > 1 && (
+                        <PanelRow>
+                            <SelectControl
+                                label={__('Form Goal', 'give')}
+                                value={goalSource}
+                                options={goalSourceOptions}
+                                onChange={(goalSource: string) => {
+                                    dispatch(setFormSettings({goalSource}));
+                                    publishGoalSource({goalSource});
+                                }}
+                                help={selectedGoalSourceDescription}
+                            />
+                        </PanelRow>
+                    )}
                     {goalSource === 'form' ? (
                         <>
                             <PanelRow>

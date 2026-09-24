@@ -35,7 +35,7 @@ class CampaignColumn extends ModelColumn
     }
 
     /**
-     * @since TBD Show the form title when the donation has no campaign or its campaign no longer exists.
+     * @since TBD Say "No campaign" when the donation has no campaign or its campaign no longer exists.
      * @since 4.8.0 Added class to link
      * @since 4.3.0
      *
@@ -48,7 +48,7 @@ class CampaignColumn extends ModelColumn
         $campaign = $model->campaignId ? $model->campaign : null;
 
         if ( ! $campaign) {
-            return esc_html($model->formTitle);
+            return __('No campaign', 'give');
         }
 
         return sprintf(
