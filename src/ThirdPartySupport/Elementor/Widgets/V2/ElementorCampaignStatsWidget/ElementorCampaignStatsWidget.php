@@ -139,6 +139,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
     }
 
     /**
+     * @since TBD Escape output.
      * @since 4.7.0
      */
     protected function render(): void
@@ -152,9 +153,7 @@ class ElementorCampaignStatsWidget extends Widget_Base
         }
 
         $shortcode = give(CampaignStatsShortcode::class);
-        echo $shortcode->renderShortcode([
-            'campaign_id' => $campaignId,
-            'statistic' => $statistic,
-        ]);
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $shortcode->renderShortcode() renders our own shortcode; its output is escaped internally.
+        echo $shortcode->renderShortcode(['campaign_id' => $campaignId, 'statistic' => $statistic]);
     }
 }
