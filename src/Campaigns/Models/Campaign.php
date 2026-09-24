@@ -90,7 +90,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
                     ->on('campaign_forms.form_id', 'id');
             })
             ->where('campaign_forms.campaign_id', $this->id)
-            ->groupBy('ID');
+            ->groupBy('forms.ID');
     }
 
     /**
