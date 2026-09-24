@@ -412,6 +412,8 @@ function give_get_host() {
  *       and the version the function was deprecated in.
  * @uses apply_filters() Calls 'give_deprecated_function_trigger_error' and expects boolean value of true to do
  *       trigger or false to not trigger error.
+ *
+ * @since TBD Escape output.
  */
 function _give_deprecated_function( $function, $version, $replacement = null, $backtrace = null ) {
 
@@ -433,12 +435,12 @@ function _give_deprecated_function( $function, $version, $replacement = null, $b
 	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'give_deprecated_function_trigger_error', $show_errors ) ) {
 		if ( ! is_null( $replacement ) ) {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead.', 'give' ), $function, $version, $replacement ) );
-			trigger_error( print_r( $backtrace, 1 ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s! Use %3$s instead.', 'give' ), esc_html( $function ), esc_html( $version ), esc_html( $replacement ) ) ) );
+			trigger_error( esc_html( print_r( $backtrace, 1 ) ) ); // Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
 		} else {
-			trigger_error( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available.', 'give' ), $function, $version ) );
-			trigger_error( print_r( $backtrace, 1 ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+			trigger_error( wp_kses_post( sprintf( __( '%1$s is <strong>deprecated</strong> since GiveWP version %2$s with no alternative available.', 'give' ), esc_html( $function ), esc_html( $version ) ) ) );
+			trigger_error( esc_html( print_r( $backtrace, 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 			// Alternatively we could dump this to a file.
 		}
 	}
@@ -610,6 +612,8 @@ if ( ! function_exists( 'array_column' ) ) {
 	 *                              the returned array. This value may be the integer key
 	 *                              of the column, or it may be the string key name.
 	 *
+	 * @since TBD Escape output.
+	 *
 	 * @return array|boolean|null
 	 */
 	function array_column( $input = null, $columnKey = null, $indexKey = null ) {
@@ -620,13 +624,13 @@ if ( ! function_exists( 'array_column' ) ) {
 		$params = func_get_args();
 
 		if ( $argc < 2 ) {
-			trigger_error( sprintf( 'array_column() expects at least 2 parameters, %s given.', $argc ), E_USER_WARNING );
+			trigger_error( esc_html( sprintf( 'array_column() expects at least 2 parameters, %s given.', $argc ) ), E_USER_WARNING );
 
 			return null;
 		}
 
 		if ( ! is_array( $params[0] ) ) {
-			trigger_error( sprintf( 'array_column() expects parameter 1 to be array, %s given.', gettype( $params[0] ) ), E_USER_WARNING );
+			trigger_error( esc_html( sprintf( 'array_column() expects parameter 1 to be array, %s given.', gettype( $params[0] ) ) ), E_USER_WARNING );
 
 			return null;
 		}
@@ -1568,6 +1572,7 @@ function give_get_limit_display_donations() {
 /**
  * Add footer to the table when donor is view the donation history page with out login
  *
+ * @since TBD Escape output.
  * @since 1.8.17
  */
 function give_donation_history_table_end() {
@@ -1579,11 +1584,11 @@ function give_donation_history_table_end() {
 				<div class="give-security-wrap">
 					<div class="give-security-column give-security-description-wrap">
 						<?php
-						echo sprintf( __( 'For security reasons, please confirm your email address (%s) to view your complete donation history.', 'give' ), $email );
+						echo esc_html( sprintf( __( 'For security reasons, please confirm your email address (%s) to view your complete donation history.', 'give' ), $email ) );
 						?>
 					</div>
 					<div class="give-security-column give-security-button-wrap">
-						<a href="#" data-email="<?php echo $email; ?>" id="give-confirm-email-btn"
+						<a href="#" data-email="<?php echo esc_attr( $email ); ?>" id="give-confirm-email-btn"
 						   class="give-confirm-email-btn give-btn">
 							<?php _e( 'Confirm Email', 'give' ); ?>
 						</a>
@@ -1605,6 +1610,7 @@ function give_donation_history_table_end() {
  * @param string $version deprecated
  *
  * @return void
+ * @since  TBD Escape output.
  * @since  1.8.18
  * @since  2.5.13 Refactor function
  */
@@ -1626,8 +1632,8 @@ function give_doing_it_wrong( $function, $message, $version = null ) {
 
 	// Allow plugin to filter the output error trigger.
 	if ( WP_DEBUG && apply_filters( 'give_doing_it_wrong_trigger_error', $show_errors ) ) {
-		trigger_error( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s', 'give' ), $function, $message ) );
-		trigger_error( print_r( wp_debug_backtrace_summary(), 1 ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
+		trigger_error( wp_kses_post( sprintf( __( '%1$s was called <strong>incorrectly</strong>. %2$s', 'give' ), esc_html( $function ), esc_html( $message ) ) ) );
+		trigger_error( esc_html( print_r( wp_debug_backtrace_summary(), 1 ) ) );// Limited to previous 1028 characters, but since we only need to move back 1 in stack that should be fine.
 	}
 }
 
@@ -2370,6 +2376,7 @@ function give_get_view_receipt_url( $donation_id ) {
  * @param $args
  *
  * @return bool|mixed
+ * @since TBD Escape output.
  * @since 2.4.1
  */
 function give_display_donation_receipt( $args ) {
@@ -2397,7 +2404,7 @@ function give_display_donation_receipt( $args ) {
 			if ( $is_email_access ) {
 				give_get_template_part( 'email-login-form' );
 			} else {
-				echo Give_Notices::print_frontend_notice( $args['error'], false, 'error' );
+				echo wp_kses_post( Give_Notices::print_frontend_notice( $args['error'], false, 'error' ) );
 			}
 
 			return ob_get_clean();
@@ -2415,10 +2422,12 @@ function give_display_donation_receipt( $args ) {
 				 */
 				$donor_mismatch_text = apply_filters( 'give_receipt_donor_mismatch_notice_text', __( 'You are trying to access invalid donation receipt. Please try again.', 'give' ) );
 
-				echo Give_Notices::print_frontend_notice(
-					$donor_mismatch_text,
-					false,
-					'error'
+				echo wp_kses_post(
+					Give_Notices::print_frontend_notice(
+						$donor_mismatch_text,
+						false,
+						'error'
+					)
 				);
 
 			} elseif ( $is_email_access ) {
