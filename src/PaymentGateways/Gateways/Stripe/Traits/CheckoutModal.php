@@ -134,7 +134,7 @@ trait CheckoutModal
                                 esc_attr( "give-stripe-checkout-modal-donate-button-{$idPrefix}" ),
                                 esc_attr($display_label),
                                 'give_stripe_modal_donate',
-                                (int) FormUtils::isLegacyForm()
+                                FormUtils::isLegacyForm() ? '1' : ''
                             );
                             ?>
                             <span class="give-loading-animation"></span>
