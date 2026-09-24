@@ -26,6 +26,7 @@ class RegisterEventsMenuItem
     /**
      * Render admin page container
      *
+     * @since TBD Escape output.
      * @since 3.6.0
      */
     public function render()
@@ -34,7 +35,7 @@ class RegisterEventsMenuItem
             $event = Event::find(absint($_GET['id']));
 
             if (!$event) {
-                wp_die(__('Event not found', 'give-event-tickets'), 404);
+                wp_die(esc_html__('Event not found', 'give-event-tickets'), 404);
             }
 
             give(EnqueueEventDetailsScripts::class)($event);
