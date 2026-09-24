@@ -77,7 +77,10 @@ class AddIndexesToDonationMetaTable extends Migration
             DB::query("ALTER TABLE {$table} " . implode(', ', $clauses));
         } catch (DatabaseQueryException $exception) {
             // Another request may have built the indexes while this one waited on the table lock.
-            if (!array_diff($wanted, DB::get_col("SHOW INDEX FROM {$table}", 2))) {
+            // Only the finished layout counts, so a failed DROP alone still fails the migration.
+            $indexes = DB::get_col("SHOW INDEX FROM {$table}", 2);
+
+            if (!array_diff($wanted, $indexes) && !array_intersect(['donation_id', 'meta_key'], $indexes)) {
                 return;
             }
 

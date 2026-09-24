@@ -11,6 +11,7 @@ use Give\Donations\Models\Donation;
 use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\ModelColumn;
 use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
@@ -483,6 +484,57 @@ class TestListDonations extends TestCase
         }
 
         $this->assertSame(array_values($byAmount), $ids);
+    }
+
+    /**
+     * Add-ons register sortable columns through givewp_donations_list_table, so any donation meta
+     * key has to be sortable, not only the ones core columns use.
+     *
+     * @since TBD
+     */
+    public function testSortsByAddOnColumnOnAnyMetaKey()
+    {
+        $listTable = give(DonationsListTable::class);
+        $listTable->addColumn(new class extends ModelColumn {
+            protected $sortColumn = 'company';
+
+            public static function getId(): string
+            {
+                return 'company';
+            }
+
+            public function getLabel(): string
+            {
+                return 'Company';
+            }
+
+            public function getCellValue($model): string
+            {
+                return (string)$model->company;
+            }
+        });
+
+        $expected = [];
+        foreach (['Zebra', 'Apple', 'Mango'] as $company) {
+            $expected[$company] = Donation::factory()->create([
+                'mode' => DonationMode::TEST(),
+                'company' => $company,
+            ])->id;
+        }
+        ksort($expected);
+
+        $request = $this->getMockRequest();
+        $request->set_param('page', 1);
+        $request->set_param('perPage', 10);
+        $request->set_param('locale', 'en-US');
+        $request->set_param('testMode', true);
+        $request->set_param('sortColumn', 'company');
+        $request->set_param('sortDirection', 'asc');
+
+        $response = (new ListDonations($listTable))->handleRequest($request);
+        $listTable->removeColumn('company');
+
+        $this->assertSame(array_values($expected), array_map('intval', array_column($response->data['items'], 'id')));
     }
 
     /**

@@ -195,7 +195,12 @@ class ListDonations extends Endpoint
 
         // Resolve the page of IDs against the posts table with only the meta the filters and sort
         // need, then hydrate those rows. Paging the fully joined model query scans every row.
-        $idQuery = DB::table('posts')->select(['ID', 'id'], ['post_date', 'createdAt'], ['post_status', 'status']);
+        $idQuery = DB::table('posts')->select(
+            ['ID', 'id'],
+            ['post_date', 'createdAt'],
+            ['post_modified', 'updatedAt'],
+            ['post_status', 'status']
+        );
         list($idQuery, $dependencies) = $this->getWhereConditions($idQuery);
         $dependencies = array_merge($dependencies, $this->getSortDependencies($sortColumns));
 
@@ -239,15 +244,8 @@ class ListDonations extends Endpoint
     private function getSortDependencies(array $sortColumns): array
     {
         $sortSql = implode(' ', $sortColumns);
-        $candidates = [
-            DonationMetaKeys::FIRST_NAME(),
-            DonationMetaKeys::LAST_NAME(),
-            DonationMetaKeys::AMOUNT(),
-            DonationMetaKeys::EXCHANGE_RATE(),
-            DonationMetaKeys::GATEWAY(),
-        ];
 
-        return array_values(array_filter($candidates, static function (DonationMetaKeys $key) use ($sortSql) {
+        return array_values(array_filter(DonationMetaKeys::values(), static function (DonationMetaKeys $key) use ($sortSql) {
             return strpos($sortSql, $key->getKeyAsCamelCase()) !== false;
         }));
     }
