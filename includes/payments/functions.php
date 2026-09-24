@@ -1738,6 +1738,7 @@ function give_get_price_id( $form_id, $price ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decides if print form dropdown html output or not.
  *
+ * @since TBD Escape output.
  * @since 1.6
  *
  * @return string
@@ -1749,6 +1750,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
 		return $form_dropdown_html;
 	}
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 	echo $form_dropdown_html;
 }
 
@@ -1758,6 +1760,7 @@ function give_get_form_dropdown( $args = [], $echo = false ) {
  * @param array $args Arguments for form dropdown.
  * @param bool  $echo This parameter decide if print form dropdown html output or not.
  *
+ * @since TBD Escape output.
  * @since 1.6
  * @since 2.12.0 Show "Custom" choice in select field if donation created with cusotm amount
  *
@@ -1809,6 +1812,7 @@ function give_get_form_variable_price_dropdown( $args = [], $echo = false ) {
 		return $form_dropdown_html;
 	}
 
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a <select> control; wp_kses_post() would strip it.
 	echo $form_dropdown_html;
 }
 
