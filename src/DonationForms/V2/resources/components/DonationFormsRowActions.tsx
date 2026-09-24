@@ -8,6 +8,7 @@ import {Interweave} from 'interweave';
 import {UpgradeModalContent} from './Migration';
 import LinkToCampaignRowAction from './LinkToCampaignModal';
 import {createInterpolateElement} from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 const donationFormsApi = new ListTableApi(window.GiveDonationForms);
 
@@ -94,6 +95,41 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
         );
     };
 
+    const confirmRemoveFromCampaignModal = (event) => {
+        showConfirmModal(
+            __('Remove from campaign', 'give'),
+            () => (
+                <p>
+                    {createInterpolateElement(
+                        sprintf(
+                            /* translators: 1: form title, 2: campaign title */
+                            __(
+                                'Remove <form>%1$s</form> from <campaign>%2$s</campaign>? The form keeps working on its own, and its past donations stay with the campaign.',
+                                'give'
+                            ),
+                            item?.name,
+                            item?.campaignTitle
+                        ),
+                        {
+                            form: <strong><Interweave content={item?.name} /></strong>,
+                            campaign: <strong><Interweave content={item?.campaignTitle} /></strong>,
+                        }
+                    )}
+                </p>
+            ),
+            async () => {
+                await apiFetch({
+                    path: '/givewp/v3/detach-forms-from-campaign',
+                    method: 'POST',
+                    data: {formIDs: [item.id]},
+                });
+                await mutate(parameters);
+            },
+            'warning',
+            __('Remove form', 'give')
+        );
+    };
+
     const copyShortcode = (event) => {
         navigator.clipboard.writeText(`[give_form id="${item.id}"]`);
         alert(sprintf(__('The shortcode for Donation Form #%d has been copied to your clipboard!', 'give'), item.id));
@@ -157,6 +193,14 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             onClick={confirmDefaultCampaignFormModal}
                             actionId={item.id}
                             displayText={__('Make as default', 'give')}
+                            hiddenText={item?.name}
+                        />
+                    )}
+                    {item.campaignId > 0 && item.campaignType !== 'p2p' && !item.isDefaultCampaignForm && (
+                        <RowAction
+                            onClick={confirmRemoveFromCampaignModal}
+                            actionId={item.id}
+                            displayText={__('Remove from campaign', 'give')}
                             hiddenText={item?.name}
                         />
                     )}

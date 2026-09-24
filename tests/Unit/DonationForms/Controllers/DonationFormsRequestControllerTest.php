@@ -122,4 +122,39 @@ class DonationFormsRequestControllerTest extends TestCase
         $this->assertSame(400, $response->get_status());
         $this->assertNull(Campaign::findByFormId($form->id));
     }
+
+    /**
+     * @since TBD
+     */
+    public function testDetachFormsFromCampaignLeavesTheFormStandaloneAndRefreshesTheCampaign(): void
+    {
+        $campaign = Campaign::factory()->create();
+        $form = DonationForm::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($campaign, $form->id);
+
+        $request = new WP_REST_Request('POST', '/givewp/v3/detach-forms-from-campaign');
+        $request->set_param('formIDs', [$form->id]);
+
+        $response = (new DonationFormsRequestController())->detachFormsFromCampaign($request);
+
+        $this->assertSame(200, $response->get_status());
+        $this->assertNull(Campaign::findByFormId($form->id));
+        $this->assertTrue(as_has_scheduled_action('givewp_cache_campaign_data', [$campaign->id], 'givewp_campaigns_cache'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testDetachFormsFromCampaignRefusesTheDefaultForm(): void
+    {
+        $campaign = Campaign::factory()->create();
+
+        $request = new WP_REST_Request('POST', '/givewp/v3/detach-forms-from-campaign');
+        $request->set_param('formIDs', [$campaign->defaultFormId]);
+
+        $response = (new DonationFormsRequestController())->detachFormsFromCampaign($request);
+
+        $this->assertSame(400, $response->get_status());
+        $this->assertSame($campaign->id, Campaign::findByFormId($campaign->defaultFormId)->id);
+    }
 }

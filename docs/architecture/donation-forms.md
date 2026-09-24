@@ -163,8 +163,9 @@ form belongs to at most one campaign. `CampaignRepository::addCampaignForm()` at
 can be neither detached nor moved until another form is made the default. Moving a form does not
 move its donations — a donation records its campaign at insert time (`_give_campaign_id` meta and
 `give_revenue.campaign_id`), so past donations stay with the original campaign and cached campaign
-totals (`givewp_cache_campaign_data`) are refreshed for both. Peer-to-Peer campaigns link their
-form through `give_campaigns.form_id` instead and are not moved. Campaigns own the goal, and
+totals (`givewp_cache_campaign_data`) are refreshed for both. The `associate-forms-with-campaign`
+and `detach-forms-from-campaign` routes are the REST surface for attach, move and detach. Peer-to-Peer
+campaigns link their form through `give_campaigns.form_id` instead and are neither moved nor detached. Campaigns own the goal, and
 `Campaigns/Actions/FormInheritsCampaignGoal.php` pushes it down to the form.
 
 So a form's goal may not be the form's own setting. Creating a form outside a campaign context

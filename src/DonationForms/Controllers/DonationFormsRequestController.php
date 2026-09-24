@@ -200,4 +200,68 @@ class DonationFormsRequestController
 
         return new WP_REST_Response($formIDs);
     }
+
+    /**
+     * Detaches forms from their campaigns so they become standalone forms. Past donations stay
+     * with the campaign. A campaign's default form and forms of non-core campaigns cannot be
+     * detached, and nothing is detached when any form in the request is refused.
+     *
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function detachFormsFromCampaign(WP_REST_Request $request): WP_REST_Response
+    {
+        $formIDs = array_map('intval', (array)$request->get_param('formIDs'));
+        $campaignRepository = give(CampaignRepository::class);
+
+        if ( ! $formIDs) {
+            return new WP_REST_Response([]);
+        }
+
+        $nonCoreForms = DB::table('give_campaigns')
+            ->select('form_id')
+            ->where('campaign_type', CampaignType::CORE, '!=')
+            ->whereIn('form_id', $formIDs)
+            ->getAll();
+
+        if ($nonCoreForms) {
+            return new WP_REST_Response([
+                'code' => 'givewp_non_core_campaign_form',
+                'message' => __('Only forms that belong to a regular campaign can be removed from it.', 'give'),
+            ], 400);
+        }
+
+        $campaignsByForm = [];
+
+        try {
+            foreach ($formIDs as $formID) {
+                $campaign = $campaignRepository->getByFormId($formID);
+
+                if ( ! $campaign) {
+                    continue;
+                }
+
+                $campaignRepository->validateFormIsNotDefault($campaign, $formID);
+                $campaignsByForm[$formID] = $campaign;
+            }
+        } catch (InvalidArgumentException $exception) {
+            return new WP_REST_Response([
+                'code' => 'givewp_default_campaign_form',
+                'message' => $exception->getMessage(),
+            ], 400);
+        }
+
+        try {
+            foreach ($campaignsByForm as $formID => $campaign) {
+                $campaignRepository->removeCampaignForm($campaign, $formID);
+            }
+        } finally {
+            foreach (array_unique(array_column($campaignsByForm, 'id')) as $id) {
+                give(CacheCampaignData::class)->dispatch($id);
+            }
+        }
+
+        return new WP_REST_Response($formIDs);
+    }
 }
