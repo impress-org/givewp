@@ -141,6 +141,7 @@ class GiveLoginWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
+     * @since TBD Escape output.
      * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
@@ -174,7 +175,7 @@ class GiveLoginWidget extends Widget_Base
 					</div>
 
 					<div class="give-lost-password give-login">
-						<a href="<?php echo get_site_url(); ?>/wp-login.php?action=lostpassword">
+						<a href="<?php echo esc_url(get_site_url()); ?>/wp-login.php?action=lostpassword">
 							<?php _e('Reset Password', 'give'); ?></a>
 					</div>
 				</fieldset>
@@ -190,8 +191,10 @@ class GiveLoginWidget extends Widget_Base
 
         // Conditionally show frontend or preview form
         if (!\Elementor\Plugin::$instance->editor->is_edit_mode()) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $html is do_shortcode() output of our own shortcode; the shortcode template escapes its values.
             echo $html;
         } else {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $preview is the static login form markup built above; wp_kses_post() would strip its form/input elements.
             echo $preview;
         }
 
