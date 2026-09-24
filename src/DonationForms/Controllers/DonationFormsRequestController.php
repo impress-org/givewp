@@ -148,6 +148,10 @@ class DonationFormsRequestController
             return new WP_REST_Response('Campaign not found', 404);
         }
 
+        if ( ! $formIDs) {
+            return new WP_REST_Response([]);
+        }
+
         $peerToPeerForms = DB::table('give_campaigns')
             ->select('form_id')
             ->where('campaign_type', CampaignType::CORE, '!=')
@@ -161,8 +165,23 @@ class DonationFormsRequestController
             ], 400);
         }
 
+        /* Refuse the whole request before moving anything, so a batch never half-applies. */
+        try {
+            foreach ($formIDs as $formID) {
+                $currentCampaign = $campaignRepository->getByFormId($formID);
+
+                if ($currentCampaign && $currentCampaign->id !== $campaign->id) {
+                    $campaignRepository->assertNotDefaultForm($currentCampaign, $formID);
+                }
+            }
+        } catch (InvalidArgumentException $exception) {
+            return new WP_REST_Response([
+                'code' => 'givewp_default_campaign_form',
+                'message' => $exception->getMessage(),
+            ], 400);
+        }
+
         $campaignIdsToRefresh = [$campaign->id];
-        $response = new WP_REST_Response($formIDs);
 
         try {
             foreach ($formIDs as $formID) {
@@ -172,18 +191,12 @@ class DonationFormsRequestController
                     $campaignIdsToRefresh[] = $previousCampaign->id;
                 }
             }
-        } catch (InvalidArgumentException $exception) {
-            $response = new WP_REST_Response([
-                'code' => 'givewp_default_campaign_form',
-                'message' => $exception->getMessage(),
-            ], 400);
+        } finally {
+            foreach (array_unique($campaignIdsToRefresh) as $id) {
+                give(CacheCampaignData::class)->dispatch($id);
+            }
         }
 
-        /* Forms moved before a refused one stay moved, so refresh every campaign touched. */
-        foreach (array_unique($campaignIdsToRefresh) as $id) {
-            give(CacheCampaignData::class)->dispatch($id);
-        }
-
-        return $response;
+        return new WP_REST_Response($formIDs);
     }
 }

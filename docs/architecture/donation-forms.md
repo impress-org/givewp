@@ -159,7 +159,7 @@ purposes — don't confuse it with the migration pipeline.
 Since 4.0 a form may belong to a campaign, joined through the `give_campaign_forms` table
 (`src/Campaigns/Migrations/Tables/CreateCampaignFormsTable.php`). `form_id` is unique there: a
 form belongs to at most one campaign. `CampaignRepository::addCampaignForm()` attaches,
-`removeCampaignForm()` detaches, and `moveCampaignForm()` does both; the campaign's default form
+`removeCampaignForm()` detaches, and `moveCampaignForm()` re-points the row in one update; the campaign's default form
 can be neither detached nor moved until another form is made the default. Moving a form does not
 move its donations — a donation records its campaign at insert time (`_give_campaign_id` meta and
 `give_revenue.campaign_id`), so past donations stay with the original campaign and cached campaign

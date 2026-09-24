@@ -63,6 +63,29 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
     /**
      * @since TBD
      */
+    public function testRepointsTheDefaultFormOfACampaignThatLostTheLink(): void
+    {
+        $this->dropUniqueKey();
+
+        $winner = Campaign::factory()->create();
+        $loser = Campaign::factory()->create();
+        $shared = DonationForm::find($winner->defaultFormId);
+
+        DB::table('give_campaign_forms')->insert(['campaign_id' => $loser->id, 'form_id' => $shared->id]);
+        DB::table('give_campaigns')->where('id', $loser->id)->update(['form_id' => $shared->id]);
+
+        (new AddUniqueFormIdToCampaignFormsTable())->run();
+
+        $loserDefaultFormId = Campaign::find($loser->id)->defaultFormId;
+
+        $this->assertEquals($winner->id, Campaign::findByFormId($shared->id)->id);
+        $this->assertNotEquals($shared->id, $loserDefaultFormId);
+        $this->assertEquals($loser->id, Campaign::findByFormId($loserDefaultFormId)->id);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testRunningTwiceIsSafe(): void
     {
         (new AddUniqueFormIdToCampaignFormsTable())->run();

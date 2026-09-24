@@ -73,6 +73,21 @@ class AddUniqueFormIdToCampaignFormsTable extends Migration
                 WHERE campaign_forms.campaign_id <> keep.keep_campaign_id"
             );
 
+            /*
+             * A campaign that lost a link may still name that form as its default. Point it at
+             * another of its own forms so the default form is one it actually owns.
+             */
+            DB::query(
+                "UPDATE $campaigns AS campaigns
+                INNER JOIN (
+                    SELECT campaign_id, MIN(form_id) AS form_id FROM $table GROUP BY campaign_id
+                ) AS owned ON owned.campaign_id = campaigns.id
+                LEFT JOIN $table AS default_link
+                    ON default_link.campaign_id = campaigns.id AND default_link.form_id = campaigns.form_id
+                SET campaigns.form_id = owned.form_id
+                WHERE default_link.form_id IS NULL"
+            );
+
             $isUnique = DB::get_var(
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS
                 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = '$table'

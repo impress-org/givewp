@@ -84,6 +84,26 @@ class DonationFormsRequestControllerTest extends TestCase
     /**
      * @since TBD
      */
+    public function testAssociateFormsWithCampaignMovesNothingWhenOneFormIsADefaultForm(): void
+    {
+        $from = Campaign::factory()->create();
+        $to = Campaign::factory()->create();
+        $movable = DonationForm::factory()->create();
+        give(CampaignRepository::class)->addCampaignForm($from, $movable->id);
+
+        $request = new WP_REST_Request('POST', '/givewp/v3/associate-forms-with-campaign');
+        $request->set_param('campaignId', $to->id);
+        $request->set_param('formIDs', [$movable->id, $from->defaultFormId]);
+
+        $response = (new DonationFormsRequestController())->associateFormsWithCampaign($request);
+
+        $this->assertSame(400, $response->get_status());
+        $this->assertSame($from->id, Campaign::findByFormId($movable->id)->id);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testAssociateFormsWithCampaignRefusesAPeerToPeerForm(): void
     {
         $to = Campaign::factory()->create();

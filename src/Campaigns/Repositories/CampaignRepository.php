@@ -236,14 +236,7 @@ class CampaignRepository
      */
     public function removeCampaignForm(Campaign $campaign, int $donationFormId): void
     {
-        if ($campaign->defaultFormId === $donationFormId) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    __('This form is the default form for the campaign "%s". Choose a new default form for that campaign first.', 'give'),
-                    $campaign->title
-                )
-            );
-        }
+        $this->assertNotDefaultForm($campaign, $donationFormId);
 
         Hooks::doAction('givewp_campaign_form_relationship_deleting', $campaign, $donationFormId);
 
@@ -256,31 +249,65 @@ class CampaignRepository
     }
 
     /**
-     * Attach a form to a campaign, detaching it from the campaign it currently belongs to.
+     * Attach a form to a campaign, taking it away from the campaign it currently belongs to.
      * A form only ever belongs to one campaign; past donations stay with the original campaign
-     * and only donations made after the move count toward the new one.
+     * and only donations made after the move count toward the new one. The current campaign's
+     * default form cannot be moved.
      *
      * @since TBD
      *
      * @return Campaign|null the campaign the form was moved out of, if any
      *
+     * @throws InvalidArgumentException when the form is its current campaign's default form
      * @throws Exception
      */
     public function moveCampaignForm(Campaign $campaign, int $donationFormId): ?Campaign
     {
         $currentCampaign = $this->getByFormId($donationFormId);
 
-        if ($currentCampaign && $currentCampaign->id === $campaign->id) {
+        if ( ! $currentCampaign) {
+            $this->addCampaignForm($campaign, $donationFormId);
+
             return null;
         }
 
-        if ($currentCampaign) {
-            $this->removeCampaignForm($currentCampaign, $donationFormId);
+        if ($currentCampaign->id === $campaign->id) {
+            return null;
         }
 
-        $this->addCampaignForm($campaign, $donationFormId);
+        $this->assertNotDefaultForm($currentCampaign, $donationFormId);
+
+        Hooks::doAction('givewp_campaign_form_relationship_deleting', $currentCampaign, $donationFormId);
+        Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationFormId, false);
+
+        /* One update keeps the move atomic: the form is never left without a campaign. */
+        DB::table('give_campaign_forms')
+            ->where('form_id', $donationFormId)
+            ->update(['campaign_id' => $campaign->id]);
+
+        Hooks::doAction('givewp_campaign_form_relationship_deleted', $currentCampaign, $donationFormId);
+        Hooks::doAction('givewp_campaign_form_relationship_created', $campaign, $donationFormId, false);
 
         return $currentCampaign;
+    }
+
+    /**
+     * @since TBD
+     *
+     * @throws InvalidArgumentException
+     */
+    public function assertNotDefaultForm(Campaign $campaign, int $donationFormId): void
+    {
+        if ($campaign->defaultFormId !== $donationFormId) {
+            return;
+        }
+
+        throw new InvalidArgumentException(
+            sprintf(
+                __('This form is the default form for the campaign "%s". Choose a new default form for that campaign first.', 'give'),
+                $campaign->title
+            )
+        );
     }
 
     /**
