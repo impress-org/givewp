@@ -12,6 +12,8 @@ import styles from './LinkToCampaignModal.module.scss';
 type LinkToCampaignProps = {
     formId: number;
     formTitle: string;
+    /** The campaign the form belongs to now, or 0 for a standalone form. */
+    campaignId: number;
     onLinked: () => Promise<void>;
 };
 
@@ -23,10 +25,11 @@ type LinkToCampaignModalProps = LinkToCampaignProps & {
 /**
  * Row action that owns the modal state. It is a real component so the parent row-actions
  * function stays hook-free and the row count can change without breaking React's hook order.
+ * A standalone form gets "Link to campaign"; a form that already has one gets "Move to campaign".
  *
  * @since TBD
  */
-export default function LinkToCampaignRowAction({formId, formTitle, onLinked}: LinkToCampaignProps) {
+export default function LinkToCampaignRowAction({formId, formTitle, campaignId, onLinked}: LinkToCampaignProps) {
     const [isOpen, setOpen] = useState(false);
 
     return (
@@ -34,7 +37,7 @@ export default function LinkToCampaignRowAction({formId, formTitle, onLinked}: L
             <RowAction
                 onClick={() => setOpen(true)}
                 actionId={formId}
-                displayText={__('Link to campaign', 'give')}
+                displayText={campaignId ? __('Move to campaign', 'give') : __('Link to campaign', 'give')}
                 hiddenText={formTitle}
             />
             {isOpen && (
@@ -43,6 +46,7 @@ export default function LinkToCampaignRowAction({formId, formTitle, onLinked}: L
                     handleClose={() => setOpen(false)}
                     formId={formId}
                     formTitle={formTitle}
+                    campaignId={campaignId}
                     onLinked={async () => {
                         setOpen(false);
                         await onLinked();
@@ -54,16 +58,30 @@ export default function LinkToCampaignRowAction({formId, formTitle, onLinked}: L
 }
 
 /**
- * Attach a standalone form to a campaign using the existing associate-forms route.
+ * Attach a form to a campaign using the associate-forms route, which also moves a form that
+ * already belongs to one. A move only offers campaigns that are not archived, and never the
+ * form's current campaign. The server refuses to move a campaign's default form and explains why.
  *
  * @since TBD
  */
-function LinkToCampaignModal({isOpen, handleClose, formId, formTitle, onLinked}: LinkToCampaignModalProps) {
+function LinkToCampaignModal({isOpen, handleClose, formId, formTitle, campaignId: currentCampaignId, onLinked}: LinkToCampaignModalProps) {
+    const isMove = currentCampaignId > 0;
     const [selected, setSelected] = useState<CampaignOption | null>(null);
     const [isSaving, setSaving] = useState(false);
     const [error, setError] = useState<string>('');
-    const {loadOptions, mapOptionsForMenu} = useCampaignAsyncSelect(null);
+    const {loadOptions, mapOptionsForMenu} = useCampaignAsyncSelect(
+        null,
+        isMove ? ['active', 'draft'] : ['active', 'draft', 'archived']
+    );
     const campaignId = selected?.value ?? 0;
+    const saveLabel = isMove ? __('Move form', 'give') : __('Link form', 'give');
+    const savingLabel = isMove ? __('Moving…', 'give') : __('Linking…', 'give');
+
+    const loadOtherCampaigns = async (search: string) => {
+        const result = await loadOptions(search);
+
+        return {...result, options: result.options.filter((option) => option.value !== currentCampaignId)};
+    };
 
     const handleSave = async () => {
         setSaving(true);
@@ -88,7 +106,7 @@ function LinkToCampaignModal({isOpen, handleClose, formId, formTitle, onLinked}:
             isOpen={isOpen}
             showHeader={true}
             handleClose={handleClose}
-            title={__('Link to campaign', 'give')}
+            title={isMove ? __('Move to campaign', 'give') : __('Link to campaign', 'give')}
             wrapperClassName={styles.linkModal}
         >
             <>
@@ -99,7 +117,7 @@ function LinkToCampaignModal({isOpen, handleClose, formId, formTitle, onLinked}:
                 <AsyncPaginate
                     inputId={`givewp-link-campaign-${formId}`}
                     placeholder={__('Search for a campaign…', 'give')}
-                    loadOptions={loadOptions}
+                    loadOptions={loadOtherCampaigns}
                     mapOptionsForMenu={mapOptionsForMenu}
                     onChange={(option: CampaignOption | null) => setSelected(option)}
                     value={selected}
@@ -117,7 +135,7 @@ function LinkToCampaignModal({isOpen, handleClose, formId, formTitle, onLinked}:
                         disabled={!campaignId || isSaving}
                         onClick={handleSave}
                     >
-                        {isSaving ? __('Linking…', 'give') : __('Link form', 'give')}
+                        {isSaving ? savingLabel : saveLabel}
                     </button>
                     <button type="button" className="button button-secondary" onClick={handleClose}>
                         {__('Cancel', 'give')}

@@ -22,9 +22,13 @@ type UseCampaignAsyncSelectReturn = {
 /**
  * Custom hook for handling async form selection with pagination and search
  *
+ * @since TBD Accept the campaign statuses to load; defaults to every status.
  * @since 4.10.0
  */
-export function useCampaignAsyncSelect(selectedCampaignId: number | null): UseCampaignAsyncSelectReturn {
+export function useCampaignAsyncSelect(
+    selectedCampaignId: number | null,
+    status: string[] = ['active', 'draft', 'archived']
+): UseCampaignAsyncSelectReturn {
     const [page, setPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState<CampaignOption | null>(null);
     const [error, setError] = useState<Error | null>(null);
@@ -55,7 +59,7 @@ export function useCampaignAsyncSelect(selectedCampaignId: number | null): UseCa
                 perPage: CAMPAIGNS_PER_PAGE,
                 page: currentPage,
                 search: search || undefined,
-                status: ['active', 'draft', 'archived'],
+                status,
             });
 
             const campaigns = await apiFetch<Campaign[]>({
@@ -87,7 +91,7 @@ export function useCampaignAsyncSelect(selectedCampaignId: number | null): UseCa
                 hasMore: false,
             };
         }
-    }, [page]);
+    }, [page, status.join(',')]);
 
     // Map options for menu (deduplication and ordering)
     const mapOptionsForMenu = useCallback(

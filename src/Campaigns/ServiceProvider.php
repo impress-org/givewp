@@ -24,6 +24,7 @@ use Give\Campaigns\Migrations\P2P\SetCampaignType;
 use Give\Campaigns\Migrations\RevenueTable\AddCampaignID as RevenueTableAddCampaignID;
 use Give\Campaigns\Migrations\RevenueTable\AddIndexes;
 use Give\Campaigns\Migrations\RevenueTable\AssociateDonationsToCampaign;
+use Give\Campaigns\Migrations\Tables\AddUniqueFormIdToCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignFormsTable;
 use Give\Campaigns\Migrations\Tables\CreateCampaignsTable;
 use Give\Campaigns\Models\Campaign;
@@ -82,6 +83,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD add AddUniqueFormIdToCampaignFormsTable
      * @since 4.8.0 add CacheCampaignData
      * @since 4.0.0
      */
@@ -97,7 +99,8 @@ class ServiceProvider implements ServiceProviderInterface
                 AssociateDonationsToCampaign::class,
                 AddIndexes::class,
                 DonationsAddCampaignId::class,
-                CacheCampaignsData::class
+                CacheCampaignsData::class,
+                AddUniqueFormIdToCampaignFormsTable::class,
             ]
         );
     }

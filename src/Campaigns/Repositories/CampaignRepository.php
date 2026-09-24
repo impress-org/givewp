@@ -227,6 +227,63 @@ class CampaignRepository
     }
 
     /**
+     * Detach a form from a campaign. The campaign's default form cannot be detached; choose a
+     * new default form first. Past donations keep the campaign they were made to.
+     *
+     * @since TBD
+     *
+     * @throws InvalidArgumentException when the form is the campaign's default form
+     */
+    public function removeCampaignForm(Campaign $campaign, int $donationFormId): void
+    {
+        if ($campaign->defaultFormId === $donationFormId) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    __('This form is the default form for the campaign "%s". Choose a new default form for that campaign first.', 'give'),
+                    $campaign->title
+                )
+            );
+        }
+
+        Hooks::doAction('givewp_campaign_form_relationship_deleting', $campaign, $donationFormId);
+
+        DB::table('give_campaign_forms')
+            ->where('campaign_id', $campaign->id)
+            ->where('form_id', $donationFormId)
+            ->delete();
+
+        Hooks::doAction('givewp_campaign_form_relationship_deleted', $campaign, $donationFormId);
+    }
+
+    /**
+     * Attach a form to a campaign, detaching it from the campaign it currently belongs to.
+     * A form only ever belongs to one campaign; past donations stay with the original campaign
+     * and only donations made after the move count toward the new one.
+     *
+     * @since TBD
+     *
+     * @return Campaign|null the campaign the form was moved out of, if any
+     *
+     * @throws Exception
+     */
+    public function moveCampaignForm(Campaign $campaign, int $donationFormId): ?Campaign
+    {
+        $currentCampaign = $this->getByFormId($donationFormId);
+
+        if ($currentCampaign && $currentCampaign->id === $campaign->id) {
+            return null;
+        }
+
+        if ($currentCampaign) {
+            $this->removeCampaignForm($currentCampaign, $donationFormId);
+        }
+
+        $this->addCampaignForm($campaign, $donationFormId);
+
+        return $currentCampaign;
+    }
+
+    /**
      * @since 4.0.0
      *
      * @throws Exception

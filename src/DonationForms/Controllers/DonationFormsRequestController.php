@@ -10,6 +10,8 @@ use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Routes\Permissions\DonationFormPermissions;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\DonationFormsRoute;
+use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 use WP_REST_Request;
@@ -126,27 +128,62 @@ class DonationFormsRequestController
     }
 
     /**
-     * @since TBD Refresh the campaign's cached totals after linking forms.
+     * Links forms to a campaign. A form that already belongs to another campaign is moved: past
+     * donations stay with the original campaign and both campaigns' cached totals are refreshed.
+     * A campaign's default form cannot be moved, and Peer-to-Peer forms stay with their campaign.
+     *
+     * @since TBD Move forms that already belong to a campaign, refuse default and Peer-to-Peer forms, refresh both campaigns' cached totals.
      * @since 4.2.0
      *
      * @throws Exception
      */
     public function associateFormsWithCampaign(WP_REST_Request $request): WP_REST_Response
     {
-        $formIDs = $request->get_param('formIDs');
+        $formIDs = array_map('intval', (array)$request->get_param('formIDs'));
         $campaignId = $request->get_param('campaignId');
         $campaignRepository = give(CampaignRepository::class);
+        $campaign = $campaignRepository->getById($campaignId);
 
-        if ($campaign = $campaignRepository->getById($campaignId)) {
-            foreach ($formIDs as $formID) {
-                $campaignRepository->addCampaignForm($campaign, $formID);
-            }
-
-            give(CacheCampaignData::class)->dispatch($campaign->id);
-
-            return new WP_REST_Response($formIDs);
+        if ( ! $campaign) {
+            return new WP_REST_Response('Campaign not found', 404);
         }
 
-        return new WP_REST_Response('Campaign not found', 404);
+        $peerToPeerForms = DB::table('give_campaigns')
+            ->select('form_id')
+            ->where('campaign_type', CampaignType::CORE, '!=')
+            ->whereIn('form_id', $formIDs)
+            ->getAll();
+
+        if ($peerToPeerForms) {
+            return new WP_REST_Response([
+                'code' => 'givewp_peer_to_peer_form',
+                'message' => __('Peer-to-Peer forms cannot be moved to another campaign.', 'give'),
+            ], 400);
+        }
+
+        $campaignIdsToRefresh = [$campaign->id];
+        $response = new WP_REST_Response($formIDs);
+
+        try {
+            foreach ($formIDs as $formID) {
+                $previousCampaign = $campaignRepository->moveCampaignForm($campaign, $formID);
+
+                if ($previousCampaign) {
+                    $campaignIdsToRefresh[] = $previousCampaign->id;
+                }
+            }
+        } catch (InvalidArgumentException $exception) {
+            $response = new WP_REST_Response([
+                'code' => 'givewp_default_campaign_form',
+                'message' => $exception->getMessage(),
+            ], 400);
+        }
+
+        /* Forms moved before a refused one stay moved, so refresh every campaign touched. */
+        foreach (array_unique($campaignIdsToRefresh) as $id) {
+            give(CacheCampaignData::class)->dispatch($id);
+        }
+
+        return $response;
     }
 }

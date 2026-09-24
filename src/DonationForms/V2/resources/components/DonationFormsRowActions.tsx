@@ -160,10 +160,11 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             hiddenText={item?.name}
                         />
                     )}
-                    {!isCampaignDetailsPage && !item.campaignId && (
+                    {!isCampaignDetailsPage && item.campaignType !== 'p2p' && (
                         <LinkToCampaignRowAction
                             formId={item.id}
                             formTitle={item?.name}
+                            campaignId={item.campaignId}
                             onLinked={async () => {
                                 await mutate(parameters);
                             }}
