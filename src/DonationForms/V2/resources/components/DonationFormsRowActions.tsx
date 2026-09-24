@@ -160,7 +160,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             hiddenText={item?.name}
                         />
                     )}
-                    {!isCampaignDetailsPage && item.campaignType !== 'p2p' && (
+                    {item.campaignType !== 'p2p' && (item.campaignId || !isCampaignDetailsPage) && (
                         <LinkToCampaignRowAction
                             formId={item.id}
                             formTitle={item?.name}
