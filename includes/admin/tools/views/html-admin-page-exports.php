@@ -98,7 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                                     $firstDonationDate ? ($currentYear - $firstDonationDate->format('Y')) : 0
                                 );
                                 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- year_dropdown()/month_dropdown() render <select> controls; wp_kses_post() would strip them.
-                                echo sprintf( esc_html__('%1$s to %2$s', 'give'), $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'), $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month') );
+                                printf( esc_html__('%1$s to %2$s', 'give'), $start_year_dropdown . ' ' . Give()->html->month_dropdown('start_month'), $end_year_dropdown . ' ' . Give()->html->month_dropdown('end_month') );
                                 ?>
 								<input type="hidden" name="give-action" value="earnings_export"/>
 								<input type="hidden" name="give-nonce" value="<?= esc_attr( wp_create_nonce('give_earnings_export') ) ?>"/>
