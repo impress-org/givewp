@@ -11,6 +11,7 @@ use Give\Campaigns\Models\Campaign;
 class RenderDonateButton
 {
     /**
+     * @since TBD Escape output.
      * @since 4.8.0 Replace BlockRenderController::render with give_form_shortcode
      * @since 4.0.0
      */
@@ -26,6 +27,7 @@ class RenderDonateButton
                 esc_html($buttonText)
             );
         } else {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() renders the whole donation form; its own output is escaped internally.
             echo give_form_shortcode([
                 'id' => $campaign->defaultFormId,
                 'campaign_id' => $campaign->id,
