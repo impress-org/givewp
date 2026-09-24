@@ -1,5 +1,6 @@
 <?php
 /**
+ * @since TBD Escape output.
  * @since 3.13.0
  */
 
@@ -18,20 +19,20 @@
     ?>
 
     <div class="givewp-sale-banners-container">
-        <aside aria-label="" id="<?php echo $dismissableElementId = "give-sale-banner-{$id}" ?>"
+        <aside aria-label="" id="<?php echo esc_attr($dismissableElementId = "give-sale-banner-{$id}") ?>"
                class="give-sale-banner">
             <div class="give-sale-banner-content">
                 <div class="give-sale-banner-content__primary-cta">
-                    <h1 class="give-sale-banner-content__primary-cta__header"><?php echo $mainHeader ?></h1>
-                    <h3 class="give-sale-banner-content__primary-cta__sub-header"><?php echo $subHeader ?></h3>
-                    <a class="give-sale-banner-content__primary-cta__link" href="<?php echo $actionURL ?>"
-                       rel="noopener" target="_blank"><?php echo $actionText ?></a>
+                    <h1 class="give-sale-banner-content__primary-cta__header"><?php echo wp_kses_post($mainHeader) ?></h1>
+                    <h3 class="give-sale-banner-content__primary-cta__sub-header"><?php echo wp_kses_post($subHeader) ?></h3>
+                    <a class="give-sale-banner-content__primary-cta__link" href="<?php echo esc_url($actionURL) ?>"
+                       rel="noopener" target="_blank"><?php echo esc_html($actionText) ?></a>
                 </div>
 
                 <div class="give-sale-banner-content__secondary-cta">
                     <p class="give-sale-banner-content__secondary-cta__content"><?php echo wp_kses($content, ['strong' =>[]]) ?></p>
-                    <a class="give-sale-banner-content__secondary-cta__link" href="<?php echo $secondaryActionURL ?>"
-                       rel="noopener" target="_blank"><?php echo $secondaryActionText ?></a>
+                    <a class="give-sale-banner-content__secondary-cta__link" href="<?php echo esc_url($secondaryActionURL) ?>"
+                       rel="noopener" target="_blank"><?php echo esc_html($secondaryActionText) ?></a>
                 </div>
             </div>
 
@@ -51,9 +52,9 @@
                     </defs>
                 </svg>
             </div>
-            <button type="button" aria-label="<?php echo __('Dismiss', 'give') ?>"
-                    aria-controls="<?php echo $dismissableElementId ?>"
-                    class="give-sale-banner-dismiss givewp-sale-banner__dismiss" data-id="<?php echo $id ?>">
+            <button type="button" aria-label="<?php echo esc_attr__('Dismiss', 'give') ?>"
+                    aria-controls="<?php echo esc_attr($dismissableElementId) ?>"
+                    class="give-sale-banner-dismiss givewp-sale-banner__dismiss" data-id="<?php echo esc_attr($id) ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
                     <line x1="1.35355" y1="0.646447" x2="19.3535" y2="18.6464" stroke="#F9FAF9" />
                     <line y1="-0.5" x2="25.4558" y2="-0.5" transform="matrix(0.707107 -0.707106 0.707107 0.707106 1 19)"
