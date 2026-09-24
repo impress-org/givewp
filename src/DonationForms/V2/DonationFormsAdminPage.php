@@ -6,6 +6,7 @@ use Give\Campaigns\CampaignsAdminPage;
 use Give\Campaigns\Models\Campaign;
 use Give\DonationForms\V2\ListTable\DonationFormsListTable;
 use Give\FeatureFlags\OptionBasedFormEditor\OptionBasedFormEditor;
+use Give\FormBuilder\FormBuilderRouteBuilder;
 use Give\FormMigration\Actions\GetMigratedFormId;
 use Give\Helpers\EnqueueScript;
 use Give\Helpers\Language;
@@ -82,6 +83,7 @@ class DonationFormsAdminPage
     /**
      * Load scripts
      *
+     * @since TBD Localize newFormUrl here instead of relying on the form builder to attach it to this script.
      * @since 3.22.0 Add locale support
      */
     public function loadScripts()
@@ -103,6 +105,7 @@ class DonationFormsAdminPage
             'supportedGateways' => $this->getSupportedGateways(),
             'isOptionBasedFormEditorEnabled' => OptionBasedFormEditor::isEnabled(),
             'locale' => Language::getLocale(),
+            'newFormUrl' => FormBuilderRouteBuilder::makeCreateFormRoute()->getUrl(),
             'swrConfig' => [
                 'revalidateOnFocus' => false
             ],
