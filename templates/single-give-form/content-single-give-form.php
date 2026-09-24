@@ -6,6 +6,7 @@
  *
  * @package       Give/Templates
  * @version       1.0
+ * @since TBD Escape output.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 do_action( 'give_before_single_form' );
 
 if ( post_password_required() ) {
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_the_password_form() is a WordPress core function that renders a trusted password-entry form; wp_kses_post() would strip the input/button elements.
 	echo get_the_password_form();
 	return;
 }
@@ -40,7 +42,7 @@ if ( post_password_required() ) {
 		do_action( 'give_before_single_form_summary' );
 		?>
 
-		<div class="<?php echo apply_filters( 'give_forms_single_summary_classes', 'summary entry-summary' ); ?>">
+		<div class="<?php echo esc_attr( apply_filters( 'give_forms_single_summary_classes', 'summary entry-summary' ) ); ?>">
 
 			<?php
 			/**
