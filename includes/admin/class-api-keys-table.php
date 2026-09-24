@@ -253,6 +253,7 @@ class Give_API_Keys_Table extends WP_List_Table {
 	 * Display the key generation form
 	 *
 	 * @access public
+	 * @since  TBD Escape output.
 	 * @since  1.1
 	 *
 	 * @param  string $which
