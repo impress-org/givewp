@@ -165,6 +165,7 @@ export function DonationFormsRowActions({data, item, removeRow, addRow, setUpdat
                             formId={item.id}
                             formTitle={item?.name}
                             campaignId={item.campaignId}
+                            campaignTitle={item.campaignTitle}
                             onLinked={async () => {
                                 await mutate(parameters);
                             }}
