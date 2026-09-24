@@ -26,7 +26,7 @@ class PaymentStatsTest extends TestCase
     {
         parent::setUp();
         Donation::query()->delete();
-        Give_Cache::flush_cache(true);
+        Give_Cache::delete_all_expired(true);
         $this->campaign = Campaign::factory()->create();
     }
 
@@ -47,7 +47,7 @@ class PaymentStatsTest extends TestCase
         $this->assertEquals(35.5, $stats->get_earnings(0, $start, $end));
         $this->assertSame(2, $stats->get_sales(0, $start, $end));
 
-        Give_Cache::flush_cache(true);
+        Give_Cache::delete_all_expired(true);
         add_filter('givewp_payment_stats_aggregate_in_sql', '__return_false');
 
         $this->assertEquals(35.5, $stats->get_earnings(0, $start, $end));
@@ -144,6 +144,41 @@ class PaymentStatsTest extends TestCase
         $this->assertEquals(20.0, (new Give_Payment_Stats())->get_earnings(0, strtotime('-7 days'), time()));
 
         remove_filter('give_donation_amount', $double);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testExcludesChildDonationsUnlessAnAddOnIncludesThem()
+    {
+        $this->donation(1000, '-1 day');
+        $renewal = $this->donation(500, '-1 day');
+        wp_update_post(['ID' => $renewal->id, 'post_parent' => 1]);
+
+        $stats = new Give_Payment_Stats();
+        $start = strtotime('-7 days');
+        $end = time();
+
+        $this->assertEquals(10.0, $stats->get_earnings(0, $start, $end));
+        $this->assertSame(1, $stats->get_sales(0, $start, $end));
+
+        Give_Cache::delete_all_expired(true);
+        $includeChildren = static function ($query) {
+            $query->__set('post_parent', null);
+        };
+        add_action('give_pre_get_payments', $includeChildren);
+
+        $this->assertEquals(15.0, $stats->get_earnings(0, $start, $end));
+        $this->assertSame(2, $stats->get_sales(0, $start, $end));
+
+        Give_Cache::delete_all_expired(true);
+        add_filter('givewp_payment_stats_aggregate_in_sql', '__return_false');
+
+        $this->assertEquals(15.0, $stats->get_earnings(0, $start, $end));
+        $this->assertSame(2, $stats->get_sales(0, $start, $end));
+
+        remove_filter('givewp_payment_stats_aggregate_in_sql', '__return_false');
+        remove_action('give_pre_get_payments', $includeChildren);
     }
 
     private function donation(int $cents, string $when, ?DonationStatus $status = null): Donation

@@ -364,7 +364,7 @@ class Give_Payment_Stats extends Give_Stats {
 
 	/**
 	 * Translate the subset of Give_Payments_Query arguments the stats methods build (status, date
-	 * range, form, and simple meta equality) into a WHERE fragment. Anything else returns null.
+	 * range, form, parent, and simple meta equality) into a WHERE fragment. Anything else returns null.
 	 *
 	 * @since TBD
 	 *
@@ -397,10 +397,23 @@ class Give_Payment_Stats extends Give_Stats {
 			return null;
 		}
 
+		/*
+		 * Give_Payments_Query excludes child donations such as renewals by setting post_parent to 0, and
+		 * add-ons like Recurring clear that through `give_pre_get_payments`. Give the hook the same query
+		 * object it would see on the legacy path so the SQL path keeps the same rows.
+		 */
+		$query = new Give_Payments_Query( $args );
+		$query->__set( 'post_parent', 0 );
+		do_action( 'give_pre_get_payments', $query );
+
 		$statuses = (array) ( $args['post_status'] ?? $args['status'] ?? 'publish' );
 		$where    = ' AND p.post_status IN (' . implode( ',', array_map( static function ( $status ) use ( $wpdb ) {
 			return $wpdb->prepare( '%s', $status );
 		}, $statuses ) ) . ')';
+
+		if ( isset( $query->args['post_parent'] ) && is_numeric( $query->args['post_parent'] ) ) {
+			$where .= $wpdb->prepare( ' AND p.post_parent = %d', $query->args['post_parent'] );
+		}
 
 		if ( ! empty( $args['start_date'] ) && ! is_wp_error( $args['start_date'] ) ) {
 			$where .= $wpdb->prepare( ' AND p.post_date >= %s', date( 'Y-m-d H:i:s', $args['start_date'] ) );
