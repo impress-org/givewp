@@ -19,6 +19,7 @@ class SubscriptionsAdminPage
     /**
      * Render the Subscription Details page.
      *
+     * @since TBD Escape output.
      * @since 4.8.0
      */
     public function render()
@@ -29,7 +30,7 @@ class SubscriptionsAdminPage
             $subscription = Subscription::find(absint($_GET['id']));
 
             if ( ! $subscription) {
-                wp_die(__('Subscription not found', 'give'), 404);
+                wp_die(esc_html__('Subscription not found', 'give'), 404);
             }
 
             give(LoadSubscriptionDetailsAssets::class)();
@@ -53,7 +54,7 @@ class SubscriptionsAdminPage
                 fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/subscriptions/view?isLegacy=0')) ?>', {
                     method: 'GET',
                     headers: {
-                        ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                        ['X-WP-Nonce']: '<?php echo esc_js(wp_create_nonce('wp_rest')) ?>'
                     }
                 })
                     .then((res) => {

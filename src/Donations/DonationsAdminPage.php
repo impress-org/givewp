@@ -52,6 +52,7 @@ class DonationsAdminPage
      * Render admin page container
      *
      * @since 4.6.0 Add new details page view
+     * @since TBD Escape output.
      * @since 2.20.0
      */
     public function render()
@@ -63,7 +64,7 @@ class DonationsAdminPage
                 $donation = Donation::find(absint($_GET['id']));
 
                 if ( ! $donation) {
-                    wp_die(__('Donation not found', 'give'), 404);
+                    wp_die(esc_html__('Donation not found', 'give'), 404);
                 }
 
                 give(LoadDonationDetailsAssets::class)();
