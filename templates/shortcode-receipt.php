@@ -1,6 +1,8 @@
 <?php
 /**
  * This template is used to display the donation summary with [give_receipt]
+ *
+ * @since TBD Escape output.
  */
 
 use Give\Helpers\Frontend\Shortcode as ShortcodeUtils;
@@ -134,7 +136,7 @@ if ( 'offline' === give_get_payment_gateway( $donation_id ) && 'pending' === $st
 	 */
 	do_action( 'give_receipt_before_offline_payment', $donation, $give_receipt_args );
 	?>
-	<h2><?php echo apply_filters( 'give_receipt_offline_payment_heading', __( 'Your Donation is Almost Complete!', 'give' ) ); ?></h2>
+	<h2><?php echo esc_html( apply_filters( 'give_receipt_offline_payment_heading', __( 'Your Donation is Almost Complete!', 'give' ) ) ); ?></h2>
 	<div id="give_donation_receipt" class="<?php echo esc_attr( apply_filters( 'give_receipt_offline_payment_classes', 'give_receipt_offline_payment' ) ); ?>">
 		<?php
 		// Instruction for offline donation.
@@ -149,7 +151,7 @@ if ( 'offline' === give_get_payment_gateway( $donation_id ) && 'pending' === $st
 		 * @param Give_Payment $donation            Donation object.
 		 * @param integer      $form_id             Donation form id.
 		 */
-		echo apply_filters( 'give_receipt_offline_payment_instruction', $offline_instruction, $donation, $form_id );
+		echo wp_kses_post( apply_filters( 'give_receipt_offline_payment_instruction', $offline_instruction, $donation, $form_id ) );
 		?>
 	</div>
 	<?php
@@ -220,7 +222,7 @@ if ( filter_var( $give_receipt_args['status_notice'], FILTER_VALIDATE_BOOLEAN ) 
 	 * @param string $status Payment status.
 	 * @param int $donation_id Donation ID.
 	 */
-	echo apply_filters( 'give_receipt_status_notice', Give_Notices::print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $donation_id );
+	echo wp_kses_post( apply_filters( 'give_receipt_status_notice', Give_Notices::print_frontend_notice( $notice_message, false, $notice_type ), $id, $status, $donation_id ) );
 
 }// End if().
 
@@ -290,8 +292,8 @@ do_action( 'give_payment_receipt_before_table', $donation, $give_receipt_args );
 	<?php foreach ( $give_receipt_args['donation_receipt'] as $receipt_item ) { ?>
 		<?php if ( filter_var( $receipt_item['display'], FILTER_VALIDATE_BOOLEAN ) ) : ?>
 			<tr>
-				<td scope="row"><strong><?php echo $receipt_item['name']; ?></strong></td>
-				<td><?php echo $receipt_item['value']; ?></td>
+				<td scope="row"><strong><?php echo esc_html( $receipt_item['name'] ); ?></strong></td>
+				<td><?php echo wp_kses_post( $receipt_item['value'] ); ?></td>
 			</tr>
 		<?php endif; ?>
 	<?php } ?>
