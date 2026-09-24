@@ -5,6 +5,8 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
 
 /**
+ * @since TBD Escape output.
+ *
  * @var array    $attributes
  * @var Campaign $campaign
  */
@@ -15,4 +17,4 @@ if (!isset($attributes['campaignId'])
     return;
 }
 
-echo (new BlockRenderController())->render($attributes, $campaign->secondaryColor ?? '#27ae60');
+echo wp_kses_post((new BlockRenderController())->render($attributes, $campaign->secondaryColor ?? '#27ae60'));
