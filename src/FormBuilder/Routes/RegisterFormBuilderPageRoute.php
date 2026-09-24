@@ -65,6 +65,7 @@ class RegisterFormBuilderPageRoute
      *
      * @since 4.16.8 Read the query args without assuming they are set.
      * @since 3.22.0 Add locale support
+     * @since TBD Escape output.
      * @since 3.1.0 set translations for scripts
      * @since 3.0.0
      *
@@ -85,7 +86,7 @@ class RegisterFormBuilderPageRoute
         // validate form exists before proceeding
         // TODO: improve on this validation
         if (!get_post($donationFormId)) {
-            wp_die(__('Donation form does not exist.', 'give'));
+            wp_die(esc_html__('Donation form does not exist.', 'give'));
         }
 
         $locale = give_clean($_GET['locale'] ?? '');

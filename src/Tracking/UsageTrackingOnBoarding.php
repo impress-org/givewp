@@ -34,6 +34,7 @@ class UsageTrackingOnBoarding
     /**
      * Register notice.
      *
+     * @since TBD Escape output.
      * @since 2.10.0
      */
     public function addNotice()
@@ -42,7 +43,7 @@ class UsageTrackingOnBoarding
             return;
         }
 
-        echo $this->getNotice(true);
+        echo wp_kses_post($this->getNotice(true));
     }
 
     /**
