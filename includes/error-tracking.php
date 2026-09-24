@@ -117,6 +117,7 @@ function _give_die_handler() {
  * kills execution of the script using wp_die(). This allows us to then to work
  * with functions using give_die() in the unit tests.
  *
+ * @since TBD Escape output.
  * @since 1.0
  *
  * @param string $message Message to store with the error.
@@ -129,5 +130,5 @@ function give_die( $message = '', $title = '', $status = 400 ) {
 	add_filter( 'wp_die_ajax_handler', '_give_die_handler', 10, 3 );
 	add_filter( 'wp_die_json_handler', '_give_die_handler', 10, 3 );
 	add_filter( 'wp_die_handler', '_give_die_handler', 10, 3 );
-	wp_die( $message, $title, array( 'response' => $status ) );
+	wp_die( wp_kses_post( $message ), esc_html( $title ), array( 'response' => (int) $status ) );
 }
