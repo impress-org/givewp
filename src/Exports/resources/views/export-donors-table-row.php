@@ -1,3 +1,4 @@
+<?php /** @since TBD Escape output. */ ?>
 <tr class="give-export-donors">
     <td scope="row" class="row-title">
         <h3>
@@ -16,6 +17,7 @@
             </h4>
 
             <?php
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- date_field() renders a date input control; its own values are escaped internally.
             echo Give()->html->date_field(
                 [
                     'id' => 'giveDonorExport-startDate',
@@ -25,6 +27,7 @@
                 ]
             );
 
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- date_field() renders a date input control; its own values are escaped internally.
             echo Give()->html->date_field(
                 [
                     'id'           => 'giveDonorExport-endDate',
@@ -49,11 +52,12 @@
                         %s
                     </label>
                 </fieldset>',
-                __('Search by:', 'give'),
-                __('Donation date', 'give'),
-                __('Donor creation date', 'give')
+                esc_html__('Search by:', 'give'),
+                esc_html__('Donation date', 'give'),
+                esc_html__('Donor creation date', 'give')
             );
 
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- forms_dropdown() renders a select control; its own values are escaped internally.
             echo Give()->html->forms_dropdown(
                 [
                     'name'   => 'forms',
@@ -93,7 +97,7 @@
 
             <?php wp_nonce_field( 'give_ajax_export', 'give_ajax_export' ); ?>
             <input type="hidden" name="give-export-class" value="Give_Donors_Export"/>
-            <input type="hidden" name="give_export_option[query_id]" value="<?php echo uniqid( 'give_' ); ?>"/>
+            <input type="hidden" name="give_export_option[query_id]" value="<?php echo esc_attr( uniqid( 'give_' ) ); ?>"/>
         </form>
     </td>
 </tr>
