@@ -21,6 +21,7 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD Escape output.
      * @since 4.13.1 commented out the setFeatureFlagNotificationCounter method and added a filter to set the count to 0
      * @since 3.6.0
      * @inheritDoc
@@ -48,15 +49,15 @@ class ServiceProvider implements ServiceProviderInterface
         });
 
         add_action('give_admin_field_beta_features', function(){
-            echo sprintf('<div class="give-admin-beta-features-message"><span class="givewp-beta-icon">BETA</span> %s </div>', __('Beta features are a way to get early access to new features. These features are functional but will be updated frequently. Updates may include changes to the feature settings, admin screens, design and database.', 'give'));
+            echo sprintf('<div class="give-admin-beta-features-message"><span class="givewp-beta-icon">BETA</span> %s </div>', esc_html__('Beta features are a way to get early access to new features. These features are functional but will be updated frequently. Updates may include changes to the feature settings, admin screens, design and database.', 'give'));
         });
 
         add_action('give_admin_field_beta_features_feedback_link', function () {
             echo sprintf(
                 '<div class="give-admin-beta-features-feedback-link"><p><img src="%s" alt="feedback link icon" /> %s <a href="https://feedback.givewp.com/events-beta-feedback" target="_blank" rel="noopener noreferrer">%s</a></p></div>',
-                GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/feedback-icon.svg',
-                __('How can we improve this feature?', 'give'),
-                __('Submit your feedback.', 'give')
+                esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/feedback-icon.svg'),
+                esc_html__('How can we improve this feature?', 'give'),
+                esc_html__('Submit your feedback.', 'give')
             );
         });
     }
