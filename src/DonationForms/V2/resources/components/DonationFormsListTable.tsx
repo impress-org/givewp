@@ -36,9 +36,6 @@ declare global {
             locale: string;
             showDefaultFormTooltip: boolean;
             campaignUrl: string;
-        };
-
-        GiveNextGen?: {
             newFormUrl: string;
         };
     }
@@ -377,7 +374,7 @@ export default function DonationFormsListTable({entity}: {entity?: CampaignEntit
                     </div>
                 ) : (
                     <>
-                        <a href={window.GiveNextGen?.newFormUrl} className={`button button-primary ${styles.button}`}>
+                        <a href={window.GiveDonationForms.newFormUrl} className={`button button-primary ${styles.button}`}>
                             {__('Add form', 'give')}
                         </a>
                         {window.GiveDonationForms.isOptionBasedFormEditorEnabled && (
