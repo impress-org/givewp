@@ -130,9 +130,10 @@ class DonationFormsRequestController
     /**
      * Links forms to a campaign. A form that already belongs to another campaign is moved: past
      * donations stay with the original campaign and both campaigns' cached totals are refreshed.
-     * A campaign's default form cannot be moved, and Peer-to-Peer forms stay with their campaign.
+     * A campaign's default form cannot be moved, and forms of non-core campaigns such as
+     * Peer-to-Peer stay with their campaign.
      *
-     * @since TBD Move forms that already belong to a campaign, refuse default and Peer-to-Peer forms, refresh both campaigns' cached totals.
+     * @since TBD Move forms that already belong to a campaign, refuse default and non-core campaign forms, refresh both campaigns' cached totals.
      * @since 4.2.0
      *
      * @throws Exception
@@ -152,16 +153,16 @@ class DonationFormsRequestController
             return new WP_REST_Response([]);
         }
 
-        $peerToPeerForms = DB::table('give_campaigns')
+        $nonCoreForms = DB::table('give_campaigns')
             ->select('form_id')
             ->where('campaign_type', CampaignType::CORE, '!=')
             ->whereIn('form_id', $formIDs)
             ->getAll();
 
-        if ($peerToPeerForms) {
+        if ($nonCoreForms) {
             return new WP_REST_Response([
-                'code' => 'givewp_peer_to_peer_form',
-                'message' => __('Peer-to-Peer forms cannot be moved to another campaign.', 'give'),
+                'code' => 'givewp_non_core_campaign_form',
+                'message' => __('Only forms that belong to a regular campaign can be moved.', 'give'),
             ], 400);
         }
 
