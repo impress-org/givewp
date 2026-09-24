@@ -100,7 +100,8 @@ if ( ! empty($tabs) && array_key_exists(give_get_current_setting_tab(), $tabs)) 
                 $urlPath = $name === 'recurring' ? 'https://docs.givewp.com/recurring-link' : admin_url(
                     'edit.php?post_type=give_forms&page=' . self::$setting_filter_prefix . "&tab={$name}"
                 );
-                echo '<a ' . esc_attr( $target ) . 'href="' . esc_url( $urlPath ) . '"' . ' class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . esc_html( $label ) . '</a>';
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $target is one of two hardcoded literal attribute fragments ('target="_blank" ' or false), never user input; esc_attr() would encode its own quotes.
+                echo '<a ' . $target . 'href="' . esc_url( $urlPath ) . '"' . ' class="nav-tab ' . ($current_tab === $name ? 'nav-tab-active' : 'give-mobile-hidden') . '">' . esc_html( $label ) . '</a>';
             }
 
             /**
