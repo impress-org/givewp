@@ -43,7 +43,10 @@ class CampaignsDataRepository
      * Cached stats for the given campaigns. Campaigns missing from the cache are queried and added
      * to it, so a warm cache never hides a campaign that arrived after it was built.
      *
-     * @since TBD Query and cache campaigns that are missing from the cache; read subscriptions from the option they are written to.
+     * The cache holds live-mode stats only. The queries filter by the site's payment mode, and the
+     * options carry no mode, so test mode reads straight from the database and never writes.
+     *
+     * @since TBD Query and cache campaigns that are missing from the cache; read subscriptions from the option they are written to; bypass the cache in test mode.
      * @since 4.8.0 added data caching layer
      *
      * @param int[] $ids
@@ -54,8 +57,13 @@ class CampaignsDataRepository
     {
         $self = new self();
         $emptyCache = ['amounts' => [], 'donationsCount' => [], 'donorsCount' => []];
-        $campaignsData = array_merge($emptyCache, (array)get_option('give_campaigns_data', []));
-        $campaignsSubscriptionData = array_merge($emptyCache, (array)get_option('give_campaigns_subscriptions_data', []));
+        $useCache = ! give_is_test_mode();
+        $campaignsData = $useCache
+            ? array_merge($emptyCache, (array)get_option('give_campaigns_data', []))
+            : $emptyCache;
+        $campaignsSubscriptionData = $useCache
+            ? array_merge($emptyCache, (array)get_option('give_campaigns_subscriptions_data', []))
+            : $emptyCache;
 
         $uncachedIds = self::missingIds($campaignsData, $ids);
 
@@ -68,7 +76,9 @@ class CampaignsDataRepository
                 'donorsCount' => array_merge($campaignsData['donorsCount'], self::withZeroRows($donations->collectDonors(), $uncachedIds, 'count')),
             ];
 
-            update_option('give_campaigns_data', $campaignsData);
+            if ($useCache) {
+                update_option('give_campaigns_data', $campaignsData);
+            }
         }
 
         // The subscriptions cache can lag the donations cache, for example when Recurring is activated later
@@ -85,7 +95,9 @@ class CampaignsDataRepository
                 'donorsCount' => array_merge($campaignsSubscriptionData['donorsCount'], self::withZeroRows($subscriptions->collectDonors(), $uncachedSubscriptionIds, 'count')),
             ];
 
-            update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
+            if ($useCache) {
+                update_option('give_campaigns_subscriptions_data', $campaignsSubscriptionData);
+            }
         }
 
         $self->amounts = $campaignsData['amounts'];

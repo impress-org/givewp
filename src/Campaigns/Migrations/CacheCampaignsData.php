@@ -53,7 +53,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
-     * @since TBD Merge donors into the donors list and subscriptions into the subscriptions option.
+     * @since TBD Merge donors into the donors list and subscriptions into the subscriptions option; skip in test mode, the cache holds live stats only.
      * @since 4.12.0 add early return if no campaigns found
      * @since 4.8.0
      *
@@ -61,6 +61,10 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
      */
     public function runBatch($firstId, $lastId)
     {
+        if (give_is_test_mode()) {
+            return;
+        }
+
         try {
             $query = $this->query();
 

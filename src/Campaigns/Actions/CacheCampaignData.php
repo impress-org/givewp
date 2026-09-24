@@ -48,11 +48,15 @@ class CacheCampaignData
     /**
      * Handle campaign cache
      *
-     * @since TBD Read the subscriptions cache from the option it is written to.
+     * @since TBD Read the subscriptions cache from the option it is written to; skip in test mode, the cache holds live stats only.
      * @since 4.8.0
      */
     public function handleCache(int $campaignId): void
     {
+        if (give_is_test_mode()) {
+            return;
+        }
+
         $campaign = Campaign::find($campaignId);
 
         if (!$campaign) {

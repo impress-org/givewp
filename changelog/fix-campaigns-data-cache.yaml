@@ -1,0 +1,5 @@
+significance: patch
+type: fix
+entry: Fixed campaign stats showing as zero after viewing the Campaigns screen
+  with test mode enabled
+timestamp: 2026-09-24T14:50:02.057Z

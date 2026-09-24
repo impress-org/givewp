@@ -7,6 +7,7 @@ use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Support\Facades\ActionScheduler\AsBackgroundJobs;
 use Give\Framework\Support\ValueObjects\Money;
@@ -120,10 +121,13 @@ final class CampaignsDataQueryTest extends TestCase
     }
 
     /**
+     * @since TBD Run in live mode, the cache is not written in test mode.
      * @since 4.8.0
      */
     public function testCampaignCache()
     {
+        give_update_option('test_mode', 'disabled');
+
         /** @var Campaign $campaign */
         $campaign = Campaign::factory()->create([
             'goalType' => CampaignGoalType::AMOUNT(),
@@ -135,6 +139,7 @@ final class CampaignsDataQueryTest extends TestCase
             'campaignId' => $campaign->id,
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
             'amount' => new Money(12000, 'EUR'),
         ]);
 
@@ -149,5 +154,7 @@ final class CampaignsDataQueryTest extends TestCase
         $this->assertEquals($campaignsDataCache['amounts'], $campaignsDataQuery->collectIntendedAmounts());
         $this->assertEquals($campaignsDataCache['donationsCount'], $campaignsDataQuery->collectDonations());
         $this->assertEquals($campaignsDataCache['donorsCount'], $campaignsDataQuery->collectDonors());
+
+        give_update_option('test_mode', 'enabled');
     }
 }

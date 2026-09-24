@@ -7,6 +7,7 @@ use Give\Campaigns\Repositories\CampaignsDataRepository;
 use Give\Campaigns\ValueObjects\CampaignGoalType;
 use Give\DonationForms\Models\DonationForm;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Donors\Models\Donor;
 use Give\Framework\Support\ValueObjects\Money;
@@ -22,7 +23,8 @@ final class CampaignsDataRepositoryTest extends TestCase
 
     /**
      * The cache lives in options, which RefreshDatabase does not truncate, and a donation insert
-     * commits the test transaction. Start every test with a cold cache.
+     * commits the test transaction. Start every test with a cold cache, in live mode so the
+     * repository uses the cache at all.
      *
      * @since TBD
      */
@@ -32,6 +34,17 @@ final class CampaignsDataRepositoryTest extends TestCase
 
         delete_option('give_campaigns_data');
         delete_option('give_campaigns_subscriptions_data');
+        give_update_option('test_mode', 'disabled');
+    }
+
+    /**
+     * @since TBD
+     */
+    public function tearDown(): void
+    {
+        give_update_option('test_mode', 'enabled');
+
+        parent::tearDown();
     }
 
     /**
@@ -50,12 +63,14 @@ final class CampaignsDataRepositoryTest extends TestCase
             'campaignId' => $campaign->id,
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
             'amount' => new Money(1000, 'USD'),
         ]);
         Donation::factory()->create([
             'campaignId' => $campaign->id,
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
             'amount' => new Money(1000, 'USD'),
         ]);
 
@@ -79,12 +94,14 @@ final class CampaignsDataRepositoryTest extends TestCase
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
             'amount' => new Money(1051, 'USD'),
             'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
             'amount' => new Money(1051, 'USD'),
             'feeAmountRecovered' => new Money(35, 'USD'),
         ]);
@@ -107,6 +124,7 @@ final class CampaignsDataRepositoryTest extends TestCase
             'campaignId' => $newCampaign->id,
             'formId' => $newCampaign->defaultFormId,
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
             'amount' => new Money(1000, 'USD'),
         ]);
 
@@ -137,6 +155,50 @@ final class CampaignsDataRepositoryTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testTestModeReadsTestDonationsInsteadOfTheLiveCache()
+    {
+        $campaign = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'formId' => $campaign->defaultFormId,
+            'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
+        CampaignsDataRepository::campaigns([$campaign->id]);
+        $liveCache = get_option('give_campaigns_data');
+
+        give_update_option('test_mode', 'enabled');
+        Donation::factory()->count(2)->create([
+            'campaignId' => $campaign->id,
+            'formId' => $campaign->defaultFormId,
+            'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::TEST(),
+            'amount' => new Money(1000, 'USD'),
+        ]);
+
+        $campaignsData = CampaignsDataRepository::campaigns([$campaign->id]);
+
+        $this->assertEquals(2, $campaignsData->getDonationsCount($campaign));
+        $this->assertEquals($liveCache, get_option('give_campaigns_data'));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testTestModeDoesNotWriteTheCache()
+    {
+        give_update_option('test_mode', 'enabled');
+        $campaign = Campaign::factory()->create(['goalType' => CampaignGoalType::AMOUNT()]);
+
+        CampaignsDataRepository::campaigns([$campaign->id]);
+
+        $this->assertFalse(get_option('give_campaigns_data'));
+    }
+
+    /**
      * @since 4.2.0
      */
     public function testCountCampaignDonors()
@@ -154,6 +216,7 @@ final class CampaignsDataRepositoryTest extends TestCase
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
             'amount' => new Money(1000, 'USD'),
             'donorId' => $donor->id,
         ]);
@@ -161,6 +224,7 @@ final class CampaignsDataRepositoryTest extends TestCase
         Donation::factory()->create([
             'formId' => $form->id,
             'status' => DonationStatus::COMPLETE(),
+            'mode' => DonationMode::LIVE(),
             'amount' => new Money(1000, 'USD'),
             'donorId' => $donor2->id,
         ]);
