@@ -17,7 +17,7 @@ type LinkToCampaignProps = {
     /** The campaign the form belongs to now, or 0 for a standalone form. */
     campaignId: number;
     campaignTitle: string;
-    /** Called once the form has been linked or moved, so the list can refresh. */
+    /** Called when the modal closes after a successful link or move, so the list can refresh. */
     onLinked: () => Promise<void>;
 };
 
@@ -92,6 +92,18 @@ function LinkToCampaignModal({
     const savingLabel = isMove ? __('Moving…', 'give') : __('Linking…', 'give');
     const campaignUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaignId}&tab=overview&action=edit`;
 
+    /*
+     * The list refresh re-renders the rows and unmounts this modal, so it waits until the
+     * modal closes. Otherwise the success view would vanish the moment it appeared.
+     */
+    const close = async () => {
+        handleClose();
+
+        if (isDone) {
+            await onLinked();
+        }
+    };
+
     const loadOtherCampaigns = async (search: string) => {
         const result = await loadOptions(search);
 
@@ -109,7 +121,6 @@ function LinkToCampaignModal({
                 data: {campaignId, formIDs: [formId]},
             });
             setDone(true);
-            await onLinked();
         } catch (e) {
             setError(e?.message ?? __('Something went wrong. Please try again.', 'give'));
         } finally {
@@ -118,7 +129,7 @@ function LinkToCampaignModal({
     };
 
     return (
-        <ModalDialog isOpen={isOpen} showHeader={true} handleClose={handleClose} title={title} wrapperClassName={styles.linkModal}>
+        <ModalDialog isOpen={isOpen} showHeader={true} handleClose={close} title={title} wrapperClassName={styles.linkModal}>
             {isDone ? (
                 <div className={styles.success} role="status">
                     <CheckCircle />
@@ -140,7 +151,7 @@ function LinkToCampaignModal({
                         <a className="button button-primary" href={campaignUrl}>
                             {__('Go to campaign', 'give')}
                         </a>
-                        <button type="button" className="button button-secondary" onClick={handleClose}>
+                        <button type="button" className="button button-secondary" onClick={close}>
                             {__('Done', 'give')}
                         </button>
                     </div>
