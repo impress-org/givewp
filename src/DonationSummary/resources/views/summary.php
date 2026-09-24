@@ -1,6 +1,7 @@
+<?php /** @since TBD Escape output. */ ?>
 <style>
     .give-donation-summary-table-wrapper {
-        --primary-color: <?php echo $this->getPrimaryColor(); ?>;
+        --primary-color: <?php echo esc_attr($this->getPrimaryColor()); ?>;
     }
 </style>
 <div class="give-donation-summary-section">
@@ -8,7 +9,7 @@
     <?php
     if ($heading = $this->getSummaryHeading()): ?>
         <div class="heading"><?php
-            echo $heading; ?></div>
+            echo esc_html($heading); ?></div>
     <?php
     endif; ?>
 
@@ -55,16 +56,16 @@
                     if ($this->isRecurringEnabled()): ?>
                         <span class="give-donation-summary-help-text js-give-donation-summary-frequency-help-text">
                             <img src="<?php
-                            echo GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'; ?>" alt="">
+                            echo esc_url(GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'); ?>" alt="">
                             <span>
                             <?php
                             $isMultiStep = $this->isMultiStep();
                             /* translators: 1: <button> open tag when multi-step 2: close tag when multi-step. */
-                            echo sprintf(
+                            echo wp_kses_post(sprintf(
                                 __('Consider making this donation %srecurring%s', 'give'),
                                 $isMultiStep ? '<button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">' : '',
                                 $isMultiStep ? '</button>' : ''
-                            );
+                            ));
                             ?>
                             </span>
                         </span>
@@ -85,10 +86,10 @@
                 <tr class="js-give-donation-summary-fees">
                     <td>
                         <div><?php
-                            echo __('Cover Donation Fees', 'give'); ?></div>
+                            echo esc_html__('Cover Donation Fees', 'give'); ?></div>
                         <span class="give-donation-summary-help-text">
                                 <img src="<?php
-                                echo GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'; ?>" alt="">
+                                echo esc_url(GIVE_PLUGIN_URL . 'src/DonationSummary/resources/images/info.svg'); ?>" alt="">
                                 <?php
                                 _e('Ensures 100% of your donation reaches our cause', 'give'); ?>
                             </span>
