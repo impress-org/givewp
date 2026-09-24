@@ -18,34 +18,40 @@ class CampaignColumnTest extends TestCase
     /**
      * @since TBD
      */
-    public function testLinksToTheCampaignPage(): void
+    public function testSaysNoCampaignWhenDonationHasNoCampaign()
+    {
+        $donation = new Donation([
+            'campaignId' => 0,
+            'formTitle' => 'Standalone Form',
+        ]);
+
+        $this->assertSame('No campaign', (new CampaignColumn())->getCellValue($donation));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testSaysNoCampaignWhenCampaignNoLongerExists()
+    {
+        $donation = new Donation([
+            'campaignId' => 999999,
+            'formTitle' => 'Orphaned Form',
+        ]);
+
+        $this->assertSame('No campaign', (new CampaignColumn())->getCellValue($donation));
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testLinksToCampaignWhenDonationHasCampaign()
     {
         $campaign = Campaign::factory()->create(['title' => 'Spring Drive']);
-        $donation = Donation::factory()->create(['campaignId' => $campaign->id, 'formId' => $campaign->defaultFormId]);
+        $donation = new Donation(['campaignId' => $campaign->id]);
 
         $cell = (new CampaignColumn())->getCellValue($donation);
 
         $this->assertStringContainsString('Spring Drive', $cell);
         $this->assertStringContainsString("id={$campaign->id}", $cell);
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testSaysNoCampaignWhenTheDonationHasNone(): void
-    {
-        $donation = Donation::factory()->create(['campaignId' => 0]);
-
-        $this->assertSame('No campaign', (new CampaignColumn())->getCellValue($donation));
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testSaysNoCampaignWhenTheCampaignNoLongerExists(): void
-    {
-        $donation = Donation::factory()->create(['campaignId' => 999999]);
-
-        $this->assertSame('No campaign', (new CampaignColumn())->getCellValue($donation));
     }
 }
