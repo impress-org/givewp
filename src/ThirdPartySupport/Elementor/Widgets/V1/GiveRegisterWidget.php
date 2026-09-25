@@ -147,6 +147,7 @@ class GiveRegisterWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
+     * @since TBD Escape output.
      * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
      */
@@ -211,8 +212,10 @@ class GiveRegisterWidget extends Widget_Base
         echo '<div class="givewp-elementor-widget give-register-shortcode-wrap">';
 
         if (!\Elementor\Plugin::$instance->editor->is_edit_mode()) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $html is do_shortcode() output of our own shortcode; the shortcode template escapes its values.
             echo $html;
         } else {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $preview is the static register form markup built above; wp_kses_post() would strip its form/input elements.
             echo $preview;
         }
 
