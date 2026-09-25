@@ -30,6 +30,7 @@ class DonationFormsRepository
     }
 
     /**
+     * @since TBD Alias the posts table so grouped queries can qualify columns (e.g. GROUP BY forms.ID).
      * @since 2.24.0
      *
      * @return ModelQueryBuilder<Donation>
@@ -38,7 +39,7 @@ class DonationFormsRepository
     {
         $builder = new ModelQueryBuilder(DonationForm::class);
 
-        return $builder->from('posts')
+        return $builder->from('posts', 'forms')
             ->select(
                 ['ID', 'id'],
                 ['post_title', 'title'],
