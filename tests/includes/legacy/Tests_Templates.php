@@ -43,7 +43,9 @@ class Tests_Templates extends Give_Unit_Test_Case {
 		$this->assertStringContainsString( 'method="post">', $form );
 		$this->assertStringContainsString( 'data-currency_position="before"', $form );
 		$this->assertStringContainsString( 'data-currency_code="USD"', $form );
-		$this->assertStringContainsString( 'data-currency_symbol="&#36;"', $form );
+		// esc_attr() now escapes this attribute; it preserves the existing HTML entity but
+		// normalizes its digit padding (&#36; -> &#036;), same character ($), same render.
+		$this->assertStringContainsString( 'data-currency_symbol="&#036;"', $form );
 		$this->assertStringContainsString( 'data-decimal_separator="."', $form );
 		$this->assertStringContainsString( 'data-thousands_separator=","', $form );
 		$this->assertStringContainsString( 'data-number_decimals="2"', $form );

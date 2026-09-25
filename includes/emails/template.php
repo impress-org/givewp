@@ -100,6 +100,7 @@ function give_email_preview_template_tags( $message ) {
  * Output Email Template Preview Buttons.
  *
  * @access private
+ * @since  TBD Escape output.
  * @since  1.0
  * @since  1.8 Field arguments param added.
  *
@@ -126,7 +127,7 @@ function give_email_preview_buttons_callback( $field ) {
                 'give-preview-email'
             )
         ),
-		$field['name']
+		esc_html( $field['name'] )
 	);
 
 	echo sprintf(
@@ -147,7 +148,7 @@ function give_email_preview_buttons_callback( $field ) {
 		esc_html__( 'Send Test Email', 'give' )
 	);
 
-	echo ob_get_clean();
+	echo wp_kses_post( ob_get_clean() );
 }
 
 
