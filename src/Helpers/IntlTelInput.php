@@ -177,7 +177,7 @@ class IntlTelInput
                     utilsScript: "<?php echo esc_url(self::getUtilsScriptUrl()); ?>",
                     hiddenInput: function (telInputName) {
                         return {
-                            phone: "<?php echo esc_js($id); ?>",
+                            phone: <?php echo wp_json_encode($id, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>,
                         };
                     },
                     initialCountry: "<?php echo esc_js(self::getInitialCountry()); ?>",
