@@ -41,6 +41,25 @@ final class CampaignBlockOutputEscapingTest extends TestCase
     /**
      * @since TBD
      */
+    public function testGridShortcodeFallsBackToBlockDefaultsForInvalidAttributeValues(): void
+    {
+        $html = (new CampaignGridShortcode())->renderShortcode([
+            'layout' => 'not-a-layout',
+            'sort_by' => 'not-a-sort',
+            'order_by' => 'not-an-order',
+        ]);
+
+        preg_match('/data-attributes="([^"]+)"/', $html, $matches);
+        $attributes = json_decode(html_entity_decode($matches[1], ENT_QUOTES | ENT_HTML5), true);
+
+        $this->assertSame('full', $attributes['layout']);
+        $this->assertSame('date', $attributes['sortBy']);
+        $this->assertSame('desc', $attributes['orderBy']);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testCampaignShortcodeEscapesAttributeValuesInOutput(): void
     {
         /** @var Campaign $campaign */

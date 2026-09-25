@@ -65,7 +65,7 @@ class CampaignGridShortcode
     }
 
     /**
-     * @since TBD Sanitize string attributes and restrict enumerated values.
+     * @since TBD Sanitize string attributes and validate against the block attribute schema.
      * @since 4.2.0
      */
     private function parseAttributes($atts): array
@@ -83,12 +83,12 @@ class CampaignGridShortcode
         ], $atts, 'givewp_campaign_grid');
 
         return [
-            'layout'          => $this->pickAllowed($atts['layout'], ['full', 'double', 'triple'], 'full'),
+            'layout'          => $this->restrictToBlockAttribute('layout', $atts['layout']),
             'showImage'       => filter_var($atts['show_image'], FILTER_VALIDATE_BOOLEAN),
             'showDescription' => filter_var($atts['show_description'], FILTER_VALIDATE_BOOLEAN),
             'showGoal'        => filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN),
-            'sortBy'          => $this->pickAllowed($atts['sort_by'], ['date', 'amount', 'donations', 'donors'], 'date'),
-            'orderBy'         => $this->pickAllowed($atts['order_by'], ['asc', 'desc'], 'desc'),
+            'sortBy'          => $this->restrictToBlockAttribute('sortBy', $atts['sort_by']),
+            'orderBy'         => $this->restrictToBlockAttribute('orderBy', $atts['order_by']),
             'filterBy'        => $atts['filter_by'] ? sanitize_text_field($atts['filter_by']) : $atts['filter_by'],
             'perPage'         => (int)$atts['per_page'],
             'showPagination'  => filter_var($atts['show_pagination'], FILTER_VALIDATE_BOOLEAN),
@@ -96,10 +96,39 @@ class CampaignGridShortcode
     }
 
     /**
+     * Restricts a value to the choices defined by the block's own attribute schema.
+     *
      * @since TBD
      */
-    private function pickAllowed($value, array $allowed, $default): string
+    private function restrictToBlockAttribute(string $attribute, $value)
     {
-        return in_array($value, $allowed, true) ? $value : $default;
+        $schema = $this->getBlockAttributes()[$attribute] ?? [];
+
+        if (empty($schema['enum']) || in_array($value, $schema['enum'], true)) {
+            return $value;
+        }
+
+        return $schema['default'] ?? $value;
+    }
+
+    /**
+     * Returns the block's attribute definitions, the same metadata used by the editor controls.
+     *
+     * @since TBD
+     */
+    private function getBlockAttributes(): array
+    {
+        static $attributes;
+
+        if ($attributes === null) {
+            $metadata = wp_json_file_decode(
+                GIVE_PLUGIN_DIR . 'src/Campaigns/Blocks/CampaignGrid/block.json',
+                ['associative' => true]
+            );
+
+            $attributes = isset($metadata['attributes']) ? $metadata['attributes'] : [];
+        }
+
+        return $attributes;
     }
 }
