@@ -278,11 +278,12 @@ function give_get_theme_template_dir_name() {
 /**
  * Adds Give Version to the <head> tag
  *
+ * @since TBD Escape output.
  * @since 1.0
  * @return void
  */
 function give_version_in_header() {
-	echo '<meta name="generator" content="Give v' . GIVE_VERSION . '" />' . "\n";
+	echo '<meta name="generator" content="Give v' . esc_attr( GIVE_VERSION ) . '" />' . "\n";
 }
 
 add_action( 'wp_head', 'give_version_in_header' );
@@ -436,16 +437,18 @@ if ( ! function_exists( 'give_output_content_wrapper_end' ) ) {
 
 /**
  * Single Give Form
+ *
+ * @since TBD Escape output.
  */
 if ( ! function_exists( 'give_left_sidebar_pre_wrap' ) ) {
 	function give_left_sidebar_pre_wrap() {
-		echo apply_filters( 'give_left_sidebar_pre_wrap', '<div id="give-sidebar-left" class="give-sidebar give-single-form-sidebar-left">' );
+		echo wp_kses_post( apply_filters( 'give_left_sidebar_pre_wrap', '<div id="give-sidebar-left" class="give-sidebar give-single-form-sidebar-left">' ) );
 	}
 }
 
 if ( ! function_exists( 'give_left_sidebar_post_wrap' ) ) {
 	function give_left_sidebar_post_wrap() {
-		echo apply_filters( 'give_left_sidebar_post_wrap', '</div>' );
+		echo wp_kses_post( apply_filters( 'give_left_sidebar_post_wrap', '</div>' ) );
 	}
 }
 

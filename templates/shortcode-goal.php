@@ -6,6 +6,7 @@ use Give\DonationForms\DonationQuery;
 /**
  * This template is used to display the goal with [give_goal]
  *
+ * @since TBD Escape output.
  * @since 4.16.3 Escaped the goal color when rendering the progress bar.
  */
 
@@ -201,7 +202,7 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                     )
                 );
 
-                echo sprintf(
+                echo wp_kses_post( sprintf(
                 /* translators: 1: amount of income raised 2: goal target amount. */
                     __( '<span class="income" data-amounts="%1$s">%2$s</span> of <span class="goal-text" data-amounts="%3$s">%4$s</span> raised', 'give' ),
                     esc_attr( wp_json_encode( $income_amounts, JSON_PRETTY_PRINT ) ),
@@ -209,17 +210,17 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                     esc_attr( wp_json_encode( $goal_amounts, JSON_PRETTY_PRINT ) ),
 
                     esc_attr( $formatted_goal )
-                );
+                ) );
             elseif ( 'percentage' === $goal_format ) :
 
-                echo sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
+                echo wp_kses_post( sprintf( /* translators: %s: percentage of the amount raised compared to the goal target */
                     __( '<span class="give-percentage">%s%%</span> funded', 'give' ),
-                    round( $progress )
-                );
+                    esc_html( round( $progress ) )
+                ) );
 
             elseif ( 'donation' === $goal_format ) :
 
-                echo sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
+                echo wp_kses_post( sprintf( /* translators: 1: total number of donations completed 2: total number of donations set as goal */
                     _n(
                         '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donation',
                         '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donations',
@@ -227,13 +228,13 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                         'give'
                     ),
 
-                    give_format_amount( $form->get_sales(), array( 'decimal' => false )),
-                    give_format_amount( $goal, array( 'decimal' => false ))
-                );
+                    esc_html( give_format_amount( $form->get_sales(), array( 'decimal' => false ) ) ),
+                    esc_html( give_format_amount( $goal, array( 'decimal' => false ) ) )
+                ) );
 
             elseif ( 'donors' === $goal_format ) :
 
-                echo sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
+                echo wp_kses_post( sprintf( /* translators: 1: total number of donors completed 2: total number of donors set as goal */
                     _n(
                         '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donor',
                         '<span class="income">%1$s</span> of <span class="goal-text">%2$s</span> donors',
@@ -241,9 +242,9 @@ $progress = apply_filters( 'give_goal_amount_funded_percentage_output', $progres
                         'give'
                     ),
 
-                    give_format_amount(  give_get_form_donor_count( $form->ID ), array( 'decimal' => false ) ),
-                    give_format_amount( $goal, array( 'decimal' => false ) )
-                );
+                    esc_html( give_format_amount(  give_get_form_donor_count( $form->ID ), array( 'decimal' => false ) ) ),
+                    esc_html( give_format_amount( $goal, array( 'decimal' => false ) ) )
+                ) );
 
             endif;
             ?>
