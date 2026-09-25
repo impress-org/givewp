@@ -328,7 +328,7 @@ function give_chosen_input( $field ) {
 	$field['wrapper_class'] = isset( $field['wrapper_class'] ) ? $field['wrapper_class'] : '';
 	$field['before_field']  = '';
 	$field['after_field']   = '';
-	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . $field['placeholder'] . '"' : '';
+	$placeholder            = isset( $field['placeholder'] ) ? 'data-placeholder="' . esc_attr( $field['placeholder'] ) . '"' : '';
 	$data_type              = ! empty( $field['data_type'] ) ? $field['data_type'] : '';
 	$type                   = '';
 	$field['value']         = array_filter( (array) give_get_field_value( $field, $thepostid ) );
@@ -357,7 +357,7 @@ function give_chosen_input( $field ) {
 				style="<?php echo esc_attr( $field['style'] ); ?>"
 				name="<?php echo esc_attr( $fieldName ); ?>"
 				id="<?php echo esc_attr( $field['id'] ); ?>"
-			<?php echo esc_attr( "{$type} {$allow_new_values} {$placeholder}" ); ?>
+			<?php echo esc_attr( $type ) . ' ' . $allow_new_values . ' ' . $placeholder; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $allow_new_values and $placeholder are static 'attr="value"' strings with their values already escaped above; esc_attr() on the whole string would entity-encode the quotes and break both attributes. ?>
             <?php echo give_get_attribute_str( $field ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_get_attribute_str() escapes each attribute value with esc_attr(). ?>
 		>
 			<?php
