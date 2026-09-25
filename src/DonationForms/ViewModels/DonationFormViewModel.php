@@ -338,7 +338,8 @@ class DonationFormViewModel
         <?php
         if ($this->previewMode || $this->formSettings->customCss): ?>
             <style id="root-givewp-donation-form-style"><?php
-                echo esc_html(wp_strip_all_tags($this->formSettings->customCss)); ?></style>
+                echo wp_strip_all_tags($this->formSettings->customCss); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_strip_all_tags() already prevents breaking out of the <style> element; esc_html() would entity-encode valid CSS characters (e.g. '>') that browsers never decode inside <style>.
+                ?></style>
         <?php
         endif; ?>
 
