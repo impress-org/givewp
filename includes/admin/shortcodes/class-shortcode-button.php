@@ -177,12 +177,12 @@ final class Give_Shortcode_Button {
 				printf(
 					'<button type="button" class="button sc-shortcode" data-shortcode="%s">%s</button>',
 					esc_attr( $shortcode ),
-					wp_kses_post( sprintf(
+					sprintf(
 						'%s %s %s',
-						$img,
+						$img, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $img is built from a static developer-authored icon lookup (give_svg_icons()) or a hardcoded asset URL, not user input; wp_kses_post() would mangle its base64 background-image data URL.
 						esc_html__( 'Insert', 'give' ),
 						esc_html( self::$shortcodes[ $shortcode ]['label'] )
-					) )
+					)
 				);
 			} else {
 				printf(
@@ -190,7 +190,7 @@ final class Give_Shortcode_Button {
 					'<button class="button sc-button" type="button">%s %s</button>' .
 					'<div class="sc-menu mce-menu">%s</div>' .
 					'</div>',
-					wp_kses_post( $img ),
+					$img, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $img is built from a static developer-authored icon lookup (give_svg_icons()) or a hardcoded asset URL, not user input; wp_kses_post() would mangle its base64 background-image data URL.
 					esc_html__( 'GiveWP Shortcodes', 'give' ),
 					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- each menu item is built by shortcode_button() with esc_attr()/esc_html() on its own values.
 					implode( '', array_values( $shortcodes ) )
