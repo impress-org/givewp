@@ -1,8 +1,12 @@
 <?php
 
+/**
+ * @since TBD Escape output.
+ */
+
 echo '<div class="givewp-donation-options inner-panel">
     <div>
-        <img src="' . GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/light-bulb-icon.svg' . '" alt="light-bulb-icon" />
+        <img src="' . esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/light-bulb-icon.svg' ) . '" alt="light-bulb-icon" />
         <p>';
 _e(
     'Did you know? You can provide donors with flexible recurring donation options! Recurring donors give up to 30% more.',
@@ -11,11 +15,11 @@ _e(
 echo '</p>
         <a href="https://docs.givewp.com/recurring-legacy" target="_blank" class="givewp-donation-options_external">';
 _e('Get more donations', 'give');
-echo '<img src="' . GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/external-link-icon.svg' . '" alt="external-link" />
+echo '<img src="' . esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/external-link-icon.svg' ) . '" alt="external-link" />
         </a>
     </div>
     <button type="button" class="givewp-donation-options_close">
-        <img src="' . GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/close-icon.svg' . '" alt="close-message" />
+        <img src="' . esc_url( GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/close-icon.svg' ) . '" alt="close-message" />
     </button>
 </div>';
 

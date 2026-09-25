@@ -1,4 +1,7 @@
-<?php /** @var array[] $banners */?>
+<?php /**
+ * @since TBD Escape output.
+ * @var array[] $banners
+ */?>
 <div class="givewp-sale-banners-container" style="display: none;">
     <?php
     foreach ($banners as $banner): extract($banner);
@@ -26,47 +29,47 @@
         );
         ?>
 
-        <aside aria-label="<?= $accessibleLabel ?>" id="<?= $dismissableElementId = "givewp-sale-banner-{$id}" ?>"
+        <aside aria-label="<?= esc_attr($accessibleLabel) ?>" id="<?= esc_attr($dismissableElementId = "givewp-sale-banner-{$id}") ?>"
                class="givewp-sale-banner">
             <div class="givewp-sale-banner__content">
-                <h2> <?php echo $header ?> </h2>
+                <h2> <?php echo wp_kses_post($header) ?> </h2>
 
-                <p> <?php echo  $leadText ?> </p>
+                <p> <?php echo wp_kses_post($leadText) ?> </p>
 
-                <a href="<?php echo $actionURL ?>" target="_blank" rel="noopener noreferrer">
-                    <img src="<?php echo $shoppingCartIconURL ?>" alt="cart"/>
+                <a href="<?php echo esc_url($actionURL) ?>" target="_blank" rel="noopener noreferrer">
+                    <img src="<?php echo esc_url($shoppingCartIconURL) ?>" alt="cart"/>
 
-                    <?php echo __('Shop now', 'give') ?>
+                    <?php echo esc_html__('Shop now', 'give') ?>
                 </a>
             </div>
 
-            <button type="button" class="givewp-sale-banner__dismiss" aria-label="<?= __('Dismiss', 'give') ?> <?= $accessibleLabel ?>">
-                <img aria-controls="<?= $dismissableElementId ?>" data-id="<?= $id ?>" src="<?php echo $dismissIconURL ?>" alt="dismiss"/>
+            <button type="button" class="givewp-sale-banner__dismiss" aria-label="<?= esc_attr__('Dismiss', 'give') ?> <?= esc_attr($accessibleLabel) ?>">
+                <img aria-controls="<?= esc_attr($dismissableElementId) ?>" data-id="<?= esc_attr($id) ?>" src="<?php echo esc_url($dismissIconURL) ?>" alt="dismiss"/>
             </button>
         </aside>
 
         <style>
             /* Default background image for Admin pages */
             .givewp-sale-banners-container {
-                background-image: url('<?= $backgroundImageLargeURL ?>');
+                background-image: url('<?= esc_url($backgroundImageLargeURL) ?>');
             }
 
             /* Default background image Addons page */
             #give-in-plugin-upsells .givewp-sale-banners-container {
-                background-image: url('<?= $backgroundImageMediumURL ?>');
+                background-image: url('<?= esc_url($backgroundImageMediumURL) ?>');
             }
 
             /* Media query for small screens */
             @media screen and (max-width: 768px) {
                 .givewp-sale-banners-container {
-                    background-image: url('<?= $backgroundImageSmallURL ?>')!important;
+                    background-image: url('<?= esc_url($backgroundImageSmallURL) ?>')!important;
                 }
             }
 
             /* Media query for medium screens */
             @media screen and (min-width: 769px) and (max-width: 1278px) {
                .givewp-sale-banners-container {
-                    background-image: url('<?= $backgroundImageMediumURL ?>');
+                    background-image: url('<?= esc_url($backgroundImageMediumURL) ?>');
                 }
             }
         </style>
