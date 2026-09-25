@@ -335,7 +335,7 @@ class IframeView
     }
 
     /**
-     * @since TBD Escape the fallback URL from getIframeURL(), which was missing esc_url() unlike the other two assignment paths.
+     * @since TBD Escape the fallback URL from getIframeURL() after addExtraQueryParams() runs, not before, since add_query_arg() needs the raw, unescaped URL.
      *
      *  Setup Default config.
      */
@@ -345,9 +345,11 @@ class IframeView
         $this->template = Give()->templates->getTemplate($activeFormTemplate);
         $this->minHeight = $this->template->getFormStartingHeight($this->formId);
 
-        $this->url = $this->url ?: esc_url($this->getIframeURL());
+        $this->url = $this->url ?: $this->getIframeURL();
 
         $this->addExtraQueryParams();
+
+        $this->url = esc_url($this->url);
     }
 
     /**

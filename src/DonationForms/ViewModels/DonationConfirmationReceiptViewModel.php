@@ -124,7 +124,8 @@ class DonationConfirmationReceiptViewModel
 
         <?php
         if ($customCss): ?>
-            <style><?php echo esc_html(wp_strip_all_tags($customCss)); ?></style>
+            <style><?php echo wp_strip_all_tags($customCss); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_strip_all_tags() already prevents breaking out of the <style> element; esc_html() would entity-encode valid CSS characters (e.g. '>') that browsers never decode inside <style>.
+            ?></style>
         <?php
         endif; ?>
 
