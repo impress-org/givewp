@@ -53,6 +53,7 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
     /**
      * @inheritDoc
      *
+     * @since TBD Merge donors into the donors list and subscriptions into the subscriptions option; always compute live stats, the cache holds live stats only.
      * @since 4.12.0 add early return if no campaigns found
      * @since 4.8.0
      *
@@ -60,6 +61,8 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
      */
     public function runBatch($firstId, $lastId)
     {
+        add_filter('give_is_test_mode', '__return_false', PHP_INT_MAX);
+
         try {
             $query = $this->query();
 
@@ -93,14 +96,14 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
                     $donations->collectDonations()
                 ),
                 'donorsCount' => array_merge(
-                    $campaignsData['donationsCount'] ?? [],
+                    $campaignsData['donorsCount'] ?? [],
                     $donations->collectDonors()
                 ),
             ]);
 
             // Set subscriptions data
             if (defined('GIVE_RECURRING_VERSION')) {
-                $subscriptionsData = get_option('give_campaigns_data', []);
+                $subscriptionsData = get_option('give_campaigns_subscriptions_data', []);
                 $subscriptions = CampaignsDataQuery::subscriptions($campaignIds);
 
                 update_option('give_campaigns_subscriptions_data', [
@@ -120,6 +123,8 @@ class CacheCampaignsData extends BatchMigration implements ReversibleMigration
             }
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while caching campaign data", 0, $exception);
+        } finally {
+            remove_filter('give_is_test_mode', '__return_false', PHP_INT_MAX);
         }
     }
 
