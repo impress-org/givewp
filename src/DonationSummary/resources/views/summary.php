@@ -61,11 +61,12 @@
                             <?php
                             $isMultiStep = $this->isMultiStep();
                             /* translators: 1: <button> open tag when multi-step 2: close tag when multi-step. */
-                            echo wp_kses_post(sprintf(
+                            echo sprintf(
+                                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- the button tags are code-controlled, not user input; wp_kses_post() would strip the onclick handler needed for navigation.
                                 __('Consider making this donation %srecurring%s', 'give'),
                                 $isMultiStep ? '<button type="button" class="back-btn" onclick="GiveDonationSummary.handleNavigateBack(event)">' : '',
                                 $isMultiStep ? '</button>' : ''
-                            ));
+                            );
                             ?>
                             </span>
                         </span>
