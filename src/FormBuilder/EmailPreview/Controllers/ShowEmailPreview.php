@@ -18,7 +18,7 @@ class ShowEmailPreview
 
         ob_clean();
         header('Content-Type: text/html; charset=UTF-8');
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs a complete rendered email, built from already-escaped parts.
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs a complete rendered email; the heading is escaped in header-default.php and the message is sanitized with wp_kses_post() in BuildEmailPreview::__invoke().
         echo give(BuildEmailPreview::class)->__invoke($request);
         exit;
     }
