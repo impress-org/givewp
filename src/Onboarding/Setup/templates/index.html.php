@@ -237,7 +237,8 @@
 										__('Enter your license key below to unlock your GiveWP add-ons. You can access your licenses anytime from the <a href="%1$s" target="_blank">My Account</a> section on the GiveWP website. ', 'give'),
                                         esc_url(Give_License::get_account_url())
                                     )),
-                                    'nonce' => wp_kses_post(wp_nonce_field('give-license-activator-nonce', 'give_license_activator_nonce', true, false)),
+                                    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_nonce_field(..., false) returns a trusted hidden <input>; wp_kses_post() would strip it.
+                                    'nonce' => wp_nonce_field('give-license-activator-nonce', 'give_license_activator_nonce', true, false),
                                     'form-label' => esc_html__('License key', 'give'),
                                     'form-placeholder' => esc_html__('Enter your license key', 'give'),
                                     'form-submit-activate' => esc_html__('Activate License', 'give'),
@@ -438,7 +439,8 @@
         'dismiss',
         [
             'action' => esc_url(admin_url('admin-post.php')),
-            'nonce' => wp_kses_post(wp_nonce_field('dismiss_setup_page', $name = '_wpnonce', $referer = true, $echo = false)),
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_nonce_field(..., false) returns trusted hidden <input> element(s); wp_kses_post() would strip them.
+            'nonce' => wp_nonce_field('dismiss_setup_page', $name = '_wpnonce', $referer = true, $echo = false),
             'label' => esc_html__('Dismiss Setup Screen', 'give'),
         ]
     )
