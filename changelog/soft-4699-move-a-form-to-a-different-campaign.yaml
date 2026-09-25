@@ -1,0 +1,4 @@
+significance: minor
+type: feature
+entry: Added a campaign action on the Forms screen to assign a form to a campaign, move it to another one, or remove it from its campaign
+timestamp: 2026-09-24T16:05:13.579Z

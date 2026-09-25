@@ -1,0 +1,105 @@
+.modal {
+    :global(.givewp-modal-dialog) {
+        width: 100%;
+        max-width: 32rem;
+        /* Let the campaign menu open past the dialog edge instead of scrolling inside it. */
+        overflow: visible;
+    }
+
+    :global(.searchableSelect__menu) {
+        width: 100%;
+    }
+
+    :global(.searchableSelect__menu-list) {
+        max-height: 14rem;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        margin-block-end: var(--givewp-spacing-2);
+    }
+}
+
+.summary {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--givewp-spacing-2) var(--givewp-spacing-4);
+    margin: 0 0 var(--givewp-spacing-6);
+    padding: var(--givewp-spacing-4);
+    border-radius: var(--givewp-rounded-4);
+    background: var(--givewp-neutral-50);
+
+    dt {
+        color: var(--givewp-neutral-500);
+        font-weight: 500;
+    }
+
+    dd {
+        margin: 0;
+        color: var(--givewp-neutral-900);
+        font-weight: 600;
+    }
+}
+
+.select {
+    inline-size: 100%;
+}
+
+.error {
+    color: var(--givewp-red-500);
+}
+
+.success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--givewp-spacing-4);
+    padding-block: var(--givewp-spacing-4);
+
+    p {
+        margin: 0;
+        font-size: 1rem;
+        color: var(--givewp-neutral-900);
+    }
+
+    .actions {
+        justify-content: center;
+        margin-block-start: var(--givewp-spacing-2);
+    }
+}
+
+.actions {
+    display: flex;
+    gap: var(--givewp-spacing-3);
+    margin-block-start: var(--givewp-spacing-6);
+}
+
+.removeLink {
+    margin-inline-start: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--givewp-red-500);
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus {
+        color: var(--givewp-red-600);
+    }
+}
+
+.danger {
+    color: #fff;
+    border-color: var(--givewp-red-500);
+    background: var(--givewp-red-500);
+
+    &:hover,
+    &:focus {
+        color: #fff;
+        border-color: var(--givewp-red-600);
+        background: var(--givewp-red-600);
+    }
+}

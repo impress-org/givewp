@@ -8,6 +8,7 @@ use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
 
 /**
+ * @since TBD form_id is unique: a form belongs to one campaign. Existing tables get the key from AddUniqueFormIdToCampaignFormsTable.
  * @since 4.0.0
  * Creates give_campaign_forms table
  */
@@ -51,7 +52,7 @@ class CreateCampaignFormsTable extends Migration
         $sql = "CREATE TABLE $table (
             campaign_id INT UNSIGNED NOT NULL,
             form_id INT UNSIGNED NOT NULL,
-            KEY form_id (form_id),
+            UNIQUE KEY form_id (form_id),
             KEY campaign_id (campaign_id),
             PRIMARY KEY (campaign_id, form_id)
         ) $charset";

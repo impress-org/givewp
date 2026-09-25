@@ -10,6 +10,8 @@ use Give\DonationForms\Models\DonationForm;
 use Give\DonationForms\Routes\Permissions\DonationFormPermissions;
 use Give\DonationForms\ValueObjects\DonationFormStatus;
 use Give\DonationForms\ValueObjects\DonationFormsRoute;
+use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Framework\QueryBuilder\QueryBuilder;
 use WP_Error;
 use WP_REST_Request;
@@ -126,27 +128,140 @@ class DonationFormsRequestController
     }
 
     /**
-     * @since TBD Refresh the campaign's cached totals after linking forms.
+     * Links forms to a campaign. A form that already belongs to another campaign is moved: past
+     * donations stay with the original campaign and both campaigns' cached totals are refreshed.
+     * A campaign's default form cannot be moved, and forms of non-core campaigns such as
+     * Peer-to-Peer stay with their campaign.
+     *
+     * @since TBD Move forms that already belong to a campaign, refuse default and non-core campaign forms, refresh both campaigns' cached totals.
      * @since 4.2.0
      *
      * @throws Exception
      */
     public function associateFormsWithCampaign(WP_REST_Request $request): WP_REST_Response
     {
-        $formIDs = $request->get_param('formIDs');
+        $formIDs = array_map('intval', (array)$request->get_param('formIDs'));
         $campaignId = $request->get_param('campaignId');
         $campaignRepository = give(CampaignRepository::class);
+        $campaign = $campaignRepository->getById($campaignId);
 
-        if ($campaign = $campaignRepository->getById($campaignId)) {
-            foreach ($formIDs as $formID) {
-                $campaignRepository->addCampaignForm($campaign, $formID);
-            }
-
-            give(CacheCampaignData::class)->dispatch($campaign->id);
-
-            return new WP_REST_Response($formIDs);
+        if ( ! $campaign) {
+            return new WP_REST_Response('Campaign not found', 404);
         }
 
-        return new WP_REST_Response('Campaign not found', 404);
+        if ( ! $formIDs) {
+            return new WP_REST_Response([]);
+        }
+
+        $nonCoreForms = DB::table('give_campaigns')
+            ->select('form_id')
+            ->where('campaign_type', CampaignType::CORE, '!=')
+            ->whereIn('form_id', $formIDs)
+            ->getAll();
+
+        if ($nonCoreForms) {
+            return new WP_REST_Response([
+                'code' => 'givewp_non_core_campaign_form',
+                'message' => __('Only forms that belong to a regular campaign can be moved.', 'give'),
+            ], 400);
+        }
+
+        /* Refuse the whole request before moving anything, so a batch never half-applies. */
+        try {
+            foreach ($formIDs as $formID) {
+                $currentCampaign = $campaignRepository->getByFormId($formID);
+
+                if ($currentCampaign && $currentCampaign->id !== $campaign->id) {
+                    $campaignRepository->validateFormIsNotDefault($currentCampaign, $formID);
+                }
+            }
+        } catch (InvalidArgumentException $exception) {
+            return new WP_REST_Response([
+                'code' => 'givewp_default_campaign_form',
+                'message' => $exception->getMessage(),
+            ], 400);
+        }
+
+        $campaignIdsToRefresh = [$campaign->id];
+
+        try {
+            foreach ($formIDs as $formID) {
+                $previousCampaign = $campaignRepository->moveCampaignForm($campaign, $formID);
+
+                if ($previousCampaign) {
+                    $campaignIdsToRefresh[] = $previousCampaign->id;
+                }
+            }
+        } finally {
+            foreach (array_unique($campaignIdsToRefresh) as $id) {
+                give(CacheCampaignData::class)->dispatch($id);
+            }
+        }
+
+        return new WP_REST_Response($formIDs);
+    }
+
+    /**
+     * Detaches forms from their campaigns so they become standalone forms. Past donations stay
+     * with the campaign. A campaign's default form and forms of non-core campaigns cannot be
+     * detached, and nothing is detached when any form in the request is refused.
+     *
+     * @since TBD
+     *
+     * @throws Exception
+     */
+    public function detachFormsFromCampaign(WP_REST_Request $request): WP_REST_Response
+    {
+        $formIDs = array_map('intval', (array)$request->get_param('formIDs'));
+        $campaignRepository = give(CampaignRepository::class);
+
+        if ( ! $formIDs) {
+            return new WP_REST_Response([]);
+        }
+
+        $nonCoreForms = DB::table('give_campaigns')
+            ->select('form_id')
+            ->where('campaign_type', CampaignType::CORE, '!=')
+            ->whereIn('form_id', $formIDs)
+            ->getAll();
+
+        if ($nonCoreForms) {
+            return new WP_REST_Response([
+                'code' => 'givewp_non_core_campaign_form',
+                'message' => __('Only forms that belong to a regular campaign can be removed from it.', 'give'),
+            ], 400);
+        }
+
+        $campaignsByForm = [];
+
+        try {
+            foreach ($formIDs as $formID) {
+                $campaign = $campaignRepository->getByFormId($formID);
+
+                if ( ! $campaign) {
+                    continue;
+                }
+
+                $campaignRepository->validateFormIsNotDefault($campaign, $formID);
+                $campaignsByForm[$formID] = $campaign;
+            }
+        } catch (InvalidArgumentException $exception) {
+            return new WP_REST_Response([
+                'code' => 'givewp_default_campaign_form',
+                'message' => $exception->getMessage(),
+            ], 400);
+        }
+
+        try {
+            foreach ($campaignsByForm as $formID => $campaign) {
+                $campaignRepository->removeCampaignForm($campaign, $formID);
+            }
+        } finally {
+            foreach (array_unique(array_column($campaignsByForm, 'id')) as $id) {
+                give(CacheCampaignData::class)->dispatch($id);
+            }
+        }
+
+        return new WP_REST_Response($formIDs);
     }
 }

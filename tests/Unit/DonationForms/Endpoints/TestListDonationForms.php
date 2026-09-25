@@ -193,6 +193,8 @@ class TestListDonationForms extends TestCase
 
             $expectedItem['isDefaultCampaignForm'] = false;
             $expectedItem['campaignId'] = 0;
+            $expectedItem['campaignType'] = '';
+            $expectedItem['campaignTitle'] = '';
 
             $expectedItems[] = $expectedItem;
         }

@@ -129,7 +129,7 @@ class ListDonationForms extends Endpoint
     }
 
     /**
-     * @since TBD Resolve isDefaultCampaignForm from the row's campaign when the request names none
+     * @since TBD Resolve isDefaultCampaignForm from the row's campaign when the request names none; expose campaignType and campaignTitle
      * @since 3.22.0 Add locale support
      * @since 2.24.0 Change this to use the new ListTable class
      *
@@ -193,6 +193,8 @@ class ListDonationForms extends Endpoint
                     ? $item['id'] === $defaultCampaignForm->id
                     : ($campaign && $campaign->defaultFormId === (int)$item['id']);
                 $item['campaignId'] = $campaign->id ?? 0;
+                $item['campaignType'] = $campaign->type ?? '';
+                $item['campaignTitle'] = $campaign->title ?? '';
             }
         }
 
