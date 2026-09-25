@@ -27,7 +27,7 @@ use Give_License;
 class FormBuilderViewModel
 {
     /**
-     * @since TBD Add externalEmbedScriptUrl key (naming the form, so the embed script carries its skeleton) to the returned array; build permalink through GenerateDonationFormPageUrl
+     * @since 4.17.0 Add externalEmbedScriptUrl key (naming the form, so the embed script carries its skeleton) to the returned array; build permalink through GenerateDonationFormPageUrl
      * @since 4.14.0 Add countries key to the returned array
      * @since 3.12.0 Add goalProgressOptions key to the returned array
      * @since 3.9.0 Add support to intlTelInputSettings key in the returned array

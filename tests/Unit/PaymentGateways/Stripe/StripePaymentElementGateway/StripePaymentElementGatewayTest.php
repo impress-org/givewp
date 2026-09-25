@@ -21,7 +21,7 @@ class StripePaymentElementGatewayTest extends TestCase
     use HasMockStripeAccounts;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function setUp(): void
     {

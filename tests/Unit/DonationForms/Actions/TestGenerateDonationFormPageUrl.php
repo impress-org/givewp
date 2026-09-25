@@ -8,7 +8,7 @@ use Give\Tests\TestCase;
 final class TestGenerateDonationFormPageUrl extends TestCase
 {
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testShouldAddressTheFormByPostTypeAndId()
     {
@@ -18,7 +18,7 @@ final class TestGenerateDonationFormPageUrl extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testShouldReturnTheBaseUrlWithoutAFormId()
     {

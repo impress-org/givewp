@@ -18,6 +18,7 @@ use Give\Campaigns\Actions\UnarchiveCampaignFormAsPublishStatus;
 use Give\Campaigns\ListTable\Routes\DeleteCampaignListTable;
 use Give\Campaigns\ListTable\Routes\GetCampaignsListTable;
 use Give\Campaigns\Migrations\CacheCampaignsData;
+use Give\Campaigns\Migrations\FlushCampaignsDataCache;
 use Give\Campaigns\Migrations\Donations\AddCampaignId as DonationsAddCampaignId;
 use Give\Campaigns\Migrations\MigrateFormsToCampaignForms;
 use Give\Campaigns\Migrations\P2P\SetCampaignType;
@@ -100,6 +101,7 @@ class ServiceProvider implements ServiceProviderInterface
                 AddIndexes::class,
                 DonationsAddCampaignId::class,
                 CacheCampaignsData::class,
+                FlushCampaignsDataCache::class,
                 AddUniqueFormIdToCampaignFormsTable::class,
             ]
         );

@@ -7,7 +7,7 @@ import ColorInheritanceToggle from '@givewp/form-builder/settings/design/style-c
 import defaultColors from './defaultColors';
 
 /**
- * @since TBD Move the default palette to defaultColors.ts so the embed panel can share it.
+ * @since 4.17.0 Move the default palette to defaultColors.ts so the embed panel can share it.
  * @since 4.3.0 Update the value of the default colors Primary color to improve accessibility color contrast.
  */
 export default function Color({dispatch}) {

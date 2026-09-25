@@ -8,7 +8,7 @@ use Give\Tests\TestCase;
 use WP;
 
 /**
- * @since TBD
+ * @since 4.17.0
  */
 class RouterScriptTest extends TestCase
 {
@@ -18,7 +18,7 @@ class RouterScriptTest extends TestCase
     private string $script;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function setUp(): void
     {
@@ -33,7 +33,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function tearDown(): void
     {
@@ -46,7 +46,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testScriptUrlWithPrettyPermalinks(): void
     {
@@ -59,7 +59,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testScriptUrlWithIndexPermalinks(): void
     {
@@ -72,7 +72,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testScriptUrlWithPlainPermalinks(): void
     {
@@ -85,7 +85,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testMatchesPrettyPathOrRouteQueryVar(): void
     {
@@ -104,7 +104,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testScriptUrlAppendsArgs(): void
     {
@@ -122,7 +122,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testScriptRequestReturnsQueryArgsAndThePathId(): void
     {
@@ -150,7 +150,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testScriptRequestMatchesARootLevelUriWithNoDirectory(): void
     {
@@ -167,7 +167,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testLocalizeCallableReceivesTheRequest(): void
     {
@@ -180,7 +180,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testEtagIsTheQuotedAssetVersion(): void
     {
@@ -188,7 +188,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testLocalizedDataIsPrintedAheadOfTheScriptAndVersionsTheEtag(): void
     {
@@ -206,7 +206,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testIfNoneMatchToleratesWeakAndGzipValidators(): void
     {
@@ -222,7 +222,7 @@ class RouterScriptTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     private function setPermalinkStructure(string $structure): void
     {

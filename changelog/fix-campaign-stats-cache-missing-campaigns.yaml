@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Campaign stats now show for campaigns that were added after the stats cache was built
+timestamp: 2026-09-21T00:00:00.000Z

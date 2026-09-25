@@ -42,7 +42,7 @@ class BlockRenderControllerTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testOnPageRenderPrintsTheSkeletonInsideTheRootAndTheModalDoesNot(): void
     {

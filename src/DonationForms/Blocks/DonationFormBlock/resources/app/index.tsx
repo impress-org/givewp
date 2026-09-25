@@ -6,7 +6,7 @@ import renderDonationForm from './renderDonationForm';
 import EmbedFrame from '@givewp/forms/shared/EmbedFrame';
 
 /**
- * @since TBD add skeletonHtml, the server-rendered skeleton for the on-page loading state.
+ * @since 4.17.0 add skeletonHtml, the server-rendered skeleton for the on-page loading state.
  * @since 3.2.1 Revert the display style value of "fullForm" to "onpage".
  * @since 3.1.2
  */
@@ -36,7 +36,7 @@ const isRedirect = (url: string) => {
 };
 
 /**
- * @since TBD render every format through EmbedFrame for a shared loading and fallback state, with
+ * @since 4.17.0 render every format through EmbedFrame for a shared loading and fallback state, with
  *            a skeleton of the form on the on-page format.
  * @since 4.3.0 replace ModalForm with Campaigns ModalForm.
  * @since 3.4.0 add logic for inline redirects.

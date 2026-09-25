@@ -334,7 +334,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 4.16.8 Apply legacy tags before donor-supplied V3 tag values.
      * @since 3.0.0
      */
@@ -353,7 +353,7 @@ class GenerateConfirmationPageReceipt
     }
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 4.16.8 Apply legacy tags before donor-supplied V3 tag values.
      * @since 3.0.0
      */

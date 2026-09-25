@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Recurring donation stats on the campaigns list now read from the cache correctly instead of showing empty values
+timestamp: 2026-09-21T00:00:01.000Z

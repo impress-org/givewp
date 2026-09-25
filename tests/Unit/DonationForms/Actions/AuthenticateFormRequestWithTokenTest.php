@@ -8,7 +8,7 @@ use Give\Tests\TestTraits\RefreshDatabase;
 use WP_Session_Tokens;
 
 /**
- * @since TBD
+ * @since 4.17.0
  */
 class AuthenticateFormRequestWithTokenTest extends TestCase
 {
@@ -40,7 +40,7 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testValidTokenSignsTheDonorIn(): void
     {
@@ -52,7 +52,7 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testLoggedInUserIsKept(): void
     {
@@ -66,7 +66,7 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testMissingTokenLeavesTheRequestAnonymous(): void
     {
@@ -81,7 +81,7 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testExpiredTokenIsRejected(): void
     {
@@ -96,7 +96,7 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testTamperedTokenIsRejected(): void
     {
@@ -110,7 +110,7 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testTokenIsNotAValidLoginCookie(): void
     {
@@ -123,7 +123,7 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testLoginCookieIsNotAValidToken(): void
     {
@@ -136,7 +136,7 @@ class AuthenticateFormRequestWithTokenTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testRevokedSessionIsRejected(): void
     {
