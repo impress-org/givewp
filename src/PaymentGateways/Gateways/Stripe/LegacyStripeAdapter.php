@@ -58,6 +58,7 @@ class LegacyStripeAdapter
     /**
      * This adds the Stripe details to the donation details page.
      *
+     * @since TBD Escape output.
      * @since 3.0.0
      */
     public function addDonationDetails()
@@ -92,7 +93,7 @@ class LegacyStripeAdapter
                         <strong><?php
                                 esc_html_e('Stripe Account:', 'give'); ?></strong><br />
                         <?php
-                        echo $account; ?>
+                        echo esc_html( $account ); ?>
                     </p>
                 </div>
 <?php

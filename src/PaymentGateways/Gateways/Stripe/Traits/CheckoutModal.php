@@ -14,6 +14,7 @@ trait CheckoutModal
      * @param int   $formId Donation Form ID.
      * @param array $args   Donation Form Arguments.
      *
+     * @since TBD Escape the remaining output in the Stripe checkout modal.
      * @since 4.16.3 Escaped the submit button label in the Stripe checkout modal.
      * @since 2.19.0 Migrated from the legacy Give_Stripe_Checkout::showCheckoutModal implementation of the Stripe Checkout Gateway.
      *
@@ -33,10 +34,10 @@ trait CheckoutModal
 
         ob_start();
         ?>
-        <div id="give-stripe-checkout-modal-<?php echo $idPrefix; ?>" class="give-stripe-checkout-modal">
+        <div id="give-stripe-checkout-modal-<?php echo esc_attr( $idPrefix ); ?>" class="give-stripe-checkout-modal">
             <div class="give-stripe-checkout-modal-content">
                 <div class="give-stripe-checkout-modal-container">
-                    <div class="give-stripe-checkout-modal-header" style="<?php echo $backgroundItem; ?>">
+                    <div class="give-stripe-checkout-modal-header" style="<?php echo esc_attr( $backgroundItem ); ?>">
                         <button class="give-stripe-checkout-modal-close">
                             <svg
                                 width="20px"
@@ -87,13 +88,13 @@ trait CheckoutModal
                                 </g>
                             </svg>
                         </button>
-                        <h3><?php echo give_get_option( 'stripe_checkout_name' ); ?></h3>
+                        <h3><?php echo esc_html( give_get_option( 'stripe_checkout_name' ) ); ?></h3>
                         <div class="give-stripe-checkout-donation-amount">
-                            <?php echo give_get_form_price( $formId ); ?>
+                            <?php echo esc_html( give_get_form_price( $formId ) ); ?>
                         </div>
                         <div class="give-stripe-checkout-donor-email"></div>
                         <div class="give-stripe-checkout-form-title">
-                            <?php echo get_the_title( $formId ); ?>
+                            <?php echo esc_html( get_the_title( $formId ) ); ?>
                         </div>
                     </div>
                     <div class="give-stripe-checkout-modal-body">
@@ -106,6 +107,7 @@ trait CheckoutModal
                         do_action( 'give_stripe_checkout_modal_before_cc_fields', $formId, $args );
 
                         // Load Credit Card Fields for Stripe Checkout.
+                        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- showCreditCardFields() renders the credit card input fields; wp_kses_post() would strip the input elements, and its own values are escaped internally.
                         echo Stripe::showCreditCardFields( $idPrefix );
 
                         /**
@@ -129,10 +131,10 @@ trait CheckoutModal
                             echo sprintf(
                                 '<input type="submit" class="%1$s" id="%2$s" value="%3$s" data-before-validation-label="%3$s" name="%4$s" data-is_legacy_form="%5$s" disabled/>',
                                 FormUtils::isLegacyForm() ? 'give-btn give-stripe-checkout-modal-donate-button' : 'give-btn give-stripe-checkout-modal-sequoia-donate-button',
-                                "give-stripe-checkout-modal-donate-button-{$idPrefix}",
+                                esc_attr( "give-stripe-checkout-modal-donate-button-{$idPrefix}" ),
                                 esc_attr($display_label),
                                 'give_stripe_modal_donate',
-                                FormUtils::isLegacyForm()
+                                FormUtils::isLegacyForm() ? '1' : ''
                             );
                             ?>
                             <span class="give-loading-animation"></span>

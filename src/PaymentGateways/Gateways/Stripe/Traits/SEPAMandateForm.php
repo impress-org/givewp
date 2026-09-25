@@ -6,6 +6,9 @@ trait SEPAMandateForm
 {
     use FormFieldMarkup;
 
+    /**
+     * @since TBD Escape output.
+     */
     public function getMandateFormHTML(int $form_id, array $args): string
     {
         ob_start();
@@ -35,9 +38,9 @@ trait SEPAMandateForm
                 ?>
                 <div id="give-iban-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
                     <label for="give-iban-number-field-<?php
-                    echo $id_prefix; ?>" class="give-label">
+                    echo esc_attr($id_prefix); ?>" class="give-label">
                         <?php
-                        echo __('IBAN', 'give'); ?>
+                        echo esc_html__('IBAN', 'give'); ?>
                         <span class="give-required-indicator">*</span>
                         <span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php
                         esc_attr_e(
@@ -47,20 +50,20 @@ trait SEPAMandateForm
                     </label>
                     <div
                         id="give-stripe-sepa-fields-<?php
-                        echo $id_prefix; ?>"
+                        echo esc_attr($id_prefix); ?>"
                         class="give-stripe-sepa-iban-field give-stripe-cc-field"
                         data-hide_icon="<?php
-                        echo give_stripe_hide_iban_icon($form_id); ?>"
+                        echo esc_attr(give_stripe_hide_iban_icon($form_id)); ?>"
                         data-icon_style="<?php
-                        echo give_stripe_get_iban_icon_style($form_id); ?>"
+                        echo esc_attr(give_stripe_get_iban_icon_style($form_id)); ?>"
                         data-placeholder_country="<?php
-                        echo give_stripe_get_iban_placeholder_country(); ?>"
+                        echo esc_attr(give_stripe_get_iban_placeholder_country()); ?>"
                     ></div>
                 </div>
                 <div class="form-row form-row-responsive give-stripe-sepa-mandate-acceptance-text">
                     <?php
                     if (give_is_setting_enabled(give_get_option('stripe_mandate_acceptance_option', 'enabled'))) {
-                        echo give_stripe_get_mandate_acceptance_text();
+                        echo wp_kses_post(give_stripe_get_mandate_acceptance_text());
                     }
                     ?>
                 </div>
