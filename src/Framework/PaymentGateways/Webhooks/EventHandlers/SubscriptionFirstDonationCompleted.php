@@ -57,6 +57,17 @@ class SubscriptionFirstDonationCompleted
         }
 
         if ( ! $donation || ! $donation->type->isSubscription() || ! $donation->subscription) {
+            PaymentGatewayLog::error(
+                sprintf('The first donation was not updated for the gateway transaction ID %s because no valid subscription donation was found to update.',
+                    $gatewayTransactionId),
+                [
+                    'Gateway Subscription ID' => $gatewaySubscriptionId,
+                    'Gateway Transaction ID' => $gatewayTransactionId,
+                    'Donation ID' => $donationId,
+                    'Message' => $message,
+                ]
+            );
+
             return;
         }
 
