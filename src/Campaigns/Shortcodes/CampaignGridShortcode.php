@@ -65,6 +65,7 @@ class CampaignGridShortcode
     }
 
     /**
+     * @since TBD Sanitize string attributes and restrict enumerated values.
      * @since 4.2.0
      */
     private function parseAttributes($atts): array
@@ -82,15 +83,23 @@ class CampaignGridShortcode
         ], $atts, 'givewp_campaign_grid');
 
         return [
-            'layout'          => $atts['layout'],
+            'layout'          => $this->pickAllowed($atts['layout'], ['full', 'double', 'triple'], 'full'),
             'showImage'       => filter_var($atts['show_image'], FILTER_VALIDATE_BOOLEAN),
             'showDescription' => filter_var($atts['show_description'], FILTER_VALIDATE_BOOLEAN),
             'showGoal'        => filter_var($atts['show_goal'], FILTER_VALIDATE_BOOLEAN),
-            'sortBy'          => $atts['sort_by'],
-            'orderBy'         => $atts['order_by'],
-            'filterBy'        => $atts['filter_by'],
+            'sortBy'          => $this->pickAllowed($atts['sort_by'], ['date', 'amount', 'donations', 'donors'], 'date'),
+            'orderBy'         => $this->pickAllowed($atts['order_by'], ['asc', 'desc'], 'desc'),
+            'filterBy'        => $atts['filter_by'] ? sanitize_text_field($atts['filter_by']) : $atts['filter_by'],
             'perPage'         => (int)$atts['per_page'],
             'showPagination'  => filter_var($atts['show_pagination'], FILTER_VALIDATE_BOOLEAN),
         ];
+    }
+
+    /**
+     * @since TBD
+     */
+    private function pickAllowed($value, array $allowed, $default): string
+    {
+        return in_array($value, $allowed, true) ? $value : $default;
     }
 }
