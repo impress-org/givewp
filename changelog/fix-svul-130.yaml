@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: Added additional escaping to campaign block output. (CVE-2026-97643)
+timestamp: 2026-09-25T19:24:39.484Z
