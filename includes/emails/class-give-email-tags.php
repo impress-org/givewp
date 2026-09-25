@@ -283,6 +283,7 @@ function give_get_emails_tags_list() {
  * @since 1.0
  * @since 2.0 $payment_id deprecated.
  * @since 2.0 $tag_args added.
+ * @since TBD Only the {meta_*} tags present in the original content are resolved.
  *
  * @return string Content with email tags filtered out.
  */
@@ -290,6 +291,16 @@ function give_do_email_tags( $content, $tag_args ) {
 	// Backward compatibility < 2.0
 	if ( ! is_array( $tag_args ) && is_numeric( $tag_args ) ) {
 		$tag_args = [ 'payment_id' => $tag_args ];
+	}
+
+	// Replace the {meta_*} tags the content started with by placeholders before
+	// any other tag is substituted. Values inserted by tag substitution,
+	// including donor-supplied ones, must not be interpreted as tags, and a
+	// placeholder keeps an original occurrence distinguishable from an injected
+	// one carrying the same syntax.
+	if ( is_array( $tag_args ) ) {
+		list( $content, $meta_tag_placeholders ) = give_protect_meta_email_tags( $content );
+		$tag_args['content_meta_placeholders'] = $meta_tag_placeholders;
 	}
 
 	$email_tags = Give()->email_tags instanceof Give_Email_Template_Tags
@@ -309,6 +320,48 @@ function give_do_email_tags( $content, $tag_args ) {
 
 	// Return content
 	return $content;
+}
+
+/**
+ * Replaces each distinct {meta_*} tag in the content with a unique placeholder.
+ *
+ * The placeholder is generated for the current call only, so the tags the
+ * content started with can be told apart from the same syntax inserted later by
+ * tag substitution. The placeholder contains a dot, which keeps the email tag
+ * engine from treating it as a tag of its own.
+ *
+ * @since TBD
+ *
+ * @param string $content Content to protect.
+ *
+ * @return array{0: string, 1: array<string, string>} Protected content, then a
+ *                                                   placeholder => original tag map.
+ */
+function give_protect_meta_email_tags( $content ) {
+	preg_match_all( '/{meta_([A-z0-9\-\_\ ]+)}/s', $content, $matches );
+
+	if ( empty( $matches[0] ) ) {
+		return [ $content, [] ];
+	}
+
+	$placeholder_prefix = '{{' . uniqid( 'givewp_meta_', true ) . '_';
+	$tag_placeholders   = [];
+
+	foreach ( array_unique( $matches[0] ) as $index => $meta_tag ) {
+		$tag_placeholders[ $meta_tag ] = "{$placeholder_prefix}{$index}}}";
+	}
+
+	$protected = preg_replace_callback(
+		'/{meta_[A-z0-9\-\_\ ]+}/s',
+		static function ( $tag_match ) use ( $tag_placeholders ) {
+			return isset( $tag_placeholders[ $tag_match[0] ] )
+				? $tag_placeholders[ $tag_match[0] ]
+				: $tag_match[0];
+		},
+		$content
+	);
+
+	return [ $protected, array_flip( $tag_placeholders ) ];
 }
 
 /**
@@ -1649,6 +1702,7 @@ function give_email_donor_comment( $tag_args ) {
  *
  * @since 4.9.0 rename function - PHP 8 compatibility
  * @since 2.0.3
+ * @since TBD Only resolve {meta_*} tags that the content contained before tag substitution.
  * @see   https://github.com/impress-org/give/issues/2801#issuecomment-365136602
  *
  * @param $content
@@ -1657,16 +1711,41 @@ function give_email_donor_comment( $tag_args ) {
  * @return mixed
  */
 function give_render_metadata_email_tag( $content, $tag_args ) {
-	preg_match_all( '/{meta_([A-z0-9\-\_\ ]+)}/s', $content, $matches );
+	$meta_placeholders = isset( $tag_args['content_meta_placeholders'] ) && is_array( $tag_args['content_meta_placeholders'] )
+		? $tag_args['content_meta_placeholders']
+		: null;
+
+	/**
+	 * When the content comes through give_do_email_tags(), the {meta_*} tags it
+	 * started with were replaced by placeholders before tag substitution, and
+	 * only those placeholders may resolve. A {meta_*} literal still in the
+	 * content was inserted by a substituted value and stays literal. Calls made
+	 * directly to this function keep the original behavior.
+	 */
+	if ( is_array( $meta_placeholders ) ) {
+		if ( empty( $meta_placeholders ) ) {
+			return $content;
+		}
+
+		$matches         = [ array_values( $meta_placeholders ) ];
+		$tag_placeholder = array_flip( $meta_placeholders );
+	} else {
+		preg_match_all( '/{meta_([A-z0-9\-\_\ ]+)}/s', $content, $matches );
+		$tag_placeholder = [];
+	}
 
 	if ( ! empty( $matches[0] ) ) {
 		$search = $replace = [];
 		foreach ( $matches[0] as $index => $meta_tag ) {
+			$original_meta_tag = $meta_tag;
+
 			if ( in_array( $meta_tag, $search ) ) {
 				continue;
 			}
 
-			$search[] = $meta_tag;
+			$search[] = isset( $tag_placeholder[ $original_meta_tag ] )
+				? $tag_placeholder[ $original_meta_tag ]
+				: $original_meta_tag;
 
 			$meta_tag     = str_replace( [ '{', 'meta_', '}' ], '', $meta_tag );
 			$meta_tag_arr = array_map( 'trim', explode( ' ', $meta_tag, 2 ) );
@@ -1722,10 +1801,24 @@ function give_render_metadata_email_tag( $content, $tag_args ) {
 						}
 					}
 
-					$meta_data = Give()->donor_meta->get_meta( $donor_id, $meta_name, true );
+					// Donor meta stays available to add-ons, but the email-access
+					// secrets are never rendered, and the donors-table fallback is
+					// restricted to columns that are safe to display.
+					$meta_data = '';
 
-					if ( empty( $meta_data ) && in_array( $meta_name, array_keys( Give()->donors->get_columns() ) ) ) {
-						$meta_data = Give()->donors->get_column_by( $meta_name, 'id', $donor_id );
+					if ( ! in_array( $meta_name, [ 'token', 'verify_key', 'verify_throttle' ], true ) ) {
+						$meta_data = Give()->donor_meta->get_meta( $donor_id, $meta_name, true );
+
+						if (
+							empty( $meta_data )
+							&& in_array(
+								$meta_name,
+								[ 'id', 'user_id', 'name', 'email', 'payment_ids', 'purchase_value', 'purchase_count', 'date_created' ],
+								true
+							)
+						) {
+							$meta_data = Give()->donors->get_column_by( $meta_name, 'id', $donor_id );
+						}
 					}
 
 					if ( ! isset( $meta_tag_arr[1] ) || ! is_array( $meta_data ) ) {
@@ -1737,7 +1830,7 @@ function give_render_metadata_email_tag( $content, $tag_args ) {
 					break;
 
 				default:
-					$replace[] = end( $search );
+					$replace[] = $original_meta_tag;
 			}
 		}
 

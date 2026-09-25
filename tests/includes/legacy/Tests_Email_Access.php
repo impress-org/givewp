@@ -121,6 +121,8 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 
 		global $wpdb;
 
+		Give()->email_access->init();
+
 		$donor_id = Give()->donors->add(
 			[
 				'name'    => 'Verify Key Donor',
@@ -136,6 +138,45 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 		$row = $wpdb->get_row( $wpdb->prepare( "SELECT verify_key, token FROM {$wpdb->donors} WHERE id = %d", $donor_id ) );
 		$this->assertSame( '', $row->verify_key );
 		$this->assertSame( 'real-verify-key', $row->token );
+
+	}
+
+	/**
+	 * is_valid_verify_key() must reject a verify key older than the token expiration window,
+	 * and must not consume it.
+	 *
+	 * @since TBD
+	 */
+	public function test_is_valid_verify_key_rejects_expired_key() {
+
+		global $wpdb;
+
+		Give()->email_access->init();
+
+		$donor_id = Give()->donors->add(
+			[
+				'name'    => 'Expired Key Donor',
+				'email'   => 'expired-key-donor@example.org',
+				'user_id' => 0,
+			]
+		);
+
+		Give()->email_access->set_verify_key( $donor_id, 'expired-key-donor@example.org', 'expired-verify-key' );
+
+		// Backdate the key beyond the token expiration window.
+		$wpdb->query(
+			$wpdb->prepare(
+				"UPDATE {$wpdb->donors} SET verify_throttle = %s WHERE id = %d",
+				date( 'Y-m-d H:i:s', time() - 7200 - 60 ),
+				$donor_id
+			)
+		);
+
+		$this->assertFalse( Give()->email_access->is_valid_verify_key( 'expired-verify-key' ) );
+
+		$row = $wpdb->get_row( $wpdb->prepare( "SELECT verify_key, token FROM {$wpdb->donors} WHERE id = %d", $donor_id ) );
+		$this->assertSame( 'expired-verify-key', $row->verify_key );
+		$this->assertSame( '', $row->token );
 
 	}
 
