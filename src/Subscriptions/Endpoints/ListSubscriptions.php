@@ -218,6 +218,7 @@ class ListSubscriptions extends Endpoint
     }
 
     /**
+     * @since TBD Filter payment mode in WHERE instead of HAVING so the database can use indexes
      * @since 4.12.0 Add "status" where condition
      * @since 4.11.0 fix search by donor name or email
      * @since 2.24.0 Replace Query Builder with Subscriptions model
@@ -235,8 +236,6 @@ class ListSubscriptions extends Endpoint
         $campaignId = $this->request->get_param('campaignId');
         $testMode = $this->request->get_param('testMode');
         $status = $this->request->get_param('status');
-
-        $hasWhereConditions = $search || $start || $end || $campaignId || $status;
 
         if (!empty($status)) {
             $query->whereIn('status', $status);
@@ -286,11 +285,7 @@ class ListSubscriptions extends Endpoint
                 });
         }
 
-        if ($hasWhereConditions) {
-            $query->having('payment_mode', '=', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
-        } else {
-            $query->where('payment_mode', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
-        }
+        $query->where('payment_mode', $testMode ? SubscriptionMode::TEST : SubscriptionMode::LIVE);
 
         return $query;
     }
