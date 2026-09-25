@@ -113,7 +113,7 @@ if (!class_exists('Give_Stripe_Webhooks')) {
             }
 
             status_header(200);
-            exit($message);
+            exit(esc_html($message));
         }
 
         /**
