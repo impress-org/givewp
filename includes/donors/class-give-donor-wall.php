@@ -381,6 +381,8 @@ class Give_Donor_Wall {
     /**
      * Get donation data.
      *
+     * @since TBD     Read meta values as stored instead of unserializing them, and read the donor
+     *                comment from the fetched rows instead of a per-donation meta lookup.
      * @since 4.16.7.2       Restrict unserialize to prevent object instantiation.
      * @since 2.27.0  Change to read comment from donations meta table
      * @since 2.3.0
@@ -417,7 +419,7 @@ class Give_Donor_Wall {
 
 			/* @var stdClass $result */
 			foreach ( $results as $result ) {
-				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = unserialize( $result->meta_value, [ 'allowed_classes' => false ] );
+				$temp[ $result->{$donation_id_col} ][ $result->meta_key ] = $result->meta_value;
 
 				// Set donation date.
 				if ( empty( $temp[ $result->{$donation_id_col} ]['donation_date'] ) ) {
@@ -436,14 +438,11 @@ class Give_Donor_Wall {
 						]
 					);
 
-					$temp[$donation_id]['donor_comment'] = give_get_payment_meta(
-                        $donation_id,
-                        DonationMetaKeys::COMMENT
-                    );
+					$temp[ $donation_id ]['donor_comment'] = $donation_data[ DonationMetaKeys::COMMENT ] ?? '';
 				}
-			}
 
-			$results = ! empty( $temp ) ? $temp : [];
+				$results = ! empty( $temp ) ? $temp : [];
+			}
 		}
 
 		return $results;
