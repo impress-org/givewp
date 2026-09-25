@@ -212,12 +212,19 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 		/**
 		 * Setup email notification.
 		 *
+		 * @since  TBD Check the gateway from meta before loading the legacy payment object.
 		 * @since  2.0
 		 * @access public
 		 *
 		 * @param int $payment_id
 		 */
 		public function setup_email_notification( $payment_id ) {
+			// Exit if not donation was not with offline donation. Checked from meta first so every
+			// non-offline donation does not pay for building a Give_Payment on insert.
+			if ( 'offline' !== give_get_payment_gateway( $payment_id ) ) {
+				return;
+			}
+
 			$this->payment = new Give_Payment( $payment_id );
 
 			if ( ! $this->payment->ID ) {
@@ -228,11 +235,6 @@ if ( ! class_exists( 'Give_Offline_Donation_Instruction_Email' ) ) :
 						'response' => 400,
 					)
 				);
-			}
-
-			// Exit if not donation was not with offline donation.
-			if ( 'offline' !== $this->payment->gateway ) {
-				return;
 			}
 
 			// Set email data.
