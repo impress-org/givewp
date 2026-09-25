@@ -1497,6 +1497,7 @@ function give_recount_form_income_donation( $form_id = 0 ) {
  * @param array $default_attributes
  *
  * @return string
+ * @since TBD Escape every attribute value, not only "value".
  * @since 1.8.17
  */
 function give_get_attribute_str( $attributes, $default_attributes = [] ) {
@@ -1515,11 +1516,7 @@ function give_get_attribute_str( $attributes, $default_attributes = [] ) {
 	}
 
 	foreach ( $attributes as $tag => $value ) {
-		if ( 'value' == $tag ) {
-			$value = esc_attr( $value );
-		}
-
-		$attribute_str .= " {$tag}=\"{$value}\"";
+		$attribute_str .= " {$tag}=\"" . esc_attr( $value ) . '"';
 	}
 
 	return trim( $attribute_str );
