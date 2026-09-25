@@ -23,16 +23,16 @@ $setupUrl = add_query_arg(
         <div class="give-donor-dashboard-upgrade-notice__row">
             <div class="give-donor-dashboard-upgrade-notice__title">
                 <?php
-                _e('Introducing the Donor Dashboard', 'give'); ?>
+                esc_html_e('Introducing the Donor Dashboard', 'give'); ?>
             </div>
             <div class="give-donor-dashboard-upgrade-notice__badge">
                 <i class="fas fa-bell"></i> <?php
-                _e('New in GiveWP 2.10.0', 'give'); ?>
+                esc_html_e('New in GiveWP 2.10.0', 'give'); ?>
             </div>
         </div>
         <div class="give-donor-dashboard-upgrade-notice__body">
             <?php
-            _e(
+            esc_html_e(
                 'The Donor Dashboard provides your donors with a one-stop location to manage all their giving history, profile, and more! Ready to get started? In order to use the new Donor Dashboard, GiveWP needs to create a new page on your site.',
                 'give'
             ); ?>
@@ -41,7 +41,7 @@ $setupUrl = add_query_arg(
             <a class="give-donor-dashboard-upgrade-notice__button" href="<?php
             echo esc_url( $setupUrl ); ?>">
                 <?php
-                _e('Create Donor Dashboard Page', 'give'); ?>
+                esc_html_e('Create Donor Dashboard Page', 'give'); ?>
             </a>
             <div class="give-donor-dashboard-upgrade-notice__pill">
                 <?php
@@ -56,7 +56,7 @@ $setupUrl = add_query_arg(
         </div>
         <a class="give-donor-dashboard-upgrade-notice__dismiss-link">
             <?php
-            _e('I\'ll setup Donor Dashboards later', 'give'); ?>
+            esc_html_e('I\'ll setup Donor Dashboards later', 'give'); ?>
         </a>
     </div>
 </div>
