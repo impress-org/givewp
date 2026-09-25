@@ -739,7 +739,7 @@ $give_updates = Give_Updates::get_instance();
 			$webhook_received_on = give_get_option( 'give_stripe_last_webhook_received_timestamp' );
 			if ( ! empty( $webhook_received_on ) ) {
 				$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
-				echo esc_html( date_i18n( esc_html( $date_time_format ), $webhook_received_on ) );
+				echo esc_html( date_i18n( $date_time_format, $webhook_received_on ) );
 			} else {
 				echo 'N/A';
 			}
