@@ -1032,7 +1032,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 									id="<?php echo esc_attr( $value['id'] ); ?>"
 									data-placeholder="<?php echo esc_attr__( 'Select Some Options', 'give'); ?>"
 								<?php
-								echo esc_attr( "{$type} {$allow_new_values}" );
+								echo esc_attr( $type ) . ' ' . $allow_new_values; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $allow_new_values is a static 'data-allows-new-values="true"' attribute string built above, not user input; esc_attr() would entity-encode its quotes and break the attribute.
 								echo implode( ' ', $custom_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- each $custom_attributes entry is built with esc_attr() above.
 								?>
 							>
