@@ -68,6 +68,7 @@ class Classic extends Template implements Hookable, Scriptable
     }
 
     /**
+     * @since TBD Escape output.
      * @inheritDoc
      */
     public function loadHooks()
@@ -219,6 +220,7 @@ class Classic extends Template implements Hookable, Scriptable
     }
 
     /**
+     * @since TBD Escape output.
      * @inheritDoc
      */
     public function renderLoadingView($formId = null)
@@ -239,6 +241,7 @@ class Classic extends Template implements Hookable, Scriptable
     /**
      * Render donation form header
      *
+     * @since TBD Escape output.
      * @since 2.19.0 use trinary operator instead of Coalesce operator to make code php 5.6 compatible.
      *
      * @param  int  $formId
@@ -263,6 +266,8 @@ class Classic extends Template implements Hookable, Scriptable
 
     /**
      * Render donation amount heading
+     *
+     * @since TBD Escape output.
      */
     public function renderDonationAmountHeading()
     {
@@ -270,12 +275,13 @@ class Classic extends Template implements Hookable, Scriptable
             'content' => $this->options[ 'donation_amount' ][ 'headline' ],
         ];
 
-        echo $this->loadFile('views/donation-amount-heading.php', $headingArgs); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- donation-amount-heading.php escapes $content internally.
+        echo wp_kses_post( $this->loadFile('views/donation-amount-heading.php', $headingArgs) );
     }
 
     /**
      * Render the SVG icon definitions.
      *
+     * @since TBD Escape output.
      * @void
      */
     public function renderIconDefinitions()
