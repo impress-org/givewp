@@ -13,6 +13,7 @@ class Admin
     /**
      * Render template setting in form metabox.
      *
+     * @since TBD Escape output.
      * @since 2.7.0
      *
      * @param Template $template
@@ -32,7 +33,7 @@ class Admin
         foreach ($template->getOptions()->sections as $group) {
             printf(
                 '<div class="give-row %1$s">',
-                $group->id
+                esc_attr( $group->id )
             );
 
             printf(
@@ -42,7 +43,7 @@ class Admin
 							</button>
 							<h2><span>%1$s</span></h2>
 						</div>',
-                $group->name
+                esc_html( $group->name )
             );
 
             echo '<div class="give-row-body">';
