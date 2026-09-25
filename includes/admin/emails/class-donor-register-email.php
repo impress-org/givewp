@@ -187,7 +187,7 @@ if ( ! class_exists( 'Give_Donor_Register_Email' ) ) :
 						var transactions = document.getElementById( "give_preview_email_user_id" );
 						var selected_trans = transactions.options[ transactions.selectedIndex ];
 						if ( selected_trans ) {
-							var url_string = "<?php echo esc_url( $request_url ); ?>&user_id=" + selected_trans.value;
+							var url_string = <?php echo wp_json_encode( $request_url, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT ); ?> + "&user_id=" + selected_trans.value;
 							window.location = url_string;
 						}
 					}
