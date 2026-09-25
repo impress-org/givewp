@@ -3,6 +3,7 @@
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
  *
+ * @since TBD Escape output.
  * @since 3.19.1 Format the donation count
  *
  * @var Give\MultiFormGoals\ProgressBar\Model $this
@@ -13,7 +14,9 @@ $uniqueId = uniqid('', true);
 
 <div id="<?= esc_attr($uniqueId) ?>" class="give-progress-bar-block">
     <style>
-        <?php echo file_get_contents( GIVE_PLUGIN_DIR . 'build/assets/dist/css/multi-form-goal-block.css' ); ?>
+        <?php
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- reads our own built CSS asset, not user input; no escaping function applies to raw CSS content.
+        echo file_get_contents( GIVE_PLUGIN_DIR . 'build/assets/dist/css/multi-form-goal-block.css' ); ?>
     </style>
     <!-- Target the Progress Bar Block elements using CSS "parts", see https://developer.mozilla.org/en-US/docs/Web/CSS/::part -->
     <div part="goal" class="give-progress-bar-block__goal">
@@ -31,19 +34,19 @@ $uniqueId = uniqid('', true);
             <div part="stat-total-value"><?php
                 echo esc_html($this->getFormattedTotal()); ?></div>
             <div part="stat-total-label"><?php
-                echo __('raised', 'give'); ?></div>
+                echo esc_html__('raised', 'give'); ?></div>
         </div>
         <div part="stat-count" class="give-progress-bar-block__stat">
             <div part="stat-count-value"><?php
                 echo esc_html($this->getFormattedDonationCount()); ?></div>
             <div part="stat-count-label"><?php
-                echo _n('donation', 'donations', $this->getDonationCount(), 'give'); ?></div>
+                echo esc_html(_n('donation', 'donations', $this->getDonationCount(), 'give')); ?></div>
         </div>
         <div part="stat-goal" class="give-progress-bar-block__stat">
             <div part="stat-goal-value"><?php
                 echo esc_html($this->getFormattedGoal()); ?></div>
             <div part="stat-goal-label"><?php
-                echo __('goal', 'give'); ?></div>
+                echo esc_html__('goal', 'give'); ?></div>
         </div>
         <?php
         if ( ! empty($this->getEndDate()) && $this->getMinutesRemaining()) : ?>
@@ -59,7 +62,7 @@ $uniqueId = uniqid('', true);
 </div>
 <script>
     (function() {
-        const container = document.getElementById('<?php echo $uniqueId; ?>');
+        const container = document.getElementById('<?php echo esc_js($uniqueId); ?>');
         const content = container.innerHTML;
         const shadow = container.attachShadow({mode: 'open'});
         shadow.innerHTML = content;

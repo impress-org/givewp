@@ -2,6 +2,9 @@
 /**
  * Multi-Form Goals block/shortcode template
  * Styles for this template are defined in 'blocks/multi-form-goals/common.scss'
+ *
+ * @since TBD Escape output.
+ *
  * @var Give\MultiFormGoals\MultiFormGoal\Model $this
  */
 ?>
@@ -9,6 +12,7 @@
 
 <?php
 if ( ! empty($this->getInnerBlocks())) {
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the block's inner blocks markup, already escaped internally.
     echo $this->getInnerBlocks();
 } else {
     ?>
@@ -27,6 +31,7 @@ if ( ! empty($this->getInnerBlocks())) {
             </div>
         </div>
         <?php
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders progressbar.php, already escaped internally.
         echo $this->getProgressBarOutput(); ?>
     </div>
 <?php

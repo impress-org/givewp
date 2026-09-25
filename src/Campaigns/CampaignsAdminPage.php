@@ -30,6 +30,7 @@ class CampaignsAdminPage
     }
 
     /**
+     * @since TBD Escape output.
      * @since 4.0.0
      */
     public function renderCampaignsPage()
@@ -38,7 +39,7 @@ class CampaignsAdminPage
             $campaign = Campaign::find(absint($_GET['id']));
 
             if ( ! $campaign) {
-                wp_die(__('Campaign not found', 'give'), 404);
+                wp_die(esc_html__('Campaign not found', 'give'), 404);
             }
 
             give(LoadCampaignDetailsAssets::class)();
