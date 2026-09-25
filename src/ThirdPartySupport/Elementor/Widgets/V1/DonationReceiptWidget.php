@@ -300,13 +300,13 @@ class DonationReceiptWidget extends Widget_Base
 			<div id="give-receipt">
 				<div class="give_notices give_errors" id="give_error_fail">
 					<p class="give_notice give_error">
-						<?php echo esc_html(!empty($error) ? $error : __('You are missing the donation ID to view this donation receipt.', 'give')); ?>
+						<?php echo !empty($error) ? $error : esc_html(__('You are missing the donation ID to view this donation receipt.', 'give')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $error is already esc_html()'d above; escaping it again would double-encode entities like '&'. ?>
 					</p>
 				</div>
 				<?php if ('yes' == $settings['status_notice']) : ?>
 				<div class="give_notices give_errors" id="give_error_success">
 					<p class="give_notice give_success">
-						<?php echo esc_html(!empty($success) ? $success : __('Thank you for your donation.', 'give')); ?>
+						<?php echo !empty($success) ? $success : esc_html(__('Thank you for your donation.', 'give')); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $success is already esc_html()'d above; escaping it again would double-encode entities like '&'. ?>
 					</p>
 				</div>
 				<?php endif; ?>
