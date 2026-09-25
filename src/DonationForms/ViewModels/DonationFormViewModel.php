@@ -55,7 +55,7 @@ class DonationFormViewModel
     /**
      * The skeleton markup for this render, or empty when there is none to show.
      *
-     * @since TBD
+     * @since 4.17.0
      *
      * @var string
      */
@@ -295,7 +295,7 @@ class DonationFormViewModel
     }
 
     /**
-     * @since TBD print the form's skeleton inside the root and announce the shell to the embedding page.
+     * @since 4.17.0 print the form's skeleton inside the root and announce the shell to the embedding page.
      * This is the order of loading:
      * 1. Enqueue global styles from WP.
      *  - This ensures template compatability with global WP css variables as needed. Loads before our templates, so they can use things like global font-family, etc.
@@ -374,7 +374,7 @@ class DonationFormViewModel
      * instead. Both are skipped for an unknown design, where there is nothing to show, and in the
      * builder preview.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     private function renderSkeleton(): string
     {

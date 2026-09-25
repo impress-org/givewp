@@ -11,7 +11,7 @@ import getCurrentFormUrlData from '@givewp/forms/app/utilities/getCurrentFormUrl
  * token or a receipt key, so it is not broadcast to whatever page happens to
  * frame the form. Without a usable origin the message is not sent.
  *
- * @since TBD
+ * @since 4.17.0
  */
 export default function navigateTop(url: string | URL): void {
     try {

@@ -20,7 +20,7 @@ import EMBED_CSS from './styles.scss?inline';
  * and the donor-facing strings in the site's locale. The snippet only has
  * to name the form; text attributes override per element.
  *
- * @since TBD
+ * @since 4.17.0
  */
 
 const LOAD_TIMEOUT_MS = 10000;

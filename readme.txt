@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.16.9
+Stable tag: 4.17.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,15 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.17.0: September 23rd, 2026 =
+* Feature: Added the ability to embed donation forms on any website with a copy-paste snippet from the form builder
+* Enhancement: Donation form embeds now show a loading state while the form loads
+* Fix: Fixed PHP 8.4 deprecation notices about implicitly nullable parameters
+* Fix: Fixed the revenue table index migration adding duplicate indexes when it runs more than once
+* Fix: Added additional escaping to the legacy donation form's billing address fields.
+* Security: Donors can no longer add unverified email addresses to their own donor record.
+* Security: Enhanced security for donations imported from CSV
+
 = 4.16.9: September 16th, 2026 =
 * Security: Added additional validation to PayPal Commerce donation processing.
 * Security: Added additional sanitization to donor information displayed on public pages.

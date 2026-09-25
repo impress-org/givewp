@@ -7,7 +7,7 @@ use Give\Framework\Routes\Route;
 /**
  * The URL third-party sites load the external embed script from.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class GenerateExternalEmbedScriptUrl
 {
@@ -15,7 +15,7 @@ class GenerateExternalEmbedScriptUrl
      * Path below the router's script base. Snippets pasted on other sites
      * carry this, so it must not change.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public const URI = 'embed/donation-form/script.js';
 
@@ -24,7 +24,7 @@ class GenerateExternalEmbedScriptUrl
      * that form's skeleton so the embed can draw it before the form page answers. Without one the
      * script is site-level and the embed shows a spinner until the form page's own skeleton.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public function __invoke(int $formId = 0): string
     {

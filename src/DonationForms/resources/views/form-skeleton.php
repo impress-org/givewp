@@ -5,7 +5,7 @@
  * the form-skeleton directory. The bars are decorative, so the whole sketch is hidden from
  * assistive tech and the element that embeds it carries the loading announcement.
  *
- * @since TBD
+ * @since 4.17.0
  *
  * @var string     $design   One of classic, multi-step, two-panel-steps.
  * @var bool       $header   Whether the form shows a header.

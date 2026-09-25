@@ -10,14 +10,14 @@
  * It lives on window.givewp.form because the login template and the form app
  * ship in separate bundles, so module state would not be shared between them.
  *
- * @since TBD
+ * @since 4.17.0
  */
 export function setAuthToken(token: string): void {
     window.givewp.form.authToken = token ?? '';
 }
 
 /**
- * @since TBD
+ * @since 4.17.0
  */
 export function getAuthToken(): string {
     return window.givewp?.form?.authToken ?? '';

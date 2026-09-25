@@ -5,7 +5,7 @@ namespace Give\Framework\Routes;
 use Give\Framework\Support\Facades\Facade;
 
 /**
- * @since TBD Add script() and scriptUrl()
+ * @since 4.17.0 Add script() and scriptUrl()
  * @since 3.0.0
  *
  * @method static string get(string $uri, string|callable $action, string $method = '_invoke')

@@ -18,7 +18,7 @@ namespace Give\DonationForms\Actions;
  * it works even when another plugin resolves the current user before this
  * plugin has loaded, and so the token is never accepted anywhere else.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class AuthenticateFormRequestWithToken
 {
@@ -26,7 +26,7 @@ class AuthenticateFormRequestWithToken
      * The request key the form sends the token under. The authentication
      * route returns it under the same key.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public const TOKEN_KEY = 'authToken';
 
@@ -35,12 +35,12 @@ class AuthenticateFormRequestWithToken
      * name, so the token verifies only here and is never a valid login cookie
      * if it leaks.
      *
-     * @since TBD
+     * @since 4.17.0
      */
     public const SCHEME = 'givewp_embedded_form';
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function __invoke(array $request): void
     {

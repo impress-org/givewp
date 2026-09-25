@@ -115,10 +115,21 @@ Scheduler queue, campaign stats simply stop updating, and nothing surfaces that 
 
 Things to know before touching this:
 
-- **The cache is authoritative once warm.** `campaigns()` computes which ids are *not* cached, but
-  then, if the cache holds any data at all, returns early with only what's cached — the uncached
-  ids are never fetched on that path. Stats for a campaign missing from the cache come from
-  `CacheCampaignData` running later, not from a read-time fallback.
+- **Read-through for missing campaigns.** `campaigns()` serves cached ids from the options and
+  queries only the ids that are missing, then writes them into the cache. A campaign with no
+  donations gets a zero row so it counts as cached and is not re-queried on every page load.
+  Before this, a warm cache returned early and a campaign absent from it showed no stats until
+  `CacheCampaignData` ran for it.
+- **The cache is live-mode only.** `CampaignsDataQuery` filters by `give_is_test_mode()` but the
+  options carry no mode, so a test-mode write would poison the live figures. In test mode
+  `campaigns()` queries every id directly and writes nothing. `CacheCampaignData` and the
+  `CacheCampaignsData` migration force live mode through the `give_is_test_mode` filter while they
+  run, so a refresh queued by a live donation still lands even if test mode was switched on before
+  Action Scheduler picked it up.
+- **Both readers and all writers use `give_campaigns_subscriptions_data`.** Until the fix, the two
+  readers used a singular key, so the subscriptions cache never hit. The
+  `Campaigns/Migrations/FlushCampaignsDataCache` migration drops both options once so no site
+  starts reading data written while the keys disagreed.
 - **The options are written with a plain `update_option()`**, no explicit `$autoload`. The plugin
   requires WP 6.6+, where WordPress applies its own autoload heuristic and keeps large values out,
   but a modest-sized value on a many-campaign site can still be autoloaded on every request. Check

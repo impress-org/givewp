@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Give\Donations\Actions\GeneratePurchaseKey;
+
 /**
  * Get the Import report of the donations
  *
@@ -652,6 +654,7 @@ function give_log_user_in_on_register_callback( $value ) {
 /**
  * Add import Donation forms, donations , donor from CSV to database
  *
+ * @since 4.17.0 Generate the purchase key with the shared GeneratePurchaseKey action.
  * @since 1.8.13
  *
  * @param array $raw_key Setup bu user at step 2.
@@ -815,7 +818,7 @@ function give_save_import_donation_to_db( $raw_key, $row_data, $main_key = [], $
 		'give_form_title' => ( ! empty( $data['form_title'] ) ? $data['form_title'] : ( method_exists( $form, 'get_name' ) ? $form->get_name() : '' ) ),
 		'give_form_id'    => ( ! empty( $form ) && method_exists( $form, 'get_ID' ) ) ? $form->get_ID() : '',
 		'give_price_id'   => $price_id,
-		'purchase_key'    => strtolower( md5( uniqid() ) ),
+		'purchase_key'    => (new GeneratePurchaseKey())($data['email']),
 		'user_email'      => $data['email'],
 		'post_date'       => $post_date,
 		'mode'            => ( ! empty( $data['mode'] ) ? ( in_array( strtolower( $data['mode'] ), $test_mode ) ? 'test' : 'live' ) : ( isset( $import_setting['mode'] ) ? ( true == (bool) $import_setting['mode'] ? 'test' : 'live' ) : ( give_is_test_mode() ? 'test' : 'live' ) ) ),

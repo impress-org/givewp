@@ -14,14 +14,14 @@ use Give\Tests\TestTraits\RefreshDatabase;
  * This data is the contract the embed's skeleton is drawn from, so every branch that changes a
  * value gets pinned here.
  *
- * @since TBD
+ * @since 4.17.0
  */
 class GetFormSkeletonDataTest extends TestCase
 {
     use RefreshDatabase;
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testReturnsDesignHeaderFlagsAndBlockNamesPerSection()
     {
@@ -49,7 +49,7 @@ class GetFormSkeletonDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testBackgroundImageAddsNoHeight()
     {
@@ -63,7 +63,7 @@ class GetFormSkeletonDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testImageStyleWithoutUrlIsNoImage()
     {
@@ -73,7 +73,7 @@ class GetFormSkeletonDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testTopLevelBlocksThatAreNotSectionsBecomeTheirOwnSection()
     {
@@ -89,7 +89,7 @@ class GetFormSkeletonDataTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.17.0
      */
     public function testNoEnabledGatewaysIsZero()
     {
@@ -101,7 +101,7 @@ class GetFormSkeletonDataTest extends TestCase
     /**
      * A saved form whose settings and blocks are then swapped in memory. Saving runs the blocks
      * through the fields API, which wants fully formed blocks; the skeleton only reads their names.
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      */
     private function form(array $settings, ?array $blocks = null): DonationForm
     {

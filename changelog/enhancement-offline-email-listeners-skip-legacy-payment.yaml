@@ -1,0 +1,4 @@
+significance: patch
+type: enhancement
+entry: Improved donation processing speed by skipping unnecessary offline donation email checks
+timestamp: 2026-09-21T14:13:47.000Z

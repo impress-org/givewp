@@ -29,7 +29,7 @@ class BlockModel implements Arrayable
     public $innerBlocks;
 
     /**
-     * @since TBD Declare the nullable parameter explicitly.
+     * @since 4.17.0 Declare the nullable parameter explicitly.
      * @since 3.1.0 added innerBlocks sanitization
      * @since 3.0.0
      * @param string $name
