@@ -234,7 +234,8 @@ class Give_Notices {
 			return;
 		}
 
-		$output = '';
+		$output         = '';
+		$trusted_output = '';
 
 		foreach ( self::$notices as $notice_id => $notice ) {
 			// Check flag set to true to show notice.
@@ -244,7 +245,8 @@ class Give_Notices {
 
 			// Render custom html.
 			if ( ! empty( $notice['description_html'] ) ) {
-				$output .= "{$notice['description_html']} \n";
+				// description_html is trusted, code-controlled markup that register_notice() explicitly documents as accepting custom HTML (including form controls); kept out of wp_kses_post() below, which would strip elements this API is meant to support.
+				$trusted_output .= "{$notice['description_html']} \n";
 				continue;
 			}
 
@@ -277,7 +279,7 @@ class Give_Notices {
 			$output .= "</div> \n";
 		}
 
-		echo wp_kses_post( $output );
+		echo wp_kses_post( $output ) . $trusted_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $trusted_output is register_notice()'s documented description_html param, trusted code-controlled markup; see the note above.
 
 		$this->print_js();
 	}
