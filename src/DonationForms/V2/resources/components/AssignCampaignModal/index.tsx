@@ -77,10 +77,7 @@ function AssignCampaignModal({
     const [selected, setSelected] = useState<CampaignOption | null>(null);
     const [isSaving, setSaving] = useState(false);
     const [error, setError] = useState<string>('');
-    const {loadOptions, mapOptionsForMenu} = useCampaignAsyncSelect(
-        null,
-        hasCampaign ? ['active', 'draft'] : ['active', 'draft', 'archived']
-    );
+    const {loadOptions, mapOptionsForMenu} = useCampaignAsyncSelect(null, ['active', 'draft']);
     const campaignId = selected?.value ?? 0;
     const title = hasCampaign ? __('Change campaign', 'give') : __('Assign campaign', 'give');
     const campaignUrl = `edit.php?post_type=give_forms&page=give-campaigns&id=${campaignId}&tab=overview&action=edit`;
