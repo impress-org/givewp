@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped output on the onboarding setup guide page and the wizard's form preview and submenu page renderers.
+timestamp: 2026-09-24T00:00:00.000Z
