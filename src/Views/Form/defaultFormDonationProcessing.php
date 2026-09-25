@@ -2,6 +2,7 @@
 /**
  * Payment confirmation view.
  *
+ * @since TBD Escape output.
  * @since 2.7.0
  */
 
@@ -17,7 +18,7 @@ language_attributes(); ?>>
 <body>
 <script type="text/javascript">
     setTimeout(function() {
-        window.location = '<?php echo give_get_success_page_uri(); ?>';
+        window.location = <?php echo wp_json_encode(esc_url_raw(give_get_success_page_uri()), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
     }, 5000);
 </script>
 </body>
