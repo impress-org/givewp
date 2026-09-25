@@ -23,6 +23,8 @@ class BuildEmailPreview
     }
 
     /**
+     * @since TBD Sanitize the preview message before it's rendered into the email body.
+     *
      * @param string $emailHeader
      * @return string
      */
@@ -59,7 +61,7 @@ class BuildEmailPreview
         do_action( "give_{$emailType}_email_preview", $emailNotification );
 
         return apply_filters( "give_{$emailType}_email_preview_message",
-            Give()->emails->build_email($this->applyPreviewTemplateTags($emailMessage)),
+            Give()->emails->build_email(wp_kses_post($this->applyPreviewTemplateTags($emailMessage))),
             $email_preview_data = apply_filters( "give_{$emailType}_email_preview_data", array() ),
             $emailNotification
         );
