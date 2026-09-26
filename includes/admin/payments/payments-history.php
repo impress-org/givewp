@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Renders the payment history page contents.
  *
  * @access      private
+ * @since       TBD Escape output.
  * @since       1.0
  * @return      void
  */
@@ -33,7 +34,7 @@ function give_payment_history_page() {
 		?>
 	<div class="wrap">
 
-		<h1 class="wp-heading-inline"><?php echo get_admin_page_title(); ?></h1>
+		<h1 class="wp-heading-inline"><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
 		<?php
 		/**
@@ -45,14 +46,14 @@ function give_payment_history_page() {
 		?>
 		<hr class="wp-header-end">
 
-		<form id="give-payments-advanced-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
+		<form id="give-payments-advanced-filter" method="get" action="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ) ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
 			<?php $payments_table->views(); ?>
 			<?php $payments_table->advanced_filters(); ?>
 		</form>
 
-		<form id="give-payments-filter" method="get" action="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ); ?>">
+		<form id="give-payments-filter" method="get" action="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-payment-history' ) ); ?>">
 			<input type="hidden" name="post_type" value="give_forms" />
 			<input type="hidden" name="page" value="give-payment-history" />
 			<?php
