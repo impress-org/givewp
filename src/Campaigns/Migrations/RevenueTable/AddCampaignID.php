@@ -37,6 +37,9 @@ class AddCampaignID extends Migration
 
     /**
      * @inheritDoc
+     *
+     * @since TBD Escape exception message.
+     *
      * @throws DatabaseMigrationException
      */
     public function run()
@@ -45,7 +48,7 @@ class AddCampaignID extends Migration
         $columnAdded = maybe_add_column($table, 'campaign_id', "ALTER TABLE $table ADD COLUMN campaign_id INT UNSIGNED NULL");
 
         if ( ! $columnAdded) {
-            throw new DatabaseMigrationException("An error occurred while updating the $table table");
+            throw new DatabaseMigrationException(esc_html("An error occurred while updating the $table table"));
         }
     }
 }
