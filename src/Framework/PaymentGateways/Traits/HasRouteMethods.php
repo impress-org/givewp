@@ -49,6 +49,7 @@ trait HasRouteMethods
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.20.0
      *
      * @param string $method
@@ -64,9 +65,9 @@ trait HasRouteMethods
         throw new PaymentGatewayException(
             sprintf(
                 '%1$s route method is not supported by %2$s and %3$s',
-                $method,
-                get_class($this),
-                get_class($this->subscriptionModule)
+                esc_html($method),
+                esc_html(get_class($this)),
+                esc_html(get_class($this->subscriptionModule))
             )
         );
     }
