@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped exception messages thrown by the event ticket and subscription database migrations
+timestamp: 2026-09-26T00:00:00.000Z
