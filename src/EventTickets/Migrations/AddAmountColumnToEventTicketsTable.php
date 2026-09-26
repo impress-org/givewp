@@ -58,6 +58,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.20.0
      *
      * @throws DatabaseMigrationException
@@ -70,11 +71,16 @@ class AddAmountColumnToEventTicketsTable extends Migration
         try {
             maybe_add_column($eventTicketsTable, 'amount', $sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while adding the amount column to the $eventTicketsTable table", 0, $exception);
+            throw new DatabaseMigrationException(
+                esc_html("An error occurred while adding the amount column to the $eventTicketsTable table"),
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.20.0
      *
      * @throws DatabaseMigrationException
@@ -89,7 +95,11 @@ class AddAmountColumnToEventTicketsTable extends Migration
         try {
             $wpdb->query($sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while migrating data to the amount column in the $eventTicketsTable table", 0, $exception);
+            throw new DatabaseMigrationException(
+                esc_html("An error occurred while migrating data to the amount column in the $eventTicketsTable table"),
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 };
