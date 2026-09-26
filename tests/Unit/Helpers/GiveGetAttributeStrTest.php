@@ -29,6 +29,19 @@ class GiveGetAttributeStrTest extends TestCase
     /**
      * @since TBD
      */
+    public function testDropsAnInvalidAttributeName(): void
+    {
+        $output = give_get_attribute_str([
+            'class' => 'a',
+            '"onmouseover=alert(1)' => 'x',
+        ]);
+
+        $this->assertSame('class="a"', $output);
+    }
+
+    /**
+     * @since TBD
+     */
     public function testTooltipLabelIsEscapedInAriaLabel(): void
     {
         $markup = Give()->tooltips->render_help('Say "hi" <b>');
