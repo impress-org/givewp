@@ -219,13 +219,14 @@ class CampaignPageRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.0.0
      */
     public function validate(CampaignPage $campaignPage)
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($campaignPage->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }
