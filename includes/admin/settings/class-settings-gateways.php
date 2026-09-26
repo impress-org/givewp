@@ -304,12 +304,12 @@ if (! class_exists('Give_Settings_Gateways')) :
                                 'Activate the free Stripe payment gateway %1$s, <a href="%2$s" target="_blank">PayPal Donations</a>, or a premium gateway like <a href="%3$s" target="_blank">2checkout</a>, or <a href="%4$s" target="_blank">Authorize.Net</a>.',
                                 'give'
                             ),
-                            wp_kses_post( Give()->tooltips->render_help(
+                            Give()->tooltips->render_help(
                                 __(
                                     'The Stripe payment gateway includes a 2% processing fee in addition to Stripe’s transaction fee. This ensures our ability to provide future support and updates for the plugin.',
                                     'give'
                                 )
-                            ) ),
+                            ),
                             esc_url( admin_url('edit.php?post_type=give_forms&page=give-settings&tab=gateways&section=paypal') ),
                             'https://givewp.com/addons/2checkout/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner',
                             'https://givewp.com/addons/authorize-net-gateway/?utm_source=WP%20Admin%20%3E%20Donations%20%3E%20Settings%20%3E%20Gateways&utm_medium=banner'
@@ -504,12 +504,11 @@ if (! class_exists('Give_Settings_Gateways')) :
 
                     echo '<li>';
                     printf('<span class="give-drag-handle"><span class="dashicons dashicons-menu"></span></span>');
+                    $tooltip = !empty($option['admin_tooltip']) ? Give()->tooltips->render_help($option['admin_tooltip']) : '';
                     printf(
                         '<span class="admin-label">%1$s %2$s</span>',
                         esc_html($option['admin_label']),
-                        !empty($option['admin_tooltip']) ? wp_kses_post( Give()->tooltips->render_help(
-                            esc_attr($option['admin_tooltip'])
-                        ) ) : ''
+                        $tooltip // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_help() escapes every attribute value (including aria-label) and the tag name; its content is a fixed icon literal.
                     );
 
                     $label = '';
