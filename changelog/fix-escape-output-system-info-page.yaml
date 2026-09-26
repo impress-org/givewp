@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped all output on the Donations > Tools > System Info page.
+timestamp: 2026-09-23T11:44:19.000Z
