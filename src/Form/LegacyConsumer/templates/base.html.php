@@ -1,4 +1,5 @@
 <?php
+/** @since TBD Escape output. */
 /** @var \Give\Framework\FieldsAPI\Text $field */ ?>
 <?php
 /** @var string $typeAttribute */ ?>
@@ -6,15 +7,15 @@
 /** @var string $fieldIdAttribute */ ?>
 <input
     type="<?php
-    echo $typeAttribute; ?>"
+    echo esc_attr($typeAttribute); ?>"
     name="<?php
-    echo $field->getName(); ?>"
+    echo esc_attr($field->getName()); ?>"
     placeholder="<?php
-    echo $field->getPlaceholder(); ?>"
+    echo esc_attr($field->getPlaceholder()); ?>"
     id="<?php
-    echo $fieldIdAttribute; ?>"
+    echo esc_attr($fieldIdAttribute); ?>"
     value="<?php
-    echo $field->getDefaultValue(); ?>"
+    echo esc_attr($field->getDefaultValue()); ?>"
     <?php
     echo $field->isRequired() ? 'required' : ''; ?>
     <?php
@@ -22,7 +23,7 @@
 
     <?php
     if( method_exists( $field, 'getMaxLength' ) ) {
-        echo ($maxLength = $field->getMaxLength()) ? "maxlength=\"$maxLength\"" : '';
+        echo ($maxLength = $field->getMaxLength()) ? 'maxlength="' . (int) $maxLength . '"' : '';
     }
     ?>
 >
