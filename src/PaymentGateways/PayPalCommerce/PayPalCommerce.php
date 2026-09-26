@@ -82,6 +82,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
+     * @since TBD Escape exception messages.
      * @since 4.16.9 Capture every order here, and validate the captured amount against the donation.
      * @since 4.16.8.1 Reject a completed order whose amount doesn't match the donation, or whose capture is already recorded against a different donation.
      * @since 4.2.1 updated to use updateOrderFromDonation
@@ -107,7 +108,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
          * further attempt with an error, which is what limits a capture to a single donation.
          */
         if ($payPalOrder->status !== 'APPROVED' && $payPalOrder->status !== 'CREATED') {
-            throw new PaymentGatewayException(__('PayPal Order is not ready to be captured.', 'give'));
+            throw new PaymentGatewayException(esc_html__('PayPal Order is not ready to be captured.', 'give'));
         }
 
         $this->validate3dSecure($payPalOrder);
@@ -120,7 +121,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
         try {
             $response = $payPalOrderRepository->approveOrder($payPalOrderId);
         } catch (Exception $exception) {
-            throw new PaymentGatewayException($this->getCaptureFailureMessage($exception));
+            throw new PaymentGatewayException($this->getCaptureFailureMessage($exception)); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- PayPal API text shown on the donation form as JSON/text (HandleHttpResponses); esc_html() here would double-encode quotes, and PayPalCommerceTest asserts these messages verbatim.
         }
 
         $this->validatePayPalOrder($response);
@@ -336,6 +337,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
      * is what finally decides how much was taken, so the captured amount is compared to the
      * donation rather than assumed to match.
      *
+     * @since TBD Escape exception messages.
      * @since 4.16.9
      *
      * @throws PaymentGatewayException
@@ -345,7 +347,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
         $capture = $payPalOrder->purchase_units[0]->payments->captures[0] ?? null;
 
         if (! isset($capture->amount->value, $capture->amount->currency_code)) {
-            throw new PaymentGatewayException(__('PayPal capture does not have an amount.', 'give'));
+            throw new PaymentGatewayException(esc_html__('PayPal capture does not have an amount.', 'give'));
         }
 
         $capturedAmount = Money::fromDecimal($capture->amount->value, $capture->amount->currency_code);
@@ -360,7 +362,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
             );
 
             throw new PaymentGatewayException(
-                __('Captured PayPal amount does not match donation amount.', 'give')
+                esc_html__('Captured PayPal amount does not match donation amount.', 'give')
             );
         }
     }
@@ -386,6 +388,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
+     * @since TBD Escape exception messages.
      * @since 4.16.9 Read the capture defensively, and report a failed or declined capture's processor response.
      *
      * @throws PaymentGatewayException
@@ -395,7 +398,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
         $transaction = $payPalOrder->purchase_units[0]->payments->captures[0] ?? null;
 
         if (! $transaction) {
-            throw new PaymentGatewayException(__('PayPal Order does not have a transaction.', 'give'));
+            throw new PaymentGatewayException(esc_html__('PayPal Order does not have a transaction.', 'give'));
         }
 
         /*
@@ -418,14 +421,17 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
                 $transaction->status
             );
 
-            throw new PaymentGatewayException(trim($message . ' ' . $processorError));
+            throw new PaymentGatewayException(trim($message . ' ' . $processorError)); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- PayPal processor response text shown on the donation form as JSON/text; esc_html() here would double-encode quotes.
         }
 
         $error = $payPalOrder->details[0]->description ?? '';
 
         if ($error) {
             throw new PaymentGatewayException(
-                sprintf(__('PayPal Order has an error: %s', 'give'), $error)
+                sprintf(
+                    esc_html__('PayPal Order has an error: %s', 'give'),
+                    $error // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- PayPal API text shown on the donation form as JSON/text; esc_html() here would double-encode quotes.
+                )
             );
         }
 
@@ -446,6 +452,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
     }
 
     /**
+     * @since TBD Escape exception messages.
      * @since 4.7.0
      *
      * @throws Exception
@@ -477,7 +484,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
                 ),
             ]);
 
-            throw new PaymentGatewayException(sprintf(__('PayPal API error: %s', 'give'), $e->getMessage()));
+            throw new PaymentGatewayException(sprintf(__('PayPal API error: %s', 'give'), $e->getMessage())); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- PayPal API text shown on the donation form as JSON/text; esc_html() here would double-encode quotes.
         }
     }
 }
