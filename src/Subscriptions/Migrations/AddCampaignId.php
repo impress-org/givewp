@@ -38,6 +38,7 @@ class AddCampaignId extends Migration implements ReversibleMigration
     }
 
     /**
+     * @since TBD Escape exception message.
      * @inheritDoc
      *
      * @throws DatabaseMigrationException
@@ -59,7 +60,7 @@ class AddCampaignId extends Migration implements ReversibleMigration
             ));
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException("An error occurred while adding campaign ID to the give_subscriptions table",
-                0, $exception);
+                0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
         }
     }
 
