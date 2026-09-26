@@ -1,4 +1,7 @@
 <?php
+/**
+ * @since TBD Escape translated output.
+ */
 
 /**
  * @since TBD Escape output.
