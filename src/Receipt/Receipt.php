@@ -150,6 +150,7 @@ abstract class Receipt implements Iterator, ArrayAccess
      * @param array  $value  Section Data.
      * @param string $offset Section ID.
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->addSection($value);
@@ -164,6 +165,7 @@ abstract class Receipt implements Iterator, ArrayAccess
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->sectionList[$offset]);
@@ -176,6 +178,7 @@ abstract class Receipt implements Iterator, ArrayAccess
      *
      * @param string $offset Section ID.
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         if ($this->offsetExists($offset)) {
@@ -193,6 +196,7 @@ abstract class Receipt implements Iterator, ArrayAccess
      *
      * @return Section|null
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return isset($this->sectionList[$offset]) ? $this->sectionList[$offset] : null;
@@ -204,6 +208,7 @@ abstract class Receipt implements Iterator, ArrayAccess
      * @since 2.7.0
      * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->sectionList[$this->sectionIds[$this->position]];
@@ -214,6 +219,7 @@ abstract class Receipt implements Iterator, ArrayAccess
      *
      * @since 2.7.0
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->position;
@@ -225,6 +231,7 @@ abstract class Receipt implements Iterator, ArrayAccess
      * @since 2.7.0
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
@@ -236,6 +243,7 @@ abstract class Receipt implements Iterator, ArrayAccess
      * @since 2.7.0
      * @return bool|void
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return isset($this->sectionIds[$this->position]);
