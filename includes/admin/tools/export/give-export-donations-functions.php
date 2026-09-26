@@ -229,6 +229,7 @@ add_filter( 'give_ajax_form_search_args', 'give_export_donation_form_search_args
 /**
  * Add Donation standard fields in export donation page
  *
+ * @since TBD Escape translated output.
  * @since 3.12.1 add Donor Phone Number to donor fields.
  * @since 2.1
  */
@@ -236,7 +237,7 @@ function give_export_donation_standard_fields() {
 	?>
 	<tr>
 		<td scope="row" class="row-title">
-			<label><?php _e( 'Standard Columns:', 'give' ); ?></label>
+			<label><?php esc_html_e( 'Standard Columns:', 'give' ); ?></label>
 		</td>
 		<td>
 			<div class="give-clearfix">
@@ -246,7 +247,7 @@ function give_export_donation_standard_fields() {
 
 							<li class="give-export-option-label give-export-option-donation-label">
 								<span>
-									<?php _e( 'Donation Payment Fields', 'give' ); ?>
+									<?php esc_html_e( 'Donation Payment Fields', 'give' ); ?>
 								</span>
 							</li>
 
@@ -254,7 +255,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-id">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[donation_id]"
-										   id="give-export-donation-id"><?php _e( 'Donation ID', 'give' ); ?>
+										   id="give-export-donation-id"><?php esc_html_e( 'Donation ID', 'give' ); ?>
 								</label>
 							</li>
 
@@ -265,7 +266,7 @@ function give_export_donation_standard_fields() {
 									<label for="give-export-seq-id">
 										<input type="checkbox" checked
 											   name="give_give_donations_export_option[seq_id]"
-											   id="give-export-seq-id"><?php _e( 'Donation Number', 'give' ); ?>
+											   id="give-export-seq-id"><?php esc_html_e( 'Donation Number', 'give' ); ?>
 									</label>
 								</li>
 								<?php
@@ -276,7 +277,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-sum">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[donation_total]"
-										   id="give-export-donation-sum"><?php _e( 'Donation Total', 'give' ); ?>
+										   id="give-export-donation-sum"><?php esc_html_e( 'Donation Total', 'give' ); ?>
 								</label>
 							</li>
 
@@ -284,7 +285,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-currency_code">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[currency_code]"
-										   id="give-export-donation-currency_code"><?php _e( 'Currency Code', 'give' ); ?>
+										   id="give-export-donation-currency_code"><?php esc_html_e( 'Currency Code', 'give' ); ?>
 								</label>
 							</li>
 
@@ -292,7 +293,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-currency_symbol">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[currency_symbol]"
-										   id="give-export-donation-currency_symbol"><?php _e( 'Currency Symbol', 'give' ); ?>
+										   id="give-export-donation-currency_symbol"><?php esc_html_e( 'Currency Symbol', 'give' ); ?>
 								</label>
 							</li>
 
@@ -300,7 +301,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-status">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[donation_status]"
-										   id="give-export-donation-status"><?php _e( 'Donation Status', 'give' ); ?>
+										   id="give-export-donation-status"><?php esc_html_e( 'Donation Status', 'give' ); ?>
 								</label>
 							</li>
 
@@ -308,7 +309,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-date">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[donation_date]"
-										   id="give-export-donation-date"><?php _e( 'Donation Date', 'give' ); ?>
+										   id="give-export-donation-date"><?php esc_html_e( 'Donation Date', 'give' ); ?>
 								</label>
 							</li>
 
@@ -316,7 +317,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-time">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[donation_time]"
-										   id="give-export-donation-time"><?php _e( 'Donation Time', 'give' ); ?>
+										   id="give-export-donation-time"><?php esc_html_e( 'Donation Time', 'give' ); ?>
 								</label>
 							</li>
 
@@ -324,7 +325,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-payment-gateway">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[payment_gateway]"
-										   id="give-export-payment-gateway"><?php _e( 'Payment Gateway', 'give' ); ?>
+										   id="give-export-payment-gateway"><?php esc_html_e( 'Payment Gateway', 'give' ); ?>
 								</label>
 							</li>
 
@@ -332,7 +333,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-payment-mode">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[payment_mode]"
-										   id="give-export-payment-mode"><?php _e( 'Payment Mode', 'give' ); ?>
+										   id="give-export-payment-mode"><?php esc_html_e( 'Payment Mode', 'give' ); ?>
 								</label>
 							</li>
 
@@ -340,7 +341,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-note-private">
 									<input type="checkbox"
 										   name="give_give_donations_export_option[donation_note_private]"
-										   id="give-export-donation-note-private"><?php _e( 'Donation Note (private)', 'give' ); ?>
+										   id="give-export-donation-note-private"><?php esc_html_e( 'Donation Note (private)', 'give' ); ?>
 								</label>
 							</li>
 
@@ -348,7 +349,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-note-to-donor">
 									<input type="checkbox"
 										   name="give_give_donations_export_option[donation_note_to_donor]"
-										   id="give-export-donation-note-to-donor"><?php _e( 'Donation Note (to donor)', 'give' ); ?>
+										   id="give-export-donation-note-to-donor"><?php esc_html_e( 'Donation Note (to donor)', 'give' ); ?>
 								</label>
 							</li>
 
@@ -368,7 +369,7 @@ function give_export_donation_standard_fields() {
 
 							<li class="give-export-option-label give-export-option-Form-label">
 								<span>
-									<?php _e( 'Donation Form Fields', 'give' ); ?>
+									<?php esc_html_e( 'Donation Form Fields', 'give' ); ?>
 								</span>
 							</li>
 
@@ -377,7 +378,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-form-id">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[form_id]"
-										   id="give-export-donation-form-id"><?php _e( 'Donation Form ID', 'give' ); ?>
+										   id="give-export-donation-form-id"><?php esc_html_e( 'Donation Form ID', 'give' ); ?>
 								</label>
 							</li>
 
@@ -385,7 +386,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-form-title">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[form_title]"
-										   id="give-export-donation-form-title"><?php _e( 'Donation Form Title', 'give' ); ?>
+										   id="give-export-donation-form-title"><?php esc_html_e( 'Donation Form Title', 'give' ); ?>
 								</label>
 							</li>
 
@@ -393,7 +394,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-form-level-id">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[form_level_id]"
-										   id="give-export-donation-form-level-id"><?php _e( 'Donation Form Level ID', 'give' ); ?>
+										   id="give-export-donation-form-level-id"><?php esc_html_e( 'Donation Form Level ID', 'give' ); ?>
 								</label>
 							</li>
 
@@ -401,7 +402,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donation-form-level-title">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[form_level_title]"
-										   id="give-export-donation-form-level-title"><?php _e( 'Donation Form Level Title', 'give' ); ?>
+										   id="give-export-donation-form-level-title"><?php esc_html_e( 'Donation Form Level Title', 'give' ); ?>
 								</label>
 							</li>
 
@@ -421,7 +422,7 @@ function give_export_donation_standard_fields() {
 
 							<li class="give-export-option-label give-export-option-donor-label">
 								<span>
-									<?php _e( 'Donor Fields', 'give' ); ?>
+									<?php esc_html_e( 'Donor Fields', 'give' ); ?>
 								</span>
 							</li>
 
@@ -437,7 +438,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-first-name">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[first_name]"
-										   id="give-export-first-name"><?php _e( 'Donor\'s First Name', 'give' ); ?>
+										   id="give-export-first-name"><?php esc_html_e( 'Donor\'s First Name', 'give' ); ?>
 								</label>
 							</li>
 
@@ -445,7 +446,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-last-name">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[last_name]"
-										   id="give-export-last-name"><?php _e( 'Donor\'s Last Name', 'give' ); ?>
+										   id="give-export-last-name"><?php esc_html_e( 'Donor\'s Last Name', 'give' ); ?>
 								</label>
 							</li>
 
@@ -453,7 +454,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-email">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[email]"
-										   id="give-export-email"><?php _e( 'Donor\'s Email', 'give' ); ?>
+										   id="give-export-email"><?php esc_html_e( 'Donor\'s Email', 'give' ); ?>
 								</label>
 							</li>
 
@@ -461,7 +462,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-company">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[company]"
-										   id="give-export-company"><?php _e( 'Company Name', 'give' ); ?>
+										   id="give-export-company"><?php esc_html_e( 'Company Name', 'give' ); ?>
 								</label>
 							</li>
 
@@ -469,7 +470,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-address">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[address]"
-										   id="give-export-address"><?php _e( 'Donor\'s Billing Address', 'give' ); ?>
+										   id="give-export-address"><?php esc_html_e( 'Donor\'s Billing Address', 'give' ); ?>
 								</label>
 							</li>
 
@@ -477,7 +478,7 @@ function give_export_donation_standard_fields() {
                                 <label for="give-export-phone">
                                     <input type="checkbox" checked
                                            name="give_give_donations_export_option[phone]"
-                                           id="give-export-address"><?php _e( 'Donor\'s Phone Number', 'give' ); ?>
+                                           id="give-export-address"><?php esc_html_e( 'Donor\'s Phone Number', 'give' ); ?>
                                 </label>
                             </li>
 
@@ -485,7 +486,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-comment">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[comment]"
-										   id="give-export-comment"><?php _e( 'Donor\'s Comment', 'give' ); ?>
+										   id="give-export-comment"><?php esc_html_e( 'Donor\'s Comment', 'give' ); ?>
 								</label>
 							</li>
 
@@ -493,7 +494,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-userid">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[userid]"
-										   id="give-export-userid"><?php _e( 'User ID', 'give' ); ?>
+										   id="give-export-userid"><?php esc_html_e( 'User ID', 'give' ); ?>
 								</label>
 							</li>
 
@@ -501,7 +502,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donorid">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[donorid]"
-										   id="give-export-donorid"><?php _e( 'Donor ID', 'give' ); ?>
+										   id="give-export-donorid"><?php esc_html_e( 'Donor ID', 'give' ); ?>
 								</label>
 							</li>
 
@@ -509,7 +510,7 @@ function give_export_donation_standard_fields() {
 								<label for="give-export-donor-ip">
 									<input type="checkbox" checked
 										   name="give_give_donations_export_option[donor_ip]"
-										   id="give-export-donor-ip"><?php _e( 'Donor IP Address', 'give' ); ?>
+										   id="give-export-donor-ip"><?php esc_html_e( 'Donor IP Address', 'give' ); ?>
 								</label>
 							</li>
 
@@ -544,6 +545,7 @@ add_action( 'give_export_donation_fields', 'give_export_donation_standard_fields
 /**
  * Add Donation Custom fields in export donation page
  *
+ * @since TBD Escape translated output.
  * @since 2.1
  */
 function give_export_donation_custom_fields() {
@@ -551,12 +553,12 @@ function give_export_donation_custom_fields() {
 	<tr
 		class="give-hidden give-export-donations-hide give-export-donations-standard-fields">
 		<td scope="row" class="row-title">
-			<label><?php _e( 'Custom Field Columns:', 'give' ); ?></label>
+			<label><?php esc_html_e( 'Custom Field Columns:', 'give' ); ?></label>
 		</td>
 		<td class="give-field-wrap">
 			<div class="give-clearfix">
 				<ul class="give-export-option-ul"></ul>
-				<p class="give-field-description"><?php _e( 'The following fields may have been created by custom code, or another plugin.', 'give' ); ?></p>
+				<p class="give-field-description"><?php esc_html_e( 'The following fields may have been created by custom code, or another plugin.', 'give' ); ?></p>
 			</div>
 		</td>
 	</tr>
@@ -569,6 +571,7 @@ add_action( 'give_export_donation_fields', 'give_export_donation_custom_fields',
 /**
  * Add Donation hidden fields in export donation page
  *
+ * @since TBD Escape translated output.
  * @since 2.1
  */
 function give_export_donation_hidden_fields() {
@@ -576,12 +579,12 @@ function give_export_donation_hidden_fields() {
 
 	<tr class="give-hidden give-export-donations-hide give-export-donations-hidden-fields">
 		<td scope="row" class="row-title">
-			<label><?php _e( 'Hidden Custom Field Columns:', 'give' ); ?></label>
+			<label><?php esc_html_e( 'Hidden Custom Field Columns:', 'give' ); ?></label>
 		</td>
 		<td class="give-field-wrap">
 			<div class="give-clearfix">
 				<ul class="give-export-option-ul"></ul>
-				<p class="give-field-description"><?php _e( 'The following hidden custom fields contain data created by GiveWP Core, a GiveWP Add-on, another plugin, etc.<br/>Hidden fields are generally used for programming logic, but may contain data you would like to export.', 'give' ); ?></p>
+				<p class="give-field-description"><?php echo wp_kses_post( __( 'The following hidden custom fields contain data created by GiveWP Core, a GiveWP Add-on, another plugin, etc.<br/>Hidden fields are generally used for programming logic, but may contain data you would like to export.', 'give' ) ); ?></p>
 			</div>
 		</td>
 	</tr>
