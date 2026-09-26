@@ -167,13 +167,14 @@ class EventRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.6.0
      */
     private function validate(Event $event): void
     {
         foreach ($this->requiredProperties as $key) {
             if (!isset($event->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }
