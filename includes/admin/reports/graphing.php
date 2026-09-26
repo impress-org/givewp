@@ -840,7 +840,7 @@ function give_reports_refresh_button() {
 		'give-refresh-reports'
 	);
 
-	echo wp_kses_post( Give()->tooltips->render_link(
+	echo Give()->tooltips->render_link( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_link() escapes every attribute value (href, aria-label, class) and the tag name; tag_content is a fixed icon span plus esc_html__().
 		[
 			'label'       => esc_attr__( 'Clicking this will clear the reports cache.', 'give' ),
 			'tag_content' => '<span class="give-admin-button-icon give-admin-button-icon-update"></span>' . esc_html__( 'Refresh Report Data', 'give' ),
@@ -850,7 +850,7 @@ function give_reports_refresh_button() {
 				'class' => 'button alignright give-admin-button',
 			],
 		]
-	) );
+	);
 }
 
 add_action( 'give_reports_graph_additional_stats', 'give_reports_refresh_button' );
