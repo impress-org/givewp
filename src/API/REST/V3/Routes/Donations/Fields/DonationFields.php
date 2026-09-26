@@ -18,6 +18,7 @@ class DonationFields
     /**
      * Process field values for special data types before setting them on the donation model.
      *
+     * @since TBD Escape exception message.
      * @since 4.13.0 update money object format to use value and currency
      * @since 4.8.0
      *
@@ -71,7 +72,7 @@ class DonationFields
                         return new DateTime($value['date'], new \DateTimeZone($value['timezone']));
                     }
                 } catch (\Exception $e) {
-                    throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
+                    throw new InvalidArgumentException(esc_html("Invalid date format for {$key}: {$value}."));
                 }
                 return $value;
 
