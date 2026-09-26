@@ -151,6 +151,7 @@ class DonateFormRouteData implements Arrayable
      * and converts them into a WP_Error object that is attached to the
      * exception and delivered back to the client via JSON.
      *
+     * @since TBD Escape exception message.
      * @since 3.0.0
      *
      * @param  array<string, string>  $errors
@@ -165,7 +166,7 @@ class DonateFormRouteData implements Arrayable
             $wpError->add($id, $error);
         }
 
-        throw new DonationFormFieldErrorsException($wpError);
+        throw new DonationFormFieldErrorsException($wpError); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- WP_Error object; its messages are returned as JSON and rendered as text by the form.
     }
 
     /**
