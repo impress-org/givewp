@@ -194,6 +194,7 @@ class DonationNotesRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.21.0
      *
      * @param DonationNote $donationNote
@@ -204,7 +205,7 @@ class DonationNotesRepository
     {
         foreach ($this->requiredDonationProperties as $key) {
             if (!isset($donationNote->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 
