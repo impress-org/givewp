@@ -118,7 +118,7 @@ trait StripeWebhookListenerRepository
                 sprintf(
                     'Failed to retrieve invoice %s: %s',
                     esc_html($invoiceId),
-                    $exception->getMessage() // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- re-thrown to the Stripe webhook handler, which logs it and prints it with esc_html().
+                    $exception->getMessage() // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by InvoicePaymentSucceeded/InvoicePaymentFailed and only logged via Log::error(), never displayed.
                 )
             );
         }

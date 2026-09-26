@@ -53,7 +53,7 @@ abstract class StripeEventListener implements EventListener
 
             return Event::retrieve($eventId, $options);
         } catch (\Exception $e) {
-            throw new Exception($e->getMessage()); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- re-thrown to the Stripe webhook handler, which logs it and prints it with esc_html().
+            throw new Exception($e->getMessage()); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- propagates to Give_Stripe_Webhooks::listen(), which embeds it in the raw webhook HTTP response via exit($message); pre-existing unescaped behavior, and the webhook client is Stripe's server, not a browser.
         }
     }
 
