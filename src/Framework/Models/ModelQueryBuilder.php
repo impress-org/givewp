@@ -21,12 +21,14 @@ class ModelQueryBuilder extends QueryBuilder
     protected $model;
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param class-string<M> $modelClass
      */
     public function __construct($modelClass)
     {
         if (!is_subclass_of($modelClass, Model::class)) {
-            throw new InvalidArgumentException("$modelClass must be an instance of " . Model::class);
+            throw new InvalidArgumentException(esc_html($modelClass) . ' must be an instance of ' . Model::class);
         }
 
         $this->model = $modelClass;
@@ -113,6 +115,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get row as model
      *
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @param object|null $row
@@ -124,7 +127,7 @@ class ModelQueryBuilder extends QueryBuilder
         $model = $this->model;
 
         if (!method_exists($model, 'fromQueryBuilderObject')) {
-            throw new InvalidArgumentException("fromQueryBuilderObject missing from $model");
+            throw new InvalidArgumentException(esc_html("fromQueryBuilderObject missing from $model"));
         }
 
         return $model::fromQueryBuilderObject($row);
@@ -133,6 +136,7 @@ class ModelQueryBuilder extends QueryBuilder
     /**
      * Get results as models
      *
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @param object[] $results
@@ -145,7 +149,7 @@ class ModelQueryBuilder extends QueryBuilder
         $model = $this->model;
 
         if (!method_exists($model, 'fromQueryBuilderObject')) {
-            throw new InvalidArgumentException("fromQueryBuilderObject missing from $model");
+            throw new InvalidArgumentException(esc_html("fromQueryBuilderObject missing from $model"));
         }
 
         return array_map(static function ($object) use ($model) {
