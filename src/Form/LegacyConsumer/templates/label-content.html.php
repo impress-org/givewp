@@ -19,12 +19,12 @@ if ($field->isRequired()) : ?>
 <?php
 endif; ?>
 <?php
-echo ($helpText = $field->getHelpText()) ?
-    wp_kses_post(Give()->tooltips->render_help([
-                                      'label' => $helpText,
-                                      'position' => give(Sequoia::class)->getID() === Template::getActiveID(
-                                          $formId
-                                      ) ? 'right' : 'top',
-                                  ])) :
-    '';
+if ($helpText = $field->getHelpText()) {
+    Give()->tooltips->print_render_help([
+        'label' => $helpText,
+        'position' => give(Sequoia::class)->getID() === Template::getActiveID(
+            $formId
+        ) ? 'right' : 'top',
+    ]);
+}
 ?>
