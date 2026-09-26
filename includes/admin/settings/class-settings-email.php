@@ -6,6 +6,7 @@
  * @subpackage  Classes/Give_Settings_Email
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       TBD Escape output.
  * @since       1.8
  */
 
@@ -70,12 +71,12 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
             // Output the appropriate button and label based on connection status
             if( $client_connected ) :
                 ?>
-                <tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+                <tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . esc_attr( $field['wrapper_class'] ) . '"' : ''; ?>>
                     <th scope="row" class="titledesc">
                         <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
                     </th>
                     <td class="give-forminp">
-                        <p><?php _e( 'SendWP plugin activated.', 'give' ); ?> <?php echo $forwarding_enabled ? $connected : $disconnected ; ?></p>
+                        <p><?php _e( 'SendWP plugin activated.', 'give' ); ?> <?php echo wp_kses_post( $forwarding_enabled ? $connected : $disconnected ); ?></p>
 
                         <br style="margin-bottom: 0.5rem;"/>
 
@@ -85,13 +86,13 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                 <?php
             else :
                 ?>
-                <tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . $field['wrapper_class'] . '"' : ''; ?>>
+                <tr valign="top" <?php echo ! empty( $field['wrapper_class'] ) ? 'class="' . esc_attr( $field['wrapper_class'] ) . '"' : ''; ?>>
                     <th scope="row" class="titledesc">
                         <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
                     </th>
                     <td class="give-forminp">
                         <div class="give-field-description">
-                            <?php _e( 'GiveWP recommends SendWP to ensure quick and reliable delivery of all emails sent from your site, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ); ?> <?php printf( __( '%sLearn more%s', 'give' ), '<a href="https://go.givewp.com/sendwpinternal" target="_blank" rel="noopener noreferrer">', '</a>' ); ?>
+                            <?php _e( 'GiveWP recommends SendWP to ensure quick and reliable delivery of all emails sent from your site, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ); ?> <?php echo wp_kses_post( sprintf( __( '%sLearn more%s', 'give' ), '<a href="https://go.givewp.com/sendwpinternal" target="_blank" rel="noopener noreferrer">', '</a>' ) ); ?>
                         </div>
 
                         <br style="margin-bottom: 0.5rem;"/>
@@ -122,7 +123,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                     function give_sendwp_remote_install() {
                         var data = {
                             'action': 'give_sendwp_remote_install',
-                            '_ajax_nonce': '<?php echo wp_create_nonce( 'give_sendwp_remote_install'); ?>'
+                            '_ajax_nonce': '<?php echo esc_js( wp_create_nonce( 'give_sendwp_remote_install' ) ); ?>'
                         };
 
                         // since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -149,7 +150,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                     function give_sendwp_disconnect() {
                         var data = {
                             'action': 'give_sendwp_disconnect',
-                            '_ajax_nonce': '<?php echo wp_create_nonce( 'give_sendwp_disconnect' ); ?>'
+                            '_ajax_nonce': '<?php echo esc_js( wp_create_nonce( 'give_sendwp_disconnect' ) ); ?>'
                         };
 
                         jQuery.post(ajaxurl, data, function( response ) {

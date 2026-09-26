@@ -6,6 +6,7 @@
  * @subpackage  Classes/Give_Settings_License
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       TBD Escape output.
  * @since       1.8
  */
 
@@ -98,10 +99,10 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 								<p class="give-field-description">
 									<?php
-									printf(
+									echo wp_kses_post( sprintf(
 										__( 'Enter your license key below to unlock your GiveWP add-ons. You can access your licenses anytime from the <a href="%1$s" target="_blank">My Account</a> section on the GiveWP website. ', 'give' ),
-										Give_License::get_account_url()
-									);
+										esc_url( Give_License::get_account_url() )
+									) );
 									?>
 								</p>
 
@@ -151,10 +152,10 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 
 									<p class="give-field-description">
 										<?php
-										printf(
+										echo wp_kses_post( sprintf(
 											__( 'Drag an add-on zip file below to upload and activate it. Access your downloads by activating a license or via the <a href="%1$s" target="_blank">My Downloads</a> section on the GiveWP website. ', 'give' ),
-											Give_License::get_downloads_url()
-										);
+											esc_url( Give_License::get_downloads_url() )
+										) );
 										?>
 									</p>
 
@@ -162,10 +163,10 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 										<div class="give-notice notice notice-error inline">
 											<p>
 												<?php
-												echo sprintf(
+												echo wp_kses_post( sprintf(
 													__( 'Sorry, you can not upload plugin from here because we do not have direct access to file system. Please <a href="%1$s" target="_blank">click here</a> to upload GiveWP Add-on.', 'give' ),
-													admin_url( 'plugin-install.php?tab=upload' )
-												);
+													esc_url( admin_url( 'plugin-install.php?tab=upload' ) )
+												) );
 												?>
 											</p>
 										</div>
@@ -213,10 +214,10 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 									<?php endif; ?>
 									<?php
 									else :
-										printf(
+										echo wp_kses_post( sprintf(
 											__( 'Because of security reasons you can not upload add-ons from here. Please <a href="%1$s" target="_blank">visit network plugin install page</a> to install add-ons.', 'give' ),
-											network_admin_url( 'plugin-install.php' )
-										);
+											esc_url( network_admin_url( 'plugin-install.php' ) )
+										) );
 										?>
 								<?php endif; ?>
 							</div>
@@ -242,18 +243,18 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 										class="button-secondary"
 										data-activate="<?php _e( 'Refresh All Licenses', 'give' ); ?>"
 										data-activating="<?php _e( 'Refreshing All Licenses...', 'give' ); ?>"
-										data-nonce="<?php echo wp_create_nonce( 'give-refresh-all-licenses' ); ?>"
+										data-nonce="<?php echo esc_attr( wp_create_nonce( 'give-refresh-all-licenses' ) ); ?>"
 									<?php echo $is_allow_refresh ? '' : 'disabled'; ?>
-									<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', $button_title ); ?>>
+									<?php echo $is_allow_refresh ? '' : sprintf( 'title="%1$s"', esc_attr( $button_title ) ); ?>>
 									<?php _e( 'Refresh All Licenses', 'give' ); ?>
 								</button>
 								<span id="give-last-refresh-notice">
 									<?php
-									echo sprintf(
+									echo esc_html( sprintf(
 										__( 'Last refreshed on %1$s at %2$s', 'give' ),
 										date( give_date_format(), $local_date ),
 										date( 'g:i a', $local_date )
-									);
+									) );
 									?>
 									</span>
 							</div>
@@ -264,6 +265,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 						</div>
 
 						<section id="give-licenses-container">
+							<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_licenses_list() renders license activate/deactivate buttons and license-key inputs; its own values are escaped, and wp_kses_post() would strip the form controls. ?>
 							<?php echo Give_License::render_licenses_list(); ?>
 						</section>
 
@@ -272,6 +274,7 @@ if ( ! class_exists( 'Give_Settings_License' ) ) :
 			</div>
 
 			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- buffered content is this method's own output above (forms, license list); every value in it is already escaped at its own point, and wp_kses_post() would strip the <form>/<input> elements.
 			echo ob_get_clean();
 		}
 	}
