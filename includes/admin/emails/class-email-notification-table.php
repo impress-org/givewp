@@ -93,7 +93,7 @@ class Give_Email_Notification_Table extends WP_List_Table {
 		<a class="row-title" href="<?php echo esc_url( $edit_url ); ?>"><?php echo esc_html( $email->config['label'] ); ?></a>
 
 		<?php if ( $desc = $email->config['description'] ) : ?>
-			<?php echo wp_kses_post( Give()->tooltips->render_help( esc_attr( $desc ) ) ); ?>
+			<?php Give()->tooltips->print_render_help( $desc ); ?>
 		<?php endif; ?>
 
 		<?php echo wp_kses_post( $this->row_actions( $actions ) ); ?>
