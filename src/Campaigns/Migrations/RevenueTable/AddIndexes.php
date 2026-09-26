@@ -39,6 +39,7 @@ class AddIndexes extends Migration
     /**
      * @inheritDoc
      *
+     * @since TBD Escape exception message.
      * @since 4.17.0 Only add indexes that do not exist yet, so re-running the migration is safe.
      * @since 4.0.0
      *
@@ -65,8 +66,11 @@ class AddIndexes extends Migration
 
             DB::query("ALTER TABLE {$wpdb->give_revenue} " . implode(', ', $clauses));
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while updating the {$wpdb->give_revenue} table", 0,
-                $exception);
+            throw new DatabaseMigrationException(
+                esc_html("An error occurred while updating the {$wpdb->give_revenue} table"),
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 }
