@@ -44,6 +44,7 @@ class CreateMigrationsTable extends Migration
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.21.0 Add Check whether table installed before adding it to database.
      * @throws DatabaseMigrationException
      */
@@ -63,7 +64,11 @@ class CreateMigrationsTable extends Migration
         try {
             DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
-            throw new DatabaseMigrationException("An error occurred while creating the {$table} table", 0, $exception);
+            throw new DatabaseMigrationException(
+                esc_html("An error occurred while creating the {$table} table"),
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 }
