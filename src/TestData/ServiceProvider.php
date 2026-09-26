@@ -39,6 +39,7 @@ class ServiceProvider implements GiveServiceProvider
     }
 
     /**
+     * @since TBD Escape output.
      * @inheritDoc
      */
     public function boot()
@@ -54,6 +55,7 @@ class ServiceProvider implements GiveServiceProvider
             try {
                 $this->loadAddonsServiceProviders();
             } catch (InvalidArgumentException $e) {
+                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes a WP-CLI terminal message, not HTML.
                 exit($e->getMessage());
             }
         }
