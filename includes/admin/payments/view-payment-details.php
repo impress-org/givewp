@@ -81,17 +81,17 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 			esc_html( $number )
 		);
 		if ( $payment_mode == 'test' ) {
-			echo wp_kses_post( Give()->tooltips->render_span(
+			echo Give()->tooltips->render_span( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_span() escapes every attribute value (including aria-label, built from the label below) and the tag name; tag_content is esc_html__() below.
 				array(
-					'label'       => __( 'This donation was made in test mode.', 'give' ),
-					'tag_content' => __( 'Test Donation', 'give' ),
+					'label'       => __( 'This donation was made in test mode.', 'give' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped into aria-label by render_span()/give_get_attribute_str().
+					'tag_content' => esc_html__( 'Test Donation', 'give' ),
 					'position'    => 'right',
 					'attributes'  => array(
 						'id'    => 'test-payment-label',
 						'class' => 'give-item-label give-item-label-orange',
 					),
 				)
-			) );
+			);
 		}
 		?>
 	</h1>
