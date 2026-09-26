@@ -17,6 +17,7 @@ class SubscriptionFields
     /**
      * Process field values for special data types before setting them on the subscription model.
      *
+     * @since TBD Escape exception message.
      * @since 4.8.0
      */
     public static function processValue(string $key, $value)
@@ -67,7 +68,7 @@ class SubscriptionFields
                         return new DateTime($value['date'], new \DateTimeZone($value['timezone']));
                     }
                 } catch (\Exception $e) {
-                    throw new InvalidArgumentException("Invalid date format for {$key}: {$value}.");
+                    throw new InvalidArgumentException(esc_html("Invalid date format for {$key}: {$value}."));
                 }
 
                 return $value;
