@@ -28,7 +28,7 @@ class AddPlatformFeeAmountToSystemInfo
                 <?php echo esc_html($label); ?>:
             </td>
             <td class="help">
-                <?php echo wp_kses_post(Give()->tooltips->render_help(__('The GiveWP Platform Fee Percentage.', 'give'))); ?>
+                <?php Give()->tooltips->print_render_help(__('The GiveWP Platform Fee Percentage.', 'give')); ?>
             </td>
             <td>
                 <?php echo esc_html($licenseRepository->getPlatformFeePercentage() . '%'); ?>
