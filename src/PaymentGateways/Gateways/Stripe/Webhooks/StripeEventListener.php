@@ -36,6 +36,7 @@ abstract class StripeEventListener implements EventListener
      *
      * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the event from the correct account, not the platform account.
      *
+     * @since TBD Escape exception message.
      * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      * @since 2.21.0
      *
@@ -52,7 +53,7 @@ abstract class StripeEventListener implements EventListener
 
             return Event::retrieve($eventId, $options);
         } catch (\Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage()); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- re-thrown to the Stripe webhook handler, which logs it and prints it with esc_html().
         }
     }
 
