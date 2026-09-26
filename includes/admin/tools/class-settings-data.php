@@ -165,20 +165,22 @@ if ( ! class_exists( 'Give_Settings_Data' ) ) :
         /**
          * Render Migrations list table app container
          *
+         * @since TBD Escape output.
          * @since 4.2.0 renamed to render_migrations_container
          * @since 2.10.0
          */
 		public function render_migrations_container() {
-			printf( '<div id="%s" style="padding-top: 20px"></div>', self::GIVE_MIGRATIONS_TABLE_APP );
+			printf( '<div id="%s" style="padding-top: 20px"></div>', esc_attr( self::GIVE_MIGRATIONS_TABLE_APP ) );
 		}
 
         /**
          * Render orphaned forms container
          *
+         * @since TBD Escape output.
          * @since 4.2.0
          */
         public function render_orphaned_forms_container() {
-            printf( '<div id="%s" style="padding-top: 20px"></div>', self::GIVE_ORPHANED_FORMS_TABLE_APP );
+            printf( '<div id="%s" style="padding-top: 20px"></div>', esc_attr( self::GIVE_ORPHANED_FORMS_TABLE_APP ) );
         }
 	}
 

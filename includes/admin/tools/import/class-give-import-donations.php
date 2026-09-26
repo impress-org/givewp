@@ -232,6 +232,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 		/**
 		 * Show success notice
 		 *
+		 * @since TBD Escape output.
          * @since 2.25.3 Add nonce check.
 		 * @since 1.8.14
 		 */
@@ -289,21 +290,21 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 						<?php
 						if ( $success ) {
 							if ( $dry_run ) {
-								printf(
+								echo wp_kses_post( sprintf(
 									_n( 'Dry run import complete! %s donation processed', 'Dry run import complete! %s donations processed', $total, 'give' ),
-									"<strong>{$total}</strong>"
-								);
+									'<strong>' . esc_html( $total ) . '</strong>'
+								) );
 							} else {
-								printf(
+								echo wp_kses_post( sprintf(
 									_n( 'Import complete! %s donation processed', 'Import complete! %s donations processed', $total, 'give' ),
-									"<strong>{$total}</strong>"
-								);
+									'<strong>' . esc_html( $total ) . '</strong>'
+								) );
 							}
 						} else {
-							printf(
+							echo wp_kses_post( sprintf(
 								_n( 'Failed to import %s donation', 'Failed to import %s donations', $total, 'give' ),
-								"<strong>{$total}</strong>"
-							);
+								'<strong>' . esc_html( $total ) . '</strong>'
+							) );
 						}
 						?>
 					</h2>
@@ -343,7 +344,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 							}
 							?>
 							<p>
-								<?php printf( $report_html[ $key ][ $dry_run ], $value, $key_name ); ?>
+								<?php echo esc_html( sprintf( $report_html[ $key ][ $dry_run ], $value, $key_name ) ); ?>
 							</p>
 							<?php
 						}
@@ -352,7 +353,7 @@ if ( ! class_exists( 'Give_Import_Donations' ) ) {
 
 					<p>
 						<a class="button button-large button-secondary"
-						   href="<?php echo esc_url( add_query_arg( $query_arg, admin_url( 'edit.php' ) ) ); ?>"><?php echo $text; ?></a>
+						   href="<?php echo esc_url( add_query_arg( $query_arg, admin_url( 'edit.php' ) ) ); ?>"><?php echo esc_html( $text ); ?></a>
 					</p>
 				</th>
 			</tr>

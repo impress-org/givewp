@@ -593,6 +593,7 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 		/**
 		 * Get allowed email tags for current email notification.
 		 *
+		 * @since  TBD Escape output.
 		 * @since  2.0
 		 * @access private
 		 *
@@ -633,8 +634,8 @@ if ( ! class_exists( 'Give_Email_Notification' ) ) :
 				ob_start() ?>
 				<ul class="give-email-tags-wrap">
 					<?php foreach ( $email_tags as $email_tag ) : ?>
-						<li class="give_<?php echo $email_tag['tag']; ?>_tag">
-							<code>{<?php echo $email_tag['tag']; ?>}</code> - <?php echo $email_tag['desc']; ?>
+						<li class="give_<?php echo esc_attr( $email_tag['tag'] ); ?>_tag">
+							<code>{<?php echo esc_html( $email_tag['tag'] ); ?>}</code> - <?php echo esc_html( $email_tag['desc'] ); ?>
 						</li>
 					<?php endforeach; ?>
 				</ul>

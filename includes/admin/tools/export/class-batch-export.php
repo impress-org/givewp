@@ -302,6 +302,7 @@ class Give_Batch_Export extends Give_Export {
 	/**
 	 * Perform the export.
 	 *
+	 * @since  TBD Escape output.
 	 * @access public
 	 * @since  1.5
 	 * @return void
@@ -315,6 +316,7 @@ class Give_Batch_Export extends Give_Export {
 
 		@unlink( $this->file );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- writes the exported file's raw content to the download stream, not to HTML.
 		echo $file;
 
 		/**

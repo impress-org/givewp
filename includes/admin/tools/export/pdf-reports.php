@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param string $data Data.
  *
+ * @since  TBD Escape output.
  * @since  1.0
  *
  * @uses   give_pdf
@@ -28,15 +29,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_generate_pdf( $data ) {
 
 	if ( ! current_user_can( 'view_give_reports' ) ) {
-		wp_die( __( 'You do not have permission to generate PDF sales reports.', 'give' ), __( 'Error', 'give' ), [ 'response' => 403 ] );
+		wp_die( esc_html__( 'You do not have permission to generate PDF sales reports.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'give_generate_pdf' ) ) {
-		wp_die( __( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), __( 'Error', 'give' ), [ 'response' => 403 ] );
+		wp_die( esc_html__( 'We\'re unable to recognize your session. Please refresh the screen to try again; otherwise contact your website administrator for assistance.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	if ( ! file_exists( GIVE_PLUGIN_DIR . '/includes/libraries/give-pdf.php' ) ) {
-		wp_die( __( 'Dependency missing.', 'give' ), __( 'Error', 'give' ), [ 'response' => 403 ] );
+		wp_die( esc_html__( 'Dependency missing.', 'give' ), esc_html__( 'Error', 'give' ), [ 'response' => 403 ] );
 	}
 
 	require_once GIVE_PLUGIN_DIR . '/includes/libraries/give-pdf.php';
