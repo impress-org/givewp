@@ -94,6 +94,7 @@ class AccountDetail
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.10.2
      *
      * @param string $key
@@ -107,7 +108,7 @@ class AccountDetail
             throw new InvalidPropertyName(
                 sprintf(
                     '$1%s property does not exist in %2$s class',
-                    $key,
+                    esc_html($key),
                     __CLASS__
                 )
             );
@@ -119,6 +120,7 @@ class AccountDetail
     /**
      * Validate array format.
      *
+     * @since TBD Escape exception message.
      * @since 2.10.2
      *
      * @param array $array
@@ -132,7 +134,7 @@ class AccountDetail
                 sprintf(
                     'To create a %1$s object, please provide valid: %2$s',
                     __CLASS__,
-                    implode(' , ', $this->requiredArgs)
+                    esc_html(implode(' , ', $this->requiredArgs))
                 )
             );
         }
