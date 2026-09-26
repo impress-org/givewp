@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped translated output in the legacy donation form template, the Give Form widget, and the donation history email-access form
+timestamp: 2026-09-26T00:00:00.000Z
