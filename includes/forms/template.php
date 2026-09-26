@@ -803,7 +803,7 @@ function give_user_info_fields( $form_id ) {
 					<?php if ( give_field_is_required( 'give_title', $form_id ) ) : ?>
 						<span class="give-required-indicator">*</span>
 					<?php endif ?>
-					<?php echo wp_kses_post( Give()->tooltips->render_help( __( 'Title is used to personalize your donation record..', 'give' ) ) ); ?>
+					<?php Give()->tooltips->print_render_help( __( 'Title is used to personalize your donation record..', 'give' ) ); ?>
 				</label>
 				<select
 					class="give-input"
@@ -837,8 +837,8 @@ function give_user_info_fields( $form_id ) {
                 <?php
                 endif ?>
                 <?php
-                echo wp_kses_post( Give()->tooltips->render_help(__('First Name is used to personalize your donation record.',
-                    'give')) ); ?>
+                Give()->tooltips->print_render_help(__('First Name is used to personalize your donation record.',
+                    'give')); ?>
             </label>
             <input
                 class="give-input required"
@@ -865,8 +865,8 @@ function give_user_info_fields( $form_id ) {
                 <?php
                 endif ?>
                 <?php
-                echo wp_kses_post( Give()->tooltips->render_help(__('Last Name is used to personalize your donation record.',
-                    'give')) ); ?>
+                Give()->tooltips->print_render_help(__('Last Name is used to personalize your donation record.',
+                    'give')); ?>
             </label>
 
             <input
@@ -945,7 +945,7 @@ function give_user_info_fields( $form_id ) {
                     <?php
                     endif; ?>
                     <?php
-                    echo wp_kses_post( Give()->tooltips->render_help(__('Donate on behalf of Company', 'give')) ); ?>
+                    Give()->tooltips->print_render_help(__('Donate on behalf of Company', 'give')); ?>
                 </label>
                 <input
                     class="give-input<?php
@@ -982,7 +982,7 @@ function give_user_info_fields( $form_id ) {
                     <?php
                 } ?>
                 <?php
-                echo wp_kses_post( Give()->tooltips->render_help(__('We will send the donation receipt to this address.', 'give')) ); ?>
+                Give()->tooltips->print_render_help(__('We will send the donation receipt to this address.', 'give')); ?>
             </label>
             <input
                 class="give-input required"
@@ -1037,7 +1037,7 @@ function give_user_info_fields( $form_id ) {
 					// https://github.com/impress-org/give/issues/3911
 					$anonymous_donation_tooltip = give_is_donor_comment_field_enabled( $form_id ) ? esc_html__( 'Would you like to prevent your name, image, and comment from being displayed publicly?', 'give' ) : esc_html__( 'Would you like to prevent your name and image from being displayed publicly?', 'give' );
 
-					echo wp_kses_post( Give()->tooltips->render_help( $anonymous_donation_tooltip ) );
+					Give()->tooltips->print_render_help( $anonymous_donation_tooltip );
 					?>
 
 				</label>
@@ -1051,7 +1051,7 @@ function give_user_info_fields( $form_id ) {
 					<?php if ( give_field_is_required( 'give_comment', $form_id ) ) { ?>
 						<span class="give-required-indicator">*</span>
 					<?php } ?>
-					<?php echo wp_kses_post( Give()->tooltips->render_help( __( 'Would you like to add a comment to this donation?', 'give' ) ) ); ?>
+					<?php Give()->tooltips->print_render_help( __( 'Would you like to add a comment to this donation?', 'give' ) ); ?>
 				</label>
 
 				<textarea
@@ -1126,7 +1126,7 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_number-<?php echo (int) $form_id; ?>" class="give-label">
 				<?php _e( 'Card Number', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<?php echo wp_kses_post( Give()->tooltips->render_help( __( 'The (typically) 16 digits on the front of your credit card.', 'give' ) ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The (typically) 16 digits on the front of your credit card.', 'give' ) ); ?>
 				<span class="card-type"></span>
 			</label>
 
@@ -1139,7 +1139,7 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_cvc-<?php echo (int) $form_id; ?>" class="give-label">
 				<?php _e( 'CVC', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<?php echo wp_kses_post( Give()->tooltips->render_help( __( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ) ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The 3 digit (back) or 4 digit (front) value on your card.', 'give' ) ); ?>
 			</label>
 
 			<input type="tel" size="4" autocomplete="off" name="card_cvc" id="card_cvc-<?php echo (int) $form_id; ?>"
@@ -1151,7 +1151,7 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_name-<?php echo (int) $form_id; ?>" class="give-label">
 				<?php _e( 'Cardholder Name', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<?php echo wp_kses_post( Give()->tooltips->render_help( __( 'The name of the credit card account holder.', 'give' ) ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The name of the credit card account holder.', 'give' ) ); ?>
 			</label>
 
 			<input type="text" autocomplete="off" name="card_name" id="card_name-<?php echo (int) $form_id; ?>"
@@ -1172,7 +1172,7 @@ function give_get_cc_form( $form_id ) {
 			<label for="card_expiry-<?php echo (int) $form_id; ?>" class="give-label">
 				<?php _e( 'Expiration', 'give' ); ?>
 				<span class="give-required-indicator">*</span>
-				<?php echo wp_kses_post( Give()->tooltips->render_help( __( 'The date your credit card expires, typically on the front of the card.', 'give' ) ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The date your credit card expires, typically on the front of the card.', 'give' ) ); ?>
 			</label>
 
 			<input type="hidden" id="card_exp_month-<?php echo (int) $form_id; ?>" name="card_exp_month"
@@ -1301,7 +1301,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 					?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<?php echo wp_kses_post( Give()->tooltips->render_help( __( 'The primary billing address for your credit card.', 'give' ) ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The primary billing address for your credit card.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1322,7 +1322,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				<?php if ( give_field_is_required( 'card_address_2', $form_id ) ) : ?>
 					<span class="give-required-indicator">*</span>
 				<?php endif; ?>
-				<?php echo wp_kses_post( Give()->tooltips->render_help( __( '(optional) The suite, apartment number, post office box (etc) associated with your billing address.', 'give' ) ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( '(optional) The suite, apartment number, post office box (etc) associated with your billing address.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1343,7 +1343,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 				<?php if ( give_field_is_required( 'card_city', $form_id ) ) : ?>
 					<span class="give-required-indicator <?php echo( $city_required ? '' : 'give-hidden' ); ?>">*</span>
 				<?php endif; ?>
-				<?php echo wp_kses_post( Give()->tooltips->render_help( __( 'The city for your billing address.', 'give' ) ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The city for your billing address.', 'give' ) ); ?>
 			</label>
 			<input
 				type="text"
@@ -1418,7 +1418,7 @@ function give_default_cc_address_fields($form_id, $return = false)
 			<label for="card_zip" class="give-label">
 				<?php _e( 'Zip / Postal Code', 'give' ); ?>
 				<span class="give-required-indicator<?php echo ( $postcode_required ? '' : ' give-hidden' ); ?>">*</span>
-				<?php echo wp_kses_post( Give()->tooltips->render_help( __( 'The zip or postal code for your billing address.', 'give' ) ) ); ?>
+				<?php Give()->tooltips->print_render_help( __( 'The zip or postal code for your billing address.', 'give' ) ); ?>
 			</label>
 
 			<input
@@ -1525,7 +1525,7 @@ function give_get_register_fields( $form_id ) {
 				<input type="checkbox" id="give-create-account-<?php echo (int) $form_id; ?>" name="give_create_account" class="give-input" value="on" />
 					<?php
 					_e( 'Create an account', 'give' );
-					echo wp_kses_post( Give()->tooltips->render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) ) );
+					Give()->tooltips->print_render_help( __( 'Create an account on the site to see and manage donation history.', 'give' ) );
 					?>
 				</label>
 				<?php } else { ?>
