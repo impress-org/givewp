@@ -57,7 +57,7 @@ class CreateRevenueTable extends Migration
             DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException(
-                'An error occurred creating the revenue table: ' . print_r($exception->getQueryErrors(), true) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- wpdb error text stored in the migration log and shown as text, not HTML.
+                esc_html('An error occurred creating the revenue table: ' . print_r($exception->getQueryErrors(), true))
             );
         }
     }
