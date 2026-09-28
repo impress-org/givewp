@@ -4,6 +4,8 @@
  *
  * This template is used to display an email form which will when submitted send an update donation receipt and also
  * refresh the users session
+ *
+ * @since TBD Escape output.
  */
 
 global $give_access_form_outputted;
@@ -106,7 +108,7 @@ if ( true === $is_form_required ) {
 			<label for="give-email"><?php esc_attr_e( 'Donation Email:', 'give' ); ?></label>
 			<input id="give-email" type="email" name="give_email" value=""
 					placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>"/>
-			<input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'give' ); ?>"/>
+			<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'give' ) ); ?>"/>
 			<input type="hidden" name="give_action" value="email_access_form_login"/>
 			<input type="hidden" name="give_access_page" value="<?php the_ID(); ?>"/>
 
@@ -126,7 +128,7 @@ if ( true === $is_form_required ) {
 				</script>
 
 				<script src='https://www.google.com/recaptcha/api.js'></script>
-				<div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
+				<div class="g-recaptcha" data-sitekey="<?php echo esc_attr( $recaptcha_key ); ?>"></div>
 				<input type="hidden" name="give_ip" class="give_ip" value=""/>
 			<?php endif; ?>
 
