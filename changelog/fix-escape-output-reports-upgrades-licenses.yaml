@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped output in the reports, upgrades, license and add-on admin screens.
+timestamp: 2026-09-24T00:00:00.000Z

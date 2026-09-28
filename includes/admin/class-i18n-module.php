@@ -155,6 +155,8 @@ class Give_i18n_Banner {
 
 	/**
 	 * Outputs a promo box
+	 *
+	 * @since TBD Escape output.
 	 */
 	public function promo() {
 
@@ -174,8 +176,8 @@ class Give_i18n_Banner {
 				<div class="give-i18n-notice-content">
 					<a href="<?php echo esc_url( add_query_arg( array( 'remove_i18n_promo' => '1' ) ) ); ?>" class="dismiss"><span class="dashicons dashicons-dismiss"></span></a>
 
-					<h2 style="margin: 10px 0;"><?php printf( esc_html__( 'Help Translate GiveWP to %s', 'give' ), $this->locale_name ); ?></h2>
-					<p><?php echo $message; ?></p>
+					<h2 style="margin: 10px 0;"><?php printf( esc_html__( 'Help Translate GiveWP to %s', 'give' ), esc_html( $this->locale_name ) ); ?></h2>
+					<p><?php echo wp_kses_post( $message ); ?></p>
 					<p>
 						<a href="https://wordpress.org/support/register.php" target="_blank"><?php _e( 'Register now &raquo;', 'give' ); ?></a>
 					</p>
