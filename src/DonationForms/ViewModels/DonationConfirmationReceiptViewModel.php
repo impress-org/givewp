@@ -82,6 +82,7 @@ class DonationConfirmationReceiptViewModel
     }
 
     /**
+     * @since TBD Escape output.
      * @since 4.1.0 add campaign colors
      * @since 3.11.0 Sanitize customCSS property
      * @since 3.0.0
@@ -123,7 +124,8 @@ class DonationConfirmationReceiptViewModel
 
         <?php
         if ($customCss): ?>
-            <style><?php echo wp_strip_all_tags($customCss); ?></style>
+            <style><?php echo wp_strip_all_tags($customCss); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_strip_all_tags() already prevents breaking out of the <style> element; esc_html() would entity-encode valid CSS characters (e.g. '>') that browsers never decode inside <style>.
+            ?></style>
         <?php
         endif; ?>
 
@@ -131,14 +133,15 @@ class DonationConfirmationReceiptViewModel
              data-iframe-height
              class="givewp-donation-confirmation-receipt"
              style="
-                     --givewp-primary-color:<?= $primaryColor ?>;
-                     --givewp-secondary-color:<?= $secondaryColor ?>;
+                     --givewp-primary-color:<?= esc_attr($primaryColor) ?>;
+                     --givewp-secondary-color:<?= esc_attr($secondaryColor) ?>;
                      "
         ></div>
 
         <?php
         wp_print_footer_scripts();
 
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- outputs the buffered page built from wp_print_styles()/wp_print_head_scripts()/wp_print_footer_scripts() and the already-escaped markup above.
         echo ob_get_clean();
 
         exit();

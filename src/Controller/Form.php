@@ -405,10 +405,12 @@ class Form
      *
      * Note: it will render style on basis on selected form template.
      *
+     * @since TBD Escape output.
      * @since 2.7.0
      */
     public function renderFormOnSingleDonationFormPage()
     {
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_form_shortcode() escapes internally (it renders includes/forms/template.php, fixed in a prior phase).
         echo give_form_shortcode([]);
     }
 }
