@@ -1577,6 +1577,7 @@ function give_get_limit_display_donations() {
 /**
  * Add footer to the table when donor is view the donation history page with out login
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  * @since 1.8.17
  */
@@ -1595,9 +1596,9 @@ function give_donation_history_table_end() {
 					<div class="give-security-column give-security-button-wrap">
 						<a href="#" data-email="<?php echo esc_attr( $email ); ?>" id="give-confirm-email-btn"
 						   class="give-confirm-email-btn give-btn">
-							<?php _e( 'Confirm Email', 'give' ); ?>
+							<?php esc_html_e( 'Confirm Email', 'give' ); ?>
 						</a>
-						<span><?php _e( 'Email Sent!', 'give' ); ?></span>
+						<span><?php esc_html_e( 'Email Sent!', 'give' ); ?></span>
 					</div>
 				</div>
 			</td>
