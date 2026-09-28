@@ -1,0 +1,4 @@
+significance: minor
+type: enhancement
+entry: Improved the Reports screen and legacy earnings stats on large sites by summing and counting donations in the database instead of loading every donation into memory
+timestamp: 2026-09-18T00:00:02.000Z

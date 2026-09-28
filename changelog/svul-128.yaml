@@ -1,0 +1,4 @@
+significance: patch
+type: security
+entry: "Enhanced security in Stripe webhook module"
+timestamp: 2026-09-25T17:56:17.369Z
