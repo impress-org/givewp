@@ -163,6 +163,7 @@ class Give_Forms_Widget extends WP_Widget {
 	 *
 	 * @param array $instance Current settings.
 	 *
+	 * @since TBD Escape translated output.
 	 * @since TBD Escape output.
 	 */
 	public function form( $instance ) {
@@ -227,7 +228,7 @@ class Give_Forms_Widget extends WP_Widget {
 			</p>
 
 			<div class="js-legacy-form-template-settings js-form-template-settings give-hidden">
-				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
+				<legend class="screen-reader-text"><?php esc_html_e( 'Options for Legacy form template ', 'give' ); ?></legend>
 				<?php // Widget: Display Style. ?>
 				<p class="give_forms_display_style_setting_row">
 					<label for="<?php echo esc_attr( $this->get_field_id( 'display_style' ) ); ?>"><?php esc_html_e( 'Display Style:', 'give' ); ?></label>
@@ -273,7 +274,7 @@ class Give_Forms_Widget extends WP_Widget {
 			</div>
 
 			<div class="js-new-form-template-settings js-form-template-settings give-hidden">
-				<legend class="screen-reader-text"><?php _e( 'Options for Legacy form template ', 'give' ); ?></legend>
+				<legend class="screen-reader-text"><?php esc_html_e( 'Options for Legacy form template ', 'give' ); ?></legend>
 
 				<?php // Widget: Display Style. ?>
 				<p class="give_forms_display_style_setting_row">
@@ -306,7 +307,7 @@ class Give_Forms_Widget extends WP_Widget {
 			</div>
 
 			<div class="js-loader">
-				<p><span class="give-spinner spinner is-show"></span>&nbsp;&nbsp;<i><?php _e( 'Loading settings...', 'give' ); ?></i></p>
+				<p><span class="give-spinner spinner is-show"></span>&nbsp;&nbsp;<i><?php esc_html_e( 'Loading settings...', 'give' ); ?></i></p>
 			</div>
 			<?php wp_nonce_field( 'give-donation-form-widget', '_wpnonce', false ); ?>
 		</div>
