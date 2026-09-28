@@ -156,9 +156,11 @@ itself through `requestUtils.rest()`.
 `.github/workflows/tests-e2e.yml` installs the latest GitHub release of each add-on named in its
 `ADDONS` env next to core before starting wp-env, so the whole Playwright suite runs with them
 active. A fatal on activation, a filter typed against the wrong model, an asset that 404s: the core
-specs see all of it. `tests/e2e/addon-peer-to-peer.spec.ts` adds what they cannot: that the add-on
+specs see all of it. Each `tests/e2e/addon-<slug>.spec.ts` adds what they cannot: that the add-on
 really is active, so a failed download cannot pass as a green run, and that its own admin screen
-still mounts.
+still mounts. `addon-recurring.spec.ts` also takes a subscription on a form with no campaign,
+because Recurring reaches core's campaign lookup on that path and a standalone form is where an
+empty lookup would show.
 
 ### Add-ons come from their release zips, not from source
 
