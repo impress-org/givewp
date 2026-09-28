@@ -57,6 +57,7 @@ if (!class_exists('Give_Stripe_Webhooks')) {
         /**
          * Listen for Stripe events.
          *
+         * @since TBD Escape output.
          * @since 2.21.3 fetching event detail in this function can cause of 400 HTTP response for Stripe webhook because
          *             stripe app setup with correct account in event listener class.
          * @since  2.5.0
@@ -113,7 +114,7 @@ if (!class_exists('Give_Stripe_Webhooks')) {
             }
 
             status_header(200);
-            exit($message);
+            exit(esc_html($message));
         }
 
         /**

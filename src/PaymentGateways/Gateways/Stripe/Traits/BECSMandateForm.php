@@ -9,6 +9,9 @@ trait BECSMandateForm
 {
     use FormFieldMarkup;
 
+    /**
+     * @since TBD Escape output.
+     */
     public function getMandateFormHTML( $form_id, $args ) {
         ob_start();
 
@@ -34,22 +37,22 @@ trait BECSMandateForm
             if ( $this->canShowFields() ) {
                 ?>
                 <div id="give-bank-account-number-wrap" class="form-row form-row-responsive give-stripe-cc-field-wrap">
-                    <label for="give-bank-account-number-field-<?php echo $id_prefix; ?>" class="give-label">
+                    <label for="give-bank-account-number-field-<?php echo esc_attr( $id_prefix ); ?>" class="give-label">
                         <?php esc_html_e( 'Bank Account', 'give' ); ?>
                         <span class="give-required-indicator">*</span>
                         <span class="give-tooltip give-icon give-icon-question" data-tooltip="<?php esc_html_e( 'BSB Number and Account Number of your bank account.', 'give' ); ?>"></span>
                     </label>
                     <div
-                        id="give-stripe-becs-fields-<?php echo $id_prefix; ?>"
+                        id="give-stripe-becs-fields-<?php echo esc_attr( $id_prefix ); ?>"
                         class="give-stripe-becs-bank-account-field give-stripe-cc-field"
-                        data-hide_icon="<?php echo give_stripe_becs_hide_icon( $form_id ); ?>"
-                        data-icon_style="<?php echo give_stripe_get_becs_icon_style( $form_id ); ?>"
+                        data-hide_icon="<?php echo esc_attr( give_stripe_becs_hide_icon( $form_id ) ); ?>"
+                        data-icon_style="<?php echo esc_attr( give_stripe_get_becs_icon_style( $form_id ) ); ?>"
                     ></div>
                 </div>
                 <div class="form-row form-row-responsive give-stripe-becs-mandate-acceptance-text">
                     <?php
                     if ( give_is_setting_enabled( give_get_option( 'stripe_becs_mandate_acceptance_option', 'enabled' ) ) ) {
-                        echo give_stripe_get_mandate_acceptance_text( 'becs' );
+                        echo wp_kses_post( give_stripe_get_mandate_acceptance_text( 'becs' ) );
                     }
                     ?>
                 </div>
