@@ -7,6 +7,25 @@ import { useEntityRecord } from '@wordpress/core-data';
 const CAMPAIGNS_PER_PAGE = 30;
 
 /**
+ * The REST collection an async select loads its options from. Both campaigns and forms return `id` and `title`.
+ *
+ * @since TBD
+ */
+export type AsyncSelectEntity = {
+    name: 'campaign' | 'form';
+    path: string;
+    status: string[];
+};
+
+/**
+ * @since TBD
+ */
+export const asyncSelectEntities: Record<AsyncSelectEntity['name'], AsyncSelectEntity> = {
+    campaign: {name: 'campaign', path: '/givewp/v3/campaigns', status: ['active', 'draft', 'archived']},
+    form: {name: 'form', path: '/givewp/v3/forms', status: ['publish', 'private', 'draft']},
+};
+
+/**
  * @since 4.10.0
  */
 type UseCampaignAsyncSelectReturn = {
@@ -20,11 +39,15 @@ type UseCampaignAsyncSelectReturn = {
 }
 
 /**
- * Custom hook for handling async form selection with pagination and search
+ * Custom hook for handling async campaign or form selection with pagination and search
  *
+ * @since TBD Accept the entity to load, defaulting to campaigns.
  * @since 4.10.0
  */
-export function useCampaignAsyncSelect(selectedCampaignId: number | null): UseCampaignAsyncSelectReturn {
+export function useCampaignAsyncSelect(
+    selectedCampaignId: number | null,
+    entity: AsyncSelectEntity = asyncSelectEntities.campaign
+): UseCampaignAsyncSelectReturn {
     const [page, setPage] = useState(0);
     const [selectedOption, setSelectedOption] = useState<CampaignOption | null>(null);
     const [error, setError] = useState<Error | null>(null);
@@ -33,7 +56,7 @@ export function useCampaignAsyncSelect(selectedCampaignId: number | null): UseCa
     const {
         record: currentCampaign,
         hasResolved: hasResolvedCampaign,
-    } = useEntityRecord<Campaign>('givewp', 'campaign', selectedCampaignId);
+    } = useEntityRecord<Campaign>('givewp', entity.name, selectedCampaignId);
 
     // Update selected option when current campaign changes
     useEffect(() => {
@@ -55,11 +78,11 @@ export function useCampaignAsyncSelect(selectedCampaignId: number | null): UseCa
                 perPage: CAMPAIGNS_PER_PAGE,
                 page: currentPage,
                 search: search || undefined,
-                status: ['active', 'draft', 'archived'],
+                status: entity.status,
             });
 
             const campaigns = await apiFetch<Campaign[]>({
-                path: `/givewp/v3/campaigns?${queryParams.toString()}`,
+                path: `${entity.path}?${queryParams.toString()}`,
             });
 
             const newOptions = formatCampaignOptions(campaigns);
@@ -78,16 +101,16 @@ export function useCampaignAsyncSelect(selectedCampaignId: number | null): UseCa
                 hasMore: hasMoreResults,
             };
         } catch (err) {
-            const loadError = err instanceof Error ? err : new Error('Failed to load campaigns');
+            const loadError = err instanceof Error ? err : new Error(`Failed to load ${entity.name}s`);
             setError(loadError);
-            console.error('Error loading campaigns:', loadError);
+            console.error(`Error loading ${entity.name}s:`, loadError);
 
             return {
                 options: [],
                 hasMore: false,
             };
         }
-    }, [page]);
+    }, [page, entity]);
 
     // Map options for menu (deduplication and ordering)
     const mapOptionsForMenu = useCallback(

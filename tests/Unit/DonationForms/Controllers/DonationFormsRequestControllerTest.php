@@ -36,4 +36,24 @@ class DonationFormsRequestControllerTest extends TestCase
             as_has_scheduled_action('givewp_cache_campaign_data', [$campaign->id], 'givewp_campaigns_cache')
         );
     }
+
+    /**
+     * @since TBD
+     */
+    public function testGetFormsFiltersByTitleSearch()
+    {
+        $match = DonationForm::factory()->create(['title' => 'Winter Appeal']);
+        DonationForm::factory()->create(['title' => 'Summer Gala']);
+
+        $request = new WP_REST_Request('GET', '/givewp/v3/forms');
+        $request->set_param('status', ['publish']);
+        $request->set_param('ids', []);
+        $request->set_param('page', 1);
+        $request->set_param('per_page', 30);
+        $request->set_param('search', 'Winter');
+
+        $forms = (new DonationFormsRequestController())->getForms($request)->get_data();
+
+        $this->assertSame([$match->id], array_column($forms, 'id'));
+    }
 }

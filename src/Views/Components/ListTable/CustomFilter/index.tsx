@@ -1,5 +1,5 @@
 import ReactSelect, { components } from 'react-select';
-import { useCampaignAsyncSelect } from './useAsyncCampaigns';
+import { AsyncSelectEntity, useCampaignAsyncSelect } from './useAsyncCampaigns';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { CampaignOption } from './utils';
 import styles from './styles.module.scss';
@@ -26,6 +26,7 @@ type CustomFilterProps = {
 	isSelectable?: boolean;
 	isClearable?: boolean;
 	isAsync?: boolean;
+	asyncEntity?: AsyncSelectEntity;
 }
 
 /**
@@ -79,14 +80,16 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, 
 }
 
 /**
+ * @since TBD Load forms as well as campaigns through `asyncEntity`.
  * @since TBD Pin any static `options` (for example "No campaign") above the async results.
  * @since 4.10.0
  */
-function AsyncFilter({name, options = [], placeholder, onChange, value, isSearchable, isClearable}: CustomFilterProps) {
+function AsyncFilter({name, options = [], placeholder, onChange, value, isSearchable, isClearable, asyncEntity}: CustomFilterProps) {
 	const staticOptions = options.map(({value, text}) => ({value, label: text})) as unknown as CampaignOption[];
 	const staticSelected = staticOptions.find((option) => String(option.value) === String(value)) ?? null;
 	const { loadOptions, mapOptionsForMenu, selectedOption } = useCampaignAsyncSelect(
-		staticSelected ? null : parseInt(value) || null
+		staticSelected ? null : parseInt(value) || null,
+		asyncEntity
 	);
 
 	const handleChange = (selectedOption: CampaignOption | null) => {

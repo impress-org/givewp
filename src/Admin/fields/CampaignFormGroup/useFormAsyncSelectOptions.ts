@@ -2,6 +2,12 @@ import { useAsyncSelectOptions } from "@givewp/admin/hooks/useAsyncSelectOption"
 import apiFetch from "@wordpress/api-fetch";
 import { useEffect, useState } from "react";
 
+/**
+ * Without a campaign, only standalone forms are listed, since a form in a campaign would put the campaign back on save.
+ *
+ * @since TBD List standalone forms when there is no campaign.
+ * @since 4.11.0
+ */
 export default function useFormAsyncSelectOptions(formId: number, campaignId: number, queryParams?: {}) {
     const [selectedForm, setSelectedForm] = useState<any>(null);
 
@@ -41,7 +47,7 @@ export default function useFormAsyncSelectOptions(formId: number, campaignId: nu
             sortColumn: 'title',
             sortDirection: 'asc',
             return: 'model',
-            campaignId,
+            ...(campaignId ? { campaignId } : { campaign: 'none' }),
             ...queryParams,
         },
         resetOnChange: campaignId

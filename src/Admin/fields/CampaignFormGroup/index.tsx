@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import { useEffect } from 'react';
 import { FieldError, useFormContext, useFormState } from 'react-hook-form';
 
 /**
@@ -24,9 +23,11 @@ type CampaignFormGroupProps = {
 }
 
 /**
+ * @since TBD Add a "No campaign" option, which clears the form and lists standalone forms.
  * @since 4.11.0
  */
 export default function CampaignFormGroup({ campaignIdFieldName, formIdFieldName }: CampaignFormGroupProps) {
+    const noCampaignOption: SelectOption = { value: 0, label: __('No campaign', 'give') };
     const { watch, setValue } = useFormContext();
     const { errors } = useFormState();
     const campaignId = watch(campaignIdFieldName);
@@ -36,7 +37,7 @@ export default function CampaignFormGroup({ campaignIdFieldName, formIdFieldName
     const { selectedOption: formSelectedOption, loadOptions: formLoadOptions, mapOptionsForMenu: formMapOptionsForMenu, error: formError } = useFormAsyncSelectOptions(formId, campaignId);
 
     const handleCampaignChange = (selectedOption: SelectOption) => {
-        setValue(campaignIdFieldName, selectedOption?.value ?? null, { shouldDirty: true });
+        setValue(campaignIdFieldName, selectedOption?.value || null, { shouldDirty: true });
         setValue(formIdFieldName, selectedOption?.record?.defaultFormId ?? null, { shouldDirty: true });
     };
 
@@ -51,9 +52,9 @@ export default function CampaignFormGroup({ campaignIdFieldName, formIdFieldName
                 name={campaignIdFieldName}
                 label={__('Campaign', 'give')}
                 handleChange={handleCampaignChange}
-                selectedOption={campaignSelectedOption}
+                selectedOption={campaignId ? campaignSelectedOption : noCampaignOption}
                 loadOptions={campaignLoadOptions}
-                mapOptionsForMenu={campaignMapOptionsForMenu}
+                mapOptionsForMenu={(options) => [noCampaignOption, ...campaignMapOptionsForMenu(options)]}
                 isLoadingError={campaignError}
                 errorMessage={errors[campaignIdFieldName]?.message as string}
                 searchPlaceholder={__('Search for a campaign...', 'give')}

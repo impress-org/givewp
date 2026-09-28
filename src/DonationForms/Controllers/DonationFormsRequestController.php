@@ -44,6 +44,7 @@ class DonationFormsRequestController
     }
 
     /**
+     * @since TBD Filter by title with the search parameter
      * @since 4.2.0
      */
     public function getForms(WP_REST_Request $request): WP_REST_Response
@@ -52,6 +53,7 @@ class DonationFormsRequestController
         $page = $request->get_param('page');
         $perPage = $request->get_param('per_page');
         $status = $request->get_param('status');
+        $search = $request->get_param('search');
 
         $query = DonationForm::query();
 
@@ -76,6 +78,10 @@ class DonationFormsRequestController
 
         if ( ! empty($ids)) {
             $query->whereIn('id', $ids);
+        }
+
+        if ($search) {
+            $query->whereLike('post_title', $search);
         }
 
         $totalQuery = clone $query;

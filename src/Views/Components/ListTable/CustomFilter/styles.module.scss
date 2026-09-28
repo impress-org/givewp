@@ -1,4 +1,6 @@
+/* A fixed width keeps the filter row from shifting when a long option is picked; the selected label truncates instead. */
 .searchableSelect {
+    inline-size: 14rem;
     z-index: 2;
 
     &.asyncSelect {
@@ -9,6 +11,20 @@
 
                     &:has(.searchableSelect__loading-indicator) {
                         padding-left: 0;
+                    }
+
+                    /* With a value selected, tighten the clear and dropdown buttons so more of the label shows. */
+                    &:has(.searchableSelect__clear-indicator) {
+                        padding-left: 0;
+
+                        .searchableSelect__clear-indicator {
+                            padding-inline: var(--givewp-spacing-1);
+                        }
+
+                        .searchableSelect__dropdown-indicator {
+                            padding-inline: var(--givewp-spacing-2);
+                            width: calc(var(--givewp-spacing-2) * 2 + 1rem);
+                        }
                     }
                 }
             }

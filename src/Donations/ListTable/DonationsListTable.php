@@ -5,6 +5,7 @@ namespace Give\Donations\ListTable;
 use Give\Donations\ListTable\Columns\AmountColumn;
 use Give\Donations\ListTable\Columns\CreatedAtColumn;
 use Give\Donations\ListTable\Columns\DonorColumn;
+use Give\Donations\ListTable\Columns\FormColumn;
 use Give\Donations\ListTable\Columns\CampaignColumn;
 use Give\Donations\ListTable\Columns\GatewayColumn;
 use Give\Donations\ListTable\Columns\IdColumn;
@@ -30,6 +31,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
+     * @since TBD Added Form column
      * @since 4.10.0 Updated columns order
      * @since 4.8.0 Added Subscription Donation Type column
      * @since 2.24.0
@@ -44,6 +46,7 @@ class DonationsListTable extends ListTable
             new PaymentTypeColumn(),
             new DonorColumn(),
             new CampaignColumn(),
+            new FormColumn(),
             new GatewayColumn(),
             new CreatedAtColumn(),
             new StatusColumn(),
@@ -52,6 +55,7 @@ class DonationsListTable extends ListTable
     }
 
     /**
+     * @since TBD Show the Form column by default
      * @since 2.24.0
      *
      * @inheritDoc
@@ -65,6 +69,7 @@ class DonationsListTable extends ListTable
             CreatedAtColumn::getId(),
             DonorColumn::getId(),
             CampaignColumn::getId(),
+            FormColumn::getId(),
             StatusColumn::getId(),
         ];
     }
