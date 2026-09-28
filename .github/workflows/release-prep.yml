@@ -27,111 +27,18 @@ on:
         default: "master"
         type: string
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
-  prepare-release:
-    name: "Prepare Release Branch & PR"
-    runs-on: blacksmith-4vcpu-ubuntu-2404
-
-    steps:
-      - name: Print inputs
-        run: |
-          echo "### Release Prep Inputs" >> $GITHUB_STEP_SUMMARY
-          echo "- Target Version: \`${{ inputs.release_version }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Release Branch: \`${{ inputs.release_branch }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Base Branch: \`${{ inputs.base_branch }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Target PR Base: \`${{ inputs.target_pr_base }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "- Release Date: \`${{ inputs.release_date }}\`" >> $GITHUB_STEP_SUMMARY
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.base_branch }}
-          fetch-depth: 0
-
-      - name: Set up Git configuration
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "7.4"
-          extensions: mbstring, intl, json
-          coverage: none
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: |
-          npm ci --prefer-offline --no-audit
-          composer install --prefer-dist --no-progress
-
-      - name: Create or checkout release branch
-        env:
-          RELEASE_BRANCH: ${{ inputs.release_branch }}
-        run: |
-          if git show-ref --quiet "refs/heads/$RELEASE_BRANCH" || git show-ref --quiet "refs/remotes/origin/$RELEASE_BRANCH"; then
-            echo "Branch $RELEASE_BRANCH exists. Checking out."
-            git checkout "$RELEASE_BRANCH" || git checkout -b "$RELEASE_BRANCH" "origin/$RELEASE_BRANCH"
-          else
-            echo "Creating branch $RELEASE_BRANCH from current ref."
-            git checkout -b "$RELEASE_BRANCH"
-          fi
-
-      - name: Run release preparation pipeline
-        env:
-          VERSION: ${{ inputs.release_version }}
-          DATE: ${{ inputs.release_date }}
-        run: |
-          DATE_ARG=""
-          if [ "$DATE" != "today" ] && [ -n "$DATE" ]; then
-            DATE_ARG="--date $DATE"
-          fi
-          
-          # Run the standard GiveWP release-prep pipeline:
-          # 1. pup replace-version
-          # 2. pup replace-tbd
-          # 3. bin/write-changelog.sh
-          bin/release-prep.sh "$VERSION" $DATE_ARG
-
-      - name: Commit and push changes
-        id: commit_changes
-        env:
-          RELEASE_BRANCH: ${{ inputs.release_branch }}
-          VERSION: ${{ inputs.release_version }}
-        run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            git add -A
-            git commit -m "chore(release): prepare release ${VERSION}"
-            git push origin "$RELEASE_BRANCH"
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "No changes detected to commit."
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        id: cpr
-        with:
-          base: ${{ inputs.target_pr_base }}
-          branch: ${{ inputs.release_branch }}
-          title: "Release: ${{ inputs.release_version }}"
-          body: "## Release for GiveWP ${{ inputs.release_version }}"
-          labels: "release, automation"
-          assignees: ${{ github.actor }}
-          reviewers: "jonwaldstein,pauloiankoski,glaubersilva"
-
-      - name: Report Summary
-        run: |
-          echo "## Release Prep Completed" >> $GITHUB_STEP_SUMMARY
-          echo "Release branch \`${{ inputs.release_branch }}\` prepared for version \`${{ inputs.release_version }}\`." >> $GITHUB_STEP_SUMMARY
+  release-prep:
+    uses: impress-org/givewp-github-actions/.github/workflows/release-prep.yml@master
+    with:
+      release_version: ${{ inputs.release_version }}
+      release_branch: ${{ inputs.release_branch }}
+      base_branch: ${{ inputs.base_branch }}
+      release_date: ${{ inputs.release_date }}
+      target_pr_base: ${{ inputs.target_pr_base }}
+      install_npm_packages: true
+      install_composer_packages: true
+      php_version: "7.4"
+      node_version: "20"
+      reviewers: "jonwaldstein,pauloiankoski,glaubersilva"
+    secrets: inherit
