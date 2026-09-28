@@ -6,6 +6,7 @@
  * @subpackage  Admin/Payments
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     https://opensource.org/licenses/gpl-license GNU Public License
+ * @since       TBD Escape translated output.
  * @since       TBD Escape output.
  * @since       1.0
  */
@@ -140,7 +141,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 							<div id="give-order-update" class="postbox give-order-data">
 
 								<div class="give-order-top">
-									<h3 class="hndle"><?php _e( 'Update Donation', 'give' ); ?></h3>
+									<h3 class="hndle"><?php esc_html_e( 'Update Donation', 'give' ); ?></h3>
 
 									<?php
 									if ( current_user_can( 'view_give_payments' ) ) {
@@ -181,7 +182,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 										<div class="give-admin-box-inside">
 											<p>
-												<label for="give-payment-status" class="strong"><?php _e( 'Status:', 'give' ); ?></label>&nbsp;
+												<label for="give-payment-status" class="strong"><?php esc_html_e( 'Status:', 'give' ); ?></label>&nbsp;
 												<select id="give-payment-status" name="give-payment-status" class="medium-text">
 													<?php foreach ( give_get_payment_statuses() as $key => $status ) : ?>
 														<option value="<?php echo esc_attr( $key ); ?>"<?php selected( $payment->status, $key, true ); ?>><?php echo esc_html( $status ); ?></option>
@@ -194,14 +195,14 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 										<div class="give-admin-box-inside">
 											<?php $date_format = give_date_format(); ?>
 											<p>
-												<label for="give-payment-date" class="strong"><?php _e( 'Date:', 'give' ); ?></label>&nbsp;
-												<input type="text" id="give-payment-date" name="give-payment-date" data-standard-date="<?php echo esc_attr( date( 'Y-m-d', $payment_date ) ); ?>" value="<?php echo esc_attr( date_i18n( $date_format, $payment_date ) ); ?>" autocomplete="off" class="medium-text give_datepicker" placeholder="<?php _e( 'Date', 'give' ); ?>"/>
+												<label for="give-payment-date" class="strong"><?php esc_html_e( 'Date:', 'give' ); ?></label>&nbsp;
+												<input type="text" id="give-payment-date" name="give-payment-date" data-standard-date="<?php echo esc_attr( date( 'Y-m-d', $payment_date ) ); ?>" value="<?php echo esc_attr( date_i18n( $date_format, $payment_date ) ); ?>" autocomplete="off" class="medium-text give_datepicker" placeholder="<?php esc_attr_e( 'Date', 'give' ); ?>"/>
 											</p>
 										</div>
 
 										<div class="give-admin-box-inside">
 											<p>
-												<label for="give-payment-time-hour" class="strong"><?php _e( 'Time:', 'give' ); ?></label>&nbsp;
+												<label for="give-payment-time-hour" class="strong"><?php esc_html_e( 'Time:', 'give' ); ?></label>&nbsp;
 												<input type="number" step="1" max="24" id="give-payment-time-hour" name="give-payment-time-hour" value="<?php echo esc_attr( date_i18n( 'H', $payment_date ) ); ?>" class="small-text give-payment-time-hour"/>&nbsp;:&nbsp;
 												<input type="number" step="1" max="59" id="give-payment-time-min" name="give-payment-time-min" value="<?php echo esc_attr( date( 'i', $payment_date ) ); ?>" class="small-text give-payment-time-min"/>
 											</p>
@@ -222,7 +223,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 										<div class="give-order-payment give-admin-box-inside">
 											<p>
-												<label for="give-payment-total" class="strong"><?php _e( 'Total Donation:', 'give' ); ?></label>&nbsp;
+												<label for="give-payment-total" class="strong"><?php esc_html_e( 'Total Donation:', 'give' ); ?></label>&nbsp;
 												<?php echo esc_html( give_currency_symbol( $payment->currency ) ); ?>
 												&nbsp;<input id="give-payment-total" name="give-payment-total" type="text" class="small-text give-price-field" value="<?php echo esc_attr( give_format_decimal( array( 'donation_id' => $payment_id ) ) ); ?>"/>
 											</p>
@@ -299,7 +300,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 							<div id="give-order-details" class="postbox give-order-data">
 
-								<h3 class="hndle"><?php _e( 'Donation Meta', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donation Meta', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div class="give-admin-box">
@@ -319,7 +320,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											?>
 											<div class="give-order-gateway give-admin-box-inside">
 												<p>
-													<strong><?php _e( 'Gateway:', 'give' ); ?></strong>&nbsp;
+													<strong><?php esc_html_e( 'Gateway:', 'give' ); ?></strong>&nbsp;
 													<?php echo esc_html( give_get_gateway_admin_label( $gateway ) ); ?>
 												</p>
 											</div>
@@ -327,14 +328,14 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 										<div class="give-order-payment-key give-admin-box-inside">
 											<p>
-												<strong><?php _e( 'Key:', 'give' ); ?></strong>&nbsp;
+												<strong><?php esc_html_e( 'Key:', 'give' ); ?></strong>&nbsp;
 												<?php echo esc_html( give_get_payment_key( $payment_id ) ); ?>
 											</p>
 										</div>
 
 										<div class="give-order-ip give-admin-box-inside">
 											<p>
-												<strong><?php _e( 'IP:', 'give' ); ?></strong>&nbsp;
+												<strong><?php esc_html_e( 'IP:', 'give' ); ?></strong>&nbsp;
 												<?php echo esc_html( give_get_payment_user_ip( $payment_id ) ); ?>
 											</p>
 										</div>
@@ -347,7 +348,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											?>
 											<div class="give-order-tx-id give-admin-box-inside">
 												<p>
-													<strong><?php _e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( esc_attr__( 'The transaction ID within %s.', 'give' ), esc_attr( $gateway ) ); ?>"></span></strong>&nbsp;
+													<strong><?php esc_html_e( 'Transaction ID:', 'give' ); ?> <span class="give-tooltip give-icon give-icon-question"  data-tooltip="<?php echo sprintf( esc_attr__( 'The transaction ID within %s.', 'give' ), esc_attr( $gateway ) ); ?>"></span></strong>&nbsp;
 													<?php echo esc_html( apply_filters( "give_payment_details_transaction_id-{$gateway}", $transaction_id, $payment_id ) ); ?>
 												</p>
 											</div>
@@ -366,7 +367,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 										<div class="give-admin-box-inside">
 											<p><?php $purchase_url = admin_url( 'edit.php?post_type=give_forms&page=give-payment-history&donor=' . absint( give_get_payment_donor_id( $payment_id ) ) ); ?>
-												<a href="<?php echo esc_url( $purchase_url ); ?>"><?php _e( 'View all donations for this donor &raquo;', 'give' ); ?></a>
+												<a href="<?php echo esc_url( $purchase_url ); ?>"><?php esc_html_e( 'View all donations for this donor &raquo;', 'give' ); ?></a>
 											</p>
 										</div>
 
@@ -412,14 +413,14 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 							<?php $column_count = 'columns-3'; ?>
 							<div id="give-donation-overview" class="postbox <?php echo esc_attr( $column_count ); ?>">
-								<h3 class="hndle"><?php _e( 'Donation Information', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donation Information', 'give' ); ?></h3>
 
 								<div class="inside">
 
 									<div class="column-container">
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Donation Form ID:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donation Form ID:', 'give' ); ?></strong><br>
 												<?php
 												if ( $payment->form_id ) :
 													printf(
@@ -465,16 +466,16 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
                                         </div>
 										<div class="column">
 											<p>
-												<strong><?php _e( 'Donation Date:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donation Date:', 'give' ); ?></strong><br>
 												<?php echo esc_html( date_i18n( give_date_format(), $payment_date ) ); ?>
 											</p>
 											<p>
-												<strong><?php _e( 'Donation Level:', 'give' ); ?></strong><br>
+												<strong><?php esc_html_e( 'Donation Level:', 'give' ); ?></strong><br>
 												<span class="give-donation-level">
 													<?php
 													$var_prices = give_has_variable_prices( $payment->form_id );
 													if ( empty( $var_prices ) ) {
-														_e( 'n/a', 'give' );
+														esc_html_e( 'n/a', 'give' );
 													} else {
 														$prices_atts = array();
 														if ( $variable_prices = give_get_variable_prices( $payment->form_id ) ) {
@@ -514,7 +515,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 																	value="1"
 																	type="radio"
 																	<?php checked( 1, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ); ?>
-																><?php _e( 'Yes', 'give' ); ?>
+																><?php esc_html_e( 'Yes', 'give' ); ?>
 															</label>
 														</li>
 														<li>
@@ -524,7 +525,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 																	value="0"
 																	type="radio"
 																	<?php checked( 0, absint( give_get_meta( $payment_id, '_give_anonymous_donation', true ) ) ); ?>
-																><?php _e( 'No', 'give' ); ?>
+																><?php esc_html_e( 'No', 'give' ); ?>
 															</label>
 														</li>
 													</ul>
@@ -598,7 +599,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 							?>
 
 							<div id="give-donor-details" class="postbox">
-								<h3 class="hndle"><?php _e( 'Donor Details', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donor Details', 'give' ); ?></h3>
 
 								<div class="inside">
 
@@ -713,19 +714,19 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 									<div class="column-container new-donor" style="display: none">
 										<div class="column">
 											<p>
-												<label for="give-new-donor-first-name"><?php _e( 'New Donor First Name:', 'give' ); ?></label>
+												<label for="give-new-donor-first-name"><?php esc_html_e( 'New Donor First Name:', 'give' ); ?></label>
 												<input id="give-new-donor-first-name" type="text" name="give-new-donor-first-name" value="" class="medium-text"/>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<label for="give-new-donor-last-name"><?php _e( 'New Donor Last Name:', 'give' ); ?></label>
+												<label for="give-new-donor-last-name"><?php esc_html_e( 'New Donor Last Name:', 'give' ); ?></label>
 												<input id="give-new-donor-last-name" type="text" name="give-new-donor-last-name" value="" class="medium-text"/>
 											</p>
 										</div>
 										<div class="column">
 											<p>
-												<label for="give-new-donor-email"><?php _e( 'New Donor Email:', 'give' ); ?></label>
+												<label for="give-new-donor-email"><?php esc_html_e( 'New Donor Email:', 'give' ); ?></label>
 												<input id="give-new-donor-email" type="email" name="give-new-donor-email" value="" class="medium-text"/>
 											</p>
 										</div>
@@ -733,9 +734,9 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 											<p>
 												<input type="hidden" name="give-current-donor" value="<?php echo (int) $donor->id; ?>"/>
 												<input type="hidden" id="give-new-donor" name="give-new-donor" value="0"/>
-												<a href="#cancel" class="give-payment-new-donor-cancel give-delete"><?php _e( 'Cancel', 'give' ); ?></a>
+												<a href="#cancel" class="give-payment-new-donor-cancel give-delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 												<br>
-												<em><?php _e( 'Click "Save Donation" to create new donor.', 'give' ); ?></em>
+												<em><?php esc_html_e( 'Click "Save Donation" to create new donor.', 'give' ); ?></em>
 											</p>
 										</div>
 									</div>
@@ -779,7 +780,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 							?>
 
 							<div id="give-billing-details" class="postbox">
-								<h3 class="hndle"><?php _e( 'Billing Address', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Billing Address', 'give' ); ?></h3>
 
 								<div class="inside">
 
@@ -799,7 +800,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 												<div class="row">
 													<div id="give-order-address-country-wrap">
-														<label class="order-data-address-line"><?php _e( 'Country:', 'give' ); ?></label>
+														<label class="order-data-address-line"><?php esc_html_e( 'Country:', 'give' ); ?></label>
 														<?php
 														// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- select() renders a <select> control; wp_kses_post() would strip it.
 														echo Give()->html->select(
@@ -822,14 +823,14 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 												<div class="row">
 													<div class="give-wrap-address-line1">
-														<label for="give-payment-address-line1" class="order-data-address"><?php _e( 'Address 1:', 'give' ); ?></label>
+														<label for="give-payment-address-line1" class="order-data-address"><?php esc_html_e( 'Address 1:', 'give' ); ?></label>
 														<input id="give-payment-address-line1" type="text" name="give-payment-address[0][line1]" value="<?php echo esc_attr( $address['line1'] ); ?>" class="medium-text"/>
 													</div>
 												</div>
 
 												<div class="row">
 													<div class="give-wrap-address-line2">
-														<label for="give-payment-address-line2" class="order-data-address-line"><?php _e( 'Address 2:', 'give' ); ?></label>
+														<label for="give-payment-address-line2" class="order-data-address-line"><?php esc_html_e( 'Address 2:', 'give' ); ?></label>
 														<input id="give-payment-address-line2" type="text" name="give-payment-address[0][line2]" value="<?php echo esc_attr( $address['line2'] ); ?>" class="medium-text"/>
 													</div>
 												</div>
@@ -877,7 +878,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 													<div class="<?php echo( ! empty( $state_exists ) ? 'column-full' : 'column' ); ?> give-column give-column-zip">
 														<div class="give-wrap-address-zip">
-															<label for="give-payment-address-zip" class="order-data-address-line"><?php _e( 'Zip / Postal Code:', 'give' ); ?></label>
+															<label for="give-payment-address-zip" class="order-data-address-line"><?php esc_html_e( 'Zip / Postal Code:', 'give' ); ?></label>
 															<input id="give-payment-address-zip" type="text" name="give-payment-address[0][zip]" value="<?php echo esc_attr( $address['zip'] ); ?>" class="medium-text"/>
 														</div>
 													</div>
@@ -917,7 +918,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 							?>
 
 							<div id="give-payment-notes" class="postbox">
-								<h3 class="hndle"><?php _e( 'Donation Notes', 'give' ); ?></h3>
+								<h3 class="hndle"><?php esc_html_e( 'Donation Notes', 'give' ); ?></h3>
 
 								<div class="inside">
 									<div id="give-payment-notes-inner">
@@ -942,12 +943,12 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 									<div class="give-clearfix">
 										<p>
-											<label for="donation_note_type" class="screen-reader-text"><?php _e( 'Note type', 'give' ); ?></label>
+											<label for="donation_note_type" class="screen-reader-text"><?php esc_html_e( 'Note type', 'give' ); ?></label>
 											<select name="donation_note_type" id="donation_note_type">
-												<option value=""><?php _e( 'Private note', 'give' ); ?></option>
-												<option value="donor"><?php _e( 'Note to donor', 'give' ); ?></option>
+												<option value=""><?php esc_html_e( 'Private note', 'give' ); ?></option>
+												<option value="donor"><?php esc_html_e( 'Note to donor', 'give' ); ?></option>
 											</select>
-											<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php _e( 'Add Note', 'give' ); ?></button>
+											<button id="give-add-payment-note" class="button button-secondary button-small" data-payment-id="<?php echo absint( $payment_id ); ?>"><?php esc_html_e( 'Add Note', 'give' ); ?></button>
 										</p>
 									</div>
 
@@ -970,7 +971,7 @@ $donor_phone_number    = $donor_model ? $donor_model->phone : '';
 
 							<?php if ( give_is_donor_comment_field_enabled( $payment->form_id ) ) : ?>
 								<div id="give-payment-donor-comment" class="postbox">
-									<h3 class="hndle"><?php _e( 'Donor Comment', 'give' ); ?></h3>
+									<h3 class="hndle"><?php esc_html_e( 'Donor Comment', 'give' ); ?></h3>
 
 									<div class="inside">
 										<div id="give-payment-donor-comment-inner">
