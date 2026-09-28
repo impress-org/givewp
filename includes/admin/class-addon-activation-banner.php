@@ -329,6 +329,7 @@ class Give_Addon_Activation_Banner {
 	/**
 	 * Render single banner activation
 	 *
+	 * @since TBD Escape output.
 	 * @since 2.1.0
 	 *
 	 * @param array $banner_arr Banner options.
@@ -373,7 +374,7 @@ class Give_Addon_Activation_Banner {
 				printf(
 					/* translators: %s: Add-on name */
 					'%s<span>%s</span>',
-					__( 'New GiveWP Add-on Activated: ', 'give' ),
+					esc_html__( 'New GiveWP Add-on Activated: ', 'give' ),
 					esc_html( $banner_arr['name'] )
 				);
 				?>

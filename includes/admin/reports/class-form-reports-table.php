@@ -224,6 +224,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 	 * Attaches the category filter to the log views
 	 *
 	 * @access public
+	 * @since  TBD Escape output.
 	 * @since  1.0
 	 *
 	 * @return void
@@ -232,6 +233,7 @@ class Give_Form_Reports_Table extends WP_List_Table {
 
 		$categories = get_terms( 'form_category' );
 		if ( $categories && ! is_wp_error( $categories ) ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- category_dropdown() renders a <select> control; wp_kses_post() would strip it, and its own values are escaped internally.
 			echo Give()->html->category_dropdown( 'category', $this->get_category() );
 		}
 	}

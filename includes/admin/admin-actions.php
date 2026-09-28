@@ -640,6 +640,7 @@ add_action( 'admin_head', '_give_test_mode_notice_admin_bar_css' );
 /**
  * Add Link to Import page in from donation archive and donation single page
  *
+ * @since TBD Escape output.
  * @since 1.8.13
  */
 function give_import_page_link_callback() {
@@ -651,7 +652,7 @@ function give_import_page_link_callback() {
             fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/donations/view?isLegacy=0')) ?>', {
                 method: 'GET',
                 headers: {
-                    ['X-WP-Nonce']: '<?php echo wp_create_nonce('wp_rest') ?>'
+                    ['X-WP-Nonce']: '<?php echo esc_js( wp_create_nonce('wp_rest') ) ?>'
                 }
             })
             .then((res) => {
@@ -1112,6 +1113,7 @@ add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
 /**
  * Show Donor Information on User Profile Page.
  *
+ * @since TBD Escape output.
  * @since 2.0
  *
  * @param object $user User Object.
@@ -1126,7 +1128,7 @@ function give_donor_information_profile_fields( $user ) {
 		<tr>
 			<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
 			<td>
-				<a href="<?php echo admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ); ?>">
+				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) ); ?>">
 					<?php _e( 'View Donor Information', 'give' ); ?>
 				</a>
 			</td>
