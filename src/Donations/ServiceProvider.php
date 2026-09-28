@@ -132,11 +132,13 @@ class ServiceProvider implements ServiceProviderInterface
     }
 
     /**
+     * @since TBD Escape output.
      * @since 3.0.0
      */
     private function addCustomFieldsToDonationDetails()
     {
         add_action('give_view_donation_details_billing_after', static function ($donationId) {
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renders the full donation details page; its view escapes its own values.
             echo (new DonationDetailsController())->show($donationId);
         });
     }
