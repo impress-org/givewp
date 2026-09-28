@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped output in campaign blocks, the donation summary, and multi-form goal views.
+timestamp: 2026-09-24T00:00:00.000Z
