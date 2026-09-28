@@ -6,6 +6,7 @@
  * @subpackage  Classes/Give_Settings_Email
  * @copyright   Copyright (c) 2016, GiveWP
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @since       TBD Escape translated output.
  * @since       TBD Escape output.
  * @since       1.8
  */
@@ -76,11 +77,11 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                         <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
                     </th>
                     <td class="give-forminp">
-                        <p><?php _e( 'SendWP plugin activated.', 'give' ); ?> <?php echo wp_kses_post( $forwarding_enabled ? $connected : $disconnected ); ?></p>
+                        <p><?php esc_html_e( 'SendWP plugin activated.', 'give' ); ?> <?php echo wp_kses_post( $forwarding_enabled ? $connected : $disconnected ); ?></p>
 
                         <br style="margin-bottom: 0.5rem;"/>
 
-                        <button id="give-sendwp-disconnect" class="button"><?php _e( 'Disconnect SendWP', 'give' ); ?></button>
+                        <button id="give-sendwp-disconnect" class="button"><?php esc_html_e( 'Disconnect SendWP', 'give' ); ?></button>
                     </td>
                 </tr>
                 <?php
@@ -92,7 +93,7 @@ if ( ! class_exists( 'Give_Settings_Email' ) ) :
                     </th>
                     <td class="give-forminp">
                         <div class="give-field-description">
-                            <?php _e( 'GiveWP recommends SendWP to ensure quick and reliable delivery of all emails sent from your site, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ); ?> <?php echo wp_kses_post( sprintf( __( '%sLearn more%s', 'give' ), '<a href="https://go.givewp.com/sendwpinternal" target="_blank" rel="noopener noreferrer">', '</a>' ) ); ?>
+                            <?php esc_html_e( 'GiveWP recommends SendWP to ensure quick and reliable delivery of all emails sent from your site, such as donation receipts, recurring donation renewal reminders, password resets, and more.', 'give' ); ?> <?php echo wp_kses_post( sprintf( __( '%sLearn more%s', 'give' ), '<a href="https://go.givewp.com/sendwpinternal" target="_blank" rel="noopener noreferrer">', '</a>' ) ); ?>
                         </div>
 
                         <br style="margin-bottom: 0.5rem;"/>
