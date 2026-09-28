@@ -250,6 +250,7 @@ class DonationReceiptWidget extends Widget_Base
      *
      * Written in PHP and used to generate the final HTML.
      *
+     * @since TBD Escape translated output.
      * @since TBD Escape output.
      * @since 4.7.0 migrated from givewp-elementor-widgets
      * @access protected
@@ -314,7 +315,7 @@ class DonationReceiptWidget extends Widget_Base
 					<thead>
 						<tr>
 							<th scope="colgroup" colspan="2">
-								<span class="give-receipt-thead-text"><?php _e('Donation Receipt', 'give'); ?></span>
+								<span class="give-receipt-thead-text"><?php esc_html_e('Donation Receipt', 'give'); ?></span>
 							</th>
 						</tr>
 					</thead>
@@ -323,55 +324,55 @@ class DonationReceiptWidget extends Widget_Base
 						<?php
                         if ('yes' == $settings['donor']) : ?>
 						<tr>
-							<td scope="row"><strong><?php _e('Donor', 'give'); ?></strong></td>
-							<td><?php _e('Test Donor', 'give'); ?></td>
+							<td scope="row"><strong><?php esc_html_e('Donor', 'give'); ?></strong></td>
+							<td><?php esc_html_e('Test Donor', 'give'); ?></td>
 						</tr>
 						<?php endif;
                         if ('yes' == $settings['company']) : ?>
 						<tr>
-							<td scope="row"><strong><?php _e('Company Name', 'give') ;?></strong></td>
+							<td scope="row"><strong><?php esc_html_e('Company Name', 'give') ;?></strong></td>
 							<td>Impress.org</td>
 						</tr>
 						<?php endif;
                         if ('yes' == $settings['date']) : ?>
 						<tr>
-							<td scope="row"><strong><?php _e('Date', 'give'); ?></strong></td>
-							<td><?php _e('April 18, 2020' , 'give') ;?></td>
+							<td scope="row"><strong><?php esc_html_e('Date', 'give'); ?></strong></td>
+							<td><?php esc_html_e('April 18, 2020' , 'give') ;?></td>
 						</tr>
 						<?php endif;
                         if ('yes' == $settings['price']) : ?>
 						<tr>
-							<td scope="row"><strong><?php _e('Total Donation' ,'give'); ?></strong></td>
+							<td scope="row"><strong><?php esc_html_e('Total Donation' ,'give'); ?></strong></td>
 							<td>$25.00</td>
 						</tr>
 						<?php endif; ?>
 						<tr>
-							<td scope="row"><strong><?php _e('Donation' , 'give'); ?></strong></td>
-							<td><?php _e('First Form', 'give'); ?><span class="donation-level-text-wrap"></span></td>
+							<td scope="row"><strong><?php esc_html_e('Donation' , 'give'); ?></strong></td>
+							<td><?php esc_html_e('First Form', 'give'); ?><span class="donation-level-text-wrap"></span></td>
 						</tr>
 						<?php
                         if ('yes' == $settings['status']) : ?>
 						<tr>
-							<td scope="row"><strong><?php _e('Donation Status', 'give'); ?></strong></td>
-							<td><?php _e('Complete', 'give'); ?></td>
+							<td scope="row"><strong><?php esc_html_e('Donation Status', 'give'); ?></strong></td>
+							<td><?php esc_html_e('Complete', 'give'); ?></td>
 						</tr>
 						<?php endif;
                         if ('yes' == $settings['payment_id']) : ?>
 						<tr>
-							<td scope="row"><strong><?php _e('Donation ID', 'give');?></strong></td>
+							<td scope="row"><strong><?php esc_html_e('Donation ID', 'give');?></strong></td>
 							<td>3</td>
 						</tr>
 						<?php endif;
                         if ('yes' == $settings['method']) : ?>
 						<tr>
-							<td scope="row"><strong><?php _e('Payment Method' , 'give'); ?></strong></td>
-							<td><?php _e('Test Donation', 'give'); ?></td>
+							<td scope="row"><strong><?php esc_html_e('Payment Method' , 'give'); ?></strong></td>
+							<td><?php esc_html_e('Test Donation', 'give'); ?></td>
 						</tr>
 						<?php endif;
                         if ('true' == $pdfreceipts) : ?>
 						<tr>
-							<td><strong><?php _e('Receipt', 'give'); ?>:</strong></td>
-							<td><a class="give_receipt_link" title="Download Receipt" href="#"><?php _e('Download Receipt', 'give');?> »</a></td>
+							<td><strong><?php esc_html_e('Receipt', 'give'); ?>:</strong></td>
+							<td><a class="give_receipt_link" title="Download Receipt" href="#"><?php esc_html_e('Download Receipt', 'give');?> »</a></td>
 						</tr>
 						<?php endif;?>
 					</tbody>
@@ -383,7 +384,7 @@ class DonationReceiptWidget extends Widget_Base
 					<thead>
 						<tr>
 							<th scope="colgroup" colspan="2">
-								<span class="give-receipt-thead-text"><?php _e('Subscription Details', 'give'); ?></span>
+								<span class="give-receipt-thead-text"><?php esc_html_e('Subscription Details', 'give'); ?></span>
 							</th>
 						</tr>
 					</thead>
@@ -391,30 +392,30 @@ class DonationReceiptWidget extends Widget_Base
 					<tbody>
 
 						<tr>
-							<td scope="row"><strong><?php _e('Subscription:', 'give'); ?></strong></td>
+							<td scope="row"><strong><?php esc_html_e('Subscription:', 'give'); ?></strong></td>
 							<td>
-								<span class="give-subscription-billing-cycle">$25.00 / <?php _e('Monthly', 'give'); ?></span>
+								<span class="give-subscription-billing-cycle">$25.00 / <?php esc_html_e('Monthly', 'give'); ?></span>
 							</td>
 						</tr>
 						<tr>
-							<td scope="row"><strong><?php _e('Status:', 'give'); ?></strong></td>
+							<td scope="row"><strong><?php esc_html_e('Status:', 'give'); ?></strong></td>
 							<td>
-								<span class="give-subscription-status"><span class="give-donation-status status-active"><span class="give-donation-status-icon"></span> <?php _e('Active', 'give'); ?></span></span>
+								<span class="give-subscription-status"><span class="give-donation-status status-active"><span class="give-donation-status-icon"></span> <?php esc_html_e('Active', 'give'); ?></span></span>
 							</td>
 						</tr>
 						<tr>
-							<td scope="row"><strong><?php _e('Renewal Date:', 'give'); ?></strong></td>
-							<td><span class="give-subscription-renewal-date"><?php _e('June 4, 2020', 'give'); ?></span></td>
+							<td scope="row"><strong><?php esc_html_e('Renewal Date:', 'give'); ?></strong></td>
+							<td><span class="give-subscription-renewal-date"><?php esc_html_e('June 4, 2020', 'give'); ?></span></td>
 						</tr>
 						<tr>
-							<td scope="row"><strong><?php _e('Progress:', 'give'); ?></strong></td>
-							<td><span class="give-subscription-times-billed">1 / <?php _e('Ongoing', 'give'); ?></span>
+							<td scope="row"><strong><?php esc_html_e('Progress:', 'give'); ?></strong></td>
+							<td><span class="give-subscription-times-billed">1 / <?php esc_html_e('Ongoing', 'give'); ?></span>
 							</td>
 						</tr>
 
 					</tbody>
 				</table>
-				<a href="#" class="give-recurring-manage-subscriptions-receipt-link"><?php _e('Manage Subscriptions', 'give'); ?> »</a>
+				<a href="#" class="give-recurring-manage-subscriptions-receipt-link"><?php esc_html_e('Manage Subscriptions', 'give'); ?> »</a>
 			</div>
 		<?php
                  endif; // End if Recurring Donations is active.
