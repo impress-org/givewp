@@ -1,12 +1,17 @@
-<?php /** @since TBD Escape output. */ ?>
+<?php
+/**
+ * @since TBD Escape translated output.
+ * @since TBD Escape output.
+ */
+?>
 <div class="form_grid_options_wrap inner-panel">
     <div class="form-template-introduction">
 
         <div class="form-template-notice">
             <img src="<?= esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/admin/cap-books.svg'); ?>" alt=""/>
             <p>
-                <?php _e('What is the Form Grid?', 'give'); ?><br />
-                <?php _e('The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode.', 'give'); ?>
+                <?php esc_html_e('What is the Form Grid?', 'give'); ?><br />
+                <?php esc_html_e('The GiveWP Form Grid provides a way to add a grid layout of multiple forms into posts and pages using either a block or shortcode.', 'give'); ?>
             </p>
 
             <a href="https://givewp.com/documentation/core/blocks/form-grid-block/" target="_blank">
