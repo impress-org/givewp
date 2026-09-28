@@ -63,7 +63,7 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $campaign = Campaign::factory()->create();
         /** @var Donation $donation */
         $donation = Donation::factory()->create(['campaignId' => $campaign->id]);
-        $standaloneForm = DonationForm::factory()->create();
+        $standaloneForm = DonationForm::factory()->create(['title' => 'Standalone Form']);
 
         $route = '/' . DonationRoute::NAMESPACE . '/' . DonationRoute::BASE . '/' . $donation->id;
         $request = $this->createRequest('PUT', $route, [], 'administrator');
@@ -75,8 +75,10 @@ class DonationRouteUpdateTest extends RestApiTestCase
         $response = $this->dispatchRequest($request);
 
         $this->assertEquals(200, $response->get_status());
-        $this->assertEmpty(Donation::find($donation->id)->campaignId);
-        $this->assertEquals($standaloneForm->id, Donation::find($donation->id)->formId);
+        $updated = Donation::find($donation->id);
+        $this->assertSame(0, $updated->campaignId);
+        $this->assertEquals($standaloneForm->id, $updated->formId);
+        $this->assertSame('Standalone Form', $updated->formTitle);
     }
 
     /**
