@@ -128,6 +128,8 @@ jobs:
           title: "Release: ${{ inputs.release_version }}"
           body: "## Release for GiveWP ${{ inputs.release_version }}"
           labels: "release, automation"
+          assignees: ${{ github.actor }}
+          reviewers: "jonwaldstein,pauloiankoski,glaubersilva"
 
       - name: Report Summary
         run: |
