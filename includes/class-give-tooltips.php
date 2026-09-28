@@ -198,4 +198,24 @@ class Give_Tooltips {
 
 		return $tooltip_markup;
 	}
+
+	/**
+	 * Echo a help tooltip.
+	 *
+	 * Safe to echo without an additional escaping wrap: every attribute value (including
+	 * aria-label) goes through esc_attr() and the tag name through tag_escape() inside
+	 * give_get_attribute_str()/render(), and the inner content is a fixed icon literal that
+	 * callers cannot override. Only render_help()'s output is safe this way — render(),
+	 * render_span() and render_link() accept a caller-supplied tag_content that is not escaped,
+	 * so do not add print_render()/print_render_span()/print_render_link() variants.
+	 *
+	 * @since TBD
+	 *
+	 * @param array|string $args
+	 *
+	 * @return void
+	 */
+	public function print_render_help( $args ) {
+		echo $this->render_help( $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- render_help() escapes every attribute value (including aria-label) and the tag name; its content is a fixed icon literal, see the docblock above.
+	}
 }
