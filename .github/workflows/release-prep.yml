@@ -126,23 +126,7 @@ jobs:
           base: ${{ inputs.target_pr_base }}
           branch: ${{ inputs.release_branch }}
           title: "Release: ${{ inputs.release_version }}"
-          body: |
-            ## Release Preparation for GiveWP ${{ inputs.release_version }}
-            
-            This automated PR prepares the release branch \`${{ inputs.release_branch }}\` targeting \`${{ inputs.target_pr_base }}\`.
-            
-            ### Automated Steps Applied:
-            - [x] Bumper version in \`give.php\` and \`readme.txt\`
-            - [x] Replaced all \`@since TBD\` tags with \`${{ inputs.release_version }}\`
-            - [x] Compiled pending entries in \`changelog/\` into \`readme.txt\` and \`changelog.txt\`
-            
-            ### Release Verification Checklist:
-            - [ ] Cross-check merged PRs against Linear cycle view
-            - [ ] Verify no unreleased SVUL tickets or unauthorized commits are included
-            - [ ] Ensure all CI checks and unit/e2e tests pass
-            - [ ] Generate RC zip and hand off to QA for Regression & GhostInspector Smoketests
-            
-            Triggered by: @${{ github.actor }}
+          body: "## Release for GiveWP ${{ inputs.release_version }}"
           labels: "release, automation"
 
       - name: Report Summary
