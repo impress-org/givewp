@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped exception messages in the Stripe gateway and its webhook handling
+timestamp: 2026-09-26T00:00:00.000Z

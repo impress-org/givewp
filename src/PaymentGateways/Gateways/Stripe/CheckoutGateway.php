@@ -105,6 +105,7 @@ class CheckoutGateway extends PaymentGateway
     /**
      * @inheritDoc
      *
+     * @since TBD Escape exception message.
      * @since 2.23.1
      *
      * @return string|void
@@ -120,7 +121,7 @@ class CheckoutGateway extends PaymentGateway
                 return $this->getCheckoutInstructions()
                        . $this->getCheckoutModalHTML($formId, $args);
             default:
-                throw new CheckoutTypeException($checkoutType);
+                throw new CheckoutTypeException(esc_html($checkoutType));
         }
     }
 }

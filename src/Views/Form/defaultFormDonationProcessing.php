@@ -2,6 +2,7 @@
 /**
  * Payment confirmation view.
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  * @since 2.7.0
  */
@@ -13,7 +14,7 @@ language_attributes(); ?>>
 <head>
     <meta charset="utf-8">
     <title><?php
-        _e('Redirecting...', 'give'); ?></title>
+        esc_html_e('Redirecting...', 'give'); ?></title>
 </head>
 <body>
 <script type="text/javascript">

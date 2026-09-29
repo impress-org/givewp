@@ -26,6 +26,7 @@ class FormDesignRegistrar
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.0.0
      *
      * @throws InvalidArgumentException
@@ -33,7 +34,7 @@ class FormDesignRegistrar
     public function getDesign(string $id): FormDesign
     {
         if (!$this->hasDesign($id)) {
-            throw new InvalidArgumentException("No design exists with the ID {$id}");
+            throw new InvalidArgumentException(esc_html("No design exists with the ID {$id}"));
         }
 
         /** @var FormDesign $design */
@@ -77,6 +78,7 @@ class FormDesignRegistrar
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 3.0.0
      *
      * @return void
@@ -89,7 +91,7 @@ class FormDesignRegistrar
             throw new InvalidArgumentException(
                 sprintf(
                     '%1$s must extend %2$s',
-                    $designClass,
+                    esc_html($designClass),
                     FormDesign::class
                 )
             );
@@ -98,7 +100,7 @@ class FormDesignRegistrar
         $designId = $designClass::id();
 
         if ($this->hasDesign($designId)) {
-            throw new OverflowException("Cannot register a design with an id that already exists: $designId");
+            throw new OverflowException(esc_html("Cannot register a design with an id that already exists: $designId"));
         }
 
         $this->designs[$designId] = $designClass;

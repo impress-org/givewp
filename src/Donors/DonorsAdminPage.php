@@ -57,6 +57,7 @@ class DonorsAdminPage
     /**
      * Display a button on the old donation forms table that switches to the React view
      *
+     * @since TBD Escape translated output.
      * @since 2.20.0
      */
     public function renderReactSwitch()
@@ -77,7 +78,7 @@ class DonorsAdminPage
 
             jQuery(function () {
                 jQuery(jQuery(".wrap .wp-header-end")).before(
-                    '<button class="page-title-action" onclick="showReactTable()"><?php _e('Switch to New View', 'give') ?></button>',
+                    '<button class="page-title-action" onclick="showReactTable()"><?php echo esc_js(__('Switch to New View', 'give')) ?></button>',
                 );
             });
         </script>

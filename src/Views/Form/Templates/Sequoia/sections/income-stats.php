@@ -3,6 +3,8 @@
 
 /**
  * @var int $formId
+ *
+ * @since TBD Escape translated output.
  */
 
 use Give\DonationForms\DonationQuery;
@@ -72,7 +74,7 @@ if ($form->has_goal()) : ?>
                 echo esc_html($raised); ?>
             </div>
             <div class="text"><?php
-                _e('raised', 'give'); ?></div>
+                esc_html_e('raised', 'give'); ?></div>
         </div>
         <div class="count">
             <div class="number">
@@ -88,7 +90,7 @@ if ($form->has_goal()) : ?>
                 echo esc_html($goal); ?>
             </div>
             <div class="text"><?php
-                _e('goal', 'give'); ?></div>
+                esc_html_e('goal', 'give'); ?></div>
         </div>
     </div>
 <?php

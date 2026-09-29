@@ -72,7 +72,8 @@ class Give_Donor_List_Table extends WP_List_Table {
 	/**
 	 * Add donors search filter.
 	 *
-     * @since TBD Escape output.
+	 * @since TBD Escape translated output.
+	 * @since TBD Escape output.
 	 * @since 3.5.0 Escape search query string.
 	 * @since 2.4.0
 	 * @return void
@@ -88,7 +89,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 		<div id="give-donor-filters" class="give-filters">
 			<div class="give-donor-search-box">
                 <input type="text" id="give-donors-search-input" placeholder="<?php
-                _e('Name, Email, or Donor ID', 'give'); ?>" name="s" value="<?php
+                esc_attr_e('Name, Email, or Donor ID', 'give'); ?>" name="s" value="<?php
                 echo esc_attr($search); ?>">
 				<?php
 				submit_button(
@@ -104,7 +105,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 			</div>
 			<div class="give-filter give-filter-half">
 				<label for="start-date"
-					   class="give-start-date-label"><?php _e( 'Start Date', 'give' ); ?></label>
+					   class="give-start-date-label"><?php esc_html_e( 'Start Date', 'give' ); ?></label>
 				<input type="text"
 					   id="start-date"
 					   name="start-date"
@@ -112,11 +113,11 @@ class Give_Donor_List_Table extends WP_List_Table {
 					   autocomplete="off"
 					   value="<?php echo $start_date ? esc_attr( date_i18n( give_date_format(), $start_date ) ) : ''; ?>"
 					   data-standard-date="<?php echo $start_date ? esc_attr( date( 'Y-m-d', $start_date ) ) : esc_attr( $start_date ); ?>"
-					   placeholder="<?php _e( 'Start Date', 'give' ); ?>"
+					   placeholder="<?php esc_attr_e( 'Start Date', 'give' ); ?>"
 				/>
 			</div>
 			<div class="give-filter give-filter-half">
-				<label for="end-date" class="give-end-date-label"><?php _e( 'End Date', 'give' ); ?></label>
+				<label for="end-date" class="give-end-date-label"><?php esc_html_e( 'End Date', 'give' ); ?></label>
 				<input type="text"
 					   id="end-date"
 					   name="end-date"
@@ -124,12 +125,12 @@ class Give_Donor_List_Table extends WP_List_Table {
 					   autocomplete="off"
 					   value="<?php echo $end_date ? esc_attr( date_i18n( give_date_format(), $end_date ) ) : ''; ?>"
 					   data-standard-date="<?php echo $end_date ? esc_attr( date( 'Y-m-d', $end_date ) ) : esc_attr( $end_date ); ?>"
-					   placeholder="<?php _e( 'End Date', 'give' ); ?>"
+					   placeholder="<?php esc_attr_e( 'End Date', 'give' ); ?>"
 				/>
 			</div>
 			<div id="give-payment-form-filter" class="give-filter">
 				<label for="give-donation-forms-filter"
-					   class="give-donation-forms-filter-label"><?php _e( 'Form', 'give' ); ?></label>
+					   class="give-donation-forms-filter-label"><?php esc_html_e( 'Form', 'give' ); ?></label>
 				<?php
 				// Filter Donations by Donation Forms.
 				echo Give()->html->forms_dropdown( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- html->forms_dropdown() builds a <select> control; wp_kses_post() would strip the select/option elements.
@@ -169,7 +170,7 @@ class Give_Donor_List_Table extends WP_List_Table {
 				if ( ! empty( $start_date ) || ! empty( $end_date ) || ! empty( $donor ) || ! empty( $search ) || ! empty( $status ) || ! empty( $form_id ) ) :
 					?>
 					<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors' ) ); ?>"
-					   class="button give-clear-filters-button"><?php _e( 'Clear Filters', 'give' ); ?></a>
+					   class="button give-clear-filters-button"><?php esc_html_e( 'Clear Filters', 'give' ); ?></a>
 				<?php endif; ?>
 			</div>
 		</div>

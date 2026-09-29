@@ -30,6 +30,7 @@ class CreateEventTicketsTable extends Migration {
     }
 
     /**
+     * @since TBD Escape exception message.
      * @inheritdoc
      * @throws DatabaseMigrationException
      */
@@ -53,7 +54,11 @@ class CreateEventTicketsTable extends Migration {
         try {
             DB::delta( $sql );
         } catch ( DatabaseQueryException $exception ) {
-            throw new DatabaseMigrationException( "An error occurred while creating the $table table", 0, $exception );
+            throw new DatabaseMigrationException(
+                esc_html( "An error occurred while creating the $table table" ),
+                0,
+                $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
+            );
         }
     }
 };

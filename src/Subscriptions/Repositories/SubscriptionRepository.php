@@ -417,6 +417,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @throws Exception
@@ -425,7 +426,7 @@ class SubscriptionRepository
     {
         foreach (Subscription::propertyKeys() as $key) {
             if (array_key_exists($key, $columns)) {
-                throw new InvalidArgumentException("'$key' is not a legacy column.");
+                throw new InvalidArgumentException(sprintf("'%s' is not a legacy column.", esc_html($key)));
             }
         }
 
@@ -538,6 +539,7 @@ class SubscriptionRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @return void
@@ -546,7 +548,7 @@ class SubscriptionRepository
     {
         foreach ($this->requiredSubscriptionProperties as $key) {
             if (!isset($subscription->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 

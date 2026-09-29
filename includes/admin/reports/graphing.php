@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Show report graphs
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  * @since 1.0
  * @return void
@@ -205,20 +206,20 @@ function give_reports_graph() {
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
 				<tr>
-					<th scope="row"><strong><?php _e( 'Total revenue for period:', 'give' ); ?></strong></th>
+					<th scope="row"><strong><?php esc_html_e( 'Total revenue for period:', 'give' ); ?></strong></th>
 					<td><?php echo esc_html( give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
-					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?><strong></th>
+					<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?><strong></th>
 					<td><?php echo esc_html( $sales_totals ); ?></td>
 				</tr>
 				<?php if ( 'this_month' === $dates['range'] ) : ?>
 					<tr>
-						<th scope="row"><strong><?php _e( 'Estimated monthly revenue:', 'give' ); ?></strong></th>
+						<th scope="row"><strong><?php esc_html_e( 'Estimated monthly revenue:', 'give' ); ?></strong></th>
 						<td><?php echo esc_html( give_currency_filter( give_format_amount( $estimated['earnings'], [ 'sanitize' => false ] ) ) ); ?></td>
 					</tr>
 					<tr class="alternate">
-						<th scope="row"><strong><?php _e( 'Estimated monthly donations:', 'give' ); ?></strong></th>
+						<th scope="row"><strong><?php esc_html_e( 'Estimated monthly donations:', 'give' ); ?></strong></th>
 						<td><?php echo (int) floor( $estimated['sales'] ); ?></td>
 					</tr>
 				<?php endif; ?>
@@ -249,6 +250,7 @@ function give_reports_graph() {
 /**
  * Show report graphs of a specific donation form.
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  * @since 1.0
  *
@@ -459,19 +461,19 @@ function give_reports_graph_of_form( $form_id = 0 ) {
 			<table class="widefat reports-table alignleft" style="max-width:450px">
 				<tbody>
 				<tr>
-					<th scope="row"><strong><?php _e( 'Total revenue for period:', 'give' ); ?></strong></th>
+					<th scope="row"><strong><?php esc_html_e( 'Total revenue for period:', 'give' ); ?></strong></th>
 					<td><?php echo esc_html( give_currency_filter( give_format_amount( $earnings_totals, [ 'sanitize' => false ] ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
-					<th scope="row"><strong><?php _e( 'Total donations for period:', 'give' ); ?></strong></th>
+					<th scope="row"><strong><?php esc_html_e( 'Total donations for period:', 'give' ); ?></strong></th>
 					<td><?php echo esc_html( $sales_totals ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><strong><?php _e( 'Average monthly revenue:', 'give' ); ?></strong></th>
+					<th scope="row"><strong><?php esc_html_e( 'Average monthly revenue:', 'give' ); ?></strong></th>
 					<td><?php echo esc_html( give_currency_filter( give_format_amount( give_get_average_monthly_form_earnings( $form_id ), [ 'sanitize' => false ] ) ) ); ?></td>
 				</tr>
 				<tr class="alternate">
-					<th scope="row"><strong><?php _e( 'Average monthly donations:', 'give' ); ?></strong></th>
+					<th scope="row"><strong><?php esc_html_e( 'Average monthly donations:', 'give' ); ?></strong></th>
 					<td><?php echo number_format( give_get_average_monthly_form_sales( $form_id ), 0 ); ?></td>
 				</tr>
 				</tbody>
@@ -556,7 +558,7 @@ function give_reports_graph_controls() {
 					</select>
 
 					<div id="give-date-range-options" style="<?php echo esc_attr( $display ); ?>">
-						<span class="screen-reader-text"><?php _e( 'From', 'give' ); ?>&nbsp;</span>
+						<span class="screen-reader-text"><?php esc_html_e( 'From', 'give' ); ?>&nbsp;</span>
 						<select id="give-graphs-month-start" name="m_start" aria-label="Start Month">
 							<?php for ( $i = 1; $i <= 12; $i ++ ) : ?>
 								<option value="<?php echo absint( $i ); ?>" <?php echo esc_attr( selected( $i, $dates['m_start'] ) ); ?>><?php echo esc_html( give_month_num_to_name( $i ) ); ?></option>
@@ -591,7 +593,7 @@ function give_reports_graph_controls() {
 						</select>
 					</div>
 
-					<input type="submit" class="button-secondary" value="<?php _e( 'Filter', 'give' ); ?>" />
+					<input type="submit" class="button-secondary" value="<?php esc_attr_e( 'Filter', 'give' ); ?>" />
 				</div>
 
 				<input type="hidden" name="give_action" value="filter_reports" />
@@ -825,6 +827,7 @@ add_action( 'give_filter_reports', 'give_parse_report_dates' );
  *
  * Outputs a "Refresh Reports" button for graphs
  *
+ * @since      TBD Escape translated output.
  * @since      TBD Escape output.
  * @since      1.3
  */

@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Escaped translated output on the System Info page
+timestamp: 2026-09-28T00:00:00.000Z

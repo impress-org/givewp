@@ -65,6 +65,7 @@ class AccountDetail
     /**
      * Get account detail by Stripe account slug.
      *
+     * @since TBD Escape exception message.
      * @since 2.13.3
      *
      * @param string $accountSlug
@@ -85,7 +86,7 @@ class AccountDetail
             throw new InvalidArgumentException(
                 sprintf(
                     'Stripe account with %s account slug does not exist',
-                    $accountSlug
+                    esc_html($accountSlug)
                 )
             );
         }

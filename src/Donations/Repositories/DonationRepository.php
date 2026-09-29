@@ -530,6 +530,7 @@ class DonationRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @return void
@@ -538,7 +539,7 @@ class DonationRepository
     {
         foreach ($this->requiredDonationProperties as $key) {
             if (!isset($donation->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 

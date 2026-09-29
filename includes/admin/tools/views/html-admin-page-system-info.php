@@ -2,6 +2,7 @@
 /**
  * Admin View: System Info
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  */
 
@@ -36,9 +37,9 @@ $give_updates = Give_Updates::get_instance();
 <div class="give-debug-report-wrapper">
 	<p class="give-debug-report-text"><?php echo esc_html( sprintf( __( 'Please copy and paste this information in your ticket when contacting support:', 'give' ) ) ); ?> </p>
 	<div class="give-debug-report-actions">
-		<a class="button-primary js-give-debug-report-button" href="#"><?php _e( 'Get System Report', 'give' ); ?></a>
+		<a class="button-primary js-give-debug-report-button" href="#"><?php esc_html_e( 'Get System Report', 'give' ); ?></a>
 		<a class="button-secondary docs" href="http://docs.givewp.com/settings-system-info"
-		   target="_blank"><?php _e( 'Understanding the System Report', 'give' ); ?> <span
+		   target="_blank"><?php esc_html_e( 'Understanding the System Report', 'give' ); ?> <span
 				class="dashicons dashicons-external"></span></a>
 	</div>
 	<div class="give-debug-report js-give-debug-report">
@@ -50,27 +51,27 @@ $give_updates = Give_Updates::get_instance();
 	<thead>
 	<tr>
 		<th colspan="3" data-export-label="WordPress Environment">
-			<h2><?php _e( 'WordPress Environment', 'give' ); ?></h2></th>
+			<h2><?php esc_html_e( 'WordPress Environment', 'give' ); ?></h2></th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-		<td data-export-label="Home URL"><?php _e( 'Home URL', 'give' ); ?>:</td>
+		<td data-export-label="Home URL"><?php esc_html_e( 'Home URL', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The URL of your site\'s homepage.', 'give' ) ); ?></td>
 		<td><?php form_option( 'home' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Site URL"><?php _e( 'Site URL', 'give' ); ?>:</td>
+		<td data-export-label="Site URL"><?php esc_html_e( 'Site URL', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The root URL of your site.', 'give' ) ); ?></td>
 		<td><?php form_option( 'siteurl' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="WP Version"><?php _e( 'WP Version', 'give' ); ?>:</td>
+		<td data-export-label="WP Version"><?php esc_html_e( 'WP Version', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The version of WordPress installed on your site.', 'give' ) ); ?></td>
 		<td><?php bloginfo( 'version' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="WP Multisite"><?php _e( 'WP Multisite', 'give' ); ?>:</td>
+		<td data-export-label="WP Multisite"><?php esc_html_e( 'WP Multisite', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Whether or not you have WordPress Multisite enabled.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -84,7 +85,7 @@ $give_updates = Give_Updates::get_instance();
 
 	</tr>
 	<tr>
-		<td data-export-label="WP Memory Limit"><?php _e( 'WP Memory Limit', 'give' ); ?>:</td>
+		<td data-export-label="WP Memory Limit"><?php esc_html_e( 'WP Memory Limit', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The maximum amount of memory (RAM) that your site can use at one time.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -104,7 +105,7 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="WP Debug Mode"><?php _e( 'WP Debug Mode', 'give' ); ?>:</td>
+		<td data-export-label="WP Debug Mode"><?php esc_html_e( 'WP Debug Mode', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Displays whether or not WordPress is in Debug Mode.', 'give' ) ); ?></td>
 		<td>
 			<?php if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) : ?>
@@ -115,7 +116,7 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="WP Cron"><?php _e( 'WP Cron', 'give' ); ?>:</td>
+		<td data-export-label="WP Cron"><?php esc_html_e( 'WP Cron', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Displays whether or not WP Cron Jobs are enabled.', 'give' ) ); ?></td>
 		<td>
 			<?php if ( defined( 'DISABLE_WP_CRON' ) && DISABLE_WP_CRON ) : ?>
@@ -126,17 +127,17 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="Language"><?php _e( 'Language', 'give' ); ?>:</td>
+		<td data-export-label="Language"><?php esc_html_e( 'Language', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The current language used by WordPress. Default = English', 'give' ) ); ?></td>
 		<td><?php echo esc_html( get_locale() ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Permalink Structure"><?php _e( 'Permalink Structure', 'give' ); ?>:</td>
+		<td data-export-label="Permalink Structure"><?php esc_html_e( 'Permalink Structure', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The permalink structure as defined in Settings.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( get_option( 'permalink_structure', __( 'Default', 'give' ) ) ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Show on Front"><?php _e( 'Show on Front', 'give' ); ?>:</td>
+		<td data-export-label="Show on Front"><?php esc_html_e( 'Show on Front', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Whether your front page is set to show posts or a static page.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( get_option( 'show_on_front', '&ndash;' ) ); ?></td>
 	</tr>
@@ -146,38 +147,38 @@ $give_updates = Give_Updates::get_instance();
 		$blog_page_id  = absint( get_option( 'page_for_posts' ) );
 		?>
 		<tr>
-			<td data-export-label="Page on Front"><?php _e( 'Page on Front', 'give' ); ?>:</td>
+			<td data-export-label="Page on Front"><?php esc_html_e( 'Page on Front', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The page set to display as your front page.', 'give' ) ); ?></td>
 			<td><?php echo 0 !== $front_page_id ? esc_html( get_the_title( $front_page_id ) . ' (#' . $front_page_id . ')' ) : esc_html__( 'Unset', 'give' ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Page for Posts"><?php _e( 'Page for Posts', 'give' ); ?>:</td>
+			<td data-export-label="Page for Posts"><?php esc_html_e( 'Page for Posts', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The page set to display your posts.', 'give' ) ); ?></td>
 			<td><?php echo 0 !== $blog_page_id ? esc_html( get_the_title( $blog_page_id ) . ' (#' . $blog_page_id . ')' ) : esc_html__( 'Unset', 'give' ); ?></td>
 		</tr>
 	<?php endif; ?>
 	<tr>
-		<td data-export-label="Table Prefix Length"><?php _e( 'Table Prefix', 'give' ); ?>:</td>
+		<td data-export-label="Table Prefix Length"><?php esc_html_e( 'Table Prefix', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The table prefix used in your WordPress database.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( $wpdb->prefix ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Table Prefix Length"><?php _e( 'Table Prefix Length', 'give' ); ?>:</td>
+		<td data-export-label="Table Prefix Length"><?php esc_html_e( 'Table Prefix Length', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The length of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( strlen( $wpdb->prefix ) ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Table Prefix Status"><?php _e( 'Table Prefix Status', 'give' ); ?>:</td>
+		<td data-export-label="Table Prefix Status"><?php esc_html_e( 'Table Prefix Status', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The status of the table prefix used in your WordPress database.', 'give' ) ); ?></td>
 		<td><?php echo strlen( $wpdb->prefix ) > 16 ? esc_html__( 'Error: Too long', 'give' ) : esc_html__( 'Acceptable', 'give' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Admin AJAX"><?php _e( 'Admin AJAX', 'give' ); ?>:</td>
+		<td data-export-label="Admin AJAX"><?php esc_html_e( 'Admin AJAX', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Whether Admin AJAX is accessible.', 'give' ) ); ?></td>
 		<td><?php echo give_test_ajax_works( true ) ? esc_html__( 'Accessible', 'give' ) : esc_html__( 'Inaccessible', 'give' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Registered Post Statuses"><?php _e( 'Registered Post Statuses', 'give' ); ?>:</td>
+		<td data-export-label="Registered Post Statuses"><?php esc_html_e( 'Registered Post Statuses', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'A list of all registered post statuses.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( implode( ', ', get_post_stati() ) ); ?></td>
 	</tr>
@@ -187,18 +188,18 @@ $give_updates = Give_Updates::get_instance();
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 	<tr>
-		<th colspan="3" data-export-label="Server Environment"><h2><?php _e( 'Server Environment', 'give' ); ?></h2>
+		<th colspan="3" data-export-label="Server Environment"><h2><?php esc_html_e( 'Server Environment', 'give' ); ?></h2>
 		</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-		<td data-export-label="Hosting Provider"><?php _e( 'Hosting Provider', 'give' ); ?>:</td>
+		<td data-export-label="Hosting Provider"><?php esc_html_e( 'Hosting Provider', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The hosting provider for this WordPress installation.', 'give' ) ); ?></td>
 		<td><?php echo give_get_host() ? esc_html( give_get_host() ) : esc_html__( 'Unknown', 'give' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="TLS Connection"><?php _e( 'TLS Connection', 'give' ); ?>:</td>
+		<td data-export-label="TLS Connection"><?php esc_html_e( 'TLS Connection', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Most payment gateway APIs only support connections using the TLS 1.2 security protocol.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -215,7 +216,7 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="TLS Connection"><?php _e( 'TLS Rating', 'give' ); ?>:</td>
+		<td data-export-label="TLS Connection"><?php esc_html_e( 'TLS Rating', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The server\'s connection as rated by https://www.howsmyssl.com/', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -226,12 +227,12 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="Server Info"><?php _e( 'Server Info', 'give' ); ?>:</td>
+		<td data-export-label="Server Info"><?php esc_html_e( 'Server Info', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Information about the web server that is currently hosting your site.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( $_SERVER['SERVER_SOFTWARE'] ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="PHP Version"><?php _e( 'PHP Version', 'give' ); ?>:</td>
+		<td data-export-label="PHP Version"><?php esc_html_e( 'PHP Version', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The version of PHP installed on your hosting server.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -245,34 +246,34 @@ $give_updates = Give_Updates::get_instance();
 					echo '<mark class="yes">' . esc_html( $php_version ) . '</mark>';
 				}
 			} else {
-				_e( "Couldn't determine PHP version because phpversion() doesn't exist.", 'give' );
+				esc_html_e( "Couldn't determine PHP version because phpversion() doesn't exist.", 'give' );
 			}
 			?>
 		</td>
 	</tr>
 	<?php if ( function_exists( 'ini_get' ) ) : ?>
 		<tr>
-			<td data-export-label="PHP Post Max Size"><?php _e( 'PHP Post Max Size', 'give' ); ?>:</td>
+			<td data-export-label="PHP Post Max Size"><?php esc_html_e( 'PHP Post Max Size', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The largest filesize that can be contained in one post.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( size_format( give_let_to_num( ini_get( 'post_max_size' ) ) ) ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="PHP Time Limit"><?php _e( 'PHP Time Limit', 'give' ); ?>:</td>
+			<td data-export-label="PHP Time Limit"><?php esc_html_e( 'PHP Time Limit', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The amount of time (in seconds) that your site will spend on a single operation before timing out (to avoid server lockups).', 'give' ) ); ?></td>
 			<td><?php echo esc_html( ini_get( 'max_execution_time' ) ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="PHP Max Input Vars"><?php _e( 'PHP Max Input Vars', 'give' ); ?>:</td>
+			<td data-export-label="PHP Max Input Vars"><?php esc_html_e( 'PHP Max Input Vars', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The maximum number of variables your server can use for a single function to avoid overloads.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( ini_get( 'max_input_vars' ) ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="PHP Max Upload Size"><?php _e( 'PHP Max Upload Size', 'give' ); ?>:</td>
+			<td data-export-label="PHP Max Upload Size"><?php esc_html_e( 'PHP Max Upload Size', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The largest filesize that can be uploaded to your WordPress installation.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( size_format( wp_max_upload_size() ) ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="cURL Version"><?php _e( 'cURL Version', 'give' ); ?>:</td>
+			<td data-export-label="cURL Version"><?php esc_html_e( 'cURL Version', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The version of cURL installed on your server.', 'give' ) ); ?></td>
 			<td>
 				<?php
@@ -291,7 +292,7 @@ $give_updates = Give_Updates::get_instance();
 			</td>
 		</tr>
 		<tr>
-			<td data-export-label="SUHOSIN Installed"><?php _e( 'SUHOSIN Installed', 'give' ); ?>:</td>
+			<td data-export-label="SUHOSIN Installed"><?php esc_html_e( 'SUHOSIN Installed', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'Suhosin is an advanced protection system for PHP installations. It was designed to protect your servers on the one hand against a number of well known problems in PHP applications and on the other hand against potential unknown vulnerabilities within these applications or the PHP core itself. If enabled on your server, Suhosin may need to be configured to increase its data submission limits.', 'give' ) ); ?></td>
 			<td><?php echo extension_loaded( 'suhosin' ) ? '<span class="dashicons dashicons-yes"></span>' : '&ndash;'; ?></td>
 		</tr>
@@ -303,7 +304,7 @@ $give_updates = Give_Updates::get_instance();
 	if ( ! empty( $wpdb->is_mysql ) && ! stristr( $ver, 'MariaDB' ) ) :
 		?>
 		<tr>
-			<td data-export-label="MySQL Version"><?php _e( 'MySQL Version', 'give' ); ?>:</td>
+			<td data-export-label="MySQL Version"><?php esc_html_e( 'MySQL Version', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The version of MySQL installed on your hosting server.', 'give' ) ); ?></td>
 			<td>
 				<?php
@@ -319,7 +320,7 @@ $give_updates = Give_Updates::get_instance();
 		</tr>
 	<?php endif; ?>
 	<tr>
-		<td data-export-label="Default Timezone is UTC"><?php _e( 'Default Timezone is UTC', 'give' ); ?>:</td>
+		<td data-export-label="Default Timezone is UTC"><?php esc_html_e( 'Default Timezone is UTC', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The default timezone for your server.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -465,23 +466,23 @@ $give_updates = Give_Updates::get_instance();
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 	<tr>
-		<th colspan="3" data-export-label="GiveWP Configuration"><h2><?php _e( 'GiveWP Configuration', 'give' ); ?></h2>
+		<th colspan="3" data-export-label="GiveWP Configuration"><h2><?php esc_html_e( 'GiveWP Configuration', 'give' ); ?></h2>
 		</th>
 	</tr>
 	</thead>
 	<tbody>
 	<tr>
-		<td data-export-label="GiveWP Version"><?php _e( 'GiveWP Version', 'give' ); ?>:</td>
+		<td data-export-label="GiveWP Version"><?php esc_html_e( 'GiveWP Version', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The version of GiveWP installed on your site.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( get_option( 'give_version' ) ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="GiveWP Cache"><?php _e( 'GiveWP Cache', 'give' ); ?>:</td>
+		<td data-export-label="GiveWP Cache"><?php esc_html_e( 'GiveWP Cache', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Whether cache is enabled in GiveWP settings.', 'give' ) ); ?></td>
 		<td><?php echo give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) ? esc_html__( 'Enabled', 'give' ) : esc_html__( 'Disabled', 'give' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Database Updates"><?php _e( 'Database Updates', 'give' ); ?>:</td>
+		<td data-export-label="Database Updates"><?php esc_html_e( 'Database Updates', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'This will show the number of pending database updates.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -517,7 +518,7 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="Database Updates"><?php _e( 'Database Migrations', 'give' ); ?>:</td>
+		<td data-export-label="Database Updates"><?php esc_html_e( 'Database Migrations', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'This will inform you whether database migration completed or not.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -531,7 +532,7 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="Database Tables"><?php _e( 'Database Tables', 'give' ); ?>:</td>
+		<td data-export-label="Database Tables"><?php esc_html_e( 'Database Tables', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'This will show list of installed database tables.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -580,12 +581,12 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="GiveWP Cache"><?php _e( 'GiveWP Cache', 'give' ); ?>:</td>
+		<td data-export-label="GiveWP Cache"><?php esc_html_e( 'GiveWP Cache', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Whether cache is enabled in GiveWP settings.', 'give' ) ); ?></td>
 		<td><?php echo give_is_setting_enabled( give_get_option( 'cache', 'enabled' ) ) ? esc_html__( 'Enabled', 'give' ) : esc_html__( 'Disabled', 'give' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="GiveWP Cache"><?php _e( 'GiveWP Emails', 'give' ); ?>:</td>
+		<td data-export-label="GiveWP Cache"><?php esc_html_e( 'GiveWP Emails', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Whether emails is enabled in GiveWP settings.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -612,52 +613,52 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="Upgraded From"><?php _e( 'Upgraded From', 'give' ); ?>:</td>
+		<td data-export-label="Upgraded From"><?php esc_html_e( 'Upgraded From', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The version of GiveWP installed prior to the last update.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( get_option( 'give_version_upgraded_from', '&ndash;' ) ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Test Mode"><?php _e( 'Test Mode', 'give' ); ?>:</td>
+		<td data-export-label="Test Mode"><?php esc_html_e( 'Test Mode', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Whether Test Mode is enabled in GiveWP settings.', 'give' ) ); ?></td>
 		<td><?php echo give_is_test_mode() ? esc_html__( 'Enabled', 'give' ) : esc_html__( 'Disabled', 'give' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Currency Code"><?php _e( 'Currency Code', 'give' ); ?>:</td>
+		<td data-export-label="Currency Code"><?php esc_html_e( 'Currency Code', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The currency code selected in GiveWP settings.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( give_get_currency() ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Currency Position"><?php _e( 'Currency Position', 'give' ); ?>:</td>
+		<td data-export-label="Currency Position"><?php esc_html_e( 'Currency Position', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The currency position selected in GiveWP settings.', 'give' ) ); ?></td>
 		<td><?php echo 'before' === give_get_option( 'currency_position' ) ? esc_html__( 'Before', 'give' ) : esc_html__( 'After', 'give' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'give' ); ?>:</td>
+		<td data-export-label="Decimal Separator"><?php esc_html_e( 'Decimal Separator', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The decimal separator defined in GiveWP settings.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( give_get_price_decimal_separator() ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Thousands Separator"><?php _e( 'Thousands Separator', 'give' ); ?>:</td>
+		<td data-export-label="Thousands Separator"><?php esc_html_e( 'Thousands Separator', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The thousands separator defined in GiveWP settings.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( give_get_price_thousand_separator() ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Success Page"><?php _e( 'Success Page', 'give' ); ?>:</td>
+		<td data-export-label="Success Page"><?php esc_html_e( 'Success Page', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The page where donors land following a successful transaction.', 'give' ) ); ?></td>
 		<td><?php echo ! empty( $give_options['success_page'] ) ? esc_url( get_permalink( $give_options['success_page'] ) ) : '&ndash;'; ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Failure Page"><?php _e( 'Failure Page', 'give' ); ?>:</td>
+		<td data-export-label="Failure Page"><?php esc_html_e( 'Failure Page', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The page where donors land following a failed transaction.', 'give' ) ); ?></td>
 		<td><?php echo ! empty( $give_options['failure_page'] ) ? esc_url( get_permalink( $give_options['failure_page'] ) ) : '&ndash;'; ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Donation History Page"><?php _e( 'Donation History Page', 'give' ); ?>:</td>
+		<td data-export-label="Donation History Page"><?php esc_html_e( 'Donation History Page', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The page where past donations are listed.', 'give' ) ); ?></td>
 		<td><?php echo ! empty( $give_options['history_page'] ) ? esc_url( get_permalink( $give_options['history_page'] ) ) : '&ndash;'; ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="GiveWP Forms Slug"><?php _e( 'GiveWP Forms Slug', 'give' ); ?>:</td>
+		<td data-export-label="GiveWP Forms Slug"><?php esc_html_e( 'GiveWP Forms Slug', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The slug used for GiveWP donation forms.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( defined( 'GIVE_SLUG' ) ? '/' . GIVE_SLUG . '/' : '/donations/' ); ?></td>
 	</tr>
@@ -685,17 +686,17 @@ $give_updates = Give_Updates::get_instance();
 	}
 	?>
 	<tr>
-		<td data-export-label="Enabled Payment Gateways"><?php _e( 'Enabled Payment Gateways', 'give' ); ?>:</td>
+		<td data-export-label="Enabled Payment Gateways"><?php esc_html_e( 'Enabled Payment Gateways', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'All payment gateways enabled in GiveWP settings.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( ! empty( $enabled_gateways ) ? $enabled_gateways : '&ndash;' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Default Payment Gateway"><?php _e( 'Default Payment Gateway', 'give' ); ?>:</td>
+		<td data-export-label="Default Payment Gateway"><?php esc_html_e( 'Default Payment Gateway', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The default payment gateway selected in GiveWP settings.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( ! empty( $default_gateway ) ? $default_gateway : '&ndash;' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="PayPal IPN Notifications"><?php _e( 'PayPal IPN Notifications', 'give' ); ?>:</td>
+		<td data-export-label="PayPal IPN Notifications"><?php esc_html_e( 'PayPal IPN Notifications', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Displays whether when last PayPal IPN is received with which donation or transaction.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -727,12 +728,12 @@ $give_updates = Give_Updates::get_instance();
 		</td>
 	</tr>
 	<tr>
-		<td data-export-label="Donor Email Access"><?php _e( 'Donor Email Access', 'give' ); ?>:</td>
+		<td data-export-label="Donor Email Access"><?php esc_html_e( 'Donor Email Access', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Whether donors can access their donation history using only email.', 'give' ) ); ?></td>
 		<td><?php echo 'enabled' === give_get_option( 'email_access' ) ? esc_html__( 'Enabled', 'give' ) : esc_html__( 'Disabled', 'give' ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Stripe Webhook Notifications"><?php _e( 'Stripe Webhook Notifications', 'give' ); ?>:</td>
+		<td data-export-label="Stripe Webhook Notifications"><?php esc_html_e( 'Stripe Webhook Notifications', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Displays whether when last Stripe Webhook is received with which donation or transaction.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -764,7 +765,7 @@ $give_updates = Give_Updates::get_instance();
 	<thead>
 	<tr>
 		<th colspan="3" data-export-label="Active GiveWP Add-ons">
-			<h2><?php _e( 'Active GiveWP Add-ons', 'give' ); ?></h2></th>
+			<h2><?php esc_html_e( 'Active GiveWP Add-ons', 'give' ); ?></h2></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -839,7 +840,7 @@ $give_updates = Give_Updates::get_instance();
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 	<tr>
-		<th colspan="3" data-export-label="Other Active Plugins"><h2><?php _e( 'Other Active Plugins', 'give' ); ?></h2>
+		<th colspan="3" data-export-label="Other Active Plugins"><h2><?php esc_html_e( 'Other Active Plugins', 'give' ); ?></h2>
 		</th>
 	</tr>
 	</thead>
@@ -892,7 +893,7 @@ $give_updates = Give_Updates::get_instance();
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 	<tr>
-		<th colspan="3" data-export-label="Inactive Plugins"><h2><?php _e( 'Inactive Plugins', 'give' ); ?></h2></th>
+		<th colspan="3" data-export-label="Inactive Plugins"><h2><?php esc_html_e( 'Inactive Plugins', 'give' ); ?></h2></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -943,7 +944,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 	<table class="give-status-table widefat" cellspacing="0">
 		<thead>
 		<tr>
-			<th colspan="3" data-export-label="Active MU Plugins"><h2><?php _e( 'Active MU Plugins', 'give' ); ?></h2>
+			<th colspan="3" data-export-label="Active MU Plugins"><h2><?php esc_html_e( 'Active MU Plugins', 'give' ); ?></h2>
 			</th>
 		</tr>
 		</thead>
@@ -991,7 +992,7 @@ if ( ! empty( $active_mu_plugins ) ) {
 <table class="give-status-table widefat" cellspacing="0">
 	<thead>
 	<tr>
-		<th colspan="3" data-export-label="Theme"><h2><?php _e( 'Theme', 'give' ); ?></h2></th>
+		<th colspan="3" data-export-label="Theme"><h2><?php esc_html_e( 'Theme', 'give' ); ?></h2></th>
 	</tr>
 	</thead>
 	<?php
@@ -1000,22 +1001,22 @@ if ( ! empty( $active_mu_plugins ) ) {
 	?>
 	<tbody>
 	<tr>
-		<td data-export-label="Name"><?php _e( 'Name', 'give' ); ?>:</td>
+		<td data-export-label="Name"><?php esc_html_e( 'Name', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The name of the current active theme.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( $active_theme->Name ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Version"><?php _e( 'Version', 'give' ); ?>:</td>
+		<td data-export-label="Version"><?php esc_html_e( 'Version', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The installed version of the current active theme.', 'give' ) ); ?></td>
 		<td><?php echo esc_html( $active_theme->Version ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Author URL"><?php _e( 'Author URL', 'give' ); ?>:</td>
+		<td data-export-label="Author URL"><?php esc_html_e( 'Author URL', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'The theme developer\'s URL.', 'give' ) ); ?></td>
 		<td><?php echo esc_url( $active_theme->{'Author URI'} ); ?></td>
 	</tr>
 	<tr>
-		<td data-export-label="Child Theme"><?php _e( 'Child Theme', 'give' ); ?>:</td>
+		<td data-export-label="Child Theme"><?php esc_html_e( 'Child Theme', 'give' ); ?>:</td>
 		<td class="help"><?php Give()->tooltips->print_render_help( __( 'Whether the current theme is a child theme.', 'give' ) ); ?></td>
 		<td>
 			<?php
@@ -1028,17 +1029,17 @@ if ( ! empty( $active_mu_plugins ) ) {
 		$parent_theme = wp_get_theme( $active_theme->Template );
 		?>
 		<tr>
-			<td data-export-label="Parent Theme Name"><?php _e( 'Parent Theme Name', 'give' ); ?>:</td>
+			<td data-export-label="Parent Theme Name"><?php esc_html_e( 'Parent Theme Name', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The name of the parent theme.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( $parent_theme->Name ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Parent Theme Version"><?php _e( 'Parent Theme Version', 'give' ); ?>:</td>
+			<td data-export-label="Parent Theme Version"><?php esc_html_e( 'Parent Theme Version', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The installed version of the parent theme.', 'give' ) ); ?></td>
 			<td><?php echo esc_html( $parent_theme->Version ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Parent Theme Author URL"><?php _e( 'Parent Theme Author URL', 'give' ); ?>:</td>
+			<td data-export-label="Parent Theme Author URL"><?php esc_html_e( 'Parent Theme Author URL', 'give' ); ?>:</td>
 			<td class="help"><?php Give()->tooltips->print_render_help( __( 'The parent theme developers URL.', 'give' ) ); ?></td>
 			<td><?php echo esc_url( $parent_theme->{'Author URI'} ); ?></td>
 		</tr>

@@ -187,13 +187,14 @@ class SubscriptionNotesRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.8.0
      */
     private function validateSubscriptionNote(SubscriptionNote $subscriptionNote): void
     {
         foreach ($this->requiredSubscriptionProperties as $key) {
             if (! isset($subscriptionNote->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
 

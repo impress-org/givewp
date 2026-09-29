@@ -306,6 +306,7 @@ function give_render_donor_view( $view, $callbacks ) {
 /**
  * View a donor
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  * @since 4.16.4 Escaped the donor company and phone output.
  * @since 3.7.0 Add "phone" field
@@ -600,7 +601,7 @@ function give_donor_view( $donor ) {
 	?>
 
 	<div id="donor-address-wrapper" class="donor-section clear">
-		<h3><?php _e( 'Addresses', 'give' ); ?></h3>
+		<h3><?php esc_html_e( 'Addresses', 'give' ); ?></h3>
 
 		<div class="postbox give-donor-addresses">
 			<div class="give-spinner-wrapper">
@@ -653,10 +654,10 @@ function give_donor_view( $donor ) {
 					}
 					?>
 					">
-						<?php _e( 'This donor does not have any addresses saved.', 'give' ); ?>
+						<?php esc_html_e( 'This donor does not have any addresses saved.', 'give' ); ?>
 					</span>
 					<button class="button add-new-address">
-						<?php _e( 'Add Address', 'give' ); ?>
+						<?php esc_html_e( 'Add Address', 'give' ); ?>
 					</button>
 				</div>
 
@@ -777,8 +778,8 @@ function give_donor_view( $donor ) {
 									<input type="hidden" name="address-action" value="add">
 									<input type="hidden" name="address-id" value="">
 									<input type="submit" class="button button-primary js-save"
-										   value="<?php _e( 'Save', 'give' ); ?>">&nbsp;&nbsp;<button
-										class="button js-cancel"><?php _e( 'Cancel', 'give' ); ?></button>
+										   value="<?php esc_attr_e( 'Save', 'give' ); ?>">&nbsp;&nbsp;<button
+										class="button js-cancel"><?php esc_html_e( 'Cancel', 'give' ); ?></button>
 								</td>
 							</tr>
 							</tbody>
@@ -813,13 +814,13 @@ function give_donor_view( $donor ) {
 		do_action( 'give_donor_before_tables', $donor );
 		?>
 
-		<h3><?php _e( 'Donor Emails', 'give' ); ?></h3>
+		<h3><?php esc_html_e( 'Donor Emails', 'give' ); ?></h3>
 
 		<table class="wp-list-table widefat striped emails">
 			<thead>
 			<tr>
-				<th><?php _e( 'Email', 'give' ); ?></th>
-				<th><?php _e( 'Actions', 'give' ); ?></th>
+				<th><?php esc_html_e( 'Email', 'give' ); ?></th>
+				<th><?php esc_html_e( 'Actions', 'give' ); ?></th>
 			</tr>
 			</thead>
 
@@ -859,9 +860,9 @@ function give_donor_view( $donor ) {
 									'give-remove-donor-email'
 								);
 								?>
-								<a href="<?php echo esc_url( $promote_url ); ?>"><?php _e( 'Make Primary', 'give' ); ?></a>
+								<a href="<?php echo esc_url( $promote_url ); ?>"><?php esc_html_e( 'Make Primary', 'give' ); ?></a>
 								&nbsp;|&nbsp;
-								<a href="<?php echo esc_url( $remove_url ); ?>" class="delete"><?php _e( 'Remove', 'give' ); ?></a>
+								<a href="<?php echo esc_url( $remove_url ); ?>" class="delete"><?php esc_html_e( 'Remove', 'give' ); ?></a>
 							<?php endif; ?>
 						</td>
 					</tr>
@@ -873,12 +874,12 @@ function give_donor_view( $donor ) {
 							<input type="hidden" name="donor-id" value="<?php echo (int) $donor->id; ?>"/>
 							<?php wp_nonce_field( 'give_add_donor_email', 'add_email_nonce', false, true ); ?>
 							<input type="email" name="additional-email" value=""
-								   placeholder="<?php _e( 'Email Address', 'give' ); ?>"/>&nbsp;
+								   placeholder="<?php esc_attr_e( 'Email Address', 'give' ); ?>"/>&nbsp;
 							<input type="checkbox" name="make-additional-primary" value="1"
 								   id="make-additional-primary"/>&nbsp;<label
-								for="make-additional-primary"><?php _e( 'Make Primary', 'give' ); ?></label>
+								for="make-additional-primary"><?php esc_html_e( 'Make Primary', 'give' ); ?></label>
 							<button class="button-secondary give-add-donor-email"
-									id="add-donor-email"><?php _e( 'Add Email', 'give' ); ?></button>
+									id="add-donor-email"><?php esc_html_e( 'Add Email', 'give' ); ?></button>
 							<span class="spinner"></span>
 						</div>
 						<div class="notice-wrap"></div>
@@ -886,7 +887,7 @@ function give_donor_view( $donor ) {
 				</tr>
 			<?php } else { ?>
 				<tr>
-					<td colspan="2"><?php _e( 'No Emails Found', 'give' ); ?></td>
+					<td colspan="2"><?php esc_html_e( 'No Emails Found', 'give' ); ?></td>
 				</tr>
 				<?php
 			}// End if().
@@ -894,7 +895,7 @@ function give_donor_view( $donor ) {
 			</tbody>
 		</table>
 
-		<h3><?php _e( 'Recent Donations', 'give' ); ?></h3>
+		<h3><?php esc_html_e( 'Recent Donations', 'give' ); ?></h3>
 		<?php
 		$payment_ids = explode( ',', $donor->payment_ids );
 		$payments    = give_get_payments(
@@ -907,11 +908,11 @@ function give_donor_view( $donor ) {
 		<table class="wp-list-table widefat striped payments">
 			<thead>
 			<tr>
-				<th scope="col"><?php _e( 'ID', 'give' ); ?></th>
-				<th scope="col"><?php _e( 'Amount', 'give' ); ?></th>
-				<th scope="col"><?php _e( 'Date', 'give' ); ?></th>
-				<th scope="col"><?php _e( 'Status', 'give' ); ?></th>
-				<th scope="col"><?php _e( 'Actions', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'ID', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Amount', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Date', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Status', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Actions', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -965,7 +966,7 @@ function give_donor_view( $donor ) {
 				<?php endforeach; ?>
 			<?php } else { ?>
 				<tr>
-					<td colspan="5"><?php _e( 'No donations found.', 'give' ); ?></td>
+					<td colspan="5"><?php esc_html_e( 'No donations found.', 'give' ); ?></td>
 				</tr>
 				<?php
 			}// End if().
@@ -973,15 +974,15 @@ function give_donor_view( $donor ) {
 			</tbody>
 		</table>
 
-		<h3><?php _e( 'Completed Forms', 'give' ); ?></h3>
+		<h3><?php esc_html_e( 'Completed Forms', 'give' ); ?></h3>
 		<?php
 		$donations = give_get_users_completed_donations( $donor->email );
 		?>
 		<table class="wp-list-table widefat striped donations">
 			<thead>
 			<tr>
-				<th scope="col"><?php _e( 'Form', 'give' ); ?></th>
-				<th scope="col" width="120px"><?php _e( 'Actions', 'give' ); ?></th>
+				<th scope="col"><?php esc_html_e( 'Form', 'give' ); ?></th>
+				<th scope="col" width="120px"><?php esc_html_e( 'Actions', 'give' ); ?></th>
 			</tr>
 			</thead>
 			<tbody>
@@ -1007,7 +1008,7 @@ function give_donor_view( $donor ) {
 				<?php endforeach; ?>
 			<?php } else { ?>
 				<tr>
-					<td colspan="2"><?php _e( 'No completed donations found.', 'give' ); ?></td>
+					<td colspan="2"><?php esc_html_e( 'No completed donations found.', 'give' ); ?></td>
 				</tr>
 			<?php } ?>
 			</tbody>
@@ -1040,6 +1041,7 @@ function give_donor_view( $donor ) {
 /**
  * View the notes of a donor.
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  * @since 4.16.6 Escaped the donor name output in the donor notes header.
  * @since 4.6.0 Escape donor note
@@ -1063,7 +1065,7 @@ function give_donor_notes_view( $donor ) {
 		<div class="donor-notes-header">
 			<?php echo get_avatar( $donor->email, 30 ); ?> <span><?php echo esc_html( $donor->name ); ?></span>
 		</div>
-		<h3><?php _e( 'Notes', 'give' ); ?></h3>
+		<h3><?php esc_html_e( 'Notes', 'give' ); ?></h3>
 
 		<?php if ( 1 == $paged ) : ?>
 			<div style="display: block; margin-bottom: 55px;">
@@ -1102,7 +1104,7 @@ function give_donor_notes_view( $donor ) {
 				<?php endforeach; ?>
 			<?php } else { ?>
 				<div class="give-no-donor-notes">
-					<?php _e( 'No donor notes found.', 'give' ); ?>
+					<?php esc_html_e( 'No donor notes found.', 'give' ); ?>
 				</div>
 			<?php } ?>
 		</div>
@@ -1117,6 +1119,7 @@ function give_donor_notes_view( $donor ) {
 /**
  * The donor delete view.
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  * @since 4.16.6 Escaped the donor name output in the delete donor view.
  * @since  1.0
@@ -1161,7 +1164,7 @@ function give_donor_delete_view( $donor ) {
 						);
 						?>
 						<label
-							for="give-donor-delete-confirm"><?php _e( 'Are you sure you want to delete this donor?', 'give' ); ?></label>
+							for="give-donor-delete-confirm"><?php esc_html_e( 'Are you sure you want to delete this donor?', 'give' ); ?></label>
 					</p>
 
 					<p>
@@ -1176,7 +1179,7 @@ function give_donor_delete_view( $donor ) {
 						);
 						?>
 						<label
-							for="give-donor-delete-records"><?php _e( 'Delete all associated donations and records?', 'give' ); ?></label>
+							for="give-donor-delete-records"><?php esc_html_e( 'Delete all associated donations and records?', 'give' ); ?></label>
 					</p>
 
 					<?php
@@ -1198,10 +1201,10 @@ function give_donor_delete_view( $donor ) {
 					<?php wp_nonce_field( 'give-delete-donor', '_wpnonce', false, true ); ?>
 					<input type="hidden" name="give_action" value="delete_donor"/>
 					<input type="submit" disabled="disabled" id="give-delete-donor" class="button-primary"
-						   value="<?php _e( 'Delete Donor', 'give' ); ?>"/>
+						   value="<?php esc_attr_e( 'Delete Donor', 'give' ); ?>"/>
 					<a id="give-delete-donor-cancel"
 					   href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=legacy-overview&id=' . $donor->id ) ); ?>"
-					   class="delete"><?php _e( 'Cancel', 'give' ); ?></a>
+					   class="delete"><?php esc_html_e( 'Cancel', 'give' ); ?></a>
 				</span>
 
 			</div>

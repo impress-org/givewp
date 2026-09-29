@@ -647,6 +647,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 		/**
 		 * Stripe Webhook field.
 		 *
+		 * @since TBD Escape translated output.
 		 * @since TBD Escape output.
 		 * @since 2.5.0
 		 *
@@ -657,7 +658,7 @@ if ( ! class_exists( 'Give_Stripe_Admin_Settings' ) ) {
 			?>
 			<tr valign="top" <?php echo ! empty( $value['wrapper_class'] ) ? 'class="' . esc_attr( $value['wrapper_class'] ) . '"' : ''; ?>>
 				<th scope="row" class="titledesc">
-					<label for=""><?php _e( 'Stripe Webhooks', 'give' ); ?></label>
+					<label for=""><?php esc_html_e( 'Stripe Webhooks', 'give' ); ?></label>
 				</th>
 
 				<td class="give-forminp give-forminp-api_key">
