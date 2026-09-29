@@ -1896,6 +1896,7 @@ class Give_API {
 	 * Modifies the output of profile.php to add key generation/revocation.
 	 *
 	 * @access public
+	 * @since TBD Escape translated output.
 	 * @since  1.1
 	 *
 	 * @param object $user Current user info
@@ -1912,7 +1913,7 @@ class Give_API {
 				<tbody>
 				<tr>
 					<th>
-						<?php _e( 'GiveWP API Keys', 'give' ); ?>
+						<?php esc_html_e( 'GiveWP API Keys', 'give' ); ?>
 					</th>
 					<td>
 						<?php
@@ -1921,22 +1922,22 @@ class Give_API {
 						?>
 						<?php if ( empty( $user->give_user_public_key ) ) { ?>
 							<input name="give_set_api_key" type="checkbox" id="give_set_api_key" />
-							<span class="description"><label for="give_set_api_key"><?php _e( 'Generate API Key', 'give' ); ?></label></span>
+							<span class="description"><label for="give_set_api_key"><?php esc_html_e( 'Generate API Key', 'give' ); ?></label></span>
 						<?php } else { ?>
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Public key:', 'give' ); ?>
+							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Public key:', 'give' ); ?>
 								&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="publickey" value="<?php echo esc_attr( $public_key ); ?>" />
 							<br />
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Secret key:', 'give' ); ?>
+							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Secret key:', 'give' ); ?>
 								&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="privatekey" value="<?php echo esc_attr( $secret_key ); ?>" />
 							<br />
-							<strong style="display:inline-block; width: 125px;"><?php _e( 'Token:', 'give' ); ?>
+							<strong style="display:inline-block; width: 125px;"><?php esc_html_e( 'Token:', 'give' ); ?>
 								&nbsp;</strong>
 							<input type="text" disabled="disabled" class="regular-text" id="token" value="<?php echo esc_attr( $this->get_token( $user->ID ) ); ?>" />
 							<br />
 							<input name="give_revoke_api_key" type="checkbox" id="give_revoke_api_key" />
-							<span class="description"><label for="give_revoke_api_key"><?php _e( 'Revoke API Keys', 'give' ); ?></label></span>
+							<span class="description"><label for="give_revoke_api_key"><?php esc_html_e( 'Revoke API Keys', 'give' ); ?></label></span>
 						<?php } ?>
 					</td>
 				</tr>
