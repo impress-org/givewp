@@ -59,6 +59,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
     /**
      * Add payment mode column to subscription table.
      *
+     * @since TBD Escape exception message.
      * @since 2.24.0
      *
      * @return void
@@ -78,13 +79,14 @@ class AddPaymentModeToSubscriptionTable extends Migration
             );
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException('An error occurred adding the payment mode column to the subscription table',
-                0, $exception);
+                0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
         }
     }
 
     /**
      * Process payment mode for existing subscriptions.
      *
+     * @since TBD Escape exception message.
      * @since 2.24.0
      *
      * @return void
@@ -111,7 +113,7 @@ class AddPaymentModeToSubscriptionTable extends Migration
             );
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException('An error occurred processing the payment mode for existing subscriptions',
-                0, $exception);
+                0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
         }
     }
 }
