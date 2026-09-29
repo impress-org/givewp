@@ -72,7 +72,7 @@ class DonationFields
                         return new DateTime($value['date'], new \DateTimeZone($value['timezone']));
                     }
                 } catch (\Exception $e) {
-                    throw new InvalidArgumentException(esc_html("Invalid date format for {$key}: {$value}."));
+                    throw new InvalidArgumentException("Invalid date format for {$key}: {$value}."); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by DonationController::create_item()'s generic catch and returned as a JSON 'error' string, never rendered as HTML; esc_html() here would double-encode the submitted value.
                 }
                 return $value;
 
