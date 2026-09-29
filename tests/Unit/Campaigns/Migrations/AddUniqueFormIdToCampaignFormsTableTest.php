@@ -4,8 +4,10 @@ namespace Give\Tests\Unit\Campaigns\Migrations;
 
 use Give\Campaigns\Migrations\Tables\AddUniqueFormIdToCampaignFormsTable;
 use Give\Campaigns\Models\Campaign;
+use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
+use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -80,6 +82,48 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
         $this->assertCount(2, DB::table('give_campaign_forms')->where('form_id', $shared->id)->getAll());
         $this->assertEquals($shared->id, Campaign::find($loser->id)->defaultFormId);
         $this->assertFalse($this->formIdIsUnique());
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testMovingAFormOnASiteWithoutTheKeyLeavesOneLink(): void
+    {
+        $this->dropUniqueKey();
+
+        $from = Campaign::factory()->create();
+        $other = Campaign::factory()->create();
+        $to = Campaign::factory()->create();
+        $form = DonationForm::factory()->create();
+
+        DB::table('give_campaign_forms')->insert(['campaign_id' => $from->id, 'form_id' => $form->id]);
+        DB::table('give_campaign_forms')->insert(['campaign_id' => $other->id, 'form_id' => $form->id]);
+
+        (new CampaignRepository())->moveCampaignForm($to, $form->id);
+
+        $links = DB::table('give_campaign_forms')->where('form_id', $form->id)->getAll();
+
+        $this->assertCount(1, $links);
+        $this->assertEquals($to->id, $links[0]->campaign_id);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testMovingRefusesAFormThatIsAnotherLinkedCampaignsDefault(): void
+    {
+        $this->dropUniqueKey();
+
+        $owner = Campaign::factory()->create();
+        $from = Campaign::factory()->create();
+        $to = Campaign::factory()->create();
+        $shared = $owner->defaultFormId;
+
+        DB::table('give_campaign_forms')->insert(['campaign_id' => $from->id, 'form_id' => $shared]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        (new CampaignRepository())->moveCampaignForm($to, $shared);
     }
 
     /**

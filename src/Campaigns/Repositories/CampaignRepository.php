@@ -278,10 +278,24 @@ class CampaignRepository
             return null;
         }
 
-        $this->validateFormIsNotDefault($currentCampaign, $donationFormId);
+        $this->validateFormCanBeMoved($donationFormId);
 
         Hooks::doAction('givewp_campaign_form_relationship_deleting', $currentCampaign, $donationFormId);
         Hooks::doAction('givewp_campaign_form_relationship_creating', $campaign, $donationFormId, false);
+
+        /*
+         * A site that skipped the unique form_id key can still link the form to other campaigns.
+         * Drop those links so the update below leaves exactly one. None of them is a default
+         * form, validateFormCanBeMoved() made sure of that. Raw SQL because the query builder's
+         * delete() goes through wpdb::delete(), which ignores comparison operators.
+         */
+        DB::query(
+            DB::prepare(
+                "DELETE FROM " . DB::prefix('give_campaign_forms') . " WHERE form_id = %d AND campaign_id <> %d",
+                $donationFormId,
+                $currentCampaign->id
+            )
+        );
 
         /* One update keeps the move atomic: the form is never left without a campaign. */
         DB::table('give_campaign_forms')
@@ -292,6 +306,26 @@ class CampaignRepository
         Hooks::doAction('givewp_campaign_form_relationship_created', $campaign, $donationFormId, false);
 
         return $currentCampaign;
+    }
+
+    /**
+     * A form that any campaign uses as its default form cannot be moved. Every campaign is
+     * checked, not only the one getByFormId() returns, because a site that skipped the unique
+     * form_id key can have the form as the default of a campaign that is not returned.
+     *
+     * @since TBD
+     *
+     * @throws InvalidArgumentException
+     */
+    public function validateFormCanBeMoved(int $donationFormId): void
+    {
+        $defaultFormOwner = $this->prepareQuery()
+            ->where('campaigns.form_id', $donationFormId)
+            ->get();
+
+        if ($defaultFormOwner) {
+            $this->validateFormIsNotDefault($defaultFormOwner, $donationFormId);
+        }
     }
 
     /**
