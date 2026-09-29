@@ -63,7 +63,7 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
     /**
      * @since TBD
      */
-    public function testRepointsTheDefaultFormOfACampaignThatLostTheLink(): void
+    public function testLeavesAFormThatIsTheDefaultOfSeveralCampaignsAlone(): void
     {
         $this->dropUniqueKey();
 
@@ -71,16 +71,15 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
         $loser = Campaign::factory()->create();
         $shared = DonationForm::find($winner->defaultFormId);
 
+        DB::table('give_campaign_forms')->where('campaign_id', $loser->id)->delete();
         DB::table('give_campaign_forms')->insert(['campaign_id' => $loser->id, 'form_id' => $shared->id]);
         DB::table('give_campaigns')->where('id', $loser->id)->update(['form_id' => $shared->id]);
 
         (new AddUniqueFormIdToCampaignFormsTable())->run();
 
-        $loserDefaultFormId = Campaign::find($loser->id)->defaultFormId;
-
-        $this->assertEquals($winner->id, Campaign::findByFormId($shared->id)->id);
-        $this->assertNotEquals($shared->id, $loserDefaultFormId);
-        $this->assertEquals($loser->id, Campaign::findByFormId($loserDefaultFormId)->id);
+        $this->assertCount(2, DB::table('give_campaign_forms')->where('form_id', $shared->id)->getAll());
+        $this->assertEquals($shared->id, Campaign::find($loser->id)->defaultFormId);
+        $this->assertFalse($this->formIdIsUnique());
     }
 
     /**
@@ -96,9 +95,13 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
 
     /**
      * Leave the table as the migration leaves it, so the next test bootstrap's dbDelta matches.
+     * Links are cleared first so a test that leaves a shared default form cannot block the key.
      */
     public function tearDown(): void
     {
+        global $wpdb;
+
+        DB::query("DELETE FROM {$wpdb->give_campaign_forms}");
         (new AddUniqueFormIdToCampaignFormsTable())->run();
 
         parent::tearDown();

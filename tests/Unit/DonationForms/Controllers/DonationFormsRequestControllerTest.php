@@ -4,6 +4,7 @@ namespace Give\Tests\Unit\DonationForms\Controllers;
 
 use Give\Campaigns\Models\Campaign;
 use Give\Campaigns\Repositories\CampaignRepository;
+use Give\Campaigns\ValueObjects\CampaignStatus;
 use Give\Campaigns\ValueObjects\CampaignType;
 use Give\Framework\Database\DB;
 use Give\DonationForms\Controllers\DonationFormsRequestController;
@@ -99,6 +100,24 @@ class DonationFormsRequestControllerTest extends TestCase
 
         $this->assertSame(400, $response->get_status());
         $this->assertSame($from->id, Campaign::findByFormId($movable->id)->id);
+    }
+
+    /**
+     * @since TBD
+     */
+    public function testAssociateFormsWithCampaignRefusesAnArchivedCampaign(): void
+    {
+        $archived = Campaign::factory()->create(['status' => CampaignStatus::ARCHIVED()]);
+        $form = DonationForm::factory()->create();
+
+        $request = new WP_REST_Request('POST', '/givewp/v3/associate-forms-with-campaign');
+        $request->set_param('campaignId', $archived->id);
+        $request->set_param('formIDs', [$form->id]);
+
+        $response = (new DonationFormsRequestController())->associateFormsWithCampaign($request);
+
+        $this->assertSame(400, $response->get_status());
+        $this->assertNull(Campaign::findByFormId($form->id));
     }
 
     /**

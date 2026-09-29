@@ -132,11 +132,22 @@ function AssignCampaignModal({
                     <CheckCircle />
                     <p>
                         {step === 'moved'
-                            ? createInterpolateElement(
-                                  /* translators: 1: form title, 2: campaign title */
-                                  sprintf(__('<form>%1$s</form> now belongs to <campaign>%2$s</campaign>.', 'give'), formTitle, selected?.label ?? ''),
-                                  {form: strong(formTitle), campaign: strong(selected?.label ?? '')}
-                              )
+                            ? hasCampaign
+                                ? createInterpolateElement(
+                                      sprintf(
+                                          /* translators: 1: form title, 2: new campaign title, 3: previous campaign title */
+                                          __('<form>%1$s</form> now belongs to <campaign>%2$s</campaign>. Its past donations stay with <previous>%3$s</previous>.', 'give'),
+                                          formTitle,
+                                          selected?.label ?? '',
+                                          currentCampaignTitle
+                                      ),
+                                      {form: strong(formTitle), campaign: strong(selected?.label ?? ''), previous: strong(currentCampaignTitle)}
+                                  )
+                                : createInterpolateElement(
+                                      /* translators: 1: form title, 2: campaign title */
+                                      sprintf(__('<form>%1$s</form> now belongs to <campaign>%2$s</campaign>.', 'give'), formTitle, selected?.label ?? ''),
+                                      {form: strong(formTitle), campaign: strong(selected?.label ?? '')}
+                                  )
                             : createInterpolateElement(
                                   /* translators: 1: form title, 2: campaign title */
                                   sprintf(__('<form>%1$s</form> is no longer part of <campaign>%2$s</campaign>.', 'give'), formTitle, currentCampaignTitle),

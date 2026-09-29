@@ -130,10 +130,10 @@ class DonationFormsRequestController
     /**
      * Links forms to a campaign. A form that already belongs to another campaign is moved: past
      * donations stay with the original campaign and both campaigns' cached totals are refreshed.
-     * A campaign's default form cannot be moved, and forms of non-core campaigns such as
-     * Peer-to-Peer stay with their campaign.
+     * A campaign's default form cannot be moved, forms of non-core campaigns such as
+     * Peer-to-Peer stay with their campaign, and nothing is moved into an archived campaign.
      *
-     * @since TBD Move forms that already belong to a campaign, refuse default and non-core campaign forms, refresh both campaigns' cached totals.
+     * @since TBD Move forms that already belong to a campaign, refuse default and non-core campaign forms and archived campaigns, refresh both campaigns' cached totals.
      * @since 4.2.0
      *
      * @throws Exception
@@ -147,6 +147,14 @@ class DonationFormsRequestController
 
         if ( ! $campaign) {
             return new WP_REST_Response('Campaign not found', 404);
+        }
+
+        /* An archived campaign keeps its forms in draft and cannot be changed. */
+        if ($campaign->status->isArchived()) {
+            return new WP_REST_Response([
+                'code' => 'givewp_archived_campaign',
+                'message' => __('Forms cannot be added to an archived campaign.', 'give'),
+            ], 400);
         }
 
         if ( ! $formIDs) {
