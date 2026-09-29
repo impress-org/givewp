@@ -123,6 +123,7 @@ class MerchantDetails
     /**
      * Get client token for hosted credit card fields.
      *
+     * @since TBD Escape exception message.
      * @since 2.30.0 Use PayPal client to generate client token.
      * @since 2.9.0
      *
@@ -157,7 +158,7 @@ class MerchantDetails
                 $response->result->expires_in - 60 // Expire token before one minute to prevent unnecessary race condition.
             );
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \Exception(esc_html($e->getMessage()));
         }
 
         return $response->result->client_token;
