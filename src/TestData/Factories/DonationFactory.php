@@ -32,6 +32,8 @@ class DonationFactory extends Factory
     private $startDate;
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param string $status
      *
      * @throws InvalidArgumentException
@@ -39,7 +41,7 @@ class DonationFactory extends Factory
     public function setDonationStatus($status)
     {
         if ( ! $this->checkDonationStatus($status)) {
-            throw new InvalidArgumentException("Invalid donation status {$status}");
+            throw new InvalidArgumentException(esc_html("Invalid donation status {$status}"));
         }
         $this->status = $status;
     }
@@ -117,6 +119,8 @@ class DonationFactory extends Factory
     }
 
     /**
+     * @since TBD Escape exception message.
+     *
      * @param string $date
      *
      * @throws InvalidArgumentException
@@ -124,7 +128,7 @@ class DonationFactory extends Factory
     public function setDonationStartDate($date)
     {
         if ( ! $this->isValidDate($date)) {
-            throw new InvalidArgumentException("Invalid date {$date}");
+            throw new InvalidArgumentException(esc_html("Invalid date {$date}"));
         }
         $this->startDate = $date;
     }

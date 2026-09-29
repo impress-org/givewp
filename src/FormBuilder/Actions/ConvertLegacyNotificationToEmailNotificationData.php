@@ -67,6 +67,9 @@ class ConvertLegacyNotificationToEmailNotificationData
         }
     }
 
+    /**
+     * @since TBD Escape exception message.
+     */
     protected function findFieldBy($key, $value)
     {
         foreach( $this->fields as $field ) {
@@ -74,7 +77,7 @@ class ConvertLegacyNotificationToEmailNotificationData
                 return $field;
             }
         }
-        throw new \Exception("Field not found with $key of '$value'");
+        throw new \Exception(sprintf("Field not found with %s of '%s'", esc_html($key), esc_html($value)));
     }
 
     protected function getDefaultValues(): array

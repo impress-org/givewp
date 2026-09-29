@@ -112,6 +112,8 @@ class Donation implements Objects
     /**
      * Take array and return object.
      *
+     * @since TBD Escape exception message.
+     *
      * @param $array
      *
      * @return Donation
@@ -132,7 +134,7 @@ class Donation implements Objects
 
         if ( ! ArrayDataSet::hasRequiredKeys($array, $expectedKeys)) {
             throw new InvalidArgumentException(
-                'Invalid Donation object, must have the exact following keys: ' . implode(', ', $expectedKeys)
+                'Invalid Donation object, must have the exact following keys: ' . esc_html(implode(', ', $expectedKeys))
             );
         }
 

@@ -49,6 +49,7 @@ class TabsRegister
     /**
      * Returns a tab with the given ID
      *
+     * @since TBD Escape exception message.
      * @since 2.10.0
      *
      * @param string $id
@@ -58,7 +59,7 @@ class TabsRegister
     public function getTab($id)
     {
         if ( ! $this->hasTab($id)) {
-            throw new MissingTabException($id);
+            throw new MissingTabException(esc_html($id));
         }
 
         return $this->tabs[$id];
