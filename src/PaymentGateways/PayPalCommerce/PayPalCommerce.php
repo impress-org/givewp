@@ -430,7 +430,7 @@ class PayPalCommerce extends PaymentGateway implements PaymentGatewayRefundable
             throw new PaymentGatewayException(
                 sprintf(
                     esc_html__('PayPal Order has an error: %s', 'give'),
-                    $error // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- PayPal API text shown on the donation form as JSON/text; esc_html() here would double-encode quotes.
+                    esc_html($error)
                 )
             );
         }
