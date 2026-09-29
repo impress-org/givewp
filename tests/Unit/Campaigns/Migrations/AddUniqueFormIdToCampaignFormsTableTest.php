@@ -4,10 +4,8 @@ namespace Give\Tests\Unit\Campaigns\Migrations;
 
 use Give\Campaigns\Migrations\Tables\AddUniqueFormIdToCampaignFormsTable;
 use Give\Campaigns\Models\Campaign;
-use Give\Campaigns\Repositories\CampaignRepository;
 use Give\DonationForms\Models\DonationForm;
 use Give\Framework\Database\DB;
-use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
@@ -65,7 +63,7 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
     /**
      * @since TBD
      */
-    public function testLeavesAFormThatIsTheDefaultOfSeveralCampaignsAlone(): void
+    public function testKeepsEveryCampaignsDefaultFormWhenCampaignsShareOne(): void
     {
         $this->dropUniqueKey();
 
@@ -79,51 +77,9 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
 
         (new AddUniqueFormIdToCampaignFormsTable())->run();
 
-        $this->assertCount(2, DB::table('give_campaign_forms')->where('form_id', $shared->id)->getAll());
+        $this->assertEquals($winner->id, Campaign::findByFormId($shared->id)->id);
         $this->assertEquals($shared->id, Campaign::find($loser->id)->defaultFormId);
-        $this->assertFalse($this->formIdIsUnique());
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testMovingAFormOnASiteWithoutTheKeyLeavesOneLink(): void
-    {
-        $this->dropUniqueKey();
-
-        $from = Campaign::factory()->create();
-        $other = Campaign::factory()->create();
-        $to = Campaign::factory()->create();
-        $form = DonationForm::factory()->create();
-
-        DB::table('give_campaign_forms')->insert(['campaign_id' => $from->id, 'form_id' => $form->id]);
-        DB::table('give_campaign_forms')->insert(['campaign_id' => $other->id, 'form_id' => $form->id]);
-
-        (new CampaignRepository())->moveCampaignForm($to, $form->id);
-
-        $links = DB::table('give_campaign_forms')->where('form_id', $form->id)->getAll();
-
-        $this->assertCount(1, $links);
-        $this->assertEquals($to->id, $links[0]->campaign_id);
-    }
-
-    /**
-     * @since TBD
-     */
-    public function testMovingRefusesAFormThatIsAnotherLinkedCampaignsDefault(): void
-    {
-        $this->dropUniqueKey();
-
-        $owner = Campaign::factory()->create();
-        $from = Campaign::factory()->create();
-        $to = Campaign::factory()->create();
-        $shared = $owner->defaultFormId;
-
-        DB::table('give_campaign_forms')->insert(['campaign_id' => $from->id, 'form_id' => $shared]);
-
-        $this->expectException(InvalidArgumentException::class);
-
-        (new CampaignRepository())->moveCampaignForm($to, $shared);
+        $this->assertTrue($this->formIdIsUnique());
     }
 
     /**
@@ -139,13 +95,9 @@ final class AddUniqueFormIdToCampaignFormsTableTest extends TestCase
 
     /**
      * Leave the table as the migration leaves it, so the next test bootstrap's dbDelta matches.
-     * Links are cleared first so a test that leaves a shared default form cannot block the key.
      */
     public function tearDown(): void
     {
-        global $wpdb;
-
-        DB::query("DELETE FROM {$wpdb->give_campaign_forms}");
         (new AddUniqueFormIdToCampaignFormsTable())->run();
 
         parent::tearDown();

@@ -180,7 +180,7 @@ class DonationFormsRequestController
                 $currentCampaign = $campaignRepository->getByFormId($formID);
 
                 if ($currentCampaign && $currentCampaign->id !== $campaign->id) {
-                    $campaignRepository->validateFormCanBeMoved($formID);
+                    $campaignRepository->validateFormIsNotDefault($formID);
                 }
             }
         } catch (InvalidArgumentException $exception) {
@@ -250,7 +250,7 @@ class DonationFormsRequestController
                     continue;
                 }
 
-                $campaignRepository->validateFormIsNotDefault($campaign, $formID);
+                $campaignRepository->validateFormIsNotDefault($formID);
                 $campaignsByForm[$formID] = $campaign;
             }
         } catch (InvalidArgumentException $exception) {

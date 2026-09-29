@@ -6,13 +6,13 @@ use Give\Framework\Database\DB;
 use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Migrations\Contracts\Migration;
 use Give\Framework\Migrations\Exceptions\DatabaseMigrationException;
-use Give\Log\Log;
 
 /**
  * A form belongs to one campaign. The table's primary key only stopped a form from being linked
  * to the same campaign twice, so a form could end up in several campaigns and whichever row came
- * first won. This removes the extra rows and makes form_id unique. A form that is the default
- * form of several campaigns is left alone, and form_id stays non-unique on that site.
+ * first won. This removes the extra rows and makes form_id unique. No campaign's default form
+ * is changed: where several campaigns name the same default form, the others keep naming it
+ * but lose their link, and CampaignRepository::validateFormIsNotDefault() keeps it from moving.
  *
  * @since TBD
  */
@@ -58,8 +58,6 @@ class AddUniqueFormIdToCampaignFormsTable extends Migration
             /*
              * For a form linked to several campaigns keep the campaign that lists it as its
              * default form, otherwise the lowest campaign id, which is the row that won before.
-             * A link to a campaign's own default form is never removed, so no campaign is left
-             * with a default form it does not own.
              */
             DB::query(
                 "DELETE campaign_forms FROM $table AS campaign_forms
@@ -74,27 +72,8 @@ class AddUniqueFormIdToCampaignFormsTable extends Migration
                     GROUP BY links.form_id
                     HAVING COUNT(*) > 1
                 ) AS keep ON keep.form_id = campaign_forms.form_id
-                LEFT JOIN $campaigns AS campaigns ON campaigns.id = campaign_forms.campaign_id
-                WHERE campaign_forms.campaign_id <> keep.keep_campaign_id
-                AND NOT (campaigns.form_id <=> campaign_forms.form_id)"
+                WHERE campaign_forms.campaign_id <> keep.keep_campaign_id"
             );
-
-            /*
-             * A form that is the default of several campaigns cannot be given to one of them
-             * without changing another campaign's default form. Leave those sites as they are.
-             */
-            $sharedDefaultFormId = DB::get_var(
-                "SELECT form_id FROM $table GROUP BY form_id HAVING COUNT(*) > 1 LIMIT 1"
-            );
-
-            if ($sharedDefaultFormId) {
-                Log::warning(
-                    'The give_campaign_forms form_id column was not made unique because a form is the default form of several campaigns.',
-                    ['form_id' => $sharedDefaultFormId]
-                );
-
-                return;
-            }
 
             $isUnique = DB::get_var(
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS

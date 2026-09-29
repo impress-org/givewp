@@ -158,11 +158,12 @@ purposes — don't confuse it with the migration pipeline.
 
 Since 4.0 a form may belong to a campaign, joined through the `give_campaign_forms` table
 (`src/Campaigns/Migrations/Tables/CreateCampaignFormsTable.php`). `form_id` is unique there: a
-form belongs to at most one campaign. The exception is a site where one form was already the default
-form of several campaigns; `AddUniqueFormIdToCampaignFormsTable` leaves those links and skips the
-unique key rather than change a campaign's default form. `CampaignRepository::addCampaignForm()` attaches,
-`removeCampaignForm()` detaches, and `moveCampaignForm()` re-points the row in one update; the campaign's default form
-can be neither detached nor moved until another form is made the default. Moving a form does not
+form belongs to at most one campaign. Where several campaigns already named the same default
+form, `AddUniqueFormIdToCampaignFormsTable` keeps one link and leaves every campaign's default form
+as it was, so a campaign can name a default form linked to another campaign. `CampaignRepository::addCampaignForm()` attaches,
+`removeCampaignForm()` detaches, and `moveCampaignForm()` re-points the row in one update. A form that
+any campaign names as its default (`validateFormIsNotDefault()`) can be neither detached nor moved until
+that campaign picks another default. Moving a form does not
 move its donations — a donation records its campaign at insert time (`_give_campaign_id` meta and
 `give_revenue.campaign_id`), so past donations stay with the original campaign and cached campaign
 totals (`givewp_cache_campaign_data`) are refreshed for both. The `associate-forms-with-campaign`

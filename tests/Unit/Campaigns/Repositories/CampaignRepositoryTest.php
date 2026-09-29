@@ -369,6 +369,31 @@ final class CampaignRepositoryTest extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testMoveAndRemoveRefuseAFormThatAnotherCampaignUsesAsItsDefault(): void
+    {
+        $from = Campaign::factory()->create();
+        $other = Campaign::factory()->create();
+        $to = Campaign::factory()->create();
+        $form = DonationForm::factory()->create();
+        $repository = new CampaignRepository();
+        $repository->addCampaignForm($from, $form->id);
+        DB::table('give_campaigns')->where('id', $other->id)->update(['form_id' => $form->id]);
+
+        try {
+            $repository->moveCampaignForm($to, $form->id);
+            $this->fail('The move was not refused.');
+        } catch (InvalidArgumentException $exception) {
+            $this->assertEquals($from->id, $repository->getByFormId($form->id)->id);
+        }
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $repository->removeCampaignForm($from, $form->id);
+    }
+
+    /**
      * @since 4.0.0
      *
      * @throws Exception
