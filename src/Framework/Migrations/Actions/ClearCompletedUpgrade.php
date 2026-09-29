@@ -12,6 +12,7 @@ use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 class ClearCompletedUpgrade
 {
     /**
+     * @since TBD Escape exception message.
      * @since 2.9.2
      *
      * @param string $upgradeId
@@ -23,7 +24,7 @@ class ClearCompletedUpgrade
         $upgradeIndex = array_search($upgradeId, $completedUpgrades, true);
 
         if (false === $upgradeIndex) {
-            throw new InvalidArgumentException("No upgrade for the given ID: $upgradeId");
+            throw new InvalidArgumentException(esc_html("No upgrade for the given ID: $upgradeId"));
         }
 
         array_splice($completedUpgrades, $upgradeIndex, 1);

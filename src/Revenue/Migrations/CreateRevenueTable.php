@@ -32,6 +32,7 @@ class CreateRevenueTable extends Migration
     /**
      * @inheritDoc
      *
+     * @since TBD Escape exception message.
      * @since 2.9.0
      * @since 2.9.2 throw an exception if there is a SQL error and add log
      *
@@ -56,7 +57,7 @@ class CreateRevenueTable extends Migration
             DB::delta($sql);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException(
-                'An error occurred creating the revenue table: ' . print_r($exception->getQueryErrors(), true)
+                esc_html('An error occurred creating the revenue table: ' . print_r($exception->getQueryErrors(), true))
             );
         }
     }
