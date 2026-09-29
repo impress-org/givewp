@@ -29,6 +29,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     abstract public static function name(): string;
 
     /**
+     * @since TBD Escape exception message.
      * @throws Exception
      */
     public function __construct(BlockModel $block)
@@ -39,8 +40,8 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
             throw new RuntimeException(
                 sprintf(
                     'BlockModel name "%s" does not match the BlockType name "%s".',
-                    $this->block->name,
-                    $this::name()
+                    esc_html($this->block->name),
+                    esc_html($this::name())
                 )
             );
         }
@@ -119,6 +120,7 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
     /**
      * Validates that the given value is a valid type for the given attribute.
      *
+     * @since TBD Escape exception message.
      * @since 3.8.0
      *
      * @throws InvalidArgumentException
@@ -128,7 +130,9 @@ abstract class BlockType implements BlockTypeInterface, Arrayable
         if (!$this->isAttributeTypeValid($key, $value)) {
             $type = $this->getPropertyType($key);
 
-            throw new InvalidArgumentException("Invalid attribute assignment. '$key' should be of type: '$type'");
+            throw new InvalidArgumentException(
+                sprintf("Invalid attribute assignment. '%s' should be of type: '%s'", esc_html($key), esc_html($type))
+            );
         }
     }
 
