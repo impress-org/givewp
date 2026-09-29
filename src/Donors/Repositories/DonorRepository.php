@@ -186,6 +186,7 @@ class DonorRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.4.0 Add support for addresses
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
@@ -241,7 +242,7 @@ class DonorRepository
 
             Log::error('Failed updating a donor', compact('donor'));
 
-            throw new FailedDonorUpdateException($donor, 0, $exception);
+            throw new FailedDonorUpdateException($donor, 0, $exception); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- donor model object and $previous Throwable, not output.
         }
 
         DB::query('COMMIT');
@@ -250,6 +251,7 @@ class DonorRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @throws Exception
@@ -260,7 +262,7 @@ class DonorRepository
 
         foreach (Donor::propertyKeys() as $key) {
             if (array_key_exists($key, $columns)) {
-                throw new InvalidArgumentException("'$key' is not a legacy column.");
+                throw new InvalidArgumentException(sprintf("'%s' is not a legacy column.", esc_html($key)));
             }
         }
 
@@ -334,6 +336,7 @@ class DonorRepository
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 2.19.6
      *
      * @return void
@@ -342,7 +345,7 @@ class DonorRepository
     {
         foreach ($this->requiredDonorProperties as $key) {
             if (!isset($donor->$key)) {
-                throw new InvalidArgumentException("'$key' is required.");
+                throw new InvalidArgumentException(sprintf("'%s' is required.", esc_html($key)));
             }
         }
     }

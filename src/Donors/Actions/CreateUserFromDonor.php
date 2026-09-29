@@ -10,6 +10,9 @@ use Give\Donors\Models\Donor;
  */
 class CreateUserFromDonor
 {
+    /**
+     * @since TBD Escape exception message.
+     */
     public function __invoke(Donor $donor): Donor
     {
         $userIdOrError = wp_insert_user(apply_filters(
@@ -29,9 +32,9 @@ class CreateUserFromDonor
             $donor->userId = $userIdOrError;
         } else {
             throw new FailedDonorUserCreationException(
-                $donor,
+                $donor, // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- model object, not output.
                 0,
-                new \Exception($userIdOrError->get_error_message())
+                new \Exception($userIdOrError->get_error_message()) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- previous exception built from a WP_Error, not output.
             );
         }
 
