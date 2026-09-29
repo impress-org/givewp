@@ -46,7 +46,7 @@ class AddCampaignIdColumn extends Migration
         $columnAdded = maybe_add_column($table, 'campaign_id', "ALTER TABLE $table ADD COLUMN campaign_id INT UNSIGNED NULL");
 
         if ( ! $columnAdded) {
-            throw new DatabaseMigrationException(esc_html("An error occurred while updating the $table table"));
+            throw new DatabaseMigrationException("An error occurred while updating the $table table"); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt a custom $table_prefix containing '&' or '<'.
         }
     }
 }

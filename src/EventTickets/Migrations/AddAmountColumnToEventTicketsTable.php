@@ -72,7 +72,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
             maybe_add_column($eventTicketsTable, 'amount', $sql);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException(
-                esc_html("An error occurred while adding the amount column to the $eventTicketsTable table"),
+                "An error occurred while adding the amount column to the $eventTicketsTable table", // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt a custom $table_prefix containing '&' or '<'.
                 0,
                 $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
             );
@@ -96,7 +96,7 @@ class AddAmountColumnToEventTicketsTable extends Migration
             $wpdb->query($sql);
         } catch (DatabaseQueryException $exception) {
             throw new DatabaseMigrationException(
-                esc_html("An error occurred while migrating data to the amount column in the $eventTicketsTable table"),
+                "An error occurred while migrating data to the amount column in the $eventTicketsTable table", // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by MigrationsRunner and shown as React text in the migration log, never as HTML; esc_html() would corrupt a custom $table_prefix containing '&' or '<'.
                 0,
                 $exception // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- $previous is a Throwable passed through for the stack trace, not output.
             );
