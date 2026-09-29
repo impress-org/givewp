@@ -640,13 +640,14 @@ add_action( 'admin_head', '_give_test_mode_notice_admin_bar_css' );
 /**
  * Add Link to Import page in from donation archive and donation single page
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  * @since 1.8.13
  */
 function give_import_page_link_callback() {
 	?>
 	<a href="<?php echo esc_url( give_import_page_url() ); ?>"
-	   class="page-import-action page-title-action"><?php _e( 'Import Donations', 'give' ); ?></a>
+	   class="page-import-action page-title-action"><?php esc_html_e( 'Import Donations', 'give' ); ?></a>
     <script>
         function showReactTable () {
             fetch( '<?php echo esc_url_raw(rest_url('give-api/v2/admin/donations/view?isLegacy=0')) ?>', {
@@ -661,7 +662,7 @@ function give_import_page_link_callback() {
         }
     </script>
     <button onclick="showReactTable()" class="page-title-action">
-        <?php _e('Switch to New View', 'give') ?>
+        <?php esc_html_e('Switch to New View', 'give') ?>
     </button>
 
 	<?php
@@ -1113,6 +1114,7 @@ add_action( 'user_profile_update_errors', 'give_validate_user_profile', 10, 3 );
 /**
  * Show Donor Information on User Profile Page.
  *
+ * @since TBD Escape translated output.
  * @since TBD Escape output.
  * @since 2.0
  *
@@ -1126,10 +1128,10 @@ function give_donor_information_profile_fields( $user ) {
 	if ( ! empty( $donor->user_id ) ) :
 		?>
 		<tr>
-			<th scope="row"><?php _e( 'Donor', 'give' ); ?></th>
+			<th scope="row"><?php esc_html_e( 'Donor', 'give' ); ?></th>
 			<td>
 				<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=give_forms&page=give-donors&view=overview&id=' . $donor->id ) ); ?>">
-					<?php _e( 'View Donor Information', 'give' ); ?>
+					<?php esc_html_e( 'View Donor Information', 'give' ); ?>
 				</a>
 			</td>
 		</tr>
