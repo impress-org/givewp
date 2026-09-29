@@ -86,6 +86,7 @@ trait StripeWebhookListenerRepository
      *
      * For Stripe Connect accounts, we need to pass the connected account ID to retrieve the invoice from the correct account, not the platform account.
      *
+     * @since TBD Escape exception message.
      * @since 4.15.3 Added support for using a secret key when retrieving invoices for non-default accounts
      * 4.14.1 Added $formId parameter and stripe_account option for Stripe Connect support
      *
@@ -116,8 +117,8 @@ trait StripeWebhookListenerRepository
             throw new Exception(
                 sprintf(
                     'Failed to retrieve invoice %s: %s',
-                    $invoiceId,
-                    $exception->getMessage()
+                    esc_html($invoiceId),
+                    $exception->getMessage() // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- caught by InvoicePaymentSucceeded/InvoicePaymentFailed and only logged via Log::error(), never displayed.
                 )
             );
         }
