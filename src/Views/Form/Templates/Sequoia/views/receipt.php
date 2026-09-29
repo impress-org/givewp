@@ -98,7 +98,7 @@ ob_start();
                     printf(
                         '<div class="details-row %1$s">%2$s<div class="detail">%3$s</div><div class="value">%4$s</div></div>',
                         esc_attr($detailRowClass),
-                        wp_kses_post($lineItem->icon),
+                        $lineItem->icon, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $lineItem->icon is developer-authored markup set via the public Section::addLineItem() API (PHP code, never request input); wp_kses_post() would strip a custom SVG icon.
                         esc_html($lineItem->label),
                         wp_kses_post($lineItem->value)
                     );

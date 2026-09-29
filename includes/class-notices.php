@@ -403,7 +403,7 @@ class Give_Notices {
 						}
 
 						jQuery.post(
-							'<?php echo esc_url( admin_url() ); ?>admin-ajax.php',
+							<?php echo wp_json_encode( esc_url_raw( admin_url( 'admin-ajax.php' ) ) ); ?>,
 							data,
 							function (response) {
 

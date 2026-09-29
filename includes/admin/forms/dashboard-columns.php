@@ -81,7 +81,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				break;
 			case 'price':
 				if ( give_has_variable_prices( $post_id ) ) {
-					echo esc_html( give_price_range( $post_id ) );
+					echo wp_kses_post( give_price_range( $post_id ) );
 				} else {
 					echo esc_html( give_price( $post_id, false ) );
 					printf( '<input type="hidden" class="formprice-%1$s" value="%2$s" />', esc_attr( $post_id ), esc_attr( give_get_form_price( $post_id ) ) );
