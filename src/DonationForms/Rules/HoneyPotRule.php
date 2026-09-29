@@ -30,7 +30,8 @@ class HoneyPotRule implements ValidationRule
     }
 
     /**
-    * @since 3.16.2
+     * @since TBD Escape exception message.
+     * @since 3.16.2
      * @throws SpamDonationException
      */
     public function __invoke($value, Closure $fail, string $key, array $values)
@@ -40,7 +41,7 @@ class HoneyPotRule implements ValidationRule
                 'formId' => $values['formId'] ?? null,
             ]);
 
-            throw new SpamDonationException(__('Thank you for the submission!', 'give'));
+            throw new SpamDonationException(esc_html__('Thank you for the submission!', 'give'));
         }
     }
 }
