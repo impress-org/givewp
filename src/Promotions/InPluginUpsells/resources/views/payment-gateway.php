@@ -1,4 +1,7 @@
 <?php
+/**
+ * @since TBD Escape translated output.
+ */
 
 echo '
         <tr class =givewp-payment-gateway-fee-recovery-recommendation-row>
@@ -8,14 +11,14 @@ echo '
                         <img src="' . esc_url(GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/light-bulb-icon.svg') . '"
                              alt="light-bulb-icon" />
                         <p>';
-_e(
+esc_html_e(
     'Dramatically reduce the impact of gateway credit card processing fees by providing donors the option to cover that cost regardless of the gateway selected.',
     'give'
 );
 echo '</p>
                         <a href="https://docs.givewp.com/feerecovery-settings-gateway" target="_blank"
                            class="givewp-payment-gateway-fee-recovery-recommendation_external">';
-_e('Recover your fees', 'give');
+esc_html_e('Recover your fees', 'give');
 echo '<img
                                 src="' . esc_url(
         GIVE_PLUGIN_URL . 'build/assets/dist/images/list-table/external-link-icon.svg'
