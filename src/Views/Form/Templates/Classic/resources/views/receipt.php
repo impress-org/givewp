@@ -118,7 +118,7 @@ ob_start();
                             ?>
 
                             <div class="details-row details-row--<?= esc_attr($lineItem->id) ?>">
-                                <?= wp_kses_post($lineItem->icon) ?>
+                                <?= $lineItem->icon /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $lineItem->icon is developer-authored markup set via the public Section::addLineItem() API (PHP code, never request input); wp_kses_post() would strip a custom SVG icon. */ ?>
                                 <dt class="detail"><?= esc_html($lineItem->label) ?></dt>
                                 <dd class="value"
                                     data-value="<?= esc_attr($lineItem->value) ?>"><?= wp_kses_post($lineItem->value) ?></dd>

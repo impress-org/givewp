@@ -170,7 +170,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 		 */
 		public static function show_messages() {
 			$notice_html = '';
-			$classes     = 'give-notice settings-error notice is-dismissible';
+			$classes     = 'give-notice give-notice-hidden settings-error notice is-dismissible';
 
 			self::$errors   = apply_filters( self::$setting_filter_prefix . '_error_notices', self::$errors );
 			self::$messages = apply_filters( self::$setting_filter_prefix . '_update_notices', self::$messages );
@@ -178,7 +178,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			if ( 0 < count( self::$errors ) ) {
 				foreach ( self::$errors as $code => $message ) {
 					$notice_html .= sprintf(
-						'<div id="setting-error-%1$s" class="%2$s error" style="display: none"><p>%3$s</p></div>',
+						'<div id="setting-error-%1$s" class="%2$s error"><p>%3$s</p></div>',
 						$code,
 						$classes,
 						$message
@@ -189,7 +189,7 @@ if ( ! class_exists( 'Give_Admin_Settings' ) ) :
 			if ( 0 < count( self::$messages ) ) {
 				foreach ( self::$messages as $code => $message ) {
 					$notice_html .= sprintf(
-						'<div id="setting-error-%1$s" class="%2$s updated" style="display: none"><p><strong>%3$s</strong></p></div>',
+						'<div id="setting-error-%1$s" class="%2$s updated"><p><strong>%3$s</strong></p></div>',
 						$code,
 						$classes,
 						$message
