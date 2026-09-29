@@ -28,6 +28,7 @@ trait InsertNode
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.8.0 Updated to only fall through if no node was found
      * @since 2.10.2
      *
@@ -60,7 +61,7 @@ trait InsertNode
         }
 
         // Only throw exception if this is the root call and no node was found
-        throw new ReferenceNodeNotFoundException($siblingName);
+        throw new ReferenceNodeNotFoundException(esc_html($siblingName));
     }
 
     /**
@@ -79,6 +80,7 @@ trait InsertNode
     }
 
     /**
+     * @since TBD Escape exception message.
      * @since 4.8.0 Updated to only fall through if no node was found
      * @since 2.10.2
      *
@@ -111,7 +113,7 @@ trait InsertNode
         }
 
         // Only throw exception if this is the root call and no node was found
-        throw new ReferenceNodeNotFoundException($siblingName);
+        throw new ReferenceNodeNotFoundException(esc_html($siblingName));
     }
 
     /**
