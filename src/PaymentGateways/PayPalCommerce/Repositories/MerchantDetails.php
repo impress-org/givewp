@@ -148,7 +148,7 @@ class MerchantDetails
                 $response->statusCode !== 200
                 || ! property_exists($response->result, 'client_token')
             ) {
-                throw new \Exception(esc_html__('Unable to generate client token.', 'give'));
+                throw new \Exception(__('Unable to generate client token.', 'give'));
             }
 
             // Save the client token in the transient.

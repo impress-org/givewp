@@ -253,7 +253,7 @@ abstract class BaseEnum implements \JsonSerializable
     {
         if (false === ($key = static::search($value))) {
             throw new \UnexpectedValueException(
-                sprintf("Value '%s' is not part of the enum %s", esc_html($value), static::class)
+                sprintf("Value '%s' is not part of the enum %s", esc_html(is_scalar($value) ? (string) $value : gettype($value)), static::class)
             );
         }
 
