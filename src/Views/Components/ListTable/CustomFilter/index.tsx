@@ -81,10 +81,11 @@ function DefaultFilter({name, options, ariaLabel, placeholder, onChange, value, 
 
 /**
  * @since TBD Load forms as well as campaigns through `asyncEntity`.
+ * @since TBD Label the select for screen readers with `ariaLabel`.
  * @since TBD Pin any static `options` (for example "No campaign") above the async results.
  * @since 4.10.0
  */
-function AsyncFilter({name, options = [], placeholder, onChange, value, isSearchable, isClearable, asyncEntity}: CustomFilterProps) {
+function AsyncFilter({name, options = [], ariaLabel, placeholder, onChange, value, isSearchable, isClearable, asyncEntity}: CustomFilterProps) {
 	const staticOptions = options.map(({value, text}) => ({value, label: text})) as unknown as CampaignOption[];
 	const staticSelected = staticOptions.find((option) => String(option.value) === String(value)) ?? null;
 	const { loadOptions, mapOptionsForMenu, selectedOption } = useCampaignAsyncSelect(
@@ -100,6 +101,7 @@ function AsyncFilter({name, options = [], placeholder, onChange, value, isSearch
 		<AsyncPaginate
 			inputId={`givewp-async-filter-${name}`}
 			placeholder={placeholder}
+			aria-label={ariaLabel}
 			loadOptions={loadOptions}
 			onChange={handleChange}
 			value={staticSelected ?? selectedOption}

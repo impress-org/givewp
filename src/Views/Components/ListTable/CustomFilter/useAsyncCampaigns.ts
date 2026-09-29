@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import { createCampaignQueryParams, processOptionsForMenu, formatCampaignOptions, formatCampaignOption } from './utils';
-import { Campaign, CampaignOption } from './utils';
+import { CampaignOption } from './utils';
 import { useEntityRecord } from '@wordpress/core-data';
 
 const CAMPAIGNS_PER_PAGE = 30;
@@ -22,7 +22,7 @@ export type AsyncSelectEntity = {
  */
 export const asyncSelectEntities: Record<AsyncSelectEntity['name'], AsyncSelectEntity> = {
     campaign: {name: 'campaign', path: '/givewp/v3/campaigns', status: ['active', 'draft', 'archived']},
-    form: {name: 'form', path: '/givewp/v3/forms', status: ['publish', 'private', 'draft']},
+    form: {name: 'form', path: '/givewp/v3/forms', status: ['publish', 'private', 'draft', 'upgraded']},
 };
 
 /**
@@ -52,20 +52,20 @@ export function useCampaignAsyncSelect(
     const [selectedOption, setSelectedOption] = useState<CampaignOption | null>(null);
     const [error, setError] = useState<Error | null>(null);
 
-    // Load current campaign details if we have a selected campaign ID
+    // Load the selected campaign or form so its title shows in the select
     const {
-        record: currentCampaign,
-        hasResolved: hasResolvedCampaign,
-    } = useEntityRecord<Campaign>('givewp', entity.name, selectedCampaignId);
+        record: currentRecord,
+        hasResolved: hasResolvedRecord,
+    } = useEntityRecord<{id: number; title: string}>('givewp', entity.name, selectedCampaignId);
 
-    // Update selected option when current campaign changes
+    // Update selected option when the selected record changes
     useEffect(() => {
-        if (hasResolvedCampaign && currentCampaign && selectedCampaignId) {
-            setSelectedOption(formatCampaignOption(currentCampaign));
+        if (hasResolvedRecord && currentRecord && selectedCampaignId) {
+            setSelectedOption(formatCampaignOption(currentRecord));
         } else if (!selectedCampaignId) {
             setSelectedOption(null);
         }
-    }, [currentCampaign, hasResolvedCampaign, selectedCampaignId]);
+    }, [currentRecord, hasResolvedRecord, selectedCampaignId]);
 
     // Load options function for AsyncPaginate
     const loadOptions = useCallback(async (search: string) => {
@@ -81,11 +81,11 @@ export function useCampaignAsyncSelect(
                 status: entity.status,
             });
 
-            const campaigns = await apiFetch<Campaign[]>({
+            const records = await apiFetch<{id: number; title: string}[]>({
                 path: `${entity.path}?${queryParams.toString()}`,
             });
 
-            const newOptions = formatCampaignOptions(campaigns);
+            const newOptions = formatCampaignOptions(records);
 
             // Update page state
             if (search !== '') {
@@ -94,7 +94,7 @@ export function useCampaignAsyncSelect(
                 setPage(currentPage);
             }
 
-            const hasMoreResults = (campaigns?.length || 0) >= CAMPAIGNS_PER_PAGE;
+            const hasMoreResults = (records?.length || 0) >= CAMPAIGNS_PER_PAGE;
 
             return {
                 options: newOptions,
