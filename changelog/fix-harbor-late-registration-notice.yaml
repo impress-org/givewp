@@ -1,0 +1,4 @@
+significance: patch
+type: fix
+entry: Fixed a "called incorrectly" notice from the licensing library when GiveWP is activated
+timestamp: 2026-09-18T00:00:00.000Z
