@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50c3235a0178fae35d1accb12a0a76ba",
+    "content-hash": "1fec2080ea0998527134bf9192ce98f7",
     "packages": [
         {
             "name": "composer/installers",
@@ -6505,8 +6505,14 @@
             "version": "dev-trunk",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wordpress/wordpress-develop.git",
-                "reference": "17017058962ca25ad57ab52e3cc43490cb4bf7d5"
+                "url": "https://github.com/WordPress/wordpress-develop.git",
+                "reference": "bb54668189a5fcd58d57eeb4dae8c0922e3aed79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WordPress/wordpress-develop/zipball/bb54668189a5fcd58d57eeb4dae8c0922e3aed79",
+                "reference": "bb54668189a5fcd58d57eeb4dae8c0922e3aed79",
+                "shasum": ""
             },
             "require": {
                 "ext-hash": "*",
@@ -6514,21 +6520,60 @@
                 "php": ">=7.4"
             },
             "require-dev": {
-                "composer/ca-bundle": "1.5.10",
+                "composer/ca-bundle": "1.5.13",
                 "phpcompatibility/phpcompatibility-wp": "~2.1.3",
-                "phpstan/phpstan": "2.1.39",
+                "phpstan/phpstan": "2.2.16",
+                "phpstan/phpstan-phpunit": "2.0.18",
                 "squizlabs/php_codesniffer": "3.13.5",
-                "wp-coding-standards/wpcs": "~3.3.0",
+                "wp-coding-standards/wpcs": "~3.4.1",
                 "yoast/phpunit-polyfills": "^1.1.0"
             },
             "suggest": {
-                "ext-dom": "*"
+                "ext-apcu": "*",
+                "ext-bc": "*",
+                "ext-curl": "*",
+                "ext-dom": "*",
+                "ext-exif": "*",
+                "ext-fileinfo": "*",
+                "ext-filter": "*",
+                "ext-ftp": "*",
+                "ext-gd": "*",
+                "ext-iconv": "*",
+                "ext-igbinary": "*",
+                "ext-imagick": "*",
+                "ext-intl": "*",
+                "ext-libxml": "*",
+                "ext-mbstring": "*",
+                "ext-memcached": "*",
+                "ext-mysqli": "*",
+                "ext-opcache": "*",
+                "ext-openssl": "*",
+                "ext-redis": "*",
+                "ext-shmop": "*",
+                "ext-simplexml": "*",
+                "ext-sockets": "*",
+                "ext-sodium": "*",
+                "ext-ssh2": "*",
+                "ext-timezonedb": "*",
+                "ext-xml": "*",
+                "ext-xmlreader": "*",
+                "ext-zip": "*",
+                "ext-zlib": "*"
             },
             "default-branch": true,
             "type": "library",
+            "autoload-dev": {
+                "psr-4": {
+                    "WordPress\\PHPStan\\": "tests/phpstan/"
+                }
+            },
             "scripts": {
                 "phpstan": [
                     "@php ./vendor/bin/phpstan analyse --memory-limit=2G"
+                ],
+                "phpstan:baselines": [
+                    "Composer\\Config::disableProcessTimeout",
+                    "@php ./tests/phpstan/generate-baselines.php"
                 ],
                 "compat": [
                     "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcompat.xml.dist --report=summary,source"
@@ -6559,9 +6604,10 @@
                 "wp"
             ],
             "support": {
-                "issues": "https://core.trac.wordpress.org/"
+                "issues": "https://core.trac.wordpress.org/",
+                "source": "https://github.com/WordPress/wordpress-develop/tree/trunk"
             },
-            "time": "2026-04-22T18:13:47+00:00"
+            "time": "2026-09-30T16:12:47+00:00"
         },
         {
             "name": "wp-cli/cache-command",

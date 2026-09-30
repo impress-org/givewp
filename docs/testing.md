@@ -23,6 +23,13 @@ matches the file name, because PHPUnit's single-file loader is strict about it, 
 hardcodes `wptests_` must use `$wpdb->prefix` instead. `composer test:serial` runs plain PHPUnit in
 one process; use it with `--filter`, which paratest does not support in this mode, and when debugging.
 
+The host run uses WordPress trunk from the `wordpress/wordpress` dev dependency, which is
+`wordpress-develop`. Composer installs it from a zip of the locked commit: the repository is
+declared as `vcs` and the package is set to prefer `dist`, because the alternative is a clone of
+the full history, about a gigabyte, in every CI job. `composer update wordpress/wordpress` asks the
+GitHub API for that zip and needs a token to do it
+(`composer config --global github-oauth.github.com <token>`); `composer install` does not.
+
 ### Running in wp-env
 
 `npm run test:php` and `npm run test:php:serial` run the same two commands inside a wp-env `cli`

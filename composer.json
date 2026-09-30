@@ -91,6 +91,9 @@
     },
     "config": {
         "process-timeout": 0,
+        "preferred-install": {
+            "wordpress/wordpress": "dist"
+        },
         "platform": {
             "php": "7.4.0"
         },
@@ -149,7 +152,7 @@
     },
     "repositories": [
         {
-            "type": "git",
+            "type": "vcs",
             "url": "https://github.com/wordpress/wordpress-develop.git"
         }
     ]
