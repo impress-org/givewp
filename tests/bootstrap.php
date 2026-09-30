@@ -14,7 +14,7 @@ if (!$testEnvironment->hasConfig()) {
     die('wp-tests-config.php not found');
 }
 
-// get the current test environment (Local or Workflow)
+// get the current test environment (wp-env, Local or Workflow)
 $currentTestEnvironment = $testEnvironment->current();
 
 // define for use in WP bootstrap file
