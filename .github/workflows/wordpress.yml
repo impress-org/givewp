@@ -60,12 +60,6 @@ jobs:
                 with:
                     # Nothing here pushes over git, and the job goes on to run third-party actions.
                     persist-credentials: false
-            -   name: Cache dependencies
-                uses: actions/cache@v6
-                with:
-                    path: ~/.composer/cache/files
-                    key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
-
             # @link https://github.com/spatie/laravel-activitylog/blob/master/.github/workflows/run-tests.yml
             -   name: Set Up PHP for build
                 uses: shivammathur/setup-php@v2
@@ -73,6 +67,18 @@ jobs:
                     php-version: 7.4
                     extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, mysql, mysqli, pdo_mysql, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
                     coverage: none
+
+            # Composer is asked where its download cache is, because the answer depends on the
+            # runner. Every job installs on the same PHP, so they all share one cache.
+            -   name: Find the Composer cache
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            -   name: Cache dependencies
+                uses: actions/cache@v6
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: composer-${{ hashFiles('composer.lock') }}
 
             -   name: Install composer dependencies
                 run: composer install --no-progress --no-interaction
@@ -170,6 +176,18 @@ jobs:
                     php-version: 7.4
                     coverage: none
 
+            # Composer is asked where its download cache is, because the answer depends on the
+            # runner. Every job installs on the same PHP, so they all share one cache.
+            -   name: Find the Composer cache
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            -   name: Cache dependencies
+                uses: actions/cache@v6
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: composer-${{ hashFiles('composer.lock') }}
+
             -   name: Install composer dependencies
                 run: composer install --no-progress --no-interaction
 
@@ -177,10 +195,11 @@ jobs:
                 uses: actions/setup-node@v7
                 with:
                     node-version-file: .nvmrc
-                    cache: npm
 
-            -   name: Install Node dependencies
-                run: npm ci
+            # wp-env is the only Node package this job uses, so it is installed alone, at the
+            # version package.json pins, rather than with everything else in the lockfile.
+            -   name: Install wp-env
+                run: npm install --global "@wordpress/env@$(node -p "require('./package.json').devDependencies['@wordpress/env']")"
 
             # wp-env takes the WordPress to install from WP_ENV_CORE.
             -   name: Resolve the WordPress version
