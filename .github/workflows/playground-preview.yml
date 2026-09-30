@@ -60,27 +60,38 @@ jobs:
                     name=$(php -d display_errors=0 bin/pup.phar zip-name "$version")
                     echo "url=https://evnt.is/test-zip?file=${name}.zip" >> "$GITHUB_OUTPUT"
 
-            -   name: Post the button
+            -   name: Post the buttons
                 env:
                     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                     ZIP_URL: ${{ steps.zip.outputs.url }}
                     PR: ${{ github.event.pull_request.number }}
                     SHA: ${{ github.event.pull_request.head.sha }}
+                    # The Give Data Generator release used by the "with sample data" preview.
+                    GENERATOR_URL: https://github.com/impress-org/give-data-generator/releases/download/1.1.0/give-data-generator.1.1.0.zip
                 run: |
-                    blueprint=$(jq -c -n --arg url "$ZIP_URL" '{
-                        landingPage: "/wp-admin/edit.php?post_type=give_forms&page=give-campaigns",
-                        preferredVersions: { php: "8.3", wp: "latest" },
-                        features: { networking: true },
-                        steps: [
-                            { step: "login", username: "admin" },
-                            { step: "installPlugin", pluginData: { resource: "url", url: $url }, options: { activate: true } }
-                        ]
-                    }')
-                    encoded=$(printf '%s' "$blueprint" | jq -s -R -r @uri)
-                    preview="https://playground.wordpress.net/?blueprint-url=data:application/json,${encoded}"
+                    blueprint() {
+                        jq -c -n --arg url "$ZIP_URL" --arg generator "$GENERATOR_URL" --argjson data "$1" '{
+                            landingPage: "/wp-admin/edit.php?post_type=give_forms&page=give-campaigns",
+                            preferredVersions: { php: "8.3", wp: "latest" },
+                            features: { networking: true },
+                            steps: ([
+                                { step: "login", username: "admin" },
+                                { step: "installPlugin", pluginData: { resource: "url", url: $url }, options: { activate: true } }
+                            ] + (if $data then [
+                                { step: "installPlugin", pluginData: { resource: "url", url: $generator }, options: { activate: true } },
+                                { step: "wp-cli", command: "wp eval '"'"'give_update_option(\"test_mode\", \"enabled\");'"'"'" },
+                                { step: "wp-cli", command: "wp give-data donations 100 --campaigns=3" }
+                            ] else [] end))
+                        }' | jq -s -R -r @uri
+                    }
+                    button() {
+                        printf '<a href="https://playground.wordpress.net/?blueprint-url=data:application/json,%s" target="_blank" rel="noopener noreferrer"><img src="%s" alt="%s" width="220" height="57" /></a>' "$1" "$2" "$3"
+                    }
+                    plain=$(button "$(blueprint false)" "https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" "Open WordPress Playground Preview")
+                    seeded=$(button "$(blueprint true)" "https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" "Open WordPress Playground Preview with sample data")
 
                     marker='<!-- givewp-playground-preview -->'
-                    body=$(printf '%s\n### WordPress Playground Preview\n\nTry this pull request in a throwaway WordPress in your browser. Built from %s.\n\n<a href="%s" target="_blank" rel="noopener noreferrer"><img src="https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" alt="Open WordPress Playground Preview" width="220" height="57" /></a>\n' "$marker" "$SHA" "$preview")
+                    body=$(printf '%s\n### WordPress Playground Preview\n\nTry this pull request in a throwaway WordPress in your browser. Built from %s.\n\n**Empty site**\n\n%s\n\n**With sample data** (3 campaigns, 100 test-mode donations; takes a few minutes longer to open)\n\n%s\n' "$marker" "$SHA" "$plain" "$seeded")
 
                     existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
                     if [ -n "$existing" ]; then
