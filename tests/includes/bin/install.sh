@@ -71,9 +71,12 @@ install_test_suite() {
 		# set up testing suite
 		mkdir -p $WP_TESTS_DIR
 		svn co https://develop.svn.wordpress.org/${WP_TESTS_TAG}/tests/phpunit/includes/ $WP_TESTS_DIR/includes
-		# The test bootstrap takes its theme, plugin and language directories from data/. Without
-		# it no theme directory is registered and WordPress reports wp_is_block_theme() as called
-		# too early in every process.
+	fi
+
+	# The test bootstrap takes its theme, plugin and language directories from data/. Without it no
+	# theme directory is registered and WordPress reports wp_is_block_theme() as called too early in
+	# every process. Checked separately so a suite directory from before data/ was fetched gets it too.
+	if [ ! -d $WP_TESTS_DIR/data ]; then
 		svn co --quiet https://develop.svn.wordpress.org/${WP_TESTS_TAG}/tests/phpunit/data/ $WP_TESTS_DIR/data
 	fi
 
