@@ -1,18 +1,25 @@
 name: Playground Preview - Build
 
-# Builds the plugin zip for the "Preview in WordPress Playground" button on each pull request.
+# Builds the plugin zip for the "Preview in WordPress Playground" button on a pull request. The
+# build takes several minutes, so it is opt-in: add the "playground" label to a pull request to
+# get a preview, and it is rebuilt on every push for as long as the label stays on.
+#
 # This half runs the pull request's own code, so it gets read-only permissions and no secrets.
-# The publish half, playground-preview-publish.yml, runs from develop and does the writing.
+# The publish half, playground-preview-publish.yml, runs from develop and does the writing. It
+# only accepts pull_request runs, which is why this is a label and not a workflow_dispatch.
 
 on:
     pull_request:
-        types: [opened, synchronize, reopened]
+        types: [labeled, synchronize]
 
 permissions:
     contents: read
 
 jobs:
     build:
+        if: >-
+            contains(github.event.pull_request.labels.*.name, 'playground')
+            && (github.event.action != 'labeled' || github.event.label.name == 'playground')
         uses: WordPress/action-wp-playground-pr-preview/.github/workflows/preview-build.yml@v4
         with:
             # The name on the left is what the publish workflow's blueprint refers to.

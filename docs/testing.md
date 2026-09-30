@@ -153,13 +153,15 @@ itself through `requestUtils.rest()`.
 
 ## Playground previews
 
-Every pull request gets a "Preview in WordPress Playground" button in its description: a
-throwaway WordPress in the browser, running the pull request's build, logged in and opened on the
-Campaigns screen. Two workflows make it:
+Add the `playground` label to a pull request and it gets a "Preview in WordPress Playground"
+button in its description: a throwaway WordPress in the browser, running the pull request's build,
+logged in and opened on the Campaigns screen. The preview is rebuilt on every push while the label
+is on, and the build takes several minutes, which is why it is opt-in. Two workflows make it:
 
 - `playground-preview-build.yml` runs on the pull request with read-only permissions. It builds
   the zip the way a release is built, `pup build` and `pup package`, and uploads it as a workflow
-  artifact.
+  artifact. A `workflow_dispatch` would be simpler, but the publish half only accepts builds that
+  came from a `pull_request` event.
 - `playground-preview-publish.yml` runs on `workflow_run` from `develop`, so it has write access
   even for pull requests from forks. It copies the zip onto a public `ci-artifacts` prerelease,
   which is what Playground can download, and writes the button. The action keeps the two most
