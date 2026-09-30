@@ -1,0 +1,6 @@
+significance: patch
+type: fix
+entry: Resolved an issue where a database error while saving a donation, donor,
+  subscription, campaign, or event caused a critical error and hid the real
+  cause
+timestamp: 2026-09-30T17:14:04.100Z

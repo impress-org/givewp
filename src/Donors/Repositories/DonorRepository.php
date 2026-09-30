@@ -111,6 +111,7 @@ class DonorRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 3.20.0 store meta using native WP functions
      * @since 3.7.0 Add support to "phone" property
      * @since 2.24.0 add support for $donor->totalAmountDonated and $donor->totalNumberOfDonation
@@ -174,7 +175,7 @@ class DonorRepository
 
             Log::error('Failed creating a donor', compact('donor'));
 
-            throw new $exception('Failed creating a donor');
+            throw new Exception('Failed creating a donor', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -250,6 +251,7 @@ class DonorRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 2.19.6
      *
      * @throws Exception
@@ -273,7 +275,7 @@ class DonorRepository
 
             Log::error('Failed updating a donor', compact('donorId', 'columns'));
 
-            throw new $exception('Failed updating a donor');
+            throw new Exception('Failed updating a donor', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -283,6 +285,7 @@ class DonorRepository
 
     /**
      *
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 2.21.0 add actions givewp_donor_deleting and givewp_donor_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
@@ -308,7 +311,7 @@ class DonorRepository
 
             Log::error('Failed deleting a donor', compact('donor'));
 
-            throw new $exception('Failed deleting a donor');
+            throw new Exception('Failed deleting a donor', 0, $exception);
         }
 
         DB::query('COMMIT');

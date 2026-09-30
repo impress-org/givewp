@@ -7,6 +7,7 @@ use Give\Donors\Models\Donor;
 use Give\Donors\Repositories\DonorRepository;
 use Give\Donors\ValueObjects\DonorMetaKeys;
 use Give\Framework\Database\DB;
+use Give\Framework\Database\Exceptions\DatabaseQueryException;
 use Give\Framework\Exceptions\Primitives\InvalidArgumentException;
 use Give\Subscriptions\Repositories\SubscriptionRepository;
 use Give\Tests\TestCase;
@@ -127,6 +128,32 @@ class TestDonorRepository extends TestCase
         $repository = new DonorRepository();
 
         $repository->insert($donorMissingFirstName);
+    }
+
+    /**
+     * @since TBD
+     *
+     * @return void
+     */
+    public function testInsertShouldKeepTheDatabaseErrorWhenTheQueryFails()
+    {
+        global $wpdb;
+
+        $donor = Donor::factory()->create();
+
+        $suppressed = $wpdb->suppress_errors(true);
+
+        try {
+            // The donors table has a unique key on email, so this insert is refused.
+            Donor::factory()->create(['email' => $donor->email]);
+
+            $this->fail('A second donor with the same email should not have been created.');
+        } catch (Exception $exception) {
+            $this->assertSame('Failed creating a donor', $exception->getMessage());
+            $this->assertInstanceOf(DatabaseQueryException::class, $exception->getPrevious());
+        } finally {
+            $wpdb->suppress_errors($suppressed);
+        }
     }
 
     /**

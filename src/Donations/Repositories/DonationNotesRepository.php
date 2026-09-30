@@ -44,6 +44,7 @@ class DonationNotesRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 2.21.0
      *
      * @param DonationNote $donationNote
@@ -91,7 +92,7 @@ class DonationNotesRepository
 
             Log::error('Failed creating a donation note', compact('donationNote'));
 
-            throw new $exception('Failed creating a donation note');
+            throw new Exception('Failed creating a donation note', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -103,6 +104,7 @@ class DonationNotesRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 2.21.0
      *
      * @param DonationNote $donationNote
@@ -134,7 +136,7 @@ class DonationNotesRepository
 
             Log::error('Failed updating a donation note', compact('donationNote'));
 
-            throw new $exception('Failed updating a donation note');
+            throw new Exception('Failed updating a donation note', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -143,6 +145,7 @@ class DonationNotesRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 2.21.0
      *
      * @param DonationNote $donationNote
@@ -169,7 +172,7 @@ class DonationNotesRepository
 
             Log::error('Failed deleting a donation note', compact('donationNote'));
 
-            throw new $exception('Failed deleting a donation note');
+            throw new Exception('Failed deleting a donation note', 0, $exception);
         }
 
         DB::query('COMMIT');
