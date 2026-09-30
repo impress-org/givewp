@@ -91,9 +91,6 @@
     },
     "config": {
         "process-timeout": 0,
-        "preferred-install": {
-            "wordpress/wordpress": "dist"
-        },
         "platform": {
             "php": "7.4.0"
         },
@@ -152,8 +149,16 @@
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/wordpress/wordpress-develop.git"
+            "type": "package",
+            "package": {
+                "name": "wordpress/wordpress",
+                "version": "dev-trunk",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/WordPress/wordpress-develop/archive/bb54668189a5fcd58d57eeb4dae8c0922e3aed79.zip",
+                    "reference": "bb54668189a5fcd58d57eeb4dae8c0922e3aed79"
+                }
+            }
         }
     ]
 }

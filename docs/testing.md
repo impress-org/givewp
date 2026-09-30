@@ -24,11 +24,11 @@ hardcodes `wptests_` must use `$wpdb->prefix` instead. `composer test:serial` ru
 one process; use it with `--filter`, which paratest does not support in this mode, and when debugging.
 
 The host run uses WordPress trunk from the `wordpress/wordpress` dev dependency, which is
-`wordpress-develop`. Composer installs it from a zip of the locked commit: the repository is
-declared as `vcs` and the package is set to prefer `dist`, because the alternative is a clone of
-the full history, about a gigabyte, in every CI job. `composer update wordpress/wordpress` asks the
-GitHub API for that zip and needs a token to do it
-(`composer config --global github-oauth.github.com <token>`); `composer install` does not.
+`wordpress-develop`. `composer.json` declares it as an inline package pointing at the zip of one
+commit, because the alternatives cost more than they give: a `git` repository clones the full
+history, about a gigabyte, in every CI job, and a `vcs` one needs a GitHub token for any
+`composer require` or `composer update`. To move to a newer trunk, change the commit hash in both
+places in that package definition and run `composer update wordpress/wordpress`.
 
 ### Running in wp-env
 
