@@ -12,6 +12,12 @@ on:
     pull_request:
         types: [labeled, synchronize]
 
+# One run per pull request at a time. A push while a preview is still building cancels that build,
+# so an older zip can never overwrite a newer button.
+concurrency:
+    group: playground-preview-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+
 jobs:
     zip:
         if: >-
