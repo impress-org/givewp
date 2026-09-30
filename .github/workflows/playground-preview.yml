@@ -81,6 +81,7 @@ jobs:
                             preferredVersions: { php: "8.3", wp: "latest" },
                             features: { networking: true },
                             steps: ([
+                                { step: "defineWpConfigConsts", consts: { WP_DEBUG: true, WP_DEBUG_DISPLAY: true } },
                                 { step: "login", username: "admin" },
                                 { step: "installTheme", themeData: { resource: "wordpress.org/themes", slug: "kadence" }, options: { activate: true } },
                                 { step: "installPlugin", pluginData: { resource: "url", url: $url }, options: { activate: true } }
@@ -98,7 +99,8 @@ jobs:
                     seeded=$(button "$(blueprint true)" "https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" "Open WordPress Playground Preview with sample data")
 
                     marker='<!-- givewp-playground-preview -->'
-                    body=$(printf '%s\n### WordPress Playground Preview\n\nTry this pull request in a throwaway WordPress in your browser. Built from %s.\n\n**Empty site**\n\n%s\n\n**With sample data** (3 campaigns, 100 test-mode donations; takes a few minutes longer to open)\n\n%s\n' "$marker" "$SHA" "$plain" "$seeded")
+                    built=$(date -u '+%Y-%m-%d %H:%M UTC')
+                    body=$(printf '%s\n### WordPress Playground Preview\n\nTry this pull request in a throwaway WordPress in your browser, with debug output on. Built %s from %s, or [download the zip](%s) for a site of your own.\n\n**Empty site**\n\n%s\n\n**With sample data** (3 campaigns, 100 test-mode donations; takes a few minutes longer to open)\n\n%s\n' "$marker" "$built" "$SHA" "$ZIP_URL" "$plain" "$seeded")
 
                     existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
                     if [ -n "$existing" ]; then
