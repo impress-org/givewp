@@ -14,6 +14,16 @@
             "username": "admin"
         },
         {
+            "step": "installTheme",
+            "themeData": {
+                "resource": "wordpress.org/themes",
+                "slug": "kadence"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
             "step": "installPlugin",
             "pluginData": {
                 "resource": "wordpress.org/plugins",

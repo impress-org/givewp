@@ -82,6 +82,7 @@ jobs:
                             features: { networking: true },
                             steps: ([
                                 { step: "login", username: "admin" },
+                                { step: "installTheme", themeData: { resource: "wordpress.org/themes", slug: "kadence" }, options: { activate: true } },
                                 { step: "installPlugin", pluginData: { resource: "url", url: $url }, options: { activate: true } }
                             ] + (if $data then [
                                 { step: "installPlugin", pluginData: { resource: "url", url: $generator }, options: { activate: true } },
