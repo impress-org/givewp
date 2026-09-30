@@ -32,23 +32,6 @@ if (!defined('GIVE_UNIT_TESTS')) {
     define('GIVE_UNIT_TESTS', true);
 }
 
-// TEMPORARY: trace the caller of wp_is_block_theme() on the CI runner. Remove before merge.
-TestHooks::addFilter('doing_it_wrong_run', static function ($function) {
-    if ($function !== 'wp_is_block_theme') {
-        return;
-    }
-
-    fwrite(STDERR, PHP_EOL . 'BLOCK_THEME_TRACE: ' . wp_debug_backtrace_summary() . PHP_EOL);
-    fwrite(STDERR, 'BLOCK_THEME_CONTEXT: ' . json_encode([
-        'theme_directories' => $GLOBALS['wp_theme_directories'] ?? null,
-        'content_dir' => WP_CONTENT_DIR,
-        'theme_root' => get_theme_root(),
-        'theme_root_exists' => file_exists(get_theme_root()),
-        'abspath' => ABSPATH,
-        'doing' => current_filter(),
-    ]) . PHP_EOL);
-});
-
 // load GiveWP
 TestHooks::addFilter('muplugins_loaded', static function () {
     require_once __DIR__ . '/../give.php';
