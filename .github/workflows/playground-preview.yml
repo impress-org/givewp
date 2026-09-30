@@ -1,0 +1,90 @@
+name: Playground Preview
+
+# Adds a "Preview in WordPress Playground" button to a pull request: a throwaway WordPress in the
+# browser with the pull request's build installed. The zip comes from the same shared pup workflow
+# and public bucket the packaging bot uses, so nothing new is hosted anywhere.
+#
+# The build takes several minutes, so it is opt-in: add the "playground" label to a pull request to
+# get a preview, and it is rebuilt on every push for as long as the label stays on. Pull requests
+# from forks are skipped, because they cannot see the bucket credentials.
+
+on:
+    pull_request:
+        types: [labeled, synchronize]
+
+jobs:
+    zip:
+        if: >-
+            !github.event.pull_request.head.repo.fork
+            && contains(github.event.pull_request.labels.*.name, 'playground')
+            && (github.event.action != 'labeled' || github.event.label.name == 'playground')
+        uses: stellarwp/github-actions/.github/workflows/zip.yml@main
+        with:
+            ref: ${{ github.event.pull_request.head.sha }}
+            production: 'no'
+            # GiveWP supports PHP 7.4 and up, so the vendor directory has to be built on 7.4.
+            php_version: '7.4'
+            # A preview needs no translations.
+            i18n: 'no'
+        secrets:
+            GH_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            JENKINS_SECRET: ${{ secrets.SLACK_PACKAGING_SECRET }}
+            S3_BUCKET: ${{ secrets.ZIP_S3_BUCKET }}
+            S3_ACCESS_KEY_ID: ${{ secrets.ZIP_S3_ACCESS_KEY_ID }}
+            S3_SECRET_ACCESS_KEY: ${{ secrets.ZIP_S3_SECRET_ACCESS_KEY }}
+            S3_REGION: ${{ secrets.ZIP_S3_REGION }}
+            S3_ENDPOINT: ${{ secrets.ZIP_S3_ENDPOINT }}
+
+    button:
+        needs: zip
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+
+        # Writes one comment on the pull request and reads the checkout, nothing else.
+        permissions:
+            pull-requests: write
+            contents: read
+
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    ref: ${{ github.event.pull_request.head.sha }}
+                    persist-credentials: false
+
+            # pup names the zip after the version, the commit time and the commit hash, so the
+            # name is asked of pup rather than rebuilt here.
+            -   name: Find the zip
+                id: zip
+                run: |
+                    composer run -q pup -- --version > /dev/null
+                    version=$(php -d display_errors=0 bin/pup.phar get-version --dev)
+                    name=$(php -d display_errors=0 bin/pup.phar zip-name "$version")
+                    echo "url=https://evnt.is/test-zip?file=${name}.zip" >> "$GITHUB_OUTPUT"
+
+            -   name: Post the button
+                env:
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    ZIP_URL: ${{ steps.zip.outputs.url }}
+                    PR: ${{ github.event.pull_request.number }}
+                    SHA: ${{ github.event.pull_request.head.sha }}
+                run: |
+                    blueprint=$(jq -c -n --arg url "$ZIP_URL" '{
+                        landingPage: "/wp-admin/edit.php?post_type=give_forms&page=give-campaigns",
+                        preferredVersions: { php: "8.3", wp: "latest" },
+                        features: { networking: true },
+                        steps: [
+                            { step: "login", username: "admin" },
+                            { step: "installPlugin", pluginData: { resource: "url", url: $url }, options: { activate: true } }
+                        ]
+                    }')
+                    encoded=$(printf '%s' "$blueprint" | jq -s -R -r @uri)
+                    preview="https://playground.wordpress.net/?blueprint-url=data:application/json,${encoded}"
+
+                    marker='<!-- givewp-playground-preview -->'
+                    body=$(printf '%s\n### WordPress Playground Preview\n\nTry this pull request in a throwaway WordPress in your browser. Built from %s.\n\n<a href="%s" target="_blank" rel="noopener noreferrer"><img src="https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" alt="Open WordPress Playground Preview" width="220" height="57" /></a>\n' "$marker" "$SHA" "$preview")
+
+                    existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
+                    if [ -n "$existing" ]; then
+                        gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -f body="$body" > /dev/null
+                    else
+                        gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="$body" > /dev/null
+                    fi
