@@ -1,0 +1,26 @@
+name: Playground Preview - Build
+
+# Builds the plugin zip for the "Preview in WordPress Playground" button on each pull request.
+# This half runs the pull request's own code, so it gets read-only permissions and no secrets.
+# The publish half, playground-preview-publish.yml, runs from develop and does the writing.
+
+on:
+    pull_request:
+        types: [opened, synchronize, reopened]
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        uses: WordPress/action-wp-playground-pr-preview/.github/workflows/preview-build.yml@v4
+        with:
+            # The name on the left is what the publish workflow's blueprint refers to.
+            artifacts: give=give.preview.zip
+            # Composer runs on PHP 7.4 so vendor matches the oldest version GiveWP supports.
+            php-version: '7.4'
+            node-version: '22'
+            # The same pup build the release zip gets, packaged under a fixed name.
+            build-command: |
+                composer run pup -- build
+                composer run pup -- package preview

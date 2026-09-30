@@ -151,6 +151,28 @@ against whatever their wp-env site accumulated. Assert on structure — a root e
 heading, a form field — not on a row count or an empty state, unless the test seeds that state
 itself through `requestUtils.rest()`.
 
+## Playground previews
+
+Every pull request gets a "Preview in WordPress Playground" button in its description: a
+throwaway WordPress in the browser, running the pull request's build, logged in and opened on the
+Campaigns screen. Two workflows make it:
+
+- `playground-preview-build.yml` runs on the pull request with read-only permissions. It builds
+  the zip the way a release is built, `pup build` and `pup package`, and uploads it as a workflow
+  artifact.
+- `playground-preview-publish.yml` runs on `workflow_run` from `develop`, so it has write access
+  even for pull requests from forks. It copies the zip onto a public `ci-artifacts` prerelease,
+  which is what Playground can download, and writes the button. The action keeps the two most
+  recent builds per pull request and removes older ones.
+
+The blueprint in the publish workflow mirrors `.wordpress-org/blueprints/blueprint.json`, which
+gives the WordPress.org plugin page its Live Preview button; the only difference is where the zip
+comes from.
+
+Playground runs on SQLite, not MySQL, with no cron, email or outside payment gateways. The core
+flows work there: the Playwright specs for campaigns, donation forms and the admin screens pass
+against it. It is for looking at a change, not for gateway or database work.
+
 ## Add-on smoke tests in CI
 
 `.github/workflows/tests-e2e.yml` installs the latest GitHub release of each add-on named in its
