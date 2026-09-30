@@ -226,6 +226,31 @@ against whatever their wp-env site accumulated. Assert on structure — a root e
 heading, a form field — not on a row count or an empty state, unless the test seeds that state
 itself through `requestUtils.rest()`.
 
+## Playground previews
+
+Add the `playground` label to a pull request and `.github/workflows/playground-preview.yml` posts
+a "Preview in WordPress Playground" button on it: a throwaway WordPress in the browser, running the
+pull request's build, logged in and opened on the Campaigns screen. The preview is rebuilt on every
+push while the label is on, and the build takes several minutes, which is why it is opt-in.
+
+The zip is the same dev build the packaging bot makes: the shared StellarWP `zip.yml` workflow
+builds it with pup and puts it in the public zip bucket, and the button's blueprint points at that
+file through the same `evnt.is/test-zip` link the bot posts to Slack. Nothing is hosted anywhere
+new, and a branch the bot already packaged is not built twice. Pull requests from forks get no
+preview, because they cannot see the bucket credentials.
+
+The comment carries two buttons. The second one also installs the
+[Give Data Generator](https://github.com/impress-org/give-data-generator) release and runs
+`wp give-data donations 100 --campaigns=3` before opening, with the site switched to test mode so
+the Donations and Donors screens show what it made. It takes a few minutes longer to open.
+
+`.wordpress-org/blueprints/blueprint.json` is the same blueprint pointed at the WordPress.org
+release. It gives the plugin page its Live Preview button.
+
+Playground runs on SQLite, not MySQL, with no cron, email or outside payment gateways. The core
+flows work there: the Playwright specs for campaigns, donation forms and the admin screens pass
+against it. It is for looking at a change, not for gateway or database work.
+
 ## Add-on smoke tests in CI
 
 `.github/workflows/tests-e2e.yml` installs the latest GitHub release of each add-on named in its
