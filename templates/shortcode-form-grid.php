@@ -412,7 +412,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
                                         'give'
                                     ),
                                     esc_attr(wp_json_encode($income_amounts, JSON_PRETTY_PRINT)),
-                                    esc_html( apply_filters('give_form_grid_progress_bar_amount_raised_value', esc_attr($formatted_income), $form_id) ),
+                                    wp_kses_post( apply_filters('give_form_grid_progress_bar_amount_raised_value', esc_attr($formatted_income), $form_id) ),
                                     esc_attr(wp_json_encode($goal_amounts, JSON_PRETTY_PRINT)),
                                     esc_attr($formatted_goal)
                                 ) );
@@ -462,7 +462,7 @@ $renderTags = static function ($wrapper_class, $apply_styles = true) use ($form_
 
                         <div class="form-grid-raised__details">
                             <span class="amount form-grid-raised__details_donations">
-                                <?php echo esc_html( apply_filters('give_form_grid_progress_bar_donations_count_value', $form->get_sales(), $form_id) ) ?>
+                                <?php echo wp_kses_post( apply_filters('give_form_grid_progress_bar_donations_count_value', $form->get_sales(), $form_id) ) ?>
                             </span>
                             <span class="goal">
                                 <?php
