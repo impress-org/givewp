@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3564085369992ab8d213c4ce1520596",
+    "content-hash": "50c3235a0178fae35d1accb12a0a76ba",
     "packages": [
         {
             "name": "composer/installers",
@@ -775,16 +775,16 @@
         },
         {
             "name": "stellarwp/field-conditions",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stellarwp/field-conditions.git",
-                "reference": "03f5aff2f4977359e672efe5426bbb4ef62101cd"
+                "reference": "9650a5154d46adf4f25b79f3d60b9ef863402f3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stellarwp/field-conditions/zipball/03f5aff2f4977359e672efe5426bbb4ef62101cd",
-                "reference": "03f5aff2f4977359e672efe5426bbb4ef62101cd",
+                "url": "https://api.github.com/repos/stellarwp/field-conditions/zipball/9650a5154d46adf4f25b79f3d60b9ef863402f3f",
+                "reference": "9650a5154d46adf4f25b79f3d60b9ef863402f3f",
                 "shasum": ""
             },
             "require": {
@@ -819,9 +819,9 @@
             "description": "A set of serializable classes for handling conditional logic for fields in PHP",
             "support": {
                 "issues": "https://github.com/stellarwp/field-conditions/issues",
-                "source": "https://github.com/stellarwp/field-conditions/tree/1.1.1"
+                "source": "https://github.com/stellarwp/field-conditions/tree/1.1.2"
             },
-            "time": "2023-04-01T00:38:22+00:00"
+            "time": "2026-09-30T16:57:40+00:00"
         },
         {
             "name": "stellarwp/harbor",
