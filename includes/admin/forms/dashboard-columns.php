@@ -82,7 +82,7 @@ function give_render_form_columns( $column_name, $post_id ) {
 				if ( give_has_variable_prices( $post_id ) ) {
 					echo wp_kses_post( give_price_range( $post_id ) );
 				} else {
-					echo esc_html( give_price( $post_id, false ) );
+					echo give_price( $post_id, false ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- give_price() already wp_kses_post()s its own return value; esc_html() here double-processed it and stripped the surviving <span> tags.
 					printf( '<input type="hidden" class="formprice-%1$s" value="%2$s" />', esc_attr( $post_id ), esc_attr( give_get_form_price( $post_id ) ) );
 				}
 				break;
