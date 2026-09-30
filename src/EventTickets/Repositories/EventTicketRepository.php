@@ -60,6 +60,7 @@ class EventTicketRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 4.16.8.1 Enforce the ticket type's remaining capacity atomically with the insert (locking the ticket type row and re-counting under that lock), closing a race that let concurrent purchases jointly oversell it.
      * @since 3.20.0 Add "amount" column to the insert statement
      * @since 3.6.0
@@ -103,7 +104,7 @@ class EventTicketRepository
 
             Log::error('Failed creating an event ticket', compact('eventTicket'));
 
-            throw new $exception('Failed creating an event ticket');
+            throw new Exception('Failed creating an event ticket', 0, $exception);
         }
 
         $eventTicket->id = $eventTicketId;
@@ -149,6 +150,7 @@ class EventTicketRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 3.20.0 Add "amount" column to the update statement
      * @since 3.6.0
      *
@@ -184,7 +186,7 @@ class EventTicketRepository
 
             Log::error('Failed updating an event ticket', compact('eventTicket'));
 
-            throw new $exception('Failed updating an event ticket');
+            throw new Exception('Failed updating an event ticket', 0, $exception);
         }
 
         $eventTicket->updatedAt = $updatedDateTime;
@@ -195,6 +197,7 @@ class EventTicketRepository
     }
 
     /**
+     * @since TBD Keep the original error as the previous exception when the write fails.
      * @since 3.6.0
      *
      * @throws Exception
@@ -218,7 +221,7 @@ class EventTicketRepository
 
             Log::error('Failed deleting an event ticket', compact('eventTicket'));
 
-            throw new $exception('Failed deleting an event ticket');
+            throw new Exception('Failed deleting an event ticket', 0, $exception);
         }
 
         DB::query('COMMIT');
