@@ -25,6 +25,8 @@ jobs:
             contents: read
 
         strategy:
+            # One failing combination says nothing about the others, so let them all finish.
+            fail-fast: false
             matrix:
                 php: [7.4, 8.4]
                 mysql: [ 'mysql:5.7', 'mysql:8.0' ]
@@ -153,6 +155,8 @@ jobs:
             contents: read
 
         strategy:
+            # One failing combination says nothing about the others, so let them all finish.
+            fail-fast: false
             matrix:
                 php: [7.4, 8.4]
                 # `minimum` is the "Requires at least" line of readme.txt, so the oldest version
