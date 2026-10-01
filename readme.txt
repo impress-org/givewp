@@ -5,7 +5,7 @@ Tags: donation, donate, recurring donations, fundraising, crowdfunding
 Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 4.17.0
+Stable tag: 4.18.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -273,6 +273,25 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 10. Use almost any payment gateway integration with GiveWP through our add-ons or by creating your own add-on.
 
 == Changelog ==
+= 4.18.0: October 1st, 2026 =
+* Enhancement: Improved donations list table performance on sites with hundreds of thousands of donations by paging on IDs first, fixing the total count query, and replacing the single-column donation meta indexes with composite ones
+* Enhancement: Improved the Reports screen and legacy earnings stats on large sites by summing and counting donations in the database instead of loading every donation into memory
+* Enhancement: Improved donation processing speed by skipping unnecessary offline donation email checks
+* Fix: Recurring donation stats on the campaigns list now read from the cache correctly instead of showing empty values
+* Fix: Campaign stats now show for campaigns that were added after the stats cache was built
+* Fix: Resolved an issue where campaign stats showed as zero after viewing the Campaigns screen with test mode enabled
+* Fix: Donations list table was running extremely slowly and including trashed donations on large sites.
+* Fix: Resolved an issue where a database error while saving a donation, donor, subscription, campaign, or event caused a critical error and hid the real cause
+* Fix: Resolved an issue where sites running PHP 8.4 or newer logged deprecation notices from GiveWP
+* Fix: Database migrations started a second time in requests that arrive while a slow migration is still running. Now it runs one time and the migrations list now shows the latest run first.
+* Fix: Resolved an issue where a PHP warning could appear on development copies of GiveWP that have not been built
+* Fix: Resolved an issue where subscription webhook events caused a fatal error when the subscription had no initial donation
+* Fix: Updated campaign duplication to create a single copy of each associated form when form metadata contains duplicate keys.
+* Fix: Restored donor names, initials, and totals on the donor wall block and shortcode.
+* Security: Enhanced security in Stripe webhook module
+* Security: Enhanced security on the campaign block. (CVE-2026-97643)
+* Security: Enhanced security for the Donor Dashboard access.
+
 = 4.17.0: September 23rd, 2026 =
 * Feature: Added the ability to embed donation forms on any website with a copy-paste snippet from the form builder
 * Enhancement: Donation form embeds now show a loading state while the form loads

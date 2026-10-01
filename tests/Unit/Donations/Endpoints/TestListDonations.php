@@ -8,8 +8,11 @@ use Give\Campaigns\Models\Campaign;
 use Give\Donations\Endpoints\ListDonations;
 use Give\Donations\ListTable\DonationsListTable;
 use Give\Donations\Models\Donation;
+use Give\Donations\ValueObjects\DonationMode;
 use Give\Donations\ValueObjects\DonationStatus;
 use Give\Framework\Database\DB;
+use Give\Framework\ListTable\ModelColumn;
+use Give\Framework\Support\ValueObjects\Money;
 use Give\Subscriptions\Models\Subscription;
 use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
@@ -333,6 +336,242 @@ class TestListDonations extends TestCase
         }
 
         return Subscription::factory()->createWithDonation([], $donationData);
+    }
+
+    /**
+     * The live-mode filter is an OR expression; ungrouped it overrode every other WHERE clause
+     * and let trash donations through.
+     *
+     * @since 4.18.0
+     */
+    public function testLiveModeListingExcludesTrashAndTestDonations()
+    {
+        $campaign = Campaign::factory()->create();
+        $live = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::LIVE(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::LIVE(),
+            'status' => DonationStatus::TRASH(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::TEST(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', false);
+
+        $response = give(ListDonations::class)->handleRequest($mockRequest);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($live->id, $response->data['items'][0]['id']);
+        $this->assertEquals(1, $response->data['totalItems']);
+    }
+
+    /**
+     * Name search is an OR over first and last name; ungrouped it leaked rows excluded by status.
+     *
+     * @since 4.18.0
+     */
+    public function testNameSearchRespectsOtherFilters()
+    {
+        $campaign = Campaign::factory()->create();
+        $match = Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'firstName' => 'Zedrick',
+            'lastName' => 'Alpha',
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'firstName' => 'Beta',
+            'lastName' => 'Zedrick',
+            'status' => DonationStatus::TRASH(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaign->id,
+            'firstName' => 'Gamma',
+            'lastName' => 'Delta',
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        $mockRequest = $this->getMockRequest();
+        $mockRequest->set_param('page', 1);
+        $mockRequest->set_param('perPage', 30);
+        $mockRequest->set_param('locale', 'en-US');
+        $mockRequest->set_param('testMode', true);
+        $mockRequest->set_param('search', 'Zedrick');
+
+        $response = give(ListDonations::class)->handleRequest($mockRequest);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($match->id, $response->data['items'][0]['id']);
+    }
+
+    /**
+     * @since 4.18.0
+     */
+    public function testTotalItemsCountsEveryMatchingDonation()
+    {
+        $campaign = Campaign::factory()->create();
+        Donation::factory()->count(3)->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::LIVE(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        Donation::factory()->count(2)->create([
+            'campaignId' => $campaign->id,
+            'mode' => DonationMode::TEST(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        $live = $this->getMockRequest();
+        $live->set_param('page', 1);
+        $live->set_param('perPage', 30);
+        $live->set_param('locale', 'en-US');
+        $live->set_param('testMode', false);
+
+        $test = $this->getMockRequest();
+        $test->set_param('page', 1);
+        $test->set_param('perPage', 30);
+        $test->set_param('locale', 'en-US');
+        $test->set_param('testMode', true);
+
+        $this->assertEquals(3, give(ListDonations::class)->handleRequest($live)->data['totalItems']);
+        $this->assertEquals(2, give(ListDonations::class)->handleRequest($test)->data['totalItems']);
+    }
+
+    /**
+     * Sorting by a meta-backed column must survive the ID-first pagination.
+     *
+     * @since 4.18.0
+     */
+    public function testSortsByAmountAcrossPages()
+    {
+        $campaign = Campaign::factory()->create();
+        $byAmount = [];
+        foreach ([500, 100, 900, 300, 700] as $cents) {
+            $byAmount[$cents] = Donation::factory()->create([
+                'campaignId' => $campaign->id,
+                'mode' => DonationMode::TEST(),
+                'amount' => new Money($cents, 'USD'),
+            ])->id;
+        }
+        krsort($byAmount);
+
+        $ids = [];
+        foreach ([1, 2, 3] as $page) {
+            $request = $this->getMockRequest();
+            $request->set_param('page', $page);
+            $request->set_param('perPage', 2);
+            $request->set_param('locale', 'en-US');
+            $request->set_param('testMode', true);
+            $request->set_param('sortColumn', 'amount');
+            $request->set_param('sortDirection', 'desc');
+
+            $response = give(ListDonations::class)->handleRequest($request);
+            foreach ($response->data['items'] as $item) {
+                $ids[] = (int)$item['id'];
+            }
+        }
+
+        $this->assertSame(array_values($byAmount), $ids);
+    }
+
+    /**
+     * Add-ons register sortable columns through givewp_donations_list_table, so any donation meta
+     * key has to be sortable, not only the ones core columns use.
+     *
+     * @since 4.18.0
+     */
+    public function testSortsByAddOnColumnOnAnyMetaKey()
+    {
+        $listTable = give(DonationsListTable::class);
+        $listTable->addColumn(new class extends ModelColumn {
+            protected $sortColumn = 'company';
+
+            public static function getId(): string
+            {
+                return 'company';
+            }
+
+            public function getLabel(): string
+            {
+                return 'Company';
+            }
+
+            public function getCellValue($model): string
+            {
+                return (string)$model->company;
+            }
+        });
+
+        $expected = [];
+        foreach (['Zebra', 'Apple', 'Mango'] as $company) {
+            $expected[$company] = Donation::factory()->create([
+                'mode' => DonationMode::TEST(),
+                'company' => $company,
+            ])->id;
+        }
+        ksort($expected);
+
+        $request = $this->getMockRequest();
+        $request->set_param('page', 1);
+        $request->set_param('perPage', 10);
+        $request->set_param('locale', 'en-US');
+        $request->set_param('testMode', true);
+        $request->set_param('sortColumn', 'company');
+        $request->set_param('sortDirection', 'asc');
+
+        $response = (new ListDonations($listTable))->handleRequest($request);
+        $listTable->removeColumn('company');
+
+        $this->assertSame(array_values($expected), array_map('intval', array_column($response->data['items'], 'id')));
+    }
+
+    /**
+     * @since 4.18.0
+     */
+    public function testFiltersByCampaignWithTestModeOff()
+    {
+        $campaignA = Campaign::factory()->create();
+        $campaignB = Campaign::factory()->create();
+        $wanted = Donation::factory()->create([
+            'campaignId' => $campaignA->id,
+            'mode' => DonationMode::LIVE(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaignB->id,
+            'mode' => DonationMode::LIVE(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+        Donation::factory()->create([
+            'campaignId' => $campaignA->id,
+            'mode' => DonationMode::TEST(),
+            'status' => DonationStatus::COMPLETE(),
+        ]);
+
+        $request = $this->getMockRequest();
+        $request->set_param('page', 1);
+        $request->set_param('perPage', 30);
+        $request->set_param('locale', 'en-US');
+        $request->set_param('testMode', false);
+        $request->set_param('campaignId', $campaignA->id);
+
+        $response = give(ListDonations::class)->handleRequest($request);
+
+        $this->assertCount(1, $response->data['items']);
+        $this->assertEquals($wanted->id, $response->data['items'][0]['id']);
+        $this->assertEquals(1, $response->data['totalItems']);
     }
 
     /**

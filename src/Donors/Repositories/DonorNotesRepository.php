@@ -39,6 +39,7 @@ class DonorNotesRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.4.0
      *
      * @throws Exception
@@ -84,7 +85,7 @@ class DonorNotesRepository
 
             Log::error('Failed creating a donor note', compact('donorNote'));
 
-            throw new $exception('Failed creating a donor note');
+            throw new Exception('Failed creating a donor note', 0, $exception);
         }
 
         DB::commit();
@@ -96,6 +97,7 @@ class DonorNotesRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.4.0
      *
      * @throws Exception
@@ -124,7 +126,7 @@ class DonorNotesRepository
 
             Log::error('Failed updating a donor note', compact('donorNote'));
 
-            throw new $exception('Failed updating a donor note');
+            throw new Exception('Failed updating a donor note', 0, $exception);
         }
 
         DB::commit();
@@ -133,6 +135,7 @@ class DonorNotesRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.4.0
      *
      * @throws Exception
@@ -156,7 +159,7 @@ class DonorNotesRepository
 
             Log::error('Failed deleting a donor note', compact('donorNote'));
 
-            throw new $exception('Failed deleting a donor note');
+            throw new Exception('Failed deleting a donor note', 0, $exception);
         }
 
         DB::commit();

@@ -78,6 +78,7 @@ class CampaignRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
@@ -126,7 +127,7 @@ class CampaignRepository
 
             Log::error('Failed creating a campaign', compact('campaign'));
 
-            throw new $exception('Failed creating a campaign');
+            throw new Exception('Failed creating a campaign', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -139,6 +140,7 @@ class CampaignRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
@@ -178,7 +180,7 @@ class CampaignRepository
 
             Log::error('Failed updating a campaign', compact('campaign'));
 
-            throw new $exception('Failed updating a campaign');
+            throw new Exception('Failed updating a campaign', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -187,6 +189,7 @@ class CampaignRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -218,7 +221,7 @@ class CampaignRepository
 
             Log::error('Failed creating a campaign form relationship', compact('campaign'));
 
-            throw new $exception('Failed creating a campaign form relationship');
+            throw new Exception('Failed creating a campaign form relationship', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -227,6 +230,7 @@ class CampaignRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -250,7 +254,7 @@ class CampaignRepository
 
             Log::error('Failed updating the campaign default form', compact('campaign'));
 
-            throw new $exception('Failed updating the campaign default form');
+            throw new Exception('Failed updating the campaign default form', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -259,6 +263,7 @@ class CampaignRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -279,7 +284,7 @@ class CampaignRepository
 
             Log::error('Failed deleting a campaign', compact('campaign'));
 
-            throw new $exception('Failed deleting a campaign');
+            throw new Exception('Failed deleting a campaign', 0, $exception);
         }
 
         DB::query('COMMIT');
@@ -290,6 +295,7 @@ class CampaignRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -345,7 +351,7 @@ class CampaignRepository
                 'destinationCampaign' => compact('destinationCampaign'),
             ]);
 
-            throw new $exception('Failed merging campaigns into destination campaign');
+            throw new Exception('Failed merging campaigns into destination campaign', 0, $exception);
         }
 
         DB::query('COMMIT');

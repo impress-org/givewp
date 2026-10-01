@@ -47,6 +47,7 @@ class EventRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
@@ -81,7 +82,7 @@ class EventRepository
 
             Log::error('Failed creating an event', compact('event'));
 
-            throw new $exception('Failed creating an event');
+            throw new Exception('Failed creating an event', 0, $exception);
         }
 
         $event->id = $eventId;
@@ -94,6 +95,7 @@ class EventRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.6.0
      *
      * @throws Exception|InvalidArgumentException
@@ -126,7 +128,7 @@ class EventRepository
 
             Log::error('Failed updating an event', compact('event'));
 
-            throw new $exception('Failed updating an event');
+            throw new Exception('Failed updating an event', 0, $exception);
         }
 
         $event->updatedAt = $updatedDateTime;
@@ -137,6 +139,7 @@ class EventRepository
     }
 
     /**
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 3.6.0
      *
      * @throws Exception
@@ -156,7 +159,7 @@ class EventRepository
 
             Log::error('Failed deleting an event', compact('event'));
 
-            throw new $exception('Failed deleting an event');
+            throw new Exception('Failed deleting an event', 0, $exception);
         }
 
         DB::query('COMMIT');

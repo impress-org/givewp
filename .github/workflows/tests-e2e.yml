@@ -19,6 +19,11 @@ jobs:
         permissions:
             contents: read
 
+        env:
+            # Add-ons whose latest GitHub release is installed next to core before the suite runs.
+            # Comma-separated repository names under impress-org; each release carries <slug>.zip.
+            ADDONS: give-peer-to-peer
+
         steps:
             -   uses: actions/checkout@v7
                 with:
@@ -60,6 +65,46 @@ jobs:
             # The admin screens under test are React apps served from build/, which is gitignored.
             -   name: Build assets
                 run: npm run build
+
+            # The add-on repositories are private and GITHUB_TOKEN only reads this one, so an
+            # installation token from the GitHub App named in the secrets reads their releases.
+            # The token is cut down to the add-on repositories and to reading their contents,
+            # whatever the App's installation covers, so a workflow edit on a branch cannot borrow
+            # it for anything else. Only pull requests from forks skip this, because they have no
+            # secrets; anywhere else a missing secret fails the run rather than quietly testing
+            # core alone.
+            -   name: Create a token that can read the add-on releases
+                id: addons-token
+                if: github.event_name != 'pull_request' || !github.event.pull_request.head.repo.fork
+                uses: actions/create-github-app-token@v2
+                with:
+                    app-id: ${{ secrets.ADDONS_APP_ID }}
+                    private-key: ${{ secrets.ADDONS_APP_PRIVATE_KEY }}
+                    owner: impress-org
+                    repositories: ${{ env.ADDONS }}
+                    permission-contents: read
+
+            # The release zip is what customers install: vendor/ and compiled assets included,
+            # wrapped in a <slug>/ directory, so it unzips straight into a plugins directory.
+            # .wp-env.override.json outranks .wp-env.json, and wp-env activates every plugin it
+            # names. WP_DEBUG_DISPLAY goes off because an add-on's PHP deprecation notice printed
+            # into a REST response breaks its JSON and with it every spec, which is not the
+            # compatibility signal this run is after. E2E_ADDONS tells the specs which add-ons to
+            # expect active.
+            -   name: Install the latest add-on releases
+                if: steps.addons-token.outputs.token != ''
+                env:
+                    GH_TOKEN: ${{ steps.addons-token.outputs.token }}
+                run: |
+                    mkdir -p addons
+                    plugins='"."'
+                    for slug in ${ADDONS//,/ }; do
+                        gh release download --repo "impress-org/$slug" --pattern "$slug.zip" --dir addons
+                        unzip -q "addons/$slug.zip" -d addons
+                        plugins="$plugins, \"./addons/$slug\""
+                    done
+                    echo "{\"plugins\": [$plugins], \"config\": {\"WP_DEBUG_DISPLAY\": false}}" > .wp-env.override.json
+                    echo "E2E_ADDONS=${ADDONS//,/ }" >> "$GITHUB_ENV"
 
             -   name: Start WordPress environment
                 run: npx wp-env start

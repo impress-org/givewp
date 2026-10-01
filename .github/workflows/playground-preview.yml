@@ -1,0 +1,110 @@
+name: Playground Preview
+
+# Adds a "Preview in WordPress Playground" button to a pull request: a throwaway WordPress in the
+# browser with the pull request's build installed. The zip comes from the same shared pup workflow
+# and public bucket the packaging bot uses, so nothing new is hosted anywhere.
+#
+# The build takes several minutes, so it is opt-in: add the "playground" label to a pull request to
+# get a preview, and it is rebuilt on every push for as long as the label stays on. Pull requests
+# from forks are skipped, because they cannot see the bucket credentials.
+
+on:
+    pull_request:
+        types: [labeled, synchronize]
+
+# One run per pull request at a time. A push while a preview is still building cancels that build,
+# so an older zip can never overwrite a newer button.
+concurrency:
+    group: playground-preview-${{ github.event.pull_request.number }}
+    cancel-in-progress: true
+
+jobs:
+    zip:
+        if: >-
+            !github.event.pull_request.head.repo.fork
+            && contains(github.event.pull_request.labels.*.name, 'playground')
+            && (github.event.action != 'labeled' || github.event.label.name == 'playground')
+        uses: stellarwp/github-actions/.github/workflows/zip.yml@main
+        with:
+            ref: ${{ github.event.pull_request.head.sha }}
+            production: 'no'
+            # GiveWP supports PHP 7.4 and up, so the vendor directory has to be built on 7.4.
+            php_version: '7.4'
+            # A preview needs no translations.
+            i18n: 'no'
+        secrets:
+            GH_BOT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            JENKINS_SECRET: ${{ secrets.SLACK_PACKAGING_SECRET }}
+            S3_BUCKET: ${{ secrets.ZIP_S3_BUCKET }}
+            S3_ACCESS_KEY_ID: ${{ secrets.ZIP_S3_ACCESS_KEY_ID }}
+            S3_SECRET_ACCESS_KEY: ${{ secrets.ZIP_S3_SECRET_ACCESS_KEY }}
+            S3_REGION: ${{ secrets.ZIP_S3_REGION }}
+            S3_ENDPOINT: ${{ secrets.ZIP_S3_ENDPOINT }}
+
+    button:
+        needs: zip
+        runs-on: blacksmith-4vcpu-ubuntu-2404
+
+        # Writes one comment on the pull request and reads the checkout, nothing else.
+        permissions:
+            pull-requests: write
+            contents: read
+
+        steps:
+            -   uses: actions/checkout@v7
+                with:
+                    ref: ${{ github.event.pull_request.head.sha }}
+                    persist-credentials: false
+
+            # pup names the zip after the version, the commit time and the commit hash, so the
+            # name is asked of pup rather than rebuilt here.
+            -   name: Find the zip
+                id: zip
+                run: |
+                    composer run -q pup -- --version > /dev/null
+                    version=$(php -d display_errors=0 bin/pup.phar get-version --dev)
+                    name=$(php -d display_errors=0 bin/pup.phar zip-name "$version")
+                    echo "url=https://evnt.is/test-zip?file=${name}.zip" >> "$GITHUB_OUTPUT"
+
+            -   name: Post the buttons
+                env:
+                    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    ZIP_URL: ${{ steps.zip.outputs.url }}
+                    PR: ${{ github.event.pull_request.number }}
+                    SHA: ${{ github.event.pull_request.head.sha }}
+                    # The Give Data Generator release used by the "with sample data" preview.
+                    GENERATOR_URL: https://github.com/impress-org/give-data-generator/releases/download/1.1.0/give-data-generator.1.1.0.zip
+                run: |
+                    blueprint() {
+                        jq -c -n --arg url "$ZIP_URL" --arg generator "$GENERATOR_URL" --argjson data "$1" '{
+                            landingPage: "/wp-admin/edit.php?post_type=give_forms&page=give-campaigns",
+                            preferredVersions: { php: "8.3", wp: "latest" },
+                            features: { networking: true },
+                            steps: ([
+                                { step: "defineWpConfigConsts", consts: { WP_DEBUG: true, WP_DEBUG_DISPLAY: true } },
+                                { step: "login", username: "admin" },
+                                { step: "installTheme", themeData: { resource: "wordpress.org/themes", slug: "kadence" }, options: { activate: true } },
+                                { step: "installPlugin", pluginData: { resource: "url", url: $url }, options: { activate: true } }
+                            ] + (if $data then [
+                                { step: "installPlugin", pluginData: { resource: "url", url: $generator }, options: { activate: true } },
+                                { step: "wp-cli", command: "wp eval '"'"'give_update_option(\"test_mode\", \"enabled\");'"'"'" },
+                                { step: "wp-cli", command: "wp give-data donations 100 --campaigns=3" }
+                            ] else [] end))
+                        }' | jq -s -R -r @uri
+                    }
+                    button() {
+                        printf '<a href="https://playground.wordpress.net/?blueprint-url=data:application/json,%s" target="_blank" rel="noopener noreferrer"><img src="%s" alt="%s" width="220" height="57" /></a>' "$1" "$2" "$3"
+                    }
+                    plain=$(button "$(blueprint false)" "https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" "Open WordPress Playground Preview")
+                    seeded=$(button "$(blueprint true)" "https://raw.githubusercontent.com/adamziel/playground-preview/refs/heads/trunk/assets/playground-preview-button.svg" "Open WordPress Playground Preview with sample data")
+
+                    marker='<!-- givewp-playground-preview -->'
+                    built=$(date -u '+%Y-%m-%d %H:%M UTC')
+                    body=$(printf '%s\n### WordPress Playground Preview\n\nTry this pull request in a throwaway WordPress in your browser, with debug output on. Built %s from %s, or [download the zip](%s) for a site of your own.\n\n**Empty site**\n\n%s\n\n**With sample data** (3 campaigns, 100 test-mode donations; takes a few minutes longer to open)\n\n%s\n' "$marker" "$built" "$SHA" "$ZIP_URL" "$plain" "$seeded")
+
+                    existing=$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --paginate --jq ".[] | select(.body | startswith(\"$marker\")) | .id" | head -n 1)
+                    if [ -n "$existing" ]; then
+                        gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$existing" -f body="$body" > /dev/null
+                    else
+                        gh api -X POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="$body" > /dev/null
+                    fi

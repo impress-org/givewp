@@ -115,10 +115,21 @@ Scheduler queue, campaign stats simply stop updating, and nothing surfaces that 
 
 Things to know before touching this:
 
-- **The cache is authoritative once warm.** `campaigns()` computes which ids are *not* cached, but
-  then, if the cache holds any data at all, returns early with only what's cached — the uncached
-  ids are never fetched on that path. Stats for a campaign missing from the cache come from
-  `CacheCampaignData` running later, not from a read-time fallback.
+- **Read-through for missing campaigns.** `campaigns()` serves cached ids from the options and
+  queries only the ids that are missing, then writes them into the cache. A campaign with no
+  donations gets a zero row so it counts as cached and is not re-queried on every page load.
+  Before this, a warm cache returned early and a campaign absent from it showed no stats until
+  `CacheCampaignData` ran for it.
+- **The cache is live-mode only.** `CampaignsDataQuery` filters by `give_is_test_mode()` but the
+  options carry no mode, so a test-mode write would poison the live figures. In test mode
+  `campaigns()` queries every id directly and writes nothing. `CacheCampaignData` and the
+  `CacheCampaignsData` migration force live mode through the `give_is_test_mode` filter while they
+  run, so a refresh queued by a live donation still lands even if test mode was switched on before
+  Action Scheduler picked it up.
+- **Both readers and all writers use `give_campaigns_subscriptions_data`.** Until the fix, the two
+  readers used a singular key, so the subscriptions cache never hit. The
+  `Campaigns/Migrations/FlushCampaignsDataCache` migration drops both options once so no site
+  starts reading data written while the keys disagreed.
 - **The options are written with a plain `update_option()`**, no explicit `$autoload`. The plugin
   requires WP 6.6+, where WordPress applies its own autoload heuristic and keeps large values out,
   but a modest-sized value on a many-campaign site can still be autoloaded on every request. Check
@@ -163,7 +174,7 @@ forms list usually ends with one of these being set.
 
 `FormGrid/` applies the same treatment to the front-end form grid shortcode.
 
-## Pagination cost
+## Pagination cost, and the donations list pattern
 
 `List*` endpoints run two queries per page: the page of models (`limit`/`offset`) and a separate
 `count()` for the total (`ListDonations::getTotalDonationsCount()`). On a large donations table
@@ -173,6 +184,40 @@ view, including page 400.
 If you add a filter, add it to *both* `getDonations()` and `getTotalDonationsCount()` — they build
 their conditions through the shared `getWhereConditions()`, and bypassing it makes the total
 disagree with the rows.
+
+**Do not page the fully joined model query.** `DonationRepository::prepareQuery()` LEFT JOINs
+`give_donationmeta` once per model property (about 30 joins). Applying `ORDER BY ... LIMIT ...
+OFFSET` to that makes the database build the whole joined set before it can skip rows: at a
+million donations that was two minutes for page one and longer for the last page. The donations
+endpoint instead does what `WP_Query` always did for the legacy screen:
+
+1. Select the page of IDs from `posts` with only the meta the filters and the sort expression
+   need attached (`getWhereConditions()` returns those dependencies; `getSortDependencies()` adds
+   the sort's).
+2. Hydrate those IDs through `prepareQuery()->whereIn('ID', $ids)` and re-apply the sort.
+
+Two rules that fall out of the same profiling, and apply to any endpoint that filters on meta:
+
+- **Filter on meta through an indexed subquery, not a joined column with an `OR`.** Test mode is
+  `ID NOT IN (SELECT donation_id FROM give_donationmeta WHERE meta_key = '_give_payment_mode' AND
+  meta_value = 'test')`, and name or email search is `ID IN (... WHERE meta_key IN (first, last)
+  AND meta_value LIKE 'term%')`. A `LEFT JOIN ... WHERE meta IS NULL OR meta <> 'test'`, or a
+  `HAVING` on a joined column, forces the full join to materialise first. And group any `OR` you
+  do write with a closure `where(function ($q) { ... })`: an ungrouped `orWhere()` binds looser
+  than the preceding `AND`s and silently drops them, which is how trashed donations once leaked
+  into the live list.
+- **Search is prefix match.** `LIKE 'term%'` walks the `(meta_key(100), meta_value(82))` index;
+  `LIKE '%term%'` scans every row for that key. Typing "smi" finds Smith; "mit" does not.
+
+`give_donationmeta` carries two composite indexes for this, `(donation_id, meta_key(100))` for the
+per-property joins and `(meta_key(100), meta_value(82))` for value lookups, added by
+`Donations/Migrations/AddIndexesToDonationMetaTable`, which also drops the single-column
+`donation_id` and `meta_key` indexes they make redundant. The same indexes are what let
+`CampaignsDataQuery`, `CampaignDonationQuery`, and `DonorStatisticsQuery` answer in milliseconds
+at a million rows without code changes. They do nothing for `ORDER BY` on a meta value or an
+expression over several (sorting the list by amount is still a full scan), and nothing for
+aggregates that must touch every row; those remain the case for moving donations into their own
+table.
 
 ## Checklist for a new column
 
