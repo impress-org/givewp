@@ -11,6 +11,7 @@
 
 // Exit if accessed directly.
 use Give\Log\Log;
+use Give\VendorOverrides\Harbor\Actions\GetFeatureSlugByPluginDirname;
 use Give\Vendors\StellarWP\AdminNotices\AdminNotices;
 
 if ( ! defined('ABSPATH') ) {
@@ -578,6 +579,7 @@ if ( ! class_exists('Give_License') ) :
 		 *
 		 * @return array
 		 *
+		 * @since TBD look up Harbor features by catalog slug instead of plugin dirname
          * @since 4.15.0 add support for Harbor unified licenses
 		 * @since  2.5.0
 		 * @access public
@@ -607,7 +609,7 @@ if ( ! class_exists('Give_License') ) :
 			}
 
 			// Fall back to Harbor feature availability when no legacy license is found.
-			if ( empty( $license ) && lw_harbor_is_feature_available( $plugin_dirname ) ) {
+			if ( empty( $license ) && lw_harbor_is_feature_available( give( GetFeatureSlugByPluginDirname::class )( $plugin_dirname ) ) ) {
 				$license = [ 'license' => 'valid' ];
 			}
 
