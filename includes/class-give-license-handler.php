@@ -699,6 +699,7 @@ if ( ! class_exists('Give_License') ) :
 		 * Render license section
 		 *
 		 * @return string
+		 * @since TBD list add-ons covered by a Liquid Web license without a legacy license key
 		 * @since 2.5.0
 		 */
 		public static function render_licenses_list() {
@@ -739,7 +740,10 @@ if ( ! class_exists('Give_License') ) :
 
 					if ( $addon_license ) {
 						$html_arr_key = 'licensed';
-						unset( $licenses_without_addon[ $addon_license['license_key'] ] );
+
+						if ( ! empty( $addon_license['license_key'] ) ) {
+							unset( $licenses_without_addon[ $addon_license['license_key'] ] );
+						}
 					}
 
 					$html[ "{$html_arr_key}" ] .= self::html_by_plugin( $give_plugin );
@@ -775,6 +779,7 @@ if ( ! class_exists('Give_License') ) :
 		 * @param $plugin
 		 *
 		 * @return string
+		 * @since TBD show add-ons covered by a Liquid Web license as licensed
 		 * @since 2.5.0
 		 */
 		public static function html_by_plugin( $plugin ) {
@@ -786,6 +791,9 @@ if ( ! class_exists('Give_License') ) :
 			ob_start();
 			$license = self::get_license_by_plugin_dirname( $plugin['Dir'] );
 
+			// A license without a key comes from a Liquid Web license rather than a legacy GiveWP one.
+			$is_covered_by_harbor = $license && empty( $license['license_key'] );
+
 			$default_plugin = [
 				'ChangeLogSlug' => $plugin['Dir'],
 				'DownloadURL'   => '',
@@ -796,7 +804,7 @@ if ( ! class_exists('Give_License') ) :
 				$default_plugin['ChangeLogSlug'] = str_replace( '-gateway', '', $default_plugin['ChangeLogSlug'] );
 			}
 
-			if ( $license ) {
+			if ( $license && ! $is_covered_by_harbor ) {
 				$license['renew_url']            = self::$checkout_url . "?edd_license_key={$license['license_key']}";
 				$default_plugin['ChangeLogSlug'] = $license['readme'];
 				$default_plugin['DownloadURL']   = $license['download'];
@@ -814,13 +822,30 @@ if ( ! class_exists('Give_License') ) :
 			?>
 			<div class="give-addon-wrap">
 				<div class="give-addon-inner">
-					<?php echo self::html_license_row( $license, $plugin ); ?>
+					<?php echo $is_covered_by_harbor ? self::html_harbor_license_row() : self::html_license_row( $license, $plugin ); ?>
 					<?php echo self::html_plugin_row( $plugin ); ?>
 				</div>
 			</div>
 			<?php
 
 			return ob_get_clean();
+		}
+
+		/**
+		 * License row html for an add-on covered by a Liquid Web license
+		 *
+		 * @return string
+		 * @since TBD
+		 */
+		private static function html_harbor_license_row() {
+			return sprintf(
+				'<div class="give-license-row give-clearfix"><div class="give-license__status"><span class="dashicons dashicons-yes"></span>&nbsp;%s</div></div>',
+				sprintf(
+					/* translators: %s: URL of the Liquid Web Software Manager page. */
+					__( 'Licensed through your Liquid Web license. Manage it in the <a href="%s">Software Manager</a>.', 'give' ),
+					esc_url( lw_harbor_get_license_page_url() )
+				)
+			);
 		}
 
 		/**

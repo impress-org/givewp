@@ -199,6 +199,25 @@ class TestLegacyLicenseCompatibility extends TestCase
     }
 
     /**
+     * @since TBD
+     */
+    public function testLicensesTabShowsHarborCoveredAddonAsLicensed(): void
+    {
+        $this->setHarborFeatureAvailable(['give-recurring-donations']);
+
+        $html = \Give_License::html_by_plugin([
+            'Dir'       => 'give-recurring',
+            'Name'      => 'Give - Recurring Donations',
+            'Version'   => '2.20.1',
+            'Status'    => 'active',
+            'PluginURI' => 'https://givewp.com/addons/recurring-donations/',
+        ]);
+
+        $this->assertStringContainsString('Licensed through your Liquid Web license', $html);
+        $this->assertStringNotContainsString('License is inactive', $html);
+    }
+
+    /**
      * Add-on not covered by either legacy or Harbor should be reported as unlicensed.
      *
      * @since 4.15.0
