@@ -780,4 +780,198 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 		 * Case 3: donation form meta data tests.
 		*/
 	}
+
+	/**
+	 * A value inserted by legacy tag substitution must not be parsed as a meta tag.
+	 *
+	 * @since TBD
+	 */
+	public function test_meta_tags_inserted_by_tag_substitution_do_not_resolve() {
+		$donor_id = Give()->donors->add(
+			[
+				'name'    => 'Injected Meta Donor',
+				'email'   => 'injected-meta-donor@example.org',
+				'user_id' => 0,
+			]
+		);
+
+		Give()->donor_meta->update_meta( $donor_id, '_give_donor_first_name', '{meta_donor_verify_key}' );
+
+		Give()->email_access->set_verify_key( $donor_id, 'injected-meta-donor@example.org', 'disclosed-token-value' );
+
+		$content = give_do_email_tags( 'Hey {name}, thanks!', [ 'donor_id' => $donor_id ] );
+
+		$this->assertSame( 'Hey {meta_donor_verify_key}, thanks!', $content );
+	}
+
+	/**
+	 * The email-access secrets must never resolve as donor meta tags, even when present
+	 * in the original content.
+	 *
+	 * @since TBD
+	 */
+	public function test_secret_donor_columns_do_not_resolve() {
+		$donor_id = Give()->donors->add(
+			[
+				'name'    => 'Secret Column Donor',
+				'email'   => 'secret-column-donor@example.org',
+				'user_id' => 0,
+			]
+		);
+
+		Give()->email_access->set_verify_key( $donor_id, 'secret-column-donor@example.org', 'secret-verify-key' );
+
+		$content = give_do_email_tags(
+			'key={meta_donor_verify_key} token={meta_donor_token} throttle={meta_donor_verify_throttle}',
+			[ 'donor_id' => $donor_id ]
+		);
+
+		$this->assertSame( 'key= token= throttle=', $content );
+	}
+
+	/**
+	 * Legitimate donor meta must still resolve when the tag is part of the original content.
+	 *
+	 * @since TBD
+	 */
+	public function test_legitimate_donor_meta_still_resolves() {
+		$donor_id = Give()->donors->add(
+			[
+				'name'    => 'Legit Meta Donor',
+				'email'   => 'legit-meta-donor@example.org',
+				'user_id' => 0,
+			]
+		);
+
+		Give()->donor_meta->update_meta( $donor_id, '_give_stripe_customer_id', 'cus_123' );
+
+		$content = give_do_email_tags(
+			'customer={meta_donor__give_stripe_customer_id} id={meta_donor_id}',
+			[ 'donor_id' => $donor_id ]
+		);
+
+		$this->assertSame( "customer=cus_123 id={$donor_id}", $content );
+	}
+
+	/**
+	 * When the original content and a substituted value both carry the same meta tag,
+	 * only the original occurrence may resolve.
+	 *
+	 * @since TBD
+	 */
+	public function test_original_meta_tag_resolves_while_injected_occurrence_stays_literal() {
+		$donor_id = Give()->donors->add(
+			[
+				'name'    => 'Borrowed Meta Donor',
+				'email'   => 'borrowed-meta-donor@example.org',
+				'user_id' => 0,
+			]
+		);
+
+		Give()->donor_meta->update_meta( $donor_id, '_give_donor_first_name', '{meta_donor_email}' );
+
+		// {name} is substituted first, so the injected occurrence precedes the original one.
+		$content = give_do_email_tags( 'A={name} B={meta_donor_email}', [ 'donor_id' => $donor_id ] );
+
+		$this->assertSame( 'A={meta_donor_email} B=borrowed-meta-donor@example.org', $content );
+	}
+
+	/**
+	 * Content without meta tags must be returned unchanged and unprotected.
+	 *
+	 * @since TBD
+	 */
+	public function test_protect_meta_email_tags_leaves_content_without_meta_tags_unchanged() {
+		list( $content, $placeholders ) = give_protect_meta_email_tags( 'Hey {name}, thanks {amount}!' );
+
+		$this->assertSame( 'Hey {name}, thanks {amount}!', $content );
+		$this->assertSame( [], $placeholders );
+	}
+
+	/**
+	 * A meta tag must be replaced by a placeholder that maps back to it.
+	 *
+	 * @since TBD
+	 */
+	public function test_protect_meta_email_tags_replaces_tag_with_mapped_placeholder() {
+		list( $content, $placeholders ) = give_protect_meta_email_tags( 'key={meta_donor_verify_key}' );
+
+		$this->assertStringNotContainsString( '{meta_donor_verify_key}', $content );
+		$this->assertStringStartsWith( 'key={{givewp_meta_', $content );
+		$this->assertStringEndsWith( '}}', $content );
+
+		$placeholder = array_key_first( $placeholders );
+
+		$this->assertSame( [ $placeholder => '{meta_donor_verify_key}' ], $placeholders );
+		$this->assertSame( 'key={meta_donor_verify_key}', strtr( $content, $placeholders ) );
+	}
+
+	/**
+	 * The placeholder must not carry syntax the email tag engine treats as a tag.
+	 *
+	 * @since TBD
+	 */
+	public function test_protect_meta_email_tags_placeholder_is_not_an_email_tag() {
+		list( $content, $placeholders ) = give_protect_meta_email_tags( '{meta_donor_email}' );
+
+		$placeholder = array_key_first( $placeholders );
+
+		$this->assertSame( 0, preg_match( '/{([A-z0-9\-\_]+)}/s', $placeholder ) );
+		$this->assertSame( $placeholder, Give()->email_tags->do_tags( $placeholder, [ 'donor_id' => 1 ] ) );
+	}
+
+	/**
+	 * Each distinct tag must get one placeholder, reused by every occurrence.
+	 *
+	 * @since TBD
+	 */
+	public function test_protect_meta_email_tags_maps_each_distinct_tag_once() {
+		list( $content, $placeholders ) = give_protect_meta_email_tags(
+			'a={meta_donor_id} b={meta_donation_amount} c={meta_donor_id}'
+		);
+
+		$this->assertCount( 2, $placeholders );
+		$this->assertSame(
+			[ '{meta_donor_id}', '{meta_donation_amount}' ],
+			array_values( $placeholders )
+		);
+		$this->assertStringNotContainsString( '{meta_', $content );
+
+		$donor_placeholder = array_search( '{meta_donor_id}', $placeholders, true );
+		$this->assertSame( 2, substr_count( $content, $donor_placeholder ) );
+		$this->assertSame(
+			'a={meta_donor_id} b={meta_donation_amount} c={meta_donor_id}',
+			strtr( $content, $placeholders )
+		);
+	}
+
+	/**
+	 * Tag names that are prefixes of one another must be replaced independently.
+	 *
+	 * @since TBD
+	 */
+	public function test_protect_meta_email_tags_handles_prefix_tag_names() {
+		list( $content, $placeholders ) = give_protect_meta_email_tags( '{meta_donor_id} {meta_donor_ids}' );
+
+		$this->assertCount( 2, $placeholders );
+		$this->assertSame(
+			[ '{meta_donor_id}', '{meta_donor_ids}' ],
+			array_values( $placeholders )
+		);
+		$this->assertStringNotContainsString( '{meta_', $content );
+		$this->assertSame( '{meta_donor_id} {meta_donor_ids}', strtr( $content, $placeholders ) );
+	}
+
+	/**
+	 * A meta tag carrying a sub-key argument must be protected as a whole.
+	 *
+	 * @since TBD
+	 */
+	public function test_protect_meta_email_tags_handles_tag_with_argument() {
+		list( $content, $placeholders ) = give_protect_meta_email_tags( '{meta_donation_key subkey}' );
+
+		$this->assertSame( [ '{meta_donation_key subkey}' ], array_values( $placeholders ) );
+		$this->assertStringNotContainsString( '{meta_donation_key subkey}', $content );
+		$this->assertSame( '{meta_donation_key subkey}', strtr( $content, $placeholders ) );
+	}
 }
