@@ -12,6 +12,7 @@ use Give\Framework\PaymentGateways\Log\PaymentGatewayLog;
 class SubscriptionRenewalDonationCreated
 {
     /**
+     * @since TBD Bail when the subscription has no initial donation instead of fataling on it.
      * @since 4.0.0 updated to create the renewal from subscription model
      * @since 3.16.0 Add log messages and a defensive approach to prevent duplicated renewals
      * @since 3.6.0
@@ -37,7 +38,24 @@ class SubscriptionRenewalDonationCreated
             return;
         }
 
-        if ($subscription->initialDonation()->gatewayTransactionId === $gatewayTransactionId) {
+        $initialDonation = $subscription->initialDonation();
+
+        if ( ! $initialDonation) {
+            PaymentGatewayLog::error(
+                sprintf('The renewal was not created for the gateway transaction ID %s because the subscription %s has no initial donation to copy the donor details from.',
+                    $gatewayTransactionId, $subscription->id),
+                [
+                    'Gateway Subscription ID' => $gatewaySubscriptionId,
+                    'Gateway Transaction ID' => $gatewayTransactionId,
+                    'Message' => $message,
+                    'Subscription' => $subscription->toArray(),
+                ]
+            );
+
+            return;
+        }
+
+        if ($initialDonation->gatewayTransactionId === $gatewayTransactionId) {
             PaymentGatewayLog::error(
                 sprintf('The renewal was not created for the gateway transaction ID %s because the initial donation of the subscription %s is already using the informed gateway transaction ID %s.',
                     $gatewayTransactionId, $subscription->id, $gatewaySubscriptionId),
