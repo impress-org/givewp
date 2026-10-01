@@ -280,6 +280,36 @@ class TestGenerateConfirmationPageReceipt extends TestCase
     }
 
     /**
+     * Values inserted by legacy email tags must not be parsed as legacy meta tags.
+     *
+     * @since TBD
+     */
+    public function testDoesNotParseMetaTagsInsertedByLegacyNameTag()
+    {
+        /** @var DonationForm $donationForm */
+        $donationForm = DonationForm::factory()->create([
+            'settings' => FormSettings::fromArray([
+                'receiptHeading' => 'Hey {name}, thanks for your donation!',
+            ]),
+        ]);
+
+        /** @var Donation $donation */
+        $donation = Donation::factory()->create([
+            'formId' => $donationForm->id,
+            'firstName' => '{meta_donor_verify_key}',
+        ]);
+
+        Give()->donors->update($donation->donorId, ['verify_key' => 'sensitive-token']);
+
+        $receipt = (new GenerateConfirmationPageReceipt())(new DonationReceipt($donation));
+
+        $settings = $receipt->settings->toArray();
+
+        $this->assertStringNotContainsString('sensitive-token', $settings['heading']);
+        $this->assertStringNotContainsString('sensitive-token', $settings['description']);
+    }
+
+    /**
      * @since 3.3.0
      */
     public function testShouldAddCustomFieldsToAdditionalDetails(): void
