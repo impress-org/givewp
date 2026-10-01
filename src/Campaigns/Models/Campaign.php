@@ -78,6 +78,7 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
     }
 
     /**
+     * @since TBD Return each associated form once when its metadata contains duplicate keys.
      * @since 4.0.0
      */
     public function forms(): ModelQueryBuilder
@@ -88,7 +89,8 @@ class Campaign extends Model implements ModelCrud, ModelHasFactory
                     ->leftJoin('give_campaign_forms', 'campaign_forms')
                     ->on('campaign_forms.form_id', 'id');
             })
-            ->where('campaign_forms.campaign_id', $this->id);
+            ->where('campaign_forms.campaign_id', $this->id)
+            ->groupBy('forms.ID');
     }
 
     /**
