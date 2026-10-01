@@ -145,7 +145,7 @@ class Tests_Email_Access extends Give_Unit_Test_Case {
 	 * is_valid_verify_key() must reject a verify key older than the token expiration window,
 	 * and must not consume it.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_is_valid_verify_key_rejects_expired_key() {
 

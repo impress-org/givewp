@@ -78,7 +78,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
@@ -140,7 +140,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception|InvalidArgumentException
@@ -189,7 +189,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -230,7 +230,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -263,7 +263,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception
@@ -295,7 +295,7 @@ class CampaignRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.0.0
      *
      * @throws Exception

@@ -161,7 +161,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.11.0 add campaign_id column to insert
      * @since 2.24.0 add payment_mode column to insert
      * @since 2.21.0 replace actions with givewp_subscription_creating and givewp_subscription_created
@@ -228,7 +228,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.11.0 add campaign_id column to update
      * @since 3.17.0 add expiration column to update
      * @since 2.24.0 add payment_mode column to update
@@ -284,7 +284,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 2.21.0 replace actions with givewp_subscription_deleting and givewp_subscription_deleted
      * @since 2.20.0 consolidate meta deletion into a single query
      * @since 2.19.6
@@ -321,7 +321,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.8.0
      *
      * @throws Exception
@@ -359,7 +359,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 4.12.0
      *
      * @throws Exception
@@ -422,7 +422,7 @@ class SubscriptionRepository
     }
 
     /**
-     * @since TBD Keep the original error as the previous exception when the write fails.
+     * @since 4.18.0 Keep the original error as the previous exception when the write fails.
      * @since 2.19.6
      *
      * @throws Exception

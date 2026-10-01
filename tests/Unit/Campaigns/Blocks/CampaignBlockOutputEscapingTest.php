@@ -9,7 +9,7 @@ use Give\Tests\TestCase;
 use Give\Tests\TestTraits\RefreshDatabase;
 
 /**
- * @since TBD
+ * @since 4.18.0
  */
 final class CampaignBlockOutputEscapingTest extends TestCase
 {
@@ -21,7 +21,7 @@ final class CampaignBlockOutputEscapingTest extends TestCase
     const PAYLOAD = "x' onfocus='alert(document.domain)' autofocus='' tabindex='0' x='";
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testGridShortcodeEscapesAttributeValuesInOutput(): void
     {
@@ -39,7 +39,7 @@ final class CampaignBlockOutputEscapingTest extends TestCase
     }
 
     /**
-     * @since TBD
+     * @since 4.18.0
      */
     public function testCampaignShortcodeEscapesAttributeValuesInOutput(): void
     {

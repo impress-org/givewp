@@ -30,7 +30,7 @@ class DonationFormsRepository
     }
 
     /**
-     * @since TBD Alias the posts table so grouped queries can qualify columns (e.g. GROUP BY forms.ID).
+     * @since 4.18.0 Alias the posts table so grouped queries can qualify columns (e.g. GROUP BY forms.ID).
      * @since 2.24.0
      *
      * @return ModelQueryBuilder<Donation>

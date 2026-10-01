@@ -784,7 +784,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * A value inserted by legacy tag substitution must not be parsed as a meta tag.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_meta_tags_inserted_by_tag_substitution_do_not_resolve() {
 		$donor_id = Give()->donors->add(
@@ -808,7 +808,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * The email-access secrets must never resolve as donor meta tags, even when present
 	 * in the original content.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_secret_donor_columns_do_not_resolve() {
 		$donor_id = Give()->donors->add(
@@ -832,7 +832,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Legitimate donor meta must still resolve when the tag is part of the original content.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_legitimate_donor_meta_still_resolves() {
 		$donor_id = Give()->donors->add(
@@ -857,7 +857,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	 * When the original content and a substituted value both carry the same meta tag,
 	 * only the original occurrence may resolve.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_original_meta_tag_resolves_while_injected_occurrence_stays_literal() {
 		$donor_id = Give()->donors->add(
@@ -879,7 +879,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Content without meta tags must be returned unchanged and unprotected.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_protect_meta_email_tags_leaves_content_without_meta_tags_unchanged() {
 		list( $content, $placeholders ) = give_protect_meta_email_tags( 'Hey {name}, thanks {amount}!' );
@@ -891,7 +891,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * A meta tag must be replaced by a placeholder that maps back to it.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_protect_meta_email_tags_replaces_tag_with_mapped_placeholder() {
 		list( $content, $placeholders ) = give_protect_meta_email_tags( 'key={meta_donor_verify_key}' );
@@ -909,7 +909,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * The placeholder must not carry syntax the email tag engine treats as a tag.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_protect_meta_email_tags_placeholder_is_not_an_email_tag() {
 		list( $content, $placeholders ) = give_protect_meta_email_tags( '{meta_donor_email}' );
@@ -923,7 +923,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Each distinct tag must get one placeholder, reused by every occurrence.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_protect_meta_email_tags_maps_each_distinct_tag_once() {
 		list( $content, $placeholders ) = give_protect_meta_email_tags(
@@ -948,7 +948,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * Tag names that are prefixes of one another must be replaced independently.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_protect_meta_email_tags_handles_prefix_tag_names() {
 		list( $content, $placeholders ) = give_protect_meta_email_tags( '{meta_donor_id} {meta_donor_ids}' );
@@ -965,7 +965,7 @@ class Tests_Email_Tags extends Give_Unit_Test_Case {
 	/**
 	 * A meta tag carrying a sub-key argument must be protected as a whole.
 	 *
-	 * @since TBD
+	 * @since 4.18.0
 	 */
 	public function test_protect_meta_email_tags_handles_tag_with_argument() {
 		list( $content, $placeholders ) = give_protect_meta_email_tags( '{meta_donation_key subkey}' );

@@ -351,7 +351,7 @@ class Give_Email_Access {
 	/**
 	 * Is this a valid verify key?
 	 *
-	 * @since  TBD Verify keys expire with the same window as access tokens.
+	 * @since  4.18.0 Verify keys expire with the same window as access tokens.
 	 * @since  4.16.7 Only accept non-empty string tokens.
 	 * @since  1.0
 	 * @access public
